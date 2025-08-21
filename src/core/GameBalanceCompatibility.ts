@@ -7,9 +7,9 @@ interface BasicConfig { [key: string]: any, }
  * 新しい設定システムへの段階的な移行を促進します。
  */
 
-import { getGameConfig } from '../config/GameConfig.js';''
-import { getConfigurationManager } from './ConfigurationManager.js';''
-import { getLoggingSystem } from './LoggingSystem.js';
+import { getGameConfig  } from '../config/GameConfig.js';''
+import { getConfigurationManager  } from './ConfigurationManager.js';''
+import { getLoggingSystem  } from './LoggingSystem.js';
 
 // 警告表示の制御
 const SHOW_DEPRECATION_WARNINGS = true;
@@ -85,7 +85,7 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, { get(target, prop) {
         switch(prop) {'
 
             case 'scoring':'';
-                return gameConfig.getScoreConfig(''';
+                return, gameConfig.getScoreConfig(''';
             case 'stages':'';
                 return, gameConfig.getStageConfig(''';
             case 'items':'';
@@ -168,5 +168,5 @@ class BalanceHelperCompatibility { /**
 export const BALANCE_CONFIG = BALANCE_CONFIG_PROXY;
 export const BalanceHelper = BalanceHelperCompatibility;
 // 新しいAPIも同時にエクスポート（移行を促進）
-export { getGameConfig } from '../config/GameConfig.js';''
-export { getConfigurationManager } from './ConfigurationManager.js';
+export { getGameConfig  } from '../config/GameConfig.js';''
+export { getConfigurationManager  } from './ConfigurationManager.js';

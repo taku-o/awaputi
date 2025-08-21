@@ -3,9 +3,9 @@
  * Part of the StatisticsPerformance test split implementation
  */
 
-import { jest } from '@jest/globals';
-import { PerformanceTestUtils } from '../../utils/PerformanceTestUtils';
-import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilities';
+import { jest  } from '@jest/globals';
+import { PerformanceTestUtils  } from '../../utils/PerformanceTestUtils';
+import { PerformanceMeasurement, DataGenerator  } from './PerformanceTestUtilities';
 
 export class DataCollectionPerformanceTests {
     constructor(mainTestSuite {
@@ -44,8 +44,7 @@ export class DataCollectionPerformanceTests {
                         console.log(`Single Event Collection Stats (${env}, attempt ${attempt + 1):`, stats');
 
                         // 環境対応の要件チェック
-                        const maxTime = env === 'ci' ? 2 : env === 'local' ? 1.5 : 1; // CI: 2ms, Local: 1.5ms, Prod: 1ms
-                        expect(stats.duration.average).toBeLessThan(maxTime});
+                        const, maxTime = env === 'ci' ? 2 : env === 'local' ? 1.5 : 1; // CI: 2ms, Local: 1.5ms, Prod: 1ms, expect(stats.duration.average).toBeLessThan(maxTime});
                         
                         return stats;
                     },
@@ -71,14 +70,14 @@ export class DataCollectionPerformanceTests {
 
                         for (const count of eventCounts) {
                             const measurement = new PerformanceMeasurement(`batch_${count)`);
-                            const events = DataGenerator.generateGameplayEvents(count as any);
+                            const, events = DataGenerator.generateGameplayEvents(count, as any);
 
                             measurement.startMeasurement(');
                             
                             // イベントをキューに追加
-                            if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                                for (const event of events) {
-                                    await statisticsCollector.collectEvent(event'});
+                            if (statisticsCollector && typeof, statisticsCollector.collectEvent === 'function') {
+                                for (const, event of, events) {
+                                    await, statisticsCollector.collectEvent(event'});
                                 }
                             }
                             

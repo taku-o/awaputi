@@ -2,7 +2,7 @@
  * ユーザー管理タブコンポーネント
  * UserInfoSceneのユーザー管理・データ管理機能を担当
  */
-import { TabComponent } from './TabComponent.js';
+import { TabComponent  } from './TabComponent.js';
 
 interface UserData { username: string,
     ap: number;
@@ -13,7 +13,7 @@ interface UserData { username: string,
     registrationDate: Date;
     lastPlayDate: Date;
     totalPlayTime: number;
-    gamesPlayed: number ,}
+   , gamesPlayed: number ,}
 interface GameEngine { playerData?: {
         getUsername(): string;
         getAP(): number;
@@ -34,7 +34,7 @@ interface EventBus { on(event: string, callback: Function): void,
     emit(event: string, data?: any): void }
 interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean;
-    reducedMotion: boolean ,}
+   , reducedMotion: boolean ,}
 interface TabState {
     accessibilitySettings: AccessibilitySettings;
 }
@@ -51,7 +51,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     private buttonSpacing: number = 15;
     // データ
     private userData: UserData | null = null;
-    private lastDataUpdate: number = 0;
+    private, lastDataUpdate: number = 0;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
 
         
@@ -87,7 +87,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
                     ownedItems: playerData.getOwnedItems();
                     registrationDate: playerData.getRegistrationDate();
                     lastPlayDate: playerData.getLastPlayDate();
-                    totalPlayTime: playerData.getTotalPlayTime( }
+                   , totalPlayTime: playerData.getTotalPlayTime( }
                     gamesPlayed: playerData.getGamesPlayed(); }
                 }
             ';
@@ -290,13 +290,13 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
 class UserInfoRenderer { private gameEngine: GameEngine
     private eventBus: EventBus;
     private state: TabState;
-    private textSettings: {
+    private, textSettings: {
         titleFont: string;
         labelFont: string;
         valueFont: string;
         titleColor: string;
         labelColor: string;
-        valueColor: string };
+       , valueColor: string };
     
     private isInitialized: boolean = false;
 
@@ -475,24 +475,24 @@ class UserInfoRenderer { private gameEngine: GameEngine
 interface Button { id: string,
     label: string;
     color: string;
-    description: string ,}
+   , description: string ,}
 class DataManagementRenderer { private gameEngine: GameEngine
     private eventBus: EventBus;
     private state: TabState;
-    private textSettings: {
+    private, textSettings: {
         titleFont: string;
         labelFont: string;
         buttonFont: string;
         titleColor: string;
         labelColor: string;
-        buttonTextColor: string };
+       , buttonTextColor: string };
     
     // ボタン設定
     private buttons: Button[];
     private buttonHeight: number = 40;
     private buttonSpacing: number = 15;
     private hoveredButton: number = -1;
-    private isInitialized: boolean = false;
+    private, isInitialized: boolean = false;
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
         this.gameEngine = gameEngine;
@@ -639,8 +639,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
             backgroundColor = this.lightenColor(button.color, 0.1); }
         ;
         // 高コントラストモードの調整
-        if(this.state.accessibilitySettings.highContrast) {'
-            ';
+        if(this.state.accessibilitySettings.highContrast) {', ';
 
         }
 

@@ -3,7 +3,7 @@
  * 全アクセシビリティコンポーネント統合・WCAG 2.1 AA準拠検証・ドキュメント生成
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for component structures
 interface ChecklistItem { id: string,
@@ -11,7 +11,7 @@ interface ChecklistItem { id: string,
     status: 'pending' | 'passed' | 'failed' | 'error' | 'warning' | 'skipped' ,}
 
 interface ChecklistCategory { name: string;
-    items: ChecklistItem[]
+   , items: ChecklistItem[]
     }
 
 interface IntegrationChecklist { coreComponents: ChecklistCategory;
@@ -19,11 +19,11 @@ interface IntegrationChecklist { coreComponents: ChecklistCategory;
     gameIntegration: ChecklistCategory;
     performance: ChecklistCategory;
     crossBrowser: ChecklistCategory;
-    documentation: ChecklistCategory
+   , documentation: ChecklistCategory
     }
 
 interface WCAGGuideline { name: string;
-    criteria: string[] }
+   , criteria: string[] }
 
 interface WCAGGuidelines { perceivable: Record<string, WCAGGuideline>;
     operable: Record<string, WCAGGuideline>;
@@ -36,7 +36,7 @@ interface ValidationIssue { ''
     component: string;
     message: string;
     guideline?: string;
-    timestamp: number }
+   , timestamp: number }
 ';
 
 interface ValidationWarning { ''
@@ -44,45 +44,45 @@ interface ValidationWarning { ''
     component: string;
     message: string;
     details?: any;
-    timestamp: number }
+   , timestamp: number }
 
 interface ChecklistSummary { total: number;
     passed: number;
     failed: number;
-    errors: number }
+   , errors: number }
 
 interface WCAGComplianceResult { principle: string;
     compliant: boolean;
     violations: WCAGViolation[];
     warnings: string[];
     checksPassed: number;
-    totalChecks: number }
+   , totalChecks: number }
 
 interface WCAGViolation { guideline: string;
-    message: string,
+   , message: string,
     severity: 'error' | 'warning' ,}
 
 interface WCAGCheckResult { passed: boolean;
-    message: string;
+   , message: string;
     violations?: string[];
     warnings?: string[]; }
 
 interface PerformanceMetric { duration?: number;
     available: boolean;
-    acceptable: boolean;
+   , acceptable: boolean;
     usedJSHeapSize?: number;
     totalJSHeapSize?: number; ,}
 
 interface PerformanceMetrics { renderingPerformance: PerformanceMetric,
     memoryUsage: PerformanceMetric;
     loadingTime: PerformanceMetric;
-    responsiveness: PerformanceMetric
+   , responsiveness: PerformanceMetric
     ,}
 
 interface ValidationResults { startTime: number | null;
-    endTime: number | null,
+   , endTime: number | null,
     overallStatus: 'pending' | 'passed' | 'failed' | 'warning';
-    checklist: Record<string, ChecklistSummary>;
+   , checklist: Record<string, ChecklistSummary>;
     wcagCompliance: Record<string, WCAGComplianceResult>;
     performanceMetrics: Partial<PerformanceMetrics>;
     issues: ValidationIssue[];
@@ -97,34 +97,34 @@ interface DeploymentConfig { enabled: boolean;
     performanceValidation: boolean;
     wcagComplianceCheck: boolean;
     crossBrowserValidation: boolean;
-    deploymentChecklist: boolean }
+   , deploymentChecklist: boolean }
 
 interface DocumentationConfig { outputFormat: string[];
     includeScreenshots: boolean;
     includeCodeExamples: boolean;
     includeApiReference: boolean;
-    languages: string[] }
+   , languages: string[] }
 
 interface DocumentationSection { title: string;
-    content: string }
+   , content: string }
 
 interface Documentation { title: string;
-    sections: DocumentationSection[]
+   , sections: DocumentationSection[]
     }
 
 interface APIMethod { name: string;
     description: string;
     parameters: any[];
-    returns: string }
+   , returns: string }
 
 interface APIDocumentation { title: string;
-    methods: APIMethod[]
+   , methods: APIMethod[]
     }
 
 interface GeneratedDocumentation { userGuide: Documentation;
     developerGuide: Documentation;
     apiDocumentation: APIDocumentation;
-    troubleshooting: Documentation
+   , troubleshooting: Documentation
     }
 ';
 
@@ -132,16 +132,16 @@ interface DeploymentRecommendation { ''
     priority: 'critical' | 'high' | 'medium' | 'low',
     category: 'blocking' | 'compliance' | 'optimization' | 'enhancement';
     message: string;
-    action: string ,}
+   , action: string ,}
 ';
 
 interface DeploymentReportSummary { overallScore: number,''
     readinessLevel: 'production-ready' | 'pre-production' | 'development' | 'not-ready';
     timestamp: string;
-    validationDuration: number ,}
+   , validationDuration: number ,}
 
 interface DeploymentReport { summary: DeploymentReportSummary;
-    checklist: Record<string, ChecklistSummary>;
+   , checklist: Record<string, ChecklistSummary>;
     wcagCompliance: Record<string, WCAGComplianceResult>;
     performance: Partial<PerformanceMetrics>;
     issues: ValidationIssue[];
@@ -155,7 +155,7 @@ interface DeploymentReadiness { score: number,''
     status: 'pending' | 'passed' | 'failed' | 'warning';
     criticalIssues: number;
     totalIssues: number;
-    recommendations: DeploymentRecommendation[]
+   , recommendations: DeploymentRecommendation[]
     ,}
 
 // AccessibilityManager interface (minimal, definition);
@@ -176,7 +176,7 @@ export class AccessibilityDeploymentPreparation {
     private integrationChecklist: IntegrationChecklist;
     private wcagGuidelines: WCAGGuidelines;
     private validationResults: ValidationResults;
-    private documentationConfig: DocumentationConfig;
+    private, documentationConfig: DocumentationConfig;
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
@@ -190,7 +190,7 @@ export class AccessibilityDeploymentPreparation {
             createUserGuides: true;
             performanceValidation: true;
             wcagComplianceCheck: true;
-            crossBrowserValidation: true;
+           , crossBrowserValidation: true;
     }
             deploymentChecklist: true }
         };
@@ -270,36 +270,19 @@ export class AccessibilityDeploymentPreparation {
         this.wcagGuidelines = {;
             // 1. 知覚可能 (Perceivable');
 
-            perceivable: {' }'
-
-                '1.1': { name: 'テキスト代替', criteria: ['1.1.1] ,},''
-                '1.2': { name: '時間ベースメディア', criteria: ['1.2.1', '1.2.2', '1.2.3] },''
-                '1.3': { name: '適応可能', criteria: ['1.3.1', '1.3.2', '1.3.3] },''
-                '1.4': { name: '判別可能', criteria: ['1.4.1', '1.4.2', '1.4.3', '1.4.4', '1.4.5] },
+            perceivable: {' }', '1.1': { name: 'テキスト代替', criteria: ['1.1.1] ,},'', '1.2': { name: '時間ベースメディア', criteria: ['1.2.1', '1.2.2', '1.2.3] },'', '1.3': { name: '適応可能', criteria: ['1.3.1', '1.3.2', '1.3.3] },'', '1.4': { name: '判別可能', criteria: ['1.4.1', '1.4.2', '1.4.3', '1.4.4', '1.4.5] },
 
             // 2. 操作可能 (Operable');
 
-            operable: { ' }'
-
-                '2.1': { name: 'キーボードアクセス可能', criteria: ['2.1.1', '2.1.2] },''
-                '2.2': { name: '十分な時間', criteria: ['2.2.1', '2.2.2] },''
-                '2.3': { name: '発作の防止', criteria: ['2.3.1] ,},''
-                '2.4': { name: 'ナビゲーション可能', criteria: ['2.4.1', '2.4.2', '2.4.3', '2.4.4] },''
-                '2.5': { name: '入力方法', criteria: ['2.5.1', '2.5.2', '2.5.3', '2.5.4] },
+            operable: { ' }', '2.1': { name: 'キーボードアクセス可能', criteria: ['2.1.1', '2.1.2] },'', '2.2': { name: '十分な時間', criteria: ['2.2.1', '2.2.2] },'', '2.3': { name: '発作の防止', criteria: ['2.3.1] ,},'', '2.4': { name: 'ナビゲーション可能', criteria: ['2.4.1', '2.4.2', '2.4.3', '2.4.4] },'', '2.5': { name: '入力方法', criteria: ['2.5.1', '2.5.2', '2.5.3', '2.5.4] },
 
             // 3. 理解可能 (Understandable');
 
-            understandable: { ' }'
-
-                '3.1': { name: '読み取り可能', criteria: ['3.1.1] ,},''
-                '3.2': { name: '予測可能', criteria: ['3.2.1', '3.2.2] },''
-                '3.3': { name: '入力支援', criteria: ['3.3.1', '3.3.2] },
+            understandable: { ' }', '3.1': { name: '読み取り可能', criteria: ['3.1.1] ,},'', '3.2': { name: '予測可能', criteria: ['3.2.1', '3.2.2] },'', '3.3': { name: '入力支援', criteria: ['3.3.1', '3.3.2] },
 
             // 4. 堅牢 (Robust');
 
-            robust: { ' }'
-
-                '4.1': { name: '互換性', criteria: ['4.1.1', '4.1.2', '4.1.3] }
+            robust: { ' }', '4.1': { name: '互換性', criteria: ['4.1.1', '4.1.2', '4.1.3] }
         };
         
         // 検証結果
@@ -311,14 +294,14 @@ export class AccessibilityDeploymentPreparation {
             performanceMetrics: {};
             issues: [];
             warnings: [];
-            recommendations: [];
+           , recommendations: [];
         },
         
         // ドキュメント生成設定
         this.documentationConfig = {;
             outputFormat: ['html', 'markdown'],
             includeScreenshots: true;
-            includeCodeExamples: true,
+           , includeCodeExamples: true,
             includeApiReference: true,
             languages: ['ja', 'en] };
 
@@ -365,7 +348,7 @@ export class AccessibilityDeploymentPreparation {
             this.validationResults.issues.push({)'
                 type: 'critical',')';
                 component: 'validation'), }
-                message: `Validation process failed: ${(error, as Error}).message}`;
+                message: `Validation process, failed: ${(error, as, Error}).message}`;
                 timestamp: Date.now();
             });
         } finally { this.validationResults.endTime = Date.now(); }
@@ -393,7 +376,7 @@ export class AccessibilityDeploymentPreparation {
                         type: 'error',);
                         component: component.id);
         ,}
-                        message: `Core component validation failed: ${component.name}`, }
+                        message: `Core component validation, failed: ${component.name}`, }
                         timestamp: Date.now(});
                     });''
                 } catch (error) {
@@ -402,7 +385,7 @@ export class AccessibilityDeploymentPreparation {
                 this.validationResults.issues.push({)'
                     type: 'error',);
                     component: component.id), }
-                    message: `Component validation error: ${(error, as Error}).message}`;
+                    message: `Component validation, error: ${(error, as, Error}).message}`;
                     timestamp: Date.now(),
                 }');
             }
@@ -469,7 +452,7 @@ export class AccessibilityDeploymentPreparation {
                         this.validationResults.issues.push({''
                             type: 'wcag_violation);
                             component: item.id);
-                            guideline: violation.guideline,)
+                           , guideline: violation.guideline,)
         }
                             message: violation.message), }
                             timestamp: Date.now(); }
@@ -482,7 +465,7 @@ export class AccessibilityDeploymentPreparation {
                 this.validationResults.issues.push({)'
                     type: 'error',);
                     component: item.id), }
-                    message: `WCAG compliance check error: ${(error, as Error}).message}`;
+                    message: `WCAG compliance check, error: ${(error, as, Error}).message}`;
                     timestamp: Date.now();
                 });
             }
@@ -497,7 +480,7 @@ export class AccessibilityDeploymentPreparation {
             violations: [];
             warnings: [];
             checksPassed: 0;
-            totalChecks: 0 ,};
+           , totalChecks: 0 ,};
         const guidelines = this.wcagGuidelines[principle as keyof WCAGGuidelines];
         if (!guidelines) { return result; }
         
@@ -582,8 +565,7 @@ export class AccessibilityDeploymentPreparation {
         
         return { passed: violations.length = == 0 };
             message: violations.length > 0 ?   : undefined 
-                `${violations.length} images missing alt text` : ''
-                'All images have appropriate alt text';
+                `${violations.length} images missing alt text` : '', 'All images have appropriate alt text';
             violations;
         }
     
@@ -652,7 +634,7 @@ export class AccessibilityDeploymentPreparation {
                         type: 'integration_error',);
                         component: item.id);
         ,}
-                        message: `Game system integration failed: ${item.name}`, }
+                        message: `Game system integration, failed: ${item.name}`, }
                         timestamp: Date.now(});
                     });''
                 } catch (error) {
@@ -661,7 +643,7 @@ export class AccessibilityDeploymentPreparation {
                 this.validationResults.issues.push({)'
                     type: 'error',);
                     component: item.id), }
-                    message: `Game integration validation error: ${(error, as Error}).message}`;
+                    message: `Game integration validation, error: ${(error, as, Error}).message}`;
                     timestamp: Date.now();
                 });
             }
@@ -676,7 +658,7 @@ export class AccessibilityDeploymentPreparation {
         const performanceResults: PerformanceMetrics = { renderingPerformance: await this.measureRenderingPerformance(),
             memoryUsage: await this.measureMemoryUsage();
             loadingTime: await this.measureLoadingTime();
-            responsiveness: await this.measureResponsiveness(), };
+           , responsiveness: await this.measureResponsiveness(), };
         
         this.validationResults.performanceMetrics = performanceResults;
         
@@ -694,7 +676,7 @@ export class AccessibilityDeploymentPreparation {
                         type: 'performance',);
                         component: item.id);
             ,}
-                        message: `Performance warning: ${item.name}`, }
+                        message: `Performance, warning: ${item.name}`, }
                         details: metric, }
 
                         timestamp: Date.now(});''
@@ -716,7 +698,7 @@ export class AccessibilityDeploymentPreparation {
         const documentation: GeneratedDocumentation = { userGuide: this.generateUserGuide(),
             developerGuide: this.generateDeveloperGuide();
             apiDocumentation: this.generateAPIDocumentation(');
-            troubleshooting: this.generateTroubleshootingGuide( ,};
+           , troubleshooting: this.generateTroubleshootingGuide( ,};
         ';
         // ドキュメントの保存
         this.saveDocumentation(documentation);
@@ -789,7 +771,7 @@ export class AccessibilityDeploymentPreparation {
     private generateAPIDocumentation(): APIDocumentation { ''
         const apiMethods = this.extractAPIMethods(''';
             title: 'BubblePop アクセシビリティ API リファレンス';
-            methods: apiMethods }
+           , methods: apiMethods }
     
     /**
      * トラブルシューティングガイドの生成'
@@ -826,7 +808,7 @@ export class AccessibilityDeploymentPreparation {
             performance: this.validationResults.performanceMetrics;
             issues: this.validationResults.issues;
             warnings: this.validationResults.warnings;
-            recommendations: this.generateDeploymentRecommendations();
+           , recommendations: this.generateDeploymentRecommendations();
         }
     
     /**
@@ -909,8 +891,7 @@ export class AccessibilityDeploymentPreparation {
     
     private async measureRenderingPerformance(): Promise<PerformanceMetric> { const startTime = performance.now();
         // レンダリング性能測定のシミュレーション
-        for(let, i = 0; i < 100; i++) {'
-            ';
+        for(let, i = 0; i < 100; i++) {', ';
 
         }
 
@@ -1042,8 +1023,7 @@ export class AccessibilityDeploymentPreparation {
         const criticalIssues = this.validationResults.issues.filter(i => i.type === 'critical).length;
         const totalIssues = this.validationResults.issues.length;
 
-        if(criticalIssues > 0) {'
-            ';
+        if(criticalIssues > 0) {', ';
 
         }
 
@@ -1081,8 +1061,7 @@ export class AccessibilityDeploymentPreparation {
      * 設定の適用
      */
     applyConfig(config: { deploymentPreparation?: Partial<DeploymentConfig> ): void {
-        if(config.deploymentPreparation) {'
-            ';
+        if(config.deploymentPreparation) {', ';
 
         }
 

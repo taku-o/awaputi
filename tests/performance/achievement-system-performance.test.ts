@@ -1,11 +1,11 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest  } from '@jest/globals';
 /**
  * 実績システムパフォーマンステスト
  */
-import { AchievementManager } from '../../src/core/AchievementManager';
-import { AchievementEventIntegrator } from '../../src/core/AchievementEventIntegrator';
-import { AchievementNotificationSystem } from '../../src/core/achievements/AchievementNotificationSystem';
-import { AchievementStatsUI } from '../../src/core/AchievementStatsUI';
+import { AchievementManager  } from '../../src/core/AchievementManager';
+import { AchievementEventIntegrator  } from '../../src/core/AchievementEventIntegrator';
+import { AchievementNotificationSystem  } from '../../src/core/achievements/AchievementNotificationSystem';
+import { AchievementStatsUI  } from '../../src/core/AchievementStatsUI';
 // Performance testing utilities
 class PerformanceMonitor {
     constructor() {
@@ -259,7 +259,7 @@ describe('Achievement System Performance Tests', () => {
                     addColorStop: jest.fn(),
     }))),
                 measureText: jest.fn(() => ({ width: 100 )));
-                fillText: jest.fn(),
+               , fillText: jest.fn(),
                 strokeText: jest.fn('),
                 fillStyle: '',
                 strokeStyle: '',

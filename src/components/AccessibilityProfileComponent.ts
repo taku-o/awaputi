@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getLocalizationManager } from '../core/LocalizationManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../core/LocalizationManager.js';
 
 interface AccessibilityProfile { id: string,
     name: string;
@@ -7,30 +7,30 @@ interface AccessibilityProfile { id: string,
     description: string;
     descriptionEn: string;
     icon: string;
-    settings: {
-        [key: string]: boolean, }
+   , settings: {
+        [ke;y: string]: boolean, }
 
 interface GameEngine { sceneManager?: {
         currentScene?: {
-            accessibilitySettingsManager?: AccessibilitySettingsManager;
+            accessibilitySettingsManage;r?: AccessibilitySettingsManager;
     };
     settingsManager?: SettingsManager;
     emit?: (event: string, data: any) => void;
 }
 
 interface AccessibilitySettingsManager { currentProfile?: string;
-    applyProfile?: (profileId: string, settings: any) => Promise<void>;
+    applyProfile?: (profileI;d: string, settings: any) => Promise<void>;
     notifySettingsChanged?: () => void; ,}
 }
 
-interface SettingsManager { get: (key: string) => any,
-    set: (key: string, value: any) => void,
+interface SettingsManager { get: (ke;y: string) => any,
+    set: (ke;y: string, value: any) => void,
     save: () => void ,}
 }
 ';
 
 interface ErrorHandler { ''
-    handleError: (error: Error, code: string, context?: any') => void }'
+    handleError: (erro;r: Error, code: string, context?: any') => void }'
 }
 
 interface LocalizationManager { // Define methods as needed }
@@ -40,7 +40,7 @@ type StatusType = 'info' | 'success' | 'error';
 interface ProfileInfo { id: string,
     name: string;
     description: string;
-    icon: string ,}
+   , icon: string ,}
 
 /**
  * AccessibilityProfileComponent
@@ -74,7 +74,7 @@ export class AccessibilityProfileComponent {
     private isApplying: boolean;
     private isDropdownOpen: boolean;
     // AccessibilitySettingsManagerの参照
-    private accessibilityManager: AccessibilitySettingsManager | undefined;
+    private, accessibilityManager: AccessibilitySettingsManager | undefined;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -86,8 +86,7 @@ export class AccessibilityProfileComponent {
                 description: '標準設定',
                 descriptionEn: 'Standard settings',
                 icon: '🎮',
-                settings: {''
-                    'accessibility.highContrast': false,
+                settings: {'', 'accessibility.highContrast': false,
                     'accessibility.reducedMotion': false,
                     'accessibility.largeText': false,
                     'accessibility.screenReader': false,
@@ -103,8 +102,7 @@ export class AccessibilityProfileComponent {
                 description: '見やすい高コントラスト表示',
                 descriptionEn: 'Enhanced visibility with high contrast',
                 icon: '🔆',
-                settings: {''
-                    'accessibility.highContrast': true,
+                settings: {'', 'accessibility.highContrast': true,
                     'accessibility.reducedMotion': false,
                     'accessibility.largeText': true,
                     'accessibility.screenReader': true,
@@ -118,8 +116,7 @@ export class AccessibilityProfileComponent {
                 description: 'モーション削減とナビゲーション支援',
                 descriptionEn: 'Reduced motion and navigation assistance',)';
                 icon: '♿')';
-                settings: {''
-                    'accessibility.highContrast': false,
+               , settings: {'', 'accessibility.highContrast': false,
                     'accessibility.reducedMotion': true,
                     'accessibility.largeText': true,
                     'accessibility.screenReader': false,
@@ -270,18 +267,18 @@ export class AccessibilityProfileComponent {
 
             option.setAttribute('aria-label', `${profile.name} - ${ profile.description)`');
 
-            const optionIcon = document.createElement('span'');''
+            const, optionIcon = document.createElement('span'');''
             optionIcon.className = 'option-icon';
             optionIcon.textContent = profile.icon;
 
-            const optionContent = document.createElement('div'');''
+            const, optionContent = document.createElement('div'');''
             optionContent.className = 'option-content';
 
-            const optionName = document.createElement('div'');''
+            const, optionName = document.createElement('div'');''
             optionName.className = 'option-name';
             optionName.textContent = profile.name;
 
-            const optionDescription = document.createElement('div'');''
+            const, optionDescription = document.createElement('div'');''
             optionDescription.className = 'option-description';
             optionDescription.textContent = profile.description;
             
@@ -336,10 +333,10 @@ export class AccessibilityProfileComponent {
             .accessibility-profile-component { ''
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 background: #ffffff;
-                border: 2px solid #e0e0e0;
+               , border: 2px solid #e0e0e0;
                 border-radius: 8px,
                 padding: 16px;
-                margin: 8px 0;
+               , margin: 8px 0;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1 }
             
             .profile-title { margin: 0 0 12px 0,
@@ -352,10 +349,10 @@ export class AccessibilityProfileComponent {
             
             .profile-dropdown-button { width: 100%,
                 padding: 12px 16px;
-                border: 2px solid #ccc;
+               , border: 2px solid #ccc;
                 border-radius: 6px,
                 background: #fff;
-                cursor: pointer;
+               , cursor: pointer;
                 font-size: 14px,
                 transition: all 0.2s ease ,}
             
@@ -379,7 +376,7 @@ export class AccessibilityProfileComponent {
             
             .dropdown-arrow { font-size: 12px,
                 color: #666;
-                transition: transform 0.2s ease ,}
+               , transition: transform 0.2s ease ,}
 
             .profile-dropdown-button[aria-expanded="true"] .dropdown-arrow { transform: rotate(180deg }
             
@@ -388,7 +385,7 @@ export class AccessibilityProfileComponent {
                 left: 0;
                 right: 0;
                 background: #fff;
-                border: 2px solid #007bff,
+               , border: 2px solid #007bff,
                 border-radius: 6px,
                 box-shadow: 0 4px 8px rgba(0,0,0,0.15);
                 z-index: 1000,
@@ -398,7 +395,7 @@ export class AccessibilityProfileComponent {
             .dropdown-option { display: flex,
                 align-items: center,
                 padding: 12px 16px;
-                cursor: pointer;
+               , cursor: pointer;
                 border-bottom: 1px solid #f0f0f0,
                 transition: background-color 0.2s ease ,}
             
@@ -425,7 +422,7 @@ export class AccessibilityProfileComponent {
                 color: #666 ,}
             
             .profile-description { background: #f8f9fa;
-                border: 1px solid #e9ecef;
+               , border: 1px solid #e9ecef;
                 border-radius: 4px,
                 padding: 12px;
                 margin-bottom: 12px,
@@ -436,15 +433,15 @@ export class AccessibilityProfileComponent {
                 padding: 12px 16px;
                 background: #28a745;
                 color: #fff;
-                border: none;
+               , border: none;
                 border-radius: 6px,
                 font-size: 14px,
                 font-weight: 500,
                 cursor: pointer;
-                transition: all 0.2s ease ,}
+               , transition: all 0.2s ease ,}
             
             .profile-apply-button:hover:not(:disabled) { background: #218838;
-                transform: translateY(-1px);
+               , transform: translateY(-1px);
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1 }
             
             .profile-apply-button:focus { outline: none,
@@ -452,10 +449,10 @@ export class AccessibilityProfileComponent {
             
             .profile-apply-button:disabled { background: #6c757d,
                 cursor: not-allowed;
-                opacity: 0.6 ,}
+               , opacity: 0.6 ,}
             
             .profile-status-indicator { margin-top: 8px;
-                padding: 8px 12px;
+               , padding: 8px 12px;
                 border-radius: 4px,
                 font-size: 13px,
                 text-align: center,
@@ -463,15 +460,15 @@ export class AccessibilityProfileComponent {
             
             .profile-status-indicator.success { background: #d4edda;
                 color: #155724;
-                border: 1px solid #c3e6cb }
+               , border: 1px solid #c3e6cb }
             
             .profile-status-indicator.error { background: #f8d7da;
                 color: #721c24;
-                border: 1px solid #f5c6cb }
+               , border: 1px solid #f5c6cb }
             
             .profile-status-indicator.info { background: #d1ecf1;
                 color: #0c5460;
-                border: 1px solid #bee5eb }
+               , border: 1px solid #bee5eb }
             
             /* アクセシビリティ向上 */
             @media (prefers-reduced-motion: reduce) { .accessibility-profile-component *;
@@ -507,8 +504,7 @@ export class AccessibilityProfileComponent {
         ';
         // ドロップダウンオプションのクリック
         const dropdownOptions = this.container.querySelector('.dropdown-options);''
-        if(dropdownOptions) {'
-            ';
+        if(dropdownOptions) {', ';
 
         }
 
@@ -613,8 +609,7 @@ export class AccessibilityProfileComponent {
             ';
 
             const profile = this.profiles.find(p => p.id === this.currentProfile);''
-            if(!profile) {'
-                ';
+            if(!profile) {', ';
 
             }
 
@@ -762,8 +757,7 @@ export class AccessibilityProfileComponent {
         
         // 5秒後にクリア
         setTimeout(() => {  ''
-            if(this.statusIndicator) {'
-                ';
+            if(this.statusIndicator) {', ';
 
             }
 
@@ -780,7 +774,7 @@ export class AccessibilityProfileComponent {
 
         if(!this.isDropdownOpen) {'
             // ドロップダウンが閉じている場合
-            if (event.key === 'Enter' || event.key === ' ') {
+            if (event.key === 'Enter' || event.key === ', ') {
                 if (event.target === this.profileDropdown) {
                     event.preventDefault();
         }
@@ -805,7 +799,7 @@ export class AccessibilityProfileComponent {
                 const prevIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1;''
                 options[prevIndex].focus(''';
             case 'Enter':)';
-            case ' ':)';
+            case ', ':)';
                 event.preventDefault();''
                 if(currentIndex >= 0) {''
                     const profileId = options[currentIndex].getAttribute('data-profile-id);
@@ -842,7 +836,7 @@ export class AccessibilityProfileComponent {
     getAvailableProfiles(): ProfileInfo[] { return this.profiles.map(profile => ({
             id: profile.id);
             name: profile.name);
-            description: profile.description,);
+           , description: profile.description,);
             icon: profile.icon))) ,}
     }
     

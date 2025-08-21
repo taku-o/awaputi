@@ -4,7 +4,7 @@
  * ゲーム開始・終了、泡破壊、コンボ、ダメージなどの各種イベントハンドリング
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 統計イベントハンドラークラス
@@ -36,7 +36,7 @@ export class StatisticsEventHandler {
                 gamesCompleted: 0;
                 totalScore: 0;
                 highScore: 0;
-                totalPlayTime: 0;
+               , totalPlayTime: 0;
     }
                 bubblesPopped: 0 }
             }

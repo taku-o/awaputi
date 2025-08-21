@@ -1,10 +1,10 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // BGMトラック型定義
 interface BGMTrack { id: string,
     name: string;
     buffer: AudioBuffer;
-    duration: number;
+   , duration: number;
     loop?: boolean;
     fadeInDuration?: number; ,}
 
@@ -23,12 +23,12 @@ interface StopOptions { fadeOut?: boolean;
 // 再生統計型定義
 interface PlaybackStats { totalPlayTime: number,
     loopCount: number;
-    trackSwitches: number ,}
+   , trackSwitches: number ,}
 
 // トラック状態型定義
 interface TrackState { id: string;
     name: string;
-    duration: number }
+   , duration: number }
 
 // BGMプレイヤー状態型定義
 interface BGMPlayerState { isPlaying: boolean;
@@ -40,7 +40,7 @@ interface BGMPlayerState { isPlaying: boolean;
     volume: number;
     playbackRate: number;
     hasNextTrack: boolean;
-    stats: PlaybackStats
+   , stats: PlaybackStats
     }
 
 // エラーハンドラー型定義
@@ -71,10 +71,10 @@ export class BGMPlayer {
     private nextTrack: BGMTrack | null = null;
     private nextTrackOptions: PlayOptions | null = null;
     // 統計情報
-    private playbackStats: PlaybackStats = {
+    private, playbackStats: PlaybackStats = {
         totalPlayTime: 0;
         loopCount: 0;
-        trackSwitches: 0 };
+       , trackSwitches: 0 };
     constructor(audioContext: AudioContext, bgmGainNode: GainNode) {
         this.audioContext = audioContext;
         this.bgmGainNode = bgmGainNode;
@@ -94,8 +94,7 @@ export class BGMPlayer {
      */
     async play(track: BGMTrack, options: PlayOptions = { ): Promise<void> {'
         try {'
-            if(!track || !track.buffer) {'
-                ';
+            if(!track || !track.buffer) {', ';
 
             }
 
@@ -421,7 +420,7 @@ export class BGMPlayer {
 
             } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_PLAYER_ERROR', {)'
                 operation: 'setVolume');
-                volume: volume,);
+               , volume: volume,);
                 fadeTime: fadeTime ,});
         }
     }
@@ -503,9 +502,9 @@ export class BGMPlayer {
      */
     getState(): BGMPlayerState { return { isPlaying: this.isPlaying,
             isPaused: this.isPaused;
-            currentTrack: this.currentTrack ? { : undefined
+           , currentTrack: this.currentTrack ? { : undefined
                 id: this.currentTrack.id;
-                name: this.currentTrack.name, };
+               , name: this.currentTrack.name, };
                 duration: this.currentTrack.duration }
             } : null;
             currentTime: this.getCurrentTime();
@@ -514,7 +513,7 @@ export class BGMPlayer {
             volume: this.fadeGainNode ? this.fadeGainNode.gain.value : 0;
             playbackRate: this.currentSource ? this.currentSource.playbackRate.value : 1;
             hasNextTrack: !!this.nextTrack;
-            stats: { ...this.playbackStats;
+           , stats: { ...this.playbackStats;
     }
     
     /**

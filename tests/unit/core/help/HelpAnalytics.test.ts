@@ -2,12 +2,12 @@
  * HelpAnalytics Test Suite
  * ヘルプアナリティクスシステムのテスト
  */
-import { jest } from '@jest/globals';
-import { HelpAnalytics } from '../../../../src/core/help/HelpAnalytics.js';
+import { jest  } from '@jest/globals';
+import { HelpAnalytics  } from '../../../../src/core/help/HelpAnalytics.js';
 // Type definitions
 interface MockGameEngine {
     localizationManager: {
-        getCurrentLanguage: jest.Mock<string, []>;
+        getCurrentLanguag;e: jest.Mock<string, []>;
     };
 }
 interface ValidationResult {

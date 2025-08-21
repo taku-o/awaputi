@@ -4,8 +4,8 @@
  * MobilePerformanceOptimizerから分離されたリソース管理機能
  */
 
-import { getErrorHandler } from '../ErrorHandler.js';''
-import { getConfigurationManager } from '../../core/ConfigurationManager.js';
+import { getErrorHandler  } from '../ErrorHandler.js';''
+import { getConfigurationManager  } from '../../core/ConfigurationManager.js';
 
 // Type definitions
 interface ErrorHandler { ''
@@ -17,49 +17,49 @@ interface MemoryInfo { jsHeapSize: number,
     jsHeapSizeLimit: number;
     totalJSHeapSize: number;
     textureMemory: number;
-    bufferMemory: number ,}
+   , bufferMemory: number ,}
 ';
 
 interface MemoryPressureDetection { enabled: boolean,''
     currentPressure: 'normal' | 'moderate' | 'severe' | 'critical',
-    warningCallback: ((pressure: string) => void) | null;''
-    criticalCallback: ((pressure: string) => void') | null ,}'
+    warningCallback: ((pressur;e: string) => void) | null;''
+    criticalCallback: ((pressur;e: string) => void') | null ,}'
 }
 
 interface MemoryConfig { maxMemoryMB: number;
     warningThreshold: number;
     criticalThreshold: number;
     gcTriggerThreshold: number;
-    pressureDetection: MemoryPressureDetection
+   , pressureDetection: MemoryPressureDetection
     }
 
 interface TexturePool { enabled: boolean;
     maxPoolSize: number;
-    pool: Map<string, any> }
+   , pool: Map<string, any> }
 
 interface TexturesConfig { maxTextureMemoryMB: number,
     compressionEnabled: boolean;
     mipmapGeneration: boolean;
     maxTextureSize: number;
-    texturePool: TexturePool
+   , texturePool: TexturePool
     ,}
 
 interface StreamingConfig { enabled: boolean;
     chunkSize: number;
     maxConcurrentLoads: number;
     preloadDistance: number;
-    unloadDistance: number }
+   , unloadDistance: number }
 
 interface ResourceConfig { enabled: boolean;
     memory: MemoryConfig;
     textures: TexturesConfig;
-    streaming: StreamingConfig
+   , streaming: StreamingConfig
     }
 
 interface LoadItem { assetId: string;
     position: any;
     priority: number;
-    timestamp: number }
+   , timestamp: number }
 ';
 
 interface CompletedLoadItem extends LoadItem { loadTime: number,''
@@ -72,28 +72,28 @@ interface FailedLoadItem extends LoadItem { error: string,''
 interface LoadingQueue { pending: LoadItem[];
     loading: LoadItem[];
     completed: CompletedLoadItem[];
-    failed: FailedLoadItem[]
+   , failed: FailedLoadItem[]
     }
 
 interface ResourceStatistics { totalLoads: number;
     failedLoads: number;
     averageLoadTime: number;
     peakMemoryUsage: number;
-    gcCount: number }
+   , gcCount: number }
 
 interface ResourceMonitoring { memoryUsage: MemoryInfo;
     loadingQueue: LoadingQueue;
-    statistics: ResourceStatistics
+   , statistics: ResourceStatistics
     }
 
 interface ResourceUsageStats { memory: MemoryInfo;
-    textures: {
-        poolSize: number;
-        maxPoolSize: number };
+   , textures: {
+        poolSiz;e: number;
+       , maxPoolSize: number };
     loading: { pending: number;
         loading: number;
         completed: number;
-        failed: number };
+       , failed: number };
     statistics: ResourceStatistics;
     }
 
@@ -101,14 +101,14 @@ export class MobileResourceManager {
     private errorHandler: ErrorHandler;
     private configManager: ConfigurationManager;
     private resourceConfig: ResourceConfig;
-    private resourceMonitoring: ResourceMonitoring;
+    private, resourceMonitoring: ResourceMonitoring;
     constructor() {
 ';
 
         this.errorHandler = getErrorHandler();''
         this.configManager = getConfigurationManager(''';
                     currentPressure: 'normal';
-                    warningCallback: null;
+                   , warningCallback: null;
     }
                     criticalCallback: null }
 };
@@ -117,16 +117,16 @@ export class MobileResourceManager {
                 compressionEnabled: true;
                 mipmapGeneration: true;
                 maxTextureSize: 2048;
-                texturePool: {
+               , texturePool: {
                     enabled: true);
                     maxPoolSize: 50);
-                    pool: new Map( }
+                   , pool: new Map( }
             };
             // Asset streaming
             streaming: { enabled: true;
-                chunkSize: 64 * 1024, // 64KB chunks;
+               , chunkSize: 64 * 1024, // 64KB chunks;
                 maxConcurrentLoads: 3;
-                preloadDistance: 100, // pixels;
+               , preloadDistance: 100, // pixels;
                 unloadDistance: 500   // pixels ,}
         };
         // Resource monitoring
@@ -135,16 +135,16 @@ export class MobileResourceManager {
                 jsHeapSizeLimit: 0;
                 totalJSHeapSize: 0;
                 textureMemory: 0;
-                bufferMemory: 0 };
+               , bufferMemory: 0 };
             loadingQueue: { pending: [];
                 loading: [];
                 completed: [];
-                failed: [] };
+               , failed: [] };
             statistics: { totalLoads: 0;
                 failedLoads: 0;
                 averageLoadTime: 0;
                 peakMemoryUsage: 0;
-                gcCount: 0 }
+               , gcCount: 0 }
         };
         // Initialize resource manager
         this.initializeResourceManager();
@@ -207,8 +207,7 @@ export class MobileResourceManager {
     checkMemoryPressure()';
         let newPressure: 'normal' | 'moderate' | 'severe' | 'critical' = 'normal')';
 
-        if(usageRatio >= config.criticalThreshold) {'
-            ';
+        if(usageRatio >= config.criticalThreshold) {', ';
 
         }
 
@@ -234,7 +233,7 @@ export class MobileResourceManager {
     handleMemoryPressureChange(oldPressure: string, newPressure: string): void {
         console.log(`[MobileResourceManager] Memory, pressure changed: ${oldPressure} → ${ newPressure)`);
         
-        const config = this.resourceConfig.memory;
+        const, config = this.resourceConfig.memory;
 
         switch(newPressure} {'
 
@@ -249,8 +248,7 @@ export class MobileResourceManager {
 
             case 'severe':;
                 this.triggerAggressiveCleanup();
-                if(config.pressureDetection.warningCallback) {'
-                    ';
+                if(config.pressureDetection.warningCallback) {', ';
 
                 }
 
@@ -540,7 +538,7 @@ export class MobileResourceManager {
             loading: { pending: this.resourceMonitoring.loadingQueue.pending.length;
                 loading: this.resourceMonitoring.loadingQueue.loading.length;
                 completed: this.resourceMonitoring.loadingQueue.completed.length;
-                failed: this.resourceMonitoring.loadingQueue.failed.length };
+               , failed: this.resourceMonitoring.loadingQueue.failed.length };
             statistics: this.resourceMonitoring.statistics;
         },
     }

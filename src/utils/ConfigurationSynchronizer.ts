@@ -5,19 +5,19 @@
  * 不整合の検出・報告・自動修正機能を提供します。
  */
 
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getErrorHandler } from './ErrorHandler.js';
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface ConfigurationSource { name: string,
     priority: number;
     loader: () => Promise<any>;''
-    validator: (config: any') => boolean ,}'
+    validator: (confi;g: any') => boolean ,}'
 }
 
 interface SourceConfigData { config: any;
     source: ConfigurationSource;
-    loadTime: number;
+   , loadTime: number;
     error?: string }
 
 interface BubbleConfig { score?: number;
@@ -49,25 +49,25 @@ interface Discrepancy { type: string,
     values: Array<[string, SourceValue]>;''
     severity: 'LOW' | 'MEDIUM' | 'HIGH';
     impact: string;
-    detectedAt: number ,}
+   , detectedAt: number ,}
 
 interface SourceValue { value: any;
     source: string;
-    priority: number }
+   , priority: number }
 
 interface Recommendation { action: string;
     description: string;
     targetValue?: any;
     affectedFiles?: string[];
     priority: string;
-    estimatedEffort: string;
+   , estimatedEffort: string;
     discrepancyId?: string }
 
 interface ValidationResult { timestamp: number;
     sourceCount?: number;
     discrepancyCount: number;
     discrepancies: Discrepancy[];
-    sourceConfigs: Record<string, SerializedSourceConfig>;
+   , sourceConfigs: Record<string, SerializedSourceConfig>;
     recommendations: Recommendation[];
     error?: string ,}
 
@@ -75,25 +75,25 @@ interface SerializedSourceConfig { name: string;
     priority: number;
     loadTime: number;
     hasConfig: boolean;
-    error: string | null }
+   , error: string | null }
 
 interface SyncHistory { timestamp: number;
     action: string;
-    result: string }
+   , result: string }
 
 interface SyncReport { timestamp: number;
     discrepancyCount: number;
     discrepancies: Discrepancy[];
-    syncHistory: SyncHistory[],
+   , syncHistory: SyncHistory[],
     sources: string[],
     status: 'SYNCHRONIZED' | 'INCONSISTENT' ,}
 
 interface SyncFixes { applied: number;
-    failed: number }
+   , failed: number }
 
 export class ConfigurationSynchronizer {
     public configManager: any;
-    public errorHandler: any,
+    public, errorHandler: any,
     public configurationSources: Map<string, ConfigurationSource>;
     public discrepancies: Discrepancy[],
     public syncHistory: SyncHistory[],
@@ -127,7 +127,7 @@ export class ConfigurationSynchronizer {
     private _registerConfigurationSources()';
         this.configurationSources.set('gameBalance', { ');''
             name: 'GameBalance.js(ORIGINAL_BALANCE_CONFIG)';
-            priority: 2, // 中優先度;
+           , priority: 2, // 中優先度;
             loader: () => this._loadGameBalanceConfig();
             validator: (config) => this._validateGameBalanceConfig(config);' ,}'
 
@@ -136,7 +136,7 @@ export class ConfigurationSynchronizer {
         // Bubble.jsからの設定ソース
         this.configurationSources.set('bubbleImplementation', { ');''
             name: 'Bubble.js(getTypeConfig)';
-            priority: 3, // 最高優先度（実装値）;
+           , priority: 3, // 最高優先度（実装値）;
             loader: () => this._loadBubbleImplementationConfig();
             validator: (config) => this._validateBubbleImplementationConfig(config);' ,}'
 
@@ -145,7 +145,7 @@ export class ConfigurationSynchronizer {
         // テストからの設定ソース
         this.configurationSources.set('testExpectations', { ');''
             name: 'Test expectations(*.test.js)';
-            priority: 1, // 低優先度;
+           , priority: 1, // 低優先度;
             loader: () => this._loadTestExpectationConfig();
             validator: (config) => this._validateTestExpectationConfig(config);' ,}'
 
@@ -154,7 +154,7 @@ export class ConfigurationSynchronizer {
         // ConfigurationManagerからの設定ソース
         this.configurationSources.set('configurationManager', { ');''
             name: 'ConfigurationManager(unified)';
-            priority: 4, // 最高優先度（統一システム）;
+           , priority: 4, // 最高優先度（統一システム）;
             loader: () => this._loadConfigurationManagerConfig();
             validator: (config) => this._validateConfigurationManagerConfig(config) ,}
         });
@@ -189,7 +189,7 @@ export class ConfigurationSynchronizer {
                     sourceConfigs.set(sourceId, { config: null)
                         source);
                         loadTime: Date.now();
-                        error: error.message });
+                       , error: error.message });
                 }
             }
             
@@ -199,10 +199,10 @@ export class ConfigurationSynchronizer {
             // 結果を整理
             const result = { timestamp: Date.now(),
                 sourceCount: sourceConfigs.size;
-                discrepancyCount: discrepancies.length;
+               , discrepancyCount: discrepancies.length;
                 discrepancies,
                 sourceConfigs: this._serializeSourceConfigs(sourceConfigs);
-                recommendations: this._generateRecommendations(discrepancies ,};
+               , recommendations: this._generateRecommendations(discrepancies ,};
             
             // 不整合リストを更新
             this.discrepancies = discrepancies;
@@ -514,9 +514,9 @@ export class ConfigurationSynchronizer {
             return {  };
                 bubbles: { }
                     normal: { score: 10 }, // Bubble.test.js:266の期待値
-                    boss: { health: 5, size: 100 ,}, // Bubble.test.js:33-34の期待値
-                    electric: { shakeIntensity: 20, disableDuration: 2000 ,}, // Bubble.test.js:241-242
-                    rainbow: { bonusTimeMs: 5000 } // Bubble.test.js:230
+                   , boss: { health: 5, size: 100 ,}, // Bubble.test.js:33-34の期待値
+                   , electric: { shakeIntensity: 20, disableDuration: 2000 ,}, // Bubble.test.js:241-242
+                   , rainbow: { bonusTimeMs: 5000 } // Bubble.test.js:230
                 }
             };''
         } catch (error) {
@@ -556,7 +556,7 @@ export class ConfigurationSynchronizer {
                 name: data.source.name;
                 priority: data.source.priority;
                 loadTime: data.loadTime;
-                hasConfig: !!data.config;
+               , hasConfig: !!data.config;
         }
                 error: data.error || null }
             }
@@ -575,7 +575,7 @@ export class ConfigurationSynchronizer {
             if (data.config && data.config.bubbles && data.config.bubbles[bubbleType] && data.config.bubbles[bubbleType].score !== undefined) {
                 values.set(sourceId, {)
                     value: data.config.bubbles[bubbleType].score);
-                    source: data.source.name, }
+                   , source: data.source.name, }
                     priority: data.source.priority); }
 }
         
@@ -593,7 +593,7 @@ export class ConfigurationSynchronizer {
             if (data.config && data.config.bubbles && data.config.bubbles[bubbleType] && data.config.bubbles[bubbleType].health !== undefined) {
                 values.set(sourceId, {)
                     value: data.config.bubbles[bubbleType].health);
-                    source: data.source.name, }
+                   , source: data.source.name, }
                     priority: data.source.priority); }
 }
         
@@ -611,7 +611,7 @@ export class ConfigurationSynchronizer {
             if (data.config && data.config.bubbles && data.config.bubbles[bubbleType] && data.config.bubbles[bubbleType].size !== undefined) {
                 values.set(sourceId, {)
                     value: data.config.bubbles[bubbleType].size);
-                    source: data.source.name, }
+                   , source: data.source.name, }
                     priority: data.source.priority); }
 }
         
@@ -629,7 +629,7 @@ export class ConfigurationSynchronizer {
             if (data.config && data.config.bubbles && data.config.bubbles.electric && data.config.bubbles.electric.shakeIntensity !== undefined) {
                 values.set(sourceId, {)
                     value: data.config.bubbles.electric.shakeIntensity);
-                    source: data.source.name, }
+                   , source: data.source.name, }
                     priority: data.source.priority); }
 }
         
@@ -647,7 +647,7 @@ export class ConfigurationSynchronizer {
             if (data.config && data.config.bubbles && data.config.bubbles.electric && data.config.bubbles.electric.disableDuration !== undefined) {
                 values.set(sourceId, {)
                     value: data.config.bubbles.electric.disableDuration);
-                    source: data.source.name, }
+                   , source: data.source.name, }
                     priority: data.source.priority); }
 }
         
@@ -665,7 +665,7 @@ export class ConfigurationSynchronizer {
             if (data.config && data.config.bubbles && data.config.bubbles.rainbow && data.config.bubbles.rainbow.bonusTimeMs !== undefined) {
                 values.set(sourceId, {)
                     value: data.config.bubbles.rainbow.bonusTimeMs);
-                    source: data.source.name, }
+                   , source: data.source.name, }
                     priority: data.source.priority); }
 }
         
@@ -686,7 +686,7 @@ export class ConfigurationSynchronizer {
     generateSyncReport(): SyncReport { return { timestamp: Date.now(),
             discrepancyCount: this.discrepancies.length;
             discrepancies: this.discrepancies;
-            syncHistory: this.syncHistory,
+           , syncHistory: this.syncHistory,
             sources: Array.from(this.configurationSources.keys()),' };
 
             status: this.discrepancies.length === 0 ? 'SYNCHRONIZED' : 'INCONSISTENT' 

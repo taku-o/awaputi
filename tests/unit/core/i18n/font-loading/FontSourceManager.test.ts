@@ -1,5 +1,5 @@
-import { jest } from '@jest/globals';
-import { FontSourceManager, LocalFontSource, GoogleFontSource, SystemFontSource } from '../../../../../src/core/i18n/font-loading/FontSourceManager.js';
+import { jest  } from '@jest/globals';
+import { FontSourceManager, LocalFontSource, GoogleFontSource, SystemFontSource  } from '../../../../../src/core/i18n/font-loading/FontSourceManager.js';
 // Type definitions
 interface MockFetch {
     mockResolvedValue: (value => void};
@@ -11,14 +11,14 @@ interface MockFontFace {
 }
 interface MockCanvasContext {
     font: string,
-    measureText: jest.Mock<{ width: number }, [string]>;
+    measureText: jest.Mock<{ widt;h: number }, [string]>;
 }
 interface MockCanvas {
     getContext: jest.Mock<MockCanvasContext, [string]>;
 }
 interface MockDocument {
     fonts?: {
-        add: jest.Mock<void, [any]>;
+        ad;d: jest.Mock<void, [any]>;
     };
     createElement: jest.Mock<any, [string]>;
     head: {
@@ -147,7 +147,7 @@ describe('FontSourceManager', () => {
         test('should load font from available source', async () => {
             const mockSource: FontSource = {
                 load: jest.fn(() => Promise.resolve({ loaded: true ));
-                isAvailable: jest.fn(() => true);
+               , isAvailable: jest.fn(() => true);
     }');
             fontSourceManager.sources.test = mockSource;
             fontSourceManager.enabledSources.push('test'');
@@ -201,7 +201,7 @@ describe('FontSourceManager', () => {
         test('should track load attempts', async () => {
             const mockSource: FontSource = {
                 load: jest.fn(() => Promise.resolve({ loaded: true ));
-                isAvailable: jest.fn(() => true);
+               , isAvailable: jest.fn(() => true);
     }');
             fontSourceManager.sources.test = mockSource;
             fontSourceManager.enabledSources.push('test'');
@@ -231,7 +231,7 @@ describe('FontSourceManager', () => {
         test('should clear load history', async () => {
             const mockSource: FontSource = {
                 load: jest.fn(() => Promise.resolve({ loaded: true ));
-                isAvailable: jest.fn(() => true);
+               , isAvailable: jest.fn(() => true);
     }');
             fontSourceManager.sources.test = mockSource;
             fontSourceManager.enabledSources.push('test'');

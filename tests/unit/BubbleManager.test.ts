@@ -2,8 +2,8 @@
  * BubbleManager Test Suite
  * Updated to use MockFactory and match actual BubbleManager API
  */
-import { describe, test, beforeEach, expect, jest } from '@jest/globals';
-import { MockFactory } from '../mocks/MockFactory.js';
+import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
+import { MockFactory  } from '../mocks/MockFactory.js';
 // Type definitions for test objects
 interface Position {
     x: number,
@@ -28,7 +28,7 @@ interface StageConfig {
 interface MockGameEngine {
     canvas: any,
     ctx: any,
-    currentStage: { name: string };
+    currentStage: { nam;e: string };
     getInputManager: jest.Mock,
     createExplosion: jest.Mock,
     returnBubbleToPool: jest.Mock,

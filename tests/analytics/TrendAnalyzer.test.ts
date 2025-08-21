@@ -1,5 +1,5 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { TrendAnalyzer } from '../../src/analytics/TrendAnalyzer';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { TrendAnalyzer  } from '../../src/analytics/TrendAnalyzer';
 // モックStorageManager
 class MockStorageManager {
     constructor() {
@@ -186,7 +186,7 @@ describe('TrendAnalyzer', () => {
                 timestamp: sessionData[0].startTime,
                 score: 1500,
                 playTime: 300;);
-                accuracy: 60 / 70, // 60/(60+10);
+               , accuracy: 60 / 70, // 60/(60+10);
                 combo: 15,
                 completed: true,
                 date: new Date(sessionData[0].startTime).toDateString(),
@@ -194,7 +194,7 @@ describe('TrendAnalyzer', () => {
                 timestamp: sessionData[1].startTime,
                 score: 1200,
                 playTime: 240;);
-                accuracy: 45 / 60, // 45/(45+15);
+               , accuracy: 45 / 60, // 45/(45+15);
                 combo: 12,
                 completed: false,
                 date: new Date(sessionData[1].startTime).toDateString(),

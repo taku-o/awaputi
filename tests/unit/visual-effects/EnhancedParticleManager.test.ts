@@ -1,8 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-import { jest } from '@jest/globals';
-import { EnhancedParticleManager } from '../../../src/effects/EnhancedParticleManager.js';
+import { jest  } from '@jest/globals';
+import { EnhancedParticleManager  } from '../../../src/effects/EnhancedParticleManager.js';
 // Type definitions
 interface MockCanvasContext {
     fillRect: jest.Mock<void, [number, number, number, number]>;
@@ -27,7 +27,7 @@ interface MockCanvasContext {
     rotate: jest.Mock<void, [number]>;
     measureText: jest.Mock<TextMetrics, [string]>;
     canvas: {
-        width: number,
+        widt;h: number,
         height: number,
     };
 }
@@ -68,7 +68,7 @@ interface TextMetrics {
     fillRect: jest.fn(),
     clearRect: jest.fn(),
     getImageData: jest.fn(() => ({ data: new Array(4).fill(0)));
-    putImageData: jest.fn(),
+   , putImageData: jest.fn(),
     createImageData: jest.fn(() => ({ data: new Array(4).fill(0))),
     setTransform: jest.fn(),
     drawImage: jest.fn(),

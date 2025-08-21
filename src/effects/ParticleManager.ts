@@ -1,21 +1,21 @@
-import { getEffectsConfig } from '../config/EffectsConfig.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { ParticleRenderer } from './particles/ParticleRenderer.js';''
-import { ParticleLifecycleManager } from './particles/ParticleLifecycleManager.js';''
+import { getEffectsConfig  } from '../config/EffectsConfig.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { ParticleRenderer  } from './particles/ParticleRenderer.js';''
+import { ParticleLifecycleManager  } from './particles/ParticleLifecycleManager.js';''
 import type { Particle } from './particles/ParticleRenderer.js';
 
 // Particle Manager types
 export interface ParticleManagerConfig { maxCount: number,
     poolSize: number;
     quality: number;
-    enabled: boolean ,}
+   , enabled: boolean ,}
 
 export interface ParticleManagerConfiguration { maxParticles: number;
     poolSize: number;
     quality: number;
     enabled: boolean;
     currentParticleCount: number;
-    poolUsage: number }
+   , poolUsage: number }
 
 export interface PerformanceStats { activeParticles: number;
     maxParticles: number;
@@ -26,7 +26,7 @@ export interface PerformanceStats { activeParticles: number;
     quality: number;
     enabled: boolean;
     lifecycle: any;
-    rendering: any }
+   , rendering: any }
 
 /**
  * パーティクル効果管理クラス（Main Controller）
@@ -37,7 +37,7 @@ export class ParticleManager {
     private errorHandler: any;
     private effectsConfig: any;
     private renderer: ParticleRenderer;
-    private lifecycleManager: ParticleLifecycleManager;
+    private, lifecycleManager: ParticleLifecycleManager;
     // Configuration properties
     private maxParticles!: number;
     private poolSize!: number;
@@ -77,7 +77,7 @@ export class ParticleManager {
             console.log('[ParticleManager] 設定から初期化完了:', {
                 maxParticles: this.maxParticles);
                 poolSize: this.poolSize);
-                quality: this.quality,)';
+               , quality: this.quality,)';
                 enabled: this.enabled);' ,}'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
@@ -347,7 +347,7 @@ export class ParticleManager {
             poolSize: this.poolSize;
             quality: this.quality;
             enabled: this.enabled;
-            currentParticleCount: this.particles.length, };
+           , currentParticleCount: this.particles.length, };
             poolUsage: this.poolSize - (lifecycleStats, as any).currentPoolSize }
         }
     
@@ -361,12 +361,12 @@ export class ParticleManager {
         return { activeParticles: this.particles.length,
             maxParticles: this.maxParticles;
             poolSize: this.poolSize;
-            availableInPool: (lifecycleStats, as any).currentPoolSize;
+           , availableInPool: (lifecycleStats, as any).currentPoolSize;
             poolUsagePercent: (lifecycleStats, as any).memoryUtilization? .poolUsagePercent || 0, : undefined
             particleUtilizationPercent: (this.particles.length / this.maxParticles * 100).toFixed(1);
             quality: this.quality;
             enabled: this.enabled;
-            lifecycle: lifecycleStats, };
+           , lifecycle: lifecycleStats, };
             rendering: renderingStats }
         }
     
@@ -393,12 +393,12 @@ export class ParticleManager {
             configuration,
             performance: performanceStats;
             particleBreakdown: this.getParticleBreakdown();
-            systemHealth: {
+           , systemHealth: {
                 errorRate: this.errorHandler.getErrorRate? .() || 0, : undefined
                 memoryUsage: performance.memory ? { : undefined
                     used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
                     total: Math.round((performance.memory.totalJSHeapSize || 0) / 1024 / 1024);
-                    limit: Math.round(((performance.memory, as any).jsHeapSizeLimit || 0) / 1024 / 1024 ,} : null
+                   , limit: Math.round(((performance.memory, as any).jsHeapSizeLimit || 0) / 1024 / 1024 ,} : null
             }
         }
     

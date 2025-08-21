@@ -20,19 +20,19 @@ interface DiagnosticSession { id: number,
     endTime?: number;
     duration?: number;
     options: DiagnosticOptions;
-    results: DiagnosticResults
+   , results: DiagnosticResults
     ,}
 
 interface CollectedDataSummary { totalMetrics: number;
     collectionDuration: number;
-    metricsPerSecond: number,
+   , metricsPerSecond: number,
     categories: string[],
     dataQuality: 'excellent' | 'good' | 'fair' | 'poor' ,}
 
 interface CollectedData { summary: CollectedDataSummary;
-    metrics: Record<string, any>;
+   , metrics: Record<string, any>;
     timestamps: number[];
-    metadata: Record<string, any> }
+   , metadata: Record<string, any> }
 
 interface Bottleneck { id: string,
 
@@ -40,15 +40,15 @@ interface Bottleneck { id: string,
     severity: 'low' | 'medium' | 'high' | 'critical';
     impact: number;
     description: string;
-    metrics: Record<string, any>;
+   , metrics: Record<string, any>;
     suggested_actions: string[] ,}
 
 interface Anomaly { id: string;
-    type: string,
+   , type: string,
     detection_time: number,
     severity: 'low' | 'medium' | 'high';
     description: string;
-    metrics: Record<string, any>;
+   , metrics: Record<string, any>;
     confidence: number ,}
 
 interface RootCause { id: string;
@@ -57,27 +57,27 @@ interface RootCause { id: string;
     evidence: string[];
     confidence: number;
     impact_assessment: string;
-    remediation_steps: string[] }
+   , remediation_steps: string[] }
 
 interface Recommendation { id: string;
-    category: string,
+   , category: string,
     priority: 'low' | 'medium' | 'high' | 'urgent';
     title: string;
-    description: string,
+   , description: string,
     estimated_impact: string,
     implementation_difficulty: 'easy' | 'medium' | 'hard';
-    steps: string[] ,}
+   , steps: string[] ,}
 ';
 interface OverallAssessment { score: number; // 0-100
     grade: 'A' | 'B' | 'C' | 'D' | 'F';
     summary: string;
     key_issues: string[];
     strengths: string[];
-    critical_recommendations: string[] }
+   , critical_recommendations: string[] }
 
 interface AnalysisResults { bottlenecks: Bottleneck[];
     anomalies: Anomaly[];
-    rootCauses: RootCause[];
+   , rootCauses: RootCause[];
     recommendations?: Recommendation[]
     }
 
@@ -94,10 +94,10 @@ interface DiagnosticReport { timestamp: number,
     summary: OverallAssessment;
     details: DiagnosticResults;
     charts?: any[];
-    metadata: Record<string, any> }
+   , metadata: Record<string, any> }
 
 interface DiagnosticCapabilities {
-    dataCollection: { available: boolean; [key: string]: any },
+    dataCollection: { availabl;e: boolean; [key: string]: any },
     analysis: { available: boolean; [key: string]: any },
     reporting: { available: boolean; [key: string]: any }
 
@@ -107,11 +107,11 @@ interface ComponentConfig { dataCollection?: any;
 
 interface ComponentReferences { dataCollector: DiagnosticDataCollector,
     analyzer: DiagnosticAnalyzer;
-    reporter: DiagnosticReporter
+   , reporter: DiagnosticReporter
     ,}
 
 interface QuickDiagnosisResult { session: DiagnosticSession;
-    report: DiagnosticReport
+   , report: DiagnosticReport
     }
 
 // Component interfaces (will, be replaced, when actual, files are, converted);
@@ -153,7 +153,7 @@ class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async co
         
         return { summary: {
                 totalMetrics: 150;
-                collectionDuration: options.duration || 5000,
+               , collectionDuration: options.duration || 5000,
                 metricsPerSecond: 30,
                 categories: ['performance', 'memory', 'network', 'rendering'],' };
 
@@ -162,7 +162,7 @@ class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async co
             metrics: { fps: 58.5;
                 memoryUsage: 45.2;
                 loadTime: 1250;
-                renderTime: 16.8 }
+               , renderTime: 16.8 }
 
             },''
             timestamps: [Date.now() - 5000, Date.now() - 2500, Date.now(''';
@@ -259,8 +259,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
     }
 
     getAnalysisCapabilities(''';
-        return { available: true, analyzers: ['bottleneck', 'anomaly', 'root_cause] })'
-    ')';
+        return { available: true, analyzers: ['bottleneck', 'anomaly', 'root_cause] })', ')';
     configure(config: any): void { ''
         console.log('[DiagnosticAnalyzer] Configuration, updated'); }'
 
@@ -291,24 +290,23 @@ class DummyDiagnosticReporter implements DiagnosticReporter { ''
 
     async generateReport(diagnosticSession: DiagnosticSession): Promise<DiagnosticReport> { return { timestamp: Date.now(,
             sessionId: diagnosticSession.id;
-            summary: diagnosticSession.results.overallAssessment || {'
+           , summary: diagnosticSession.results.overallAssessment || {'
                 score: 75,
                 grade: 'C',
                 summary: 'System performance is acceptable';
                 key_issues: [];
-                strengths: [], };
+               , strengths: [], };
                 critical_recommendations: [] }
             };
             details: diagnosticSession.results;
-            charts: [],
+           , charts: [],
             metadata: { ''
                 version: '1.0.0',
                 generatedBy: 'PerformanceDiagnostics' ,}))
     }
 
     getReportingCapabilities(''';
-        return { available: true, formats: ['json', 'html', 'csv] })'
-    ')';
+        return { available: true, formats: ['json', 'html', 'csv] })', ')';
     configure(config: any): void { ''
         console.log('[DiagnosticReporter] Configuration, updated'); }'
 
@@ -321,7 +319,7 @@ export class PerformanceDiagnostics {
     private dataCollector: DiagnosticDataCollector;
     private analyzer: DiagnosticAnalyzer;
     private reporter: DiagnosticReporter;
-    private initialized: boolean;
+    private, initialized: boolean;
     constructor() {
 
         // Initialize sub-components (using, dummy implementations);
@@ -351,8 +349,7 @@ export class PerformanceDiagnostics {
 ';
 
     async runComprehensiveDiagnosis(options: DiagnosticOptions = {}): Promise<QuickDiagnosisResult> { ''
-        if(!this.initialized) {'
-            ';
+        if(!this.initialized) {', ';
 
         }
 
@@ -361,12 +358,12 @@ export class PerformanceDiagnostics {
 
         const diagnosticSession: DiagnosticSession = { id: Date.now(,
             startTime: performance.now(;
-            options: {
+           , options: {
                 duration: options.duration || 30000, // 30秒;
                 includeBottleneckAnalysis: options.includeBottleneckAnalysis !== false;
                 includeAnomalyDetection: options.includeAnomalyDetection !== false;
                 includeRootCauseAnalysis: options.includeRootCauseAnalysis !== false;
-                generateRecommendations: options.generateRecommendations !== false,
+               , generateRecommendations: options.generateRecommendations !== false,
                 detailLevel: options.detailLevel || 'comprehensive', // basic, standard, comprehensive;
                 ...options,
             results: {,}))
@@ -389,7 +386,7 @@ export class PerformanceDiagnostics {
                 anomalies: analysisResults.anomalies;
                 rootCauses: analysisResults.rootCauses;
                 recommendations: analysisResults.recommendations;
-                overallAssessment: await this.analyzer.generateOverallAssessment(analysisResults), };
+               , overallAssessment: await this.analyzer.generateOverallAssessment(analysisResults), };
 
             diagnosticSession.endTime = performance.now();
             diagnosticSession.duration = diagnosticSession.endTime - diagnosticSession.startTime;
@@ -438,7 +435,7 @@ export class PerformanceDiagnostics {
     async quickDiagnosis(targetMetric: string | null = null): Promise<QuickDiagnosisResult> { const options: DiagnosticOptions = {'
             duration: 5000, // 5秒;
             detailLevel: 'basic';
-            includeRootCauseAnalysis: false ,};
+           , includeRootCauseAnalysis: false ,};
         if (targetMetric) { options.focusMetric = targetMetric; }
 
         return await this.runComprehensiveDiagnosis(options);

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * SettingsScene-accessibility.test.js
  * 
@@ -6,8 +6,8 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * Issue #163 - Duplicate help/settings screen consolidation  
  * Task 10 - Accessibility Settings Integration
  */
-import { SettingsScene } from '../../src/scenes/SettingsScene';
-import { AccessibilitySettingsManager } from '../../src/scenes/settings-scene/AccessibilitySettingsManager';
+import { SettingsScene  } from '../../src/scenes/SettingsScene';
+import { AccessibilitySettingsManager  } from '../../src/scenes/settings-scene/AccessibilitySettingsManager';
 // DOM APIのモック
 const mockDocument = {
     createElement: jest.fn((') => ({
@@ -48,7 +48,7 @@ describe('SettingsScene Accessibility Integration', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true;);
-                switchScene: jest.fn(').mockReturnValue(true,
+               , switchScene: jest.fn(').mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'SettingsScene' }
                 }

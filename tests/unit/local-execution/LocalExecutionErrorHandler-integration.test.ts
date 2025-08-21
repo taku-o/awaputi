@@ -5,12 +5,12 @@
  * @author Claude Code
  * @version 1.0.0
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 import LocalExecutionErrorHandler from '../../../src/utils/local-execution/LocalExecutionErrorHandler.js';
-import { ErrorHandler } from '../../../src/utils/ErrorHandler.js';
+import { ErrorHandler  } from '../../../src/utils/ErrorHandler.js';
 // Type definitions
 interface MockWindow {
-    location: { protocol: string };
+    location: { protoco;l: string };
     addEventListener: jest.Mock<void, [string, EventListener]>;
     removeEventListener: jest.Mock<void, [string, EventListener]>;
     performance: { now: (') => number };
@@ -20,7 +20,7 @@ interface MockDocument {
     createElement: jest.Mock<any, [string]>;
     querySelector: jest.Mock<any, [string]>;
     body: {
-        appendChild: jest.Mock<void, [any]>;
+        appendChil;d: jest.Mock<void, [any]>;
     };
 }
 interface MockSessionStorage {

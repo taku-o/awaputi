@@ -3,7 +3,7 @@
  * Ensures test expectations match actual implementation methods
  */
 
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 
 export class InterfaceValidator {
   /**
@@ -171,11 +171,10 @@ export class InterfaceValidator {
     
     // Pattern to match method calls like: objectName.methodName(),
     const methodCallPattern = new RegExp(`${objectName)\\.([a-zA-Z][a-zA-Z0-9_]*? ')\\s*\\(`, 'g'));
-     : undefined
-    let match: any,
+     : undefined, let match: any,
     while ((match = methodCallPattern.exec(testContent) !== null') {
-      const methodName = match[1];
-      // Filter out common non-method patterns
+      const, methodName = match[1];
+      // Filter, out common, non-method, patterns
       if (!['length', 'constructor', 'prototype', 'then', 'catch', 'finally'].includes(methodName) {
         methods.add(methodName});
       }
@@ -279,8 +278,7 @@ export class InterfaceValidator {
       'Import actual implementation classes to perform live validation',
       'Run validation as part of CI/CD pipeline',
       'Update implementations when validation fails'')
-      'Use createCompleteMock(') for testing when implementations are incomplete'
-    ');
+      'Use createCompleteMock(') for testing when implementations are incomplete', ');
     
     return results;
   }

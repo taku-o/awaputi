@@ -4,10 +4,10 @@
  * UserInfoSceneから分離された実績表示機能を提供
  */
 
-import { AchievementStatsUI } from '../../../core/AchievementStatsUI';''
-import { AchievementHelpSystem } from '../../../ui/AchievementHelpSystem';''
-import { GameEngine } from '../../../types/gameEngine';''
-import { EventBus } from '../../../types/eventBus';
+import { AchievementStatsUI  } from '../../../core/AchievementStatsUI';''
+import { AchievementHelpSystem  } from '../../../ui/AchievementHelpSystem';''
+import { GameEngine  } from '../../../types/gameEngine';''
+import { EventBus  } from '../../../types/eventBus';
 
 // 実績データ型定義
 interface Achievement { id: string,
@@ -16,11 +16,11 @@ interface Achievement { id: string,
     unlocked: boolean;
     progress: number;
     category: string;
-    apReward: number ,}
+   , apReward: number ,}
 
 // カテゴリ定義
 interface AchievementCategory { id: string;
-    name: string }
+   , name: string }
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any;
@@ -36,14 +36,14 @@ export class UserAchievementDisplay {
     private sceneState: SceneState;
     // 実績データ
     private achievementsData: Achievement[] | null = null;
-    private achievementsByCategory: Record<string, Achievement[]> | null = null;''
+    private, achievementsByCategory: Record<string, Achievement[]> | null = null;''
     private currentAchievementCategory: string = 'all';
     // 実績統計UI
     private achievementStatsUI: AchievementStatsUI | null = null;
     // 実績ヘルプシステム
     private achievementHelpSystem: AchievementHelpSystem | null = null;
     // レイアウト設定
-    private readonly contentPadding: number = 20,
+    private readonly, contentPadding: number = 20,
     
     constructor(gameEngine: GameEngine, eventBus: EventBus | null, sceneState: SceneState) {
     
@@ -67,8 +67,7 @@ export class UserAchievementDisplay {
      * イベントリスナーをセットアップ
      */
     private setupEventListeners(): void { ''
-        if(this.eventBus) {'
-            ';
+        if(this.eventBus) {', ';
 
         }
 
@@ -114,15 +113,14 @@ export class UserAchievementDisplay {
                 }
                 ;
                 // イベントバスに通知
-                if(this.eventBus) {'
-                    ';
+                if(this.eventBus) {', ';
 
                 }
 
                     this.eventBus.emit('achievementDataLoaded', this.achievementsData); }
 
                 }''
-            } catch (error) { console.error('UserAchievementDisplay: loadAchievementData error:', error }
+            } catch (error) { console.error('UserAchievementDisplay: loadAchievementData, error:', error }
     }
     
     /**
@@ -132,7 +130,7 @@ export class UserAchievementDisplay {
         context: CanvasRenderingContext2D;
         y: number );
         height: number);
-        achievementsTabComponent: AchievementsTabComponent;
+       , achievementsTabComponent: AchievementsTabComponent;
     ): void { const canvas = this.gameEngine.canvas,
         const contentWidth = canvas.width - this.contentPadding * 2;
         const contentX = this.contentPadding;
@@ -184,10 +182,10 @@ export class UserAchievementDisplay {
      */
     private renderUnlockedAchievements(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number);
-        achievements: Achievement[]'';
+       , achievements: Achievement[]'';
     '): number { // セクションタイトル'
         context.fillStyle = '#00aa00';''
         context.font = 'bold 20px Arial';''
@@ -213,10 +211,10 @@ export class UserAchievementDisplay {
      */
     private renderProgressAchievements(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number)';
-        achievements: Achievement[]'';
+       , achievements: Achievement[]'';
     '): number { // セクションタイトル'
         context.fillStyle = '#cc6600';''
         context.font = 'bold 20px Arial';''
@@ -242,11 +240,11 @@ export class UserAchievementDisplay {
      */
     private renderAchievementItem(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number, ;
         width: number );
         achievement: Achievement)';
-        isUnlocked: boolean'';
+       , isUnlocked: boolean'';
     '): number { const itemHeight = 70,
         // 背景
         context.fillStyle = isUnlocked ? '#1a2e1a' : '#1a1a2e';''
@@ -373,10 +371,10 @@ export class UserAchievementDisplay {
      */
     private renderEnhancedProgressBar(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number)';
-        progress: number'';
+       , progress: number'';
     '): void { const height = 8,
         const radius = 4;
 
@@ -405,11 +403,11 @@ export class UserAchievementDisplay {
      */
     private drawRoundedRect(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number, ;
         width: number );
         height: number);
-        radius: number;
+       , radius: number;
     ): void { context.beginPath(),
         context.moveTo(x + radius, y);
         context.lineTo(x + width - radius, y);
@@ -429,7 +427,7 @@ export class UserAchievementDisplay {
         context: CanvasRenderingContext2D;
         x: number );
         y: number);
-        width: number';
+       , width: number';
     ): number { ''
         if(!this.achievementStatsUI) return y,
         
@@ -465,7 +463,7 @@ export class UserAchievementDisplay {
         context: CanvasRenderingContext2D;
         x: number );
         y: number);
-        width: number;
+       , width: number;
     ): void { if (!this.achievementsData) return,
         
         const unlockedCount = this.achievementsData.filter(a => a.unlocked).length;
@@ -556,10 +554,10 @@ export class UserAchievementDisplay {
     /**
      * カテゴリ別実績統計を取得
      */
-    public getCategoryStats(): Record<string, { unlocked: number; total: number; rate: number ,}> {
+    public getCategoryStats(): Record<string, { unlocked: number; total: number;, rate: number ,}> {
         if (!this.achievementsByCategory) return {};
         
-        const stats: Record<string, { unlocked: number; total: number; rate: number }> = {}
+        const stats: Record<string, { unlocked: number; total: number;, rate: number }> = {}
         for(const [category, achievements] of Object.entries(this.achievementsByCategory) {
             const unlocked = achievements.filter(a => a.unlocked).length;
             const total = achievements.length;

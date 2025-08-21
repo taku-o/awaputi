@@ -1,6 +1,6 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { ComparisonEngine } from '../../src/analytics/ComparisonEngine';
-import { ComparisonEngine as CoreComparisonEngine } from '../../src/core/ComparisonEngine';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { ComparisonEngine  } from '../../src/analytics/ComparisonEngine';
+import { ComparisonEngine, as CoreComparisonEngine  } from '../../src/core/ComparisonEngine';
 // Import split test components
 import './comparison-engine-tests/ComparisonEngineBasicTests';
 import './comparison-engine-tests/ComparisonEngineAdvancedTests';
@@ -137,4 +137,4 @@ describe('ComparisonEngine - Main Test Suite', () => {
     }
 }');
 // Export shared utilities for use in split test components
-export { MockStorageManager, TestDataFactory };
+export { MockStorageManager, TestDataFactory  };

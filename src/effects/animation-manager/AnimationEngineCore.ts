@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * Animation quality levels'
@@ -32,20 +32,20 @@ export interface AnimationEngineSettings { enabled: boolean,
     globalSpeed: number;
     quality: AnimationQuality;
     enableEasing: boolean;
-    enableParallax: boolean ,}
+   , enableParallax: boolean ,}
 
 /**
  * Performance metrics interface
  */
 export interface PerformanceMetrics { activeAnimations: number;
     frameTime: number;
-    droppedFrames: number }
+   , droppedFrames: number }
 
 /**
  * Animation progress result interface
  */
 export interface AnimationProgress { progress: number;
-    easedProgress: number }
+   , easedProgress: number }
 
 /**
  * Animation target interface
@@ -55,7 +55,7 @@ export interface AnimationTarget { [key: string]: any, }
 /**
  * Animation options interface
  */
-export interface AnimationOptions { onComplete?: (animation: Animation) => void;
+export interface AnimationOptions { onComplete?: (animatio;n: Animation) => void;
     [key: string]: any, }
 }
 
@@ -65,7 +65,7 @@ export interface AnimationOptions { onComplete?: (animation: Animation) => void;
 export interface Animation { type?: string;
     target?: AnimationTarget;
     duration: number;
-    elapsed: number;
+   , elapsed: number;
     easing?: EasingType;
     endValues?: Record<string, any>;
     options?: AnimationOptions;
@@ -76,7 +76,7 @@ export interface Animation { type?: string;
  */
 export interface QualityLevelSettings { particleCount: number,
     effectIntensity: number;
-    complexAnimations: boolean ,}
+   , complexAnimations: boolean ,}
 
 /**
  * Quality levels configuration interface
@@ -84,7 +84,7 @@ export interface QualityLevelSettings { particleCount: number,
 export interface QualityLevels { low: QualityLevelSettings;
     medium: QualityLevelSettings;
     high: QualityLevelSettings;
-    ultra: QualityLevelSettings
+   , ultra: QualityLevelSettings
     }
 
 /**
@@ -104,11 +104,11 @@ export class AnimationEngineCore {
     constructor(''';
             quality: 'high';
             enableEasing: true;
-            enableParallax: true };
+           , enableParallax: true };
         // パフォーマンス監視
         this.performanceMetrics = { activeAnimations: 0,
             frameTime: 0;
-            droppedFrames: 0 ,}))
+           , droppedFrames: 0 ,}))
     }
     
     /**
@@ -298,13 +298,13 @@ export class AnimationEngineCore {
     dispose(''';
             quality: 'high';
             enableEasing: true;
-            enableParallax: true;
+           , enableParallax: true;
         },
         
         // メトリクスリセット
         this.performanceMetrics = { activeAnimations: 0,
             frameTime: 0;
-            droppedFrames: 0 ,}
+           , droppedFrames: 0 ,}
 }
 
 /**
@@ -315,7 +315,7 @@ export class AnimationQualityController {
     private qualityLevels: QualityLevels;
     private currentQuality: AnimationQuality;
     private frameTimeHistory: number[]);
-    private readonly maxHistorySize: number);
+    private readonly, maxHistorySize: number);
 
     constructor(''';
         this.currentQuality = 'high';

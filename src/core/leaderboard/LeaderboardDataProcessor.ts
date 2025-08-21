@@ -22,7 +22,7 @@ export interface Leaderboard { entries: ScoreEntry[],
 
 export interface ScoreEntry { score: number;
     playerName: string;
-    timestamp: number;
+   , timestamp: number;
     stageId?: string;
     checksum?: string;
     metadata?: ScoreMetadata;
@@ -63,17 +63,17 @@ export interface PeriodBoardMetadata { totalPlayers: number,
     averageScore: number;
     highestScore: number;
     period: PeriodType;
-    periodKey: string ,}
+   , periodKey: string ,}
 
 export interface PlayerHistory { scores: PlayerScore[];
     bestScore: number;
     totalGames: number;
-    averageScore: number;
+   , averageScore: number;
     metadata?: PlayerMetadata
     }
 
 export interface PlayerScore { score: number;
-    timestamp: number;
+   , timestamp: number;
     stageId?: string;
     rank?: number;
     metadata?: ScoreMetadata;
@@ -89,32 +89,32 @@ export interface BoardMetadata { createdAt: number,
     updatedAt: number;
     totalEntries: number;
     uniquePlayers: number;
-    averageScore: number ,}
+   , averageScore: number ,}
 
 export interface DataMetadata { version: string;
     createdAt: number;
     lastUpdated: number;
     totalBoards: number;
-    totalEntries: number }
+   , totalEntries: number }
 
 export interface DataStatistics { totalPlayers: number;
     totalGames: number;
     totalScores: number;
     averageScore: number;
     highestScore: number;
-    lastCalculated: number }
+   , lastCalculated: number }
 
 export interface IntegrityCheckResult { isValid: boolean;
     errors: string[];
     warnings: string[];
-    statistics: ValidationStatistics;
+   , statistics: ValidationStatistics;
     recommendations?: string[];
     fixedIssues?: string[]; }
 
 export interface ValidationStatistics { totalEntries: number,
     validEntries: number;
     invalidEntries: number;
-    duplicateEntries: number;
+   , duplicateEntries: number;
     corruptedEntries?: number;
     repairedEntries?: number; ,}
 
@@ -122,7 +122,7 @@ export interface ValidationError { type: ValidationErrorType,
     message: string;
     entry?: ScoreEntry;
     boardName?: string;
-    severity: ErrorSeverity
+   , severity: ErrorSeverity
     ,}
 
 export interface ProcessingOptions { validateChecksum?: boolean;
@@ -134,7 +134,7 @@ export interface ProcessingOptions { validateChecksum?: boolean;
 export interface ChecksumCalculationParams { score: number,
     playerName: string;
     timestamp: number;
-    stageId: string;
+   , stageId: string;
     algorithm?: ChecksumAlgorithm
     ,}
 
@@ -142,14 +142,14 @@ export interface DataCleanupResult { removedEntries: number;
     repairedEntries: number;
     compactedSize: number;
     errors: string[];
-    warnings: string[] }
+   , warnings: string[] }
 
 // 列挙型
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
 export type ValidationErrorType = '';
-    | 'invalid_score' | 'invalid_player_name' | 'invalid_timestamp' '';
-    | 'invalid_stage_id' | 'checksum_mismatch' | 'duplicate_entry' '';
+    | 'invalid_score' | 'invalid_player_name' | 'invalid_timestamp', '';
+    | 'invalid_stage_id' | 'checksum_mismatch' | 'duplicate_entry', '';
     | 'missing_required_field' | 'invalid_metadata' | 'corrupted_data';''
 export type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';''
 export type ChecksumAlgorithm = 'simple_hash' | 'djb2' | 'fnv1a';''
@@ -175,7 +175,7 @@ export const DEFAULT_PROCESSING_OPTIONS: ProcessingOptions = { validateChecksum:
     allowDuplicates: false;
     autoRepair: false;
     maxHistorySize: DEFAULT_MAX_HISTORY_SIZE;
-    strictValidation: false ,};
+   , strictValidation: false ,};
 ';
 // ユーティリティ関数
 export function isValidScoreData(data: any): data is ScoreData { return data &&''
@@ -263,7 +263,7 @@ export function calculateFNV1AHash(data: string): string { let hash = 2166136261
 
 export class LeaderboardDataProcessor {
     private leaderboardManager: LeaderboardManager;
-    private processingOptions: ProcessingOptions;
+    private, processingOptions: ProcessingOptions;
     constructor(leaderboardManager: LeaderboardManager, options: Partial<ProcessingOptions> = {) {
         this.leaderboardManager = leaderboardManager ,}
         this.processingOptions = { ...DEFAULT_PROCESSING_OPTIONS, ...options;
@@ -306,7 +306,7 @@ export class LeaderboardDataProcessor {
         const entry: ScoreEntry = { score: clampScore(scoreData.score),
             playerName: sanitizePlayerName(scoreData.playerName),
             timestamp: scoreData.timestamp || Date.now(''';
-            stageId: scoreData.stageId || 'default' ,}))
+           , stageId: scoreData.stageId || 'default' ,}))
         // チェックサムの計算)
         if (this.processingOptions.validateChecksum) { entry.checksum = this.calculateScoreChecksum(entry); }
 
@@ -378,15 +378,15 @@ export class LeaderboardDataProcessor {
             isValid: true;
             errors: [];
             warnings: [];
-            statistics: {
+           , statistics: {
                 totalEntries: 0;
                 validEntries: 0;
                 invalidEntries: 0;
                 duplicateEntries: 0;
                 corruptedEntries: 0;
-                repairedEntries: 0 };
+               , repairedEntries: 0 };
             recommendations: [];
-            fixedIssues: [];
+           , fixedIssues: [];
         },
 
         if(!targetData || !targetData.leaderboards) {'
@@ -404,8 +404,7 @@ export class LeaderboardDataProcessor {
             if(!isValidLeaderboard(board)) {'
                 const error = createValidationError('';
                     'invalid_metadata',)';
-                    `Invalid board structure for: ${boardName',}`,''
-                    'high',
+                    `Invalid board structure for: ${boardName',}`,'', 'high',
                     undefined,
                     boardName;
                 }
@@ -449,8 +448,7 @@ export class LeaderboardDataProcessor {
 
                 const error = createValidationError('';
                     'invalid_metadata',)';
-                    `Invalid entry in board ${boardName')`,''
-                    'medium',
+                    `Invalid entry in board ${boardName')`,'', 'medium',
                     entry,
                     boardName;
                 };
@@ -564,16 +562,14 @@ export class LeaderboardDataProcessor {
             results.recommendations.push('Consider, enabling duplicate, removal to, clean up, redundant entries); }'
         }
 
-        if(results.statistics.invalidEntries > results.statistics.totalEntries * 0.1) {'
-            ';
+        if(results.statistics.invalidEntries > results.statistics.totalEntries * 0.1) {', ';
 
         }
 
             results.recommendations.push('High, number of, invalid entries, detected. Review, data validation, rules); }'
         }
 
-        if(results.warnings.length > 0) {'
-            ';
+        if(results.warnings.length > 0) {', ';
 
         }
 
@@ -597,7 +593,7 @@ export class LeaderboardDataProcessor {
                 bestScore: scoreEntry.score;
                 totalGames: 0;
                 averageScore: 0;
-                metadata: {
+               , metadata: {
                     firstPlayDate: scoreEntry.timestamp;
         }
                     lastPlayDate: scoreEntry.timestamp }
@@ -609,7 +605,7 @@ export class LeaderboardDataProcessor {
         const playerScore: PlayerScore = { score: scoreEntry.score,
             timestamp: scoreEntry.timestamp;
             stageId: scoreEntry.stageId;
-            metadata: scoreEntry.metadata ,};
+           , metadata: scoreEntry.metadata ,};
         history.scores.push(playerScore);
 
         // 統計の更新
@@ -644,7 +640,7 @@ export class LeaderboardDataProcessor {
             repairedEntries: 0;
             compactedSize: 0;
             errors: [];
-            warnings: [] ,};
+           , warnings: [] ,};
         try { const data = this.leaderboardManager.data;
             
             // 重複エントリの除去
@@ -796,7 +792,7 @@ export class LeaderboardDataProcessor {
             totalScores: 0;
             averageScore: 0;
             highestScore: 0;
-            lastCalculated: Date.now( };
+           , lastCalculated: Date.now( };
 
         const allScores: number[] = [],
         const uniquePlayers = new Set<string>();

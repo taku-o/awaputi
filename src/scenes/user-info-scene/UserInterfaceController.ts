@@ -10,7 +10,7 @@ import type { EventBus } from '../../core/EventBus';
 // Tab interface
 interface Tab { id: TabId,
     label: string;
-    icon: string ,}
+   , icon: string ,}
 ;
 // Tab ID type
 type TabId = 'profile' | 'statistics' | 'achievements' | 'data' | 'help';
@@ -23,25 +23,25 @@ interface UIState { currentTab: TabId,
     isDialogOpen: boolean;
     activeDialog: DialogType;
     lastUpdateTime: number;
-    needsUpdate: boolean ,}
+   , needsUpdate: boolean ,}
 
 // Layout configuration interface
 interface LayoutConfig { tabHeight: number;
     contentPadding: number;
     buttonHeight: number;
     buttonSpacing: number;
-    dialogOverlayAlpha: number }
+   , dialogOverlayAlpha: number }
 
 // Click event data interface
 interface ContentClickEventData { tab: TabId;
     x: number;
     y: number;
-    canvas: HTMLCanvasElement
+   , canvas: HTMLCanvasElement
     }
 
 // Dialog click event data interface
 interface DialogClickEventData { x: number;
-    y: number }
+   , y: number }
 
 // Scene state interface
 interface SceneState { // Add scene state properties as needed
@@ -54,7 +54,7 @@ export class UserInterfaceController {
     // UI状態管理
     private uiState: UIState;
     // タブ設定
-    private readonly tabs: ReadonlyArray<Tab> = [' }'
+    private readonly, tabs: ReadonlyArray<Tab> = [' }'
 
         { id: 'profile', label: 'プロフィール', icon: '👤' ,},''
         { id: 'statistics', label: '統計', icon: '📊' ,},''
@@ -76,7 +76,7 @@ export class UserInterfaceController {
             currentTab: 'profile';
             isDialogOpen: false;
             activeDialog: null;
-            lastUpdateTime: Date.now();
+           , lastUpdateTime: Date.now();
     }
             needsUpdate: true }
         };
@@ -85,7 +85,7 @@ export class UserInterfaceController {
             contentPadding: 20;
             buttonHeight: 40;
             buttonSpacing: 10;
-            dialogOverlayAlpha: 0.7 ,};
+           , dialogOverlayAlpha: 0.7 ,};
         ;
         // イベントリスナーの設定
         this.setupEventListeners()';
@@ -196,7 +196,7 @@ export class UserInterfaceController {
                 return this.handleDataClick(x, contentY, canvas);
             default:;
                 // 他のタブのクリック処理はそれぞれのコンポーネントに委譲
-                const eventData: ContentClickEventData = { 
+                const, eventData: ContentClickEventData = { 
                     tab: currentTab, ;
                     x, ;
                     y: contentY;

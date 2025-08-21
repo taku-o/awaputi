@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * Enhanced History Manager Tests'
  */''
-import { EnhancedHistoryManager } from '../../src/debug/EnhancedHistoryManager';''
+import { EnhancedHistoryManager  } from '../../src/debug/EnhancedHistoryManager';''
 describe('EnhancedHistoryManager', () => {  let mockConsole: any,
     let historyManager: any,
     beforeEach(() => {
@@ -140,8 +140,7 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
             });
             expect(results.length).toBeGreaterThan(1);'
             // Results should be sorted by relevance score''
-            for(let i = 1; i < results.length; i++') {'
-                '';
+            for(let i = 1; i < results.length; i++') {', '';
                 const prevScore = historyManager.calculateRelevanceScore(results[i-1], 'config'');''
                 const currScore = historyManager.calculateRelevanceScore(results[i], 'config');
             }

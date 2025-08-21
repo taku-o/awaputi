@@ -5,26 +5,26 @@
 
 // Error detection interfaces
 interface DetectionThresholds {
-    frameRate: { critical: number; warning: number; target: number },
-    memory: { critical: number; warning: number; target: number },
-    rendering: { critical: number; warning: number; target: number },
-    network: { critical: number; warning: number; target: number },
-    javascript: { critical: number; warning: number; target: number },
-    resource: { critical: number; warning: number; target: number }
+    frameRate: { critica;l: number; warning: number;, target: number },
+    memory: { critical: number; warning: number;, target: number },
+    rendering: { critical: number; warning: number;, target: number },
+    network: { critical: number; warning: number;, target: number },
+    javascript: { critical: number; warning: number;, target: number },
+    resource: { critical: number; warning: number;, target: number }
 
 interface ThresholdConfig { critical: number,
     warning: number;
-    target: number ,}
+   , target: number ,}
 
 interface PerformanceBaseline { averageTaskTime: number;
     minTaskTime: number;
     maxTaskTime: number;
     standardDeviation: number;
-    timestamp: number }
+   , timestamp: number }
 
 interface DetectedError { type: string;
     level: 'critical' | 'warning' | 'info';
-    metrics: Record<string, any>;
+   , metrics: Record<string, any>;
     timestamp: number;
     detector?: string;
     baseline?: PerformanceBaseline;
@@ -46,26 +46,26 @@ interface IErrorDetector { initialize(): Promise<void>;
     getStatus(''';
     priority: 'critical' | 'high' | 'medium' | 'low';
     recoverable: boolean;
-    degradationOptions: string[] ,}
+   , degradationOptions: string[] ,}
 ';
 
 interface ErrorSeverity { score: number,''
     level: 'critical' | 'high' | 'medium' | 'low';
-    components: {
-        impact: number;
+   , components: {
+        impac;t: number;
         frequency: number;
         userExperience: number;
-        recoverability: number ,}
+       , recoverability: number ,}
 
 interface ErrorPatterns { recognized: boolean,
     type: string,
     confidence: number,
     trend: 'increasing' | 'decreasing' | 'stable' | 'insufficient_data';
-    clustering: {
-        clustered: boolean;
+   , clustering: {
+        clustere;d: boolean;
         dominantDetector?: string ,};
     correlation: { hasCorrelation: boolean;
-        correlatedWith: string[] }
+       , correlatedWith: string[] }
 
 interface ErrorClassification { category: string,
 
@@ -76,24 +76,24 @@ interface ErrorClassification { category: string,
     severity: ErrorSeverity;
     patterns: ErrorPatterns;
     classifiedAt: number;
-    confidence: number ,}
+   , confidence: number ,}
 
 interface ClassifiedError extends EnrichedError { classification: ErrorClassification
     }
 
 // Frame rate specific interfaces
 interface FrameData { fps: number;
-    timestamp: number }
+   , timestamp: number }
 
 // Memory specific interfaces
 interface MemoryMetrics { usage: number;
     used: number;
-    total: number }
+   , total: number }
 
 // Error history interface
 interface ErrorHistoryEntry { detector: string)
-    timestamp: number);
-    severity: string }
+    timestam;p: number);
+   , severity: string }
 
 /**
  * Performance Error Detector
@@ -105,7 +105,7 @@ export class PerformanceErrorDetector {
     private detectionThresholds: DetectionThresholds;
     private errorCallbacks: ErrorCallback[];
     private monitoringInterval: NodeJS.Timeout | null;
-    private performanceBaseline: PerformanceBaseline | null;
+    private, performanceBaseline: PerformanceBaseline | null;
     constructor() {
 
         this.detectors = new Map<string, IErrorDetector>();
@@ -163,10 +163,10 @@ export class PerformanceErrorDetector {
 
         this.performanceBaseline = { averageTaskTime: measurements.reduce((a, b) => a + b, 0) / measurements.length,
             minTaskTime: Math.min(...measurements);
-            maxTaskTime: Math.max(...measurements),
+           , maxTaskTime: Math.max(...measurements),
             standardDeviation: this.calculateStandardDeviation(measurements),
             timestamp: Date.now(')';
-        console.log('Performance baseline established:', this.performanceBaseline) }
+        console.log('Performance baseline, established:', this.performanceBaseline) }
     }
 
     private async performBenchmarkTask(): Promise<number> { // Simple benchmark task for baseline measurement
@@ -215,7 +215,7 @@ export class PerformanceErrorDetector {
             ...error,
             detector: detectorName;
             timestamp: Date.now();
-            baseline: this.performanceBaseline! ,};
+           , baseline: this.performanceBaseline! ,};
         console.warn(`Performance, error detected, by ${ detectorName):`, enrichedError};
         
         this.errorCallbacks.forEach(callback => { } }
@@ -241,7 +241,7 @@ export class PerformanceErrorDetector {
 
     getDetectionStatus(): object { const status = {
             monitoring: this.monitoringEnabled;
-            baseline: this.performanceBaseline, }
+           , baseline: this.performanceBaseline, }
             detectors: {} as Record<string, DetectorStatus>
         };
 
@@ -257,7 +257,7 @@ export class PerformanceErrorClassifier {
     private classificationRules: Map<string, ClassificationRule>;
     private severityCalculator: ErrorSeverityCalculator;
     private patternAnalyzer: ErrorPatternAnalyzer;
-    private initialized: boolean;
+    private, initialized: boolean;
     constructor() {
 
         this.classificationRules = new Map<string, ClassificationRule>();
@@ -284,7 +284,7 @@ export class PerformanceErrorClassifier {
             category: 'performance',
             subcategory: 'rendering',)';
             priority: 'high')';
-            recoverable: true,')';
+           , recoverable: true,')';
             degradationOptions: ['quality', 'effects', 'resolution])');
 ';
         // Memory related errors
@@ -292,7 +292,7 @@ export class PerformanceErrorClassifier {
             category: 'resource',
             subcategory: 'memory',)';
             priority: 'critical')';
-            recoverable: true,')';
+           , recoverable: true,')';
             degradationOptions: ['cleanup', 'cache', 'objects])');
 ';
         // Rendering related errors
@@ -300,7 +300,7 @@ export class PerformanceErrorClassifier {
             category: 'performance',
             subcategory: 'graphics',)';
             priority: 'high')';
-            recoverable: true,')';
+           , recoverable: true,')';
             degradationOptions: ['quality', 'effects', 'particles])');
 ';
         // Network related errors
@@ -308,7 +308,7 @@ export class PerformanceErrorClassifier {
             category: 'connectivity',
             subcategory: 'network',)';
             priority: 'medium')';
-            recoverable: false,')';
+           , recoverable: false,')';
             degradationOptions: ['offline', 'retry', 'cache])');
 ';
         // JavaScript errors
@@ -316,7 +316,7 @@ export class PerformanceErrorClassifier {
             category: 'code',
             subcategory: 'execution',)';
             priority: 'critical')';
-            recoverable: false,')';
+           , recoverable: false,')';
             degradationOptions: ['fallback', 'disable])');
 ';
         // Resource loading errors
@@ -324,13 +324,12 @@ export class PerformanceErrorClassifier {
             category: 'resource',
             subcategory: 'loading',)';
             priority: 'medium')';
-            recoverable: true,')';
+           , recoverable: true,')';
             degradationOptions: ['retry', 'fallback', 'cache] }
 ';
 
     async classify(detectedError: EnrichedError): Promise<ClassifiedError> { ''
-        if(!this.initialized) {'
-            ';
+        if(!this.initialized) {', ';
 
         }
 
@@ -342,7 +341,7 @@ export class PerformanceErrorClassifier {
             subcategory: 'unclassified',
             priority: 'low' as const;
             recoverable: false;
-            degradationOptions: [] ,};
+           , degradationOptions: [] ,};
         // Calculate severity
         const severity = await this.severityCalculator.calculate(detectedError);
         
@@ -391,14 +390,14 @@ class ErrorSeverityCalculator { private severityWeights: {
         impact: number;
         frequency: number;
         userExperience: number;
-        recoverability: number };
+       , recoverability: number };
 
     constructor() {
 
         this.severityWeights = {
             impact: 0.4;
             frequency: 0.3;
-            userExperience: 0.2;
+           , userExperience: 0.2;
     }
             recoverability: 0.1 }
         }
@@ -420,8 +419,7 @@ class ErrorSeverityCalculator { private severityWeights: {
 
         return { score: weightedScore };
             level: this.scoresToLevel(weightedScore, }
-            components: { impact, frequency, userExperience, recoverability }')'
-')';
+            components: { impact, frequency, userExperience, recoverability }')', ')';
     private calculateImpact(error: EnrichedError): number { // Calculate impact based on error type and metrics
         if(error.detector === 'memory' && error.metrics? .usage > 0.9) return 1.0;''
         if(error.detector === 'frameRate' && error.metrics?.fps < 15) return 0.9;''
@@ -473,7 +471,7 @@ class ErrorSeverityCalculator { private severityWeights: {
  * エラーパターン分析器 - エラーのパターンと傾向を分析
  */
 class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
-    private patterns: Map<string, any>;
+    private, patterns: Map<string, any>;
     private maxHistorySize: number;
     constructor() {
 
@@ -498,7 +496,7 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
             confidence: 0;
             trend: this.analyzeTrend();
             clustering: this.analyzeClustering();
-            correlation: this.analyzeCorrelation(error ,};
+           , correlation: this.analyzeCorrelation(error ,};
 
         // Simple pattern recognition
         if(this.errorHistory.length >= 3) {
@@ -517,7 +515,7 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
 
     private addToHistory(error: EnrichedError): void { this.errorHistory.push({)
             detector: error.detector)';
-            timestamp: error.timestamp,')';
+           , timestamp: error.timestamp,')';
             severity: error.classification? .severity?.level || 'unknown');
         if(this.errorHistory.length > this.maxHistorySize) {
 
@@ -564,7 +562,7 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
             dominantDetector: Object.keys(detectorCounts).find(key => detectorCounts[key] === maxCount); }
         }
 
-    private analyzeCorrelation(error: EnrichedError): { hasCorrelation: boolean; correlatedWith: string[] } { const timeWindow = 10000; // 10 seconds
+    private analyzeCorrelation(error: EnrichedError): { hasCorrelation: boolean;, correlatedWith: string[] } { const timeWindow = 10000; // 10 seconds
         const recentErrors = this.errorHistory.filter();
             e => error.timestamp - e.timestamp < timeWindow);
         
@@ -580,7 +578,7 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
 export class FrameRateErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
     private frameHistory: FrameData[];
     private errorCallbacks: ErrorCallback[];
-    private lastFrameTime: number;
+    private, lastFrameTime: number;
     constructor(thresholds: ThresholdConfig) {
 
         this.thresholds = thresholds;
@@ -608,8 +606,7 @@ export class FrameRateErrorDetector implements IErrorDetector { private threshol
         
         this.lastFrameTime = currentTime;
 
-        if(fps < this.thresholds.critical') {'
-            ';
+        if(fps < this.thresholds.critical') {', ';
 
         }
 
@@ -639,14 +636,14 @@ export class FrameRateErrorDetector implements IErrorDetector { private threshol
             
         return { enabled: true,
             averageFps: avgFps;
-            thresholds: this.thresholds, };
+           , thresholds: this.thresholds, };
             historySize: this.frameHistory.length }
         }
 }
 
 export class MemoryErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
     private errorCallbacks: ErrorCallback[];
-    private lastCheck: number;
+    private, lastCheck: number;
     constructor(thresholds: ThresholdConfig) {
 
         this.thresholds = thresholds;
@@ -665,8 +662,7 @@ export class MemoryErrorDetector implements IErrorDetector { private thresholds:
         const memory = (performance, as any).memory;
         const usage = memory.usedJSHeapSize / memory.jsHeapSizeLimit;
 
-        if(usage > this.thresholds.critical') {'
-            ';
+        if(usage > this.thresholds.critical') {', ';
 
         }
 
@@ -685,7 +681,7 @@ export class MemoryErrorDetector implements IErrorDetector { private thresholds:
             metrics: { 
                 usage;
                 used: memory.usedJSHeapSize;
-                total: memory.jsHeapSizeLimit ,};
+               , total: memory.jsHeapSizeLimit ,};
             timestamp: Date.now();
         };
         
@@ -709,7 +705,7 @@ export class MemoryErrorDetector implements IErrorDetector { private thresholds:
 
 // Additional simplified detector classes
 export class RenderingErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
-    private errorCallbacks: ErrorCallback[];
+    private, errorCallbacks: ErrorCallback[];
     constructor(thresholds: ThresholdConfig) {
 
         this.thresholds = thresholds
@@ -734,7 +730,7 @@ export class RenderingErrorDetector implements IErrorDetector { private threshol
 }
 
 export class NetworkErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
-    private errorCallbacks: ErrorCallback[];
+    private, errorCallbacks: ErrorCallback[];
     constructor(thresholds: ThresholdConfig) {
 
         this.thresholds = thresholds
@@ -758,7 +754,7 @@ export class NetworkErrorDetector implements IErrorDetector { private thresholds
 }
 
 export class JavaScriptErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
-    private errorCallbacks: ErrorCallback[];
+    private, errorCallbacks: ErrorCallback[];
     constructor(thresholds: ThresholdConfig) {
 
         this.thresholds = thresholds
@@ -782,7 +778,7 @@ export class JavaScriptErrorDetector implements IErrorDetector { private thresho
 }
 
 export class ResourceErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
-    private errorCallbacks: ErrorCallback[];
+    private, errorCallbacks: ErrorCallback[];
     constructor(thresholds: ThresholdConfig) {
 
         this.thresholds = thresholds

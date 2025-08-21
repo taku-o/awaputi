@@ -1,15 +1,15 @@
-import { BaseComponent } from '../BaseComponent.js';
+import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface Suggestion { action: string,
     code?: string;
     description: string,
     priority: 'low' | 'medium' | 'high';
-    category: string;
+   , category: string;
     score?: number ,}
 
 interface Pattern { id: string;
-    name: string,
+   , name: string,
     category: string,
     severity: 'low' | 'medium' | 'high' | 'critical' ,}
 
@@ -19,14 +19,14 @@ interface Test { name: string;
 
 interface ContextualSuggestion { action: string,
     code: string;
-    description: string ,}
+   , description: string ,}
 
 interface ComponentPattern { pattern: RegExp;
-    name: string }
+   , name: string }
 
 interface SuggestionStatistics { totalPatterns: number;
     totalSuggestions: number;
-    suggestionsByCategory: Record<string, number>;
+   , suggestionsByCategory: Record<string, number>;
     suggestionsByPriority: Record<string, number> }
 
 interface MainController { [key: string]: any, }
@@ -254,7 +254,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
         this.contextualSuggestions.set('ScoreManager', { assertion_failure: [{''
                     action: 'Check GameBalance values',' }
 
-                    code: 'import { BUBBLE_CONFIGS } from "./config/GameBalance.js"',''
+                    code: 'import { BUBBLE_CONFIGS  } from "./config/GameBalance.js"',''
                     description: 'GameBalance.jsの設定値を確認])';
                 }')]'
             ])'),
@@ -457,7 +457,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
      */
     getSuggestionStatistics(): SuggestionStatistics { const stats: SuggestionStatistics = {
             totalPatterns: this.debugSuggestions.size;
-            totalSuggestions: 0, }
+           , totalSuggestions: 0, }
             suggestionsByCategory: {};
             suggestionsByPriority: {};
         for(const, suggestions of, this.debugSuggestions.values() {

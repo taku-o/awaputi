@@ -1,17 +1,17 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Type definitions for quality scaling and performance optimization
 interface ParticleManager { setQualityLevel(quality: string): void,
     maxParticles: number;
     particles: Particle[];
     backgroundEnabled: boolean;
-    backgroundParticles: Particle[];
+   , backgroundParticles: Particle[];
     returnParticleToPool(particle: Particle): void, }
 
 interface Particle { type: string,
     life: number;
     maxLife: number;
-    size: number ,}
+   , size: number ,}
 ';
 
 interface PerformanceMonitor { ''
@@ -39,11 +39,10 @@ export, class QualityScalingSystem {
         this.performanceMonitor = performanceMonitor;
         
         // 品質レベル定義
-        this.qualityLevels = {''
-            'potato': {''
+        this.qualityLevels = {'', 'potato': {''
                 name: 'ポテト';
                 countMultiplier: 0.1;
-                sizeMultiplier: 0.6,
+               , sizeMultiplier: 0.6,
                 complexityLevel: 0,
                 enabledEffects: ['circle'],
                 disabledFeatures: ['trail', 'glow', 'background', 'lighting'],
@@ -52,58 +51,53 @@ export, class QualityScalingSystem {
 
                 description: '最低品質 - 古い端末向け' }
 
-            },''
-            'low': { ''
+            },'', 'low': { ''
                 name: '低';
                 countMultiplier: 0.25;
-                sizeMultiplier: 0.8,
+               , sizeMultiplier: 0.8,
                 complexityLevel: 1,
                 enabledEffects: ['circle', 'star', 'diamond'],
                 disabledFeatures: ['trail', 'glow', 'background'],
                 maxParticles: 150,
                 description: '低品質 - 軽量モード' ,}
 
-            },''
-            'medium': { ''
+            },'', 'medium': { ''
                 name: '中';
                 countMultiplier: 0.5;
-                sizeMultiplier: 0.9,
+               , sizeMultiplier: 0.9,
                 complexityLevel: 2,
                 enabledEffects: ['circle', 'star', 'diamond', 'advanced_circle', 'hexagon'],
                 disabledFeatures: ['background'],
                 maxParticles: 300,
                 description: '中品質 - バランス重視' ,}
 
-            },''
-            'high': { ''
+            },'', 'high': { ''
                 name: '高';
                 countMultiplier: 1.0;
-                sizeMultiplier: 1.0,
+               , sizeMultiplier: 1.0,
                 complexityLevel: 3,
                 enabledEffects: ['*];
-                disabledFeatures: [],
+               , disabledFeatures: [],
                 maxParticles: 500,
                 description: '高品質 - 標準設定' ,}
 
-            },''
-            'ultra': { ''
+            },'', 'ultra': { ''
                 name: '最高';
                 countMultiplier: 1.5;
-                sizeMultiplier: 1.2,
+               , sizeMultiplier: 1.2,
                 complexityLevel: 4,
                 enabledEffects: ['*];
-                disabledFeatures: [],
+               , disabledFeatures: [],
                 maxParticles: 800,
                 description: '最高品質 - ハイエンド向け' ,}
 
-            },''
-            'insane': { ''
+            },'', 'insane': { ''
                 name: '狂気';
                 countMultiplier: 2.0;
-                sizeMultiplier: 1.5,
+               , sizeMultiplier: 1.5,
                 complexityLevel: 5,
                 enabledEffects: ['*];
-                disabledFeatures: [],
+               , disabledFeatures: [],
                 maxParticles: 1200,
                 description: '狂気品質 - 実験的設定' ,}
         };
@@ -116,7 +110,7 @@ export, class QualityScalingSystem {
         this.performanceThresholds = { targetFPS: 60,
             minFPS: 30;
             criticalFPS: 15;
-            memoryThreshold: 50 * 1024 * 1024, // 50MB;
+           , memoryThreshold: 50 * 1024 * 1024, // 50MB;
             particleCountThreshold: 300 ,};
         // 調整履歴
         this.adjustmentHistory = [];
@@ -216,8 +210,7 @@ export, class QualityScalingSystem {
      * @param particle - パーティクル
      * @returns 優先度 (低いほど削除されやすい)
      */''
-    private getParticlePriority(particle: Particle): number { const typePriorities: Record<string, number> = {''
-            'background': 1,
+    private getParticlePriority(particle: Particle): number { const typePriorities: Record<string, number> = {'', 'background': 1,
             'circle': 2,
             'advanced_circle': 3,
             'star': 4,
@@ -367,7 +360,7 @@ export, class QualityScalingSystem {
             maxParticles: currentSettings.maxParticles;
             enabledEffects: currentSettings.enabledEffects.length;
             disabledFeatures: currentSettings.disabledFeatures.length;
-            adjustmentCount: this.adjustmentHistory.length, };
+           , adjustmentCount: this.adjustmentHistory.length, };
             lastAdjustment: this.adjustmentHistory[this.adjustmentHistory.length - 1] || null }
         }
     

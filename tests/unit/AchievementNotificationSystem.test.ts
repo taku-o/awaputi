@@ -1,8 +1,8 @@
 /**
  * AchievementNotificationSystem単体テスト
  */
-import { describe, test, beforeEach, expect, jest } from '@jest/globals';
-import { AchievementNotificationSystem } from '../../src/core/achievements/AchievementNotificationSystem.js';
+import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
+import { AchievementNotificationSystem  } from '../../src/core/achievements/AchievementNotificationSystem.js';
 // Type definitions for test objects
 interface Achievement {
     id: string,
@@ -10,7 +10,7 @@ interface Achievement {
     description?: string;
     icon: string,
     reward?: {
-        ap: number
+        a;p: number
     },
     rarity: string,
 }
@@ -93,7 +93,7 @@ describe('AchievementNotificationSystem', () => {
                 addColorStop: jest.fn(),
     }) as MockCanvasGradient),
             measureText: jest.fn(() => ({ width: 100 )));
-            fillText: jest.fn(),
+           , fillText: jest.fn(),
             strokeText: jest.fn('),
             fillStyle: '',
             strokeStyle: '',

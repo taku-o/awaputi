@@ -20,12 +20,12 @@ interface DataPoint { value: number,
 interface ChartPadding { top: number;
     right: number;
     bottom: number;
-    left: number }
+   , left: number }
 
 interface ChartArea { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface Metrics { [key: string]: number, }
 
@@ -60,7 +60,7 @@ export class PerformanceChart {
             max: 100;
             warning: 80;
             critical: 90;
-            samples: 100,
+           , samples: 100,
             gridLines: 5,
             key: '';
             ...config;
@@ -72,7 +72,7 @@ export class PerformanceChart {
         this.chartArea = { x: this.padding.left,
             y: this.padding.top;
             width: this.canvas.width - this.padding.left - this.padding.right;
-            height: this.canvas.height - this.padding.top - this.padding.bottom ,};
+           , height: this.canvas.height - this.padding.top - this.padding.bottom ,};
         this.setupCanvas();
         this.render();
     }
@@ -347,7 +347,7 @@ export class PerformanceChart {
             x: this.padding.left;
             y: this.padding.top;
             width: this.canvas.width - this.padding.left - this.padding.right;
-            height: this.canvas.height - this.padding.top - this.padding.bottom };
+           , height: this.canvas.height - this.padding.top - this.padding.bottom };
         this.setupCanvas();
         this.render();
     }

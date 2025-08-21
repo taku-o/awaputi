@@ -1,11 +1,11 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * RGBカラーインターフェース
  */
 interface RGBColor { r: number,
     g: number;
-    b: number ,}
+   , b: number ,}
 
 /**
  * 反射面インターフェース
@@ -25,7 +25,7 @@ interface ReflectionSurface { ''
 interface ReflectionObject { surface: ReflectionSurface,
     reflectivity: number;
     blur: number;
-    enabled: boolean ,}
+   , enabled: boolean ,}
 
 /**
  * 光源インターフェース
@@ -36,13 +36,13 @@ interface LightSource { x: number;
     intensity: number;
     currentIntensity?: number;
     color: RGBColor;
-    enabled: boolean }
+   , enabled: boolean }
 
 /**
  * バブルオブジェクトインターフェース
  */
 interface BubbleObject { x: number;
-    y: number;
+   , y: number;
     size?: number;
     type?: string; }
 
@@ -58,7 +58,7 @@ interface RenderSettings { enableReflections: boolean,''
  */
 export class ReflectionRenderer {
     private canvas: HTMLCanvasElement;
-    private errorHandler: any;
+    private, errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas
@@ -225,11 +225,11 @@ export class ReflectionRenderer {
             context.fill();
             
             // 二次光沢
-            const secondaryGlossSize = radius * 0.15;
-            const secondaryGlossX = bubble.x + radius * 0.3;
-            const secondaryGlossY = bubble.y + radius * 0.1;
+            const, secondaryGlossSize = radius * 0.15;
+            const, secondaryGlossX = bubble.x + radius * 0.3;
+            const, secondaryGlossY = bubble.y + radius * 0.1;
             
-            const secondaryGradient = context.createRadialGradient(;
+            const, secondaryGradient = context.createRadialGradient(;
                 secondaryGlossX, secondaryGlossY, 0);
                 secondaryGlossX, secondaryGlossY, secondaryGlossSize);''
             secondaryGradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity * 0.4)`');''
@@ -343,7 +343,7 @@ export class ReflectionRenderer {
                 surface: { ...bubble, type: 'bubble' ,},
                 reflectivity: 0.7;
                 blur: 0;
-                enabled: true;
+               , enabled: true;
             },
 
             this.renderBubbleReflection(context, reflectionSurface, renderSettings);''

@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest  } from '@jest/globals';
 /**
  * EventStageManager Integration Tests
  * 季節イベント、通知、統計機能の統合テスト'
  */''
-import { EventStageManager } from '../../src/core/EventStageManager';''
-import { EventRankingManager } from '../../src/core/EventRankingManager';''
+import { EventStageManager  } from '../../src/core/EventStageManager';''
+import { EventRankingManager  } from '../../src/core/EventRankingManager';''
 describe('EventStageManager Integration Tests', () => {  let eventStageManager: any,
     let mockGameEngine: any,
     let mockAchievementNotificationSystem: any,
@@ -158,7 +158,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         test('should get detailed event statistics', (') => {  mockStatisticsManager.getDetailedEventStatistics.mockReturnValue({
                 totalEvents: 5,);
                 completionRate: 0.8)';
-                averageScore: 12500,') }'
+               , averageScore: 12500,') }'
                 favoriteEvent: 'spring-cherry-blossom'); }
             });
             const stats = eventStageManager.getDetailedEventStatistics();
@@ -168,9 +168,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(mockStatisticsManager.getDetailedEventStatistics).toHaveBeenCalled();''
         }');''
         test('should export event data correctly', (') => {  // Add some test data'
-            eventStageManager.eventParticipationHistory = {''
-                'test-player': {''
-                    'spring-cherry-blossom': {
+            eventStageManager.eventParticipationHistory = {'', 'test-player': {'', 'spring-cherry-blossom': {
                         participationCount: 3,
                         bestScore: 20000, }
         lastParticipation: Date.now(); }
@@ -274,9 +272,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
     describe('Data Persistence', (') => {  ''
         test('should save event data correctly', (') => {
             // Add some test data'
-            eventStageManager.eventParticipationHistory = {''
-                'player1': {''
-                    'spring-cherry-blossom': {
+            eventStageManager.eventParticipationHistory = {'', 'player1': {'', 'spring-cherry-blossom': {
                         participationCount: 2 }
                         bestScore: 18000 }
                     }
@@ -294,9 +290,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         test('should load event data correctly', (') => {  // Setup test data in localStorage'
             const testData = {''
                 version: '1.2.0',';
-                eventParticipationHistory: {''
-                    'player1': {''
-                        'summer-fireworks': {
+                eventParticipationHistory: {'', 'player1': {'', 'summer-fireworks': {
                             participationCount: 3, }
                             bestScore: 22000 }
                         }
@@ -315,8 +309,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         test('should migrate event data when version differs', (') => {  // Setup old version data'
             const oldData = {''
                 version: '1.0.0',';
-                eventHistory: {' }'
-                    'player1': ['spring-cherry-blossom'] }
+                eventHistory: {' }', 'player1': ['spring-cherry-blossom'] }
                 }'
             };''
             localStorage.setItem('eventStageData', JSON.stringify(oldData);'

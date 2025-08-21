@@ -1,8 +1,8 @@
 /**
  * AchievementEventIntegrator単体テスト
  */
-import { describe, test, beforeEach, expect } from '@jest/globals';
-import { AchievementEventIntegrator } from '../../src/core/AchievementEventIntegrator.js';
+import { describe, test, beforeEach, expect  } from '@jest/globals';
+import { AchievementEventIntegrator  } from '../../src/core/AchievementEventIntegrator.js';
 // Type definitions for test objects
 interface BubbleObject {
     type: string,
@@ -21,7 +21,7 @@ interface Achievement {
     id: string,
     unlocked: boolean,
     progress: {
-        current: number,
+        curren;t: number,
         target: number,
     };
 }
@@ -31,7 +31,7 @@ interface SessionData {
 interface PlayerDataStats {
     bubbleTypes: {
         normal: {
-            popped: number,
+            poppe;d: number,
         };
     };
     sessionData: SessionData,

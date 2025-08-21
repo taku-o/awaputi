@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../ErrorHandler.js';
+import { getErrorHandler  } from '../ErrorHandler.js';
 
 // Type definitions
 interface LayerConfig { cachingEnabled?: boolean;
@@ -17,7 +17,7 @@ interface LayerProperties { opacity?: number;
 interface BoundingBox { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface Layer { name: string;
     order: number;
@@ -43,7 +43,7 @@ interface LayerStats { totalLayers: number;
     cachedLayers: number;
     renderTime: number;
     compositionTime: number;
-    cacheHitRatio: number }
+   , cacheHitRatio: number }
 
 interface Viewport { x?: number;
     y?: number;
@@ -62,7 +62,7 @@ interface ErrorHandler { ''
 export class AdvancedLayerManager {
     private errorHandler: ErrorHandler;
     private mainCanvas: HTMLCanvasElement;
-    private layers: Map<string, Layer>;
+    private, layers: Map<string, Layer>;
     private layerOrder: string[];
     private staticLayers: Set<string>;
     private dynamicLayers: Set<string>;
@@ -97,7 +97,7 @@ export class AdvancedLayerManager {
             activeLayers: 0;
             cachedLayers: 0;
             renderTime: 0;
-            compositionTime: 0;
+           , compositionTime: 0;
     ,}
             cacheHitRatio: 0 }
         };
@@ -130,7 +130,7 @@ export class AdvancedLayerManager {
             const layer: Layer = { name,
                 order,
                 enabled: true;
-                visible: true,
+               , visible: true,
                 opacity: properties.opacity || 1.0,
                 blendMode: properties.blendMode || 'source-over';
                 // Layer canvas for caching
@@ -142,14 +142,14 @@ export class AdvancedLayerManager {
                 dirty: true;
                 lastModified: Date.now();
                 // Content tracking
-                objects: new Set(), }
+               , objects: new Set(), }
                 boundingBox: { x: 0, y: 0, width: 0, height: 0 ,},
                 
                 // Performance tracking
                 renderTime: 0;
                 complexity: 0;
                 cacheHits: 0;
-                cacheMisses: 0;
+               , cacheMisses: 0;
             },
             ;
             // Create layer canvas if cacheable

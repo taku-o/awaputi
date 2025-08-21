@@ -1,19 +1,19 @@
 import fs from 'fs/promises';''
-import { BackupFileInvestigator } from './BackupFileInvestigator.js';''
-import { ReferenceAnalyzer } from './ReferenceAnalyzer.js';
+import { BackupFileInvestigator  } from './BackupFileInvestigator.js';''
+import { ReferenceAnalyzer  } from './ReferenceAnalyzer.js';
 
 // Type definitions
 interface BasicValidation { fileExists: boolean,
     currentFileExists: boolean;
     isBackupFile: boolean;
-    passed: boolean;
+   , passed: boolean;
     currentFilePath?: string;
     error?: string; ,}
 
 interface CurrentFileIntegrity { currentFileValid: boolean,
     syntaxValid: boolean;
     functionallyEquivalent: boolean;
-    passed: boolean;
+   , passed: boolean;
     error?: string ,}
 }
 
@@ -21,7 +21,7 @@ interface ReferenceValidation { importReferences: number;
     activeStringReferences: number;
     reportFileReferences: number;
     totalReferences: number;
-    passed: boolean;
+   , passed: boolean;
     referenceReport?: any;
     error?: string; }
 
@@ -29,7 +29,7 @@ interface BuildDependencies { inPackageJson: boolean,
     inTsConfig: boolean;
     inWebpackConfig: boolean;
     inOtherConfigs: boolean;
-    passed: boolean;
+   , passed: boolean;
     configFiles?: string[];
     error?: string; ,}
 
@@ -39,7 +39,7 @@ interface LastCommitInfo { hash: string,
 interface GitStatus { isTracked: boolean;
     hasUncommittedChanges: boolean;
     lastCommitInfo: LastCommitInfo | null;
-    passed: boolean;
+   , passed: boolean;
     error?: string }
 
 interface SafetyChecks { basicValidation?: BasicValidation;
@@ -53,7 +53,7 @@ interface SafetyWarning { level: string,
     message: string ,}
 
 interface SafetyRecommendation { type: string;
-    message: string;
+   , message: string;
     priority?: string }
 
 interface SafetyVerification { filePath: string;
@@ -61,29 +61,29 @@ interface SafetyVerification { filePath: string;
     checks: SafetyChecks;
     overallSafety: boolean;
     warnings: SafetyWarning[];
-    recommendations: SafetyRecommendation[];
+   , recommendations: SafetyRecommendation[];
     error?: string }
 
 interface SafetySummary { totalFiles: number;
     safeFiles: number;
     unsafeFiles: number;
-    errorFiles: number }
+   , errorFiles: number }
 
 interface SafetyBreakdown { basicValidation: number;
     currentFileIntegrity: number;
     referenceValidation: number;
     buildDependencies: number;
-    gitStatus: number }
+   , gitStatus: number }
 
 interface OverallRecommendation { action: string;
     message: string;
-    priority: string }
+   , priority: string }
 
 interface SafetyReport { summary: SafetySummary;
     safetyBreakdown: SafetyBreakdown;
     files: SafetyVerification[];
     overallRecommendation: OverallRecommendation;
-    generatedAt: string }
+   , generatedAt: string }
 
 /**
  * SafetyVerifier - バックアップファイル削除の安全性を検証するクラス
@@ -91,7 +91,7 @@ interface SafetyReport { summary: SafetySummary;
  */
 export class SafetyVerifier {
     private investigator: BackupFileInvestigator;
-    private referenceAnalyzer: ReferenceAnalyzer;
+    private, referenceAnalyzer: ReferenceAnalyzer;
     constructor() {
 
         this.investigator = new BackupFileInvestigator();
@@ -109,7 +109,7 @@ export class SafetyVerifier {
             checks: {};
             overallSafety: false;
             warnings: [];
-            recommendations: [];
+           , recommendations: [];
         },
 
         try { // 1. 基本ファイル検証
@@ -136,7 +136,7 @@ export class SafetyVerifier {
 
             verification.warnings.push({)'
                 level: 'critical' }
-                message: `検証中にエラーが発生しました: ${(error, as Error}).message}`
+                message: `検証中にエラーが発生しました: ${(error, as, Error}).message}`
             });
         }
 
@@ -150,7 +150,7 @@ export class SafetyVerifier {
             fileExists: false;
             currentFileExists: false;
             isBackupFile: false;
-            passed: false };
+           , passed: false };
         try { // ファイル存在確認
             validation.fileExists = await this.investigator.checkFileExists(filePath);
             
@@ -183,7 +183,7 @@ export class SafetyVerifier {
             currentFileValid: false;
             syntaxValid: false;
             functionallyEquivalent: false;
-            passed: false }
+           , passed: false }
         };
 ';
 
@@ -224,7 +224,7 @@ export class SafetyVerifier {
             activeStringReferences: 0;
             reportFileReferences: 0;
             totalReferences: 0;
-            passed: false };
+           , passed: false };
         try { // import参照の検索
             const importAnalysis = await this.referenceAnalyzer.searchImportReferences(filePath);
             validation.importReferences = importAnalysis.importReferences.length;
@@ -258,7 +258,7 @@ export class SafetyVerifier {
             inTsConfig: false;
             inWebpackConfig: false;
             inOtherConfigs: false;
-            passed: true };
+           , passed: true };
 ';
         try { // package.jsonでの参照確認
             const packageJsonPath = './package.json';
@@ -305,7 +305,7 @@ export class SafetyVerifier {
             isTracked: false;
             hasUncommittedChanges: false;
             lastCommitInfo: null;
-            passed: true };
+           , passed: true };
 ';
 
         try { }
@@ -341,7 +341,7 @@ export class SafetyVerifier {
                             hash,
                     }
 
-                            message: messageParts.join(' '); }
+                            message: messageParts.join(', '); }
                         } catch { // 最後のコミット情報取得エラーは無視 }
             }
 
@@ -441,8 +441,7 @@ export class SafetyVerifier {
     /**
      * 対応する現在ファイルのパスを取得
      */''
-    private getCurrentFilePath(backupFilePath: string): string | null { const mapping: Record<string, string> = {''
-            'src/utils/TestConfigurationGenerator_old.js': 'src/utils/TestConfigurationGenerator.js',
+    private getCurrentFilePath(backupFilePath: string): string | null { const mapping: Record<string, string> = {'', 'src/utils/TestConfigurationGenerator_old.js': 'src/utils/TestConfigurationGenerator.js',
             'src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js': 'src/utils/performance-monitoring/PerformanceDataAnalyzer.js',
             'src/debug/TestDataGenerationCommands_old.js': 'src/debug/TestDataGenerationCommands.js',
             'src/debug/TestDataGenerationCommands_backup.js': 'src/debug/TestDataGenerationCommands.js',
@@ -489,7 +488,7 @@ export class SafetyVerifier {
             };
             files: verificationResults;
             overallRecommendation: this.generateOverallRecommendation(verificationResults);
-            generatedAt: new Date().toISOString();
+           , generatedAt: new Date().toISOString();
         };
 
         return report;

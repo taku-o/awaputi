@@ -1,5 +1,5 @@
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { SyncManager } from '../../src/core/SyncManager.js';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { SyncManager  } from '../../src/core/SyncManager.js';
 // 型定義
 interface MockLocalStorage {
     keys: jest.Mock<Promise<string[]>, []>;
@@ -16,13 +16,13 @@ interface MockCloudStorage {
 interface LocalData {
     data: any,
     _metadata?: {
-        timestamp: number,
+        timestam;p: number,
     };
 }
 interface CloudData {
     data: any,
     _cloudMetadata?: {
-        uploadedAt: number,
+        uploadedA;t: number,
     };
 }
 interface SyncResult {
@@ -47,7 +47,7 @@ interface SyncStatus {
 }
 interface SavedSyncState {
     lastSyncTime: number,
-    conflicts: Array<{ key: string }>;
+    conflicts: Array<{ ke;y: string }>;
     syncErrors: any[],
 }
 describe('SyncManager', () => {

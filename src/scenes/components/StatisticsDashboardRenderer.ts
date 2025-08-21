@@ -4,7 +4,7 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void ,};
+        handleError(erro;r: Error, context: any): void ,};
     statisticsDashboard?: { render(context: CanvasRenderingContext2D, options: RenderOptions): Promise<void>
     ,};
     chartRenderer?: { render(context: CanvasRenderingContext2D, type: string, data: any, options: any): Promise<void>
@@ -18,7 +18,7 @@ interface EventBus { on(event: string, callback: Function): void,
 
 interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean;
-    reducedMotion: boolean ,}
+   , reducedMotion: boolean ,}
 
 interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
@@ -28,7 +28,7 @@ interface StatisticsDisplaySettings { showDashboard: boolean;
     showCharts: boolean;
     showDetailedStats: boolean;
     enableAnimations: boolean;
-    compactMode: boolean }
+   , compactMode: boolean }
 
 interface RenderOptions { data: any;
     animated: boolean;
@@ -38,10 +38,10 @@ interface RenderOptions { data: any;
     compactMode: boolean;
     largeText: boolean;
     width: number;
-    height: number }
+   , height: number }
 
 interface StatisticsData { basic?: {
-        totalGamesPlayed?: number;
+        totalGamesPlaye;d?: number;
         highestScore?: number;
         totalScore?: number;
         averageScore?: number;
@@ -68,7 +68,7 @@ interface StatisticsData { basic?: {
 
 interface StatCard { title: string,
     value: number;
-    unit: string ,}
+   , unit: string ,}
 
 export class StatisticsDashboardRenderer {
     private gameEngine: GameEngine;
@@ -87,7 +87,7 @@ export class StatisticsDashboardRenderer {
     private statisticsDisplaySettings: StatisticsDisplaySettings;
     // 統計システム参照
     private statisticsDashboard: GameEngine['statisticsDashboard] | null = null'';
-    private chartRenderer: GameEngine['chartRenderer] | null = null;
+    private, chartRenderer: GameEngine['chartRenderer] | null = null;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: ComponentState) {
 
         this.gameEngine = gameEngine;
@@ -100,7 +100,7 @@ export class StatisticsDashboardRenderer {
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
             highContrast: false;
-            largeText: false;
+           , largeText: false;
     ,}
             reducedMotion: false }
         };
@@ -109,7 +109,7 @@ export class StatisticsDashboardRenderer {
             showCharts: true;
             showDetailedStats: true;
             enableAnimations: !this.accessibilitySettings.reducedMotion;
-            compactMode: false ,};
+           , compactMode: false ,};
         this.setupEventListeners();
         this.initializeStatisticsSystems();
     }
@@ -197,13 +197,13 @@ export class StatisticsDashboardRenderer {
             // ダッシュボードの描画
             await this.statisticsDashboard.render(dashboardContext, {
                 data: this.statisticsData;
-                animated: this.statisticsDisplaySettings.enableAnimations,
+               , animated: this.statisticsDisplaySettings.enableAnimations,
                 backgroundColor: this.accessibilitySettings.highContrast ? '#000000' : '#FFFFFF',
                 textColor: this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333',
                 accentColor: this.accessibilitySettings.highContrast ? '#FFFF00' : '#4a90e2';
                 compactMode: this.statisticsDisplaySettings.compactMode);
                 largeText: this.accessibilitySettings.largeText);
-                width: width,);
+               , width: width,);
                 height: height);
             // メインキャンバスに描画;
             context.drawImage(dashboardCanvas, x, y);

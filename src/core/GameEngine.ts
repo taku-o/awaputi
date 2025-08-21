@@ -1,57 +1,57 @@
-import { PlayerData } from './PlayerData.js';''
-import { BubbleManager } from '../managers/BubbleManager.js';''
-import { ScoreManager } from '../managers/ScoreManager.js';''
-import { StageManager } from './StageManager.js';''
-import { SceneManager } from './SceneManager.js';''
-import { ItemManager } from './ItemManager.js';''
-import { SettingsManager } from './SettingsManager.js';''
-// import { getLocalizationManager } from './LocalizationManager.js';''
-import { CoreKeyboardShortcutManager } from './KeyboardShortcutManager.js';''
-import { AchievementManager } from './AchievementManager.js';''
-// import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';''
-// import { AchievementNotificationSystem } from './achievements/AchievementNotificationSystem.js';''
-import { StatisticsManager } from './StatisticsManager.js';''
-// import { EventStageManager } from './EventStageManager.js';''
-// import { ChallengeSystem } from './ChallengeSystem.js';''
-// import { DailyChallengeManager } from './DailyChallengeManager.js';''
-// import { WeeklyChallengeManager } from './WeeklyChallengeManager.js';''
-import { AudioManager } from '../audio/AudioManager.js';''
-import { ParticleManager } from '../effects/ParticleManager.js';''
-import { EffectManager } from '../effects/EffectManager.js';''
-import { EnhancedParticleManager } from '../effects/EnhancedParticleManager.js';''
-import { EnhancedEffectManager } from '../effects/EnhancedEffectManager.js';''
-// import { getSeasonalEffectManager } from '../effects/SeasonalEffectManager.js';''
-// import { getEffectQualityController } from '../effects/EffectQualityController.js';''
-// import { getEffectPerformanceMonitor } from '../effects/EffectPerformanceMonitor.js';''
-// import { getEffectConfigurationIntegrator } from '../effects/EffectConfigurationIntegrator.js';''
-// import { getAudioVisualSynchronizer } from '../effects/AudioVisualSynchronizer.js';''
-// import { getPoolManager } from '../utils/ObjectPool.js';''
-import { RenderOptimizer, PerformanceMonitor } from '../utils/RenderOptimizer.js';''
-import { getMemoryManager } from '../utils/MemoryManager.js';''
-import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer.js';''
-// import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';''
-import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from './ConfigurationManager.js';''
-import { getCalculationEngine } from './CalculationEngine.js';''
-// import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';''
-import { EnhancedDebugInterface } from '../debug/EnhancedDebugInterface.js';''
-// import { EffectProfiler } from '../effects/EffectProfiler.js';''
-// import { EffectOptimizationAdvisor } from '../effects/EffectOptimizationAdvisor.js';''
-// import { EffectPerformanceOptimizer } from '../effects/EffectPerformanceOptimizer.js';''
-// import { EffectErrorHandler } from '../effects/EffectErrorHandler.js';''
-// import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js';''
-// import { AnimationManager } from '../effects/AnimationManager.js';''
-// import { getHelpManager } from './help/HelpManager.js';''
-// import { getSEOMonitor } from '../seo/SEOMonitor.js';''
-import { SocialSharingManager } from './SocialSharingManager.js';''
-import { LeaderboardManager } from './LeaderboardManager.js';
+import { PlayerData  } from './PlayerData.js';''
+import { BubbleManager  } from '../managers/BubbleManager.js';''
+import { ScoreManager  } from '../managers/ScoreManager.js';''
+import { StageManager  } from './StageManager.js';''
+import { SceneManager  } from './SceneManager.js';''
+import { ItemManager  } from './ItemManager.js';''
+import { SettingsManager  } from './SettingsManager.js';''
+// import { getLocalizationManager  } from './LocalizationManager.js';''
+import { CoreKeyboardShortcutManager  } from './KeyboardShortcutManager.js';''
+import { AchievementManager  } from './AchievementManager.js';''
+// import { AchievementEventIntegrator  } from './AchievementEventIntegrator.js';''
+// import { AchievementNotificationSystem  } from './achievements/AchievementNotificationSystem.js';''
+import { StatisticsManager  } from './StatisticsManager.js';''
+// import { EventStageManager  } from './EventStageManager.js';''
+// import { ChallengeSystem  } from './ChallengeSystem.js';''
+// import { DailyChallengeManager  } from './DailyChallengeManager.js';''
+// import { WeeklyChallengeManager  } from './WeeklyChallengeManager.js';''
+import { AudioManager  } from '../audio/AudioManager.js';''
+import { ParticleManager  } from '../effects/ParticleManager.js';''
+import { EffectManager  } from '../effects/EffectManager.js';''
+import { EnhancedParticleManager  } from '../effects/EnhancedParticleManager.js';''
+import { EnhancedEffectManager  } from '../effects/EnhancedEffectManager.js';''
+// import { getSeasonalEffectManager  } from '../effects/SeasonalEffectManager.js';''
+// import { getEffectQualityController  } from '../effects/EffectQualityController.js';''
+// import { getEffectPerformanceMonitor  } from '../effects/EffectPerformanceMonitor.js';''
+// import { getEffectConfigurationIntegrator  } from '../effects/EffectConfigurationIntegrator.js';''
+// import { getAudioVisualSynchronizer  } from '../effects/AudioVisualSynchronizer.js';''
+// import { getPoolManager  } from '../utils/ObjectPool.js';''
+import { RenderOptimizer, PerformanceMonitor  } from '../utils/RenderOptimizer.js';''
+import { getMemoryManager  } from '../utils/MemoryManager.js';''
+import { getPerformanceOptimizer  } from '../utils/PerformanceOptimizer.js';''
+// import { getBrowserCompatibility  } from '../utils/BrowserCompatibility.js';''
+import { ResponsiveCanvasManager  } from '../utils/ResponsiveCanvasManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from './ConfigurationManager.js';''
+import { getCalculationEngine  } from './CalculationEngine.js';''
+// import { EffectDebugInterface  } from '../effects/EffectDebugInterface.js';''
+import { EnhancedDebugInterface  } from '../debug/EnhancedDebugInterface.js';''
+// import { EffectProfiler  } from '../effects/EffectProfiler.js';''
+// import { EffectOptimizationAdvisor  } from '../effects/EffectOptimizationAdvisor.js';''
+// import { EffectPerformanceOptimizer  } from '../effects/EffectPerformanceOptimizer.js';''
+// import { EffectErrorHandler  } from '../effects/EffectErrorHandler.js';''
+// import { VisualPolishEnhancements  } from '../effects/VisualPolishEnhancements.js';''
+// import { AnimationManager  } from '../effects/AnimationManager.js';''
+// import { getHelpManager  } from './help/HelpManager.js';''
+// import { getSEOMonitor  } from '../seo/SEOMonitor.js';''
+import { SocialSharingManager  } from './SocialSharingManager.js';''
+import { LeaderboardManager  } from './LeaderboardManager.js';
 ';
 // サブコンポーネントのインポート
-import { GameEngineInitializer } from './game-engine/GameEngineInitializer.js';''
-import { GameEngineEventManager } from './game-engine/GameEngineEventManager.js';''
-import { GameEngineRenderer } from './game-engine/GameEngineRenderer.js';''
-import { GameEngineUtilities } from './game-engine/GameEngineUtilities.js';
+import { GameEngineInitializer  } from './game-engine/GameEngineInitializer.js';''
+import { GameEngineEventManager  } from './game-engine/GameEngineEventManager.js';''
+import { GameEngineRenderer  } from './game-engine/GameEngineRenderer.js';''
+import { GameEngineUtilities  } from './game-engine/GameEngineUtilities.js';
 
 // Type definitions - GameEngineConfig removed (unused)
 ;
@@ -59,13 +59,13 @@ interface GameStats { fps: number,
     frameTime: number;
     entities: number;
     particles: number;
-    memoryUsage: number ,}
+   , memoryUsage: number ,}
 
 interface GameState { isRunning: boolean;
     isPaused: boolean;
     currentScene?: string;
     elapsedTime: number;
-    frameCount: number }
+   , frameCount: number }
 
 type EventListenerCallback = (...args: any[]) => void;
 
@@ -82,7 +82,7 @@ export class GameEngine {
     private frameCount: number;
     private elapsedTime: number;
     // Event system
-    private eventListeners: Map<string, Set<EventListenerCallback>>;
+    private, eventListeners: Map<string, Set<EventListenerCallback>>;
     
     // Sub-components
     private initializer!: GameEngineInitializer;
@@ -163,7 +163,7 @@ export class GameEngine {
             this.gameState = { isRunning: false,
                 isPaused: false;
                 elapsedTime: 0;
-                frameCount: 0 ,};
+               , frameCount: 0 ,};
             ;
             // サブコンポーネントの初期化
             console.log('[DEBUG] GameEngine: サブコンポーネント初期化開始),
@@ -279,7 +279,7 @@ export class GameEngine {
      */''
     private _initializeAudioAndEffects()';
                 quality: 'medium' as const);
-                getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25 ,}),
+               , getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25 ,}),
                 getReverbConfig: () => ({ duration: 2, decay: 2, reverse: false ,}),
                 isCompressionEnabled: () => false;
                 isReverbEnabled: () => false;
@@ -314,8 +314,7 @@ export class GameEngine {
             this.performanceMonitor = new PerformanceMonitor();
 
             // Debug interface(only, in development');''
-            if(process.env.NODE_ENV === 'development) {'
-                ';
+            if(process.env.NODE_ENV === 'development) {', ';
 
             }
 
@@ -491,8 +490,7 @@ export class GameEngine {
             if (this.sceneManager) this.sceneManager.update(deltaTime);
             ';
             // Update performance systems
-            if(this.memoryManager && 'update' in, this.memoryManager && typeof, this.memoryManager.update === 'function) {'
-                ';
+            if(this.memoryManager && 'update' in, this.memoryManager && typeof, this.memoryManager.update === 'function) {', ';
 
             }
 
@@ -564,7 +562,7 @@ export class GameEngine {
         
         return { fps: Math.round(fps)
             frameTime: this.lastTime);
-            entities: (this.bubbleManager? .bubbles?.length || 0, : undefined);
+           , entities: (this.bubbleManager? .bubbles?.length || 0, : undefined);
             particles: (this.particleManager? .getParticles?.()?.length || 0, : undefined };
             memoryUsage: this.memoryManager? .getStats?.()?.currentMemoryPressure || 0 }
         }

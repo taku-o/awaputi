@@ -13,26 +13,26 @@ interface GameEngine { // Game engine interface }
 interface AutocompleteSettings { maxSuggestions: number;
     fuzzyMatch: boolean;
     contextAware: boolean;
-    learningEnabled: boolean }
+   , learningEnabled: boolean }
 
 interface Suggestion { text: string;
     type: 'command' | 'recent' | 'popular';
     description: string;
     score: number;
-    usage: number }
+   , usage: number }
 
 interface ExecutionHistoryEntry { command: string;
     args: any[];
     success: boolean;
-    timestamp: number }
+   , timestamp: number }
 
 export class EnhancedAutocompleteEngine {
     private console: Console;
     private gameEngine: GameEngine;
     private settings: AutocompleteSettings;
-    private usageStats: Map<string, number>;
+    private, usageStats: Map<string, number>;
     private executionHistory: ExecutionHistoryEntry[];
-    private maxHistorySize: number;
+    private, maxHistorySize: number;
     constructor(console: Console, gameEngine: GameEngine) {
 
         this.console = console;
@@ -40,7 +40,7 @@ export class EnhancedAutocompleteEngine {
         this.settings = {
             maxSuggestions: 10;
             fuzzyMatch: true;
-            contextAware: true;
+           , contextAware: true;
     ,}
             learningEnabled: true }
         };
@@ -90,7 +90,7 @@ export class EnhancedAutocompleteEngine {
                     text: command,)';
                     type: 'command',);
                     description: data.description);
-                    score: 900 - (command.length - input.length);
+                   , score: 900 - (command.length - input.length);
         ,}
                     usage: this.getUsageCount(command); }
                 });
@@ -114,7 +114,7 @@ export class EnhancedAutocompleteEngine {
                 matches.push({'
                     text: command,)';
                     type: 'command');
-                    description: data.description,);
+                   , description: data.description,);
                     score: 700);
         ,}
                     usage: this.getUsageCount(command); }
@@ -136,7 +136,7 @@ export class EnhancedAutocompleteEngine {
                 type: 'recent' as const,
                 description: 'Recently used';
                 score: 1000 - index * 10);
-                usage: this.getUsageCount(entry.command) ,}
+               , usage: this.getUsageCount(entry.command) ,}
             });
         
         return this.deduplicateAndSort(recentCommands);

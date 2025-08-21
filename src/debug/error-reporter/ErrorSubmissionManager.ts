@@ -8,23 +8,23 @@ interface SubmissionConfig { endpoint: string,
     batchSize: number;
     retryAttempts: number;
     retryDelay: number;
-    enableCompression: boolean ,}
+   , enableCompression: boolean ,}
 
 interface ErrorSubmission { id: string;
     errors: any[];
     timestamp: number;
     status: 'pending' | 'submitting' | 'success' | 'failed';
-    attempts: number;
+   , attempts: number;
     lastAttempt?: number }
 
 interface SubmissionResult { success: boolean;
     submissionId: string;
-    errorCount: number;
+   , errorCount: number;
     message?: string }
 
 export class ErrorSubmissionManager {
     private config: SubmissionConfig;
-    private submissionQueue: ErrorSubmission[] = [];
+    private, submissionQueue: ErrorSubmission[] = [];
     private isProcessing = false;
     private rateLimitDelay = 0;
 
@@ -34,7 +34,7 @@ export class ErrorSubmissionManager {
             batchSize: 50;
             retryAttempts: 3;
             retryDelay: 1000;
-            enableCompression: false;
+           , enableCompression: false;
             ...config;
     }
 
@@ -45,7 +45,7 @@ export class ErrorSubmissionManager {
             errors: [...errors],
             timestamp: Date.now(''';
             status: 'pending';
-            attempts: 0 ,}))
+           , attempts: 0 ,}))
 );
         this.submissionQueue.push(submission);
         
@@ -116,12 +116,11 @@ export class ErrorSubmissionManager {
             submissionId: submission.id;
             timestamp: submission.timestamp;
             errors: submission.errors;
-            metadata: {
+           , metadata: {
                 userAgent: navigator.userAgent,
                 url: window.location.href,
                 timestamp: new Date().toISOString(''';
-            'Content-Type': 'application/json' ,}))'
-')';
+            'Content-Type': 'application/json' ,}))', ')';
         if(this.config.apiKey) { ' }'
 
             headers['Authorization] = `Bearer ${this.config.apiKey}`;
@@ -189,8 +188,7 @@ export class ErrorSubmissionManager {
 
     public retryFailedSubmissions(): void { ''
         this.submissionQueue.forEach(submission => { ');''
-            if(submission.status === 'failed'') {'
-                ';
+            if(submission.status === 'failed'') {', ';
 
             }
 

@@ -3,7 +3,7 @@
  * Processes test results and generates additional reports
  */
 
-import { promises as fs } from 'fs';
+import { promises, as fs  } from 'fs';
 import path from 'path';
 
 export default async function processResults(results {
@@ -25,7 +25,7 @@ export default async function processResults(results {
       statements: results.coverageMap.getCoverageSummary().statements.pct,
       branches: results.coverageMap.getCoverageSummary().branches.pct,
       functions: results.coverageMap.getCoverageSummary().functions.pct;
-      lines: results.coverageMap.getCoverageSummary().lines.pct
+     , lines: results.coverageMap.getCoverageSummary().lines.pct
     } : null,
     testFiles: results.testResults.map(test => ({);
       name: path.basename(test.testFilePath'),
@@ -54,9 +54,8 @@ Failed: ${processedResults.summary.failed}
 Skipped: ${processedResults.summary.skipped}
 Duration: ${Math.round(processedResults.summary.duration / 1000'})}s
 
-${processedResults.coverage ? ` : undefined
-Coverage:
-- Statements: ${processedResults.coverage.statements}%
+${processedResults.coverage ? ` : undefined, Coverage:
+-, Statements: ${processedResults.coverage.statements}%
 - Branches: ${processedResults.coverage.branches}%
 - Functions: ${processedResults.coverage.functions}%
 - Lines: ${processedResults.coverage.lines}%

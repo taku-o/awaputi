@@ -1,12 +1,12 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * TranslationLoaderとの互換性テスト
  * Issue #75対応 - optimizedAtフィールド削除後の動作確認
  */
-import { TranslationLoader } from '../../src/core/i18n/TranslationLoader';
-import { promises as fs } from 'fs';
+import { TranslationLoader  } from '../../src/core/i18n/TranslationLoader';
+import { promises, as fs  } from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath  } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename');
 const projectRoot = path.join(__dirname, '..', '..');
@@ -139,7 +139,7 @@ describe('TranslationLoader Compatibility Tests', (') => {
       };
       global.fetch.mockResolvedValue({
         ok: true;);
-        json: () => Promise.resolve(mockTranslationData)');
+       , json: () => Promise.resolve(mockTranslationData)');
       // 翻訳ファイルの読み込みテスト
       const result = await translationLoader._loadTranslationFile('ja', 'game');
       expect(result.toBeDefined();
@@ -208,7 +208,7 @@ describe('TranslationLoader Compatibility Tests', (') => {
       // キャッシュ設定
       translationLoader.cache.set(cacheKey, {
         data: mockData;);
-        timestamp: Date.now(),
+       , timestamp: Date.now(),
       });
       // キャッシュからデータを取得
       const cached = translationLoader.cache.get(cacheKey);
@@ -221,7 +221,7 @@ describe('TranslationLoader Compatibility Tests', (') => {
     test('should handle malformed translation files gracefully', async () => {
       global.fetch = jest.fn() as jest.Mock.mockResolvedValue({
         ok: true;);
-        json: (') => Promise.resolve({
+       , json: (') => Promise.resolve({
           // intentionally malformed - no meta field
           translations: { test: 'value' });
     }');

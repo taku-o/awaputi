@@ -11,25 +11,25 @@ interface CoreWebVitals { timestamp: number,
     fid: number | null;
     cls: number | null;
     fcp: number | null;
-    ttfb: number | null;
+   , ttfb: number | null;
     LCP?: number;
     FID?: number;
     CLS?: number; ,}
 
 interface LighthouseScore { timestamp: number,
     score: number;
-    details: SEOScoreDetails
+   , details: SEOScoreDetails
     ,}
 
 interface MonitoringData { coreWebVitals: CoreWebVitals[];
     lighthouseScores: LighthouseScore[];
-    searchConsoleMetrics: any[] }
+   , searchConsoleMetrics: any[] }
 
 interface SEOScoreDetails { metaTags: Record<string, string>;
     structuredData: StructuredDataResult[];
     images: ImageAnalysis;
     performance: PerformanceMetrics;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface StructuredDataResult { valid: boolean;
     type?: string;
@@ -38,7 +38,7 @@ interface StructuredDataResult { valid: boolean;
 
 interface ImageAnalysis { total: number,
     withAlt: number;
-    withoutAlt: number ,}
+   , withoutAlt: number ,}
 
 interface PerformanceMetrics { domContentLoaded?: number;
     loadComplete?: number;
@@ -49,12 +49,12 @@ interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart:
     loadEventStart: number;
     loadEventEnd: number;
     requestStart: number;
-    responseStart: number ,}
+   , responseStart: number ,}
 
 export class SEOMonitoringEngine {
     private config: SEOConfig;
     private monitoringData: MonitoringData;
-    private observerInstances: PerformanceObserver[];
+    private, observerInstances: PerformanceObserver[];
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
         this.config = config;
@@ -149,7 +149,7 @@ export class SEOMonitoringEngine {
     /**
      * Lighthouseスコアのチェック
      */
-    async checkLighthouseScore(): Promise<{ performance: number; accessibility: number; bestPractices: number; seo: number; timestamp: string } | null> { try {
+    async checkLighthouseScore(): Promise<{ performance: number; accessibility: number; bestPractices: number; seo: number;, timestamp: string } | null> { try {
             const score = {
                 performance: this.generateRealisticScore(85, 100),
                 accessibility: this.generateRealisticScore(88, 100),
@@ -166,7 +166,7 @@ export class SEOMonitoringEngine {
     /**
      * Core Web Vitalsのチェック
      */
-    async checkCoreWebVitals(): Promise<{ LCP: number; FID: number; CLS: number; timestamp: string ,} | null> { try {
+    async checkCoreWebVitals(): Promise<{ LCP: number; FID: number; CLS: number;, timestamp: string ,} | null> { try {
             const vitals = {
                 LCP: this.generateRealisticMetric(1000, 3000),
                 FID: this.generateRealisticMetric(10, 150),
@@ -214,7 +214,7 @@ export class SEOMonitoringEngine {
             this.monitoringData.lighthouseScores.push({ );
                 timestamp: Date.now();
                 score: seoScore;
-                details: await this.getSEOScoreDetails(), });
+               , details: await this.getSEOScoreDetails(), });
 
             if (this.monitoringData.lighthouseScores.length > 100) { this.monitoringData.lighthouseScores = this.monitoringData.lighthouseScores.slice(-100); }
 ';
@@ -337,7 +337,7 @@ export class SEOMonitoringEngine {
     private async getSEOScoreDetails(): Promise<SEOScoreDetails> { return { metaTags: this.analyzeMetaTags();
             structuredData: this.validateStructuredData();
             images: this.analyzeImages();
-            performance: await this.getPerformanceMetrics(), };
+           , performance: await this.getPerformanceMetrics(), };
             timestamp: Date.now(); }
         }
     

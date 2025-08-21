@@ -9,7 +9,7 @@ interface PerformanceConfig { enableCache: boolean,
     cacheSize: number;
     cacheTTL: number; // キャッシュ有効期限（ミリ秒）
     batchSize: number;
-    throttleDelay: number; // スロットル遅延（ミリ秒） ,}
+   , throttleDelay: number; // スロットル遅延（ミリ秒） ,}
 
 interface CacheEntry { value: any,
     timestamp: number ,}
@@ -18,15 +18,15 @@ interface PerformanceStats { cacheHits: number;
     cacheMisses: number;
     totalProcessed: number;
     averageProcessTime: number;
-    throttledEvents: number }
+   , throttledEvents: number }
 
 export class PerformanceOptimizer {
     private cache: Map<string, CacheEntry>;
     private config: PerformanceConfig;
-    private stats: PerformanceStats ,}
-    private eventQueue: Array<{ eventType: string; data: any; callback: Function }>;
+    private, stats: PerformanceStats ,}
+    private eventQueue: Array<{ eventType: string; data: any;, callback: Function }>;
     private isProcessing: boolean;
-    private throttleTimers: Map<string, NodeJS.Timeout>;
+    private, throttleTimers: Map<string, NodeJS.Timeout>;
 
     constructor() {
 
@@ -38,7 +38,7 @@ export class PerformanceOptimizer {
         this.config = {
             enableCache: true;
             cacheSize: 1000;
-            cacheTTL: 60000, // 1分;
+           , cacheTTL: 60000, // 1分;
             batchSize: 10;
     ,}
             throttleDelay: 100 // 100ms }
@@ -47,7 +47,7 @@ export class PerformanceOptimizer {
             cacheMisses: 0;
             totalProcessed: 0;
             averageProcessTime: 0;
-            throttledEvents: 0 ,}
+           , throttledEvents: 0 ,}
 
     /**
      * 初期化
@@ -161,7 +161,7 @@ export class PerformanceOptimizer {
             cacheMisses: 0;
             totalProcessed: 0;
             averageProcessTime: 0;
-            throttledEvents: 0 }
+           , throttledEvents: 0 }
 
     /**
      * 統計をロード

@@ -6,7 +6,7 @@
 // 型定義
 export interface LeaderboardManager { data: LeaderboardData,
     config: LeaderboardConfig;
-    clearRelevantCache: (leaderboardKey: string) => void ,}
+   , clearRelevantCache: (leaderboardKe;y: string) => void ,}
 }
 
 export interface LeaderboardData { leaderboards: Record<string, Leaderboard>,
@@ -22,7 +22,7 @@ export interface Leaderboard { entries: ScoreEntry[],
 
 export interface ScoreEntry { playerName: string;
     score: number;
-    timestamp: number;
+   , timestamp: number;
     stageId?: string;
     difficulty?: string;
     playTime?: number;
@@ -44,7 +44,7 @@ export interface PeriodLeaderboards { daily?: Record<string, PeriodLeaderboard>;
 
 export interface PeriodLeaderboard { entries: ScoreEntry[],
     startDate: Date;
-    endDate: Date;
+   , endDate: Date;
     metadata?: PeriodMetadata
     ,}
 
@@ -53,27 +53,27 @@ export interface PeriodMetadata { totalPlayers: number;
     averageScore: number;
     highestScore: number;
     period: PeriodType;
-    periodKey: string }
+   , periodKey: string }
 
 export interface LeaderboardMetadata { createdAt: number;
     updatedAt: number;
     totalEntries: number;
     highestScore: number;
     averageScore: number;
-    uniquePlayers: number }
+   , uniquePlayers: number }
 
 export interface SortCriteria { primary: SortField;
     secondary?: SortField;
-    order: SortOrder
+   , order: SortOrder
     }
 
 export interface SortField { field: string;
-    numeric: boolean }
+   , numeric: boolean }
 
 export interface LeaderboardStatistics { totalPlayers: number;
     totalScores: number;
     averageScore: number;
-    highestScore: number;
+   , highestScore: number;
     period?: PeriodType;
     periodKey?: string; }
 
@@ -82,38 +82,38 @@ export interface LeaderboardCache { rankings: Record<string, CachedRanking>,
     lastClearTime: number ,}
 
 export interface CachedRanking { data: ScoreEntry[];
-    timestamp: number;
+   , timestamp: number;
     period?: PeriodType
     }
 
 export interface CachedStatistics { data: LeaderboardStatistics;
-    timestamp: number;
+   , timestamp: number;
     period?: PeriodType
     }
 
 export interface DateKeyComponents { year: number;
-    month: number;
+   , month: number;
     day?: number;
     week?: number; }
 
 export interface PeriodRange { start: Date,
     end: Date;
     key: string;
-    period: PeriodType
+   , period: PeriodType
     ,}
 
 export interface RankingUpdateResult { success: boolean;
     updatedEntries: number;
     newRank?: number;
     previousRank?: number;
-    leaderboardKey: string }
+   , leaderboardKey: string }
 
 export interface BinarySearchResult { found: boolean;
     index: number;
-    exactMatch: boolean }
+   , exactMatch: boolean }
 
 export interface PeriodCalculationParams { date: Date;
-    period: PeriodType;
+   , period: PeriodType;
     weekStartDay?: WeekStartDay
     }
 
@@ -132,7 +132,7 @@ export const DEFAULT_WEEK_START_DAY: WeekStartDay = 0; // Sunday
 export const DEFAULT_RANKING_LIMIT = 10;
 export const CACHE_EXPIRY_TIME = 300000; // 5 minutes
 
-export const PERIOD_TYPES: PeriodType[] = ['daily', 'weekly', 'monthly', 'yearly'];
+export const, PERIOD_TYPES: PeriodType[] = ['daily', 'weekly', 'monthly', 'yearly'];
 ';
 
 export const DEFAULT_SORT_CRITERIA: SortCriteria = { ' }'
@@ -173,8 +173,7 @@ export function formatDateKey(date: Date, period: PeriodType, weekStartDay: Week
     const month = String(date.getMonth() + 1').padStart(2, '0);''
     const day = String(date.getDate()).padStart(2, '0);
 
-    switch(period) {'
-        ';
+    switch(period) {', ';
 
     }
 
@@ -220,12 +219,12 @@ export function parseDateKey(key: string, period: PeriodType): Date | null { try
 
 export function createDefaultLeaderboard(): Leaderboard { return { entries: [],
         lastUpdated: Date.now();
-        metadata: {
+       , metadata: {
             createdAt: Date.now();
             updatedAt: Date.now();
             totalEntries: 0;
             highestScore: 0;
-            averageScore: 0, };
+           , averageScore: 0, };
             uniquePlayers: 0 }
 }
 
@@ -341,7 +340,7 @@ export class LeaderboardRankingManager {
 
             data.periodLeaderboards[period]![key] = {
                 entries: [];
-                startDate: this.getPeriodStartDate(key, period) || new Date(),
+               , startDate: this.getPeriodStartDate(key, period) || new Date(),
 
         }
                 endDate: this.getPeriodEndDate(key, period) || new Date(); }
@@ -381,7 +380,7 @@ export class LeaderboardRankingManager {
         return entries.map((entry, index) => ({ ...entry,
             rank: index + 1;
             period: period);
-            periodKey: currentKey ,});
+           , periodKey: currentKey ,});
     }
 
     /**
@@ -571,7 +570,7 @@ export class LeaderboardRankingManager {
                 totalEntries: 0;
                 highestScore: 0;
                 averageScore: 0;
-                uniquePlayers: 0 }
+               , uniquePlayers: 0 }
 
         const entries = leaderboard.entries;
         const scores = entries.map(entry => entry.score);
@@ -589,7 +588,7 @@ export class LeaderboardRankingManager {
     private createEmptyStats(period: PeriodType): LeaderboardStatistics { return { totalPlayers: 0,
             totalScores: 0;
             averageScore: 0;
-            highestScore: 0, };
+           , highestScore: 0, };
             period: period }
         }
 
@@ -616,7 +615,7 @@ export class LeaderboardRankingManager {
 
         return { totalPlayers: uniquePlayers,
             totalScores: entries.length;
-            averageScore: calculateAverageScore(scores),' };
+           , averageScore: calculateAverageScore(scores),' };
 
             highestScore: entries.length > 0 ? Math.max(...scores) : 0 
         }''

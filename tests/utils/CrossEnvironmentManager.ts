@@ -3,7 +3,7 @@
  * Provides environment detection, API validation, and fallback implementations
  */
 
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 
 export class CrossEnvironmentManager {
   constructor() {
@@ -115,7 +115,7 @@ export class CrossEnvironmentManager {
             clearRect: jest.fn(),
             drawImage: jest.fn(),
             getImageData: jest.fn(() => ({ data: new Uint8ClampedArray(4)));
-            putImageData: jest.fn(),
+           , putImageData: jest.fn(),
             measureText: jest.fn(() => ({ width: 100 ))),
             save: jest.fn(),
             restore: jest.fn(),
@@ -577,7 +577,7 @@ export class CrossEnvironmentManager {
         Promise.resolve({
           ok: true,
           status: 200;);
-          json: () => Promise.resolve({);
+         , json: () => Promise.resolve({);
           text: (') => Promise.resolve('');
           blob: () => Promise.resolve(new Blob(),
           arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)
@@ -665,7 +665,7 @@ export class CrossEnvironmentManager {
       createElement: typeof document? .createElement === 'function'; : undefined
       querySelector: typeof document? .querySelector === 'function'; : undefined
       getElementById: typeof document? .getElementById === 'function'; : undefined
-      addEventListener: typeof document? .addEventListener === 'function'
+     , addEventListener: typeof document? .addEventListener === 'function'
     };
 
     this.apiCompatibility.set('dom_apis', validationResults);

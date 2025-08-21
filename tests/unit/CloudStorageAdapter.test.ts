@@ -1,5 +1,5 @@
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { CloudStorageAdapter, createCloudStorageAdapter } from '../../src/core/CloudStorageAdapter.js';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { CloudStorageAdapter, createCloudStorageAdapter  } from '../../src/core/CloudStorageAdapter.js';
 // Configuration interface
 interface CloudStorageConfig {
     provider: string,
@@ -22,9 +22,9 @@ interface Credentials {
 }
 // Mock localStorage interface
 interface MockLocalStorage {
-    getItem: jest.MockedFunction<(key: string) => string | null>;
-    setItem: jest.MockedFunction<(key: string, value: string) => void>,
-    removeItem: jest.MockedFunction<(key: string) => void>;
+    getItem: jest.MockedFunction<(ke;y: string) => string | null>;
+    setItem: jest.MockedFunction<(ke;y: string, value: string) => void>,
+    removeItem: jest.MockedFunction<(ke;y: string) => void>;
 }
 // Mock fetch response interface
 interface MockResponse {
@@ -129,7 +129,7 @@ describe('CloudStorageAdapter', () => {
             
             mockFetch.mockResolvedValueOnce({
                 ok: true;);
-                json: () => Promise.resolve(mockResponse);
+               , json: () => Promise.resolve(mockResponse);
             } as MockResponse');
             const credentials: Credentials = {
                 username: 'test',
@@ -156,7 +156,7 @@ describe('CloudStorageAdapter', () => {
             
             mockFetch.mockResolvedValueOnce({
                 ok: true;);
-                json: () => Promise.resolve({ success: true });
+               , json: () => Promise.resolve({ success: true });
             } as MockResponse');
             const result = await adapter.set('testKey', testData);
             expect(result).toBe(true);
@@ -174,7 +174,7 @@ describe('CloudStorageAdapter', () => {
             
             mockFetch.mockResolvedValueOnce({
                 ok: true;);
-                json: () => Promise.resolve({ data: testData });
+               , json: () => Promise.resolve({ data: testData });
             } as MockResponse');
             const result = await adapter.get('testKey');
             expect(result).toEqual(testData);
@@ -192,7 +192,7 @@ describe('CloudStorageAdapter', () => {
         test('データ削除が正常に実行される', async () => {
             mockFetch.mockResolvedValueOnce({
                 ok: true;);
-                json: () => Promise.resolve({ success: true });
+               , json: () => Promise.resolve({ success: true });
             } as MockResponse');
             const result = await adapter.remove('testKey');
             expect(result).toBe(true);
@@ -227,11 +227,11 @@ describe('CloudStorageAdapter', () => {
             mockFetch
                 .mockResolvedValueOnce({
                     ok: true;);
-                    json: () => Promise.resolve({ success: true });
+                   , json: () => Promise.resolve({ success: true });
                 } as MockResponse)
                 .mockResolvedValueOnce({
                     ok: true;);
-                    json: () => Promise.resolve({ success: true });
+                   , json: () => Promise.resolve({ success: true });
                 } as MockResponse');
             // 認証済み状態でオンライン復帰をシミュレート
             adapter.authToken = 'test-token';
@@ -250,7 +250,7 @@ describe('CloudStorageAdapter', () => {
             mockFetch
                 .mockResolvedValue({
                     ok: true;);
-                    json: () => Promise.resolve({ success: true });
+                   , json: () => Promise.resolve({ success: true });
                 } as MockResponse');
             const result = await adapter.setChunked('largeKey', largeData);
             expect(result).toBe(true);
@@ -261,7 +261,7 @@ describe('CloudStorageAdapter', () => {
         test('正常な接続でテストが成功する', async () => {
             mockFetch.mockResolvedValueOnce({
                 ok: true;);
-                json: (') => Promise.resolve({ status: 'ok' });
+               , json: (') => Promise.resolve({ status: 'ok' });
             } as MockResponse);
             const result = await adapter.testConnection();
             expect(result).toBe(true);
@@ -269,8 +269,8 @@ describe('CloudStorageAdapter', () => {
         test('接続失敗でエラーが発生する', async () => {
             mockFetch.mockResolvedValueOnce({
                 ok: true;);
-                json: (') => Promise.resolve({ status: 'error';
-        message: 'Service unavailable' });
+               , json: (') => Promise.resolve({ status: 'error';
+       , message: 'Service unavailable' });
     });
             } as MockResponse);
             await expect(adapter.testConnection()').rejects.toThrow('Connection test failed');

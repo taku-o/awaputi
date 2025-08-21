@@ -12,21 +12,21 @@ interface DeviceConfig { devices: string[],
 
 interface ScreenInfo { width: number;
     height: number;
-    pixelRatio: number }
+   , pixelRatio: number }
 
 interface CurrentDevice { name: string;
     screen: ScreenInfo;
     userAgent: string;
     orientation: 'portrait' | 'landscape';
-    battery: {
-        level: number;
-        charging: boolean };
+   , battery: {
+        leve;l: number;
+       , charging: boolean };
     connection: { type: string;
-        effectiveType: string }
+       , effectiveType: string }
 
 interface SimulationState { isActive: boolean,
     mocksApplied: boolean;
-    originalValues: Map<string, any>;
+   , originalValues: Map<string, any>;
     activeListeners: Map<string, any> }
 
 interface TouchPoint { identifier: number,
@@ -36,40 +36,40 @@ interface TouchPoint { identifier: number,
     pageY: number;
     screenX: number;
     screenY: number;
-    target: Element
+   , target: Element
     ,}
 
 interface DeviceInfo { userAgent: string;
     screen: ScreenInfo;
-    pixelRatio: number }
+   , pixelRatio: number }
 
-interface DeviceUtils { createTouchEvent: (type: string, touches: TouchPoint[]) => Event;
-    createTouch: (x: number, y: number, id?: number) => TouchPoint;
-    createDeviceInfo: (device: string) => DeviceInfo;
-    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
-    wait: (ms: number) => Promise<void>;
-    randomDelay: (min: number, max: number) => Promise<void> ,}
+interface DeviceUtils { createTouchEvent: (typ;e: string, touches: TouchPoint[]) => Event;
+    createTouch: (;x: number, y: number, id?: number) => TouchPoint;
+    createDeviceInfo: (devic;e: string) => DeviceInfo;
+    measurePerformance: (testFunctio;n: () => Promise<void>) => Promise<number>;
+    wait: (m;s: number) => Promise<void>;
+    randomDelay: (mi;n: number, max: number) => Promise<void> ,}
 }
 
 interface MockedAPIs { vibrate: any,
     speechSynthesis: {
-        speak: any;
+        spea;k: any;
         cancel: any;
-        getVoices: any ,};
+       , getVoices: any ,};
     deviceMotion: any;
     deviceOrientation: any;
     getBattery: any;
-    serviceWorker: { register: any;
-        ready: Promise<any> };
+   , serviceWorker: { register: any;
+       , ready: Promise<any> };
     connection: { effectiveType: string;
         downlink: number;
         rtt: number;
-        saveData: boolean }
+       , saveData: boolean }
 
 interface DebugInfo { deviceConfig: DeviceConfig,
     currentDevice: CurrentDevice;
     simulationState: SimulationState;
-    mocksStatus: Record<string, boolean> }
+   , mocksStatus: Record<string, boolean> }
 
 export class MobileDeviceSimulator {
     private mobileTestSuite: any; // MobileTestSuite type would create circular dependency
@@ -77,7 +77,7 @@ export class MobileDeviceSimulator {
     private currentDevice: CurrentDevice;
     private simulationState: SimulationState;
     private mocks: MockedAPIs;
-    public utils: DeviceUtils,
+    public, utils: DeviceUtils,
 
     constructor(mobileTestSuite: any) {
         this.mobileTestSuite = mobileTestSuite;
@@ -110,28 +110,28 @@ export class MobileDeviceSimulator {
         // シミュレーション状態
         this.simulationState = { isActive: false,
             mocksApplied: false;
-            originalValues: new Map<string, any>(),
+           , originalValues: new Map<string, any>(),
             activeListeners: new Map<string, any>( };
         
         // モック設定
         this.mocks = { // 振動API, vibrate: jest.fn();
             // 音声合成API
-            speechSynthesis: {
+           , speechSynthesis: {
                 speak: jest.fn();
                 cancel: jest.fn();
-                getVoices: jest.fn(() => []) }
+               , getVoices: jest.fn(() => []) }
             };
             // デバイス API
             deviceMotion: jest.fn();
             deviceOrientation: jest.fn();
             // バッテリー API
-            getBattery: jest.fn(() => Promise.resolve({ level: 0.8)
+           , getBattery: jest.fn(() => Promise.resolve({ level: 0.8)
                 charging: false);
                 chargingTime: Infinity;
     );
                 dischargingTime: 28800)));
             // PWA API
-            serviceWorker: {
+           , serviceWorker: {
                 register: jest.fn(() => Promise.resolve();
                 ready: Promise.resolve({), }
                     active: { postMessage: jest.fn( }''
@@ -143,7 +143,7 @@ export class MobileDeviceSimulator {
                 effectiveType: '4g';
                 downlink: 10;
                 rtt: 50;
-                saveData: false }
+               , saveData: false }
         };
         // ユーティリティ設定
         this.utils = {} as DeviceUtils;
@@ -179,11 +179,11 @@ export class MobileDeviceSimulator {
                 pageY: y;
                 screenX: x;
                 screenY: y);
-                target: this.mobileTestSuite.testContainer || document.body ,});
+               , target: this.mobileTestSuite.testContainer || document.body ,});
             // デバイス情報生成
             createDeviceInfo: (device: string): DeviceInfo => ({ userAgent: this.getDeviceUserAgent(device);
                 screen: this.getDeviceScreen(device);
-                pixelRatio: this.getDevicePixelRatio(device });
+               , pixelRatio: this.getDevicePixelRatio(device });
             // パフォーマンス測定
             measurePerformance: async (testFunction: () => Promise<void>): Promise<number> => {  const start = performance.now();
                 await testFunction();
@@ -280,30 +280,30 @@ export class MobileDeviceSimulator {
      */''
     private applyCustomProperties()';
         Object.defineProperty(navigator, 'userAgent', { value: this.currentDevice.userAgent)'
-            writable: false,')';
+           , writable: false,')';
             configurable: true)');
         ';
         // 画面サイズ設定
         Object.defineProperty(window, 'innerWidth', {)
             value: this.currentDevice.screen.width)';
-            writable: true,')';
+           , writable: true,')';
             configurable: true)'),
 
         Object.defineProperty(window, 'innerHeight', {)
             value: this.currentDevice.screen.height)';
-            writable: true,')';
+           , writable: true,')';
             configurable: true)');
         ';
         // デバイスピクセル比設定
         Object.defineProperty(window, 'devicePixelRatio', {)
             value: this.currentDevice.screen.pixelRatio)';
-            writable: true,')';
+           , writable: true,')';
             configurable: true)');
         ';
         // タッチサポート設定
         Object.defineProperty(navigator, 'maxTouchPoints', {)
             value: 10);
-            writable: false,);
+           , writable: false,);
             configurable: true ,}
     
     /**
@@ -393,8 +393,7 @@ export class MobileDeviceSimulator {
      */''
     private cleanupDeviceEnvironment()';
         const cssVars = this.simulationState.activeListeners.get('css-vars);
-        if(cssVars && cssVars.parentNode) {'
-            ';
+        if(cssVars && cssVars.parentNode) {', ';
 
         }
 
@@ -403,8 +402,7 @@ export class MobileDeviceSimulator {
         ';
         // イベントリスナー削除
         const orientationHandler = this.simulationState.activeListeners.get('orientation);''
-        if(orientationHandler) {'
-            ';
+        if(orientationHandler) {', ';
 
         }
 
@@ -500,16 +498,7 @@ export class MobileDeviceSimulator {
     /**
      * デバイスUser Agent取得'
      */''
-    getDeviceUserAgent(device: string): string { const userAgents: Record<string, string> = {''
-            'iPhone SE': 'Mozilla/5.0 (iPhone; CPU, iPhone OS, 15_0 like, Mac OS, X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',''
-            'iPhone 12': 'Mozilla/5.0 (iPhone; CPU, iPhone OS, 16_0 like, Mac OS, X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',''
-            'iPhone 14 Pro': 'Mozilla/5.0 (iPhone; CPU, iPhone OS, 17_0 like, Mac OS, X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',''
-            'Samsung Galaxy S21': 'Mozilla/5.0 (Linux; Android, 11; SM-G991B) AppleWebKit/537.36(KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36',''
-            'Samsung Galaxy Note 20': 'Mozilla/5.0 (Linux; Android, 10; SM-N981B) AppleWebKit/537.36(KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36',''
-            'iPad Air': 'Mozilla/5.0 (iPad; CPU, OS 15_0, like Mac, OS X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',''
-            'iPad Pro': 'Mozilla/5.0 (iPad; CPU, OS 16_0, like Mac, OS X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',''
-            'Pixel 6': 'Mozilla/5.0 (Linux; Android, 12; Pixel, 6) AppleWebKit/537.36(KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36',''
-            'OnePlus 9': 'Mozilla/5.0 (Linux; Android, 11; LE2115) AppleWebKit/537.36(KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36' }
+    getDeviceUserAgent(device: string): string { const userAgents: Record<string, string> = {'', 'iPhone SE': 'Mozilla/5.0 (iPhone; CPU, iPhone OS, 15_0 like, Mac OS, X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1','', 'iPhone 12': 'Mozilla/5.0 (iPhone; CPU, iPhone OS, 16_0 like, Mac OS, X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1','', 'iPhone 14 Pro': 'Mozilla/5.0 (iPhone; CPU, iPhone OS, 17_0 like, Mac OS, X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1','', 'Samsung Galaxy S21': 'Mozilla/5.0 (Linux; Android, 11; SM-G991B) AppleWebKit/537.36(KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36','', 'Samsung Galaxy Note 20': 'Mozilla/5.0 (Linux; Android, 10; SM-N981B) AppleWebKit/537.36(KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36','', 'iPad Air': 'Mozilla/5.0 (iPad; CPU, OS 15_0, like Mac, OS X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1','', 'iPad Pro': 'Mozilla/5.0 (iPad; CPU, OS 16_0, like Mac, OS X) AppleWebKit/605.1.15(KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1','', 'Pixel 6': 'Mozilla/5.0 (Linux; Android, 12; Pixel, 6) AppleWebKit/537.36(KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36','', 'OnePlus 9': 'Mozilla/5.0 (Linux; Android, 11; LE2115) AppleWebKit/537.36(KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36' }
 
         };''
         return userAgents[device] || userAgents['iPhone 12];
@@ -518,17 +507,7 @@ export class MobileDeviceSimulator {
     /**
      * デバイス画面サイズ取得'
      */''
-    getDeviceScreen(device: string): ScreenInfo { const screens: Record<string, ScreenInfo> = {' }'
-
-            'iPhone SE': { width: 375, height: 667, pixelRatio: 2 ,},''
-            'iPhone 12': { width: 390, height: 844, pixelRatio: 3 ,},''
-            'iPhone 14 Pro': { width: 393, height: 852, pixelRatio: 3 ,},''
-            'Samsung Galaxy S21': { width: 384, height: 854, pixelRatio: 2.75 ,},''
-            'Samsung Galaxy Note 20': { width: 412, height: 915, pixelRatio: 2.625 ,},''
-            'iPad Air': { width: 820, height: 1180, pixelRatio: 2 ,},''
-            'iPad Pro': { width: 1024, height: 1366, pixelRatio: 2 ,},''
-            'Pixel 6': { width: 412, height: 915, pixelRatio: 2.625 ,},''
-            'OnePlus 9': { width: 412, height: 919, pixelRatio: 2.625 ,}
+    getDeviceScreen(device: string): ScreenInfo { const screens: Record<string, ScreenInfo> = {' }', 'iPhone SE': { width: 375, height: 667, pixelRatio: 2 ,},'', 'iPhone 12': { width: 390, height: 844, pixelRatio: 3 ,},'', 'iPhone 14 Pro': { width: 393, height: 852, pixelRatio: 3 ,},'', 'Samsung Galaxy S21': { width: 384, height: 854, pixelRatio: 2.75 ,},'', 'Samsung Galaxy Note 20': { width: 412, height: 915, pixelRatio: 2.625 ,},'', 'iPad Air': { width: 820, height: 1180, pixelRatio: 2 ,},'', 'iPad Pro': { width: 1024, height: 1366, pixelRatio: 2 ,},'', 'Pixel 6': { width: 412, height: 915, pixelRatio: 2.625 ,},'', 'OnePlus 9': { width: 412, height: 919, pixelRatio: 2.625 ,}
 
         };''
         return screens[device] || screens['iPhone 12];
@@ -557,9 +536,9 @@ export class MobileDeviceSimulator {
     getSimulationState(): { isActive: boolean,
         currentDevice: string;
         mocksApplied: boolean;
-        activeListeners: number ,} { return { isActive: this.simulationState.isActive;
+       , activeListeners: number ,} { return { isActive: this.simulationState.isActive;
             currentDevice: this.currentDevice.name;
-            mocksApplied: this.simulationState.mocksApplied, };
+           , mocksApplied: this.simulationState.mocksApplied, };
             activeListeners: this.simulationState.activeListeners.size }
         }
     
@@ -568,7 +547,7 @@ export class MobileDeviceSimulator {
      */
     getDebugInfo(): DebugInfo { return { deviceConfig: this.deviceConfig,
             currentDevice: this.currentDevice;
-            simulationState: this.simulationState,
+           , simulationState: this.simulationState,
             mocksStatus: Object.keys(this.mocks).reduce((status: Record<string, boolean>, key: string) => { ' ,}'
 
                 status[key] = typeof(navigator, as any)[key] !== 'undefined'; };

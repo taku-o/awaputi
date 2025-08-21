@@ -4,7 +4,7 @@
  * 各種効果音のリアルタイム生成・バリエーション作成を担当
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * プロシージャル音響生成クラス
@@ -13,11 +13,11 @@ export class ProceduralSoundGenerator {
     // プロパティ宣言
     isInitialized: boolean;
     audioContext: any;
-    soundBuffers: Map<string, any>,
+   , soundBuffers: Map<string, any>,
     soundParams: any;
     isGenerating: boolean;
     generationProgress: number;
-    lastGenerationTime: number;
+   , lastGenerationTime: number;
     constructor() {
 
         // 初期化状態

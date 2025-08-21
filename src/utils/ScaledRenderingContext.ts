@@ -8,8 +8,8 @@ interface StateInfo { timestamp: number,
     scaleFactor: number ,}
 
 interface ScaledCoordinateManager {
-    getScaledPosition(baseX: number, baseY: number): { x: number; y: number ,}
-    getScaledSize(baseWidth: number, baseHeight: number): { width: number; height: number }
+    getScaledPosition(baseX: number, baseY: number): { ;x: number;, y: number ,}
+    getScaledSize(baseWidth: number, baseHeight: number): { width: number;, height: number }
     getScaleFactor(): number;
     getDebugInfo(): any;
 }
@@ -17,7 +17,7 @@ interface ScaledCoordinateManager {
 export class ScaledRenderingContext {
     private context: CanvasRenderingContext2D;
     private scaledCoordinateManager: ScaledCoordinateManager;
-    private stateStack: StateInfo[];
+    private, stateStack: StateInfo[];
     constructor(context: CanvasRenderingContext2D, scaledCoordinateManager: ScaledCoordinateManager) {
 
         this.context = context;
@@ -160,7 +160,7 @@ export class ScaledRenderingContext {
             // 追加の状態情報を保存
             this.stateStack.push({);
                 timestamp: Date.now();
-                scaleFactor: this.scaledCoordinateManager.getScaleFactor( });''
+               , scaleFactor: this.scaledCoordinateManager.getScaleFactor( });''
         } catch (error) { console.warn('ScaledRenderingContext: save failed', error }
     }
     

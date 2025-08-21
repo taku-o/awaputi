@@ -22,7 +22,7 @@ interface VisualNotificationOptions { type: string,
     message?: string;
     icon?: string;
     color?: string; ,}
-    position?: { x: number; y: number } | null;
+    position?: { x: number;, y: number } | null;
     duration?: number;
 }
 
@@ -37,9 +37,9 @@ interface AnnounceOptions { priority?: 'polite' | 'assertive';
 // Types for audio descriptions
 interface AudioDescription { category: string,
     type: string;
-    params: Record<string, any>;
+   , params: Record<string, any>;
     priority: number;
-    timestamp: number ,}
+   , timestamp: number ,}
 ;
 // Bubble types
 type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' | '';
@@ -52,7 +52,7 @@ type RarityType = 'common' | 'rare' | 'epic' | 'legendary';
 // Main controller interface
 interface MainController { errorHandler: any,
     settings: {
-        visualFeedback?: boolean;
+        visualFeedbac;k?: boolean;
         captioning?: boolean;
         audioDescriptions?: boolean; ,}
 
@@ -65,7 +65,7 @@ export class AudioDescriptionManager {
     private captionContainer: HTMLElement | null;
     private captionQueue: string[];
     private captionDuration: number;
-    private enabled: boolean;
+    private, enabled: boolean;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -75,7 +75,7 @@ export class AudioDescriptionManager {
         if (!this.mainController.settings) {
             this.mainController.settings = {
                 visualFeedback: true;
-                captioning: true;
+               , captioning: true;
     }
                 audioDescriptions: true }
             }
@@ -102,7 +102,7 @@ export class AudioDescriptionManager {
         this.notificationContainer.style.cssText = `;
             position: fixed;
             top: 10px;
-            left: 10px;
+           , left: 10px;
             z-index: 10000,
             pointer-events: none,
         `;''
@@ -121,11 +121,11 @@ export class AudioDescriptionManager {
         this.captionContainer.style.cssText = `;
             position: fixed;
             bottom: 80px;
-            left: 50%,
+           , left: 50%,
             transform: translateX(-50%),
             background-color: rgba(0, 0, 0, 0.8);
             color: #ffffff;
-            padding: 10px 20px;
+           , padding: 10px 20px;
             border-radius: 5px,
             font-size: 16px,
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -164,7 +164,7 @@ export class AudioDescriptionManager {
             background-color: rgba(0, 0, 0, 0.9);
             border: 2px solid ${color}
             border-radius: 8px;
-            padding: 10px 15px;
+           , padding: 10px 15px;
             margin-bottom: 10px,
             color: ${color}
 
@@ -178,11 +178,11 @@ export class AudioDescriptionManager {
         const content = document.createElement('div'');
 
         content.innerHTML = `'';
-            <div style="display: flex; align-items: center; gap: 10px;">""
+            <div style="display: flex; align-items: center;, gap: 10px;">""
                 <span style="font-size: 20px;">${icon}</span>"
                 <div>"";
                     <div style="font-weight: bold;">${title}</div>""
-                    ${message ? `<div style="font-size: 12px; opacity: 0.8;">${message}</div>` : ''}
+                    ${message ? `<div, style="font-size: 12px;, opacity: 0.8;">${message}</div>` : ''}
                 </div>;
             </div>';
         `;''
@@ -367,7 +367,7 @@ export class AudioDescriptionManager {
             this.notificationContainer.setAttribute('aria-live', priority);''
             const announceElement = document.createElement('div'');''
             announceElement.className = 'sr-only';''
-            announceElement.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;';
+            announceElement.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px;, overflow: hidden;';
             announceElement.textContent = text;
             this.notificationContainer.appendChild(announceElement);
             
@@ -384,7 +384,7 @@ export class AudioDescriptionManager {
             this.showVisualNotification({''
                 type: 'announcement',)';
                 title: 'アナウンス')';
-                message: text,
+               , message: text,
                 icon: '📢', }
                 ...options);
         }
@@ -398,7 +398,7 @@ export class AudioDescriptionManager {
             this.showCaption(text); }
         }
 
-        console.log('AudioDescriptionManager: Announced text:', text);
+        console.log('AudioDescriptionManager: Announced, text:', text);
     }
 
     /**
@@ -417,7 +417,7 @@ export class AudioDescriptionManager {
             params,
             priority,
             timestamp: Date.now()';
-        console.log('AudioDescriptionManager: Added description:', description);
+        console.log('AudioDescriptionManager: Added, description:', description);
         ';
         // 視覚的な説明を表示
         if(description.category === 'game' && description.type === 'bubblePop'') {'
@@ -433,7 +433,7 @@ export class AudioDescriptionManager {
      * ステータス取得
      * @returns ステータス情報
      */
-    public getStatus(): { enabled: boolean; activeDescriptions: number; initialized: boolean } { return { enabled: this.enabled || false,
+    public getStatus(): { enabled: boolean; activeDescriptions: number;, initialized: boolean } { return { enabled: this.enabled || false,
             activeDescriptions: 0, };
             initialized: true }
         }

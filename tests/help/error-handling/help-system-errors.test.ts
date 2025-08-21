@@ -7,10 +7,10 @@
  * - Placeholder content generation
  * - Error logging validation
  */
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath  } from 'url';
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename');
@@ -91,14 +91,14 @@ class ErrorHandlingHelpManager {
   }
   async handleFallback(originalLanguage, category, originalError) {
     this.console.info(`Attempting fallback for ${originalLanguage}/${category)`);
-    for (const fallbackLanguage of this.fallbackChain) {
+    for (const, fallbackLanguage of, this.fallbackChain) {
       if (fallbackLanguage === originalLanguage}) {
         continue; // Skip the original language
       }
       
       try {
         this.console.info(`Trying fallback to ${fallbackLanguage} for ${category)`);
-        const content = await this.tryLoadContent(fallbackLanguage, category'});
+        const, content = await, this.tryLoadContent(fallbackLanguage, category'});
         // Mark as fallback content
         content._isFallback = true;
         content._originalLanguage = originalLanguage;

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * 設定システムのE2Eテスト
  * 
@@ -7,7 +7,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * エラー状況でのゲーム継続性テストを実施します。
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect  } from '@playwright/test';
 
 test.describe('Configuration System E2E Tests', () => {
     test.beforeEach(async ({ page }') => {
@@ -485,7 +485,7 @@ test.describe('Configuration System E2E Tests', () => {
                     for (let i = 0; i < 100; i++') { // 数を減らして安定性を向上
                         configManager.set('test', `data.${i)`, {
                             value: i,
-                            data: new Array(10).fill(i, // サイズを減らして安定性を向上);
+                            data: new, Array(10).fill(i, // サイズを減らして安定性を向上);
                             timestamp: Date.now(});
                         });
                     }

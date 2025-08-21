@@ -2,9 +2,9 @@
  * Panel Manager Tests
  * PanelManager クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -16,8 +16,7 @@ const mockDebugInterface = { gameEngine: { }
     },'
     debugPanel: { ''
         querySelector: jest.fn((selector') => { ''
-            if(selector === '.debug-tabs'') {'
-                '';
+            if(selector === '.debug-tabs'') {', '';
                 const element = document.createElement('div'');'
             }'
                 element.className = 'debug-tabs'; }
@@ -114,8 +113,7 @@ describe('PanelManager', () => {  let panelManager: any,
             expect(hooks.beforeDestroy).toBeInstanceOf(Set as any); }'
             expect(hooks.destroyed).toBeInstanceOf(Set as any);' }'
         }');''
-        test('should load panel states from localStorage', (') => {  const savedStates = {' }'
-                'test-panel': { }
+        test('should load panel states from localStorage', (') => {  const savedStates = {' }', 'test-panel': { }
                     position: { x: 100, y: 200 },
                     size: { width: 400, height: 500 },
                     minimized: false;
@@ -301,8 +299,7 @@ describe('PanelManager', () => {  let panelManager: any,
         test('should save and restore panel state', (') => {  ''
             panelManager.showPanel('test'');''
             const panelInfo = panelManager.panels.get('test'');''
-            panelInfo.instance.state.data.testValue = 'test';'
-            '';
+            panelInfo.instance.state.data.testValue = 'test';', '';
             panelManager.savePanelState('test'');''
             const savedState = panelManager.panelStates.get('test');' }'
             expect(savedState.data.testValue').toBe('test'););' }'

@@ -7,12 +7,12 @@
  * - イベント伝播テスト
  */
 
-import { getErrorHandler } from '../../core/ErrorHandler.js';
+import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // Interfaces for keyboard event handling
 interface EventHandlerConfig { enabled: boolean,
     monitorEvents: boolean;
-    trackShortcuts: boolean ,}
+   , trackShortcuts: boolean ,}
 
 interface KeyCodes { TAB: number;
     ENTER: number;
@@ -37,7 +37,7 @@ interface KeyCodes { TAB: number;
     F9: number;
     F10: number;
     F11: number;
-    F12: number }
+   , F12: number }
 
 interface EventData { type: string;
     key?: string;
@@ -48,7 +48,7 @@ interface EventData { type: string;
     shiftKey?: boolean;
     metaKey?: boolean;
     target: EventTarget | null;
-    timestamp: number;
+   , timestamp: number;
     relatedTarget?: EventTarget | null }
 ';
 
@@ -56,30 +56,30 @@ interface NavigationData { ''
     type: 'tab-navigation';
     shiftKey: boolean;
     target: EventTarget | null;
-    timestamp: number }
+   , timestamp: number }
 ';
 
 interface EscapeData { ''
     type: 'escape-key';
     target: EventTarget | null;
-    timestamp: number }
+   , timestamp: number }
 ';
 
 interface ArrowData { ''
     type: 'arrow-key';
     key: string;
     target: EventTarget | null;
-    timestamp: number }
+   , timestamp: number }
 
 interface ShortcutData { shortcut: string;
     target: EventTarget | null;
     timestamp: number;
-    isBrowserShortcut: boolean }
+   , isBrowserShortcut: boolean }
 
-interface Monitoring { keydownListener: ((event: KeyboardEvent) => void) | null;
-    keyupListener: ((event: KeyboardEvent) => void) | null;
-    focusListener: ((event: FocusEvent) => void) | null,
-    blurListener: ((event: FocusEvent) => void) | null;''
+interface Monitoring { keydownListener: ((even;t: KeyboardEvent) => void) | null;
+    keyupListener: ((even;t: KeyboardEvent) => void) | null;
+    focusListener: ((even;t: FocusEvent) => void) | null,
+    blurListener: ((even;t: FocusEvent) => void) | null;''
     eventHistory: (EventData | NavigationData | EscapeData | ArrowData')[];
     shortcutHistory: ShortcutData[]
     ,}
@@ -87,7 +87,7 @@ interface Monitoring { keydownListener: ((event: KeyboardEvent) => void) | null;
 
 interface SimulationOptions { key: string;
     code: string;
-    keyCode: number;
+   , keyCode: number;
     ctrlKey?: boolean;
     altKey?: boolean;
     shiftKey?: boolean;
@@ -98,7 +98,7 @@ interface SimulationOptions { key: string;
 interface SimulationResult { keydown: boolean,
     keyup: boolean;
     element: Element;
-    options: SimulationOptions
+   , options: SimulationOptions
     ,}
 
 interface EventDetection { hasKeydownHandler: boolean;
@@ -106,7 +106,7 @@ interface EventDetection { hasKeydownHandler: boolean;
     hasKeypressHandler: boolean;
     hasAccessKey: boolean;
     hasTabIndex: boolean;
-    eventHandlers: string[];
+   , eventHandlers: string[];
     accessKey?: string;
     tabIndex?: string;
     hasInlineHandlers?: boolean; }
@@ -114,12 +114,12 @@ interface EventDetection { hasKeydownHandler: boolean;
 
 interface ValidationIssue { type: string,''
     severity: 'error' | 'warning';
-    message: string;
+   , message: string;
     suggestion?: string ,}
 
 interface ValidationResult { passed: boolean;
     issues: ValidationIssue[];
-    warnings: ValidationIssue[]
+   , warnings: ValidationIssue[]
     }
 
 interface EventStatistics { totalEvents: number;
@@ -127,19 +127,19 @@ interface EventStatistics { totalEvents: number;
     tabEvents: number;
     escapeEvents: number;
     shortcutEvents: number;
-    browserShortcutConflicts: number }
+   , browserShortcutConflicts: number }
 
 export class KeyboardEventHandler {
     private config: EventHandlerConfig;
     private keyCodes: KeyCodes;
-    private browserShortcuts: Record<string, string>;
+    private, browserShortcuts: Record<string, string>;
     private monitoring: Monitoring';
 
     constructor(config: Partial<EventHandlerConfig> = {)) {
         this.config = {
             enabled: true;
             monitorEvents: true;
-            trackShortcuts: true;
+           , trackShortcuts: true;
             ...config;
         
         // キーコード定義
@@ -166,7 +166,7 @@ export class KeyboardEventHandler {
             F9: 120;
             F10: 121;
             F11: 122;
-            F12: 123 ,};
+           , F12: 123 ,};
         // 標準ブラウザショートカット
         this.browserShortcuts = {;
             'Ctrl+Tab': 'タブ切り替え',
@@ -186,7 +186,7 @@ export class KeyboardEventHandler {
             focusListener: null;
             blurListener: null;
             eventHistory: [];
-            shortcutHistory: [] ,};
+           , shortcutHistory: [] ,};
         console.log('KeyboardEventHandler, initialized);
     }
     
@@ -250,7 +250,7 @@ export class KeyboardEventHandler {
                 shiftKey: event.shiftKey;
                 metaKey: event.metaKey;
                 target: event.target;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             this.monitoring.eventHistory.push(eventData);
             
@@ -271,7 +271,7 @@ export class KeyboardEventHandler {
         } catch (error) {
             getErrorHandler(').handleError(error, 'KEYBOARD_EVENT_HANDLING_ERROR', {)'
                 component: 'KeyboardEventHandler');
-                event: event.key,);
+               , event: event.key,);
                 type); });
         }
     }
@@ -286,7 +286,7 @@ export class KeyboardEventHandler {
                 type,
                 target: event.target;
                 relatedTarget: event.relatedTarget;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             this.monitoring.eventHistory.push(eventData);
             ';
@@ -302,8 +302,7 @@ export class KeyboardEventHandler {
      * 特定のキーイベントの追跡'
      */''
     private trackSpecificKeyEvents(event: KeyboardEvent, type: string): void { // Tabキーの追跡
-        if(event.key === 'Tab) {'
-            ';
+        if(event.key === 'Tab) {', ';
 
         }
 
@@ -311,8 +310,7 @@ export class KeyboardEventHandler {
         }
         ';
         // Escapeキーの追跡
-        if(event.key === 'Escape) {'
-            ';
+        if(event.key === 'Escape) {', ';
 
         }
 
@@ -330,7 +328,7 @@ export class KeyboardEventHandler {
             type: 'tab-navigation';
             shiftKey: event.shiftKey;
             target: event.target;
-            timestamp: Date.now( };
+           , timestamp: Date.now( };
         
         this.monitoring.eventHistory.push(navigationData);
     }
@@ -341,7 +339,7 @@ export class KeyboardEventHandler {
     private trackEscapeKeyUsage(event: KeyboardEvent): void { const escapeData: EscapeData = {''
             type: 'escape-key';
             target: event.target;
-            timestamp: Date.now( };
+           , timestamp: Date.now( };
         
         this.monitoring.eventHistory.push(escapeData);
     }
@@ -353,7 +351,7 @@ export class KeyboardEventHandler {
             type: 'arrow-key';
             key: event.key;
             target: event.target;
-            timestamp: Date.now( };
+           , timestamp: Date.now( };
         
         this.monitoring.eventHistory.push(arrowData);
     }
@@ -365,7 +363,7 @@ export class KeyboardEventHandler {
             shortcut,
             target: event.target;
             timestamp: Date.now();
-            isBrowserShortcut: this.browserShortcuts.hasOwnProperty(shortcut ,};
+           , isBrowserShortcut: this.browserShortcuts.hasOwnProperty(shortcut ,};
         
         this.monitoring.shortcutHistory.push(shortcutData);
         
@@ -400,7 +398,7 @@ export class KeyboardEventHandler {
                 shiftKey: false;
                 metaKey: false;
                 bubbles: true;
-                cancelable: true ,};
+               , cancelable: true ,};
             const options = { ...defaultOptions, ...keyOptions as SimulationOptions;
             ';
             // KeyboardEventの作成
@@ -420,7 +418,7 @@ export class KeyboardEventHandler {
 
         } catch (error) { getErrorHandler(').handleError(error, 'KEY_SIMULATION_ERROR', {)'
                 component: 'KeyboardEventHandler');
-                element: element.tagName,);
+               , element: element.tagName,);
                 key: keyOptions.key ,});
             return null;
     
@@ -430,7 +428,7 @@ export class KeyboardEventHandler {
     simulateTabKey(element: Element, shiftKey: boolean = false): SimulationResult | null { return this.simulateKeyPress(element, {''
             key: 'Tab',)';
             code: 'Tab');
-            keyCode: this.keyCodes.TAB,);
+           , keyCode: this.keyCodes.TAB,);
             shiftKey); }
     
     /**
@@ -458,7 +456,7 @@ export class KeyboardEventHandler {
             hasKeypressHandler: false;
             hasAccessKey: false;
             hasTabIndex: false;
-            eventHandlers: [] };
+           , eventHandlers: [] };
         ';
         try { // onXXX属性の検出
             if ((element, as any).onkeydown) {'
@@ -477,8 +475,7 @@ export class KeyboardEventHandler {
             ';
             // tabindex属性の検出
             if(element.hasAttribute('tabindex)) { events.hasTabIndex = true;''
-                events.tabIndex = element.getAttribute('tabindex) || undefined; }'
-            ';
+                events.tabIndex = element.getAttribute('tabindex) || undefined; }', ';
             // HTML内容からイベントハンドラーの推測
             const elementHTML = element.outerHTML.toLowerCase()';
             if (elementHTML.includes('keydown'') || '';
@@ -499,7 +496,7 @@ export class KeyboardEventHandler {
     validateEventHandlers(element: HTMLElement): ValidationResult { const validation: ValidationResult = {
             passed: true;
             issues: [];
-            warnings: [] };
+           , warnings: [] };
         try { const events = this.detectKeyboardEvents(element);
             
             // インタラクティブ要素のキーボード対応チェック
@@ -530,7 +527,7 @@ export class KeyboardEventHandler {
                 }
 
                         severity: 'warning', })'
-                        message: `Access key may conflict with browser shortcut: ${shortcut}`,')'
+                        message: `Access key may conflict with browser, shortcut: ${shortcut}`,')'
                         suggestion: 'Consider using different access key');
                 }
             }
@@ -544,7 +541,7 @@ export class KeyboardEventHandler {
             }
 
                         severity: 'warning', })'
-                        message: `Positive tabindex found: ${tabIndex}`,')'
+                        message: `Positive tabindex, found: ${tabIndex}`,')'
                         suggestion: 'Use tabindex="0" or rely on natural tab order'),
                 }''
             } catch (error) { validation.passed = false;
@@ -552,7 +549,7 @@ export class KeyboardEventHandler {
             validation.issues.push({)'
                 type: 'validation-error',')';
                 severity: 'error'), }
-                message: `Event handler validation failed: ${(error, as Error}).message}`
+                message: `Event handler validation, failed: ${(error, as, Error}).message}`
             });
         }
         

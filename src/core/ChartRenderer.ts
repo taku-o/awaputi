@@ -5,15 +5,15 @@
  * Canvas 2D APIを使用してさまざまなタイプのグラフを描画する統合エンジンです。
  */
 
-import { BarChartRenderer } from './chart-renderer/BarChartRenderer';''
-import { LineChartRenderer } from './chart-renderer/LineChartRenderer';''
-import { PieChartRenderer } from './chart-renderer/PieChartRenderer';
+import { BarChartRenderer  } from './chart-renderer/BarChartRenderer';''
+import { LineChartRenderer  } from './chart-renderer/LineChartRenderer';''
+import { PieChartRenderer  } from './chart-renderer/PieChartRenderer';
 import { ChartAnimationEngine, 
     ChartInteractionManager, ;
     ChartLayoutManager,
     AreaChartRenderer,
     ScatterChartRenderer,
-    ProgressBarRenderer ' }'
+    ProgressBarRenderer '  }'
 
 } from './chart-renderer/ChartUtilities';
 
@@ -21,39 +21,39 @@ import { ChartAnimationEngine,
  * チャートテーマインターフェース
  */
 export interface ChartTheme { colors: {
-        primary: string;
+        primar;y: string;
         secondary: string;
         success: string;
         warning: string;
         danger: string;
         info: string;
         light: string;
-        dark: string 
+       , dark: string 
 };
     palette: string[];
-    fonts: { family: string;
-        size: {
+   , fonts: { family: string;
+       , size: {
             small: number;
             normal: number;
             large: number;
-            title: number 
+           , title: number 
 };
         weight: { normal: string;
-            bold: string };
+           , bold: string };
     spacing: { padding: number;
         margin: number;
-        gap: number 
+       , gap: number 
 };
     borders: { width: number;
         radius: number;
-        style: string 
+       , style: string 
 };
     shadows: { light: string;
         medium: string;
-        heavy: string 
+       , heavy: string 
 };
     animation: { duration: number;
-        easing: string }
+       , easing: string }
 
 /**
  * チャートオプションインターフェース
@@ -82,7 +82,7 @@ export interface ChartOptions { width?: number;
 interface ChartArea { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 /**
  * レンダリング結果インターフェース
  */
@@ -114,7 +114,7 @@ export interface MultiChartConfig { type: string,
  */
 interface CacheEntry { result: RenderResult,
     canvas: HTMLCanvasElement;
-    timestamp: number ,}
+   , timestamp: number ,}
 /**
  * チャートレンダラーインターフェース
  */
@@ -126,15 +126,15 @@ export class CoreChartRenderer {
     private interactionManager: ChartInteractionManager;
     private layoutManager: ChartLayoutManager;
     private defaultTheme: ChartTheme;
-    private currentTheme: ChartTheme;
+    private, currentTheme: ChartTheme;
     private responsiveBreakpoints = {
         small: 480;
         medium: 768;
-        large: 1024 
+       , large: 1024 
 ,};
     private performanceConfig = { maxDataPoints: 1000,
         animationFrameLimit: 60;
-        cacheEnabled: true 
+       , cacheEnabled: true 
 ,};
     private renderCache: Map<string, CacheEntry>;
 
@@ -144,7 +144,7 @@ export class CoreChartRenderer {
             line: new LineChartRenderer();
             pie: new PieChartRenderer();
             area: new AreaChartRenderer();
-            scatter: new ScatterChartRenderer( }
+           , scatter: new ScatterChartRenderer( }
             progress: new, ProgressBarRenderer(); }
         };
         
@@ -168,7 +168,7 @@ export class CoreChartRenderer {
         context: CanvasRenderingContext2D;
         type: string );
         data: ChartData[] | ChartData);
-        options: ChartOptions = { ): RenderResult {
+       , options: ChartOptions = { ): RenderResult {
         try {
             // 入力検証
             if(!this.validateInput(context, type, data)) {''
@@ -230,7 +230,7 @@ export class CoreChartRenderer {
      */
     renderMultiple(;
         context: CanvasRenderingContext2D)';
-        charts: MultiChartConfig[],
+       , charts: MultiChartConfig[],
         layout: string = 'grid';
     ): RenderResult { // レイアウト計算を専門コンポーネントに委譲
         const layoutConfig = this.layoutManager.calculateLayout();
@@ -260,7 +260,7 @@ export class CoreChartRenderer {
         return { ''
             type: 'multiple';
             layout: layout;
-            charts: results, };
+           , charts: results, };
             totalArea: layoutConfig.totalArea ;
 }
         },
@@ -289,8 +289,7 @@ export class CoreChartRenderer {
         const width = canvas.width;
 
         let breakpoint: 'small' | 'medium' | 'large' = 'large',
-        if(width <= this.responsiveBreakpoints.small) {'
-            ';
+        if(width <= this.responsiveBreakpoints.small) {', ';
 
         }
 
@@ -367,7 +366,7 @@ export class CoreChartRenderer {
                     small: 10;
                     normal: 12;
                     large: 14;
-                    title: 16 
+                   , title: 16 
 ,};
                 weight: { ''
                     normal: 'normal',
@@ -376,10 +375,10 @@ export class CoreChartRenderer {
             },
             spacing: { padding: 20;
                 margin: 10;
-                gap: 5 
+               , gap: 5 
 };
             borders: { width: 1;
-                radius: 4,
+               , radius: 4,
                 style: 'solid' ,}))'
             shadows: { ''
                 light: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -399,7 +398,7 @@ export class CoreChartRenderer {
             width: 400;
             height: 300;
             padding: this.currentTheme.spacing.padding;
-            fontSize: this.currentTheme.fonts.size.normal,
+           , fontSize: this.currentTheme.fonts.size.normal,
             fontFamily: this.currentTheme.fonts.family,
             backgroundColor: '#FFFFFF';
             showLegend: true;
@@ -409,7 +408,7 @@ export class CoreChartRenderer {
             animated: false;
             interactive: true;
             responsive: true;
-            accessibility: true 
+           , accessibility: true 
 ,};
         return { ...defaultOptions, ...options, theme: this.currentTheme ,}
     /**
@@ -471,7 +470,7 @@ export class CoreChartRenderer {
 
         return { ''
             type: 'error';
-            message: errorMessage, };
+           , message: errorMessage, };
             timestamp: Date.now(); }
         }
     
@@ -538,7 +537,7 @@ export class CoreChartRenderer {
         this.renderCache.set(key, {)
             result: result,);
             canvas: cacheCanvas);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
         
         // キャッシュサイズ制限
         if(this.renderCache.size > 50) {

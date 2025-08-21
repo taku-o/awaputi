@@ -1,11 +1,11 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * KeyboardShortcutRouter.test.js
  * 
  * KeyboardShortcutRouterの単体テスト
  * Issue #163 - Duplicate help/settings screen consolidation
  */
-import { KeyboardShortcutRouter } from '../../../src/core/navigation/KeyboardShortcutRouter';
+import { KeyboardShortcutRouter  } from '../../../src/core/navigation/KeyboardShortcutRouter';
 // DOM APIのモック
 const mockDocument = {
     fullscreenElement: null,
@@ -30,7 +30,7 @@ describe('KeyboardShortcutRouter', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true;);
-                switchScene: jest.fn(').mockReturnValue(true,
+               , switchScene: jest.fn(').mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'MenuScene' }
                 }

@@ -1,8 +1,8 @@
-import { getConfigurationManager } from './ConfigurationManager.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';''
-import { PWAServiceWorkerManager } from './pwa/PWAServiceWorkerManager.js';''
-import { PWAInstallationManager } from './pwa/PWAInstallationManager.js';
+import { getConfigurationManager  } from './ConfigurationManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getBrowserCompatibility  } from '../utils/BrowserCompatibility.js';''
+import { PWAServiceWorkerManager  } from './pwa/PWAServiceWorkerManager.js';''
+import { PWAInstallationManager  } from './pwa/PWAInstallationManager.js';
 
 /**
  * Progressive Web App Manager（Main Controller）
@@ -22,12 +22,12 @@ export class PWAManager {
             };
             installation: { enabled: true;
                 autoPrompt: false;
-                promptDelay: 5000 };
+               , promptDelay: 5000 };
             offline: { enabled: true,''
                 cacheStrategy: 'cacheFirst',
                 fallbackPages: ['/offline.html] ,};
             sync: { enabled: true;
-                retryInterval: 60000 // 1分 }
+               , retryInterval: 60000 // 1分 }
         };
         // PWA状態
         this.state = { isOnline: navigator.onLine,
@@ -35,14 +35,14 @@ export class PWAManager {
             isStandalone: false;
             serviceWorkerReady: false;
             offlineCapability: false;
-            updateAvailable: false ,};
+           , updateAvailable: false ,};
         // パフォーマンス統計
         this.stats = { initializationTime: 0,
             serviceWorkerRegistrationTime: 0;
             offlineEvents: 0;
             onlineEvents: 0;
             installPrompts: 0;
-            lastUpdateCheck: 0 ,}))
+           , lastUpdateCheck: 0 ,}))
         // サブコンポーネントの初期化
         this.serviceWorkerManager = new PWAServiceWorkerManager(this);''
         this.installationManager = new PWAInstallationManager(this);
@@ -203,7 +203,7 @@ export class PWAManager {
             this.networkInfo = {
                 effectiveType: connection.effectiveType;
                 downlink: connection.downlink;
-                rtt: connection.rtt;
+               , rtt: connection.rtt;
     }
                 saveData: connection.saveData }
             }
@@ -304,7 +304,7 @@ export class PWAManager {
                 transform: translateX(-50%);
                 background: #FF9800;
                 color: white;
-                padding: 8px 16px;
+               , padding: 8px 16px;
                 border-radius: 20px,
                 font-size: 14px,
                 z-index: 1001,
@@ -325,8 +325,7 @@ export class PWAManager {
      */''
     hideOfflineIndicator()';
         const indicator = document.getElementById('pwa-offline-indicator);''
-        if(indicator) {'
-            ';
+        if(indicator) {', ';
 
         }
 
@@ -409,7 +408,7 @@ export class PWAManager {
             transform: translateX(-50%);
             background: #2196F3;
             color: white;
-            padding: 16px;
+           , padding: 16px;
             border-radius: 8px,
             z-index: 1002,
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);

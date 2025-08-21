@@ -11,7 +11,7 @@ interface UserData { username: string,
     gamesPlayed: number;
     totalPlayTime: number;
     highestScore: number;
-    level: number;
+   , level: number;
     totalScore?: number;
     gamesWon?: number; ,}
 
@@ -24,7 +24,7 @@ interface ProfileStatistics { username: string,
     totalPlayTime: number;
     highestScore: number;
     averageScore: number;
-    winRate: number ,}
+   , winRate: number ,}
 
 // プレイヤーデータのインターフェース
 interface PlayerData { username?: string;
@@ -41,8 +41,8 @@ interface GameEngine { playerData?: PlayerData;
     }
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (data?: any) => void): void;
-    off(event: string, callback?: (data?: any) => void): void;
+interface EventBus { on(event: string, callback: (dat;a?: any) => void): void;
+    off(event: string, callback?: (dat;a?: any) => void): void;
     emit(event: string, data?: any): void }
 }
 
@@ -56,7 +56,7 @@ export class UserProfileManager {
     private sceneState: SceneState;
     // プロフィール関連の状態
     private userData: UserData | null = null;
-    private lastDataUpdate: number = 0;
+    private, lastDataUpdate: number = 0;
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
         this.gameEngine = gameEngine;
@@ -97,15 +97,14 @@ export class UserProfileManager {
             this.lastDataUpdate = Date.now();
             ';
             // イベントバスに通知
-            if(this.eventBus) {'
-                ';
+            if(this.eventBus) {', ';
 
             }
 
                 this.eventBus.emit('profileDataLoaded', this.userData);' }
 
             } catch (error) { : undefined''
-            console.error('UserProfileManager: loadUserData error:', error);
+            console.error('UserProfileManager: loadUserData, error:', error);
             throw error; }
     }
     
@@ -116,7 +115,7 @@ export class UserProfileManager {
         context: CanvasRenderingContext2D;
         x: number );
         y: number)';
-        width: number'';
+       , width: number'';
     '): number { // セクション背景'
         context.fillStyle = '#1a1a2e';''
         context.fillRect(x, y, width, 80);
@@ -157,11 +156,11 @@ export class UserProfileManager {
      */
     public renderUsernameChangeButton(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number, ;
         width: number );
         focusedElement: number);
-        tabsLength: number'';
+       , tabsLength: number'';
     '): number { const buttonWidth = 200,
         const buttonHeight = 40;
         const isFocused = focusedElement === tabsLength + 1;
@@ -190,10 +189,10 @@ export class UserProfileManager {
      */
     public renderUsernameDialog(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number)';
-        height: number'';
+       , height: number'';
     '): void { // タイトル'
         context.fillStyle = '#ffffff';''
         context.font = 'bold 20px Arial';''
@@ -231,8 +230,7 @@ export class UserProfileManager {
      */'
     private handleUsernameChange(newUsername: string): void { try {'
             if(!newUsername || newUsername.trim() === ''') {''
-                throw new Error('ユーザー名が入力されていません); }'
-            ';
+                throw new Error('ユーザー名が入力されていません); }', ';
             // ユーザー名の検証
             if(newUsername.length > 20) {'
                 ';
@@ -257,8 +255,7 @@ export class UserProfileManager {
                 }
                 ;
                 // イベントバスに通知
-                if(this.eventBus) {'
-                    ';
+                if(this.eventBus) {', ';
 
                 }
 
@@ -267,11 +264,10 @@ export class UserProfileManager {
 
                 console.log('Username changed to:', newUsername.trim();''
             } catch (error) {
-            console.error('UserProfileManager: handleUsernameChange error:', error);
+            console.error('UserProfileManager: handleUsernameChange, error:', error);
             ';
             // エラーをイベントバスに通知
-            if(this.eventBus) {'
-                ';
+            if(this.eventBus) {', ';
 
             }
 
@@ -286,8 +282,7 @@ export class UserProfileManager {
      * ユーザー名変更ボタンのクリック処理
      */'
     public handleUsernameButtonClick(): void { ''
-        if(this.eventBus) {'
-            ';
+        if(this.eventBus) {', ';
 
         }
 

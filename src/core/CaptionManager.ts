@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 型定義
 interface AudioAccessibilityManager { accessibilityManager?: AccessibilityManager;
@@ -8,11 +8,11 @@ interface AccessibilityManager { gameEngine?: GameEngine;
     }
 
 interface GameEngine { audioManager?: AudioManager;
-    addEventListener?: (event: string, handler: (event: any) => void) => void ,}
+    addEventListener?: (even;t: string, handler: (even;t: any) => void) => void ,}
 }
 
-interface AudioManager { playSound?: (soundId: string, options?: PlaySoundOptions) => any;
-    playMusic?: (musicId: string, options?: PlayMusicOptions) => any }
+interface AudioManager { playSound?: (soundI;d: string, options?: PlaySoundOptions) => any;
+    playMusic?: (musicI;d: string, options?: PlayMusicOptions) => any }
 }
 
 interface PlaySoundOptions { volume?: number;
@@ -28,13 +28,13 @@ interface CaptionConfig { enabled: boolean,
     ambientSoundDescriptions: boolean;
     captionDelay: number;
     maxCaptionLines: number;
-    captionDuration: {
-        short: number;
+   , captionDuration: {
+        shor;t: number;
         medium: number;
         long: number;
-        persistent: number ,};
+       , persistent: number ,};
     positioning: { default: string;
-        alternatives: string[] };
+       , alternatives: string[] };
     styling: { fontSize: string;
         fontFamily: string;
         fontWeight: string;
@@ -47,26 +47,26 @@ interface CaptionConfig { enabled: boolean,
         margin: string;
         textShadow: string;
         lineHeight: string;
-        letterSpacing: string };
+       , letterSpacing: string };
     animation: { fadeIn: number;
         fadeOut: number;
         slideIn: boolean;
-        bounce: boolean }
+       , bounce: boolean }
 
 interface SoundDescription { text: string,
     category: string;
-    duration: string ,}
+   , duration: string ,}
 
 interface MusicDescription { text: string;
     mood: string;
-    tempo: string }
+   , tempo: string }
 
 interface CaptionStats { captionsDisplayed: number;
-    captionsByCategory: Map<string, number>;
+   , captionsByCategory: Map<string, number>;
     averageDisplayTime: number;
     totalDisplayTime: number;
     userInteractions: number;
-    sessionStart: number ,}
+   , sessionStart: number ,}
 
 interface UserPreferences { enabled: boolean;
     position: string;
@@ -79,28 +79,28 @@ interface UserPreferences { enabled: boolean;
     showAmbientSounds: boolean;
     autoHide: boolean;
     hideDelay: number;
-    customDescriptions: Map<string, string>;
+   , customDescriptions: Map<string, string>;
     languagePreference: string;
-    verbosityLevel: string ,}
+   , verbosityLevel: string ,}
 
 interface LanguageConfig { soundPrefix: string;
     musicPrefix: string;
-    categories: {
-        game: string;
+   , categories: {
+        gam;e: string;
         ui: string;
         special: string;
-        ambient: string }
+       , ambient: string }
 
 interface CaptionData { element: HTMLElement,
     startTime: number;
     duration: number;
     description: SoundDescription;
-    options: any ,}
+   , options: any ,}
 
 interface AudioEvent { soundId: string;
     category: string;
     volume: number;
-    duration: number }
+   , duration: number }
 
 interface GameEvent { bubble?: any;
     count?: number;
@@ -111,24 +111,24 @@ interface GameEvent { bubble?: any;
 
 interface AccessibilityEvent extends Event { detail: {
         component: string;
-        config: any }
+       , config: any }
 
 interface ManualCaptionOptions { category?: string;
     duration?: string; }
 
 interface CaptionReport { timestamp: string,
     configuration: {
-        enabled: boolean;
+        enable;d: boolean;
         position: string;
         verbosityLevel: string;
-        language: string ,};
+       , language: string ,};
     statistics: CaptionStats & { sessionDuration: number;
         captionsPerMinute: number;
         activeCaptions: number;
-        customDescriptions: number };
+       , customDescriptions: number };
     userPreferences: UserPreferences;
-    performance: { averageDisplayTime: number;
-        maxConcurrentCaptions: number }
+   , performance: { averageDisplayTime: number;
+       , maxConcurrentCaptions: number }
 
 /**
  * キャプション管理クラス
@@ -139,7 +139,7 @@ export class CaptionManager {
     private accessibilityManager?: AccessibilityManager;
     private gameEngine?: GameEngine;
     private config: CaptionConfig;
-    private soundDescriptions: Map<string, SoundDescription>;
+    private, soundDescriptions: Map<string, SoundDescription>;
     private musicDescriptions: Map<string, MusicDescription>;
     private activeCaptions: Map<number, CaptionData>;
     private captionQueue: any[];
@@ -149,7 +149,7 @@ export class CaptionManager {
     private currentStyle: string;
     private stats: CaptionStats;
     private userPreferences: UserPreferences;
-    private languageSupport: Map<string, LanguageConfig>;
+    private, languageSupport: Map<string, LanguageConfig>;
 
     constructor(audioAccessibilityManager: AudioAccessibilityManager) {
         this.audioAccessibilityManager = audioAccessibilityManager;
@@ -163,9 +163,9 @@ export class CaptionManager {
             soundEffectDescriptions: true;
             musicDescriptions: true;
             ambientSoundDescriptions: false;
-            captionDelay: 0, // ミリ秒;
+           , captionDelay: 0, // ミリ秒;
             maxCaptionLines: 3;
-            captionDuration: {
+           , captionDuration: {
                 short: 2000,   // 短い音響効果;
                 medium: 4000,  // 中程度の音;
                 long: 6000,    // 長い音楽やナレーション
@@ -193,7 +193,7 @@ export class CaptionManager {
             animation: { fadeIn: 300;
                 fadeOut: 300;
                 slideIn: true;
-                bounce: false }
+               , bounce: false }
         };
         // 音響効果の説明マッピング
         this.soundDescriptions = new Map<string, SoundDescription>([;
@@ -245,20 +245,20 @@ export class CaptionManager {
             captionsByCategory: new Map();
             averageDisplayTime: 0;
             totalDisplayTime: 0;
-            userInteractions: 0,
+           , userInteractions: 0,
             sessionStart: Date.now()';
             position: 'bottom-center')';
-            fontSize: 16,
+           , fontSize: 16,
             fontFamily: 'Arial',
             textColor: '#ffffff',')';
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             showSoundEffects: true;
             showMusic: true;
             showAmbientSounds: false;
-            autoHide: true,
+           , autoHide: true,
             hideDelay: 4000,
             customDescriptions: new Map(''';
-            languagePreference: 'ja',
+           , languagePreference: 'ja',
             verbosityLevel: 'normal' // 'minimal', 'normal', 'detailed' };
         
         // 言語サポート
@@ -276,7 +276,7 @@ export class CaptionManager {
             ['en', { ''
                 soundPrefix: '♪ ',)';
                 musicPrefix: '♫ ')';
-                categories: {''
+               , categories: {''
                     game: 'Game Sound',
                     ui: 'UI Sound',
                     special: 'Special Effect',
@@ -453,20 +453,20 @@ export class CaptionManager {
                 border: 2px solid ${prefs.textColor}
                 border-radius: 8px;
                 padding: 12px 16px;
-                margin: 4px 0;
+               , margin: 4px 0;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
                 line-height: 1.4,
                 letter-spacing: 0.5px,
                 word-wrap: break-word,
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
                 opacity: 0;
-                transform: translateY(20px})
+               , transform: translateY(20px})
                 transition: all 0.3s ease);
             .caption-item.visible { opacity: 1,
                 transform: translateY(0 ,}
             
             .caption-item.fade-out { opacity: 0;
-                transform: translateY(-20px }
+               , transform: translateY(-20px }
             
             /* カテゴリ別スタイル */
             .caption-game { border-left: 4px solid #4ecdc4, }
@@ -495,17 +495,17 @@ export class CaptionManager {
             /* アニメーション */
             @keyframes slideInFromBottom { from {
                     opacity: 0;
-                    transform: translateY(100% }
+                   , transform: translateY(100% }
                 to { opacity: 1;
-                    transform: translateY(0 }
+                   , transform: translateY(0 }
             }
             
             @keyframes, fadeInBounce { 0% {
                     opacity: 0;
-                    transform: scale(0.3) translateY(20px }
+                   , transform: scale(0.3) translateY(20px }
                 50% { transform: scale(1.05) translateY(-5px }
                 100% { opacity: 1;
-                    transform: scale(1) translateY(0 }
+                   , transform: scale(1) translateY(0 }
             }
             
             .caption-item.slide-in { animation: slideInFromBottom, 0.3s, ease-out }
@@ -534,7 +534,7 @@ export class CaptionManager {
             /* 高コントラストモードとの統合 */
             .high-contrast .caption-item { background: #000000;
                 color: #ffffff;
-                border: 3px solid #ffffff;
+               , border: 3px solid #ffffff;
                 text-shadow: none, }
             
             /* アクセシビリティ強化 */
@@ -730,7 +730,7 @@ export class CaptionManager {
 
         const description: SoundDescription = { text,''
             category: 'music';
-            duration: musicDescription.tempo ,};
+           , duration: musicDescription.tempo ,};
         const captionId = this.generateCaptionId();
         const duration = this.config.captionDuration.persistent;
 
@@ -835,16 +835,14 @@ export class CaptionManager {
         }
         ';
         // アニメーション設定
-        if(this.config.animation.slideIn) {'
-            ';
+        if(this.config.animation.slideIn) {', ';
 
         }
 
             captionElement.classList.add('slide-in); }'
 
         }''
-        if(this.config.animation.bounce) {'
-            ';
+        if(this.config.animation.bounce) {', ';
 
         }
 
@@ -947,8 +945,7 @@ export class CaptionManager {
     enable(): void { this.config.enabled = true;
         this.userPreferences.enabled = true;
 
-        if(this.captionContainer) {'
-            ';
+        if(this.captionContainer) {', ';
 
         }
 
@@ -968,8 +965,7 @@ export class CaptionManager {
         // すべてのアクティブキャプションをクリア
         this.clearAllCaptions();
 
-        if(this.captionContainer') {'
-            ';
+        if(this.captionContainer') {', ';
 
         }
 
@@ -1109,17 +1105,17 @@ export class CaptionManager {
             configuration: {
                 enabled: this.config.enabled;
                 position: this.userPreferences.position;
-                verbosityLevel: this.userPreferences.verbosityLevel, };
+               , verbosityLevel: this.userPreferences.verbosityLevel, };
                 language: this.userPreferences.languagePreference }
             };
             statistics: { ...this.stats;
                 sessionDuration,
                 captionsPerMinute: this.stats.captionsDisplayed / (sessionDuration / 60000);
                 activeCaptions: this.activeCaptions.size;
-                customDescriptions: this.userPreferences.customDescriptions.size ,};
+               , customDescriptions: this.userPreferences.customDescriptions.size ,};
             userPreferences: this.userPreferences;
-            performance: { averageDisplayTime: this.stats.averageDisplayTime;
-                maxConcurrentCaptions: Math.max(...Array.from(this.stats.captionsByCategory.values() }
+           , performance: { averageDisplayTime: this.stats.averageDisplayTime;
+               , maxConcurrentCaptions: Math.max(...Array.from(this.stats.captionsByCategory.values() }
     
     /**
      * 有効状態の設定

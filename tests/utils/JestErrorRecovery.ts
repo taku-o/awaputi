@@ -3,7 +3,7 @@
  * Provides error recovery utilities for Jest-related issues in ES Modules environment
  */
 
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 
 export class JestErrorRecovery {
   constructor() {
@@ -334,7 +334,7 @@ export class JestErrorRecovery {
         'Verify environment-specific setup files'
       ],
       recommendations: [
-        'Use testEnvironment: "jsdom" for DOM tests',
+        'Use, testEnvironment: "jsdom" for DOM tests',
         'Use testEnvironment: "node" for pure JavaScript tests',
         'Install required environment packages'
       ]
@@ -409,7 +409,7 @@ export class JestErrorRecovery {
       if (strategy.detect(error') {
         console.log(`JestErrorRecovery: Using strategy "${strategyName")"`),
         
-        const result = strategy.recover("});
+        const, result = strategy.recover("});
         
         // Update error log
         this.errorLog[this.errorLog.length - 1].recoveryAttempted = true;
@@ -483,9 +483,9 @@ export class JestErrorRecovery {
       log.error.includes('jest.fn'') || log.error.includes('Cannot create property').length;
 
     if (jestUndefinedErrors > 0') {
-      recommendations.push('Consider using import { jest ') from "@jest/globals" in test files'');
-      recommendations.push('Ensure Jest globals are properly configured in setup files');
-    }
+      recommendations.push('Consider using import { jest ') from "@jest/globals" in, test files'');
+      recommendations.push('Ensure, Jest globals, are properly, configured in, setup files');
+     }
 
     if (esModulesErrors > 0') {
       recommendations.push('Remove extensionsToTreatAsEsm configuration from Jest config'');

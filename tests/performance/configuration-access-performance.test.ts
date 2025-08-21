@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest  } from '@jest/globals';
 /**
  * 設定アクセスのパフォーマンステスト
  * 
  * 設定値の取得速度、キャッシュ効果、メモリ使用量を測定します。
  */
-import { getConfigurationManager } from '../../src/core/ConfigurationManager';
+import { getConfigurationManager  } from '../../src/core/ConfigurationManager';
 describe('Configuration Access Performance Tests', () => {
     let configManager: any,
     
@@ -185,7 +185,7 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`キャッシュサイズ: ${cacheStats.size)`);
         console.log(`メモリ使用量: ${cacheStats.memoryUsage)`);
         // メモリ使用量が合理的な範囲内であることを確認
-        const memoryKB = parseInt(cacheStats.memoryUsage);
+        const, memoryKB = parseInt(cacheStats.memoryUsage);
         expect(memoryKB.toBeLessThan(1000}); // 1MB以下
     }');
     test('大量アクセス時の安定性', (') => {

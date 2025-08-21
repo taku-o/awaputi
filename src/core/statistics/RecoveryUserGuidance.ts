@@ -17,17 +17,17 @@ export interface NotificationConfig { showRecoveryProgress: boolean,
     showFailureMessage: boolean;
     autoCloseDelay: number;
     position: NotificationPosition;
-    maxNotifications: number ,}
+   , maxNotifications: number ,}
 
 export interface ProgressTracking { currentStep: string | null;
     totalSteps: number;
     completedSteps: number;
     progress: number;
     startTime: number | null;
-    estimatedTimeRemaining: number | null }
+   , estimatedTimeRemaining: number | null }
 
 export interface LocalizedMessages { ja: MessageSet;
-    en: MessageSet
+   , en: MessageSet
     }
 
 export interface MessageSet { recovery_started: string;
@@ -39,7 +39,7 @@ export interface MessageSet { recovery_started: string;
     recovery_partial: string;
     corruption_detected: string;
     backup_restored: string;
-    default_initialized: string }
+   , default_initialized: string }
 
 export interface RecoveryPlan { totalSteps?: number;
     strategy?: RecoveryStrategy;
@@ -55,12 +55,12 @@ export interface RecoveryResult { success: boolean,
 
 export interface RepairLogEntry { timestamp: number,
     action: string;
-    result: string;
+   , result: string;
     details?: any ,}
 
 export interface NotificationData { type: NotificationType;
     title: string;
-    message: string;
+   , message: string;
     details?: any;
     showProgress?: boolean;
     autoClose?: boolean;
@@ -70,7 +70,7 @@ export interface ProgressNotificationData { type: 'progress',
     step: string;
     progress: number;
     details: any;
-    tracking: ProgressTracking
+   , tracking: ProgressTracking
     ,}
 
 export interface ErrorMessageResult { type: ErrorType;
@@ -79,7 +79,7 @@ export interface ErrorMessageResult { type: ErrorType;
     suggestions: string[];
     technicalDetails: TechnicalDetails;
     severity: ErrorSeverity;
-    recoverable: boolean }
+   , recoverable: boolean }
 
 export interface TechnicalDetails { error: string;
     stack?: string;
@@ -98,41 +98,41 @@ export interface CorruptionAnalysis { corruptionLevel: CorruptionLevel,
 export interface IntegrityAnalysis { validFieldsRatio: number,
     missingFields: string[];
     invalidFields: string[];
-    structureValid: boolean ,}
+   , structureValid: boolean ,}
 
 export interface RecoveryGuidance { recommended: GuidanceAction[];
     optional: GuidanceAction[];
     warnings: GuidanceWarning[];
-    estimatedTime: string }
+   , estimatedTime: string }
 
 export interface GuidanceAction { action: ActionType;
     title: string;
-    description: string;
+   , description: string;
     estimatedTime?: string;
     risk?: RiskLevel;
     }
 
 export interface GuidanceWarning { type: WarningType,
     message: string;
-    severity: WarningSeverity;
+   , severity: WarningSeverity;
     recoverable?: boolean ,}
 
 export interface RecoveryHistoryEntry { timestamp: string;
     success: boolean;
     method?: RecoveryMethod;
     details: RepairLogEntry[];
-    duration: number | null }
+   , duration: number | null }
 
 export interface GuidanceStats { historyCount: number;
     callbackCount: number;
     currentLanguage: SupportedLanguage;
     config: NotificationConfig;
-    progress: ProgressTracking
+   , progress: ProgressTracking
     }
 
 export interface UserFriendlyMessage { title: string;
     message: string;
-    suggestions: string[] }
+   , suggestions: string[] }
 ';
 // コールバック型
 export type NotificationCallback = (notification: NotificationData | ProgressNotificationData') => void;
@@ -173,7 +173,7 @@ export class RecoveryUserGuidance {
             showRecoveryProgress: true;
             showSuccessMessage: true;
             showFailureMessage: true;
-            autoCloseDelay: 5000,
+           , autoCloseDelay: 5000,
             position: 'top-right';
     ,}
             maxNotifications: 5 }
@@ -191,7 +191,7 @@ export class RecoveryUserGuidance {
             completedSteps: 0;
             progress: 0;
             startTime: null;
-            estimatedTimeRemaining: null ,};
+           , estimatedTimeRemaining: null ,};
         // 多言語メッセージ
         this.messages = { ja: {''
                 recovery_started: '統計データの復旧を開始しています...',
@@ -268,14 +268,14 @@ export class RecoveryUserGuidance {
             this.progressTracking = {''
                 currentStep: 'initializing';
                 totalSteps: recoveryPlan.totalSteps || 5;
-                completedSteps: 0,
+               , completedSteps: 0,
                 progress: 0,
                 startTime: Date.now(''';
-                type: 'info',
+               , type: 'info',
                 title: 'データ復旧';
                 message);
                 details: recoveryPlan)';
-                showProgress: true,')';
+               , showProgress: true,')';
                 autoClose: false)'),
 
             console.log('[RecoveryUserGuidance] Recovery, start notification, sent');
@@ -323,12 +323,12 @@ export class RecoveryUserGuidance {
             this._sendNotification({ type: notificationType,''
                 title: 'データ復旧完了);
                 message);
-                details: {
+               , details: {
                     method: recoveryMethod,);
                     repairLog: repairLog || []);
-                    dataSize: data ? Object.keys(data).length : 0 ,};
+                   , dataSize: data ? Object.keys(data).length : 0 ,};
                 showProgress: false;
-                autoClose: true;
+               , autoClose: true;
             }),
             
             // 履歴に記録
@@ -358,13 +358,13 @@ export class RecoveryUserGuidance {
                 title: userMessage.title;
                 message: userMessage.message;
                 suggestions: userMessage.suggestions;
-                technicalDetails: {
+               , technicalDetails: {
                     error: error.message;
-                    stack: error.stack, };
+                   , stack: error.stack, };
                     context }
                 },
                 severity: this._getErrorSeverity(errorType);
-                recoverable: this._isRecoverable(errorType);
+               , recoverable: this._isRecoverable(errorType);
             } catch (generationError) {
             console.error('[RecoveryUserGuidance] Error message generation failed:', generationError);
             ';
@@ -378,7 +378,7 @@ export class RecoveryUserGuidance {
 
                 technicalDetails: { error: error.message },''
                 severity: 'high';
-                recoverable: true;
+               , recoverable: true;
             },
         }
     }
@@ -391,7 +391,7 @@ export class RecoveryUserGuidance {
     generateRecoveryGuidance(analysis: DataAnalysis): RecoveryGuidance { try {
             const guidance: RecoveryGuidance = {
                 recommended: [];
-                optional: [],
+               , optional: [],
                 warnings: [],
                 estimatedTime: '不明' ,};
             ';
@@ -569,7 +569,7 @@ export class RecoveryUserGuidance {
                 step;
                 progress: this.progressTracking.progress;
                 ...details))
-            showProgress: true,);
+           , showProgress: true,);
             autoClose: false);
     ,}
     
@@ -700,7 +700,7 @@ export class RecoveryUserGuidance {
             success: result.success;
             method: result.recoveryMethod;
             details: result.repairLog || [];
-            duration: this.progressTracking.startTime ?   : undefined
+           , duration: this.progressTracking.startTime ?   : undefined
                      Date.now() - this.progressTracking.startTime : null };
         this.recoveryHistory.push(historyEntry);
         
@@ -738,7 +738,7 @@ export class RecoveryUserGuidance {
             completedSteps: 0;
             progress: 0;
             startTime: null;
-            estimatedTimeRemaining: null }
+           , estimatedTimeRemaining: null }
     
     /**
      * 統計情報を取得

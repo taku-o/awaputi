@@ -16,7 +16,7 @@ export interface ChartRendererOptions { enableResponsive?: boolean;
 export interface ThemeConfig { backgroundColor: string,
     borderColor: string;
     textColor: string;
-    gridColor: string ,}
+   , gridColor: string ,}
 
 export interface ChartConfig { label?: string;
     xAxisLabel?: string;
@@ -35,12 +35,12 @@ export interface ChartDataUpdate { labels?: string[];
 
 export interface ChartStatistics { totalCharts: number,
     activeRealtimeCharts: number;
-    chartTypes: Record<string, number>,
+   , chartTypes: Record<string, number>,
     memoryUsage: MemoryUsage
     ,}
 
 export interface MemoryUsage { estimatedDataPoints: number;
-    estimatedMemoryKB: number }
+   , estimatedMemoryKB: number }
 
 export type DataSourceCallback = () => ChartDataUpdate | null;
 
@@ -59,7 +59,7 @@ export class AnalyticsChartRenderer {
     private dataSourceCallbacks: Map<string, DataSourceCallback>;
     private Chart: any;
     private currentTheme: ThemeConfig;
-    private useCanvasFallback: boolean;
+    private, useCanvasFallback: boolean;
 
     constructor(options: ChartRendererOptions = { )) {
         this.options = {
@@ -67,7 +67,7 @@ export class AnalyticsChartRenderer {
             defaultWidth: 400;
             defaultHeight: 300;
             animationDuration: 750;
-            updateInterval: 1000, // リアルタイム更新間隔（1秒）;
+           , updateInterval: 1000, // リアルタイム更新間隔（1秒）;
             maxDataPoints: 50, // 表示する最大データポイント数;
             theme: 'default', // default, dark, light;
             locale: 'ja-JP';
@@ -78,7 +78,7 @@ export class AnalyticsChartRenderer {
 
         this.updateTimers = new Map();''
         this.dataSourceCallbacks = new Map()';
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+           , backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             textColor: '#333333',
             gridColor: 'rgba(0, 0, 0, 0.1)';
@@ -184,7 +184,7 @@ export class AnalyticsChartRenderer {
 
         const defaultConfig = {''
             type: 'line';
-            data: {
+           , data: {
                 labels: [],
                 datasets: [{]'
                     label: config.label || 'データ',];
@@ -193,19 +193,19 @@ export class AnalyticsChartRenderer {
                     borderColor: this.currentTheme.borderColor;
                     borderWidth: 2;
                     fill: false;
-                    tension: 0.1 ,}]
+                   , tension: 0.1 ,}]
             };
             options: { responsive: this.options.enableResponsive;
-                scales: {
+               , scales: {
                     x: {
                         display: true;
-                        title: {'
+                       , title: {'
                             display: true,
                             text: config.xAxisLabel || 'X軸' ,};
                         grid: { color: this.currentTheme.gridColor }
                     };
                     y: { display: true;
-                        title: {'
+                       , title: {'
                             display: true,
                             text: config.yAxisLabel || 'Y軸' ,};
                         grid: { color: this.currentTheme.gridColor }
@@ -233,7 +233,7 @@ export class AnalyticsChartRenderer {
 
         const defaultConfig = {''
             type: 'bar';
-            data: {
+           , data: {
                 labels: [],
                 datasets: [{]'
                     label: config.label || 'データ',];
@@ -243,17 +243,17 @@ export class AnalyticsChartRenderer {
                     borderWidth: 1 ,}]
             };
             options: { responsive: this.options.enableResponsive;
-                scales: {
+               , scales: {
                     x: {
                         display: true;
-                        title: {'
+                       , title: {'
                             display: true,
                             text: config.xAxisLabel || 'カテゴリ' ,};
                         grid: { color: this.currentTheme.gridColor }
                     };
                     y: { display: true;
                         beginAtZero: true;
-                        title: {'
+                       , title: {'
                             display: true,
                             text: config.yAxisLabel || '値' ,};
                         grid: { color: this.currentTheme.gridColor }
@@ -281,7 +281,7 @@ export class AnalyticsChartRenderer {
 
         const defaultConfig = {''
             type: 'pie';
-            data: {
+           , data: {
                 labels: [],
                 datasets: [{]'
                     label: config.label || 'データ',];
@@ -291,12 +291,12 @@ export class AnalyticsChartRenderer {
                     borderWidth: 2 ,}]
             };
             options: { responsive: this.options.enableResponsive;
-                plugins: {
+               , plugins: {
                     legend: {'
                         display: config.showLegend !== false,
                         position: config.legendPosition || 'right' ,};
                     tooltip: { enabled: config.showTooltip !== false;
-                        callbacks: {''
+                       , callbacks: {''
                             label(context: any) {''
                                 const label = context.label || '';
                                 const value = context.parsed;
@@ -571,7 +571,7 @@ export class AnalyticsChartRenderer {
      */
     getChartStatistics(): ChartStatistics { return { totalCharts: this.charts.size,
             activeRealtimeCharts: this.updateTimers.size;
-            chartTypes: [...this.chartConfigs.values()].reduce((acc: Record<string, number>, config) => {  }
+           , chartTypes: [...this.chartConfigs.values()].reduce((acc: Record<string, number>, config) => {  }
                 acc[config.type] = (acc[config.type] || 0) + 1; }
                 return acc;, {}),
             memoryUsage: this.estimateMemoryUsage();

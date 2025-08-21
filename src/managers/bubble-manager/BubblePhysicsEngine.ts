@@ -293,7 +293,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         // @ts-ignore 将来の方向ベクトル計算で使用予定
         const _direction = {
             x: (endPos.x - startPos.x) / pathLength;
-            y: (endPos.y - startPos.y) / pathLength ,};
+           , y: (endPos.y - startPos.y) / pathLength ,};
         // パス上のバブルを検出
         bubbles.forEach(bubble => {  );
             if (!bubble.isAlive) return;

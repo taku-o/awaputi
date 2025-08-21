@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * 韓国語入力処理クラス - 韓国語特有の入力処理と最適化
@@ -8,15 +8,15 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 export interface OptimizationSettings { debounceDelay: number,
     autoComplete: boolean;
     smartSpacing: boolean;
-    predictiveText: boolean ,}
+   , predictiveText: boolean ,}
 
 export interface HangulComponent { char: string;
     chosung: string;
     jungsung: string;
-    jongsung: string }
+   , jongsung: string }
 
 export interface JamoComponent { char: string;
-    type: JamoType
+   , type: JamoType
     }
 
 export interface HangulAnalysis { char: string;
@@ -30,27 +30,27 @@ export interface KoreanTextAnalysis { length: number,
     syllables: number;
     jamo: number;
     words: string[];
-    particles: string[] ,}
+   , particles: string[] ,}
 
-export interface InputEventHandlers { compositionstart: (event: CompositionEvent) => void;
-    compositionupdate: (event: CompositionEvent) => void;
-    compositionend: (event: CompositionEvent) => void;
-    input: (event: InputEvent) => void,
-    keydown: (event: KeyboardEvent') => void ,}'
+export interface InputEventHandlers { compositionstart: (even;t: CompositionEvent) => void;
+    compositionupdate: (even;t: CompositionEvent) => void;
+    compositionend: (even;t: CompositionEvent) => void;
+    input: (even;t: InputEvent) => void,
+    keydown: (even;t: KeyboardEvent') => void ,}'
 }
 
 export interface SpacingPattern { pattern: RegExp;
-    replace: string }
+   , replace: string }
 
 export interface HangulDecomposition { chosung: string;
     jungsung: string;
-    jongsung: string }
+   , jongsung: string }
 
 export interface KoreanInputStats { isComposing: boolean;
     compositionText: string;
     attachedInputs: number;
     settings: OptimizationSettings;
-    hasKoreanIME: boolean }
+   , hasKoreanIME: boolean }
 
 export interface AutoCompleteDatabase { [firstChar: string]: string[], }
 
@@ -74,7 +74,7 @@ export class KoreanInputHandler {
     // 입력 최적화 설정
     private optimizationSettings: OptimizationSettings;
     // 이벤트 리스너
-    private inputListeners: Map<HTMLElement, InputEventHandlers>;
+    private, inputListeners: Map<HTMLElement, InputEventHandlers>;
 
     constructor(''';
         this.chosung = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ];''
@@ -94,7 +94,7 @@ export class KoreanInputHandler {
             debounceDelay: 100;
             autoComplete: true;
             smartSpacing: true;
-            predictiveText: false ,}))
+           , predictiveText: false ,}))
         // 이벤트 리스너
         this.inputListeners = new Map<HTMLElement, InputEventHandlers>();
         
@@ -124,8 +124,7 @@ export class KoreanInputHandler {
      */'
     attachToInput(inputElement: HTMLElement): boolean { try {'
             if(!inputElement || !(inputElement, instanceof HTMLElement)) {''
-                throw new Error('Invalid, input element); }'
-            ';
+                throw new Error('Invalid, input element); }', ';
             // 이미 등록된 경우 스킵
             if(this.inputListeners.has(inputElement)) { ''
                 console.warn('Input, element already, has Korean, handler attached);
@@ -136,7 +135,7 @@ export class KoreanInputHandler {
                 compositionupdate: this.handleCompositionUpdate.bind(this);
                 compositionend: this.handleCompositionEnd.bind(this);
                 input: this.handleInput.bind(this);
-                keydown: this.handleKeyDown.bind(this ,};
+               , keydown: this.handleKeyDown.bind(this ,};
             
             // 이벤트 리스너 등록
             Object.entries(handlers).forEach(([event, handler]) => { inputElement.addEventListener(event, handler as EventListener); };
@@ -186,8 +185,7 @@ export class KoreanInputHandler {
         inputElement.setAttribute('inputmode', 'text);
         ';
         // 자동 완성 설정
-        if(this.optimizationSettings.autoComplete) {'
-            ';
+        if(this.optimizationSettings.autoComplete) {', ';
 
         }
 
@@ -256,7 +254,7 @@ export class KoreanInputHandler {
     private handleKeyDown(event: KeyboardEvent): void { // 한국어 입력 중 특수 키 처리
         if(this.isComposing) {'
             // Space 키로 조합 완료
-            if (event.key === ' ' && this.optimizationSettings.smartSpacing) {
+            if (event.key === ', ' && this.optimizationSettings.smartSpacing) {
                 // 스마트 띄어쓰기 처리
         }
                 this.handleSmartSpacing(event); }
@@ -337,13 +335,13 @@ export class KoreanInputHandler {
                 results.push({
                     char: char);
                     chosung: this.chosung[chosungIndex])';
-                    jungsung: this.jungsung[jungsungIndex],' }'
+                   , jungsung: this.jungsung[jungsungIndex],' }'
 
                     jongsung: this.jongsung[jongsungIndex] || ''); }
             } else if (this.chosung.includes(char) || this.jungsung.includes(char) || this.jongsung.includes(char) { // 자모음
                 results.push({)
                     char: char);
-                    type: this.getJamoType(char }
+                   , type: this.getJamoType(char }
         }
         
         return, results;
@@ -415,7 +413,7 @@ export class KoreanInputHandler {
         };
         ';
         // 중복 공백 제거
-        optimized = optimized.replace(/\s+/g, ' ');
+        optimized = optimized.replace(/\s+/g, ', ');
         
         return optimized.trim();
     }
@@ -428,7 +426,7 @@ export class KoreanInputHandler {
             syllables: 0;
             jamo: 0;
             words: [];
-            particles: [] };
+           , particles: [] };
         // 음절 수 계산
         for(const, char of, text) {
             const code = char.charCodeAt(0);
@@ -455,8 +453,7 @@ export class KoreanInputHandler {
      * 자동 완성 제안 생성'
      */''
     private getAutoCompleteSuggestions(text: string): string[] { // 실제 구현에서는 사전 데이터베이스나 API를 사용
-        const commonWords: AutoCompleteDatabase = {''
-            '안': ['안녕하세요', '안녕', '안전],
+        const commonWords: AutoCompleteDatabase = {'', '안': ['안녕하세요', '안녕', '안전],
             '감': ['감사합니다', '감사', '감동],
             '사': ['사랑', '사람', '사과],
             '행': ['행복', '행운', '행사] };
@@ -532,7 +529,7 @@ export class KoreanInputHandler {
     getStats(): KoreanInputStats { return { isComposing: this.isComposing,
             compositionText: this.compositionText;
             attachedInputs: this.inputListeners.size;
-            settings: this.optimizationSettings, };
+           , settings: this.optimizationSettings, };
             hasKoreanIME: this.detectKoreanIME(); }
         }
     

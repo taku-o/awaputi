@@ -1,10 +1,10 @@
 /**
  * ヘルプシステム統合テスト
  */
-import { jest } from '@jest/globals';
-import { HelpManager } from '../../../src/core/help/HelpManager';
-import { TutorialManager } from '../../../src/core/help/TutorialManager';
-import { ContextManager } from '../../../src/core/help/ContextManager';
+import { jest  } from '@jest/globals';
+import { HelpManager  } from '../../../src/core/help/HelpManager';
+import { TutorialManager  } from '../../../src/core/help/TutorialManager';
+import { ContextManager  } from '../../../src/core/help/ContextManager';
 // モック作成
 const mockGameEngine = {
     localizationManager: {
@@ -30,7 +30,7 @@ const mockGameEngine = {
         getTutorialProgress: jest.fn(() => ({)));
         saveTutorialProgress: jest.fn(),
         getHelpProgress: jest.fn(() => ({ readSections: [] )));
-        saveHelpProgress: jest.fn(),
+       , saveHelpProgress: jest.fn(),
     canvas: { width: 800,
         height: 600 
     }');

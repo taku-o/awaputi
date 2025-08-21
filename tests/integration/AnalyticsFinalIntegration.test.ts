@@ -1,14 +1,14 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * AnalyticsFinalIntegration.test.js
  * ゲーム分析機能の最終統合検証テスト
  */
-import { EnhancedAnalyticsManager } from '../../src/analytics/EnhancedAnalyticsManager';
-import { AnalyticsDashboard } from '../../src/analytics/AnalyticsDashboard';
-import { TrendAnalyzer } from '../../src/analytics/TrendAnalyzer';
-import { ComparisonEngine } from '../../src/analytics/ComparisonEngine';
-import { ExportManager } from '../../src/analytics/ExportManager';
-import { AnalyticsAPI } from '../../src/analytics/AnalyticsAPI';
+import { EnhancedAnalyticsManager  } from '../../src/analytics/EnhancedAnalyticsManager';
+import { AnalyticsDashboard  } from '../../src/analytics/AnalyticsDashboard';
+import { TrendAnalyzer  } from '../../src/analytics/TrendAnalyzer';
+import { ComparisonEngine  } from '../../src/analytics/ComparisonEngine';
+import { ExportManager  } from '../../src/analytics/ExportManager';
+import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
 // Environment setup for production variable
 global.__PROD__ = false;
 // IndexedDB mock is provided by Jest setup
@@ -251,7 +251,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 sessionId: 'recovery_test',
                 stageId: 'stage_1',
                 difficulty: 'normal';);
-                startTime: Date.now(),
+               , startTime: Date.now(),
                 previousBestScore: 3000
             }');
             // 破損データの模擬
@@ -424,7 +424,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 sessionId: 'req1_test',
                 stageId: 'stage_1',
                 difficulty: 'normal';);
-                startTime: Date.now(),
+               , startTime: Date.now(),
                 previousBestScore: 3000
             }');
             // インタラクション記録
@@ -511,7 +511,7 @@ async function generateTestData(analyticsManager, count = 100) {
         sessionId: sessionId,
         stageId: 'test_stage',
         difficulty: 'normal';);
-        startTime: Date.now(),
+       , startTime: Date.now(),
         previousBestScore: Math.floor(Math.random() * 5000),
     });
     for (let i = 0; i < count; i++) {

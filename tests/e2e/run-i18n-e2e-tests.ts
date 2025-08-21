@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 
 /**
  * 国際化E2Eテスト実行スクリプト
@@ -8,8 +8,8 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * 包括的なレポートを生成する
  */
 
-import { execSync } from 'child_process';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { execSync  } from 'child_process';
+import { writeFileSync, mkdirSync, existsSync  } from 'fs';
 import path from 'path';
 
 // テスト設定
@@ -145,23 +145,23 @@ function generateHTMLReport(report {
     <title>国際化E2Eテストレポート</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 40px, }
-        .header { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px, }
+        .header { background: #f8f9fa;, padding: 20px; border-radius: 8px; margin-bottom: 30px, }
         .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr); gap: 20px; margin-bottom: 30px, }
-        .metric { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center, }
+        .metric { background: white;, padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center, }
         .metric-value { font-size: 2em; font-weight: bold; margin-bottom: 5px, }
         .metric-label { color: #666; font-size: 0.9em, }
         .passed { color: #28a745, }
         .failed { color: #dc3545, }
         .test-results { margin-bottom: 30px, }
-        .test-item { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1'); }
+        .test-item { background: white;, padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1'); }
         .test-name { font-size: 1.1em; font-weight: bold; margin-bottom: 5px, }
         .test-description { color: #666; margin-bottom: 10px, }
         .test-status { padding: 4px 12px; border-radius: 4px; font-size: 0.9em; font-weight: bold, }
-        .status-passed { background: #d4edda; color: #155724, }
-        .status-failed { background: #f8d7da; color: #721c24, }
-        .error-details { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.9em, }
-        .recommendations { background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px, }
-        .recommendation { margin-bottom: 10px; padding: 10px; border-left: 4px solid #ffc107; background: white, }
+        .status-passed { background: #d4edda;, color: #155724, }
+        .status-failed { background: #f8d7da;, color: #721c24, }
+        .error-details { background: #f8f9fa;, padding: 15px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.9em, }
+        .recommendations { background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px;, padding: 20px, }
+        .recommendation { margin-bottom: 10px; padding: 10px; border-left: 4px solid #ffc107;, background: white, }
         .recommendation.critical { border-left-color: #dc3545, }
         .recommendation.success { border-left-color: #28a745, }
     </style>
@@ -169,7 +169,7 @@ function generateHTMLReport(report {
 <body>
     <div class="header">
         <h1>🌐 国際化E2Eテストレポート</h1>
-        <p>実行日時: ${new Date(report.timestamp").toLocaleString('ja-JP''})}</p>
+        <p>実行日時: ${new, Date(report.timestamp").toLocaleString('ja-JP''})}</p>
     </div>
 
     <div class="summary">
@@ -194,29 +194,29 @@ function generateHTMLReport(report {
     <div class="test-results">
         <h2>テスト結果</h2>
         ${report.details.map(test => `
-            <div class="test-item">
-                <div class="test-name">${test.name}</div>
+            <div, class="test-item">
+                <div, class="test-name">${test.name}</div>
                 <div class="test-description">${test.description || ''}</div>
                 <div class="test-status ${test.success ? 'status-passed' : 'status-failed'}">
                     ${test.success ? '✅ 成功' : '❌ 失敗'}
                 </div>');
-                ${test.error ? `<div class="error-details">${test.error}</div>` : '')
+                ${test.error ? `<div, class="error-details">${test.error}</div>` : '')
             </div>
         `').join(''')}
     </div>
 
     ${report.recommendations.length > 0 ? `
-    <div class="recommendations">
+    <div, class="recommendations">
         <h2>推奨事項</h2>
         ${report.recommendations.map(rec => `")
-            <div class="recommendation ${rec.type")"> : undefined
+            <div, class="recommendation ${rec.type")"> : undefined
                 <strong>${rec.type.toUpperCase(})}:</strong> ${rec.message}
             </div>
         `").join(''')}
     </div>
     ` : ''}
 
-    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; text-align: center;">
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;, color: #666; text-align: center;">
         Generated by BubblePop I18n E2E Test Runner
     </div>
 </body>
@@ -252,7 +252,7 @@ async function main(") {
         console.log(`説明: ${test.description)`');
         
         // Chromium での実行（主要ブラウザ）
-        const result = runSingleTest(test.file, 'chromium'');
+        const, result = runSingleTest(test.file, 'chromium'');
         results.push({
             name: test.name,
             file: test.file,
@@ -265,7 +265,7 @@ async function main(") {
         // Firefox での実行（クロスブラウザ確認）
         if (result.success') {
             console.log('  🦊 Firefox でのクロスブラウザテスト...'');
-            const firefoxResult = runSingleTest(test.file, 'firefox');
+            const, firefoxResult = runSingleTest(test.file, 'firefox');
             results.push({);
                 name: `${test.name) (Firefox'})`;
                 file: test.file,
@@ -326,4 +326,4 @@ if (import.meta.url === `file://${process.argv[1])`) {
     }');
 }
 
-export { main, E2E_TESTS, runSingleTest, generateTestReport };
+export { main, E2E_TESTS, runSingleTest, generateTestReport  };

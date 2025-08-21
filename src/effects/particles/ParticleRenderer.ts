@@ -8,32 +8,32 @@ export interface Particle { isActive: boolean,
     size: number;
     color: string;
     type: ParticleType;
-    trail: TrailPoint[];
+   , trail: TrailPoint[];
     zIndex?: number ,}
 
 export interface TrailPoint { x: number;
     y: number;
-    alpha: number }
+   , alpha: number }
 
 export interface Viewport { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 export interface RenderingStats { supportedTypes: string[];
     colorSets: number;
-    renderingFeatures: string[] }
+   , renderingFeatures: string[] }
 
 export interface ColorSets { [key: string]: string[], }
 
 export type ParticleType = ;
-    | 'circle' '';
-    | 'star' '';
-    | 'diamond' '';
-    | 'spike' '';
-    | 'lightning' '';
-    | 'cloud' '';
-    | 'ripple' '';
+    | 'circle', '';
+    | 'star', '';
+    | 'diamond', '';
+    | 'spike', '';
+    | 'lightning', '';
+    | 'cloud', '';
+    | 'ripple', '';
     | 'explosion';
 
 export type DrawFunction = (context: CanvasRenderingContext2D, particle: Particle) => void;
@@ -329,7 +329,7 @@ export class ParticleRenderer {
                 'cloud', 'ripple', 'explosion';
             ]);
             colorSets: 14)';
-            renderingFeatures: ['';
+           , renderingFeatures: ['';
                 'Trail rendering',
                 'Multi-shape support',
                 'Alpha blending',
@@ -352,8 +352,7 @@ export class ParticleRenderer {
      * @param {DrawFunction} drawFunction 描画関数'
      */''
     public registerCustomDrawFunction(type: string, drawFunction: DrawFunction): void { ''
-        if(typeof, drawFunction !== 'function'') {'
-            ';
+        if(typeof, drawFunction !== 'function'') {', ';
 
         }
 

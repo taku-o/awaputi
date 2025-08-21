@@ -5,30 +5,30 @@
 
 // 型定義
 interface CompressionConfig { compression: {
-        enabled: boolean;
+        enable;d: boolean;
         algorithms: string[];
         defaultLevel: number;
         batchSize: number;
-        compressionThreshold: number };
+       , compressionThreshold: number };
     retention: { rawDataDays: number;
         detailedDataDays: number;
         summaryDataDays: number;
-        maxRetentionDays: number };
+       , maxRetentionDays: number };
     thresholds: { memoryUsage: number;
         recordCount: number;
-        compressionRatio: number }
+       , compressionRatio: number }
 
 interface CompressionState { isCompressing: boolean,
     queue: CompressionJob[];
     history: CompressionHistoryEntry[];
-    statistics: CompressionStatistics
+   , statistics: CompressionStatistics
     ,}
 
 interface CompressionJob { data: any;
     dataType: string;
     options: CompressionOptions;
-    resolve: (result: CompressionResult) => void;
-    reject: (error: Error) => void;
+    resolve: (resul;t: CompressionResult) => void;
+    reject: (erro;r: Error) => void;
     timestamp: number }
 }
 
@@ -55,7 +55,7 @@ interface CompressionStageInfo { algorithm: string;
     originalSize: number;
     compressedSize: number;
     ratio: number;
-    processingTime: number;
+   , processingTime: number;
     error?: string }
 
 interface CompressionMetadata { id: string;
@@ -63,12 +63,12 @@ interface CompressionMetadata { id: string;
     strategies: string[];
     compressionInfo: CompressionInfo;
     timestamp: number;
-    version: string }
+   , version: string }
 
 interface CompressionStatistics { totalCompressed: number;
     totalSaved: number;
     averageRatio: number;
-    lastCompression: number | null }
+   , lastCompression: number | null }
 
 interface CompressionHistoryEntry extends CompressionInfo { timestamp: number }
 
@@ -80,34 +80,34 @@ interface NumericSummary { type: 'numeric_summary';
     min: number;
     max: number;
     standardDeviation: number;
-    percentiles: {
-        p25: number;
+   , percentiles: {
+        p2;5: number;
         p75: number;
         p90: number;
-        p95: number }
+       , p95: number }
 ';
 
 interface ObjectArraySummary { ''
     type: 'object_array_summary';
     count: number;
-    fields: Record<string, FieldInfo>;
+   , fields: Record<string, FieldInfo>;
     dateRange: DateRange | null;
-    sample: any[] ,}
+   , sample: any[] ,}
 
 interface FieldInfo { type: string;
-    count: number;
+   , count: number;
     values?: any[];
     statistics?: NumericSummary;
     uniqueValues?: any[]; }
 
 interface DateRange { start: number,
     end: number;
-    span: number ,}
+   , span: number ,}
 
 export class DataCompressionManager {
     private config: CompressionConfig;
     private compressionState: CompressionState;
-    private compressionAlgorithms: Map<string, (data: any, options?: CompressionOptions) => Promise<any>>;
+    private, compressionAlgorithms: Map<string, (data: any, options?: CompressionOptions) => Promise<any>>;
     private compressionStrategies: Map<string, string[]>;
     private compressionMetadata: Map<string, CompressionMetadata>;
 
@@ -115,7 +115,7 @@ export class DataCompressionManager {
                 algorithms: ['summary', 'sampling', 'aggregation'],
                 defaultLevel: 3, // 1-5段階;
                 batchSize: 1000;
-                compressionThreshold: 5000 // 5000レコード以上で圧縮開始 ,}
+               , compressionThreshold: 5000 // 5000レコード以上で圧縮開始 ,}
             };
             retention: { rawDataDays: 30, // 30日間は生データを保持
                 detailedDataDays: 90, // 90日間は詳細データを保持;
@@ -123,17 +123,17 @@ export class DataCompressionManager {
                 maxRetentionDays: 1095 // 最大3年間保持 ,};
             thresholds: { memoryUsage: 50 * 1024 * 1024, // 50MB
                 recordCount: 10000;
-                compressionRatio: 0.7 // 70%以下に圧縮 ,}
+               , compressionRatio: 0.7 // 70%以下に圧縮 ,}
         };
         // 圧縮状態管理
         this.compressionState = { isCompressing: false,
             queue: [];
             history: [];
-            statistics: {
+           , statistics: {
                 totalCompressed: 0;
                 totalSaved: 0;
                 averageRatio: 0;
-                lastCompression: null ,}))
+               , lastCompression: null ,}))
         // 圧縮アルゴリズム
         this.compressionAlgorithms = new Map(['])';
             ['summary', this.createSummaryCompression.bind(this)],
@@ -189,7 +189,7 @@ export class DataCompressionManager {
             let compressedData = data;
             let compressionInfo = {
                 originalSize: this.calculateDataSize(data);
-                stages: [] ,};
+               , stages: [] ,};
             // 複数段階の圧縮を実行
             for(const, strategy of, strategies) {
                 const stageResult = await this.applyCompressionStage(compressedData, strategy, options);
@@ -223,7 +223,7 @@ export class DataCompressionManager {
             
             return { data: compressedData,
                 compressed: true;
-                metadata: metadata, };
+               , metadata: metadata, };
                 info: compressionInfo }
             } catch (error) {
             console.error('Data compression failed:', error);
@@ -278,7 +278,7 @@ export class DataCompressionManager {
     /**
      * 圧縮段階の適用
      */
-    private async applyCompressionStage(data: any, algorithm: string, options: CompressionOptions): Promise<{ data: any; info: CompressionStageInfo ,}> { const startTime = Date.now();
+    private async applyCompressionStage(data: any, algorithm: string, options: CompressionOptions): Promise<{ data: any;, info: CompressionStageInfo ,}> { const startTime = Date.now();
         const originalSize = this.calculateDataSize(data);
         
         try {
@@ -305,7 +305,7 @@ export class DataCompressionManager {
                     originalSize,
                     compressedSize: originalSize;
                     ratio: 1.0;
-                    processingTime: Date.now() - startTime, };
+                   , processingTime: Date.now() - startTime, };
                     error: error.message }
 }
     }
@@ -328,16 +328,14 @@ export class DataCompressionManager {
         if(array.length === 0) return array;
         ';
         // 数値配列の統計サマリー
-        if(array.every(item => typeof, item === 'number) {'
-            ';
+        if(array.every(item => typeof, item === 'number) {', ';
 
         }
 
             return this.createNumericSummary(array);
         ';
         // オブジェクト配列のサマリー
-        if(array.every(item => typeof, item === 'object) {'
-            ';
+        if(array.every(item => typeof, item === 'object) {', ';
 
         }
 
@@ -347,7 +345,7 @@ export class DataCompressionManager {
         return { ''
             type: 'array_summary';
             length: array.length;
-            sample: array.slice(0, Math.min(10, array.length), };
+           , sample: array.slice(0, Math.min(10, array.length), };
             uniqueValues: [...new Set(array)].slice(0, 100); }
         }
     
@@ -362,7 +360,7 @@ export class DataCompressionManager {
         return { ''
             type: 'numeric_summary';
             count: length;
-            sum: numbers.reduce((sum, n) => sum + n, 0),
+           , sum: numbers.reduce((sum, n) => sum + n, 0),
             mean: numbers.reduce((sum, n) => sum + n, 0) / length,
             median: length % 2 === 0 ?   : undefined
                 (sorted[length / 2 - 1] + sorted[length / 2]) / 2 : ;
@@ -370,10 +368,10 @@ export class DataCompressionManager {
             min: sorted[0];
             max: sorted[length - 1];
             standardDeviation: this.calculateStandardDeviation(numbers);
-            percentiles: {
+           , percentiles: {
                 p25: sorted[Math.floor(length * 0.25)];
                 p75: sorted[Math.floor(length * 0.75)];
-                p90: sorted[Math.floor(length * 0.90)], };
+               , p90: sorted[Math.floor(length * 0.90)], };
                 p95: sorted[Math.floor(length * 0.95)] }
 }
     
@@ -392,7 +390,7 @@ export class DataCompressionManager {
             count: array.length;
             fields: new Map();
             dateRange: null;
-            sample: array.slice(0, Math.min(100, array.length };
+           , sample: array.slice(0, Math.min(100, array.length };
         
         // フィールド分析
         array.forEach(obj => {  );
@@ -409,8 +407,7 @@ export class DataCompressionManager {
                 const fieldInfo = summary.fields.get(key);
                 fieldInfo.count++;
 
-                if(typeof, value === 'number) {'
-                    ';
+                if(typeof, value === 'number) {', ';
 
                 }
 
@@ -439,7 +436,7 @@ export class DataCompressionManager {
         if(timestamps.length > 0) {
             summary.dateRange = {
                 start: Math.min(...timestamps);
-                end: Math.max(...timestamps);
+               , end: Math.max(...timestamps);
         }
                 span: Math.max(...timestamps) - Math.min(...timestamps);
             }
@@ -484,11 +481,11 @@ export class DataCompressionManager {
         return { ''
             type: 'sampled_data';
             originalCount: data.length;
-            sampleCount: samples.length,
+           , sampleCount: samples.length,
             sampleRate: samples.length / data.length,
             samplingStrategy: 'strategic';
             samples: samples;
-            metadata: {
+           , metadata: {
                 compressionRatio: samples.length / data.length, };
                 timestamp: Date.now(); }
 }
@@ -598,7 +595,7 @@ export class DataCompressionManager {
                         count: values.length;
                         sum: processed[field].sum;
                         average: processed[field].sum / values.length;
-                        min: processed[field].min;
+                       , min: processed[field].min;
                 }
                         max: processed[field].max, }
                         median: this.calculateMedian(values); }
@@ -615,7 +612,7 @@ export class DataCompressionManager {
             aggregationPeriod: period;
             aggregationFields: fields;
             originalCount: data.length;
-            aggregatedCount: result.length, };
+           , aggregatedCount: result.length, };
             data: result }
         }
     
@@ -624,8 +621,7 @@ export class DataCompressionManager {
      */
     private getPeriodKey(timestamp: number, period: string): string { const date = new Date(timestamp);
 
-        switch(period) {'
-            ';
+        switch(period) {', ';
 
         }
 
@@ -636,7 +632,7 @@ export class DataCompressionManager {
 
                 return `${date.getFullYear(})-${date.getMonth(})-${ date.getDate()'
             case 'week':);
-                const weekStart = new Date(date);
+                const, weekStart = new, Date(date);
 
                 weekStart.setDate(date.getDate(} - date.getDay(};' }'
 
@@ -686,7 +682,7 @@ export class DataCompressionManager {
         return { ''
             type: 'delta_compressed';
             deltaFields: deltaFields;
-            originalCount: data.length, };
+           , originalCount: data.length, };
             data: result }
         }
     
@@ -742,7 +738,7 @@ export class DataCompressionManager {
             strategies,;
             compressionInfo,
             timestamp: Date.now(''';
-            version: '1.0);
+           , version: '1.0);
         })
     
     /**
@@ -818,12 +814,12 @@ export class DataCompressionManager {
         historyCount: number;
         metadataCount: number;
         algorithms: string[];
-        strategies: Record<string, string[]>, } { return { ...this.compressionState.statistics,
+       , strategies: Record<string, string[]>, } { return { ...this.compressionState.statistics,
             queueLength: this.compressionState.queue.length;
             isCompressing: this.compressionState.isCompressing;
             historyCount: this.compressionState.history.length;
             metadataCount: this.compressionMetadata.size;
-            algorithms: Array.from(this.compressionAlgorithms.keys(), };
+           , algorithms: Array.from(this.compressionAlgorithms.keys(), };
             strategies: Object.fromEntries(this.compressionStrategies); }
         }
     

@@ -14,7 +14,7 @@ interface ErrorStats { totalErrors: number,
     errorsByType: Map<string, number>;
     errorsByComponent: Map<string, number>;
     recoveredErrors: number;
-    unrecoverableErrors: number ,}
+   , unrecoverableErrors: number ,}
 
 interface ErrorMetadata { [key: string]: any;
     feature?: string;
@@ -27,33 +27,33 @@ interface ErrorMetadata { [key: string]: any;
 
 interface ErrorStatsOutput { mainErrorHandler: any,
     localErrorHandler: any;
-    localMode: {
-        totalErrors: number;
-        errorsByType: Record<string, number>;
+   , localMode: {
+        totalError;s: number;
+       , errorsByType: Record<string, number>;
         errorsByComponent: Record<string, number>;
         recoveredErrors: number;
         unrecoverableErrors: number;
-        recoveryRate: number ,}
+       , recoveryRate: number ,}
 
 interface InitializationErrorConfig { enableDeveloperGuidance?: boolean;
     [key: string]: any, }
 
 interface InitializationGuidanceOptions { component: string,
     error: string;
-    suggestions: string[] ,}
+   , suggestions: string[] ,}
 
 interface ErrorInfo { error: string;
     stack?: string;
     context: string;
     metadata: ErrorMetadata;
-    timestamp: string }
+   , timestamp: string }
 
 export default class LocalModeErrorHandler { /**
      * エラー統計
      */
     private static _errorStats: ErrorStats = {
         totalErrors: 0;
-        errorsByType: new Map(),
+       , errorsByType: new Map(),
         errorsByComponent: new Map()';
     static handleError(error: Error, context: string = 'GENERAL', metadata: ErrorMetadata = {)): void {'
         this._errorStats.totalErrors++;''
@@ -148,12 +148,12 @@ export default class LocalModeErrorHandler { /**
      */
     static getErrorStats(): ErrorStatsOutput { return { mainErrorHandler: this._getMainErrorHandlerStats(),
             localErrorHandler: this._getLocalErrorHandlerStats();
-            localMode: {
+           , localMode: {
                 totalErrors: this._errorStats.totalErrors;
                 errorsByType: Object.fromEntries(this._errorStats.errorsByType);
                 errorsByComponent: Object.fromEntries(this._errorStats.errorsByComponent);
                 recoveredErrors: this._errorStats.recoveredErrors;
-                unrecoverableErrors: this._errorStats.unrecoverableErrors, };
+               , unrecoverableErrors: this._errorStats.unrecoverableErrors, };
                 recoveryRate: this._calculateRecoveryRate(); }
 }
     
@@ -165,7 +165,7 @@ export default class LocalModeErrorHandler { /**
             errorsByType: new Map();
             errorsByComponent: new Map();
             recoveredErrors: 0;
-            unrecoverableErrors: 0 }
+           , unrecoverableErrors: 0 }
     
     /**
      * LocalExecutionErrorHandlerに委譲
@@ -175,8 +175,7 @@ export default class LocalModeErrorHandler { /**
             ...metadata,
             localModeContext: true,
             timestamp: new Date().toISOString()';
-        if(context.includes('RESOURCE) {'
-            ';
+        if(context.includes('RESOURCE) {', ';
 
         ,}
 
@@ -196,7 +195,7 @@ export default class LocalModeErrorHandler { /**
      */
     private static _handleErrorLocally(error: Error, context: string, metadata: ErrorMetadata): void { const errorInfo: ErrorInfo = {
             error: error.message;
-            stack: error.stack;
+           , stack: error.stack;
             context,
             metadata,
             timestamp: new Date().toISOString( ,};
@@ -247,13 +246,11 @@ export default class LocalModeErrorHandler { /**
      * @private
      */'
     private static _mitigateSecurityIssue(policy: string): void { ''
-        const mitigations: Record<string, (') => void> = {''
-            'X-Frame-Options': (') => { ' }
+        const mitigations: Record<string, (') => void> = {'', 'X-Frame-Options': (') => { ' }
 
                 console.warn('X-Frame-Options policy detected, optimizing for local execution''); }
 
-            },''
-            'Content-Security-Policy': (') => {  ' }
+            },'', 'Content-Security-Policy': (') => {  ' }
 
                 console.warn('CSP policy detected, applying local execution adjustments'); }'
 };
@@ -267,18 +264,15 @@ export default class LocalModeErrorHandler { /**
      * @private
      */'
     private static _applyInitializationFallback(component: string, error: Error): void { ''
-        const fallbacks: Record<string, (') => void> = {''
-            'faviconGenerator': (') => { ' }
+        const fallbacks: Record<string, (') => void> = {'', 'faviconGenerator': (') => { ' }
 
                 console.warn('Favicon generation failed, continuing without favicons''); }
 
-            },''
-            'metaTagOptimizer': (') => {  ' }
+            },'', 'metaTagOptimizer': (') => {  ' }
 
                 console.warn('Meta tag optimization failed, using default tags''); }
 
-            },''
-            'developerGuidance': (') => {  ' }
+            },'', 'developerGuidance': (') => {  ' }
 
                 console.warn('Developer guidance system failed, continuing silently'); }'
 };
@@ -291,8 +285,7 @@ export default class LocalModeErrorHandler { /**
      * 初期化提案取得
      * @private'
      */''
-    private static _getInitializationSuggestions(component: string, error: Error): string[] { const suggestions: Record<string, string[]> = {''
-            'faviconGenerator': ['';
+    private static _getInitializationSuggestions(component: string, error: Error): string[] { const suggestions: Record<string, string[]> = {'', 'faviconGenerator': ['';
                 'Check if Canvas API is supported in this browser',
                 'Verify localStorage permissions for caching',]';
                 'Try running with a local server instead of file://']';
@@ -313,7 +306,7 @@ export default class LocalModeErrorHandler { /**
     private static _getMainErrorHandlerStats(): any { try { }
 
             return (LocalExecutionErrorHandler, as any).errorHandlerInstance? .getErrorStats?.() || {};''
-        } catch (error) { : undefined' '
+        } catch (error) { : undefined', '
             return { error: 'Stats unavailable' ,}
     }
     
@@ -324,7 +317,7 @@ export default class LocalModeErrorHandler { /**
     private static _getLocalErrorHandlerStats(): any { try { }
 
             return (LocalExecutionErrorHandler, as any).getDebugInfo? .() || {};''
-        } catch (error) { : undefined' '
+        } catch (error) { : undefined', '
             return { error: 'Debug info unavailable' ,}
     }
     

@@ -1,33 +1,33 @@
 /**
  * GameBalanceCompatibilityテスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Types
 interface MockErrorHandler {
-    handleError: jest.Mock<(error: Error, context?: any) => void>;
+    handleError: jest.Mock<(erro;r: Error, context?: any) => void>;
 }
 interface MockLoggingSystem {
-    warn: jest.Mock<(...args: any[]) => void>;
-    info: jest.Mock<(...args: any[]) => void>;
-    error: jest.Mock<(...args: any[]) => void>;
-    debug: jest.Mock<(...args: any[]) => void>;
+    warn: jest.Mock<(...arg;s: any[]) => void>;
+    info: jest.Mock<(...arg;s: any[]) => void>;
+    error: jest.Mock<(...arg;s: any[]) => void>;
+    debug: jest.Mock<(...arg;s: any[]) => void>;
 }
 interface ScoreConfig {
-    baseScores: { [key: string]: number };
+    baseScores: { [ke;y: string]: number };
     combo: { multiplierIncrement: number };
     ageBonus: { earlyBonus: number };
 }
 interface StageConfig {
-    unlockRequirements: { [key: string]: number };
+    unlockRequirements: { [ke;y: string]: number };
     difficulty: { [key: string]: { spawnRate: number } };
 }
 interface ItemConfig {
-    baseCosts: { [key: string]: number };
+    baseCosts: { [ke;y: string]: number };
     effects: { [key: string]: number };
     maxLevels: { [key: string]: number };
 }
 interface BubbleConfig {
-    maxAge: { [key: string]: number };
+    maxAge: { [ke;y: string]: number };
     health: { [key: string]: number };
     specialEffects: { [key: string]: { [effect: string]: number } };
 }
@@ -36,10 +36,10 @@ interface GameConfigInterface {
     getStageConfig: jest.Mock<() => StageConfig>;
     getItemConfig: jest.Mock<() => ItemConfig>;
     getBubbleConfig: jest.Mock<() => BubbleConfig>;
-    calculateScore: jest.Mock<(bubbleType: string, ageRatio: number) => number>;
-    calculateComboMultiplier: jest.Mock<(comboCount: number) => number>;
-    calculateItemCost: jest.Mock<(itemId: string, currentLevel: number) => number>,
-    isStageUnlocked: jest.Mock<(stageId: string, playerTAP: number') => boolean>;
+    calculateScore: jest.Mock<(bubbleTyp;e: string, ageRatio: number) => number>;
+    calculateComboMultiplier: jest.Mock<(comboCoun;t: number) => number>;
+    calculateItemCost: jest.Mock<(itemI;d: string, currentLevel: number) => number>,
+    isStageUnlocked: jest.Mock<(stageI;d: string, playerTAP: number') => boolean>;
 }
 // ErrorHandlerとLoggingSystemをモック
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
@@ -56,8 +56,8 @@ jest.mock('../../src/core/LoggingSystem.js', () => ({
     });
 })');
 // Import after mocking
-import { BALANCE_CONFIG, BalanceHelper } from '../../src/core/GameBalanceCompatibility.js';
-import { getGameConfig } from '../../src/config/GameConfig.js';
+import { BALANCE_CONFIG, BalanceHelper  } from '../../src/core/GameBalanceCompatibility.js';
+import { getGameConfig  } from '../../src/config/GameConfig.js';
 // 警告出力をモック
 const originalConsoleWarn = console.warn;
 const originalConsoleError = console.error;

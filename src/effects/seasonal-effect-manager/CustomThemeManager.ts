@@ -10,8 +10,8 @@ export interface CustomTheme { id: string,
     author: string;
     created: string;
     version: string;
-    colors: {
-        primary: string[];
+   , colors: {
+        primar;y: string[];
         secondary?: string[];
         accent?: string[]; ,};
     particles: { types: string[];
@@ -27,16 +27,16 @@ export interface CustomTheme { id: string,
 export interface ThemeHistoryEntry { action: 'save' | 'delete' | 'import' | 'export',
     themeName: string;
     timestamp: string;
-    themeId: string ,}
+   , themeId: string ,}
 
 export interface ThemeListItem { name: string;
     displayName: string;
     author: string;
     created: string;
-    id: string }
+   , id: string }
 
 export interface ThemeStatistics { totalThemes: number;
-    authorCounts: Record<string, number>,
+   , authorCounts: Record<string, number>,
     oldestTheme?: CustomTheme;
     newestTheme?: CustomTheme;
     }
@@ -44,7 +44,7 @@ export interface ThemeStatistics { totalThemes: number;
 export interface ThemeBackup { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[];
     timestamp: string;
-    version: string ,}
+   , version: string ,}
 
 export interface StorageData { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[]
@@ -54,7 +54,7 @@ export class CustomThemeManager {
     private customThemes: Map<string, CustomTheme>;
     private userThemes: Map<string, CustomTheme>;
     private themeHistory: ThemeHistoryEntry[];
-    private readonly maxHistorySize: number,
+    private readonly, maxHistorySize: number,
     private readonly storageKey: string,
     
     constructor() {
@@ -87,8 +87,7 @@ export class CustomThemeManager {
                 name,
                 author,
                 created: new Date().toISOString(''';
-                version: '1.0.0' ,}))'
-            ')';
+               , version: '1.0.0' ,}))', ')';
             this.customThemes.set(name, themeData);''
             this._addToHistory('save', name, themeData);
             this._persistToStorage();
@@ -129,7 +128,7 @@ export class CustomThemeManager {
             displayName: theme.name;
             author: theme.author;
             created: theme.created);
-            id: theme.id ,}
+           , id: theme.id ,}
         });
     }
     
@@ -181,7 +180,7 @@ export class CustomThemeManager {
             ...sourceTheme,
             name: newName,
             author: sourceTheme.author + ' (copy')';
-            created: new Date().toISOString( ,};
+           , created: new Date().toISOString( ,};
         
         return this.saveCustomTheme(newName, duplicatedTheme);
     }
@@ -302,7 +301,7 @@ export class CustomThemeManager {
             action,
             themeName,
             timestamp: new Date().toISOString();
-            themeId: themeData.id ,};
+           , themeId: themeData.id ,};
         this.themeHistory.push(historyEntry);
         
         // 履歴サイズ制限
@@ -316,7 +315,7 @@ export class CustomThemeManager {
     private _persistToStorage(): void { try {
             const data: StorageData = {
                 themes: Array.from(this.customThemes.entries();
-                history: this.themeHistory };
+               , history: this.themeHistory };
             localStorage.setItem(this.storageKey, JSON.stringify(data);''
         } catch (error) { console.error('Failed to persist themes to storage:', error }
     }
@@ -329,7 +328,7 @@ export class CustomThemeManager {
             themes: Array.from(this.customThemes.entries(),
             history: this.themeHistory,
             timestamp: new Date().toISOString(''';
-            version: '1.0.0' ,}))
+           , version: '1.0.0' ,}))
         );
         return JSON.stringify(backup, null, 2);
     }

@@ -9,33 +9,33 @@
  * - パフォーマンス推奨エンジン
  */
 
-import { getErrorHandler, ErrorHandler } from '../core/ErrorHandler';''
-import { PerformanceThresholdMonitor } from './performance-warning/PerformanceThresholdMonitor';''
-import { WarningNotificationManager } from './performance-warning/WarningNotificationManager';''
-import { PerformanceAlertGenerator } from './performance-warning/PerformanceAlertGenerator';
+import { getErrorHandler, ErrorHandler  } from '../core/ErrorHandler';''
+import { PerformanceThresholdMonitor  } from './performance-warning/PerformanceThresholdMonitor';''
+import { WarningNotificationManager  } from './performance-warning/WarningNotificationManager';''
+import { PerformanceAlertGenerator  } from './performance-warning/PerformanceAlertGenerator';
 
 // Type definitions
 interface SuggestionEngine { enabled: boolean,
     suggestions: Map<string, Suggestion>;
     customSuggestions: Map<string, Suggestion>;
     lastSuggestionTime: number;
-    suggestionCooldown: number ,}
+   , suggestionCooldown: number ,}
 
 interface Suggestion { title: string;
     description: string;
     actionLabel: string;
-    action: () => void }
+   , action: () => void }
 }
 
 interface ViolationData { metric: string;
     value: number | string;
     threshold: number | string;
-    severity: string;
+   , severity: string;
     details?: any }
 
 interface Violation { id: string;
     severity: string;
-    data: ViolationData
+   , data: ViolationData
     }
 
 interface Alert { id: string;
@@ -44,10 +44,10 @@ interface Alert { id: string;
     details: string;
     suggestions: string[];
     metrics: ViolationData;
-    priority: string }
+   , priority: string }
 
 interface WarningConfig { title: string;
-    message: string;
+   , message: string;
     details?: string;
     suggestions?: string[];
     metrics?: ViolationData;
@@ -56,11 +56,11 @@ interface WarningConfig { title: string;
 interface SystemStats { thresholdMonitor: any,
     notifications: any;
     alerts: any;
-    suggestions: {
-        totalSuggestions: number;
-        lastSuggestionTime: number ,};
+   , suggestions: {
+        totalSuggestion;s: number;
+       , lastSuggestionTime: number ,};
     systemStatus: { initialized: boolean;
-        destroyed: boolean }
+       , destroyed: boolean }
 
 interface ConfigOptions { thresholds?: any;
     notifications?: any;
@@ -82,7 +82,7 @@ export class PerformanceWarningSystem {
     private alertGenerator: PerformanceAlertGenerator;
     private isInitialized: boolean;
     private isDestroyed: boolean;
-    private suggestionEngine: SuggestionEngine;
+    private, suggestionEngine: SuggestionEngine;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -101,7 +101,7 @@ export class PerformanceWarningSystem {
             enabled: true;
             suggestions: new Map();
             customSuggestions: new Map();
-            lastSuggestionTime: 0;
+           , lastSuggestionTime: 0;
     }
             suggestionCooldown: 30000 // 30 seconds }
         };
@@ -141,7 +141,7 @@ export class PerformanceWarningSystem {
                     title: alert.title;
                     message: alert.message);
                     details: alert.details);
-                    suggestions: alert.suggestions,);
+                   , suggestions: alert.suggestions,);
                     metrics: alert.metrics);
             ),;
             ' }'
@@ -176,12 +176,11 @@ export class PerformanceWarningSystem {
                 // Send high-priority notification
             }
                 this.notificationManager.sendNotification(}
-                    `escalated_${alert.id}`,)'
-                    'critical');
+                    `escalated_${alert.id}`,)', 'critical');
                     {
                         title: `ESCALATED: ${alert.title}`,)'
                         message: alert.message),
-                        details: `Escalated due to repeated violations: ${ alert.details'}`,' }
+                        details: `Escalated due to repeated, violations: ${ alert.details'}`,' }
 
                         suggestions: ['emergency_mode', ...alert.suggestions.slice(0, 2})]
                     }
@@ -214,8 +213,7 @@ export class PerformanceWarningSystem {
                 actionLabel: 'Reduce Quality',)';
                 action: (') => this.applySuggestion('reduce_quality'') ,}
 
-            },''
-            'close_apps': { ''
+            },'', 'close_apps': { ''
                 title: 'Close Background Apps',
                 description: 'Close other applications to free up resources',
                 actionLabel: 'Guide Me',
@@ -358,12 +356,12 @@ export class PerformanceWarningSystem {
             return { thresholdMonitor: this.thresholdMonitor.getMonitoringStats(),
                 notifications: this.notificationManager.getNotificationStats();
                 alerts: this.alertGenerator.getStats();
-                suggestions: {
+               , suggestions: {
                     totalSuggestions: this.suggestionEngine.suggestions.size + this.suggestionEngine.customSuggestions.size, };
                     lastSuggestionTime: this.suggestionEngine.lastSuggestionTime }
                 };
                 systemStatus: { initialized: this.isInitialized;
-                    destroyed: this.isDestroyed }
+                   , destroyed: this.isDestroyed }
 
             };''
         } catch (error) {
@@ -373,9 +371,9 @@ export class PerformanceWarningSystem {
                 notifications: {};
                 alerts: {};
                 suggestions: { totalSuggestions: 0;
-                    lastSuggestionTime: 0 };
+                   , lastSuggestionTime: 0 };
                 systemStatus: { initialized: false;
-                    destroyed: false }
+                   , destroyed: false }
             }
     }
     

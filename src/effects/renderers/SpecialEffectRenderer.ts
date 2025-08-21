@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * Special effect configuration interface
@@ -7,7 +7,7 @@ interface SpecialEffectConfig { name: string,
     particleCount: number;
     colors: string[];
     duration: number;
-    priority: number ,}
+   , priority: number ,}
 
 /**
  * Special effects map interface
@@ -30,13 +30,13 @@ interface Particle { x: number,
     gravity: number;
     friction: number;
     bounce?: number;
-    type: string;
+   , type: string;
     rotationSpeed?: number;
     scaleSpeed?: number;
     maxTrailLength?: number; ,}
-    trail?: Array<{ x: number; y: number }>;
+    trail?: Array<{ x: number;, y: number }>;
     pulseSpeed?: number;
-    vortexCenter?: { x: number; y: number }
+    vortexCenter?: { x: number;, y: number }
     vortexStrength?: number;
 }
 
@@ -55,7 +55,7 @@ interface ParticleManager { particles: Particle[],
  */
 export class SpecialEffectRenderer {
     private particleManager: ParticleManager;
-    private specialEffects: SpecialEffects';
+    private, specialEffects: SpecialEffects';
 
     constructor(particleManager: ParticleManager) {
         this.particleManager = particleManager;
@@ -76,58 +76,58 @@ export class SpecialEffectRenderer {
                 particleCount: 15,
                 colors: ['#4B0082', '#8A2BE2', '#9932CC', '#BA55D3],
                 duration: 800;
-                priority: 5 ,};
+               , priority: 5 ,};
             vortex: { ''
                 name: '渦',
                 particleCount: 25,
                 colors: ['#00CED1', '#20B2AA', '#48D1CC', '#00FFFF],
                 duration: 2000;
-                priority: 7 ,};
+               , priority: 7 ,};
             // エネルギー効果
             energy_discharge: { ''
                 name: 'エネルギー放出',
                 particleCount: 30,
                 colors: ['#00FF00', '#32CD32', '#7FFF00', '#ADFF2F],
                 duration: 1500;
-                priority: 8 ,};
+               , priority: 8 ,};
             plasma_wave: { ''
                 name: 'プラズマ波',
                 particleCount: 18,
                 colors: ['#FF00FF', '#DA70D6', '#EE82EE', '#DDA0DD],
                 duration: 1000;
-                priority: 7 ,};
+               , priority: 7 ,};
             // 魔法効果
             magic_circle: { ''
                 name: '魔法陣',
                 particleCount: 12,
                 colors: ['#4169E1', '#6495ED', '#87CEEB', '#B0E0E6],
                 duration: 3000;
-                priority: 9 ,};
+               , priority: 9 ,};
             teleport: { ''
                 name: 'テレポート',
                 particleCount: 16,
                 colors: ['#9370DB', '#8B008B', '#9400D3', '#9932CC],
                 duration: 1200;
-                priority: 8 ,};
+               , priority: 8 ,};
             // 自然効果
             wind_gust: { ''
                 name: '突風',
                 particleCount: 22,
                 colors: ['#F0F8FF', '#E6E6FA', '#D3D3D3', '#C0C0C0],
                 duration: 1800;
-                priority: 4 ,};
+               , priority: 4 ,};
             fire_burst: { ''
                 name: '炎上',
                 particleCount: 28,
                 colors: ['#DC143C', '#B22222', '#FF0000', '#FF4500],
                 duration: 2200;
-                priority: 7 ,};
+               , priority: 7 ,};
             ice_shatter: { ''
                 name: '氷砕',
                 particleCount: 20,
                 colors: ['#B0E0E6', '#ADD8E6', '#87CEEB', '#E0FFFF],
                 duration: 1600;
-                priority: 6 ,}
+               , priority: 6 ,}
         };
         console.log('[SpecialEffectRenderer] 初期化完了);
     }

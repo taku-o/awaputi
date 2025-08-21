@@ -7,7 +7,7 @@
 export interface MotionManager { visualAccessibilityManager: VisualAccessibilityManager,
     accessibilityManager: AccessibilityManager;
     gameEngine: GameEngine;
-    activeAnimations: Map<string, AnimationData>,
+   , activeAnimations: Map<string, AnimationData>,
     pausedAnimations: Set<string>;
     animationObservers: Map<string, MutationObserver>,
     performanceMonitor: PerformanceMonitor;
@@ -15,7 +15,7 @@ export interface MotionManager { visualAccessibilityManager: VisualAccessibility
     userPreferences: UserPreferences;
     currentLevel: MotionLevel;
     config: MotionConfig;
-    setMotionLevel: (level: MotionLevel) => void ,}
+   , setMotionLevel: (leve;l: MotionLevel) => void ,}
 }
 
 export interface VisualAccessibilityManager { [key: string]: any, }
@@ -31,7 +31,7 @@ export interface AnimationData { id: string,
     startTime: number;
     duration: number | null;
     isActive: boolean;
-    isPaused: boolean ,}
+   , isPaused: boolean ,}
 
 export interface AnimationOptions { duration?: number;
     intensity?: number;
@@ -42,62 +42,62 @@ export interface AnimationOptions { duration?: number;
 
 export interface PerformanceMonitor { frameRate: number,
     droppedFrames: number;
-    lastFrameTime: number ,}
+   , lastFrameTime: number ,}
 
 export interface MotionStats { animationsControlled: number;
     animationsPaused: number;
     animationsReduced: number;
-    performanceAdjustments: number }
+   , performanceAdjustments: number }
 
 export interface UserPreferences { autoReduceOnPerformance: boolean;
     granularControls: GranularControls;
-    selectiveReduction: SelectiveReduction
+   , selectiveReduction: SelectiveReduction
     }
 
 export interface GranularControls { particleDensity: number;
     cameraMovement: number;
-    backgroundMotion: number }
+   , backgroundMotion: number }
 
 export interface SelectiveReduction { disableRotation: boolean;
     disableScaling: boolean;
-    disableParallax: boolean }
+   , disableParallax: boolean }
 
 export interface MotionConfig { vestibularSafety: boolean;
     vestibularGuidelines: VestibularGuidelines;
-    motionCategories: Record<string, MotionCategoryConfig>, }
+   , motionCategories: Record<string, MotionCategoryConfig>, }
 
 export interface VestibularGuidelines { maxRotationSpeed: number,
     maxScaleChange: number;
     maxTranslationSpeed: number;
-    maxFlashFrequency: number ,}
+   , maxFlashFrequency: number ,}
 
 export interface MotionCategoryConfig { enabled: boolean;
     intensity: number;
     duration: number;
-    vestibularSafe: boolean }
+   , vestibularSafe: boolean }
 
 export interface AnimationStatistics { active: number;
     paused: number;
     observed: number;
     performance: PerformanceMetrics;
-    categories: Record<string, CategoryStats>,
+   , categories: Record<string, CategoryStats>,
     totalControlled: number;
     totalPaused: number;
-    totalReduced: number ,}
+   , totalReduced: number ,}
 
 export interface PerformanceMetrics { frameRate: number;
     droppedFrames: number;
-    lastFrameTime: number }
+   , lastFrameTime: number }
 
 export interface CategoryStats { active: number;
-    paused: number }
+   , paused: number }
 
 // 列挙型
 export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhanced';
 ';
 
 export type AnimationCategory = '';
-    | 'general' | 'particles' | 'camera' | 'background' | 'ui' '';
+    | 'general' | 'particles' | 'camera' | 'background' | 'ui', '';
     | 'parallax' | 'transitions' | 'effects' | 'gameplay';
 
 export type AnimationState = 'active' | 'paused' | 'stopped' | 'completed';
@@ -117,13 +117,13 @@ export const DEFAULT_MOTION_CONFIG: Partial<MotionConfig> = { vestibularSafety: 
     vestibularGuidelines: {
         maxRotationSpeed: 45, // degrees per second;
         maxScaleChange: 1.5;
-        maxTranslationSpeed: 100, // pixels per second;
+       , maxTranslationSpeed: 100, // pixels per second;
         maxFlashFrequency: 3 // flashes per second ,}
 };
 export const DEFAULT_ANIMATION_OPTIONS: AnimationOptions = { duration: DEFAULT_ANIMATION_DURATION,
     intensity: 1.0;
     speed: 1.0;
-    vestibularSafe: true ,};
+   , vestibularSafe: true ,};
 // ユーティリティ関数
 export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVEL_HIERARCHY.includes(level, as MotionLevel); }
 
@@ -179,7 +179,7 @@ export function createMotionWarningStyle(): string { return `
             left: 0;
             background: #ff6b6b;
             color: white;
-            padding: 2px 6px;
+           , padding: 2px 6px;
             border-radius: 3px,
             font-size: 11px,
             z-index: 1000, }
@@ -192,18 +192,18 @@ export class AnimationController {
     private accessibilityManager: AccessibilityManager;
     private gameEngine: GameEngine;
     // アニメーション状態管理
-    private activeAnimations: Map<string, AnimationData>;
+    private, activeAnimations: Map<string, AnimationData>;
     private pausedAnimations: Set<string>;
     private animationObservers: Map<string, MutationObserver>;
     
     // CSS アニメーション管理
     private dynamicStyleSheet: HTMLStyleElement | null = null;
-    private cssRules: Map<string, string> = new Map();
+    private, cssRules: Map<string, string> = new Map();
     
     // パフォーマンス監視
     private performanceMonitor: PerformanceMonitor;
     // 統計情報
-    private stats: MotionStats;
+    private, stats: MotionStats;
 
     constructor(motionManager: MotionManager) {
         this.motionManager = motionManager;
@@ -245,7 +245,7 @@ export class AnimationController {
             /* モーションレベル基本設定 */
             .motion-none * { animation: none !important,
                 transition: none !important;
-                transform: none !important ,}
+               , transform: none !important ,}
             
             .motion-essential * { animation-duration: 0.1s !important;
                 transition-duration: 0.1s !important, }
@@ -350,8 +350,7 @@ export class AnimationController {
     registerAnimation(element: HTMLElement, category: AnimationCategory = 'general', options: AnimationOptions = { ): string | null {'
         try {'
             if(!isHTMLElement(element)) {''
-                throw new Error('Invalid, element provided); }'
-';
+                throw new Error('Invalid, element provided); }', ';
 
             if(!isValidAnimationCategory(category) { ' }'
 
@@ -369,7 +368,7 @@ export class AnimationController {
                 startTime: Date.now();
                 duration: mergedOptions.duration || null;
                 isActive: true;
-                isPaused: false ,};
+               , isPaused: false ,};
             this.activeAnimations.set(id, animationData);
             this.stats.animationsControlled++;
             
@@ -468,24 +467,21 @@ export class AnimationController {
     private applySelectiveReduction(element: HTMLElement, category: string): void { const selective = this.motionManager.userPreferences.selectiveReduction;
         const currentTransform = element.style.transform;
 
-        if(selective.disableRotation && currentTransform? .includes('rotate) {'
-            ';
+        if(selective.disableRotation && currentTransform? .includes('rotate) {', ';
 
         }
 
             element.style.transform = currentTransform.replace(/rotate\([^)]*\')/g, '''); }
         }
 
-        if(selective.disableScaling && currentTransform?.includes('scale) {'
-            ';
+        if(selective.disableScaling && currentTransform?.includes('scale) {', ';
 
         }
 
             element.style.transform = currentTransform.replace(/scale\([^)]*\')/g, '''); }
         }
 
-        if(selective.disableParallax && category === 'parallax'') {'
-            ';
+        if(selective.disableParallax && category === 'parallax'') {', ';
 
         }
 
@@ -714,15 +710,15 @@ export class AnimationController {
     getAnimationStats(): AnimationStatistics { return { active: this.activeAnimations.size,
             paused: this.pausedAnimations.size;
             observed: this.animationObservers.size;
-            performance: {
+           , performance: {
                 frameRate: this.performanceMonitor.frameRate;
-                droppedFrames: this.performanceMonitor.droppedFrames, };
+               , droppedFrames: this.performanceMonitor.droppedFrames, };
                 lastFrameTime: this.performanceMonitor.lastFrameTime }
             };
             categories: this.getAnimationsByCategory();
             totalControlled: this.stats.animationsControlled;
             totalPaused: this.stats.animationsPaused;
-            totalReduced: this.stats.animationsReduced;
+           , totalReduced: this.stats.animationsReduced;
         },
     }
     

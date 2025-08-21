@@ -4,29 +4,29 @@
  * ユーザー進捗の保存・復元、ツアー進捗追跡、ステップ管理を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
 export interface UserProgress { completedTutorials: Set<string>,
     currentTutorialId: string | null;
     currentStepIndex: number;
     startTime: number | null;
-    pausedTime: number | null ,}
+   , pausedTime: number | null ,}
 
 export interface TourProgress { lastActiveStep: number;
     stepStartTime: number;
     stepAttempts: number;
     tourType: string | null;
     completedSteps: string[];
-    skippedSteps: string[] }
+   , skippedSteps: string[] }
 
 export interface SavedProgress { completedTutorials: string[];
     currentTutorialId: string | null;
     currentStepIndex: number;
     startTime: number | null;
     pausedTime: number | null;
-    tourProgress: TourProgress
+   , tourProgress: TourProgress
     }
 
 export interface TutorialStep { id: string;
@@ -44,7 +44,7 @@ export interface TourSpecificProgress { tourId: string,
     currentStep: number;
     totalSteps: number;
     completedSteps: string[];
-    stepDetails: StepDetail[]
+   , stepDetails: StepDetail[]
     ,}
 
 export interface StepDetail { id: string;
@@ -52,7 +52,7 @@ export interface StepDetail { id: string;
     isCompleted: boolean;
     isCurrent: boolean;
     attempts: number;
-    lastAttemptTime: number | null }
+   , lastAttemptTime: number | null }
 
 export interface ProgressInfo { completedTutorials: string[];
     currentTutorialId: string | null;
@@ -60,18 +60,18 @@ export interface ProgressInfo { completedTutorials: string[];
     isRunning: boolean;
     isPaused: boolean;
     elapsedTime: number;
-    startTime: number | null }
+   , startTime: number | null }
 
 export interface ProgressStatistics { totalCompletedTutorials: number;
     totalStepsCompleted: number;
     totalTimeSpent: number;
     averageTimePerTutorial: number;
     mostRecentCompletion: number | null;
-    completionRate: number }
+   , completionRate: number }
 
 export interface StepAttemptData { stepKey: string;
     attempts: number;
-    lastAttemptTime: number | null }
+   , lastAttemptTime: number | null }
 
 /**
  * チュートリアル進捗管理クラス
@@ -81,7 +81,7 @@ export class TutorialProgressManager {
     // ユーザー進捗データ
     private userProgress: UserProgress;
     // ステップ試行回数
-    private stepAttempts: Map<string, number>;
+    private, stepAttempts: Map<string, number>;
     
     // スキップされたステップ
     private skippedSteps: string[];
@@ -116,7 +116,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`進捗管理初期化エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`進捗管理初期化エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -136,7 +136,7 @@ export class TutorialProgressManager {
 
             } catch (error) { }
 
-            this.loggingSystem.log(`ユーザー進捗読み込みエラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`ユーザー進捗読み込みエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -153,11 +153,11 @@ export class TutorialProgressManager {
                 startTime: this.userProgress.startTime;
                 pausedTime: this.userProgress.pausedTime;
                 // ガイドツアー専用の進捗情報
-                tourProgress: {
+               , tourProgress: {
                     lastActiveStep: currentStep,
                     stepStartTime: Date.now()';
                     stepAttempts: this.stepAttempts.get(this.userProgress.currentTutorialId || '') || 0;
-                    tourType: currentTutorial? .tourType || null, : undefined';
+                   , tourType: currentTutorial? .tourType || null, : undefined';
                     completedSteps: this.getCompletedStepsForCurrentTour(currentTutorial, currentStep),
                     skippedSteps: this.getSkippedStepsForCurrentTour()';
             localStorage.setItem('awaputi_tutorial_progress', JSON.stringify(progress));
@@ -168,8 +168,8 @@ export class TutorialProgressManager {
             }
                 this.saveTourSpecificProgress(currentTutorial, currentStep); }
 
-            } catch (error) { : undefined' '
-            this.loggingSystem.log(`ユーザー進捗保存エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            } catch (error) { : undefined', '
+            this.loggingSystem.log(`ユーザー進捗保存エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -189,7 +189,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`チュートリアル開始設定エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`チュートリアル開始設定エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -210,7 +210,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`チュートリアル完了設定エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`チュートリアル完了設定エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -223,7 +223,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`チュートリアル一時停止エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`チュートリアル一時停止エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -235,7 +235,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`チュートリアル再開エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`チュートリアル再開エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -250,7 +250,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`ステップ進行エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`ステップ進行エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -292,7 +292,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`ステップスキップマークエラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`ステップスキップマークエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -310,7 +310,7 @@ export class TutorialProgressManager {
                 lastAccessTime: Date.now();
                 currentStep: currentStep;
                 totalSteps: currentTutorial.steps.length;
-                completedSteps: this.getCompletedStepsForCurrentTour(currentTutorial, currentStep),
+               , completedSteps: this.getCompletedStepsForCurrentTour(currentTutorial, currentStep),
                 
                 // ステップ別の詳細情報
                 stepDetails: currentTutorial.steps.map((step: TutorialStep, index: number): StepDetail => ({
@@ -327,7 +327,7 @@ export class TutorialProgressManager {
             localStorage.setItem(storageKey, JSON.stringify(tourProgress);
         } catch (error) { }
 
-            this.loggingSystem.log(`ツアー進捗保存エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`ツアー進捗保存エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -347,7 +347,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`ツアー進捗読み込みエラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`ツアー進捗読み込みエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
             return null;
     
     /**
@@ -389,7 +389,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`ステップ試行記録エラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`ステップ試行記録エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -412,7 +412,7 @@ export class TutorialProgressManager {
             currentStepIndex: this.userProgress.currentStepIndex;
             isRunning: !!this.userProgress.currentTutorialId;
             isPaused: !!this.userProgress.pausedTime;
-            elapsedTime: this.getElapsedTime(), };
+           , elapsedTime: this.getElapsedTime(), };
             startTime: this.userProgress.startTime }
         }
     
@@ -568,7 +568,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`進捗リセットエラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`進捗リセットエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -611,8 +611,8 @@ export class TutorialProgressManager {
 
             this.loggingSystem.log(`チュートリアル${tutorialId}の進捗がリセットされました`, 'info', 'TutorialProgressManager'});
 
-        } catch (error) { : undefined' '
-            this.loggingSystem.log(`チュートリアル進捗リセットエラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+        } catch (error) { : undefined', '
+            this.loggingSystem.log(`チュートリアル進捗リセットエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -643,7 +643,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`チュートリアルデータクリアエラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`チュートリアルデータクリアエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -657,7 +657,7 @@ export class TutorialProgressManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`クリーンアップエラー: ${(error, as Error'}).message}`, 'error', 'TutorialProgressManager');
+            this.loggingSystem.log(`クリーンアップエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialProgressManager');
         }
 }
 

@@ -2,29 +2,29 @@
  * ユーザー情報画面シーン (Main, Controller Pattern)
  * 既存コンポーネントシステムを活用し、軽量なコントローラーとして機能
  */
-import { Scene } from '../core/Scene';
+import { Scene  } from '../core/Scene';
 ';
 // コンポーネントシステム
-import { ScenesDialogManager } from './components/ScenesDialogManager';''
-import { ComponentEventBus } from './components/ComponentEventBus';''
-import { SceneState } from './components/SceneState';''
-import { UsernameDialog } from './components/UsernameDialog';''
-import { ScenesExportDialog } from './components/ScenesExportDialog';''
-import { ScenesImportDialog } from './components/ScenesImportDialog';
+import { ScenesDialogManager  } from './components/ScenesDialogManager';''
+import { ComponentEventBus  } from './components/ComponentEventBus';''
+import { SceneState  } from './components/SceneState';''
+import { UsernameDialog  } from './components/UsernameDialog';''
+import { ScenesExportDialog  } from './components/ScenesExportDialog';''
+import { ScenesImportDialog  } from './components/ScenesImportDialog';
 ';
 // 既存の分離コンポーネント
-import { UserProfileManager } from './components/user-info/UserProfileManager';''
-import { UserStatisticsRenderer } from './components/user-info/UserStatisticsRenderer';''
-import { UserAchievementDisplay } from './components/user-info/UserAchievementDisplay';''
-import { UserDataExporter } from './components/user-info/UserDataExporter';''
-import { UserHelpIntegration } from './components/user-info/UserHelpIntegration';''
-import { UserInfoTabManager } from './components/user-info/UserInfoTabManager';''
-import { UserInfoRenderer } from './components/user-info/UserInfoRenderer';''
-import { UserInfoEventHandler } from './components/user-info/UserInfoEventHandler';
+import { UserProfileManager  } from './components/user-info/UserProfileManager';''
+import { UserStatisticsRenderer  } from './components/user-info/UserStatisticsRenderer';''
+import { UserAchievementDisplay  } from './components/user-info/UserAchievementDisplay';''
+import { UserDataExporter  } from './components/user-info/UserDataExporter';''
+import { UserHelpIntegration  } from './components/user-info/UserHelpIntegration';''
+import { UserInfoTabManager  } from './components/user-info/UserInfoTabManager';''
+import { UserInfoRenderer  } from './components/user-info/UserInfoRenderer';''
+import { UserInfoEventHandler  } from './components/user-info/UserInfoEventHandler';
 ';
 // 新しいサブコンポーネント
-import { UserInterfaceController } from './user-info-scene/UserInterfaceController';''
-import { UserDataManager } from './user-info-scene/UserDataManager';
+import { UserInterfaceController  } from './user-info-scene/UserInterfaceController';''
+import { UserDataManager  } from './user-info-scene/UserDataManager';
 
 export class UserInfoScene extends Scene { // コンポーネントシステム
     private eventBus!: ComponentEventBus;
@@ -46,9 +46,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     private userHelpIntegration!: UserHelpIntegration;
     // レガシー互換性プロパティ
     private lastCleanupTime: number = Date.now(''';
-    public currentTab: string = 'profile',
+    public, currentTab: string = 'profile',
     public isDialogOpen: boolean = false);
-    public activeDialog: string | null = null);
+    public, activeDialog: string | null = null);
     );
     constructor(gameEngine: any) {
         super(gameEngine);

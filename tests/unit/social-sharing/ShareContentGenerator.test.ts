@@ -2,11 +2,11 @@
  * ShareContentGenerator 単体テスト (Task 20.1)
  * 包括的なテストカバレッジでShareContentGeneratorの全機能をテスト
  */
-import { jest } from '@jest/globals';
-import { ShareContentGenerator } from '../../../src/core/ShareContentGenerator.js';
+import { jest  } from '@jest/globals';
+import { ShareContentGenerator  } from '../../../src/core/ShareContentGenerator.js';
 // Type definitions
 interface LocalizationManager {
-    translate: jest.MockedFunction<(key: string, params?: Record<string, any>) => string>;
+    translate: jest.MockedFunction<(ke;y: string, params?: Record<string, any>) => string>;
     getCurrentLanguage: jest.MockedFunction<() => string>;
     getSupportedLanguages: jest.MockedFunction<() => string[]>;
 }
@@ -48,7 +48,7 @@ interface ValidationResult {
 }
 interface PlatformLimits {
     twitter: {
-        maxLength: number,
+        maxLengt;h: number,
         hashtagLimit: number
     },
     facebook: {

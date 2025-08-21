@@ -1,10 +1,10 @@
 /**
  * PerformanceConfig クラスのユニットテスト
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
-import { PerformanceConfig, getPerformanceConfig } from '../../src/config/PerformanceConfig.js';
-import { ConfigurationManager, getConfigurationManager } from '../../src/core/ConfigurationManager.js';
-import { getErrorHandler } from '../../src/utils/ErrorHandler.js';
+import { jest, describe, test, expect, beforeEach  } from '@jest/globals';
+import { PerformanceConfig, getPerformanceConfig  } from '../../src/config/PerformanceConfig.js';
+import { ConfigurationManager, getConfigurationManager  } from '../../src/core/ConfigurationManager.js';
+import { getErrorHandler  } from '../../src/utils/ErrorHandler.js';
 // モックの型定義
 interface MockCall {
     category: string,
@@ -20,7 +20,7 @@ interface ValidationRule {
     type?: string;
     min?: number;
     max?: number;
-    validator?: (value: any) => boolean | string;
+    validator?: (valu;e: any) => boolean | string;
 }
 interface MockConfigManager {
     get: jest.Mock<any, [string, string, any? ]>; : undefined
@@ -43,9 +43,9 @@ interface PerformanceOptimizer {
     maxHistorySize: number,
     adaptiveMode?: boolean;
     performanceLevel?: string;
-    setAdaptiveMode: (mode: boolean) => void;
+    setAdaptiveMode: (mod;e: boolean) => void;
     optimizationInterval: number,
-    setPerformanceLevel: (level: string) => void,
+    setPerformanceLevel: (leve;l: string) => void,
     settings: Record<string, any>;
 }
 // モックの設定

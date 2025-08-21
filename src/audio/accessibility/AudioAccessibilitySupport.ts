@@ -7,17 +7,17 @@
  * Refactored: Phase F.4 - Main Controller Pattern
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler';''
-import { getConfigurationManager } from '../../core/ConfigurationManager';''
-import { getLocalizationManager } from '../../core/LocalizationManager';
+import { getErrorHandler  } from '../../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../../core/ConfigurationManager';''
+import { getLocalizationManager  } from '../../core/LocalizationManager';
 ';
 // Import sub-components
-import { AudioDescriptionManager } from './AudioDescriptionManager';''
-import { AudioCueManager } from './AudioCueManager';''
-import { AudioFeedbackManager } from './AudioFeedbackManager';''
-import { AudioSettingsManager } from './AudioSettingsManager';''
-import { AudioEventManager } from './AudioEventManager';''
-import { AudioLegacyAdapter } from './AudioLegacyAdapter';
+import { AudioDescriptionManager  } from './AudioDescriptionManager';''
+import { AudioCueManager  } from './AudioCueManager';''
+import { AudioFeedbackManager  } from './AudioFeedbackManager';''
+import { AudioSettingsManager  } from './AudioSettingsManager';''
+import { AudioEventManager  } from './AudioEventManager';''
+import { AudioLegacyAdapter  } from './AudioLegacyAdapter';
 
 /**
  * 通知タイプ'
@@ -68,7 +68,7 @@ interface ComponentStatus { descriptionManager: any,
     feedbackManager: any;
     settingsManager: any;
     eventManager: any;
-    legacyAdapter: any ,}
+   , legacyAdapter: any ,}
 
 /**
  * システム状態インターフェース
@@ -77,7 +77,7 @@ interface SystemStatus { initialized: boolean;
     components: ComponentStatus;
     eventHistorySize: number;
     capabilities: any;
-    settings: any }
+   , settings: any }
 
 /**
  * デバイス機能インターフェース
@@ -85,7 +85,7 @@ interface SystemStatus { initialized: boolean;
 interface DeviceCapabilities { vibration: boolean;
     screenReader: boolean;
     reduceMotion: boolean;
-    prefersContrast: boolean;
+   , prefersContrast: boolean;
     [key: string]: any, }
 
 /**
@@ -147,7 +147,7 @@ export class ComponentAudioAccessibilitySupport {
     private legacyAdapter: AudioLegacyAdapter;
     // Legacy compatibility properties
     private vibrationManager: VibrationManager;
-    private visualNotifications: any[];
+    private, visualNotifications: any[];
     constructor(audioManager: AudioManager) {
 
         this.audioManager = audioManager;
@@ -375,12 +375,12 @@ export class ComponentAudioAccessibilitySupport {
                 cueManager: this.cueManager.getStatus();
                 feedbackManager: this.feedbackManager.getStatus();
                 settingsManager: this.settingsManager.getStatus();
-                eventManager: this.eventManager.getStatus(), };
+               , eventManager: this.eventManager.getStatus(), };
                 legacyAdapter: this.legacyAdapter.getStatus(); }
             },
             eventHistorySize: this.eventManager.getEventHistory().length;
             capabilities: this.getCapabilities();
-            settings: this.getSettings();
+           , settings: this.getSettings();
         }
 
     /**

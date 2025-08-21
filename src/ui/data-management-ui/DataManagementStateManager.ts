@@ -30,14 +30,14 @@ interface UIState { isVisible: boolean,
     currentView: string;
     selectedItem: number;
     scrollPosition: number;
-    errorMessage: string | null ,}
+   , errorMessage: string | null ,}
 
 /**
  * Dialog history entry interface
  */
 interface DialogHistoryEntry { type: string;
     data: any;
-    timestamp: number }
+   , timestamp: number }
 
 /**
  * Dialog state interface
@@ -45,7 +45,7 @@ interface DialogHistoryEntry { type: string;
 interface DialogState { showingDialog: string | null;
     dialogData: any;
     dialogInput: string;
-    isVisible: boolean }
+   , isVisible: boolean }
 
 /**
  * Operation history entry interface
@@ -56,7 +56,7 @@ interface OperationHistoryEntry { type: string;
     duration: number;
     startTime: number;
     endTime: number;
-    data: any }
+   , data: any }
 
 /**
  * Operation state interface
@@ -65,7 +65,7 @@ interface OperationState { operationInProgress: boolean;
     operationType: string | null;
     operationProgress: number;
     operationMessage: string;
-    operationDuration: number }
+   , operationDuration: number }
 
 /**
  * Backup status interface
@@ -75,7 +75,7 @@ interface BackupStatus { lastBackup: string | number | Date | null;
     totalSize: number;
     autoBackupEnabled: boolean;
     nextBackup: string | number | Date | null;
-    backupHistory: BackupHistoryEntry[]
+   , backupHistory: BackupHistoryEntry[]
     }
 
 /**
@@ -98,14 +98,14 @@ interface DataManager { backup?: {
  */
 export class UIStateManager {
     private isVisible: boolean = false;
-    private currentView: string = 'overview'; // 'overview', 'backup', 'export', 'import', 'clear'
+    private, currentView: string = 'overview'; // 'overview', 'backup', 'export', 'import', 'clear'
     private selectedItem: number = 0;
     private scrollPosition: number = 0;
     // エラー状態
     private errorMessage: string | null = null;
     private errorTimeout: NodeJS.Timeout | null = null;
     // 状態変更コールバック
-    private stateChangeCallbacks: StateChangeCallback[] = [];
+    private, stateChangeCallbacks: StateChangeCallback[] = [];
 ';
 
     setVisible(visible: boolean): void {''
@@ -208,7 +208,7 @@ export class UIStateManager {
     getState(): UIState { return { isVisible: this.isVisible,
             currentView: this.currentView;
             selectedItem: this.selectedItem;
-            scrollPosition: this.scrollPosition, };
+           , scrollPosition: this.scrollPosition, };
             errorMessage: this.errorMessage }
         }
 
@@ -234,7 +234,7 @@ export class DialogStateManager {'
     private dialogCallbacks: DialogChangeCallback[] = [];
     // 履歴管理
     private dialogHistory: DialogHistoryEntry[] = [];
-    private maxHistorySize: number = 10;
+    private, maxHistorySize: number = 10;
     showDialog(type: string, data: any = { ): void {
         if(this.showingDialog) {
 
@@ -305,7 +305,7 @@ export class DialogStateManager {'
 
     getState(): DialogState { return { showingDialog: this.showingDialog,
             dialogData: this.dialogData;
-            dialogInput: this.dialogInput, };
+           , dialogInput: this.dialogInput, };
             isVisible: this.isDialogVisible(); }
         }
 ';
@@ -322,8 +322,7 @@ export class DialogStateManager {'
     private, operationCallbacks: OperationChangeCallback[] = []);
 ')';
     startOperation(type: string, message: string = '', timeout: number = 300000): void { // 5 minutes default
-        if(this.operationInProgress) {'
-            '
+        if(this.operationInProgress) {', '
         ,}
 
             this.endOperation('cancelled', 'New operation started); }
@@ -385,7 +384,7 @@ export class DialogStateManager {'
                 message);
                 duration,);
                 startTime: this.operationStartTime);
-                endTime: Date.now();
+               , endTime: Date.now();
         ,}
                 data' }'
 
@@ -443,14 +442,13 @@ export class DialogStateManager {'
     getState(): OperationState { return { operationInProgress: this.operationInProgress,
             operationType: this.operationType;
             operationProgress: this.operationProgress;
-            operationMessage: this.operationMessage, };
+           , operationMessage: this.operationMessage, };
             operationDuration: this.getOperationDuration(); }
         }
 ';
 
     reset(): void { ''
-        if(this.operationInProgress) {'
-            ';
+        if(this.operationInProgress) {', ';
 
         }
 
@@ -472,13 +470,13 @@ export class BackupStatusManager {
         totalSize: 0;
         autoBackupEnabled: true;
         nextBackup: null;
-        backupHistory: [] };
+       , backupHistory: [] };
     // 更新コールバック
     private updateCallbacks: BackupUpdateCallback[] = [];
     // 定期更新タイマー
     private updateInterval: NodeJS.Timer | null = null;
     // Data manager reference
-    private dataManager: DataManager | undefined;
+    private, dataManager: DataManager | undefined;
     async initialize(dataManager: DataManager): Promise<void> { this.dataManager = dataManager;
         
         try {
@@ -543,7 +541,7 @@ export class BackupStatusManager {
         this.updateBackupStatus({ );
             lastBackup: backupInfo.timestamp || Date.now();
             backupCount: this.backupStatus.backupCount + 1;
-            totalSize: this.backupStatus.totalSize + (backupInfo.size || 0 });
+           , totalSize: this.backupStatus.totalSize + (backupInfo.size || 0 });
     }
 ';
 
@@ -555,7 +553,7 @@ export class BackupStatusManager {
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);
 
-        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ' ' + sizes[i]; }
+        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i]; }
 
 ';
 

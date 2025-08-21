@@ -7,23 +7,23 @@ interface TestFailure { testName: string,
     error: Error;
     timestamp: number;
     category: string;
-    severity: 'low' | 'medium' | 'high' | 'critical' ,}
+   , severity: 'low' | 'medium' | 'high' | 'critical' ,}
 
 interface FailurePattern { pattern: RegExp;
     category: string;
-    description: string;
+   , description: string;
     solution?: string }
 
 interface AnalysisResult { patterns: FailurePattern[];
     recommendations: string[];
-    statistics: {
-        totalFailures: number, }
+   , statistics: {
+        totalFailure;s: number, }
         byCategory: { [category: string]: number }
         bySeverity: { [severity: string]: number }
 
 export class TestFailureAnalyzer {
     private failures: TestFailure[] = [];
-    private patterns: FailurePattern[] = [];
+    private, patterns: FailurePattern[] = [];
     constructor() {
 
         

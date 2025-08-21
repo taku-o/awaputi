@@ -4,8 +4,8 @@
  * ゲームエンジンとチュートリアルシステム間のブリッジ機能を提供
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
 export interface GameEngine { eventBus?: EventBus;
@@ -16,14 +16,14 @@ export interface GameEngine { eventBus?: EventBus;
     currentScene?: Scene;
     gameTime?: number; }
 
-export interface EventBus { on(event: string, callback: (data: any) => void): void;
-    off?(event: string, callback: (data: any) => void): void 
+export interface EventBus { on(event: string, callback: (dat;a: any) => void): void;
+    off?(event: string, callback: (dat;a: any) => void): void 
 ,}
 
 export interface BubbleManager { popBubble(bubble: Bubble): boolean,
     getActiveBubbleCount(): number }
 
-export interface InputManager { on(event: string, callback: (data: DragData) => void): void ,}
+export interface InputManager { on(event: string, callback: (dat;a: DragData) => void): void ,}
 }
 
 export interface ScoreManager { getCurrentScore(): number;
@@ -34,86 +34,86 @@ export interface ScoreManager { getCurrentScore(): number;
 export interface PlayerData { getCurrentHP(): number; }
 
 export interface Scene {
-    constructor: { name: string }
+    constructor: { nam;e: string }
 
 export interface Bubble { id: string,
     type: string;
     x: number;
-    y: number;
+   , y: number;
     score?: number ,}
 
 export interface Position { x: number;
-    y: number }
+   , y: number }
 
 export interface DragData { targetType: string;
     targetId: string;
     startX: number;
     startY: number;
     endX: number;
-    endY: number }
+   , endY: number }
 
 export interface ActionData { actionType: string;
     timestamp: number;
-    gameState: GameState;
+   , gameState: GameState;
     [key: string]: any, }
 
 export interface BubblePopData extends ActionData { bubbleId: string,
     bubbleType: string;
     position: Position;
     score: number;
-    comboMultiplier: number ,}
+   , comboMultiplier: number ,}
 
 export interface BubbleDragData extends ActionData { bubbleId: string;
     startPosition: Position;
     endPosition: Position;
     dragDistance: number;
-    dragDirection: number }
+   , dragDirection: number }
 
 export interface SpecialBubblePopData extends ActionData { bubbleId: string;
     bubbleType: string;
     specialEffect: string;
     affectedBubbles: string[];
-    effectDuration: number }
+   , effectDuration: number }
 
 export interface ComboAchievedData extends ActionData { comboCount: number;
     comboScore: number;
     comboMultiplier: number;
-    comboDuration: number }
+   , comboDuration: number }
 
 export interface ScoreReachedData extends ActionData { score: number;
     milestone: number;
     previousScore: number;
-    scoreIncrease: number }
+   , scoreIncrease: number }
 
 export interface HPChangedData extends ActionData { currentHP: number;
     previousHP: number;
     hpChange: number;
-    changeReason: string }
+   , changeReason: string }
 
 export interface KeyPressedData extends ActionData { key: string;
     code: string;
     ctrlKey: boolean;
     shiftKey: boolean;
-    altKey: boolean }
+   , altKey: boolean }
 
 export interface ClickData extends ActionData { position: Position;
     target: string;
-    button: number }
+   , button: number }
 
 export interface TouchStartData extends ActionData { position: Position;
-    touchCount: number }
+   , touchCount: number }
 
 export interface GameState { currentScene: string;
     score: number;
     combo: number;
     hp: number;
     activeBubbles: number;
-    gameTime: number }
+   , gameTime: number }
 
 export interface ActionListenerInfo { callback: ActionCallback;
     options: ActionOptions;
     registeredAt: number;
-    triggerCount: number }
+   , triggerCount: number }
 
 export interface ActionOptions { requiredCombo?: number;
     requiredScore?: number;
@@ -125,10 +125,10 @@ export interface ActionStats { totalActions: number,
     lastActionTime: number ,}
 
 export interface ActionStatistics { totalActions: number;
-    actionsByType: Record<string, number>,
+   , actionsByType: Record<string, number>,
     averageResponseTime: Record<string, number>,
     activeListeners: number;
-    stateWatchers: number ,}
+   , stateWatchers: number ,}
 ';
 
 export type ActionCallback = (data: ActionData) => void;''
@@ -143,7 +143,7 @@ export class TutorialActions {
     private loggingSystem: LoggingSystem;
     private stateMonitoringInterval: number | null;
     // アクションリスナー管理
-    private activeListeners: Map<string, any[]>;
+    private, activeListeners: Map<string, any[]>;
     private actionCallbacks: Map<string, ActionListenerInfo>;
     
     // ゲーム状態監視
@@ -169,7 +169,7 @@ export class TutorialActions {
         // アクション統計
         this.actionStats = {
             totalActions: 0;
-            actionsByType: new Map<string, number>(),
+           , actionsByType: new Map<string, number>(),
             averageResponseTime: new Map<string, number>(),
 
     }
@@ -208,7 +208,7 @@ export class TutorialActions {
                 callback,
                 options,
                 registeredAt: Date.now();
-                triggerCount: 0 ,};
+               , triggerCount: 0 ,};
             this.actionCallbacks.set(actionType, listenerInfo);
             ';
             // アクションタイプ別の監視設定
@@ -278,7 +278,7 @@ export class TutorialActions {
     buildActionData(actionType: string, eventData: any): ActionData { const baseData = {
             actionType,
             timestamp: Date.now();
-            gameState: this.getCurrentGameState();
+           , gameState: this.getCurrentGameState();
             ...eventData;
 ';
         // アクションタイプ別の追加データ
@@ -299,31 +299,31 @@ export class TutorialActions {
                     startPosition: eventData.startPosition || { x: 0, y: 0 ,},
                     endPosition: eventData.endPosition || { x: 0, y: 0 ,},
                     dragDistance: eventData.dragDistance || 0;
-                    dragDirection: eventData.dragDirection || 0;
+                   , dragDirection: eventData.dragDirection || 0;
                 },
 
             case 'special_bubble_pop': return { ...baseData;
                     bubbleId: eventData.bubbleId;
                     bubbleType: eventData.bubbleType;
                     specialEffect: eventData.specialEffect;
-                    affectedBubbles: eventData.affectedBubbles || [], };
+                   , affectedBubbles: eventData.affectedBubbles || [], };
                     effectDuration: eventData.effectDuration || 0 }
                 };
             case 'combo_achieved': return { ...baseData;
                     comboCount: eventData.comboCount || 0;
                     comboScore: eventData.comboScore || 0;
-                    comboMultiplier: eventData.comboMultiplier || 1, };
+                   , comboMultiplier: eventData.comboMultiplier || 1, };
                     comboDuration: eventData.comboDuration || 0 }
                 };
             case 'score_reached': return { ...baseData;
                     score: eventData.score || 0;
                     milestone: eventData.milestone || 0;
-                    previousScore: eventData.previousScore || 0, };
+                   , previousScore: eventData.previousScore || 0, };
                     scoreIncrease: eventData.scoreIncrease || 0 }
                 };
             case 'hp_changed': return { ...baseData;
                     currentHP: eventData.currentHP || 0;
-                    previousHP: eventData.previousHP || 0,
+                   , previousHP: eventData.previousHP || 0,
                     hpChange: eventData.hpChange || 0,' };
 
                     changeReason: eventData.changeReason || 'unknown' }
@@ -401,7 +401,7 @@ export class TutorialActions {
                 key: event.key;
                 code: event.code);
                 ctrlKey: event.ctrlKey);
-                shiftKey: event.shiftKey, }
+               , shiftKey: event.shiftKey, }
                 altKey: event.altKey); }
 
             });''
@@ -499,7 +499,7 @@ export class TutorialActions {
                         startPosition: { x: data.startX, y: data.startY ,});
                         endPosition: { x: data.endX, y: data.endY ),
                         dragDistance: dragDistance;
-                        dragDirection: Math.atan2(data.endY - data.startY, data.endX - data.startX });
+                       , dragDirection: Math.atan2(data.endY - data.startY, data.endX - data.startX });
                 }
             });
         }
@@ -546,7 +546,7 @@ export class TutorialActions {
                     if(currentScore >= milestone && lastScore < milestone) {''
                         this.triggerAction('score_reached', {
                             score: currentScore);
-                            milestone: milestone)
+                           , milestone: milestone)
         ,}
                             previousScore: lastScore,) }
                             scoreIncrease: currentScore - lastScore); }
@@ -673,7 +673,7 @@ export class TutorialActions {
     getActionStats(): ActionStatistics { return { ...this.actionStats,
             actionsByType: Object.fromEntries(this.actionStats.actionsByType);
             averageResponseTime: Object.fromEntries(this.actionStats.averageResponseTime);
-            activeListeners: this.actionCallbacks.size, };
+           , activeListeners: this.actionCallbacks.size, };
             stateWatchers: this.gameStateWatchers.size }
         }
 

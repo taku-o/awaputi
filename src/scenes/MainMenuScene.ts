@@ -1,12 +1,12 @@
-import { Scene } from '../core/Scene.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
+import { Scene  } from '../core/Scene.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
 import type { MenuItem, MainMenuScene as IMainMenuScene } from '../types/game';
 ';
 // サブコンポーネントのインポート
-import { MainMenuRenderer } from './main-menu/MainMenuRenderer.js';''
-import { UsernameInputManager } from './main-menu/UsernameInputManager.js';''
-import { MainMenuDialogManager } from './main-menu/MainMenuDialogManager.js';''
-import { MenuInputHandler } from './main-menu/MenuInputHandler.js';
+import { MainMenuRenderer  } from './main-menu/MainMenuRenderer.js';''
+import { UsernameInputManager  } from './main-menu/UsernameInputManager.js';''
+import { MainMenuDialogManager  } from './main-menu/MainMenuDialogManager.js';''
+import { MenuInputHandler  } from './main-menu/MenuInputHandler.js';
 
 /**
  * メインメニューシーン (Refactored)
@@ -17,7 +17,7 @@ import { MenuInputHandler } from './main-menu/MenuInputHandler.js';
  * - UsernameInputManager: ユーザー名入力画面の管理と描画
  * - SettingsRenderer: 設定画面の描画とUI要素管理
  * - DialogManager: 確認ダイアログ、ヘルプ画面の管理
- * - MenuInputHandler: 入力処理とクリック判定の統制
+ * -, MenuInputHandler: 入力処理とクリック判定の統制
  */
 export class MainMenuScene extends Scene implements IMainMenuScene { public errorHandler: any,
     public selectedMenuIndex: number = 0,
@@ -377,8 +377,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             const success = this.gameEngine.sceneManager.switchScene('settings', contextData);
 
-            if(!success) {'
-                ';
+            if(!success) {', ';
 
             }
 
@@ -422,13 +421,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     openHelp(''';
                 accessMethod: 'menu_click',
                 sourceScene: 'MainMenuScene';
-                standard: true // 標準ヘルプモード);
+               , standard: true // 標準ヘルプモード);
             })
 
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
-            if(!success) {'
-                ';
+            if(!success) {', ';
 
             }
 

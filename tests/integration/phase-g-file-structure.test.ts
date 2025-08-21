@@ -4,8 +4,8 @@
  * Phase G.1-G.4で分割されたファイル群の構造確認テスト
  * Main Controller Pattern実装の完了確認
  */
-import { jest } from '@jest/globals';
-import { promises as fs } from 'fs';
+import { jest  } from '@jest/globals';
+import { promises, as fs  } from 'fs';
 import path from 'path';
 const PROJECT_ROOT = path.resolve(process.cwd()');
 describe('Phase G ファイル構造統合テスト', (') => {
@@ -182,11 +182,11 @@ describe('Phase G ファイル構造統合テスト', (') => {
                 expect(content.toContain("import { BalanceValidator ") from './BalanceValidator'")");
                 expect(content.toContain("import { BalanceExporter ") from './BalanceExporter'")");
                 // コンストラクターでのコンポーネント初期化を確認
-                expect(content.toContain('this.dataLoader = new BalanceDataLoader')');
-                expect(content.toContain('this.calculator = new BalanceCalculator')');
-                expect(content.toContain('this.validator = new BalanceValidator')');
-                expect(content.toContain('this.exporter = new BalanceExporter');
-            } catch (error') {
+                expect(content.toContain('this.dataLoader = new, BalanceDataLoader')');
+                expect(content.toContain('this.calculator = new, BalanceCalculator')');
+                expect(content.toContain('this.validator = new, BalanceValidator')');
+                expect(content.toContain('this.exporter = new, BalanceExporter');
+             } catch (error') {
                 console.warn('balance-adjuster.js読み込みエラー:', error.message);
             }
         }');
@@ -200,11 +200,11 @@ describe('Phase G ファイル構造統合テスト', (') => {
                 expect(content.toContain("import { AudioFeedbackManager ") from '../../src/audio/accessibility/AudioFeedbackManager'")");
                 expect(content.toContain("import { AudioSettingsManager ") from '../../src/audio/accessibility/AudioSettingsManager'")");
                 // コンストラクターでのコンポーネント初期化を確認
-                expect(content.toContain('this.descriptionManager = new AudioDescriptionManager')');
-                expect(content.toContain('this.cueManager = new AudioCueManager')');
-                expect(content.toContain('this.feedbackManager = new AudioFeedbackManager')');
-                expect(content.toContain('this.settingsManager = new AudioSettingsManager');
-            } catch (error') {
+                expect(content.toContain('this.descriptionManager = new, AudioDescriptionManager')');
+                expect(content.toContain('this.cueManager = new, AudioCueManager')');
+                expect(content.toContain('this.feedbackManager = new, AudioFeedbackManager')');
+                expect(content.toContain('this.settingsManager = new, AudioSettingsManager');
+             } catch (error') {
                 console.warn('AudioAccessibilitySupport.js読み込みエラー:', error.message);
             }
         }');
@@ -224,7 +224,7 @@ describe('Phase G ファイル構造統合テスト', (') => {
                 expect(content.toContain('async saveChanges(')')');
                 // エクスポートが正しく行われているかを確認
                 expect(content.toContain('export { BalanceAdjuster ')'));
-            } catch (error') {
+             } catch (error') {
                 console.warn('balance-adjuster.js API検証エラー:', error.message);
             }
         }');

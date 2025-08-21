@@ -1,13 +1,13 @@
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getEffectQualityController } from './EffectQualityController.js';''
-import { getSeasonalEffectManager } from './SeasonalEffectManager.js';
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getEffectQualityController  } from './EffectQualityController.js';''
+import { getSeasonalEffectManager  } from './SeasonalEffectManager.js';
 
 // Type definitions for configuration integration system
 interface ConfigurationManager { has(key: string): boolean,
     get<T = any>(key: string, defaultValue?: T): T;
     set<T = any>(key: string, value: T): void,
-    watch<T = any>(key: string, callback: (newValue: T, oldValue?: T) => void): ConfigWatchListener;
+    watch<T = any>(key: string, callback: (newValu;e: T, oldValue?: T) => void): ConfigWatchListener;
     unwatch(key: string, listener: ConfigWatchListener): void ,}
 }
 
@@ -31,64 +31,39 @@ interface EffectSystems { qualityController?: QualityController;
     }
 ';
 
-interface DefaultQualitySettings { ''
-    'effects.quality.level': string;''
-    'effects.quality.autoAdjust': boolean;''
-    'effects.quality.targetFPS': number;''
-    'effects.quality.memoryThreshold': number;''
-    'effects.quality.maxParticles': number;''
-    'effects.quality.maxEffects': number; }
+interface DefaultQualitySettings { '', 'effects.quality.level': string;'', 'effects.quality.autoAdjust': boolean;'', 'effects.quality.targetFPS': number;'', 'effects.quality.memoryThreshold': number;'', 'effects.quality.maxParticles': number;'', 'effects.quality.maxEffects': number; }
 ';
 
-interface DefaultSeasonalSettings { ''
-    'effects.seasonal.enabled': boolean;''
-    'effects.seasonal.autoDetection': boolean;''
-    'effects.seasonal.events': boolean;''
-    'effects.seasonal.customThemes.enabled': boolean;''
-    'effects.seasonal.backgroundEffects': boolean;''
-    'effects.seasonal.currentSeason': string;''
-    'effects.seasonal.currentTheme': string | null; }
+interface DefaultSeasonalSettings { '', 'effects.seasonal.enabled': boolean;'', 'effects.seasonal.autoDetection': boolean;'', 'effects.seasonal.events': boolean;'', 'effects.seasonal.customThemes.enabled': boolean;'', 'effects.seasonal.backgroundEffects': boolean;'', 'effects.seasonal.currentSeason': string;'', 'effects.seasonal.currentTheme': string | null; }
 ';
 
-interface DefaultAudioSettings { ''
-    'effects.audio.enabled': boolean;''
-    'effects.audio.volumeSync': boolean;''
-    'effects.audio.visualFeedback': boolean;''
-    'effects.audio.seasonalSounds': boolean;''
-    'effects.audio.qualityScaling': boolean;''
-    'effects.audio.reverbEffects': boolean; }
+interface DefaultAudioSettings { '', 'effects.audio.enabled': boolean;'', 'effects.audio.volumeSync': boolean;'', 'effects.audio.visualFeedback': boolean;'', 'effects.audio.seasonalSounds': boolean;'', 'effects.audio.qualityScaling': boolean;'', 'effects.audio.reverbEffects': boolean; }
 ';
 
-interface DefaultPerformanceSettings { ''
-    'effects.performance.monitoring': boolean;''
-    'effects.performance.autoOptimization': boolean;''
-    'effects.performance.culling': boolean;''
-    'effects.performance.lowLatencyMode': boolean;''
-    'effects.performance.resourceCleanup': boolean;''
-    'effects.performance.frameTimeLimit': number; }
+interface DefaultPerformanceSettings { '', 'effects.performance.monitoring': boolean;'', 'effects.performance.autoOptimization': boolean;'', 'effects.performance.culling': boolean;'', 'effects.performance.lowLatencyMode': boolean;'', 'effects.performance.resourceCleanup': boolean;'', 'effects.performance.frameTimeLimit': number; }
 
 interface ExportedEffectSettings { quality: {
-        level: string;
+        leve;l: string;
         autoAdjust: boolean;
         targetFPS: number;
-        maxParticles: number };
+       , maxParticles: number };
     seasonal: { enabled: boolean;
         autoDetection: boolean;
         events: boolean;
-        customThemes: boolean };
+       , customThemes: boolean };
     audio: { enabled: boolean;
         volumeSync: boolean;
         visualFeedback: boolean;
-        seasonalSounds: boolean };
+       , seasonalSounds: boolean };
     performance: { monitoring: boolean;
         autoOptimization: boolean;
         culling: boolean;
-        resourceCleanup: boolean };
+       , resourceCleanup: boolean };
     metadata: { version: string;
-        exportTime: number }
+       , exportTime: number }
 
 interface ImportedSettings { quality?: {
-        level?: string;
+        leve;l?: string;
         autoAdjust?: boolean;
         targetFPS?: number;
         maxParticles?: number; };
@@ -108,10 +83,10 @@ interface ImportedSettings { quality?: {
 interface ConfigurationStats { totalSettings: number,
     lastSyncTime: number;
     syncInProgress: boolean;
-    registeredSystems: {
-        qualityController: boolean;
+   , registeredSystems: {
+        qualityControlle;r: boolean;
         seasonalManager: boolean;
-        audioManager: boolean ,}
+       , audioManager: boolean ,}
 
 /**
  * エフェクト設定統合クラス
@@ -127,12 +102,12 @@ export class EffectConfigurationIntegrator {
     private seasonalManager: SeasonalManager | null = null;
     private audioManager: AudioManager | null = null;
     // 設定監視用のリスナーマップ
-    private configListeners: Map<string, ConfigWatchListener> = new Map();
+    private, configListeners: Map<string, ConfigWatchListener> = new Map();
     
     // 設定同期状態
     private syncInProgress: boolean = false;
     private lastSyncTime: number = 0;
-    private readonly syncInterval: number = 1000; // 1秒間隔で同期チェック
+    private readonly, syncInterval: number = 1000; // 1秒間隔で同期チェック
 
     constructor() {
 
@@ -505,7 +480,7 @@ export class EffectConfigurationIntegrator {
                     resourceCleanup: this.configManager.get('effects.performance.resourceCleanup'' ,};
                 metadata: { ''
                     version: '1.0';
-                    exportTime: Date.now( }
+                   , exportTime: Date.now( }
             };
             ';
 
@@ -520,8 +495,7 @@ export class EffectConfigurationIntegrator {
      * @returns インポート成功か'
      */''
     public importEffectSettings(settings: ImportedSettings): boolean { try {'
-            if(!settings || typeof, settings !== 'object'') {'
-                ';
+            if(!settings || typeof, settings !== 'object'') {', ';
 
             ,}
 
@@ -595,9 +569,9 @@ export class EffectConfigurationIntegrator {
     public getConfigurationStats(): ConfigurationStats { return { totalSettings: this.configListeners.size,
             lastSyncTime: this.lastSyncTime;
             syncInProgress: this.syncInProgress;
-            registeredSystems: {
+           , registeredSystems: {
                 qualityController: !!this.qualityController;
-                seasonalManager: !!this.seasonalManager, };
+               , seasonalManager: !!this.seasonalManager, };
                 audioManager: !!this.audioManager }
 }
     

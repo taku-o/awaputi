@@ -1,10 +1,10 @@
-import { getErrorHandler } from '../ErrorHandler.js';''
+import { getErrorHandler  } from '../ErrorHandler.js';''
 import fs from 'fs';''
 import path from 'path';
 
 // Type definitions
 interface ErrorHandler { ''
-    handleError: (error: Error, context?: any') => void }'
+    handleError: (erro;r: Error, context?: any') => void }'
 }
 
 interface ReportConfig { projectRoot?: string;
@@ -22,7 +22,7 @@ interface ResolvedItem { name: string,
 
 interface ResolvedDuplication { taskId: string;
     category: string;
-    items: ResolvedItem[]
+   , items: ResolvedItem[]
     }
 
 interface ReportMetadata { title: string;
@@ -31,7 +31,7 @@ interface ReportMetadata { title: string;
     generatedBy: string;
     projectRoot: string;
     branch: string;
-    version: string }
+   , version: string }
 
 interface ProjectSummary { objective: string;
     scope: string;
@@ -40,23 +40,20 @@ interface ProjectSummary { objective: string;
     tasksCompleted: number;
     totalTasks: number;
     completionPercentage: number;
-    keyAchievements: string[] }
+   , keyAchievements: string[] }
 
 interface DuplicationCategory { [categoryName: string]: number, }
 ';
 
-interface NamingStrategies { ''
-    'Domain-based': number;''
-    'Function-level': number;''
-    'Context-specific': number; }
+interface NamingStrategies { '', 'Domain-based': number;'', 'Function-level': number;'', 'Context-specific': number; }
 
 interface FilesModified { renamed: number,
     updated: number;
-    created: number ,}
+   , created: number ,}
 
 interface DuplicationsResolved { totalClasses: number;
     totalFiles: number;
-    byCategory: DuplicationCategory
+   , byCategory: DuplicationCategory
     }
 
 interface Statistics { duplicationsResolved: DuplicationsResolved;
@@ -64,56 +61,56 @@ interface Statistics { duplicationsResolved: DuplicationsResolved;
     namingStrategies: NamingStrategies;
     gitCommits: number;
     testsPassing: boolean;
-    buildSuccessful: boolean }
+   , buildSuccessful: boolean }
 
 interface ChangeItem { name: string;
     action: string;
     files: string[];
     impact: string;
-    reasoning: string }
+   , reasoning: string }
 
 interface ChangePhase { taskId: string;
     phase: string;
     category: string;
     description: string;
-    items: ChangeItem[]
+   , items: ChangeItem[]
     }
 
 interface ChangeLog { overview: string;
-    phases: ChangePhase[]
+   , phases: ChangePhase[]
     }
 
 interface SystemImpactArea { maintainability: string;
     readability: string;
     debuggability: string;
-    onboardingExperience: string }
+   , onboardingExperience: string }
 
 interface DevelopmentImpactArea { namingConfusion: string;
     importErrors: string;
     codeNavigation: string;
-    toolSupport: string }
+   , toolSupport: string }
 
 interface PerformanceImpactArea { runtime: string;
     buildTime: string;
-    bundleSize: string }
+   , bundleSize: string }
 
 interface SystemImpacts { codebase: SystemImpactArea;
     development: DevelopmentImpactArea;
-    performance: PerformanceImpactArea
+   , performance: PerformanceImpactArea
     }
 
 interface RiskAssessment { breakingChanges: string;
     backwardCompatibility: string;
     regressionRisk: string;
-    rollbackComplexity: string }
+   , rollbackComplexity: string }
 
 interface Beneficiaries { developers: string;
     codeReviewers: string;
-    newTeamMembers: string }
+   , newTeamMembers: string }
 
 interface ImpactAnalysis { systemImpacts: SystemImpacts;
     riskAssessment: RiskAssessment;
-    beneficiaries: Beneficiaries
+   , beneficiaries: Beneficiaries
     }
 
 interface ValidationArea { status: string;
@@ -133,45 +130,45 @@ interface ValidationArea { status: string;
 interface ValidationResults { syntaxValidation: ValidationArea,
     importValidation: ValidationArea;
     testSuite: ValidationArea;
-    buildValidation: ValidationArea
+   , buildValidation: ValidationArea
     ,}
 
 interface Recommendation { category: string;
     priority: string;
     recommendation: string;
     rationale: string;
-    implementation: string }
+   , implementation: string }
 
 interface AutomaticValidation { description: string;
     implementation: string;
     integration: string;
-    coverage: string }
+   , coverage: string }
 
 interface DevelopmentGuidelines { description: string;
     domainBased: string;
     functionalLevel: string;
-    contextSpecific: string }
+   , contextSpecific: string }
 }
 
 interface ToolingSupport { description: string;
     cliTools: string;
     validation: string;
-    integration: string }
+   , integration: string }
 
 interface ProcessImprovements { description: string;
     codeReview: string;
     onboarding: string;
-    refactoring: string }
+   , refactoring: string }
 
 interface PreventionMeasures { automaticValidation: AutomaticValidation;
     developmentGuidelines: DevelopmentGuidelines;
     toolingSupport: ToolingSupport;
-    processImprovements: ProcessImprovements
+   , processImprovements: ProcessImprovements
     }
 
 interface FileAnalysisResult { renamedFiles: number;
     updatedFiles: number;
-    createdFiles: number }
+   , createdFiles: number }
 
 interface OutputFiles { json?: string;
     markdown?: string; }
@@ -183,7 +180,7 @@ interface ComprehensiveReport { metadata: ReportMetadata,
     impactAnalysis: ImpactAnalysis;
     validationResults: ValidationResults;
     recommendations: Recommendation[];
-    futurePreventionMeasures: PreventionMeasures
+   , futurePreventionMeasures: PreventionMeasures
     ,}
 
 /**
@@ -209,7 +206,7 @@ export class ReportGenerator {
         this.resolvedDuplications = [{;
                 taskId: '6',
                 category: 'Configuration Files';
-                items: [';
+               , items: [';
                     { ''
                         name: 'PerformanceConfig', ]';
                         resolution: 'Backup file merged with main configuration',']';
@@ -254,7 +251,7 @@ export class ReportGenerator {
                     { ''
                         name: 'AudioContextManager',)';
                         resolution: 'AudioContextManager & AudioEffectContextManager')';
-                        files: [')';
+                       , files: [')';
                             'src/audio/AudioContextManager.js(kept)',]';
                             'src/audio/effects/AudioContextManager.js → AudioEffectContextManager.js']';
                         ],
@@ -427,7 +424,7 @@ export class ReportGenerator {
                 impactAnalysis: await this.generateImpactAnalysis();
                 validationResults: await this.generateValidationResults();
                 recommendations: this.generateRecommendations();
-                futurePreventionMeasures: this.generatePreventionMeasures('), };
+               , futurePreventionMeasures: this.generatePreventionMeasures('), };
             ';
 
             return report;''
@@ -444,7 +441,7 @@ export class ReportGenerator {
             title: 'JavaScript Class Name Deduplication Project Report',
             subtitle: 'Issue #131 - Complete Resolution Report',)';
             generatedAt: new Date().toISOString(''';
-            generatedBy: 'ReportGenerator v1.0.0',
+           , generatedBy: 'ReportGenerator v1.0.0',
             projectRoot: this.projectRoot,
             branch: 'fix/issue-131-duplicate-class-names',
             version: '1.0.0';
@@ -460,7 +457,7 @@ export class ReportGenerator {
             approach: 'Domain-based and function-level naming strategies with systematic file renaming and import updates',
             completionStatus: 'Completed);
             tasksCompleted: 13)';
-            totalTasks: 17,')';
+           , totalTasks: 17,')';
             completionPercentage: Math.round((13 / 17) * 100'),
             keyAchievements: ['';
                 'Resolved all major class name duplications across 8 system categories',
@@ -487,14 +484,13 @@ export class ReportGenerator {
             },
             filesModified: { renamed: stats.renamedFiles;
                 updated: stats.updatedFiles;
-                created: stats.createdFiles };
-            namingStrategies: { ''
-                'Domain-based': 18, // Core*, Debug*, Utils*, Analytics*;
+               , created: stats.createdFiles };
+            namingStrategies: { '', 'Domain-based': 18, // Core*, Debug*, Utils*, Analytics*;
                 'Function-level': 6,  // Advanced*, Basic*;
                 'Context-specific': 7 // Scenes*, DataManagement*, MainMenu* },
             gitCommits: 8;
             testsPassing: true;
-            buildSuccessful: true;
+           , buildSuccessful: true;
         },
     }
     
@@ -503,7 +499,7 @@ export class ReportGenerator {
      */''
     async generateChangeLog(''';
             overview: 'Systematic resolution of JavaScript class name duplications';
-            phases: []);
+           , phases: []);
         })
         // 各タスクの詳細を変更ログに追加)
         for(const, duplication of, this.resolvedDuplications) {
@@ -512,7 +508,7 @@ export class ReportGenerator {
                 taskId: duplication.taskId, }
                 phase: `Task ${duplication.taskId}`;
                 category: duplication.category;
-                description: `Resolved duplications in ${duplication.category}`;
+               , description: `Resolved duplications in ${duplication.category}`;
                 items: [];
             },
             
@@ -520,7 +516,7 @@ export class ReportGenerator {
             
                 phase.items.push({)
                     name: item.name);
-                    action: `Renamed/Reorganized: ${item.resolution}`;
+                   , action: `Renamed/Reorganized: ${item.resolution}`;
                     files: item.files;
             }
                     impact: item.impact, }
@@ -578,7 +574,7 @@ export class ReportGenerator {
                 status: 'Passed',
                 missingImports: 0,
                 unreferencedImports: 'Some cleanup opportunities';
-                circularDependencies: 0 ,};
+               , circularDependencies: 0 ,};
             testSuite: { ''
                 status: 'Passing',
                 unitTests: 'All passing',
@@ -670,8 +666,7 @@ export class ReportGenerator {
     /**
      * アイテムの理由を生成
      */''
-    generateReasoningForItem(item: ResolvedItem): string { const reasonings: Record<string, string> = {''
-            'PerformanceConfig': 'Merged backup configuration with main file to eliminate redundancy',
+    generateReasoningForItem(item: ResolvedItem): string { const reasonings: Record<string, string> = {'', 'PerformanceConfig': 'Merged backup configuration with main file to eliminate redundancy',
             'AccessibilityManager': 'Separated core functionality from debug-specific features',
             'KeyboardShortcutManager': 'Distinguished between core shortcuts and debug shortcuts',
             'AudioAccessibilitySupport': 'Separated main audio accessibility from component-specific support',
@@ -790,7 +785,7 @@ export class ReportGenerator {
 
             md.push(`### Task ${phase.taskId}: ${ phase.category)`');''
             md.push();
-            for(const, item of, phase.items) {
+            for(const, item, of, phase.items) {
                 md.push(`#### ${item.name)`);
                 md.push(`**Resolution: ** ${item.action)`),
 

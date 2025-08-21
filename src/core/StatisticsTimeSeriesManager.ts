@@ -4,7 +4,7 @@
  * 時系列データの記録、集計、トレンド分析を担当
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 統計時系列管理クラス
@@ -16,7 +16,7 @@ export class StatisticsTimeSeriesManager {
         this.aggregationIntervals = {
             hourly: 60 * 60 * 1000;
             daily: 24 * 60 * 60 * 1000;
-            weekly: 7 * 24 * 60 * 60 * 1000;
+           , weekly: 7 * 24 * 60 * 60 * 1000;
     }
             monthly: 30 * 24 * 60 * 60 * 1000 }
         }
@@ -110,7 +110,7 @@ export class StatisticsTimeSeriesManager {
                 
                     aggregated[bucketTime] = {
                         timestamp: bucketTime;
-                        count: 0;
+                       , count: 0;
                 }
                         sum: 0, }
                         values: [] }
@@ -123,10 +123,10 @@ export class StatisticsTimeSeriesManager {
 
             return Object.values(aggregated).map(bucket => ({ timestamp: bucket.timestamp)
                 value: bucket.sum / bucket.count);
-                count: bucket.count,);
+               , count: bucket.count,);
                 sum: bucket.sum);
                 min: Math.min(...bucket.values);
-                max: Math.max(...bucket.values))).sort((a, b) => a.timestamp - b.timestamp);
+               , max: Math.max(...bucket.values))).sort((a, b) => a.timestamp - b.timestamp);
 
         } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'aggregateData'');
@@ -157,7 +157,7 @@ export class StatisticsTimeSeriesManager {
                 metric: 'playTime');
             return { score: scoreData,
                 efficiency: efficiencyData;
-                playTime: playTimeData;
+               , playTime: playTimeData;
                 period,
     }
                 days, };
@@ -188,12 +188,12 @@ export class StatisticsTimeSeriesManager {
             return { totalDataPoints: dataPoints,
                 dateRange: {
                     start: firstPoint.timestamp;
-                    end: lastPoint.timestamp, };
+                   , end: lastPoint.timestamp, };
                     duration: lastPoint.timestamp - firstPoint.timestamp }
                 };
                 trends: this.calculateTrends();
                 peaks: this.findPeaks();
-                averages: this.calculateAverages();
+               , averages: this.calculateAverages();
             } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getTimeSeriesStatisticsSummary);
             return { totalDataPoints: 0, };
@@ -216,7 +216,7 @@ export class StatisticsTimeSeriesManager {
             if(recentData.length === 0) {
                 return { period: days,
                     gamesPlayed: 0;
-                    averageScore: 0;
+                   , averageScore: 0;
     ,}
 
                     averageEfficiency: 0,' };
@@ -253,7 +253,7 @@ export class StatisticsTimeSeriesManager {
             return { period: days,
                 gamesPlayed: totalGames;
                 averageScore: Math.round(averageScore);
-                averageEfficiency: Math.round(averageEfficiency * 10) / 10;
+               , averageEfficiency: Math.round(averageEfficiency * 10) / 10;
                 trend,
                 bestScore: Math.max(...recentData.map(point = > point.score ,};
                 worstScore: Math.min(...recentData.map(point => point.score); }
@@ -261,7 +261,7 @@ export class StatisticsTimeSeriesManager {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getRecentPerformance'');
             return { period: days,
                 gamesPlayed: 0;
-                averageScore: 0,
+               , averageScore: 0,
                 averageEfficiency: 0,' };
 
                 trend: 'no-data' }
@@ -297,9 +297,9 @@ export class StatisticsTimeSeriesManager {
                 };
                 peakDay: { day: peakDay;
                     name: dayNames[peakDay];
-                    count: dayCounts[peakDay] };
+                   , count: dayCounts[peakDay] };
                 hourDistribution: hourCounts;
-                dayDistribution: dayCounts;
+               , dayDistribution: dayCounts;
             },
 
         } catch (error) {
@@ -310,7 +310,7 @@ export class StatisticsTimeSeriesManager {
                 peakHour: { hour: 0, count: 0, timeRange: '0:00-1:00' ,},''
                 peakDay: { day: 0, name: 'Sunday', count: 0 ,},
                 hourDistribution: new Array(24).fill(0);
-                dayDistribution: new Array(7).fill(0);
+               , dayDistribution: new Array(7).fill(0);
             }
     }
 
@@ -328,13 +328,12 @@ export class StatisticsTimeSeriesManager {
                     distribution: {};
                     average: 0;
                     median: 0;
-                    mode: 0;
+                   , mode: 0;
                 },
             }
 
             // 時間を分単位のバケットに分類
-            const buckets = { ''
-                '0-1min': 0,
+            const buckets = { '', '0-1min': 0,
                 '1-3min': 0,
                 '3-5min': 0,
                 '5-10min': 0,
@@ -360,7 +359,7 @@ export class StatisticsTimeSeriesManager {
             return { distribution: buckets,
                 average: Math.round(average);
                 median: Math.round(median);
-                shortest: sortedTimes[0], };
+               , shortest: sortedTimes[0], };
                 longest: sortedTimes[sortedTimes.length - 1] }
             } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPlayTimeDistribution'');
@@ -368,7 +367,7 @@ export class StatisticsTimeSeriesManager {
                 distribution: {};
                 average: 0;
                 median: 0;
-                mode: 0;
+               , mode: 0;
             },
         }
     }
@@ -419,7 +418,7 @@ export class StatisticsTimeSeriesManager {
         if (data.length === 0) {
             return { totalGames: 0,
                 averageScore: 0;
-                averageEfficiency: 0;
+               , averageEfficiency: 0;
     ,}
                 totalPlayTime: 0, };
                 bestScore: 0 }
@@ -433,7 +432,7 @@ export class StatisticsTimeSeriesManager {
 
         return { totalGames,
             averageScore: totalScore / totalGames;
-            averageEfficiency: totalEfficiency / totalGames;
+           , averageEfficiency: totalEfficiency / totalGames;
             totalPlayTime, };
             bestScore }
         }
@@ -453,8 +452,7 @@ export class StatisticsTimeSeriesManager {
      * トレンドを計算
      * @returns {Object} トレンド情報
      */
-    calculateTrends() {'
-        ';
+    calculateTrends() {', ';
 
     }
 
@@ -511,13 +509,13 @@ export class StatisticsTimeSeriesManager {
         return { score: {
                 max: Math.max(...scores);
                 maxIndex: scores.indexOf(Math.max(...scores);
-                min: Math.min(...scores), };
+               , min: Math.min(...scores), };
                 minIndex: scores.indexOf(Math.min(...scores);
             },
             efficiency: { max: Math.max(...efficiencies);
                 maxIndex: efficiencies.indexOf(Math.max(...efficiencies);
                 min: Math.min(...efficiencies);
-                minIndex: efficiencies.indexOf(Math.min(...efficiencies }
+               , minIndex: efficiencies.indexOf(Math.min(...efficiencies }
 
     /**
      * 平均値を計算

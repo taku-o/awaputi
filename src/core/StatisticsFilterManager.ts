@@ -25,7 +25,7 @@ export class StatisticsFilterManager {
         // 現在のフィルター設定
         this.currentFilter = {;
             period: 'last7days';
-            customStart: null,
+           , customStart: null,
             customEnd: null,
             categories: ['all'],
             sortBy: 'date',
@@ -33,7 +33,7 @@ export class StatisticsFilterManager {
         // フィルター適用状態
         this.filterState = { isApplying: false,
             lastApplied: null;
-            cachedResults: new Map( ,};
+           , cachedResults: new Map( ,};
         
         // イベントハンドラ
         this.eventHandlers = new Map();
@@ -42,8 +42,7 @@ export class StatisticsFilterManager {
     /**
      * フィルター期間の設定
      */''
-    setPeriod(period, customStart = null, customEnd = null) {'
-        ';
+    setPeriod(period, customStart = null, customEnd = null) {', ';
 
     }
 
@@ -70,7 +69,7 @@ export class StatisticsFilterManager {
         // キャッシュをクリア
         this.clearCache()';
         this.emit('filterChanged', { period: this.currentFilter.period)
-            customStart: this.currentFilter.customStart,);
+           , customStart: this.currentFilter.customStart,);
             customEnd: this.currentFilter.customEnd ,}
     
     /**
@@ -114,7 +113,7 @@ export class StatisticsFilterManager {
         this.currentFilter.sortOrder = sortOrder;''
         this.clearCache()';
         this.emit('sortingChanged', { sortBy: this.currentFilter.sortBy)
-            sortOrder: this.currentFilter.sortOrder }
+           , sortOrder: this.currentFilter.sortOrder }
     
     /**
      * フィルターされた統計データの取得
@@ -159,7 +158,7 @@ export class StatisticsFilterManager {
                 statistics: sortedStats;
                 timeSeriesData: timeSeriesData;
                 summary: this.generateSummary(sortedStats);
-                metadata: {
+               , metadata: {
                     totalRecords: sortedStats.sessions? .length || 0, : undefined
                     filteredAt: new Date(), 
                     filterSettings: { ...this.currentFilter
@@ -231,8 +230,7 @@ export class StatisticsFilterManager {
             start.setHours(0, 0, 0, 0); }
             return { start, end: now ,}
 
-        if(this.currentFilter.period === 'thisMonth) {'
-            ';
+        if(this.currentFilter.period === 'thisMonth) {', ';
 
         }
 
@@ -395,7 +393,7 @@ export class StatisticsFilterManager {
             totalGames: 0;
             totalPlayTime: 0;
             avgAccuracy: 0;
-            maxCombo: 0 ,});
+           , maxCombo: 0 ,});
     }
     
     /**
@@ -424,7 +422,7 @@ export class StatisticsFilterManager {
             averageScore: totalScore / sessions.length;
             totalPlayTime,
             averagePlayTime: totalPlayTime / sessions.length;
-            averageAccuracy: avgAccuracy;
+           , averageAccuracy: avgAccuracy;
             maxCombo,
             period: this.currentFilter.period,' };
 
@@ -467,7 +465,7 @@ export class StatisticsFilterManager {
             return { ...statisticsData,
                 sessions: filteredSessions;
                 filteredPeriod: period;
-                filterStartDate: startDate, };
+               , filterStartDate: startDate, };
                 sessionCount: filteredSessions.length }
             } catch (error) {
             console.error('Error filtering statistics by period:', error);
@@ -497,7 +495,7 @@ export class StatisticsFilterManager {
      */''
     resetFilters(''';
             period: 'last7days';
-            customStart: null,
+           , customStart: null,
             customEnd: null,
             categories: ['all'],
             sortBy: 'date',

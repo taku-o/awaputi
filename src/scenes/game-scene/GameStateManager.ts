@@ -8,12 +8,12 @@
 interface GameState { isInitialized: boolean,
     isGameStarted: boolean;
     gameStartTime: number;
-    lastUpdateTime: number;
+   , lastUpdateTime: number;
     lastScore?: number ,}
 
 interface PlayerData { currentHP: number;
     maxHP: number;
-    currentScore: number;
+   , currentScore: number;
     reset(): void }
 
 interface ScoreManager { resetCombo(): void;
@@ -29,8 +29,8 @@ interface ItemManager { ownedItems: string[],
 
 interface Item { id: string,
     effect: {
-        type: string;
-        value: number ,}
+        typ;e: string;
+       , value: number ,}
 
 interface StageManager { startStage(stageName: string): boolean, }
 
@@ -43,21 +43,21 @@ interface GameStats { isGameStarted: boolean,
     hp: number;
     maxHP: number;
     bubbleCount: number;
-    comboCount: number ,}
+   , comboCount: number ,}
 
 interface TimeWarnings { timeWarning: boolean;
     urgentWarning: boolean;
-    message: string | null }
+   , message: string | null }
 
 interface DebugInfo { gameState: GameState;
     isPaused: boolean;
     isGameOver: boolean;
-    gameStats: GameStats
+   , gameStats: GameStats
     }
 
 interface Bubble { type: string;
     x: number;
-    y: number }
+   , y: number }
 
 // Minimal GameEngine interface
 interface GameEngine { playerData: PlayerData;
@@ -72,7 +72,7 @@ interface GameEngine { playerData: PlayerData;
     scoreMultiplier: number;
     screenShakeRemaining: number;
     screenShakeIntensity: number;
-    inputDisabled: boolean;
+   , inputDisabled: boolean;
     isTimeStopActive(): boolean;
     startBonusTime(): void;
     startTimeStop(): void; }
@@ -80,7 +80,7 @@ interface GameEngine { playerData: PlayerData;
 export class GameStateManager {
     private gameEngine: GameEngine;
     private gameState: GameState;
-    public isPaused: boolean,
+    public, isPaused: boolean,
 
     constructor(gameEngine: GameEngine) {
 
@@ -91,7 +91,7 @@ export class GameStateManager {
         this.gameState = {
             isInitialized: false;
             isGameStarted: false;
-            gameStartTime: 0;
+           , gameStartTime: 0;
     ,}
             lastUpdateTime: 0 }
         }
@@ -223,8 +223,7 @@ export class GameStateManager {
         this.gameEngine.scoreManager.addScore(points);
         ';
         // 特殊効果の判定
-        if(bubble.type === 'rainbow) {'
-            ';
+        if(bubble.type === 'rainbow) {', ';
 
         }
 
@@ -315,7 +314,7 @@ export class GameStateManager {
         const warnings: TimeWarnings = {
             timeWarning: false;
             urgentWarning: false;
-            message: null };
+           , message: null };
         ;
         // 30秒以下で警告
         if(timeRemaining <= 30000 && timeRemaining > 29000) {'
@@ -350,7 +349,7 @@ export class GameStateManager {
             score: this.gameEngine.playerData.currentScore;
             hp: this.gameEngine.playerData.currentHP;
             maxHP: this.gameEngine.playerData.maxHP;
-            bubbleCount: this.gameEngine.bubbleManager.getBubbleCount(), };
+           , bubbleCount: this.gameEngine.bubbleManager.getBubbleCount(), };
             comboCount: this.gameEngine.scoreManager.getCombo(); }
         }
     

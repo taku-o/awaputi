@@ -3,16 +3,16 @@
  * 
  * 動的なsitemap.xml生成機能を提供
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';''
-import { normalizeUrl, measurePerformance } from './SEOUtils';
+import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';''
+import { normalizeUrl, measurePerformance  } from './SEOUtils';
 
 // URL情報インターフェース
 interface UrlData { loc: string,
     priority: number,
     changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
-    lastmod: string;
+   , lastmod: string;
     hreflang?: string ,}
 
 // 動的URL生成関数型
@@ -27,17 +27,17 @@ interface SitemapGenerationOptions { forceRegenerate?: boolean;
 // サイトマップサマリーインターフェース
 interface SitemapSummary { totalUrls: number,
     lastGenerated: Date | null;
-    urlsByPriority: Record<string, number>;
+   , urlsByPriority: Record<string, number>;
     urlsByChangeFreq: Record<string, number>;
     supportedLanguages: number;
-    dynamicGenerators: number ,}
+   , dynamicGenerators: number ,}
 
 // サイトマップ検証結果インターフェース
 interface SitemapValidationResult { isValid: boolean;
     issues: string[];
     warnings: string[];
     urlCount: number;
-    duplicateCount: number }
+   , duplicateCount: number }
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
@@ -48,7 +48,7 @@ interface ExtendedWindow extends Window { showSaveFilePicker?: (options?: {
         suggestedName?: string;
         types?: Array<{
             description: string);
-            accept: Record<string, string[]> }>;
+           , accept: Record<string, string[]> }>;
     }) => Promise<FileSystemFileHandle>;
 }
 
@@ -64,11 +64,11 @@ interface FileSystemWritableFileStream { write(data: BufferSource | Blob | strin
 export class SitemapGenerator {
     private localizationManager: LocalizationManager | null;
     private baseUrl: string;
-    private urls: Map<string, UrlData>;
+    private, urls: Map<string, UrlData>;
     private staticUrls: UrlData[];
-    private dynamicUrlGenerators: Map<string, DynamicUrlGenerator>;
+    private, dynamicUrlGenerators: Map<string, DynamicUrlGenerator>;
     private lastGenerated: Date | null;
-    private hasStatsPages: boolean = false;
+    private, hasStatsPages: boolean = false;
     constructor(localizationManager: LocalizationManager | null = null) {
     
         this.localizationManager = localizationManager;
@@ -146,7 +146,7 @@ export class SitemapGenerator {
 
                 const fileHandle = await extWindow.showSaveFilePicker({)'
                     suggestedName: 'sitemap.xml)';
-                    types: [{'
+                   , types: [{'
             }]'
                         description: 'XML files',' }]'
                         accept: { 'application/xml': ['.xml] })]);
@@ -186,13 +186,13 @@ export class SitemapGenerator {
     private _registerStaticUrls(''';
                 loc: '/);
                 priority: SEOConfig.sitemap.priority.home)';
-                changefreq: SEOConfig.sitemap.changeFrequency.home,
+               , changefreq: SEOConfig.sitemap.changeFrequency.home,
                 lastmod: new Date().toISOString(').split('T'')[0];
             },
 
             { ''
                 loc: '/help/';
-                priority: SEOConfig.sitemap.priority.help,
+               , priority: SEOConfig.sitemap.priority.help,
                 changefreq: SEOConfig.sitemap.changeFrequency.help,
                 lastmod: new Date().toISOString(').split('T'')[0] ,}
         ];
@@ -206,7 +206,7 @@ export class SitemapGenerator {
         
         importantAssets.forEach(asset => {  this.staticUrls.push({)
                 loc: asset);
-                priority: SEOConfig.sitemap.priority.assets,)';
+               , priority: SEOConfig.sitemap.priority.assets,)';
                 changefreq: SEOConfig.sitemap.changeFrequency.assets),' }'
 
                 lastmod: new Date().toISOString(').split('T)[0] }
@@ -251,7 +251,7 @@ export class SitemapGenerator {
             if(this.hasStatsPages) {'
                 statsPages.push({)'
                     loc: '/stats/')';
-                    priority: 0.6,' }'
+                   , priority: 0.6,' }'
 
                     changefreq: 'weekly'),' }
 
@@ -328,7 +328,7 @@ export class SitemapGenerator {
                 this.urls.set(localizedUrl, {
                     ...urlData);
                     loc: localizedUrl);
-                    priority: SEOConfig.sitemap.priority.languageVariants, }
+                   , priority: SEOConfig.sitemap.priority.languageVariants, }
                     hreflang: lang); }
             });
         });
@@ -445,7 +445,7 @@ export class SitemapGenerator {
         
         return { : undefined
             totalUrls: this.urls.size;
-            lastGenerated: this.lastGenerated;
+           , lastGenerated: this.lastGenerated;
             urlsByPriority,
             urlsByChangeFreq,
             supportedLanguages: SEOConfig.supportedLanguages.length, };

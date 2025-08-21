@@ -5,8 +5,8 @@
  * Main Controller Pattern: Lightweight orchestrator delegating to specialized sub-components
  */
 
-import { TestChartGenerator } from './test-result-visualizer/TestChartGenerator.js';''
-import { TestDataVisualizer } from './test-result-visualizer/TestDataVisualizer.js';
+import { TestChartGenerator  } from './test-result-visualizer/TestChartGenerator.js';''
+import { TestDataVisualizer  } from './test-result-visualizer/TestDataVisualizer.js';
 
 interface TestSupportTools { // Define the interface based on usage }
 
@@ -15,20 +15,20 @@ interface TestResult { id: string,
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
     error?: Error;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface TestSummary { total: number;
     passed: number;
     failed: number;
     skipped: number;
-    duration: number;
+   , duration: number;
     coverage?: number }
 
 export class TestResultVisualizer {
     private testSupportTools: TestSupportTools;
     private chartGenerator: TestChartGenerator;
     private dataVisualizer: TestDataVisualizer;
-    private container: HTMLElement | null = null;
+    private, container: HTMLElement | null = null;
     private charts = new Map<string, any>();
     private isVisible = false;
     private currentTestResults: TestResult[] | null = null;
@@ -57,11 +57,11 @@ export class TestResultVisualizer {
             position: fixed;
             top: 10px;
             left: 10px;
-            width: 900px,
+           , width: 900px,
             height: 700px,
             background: rgba(0, 0, 0, 0.9),
             color: white;
-            padding: 20px,
+           , padding: 20px,
             border-radius: 12px,
             font-family: 'Segoe UI', monospace;
             font-size: 13px,
@@ -266,8 +266,7 @@ export class TestResultVisualizer {
         });
 
         const activePanel = this.container.querySelector(`#tab-${tabName}`);
-        if(activePanel) {'
-            ';
+        if(activePanel) {', ';
 
         }
 
@@ -347,7 +346,7 @@ export class TestResultVisualizer {
         const data = {
             results: this.currentTestResults;
             summary: this.calculateSummary(this.currentTestResults);
-            exportedAt: new Date().toISOString( };
+           , exportedAt: new Date().toISOString( };
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });''
         const url = URL.createObjectURL(blob);''

@@ -5,8 +5,8 @@
  * SEOTester のサブコンポーネント
  */
 
-import { seoLogger } from '../SEOLogger.js';''
-import { seoErrorHandler } from '../SEOErrorHandler.js';
+import { seoLogger  } from '../SEOLogger.js';''
+import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController {
     baseUrl: string;
@@ -14,30 +14,30 @@ interface MainController {
 
 interface TestResult { name: string,
     passed: boolean;
-    message: string ,}
+   , message: string ,}
 
 interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
     failed: number;
-    warnings: number }
+   , warnings: number }
 
 interface CoreWebVitalsResults extends ValidationResults { vitals: {
         LCP: number;
         FID: number;
         CLS: number;
-        timestamp: string }
+       , timestamp: string }
 
 interface ImageInfo { src: string,
     alt: string ,}
 
 interface HeadingStructure { isValid: boolean;
     levels: number[];
-    issues: string[] }
+   , issues: string[] }
 
 export class PerformanceValidator {
     private mainController: MainController;
-    private baseUrl: string;
+    private, baseUrl: string;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -55,7 +55,7 @@ export class PerformanceValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0;
+               , warnings: 0;
             },
             
             // WebP対応の確認
@@ -120,7 +120,7 @@ export class PerformanceValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0;
+               , warnings: 0;
             ,},
             
             // alt属性の確認
@@ -198,7 +198,7 @@ export class PerformanceValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0;
+               , warnings: 0;
             ,}
                 vitals: vitals }))
             // LCP検証
@@ -249,7 +249,7 @@ export class PerformanceValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0;
+               , warnings: 0;
             ,},
             
             // サイトマップの存在確認
@@ -285,7 +285,7 @@ export class PerformanceValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0;
+               , warnings: 0;
             ,},
             
             // robots.txtの存在確認
@@ -422,7 +422,7 @@ export class PerformanceValidator {
 
             } catch (error) { }
 
-            test.message = `⚠️ Could not verify compression: ${error instanceof Error ? error.message : 'Unknown error'}`;
+            test.message = `⚠️ Could not verify compression: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
         
         return test;
@@ -448,7 +448,7 @@ export class PerformanceValidator {
                 test.message = `⚠️ Resources could be better optimized (${optimizationScore.toFixed(1})%)`;''
             } catch (error) { }
 
-            test.message = `⚠️ Resource optimization check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+            test.message = `⚠️ Resource optimization check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
         
         return test;
@@ -478,7 +478,7 @@ export class PerformanceValidator {
 
             } catch (error) { }
 
-            test.message = `⚠️ Keyboard navigation check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+            test.message = `⚠️ Keyboard navigation check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
         
         return test;
@@ -504,7 +504,7 @@ export class PerformanceValidator {
                 test.message = `⚠️ Color contrast below WCAG AA standards (${contrastRatio.toFixed(2}):1)`;''
             } catch (error) { }
 
-            test.message = `⚠️ Color contrast check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+            test.message = `⚠️ Color contrast check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
         
         return test;

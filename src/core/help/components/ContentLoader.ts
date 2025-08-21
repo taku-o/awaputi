@@ -10,13 +10,13 @@ export interface HitRatio { hits: number,
     misses: number ,}
 
 export interface LoadQueueItem { category: string;
-    priority: number;
+   , priority: number;
     callback?: () => void }
 }
 
 export class ContentLoader {
     private localizationManager: LocalizationManager;
-    private contentCache: Map<string, any>;
+    private, contentCache: Map<string, any>;
     private imageCache: Map<string, any>;
     private cacheExpiry: Map<string, number>;
     private maxCacheSize: number;
@@ -25,10 +25,10 @@ export class ContentLoader {
     private preloadPriority: string[];
     private loadingQueue: LoadQueueItem[];
     private isLoading: boolean;
-    private loadTimes: Map<string, number>;
+    private, loadTimes: Map<string, number>;
     private hitRatio: HitRatio;
     private contentVersion: string;
-    private versionCheck: boolean;
+    private, versionCheck: boolean;
     constructor(localizationManager: LocalizationManager) {
 
         this.localizationManager = localizationManager;
@@ -116,8 +116,7 @@ export class ContentLoader {
             
             this.hitRatio.misses++;
             // 遅延読み込み対応
-            if(this.lazyLoadingEnabled && this.isLoading) {'
-                ';
+            if(this.lazyLoadingEnabled && this.isLoading) {', ';
 
             }
 
@@ -360,7 +359,7 @@ export class ContentLoader {
             cacheSize: this.contentCache.size;
             imageCacheSize: this.imageCache.size;
             queueLength: this.loadingQueue.length;
-            averageLoadTimes: avgLoadTimes, };
+           , averageLoadTimes: avgLoadTimes, };
             isLoading: this.isLoading }
         }
     
@@ -372,7 +371,7 @@ export class ContentLoader {
         const mockContent = [{ }
                 id: `${category}-help-1`;
                 category: category;
-                title: `${category}ヘルプ`;
+               , title: `${category}ヘルプ`;
                 content: `${category}に関するヘルプコンテンツです。`]
                 language: language,']';
                 searchKeywords: [category, 'help', 'ヘルプ],
@@ -395,7 +394,7 @@ export class ContentLoader {
                 title: '基本チュートリアル',
                 description: 'ゲームの基本操作を学習します';
                 language: language;
-                steps: [';
+               , steps: [';
                     {''
                         id: 'step1',
                         title: 'ステップ1',
@@ -421,7 +420,7 @@ export class ContentLoader {
                 answer: '回答1',
                 category: 'basic';
                 language: language;
-                lastUpdated: new Date().toISOString( ,}]
+               , lastUpdated: new Date().toISOString( ,}]
             }]
         ];
         
@@ -459,7 +458,7 @@ export class ContentLoader {
                 id: 'default-tutorial',
                 title: 'デフォルトチュートリアル',
                 description: 'オフライン用基本チュートリアル';
-                steps: [];
+               , steps: [];
             })
         ]);
     }

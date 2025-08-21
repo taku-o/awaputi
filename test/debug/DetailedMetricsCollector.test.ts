@@ -2,9 +2,9 @@
  * Detailed Metrics Collector Tests
  * DetailedMetricsCollector クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -34,8 +34,7 @@ const mockMonitor = { gameEngine: {'
         canvas: {''
             getContext: jest.fn((type') => { ' }'
                 if (type === 'webgl' || type === 'experimental-webgl'') {' }'
-                    return { mock: 'webgl-context' })''
-                ');''
+                    return { mock: 'webgl-context' })'', ');''
                 if (type === '2d'') { ' }'
                     return { mock: '2d-context' }
                 }

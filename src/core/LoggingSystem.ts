@@ -5,7 +5,7 @@
  * デバッグモードでの詳細ログ出力を実装します。
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 ';
 
 class LoggingSystem { ''
@@ -20,19 +20,19 @@ class LoggingSystem { ''
             enableConsole: options.enableConsole !== undefined ? options.enableConsole : true;
             enableTimestamp: options.enableTimestamp !== undefined ? options.enableTimestamp : true;
             enableSource: options.enableSource !== undefined ? options.enableSource : true;
-            filterCategories: options.filterCategories || null ,};
+           , filterCategories: options.filterCategories || null ,};
         // ログレベル定義
         this.logLevels = { debug: 0,
             info: 1;
             warn: 2;
-            error: 3 ,};
+           , error: 3 ,};
         // 統計情報
         this.stats = { total: 0,
             byLevel: {
                 debug: 0;
                 info: 0;
                 warn: 0;
-                error: 0 ,};
+               , error: 0 ,};
             byCategory: {}
     
     /**
@@ -41,8 +41,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース
      */''
-    debug(message, data = null, source = null) {'
-        ';
+    debug(message, data = null, source = null) {', ';
 
     }
 
@@ -55,8 +54,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース'
      */''
-    info(message, data = null, source = null) {'
-        ';
+    info(message, data = null, source = null) {', ';
 
     }
 
@@ -69,8 +67,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース'
      */''
-    warn(message, data = null, source = null) {'
-        ';
+    warn(message, data = null, source = null) {', ';
 
     }
 
@@ -83,8 +80,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース'
      */''
-    error(message, data = null, source = null) {'
-        ';
+    error(message, data = null, source = null) {', ';
 
     }
 
@@ -259,8 +255,7 @@ class LoggingSystem { ''
      * ログ設定を更新
      * @param {Object} newConfig - 新しい設定
      */
-    updateConfig(newConfig) {'
-        ';
+    updateConfig(newConfig) {', ';
 
     }
 
@@ -417,10 +412,10 @@ class LoggingSystem { ''
     _resetStats() {
         this.stats = {
             total: 0;
-            byLevel: {
+           , byLevel: {
                 debug: 0;
                 info: 0;
-                warn: 0;
+               , warn: 0;
     }
                 error: 0 }
             };
@@ -491,6 +486,6 @@ function getLoggingSystem(options = {}) { if (!instance) {
 
 export { LoggingSystem,
 
-    getLoggingSystem' }'
+    getLoggingSystem'  }'
 
 };

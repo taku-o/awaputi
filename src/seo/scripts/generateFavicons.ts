@@ -3,31 +3,31 @@
  * 
  * 全てのファビコンアセットを生成するスクリプト
  */
-import { FaviconManager } from '../FaviconManager.js';''
-import { seoLogger } from '../SEOLogger.js';
+import { FaviconManager  } from '../FaviconManager.js';''
+import { seoLogger  } from '../SEOLogger.js';
 
 interface FaviconResult { filename: string,
     size: string;
     type: string;
     category: string;
-    dataUrl: string ,}
+   , dataUrl: string ,}
 
 interface FaviconError { filename: string;
-    error: string }
+   , error: string }
 
 interface GenerationResults { generated: FaviconResult[];
-    errors: FaviconError[]
+   , errors: FaviconError[]
     }
 
 interface ValidationResult { isValid: boolean;
     generatedCount: number;
     issues: string[];
-    warnings: string[] }
+   , warnings: string[] }
 
 // Window オブジェクト拡張の型定義
 declare global { interface Window {
         generateAllFavicons?: () => Promise<GenerationResults>;
-        generateFaviconCategory?: (category: string) => Promise<FaviconResult[]>;
+        generateFaviconCategory?: (categor;y: string) => Promise<FaviconResult[]>;
         generateFaviconPreview?: () => Promise<string>; ,}
 }
 
@@ -51,8 +51,7 @@ async function generateAllFavicons()';
         console.log(`Generated: ${results.generated.length) favicons`),
         console.log(`Errors: ${results.errors.length')`,},
 
-        if(results.generated.length > 0} {'
-            ';
+        if(results.generated.length > 0} {', ';
 
         }
 
@@ -84,8 +83,7 @@ async function generateAllFavicons()';
         console.log(`Valid: ${ validation.isValid)`),
         console.log(`Generated, count: ${validation.generatedCount')`,},
 
-        if(validation.issues.length > 0} {'
-            ';
+        if(validation.issues.length > 0} {', ';
 
         }
 
@@ -94,8 +92,7 @@ async function generateAllFavicons()';
 
         }
 
-        if(validation.warnings.length > 0) {'
-            ';
+        if(validation.warnings.length > 0) {', ';
 
         }
 
@@ -181,15 +178,15 @@ async function generateFaviconPreview()';
     <style>;
         body { font-family: Arial, sans-serif; margin: 20px, }
         .favicon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr); gap: 20px, }
-        .favicon-item { border: 1px solid #ddd; padding: 15px; border-radius: 8px, }
+        .favicon-item { border: 1px solid #ddd;, padding: 15px; border-radius: 8px, }
         .favicon-item img { max-width: 64px; max-height: 64px, }
-        .favicon-info { margin-top: 10px; font-size: 12px; color: #666, }
+        .favicon-info { margin-top: 10px; font-size: 12px;, color: #666, }
         .category-header { color: #4CAF50; margin-top: 30px; border-bottom: 2px solid #4CAF50, }
     </style>;
 </head>;
 <body>;
     <h1>BubblePop Favicon Preview</h1>;
-    <p>Generated on ${new Date(}.toLocaleString(})</p>
+    <p>Generated on ${new, Date(}.toLocaleString(})</p>
 `;
         
         // カテゴリ別にファビコンを表示
@@ -254,8 +251,7 @@ if (typeof, window !== 'undefined'') { // ブラウザ環境での実行
     window.generateFaviconCategory = generateFaviconCategory;
     window.generateFaviconPreview = generateFaviconPreview;
     // 自動実行（オプション）
-    if(window.location && window.location.search.includes('autorun=true) {'
-        ';
+    if(window.location && window.location.search.includes('autorun=true) {', ';
 
     }
 
@@ -264,6 +260,6 @@ if (typeof, window !== 'undefined'') { // ブラウザ環境での実行
 
 export { generateAllFavicons,
     generateFaviconCategory,
-    generateFaviconPreview' }'
+    generateFaviconPreview'  }'
 
 };

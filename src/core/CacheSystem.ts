@@ -5,34 +5,34 @@
  * メモリ効率的なキャッシュ管理を実装します。
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 型定義
 interface CacheOptions { maxSize?: number;
     ttl?: number;
     cleanupInterval?: number;
-    priorityFunction?: (entry: CacheEntry) => number ,}
+    priorityFunction?: (entr;y: CacheEntry) => number ,}
 }
 
 interface CacheEntry { value: any;
     expiresAt: number;
     priority: number;
     createdAt: number;
-    accessCount: number }
+   , accessCount: number }
 
 interface CacheStats { hits: number;
     misses: number;
     evictions: number;
     expirations: number;
     size: number;
-    totalRequests: number;
+   , totalRequests: number;
     hitRate?: string;
     memoryUsage?: string; }
 
 interface CacheConfig { maxSize: number,
     ttl: number;
     cleanupInterval: number;
-    priorityFunction: (entry: CacheEntry) => number ,}
+   , priorityFunction: (entr;y: CacheEntry) => number ,}
 }
 
 interface SetOptions { ttl?: number;
@@ -49,48 +49,48 @@ interface LeakDetectionResult { potentialLeaks: MemoryLeak[];
     recommendations: string[];
     memoryUsage: string;
     cacheSize: number;
-    accessHistorySize: number }
+   , accessHistorySize: number }
 
 interface MemoryStats { cacheSize: number;
     memoryUsage: string;
-    accessHistorySize: number }
+   , accessHistorySize: number }
 
 interface MemoryFixResult { before: MemoryStats;
     after: MemoryStats;
     expiredEntriesRemoved: number;
     memoryFreed: string;
-    success: boolean }
+   , success: boolean }
 
 interface EntryWithSize { key: string;
-    size: number }
+   , size: number }
 
 interface EntryWithPriority { key: string;
-    priority: number }
+   , priority: number }
 
 interface MemoryOverview { totalMemoryUsage: string;
     cacheSize: number;
     accessHistorySize: number;
-    averageEntrySize: string }
+   , averageEntrySize: string }
 
 interface MemoryBreakdown { cacheEntries: string;
     accessHistory: string;
-    metadata: string }
+   , metadata: string }
 
 interface LargestEntry { key: string;
-    size: string }
+   , size: string }
 
 interface MemoryReport { overview: MemoryOverview;
     breakdown: MemoryBreakdown;
     topLargestEntries: LargestEntry[];
-    recommendations: string[] }
+   , recommendations: string[] }
 
 class CacheSystem { private cache: Map<string, CacheEntry>;
     private config: CacheConfig;
     private stats: CacheStats;
-    private accessHistory: Map<string, number>;
+    private, accessHistory: Map<string, number>;
     private lastCleanup: number;
     private cleanupTimer: NodeJS.Timeout | null = null;
-    private memoryMonitorTimer: NodeJS.Timeout | null = null;
+    private, memoryMonitorTimer: NodeJS.Timeout | null = null;
     constructor(options: CacheOptions = {) {
     
         // キャッシュストレージ
@@ -99,7 +99,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         // キャッシュ設定
         this.config = {
             maxSize: options.maxSize || 1000;
-            ttl: options.ttl || 60000, // デフォルト有効期限: 60秒;
+           , ttl: options.ttl || 60000, // デフォルト有効期限: 60秒;
             cleanupInterval: options.cleanupInterval || 300000, // デフォルトクリーンアップ間隔: 5分
     }
             priorityFunction: options.priorityFunction || this._defaultPriorityFunction }
@@ -110,7 +110,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             evictions: 0;
             expirations: 0;
             size: 0;
-            totalRequests: 0 ,};
+           , totalRequests: 0 ,};
         // アクセス履歴（LRU用）
         this.accessHistory = new Map();
         
@@ -145,7 +145,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
                 expiresAt,
                 priority,
                 createdAt: Date.now(;
-                accessCount: 0 ,}))
+               , accessCount: 0 ,}))
             // キャッシュに保存)
             this.cache.set(key, entry);
             
@@ -645,7 +645,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
      * 重複データを最適化
      */
     private _optimizeDuplicateData(): void { // 同じ値を持つエントリを特定 }
-        const valueMap = new Map<string, Array<{ key: string; entry: CacheEntry }>>();
+        const valueMap = new Map<string, Array<{ key: string;, entry: CacheEntry }>>();
         
         for(const [key, entry] of this.cache.entries() {
         
@@ -685,7 +685,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             recommendations: [];
             memoryUsage: this._estimateMemoryUsage(;
             cacheSize: this.cache.size;
-            accessHistorySize: this.accessHistory.size }))
+           , accessHistorySize: this.accessHistory.size }))
         );
         const now = Date.now();
         
@@ -706,7 +706,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             // 30%以上が古い場合
             results.potentialLeaks.push({)'
                 type: 'stale_entries')';
-                count: staleCount,')';
+               , count: staleCount,')';
                 description: '長期間アクセスされていないエントリが多数存在')');
 
         ,}
@@ -725,7 +725,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         if(orphanedHistory.length > 0) {'
             results.potentialLeaks.push({)'
                 type: 'orphaned_history')';
-                count: orphanedHistory.length,')';
+               , count: orphanedHistory.length,')';
                 description: 'キャッシュに存在しないアクセス履歴')');''
             results.recommendations.push('アクセス履歴の整合性チェックを実行してください);
             
@@ -740,7 +740,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             // 10MB以上
             results.potentialLeaks.push({)'
                 type: 'high_memory_usage')';
-                usage: results.memoryUsage,')';
+               , usage: results.memoryUsage,')';
                 description: 'メモリ使用量が異常に高い')');
 
         ,}
@@ -754,7 +754,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             results.potentialLeaks.push({''
                 type: 'cache_size_overflow);
                 currentSize: this.cache.size)';
-                maxSize: this.config.maxSize,')';
+               , maxSize: this.config.maxSize,')';
                 description: 'キャッシュサイズが制限を超過')');
 
         ,}
@@ -771,7 +771,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
     fixMemoryLeaks(): MemoryFixResult { const beforeStats: MemoryStats = {
             cacheSize: this.cache.size;
             memoryUsage: this._estimateMemoryUsage(;
-            accessHistorySize: this.accessHistory.size }))
+           , accessHistorySize: this.accessHistory.size }))
         // 1. 期限切れエントリの削除)
         const expiredCount = this._cleanupExpiredEntries();
         
@@ -790,10 +790,10 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         
         const afterStats: MemoryStats = { cacheSize: this.cache.size,
             memoryUsage: this._estimateMemoryUsage(;
-            accessHistorySize: this.accessHistory.size ,}
+           , accessHistorySize: this.accessHistory.size ,}
         );
         return { before: beforeStats)
-            after: afterStats, };
+           , after: afterStats, };
             expiredEntriesRemoved: expiredCount,) }
             memoryFreed: `${parseInt(beforeStats.memoryUsage} - parseInt(afterStats.memoryUsage}) KB`;
             success: true;
@@ -854,7 +854,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
                 totalMemoryUsage: this._estimateMemoryUsage(;
                 cacheSize: this.cache.size);
                 accessHistorySize: this.accessHistory.size);
-                averageEntrySize: this.cache.size > 0 ? ' }'
+               , averageEntrySize: this.cache.size > 0 ? ' }'
 
                     `${Math.round(parseInt(this._estimateMemoryUsage(} / this.cache.size'}) KB` : '0 KB'
             };
@@ -863,7 +863,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
                 accessHistory: '0 KB',
                 metadata: '0 KB' ,};
             topLargestEntries: [];
-            recommendations: [];
+           , recommendations: [];
         },
         
         // エントリサイズの分析
@@ -892,16 +892,14 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         
         // 推奨事項
         const memoryKB = parseInt(report.overview.totalMemoryUsage);''
-        if(memoryKB > 5000) {'
-            ';
+        if(memoryKB > 5000) {', ';
 
         }
 
             report.recommendations.push('メモリ使用量が高いため、キャッシュサイズの削減を検討してください); }'
         }
 
-        if(this.cache.size > this.config.maxSize * 0.8) {'
-            ';
+        if(this.cache.size > this.config.maxSize * 0.8) {', ';
 
         }
 
@@ -911,8 +909,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         const hitRate = this.stats.totalRequests > 0 ? ';
 
             (this.stats.hits / this.stats.totalRequests) * 100 : 0;''
-        if(hitRate < 50) {'
-            ';
+        if(hitRate < 50) {', ';
 
         }
 
@@ -976,6 +973,6 @@ function getCacheSystem(options: CacheOptions = {}): CacheSystem { if (!instance
 
 export { CacheSystem,
 
-    getCacheSystem' }'
+    getCacheSystem'  }'
 
 };

@@ -3,12 +3,12 @@
  * 
  * 包括的なファビコン生成・管理機能を提供
  */
-import { SEOConfig, getBaseUrl } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';
+import { SEOConfig, getBaseUrl  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';
 import { optimizeImageUrl, 
     measurePerformance,
-    generateCacheKey ' }'
+    generateCacheKey '  }'
 
 } from './SEOUtils';
 
@@ -17,7 +17,7 @@ interface FaviconSpec { size?: number;
     width?: number;
     height?: number;''
     type: 'png' | 'svg' | 'ico';
-    filename: string;
+   , filename: string;
     multiSize?: number[];
     vector?: boolean;
     monochrome?: boolean;
@@ -29,42 +29,42 @@ interface GeneratedFavicon { category: string,
     size: number | string;
     type: string;
     dataUrl: string;
-    spec: FaviconSpec
+   , spec: FaviconSpec
     ,}
 
 // ファビコン生成結果インターフェース
 interface FaviconGenerationResult { generated: GeneratedFavicon[];
-    errors: Array<{
-        category: string;
+   , errors: Array<{
+        categor;y: string;
         filename?: string;
-        error: string }>;
+       , error: string }>;
     summary: FaviconSummary;
     }
 
 // カテゴリ別生成結果インターフェース
 interface CategoryGenerationResult { generated: GeneratedFavicon[],
     errors: Array<{
-        category: string;
+        categor;y: string;
         filename: string;
-        error: string ,}>;
+       , error: string ,}>;
 }
 
 // ファビコンサマリーインターフェース
 interface FaviconSummary { totalGenerated: number,
     totalErrors: number;
-    byCategory: Record<string, number>;
+   , byCategory: Record<string, number>;
     byType: Record<string, number>;
     generatedAt: string ,}
 
 // PNGデータインターフェース
 interface PngData { size: number;
-    data: string }
+   , data: string }
 
 // ファビコン検証結果インターフェース
 interface FaviconValidationResult { isValid: boolean;
     issues: string[];
     warnings: string[];
-    generatedCount: number }
+   , generatedCount: number }
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
@@ -75,7 +75,7 @@ interface ExtendedWindow extends Window { showDirectoryPicker?: () => Promise<Fi
 }
 
 // FileSystemDirectoryHandle インターフェース
-interface FileSystemDirectoryHandle { getFileHandle(name: string, options?: { create?: boolean ): Promise<FileSystemFileHandle>
+interface FileSystemDirectoryHandle { getFileHandle(name: string, options?: { creat;e?: boolean ): Promise<FileSystemFileHandle>
     }
 
 // FileSystemFileHandle インターフェース
@@ -92,7 +92,7 @@ export class FaviconManager {
     private baseUrl: string;
     private canvas: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D | null;
-    private generatedFavicons: Map<string, string>;
+    private, generatedFavicons: Map<string, string>;
     private faviconSpecs: Map<string, FaviconSpec[]>;
     
     constructor(localizationManager: LocalizationManager | null = null) {
@@ -209,9 +209,9 @@ export class FaviconManager {
             const results: FaviconGenerationResult = {
                 generated: [];
                 errors: [];
-                summary: {
+               , summary: {
                     totalGenerated: 0;
-                    totalErrors: 0, }
+                   , totalErrors: 0, }
                     byCategory: {}
 
                     byType: {}''
@@ -247,7 +247,7 @@ export class FaviconManager {
     private async _generateFaviconCategory(;
         category: string );
         specs: FaviconSpec[]);
-        options: { forceRegenerate?: boolean ,}
+       , options: { forceRegenerate?: boolean ,}
     ): Promise<CategoryGenerationResult>;
         const results: CategoryGenerationResult = { generated: [],
             errors: [] ,};
@@ -263,12 +263,12 @@ export class FaviconManager {
                         filename: spec.filename, }
                         size: spec.size || `${spec.width}x${spec.height}`)
                         type: spec.type);
-                        dataUrl: faviconData,);
+                       , dataUrl: faviconData,);
                         spec);
                 } catch (error) { results.errors.push({)
                     category,);
                     filename: spec.filename);
-                    error: (error, as Error).message ,});
+                   , error: (error, as Error).message ,});
             }
         }
         
@@ -293,8 +293,7 @@ export class FaviconManager {
         
         try { let faviconData: string,
 
-            if(spec.type === 'svg) {'
-                ';
+            if(spec.type === 'svg) {', ';
 
             }
 
@@ -417,8 +416,7 @@ export class FaviconManager {
         this.ctx!.beginPath();
         this.ctx!.arc(centerX + radius/4, centerY - radius/4, highlightRadius/2, 0, Math.PI * 2);''
         this.ctx!.fill()';
-        if(spec.filename && spec.filename.includes('mstile) {'
-            ';
+        if(spec.filename && spec.filename.includes('mstile) {', ';
 
         }
 
@@ -563,7 +561,7 @@ export class FaviconManager {
      */
     private _generateFaviconSummary(results: FaviconGenerationResult): FaviconSummary { const summary: FaviconSummary = {
             totalGenerated: results.generated.length;
-            totalErrors: results.errors.length, }
+           , totalErrors: results.errors.length, }
             byCategory: {}
             byType: {}
             generatedAt: new Date().toISOString();

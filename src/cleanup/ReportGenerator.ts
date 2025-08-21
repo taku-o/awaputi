@@ -1,12 +1,12 @@
 import fs from 'fs';''
 import path from 'path';''
-import { FileInfo } from './FileScanner.js';''
-import { ReferenceResult } from './ReferenceChecker.js';
+import { FileInfo  } from './FileScanner.js';''
+import { ReferenceResult  } from './ReferenceChecker.js';
 
 interface ScanSummary { totalFiles: number,
     totalSize: string;
     fileTypes: number;
-    timestamp: string ,}
+   , timestamp: string ,}
 
 interface FilesByType { [fileType: string]: FileInfo[];
     }
@@ -16,7 +16,7 @@ interface FormattedFileInfo extends Omit<FileInfo, 'fileSize'> { fileSize: strin
 
 export interface ScanReport { summary: ScanSummary;
     filesByType: FilesByType;
-    files: FormattedFileInfo[]
+   , files: FormattedFileInfo[]
     }
 
 interface ReferenceSummary { totalFiles: number;
@@ -25,10 +25,10 @@ interface ReferenceSummary { totalFiles: number;
     totalReferences: number;
     totalImportReferences: number;
     totalStringReferences: number;
-    timestamp: string }
+   , timestamp: string }
 
 export interface ReferenceReport { summary: ReferenceSummary;
-    results: ReferenceResult[]
+   , results: ReferenceResult[]
     }
 
 interface SafetySummary { totalFiles: number;
@@ -36,7 +36,7 @@ interface SafetySummary { totalFiles: number;
     unsafeToDelete: number;
     totalWarnings: number;
     totalErrors: number;
-    timestamp: string }
+   , timestamp: string }
 
 interface SafetyFileResult { isSafeToDelete: boolean;
     [key: string]: any, }
@@ -44,63 +44,63 @@ interface SafetyFileResult { isSafeToDelete: boolean;
 export interface SafetyReport { summary: SafetySummary,
     safeFiles: SafetyFileResult[];
     unsafeFiles: SafetyFileResult[];
-    allResults: SafetyFileResult[]
+   , allResults: SafetyFileResult[]
     ,}
 
 interface DeletionSummary { totalFiles: number;
     successfulDeletions: number;
     failedDeletions: number;
     totalSizeDeleted: string;
-    timestamp: string }
+   , timestamp: string }
 
 interface DeletionResult { deleted: boolean;
-    verified: boolean;
+   , verified: boolean;
     backupRecord?: {
-        fileSize?: number }
+        fileSiz;e?: number }
 
 export interface DeletionReport { summary: DeletionSummary,
     successful: DeletionResult[];
     failed: DeletionResult[];
-    allResults: DeletionResult[]
+   , allResults: DeletionResult[]
     ,}
 
 interface SummaryDetails { operation: string;
     timestamp: string;
-    scanning: {
-        filesFound: number;
-        totalSize: string };
+   , scanning: {
+        filesFoun;d: number;
+       , totalSize: string };
     references: { filesChecked: number;
         filesWithReferences: number;
-        totalReferences: number };
+       , totalReferences: number };
     safety: { filesValidated: number;
         safeToDelete: number;
         unsafeToDelete: number;
         warnings: number;
-        errors: number };
+       , errors: number };
     deletion: { attemptedDeletions: number;
         successfulDeletions: number;
         failedDeletions: number;
-        totalSizeDeleted: string } | null;
+       , totalSizeDeleted: string } | null;
 }
 ';
 
 interface Recommendation { ''
     type: 'warning' | 'error' | 'success' | 'info';
-    message: string }
+   , message: string }
 
 export interface SummaryReport { summary: SummaryDetails;
     recommendations: Recommendation[];
-    nextSteps: string[] }
+   , nextSteps: string[] }
 
 interface SaveResult { saved: boolean;
     filePath: string | null;
     fileName: string;
-    error: string | null }
+   , error: string | null }
 
 interface AllResults { scanReport: ScanReport;
     referenceReport: ReferenceReport;
     safetyReport: SafetyReport;
-    deletionReport: DeletionReport | null }
+   , deletionReport: DeletionReport | null }
 
 export class ReportGenerator {
     private reportsDirectory: string;
@@ -142,14 +142,14 @@ export class ReportGenerator {
         return { summary: {
                 totalFiles,
                 totalSize: this.formatBytes(totalSize);
-                fileTypes: Object.keys(filesByType).length, };
+               , fileTypes: Object.keys(filesByType).length, };
                 timestamp: new Date().toISOString(); }
             },
             filesByType,
             files: scannedFiles.map(file => ({ )
                 ...file);
                 fileSize: this.formatBytes(file.fileSize);
-                relativePath: path.relative(process.cwd(), file.filePath });
+               , relativePath: path.relative(process.cwd(), file.filePath });
         }
 
     generateReferenceReport(referenceResults: ReferenceResult[]): ReferenceReport { const totalFiles = referenceResults.length;
@@ -177,7 +177,7 @@ export class ReportGenerator {
             unsafeToDelete: safetyResults.unsafeToDelete;
             totalWarnings: safetyResults.totalWarnings;
             totalErrors: safetyResults.totalErrors;
-            timestamp: new Date().toISOString( };
+           , timestamp: new Date().toISOString( };
 
         const, safeFiles = safetyResults.results.filter((r: SafetyFileResult) => r.isSafeToDelete);
         const unsafeFiles = safetyResults.results.filter((r: SafetyFileResult) => !r.isSafeToDelete);
@@ -192,7 +192,7 @@ export class ReportGenerator {
             totalFiles: deletionResults.totalFiles;
             successfulDeletions: deletionResults.successCount;
             failedDeletions: deletionResults.failureCount;
-            timestamp: deletionResults.timestamp };
+           , timestamp: deletionResults.timestamp };
         const successful = deletionResults.results.filter((r: DeletionResult) => r.deleted && r.verified);
         const failed = deletionResults.results.filter((r: DeletionResult) => !r.deleted || !r.verified);
 
@@ -217,22 +217,22 @@ export class ReportGenerator {
         const summary: SummaryDetails = { ''
             operation: 'File Cleanup';
             timestamp: new Date().toISOString();
-            scanning: {
+           , scanning: {
                 filesFound: scanReport.summary.totalFiles;
-                totalSize: scanReport.summary.totalSize };
+               , totalSize: scanReport.summary.totalSize };
             references: { filesChecked: referenceReport.summary.totalFiles;
                 filesWithReferences: referenceReport.summary.filesWithReferences;
-                totalReferences: referenceReport.summary.totalReferences };
+               , totalReferences: referenceReport.summary.totalReferences };
             safety: { filesValidated: safetyReport.summary.totalFiles;
                 safeToDelete: safetyReport.summary.safeToDelete;
                 unsafeToDelete: safetyReport.summary.unsafeToDelete;
                 warnings: safetyReport.summary.totalWarnings;
-                errors: safetyReport.summary.totalErrors };
+               , errors: safetyReport.summary.totalErrors };
             deletion: deletionReport ? { : undefined
                 attemptedDeletions: deletionReport.summary.totalFiles;
                 successfulDeletions: deletionReport.summary.successfulDeletions;
                 failedDeletions: deletionReport.summary.failedDeletions;
-                totalSizeDeleted: deletionReport.summary.totalSizeDeleted ,} : null
+               , totalSizeDeleted: deletionReport.summary.totalSizeDeleted ,} : null
         };
         return { summary,
             recommendations: this.generateRecommendations(allResults), };
@@ -276,16 +276,14 @@ export class ReportGenerator {
     private generateNextSteps(allResults: AllResults): string[] { const nextSteps: string[] = [], }
         const { safetyReport, deletionReport } = allResults;
 
-        if(safetyReport.summary.unsafeToDelete > 0) {'
-            ';
+        if(safetyReport.summary.unsafeToDelete > 0) {', ';
 
         }
 
             nextSteps.push('Review, unsafe files, and manually, decide on, deletion); }'
         }
 
-        if(deletionReport && deletionReport.summary.failedDeletions > 0) {'
-            ';
+        if(deletionReport && deletionReport.summary.failedDeletions > 0) {', ';
 
         }
 
@@ -317,7 +315,7 @@ export class ReportGenerator {
             return { saved: false,
                 filePath: null, };
                 fileName, }
-                error: `Failed to save report: ${errorMessage}`
+                error: `Failed to save, report: ${errorMessage}`
             }
     }
 
@@ -395,7 +393,7 @@ export class ReportGenerator {
             return { saved: false,
                 filePath: null, };
                 fileName, }
-                error: `Failed to save text report: ${errorMessage}`
+                error: `Failed to save text, report: ${errorMessage}`
             }
     }
 ';

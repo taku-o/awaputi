@@ -5,9 +5,9 @@
  * Requirements: 4.4, 7.1, 10.3
  */
 
-import { ConfigurationValidator } from './performance-config/ConfigurationValidator.js';''
-import { ConfigurationApplier } from './performance-config/ConfigurationApplier.js';''
-import { ConfigurationMonitor } from './performance-config/ConfigurationMonitor.js';
+import { ConfigurationValidator  } from './performance-config/ConfigurationValidator.js';''
+import { ConfigurationApplier  } from './performance-config/ConfigurationApplier.js';''
+import { ConfigurationMonitor  } from './performance-config/ConfigurationMonitor.js';
 
 // Type definitions
 interface ConfigMetadata { reason?: string;
@@ -21,12 +21,12 @@ interface ConfigStatus { initialized: boolean,
     errorCount: number;
     validator: any;
     applier: any;
-    monitor: any ,}
+   , monitor: any ,}
 
 interface Components { validator: ConfigurationValidator;
     applier: ConfigurationApplier;
     monitor: ConfigurationMonitor;
-    errorHandler: ConfigErrorHandler
+   , errorHandler: ConfigErrorHandler
     }
 
 interface ConfigurationOptions { validator?: any;
@@ -36,7 +36,7 @@ interface ConfigurationOptions { validator?: any;
 interface ErrorRecord { key: string,
     error: string;
     timestamp: number;
-    type: string;
+   , type: string;
     recovery?: RecoveryResult;
     recoveryFailed?: string; ,}
 
@@ -56,7 +56,7 @@ export class PerformanceConfigurationIntegration {
     private backupManager: ConfigurationApplier;
     private syncManager: any;
     private notificationSystem: any;
-    private initialized: boolean;
+    private, initialized: boolean;
     constructor() {
 
         // Initialize sub-components with dependency injection
@@ -128,7 +128,7 @@ export class PerformanceConfigurationIntegration {
      */''
     async updatePerformanceConfig(configUpdates: Record<string, any>): Promise<any[]> { return await this.applier.applyConfigChanges(configUpdates, {)'
             reason: 'manual_update');
-            timestamp: Date.now(), });
+           , timestamp: Date.now(), });
     }
 
     /**
@@ -171,7 +171,7 @@ export class PerformanceConfigurationIntegration {
             pendingChanges: this.syncManager.getPendingChanges();
             errorCount: this.errorHandler.getErrorCount();
             validator: this.validator.getValidatorStatus();
-            applier: this.applier.getApplierStatus(), };
+           , applier: this.applier.getApplierStatus(), };
             monitor: this.monitor.getMonitorStatus(); }
         }
 
@@ -211,7 +211,7 @@ export class PerformanceConfigurationIntegration {
      */
     getComponents(): Components { return { validator: this.validator,
             applier: this.applier;
-            monitor: this.monitor, };
+           , monitor: this.monitor, };
             errorHandler: this.errorHandler }
         }
 
@@ -254,7 +254,7 @@ export function getPerformanceConfigurationIntegration(): PerformanceConfigurati
 
 // 設定エラーハンドラー - Kept for backward compatibility
 class ConfigErrorHandler { private errors: ErrorRecord[]
-    private recoveryStrategies: Map<string, RecoveryStrategy>;
+    private, recoveryStrategies: Map<string, RecoveryStrategy>;
 
     constructor() {
 
@@ -283,7 +283,7 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
             key,
             error: error.message;
             timestamp: Date.now();
-            type: this.classifyError(error ,};
+           , type: this.classifyError(error ,};
 
         this.errors.push(errorRecord);
         

@@ -2,13 +2,13 @@
  * Tests for keyboard shortcut removal (Issue #170)
  * Verifies that removed keyboard shortcuts no longer trigger any functionality
  */
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { CoreKeyboardShortcutManager } from '../../src/core/KeyboardShortcutManager';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { CoreKeyboardShortcutManager  } from '../../src/core/KeyboardShortcutManager';
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        get: jest.Mock<(key: string) => any>;
-        set: jest.Mock<(key: string, value => void>);
+        get: jest.Mock<(ke;y: string) => any>;
+        set: jest.Mock<(ke;y: string, value => void>);
     };
     audioManager: {
         toggleMute: jest.Mock<() => void>
@@ -22,7 +22,7 @@ interface MockGameEngine {
     isDebugMode: jest.Mock<() => boolean>;
 }
 interface MockErrorHandler {
-    handleError: jest.Mock<(error: Error, context: string) => void>;
+    handleError: jest.Mock<(erro;r: Error, context: string) => void>;
 }
 interface ShortcutDefinition {
     keys: string[],
@@ -269,7 +269,7 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {
     describe('Help Text Generation', (') => {
         test('should not include removed shortcuts in help text', () => {
             const helpSections = keyboardManager.generateHelpText() as HelpSections;
-            const allHelpText = Object.values(helpSections).flat(').join(' ');
+            const allHelpText = Object.values(helpSections).flat(').join(', ');
             // Confirm removed shortcuts are not included
             expect(allHelpText).not.toMatch(/KeyF|fullscreen/i);
             expect(allHelpText).not.toMatch(/KeyM.*mute/i);
@@ -281,7 +281,7 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {
         }');
         test('should still include valid shortcuts in help text', () => {
             const helpSections = keyboardManager.generateHelpText() as HelpSections;
-            const allHelpText = Object.values(helpSections).flat(').join(' ');
+            const allHelpText = Object.values(helpSections).flat(').join(', ');
             // Confirm remaining shortcuts are included
             expect(allHelpText).toMatch(/Space.*pause/i);
             expect(allHelpText).toMatch(/Escape.*menu/i);

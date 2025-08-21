@@ -1,6 +1,6 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * インポート管理クラス - データインポート機能
@@ -13,7 +13,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  */
 export class ImportManager {
     private config: BasicConfig;
-    private state: any';
+    private, state: any';
 
     constructor(dataStorage: any, validationManager: any = null, backupManager: any = null) {
         this.storage = dataStorage;
@@ -33,7 +33,7 @@ export class ImportManager {
             validateBeforeImport: true;
             createBackupBeforeImport: true;
             allowPartialImport: true;
-            strictVersionCheck: false;
+           , strictVersionCheck: false;
     ,}
             maxImportSize: 50 * 1024 * 1024 // 50MB }
         };
@@ -43,7 +43,7 @@ export class ImportManager {
             failedImports: 0;
             partialImports: 0;
             averageImportTime: 0;
-            lastImport: null ,};
+           , lastImport: null ,};
         this.initialize();
     }
     
@@ -204,7 +204,7 @@ export class ImportManager {
                 operation: 'validateImportData' ,});
             
             return { isValid: false, }
-                errors: [`Validation failed: ${error.message}`];
+                errors: [`Validation, failed: ${error.message}`];
                 warnings: [];
             },
         }
@@ -299,7 +299,7 @@ export class ImportManager {
                         conflicts.push({''
                             type: 'ARRAY_CONFLICT';
                             field);
-                            existing: existing[field] ,}
+                           , existing: existing[field] ,}
                             imported: imported[field],) }
                             message: `Different ${field} arrays`);
                     }''
@@ -307,7 +307,7 @@ export class ImportManager {
                         type: 'VALUE_CONFLICT';
                         field);
                         existing: existing[field]);
-                        imported: imported[field], }
+                       , imported: imported[field], }
                         message: `Different ${field} values`);
                 }
 }
@@ -323,7 +323,7 @@ export class ImportManager {
                             type: 'SCORE_CONFLICT', }
                             field: `highScores.${stage}`)
                             existing: existing.highScores[stage]);
-                            imported: imported.highScores[stage],);
+                           , imported: imported.highScores[stage],);
                             message: `Different high score for ${stage}`);
                     }
 }
@@ -343,7 +343,7 @@ export class ImportManager {
                 conflicts.push({''
                     type: 'SETTING_CONFLICT';
                     field: key);
-                    existing: existing[key] ,}
+                   , existing: existing[key] ,}
                     imported: value,) }
                     message: `Different setting value for ${key}`);
             }
@@ -366,7 +366,7 @@ export class ImportManager {
                     conflicts.push({''
                         type: 'STATISTIC_CONFLICT';
                         field);
-                        existing: existing[field] ,}
+                       , existing: existing[field] ,}
                         imported: imported[field], }
 
                         message: `Different ${field} values`,')'
@@ -448,7 +448,7 @@ export class ImportManager {
 
                                     success: false'),' }
 
-                                    error: `Validation failed: ${validationResult.errors.join(', '})`,
+                                    error: `Validation, failed: ${validationResult.errors.join(', '})`,
                                     skipped: true;
                                 }),
 
@@ -494,7 +494,7 @@ export class ImportManager {
             
             return { success: false,
                 partial: false;
-                error: error.message, };
+               , error: error.message, };
                 results: [] }
             }
     }
@@ -560,8 +560,7 @@ export class ImportManager {
                 conflict.field.startsWith('highScores);
         );
 
-        if(criticalConflicts.length > 0) {'
-            ';
+        if(criticalConflicts.length > 0) {', ';
 
         }
 
@@ -611,7 +610,7 @@ export class ImportManager {
     getImportHistory() { return { }
             statistics: { ...this.statistics;
             supportedResolutions: Array.from(this.conflictResolvers.keys();
-            config: { ...this.config;
+           , config: { ...this.config;
     }
     
     /**
@@ -840,7 +839,7 @@ class MergeResolver { constructor(importManager: any) {
                     field: c.field);
                     action: this.getMergeAction(c);
                     existing: c.existing);
-                    imported: c.imported, }
+                   , imported: c.imported, }
 
                     result: this.getMergeResult(c),' }'
 

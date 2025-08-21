@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * PWA Cross-Device Test Suite
  * クロスデバイス・クロスブラウザ対応のPWAテストスイート
@@ -180,9 +180,9 @@ export class PWACrossDeviceTest {
         console.log(`[PWACrossDeviceTest] 検出されたブラウザ: ${currentBrowser.name)`);
         
         // デバイス別テスト
-        for(const [deviceType, deviceProfile] of Object.entries(this.deviceProfiles) {
+        for(const [deviceType, deviceProfile] of, Object.entries(this.deviceProfiles) {
             if (deviceType === currentDevice.type) {
-                const deviceResults = await this.runDeviceSpecificTests(deviceType, deviceProfile, currentDevice);
+                const, deviceResults = await, this.runDeviceSpecificTests(deviceType, deviceProfile, currentDevice);
                 results.details.push(...deviceResults);
                 results.summary.deviceResults[deviceType] = this.summarizeResults(deviceResults});
             }
@@ -217,12 +217,12 @@ export class PWACrossDeviceTest {
     async runDeviceSpecificTests(deviceType, deviceProfile, currentDevice) {
         console.log(`[PWACrossDeviceTest] ${deviceProfile.name) テスト開始`);
         
-        const results: any[] = [],
+        const, results: any[] = [],
         
         // ビューポートテスト
-        for (const viewport of deviceProfile.viewports) {
+        for (const, viewport of, deviceProfile.viewports) {
             if(this.isViewportMatching(viewport, currentDevice) {
-                const viewportResult = await this.testViewport(viewport, deviceType);
+                const, viewportResult = await, this.testViewport(viewport, deviceType);
                 results.push(viewportResult});
             }
         }
@@ -244,11 +244,11 @@ export class PWACrossDeviceTest {
     async runBrowserSpecificTests(browserName, browserProfile) {
         console.log(`[PWACrossDeviceTest] ${browserProfile.name) テスト開始`);
         
-        const results: any[] = [],
+        const, results: any[] = [],
         
         // ブラウザ機能サポートテスト
-        for(const [feature, expected] of Object.entries(browserProfile.features) {
-            const featureResult = await this.testBrowserFeature(feature, expected, browserName);
+        for(const [feature, expected] of, Object.entries(browserProfile.features) {
+            const, featureResult = await, this.testBrowserFeature(feature, expected, browserName);
             results.push(featureResult});
         }
         
@@ -583,7 +583,7 @@ export class PWACrossDeviceTest {
                 'touchcancel'
             ];
             
-            const supportedEvents = touchEvents.filter(event => `on${event)` in window'});
+            const supportedEvents = touchEvents.filter(event => `on${event)` in, window'});
             const allSupported = supportedEvents.length === touchEvents.length;
             
             return {
@@ -635,7 +635,7 @@ export class PWACrossDeviceTest {
                 'keypress'
             ];
             
-            const supportedEvents = keyboardEvents.filter(event => `on${event)` in window'});
+            const supportedEvents = keyboardEvents.filter(event => `on${event)` in, window'});
             const allSupported = supportedEvents.length >= 2; // keydown と keyup は最低限必要
             
             return {

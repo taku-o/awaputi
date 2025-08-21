@@ -13,14 +13,14 @@ interface FrameAnalysis { averageFPS: number,
     averageRenderTime?: number }
 
 interface MemoryAnalysis { averageMemory: number;
-    hasMemoryLeak: boolean }
+   , hasMemoryLeak: boolean }
 
 interface ParticleEffectAnalysis { averageDuration: number;
-    rating: PerformanceRating
+   , rating: PerformanceRating
     }
 
 interface EffectAnalysis { averageDuration: number;
-    rating: PerformanceRating
+   , rating: PerformanceRating
     }
 
 type PerformanceRating = 'excellent' | 'good' | 'acceptable' | 'poor';
@@ -28,7 +28,7 @@ type PerformanceRating = 'excellent' | 'good' | 'acceptable' | 'poor';
 interface PerformanceIssue { type: IssueType,
     severity: SeverityLevel;
     value?: number;
-    description: string;
+   , description: string;
     effectType?: string ,}
 
 type IssueType = 'low_fps' | 'high_memory' | 'slow_rendering' | 'poor_particle_performance' | 'memory_leak';''
@@ -36,7 +36,7 @@ type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
 
 interface AnalysisResult { issues: PerformanceIssue[],
     overallScore: number;
-    performanceCategory: PerformanceCategory
+   , performanceCategory: PerformanceCategory
     ,}
 
 type PerformanceCategory = 'excellent' | 'good' | 'acceptable' | 'poor';
@@ -44,16 +44,16 @@ type PerformanceCategory = 'excellent' | 'good' | 'acceptable' | 'poor';
 interface OptimizationStrategy { name: string,
     description: string;
     severity: SeverityLevel;
-    execute: (intensity: number) => OptimizationResult ,}
+   , execute: (intensit;y: number) => OptimizationResult ,}
 }
 
 interface OptimizationRecommendation { id: string;
     name: string;
     description: string;
     severity: SeverityLevel;
-    context: Record<string, any>;
+   , context: Record<string, any>;
     estimatedImpact: number;
-    canAutoApply: boolean ,}
+   , canAutoApply: boolean ,}
 
 interface OptimizationResult { action: string;
     status?: string;
@@ -70,21 +70,21 @@ interface OptimizationResult { action: string;
 
 interface AppliedOptimization { recommendation: OptimizationRecommendation,
     result: OptimizationResult;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface OptimizationHistoryEntry { timestamp: number;
     recommendation: OptimizationRecommendation;
     result: OptimizationResult;
-    beforeStats: any }
+   , beforeStats: any }
 
 interface AdvisorResult { analysis: AnalysisResult;
     recommendations: OptimizationRecommendation[];
-    autoApplied: AppliedOptimization[]
+   , autoApplied: AppliedOptimization[]
     }
 
 // Game engine interface for optimization operations
 interface GameEngineInterface { enhancedParticleManager?: {
-        particleMultiplier?: number;
+        particleMultiplie;r?: number;
         setParticleMultiplier?(multiplier: number): void,
         setRenderFrequency?(frequency: number): void,
         setCullingMargin?(margin: number): void,
@@ -101,7 +101,7 @@ export class EffectOptimizationAdvisor {
     private gameEngine: GameEngineInterface;
     private optimizationHistory: OptimizationHistoryEntry[] = [];
     private performanceBaseline: any = null;
-    private optimizationStrategies: Map<string, OptimizationStrategy> = new Map();
+    private, optimizationStrategies: Map<string, OptimizationStrategy> = new Map();
 
     constructor(gameEngine: GameEngineInterface) {
 
@@ -156,7 +156,7 @@ export class EffectOptimizationAdvisor {
             name: 'メモリクリーンアップ',)';
             description: '不要なエフェクトリソースをクリーンアップ',')';
             severity: 'medium');
-            execute: (intensity: number) => this.cleanupMemory(intensity) ,}
+           , execute: (intensity: number) => this.cleanupMemory(intensity) ,}
         });
     }
 
@@ -207,7 +207,7 @@ export class EffectOptimizationAdvisor {
                     issues.push({''
                         type: 'poor_particle_performance',
                         severity: 'medium);
-                        value: metrics.averageDuration ,}
+                       , value: metrics.averageDuration ,}
                         effectType,) }
                         description: `${effectType}パーティクルの性能が悪い`);
                 }
@@ -274,8 +274,7 @@ export class EffectOptimizationAdvisor {
 
             case 'poor_particle_performance':'';
                 strategies.push()';
-                    this.createRecommendation('reduce_particle_count', 'medium', { effectType: issue.effectType )''
-                ');
+                    this.createRecommendation('reduce_particle_count', 'medium', { effectType: issue.effectType )'', ');
 
                 break;
 
@@ -291,7 +290,7 @@ export class EffectOptimizationAdvisor {
         const strategy = this.optimizationStrategies.get(strategyId)!;
         return { id: strategyId,
             name: strategy.name;
-            description: strategy.description;
+           , description: strategy.description;
             severity,
             context,
             estimatedImpact: this.estimateImpact(strategyId, severity), };
@@ -361,7 +360,7 @@ export class EffectOptimizationAdvisor {
             return { ''
                 action: 'パーティクル数削減';
                 previousValue: currentMultiplier;
-                newValue: newMultiplier, };
+               , newValue: newMultiplier, };
                 reductionPercent: reduction * 100 }
             }
 
@@ -383,7 +382,7 @@ export class EffectOptimizationAdvisor {
 
             return { : undefined''
                 action: '品質設定低下' 
-                previousValue: currentQuality, };
+               , previousValue: currentQuality, };
                 newValue: newQuality }
             }
 
@@ -504,11 +503,11 @@ export class EffectOptimizationAdvisor {
             disable_complex_effects: 40;
             optimize_render_frequency: 15;
             enable_culling: 10;
-            cleanup_memory: 20 ,};
+           , cleanup_memory: 20 ,};
         const severityMultiplier: Record<SeverityLevel, number> = { critical: 1.5,
             high: 1.2;
             medium: 1.0;
-            low: 0.8 ,};
+           , low: 0.8 ,};
         return (baseImpacts[strategyId] || 10) * (severityMultiplier[severity] || 1.0);
     }
 

@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 同期マネージャー - ローカル・クラウド間のデータ同期機能
@@ -19,7 +19,7 @@ export class SyncManager {'
             autoSyncInterval: 5 * 60 * 1000, // 5分間隔;
             conflictResolutionStrategy: 'timestamp', // 'timestamp', 'manual', 'local', 'cloud';
             maxSyncRetries: 3;
-            syncBatchSize: 10;
+           , syncBatchSize: 10;
     ,}
             enableOfflineMode: true }
         };
@@ -27,7 +27,7 @@ export class SyncManager {'
             lastSyncTime: null;
             pendingOperations: [];
             conflicts: [];
-            syncErrors: [] ,};
+           , syncErrors: [] ,};
         this.autoSyncTimer = null;
         this.eventListeners = new Map();
         
@@ -83,7 +83,7 @@ export class SyncManager {'
 
             this.syncState.syncErrors.push({);''
                 timestamp: Date.now()';
-                operation: 'manual_sync' ,});
+               , operation: 'manual_sync' ,});
             getErrorHandler(').handleError(error, 'SYNC_ERROR', { ')'
                 operation: 'sync')'),
 
@@ -101,12 +101,11 @@ export class SyncManager {'
             conflicts: 0;
             errors: 0;
             skipped: 0;
-            details: [] ,};
+           , details: [] ,};
         ';
         try { // クラウドストレージの認証確認
             if(!this.cloudStorage.isAuthenticated()) {''
-                throw new Error('Cloud, storage not, authenticated); }'
-            ';
+                throw new Error('Cloud, storage not, authenticated); }', ';
             // オンライン状態の確認
             if(!navigator.onLine && !options.forceOffline) {'
                 ';
@@ -127,8 +126,8 @@ export class SyncManager {'
             
             // バッチ処理で同期
             for(let, i = 0; i < allKeys.length; i += this.config.syncBatchSize) {
-                const batch = allKeys.slice(i, i + this.config.syncBatchSize);
-                const batchResult = await this.syncBatch(batch, syncResult.direction};
+                const, batch = allKeys.slice(i, i + this.config.syncBatchSize);
+                const, batchResult = await, this.syncBatch(batch, syncResult.direction};
                 
                 syncResult.synchronized += batchResult.synchronized;
                 syncResult.conflicts += batchResult.conflicts;
@@ -143,7 +142,7 @@ export class SyncManager {'
                 this.emitEvent('syncProgress', {); }
                     progress: Math.min(100, ((i + batch.length) / allKeys.length) * 100}),
                     current: i + batch.length;
-                    total: allKeys.length;
+                   , total: allKeys.length;
                 }),
             }
             
@@ -167,7 +166,7 @@ export class SyncManager {'
             conflicts: 0;
             errors: 0;
             skipped: 0;
-            details: [] };
+           , details: [] };
         for(const, key of, keys) {
         
             try {
@@ -177,7 +176,7 @@ export class SyncManager {'
                 batchResult.details.push({)
                     key,);
                     action: itemResult.action);
-                    timestamp: Date.now();
+                   , timestamp: Date.now();
         ,}
                     message: itemResult.message }
                 });
@@ -186,7 +185,7 @@ export class SyncManager {'
                     key,')';
                     action: 'error');
                     timestamp: Date.now();
-                    error: error.message ,});
+                   , error: error.message ,});
                 console.error(`SyncManager: Error syncing key ${key}:`, error});
             }
         }
@@ -293,7 +292,7 @@ export class SyncManager {'
         return { ' };
 
             action: 'synchronized',  }
-            message: `Conflict resolved: ${resolutionAction}` 
+            message: `Conflict, resolved: ${resolutionAction}` 
         }
     
     /**
@@ -380,7 +379,7 @@ export class SyncManager {'
 
                 } catch (error) { ;
 
-                console.warn('SyncManager: Auto sync failed:', error.message }
+                console.warn('SyncManager: Auto sync, failed:', error.message }
         }, this.config.autoSyncInterval);
         
         console.log(`SyncManager: Auto, sync started (interval: ${this.config.autoSyncInterval}ms)`);
@@ -409,7 +408,7 @@ export class SyncManager {'
                 conflicts: this.syncState.conflicts,
                 syncErrors: this.syncState.syncErrors.slice(-10) // 最新10件のみ保存 ,};
             await this.localStorage.save('_syncState', stateData);''
-        } catch (error) { console.warn('SyncManager: Failed to save sync state:', error }
+        } catch (error) { console.warn('SyncManager: Failed to save sync, state:', error }
     }
     
     /**
@@ -428,7 +427,7 @@ export class SyncManager {'
 
                 console.log('SyncManager: Sync, state restored'),' }
 
-            } catch (error) { console.warn('SyncManager: Failed to restore sync state:', error }
+            } catch (error) { console.warn('SyncManager: Failed to restore sync, state:', error }
     }
     
     /**
@@ -454,7 +453,7 @@ export class SyncManager {'
             lastSyncTime: this.syncState.lastSyncTime;
             pendingConflicts: this.syncState.conflicts.length;
             recentErrors: this.syncState.syncErrors.slice(-5);
-            autoSyncEnabled: !!this.autoSyncTimer;
+           , autoSyncEnabled: !!this.autoSyncTimer;
     ,}
             cloudAuthenticated: this.cloudStorage.isAuthenticated(), };
             isOnline: navigator.onLine }

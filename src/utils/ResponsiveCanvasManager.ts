@@ -1,38 +1,38 @@
-import { getBrowserCompatibility } from './BrowserCompatibility.js';''
-import { ScaledCoordinateManager } from './ScaledCoordinateManager.js';
+import { getBrowserCompatibility  } from './BrowserCompatibility.js';''
+import { ScaledCoordinateManager  } from './ScaledCoordinateManager.js';
 
 // Type definitions
 interface CanvasSize { displayWidth: number,
     displayHeight: number;
     actualWidth: number;
     actualHeight: number;
-    scale: number;
+   , scale: number;
     pixelRatio?: number ,}
 
 interface OptimalCanvasSize { displayWidth: number;
     displayHeight: number;
     actualWidth: number;
     actualHeight: number;
-    pixelRatio: number }
+   , pixelRatio: number }
 
 interface Coordinates { x: number;
-    y: number }
+   , y: number }
 
 interface Size { width: number;
-    height: number }
+   , height: number }
 
 interface CanvasInfo extends CanvasSize { baseWidth: number;
     baseHeight: number;
     aspectRatio: number;
-    deviceInfo: any }
+   , deviceInfo: any }
 
-interface GameEngine { onCanvasResize?: (size: CanvasSize) => void ,}
+interface GameEngine { onCanvasResize?: (siz;e: CanvasSize) => void ,}
 }
 
 interface BrowserCompatibility { calculateOptimalCanvasSize(): OptimalCanvasSize;
     deviceInfo: any;
-    browserInfo: {
-        name: string ,};
+   , browserInfo: {
+        nam;e: string ,};
     getOrientation(): string;
 }
 
@@ -51,7 +51,7 @@ export class ResponsiveCanvasManager {
     private resizeTimeout: number | null;
     private isInitialized: boolean;
     // ScaledCoordinateManager を初期化
-    private readonly scaledCoordinateManager: ScaledCoordinateManager,
+    private readonly, scaledCoordinateManager: ScaledCoordinateManager,
 
     constructor(canvas: HTMLCanvasElement, gameEngine: GameEngine | null = null) {
         this.canvas = canvas;
@@ -73,7 +73,7 @@ export class ResponsiveCanvasManager {
             displayHeight: this.baseHeight;
             actualWidth: this.baseWidth;
             actualHeight: this.baseHeight;
-            scale: 1 ,};
+           , scale: 1 ,};
         this.resizeTimeout = null;
         this.isInitialized = false;
         
@@ -97,8 +97,7 @@ export class ResponsiveCanvasManager {
         window.addEventListener('resize', () => { this.handleResize(); });
         ';
         // 画面の向き変更
-        if(screen.orientation) {'
-            ';
+        if(screen.orientation) {', ';
 
         }
 
@@ -156,7 +155,7 @@ export class ResponsiveCanvasManager {
             actualWidth: optimalSize.actualWidth;
             actualHeight: optimalSize.actualHeight;
             scale: scale;
-            pixelRatio: pixelRatio ,};
+           , pixelRatio: pixelRatio ,};
         // Canvas の位置を中央に調整
         this.centerCanvas();
         
@@ -270,7 +269,7 @@ export class ResponsiveCanvasManager {
         return { ...this.currentSize,
             baseWidth: this.baseWidth;
             baseHeight: this.baseHeight;
-            aspectRatio: this.aspectRatio, };
+           , aspectRatio: this.aspectRatio, };
             deviceInfo: browserCompat.deviceInfo }
         }
     
@@ -284,8 +283,7 @@ export class ResponsiveCanvasManager {
         const isLandscape = orientation.includes('landscape);
         ';
         // 縦向きの場合は横向きを推奨
-        if(!isLandscape && this.currentSize.displayWidth < 500) {'
-            ';
+        if(!isLandscape && this.currentSize.displayWidth < 500) {', ';
 
         }
 
@@ -302,9 +300,9 @@ export class ResponsiveCanvasManager {
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0,0,0,0.8),
+           , background: rgba(0,0,0,0.8),
             color: white;
-            padding: 10px 20px;
+           , padding: 10px 20px;
             border-radius: 5px,
             font-family: Arial, sans-serif;
             font-size: 14px,

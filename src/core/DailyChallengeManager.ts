@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 /**
  * デイリーチャレンジ管理クラス
@@ -8,9 +8,9 @@ import { getErrorHandler } from '../utils/ErrorHandler';
 
 export interface DailyChallengeConfig { maxDailyChallenges: number,''
     resetTime: number, // 日本時間5:00 (UTC, 20:00);
-    difficultyAdjustmentPeriod: number, // 7日間の実績で難易度調整;
+   , difficultyAdjustmentPeriod: number, // 7日間の実績で難易度調整;
     storageKey: string;
-    progressStorageKey: string ,}
+   , progressStorageKey: string ,}
 
 export type DifficultyLevel = 'easy' | 'normal' | 'hard' | 'expert';''
 export type ChallengeCategory = 'score' | 'play' | 'action' | 'skill' | 'endurance' | 'progress';''
@@ -21,7 +21,7 @@ export interface ChallengeTemplate { category: ChallengeCategory,
     progressType: ProgressType;
     titles: string[];
     descriptions: string[];
-    baseDifficulty: Record<DifficultyLevel, number>, }
+   , baseDifficulty: Record<DifficultyLevel, number>, }
 
 export interface RewardItem { type: RewardType,
     amount?: number;
@@ -49,23 +49,23 @@ export interface DailyChallengeData { id: string,''
     isActive: boolean;
     category: ChallengeCategory;
     difficulty: DifficultyLevel;
-    metadata: {
-        date: string;
+   , metadata: {
+        dat;e: string;
         template: ChallengeTemplate;
-        dailyIndex: number ,}
+       , dailyIndex: number ,}
 
 export interface PlayerPerformance { averageScore: number,
     averagePlayCount: number;
     averageCombo: number;
     lastWeekCompleted: number;
-    difficultyPreference: DifficultyLevel
+   , difficultyPreference: DifficultyLevel
     ,}
 
 export interface ChallengeProgress { current: number;
     target: number;
     percentage: number;
     completed: boolean;
-    rewardClaimed: boolean }
+   , rewardClaimed: boolean }
 
 export interface DailyChallengeWithProgress extends DailyChallengeData { progress: ChallengeProgress | null }
 
@@ -74,7 +74,7 @@ export interface DailyStats { date: string;
     completedChallenges: number;
     totalProgress: number;
     averageProgress: number;
-    difficulty: DifficultyLevel
+   , difficulty: DifficultyLevel
     }
 
 export interface GameStats { averageScore?: number;
@@ -99,11 +99,11 @@ export class DailyChallengeManager {
     private gameEngine: GameEngine;
     private challengeSystem: ChallengeSystem;
     private config: DailyChallengeConfig;
-    private challengeTemplates: Record<string, ChallengeTemplate>;
+    private, challengeTemplates: Record<string, ChallengeTemplate>;
     private rewardTables: Record<DifficultyLevel, RewardItem[]>;
     private playerPerformance: PlayerPerformance;
     private lastGenerationDate: string | null = null;
-    private todaysChallenges: any[] = [];
+    private, todaysChallenges: any[] = [];
     constructor(gameEngine: GameEngine, challengeSystem: ChallengeSystem) {
 
         this.gameEngine = gameEngine;
@@ -114,7 +114,7 @@ export class DailyChallengeManager {
             maxDailyChallenges: 3,
             resetTime: 5, // 日本時間5:00(UTC, 20:00);
 
-            difficultyAdjustmentPeriod: 7, // 7日間の実績で難易度調整;
+           , difficultyAdjustmentPeriod: 7, // 7日間の実績で難易度調整;
             storageKey: 'awaputi_daily_challenges';
     ,}
 
@@ -130,15 +130,12 @@ export class DailyChallengeManager {
                     'スコアマスター',]';
                     'ポイントハンター'];
                 ],
-                descriptions: [' ,}'
-
-                    '{target}点以上のスコアを達成しよう','', '目標スコア{target}点を目指そう',]'
-                    '{target}点の壁を超えよう']
+                descriptions: [' ,}', '{target}点以上のスコアを達成しよう','', '目標スコア{target}点を目指そう',]', '{target}点の壁を超えよう']
                 ],
                 baseDifficulty: { easy: 1000;
                     normal: 5000;
                     hard: 15000;
-                    expert: 30000 }
+                   , expert: 30000 }
             };
             // プレイ回数系チャレンジ
             playCount: { ''
@@ -149,15 +146,12 @@ export class DailyChallengeManager {
                     '継続は力なり',]';
                     'ゲーム中毒者'];
                 ],
-                descriptions: [' ,}'
-
-                    '{target}回ゲームをプレイしよう','', '今日は{target}回挑戦しよう',]'
-                    '{target}ゲーム完走を目指そう']
+                descriptions: [' ,}', '{target}回ゲームをプレイしよう','', '今日は{target}回挑戦しよう',]', '{target}ゲーム完走を目指そう']
                 ],
                 baseDifficulty: { easy: 3;
                     normal: 5;
                     hard: 10;
-                    expert: 15 }
+                   , expert: 15 }
             };
             // 泡破壊系チャレンジ
             bubblePop: { ''
@@ -168,15 +162,12 @@ export class DailyChallengeManager {
                     'ポップマスター',]';
                     '泡の破壊者'];
                 ],
-                descriptions: [' ,}'
-
-                    '{target}個の泡を割ろう','', '泡を{target}個破壊しよう',]'
-                    '{target}回のポップを達成しよう']
+                descriptions: [' ,}', '{target}個の泡を割ろう','', '泡を{target}個破壊しよう',]', '{target}回のポップを達成しよう']
                 ],
                 baseDifficulty: { easy: 50;
                     normal: 150;
                     hard: 300;
-                    expert: 500 }
+                   , expert: 500 }
             };
             // コンボ系チャレンジ
             maxCombo: { ''
@@ -187,15 +178,12 @@ export class DailyChallengeManager {
                     '連鎖の達人',]';
                     'コンボキング'];
                 ],
-                descriptions: [' ,}'
-
-                    '{target}コンボを達成しよう','', '最大{target}連鎖を目指そう',]'
-                    '{target}コンボの壁を突破しよう']
+                descriptions: [' ,}', '{target}コンボを達成しよう','', '最大{target}連鎖を目指そう',]', '{target}コンボの壁を突破しよう']
                 ],
                 baseDifficulty: { easy: 10;
                     normal: 25;
                     hard: 50;
-                    expert: 100 }
+                   , expert: 100 }
             };
             // プレイ時間系チャレンジ
             playTime: { ''
@@ -206,15 +194,12 @@ export class DailyChallengeManager {
                     '時間の達人',]';
                     '長時間バトラー'];
                 ],
-                descriptions: [' ,}'
-
-                    '{target}分間プレイしよう','', '合計{target}分の挑戦を続けよう',]'
-                    '今日は{target}分間頑張ろう']
+                descriptions: [' ,}', '{target}分間プレイしよう','', '合計{target}分の挑戦を続けよう',]', '今日は{target}分間頑張ろう']
                 ],
                 baseDifficulty: { easy: 15;
                     normal: 30;
                     hard: 60;
-                    expert: 120 }
+                   , expert: 120 }
             };
             // ステージクリア系チャレンジ
             stageClear: { ''
@@ -225,15 +210,12 @@ export class DailyChallengeManager {
                     'クリアの達人',]';
                     'ステージコンプリーター'];
                 ],
-                descriptions: [' ,}'
-
-                    '{target}ステージクリアしよう','', '今日は{target}ステージ制覇だ',]'
-                    '{target}ステージの完走を目指そう']
+                descriptions: [' ,}', '{target}ステージクリアしよう','', '今日は{target}ステージ制覇だ',]', '{target}ステージの完走を目指そう']
                 ],
                 baseDifficulty: { easy: 2;
                     normal: 5;
                     hard: 10;
-                    expert: 15 }
+                   , expert: 15 }
 };
         // 報酬テーブル
         this.rewardTables = { easy: [' }'
@@ -269,7 +251,7 @@ export class DailyChallengeManager {
         this.playerPerformance = { averageScore: 0,
             averagePlayCount: 0;
             averageCombo: 0;
-            lastWeekCompleted: 0,
+           , lastWeekCompleted: 0,
             difficultyPreference: 'normal' ,};
         console.log('[DailyChallengeManager] 初期化完了);
     }
@@ -384,7 +366,7 @@ export class DailyChallengeManager {
         difficulty: DifficultyLevel
     );
         date: string);
-        index: number;
+       , index: number;
     ): Promise<any | null>,
         try { const targetValue = this.calculateTargetValue(template, difficulty);''
             const reward = this.selectReward(difficulty);
@@ -403,10 +385,10 @@ export class DailyChallengeManager {
                 isActive: true;
                 category: template.category;
                 difficulty: difficulty;
-                metadata: {
+               , metadata: {
                     date: date;
                     template: template;
-                    dailyIndex: index ,}
+                   , dailyIndex: index ,}
             };
             // チャレンジシステムに登録
             return this.challengeSystem.createChallenge(challengeData);
@@ -423,8 +405,7 @@ export class DailyChallengeManager {
     calculateOptimalDifficulty(): DifficultyLevel { const performance = this.playerPerformance;
         ';
         // プレイヤーの過去1週間の完了率に基づいて難易度を調整
-        if(performance.lastWeekCompleted >= 0.8) {'
-            ';
+        if(performance.lastWeekCompleted >= 0.8) {', ';
 
         }
 
@@ -493,7 +474,7 @@ export class DailyChallengeManager {
             if (random <= currentWeight) {
                 return { type: reward.type,
                     amount: reward.amount;
-                    itemId: reward.itemId;
+                   , itemId: reward.itemId;
         ,}
                     titleId: reward.titleId, };
                     themeId: reward.themeId }
@@ -504,7 +485,7 @@ export class DailyChallengeManager {
         return { type: rewardTable[0].type,
             amount: rewardTable[0].amount;
             itemId: rewardTable[0].itemId;
-            titleId: rewardTable[0].titleId, };
+           , titleId: rewardTable[0].titleId, };
             themeId: rewardTable[0].themeId }
         }
 
@@ -528,7 +509,7 @@ export class DailyChallengeManager {
                 progress: progress ? { : undefined
                     current: progress.currentValue;
                     target: challenge.targetValue;
-                    percentage: Math.min(100, (progress.currentValue / challenge.targetValue) * 100), }
+                   , percentage: Math.min(100, (progress.currentValue / challenge.targetValue) * 100), }
                     completed: progress.completed, };
                     rewardClaimed: progress.rewardClaimed }
                 } : null
@@ -603,7 +584,7 @@ export class DailyChallengeManager {
             const data = {
                 lastGenerationDate: this.lastGenerationDate;
                 performance: this.playerPerformance;
-                timestamp: Date.now( };
+               , timestamp: Date.now( };
             
             localStorage.setItem(this.config.progressStorageKey, JSON.stringify(data);
             ';

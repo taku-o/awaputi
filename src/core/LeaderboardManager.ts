@@ -1,7 +1,7 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { LeaderboardDataProcessor } from './leaderboard/LeaderboardDataProcessor.js';''
-import { LeaderboardRankingManager } from './leaderboard/LeaderboardRankingManager.js';''
-import { LeaderboardStorageManager } from './leaderboard/LeaderboardStorageManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { LeaderboardDataProcessor  } from './leaderboard/LeaderboardDataProcessor.js';''
+import { LeaderboardRankingManager  } from './leaderboard/LeaderboardRankingManager.js';''
+import { LeaderboardStorageManager  } from './leaderboard/LeaderboardStorageManager.js';
 
 export interface LeaderboardConfig { maxEntries: number,
     maxPeriodEntries: number;
@@ -9,11 +9,11 @@ export interface LeaderboardConfig { maxEntries: number,
     cacheMaxAge: number;
     dataVersion: string;
     validationEnabled: boolean;
-    backupEnabled: boolean ,}
+   , backupEnabled: boolean ,}
 
 export interface LeaderboardEntry { id: string;
     score: number;
-    timestamp: number;
+   , timestamp: number;
     playerName?: string;
     gameData?: any; }
 
@@ -31,9 +31,9 @@ export class LeaderboardManager {'
             maxEntries: 100;
             maxPeriodEntries: 50;
             maxCacheSize: 100;
-            cacheMaxAge: 300000, // 5分;
+           , cacheMaxAge: 300000, // 5分;
             dataVersion: '1.0.0';
-            validationEnabled: true;
+           , validationEnabled: true;
     ,}
             backupEnabled: true }
         };
@@ -46,7 +46,7 @@ export class LeaderboardManager {'
             periodLeaderboards: {};
             playerHistory: {};
             lastUpdated: Date.now();
-            version: this.version;
+           , version: this.version;
         },
         
         // パフォーマンス統計
@@ -54,7 +54,7 @@ export class LeaderboardManager {'
             saveCount: 0;
             validationErrors: 0;
             operationCount: 0;
-            lastReset: Date.now( ,};
+           , lastReset: Date.now( ,};
         
         // サブコンポーネントの初期化
         this.dataProcessor = new LeaderboardDataProcessor(this);
@@ -343,7 +343,7 @@ export class LeaderboardManager {'
             dataLoadTime: 0;
             saveCount: 0;
             validationErrors: 0;
-            operationCount: 0;
+           , operationCount: 0;
     }
             lastReset: Date.now(); }
         }

@@ -19,7 +19,7 @@ interface FaviconConfig { backgroundColor?: string;
 interface FaviconRenderConfig { backgroundColor: string,
     textColor: string;
     fontFamily: string;
-    text: string ,}
+   , text: string ,}
 
 type ImageFormat = 'png' | 'ico';
 
@@ -35,8 +35,7 @@ export default class FaviconCanvasRenderer { /**
         canvas.height = size;''
         const ctx = canvas.getContext('2d);
 
-        if(!ctx) {'
-            ';
+        if(!ctx) {', ';
 
         }
 
@@ -134,8 +133,8 @@ export default class FaviconCanvasRenderer { /**
                 <circle cx="${size * 0.3}" cy="${size * 0.3}" r="${size * 0.15}" fill="#64B5F6" opacity="0.8"/>""
                 <circle cx="${size * 0.7}" cy="${size * 0.4}" r="${size * 0.1}" fill="#90CAF9" opacity="0.6"/>""
                 <circle cx="${size * 0.5}" cy="${size * 0.7}" r="${size * 0.08}" fill="#BBDEFB" opacity="0.4"/>""
-                <text x="${size/2}" y="${size/2}" text-anchor="middle" dominant-baseline="central" ""
-                      fill="${renderConfig.textColor}" font-family="Arial, sans-serif" font-weight="bold" ""
+                <text x="${size/2}" y="${size/2}" text-anchor="middle" dominant-baseline="central", ""
+                      fill="${renderConfig.textColor}" font-family="Arial, sans-serif" font-weight="bold", ""
                       font-size="${Math.floor(size * 0.5"})">${renderConfig.text}</text>
             </svg>;
         `;"

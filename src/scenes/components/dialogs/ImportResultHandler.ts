@@ -11,42 +11,42 @@ export interface ResultType { SUCCESS: 'success',''
     WARNING: 'warning' ,}
 export interface FeedbackAnimation { color: string,
     icon: string;
-    duration: number ,}
+   , duration: number ,}
 export interface ImportStats { playerDataImported: boolean,
     statisticsImported: boolean;
     achievementsImported: boolean;
     settingsImported: boolean;
     dataSize: number;
     itemCount: number;
-    version: string ,}
+   , version: string ,}
 export interface ImportResult { action: string,
     data: {
-        success: boolean;
+        succes;s: boolean;
         method: string;
         error?: string;
         importStats?: ImportStats | null;
         timestamp: string;
-        duration: string ,}
+       , duration: string ,}
 
 export interface Layout { contentX: number,
     contentY: number;
     contentWidth: number;
     buttonY: number;
     x: number;
-    width: number ,}
+   , width: number ,}
 export interface ComponentStatus { componentType: string,
     supportedResultTypes: string[];
     animationTypes: string[];
-    exportFormats: string[] ,}
+   , exportFormats: string[] ,}
 export interface MainController { data: {
-        success?: boolean;
+        succes;s?: boolean;
         error?: string;
         importMethod: string;
         parsedData?: any;
-        step: string 
+       , step: string 
 };
     textSettings: { contentFont: string;
-        contentColor: string 
+       , contentColor: string 
 };
     gameEngine: { eventBus?: {
             emit(event: string, data: any): void ,};
@@ -57,12 +57,12 @@ export interface AnimationResult { type: string,
     color: string;
     icon: string;
     startTime: number;
-    duration: number;
+   , duration: number;
     isActive(): boolean ,}
 export class ImportResultHandler {
     private mainController: MainController;
     private resultTypes: ResultType;
-    private feedbackAnimations: Record<string, FeedbackAnimation>;
+    private, feedbackAnimations: Record<string, FeedbackAnimation>;
 
     constructor(mainController: MainController) {
         this.mainController = mainController;
@@ -201,8 +201,7 @@ export class ImportResultHandler {
             currentY += 15; }
 
         }''
-        if(stats.settingsImported) {'
-            ';
+        if(stats.settingsImported) {', ';
 
         }
 
@@ -283,13 +282,13 @@ export class ImportResultHandler {
      */''
     handleComplete(''';
             action: 'import';
-            data: { success: this.mainController.data.success || false;
+           , data: { success: this.mainController.data.success || false;
                 method: this.mainController.data.importMethod);
                 error: this.mainController.data.error);
                 importStats: this.mainController.data.parsedData ?   : undefined
                     this.generateImportStats(this.mainController.data.parsedData) : null;
                 timestamp: new Date().toISOString();
-                duration: this.calculateImportDuration( }
+               , duration: this.calculateImportDuration( }
         };
 
         // 成功時の追加処理
@@ -319,7 +318,7 @@ export class ImportResultHandler {
                 const importHistory = JSON.parse(localStorage.getItem('importHistory'') || '[]');
                 importHistory.push({)
                     timestamp: result.data.timestamp);
-                    method: result.data.method,);
+                   , method: result.data.method,);
                     success: true);
                 // 履歴を最新10件に制限
                 if (importHistory.length > 10) {'
@@ -350,7 +349,7 @@ export class ImportResultHandler {
     generateImportStats(parsedData: any): ImportStats { return { playerDataImported: !!parsedData.playerData,
             statisticsImported: !!parsedData.statistics;
             achievementsImported: !!parsedData.achievements;
-            settingsImported: !!parsedData.settings,
+           , settingsImported: !!parsedData.settings,
             dataSize: this.calculateDataSize(parsedData),
             itemCount: this.countImportedItems(parsedData),' };
 
@@ -453,7 +452,7 @@ export class ImportResultHandler {
         console.debug('Import Error Report:', {
             error: errorData.error);
             method: errorData.method)';
-            timestamp: errorData.timestamp,')';
+           , timestamp: errorData.timestamp,')';
             userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A' ,}
     /**
      * 結果フィードバックアニメーション
@@ -468,7 +467,7 @@ export class ImportResultHandler {
         // アニメーション効果の設定（将来的な実装用）
         return { type: resultType,
             color: animation.color;
-            icon: animation.icon;
+           , icon: animation.icon;
             startTime,;
             duration: duration || animation.duration,
             isActive: () => Date.now()';
@@ -478,7 +477,7 @@ export class ImportResultHandler {
             success: this.mainController.data.success || false;
             method: this.mainController.data.importMethod;
             error: this.mainController.data.error;
-            stats: this.mainController.data.parsedData ?   : undefined ,};
+           , stats: this.mainController.data.parsedData ?   : undefined ,};
                 this.generateImportStats(this.mainController.data.parsedData) : null }
         } as any,
 
@@ -522,7 +521,7 @@ export class ImportResultHandler {
      */''
     getStatus()';
             componentType: 'ImportResultHandler')';
-            supportedResultTypes: Object.values(this.resultTypes),
+           , supportedResultTypes: Object.values(this.resultTypes),
             animationTypes: Object.keys(this.feedbackAnimations),
             exportFormats: ['json', 'text'];
         }''

@@ -1,17 +1,17 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 型定義
 interface EncryptionConfig { algorithm: string,
     keyLength: number;
     ivLength: number;
     tagLength: number;
-    saltLength: number ,}
+   , saltLength: number ,}
 
 interface SecurityConfig { encryptionEnabled: boolean;
     integrityCheckEnabled: boolean;
     anonymizationEnabled: boolean;
     secureDeleteEnabled: boolean;
-    auditLoggingEnabled: boolean }
+   , auditLoggingEnabled: boolean }
 
 interface SecurityStatistics { encryptionOperations: number;
     decryptionOperations: number;
@@ -19,16 +19,16 @@ interface SecurityStatistics { encryptionOperations: number;
     integrityViolations: number;
     dataAnonymizations: number;
     secureDeletes: number;
-    lastSecurityEvent: SecurityEvent | null }
+   , lastSecurityEvent: SecurityEvent | null }
 
 interface SecurityEvent { type: string;
     timestamp: number;
     details: any;
     userAgent: string;
-    sessionId: string }
+   , sessionId: string }
 
 interface EncryptionResult { success: boolean;
-    data: any;
+   , data: any;
     metadata?: any;
     error?: string; }
 
@@ -38,11 +38,11 @@ interface DecryptionResult { success: boolean,
 
 interface IntegrityResult { isValid: boolean,
     expectedHash: string;
-    actualHash: string;
+   , actualHash: string;
     error?: string ,}
 
 interface AnonymizationResult { success: boolean;
-    data: any;
+   , data: any;
     error?: string }
 
 interface SecureDeleteResult { success: boolean;
@@ -53,10 +53,10 @@ interface SecurityStatus { isEncryptionAvailable: boolean,
     config: SecurityConfig;
     statistics: SecurityStatistics;
     keyManagerStatus: any;
-    lastSecurityEvent: SecurityEvent | null ,}
+   , lastSecurityEvent: SecurityEvent | null ,}
 
 interface KeyManagerStatus { keysLoaded: number;
-    saltGenerated: boolean }
+   , saltGenerated: boolean }
 
 /**
  * セキュリティ管理クラス - データ暗号化・改ざん検出・プライバシー保護
@@ -83,13 +83,13 @@ export class SecurityManager {
             keyLength: 256;
             ivLength: 96;
             tagLength: 128;
-            saltLength: 128 };
+           , saltLength: 128 };
         // セキュリティ設定
         this.config = { encryptionEnabled: false, // デフォルトでは無効
             integrityCheckEnabled: true;
             anonymizationEnabled: true;
             secureDeleteEnabled: true;
-            auditLoggingEnabled: true ,}))
+           , auditLoggingEnabled: true ,}))
         // キー管理
         this.keyManager = new KeyManager(this);
         
@@ -106,7 +106,7 @@ export class SecurityManager {
             integrityViolations: 0;
             dataAnonymizations: 0;
             secureDeletes: 0;
-            lastSecurityEvent: null ,};
+           , lastSecurityEvent: null ,};
         this.initialize();
     }
     
@@ -154,7 +154,7 @@ export class SecurityManager {
             const result = await this.performEncryption(plaintext, options);
 
             this.logSecurityEvent('ENCRYPTION', { dataSize: plaintext.length)
-                algorithm: this.encryptionConfig.algorithm);
+               , algorithm: this.encryptionConfig.algorithm);
             return { success: true,
                 data: result.encryptedData, };
                 metadata: result.metadata }
@@ -196,7 +196,7 @@ export class SecurityManager {
             } catch (parseError) { data = plaintext; // 文字列として返す }
 
             this.logSecurityEvent('DECRYPTION', { dataSize: plaintext.length)
-                algorithm: metadata.algorithm || this.encryptionConfig.algorithm });
+               , algorithm: metadata.algorithm || this.encryptionConfig.algorithm });
             
             return { success: true, };
                 data }
@@ -232,7 +232,7 @@ export class SecurityManager {
             const encryptedBuffer = await window.crypto.subtle.encrypt(;
                 {)
                     name: this.encryptionConfig.algorithm);
-                    iv: iv,);
+                   , iv: iv,);
                     tagLength: this.encryptionConfig.tagLength);
                 key,
                 data;
@@ -253,7 +253,7 @@ export class SecurityManager {
                 ivLength: this.encryptionConfig.ivLength;
                 tagLength: this.encryptionConfig.tagLength;
                 timestamp: Date.now();
-                version: this.version ,};
+               , version: this.version ,};
             return { encryptedData, metadata } catch (error) { // フォールバック: Base64エンコードのみ
             console.warn('Encryption failed, using Base64 fallback:', error);
 
@@ -261,7 +261,7 @@ export class SecurityManager {
                 encryptedData: btoa(plaintext),
                 metadata: {''
                     algorithm: 'BASE64';
-                    fallback: true, };
+                   , fallback: true, };
                     timestamp: Date.now(); }
 }
     }
@@ -292,7 +292,7 @@ export class SecurityManager {
             // 復号化の実行
             const decryptedBuffer = await window.crypto.subtle.decrypt(;
                 { name: metadata.algorithm || this.encryptionConfig.algorithm)
-                    iv: iv,);
+                   , iv: iv,);
                     tagLength: metadata.tagLength || this.encryptionConfig.tagLength);
                 key,
                 ciphertext;
@@ -365,7 +365,7 @@ export class SecurityManager {
 
             this.logSecurityEvent('ANONYMIZATION', { );
                 originalSize: JSON.stringify(data).length;
-                anonymizedSize: JSON.stringify(anonymizedData).length });
+               , anonymizedSize: JSON.stringify(anonymizedData).length });
             return { success: true, };
                 data: anonymizedData }
             };
@@ -497,7 +497,7 @@ export class SecurityManager {
             details,
             userAgent: navigator.userAgent,
             sessionId: this.getSessionId()';
-        console.log('Security Event:', event }
+        console.log('Security, Event:', event }
     
     /**
      * セッションIDの取得
@@ -573,7 +573,7 @@ export class SecurityManager {
             config: { ...this.config;
             statistics: { ...this.statistics;
             keyManagerStatus: this.keyManager.getStatus();
-            lastSecurityEvent: this.statistics.lastSecurityEvent;
+           , lastSecurityEvent: this.statistics.lastSecurityEvent;
         },
     }
     
@@ -594,7 +594,7 @@ export class SecurityManager {
  * キー管理クラス
  */
 class KeyManager { private securityManager: SecurityManager
-    private keys: Map<string, CryptoKey>;
+    private, keys: Map<string, CryptoKey>;
     private keyDerivationSalt: Uint8Array | null;
     constructor(securityManager: SecurityManager) {
 
@@ -629,7 +629,7 @@ class KeyManager { private securityManager: SecurityManager
             // ベースキーマテリアルの生成（ブラウザ固有）
             const baseKeyMaterial = await this.generateBaseKeyMaterial(''';
                     name: 'PBKDF2';
-                    salt: this.keyDerivationSalt,
+                   , salt: this.keyDerivationSalt,
                     iterations: 100000,
                     hash: 'SHA-256' ,})
                 baseKeyMaterial)';
@@ -656,7 +656,7 @@ class KeyManager { private securityManager: SecurityManager
             return await window.crypto.subtle.importKey(')';
                 'raw',')';
                 data')'';
-                { name: 'PBKDF2' '),
+                { name: 'PBKDF2', '),
 
                 false,
                 ['deriveKey'];
@@ -774,8 +774,7 @@ class PrivacyManager { private securityManager: SecurityManager
         if(!str || str.length === 0) return '';
         ';
         // 最初と最後の文字を保持、中間をマスク
-        if(str.length <= 2) {'
-            ';
+        if(str.length <= 2) {', ';
 
         ,}
 

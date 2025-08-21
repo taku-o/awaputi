@@ -10,7 +10,7 @@
  * - Phase G.3: VisualFocusManager.js + 4コンポーネント
  * - Phase G.4: VisualFeedbackManager.js + 4コンポーネント
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Mock Canvas and other browser APIs
 global.HTMLCanvasElement = class HTMLCanvasElement {
     constructor() {
@@ -97,7 +97,7 @@ describe('Phase G統合テストスイート', () => {
         // Mock DOM elements
         global.document = {
             createElement: jest.fn().mockReturnValue(mockCanvas;);
-            getElementById: jest.fn().mockReturnValue(mockCanvas,
+           , getElementById: jest.fn().mockReturnValue(mockCanvas,
             body: {),
                 appendChild: jest.fn(),
         removeChild: jest.fn(),
@@ -130,11 +130,11 @@ describe('Phase G統合テストスイート', () => {
             const mockBalanceSystem = {
                 dataLoader: {
                     loadCurrentConfiguration: jest.fn(() => ({ scoring: { normal: 10 ) )));
-                    reloadConfiguration: jest.fn(() => true);
+                   , reloadConfiguration: jest.fn(() => true);
     }),
                 calculator: {
                     previewBalanceImpact: jest.fn((') => ({ impact: 'moderate' )));
-                    performDetailedImpactAnalysis: jest.fn(() => ({ detailed: true )));
+                   , performDetailedImpactAnalysis: jest.fn(() => ({ detailed: true )));
     }),
                 validator: {
                     runQuickTests: jest.fn().mockResolvedValue({ passed: 5, failed: 0 ),
@@ -192,7 +192,7 @@ describe('Phase G統合テストスイート', () => {
                 settingsManager: {
                     getSettings: jest.fn(() => ({)));
                     updateSettings: jest.fn().mockResolvedValue(true;);
-                    resetSettings: jest.fn().mockResolvedValue(true),
+                   , resetSettings: jest.fn().mockResolvedValue(true),
                 eventManager: {
                     recordEvent: jest.fn(),
                     getEventHistory: jest.fn(() => []);
@@ -200,10 +200,10 @@ describe('Phase G統合テストスイート', () => {
     }),
                 legacyAdapter: {
                     enableAccessibilityFeatures: jest.fn().mockResolvedValue(true;);
-                    getCapabilities: jest.fn(() => ({)));
+                   , getCapabilities: jest.fn(() => ({)));
     }),
                 initialize: jest.fn().mockResolvedValue(true;);
-                getStatus: jest.fn(() => ({ 
+               , getStatus: jest.fn(() => ({ 
                     initialized: true, 
                     components: {
                         description: true,
@@ -247,7 +247,7 @@ describe('Phase G統合テストスイート', () => {
             // 実際のファイルが存在しない場合のフォールバック
             const mockManager = {
                 initialize: jest.fn().mockResolvedValue(true;);
-                getStatus: jest.fn().mockReturnValue({ active: true });
+               , getStatus: jest.fn().mockReturnValue({ active: true });
                 updateFocusState: jest.fn(),
                 renderFocusEffects: jest.fn(),
                 handleFocusEvents: jest.fn(),
@@ -268,7 +268,7 @@ describe('Phase G統合テストスイート', () => {
             // 実際のファイルが存在しない場合のフォールバック
             const mockManager = {
                 initialize: jest.fn().mockResolvedValue(true;);
-                getStatus: jest.fn().mockReturnValue({ active: true });
+               , getStatus: jest.fn().mockReturnValue({ active: true });
                 showFeedback: jest.fn(),
                 triggerAnimation: jest.fn(),
                 updateConfiguration: jest.fn(),
@@ -329,7 +329,7 @@ describe('Phase G統合テストスイート', () => {
                 getConfig: jest.fn().mockReturnValue({});
                 updateConfig: jest.fn(),
                 validateConfig: jest.fn().mockReturnValue(true;);
-                syncConfigs: jest.fn().mockReturnValue(true
+               , syncConfigs: jest.fn().mockReturnValue(true
             };
             
             // Test config management across components);
@@ -353,7 +353,7 @@ describe('Phase G統合テストスイート', () => {
                 const component = {
                     id: i,
                     data: new Array(1000).fill(i;);
-                    destroy: jest.fn(() => { component.data = null; ));
+                   , destroy: jest.fn(() => { component.data = null; ));
     });
                 components.push(component);
             }

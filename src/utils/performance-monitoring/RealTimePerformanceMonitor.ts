@@ -3,7 +3,7 @@
  * Handles real-time performance data collection, continuous monitoring, data streaming, and performance event detection
  */
 
-import { getErrorHandler } from '../../core/ErrorHandler.js';
+import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // Configuration interfaces
 interface MonitoringConfig { interval: number,
@@ -14,7 +14,7 @@ interface MonitoringConfig { interval: number,
     metricsFilter: string[];
     retention: number;
     bufferSize: number;
-    samplingRate: number ,}
+   , samplingRate: number ,}
 
 // Event detection interfaces
 interface EventDetector { threshold: number;
@@ -34,17 +34,17 @@ interface PerformanceEvent { type: string;
     detected: number;
     resolved?: number;
     duration?: number;
-    metrics: Map<string, any>;
+   , metrics: Map<string, any>;
     severity?: string; }
 
 // Stream interfaces
 interface RealtimeStream { active: boolean,
     buffer: StreamDataPoint[];
     bufferSize: number;
-    lastFlush: number ,}
+   , lastFlush: number ,}
 
 interface StreamDataPoint { timestamp: number;
-    metrics: Record<string, any>;
+   , metrics: Record<string, any>;
     events: string[] ,}
 
 // Data collector interfaces
@@ -52,7 +52,7 @@ interface IDataCollector { initialize(): Promise<void>;
     collect(): Promise<Map<string, any>>; }
 
 // Error handler type
-interface ErrorHandler { handleError(error: any, context?: { context: string ): void ,}
+interface ErrorHandler { handleError(error: any, context?: { contex;t: string ): void ,}
 
 // Performance monitoring system interface
 interface PerformanceMonitoringSystem { ''
@@ -61,7 +61,7 @@ interface PerformanceMonitoringSystem { ''
 // Navigator extensions
 declare global { interface Navigator {
         connection?: {
-            downlink?: number; ,};
+            downlin;k?: number; ,};
         battery?: any;
         getBattery?(): any;
     }
@@ -90,7 +90,7 @@ export class RealTimePerformanceMonitor {
     // Performance event detection
     private eventDetectors: Map<string, EventDetector>;
     private detectedEvents: PerformanceEvent[];
-    private eventThresholds: Map<string, any>;
+    private, eventThresholds: Map<string, any>;
 
     constructor(performanceMonitoringSystem: PerformanceMonitoringSystem) {
 
@@ -104,7 +104,7 @@ export class RealTimePerformanceMonitor {
             enableHistory: true;
             enableAlerts: true;
             enableRealtimeStream: true;
-            metricsFilter: [], // 空の場合は全メトリクス;
+           , metricsFilter: [], // 空の場合は全メトリクス;
             retention: 24 * 60 * 60 * 1000, // 24時間;
             bufferSize: 1000, // データポイント数
     }
@@ -162,10 +162,10 @@ export class RealTimePerformanceMonitor {
      */''
     private setupEventDetectors()';
         this.eventDetectors.set('fps_drop', { threshold: 45)
-            duration: 3000, // 3秒間);
+           , duration: 3000, // 3秒間);
             condition: (value: number, threshold: number) => value < threshold,
             active: false;
-            startTime: null' ,}'
+           , startTime: null' ,}'
 
         }');
         ';
@@ -506,7 +506,7 @@ export class RealTimePerformanceMonitor {
             type: eventType;
             detected: timestamp;
             metrics: new Map(metrics);
-            severity: this.calculateEventSeverity(eventType, metrics };
+           , severity: this.calculateEventSeverity(eventType, metrics };
         
         this.detectedEvents.push(event);
         
@@ -537,7 +537,7 @@ export class RealTimePerformanceMonitor {
             resolved: timestamp;
             duration: timestamp - startTime;
             metrics: new Map(metrics;
-            detected: startTime }))
+           , detected: startTime }))
         // Update the corresponding detected event
         const detectedEvent = this.detectedEvents.find(e => );
             e.type === eventType && !e.resolved);
@@ -551,8 +551,7 @@ export class RealTimePerformanceMonitor {
         }
         ;
         // Notify monitoring system
-        if(this.performanceMonitoringSystem && this.performanceMonitoringSystem.onPerformanceEvent) {'
-            ';
+        if(this.performanceMonitoringSystem && this.performanceMonitoringSystem.onPerformanceEvent) {', ';
 
         }
 
@@ -612,7 +611,7 @@ export class RealTimePerformanceMonitor {
      */
     private initializeStream(): void { this.realtimeStream = {
             active: true;
-            buffer: [],
+           , buffer: [],
             bufferSize: this.monitoringConfig.bufferSize,
             lastFlush: Date.now()';
         console.log('[RealTimePerformanceMonitor] Real-time, stream initialized'), }'
@@ -627,7 +626,7 @@ export class RealTimePerformanceMonitor {
         const dataPoint: StreamDataPoint = {
             timestamp,
             metrics: Object.fromEntries(metrics);
-            events: this.getActiveEvents( ,};
+           , events: this.getActiveEvents( ,};
         
         // Add to stream buffer
         this.realtimeStream.buffer.push(dataPoint);
@@ -719,12 +718,12 @@ export class RealTimePerformanceMonitor {
      */
     getMonitoringStats(): object { return { monitoring: this.monitoring,
             config: this.monitoringConfig;
-            streamActive: this.realtimeStream? .active || false, : undefined
+           , streamActive: this.realtimeStream? .active || false, : undefined
             streamBufferSize: this.realtimeStream? .buffer.length || 0, : undefined
             subscribersCount: this.streamSubscribers.size;
             activeEvents: this.getActiveEvents().length;
             totalEventsDetected: this.detectedEvents.length;
-            eventDetectors: Object.fromEntries();
+           , eventDetectors: Object.fromEntries();
                 Array.from(this.eventDetectors.entries().map(([type, detector]) => [type, ;
                     { 
                         active: detector.active,  };
@@ -749,7 +748,7 @@ export class RealTimePerformanceMonitor {
 // Data collector classes (simplified, implementations);
 class FrameDataCollector implements IDataCollector { private lastFrameTime: number = 0
     private frameCount: number = 0;
-    private frameTimes: number[] = [];
+    private, frameTimes: number[] = [];
     async initialize(): Promise<void> {
         this.lastFrameTime = performance.now();
         this.frameCount = 0;
@@ -784,7 +783,7 @@ class FrameDataCollector implements IDataCollector { private lastFrameTime: numb
         return values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
 
 class MemoryDataCollector implements IDataCollector { private baselineMemory: number = 0
-    private lastMemoryCheck: number = 0;
+    private, lastMemoryCheck: number = 0;
     async initialize(): Promise<void> {
         this.baselineMemory = (performance, as any).memory? .usedJSHeapSize || 0;
         this.lastMemoryCheck = Date.now(); ,}

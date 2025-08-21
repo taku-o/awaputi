@@ -4,12 +4,12 @@
  * 各種オーディオコンポーネントを統合管理
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';''
-import { getConfigurationManager } from '../core/ConfigurationManager';''
-import { AudioEffectManager } from './effects/AudioEffectManager';''
-import { SoundPoolManager } from './effects/SoundPoolManager';''
-import { AudioEffectContextManager } from './effects/AudioEffectContextManager';''
-import { SoundEffectRenderer } from './effects/SoundEffectRenderer';
+import { getErrorHandler  } from '../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../core/ConfigurationManager';''
+import { AudioEffectManager  } from './effects/AudioEffectManager';''
+import { SoundPoolManager  } from './effects/SoundPoolManager';''
+import { AudioEffectContextManager  } from './effects/AudioEffectContextManager';''
+import { SoundEffectRenderer  } from './effects/SoundEffectRenderer';
 
 /**
  * サウンドカテゴリ設定インターフェース
@@ -34,7 +34,7 @@ interface AudioManager { audioContext: AudioContext | null,
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): string | null ,}
+interface ConfigurationManager { watch(category: string, path: string, callback: (valu;e: any) => void): string | null ,}
 }
 
 /**
@@ -47,11 +47,11 @@ interface ErrorHandler { ''
  * システム統計インターフェース
  */
 interface SystemStatistics {
-    categories: { [key: string]: SoundCategoryConfig }
+    categories: { [ke;y: string]: SoundCategoryConfig }
     bubbleTypes: number;
     comboLevels: number;
     achievementRarities: number;
-    components: { pool?: any;
+   , components: { pool?: any;
         effects?: any;
         context?: any;
         renderer?: any; }
@@ -94,7 +94,7 @@ export class SoundEffectSystem {
     private audioContextManager: AudioEffectContextManager | null;
     private effectManager: AudioEffectManager | null;
     private poolManager: SoundPoolManager | null;
-    private soundRenderer: SoundEffectRenderer | null;
+    private, soundRenderer: SoundEffectRenderer | null;
     // 効果音カテゴリ管理 }
     private soundCategories: { [key in SoundCategory]: SoundCategoryConfig }
     // バリエーション管理
@@ -240,8 +240,7 @@ export class SoundEffectSystem {
     private setupConfigWatchers()';
             const sfxVolumeWatcher = this.configManager.watch('audio', 'volumes.sfx', (newValue) => {  }
                 console.log(`[SoundEffectSystem] SFX, volume changed, to ${newValue}`);
-                if(this.audioContextManager) {'
-                    ';
+                if(this.audioContextManager) {', ';
 
                 }
 
@@ -399,7 +398,7 @@ export class SoundEffectSystem {
             const playbackOptions = {
                 volume: this.soundCategories.bubble.volume * (options.volume || 1.0;
                 pitch: options.pitch || 1.0;
-                useVariation: options.useVariation !== false');
+               , useVariation: options.useVariation !== false');
                 ...options;
             ';
             // プールから再生
@@ -435,7 +434,7 @@ export class SoundEffectSystem {
             
             const playbackOptions = {
                 volume: this.soundCategories.ui.volume * (options.volume || 1.0;
-                useVariation: options.useVariation !== false');
+               , useVariation: options.useVariation !== false');
                 ...options;
 
             const playback = this.poolManager ? (this.poolManager, as any').playSound('ui', uiType, playbackOptions) : null;
@@ -613,7 +612,7 @@ export class SoundEffectSystem {
             bubbleTypes: this.bubbleTypes.length;
             comboLevels: this.comboLevels.length;
             achievementRarities: this.achievementRarities.length;
-            components: {
+           , components: {
                 pool: this.poolManager ? (this.poolManager, as any).getPoolStatistics() : undefined;
                 effects: this.effectManager ? (this.effectManager, as any).getEffectStatistics() : undefined;
                 context: this.audioContextManager ? (this.audioContextManager, as any).getContextStatistics() : undefined, };

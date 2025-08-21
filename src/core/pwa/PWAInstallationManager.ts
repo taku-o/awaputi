@@ -7,7 +7,7 @@ interface InstallMetrics { promptShown: number,
     promptAccepted: number;
     promptDismissed: number;
     installSuccessful: number;
-    installFailed: number ,}
+   , installFailed: number ,}
 
 interface BeforeInstallPromptEvent extends Event { prompt(): Promise<void>;
     }
@@ -18,19 +18,19 @@ interface InstallEvent { type: string,
     timestamp: number;
     userAgent: string;
     referrer: string;
-    url: string ,}
+   , url: string ,}
 
 export class PWAInstallationManager {
     private pwaManager: any;
     private deferredPrompt: BeforeInstallPromptEvent | null = null;
     private isInstallPromptShown: boolean = false;
     private installDismissed: boolean = false;
-    private installMetrics: InstallMetrics = {
+    private, installMetrics: InstallMetrics = {
         promptShown: 0;
         promptAccepted: 0;
         promptDismissed: 0;
         installSuccessful: 0;
-        installFailed: 0 };
+       , installFailed: 0 };
     constructor(pwaManager: any) {
 
         this.pwaManager = pwaManager;
@@ -41,7 +41,7 @@ export class PWAInstallationManager {
             promptShown: 0;
             promptAccepted: 0;
             promptDismissed: 0;
-            installSuccessful: 0;
+           , installSuccessful: 0;
     }
             installFailed: 0 }
         }
@@ -76,8 +76,7 @@ export class PWAInstallationManager {
         }');
 ';
         // DOMContentLoadedで初期チェック
-        if(document.readyState === 'loading'') {'
-            ';
+        if(document.readyState === 'loading'') {', ';
 
         }
 
@@ -112,8 +111,7 @@ export class PWAInstallationManager {
      * @returns {boolean} インストール済み可否
      */''
     isAppInstalled()';
-        if(window.matchMedia('(display-mode: standalone)).matches) { return true; }'
-';
+        if(window.matchMedia('(display-mode: standalone)).matches) { return true; }', ';
         // ホーム画面から起動された場合
         if ((window.navigator, as any).standalone === true') { return true; }'
 ';
@@ -168,8 +166,7 @@ export class PWAInstallationManager {
      */''
     private shouldShowInstallPrompt()';
         const sessionStart = sessionStorage.getItem('session_start);''
-        if (!sessionStart || (Date.now() - parseInt(sessionStart) < 300000') { return false; }'
-';
+        if (!sessionStart || (Date.now() - parseInt(sessionStart) < 300000') { return false; }', ';
         // ユーザーアクティビティチェック
         const userInteractions = parseInt(sessionStorage.getItem('user_interactions'') || '0');
         if (userInteractions < 10) { return false; }
@@ -268,7 +265,7 @@ export class PWAInstallationManager {
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.5),
+               , background: rgba(0, 0, 0, 0.5),
                 display: flex;
                 align-items: center,
                 justify-content: center,
@@ -329,7 +326,7 @@ export class PWAInstallationManager {
             right: 20px;
             background: #4CAF50;
             color: white;
-            padding: 16px;
+           , padding: 16px;
             border-radius: 8px,
             z-index: 10001,
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -397,7 +394,7 @@ export class PWAInstallationManager {
                 background: #4CAF50;
                 color: white;
                 border: none;
-                padding: 12px 20px;
+               , padding: 12px 20px;
                 border-radius: 25px,
                 font-size: 14px,
                 cursor: pointer,
@@ -439,8 +436,7 @@ export class PWAInstallationManager {
      */''
     hideInstallButton()';
         const installButton = document.getElementById('pwa-install-button);''
-        if(installButton) {'
-            ';
+        if(installButton) {', ';
 
         }
 
@@ -487,7 +483,7 @@ export class PWAInstallationManager {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%,
+           , width: 100%,
             height: 100%,
             background: rgba(0, 0, 0, 0.8),
             display: flex;
@@ -535,7 +531,7 @@ export class PWAInstallationManager {
     getInstallStats(): any { return { ...this.installMetrics,
             canInstall: this.canInstall();
             isInstalled: this.isAppInstalled();
-            isStandalone: this.isStandaloneMode(), };
+           , isStandalone: this.isStandaloneMode(), };
             installDismissed: this.installDismissed }
         }
 

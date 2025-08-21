@@ -1,5 +1,5 @@
-import { FormatterEngine } from '../FormatterEngine.js';''
-import { getRegionalSettingsManager } from '../RegionalSettingsManager.js';
+import { FormatterEngine  } from '../FormatterEngine.js';''
+import { getRegionalSettingsManager  } from '../RegionalSettingsManager.js';
 
 // インターフェース定義
 interface TestResult { category: string,
@@ -7,51 +7,51 @@ interface TestResult { category: string,
     passed: boolean;
     actual: string;
     expected: string;
-    timestamp: Date
+   , timestamp: Date
     ,}
 
 interface NumberTestCase { value: number;
     language: string;
-    expected: string }
+   , expected: string }
 
 interface DateTestCase { date: Date;
     language: string;
     format: string;
-    expected: string }
+   , expected: string }
 
 interface TimeTestCase { time: Date;
     language: string;
     format: string;
-    expected: string }
+   , expected: string }
 
 interface CurrencyTestCase { value: number;
     language: string;
-    expected: string }
+   , expected: string }
 
 interface RegionalTestCase { language: string;
-    region: string }
+   , region: string }
 
 interface FormatStringTestCase { text: string, }
     params: { [key: string]: any }
     language: string;
-    expected: string;
+   , expected: string;
 }
 
 interface MultiLanguageResults { [language: string]: {
-        number: string;
+        numbe;r: string;
         currency: string;
-        date: string }
+       , date: string }
 
 interface TestReport { summary: {
-        totalTests: number;
+        totalTest;s: number;
         passedTests: number;
         failedTests: number;
-        successRate: string };
+       , successRate: string };
     categories: { [category: string]: {
             total: number;
             passed: number;
             failed: number;
-            tests: TestResult[]
+           , tests: TestResult[]
     };
     timestamp: Date;
     }
@@ -66,7 +66,7 @@ interface TestResultWithReport { results: TestResult[],
 export class RegionalFormattingTest {
     private formatterEngine: FormatterEngine;
     private regionalSettingsManager: any;
-    private testResults: TestResult[];
+    private, testResults: TestResult[];
     constructor() {
 ';
 
@@ -394,7 +394,7 @@ export class RegionalFormattingTest {
             // 空白や特殊文字の違いを許容
         }
 
-            return actual.trim(').replace(/\s+/g, ' ') === expected.trim(').replace(/\s+/g, ' ');
+            return actual.trim(').replace(/\s+/g, ', ') === expected.trim(').replace(/\s+/g, ' ');
         return actual === expected;
     }
     
@@ -437,7 +437,7 @@ export class RegionalFormattingTest {
     generateReport(): TestReport { const report: TestReport = {
             summary: {
                 totalTests: this.testResults.length;
-                passedTests: this.testResults.filter(r => r.passed).length,
+               , passedTests: this.testResults.filter(r => r.passed).length,
                 failedTests: this.testResults.filter(r => !r.passed).length,
                 successRate: ((this.testResults.filter(r => r.passed).length / this.testResults.length) * 100).toFixed(1') + '%' ,}
             };
@@ -450,7 +450,7 @@ export class RegionalFormattingTest {
             if(!report.categories[result.category]) {
                 report.categories[result.category] = {
                     total: 0;
-                    passed: 0;
+                   , passed: 0;
             }
                     failed: 0, }
                     tests: [] }

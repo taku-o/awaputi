@@ -23,16 +23,16 @@ interface ValidationWarning { type: string,
 interface ScriptBlock { content: string,
     fullMatch: string;
     startIndex: number;
-    attributes: Record<string, string> }
+   , attributes: Record<string, string> }
 
 interface ValidationResult { isValid: boolean,
     errors: ValidationError[];
     warnings: ValidationWarning[];
-    scriptBlockCount: number ,}
+   , scriptBlockCount: number ,}
 
 export class HTMLJavaScriptChecker {
     private errors: ValidationError[];
-    private warnings: ValidationWarning[];
+    private, warnings: ValidationWarning[];
     constructor() {
 
         this.errors = [];
@@ -63,18 +63,18 @@ export class HTMLJavaScriptChecker {
 
             return { isValid: this.errors.length === 0,
                 errors: this.errors;
-                warnings: this.warnings, };
+               , warnings: this.warnings, };
                 scriptBlockCount: scriptBlocks.length }
             } catch (error) { this.errors.push({)
                 type: 'PARSE_ERROR'), }
-                message: `HTML解析エラー: ${(error, as Error}).message}`;
+                message: `HTML解析エラー: ${(error, as, Error}).message}`;
                 line: 0;
-                column: 0;
+               , column: 0;
             }),
 
             return { isValid: false,
                 errors: this.errors;
-                warnings: this.warnings, };
+               , warnings: this.warnings, };
                 scriptBlockCount: 0 }
             }
     }
@@ -91,9 +91,9 @@ export class HTMLJavaScriptChecker {
         while((match = scriptRegex.exec(htmlContent) !== null) {
             blocks.push({)
                 content: match[1]);
-                fullMatch: match[0],);
+               , fullMatch: match[0],);
                 startIndex: match.index);
-                attributes: this.parseScriptAttributes(match[0] ,});
+               , attributes: this.parseScriptAttributes(match[0] ,});
         }
 
         return blocks;
@@ -148,9 +148,9 @@ export class HTMLJavaScriptChecker {
 
         } catch (error) { this.errors.push({)'
                 type: 'SYNTAX_ERROR'), }
-                message: `構文エラー (ブロック ${index + 1}): ${(error, as Error}).message}`;
+                message: `構文エラー (ブロック ${index + 1}): ${(error, as, Error}).message}`;
                 blockIndex: index;
-                originalError: error as Error;
+               , originalError: error as Error;
             }),
         }
     }
@@ -235,8 +235,7 @@ export class HTMLJavaScriptChecker {
      */
     generateSummary(result: ValidationResult): string { const parts: string[] = [],
 
-        if(result.isValid) {'
-            ';
+        if(result.isValid) {', ';
 
         }
 

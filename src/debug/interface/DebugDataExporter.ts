@@ -1,10 +1,10 @@
-import { BaseComponent } from '../BaseComponent.js';
+import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface ExportFormat { name: string,
     extension: string;
-    mimeType: string,
-    exporter: (data: any') => string ,}'
+   , mimeType: string,
+    exporter: (dat;a: any') => string ,}'
 }
 
 interface ExportOptions { includeMetadata?: boolean;
@@ -13,20 +13,20 @@ interface ExportOptions { includeMetadata?: boolean;
 
 interface ExportStatistics { totalExports: number,
     successfulExports: number;
-    failedExports: number ,}
+   , failedExports: number ,}
 
 interface ExportRecord { filename: string;
     format: string;
     size?: number;
     error?: string;
     timestamp: number;
-    success: boolean }
+   , success: boolean }
 ';
 
 interface TestSuite { suite: string,''
     status: 'ready' | 'running' | 'completed' | 'failed';
     results: TestResult[];
-    summary: TestSummary
+   , summary: TestSummary
     ,}
 ';
 
@@ -37,27 +37,27 @@ interface TestResult { name: string,''
 
 interface TestSummary { passed: number,
     failed: number;
-    skipped: number ,}
+   , skipped: number ,}
 
 interface PanelData { panelId: string;
     timestamp: number;
     sessionId: string;
     version: string;
-    type: string;
+   , type: string;
     [key: string]: any, }
 
 interface MetricsData { fps: number,
     memory: number;
     cpu: number;
-    gpu: number ,}
+   , gpu: number ,}
 
 interface NetworkPerformance { download: number;
     upload: number;
-    latency: number }
+   , latency: number }
 
 interface GCInfo { collections: number;
     totalTime: number;
-    averageTime: number }
+   , averageTime: number }
 
 interface MainController { container?: HTMLElement;
     sessionId: string;
@@ -81,7 +81,7 @@ interface Visualizer { charts: Map<string, HTMLElement>;
 export class DebugDataExporter extends BaseComponent { private exportFormats: Map<string, ExportFormat>;
     private testResults: Map<string, TestSuite>;
     private exportHistory: ExportRecord[];
-    private exportStatistics: ExportStatistics';
+    private, exportStatistics: ExportStatistics';
 
     constructor(mainController: MainController) {'
 
@@ -91,7 +91,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         this.exportHistory = [];
         this.exportStatistics = {
             totalExports: 0;
-            successfulExports: 0;
+           , successfulExports: 0;
     ,}
             failedExports: 0 }
         }
@@ -134,7 +134,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
             name: 'XML',)';
             extension: '.xml',')';
             mimeType: 'application/xml');
-            exporter: (data: any) => this.convertToXML(data) ,}
+           , exporter: (data: any) => this.convertToXML(data) ,}
         });
     }
 
@@ -145,7 +145,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         this.testResults.set('integration', { ''
             suite: 'Integration Tests',)';
             status: 'ready')';
-            results: [],' }'
+           , results: [],' }'
 
             summary: { passed: 0, failed: 0, skipped: 0 ,})');
 ';
@@ -153,7 +153,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         this.testResults.set('requirements', { ''
             suite: 'Requirements Validation',)';
             status: 'ready')';
-            results: [],' }'
+           , results: [],' }'
 
             summary: { passed: 0, failed: 0, skipped: 0 ,})');
 ';
@@ -161,7 +161,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         this.testResults.set('final', { ''
             suite: 'Final Validation',)';
             status: 'ready')';
-            results: [],' }'
+           , results: [],' }'
 
             summary: { passed: 0, failed: 0, skipped: 0 ,})');
     }
@@ -195,9 +195,8 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         const baseData: PanelData = {'
             panelId: panelId,
             timestamp: Date.now(''';
-            version: '1.0.0',
-            type: 'unknown' ,}))'
-')';
+           , version: '1.0.0',
+            type: 'unknown' ,}))', ')';
         switch(panelId) {'
 
             case 'console':'';
@@ -237,10 +236,10 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
 
         return { ''
             type: 'performance';
-            metrics: {
+           , metrics: {
                 fps: this.getCurrentFPS();
                 memory: this.getCurrentMemoryUsage();
-                cpu: this.getCurrentCPUUsage(), };
+               , cpu: this.getCurrentCPUUsage(), };
                 gpu: this.getCurrentGPUUsage(); }
             },
             charts: visualizer ? this.exportChartData() : {};
@@ -253,11 +252,11 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      */''
     collectMemoryData()';
             type: 'memory');
-            usage: { used: (performance, as any).memory? .usedJSHeapSize || 0, : undefined
+           , usage: { used: (performance, as any).memory? .usedJSHeapSize || 0, : undefined
                 total: (performance, as any).memory? .totalJSHeapSize || 0, : undefined
                 limit: (performance, as any).memory? .jsHeapSizeLimit || 0 ,}, : undefined
             gc: this.getGCInfo();
-            timestamp: Date.now();
+           , timestamp: Date.now();
         }
 
     /**
@@ -268,7 +267,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
             type: 'network');
             requests: this.getNetworkRequests();
             performance: this.getNetworkPerformance();
-            timestamp: Date.now();
+           , timestamp: Date.now();
         }
 
     /**
@@ -308,10 +307,10 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
             
             // エクスポート履歴に追加
             this.addToExportHistory({ filename: fullFilename)
-                format: format,);
+               , format: format,);
                 size: exportedData.length);
                 timestamp: Date.now();
-                success: true ,});
+               , success: true ,});
             this.exportStatistics.totalExports++;
             this.exportStatistics.successfulExports++;
 
@@ -323,7 +322,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
             this.addToExportHistory({)
                 filename: filename,);
                 format: format);
-                error: (error, as Error).message;
+               , error: (error, as Error).message;
                 timestamp: Date.now(),
                 success: false' ,}'
 
@@ -402,7 +401,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * @returns テキスト文字列'
      */''
     objectToText(obj: any, indent: number = 0): string { ''
-        const spaces = '  '.repeat(indent);
+        const spaces = ', '.repeat(indent);
 
         const lines: string[] = [],
 
@@ -438,7 +437,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * @returns XML文字列'
      */ : undefined''
     objectToXML(obj: any, indent: number = 0): string { ''
-        const spaces = '  '.repeat(indent);''
+        const spaces = ', '.repeat(indent);''
         let xml = '';
 
         for(const [key, value] of Object.entries(obj)) {''
@@ -496,8 +495,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * @param format - エクスポート形式'
      */''
     exportIntegrationTestResults(format: string = 'json): void { const results = this.getIntegrationTestResults();''
-        if(results) {'
-            ';
+        if(results) {', ';
 
         }
 
@@ -517,8 +515,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * @param format - エクスポート形式'
      */''
     exportRequirementsValidationResults(format: string = 'json): void { const results = this.getRequirementsValidationResults();''
-        if(results) {'
-            ';
+        if(results) {', ';
 
         }
 
@@ -538,8 +535,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * @param format - エクスポート形式'
      */''
     exportFinalValidationResults(format: string = 'json): void { const results = this.getFinalValidationResults();''
-        if(results) {'
-            ';
+        if(results) {', ';
 
         }
 
@@ -615,7 +611,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         for(const [id, chart] of visualizer.charts) {
             chartData[id] = {
                 id: id;
-                content: chart.innerHTML;
+               , content: chart.innerHTML;
         }
                 data: (chart, as any).dataset }
             }
@@ -653,12 +649,12 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         const allData = {
             debugInterface: {
                 sessionId: controller.sessionId;
-                timestamp: Date.now( };
+               , timestamp: Date.now( };
             panels: {} as Record<string, PanelData>,
             testResults: Object.fromEntries(this.testResults),
             statistics: { ''
                 export: this.getExportStatistics()';
-                panels: (controller.getComponent('panelManager) as PanelManager)? .getPanelStatistics?.('), : undefined'';
+               , panels: (controller.getComponent('panelManager) as PanelManager)? .getPanelStatistics?.('), : undefined'';
                 shortcuts: (controller.getComponent('commandProcessor) as CommandProcessor)? .getShortcutStatistics?.(' ,}
         };
 ';
@@ -685,5 +681,5 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         this.exportStatistics = {
             totalExports: 0;
             successfulExports: 0;
-            failedExports: 0 };
+           , failedExports: 0 };
         super.cleanup(');

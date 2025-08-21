@@ -1,5 +1,5 @@
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { SettingsImportExportComponent } from '../../../src/components/SettingsImportExportComponent';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { SettingsImportExportComponent  } from '../../../src/components/SettingsImportExportComponent';
 /**
  * SettingsImportExportComponent テストスイート
  * 
@@ -12,15 +12,15 @@ import { SettingsImportExportComponent } from '../../../src/components/SettingsI
 interface MockGameEngine {
     version: string,
     settingsManager: {
-        get: jest.Mock<(key: string) => any>;
-        set: jest.Mock<(key: string, value => void>);
+        get: jest.Mock<(ke;y: string) => any>;
+        set: jest.Mock<(ke;y: string, value => void>);
     } | null;
     sceneManager: {
         currentScene: {
             accessibilitySettingsManager: {
-                getExtendedAccessibilitySettings: jest.Mock<() => Array<{key: string; label: string}>>,
+                getExtendedAccessibilitySettings: jest.Mock<() => Array<{key: string;, label: string}>>,
                 currentProfile: string,
-                getStats: jest.Mock<() => {exportCount: number; importCount: number}>,
+                getStats: jest.Mock<() => {exportCount: number;, importCount: number}>,
                 importSettings: jest.Mock<(') => Promise<void>>;
             };
         };
@@ -61,7 +61,7 @@ const mockGameEngine: MockGameEngine = {
         currentScene: {
             accessibilitySettingsManager: {
                 getExtendedAccessibilitySettings: jest.fn((') => [
-                    { key: 'accessibility.highContrast', label: 'ハイコントラスト' '),
+                    { key: 'accessibility.highContrast', label: 'ハイコントラスト', '),
                     { key: 'accessibility.largeText',
         label: '大きな文字' 
     })

@@ -39,7 +39,7 @@ interface ShareResult { success: boolean,
 interface Platform { id: string,
     name: string;
     icon: string;
-    available: boolean ,}
+   , available: boolean ,}
 
 /**
  * Bottom sheet config interface
@@ -47,28 +47,28 @@ interface Platform { id: string,
 interface BottomSheetConfig { dragThreshold: number;
     closeThreshold: number;
     animationDuration: number;
-    backdropOpacity: number }
+   , backdropOpacity: number }
 
 /**
  * Buttons config interface
  */
 interface ButtonsConfig { minTouchSize: number;
     spacing: number;
-    cornerRadius: number }
+   , cornerRadius: number }
 
 /**
  * Breakpoints config interface
  */
 interface BreakpointsConfig { mobile: number;
     tablet: number;
-    compact: number }
+   , compact: number }
 
 /**
  * Configuration interface
  */
 interface Config { bottomSheet: BottomSheetConfig;
     buttons: ButtonsConfig;
-    breakpoints: BreakpointsConfig
+   , breakpoints: BreakpointsConfig
     }
 
 /**
@@ -78,13 +78,13 @@ interface ThemeColors { background: string;
     surface: string;
     primary: string;
     text: string;
-    border: string }
+   , border: string }
 
 /**
  * Themes interface
  */
 interface Themes { light: ThemeColors;
-    dark: ThemeColors
+   , dark: ThemeColors
     }
 
 export class MobileShareUI {
@@ -95,23 +95,23 @@ export class MobileShareUI {
     private currentBottomSheet: HTMLElement | null = null;
     private gestureState: any = null;
     // UI設定
-    private config: Config = {
+    private, config: Config = {
         bottomSheet: {
             dragThreshold: 50;
             closeThreshold: 150;
             animationDuration: 300;
-            backdropOpacity: 0.5 };
+           , backdropOpacity: 0.5 };
         buttons: { minTouchSize: 44;
             spacing: 16;
-            cornerRadius: 12 };
+           , cornerRadius: 12 };
         breakpoints: { mobile: 768;
             tablet: 1024;
-            compact: 480 }
+           , compact: 480 }
     };
     // テーマ設定
     private themes: Themes = { light: {''
             background: '#ffffff''';
-            surface: '#f8f9fa',
+           , surface: '#f8f9fa',
             primary: '#007bff',
             text: '#333333',
             border: '#e9ecef' ,};
@@ -163,11 +163,11 @@ export class MobileShareUI {
                 bottom: 0;
                 left: 0;
                 right: 0;
-                background: var(--bg-color, #ffffff),
+               , background: var(--bg-color, #ffffff),
                 border-radius: 24px 24px 0 0,
                 box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
                 transform: translateY(100%);
-                transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+               , transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1),
                 z-index: 1000,
                 max-height: 80vh,
                 overflow: hidden;
@@ -180,10 +180,10 @@ export class MobileShareUI {
             /* ハンドル */
             .mobile-bottom-sheet-handle { width: 40px,
                 height: 4px;
-                background: var(--border-color, #e9ecef),
+               , background: var(--border-color, #e9ecef),
                 border-radius: 2px,
                 margin: 12px auto 8px;
-                cursor: grab;
+               , cursor: grab;
                 touch-action: none, }
             
             .mobile-bottom-sheet-handle:active { cursor: grabbing }
@@ -210,13 +210,13 @@ export class MobileShareUI {
             .mobile-share-close { width: 32px;
                 height: 32px;
                 border: none;
-                background: var(--surface-color, #f8f9fa),
+               , background: var(--surface-color, #f8f9fa),
                 border-radius: 50%,
                 display: flex;
                 align-items: center,
                 justify-content: center,
                 cursor: pointer;
-                color: var(--text-color, #333333),
+               , color: var(--text-color, #333333),
                 touch-action: manipulation, }
             
             /* プラットフォームグリッド */
@@ -229,22 +229,22 @@ export class MobileShareUI {
                 flex-direction: column,
                 align-items: center,
                 padding: 16px 8px;
-                background: var(--surface-color, #f8f9fa),
+               , background: var(--surface-color, #f8f9fa),
                 border: none;
                 border-radius: 16px,
                 cursor: pointer;
-                transition: all 0.2s ease;
+               , transition: all 0.2s ease;
                 min-height: 88px,
                 touch-action: manipulation,
                 position: relative;
-                overflow: hidden ,}
+               , overflow: hidden ,}
             
             .mobile-platform-button:active { transform: scale(0.95);
-                background: var(--primary-color, #007bff),
+               , background: var(--primary-color, #007bff),
                 color: white ,}
             
             .mobile-platform-icon { width: 32px;
-                height: 32px;
+               , height: 32px;
                 margin-bottom: 8px,
                 border-radius: 8px,
                 display: flex;
@@ -273,12 +273,12 @@ export class MobileShareUI {
             .mobile-message-textarea { width: 100%,
                 min-height: 80px,
                 padding: 12px;
-                border: 1px solid var(--border-color, #e9ecef),
+               , border: 1px solid var(--border-color, #e9ecef),
                 border-radius: 8px,
                 font-size: 14px,
                 font-family: inherit,
                 resize: vertical;
-                background: var(--bg-color, #ffffff),
+               , background: var(--bg-color, #ffffff),
                 color: var(--text-color, #333333), }
             
             /* アクションボタン */
@@ -287,12 +287,12 @@ export class MobileShareUI {
             
             .mobile-action-button { flex: 1;
                 height: 48px;
-                border: none;
+               , border: none;
                 border-radius: 12px,
                 font-size: 16px,
                 font-weight: 600,
                 cursor: pointer;
-                transition: all 0.2s ease;
+               , transition: all 0.2s ease;
                 touch-action: manipulation, }
             
             .mobile-action-button.primary { background: var(--primary-color, #007bff),
@@ -309,7 +309,7 @@ export class MobileShareUI {
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba(0, 0, 0, 0),
+               , background: rgba(0, 0, 0, 0),
                 transition: background 0.3s ease;
                 z-index: 999,
                 pointer-events: none, }
@@ -323,7 +323,7 @@ export class MobileShareUI {
                 height: auto;
                 border-radius: 8px,
                 margin: 16px auto;
-                display: block;
+               , display: block;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15 }
             
             /* レスポンシブ調整 */
@@ -418,7 +418,7 @@ export class MobileShareUI {
      */
     private setupResponsiveObserver(): void { // ブレークポイント監視
         const mobileQuery = window.matchMedia(`(max-width: ${this.config.breakpoints.mobile)px)`),
-        const compactQuery = window.matchMedia(`(max-width: ${this.config.breakpoints.compact)px)`),
+        const, compactQuery = window.matchMedia(`(max-width: ${this.config.breakpoints.compact)px)`),
         
         mobileQuery.addListener((} => this.handleBreakpointChange(} }
         compactQuery.addListener(() => this.handleBreakpointChange()});
@@ -569,7 +569,7 @@ export class MobileShareUI {
                 <p class="mobile-message-text">${previewMessage}</p>""
                 <div class="mobile-message-edit">";
                     <textarea "";
-                        class="mobile-message-textarea" "";
+                        class="mobile-message-textarea", "";
                         placeholder="メッセージをカスタマイズ...""";
                         maxlength="280";
                     >${previewMessage}</textarea>
@@ -577,8 +577,8 @@ export class MobileShareUI {
             </div>;
             ${ shareData.screenshot ? `"
                 <img "";
-                    class="mobile-screenshot-preview" " }"
-                    src="${shareData.screenshot}" ""
+                    class="mobile-screenshot-preview", " }"
+                    src="${shareData.screenshot}", ""
                     alt="スクリーンショット"";
                 /> : undefined"";
             ` : ''}
@@ -597,32 +597,32 @@ export class MobileShareUI {
                 id: 'native',
                 name: 'デバイス共有',
                 icon: '📱';
-                available: this.mobileWebShareHandler? .isSupported || false ,};
+               , available: this.mobileWebShareHandler? .isSupported || false ,};
             { : undefined''
                 id: 'twitter',
                 name: 'Twitter',
                 icon: '🐦';
-                available: true ,};
+               , available: true ,};
             { ''
                 id: 'facebook',
                 name: 'Facebook',
                 icon: '📘';
-                available: true ,};
+               , available: true ,};
             { ''
                 id: 'line',
                 name: 'LINE',
                 icon: '💬';
-                available: true ,};
+               , available: true ,};
             { ''
                 id: 'whatsapp',
                 name: 'WhatsApp',
                 icon: '💬';
-                available: true ,};
+               , available: true ,};
             { ''
                 id: 'email',
                 name: 'メール',
                 icon: '📧';
-                available: true ,};
+               , available: true ,};
             { ''
                 id: 'copy',
                 name: 'コピー',
@@ -632,7 +632,7 @@ export class MobileShareUI {
                 id: 'more',
                 name: 'その他',
                 icon: '⋯';
-                available: true ,}]
+               , available: true ,}]
             }]
         ];
         return platforms.filter(platform => platform.available);
@@ -643,7 +643,7 @@ export class MobileShareUI {
      */''
     private createPlatformButton(platform: Platform): string { return `'
             <button '';
-                class="mobile-platform-button" " }"
+                class="mobile-platform-button", " }"
                 data-platform="${platform.id}"""
                 aria-label="${platform.name}で共有""
             >"";
@@ -657,8 +657,7 @@ export class MobileShareUI {
      * プレビューメッセージの生成"
      */""
     private generatePreviewMessage(shareData: ShareData): string { ""
-        if(shareData.type === 'score) {'
-            ';
+        if(shareData.type === 'score) {', ';
 
         }
 
@@ -798,8 +797,7 @@ export class MobileShareUI {
         
         try {
             // ハプティックフィードバック
-            if(this.mobileSocialOptimizer? .triggerHapticFeedback) {'
-                ';
+            if(this.mobileSocialOptimizer? .triggerHapticFeedback) {', ';
 
             }
 
@@ -933,8 +931,7 @@ export class MobileShareUI {
 ';
         // アニメーション
         bottomSheet.classList.remove('open);''
-        if(backdrop) {'
-            ';
+        if(backdrop) {', ';
 
         }
 
@@ -973,15 +970,15 @@ export class MobileShareUI {
         toast.style.cssText = `;
             position: fixed;
             top: 20px;
-            left: 50%,
+           , left: 50%,
             transform: translateX(-50%},)'
             background: ${ type === 'error' ? '#dc3545' : type === 'success' ? '#28a745' : '#333333');
             color: white;
-            padding: 12px 24px;
+           , padding: 12px, 24px;
             border-radius: 8px,
             z-index: 10001,
             font-size: 14px,
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0, 4px 12px, rgba(0,0,0,0.3);
             max-width: calc(100vw - 40px),
             text-align: center,
         `;

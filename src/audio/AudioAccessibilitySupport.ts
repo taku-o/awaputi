@@ -1,10 +1,10 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getLocalizationManager } from '../core/LocalizationManager.js';''
-import { AudioDescriptionManager } from './accessibility/AudioDescriptionManager.js';''
-import { AudioCueManager } from './accessibility/AudioCueManager.js';''
-import { AudioFeedbackManager } from './accessibility/AudioFeedbackManager.js';''
-import { AudioSettingsManager } from './accessibility/AudioSettingsManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getLocalizationManager  } from '../core/LocalizationManager.js';''
+import { AudioDescriptionManager  } from './accessibility/AudioDescriptionManager.js';''
+import { AudioCueManager  } from './accessibility/AudioCueManager.js';''
+import { AudioFeedbackManager  } from './accessibility/AudioFeedbackManager.js';''
+import { AudioSettingsManager  } from './accessibility/AudioSettingsManager.js';
 
 // エラーハンドラー型定義
 interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
@@ -37,10 +37,10 @@ interface BubblePopEventData { bubbleType: string,
     position?: any ,}
 
 interface ComboEventData { comboLevel: string;
-    comboCount: number }
+   , comboCount: number }
 
 interface AchievementEventData { achievementName: string;
-    rarity: string }
+   , rarity: string }
 
 interface GameStateEventData { state: string;
     details?: string }
@@ -58,7 +58,7 @@ interface AudioEventData { bubbleType?: string;
 interface AccessibilitySettings { visualFeedback: boolean,
     colorIndication: boolean;
     hapticFeedback: boolean;
-    captioning: boolean ,}
+   , captioning: boolean ,}
 
 // パターン認識型定義
 interface PatternRecognition {
@@ -116,7 +116,7 @@ export class MainAudioAccessibilitySupport {
     private audioFeedbackManager: AudioFeedbackManager;
     private audioSettingsManager: AudioSettingsManager;
     // 下位互換性のためのプロパティ（Component delegationで管理）
-    public settings: AccessibilitySettings,
+    public, settings: AccessibilitySettings,
     // オーディオイベントリスナー
     private audioEventListeners: Map<string, ((event: any) => void)[]> = new Map();
     
@@ -237,8 +237,7 @@ export class MainAudioAccessibilitySupport {
         if(!this.colorIndicator || !this.settings.colorIndication) return;
 
         const levelMarker = this.colorIndicator.querySelector('.level-marker) as HTMLElement;
-        if(levelMarker) {'
-            ';
+        if(levelMarker) {', ';
 
         }
 
@@ -314,8 +313,7 @@ export class MainAudioAccessibilitySupport {
         }
         ;
         // 触覚フィードバック
-        if(this.settings.hapticFeedback) {'
-            ';
+        if(this.settings.hapticFeedback) {', ';
 
         }
 
@@ -345,8 +343,7 @@ export class MainAudioAccessibilitySupport {
         }
         ;
         // 触覚フィードバック
-        if(this.settings.hapticFeedback) {'
-            ';
+        if(this.settings.hapticFeedback) {', ';
 
         }
 
@@ -364,10 +361,10 @@ export class MainAudioAccessibilitySupport {
         this.showVisualNotification({ ''
             type: 'achievement',)';
             title: '実績解除')';
-            message: achievementName,')';
+           , message: achievementName,')';
             icon: '🏆');
             color: this.getRarityColor(rarity);
-            duration: 4000 ,});
+           , duration: 4000 ,});
         // 字幕
         if(this.settings.captioning) {
             
@@ -376,8 +373,7 @@ export class MainAudioAccessibilitySupport {
         }
         ;
         // 触覚フィードバック
-        if(this.settings.hapticFeedback) {'
-            ';
+        if(this.settings.hapticFeedback) {', ';
 
         }
 
@@ -392,7 +388,7 @@ export class MainAudioAccessibilitySupport {
         const { state, details } = event;
         ';
 
-        const stateMessages: Record<string, { title: string; icon: string; color: string }> = { ' }'
+        const stateMessages: Record<string, { title: string; icon: string;, color: string }> = { ' }'
 
             gameStart: { title: 'ゲーム開始', icon: '🎮', color: '#00ff00' ,},''
             gameOver: { title: 'ゲームオーバー', icon: '💀', color: '#ff0000' ,},''
@@ -409,7 +405,7 @@ export class MainAudioAccessibilitySupport {
                 title: stateInfo.title,
                 message: details || '');
                 icon: stateInfo.icon);
-                color: stateInfo.color,);
+               , color: stateInfo.color,);
                 duration: 3000);
             ';
 
@@ -422,8 +418,7 @@ export class MainAudioAccessibilitySupport {
             }
             ';
             // 触覚フィードバック
-            if(this.settings.hapticFeedback) {'
-                ';
+            if(this.settings.hapticFeedback) {', ';
 
             }
 

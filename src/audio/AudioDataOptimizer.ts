@@ -5,8 +5,8 @@
  * 品質とファイルサイズのバランス最適化を提供します。
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 
 // エラーハンドラー型定義
 interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
@@ -18,26 +18,26 @@ interface ConfigurationManager { get(section: string, key: string): any,
 // 最適化設定型定義
 interface OptimizationSettings { qualityLevel: number,
     compression: {
-        enabled: boolean;
+        enable;d: boolean;
         algorithm: string;
         compressionRatio: number;
-        qualityThreshold: number ,};
+       , qualityThreshold: number ,};
     resampling: { enabled: boolean;
         targetSampleRate: number;
-        dynamicResampling: boolean };
+       , dynamicResampling: boolean };
     bitDepth: { enabled: boolean;
         targetBitDepth: number;
-        dynamicBitDepth: boolean };
+       , dynamicBitDepth: boolean };
     channelOptimization: { enabled: boolean;
         forceMonoThreshold: number;
-        stereoPreservation: boolean }
+       , stereoPreservation: boolean }
 
 // パフォーマンス統計型定義
 interface PerformanceMetrics { processedBuffers: number,
     totalOriginalSize: number;
     totalOptimizedSize: number;
     averageCompressionRatio: number;
-    processingTime: number ,}
+   , processingTime: number ,}
 
 // 圧縮アルゴリズム型定義
 type CompressionAlgorithm = (buffer: AudioBuffer, settings: any) => Promise<AudioBuffer>;
@@ -47,14 +47,14 @@ interface AudioCharacteristics { peakLevel: number,
     rmsLevel: number;
     dynamicRange: number;
     silenceRatio: number;
-    estimatedComplexity: number ,}
+   , estimatedComplexity: number ,}
 
 // 最適化統計型定義
 interface OptimizationStats { count: number;
     totalCompressionRatio: number;
     totalProcessingTime: number;
     averageCompressionRatio: number;
-    averageProcessingTime: number }
+   , averageProcessingTime: number }
 
 // 最適化オプション型定義
 interface OptimizationOptions extends Partial<OptimizationSettings> { [key: string]: any, }
@@ -68,7 +68,7 @@ export class AudioDataOptimizer {
     // パフォーマンス監視
     private performanceMetrics: PerformanceMetrics;
     // 圧縮アルゴリズム定義
-    private compressionAlgorithms: Map<string, CompressionAlgorithm>;
+    private, compressionAlgorithms: Map<string, CompressionAlgorithm>;
     
     // 最適化統計
     private optimizationStats: Map<string, OptimizationStats>;
@@ -84,7 +84,7 @@ export class AudioDataOptimizer {
             // 品質レベル設定 (0-1);
             qualityLevel: 1.0;
             // 圧縮設定
-            compression: {'
+           , compression: {'
                 enabled: true,
                 algorithm: 'adaptive', // 'lossless', 'lossy', 'adaptive';
                 compressionRatio: 0.7, // 0-1
@@ -93,15 +93,15 @@ export class AudioDataOptimizer {
             };
             // リサンプリング設定
             resampling: { enabled: false;
-                targetSampleRate: 22050, // デフォルトサンプルレート;
+               , targetSampleRate: 22050, // デフォルトサンプルレート;
                 dynamicResampling: true ,};
             // ビット深度設定
             bitDepth: { enabled: false;
-                targetBitDepth: 16, // 8, 16, 24, 32;
+               , targetBitDepth: 16, // 8, 16, 24, 32;
                 dynamicBitDepth: true ,};
             // チャンネル設定
             channelOptimization: { enabled: true;
-                forceMonoThreshold: 0.5, // 低品質時はモノラルに変換;
+               , forceMonoThreshold: 0.5, // 低品質時はモノラルに変換;
                 stereoPreservation: true ,}
         };
         // パフォーマンス監視
@@ -109,7 +109,7 @@ export class AudioDataOptimizer {
             totalOriginalSize: 0;
             totalOptimizedSize: 0;
             averageCompressionRatio: 0;
-            processingTime: 0 ,};
+           , processingTime: 0 ,};
         // 圧縮アルゴリズム定義
         this.compressionAlgorithms = new Map(['])';
             ['lossless', this._losslessCompression.bind(this)],
@@ -182,7 +182,7 @@ export class AudioDataOptimizer {
                 totalOriginalSize: 0;
                 totalOptimizedSize: 0;
                 averageCompressionRatio: 0;
-                processingTime: 0 };
+               , processingTime: 0 };
             ;
             // 最適化統計をクリア
             this.optimizationStats.clear()';
@@ -200,8 +200,7 @@ export class AudioDataOptimizer {
      */
     async optimizeAudioBuffer(originalBuffer: AudioBuffer, options: OptimizationOptions = { ): Promise<AudioBuffer> {'
         try {'
-            if(!originalBuffer) {'
-                ';
+            if(!originalBuffer) {', ';
 
             }
 
@@ -243,7 +242,7 @@ export class AudioDataOptimizer {
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {)'
                 operation: 'optimizeAudioBuffer');
-                originalBufferLength: originalBuffer? .length, : undefined);
+               , originalBufferLength: originalBuffer? .length, : undefined);
                 originalBufferChannels: originalBuffer? .numberOfChannels ,});
             return originalBuffer; // エラー時は元のバッファを返す
         }
@@ -581,7 +580,7 @@ export class AudioDataOptimizer {
             return { peakLevel: peakLevel,
                 rmsLevel: rmsLevel;
                 dynamicRange: dynamicRange;
-                silenceRatio: silenceRatio, };
+               , silenceRatio: silenceRatio, };
                 estimatedComplexity: 1 - silenceRatio + dynamicRange }
             };''
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {)'
@@ -589,7 +588,7 @@ export class AudioDataOptimizer {
             return { peakLevel: 1,
                 rmsLevel: 0.5;
                 dynamicRange: 0.5;
-                silenceRatio: 0, };
+               , silenceRatio: 0, };
                 estimatedComplexity: 1 }
             }
     }
@@ -726,7 +725,7 @@ export class AudioDataOptimizer {
                     count: 0;
                     totalCompressionRatio: 0);
                     totalProcessingTime: 0);
-                    averageCompressionRatio: 0, }
+                   , averageCompressionRatio: 0, }
                     averageProcessingTime: 0); }
             }
             
@@ -765,8 +764,7 @@ export class AudioDataOptimizer {
      * @param qualityLevel - 品質レベル (0-1)
      */'
     setQualityLevel(qualityLevel: number): void { try {'
-            if(qualityLevel < 0 || qualityLevel > 1) {'
-                ';
+            if(qualityLevel < 0 || qualityLevel > 1) {', ';
 
             }
 
@@ -831,7 +829,7 @@ export class AudioDataOptimizer {
     getPerformanceMetrics(): any { return { }
             global: { ...this.performanceMetrics;
             byFormat: Object.fromEntries(this.optimizationStats);
-            currentSettings: { ...this.optimizationSettings;
+           , currentSettings: { ...this.optimizationSettings;
     }
     
     /**

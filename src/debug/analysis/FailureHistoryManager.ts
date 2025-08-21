@@ -1,18 +1,18 @@
-import { BaseComponent } from '../BaseComponent.js';
+import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface FailureHistoryEntry { timestamp: number,
     sessionId: string;
     testName: string;
-    pattern: {
-        id: string;
+   , pattern: {
+        i;d: string;
         name: string;
         category: string;
-        severity: string ,} | null;
+       , severity: string ,} | null;
     error: string;
     component: string | null;
     recoverability: string | null;
-    suggestions: string[];
+   , suggestions: string[];
 }
 
 interface Test { name: string,
@@ -21,10 +21,10 @@ interface Test { name: string,
 
 interface Analysis { test: Test,
     pattern?: {
-        id: string;
+        i;d: string;
         name: string;
         category: string;
-        severity: string ,};
+       , severity: string ,};
     component?: string;
     recoverability?: string;
     suggestions?: string[];
@@ -32,20 +32,20 @@ interface Analysis { test: Test,
 
 interface FrequencyAnalysis { frequency: number,
     recentFailures: number;
-    weeklyFailures: number,
+   , weeklyFailures: number,
     trend: 'stable' | 'increasing' | 'decreasing';
     firstFailure: Date | null;
-    lastFailure: Date | null ,}
+   , lastFailure: Date | null ,}
 
 interface HistoryStatistics { totalFailures: number;
     uniqueTests: number;
-    patternBreakdown: Record<string, number>;
+   , patternBreakdown: Record<string, number>;
     componentBreakdown: Record<string, number>;
     severityBreakdown: Record<string, number>;
     timeRange: {
-        earliest: Date;
+        earlies;t: Date;
         latest: Date;
-        spanDays: number ,} | null;
+       , spanDays: number ,} | null;
 }
 
 interface Suggestion { action: string,
@@ -53,28 +53,28 @@ interface Suggestion { action: string,
     description: string,
     priority: 'low' | 'medium' | 'high';
     category: string;
-    source: string ,}
+   , source: string ,}
 
 interface CommonPattern { id: string;
     name: string;
-    count: number }
+   , count: number }
 ';
 
 interface TrendAnalysis { ''
     trend: 'no_data' | 'low' | 'medium' | 'high';
     totalFailures: number;
     dailyAverage: number;
-    mostCommonPattern: {
-        pattern: string;
-        count: number } | null;
+   , mostCommonPattern: {
+        patter;n: string;
+       , count: number } | null;
     mostProblematicTest: { testName: string;
-        count: number } | null;
+       , count: number } | null;
 }
 
 interface ExportData { version: string,
     exportDate: string;
     totalFailures: number;
-    history: FailureHistoryEntry[]
+   , history: FailureHistoryEntry[]
     ,}
 
 interface MainController { [key: string]: any, }
@@ -84,7 +84,7 @@ interface MainController { [key: string]: any, }
  */
 export class FailureHistoryManager extends BaseComponent { private failureHistory: FailureHistoryEntry[]
     private maxHistorySize: number;
-    private storageKey: string';
+    private, storageKey: string';
 
     constructor(mainController: MainController) {'
 
@@ -151,10 +151,10 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
                     timestamp,
                     sessionId,
                     testName: analysis.test.name;
-                    pattern: analysis.pattern ? { : undefined
+                   , pattern: analysis.pattern ? { : undefined
                         id: analysis.pattern.id;
                         name: analysis.pattern.name;
-                        category: analysis.pattern.category;
+                       , category: analysis.pattern.category;
         ,}
                         severity: analysis.pattern.severity }
 
@@ -162,7 +162,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
                     error: analysis.test.error || '';
                     component: analysis.component || null;
                     recoverability: analysis.recoverability || null;
-                    suggestions: analysis.suggestions ? analysis.suggestions.slice(0, 3) : [];
+                   , suggestions: analysis.suggestions ? analysis.suggestions.slice(0, 3) : [];
                 };
 
                 this.failureHistory.push(historyEntry);
@@ -270,7 +270,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
      */
     getHistoryStatistics(): HistoryStatistics { const stats: HistoryStatistics = {
             totalFailures: this.failureHistory.length;
-            uniqueTests: new Set(this.failureHistory.map(f = > f.testName).size }
+           , uniqueTests: new Set(this.failureHistory.map(f = > f.testName).size }
             patternBreakdown: {};
             componentBreakdown: {};
             severityBreakdown: {};
@@ -283,7 +283,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
         const timestamps = this.failureHistory.map(f => f.timestamp).sort((a, b) => a - b);
         stats.timeRange = { earliest: new Date(timestamps[0]),
             latest: new Date(timestamps[timestamps.length - 1]);
-            spanDays: (timestamps[timestamps.length - 1] - timestamps[0]) / (24 * 60 * 60 * 1000 ,};
+           , spanDays: (timestamps[timestamps.length - 1] - timestamps[0]) / (24 * 60 * 60 * 1000 ,};
 
         // パターン別統計
         for(const failure of this.failureHistory) {
@@ -374,7 +374,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
                 if (!patternCounts[key]) {
                     patternCounts[key] = {
                         id: failure.pattern.id;
-                        name: failure.pattern.name;
+                       , name: failure.pattern.name;
         }
                         count: 0 }
                     }
@@ -401,7 +401,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
             return { ''
                 trend: 'no_data';
                 totalFailures: 0;
-                dailyAverage: 0;
+               , dailyAverage: 0;
         }
                 mostCommonPattern: null, };
                 mostProblematicTest: null }
@@ -456,7 +456,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
             } : null;
             mostProblematicTest: mostProblematicTest ? { : undefined
                 testName: mostProblematicTest[0];
-                count: mostProblematicTest[1] ,} : null
+               , count: mostProblematicTest[1] ,} : null
         }
 
     /**
@@ -478,7 +478,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
             version: '1.0);
             exportDate: new Date().toISOString();
             totalFailures: this.failureHistory.length;
-            history: this.failureHistory;
+           , history: this.failureHistory;
         } as ExportData, null, 2);
     }
 

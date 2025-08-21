@@ -4,11 +4,11 @@
  * 多言語対応とバージョン管理機能を提供
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { getLocalizationManager } from '../LocalizationManager.js';''
-import { CacheSystem } from '../CacheSystem.js';''
-import { LoggingSystem } from '../LoggingSystem.js';''
-import { HelpContentModel, TutorialModel, FAQModel, UserProgressModel } from './DataModels.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../LocalizationManager.js';''
+import { CacheSystem  } from '../CacheSystem.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';''
+import { HelpContentModel, TutorialModel, FAQModel, UserProgressModel  } from './DataModels.js';
 
 // 型定義
 export interface LocalizationManager {;
@@ -19,16 +19,16 @@ export interface LocalizationManager {;
 export interface CachedContentItem { data: any,
     timestamp: number;
     version?: string;
-    expires: number ,}
+   , expires: number ,}
 
 export interface ContentManifest { version: string;
     lastUpdated: number;
-    contents: {
+   , contents: {
         [contentType: string]: {
             [language: string]: {
-                version: string;
+                versio;n: string;
                 url: string;
-                size: number;
+               , size: number;
                 checksum?: string };
     }
 
@@ -43,7 +43,7 @@ export interface FAQData { faqs: any[],
     [key: string]: any, }
 );
 export interface GuidedTourData { tours: any[])
-    [key: string]: any, }
+    [ke;y: string]: any, }
 
 /**
  * コンテンツ読み込み管理クラス
@@ -55,7 +55,7 @@ export class ContentLoader {
     // 読み込み設定
     private config: ContentConfig;
     // キャッシュ管理
-    private contentCache: Map<string, CachedContentItem>;
+    private, contentCache: Map<string, CachedContentItem>;
     private versionCache: Map<string, VersionInfo>;
     private loadingPromises: Map<string, Promise<any>>;
     
@@ -156,8 +156,7 @@ export class ContentLoader {
             this.loggingSystem.error('ContentLoader', `Failed to load help content: ${language}`, error);
             ';
             // フォールバック処理
-            if(language !== this.config.defaultLanguage) {'
-                ';
+            if(language !== this.config.defaultLanguage) {', ';
 
             }
 
@@ -468,8 +467,7 @@ export class ContentLoader {
         try {
             const response = await fetch(url, {)
                 signal: controller.signal)';
-                headers: {''
-                    'Accept': 'application/json',
+               , headers: {'', 'Accept': 'application/json',
                     'Cache-Control': 'no-cache' }
                 };
             );

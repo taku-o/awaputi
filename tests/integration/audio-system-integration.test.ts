@@ -1,14 +1,14 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * 音響システム統合テスト
  * 
  * Issue #23で実装された音響システム全体の統合をテストします。
  * BGMシステム、効果音システム、アクセシビリティ支援、触覚フィードバックなどの連携を検証します。
  */
-import { AudioManager } from '../../src/audio/AudioManager';
-import { AudioAccessibilitySupport } from '../../src/audio/accessibility/AudioAccessibilitySupport';
-import { VibrationManager } from '../../src/core/VibrationManager';
-import { getConfigurationManager } from '../../src/core/ConfigurationManager';
+import { AudioManager  } from '../../src/audio/AudioManager';
+import { AudioAccessibilitySupport  } from '../../src/audio/accessibility/AudioAccessibilitySupport';
+import { VibrationManager  } from '../../src/core/VibrationManager';
+import { getConfigurationManager  } from '../../src/core/ConfigurationManager';
 // モック関数ユーティリティ
 const mockFn = (returnValue) => {
     let calls = [];
@@ -117,7 +117,7 @@ describe('音響システム統合テスト', () => {
                     length: 44100,
                     sampleRate: 44100,
                     numberOfChannels: 2;);
-                    getChannelData: mockFn(() => new Float32Array(44100);
+                   , getChannelData: mockFn(() => new Float32Array(44100);
                 })'),
                 destination: {
                     channelCount: 2,
@@ -162,7 +162,7 @@ describe('音響システム統合テスト', () => {
                 charging: false,
                 chargingTime: Infinity,
                 dischargingTime: 3600;);
-        addEventListener: mockFn(),
+       , addEventListener: mockFn(),
             });
         };
         // DOM APIs のモック

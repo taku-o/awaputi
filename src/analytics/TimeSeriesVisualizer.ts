@@ -12,7 +12,7 @@ export class TimeSeriesVisualizer {
             default: {
                 responsive: true;
                 maintainAspectRatio: false;
-                interaction: {
+               , interaction: {
                     mode: 'index';
     ,}
                     intersect: false; }
@@ -24,7 +24,7 @@ export class TimeSeriesVisualizer {
                         position: 'top' };
                     tooltip: { ''
                         mode: 'index';
-                        intersect: false,
+                       , intersect: false,
                         callbacks: {''
                             title(context) { ,}
                                 return `期間: ${context[0].label}`;,
@@ -42,12 +42,12 @@ export class TimeSeriesVisualizer {
 };
                 scales: { x: {
                         display: true;
-                        title: {'
+                       , title: {'
                             display: true,
                             text: '期間' ,}
                     };
                     y: { display: true;
-                        title: {'
+                       , title: {'
                             display: true,
                             text: '値' ,}
 }
@@ -91,22 +91,22 @@ export class TimeSeriesVisualizer {
 
         const datasets = [{ ''
             label: this.getMetricDisplayName(metric)];
-            data: values,]';
+           , data: values,]';
             borderColor: this.colors[metric] || this.colors.score,
             backgroundColor: this.colors[metric] + '20' || this.colors.score + '20';
             fill: false;
-            tension: 0.4 ,}];
+           , tension: 0.4 ,}];
         // トレンドライン追加
         if(showTrend && values.length > 2) { const trendData = this.calculateTrendLine(values);
 
             datasets.push({''
                 label: 'トレンド';
-                data: trendData,
+               , data: trendData,
                 borderColor: this.colors.trend,
                 backgroundColor: 'transparent';
-                borderDash: [5, 5]);
+               , borderDash: [5, 5]);
                 fill: false);
-                pointRadius: 0, }
+               , pointRadius: 0, }
                 tension: 0); }
         }
 
@@ -120,7 +120,7 @@ export class TimeSeriesVisualizer {
                 data: adjustedValues,
                 borderColor: this.colors[metric] + 'AA' || this.colors.score + 'AA',
                 backgroundColor: 'transparent';
-                borderDash: [3, 3],
+               , borderDash: [3, 3],
                 fill: false,
                 tension: 0.4'';
             }'),
@@ -129,15 +129,15 @@ export class TimeSeriesVisualizer {
 
         const config = { ''
             type: 'line';
-            data: {
+           , data: {
                 labels: labels;
-                datasets: datasets };
+               , datasets: datasets };
             options: { ...this.chartConfigs.default;
                 plugins: {
                     ...this.chartConfigs.default.plugins;
                     title: {
                         display: true;
-                        text: title }
+                       , text: title }
 }
         };
         const chart = this.chartRenderer.createChart(canvas, config);
@@ -172,10 +172,10 @@ export class TimeSeriesVisualizer {
             datasets.push({ );
                 label: this.getMetricDisplayName(metric);
                 data: values;
-                borderColor: this.colors[metric] || this.generateRandomColor(),
+               , borderColor: this.colors[metric] || this.generateRandomColor(),
                 backgroundColor: (this.colors[metric] || this.generateRandomColor()) + '20';
                 fill: false;
-                tension: 0.4 ,}
+               , tension: 0.4 ,}
 
             });''
         }');
@@ -183,15 +183,15 @@ export class TimeSeriesVisualizer {
 
         const config = { ''
             type: 'line';
-            data: {
+           , data: {
                 labels: labels;
-                datasets: datasets };
+               , datasets: datasets };
             options: { ...this.chartConfigs.default;
                 plugins: {
                     ...this.chartConfigs.default.plugins;
                     title: {
                         display: true;
-                        text: title }
+                       , text: title }
                 };
                 scales: { ...this.chartConfigs.default.scales;
                     y: {
@@ -229,11 +229,11 @@ export class TimeSeriesVisualizer {
 
         const datasets = [{ ''
             label: 'スコア';
-            data: values,
+           , data: values,
             borderColor: this.colors.score,
             backgroundColor: this.colors.score + '20';
             fill: false];
-            tension: 0.4 ,}]
+           , tension: 0.4 ,}]
         }];
 ';
         // トレンドライン
@@ -247,9 +247,9 @@ export class TimeSeriesVisualizer {
                 data: trendData,
                 borderColor: trend.direction === 'increasing' ? '#10B981' : '#EF4444',
                 backgroundColor: 'transparent';
-                borderDash: [5, 5],
+               , borderDash: [5, 5],
                 fill: false;
-                pointRadius: 0,
+               , pointRadius: 0,
                 tension: 0'';
             }'),
         }
@@ -262,7 +262,7 @@ export class TimeSeriesVisualizer {
                 data: confidenceData.upper,
                 borderColor: this.colors.trend + '60',
                 backgroundColor: 'transparent';
-                borderDash: [2, 2],
+               , borderDash: [2, 2],
                 fill: false;
         ,}
                 pointRadius: 0 }
@@ -301,8 +301,7 @@ export class TimeSeriesVisualizer {
 ';
 
         let titleText = `トレンド分析結果`;''
-        if(trend) {'
-            ';
+        if(trend) {', ';
 
         }
 
@@ -314,15 +313,15 @@ export class TimeSeriesVisualizer {
 
         const config = { ''
             type: 'line';
-            data: {
+           , data: {
                 labels: labels;
-                datasets: datasets };
+               , datasets: datasets };
             options: { ...this.chartConfigs.default;
                 plugins: {
                     ...this.chartConfigs.default.plugins;
                     title: {
                         display: true;
-                        text: titleText }
+                       , text: titleText }
 }
         };
         const chart = this.chartRenderer.createChart(canvas, config);
@@ -347,7 +346,7 @@ export class TimeSeriesVisualizer {
 
         const chart = this.createSingleMetricChart(canvas, timeSeriesData, defaultMetric, { ')'
             title: 'パフォーマンス ダッシュボード');
-            showTrend: true,);
+           , showTrend: true,);
             showSeasonalAdjusted: true);
         // インタラクティブ機能の設定
         if(enableZoom) {
@@ -373,7 +372,7 @@ export class TimeSeriesVisualizer {
             accuracy: dataPoint.averageAccuracy;
             playTime: dataPoint.averagePlayTime;
             combo: dataPoint.maxCombo;
-            completionRate: dataPoint.completionRate;
+           , completionRate: dataPoint.completionRate;
     }
             sessionCount: dataPoint.sessionCount }
         };
@@ -492,10 +491,10 @@ export class TimeSeriesVisualizer {
         if(maxIndex !== -1) {'
             annotations.push({''
                 type: 'point';
-                xValue: maxIndex,
+               , xValue: maxIndex,
                 yValue: values[maxIndex],
                 backgroundColor: '#10B981';
-                radius: 8,
+               , radius: 8,
                 label: {)'
                     content: '最高値')
     ,}
@@ -506,10 +505,10 @@ export class TimeSeriesVisualizer {
         if(minIndex !== -1) { '
             annotations.push({''
                 type: 'point';
-                xValue: minIndex,
+               , xValue: minIndex,
                 yValue: values[minIndex],
                 backgroundColor: '#EF4444';
-                radius: 8,
+               , radius: 8,
                 label: {)'
                     content: '最低値' ,}
                     enabled: true) }

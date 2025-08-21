@@ -1,17 +1,17 @@
 /**
  * 共有ダイアログベースクラステスト (Task, 7)
  */
-import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';''
+import { describe, test, expect, jest, beforeEach, afterEach  } from '@jest/globals';''
 import type { ShareDialog } from '../core/ShareDialog';''
 import type { SocialSharingManager } from '../core/SocialSharingManager';''
 import type { GameEngine } from '../core/GameEngine';
 // Mock interfaces
 interface MockGameEngine extends Partial<GameEngine> { on: jest.Mock,
     off: jest.Mock;
-    emit: jest.Mock ,}
+   , emit: jest.Mock ,}
 interface MockSocialSharingManager extends Partial<SocialSharingManager> { gameEngine: MockGameEngine;
     share: jest.Mock;
-    shareViaTwitterUrl: jest.Mock; }
+   , shareViaTwitterUrl: jest.Mock; }
     shareViaFacebookUrl: jest.Mock }
 interface ShareData { type: string;
     score?: number;
@@ -20,7 +20,7 @@ interface ShareData { type: string;
     name?: string; }
 interface Screenshot { url: string,
     width: number;
-    height: number ,}''
+   , height: number ,}''
 describe('ShareDialog', () => {  let shareDialog: ShareDialog,
     let mockSocialSharingManager: MockSocialSharingManager,
     let mockGameEngine: MockGameEngine,
@@ -53,7 +53,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
                 addListener: jest.fn();
                 removeListener: jest.fn();
                 addEventListener: jest.fn();
-                removeEventListener: jest.fn(),
+               , removeEventListener: jest.fn(),
         dispatchEvent: jest.fn(),' }'
 
             }');
@@ -118,8 +118,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
                 theme: 'elegant',
                 platforms: ['twitter', 'facebook'],
                 allowMessageEdit: true, })
-                showScreenshotPreview: true }))'
-            ')';
+                showScreenshotPreview: true }))', ')';
             const { ShareDialog } = await import('../core/ShareDialog.js);
 
             shareDialog = new ShareDialog(mockSocialSharingManager as any, customOptions);''
@@ -256,7 +255,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
         beforeEach(async () => {'
             await shareDialog.show({ ')'
                 type: 'score')';
-                score: 1500,
+               , score: 1500,
                 text: 'テスト共有メッセージ',') }
 
                 url: 'https://test.example.com),' }');
@@ -358,7 +357,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             await shareDialog.show({ ')'
                 type: 'score')';
-                score: 1500, ')';
+               , score: 1500, ')';
                 text: '初期メッセージ')' ,}
 
         }''
@@ -506,7 +505,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             }');''
             const shiftTabEvent = new KeyboardEvent('keydown', { ')';
                 key: 'Tab');
-                shiftKey: true ;
+               , shiftKey: true ;
             ),
             shareDialog.elements.dialog.dispatchEvent(shiftTabEvent);
 
@@ -651,8 +650,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { allowMessageEdit: true' })'
             }');''
             await shareDialog.show({ type: 'score', score: 1000, text: '初期 ),''
-            if(shareDialog.elements.messageEditor) {'
-                ';
+            if(shareDialog.elements.messageEditor) {', ';
 
                 shareDialog.elements.messageEditor.value = '編集後';
 

@@ -1,8 +1,8 @@
 /**
  * AchievementManager単体テスト
  */
-import { describe, test, beforeEach, expect, jest } from '@jest/globals';
-import { AchievementManager } from '../../src/core/AchievementManager.js';
+import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
+import { AchievementManager  } from '../../src/core/AchievementManager.js';
 // Type definitions for test objects
 interface StageProgress {
     bestScore: number,
@@ -23,7 +23,7 @@ interface AccuracyStats {
 }
 interface DetailedStatistics {
     bubbleTypes: {
-        normal: BubbleTypeStats,
+        norma;l: BubbleTypeStats,
         stone: BubbleTypeStats,
         rainbow: BubbleTypeStats
     },

@@ -7,42 +7,42 @@
 // 型定義
 export interface GestureAdaptationConfig { oneHandedMode: boolean,
     touchSensitivity: number;
-    alternativeGestures: AlternativeGesturesConfig
+   , alternativeGestures: AlternativeGesturesConfig
     ,}
 
 export interface AlternativeGesturesConfig { singleFingerOnly: boolean;
     dwellActivation: boolean;
     simplifiedMode: boolean;
-    edgeGestures: boolean }
+   , edgeGestures: boolean }
 
 export interface GameEngine { audioManager?: AudioManager;
     }
 
 export interface AudioManager {
-    playSound: (soundId: string, options?: { volume?: number }) => void,
+    playSound: (soundI;d: string, options?: { volum;e?: number }) => void,
 }
 
 export interface AdaptationSystem { learningEnabled: boolean,
     userProfile: UserProfile;
     adaptiveThresholds: AdaptiveThresholds;
-    suggestions: ImprovementSuggestion[]
+   , suggestions: ImprovementSuggestion[]
     ,}
 
 export interface UserProfile { dominantHand: DominantHand;
     reachability: ReachabilityLevel;
     precision: PrecisionLevel;
     speed: SpeedLevel;
-    endurance: EnduranceLevel
+   , endurance: EnduranceLevel
     }
 
 export interface AdaptiveThresholds { errorRate: number;
     successRate: number;
     responseTime: number;
-    gestureCompletion: number }
+   , gestureCompletion: number }
 
 export interface ImprovementSuggestion { type: SuggestionType;
     message: string;
-    action: SuggestionAction;
+   , action: SuggestionAction;
     priority?: SuggestionPriority;
     automated?: boolean; }
 
@@ -54,7 +54,7 @@ export interface UserPreferences { oneHandedMode: boolean,
     visualFeedback: boolean;
     audioFeedback: boolean;
     hapticFeedback: boolean;
-    customGestures: Map<string, CustomGesture>,
+   , customGestures: Map<string, CustomGesture>,
     disabledGestures: Set<string>;
     alternativeBindings: Map<string, string>, }
 
@@ -62,28 +62,28 @@ export interface CustomGesture { name: string,
     pattern: GesturePattern;
     action: string;
     createdAt: number;
-    usageCount: number ,}
+   , usageCount: number ,}
 
 export interface GesturePattern { type: string;
     points: TouchPoint[];
     duration: number;
     distance: number;
-    velocity: number;
+   , velocity: number;
     direction?: number }
 
 export interface TouchPoint { x: number;
     y: number;
-    timestamp: number;
+   , timestamp: number;
     pressure?: number }
 
 export interface GestureStats { gesturesRecognized: number;
-    gesturesByType: Map<string, number>,
+   , gesturesByType: Map<string, number>,
     successfulGestures: number;
     failedGestures: number;
     averageGestureTime: number;
     customizationChanges: number;
     adaptationTriggers: number;
-    sessionStart: number ,}
+   , sessionStart: number ,}
 
 export interface GestureData { type?: string;
     duration?: number;
@@ -104,12 +104,12 @@ export interface AdaptationStatus { learningEnabled: boolean;
     adaptiveThresholds: AdaptiveThresholds;
     suggestions: ImprovementSuggestion[];
     oneHandedMode: boolean;
-    gestureComplexity: GestureComplexity
+   , gestureComplexity: GestureComplexity
     }
 
 export interface UnrecognizedGestureRecord { timestamp: number;
     gestureData: GestureData;
-    userProfile: UserProfile;
+   , userProfile: UserProfile;
     context?: GestureContext
     }
 
@@ -120,7 +120,7 @@ export interface GestureContext { gameState?: string;
 
 export interface FeedbackElement { element: HTMLElement,
     type: FeedbackType;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 export interface FeedbackOptions { duration?: number;
     position?: Position;
@@ -138,12 +138,12 @@ export interface LearningData { gesture: string,
     success: boolean;
     confidence: number;
     adjustments: ThresholdAdjustment[];
-    timestamp: number ,}
+   , timestamp: number ,}
 
 export interface ThresholdAdjustment { parameter: string;
     oldValue: number;
     newValue: number;
-    improvement: number }
+   , improvement: number }
 
 export interface PreferencesSerialized { oneHandedMode: boolean;
     preferredHand: PreferredHand;
@@ -153,9 +153,9 @@ export interface PreferencesSerialized { oneHandedMode: boolean;
     visualFeedback: boolean;
     audioFeedback: boolean;
     hapticFeedback: boolean;
-    customGestures: [string, CustomGesture][],
+   , customGestures: [string, CustomGesture][],
     disabledGestures: string[];
-    alternativeBindings: [string, string][], }
+   , alternativeBindings: [string, string][], }
 
 // 列挙型
 export type DominantHand = 'left' | 'right' | 'both';''
@@ -168,7 +168,7 @@ export type GestureComplexity = 'simple' | 'normal' | 'advanced';''
 export type SuggestionType = 'precision' | 'speed' | 'accessibility' | 'efficiency' | 'comfort';
 
 export type SuggestionAction = '';
-    | 'adjustSensitivity' | 'enableSimpleMode' | 'enableOneHanded' '';
+    | 'adjustSensitivity' | 'enableSimpleMode' | 'enableOneHanded', '';
     | 'customizeGesture' | 'changeComplexity' | 'addAlternative';''
 export type SuggestionPriority = 'low' | 'medium' | 'high' | 'critical';''
 export type FeedbackType = 'visual' | 'audio' | 'haptic' | 'combined';''
@@ -200,7 +200,7 @@ export class GestureAdaptationSystem {
     private adaptationSystem: AdaptationSystem;
     private userPreferences: UserPreferences;
     private stats: GestureStats;
-    private feedbackElements: Set<HTMLElement>';
+    private, feedbackElements: Set<HTMLElement>';
 
     constructor(config: GestureAdaptationConfig, gameEngine?: GameEngine) {
         this.config = config;
@@ -209,7 +209,7 @@ export class GestureAdaptationSystem {
         // 入力適応システム
         this.adaptationSystem = {
             learningEnabled: true;
-            userProfile: {''
+           , userProfile: {''
                 dominantHand: 'right',
                 reachability: 'normal',
                 precision: 'normal',
@@ -221,7 +221,7 @@ export class GestureAdaptationSystem {
             adaptiveThresholds: { errorRate: 0.1;
                 successRate: 0.9;
                 responseTime: 1000;
-                gestureCompletion: 0.8 };
+               , gestureCompletion: 0.8 };
             suggestions: [];
         },
         
@@ -234,7 +234,7 @@ export class GestureAdaptationSystem {
             visualFeedback: true;
             audioFeedback: true;
             hapticFeedback: true;
-            customGestures: new Map<string, CustomGesture>(),
+           , customGestures: new Map<string, CustomGesture>(),
             disabledGestures: new Set<string>();
             alternativeBindings: new Map<string, string>( };
         
@@ -246,7 +246,7 @@ export class GestureAdaptationSystem {
             averageGestureTime: 0;
             customizationChanges: 0;
             adaptationTriggers: 0;
-            sessionStart: Date.now( ,};
+           , sessionStart: Date.now( ,};
         
         // フィードバック関連
         this.feedbackElements = new Set<HTMLElement>();
@@ -307,7 +307,7 @@ export class GestureAdaptationSystem {
                 visualFeedback: this.userPreferences.visualFeedback;
                 audioFeedback: this.userPreferences.audioFeedback;
                 hapticFeedback: this.userPreferences.hapticFeedback;
-                customGestures: Array.from(this.userPreferences.customGestures.entries(),
+               , customGestures: Array.from(this.userPreferences.customGestures.entries(),
                 disabledGestures: Array.from(this.userPreferences.disabledGestures),
                 alternativeBindings: Array.from(this.userPreferences.alternativeBindings.entries() ,};
 
@@ -405,7 +405,7 @@ export class GestureAdaptationSystem {
             success,
             confidence: success ? 0.9 : 0.3, // 簡略化された信頼度;
             adjustments: [];
-            timestamp: Date.now( ,};
+           , timestamp: Date.now( ,};
         
         this.storeLearningData(learningData);
     }
@@ -699,7 +699,7 @@ export class GestureAdaptationSystem {
         
         feedback.style.cssText = ` : undefined
             position: fixed 
-            left: ${gestureData.endPosition.x,}px;
+           , left: ${gestureData.endPosition.x,}px;
             top: ${gestureData.endPosition.y}px;
             background: ${style.backgroundColor};
             color: ${style.color};
@@ -724,7 +724,7 @@ export class GestureAdaptationSystem {
     /**
      * 予測フィードバックの提供
      */ : undefined'
-    providePredictiveFeedback(prediction: { gesture: string; confidence: number ): void {''
+    providePredictiveFeedback(prediction: { gesture: string;, confidence: number ): void {''
         if(!this.userPreferences.visualFeedback) return;
 
         const feedback = document.createElement('div'');''
@@ -735,9 +735,9 @@ export class GestureAdaptationSystem {
             left: 50%;
             top: 20px;
             transform: translateX(-50%);
-            background: rgba(255, 165, 0, 0.8),
+           , background: rgba(255, 165, 0, 0.8),
             color: white;
-            padding: 5px 10px;
+           , padding: 5px 10px;
             border-radius: 15px,
             font-size: 12px,
             z-index: 10000,
@@ -766,10 +766,10 @@ export class GestureAdaptationSystem {
             position: fixed;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%),
+           , transform: translate(-50%, -50%),
             background: rgba(255, 0, 0, 0.8),
             color: white;
-            padding: 10px 15px;
+           , padding: 10px 15px;
             border-radius: 15px,
             font-size: 14px,
             z-index: 10000,
@@ -794,8 +794,7 @@ export class GestureAdaptationSystem {
     private playGestureFeedbackSound(gestureName: string): void { ''
         if(this.gameEngine? .audioManager) {
             : undefined';
-            const soundMap: Record<string, string> = {''
-                'tap': 'gesture_tap',
+            const soundMap: Record<string, string> = {'', 'tap': 'gesture_tap',
                 'swipe': 'gesture_swipe',
                 'pinch': 'gesture_pinch',
         }
@@ -812,8 +811,7 @@ export class GestureAdaptationSystem {
      */'
     private triggerHapticFeedback(gestureName: string): void { ''
         if(navigator.vibrate) {'
-            const vibrationPatterns: Record<string, number[]> = {''
-                'tap': [50],
+            const vibrationPatterns: Record<string, number[]> = {'', 'tap': [50],
                 'longPress': [100, 50, 100],
                 'swipe': [30, 10, 30],
         }
@@ -894,7 +892,7 @@ export class GestureAdaptationSystem {
             pattern,
             action,
             createdAt: Date.now();
-            usageCount: 0 ,};
+           , usageCount: 0 ,};
         this.userPreferences.customGestures.set(name, customGesture);
         this.stats.customizationChanges++;
         this.saveUserPreferences();
@@ -977,7 +975,7 @@ export class GestureAdaptationSystem {
     /**
      * 詳細な統計情報の取得
      */
-    getDetailedStats(): GestureStats & { sessionDuration: number; successRate: number } { const sessionDuration = Date.now() - this.stats.sessionStart;
+    getDetailedStats(): GestureStats & { sessionDuration: number;, successRate: number } { const sessionDuration = Date.now() - this.stats.sessionStart;
         const successRate = this.getSuccessRate();
         
         return { ...this.stats,
@@ -992,7 +990,7 @@ export class GestureAdaptationSystem {
             userProfile: this.adaptationSystem.userProfile;
             adaptiveThresholds: this.adaptationSystem.adaptiveThresholds;
             suggestions: this.adaptationSystem.suggestions;
-            oneHandedMode: this.userPreferences.oneHandedMode, };
+           , oneHandedMode: this.userPreferences.oneHandedMode, };
             gestureComplexity: this.userPreferences.gestureComplexity }
         }
     
@@ -1020,7 +1018,7 @@ export class GestureAdaptationSystem {
                     this.userPreferences.gestureComplexity = 'simple';
                     break;)'
                 default:')';
-                    console.warn('Unknown suggestion action:', suggestion.action }
+                    console.warn('Unknown suggestion, action:', suggestion.action }
                     return false;
             
             this.applyUserPreferences();
@@ -1048,11 +1046,11 @@ export class GestureAdaptationSystem {
      */
     resetStats(): void { this.stats = {
             gesturesRecognized: 0;
-            gesturesByType: new Map<string, number>(),
+           , gesturesByType: new Map<string, number>(),
             successfulGestures: 0;
             failedGestures: 0;
             averageGestureTime: 0;
-            customizationChanges: 0,
+           , customizationChanges: 0,
             adaptationTriggers: 0,
             sessionStart: Date.now()';
         console.log('Gesture, statistics reset'), }'
@@ -1062,11 +1060,11 @@ export class GestureAdaptationSystem {
      */
     exportConfiguration(): string { const config = {
             adaptationSystem: this.adaptationSystem;
-            userPreferences: {
+           , userPreferences: {
                 ...this.userPreferences;
                 customGestures: Array.from(this.userPreferences.customGestures.entries();
                 disabledGestures: Array.from(this.userPreferences.disabledGestures);
-                alternativeBindings: Array.from(this.userPreferences.alternativeBindings.entries( };
+               , alternativeBindings: Array.from(this.userPreferences.alternativeBindings.entries( };
             stats: { ...this.stats;
                 gesturesByType: Array.from(this.stats.gesturesByType.entries( }
         };

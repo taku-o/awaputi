@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * テキストスケーリング管理クラス
@@ -19,9 +19,9 @@ export class TextScalingManager {'
             maxScale: 3.0;
             step: 0.1;
             preserveLayout: true;
-            responsiveBreakpoints: {
+           , responsiveBreakpoints: {
                 mobile: 768;
-                tablet: 1024;
+               , tablet: 1024;
     ,}
                 desktop: 1200 }
             };
@@ -32,7 +32,7 @@ export class TextScalingManager {'
             lineHeight: { base: 1.4;
                 scaled: 1.6;
                 minimum: 1.2;
-                maximum: 2.0 };
+               , maximum: 2.0 };
             letterSpacing: { ''
                 base: 'normal',
                 scaled: '0.05em',
@@ -58,9 +58,9 @@ export class TextScalingManager {'
         this.stats = { scalingOperations: 0,
             elementsScaled: 0;
             layoutReflows: 0;
-            performanceMetrics: {
+           , performanceMetrics: {
                 averageScalingTime: 0;
-                totalScalingTime: 0 ,},''
+               , totalScalingTime: 0 ,},''
             sessionStart: Date.now(''';
             fontFamily: 'default';
             lineHeightAdjustment: 0;
@@ -68,7 +68,7 @@ export class TextScalingManager {'
             wordSpacingAdjustment: 0;
             preserveGameLayout: true;
             responsiveScaling: true;
-            smoothTransitions: true);
+           , smoothTransitions: true);
         })
         // パフォーマンス最適化
         this.scalingQueue = [];
@@ -121,7 +121,7 @@ export class TextScalingManager {'
             testElement.style.cssText = `;
                 font-size: 1rem,
                 position: absolute;
-                visibility: hidden;
+               , visibility: hidden;
                 white-space: nowrap,
             `;''
             testElement.textContent = 'Test';
@@ -364,8 +364,7 @@ export class TextScalingManager {'
         });
         ';
         // フォントロードイベント
-        if(document.fonts) {'
-            ';
+        if(document.fonts) {', ';
 
         }
 
@@ -394,7 +393,7 @@ export class TextScalingManager {'
         });
         
         this.domObserver.observe(document.body, { childList: true)
-            subtree: true }
+           , subtree: true }
     
     /**
      * 初期要素の分析'
@@ -498,7 +497,7 @@ export class TextScalingManager {'
             fontSize: styles.fontSize;
             lineHeight: styles.lineHeight;
             letterSpacing: styles.letterSpacing;
-            wordSpacing: styles.wordSpacing ,};
+           , wordSpacing: styles.wordSpacing ,};
         this.originalStyles.set(element, originalStyle);
         this.scaledElements.set(element, { originalStyle)'
             isScaled: false,')';
@@ -791,8 +790,7 @@ export class TextScalingManager {'
     enable()';
         document.body.classList.add('text-scaling-enabled);
 
-        if(this.userPreferences.smoothTransitions) {'
-            ';
+        if(this.userPreferences.smoothTransitions) {', ';
 
         }
 
@@ -844,7 +842,7 @@ export class TextScalingManager {'
             fontFamily: this.userPreferences.fontFamily;
             lineHeightAdjustment: this.userPreferences.lineHeightAdjustment;
             letterSpacingAdjustment: this.userPreferences.letterSpacingAdjustment;
-            wordSpacingAdjustment: this.userPreferences.wordSpacingAdjustment;
+           , wordSpacingAdjustment: this.userPreferences.wordSpacingAdjustment;
     ,}
             smoothTransitions: this.userPreferences.smoothTransitions, };
             currentBreakpoint: this.currentBreakpoint }
@@ -871,7 +869,7 @@ export class TextScalingManager {'
         
         return { : undefined
             timestamp: new Date().toISOString();
-            configuration: {
+           , configuration: {
                 enabled: this.config.enabled;
     ,}
                 scale: this.config.scale, };
@@ -881,11 +879,11 @@ export class TextScalingManager {'
                 sessionDuration,
                 scaledElementsCount: this.scaledElements.size;
                 gameElementsCount: this.gameElements.size;
-                layoutContainersCount: this.layoutContainers.size ,};
+               , layoutContainersCount: this.layoutContainers.size ,};
             performance: this.stats.performanceMetrics;
             userPreferences: this.userPreferences;
-            responsive: { currentBreakpoint: this.currentBreakpoint;
-                breakpoints: this.config.responsiveBreakpoints }
+           , responsive: { currentBreakpoint: this.currentBreakpoint;
+               , breakpoints: this.config.responsiveBreakpoints }
         }
     
     /**

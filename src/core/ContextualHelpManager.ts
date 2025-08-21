@@ -3,7 +3,7 @@
  * 状況に応じたヘルプ情報の表示と管理を行う
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 export interface HelpContext { scene: string,
     component: string;
@@ -14,27 +14,27 @@ export interface HelpContext { scene: string,
 export interface HelpContent { title: string,
     description: string;
     tips?: string[] ,}
-    links?: Array<{ text: string; url: string }>;
+    links?: Array<{ text: string;, url: string }>;
 }
 
 export interface HelpManagerConfig { enabled: boolean,
     showTips: boolean;
-    autoShow: boolean,
+   , autoShow: boolean,
     delay: number,
     position: 'top' | 'bottom' | 'left' | 'right' ,}
 
 export class ContextualHelpManager {
     private config: HelpManagerConfig;
     private currentContext: HelpContext | null = null;
-    private helpContent: Map<string, HelpContent> = new Map();
+    private, helpContent: Map<string, HelpContent> = new Map();
     private helpElement: HTMLElement | null = null;
-    private showTimer: NodeJS.Timeout | null = null';
+    private, showTimer: NodeJS.Timeout | null = null';
 
     constructor(config: Partial<HelpManagerConfig> = {)) {
         this.config = {
             enabled: true;
             showTips: true;
-            autoShow: false,
+           , autoShow: false,
             delay: 1000,
             position: 'bottom';
             ...config;
@@ -106,7 +106,7 @@ export class ContextualHelpManager {
             <div class="help-title">${content.title}</div>""
             <div class="help-description">${content.description}</div>"
             ${ content.tips ? `""
-                <ul class="help-tips">" }"
+                <ul, class="help-tips">" }"
                     ${content.tips.map(tip => `<li>${tip}</li>`"}.join('''})'
                 </ul> : undefined'';
             ` : ''}
@@ -170,8 +170,7 @@ export class ContextualHelpManager {
     }
 
     destroy(): void { this.hideHelp();
-        if(this.showTimer) {'
-            ';
+        if(this.showTimer) {', ';
 
         }
 

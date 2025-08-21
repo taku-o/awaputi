@@ -2,8 +2,8 @@
  * AnalyticsPerformanceOptimizer.test.ts
  * ゲーム分析パフォーマンス最適化システムのユニットテスト
  */
-import { describe, test, beforeEach, afterEach, expect, jest } from '@jest/globals';
-import { AnalyticsPerformanceOptimizer } from '../../src/analytics/AnalyticsPerformanceOptimizer.js';
+import { describe, test, beforeEach, afterEach, expect, jest  } from '@jest/globals';
+import { AnalyticsPerformanceOptimizer  } from '../../src/analytics/AnalyticsPerformanceOptimizer.js';
 // Type definitions for test objects
 interface PerformanceHistory {
     timestamp: number,
@@ -246,7 +246,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
             // 新しいイベントを追加
             optimizer.eventQueue.push({
                 type: 'new_event';);
-                timestamp: Date.now(),
+               , timestamp: Date.now(),
                 data: {}
             });
             optimizer.performMemoryCleanup();

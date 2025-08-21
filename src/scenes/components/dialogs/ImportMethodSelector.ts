@@ -7,22 +7,22 @@
 
 export interface ImportMethod { id: string,
     name: string;
-    icon: string ,}
+   , icon: string ,}
 
 export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
     x: number;
-    width: number }
+   , width: number }
 
 export interface MainController { data: {
-        importMethod: string;
-        importData: string;
+        importMetho;d: string;
+       , importData: string;
         error?: string };
     selectedMethod?: string;
     textSettings: { contentFont: string;
-        contentColor: string };
+       , contentColor: string };
     roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void,
 }
 
@@ -32,13 +32,13 @@ export interface FileSelectionEvent extends Event {
 export interface ComponentStatus { componentType: string,
     supportedMethods: string[];
     textAreaActive: boolean;
-    dragDropSupport: boolean ,}
+   , dragDropSupport: boolean ,}
 
 export class ImportMethodSelector {
     private mainController: MainController;
     private importMethods: ImportMethod[];
     private textAreaActive: boolean;
-    private cursorPosition: number;
+    private, cursorPosition: number;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -76,8 +76,7 @@ export class ImportMethodSelector {
         }
         ';
         // ファイル選択またはテキスト入力エリア
-        if(this.mainController.data.importMethod === 'file) {'
-            ';
+        if(this.mainController.data.importMethod === 'file) {', ';
 
         }
 
@@ -384,6 +383,6 @@ export class ImportMethodSelector {
      */''
     getStatus()';
             componentType: 'ImportMethodSelector');
-            supportedMethods: this.importMethods.map(method => method.id),
+           , supportedMethods: this.importMethods.map(method => method.id),
             textAreaActive: this.textAreaActive,
             dragDropSupport: this.supportsDragAndDrop('));

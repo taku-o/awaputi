@@ -1,8 +1,8 @@
 /**
  * BalanceCalculator のテスト
  */
-import { describe, test, beforeEach, expect } from '@jest/globals';
-import { BalanceCalculator } from '../../src/core/BalanceCalculator.js';
+import { describe, test, beforeEach, expect  } from '@jest/globals';
+import { BalanceCalculator  } from '../../src/core/BalanceCalculator.js';
 // Type definitions for test objects
 interface UnlockRequirements {
     [stageName: string]: number,
@@ -28,8 +28,8 @@ interface BubbleHealth {
 }
 interface BalanceConfig {
     stages: {
-        unlockRequirements: UnlockRequirements,
-        difficulty: { [stageName: string]: StageDifficulty }
+        unlockRequirement;s: UnlockRequirements,
+        difficulty: { [stageNam;e: string]: StageDifficulty }
     },
     items: {
         baseCosts: ItemBaseCosts,
@@ -70,7 +70,7 @@ interface ItemRecommendation {
 }
 interface RecommendationInput {
     currentTAP: number,
-    currentItems: { [itemId: string]: number };
+    currentItems: { [itemI;d: string]: number };
     playStyle: 'balanced' | 'aggressive' | 'defensive',
 }
 interface GameProgressInput {
@@ -90,7 +90,7 @@ interface GameProgress {
 interface BalanceAdjustmentInput {
     averagePlayTime: number,
     averageScore: number,
-    stageCompletionRates: { [stageId: string]: number };
+    stageCompletionRates: { [stageI;d: string]: number };
     itemUsageRates: { [itemId: string]: number };
 }
 interface DifficultyAdjustment {

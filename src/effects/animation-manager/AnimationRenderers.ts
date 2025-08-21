@@ -13,7 +13,7 @@ export interface Position { x: number,
  * Loading animation options interface
  */
 export interface LoadingAnimationOptions { color: string;
-    thickness: number;
+   , thickness: number;
     elements?: number;
     progress?: number;
     backgroundColor?: string;
@@ -27,7 +27,7 @@ export interface LoadingAnimationOptions { color: string;
 export interface LoadingAnimation { position: Position,
     size: number;
     options: LoadingAnimationOptions;
-    loadingType: 'spinner' | 'dots' | 'pulse' | 'wave' | 'progress';
+   , loadingType: 'spinner' | 'dots' | 'pulse' | 'wave' | 'progress';
     rotation?: number;
     dotPhases?: number[];
     phase?: number;
@@ -45,7 +45,7 @@ export interface RippleEffectOptions { color: string,
 export interface RippleAnimation { position: Position;
     startRadius?: number;
     endRadius?: number;
-    options: RippleEffectOptions
+   , options: RippleEffectOptions
     }
 
 /**
@@ -53,7 +53,7 @@ export interface RippleAnimation { position: Position;
  */
 export interface FocusGlowState { active: boolean;
     intensity: number;
-    color: string;
+   , color: string;
     phase?: number }
 
 /**
@@ -68,7 +68,7 @@ export interface HoverState { active: boolean;
 export interface ElementBounds { x: number;
     y: number;
     width: number;
-    height: number;
+   , height: number;
     focusGlow?: FocusGlowState;
     hoverState?: HoverState;
     }
@@ -93,21 +93,21 @@ export interface Particle { startX: number,
     size: number;
     growth: number;
     alpha: number;
-    color: string ,}
+   , color: string ,}
 
 /**
  * Explosion animation interface
  */
 export interface ExplosionAnimation { particles?: Particle[];
     duration: number;
-    options: ParticleOptions
+   , options: ParticleOptions
     ,}
 
 /**
  * Trail point interface
  */
 export interface TrailPoint { x: number;
-    y: number }
+   , y: number }
 
 /**
  * Trail animation interface
@@ -131,7 +131,7 @@ export interface SparkleParticle { x: number;
     alpha: number;
     phase: number;
     speed: number;
-    color: string }
+   , color: string }
 
 /**
  * Sparkle animation interface
@@ -179,8 +179,7 @@ export class LoadingAnimationRenderer {
         const options = animation.options;
 
         context.save(''';
-        context.lineCap = 'round';)'
-        ')';
+        context.lineCap = 'round';)', ')';
         switch(animation.loadingType) {'
 
             case 'spinner':'';
@@ -633,7 +632,7 @@ export class AnimationEffectUtils {
                 size: Math.random() * 3 + 1;
                 growth: Math.random() * 2;
                 alpha: Math.random() * 0.5 + 0.5;
-                color: options.colors ?   : undefined'';
+               , color: options.colors ?   : undefined'';
                        options.colors[Math.floor(Math.random() * options.colors.length)] : ';
 
         ,}
@@ -663,7 +662,7 @@ export class AnimationEffectUtils {
                 size: Math.random() * 4 + 2;
                 alpha: Math.random() * 0.8 + 0.2;
                 phase: Math.random() * Math.PI * 2;
-                speed: Math.random() * 0.1 + 0.05,
+               , speed: Math.random() * 0.1 + 0.05,
                 color: options.colors ?   : undefined'';
                        options.colors[Math.floor(Math.random() * options.colors.length)] : ';
 

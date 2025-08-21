@@ -5,8 +5,8 @@
  * SEOTester のサブコンポーネント
  */
 
-import { seoLogger } from '../SEOLogger.js';''
-import { seoErrorHandler } from '../SEOErrorHandler.js';
+import { seoLogger  } from '../SEOLogger.js';''
+import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController {
     baseUrl: string;
@@ -25,7 +25,7 @@ interface CategoryResult { category: string;
 interface TestResults { overallScore?: number;
     executionTime?: number;
     summary?: {
-        totalTests?: number;
+        totalTest;s?: number;
         passedTests?: number;
         failedTests?: number;
         warnings?: number; };
@@ -37,8 +37,8 @@ interface LighthouseScore { performance: number,
     bestPractices: number;
     seo: number;
     timestamp: string;
-    details: {
-        performance: Record<string, number>;
+   , details: {
+        performanc;e: Record<string, number>;
         accessibility: Record<string, string>;
         seo: Record<string, string> }
 
@@ -50,71 +50,71 @@ interface ReportOptions { includeRecommendations?: boolean;
 interface ExecutiveSummary { grade: string,
     priority: string;
     recommendation: string;
-    keyMetrics: {
-        overallScore: number;
+   , keyMetrics: {
+        overallScor;e: number;
         totalTests: number;
         passedTests: number;
         failedTests: number;
         warnings: number;
-        passRate: number ,}
+       , passRate: number ,}
 
 interface EnhancedCategory extends CategoryResult { score: number,
     impact: string;
-    priority: string ,}
+   , priority: string ,}
 
 interface Recommendation { category: string;
     test: string;
     issue: string;
     recommendation: string;
-    priority: string }
+   , priority: string }
 
 interface Timeline { testStartTime: string;
     testEndTime: string;
-    executionTime: number, }
-    phases: Array<{ name: string; duration: number }>;
+   , executionTime: number, }
+    phases: Array<{ name: string;, duration: number }>;
 }
 
 interface VisualizationData { scoreDistribution: Record<string, number>;
     categoryBreakdown: Array<{
-        name: string;
+        nam;e: string;
         passed: number;
         failed: number;
         warnings: number;
-        total: number ,}>;
+       , total: number ,}>;
     timeSeriesData: any[];
-    heatmapData: any[];
+   , heatmapData: any[];
 }
 
 interface DetailedReport { metadata: {
-        generatedAt: string;
+        generatedA;t: string;
         baseUrl: string;
         reportVersion: string;
         totalTests: number;
-        executionTime: number };
+       , executionTime: number };
     summary: ExecutiveSummary;
-    categories: Record<string, EnhancedCategory>;
+   , categories: Record<string, EnhancedCategory>;
     recommendations: Recommendation[] | null;
     timeline: Timeline | null;
     comparison: ComparisonResult | null;
-    visualizations: VisualizationData;
+   , visualizations: VisualizationData;
     }
 
 interface ComparisonResult { scoreChange: number,
     testChanges: {
-        newPassed: number;
+        newPasse;d: number;
         newFailed: number;
-        newWarnings: number ,};
+       , newWarnings: number ,};
     categoryChanges: Record<string, { category: string,
         currentScore: number;
         previousScore: number;
-        change: number ,}>;
-    improvements: Array<{ category: string; improvement: number }>,
-    regressions: Array<{ category: string; regression: number }>;
+       , change: number ,}>;
+    improvements: Array<{ category: string;, improvement: number }>,
+    regressions: Array<{ category: string;, regression: number }>;
 }
 
 export class SEOReportGenerator {
     private mainController: MainController;
-    private baseUrl: string';
+    private, baseUrl: string';
 
     constructor(mainController: MainController) {
         this.mainController = mainController
@@ -165,7 +165,7 @@ export class SEOReportGenerator {
                 performance: 95;
                 accessibility: 92;
                 bestPractices: 88;
-                seo: 96,
+               , seo: 96,
                 timestamp: new Date().toISOString(''';
                         'first-contentful-paint': 1200,
                         'speed-index': 1300,
@@ -174,13 +174,11 @@ export class SEOReportGenerator {
                         'total-blocking-time': 150,
                         'cumulative-layout-shift': 0.05 },
 
-                    accessibility: { ''
-                        'color-contrast': 'pass',
+                    accessibility: { '', 'color-contrast': 'pass',
                         'image-alt': 'pass',
                         'heading-order': 'pass',
                         'label': 'pass' }))'
-                    seo: { ''
-                        'meta-description': 'pass',
+                    seo: { '', 'meta-description': 'pass',
                         'document-title': 'pass',
                         'structured-data': 'pass',
                         'robots-txt': 'pass' }
@@ -210,13 +208,13 @@ export class SEOReportGenerator {
             const detailedReport: DetailedReport = { metadata: {''
                     generatedAt: new Date().toISOString()';
                     reportVersion: '1.0.0);
-                    totalTests: results.summary? .totalTests || 0, : undefined
+                   , totalTests: results.summary? .totalTests || 0, : undefined
                     executionTime: results.executionTime || 0 ,},)
                 summary: this._generateExecutiveSummary(results);
-                categories: this._enhanceCategoryResults(results.categories || { );
+               , categories: this._enhanceCategoryResults(results.categories || { );
                 recommendations: includeRecommendations ? this._generateRecommendations(results) : null;
                 timeline: includeTimeline ? this._generateTimeline(results) : null;
-                comparison: includeComparison && previousResults ? this._generateComparison(results, previousResults) : null,
+               , comparison: includeComparison && previousResults ? this._generateComparison(results, previousResults) : null,
                 visualizations: this._generateVisualizationData(results ,};
 
             return detailedReport;
@@ -232,7 +230,7 @@ export class SEOReportGenerator {
     generateVisualizationData(results: TestResults): VisualizationData { try {
             return { scoreDistribution: this._calculateScoreDistribution(results),
                 categoryBreakdown: this._calculateCategoryBreakdown(results);
-                timeSeriesData: this._generateTimeSeriesData(results), };
+               , timeSeriesData: this._generateTimeSeriesData(results), };
                 heatmapData: this._generateHeatmapData(results); }
 
             };''
@@ -282,19 +280,19 @@ export class SEOReportGenerator {
             padding: 30px, ;
             text-align: center, }
         .header h1 { margin: 0; font-size: 2.5em, }
-        .header p { margin: 10px 0 0; opacity: 0.9, }
+        .header p { margin: 10px 0 0;, opacity: 0.9, }
         .summary { display: grid, 
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr); 
             gap: 20px, ;
             padding: 30px, ;
             background: #f8f9fa ,}
         .summary-card { background: white;
-            padding: 20px, ;
+           , padding: 20px, ;
             border-radius: 8px, ;
             text-align: center, ;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1 }
-        .summary-card h3 { margin: 0 0 10px; color: #333, }
-        .summary-card .number { font-size: 2em; font-weight: bold; margin: 10px 0, }
+        .summary-card h3 { margin: 0 0 10px;, color: #333, }
+        .summary-card .number { font-size: 2em; font-weight: bold;, margin: 10px 0, }
         .passed { color: #4CAF50, }
         .failed { color: #f44336, }
         .warning { color: #ff9800, }
@@ -307,7 +305,7 @@ export class SEOReportGenerator {
             border-left: 4px solid #4CAF50,
             margin: 0 ,}
         .category-header h3 { margin: 0;
-            color: #333, ;
+           , color: #333, ;
             font-size: 1.3em, }
         .test { padding: 15px 30px, 
             border-bottom: 1px solid #f0f0f0, ;
@@ -325,7 +323,7 @@ export class SEOReportGenerator {
         }''
         @media(max-width: 768px) {
             .summary { grid-template-columns: 1fr, }
-            .test { flex-direction: column; align-items: flex-start; gap: 10px }
+            .test { flex-direction: column; align-items: flex-start;, gap: 10px }
     </style>;
 </head>';
 <body>'';
@@ -364,7 +362,7 @@ export class SEOReportGenerator {
                 <h3>${category.category}</h3>
             </div>";
             ${ category.tests?.map(test => `)"
-            <div class="test">"}"";
+            <div, class="test">"}"";
                 <div class="test-name">${test.name"}</div> : undefined" }"
                 <div class="test-result ${test.passed ? 'passed' : test.message?.includes('⚠️''}) ? 'warning' : 'failed'}">
                     ${test.message}
@@ -563,7 +561,7 @@ export class SEOReportGenerator {
         Object.entries(categories).forEach(([key, category]) => {  enhanced[key] = {
                 ...category,
                 score: category.tests?.length ? Math.round(((category.passed || 0) / category.tests.length) * 100) : 0;
-                impact: this._calculateCategoryImpact(category), }
+               , impact: this._calculateCategoryImpact(category), }
                 priority: this._calculateCategoryPriority(category); }
             });
         
@@ -604,9 +602,9 @@ export class SEOReportGenerator {
                 if(!test.passed && !test.message?.includes('⚠️)) {'
                     recommendations.push({ : undefined)
                         category: category.category)';
-                        test: test.name,')';
+                       , test: test.name,')';
                         issue: test.message || '');
-                        recommendation: this._getRecommendationForTest(test.name), }
+                       , recommendation: this._getRecommendationForTest(test.name), }
                         priority: this._getRecommendationPriority(test.name, category.category); }
                     });
                 }
@@ -624,8 +622,7 @@ export class SEOReportGenerator {
      * テスト別推奨事項の取得
      * @private'
      */''
-    private _getRecommendationForTest(testName: string): string { const recommendations: Record<string, string> = {''
-            'Required meta tag: title': 'Add a descriptive title tag to your HTML head section.',
+    private _getRecommendationForTest(testName: string): string { const recommendations: Record<string, string> = {'', 'Required meta tag: title': 'Add a descriptive title tag to your HTML head section.',
             'Required meta tag: description': 'Add a meta description tag with a compelling summary of your page.',
             'Title length validation': 'Optimize your title tag length to be between 10-60 characters.',
             'Required OG tag: og:image': 'Add an Open Graph image tag for better social media sharing.',
@@ -696,19 +693,19 @@ export class SEOReportGenerator {
         passed: number;
         failed: number;
         warnings: number;
-        total: number ,}> { const breakdown: Array<{
+       , total: number ,}> { const breakdown: Array<{
             name: string;
             passed: number;
             failed: number;
             warnings: number;
-            total: number }> = [];
+           , total: number }> = [];
         
         Object.entries(results.categories || { ).forEach(([key, category]) => { 
             breakdown.push({
                 name: category.category;
                 passed: category.passed || 0);
                 failed: category.failed || 0);
-                warnings: category.warnings || 0,) }
+               , warnings: category.warnings || 0,) }
                 total: category.tests? .length || 0); }
             });
         });
@@ -736,7 +733,7 @@ export class SEOReportGenerator {
      */
     private _generateVisualizationData(results: TestResults): VisualizationData { return { scoreDistribution: this._calculateScoreDistribution(results),
             categoryBreakdown: this._calculateCategoryBreakdown(results);
-            timeSeriesData: this._generateTimeSeriesData(results), };
+           , timeSeriesData: this._generateTimeSeriesData(results), };
             heatmapData: this._generateHeatmapData(results); }
         }
 
@@ -746,13 +743,13 @@ export class SEOReportGenerator {
      */
     private _generateComparison(currentResults: TestResults, previousResults: TestResults): ComparisonResult { const comparison: ComparisonResult = {
             scoreChange: (currentResults.overallScore || 0) - (previousResults.overallScore || 0);
-            testChanges: {
+           , testChanges: {
                 newPassed: (currentResults.summary? .passedTests || 0) - (previousResults.summary?.passedTests || 0), : undefined
                 newFailed: (currentResults.summary? .failedTests || 0) - (previousResults.summary?.failedTests || 0), : undefined
                 newWarnings: (currentResults.summary? .warnings || 0) - (previousResults.summary?.warnings || 0 ,}, : undefined
             categoryChanges: {};
             improvements: [];
-            regressions: [];
+           , regressions: [];
         },
         
         // カテゴリ別比較

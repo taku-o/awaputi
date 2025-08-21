@@ -7,7 +7,7 @@
 interface ErrorInfo { id: string,
     context: string;
     message: string;
-    timestamp: string;
+   , timestamp: string;
     name?: string;
     stack?: string;
     metadata?: Record<string, any>;
@@ -18,11 +18,11 @@ interface NotificationConfig { autoHide: boolean,
     maxConcurrentNotifications: number;
     position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
     showReloadButton: boolean;
-    showCloseButton: boolean ,}
+   , showCloseButton: boolean ,}
 ';
 
 interface MainController { ''
-    determineSeverity?: (errorInfo: ErrorInfo') => string ,}'
+    determineSeverity?: (errorInf;o: ErrorInfo') => string ,}'
 }
 
 type NotificationAction = 'dismiss' | 'reload' | 'report';''
@@ -45,10 +45,10 @@ export class UtilsErrorReporter {
         // Notification configuration
         this.notificationConfig = {
             autoHide: true;
-            hideDelay: 10000, // 10 seconds;
+           , hideDelay: 10000, // 10 seconds;
             maxConcurrentNotifications: 3,
             position: 'top-right';
-            showReloadButton: true;
+           , showReloadButton: true;
     ,}
             showCloseButton: true }
         };
@@ -159,8 +159,8 @@ export class UtilsErrorReporter {
                     ${ this.notificationConfig.showCloseButton ?   : undefined" }"
                         '<button class="error-btn error-btn-secondary" data-action="dismiss">閉じる</button>' : ''}
 
-                    ${ this.notificationConfig.showReloadButton ?   : undefined' '
-                        '<button class="error-btn error-btn-primary" data-action="reload">再読み込み</button>' : ''}
+                    ${ this.notificationConfig.showReloadButton ?   : undefined', '
+                        '<button, class="error-btn, error-btn-primary" data-action="reload">再読み込み</button>' : ''}
                 </div>;
             </div>;
         `;
@@ -205,50 +205,43 @@ export class UtilsErrorReporter {
     private getUserFriendlyMessage(errorInfo: ErrorInfo): string {
         const { context, message } = errorInfo;
 
-        if(context === 'CANVAS_ERROR'') {'
-            ';
+        if(context === 'CANVAS_ERROR'') {', ';
 
         }
 
             return 'グラフィック機能に問題が発生しました。ブラウザを更新してください。';
 
-        if(context === 'AUDIO_ERROR'') {'
-            ';
+        if(context === 'AUDIO_ERROR'') {', ';
 
         }
 
             return '音声機能が利用できません。ゲームは音声なしで続行されます。';
 
-        if(context === 'STORAGE_ERROR'') {'
-            ';
+        if(context === 'STORAGE_ERROR'') {', ';
 
         }
 
             return 'データの保存に問題が発生しました。進行状況が保存されない可能性があります。';
 
-        if(context === 'MEMORY_WARNING'') {'
-            ';
+        if(context === 'MEMORY_WARNING'') {', ';
 
         }
 
             return 'メモリ使用量が多くなっています。パフォーマンスが低下する可能性があります。';
 
-        if(context === 'PERFORMANCE_WARNING'') {'
-            ';
+        if(context === 'PERFORMANCE_WARNING'') {', ';
 
         }
 
             return 'パフォーマンスが低下しています。設定を調整することをお勧めします。';
 
-        if(context === 'NETWORK_ERROR'') {'
-            ';
+        if(context === 'NETWORK_ERROR'') {', ';
 
         }
 
             return 'ネットワーク接続に問題があります。インターネット接続を確認してください。';
 
-        if(context === 'BROWSER_COMPATIBILITY'') {'
-            ';
+        if(context === 'BROWSER_COMPATIBILITY'') {', ';
 
         }
 
@@ -273,7 +266,7 @@ export class UtilsErrorReporter {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             z-index: 10000,
             opacity: 0;
-            transform: translateX(100%),
+           , transform: translateX(100%),
             transition: all 0.3s ease-out,
             border-left: 4px solid ${this.getSeverityColor(severity'})'
         `;
@@ -282,8 +275,7 @@ export class UtilsErrorReporter {
         ';
         // Content styles
         const content = notification.querySelector('.error-notification-content) as HTMLElement;''
-        if(content) {'
-            ';
+        if(content) {', ';
 
         }
 
@@ -292,22 +284,20 @@ export class UtilsErrorReporter {
         ';
         // Header styles
         const header = notification.querySelector('.error-notification-header) as HTMLElement;''
-        if(header) {'
-            ';
+        if(header) {', ';
 
         }
 
-            header.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-bottom: 12px;'; }
+            header.style.cssText = 'display: flex; align-items: center;, gap: 8px; margin-bottom: 12px;'; }
         }
         ';
         // Title styles
         const title = notification.querySelector('.error-notification-title) as HTMLElement;''
-        if(title) {'
-            ';
+        if(title) {', ';
 
         }
 
-            title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333; flex: 1;'; }
+            title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333;, flex: 1;'; }
         }
         ';
         // Close button styles
@@ -315,14 +305,14 @@ export class UtilsErrorReporter {
         if(closeBtn) {
             closeBtn.style.cssText = `;
                 background: none;
-                border: none;
+               , border: none;
                 font-size: 20px,
                 color: #666;
                 cursor: pointer;
                 padding: 0;
                 width: 24px;
                 height: 24px;
-                display: flex;
+               , display: flex;
                 align-items: center,
                 justify-content: center,
         }
@@ -331,22 +321,20 @@ export class UtilsErrorReporter {
         ';
         // Message styles
         const messageEl = notification.querySelector('.error-notification-message) as HTMLElement;''
-        if(messageEl) {'
-            ';
+        if(messageEl) {', ';
 
         }
 
-            messageEl.style.cssText = 'margin: 0 0 16px 0; color: #555; line-height: 1.4;'; }
+            messageEl.style.cssText = 'margin: 0 0 16px 0;, color: #555; line-height: 1.4;'; }
         }
         ';
         // Actions styles
         const actions = notification.querySelector('.error-notification-actions) as HTMLElement;''
-        if(actions) {'
-            ';
+        if(actions) {', ';
 
         }
 
-            actions.style.cssText = 'display: flex; gap: 8px; justify-content: flex-end;'; }
+            actions.style.cssText = 'display: flex;, gap: 8px; justify-content: flex-end;'; }
         }
         ';
         // Button styles
@@ -355,16 +343,15 @@ export class UtilsErrorReporter {
             const isPrimary = button.classList.contains('error-btn-primary);
             button.style.cssText = `;
                 padding: 8px 16px;
-                border: none;
+               , border: none;
                 border-radius: 4px,
                 cursor: pointer;
                 font-size: 14px,
                 font-weight: 500,
                 transition: background-color 0.2s, }
 
-                ${isPrimary ?   : undefined' '
-                    `background: ${this.getSeverityColor(severity',}); color: white;` :''
-                    'background: #f5f5f5; color: #333;
+                ${isPrimary ?   : undefined', '
+                    `background: ${this.getSeverityColor(severity',}); color: white;` :'', 'background: #f5f5f5;, color: #333;
 
                 }
             `;
@@ -376,12 +363,7 @@ export class UtilsErrorReporter {
      * @returns CSS position styles'
      */''
     private getPositionStyles(''';
-            'top-right': 'top: 20px; right: 20px;',''
-            'top-left': 'top: 20px; left: 20px;',''
-            'bottom-right': 'bottom: 20px; right: 20px;',''
-            'bottom-left': 'bottom: 20px; left: 20px;',)'
-            'top-center': 'top: 20px; left: 50%; transform: translateX(-50%);',''
-            'bottom-center': 'bottom: 20px; left: 50%; transform: translateX(-50%);
+            'top-right': 'top: 20px;, right: 20px;','', 'top-left': 'top: 20px;, left: 20px;','', 'bottom-right': 'bottom: 20px;, right: 20px;','', 'bottom-left': 'bottom: 20px;, left: 20px;',)', 'top-center': 'top: 20px; left: 50%;, transform: translateX(-50%);','', 'bottom-center': 'bottom: 20px; left: 50%;, transform: translateX(-50%);
 
         };
 
@@ -407,8 +389,7 @@ export class UtilsErrorReporter {
      */''
     private attachNotificationEventListeners(notification: HTMLElement): void { // Close button
         const closeBtn = notification.querySelector('.error-notification-close) as HTMLElement;''
-        if(closeBtn) {'
-            ';
+        if(closeBtn) {', ';
 
         }
 
@@ -555,9 +536,9 @@ export class UtilsErrorReporter {
                 position: fixed;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%),
+               , transform: translate(-50%, -50%),
                 background: white;
-                padding: 30px,
+               , padding: 30px,
                 border-radius: 10px,
                 box-shadow: 0 4px 20px rgba(0,0,0,0.3);
                 text-align: center,
@@ -568,7 +549,7 @@ export class UtilsErrorReporter {
                 <h2>ブラウザの互換性について</h2>;
                 <p>お使いのブラウザでは一部機能が制限される可能性があります。</p>";
                 <p>最適な体験のために、以下のブラウザを推奨します：</p>"";
-                <ul style="text-align: left; margin: 20px 0;">
+                <ul style="text-align: left;, margin: 20px 0;">
                     <li>Google Chrome (推奨)</li>;
                     <li>Mozilla Firefox</li>";
                     <li>Microsoft Edge</li>"";
@@ -579,7 +560,7 @@ export class UtilsErrorReporter {
                         padding: 10px 20px;
                         background: #28a745;
                         color: white;
-                        border: none;
+                       , border: none;
                         border-radius: 5px,
                         cursor: pointer;
                         font-size: 16px,
@@ -589,7 +570,7 @@ export class UtilsErrorReporter {
                         padding: 10px 20px;
                         background: #007bff;
                         color: white;
-                        border: none;
+                       , border: none;
                         border-radius: 5px,
                         cursor: pointer;
                         font-size: 16px,
@@ -599,7 +580,7 @@ export class UtilsErrorReporter {
                         padding: 10px 20px;
                         background: #6c757d;
                         color: white;
-                        border: none;
+                       , border: none;
                         border-radius: 5px,
                         cursor: pointer,
                         font-size: 16px,

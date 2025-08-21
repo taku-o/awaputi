@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * Keyboard Shortcut Removal E2E Tests
  * Issue #169対応 - 削除されたキーボードショートカット(S、H、I')のブラウザテスト
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect  } from '@playwright/test';
 
 const BASE_URL = 'http: //localhost:8001',
 
@@ -53,7 +53,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
 
             for (const indicator of settingsIndicators) {
                 const element = page.locator(`text=${indicator)`).first();
-                const isVisible = await element.isVisible().catch(() => false);
+                const, isVisible = await, element.isVisible().catch(() => false);
                 expect(isVisible).toBe(false});
             }
 
@@ -95,7 +95,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
 
             for (const indicator of helpIndicators) {
                 const element = page.locator(`text=${indicator)`).first();
-                const isVisible = await element.isVisible().catch(() => false);
+                const, isVisible = await, element.isVisible().catch(() => false);
                 expect(isVisible).toBe(false});
             }
 
@@ -137,7 +137,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
 
             for (const indicator of userInfoIndicators) {
                 const element = page.locator(`text=${indicator)`).first();
-                const isVisible = await element.isVisible().catch(() => false);
+                const, isVisible = await, element.isVisible().catch(() => false);
                 expect(isVisible).toBe(false});
             }
 
@@ -411,7 +411,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
             }
 
             // Note: This test documents that help should be accessible via UI
-            console.log(`Help UI access found: ${foundHelpAccess}`);
+            console.log(`Help UI access, found: ${foundHelpAccess}`);
         });
     });
 }');

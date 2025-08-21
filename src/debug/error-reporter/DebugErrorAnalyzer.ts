@@ -9,23 +9,23 @@ interface ErrorPattern { id: string,
     severity: 'low' | 'medium' | 'high' | 'critical';
     description: string;
     solution?: string;
-    frequency: number ,}
+   , frequency: number ,}
 
 interface AnalysisResult { errorId: string;
     matchedPatterns: ErrorPattern[];
     suggestions: string[];
     severity: string;
     category: string;
-    confidence: number }
+   , confidence: number }
 
 interface ErrorTrend { category: string;
-    count: number,
+   , count: number,
     trend: 'increasing' | 'decreasing' | 'stable';
-    timeframe: number ,}
+   , timeframe: number ,}
 
 export class DebugErrorAnalyzer {
     private patterns: ErrorPattern[] = [];
-    private errorHistory: any[] = [];
+    private, errorHistory: any[] = [];
     constructor() {
 
         
@@ -41,7 +41,7 @@ export class DebugErrorAnalyzer {
                 severity: 'high',
                 description: 'Method not found or not defined',
                 solution: 'Check method spelling and ensure object has the method';
-                frequency: 0;
+               , frequency: 0;
             },
 
             { ''
@@ -51,7 +51,7 @@ export class DebugErrorAnalyzer {
                 severity: 'high',
                 description: 'Null or undefined reference access',
                 solution: 'Add null checks before accessing properties';
-                frequency: 0 ,};
+               , frequency: 0 ,};
             { ''
                 id: 'network_error',
                 pattern: /fetch|XMLHttpRequest|network/i,
@@ -59,7 +59,7 @@ export class DebugErrorAnalyzer {
                 severity: 'medium',
                 description: 'Network connectivity or API error',
                 solution: 'Check network connection and API endpoints';
-                frequency: 0 ,};
+               , frequency: 0 ,};
             { ''
                 id: 'memory_leak',
                 pattern: /memory|heap|out of memory/i,
@@ -67,14 +67,14 @@ export class DebugErrorAnalyzer {
                 severity: 'critical',
                 description: 'Potential memory leak or high memory usage',
                 solution: 'Review object lifecycle and remove unused references';
-                frequency: 0 ,}
+               , frequency: 0 ,}
         ];
     }
 
     public analyzeError(error: { message: string)
         stack?: string;
         context?: any;
-        timestamp: number): AnalysisResult {
+       , timestamp: number): AnalysisResult {
         this.errorHistory.push(error);
         const matchedPatterns = this.patterns.filter(pattern =>);
             pattern.pattern.test(error.message) || ;

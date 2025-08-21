@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * Local Execution Final Integration Test
  * ローカル実行フローの完全統合テスト
@@ -71,7 +71,7 @@ const mockDocument = {
         removeEventListener: jest.fn()
 ');
 const mockWindow = {
-    location: { protocol: 'file:', href: 'file:///test/index.html' '),
+    location: { protocol: 'file:', href: 'file:///test/index.html', '),
     navigator: { userAgent: 'Test Browser' ),
     localStorage: mockLocalStorage,
     sessionStorage: mockSessionStorage,

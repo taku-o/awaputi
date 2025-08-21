@@ -2,19 +2,19 @@
  * 統計タブコンポーネント
  * UserInfoSceneの統計表示機能を分離したコンポーネント
  */
-import { TabComponent } from './TabComponent.js';''
-import { StatisticsFilterUI } from './StatisticsFilterUI.js';''
-import { StatisticsRenderer } from './StatisticsRenderer.js';''
-import { StatisticsDashboardRenderer } from './StatisticsDashboardRenderer.js';
+import { TabComponent  } from './TabComponent.js';''
+import { StatisticsFilterUI  } from './StatisticsFilterUI.js';''
+import { StatisticsRenderer  } from './StatisticsRenderer.js';''
+import { StatisticsDashboardRenderer  } from './StatisticsDashboardRenderer.js';
 
 interface StatisticsDisplaySettings { showDashboard: boolean,
     showCharts: boolean;
     showDetailedStats: boolean;
     enableAnimations: boolean;
-    compactMode: boolean ,}
+   , compactMode: boolean ,}
 
 interface GameEngine { statisticsManager?: {
-        getDetailedStatistics(period: string): Promise<any>;
+        getDetailedStatistics(perio;d: string): Promise<any>;
     ,};
     errorHandler?: { handleError(error: Error, context: any): void ,}
 
@@ -24,9 +24,9 @@ interface EventBus { on(event: string, callback: Function): void,
     emit(event: string, data?: any): void }
 
 interface StatisticsState { accessibilitySettings?: {
-        highContrast: boolean;
+        highContras;t: boolean;
         largeText: boolean;
-        reducedMotion: boolean ,}
+       , reducedMotion: boolean ,}
 
 type StatisticsViewMode = 'dashboard' | 'charts' | 'details';
 ';
@@ -42,7 +42,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
     // 統計データ
     private statisticsData: any = null;
     // レイアウト設定
-    private contentPadding: number = 20;
+    private, contentPadding: number = 20;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: StatisticsState) {
 
         super(gameEngine, eventBus, state);
@@ -51,7 +51,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
             showDashboard: true;
             showCharts: true;
             showDetailedStats: true;
-            enableAnimations: true;
+           , enableAnimations: true;
     ,}
             compactMode: false }
         }
@@ -291,7 +291,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      * @param screenWidth - 画面幅
      * @returns レイアウト設定
      */'
-    getResponsiveLayout(screenWidth: number): { columns: number; fontSize: string } { ''
+    getResponsiveLayout(screenWidth: number): { columns: number;, fontSize: string } { ''
         if(screenWidth < 600) {' }'
 
             return { columns: 1, fontSize: 'small' ,}''

@@ -3,7 +3,7 @@
  * 
  * Main Controller Pattern: 軽量オーケストレーターとして各専用コンポーネントを統制
  * 
- * Requirements: 1.1, 1.3, 5.2
+ *, Requirements: 1.1, 1.3, 5.2
  * 
  * @author Claude Code
  * @version 1.0.0
@@ -22,7 +22,7 @@ interface PerformanceConfig { enableLazyInitialization: boolean,
     initializationTimeout: number;
     componentInitDelay: number;
     retryAttempts: number;
-    maxConcurrentTasks: number ,}
+   , maxConcurrentTasks: number ,}
 
 interface LocalModeConfig { enableMetaTagOptimization?: boolean;
     enableFaviconGeneration?: boolean;
@@ -40,19 +40,19 @@ interface DefaultConfig { enableMetaTagOptimization: boolean,
     enableFallbackResources: boolean;
     autoInitialize: boolean;
     debugMode: boolean;
-    enablePerformanceOptimizations: boolean ,}
+   , enablePerformanceOptimizations: boolean ,}
 
 interface InitializationMetrics { startTime: number | null;
     endTime: number | null;
-    componentTimes: Record<string, number>;
+   , componentTimes: Record<string, number>;
     totalExecutionTime: number;
-    optimizationsApplied: string[] ,}
+   , optimizationsApplied: string[] ,}
 
 interface ExecutionContext { isLocal: boolean;
     protocol: string;
     url: string;
     domain: string;
-    path: string }
+   , path: string }
 
 interface InitializationResult { success: boolean;
     executionContext?: ExecutionContext;
@@ -75,7 +75,7 @@ class LocalModeManager { /**
         initializationTimeout: 30000;
         componentInitDelay: 50;
         retryAttempts: 3;
-        maxConcurrentTasks: 3 };
+       , maxConcurrentTasks: 3 };
     /**
      * デフォルト設定
      */
@@ -86,7 +86,7 @@ class LocalModeManager { /**
         enableFallbackResources: true;
         autoInitialize: true;
         debugMode: false;
-        enablePerformanceOptimizations: true ,};
+       , enablePerformanceOptimizations: true ,};
     public config: DefaultConfig,
     public isInitialized: boolean,
     public executionContext: ExecutionContext | null,
@@ -95,7 +95,7 @@ class LocalModeManager { /**
     // パフォーマンス最適化用のプライベートストレージ
     private _componentCache: Map<string, any>;
     private _initializationMetrics: InitializationMetrics;
-    private _resourcePreloadPromises: Map<string, Promise<any>>;
+    private, _resourcePreloadPromises: Map<string, Promise<any>>;
 
     /**
      * コンストラクター
@@ -113,7 +113,7 @@ class LocalModeManager { /**
             endTime: null, }
             componentTimes: {}
             totalExecutionTime: 0;
-            optimizationsApplied: [];
+           , optimizationsApplied: [];
         };''
         this._resourcePreloadPromises = new Map()';
         this.log('LocalModeManager, instance created);
@@ -156,8 +156,8 @@ class LocalModeManager { /**
                 this.log(`LocalModeManager, initialization failed: ${result.reason || result.error? .message}`});
                 return false;
 
-            } catch (error) { : undefined' '
-            this.log(`LocalModeManager initialization error: ${(error as Error,}).message}`');
+            } catch (error) { : undefined', '
+            this.log(`LocalModeManager initialization error: ${(error, as Error,}).message}`');
             return false;
 
     /**

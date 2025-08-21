@@ -7,14 +7,14 @@
 interface HistorySettings { maxHistoryEntries: number,
     maxParticipationEntries: number;
     retentionDays: number;
-    enableDetailedTracking: boolean ,}
+   , enableDetailedTracking: boolean ,}
 
 interface Statistics { totalEventsParticipated: number;
     totalEventsCompleted: number;
     favoriteEventType: string | null;
     averageScore: number;
     bestRank: number | null;
-    streakCount: number }
+   , streakCount: number }
 
 interface HistoryEntry { id: string;
     type: string;
@@ -24,7 +24,7 @@ interface HistoryEntry { id: string;
     achievementId?: string;
     achievementName?: string;
     timestamp: number;
-    playerLevel: number;
+   , playerLevel: number;
     details?: any;
     results?: EventResults;
     context?: any;
@@ -39,11 +39,11 @@ interface ParticipationData { eventId: string,
     bestRank: number | null;
     lastParticipation: number;
     averageScore: number;
-    totalScore: number ,}
+   , totalScore: number ,}
 
 interface EventResults { score: number;
     rank: number;
-    completionTime: number;
+   , completionTime: number;
     achievements?: any[];
     rewards?: any;
     difficulty?: string;
@@ -54,11 +54,11 @@ interface RankingData { currentRank: number,
     previousRank: number;
     improvement: number;
     totalParticipants: number;
-    percentile: number ,}
+   , percentile: number ,}
 
 interface Event { id: string;
     name: string;
-    type: string;
+   , type: string;
     duration?: number;
     specialRules?: any;
     rewards?: any; }
@@ -80,47 +80,47 @@ interface Filter { type?: string;
 interface EventTypeStats { [key: string]: number, }
 
 interface MonthlyStats { [key: string]: {
-        count: number;
+        coun;t: number;
         totalScore: number;
-        averageScore: number }
+       , averageScore: number }
 
 interface CategoryStats { [key: string]: {
-        count: number;
-        points: number }
+        coun;t: number;
+       , points: number }
 
 interface AchievementStats { totalAchievements: number,
     totalPoints: number;
-    categories: CategoryStats
+   , categories: CategoryStats
     ,}
 
 interface PersonalBests { [eventId: string]: {
-        bestScore: number;
+        bestScor;e: number;
         bestRank: number | null;
-        completionCount: number }
+       , completionCount: number }
 
 interface DetailedStatistics { general: Statistics,
     eventTypes: EventTypeStats;
     monthly: MonthlyStats;
     achievements: AchievementStats;
     recentActivity: HistoryEntry[];
-    personalBests: PersonalBests
+   , personalBests: PersonalBests
     ,}
 
 interface ExportData { eventHistory: HistoryEntry[];
-    participationHistory: [string, ParticipationData][];
+   , participationHistory: [string, ParticipationData][];
     achievementHistory: HistoryEntry[];
     rankingHistory: HistoryEntry[];
     statistics: Statistics;
-    exportDate: number ,}
+   , exportDate: number ,}
 
 export class EventHistoryManager {
     private gameEngine: any;
     private eventHistory: HistoryEntry[] = [];
-    private participationHistory: Map<string, ParticipationData> = new Map();
+    private, participationHistory: Map<string, ParticipationData> = new Map();
     private achievementHistory: HistoryEntry[] = [];
     private rankingHistory: HistoryEntry[] = [];
     private settings: HistorySettings;
-    private statistics: Statistics;
+    private, statistics: Statistics;
     constructor(gameEngine: any) {
 
         this.gameEngine = gameEngine;
@@ -135,7 +135,7 @@ export class EventHistoryManager {
         this.settings = {
             maxHistoryEntries: 1000;
             maxParticipationEntries: 500;
-            retentionDays: 365;
+           , retentionDays: 365;
     ,}
             enableDetailedTracking: true }
         };
@@ -145,7 +145,7 @@ export class EventHistoryManager {
             favoriteEventType: null;
             averageScore: 0;
             bestRank: null;
-            streakCount: 0 ,};
+           , streakCount: 0 ,};
         this.loadHistoryData();
     }
     
@@ -196,13 +196,13 @@ export class EventHistoryManager {
             type: 'event_start';
             eventId: event.id);
             eventName: event.name);
-            eventType: event.type,);
+           , eventType: event.type,);
             timestamp: Date.now();
             playerLevel: this.getPlayerLevel();
-            details: {
+           , details: {
                 duration: event.duration;
                 specialRules: event.specialRules;
-                rewards: event.rewards ,}
+               , rewards: event.rewards ,}
         };
         this.addHistoryEntry(historyEntry);''
         this.updateParticipationHistory(event.id, 'started);
@@ -218,18 +218,18 @@ export class EventHistoryManager {
             type: 'event_completion';
             eventId: event.id);
             eventName: event.name);
-            eventType: event.type,);
+           , eventType: event.type,);
             timestamp: Date.now();
             playerLevel: this.getPlayerLevel();
-            results: {
+           , results: {
                 score: results.score;
                 rank: results.rank;
                 completionTime: results.completionTime;
-                achievements: results.achievements || [], }
+               , achievements: results.achievements || [], }
                 rewards: results.rewards || {};
             details: { difficulty: results.difficulty;
                 participantCount: results.participantCount;
-                personalBest: results.personalBest || false }
+               , personalBest: results.personalBest || false }
         };
         this.addHistoryEntry(historyEntry);''
         this.updateParticipationHistory(event.id, 'completed', results);
@@ -245,14 +245,14 @@ export class EventHistoryManager {
             id: this.generateHistoryId(''';
             type: 'achievement_unlock);
             achievementId: achievement.id);
-            achievementName: achievement.name,);
+           , achievementName: achievement.name,);
             timestamp: Date.now();
             playerLevel: this.getPlayerLevel();
             context: eventContext || null;
-            details: {
+           , details: {
                 category: achievement.category;
                 rarity: achievement.rarity;
-                points: achievement.points ,}
+               , points: achievement.points ,}
         };
         this.achievementHistory.push(historyEntry);
         this.addHistoryEntry(historyEntry);
@@ -266,15 +266,15 @@ export class EventHistoryManager {
     recordRankingUpdate(eventId: string, rankingData: RankingData): void { const historyEntry: HistoryEntry = {''
             id: this.generateHistoryId()';
             type: 'ranking_update');
-            eventId: eventId,);
+           , eventId: eventId,);
             timestamp: Date.now();
             playerLevel: this.getPlayerLevel();
-            ranking: {
+           , ranking: {
                 currentRank: rankingData.currentRank;
                 previousRank: rankingData.previousRank;
                 improvement: rankingData.improvement;
                 totalParticipants: rankingData.totalParticipants;
-                percentile: rankingData.percentile ,}
+               , percentile: rankingData.percentile ,}
         };
         this.rankingHistory.push(historyEntry);
         this.addHistoryEntry(historyEntry);
@@ -313,7 +313,7 @@ export class EventHistoryManager {
                 bestRank: null;
                 lastParticipation: Date.now();
                 averageScore: 0;
-                totalScore: 0 ,});
+               , totalScore: 0 ,});
         }
 
         const participation = this.participationHistory.get(eventId)!;
@@ -372,8 +372,7 @@ export class EventHistoryManager {
     private getEventTypeParticipationCount(): EventTypeStats {
         const counts: EventTypeStats = {}''
         this.eventHistory.forEach(entry => {  ');''
-            if(entry.type === 'event_completion'') {'
-                ';
+            if(entry.type === 'event_completion'') {', ';
 
             }
 
@@ -489,7 +488,7 @@ export class EventHistoryManager {
             eventTypes: eventTypeStats;
             monthly: monthlyStats;
             achievements: achievementStats;
-            recentActivity: this.getRecentActivity(), };
+           , recentActivity: this.getRecentActivity(), };
             personalBests: this.getPersonalBests(); }
         }
     
@@ -535,7 +534,7 @@ export class EventHistoryManager {
         
         return { : undefined
             totalAchievements: this.achievementHistory.length;
-            totalPoints: totalPoints, };
+           , totalPoints: totalPoints, };
             categories: categoryStats }
         }
     
@@ -556,7 +555,7 @@ export class EventHistoryManager {
         const bests: PersonalBests = {}
         this.participationHistory.forEach((participation, eventId) => {  bests[eventId] = {
                 bestScore: participation.bestScore;
-                bestRank: participation.bestRank, }
+               , bestRank: participation.bestRank, }
                 completionCount: participation.completionCount }
             });
         
@@ -595,7 +594,7 @@ export class EventHistoryManager {
             participationHistory: Array.from(this.participationHistory.entries();
             achievementHistory: this.achievementHistory;
             rankingHistory: this.rankingHistory;
-            statistics: this.statistics, };
+           , statistics: this.statistics, };
             exportDate: Date.now(); }
         }
     

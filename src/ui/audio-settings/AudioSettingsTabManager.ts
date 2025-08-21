@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
-import { getLocalizationManager } from '../../core/LocalizationManager.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../../core/LocalizationManager.js';''
 import type { AudioManager } from '../../audio/AudioManager.js';''
 import type { ConfigurationManager } from '../../core/ConfigurationManager.js';''
 import type { ErrorHandler } from '../../utils/ErrorHandler.js';''
@@ -35,7 +35,7 @@ export class AudioSettingsTabManager {
     private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     // タブ定義
-    private tabs: Record<TabKey, TabDefinition> = {' }'
+    private, tabs: Record<TabKey, TabDefinition> = {' }'
 
         volume: { label: 'audio.settings.tabs.volume', icon: '🔊' ,},''
         quality: { label: 'audio.settings.tabs.quality', icon: '🎚️' ,},''
@@ -45,7 +45,7 @@ export class AudioSettingsTabManager {
 
     private activeTab: TabKey = 'volume';
     private container: HTMLElement | null = null;
-    private tabRenderers: TabRenderers | null = null;
+    private, tabRenderers: TabRenderers | null = null;
     constructor(audioManager: AudioManager, configManager: ConfigurationManager) {
 
         this.audioManager = audioManager;
@@ -69,7 +69,7 @@ export class AudioSettingsTabManager {
         nav.className = 'audio-settings-tabs';
         nav.style.cssText = `;
             display: flex;
-            gap: 10px;
+           , gap: 10px;
             border-bottom: 2px solid #333333,
             padding-bottom: 10px,
         `;
@@ -94,8 +94,7 @@ export class AudioSettingsTabManager {
 
             button.addEventListener('click', () => this.showTab(tabKey));''
             button.addEventListener('mouseenter', () => {  ''
-                if(tabKey !== this.activeTab) {'
-                    ';
+                if(tabKey !== this.activeTab) {', ';
 
                 }
 
@@ -104,8 +103,7 @@ export class AudioSettingsTabManager {
                     button.style.color = '#cccccc'; }
 };''
             button.addEventListener('mouseleave', () => {  ''
-                if(tabKey !== this.activeTab) {'
-                    ';
+                if(tabKey !== this.activeTab) {', ';
 
                 }
 

@@ -5,16 +5,16 @@
  * Requirements: 7.1, 7.3
  */
 
-import { getErrorHandler } from '../core/ErrorHandler.js';''
-import { RealTimePerformanceMonitor } from './performance-monitoring/RealTimePerformanceMonitor.js';''
-import { PerformanceDataAnalyzer } from './performance-monitoring/PerformanceDataAnalyzer.js';
+import { getErrorHandler  } from '../core/ErrorHandler.js';''
+import { RealTimePerformanceMonitor  } from './performance-monitoring/RealTimePerformanceMonitor.js';''
+import { PerformanceDataAnalyzer  } from './performance-monitoring/PerformanceDataAnalyzer.js';
 import { PerformanceDashboard, 
     PerformanceDataGatherer, ;
     PerformanceHistoryTracker, ;
     PerformanceAlertManager, ;
     MetricsRegistry,
 
-    RealtimeMetricsStream ' }'
+    RealtimeMetricsStream '  }'
 
 } from './performance-monitoring/PerformanceLegacyComponents.js';
 
@@ -26,7 +26,7 @@ interface MetricConfig { id: string,
     name: string;
     category: string;
     unit: string;
-    target: number;
+   , target: number;
     min?: number;
     max?: number;
     warning_min?: number;
@@ -48,20 +48,20 @@ interface DataPoint { timestamp: number,
 
 interface MetricStats { current: number;
     average: number;
-    min: number,
+   , min: number,
     max: number,
     trend: 'stable' | 'increasing' | 'decreasing';
     variance: number;
-    samplesCount: number ,}
+   , samplesCount: number ,}
 
 interface TimeRange { startTime: number;
     endTime: number;
-    duration: number }
+   , duration: number }
 
 interface Alert { metricId: string;
     threshold: number;
     condition: string;
-    timestamp: number;
+   , timestamp: number;
     [key: string]: any, }
 
 interface PerformanceEvent { type: string,
@@ -74,17 +74,17 @@ interface MonitoringStats { [key: string]: any, }
 
 interface ReportSummary { totalMetrics: number,
     healthyMetrics: number;
-    warningMetrics: number,
+   , warningMetrics: number,
     criticalMetrics: number,
     overallHealth: 'healthy' | 'warning' | 'critical' | 'unknown' ,}
 
 interface PerformanceReport { timeRange: TimeRange;
-    metrics: Map<string, MetricStats>;
+   , metrics: Map<string, MetricStats>;
     summary: ReportSummary;
     alerts: Alert[];
     analysisResults: AnalysisResults;
     performanceEvents: PerformanceEvent[];
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface MonitoringStatus { active: boolean;
     config: MonitoringConfig | null;
@@ -92,7 +92,7 @@ interface MonitoringStatus { active: boolean;
     dataPoints: number;
     activeAlerts: number;
     realTimeStats: MonitoringStats;
-    analysisResults: AnalysisResults
+   , analysisResults: AnalysisResults
     }
 
 interface TrendData { [key: string]: any, }
@@ -166,7 +166,7 @@ export class PerformanceMonitoringSystem {
     private metricsRegistry: MetricsRegistry;
     private realtimeStream: RealtimeMetricsStream;
     private monitoring: boolean;
-    private monitoringConfig: MonitoringConfig | null;
+    private, monitoringConfig: MonitoringConfig | null;
     private monitoringInterval?: NodeJS.Timeout;
 
     constructor() {
@@ -253,7 +253,7 @@ export class PerformanceMonitoringSystem {
             enableHistory: config.enableHistory !== false;
             enableAlerts: config.enableAlerts !== false;
             enableRealtimeStream: config.enableRealtimeStream !== false;
-            metricsFilter: config.metricsFilter || [], // 空の場合は全メトリクス;
+           , metricsFilter: config.metricsFilter || [], // 空の場合は全メトリクス;
             retention: config.retention || 24 * 60 * 60 * 1000, // 24時間;
             ...config;
 
@@ -423,7 +423,7 @@ export class PerformanceMonitoringSystem {
             metricsCount: this.metricsRegistry.getCount();
             dataPoints: this.historyTracker.getDataPointCount();
             activeAlerts: this.alertManager.getActiveAlerts().length;
-            realTimeStats: this.realTimeMonitor.getMonitoringStats(), };
+           , realTimeStats: this.realTimeMonitor.getMonitoringStats(), };
             analysisResults: this.dataAnalyzer.getAnalysisResults(); }
         }
 
@@ -434,11 +434,11 @@ export class PerformanceMonitoringSystem {
         const report: PerformanceReport = { }
             timeRange: { startTime, endTime, duration: timeRange ,},
             metrics: new Map();
-            summary: {} as ReportSummary;
+           , summary: {} as ReportSummary;
             alerts: this.alertManager.getAlertsInRange(startTime, endTime),
             analysisResults: this.dataAnalyzer.getAnalysisResults();
             performanceEvents: this.realTimeMonitor.getEventsHistory(timeRange);
-            timestamp: endTime;
+           , timestamp: endTime;
         },
 
         // 各メトリクスの統計情報を計算
@@ -498,7 +498,7 @@ export class PerformanceMonitoringSystem {
         return { totalMetrics: metrics.size,
             healthyMetrics: healthy;
             warningMetrics: warning;
-            criticalMetrics: critical, };
+           , criticalMetrics: critical, };
             overallHealth: this.calculateOverallHealth(healthy, warning, critical); }
         }
 
@@ -577,4 +577,4 @@ export class PerformanceMonitoringSystem {
         console.log('[PerformanceMonitoringSystem] Monitoring, system destroyed''); }
 }
 
-export { PerformanceMonitoringSystem };
+export { PerformanceMonitoringSystem  };

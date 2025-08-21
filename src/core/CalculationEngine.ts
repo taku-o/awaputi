@@ -15,13 +15,13 @@ interface CacheStats { hits: number,
     heavyCalculations: number;
     optimizedCalculations: number;
     averageCalculationTime: number;
-    totalCalculationTime: number ,}
+   , totalCalculationTime: number ,}
 
 interface PerformanceStats { count: number;
     totalTime: number;
     avgTime: number;
     minTime: number;
-    maxTime: number }
+   , maxTime: number }
 
 interface CacheConfig { maxSize: number;
     ttl: number;
@@ -29,22 +29,22 @@ interface CacheConfig { maxSize: number;
     cleanupInterval: number;
     intelligentCaching: boolean;
     preloadThreshold: number;
-    heavyCalculationThreshold: number }
+   , heavyCalculationThreshold: number }
 
 interface OptimizationConfig { batchProcessing: boolean;
     memoization: boolean;
     parallelProcessing: boolean;
-    adaptiveCaching: boolean }
+   , adaptiveCaching: boolean }
 
 interface BatchRequest { params: any[];
-    resolve: (value: any) => void;
-    reject: (reason?: any) => void;
+    resolve: (valu;e: any) => void;
+    reject: (reaso;n?: any) => void;
     options: CalculationOptions
     }
 }
 
 interface BatchQueue { requests: BatchRequest[];
-    timeout: NodeJS.Timeout | null }
+   , timeout: NodeJS.Timeout | null }
 
 interface CalculationOptions { batchable?: boolean;
     priority?: 'high' | 'medium' | 'low';
@@ -53,7 +53,7 @@ interface CalculationOptions { batchable?: boolean;
 
 interface CacheEntry { value: any,
     expiry: number;
-    timestamp: number;
+   , timestamp: number;
     calculationTime?: number;
     accessCount?: number;
     lastAccess?: number;
@@ -63,11 +63,11 @@ export class CalculationEngine {
     private calculators: Map<string, Calculator>;
     private cache: Map<string, CacheEntry>;
     private cacheStats: CacheStats;
-    private performanceStats: Map<string, PerformanceStats>;
+    private, performanceStats: Map<string, PerformanceStats>;
     private frequentCalculations: Map<string, number>;
     private cacheConfig: CacheConfig;
     private optimizationConfig: OptimizationConfig;
-    private batchQueue: Map<string, BatchQueue>;
+    private, batchQueue: Map<string, BatchQueue>;
     private cleanupInterval?: NodeJS.Timeout;
     private optimizationInterval?: NodeJS.Timeout;
     constructor() {
@@ -84,7 +84,7 @@ export class CalculationEngine {
             totalRequests: 0;
             heavyCalculations: 0;
             optimizedCalculations: 0;
-            averageCalculationTime: 0;
+           , averageCalculationTime: 0;
     ,}
             totalCalculationTime: 0 }
         };
@@ -97,8 +97,8 @@ export class CalculationEngine {
         // キャッシュ設定（最適化版）
         this.cacheConfig = { maxSize: 2000,           // 最大キャッシュサイズ（増加）
             ttl: 300000,            // TTL: 5分（延長）;
-            heavyCalculationTtl: 600000, // 重い計算のTTL: 10分;
-            cleanupInterval: 60000,  // クリーンアップ間隔: 1分;
+           , heavyCalculationTtl: 600000, // 重い計算のTTL: 10分;
+           , cleanupInterval: 60000,  // クリーンアップ間隔: 1分;
             intelligentCaching: true, // インテリジェントキャッシュ有効;
             preloadThreshold: 5,     // プリロード閾値（アクセス回数）;
             heavyCalculationThreshold: 10 // 重い計算の閾値（ミリ秒） ,};
@@ -123,8 +123,7 @@ export class CalculationEngine {
      * @param calculator - 計算処理クラスのインスタンス
      */'
     registerCalculator(type: string, calculator: Calculator): void { ''
-        if(!type || !calculator) {'
-            ';
+        if(!type || !calculator) {', ';
 
         }
 
@@ -357,7 +356,7 @@ export class CalculationEngine {
         const expiry = Date.now() + this.cacheConfig.ttl;
         this.cache.set(key, { value: result)
             expiry: expiry);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
     }
     
     /**
@@ -448,7 +447,7 @@ export class CalculationEngine {
             
         return { size: this.cache.size,
             maxSize: this.cacheConfig.maxSize;
-            hits: this.cacheStats.hits;
+           , hits: this.cacheStats.hits;
     ,}
             misses: this.cacheStats.misses, };
             totalRequests: this.cacheStats.totalRequests, }
@@ -528,9 +527,9 @@ export class CalculationEngine {
             expiry: now + adaptiveTtl;
             timestamp: now);
             calculationTime);
-            accessCount: 1,);
+           , accessCount: 1,);
             lastAccess: now);
-            priority: this._calculateCachePriority(key, calculationTime });
+           , priority: this._calculateCachePriority(key, calculationTime });
     }
     
     /**
@@ -640,7 +639,7 @@ export class CalculationEngine {
                 count: 0;
                 totalTime: 0);
                 avgTime: 0);
-                minTime: Infinity; ,}
+               , minTime: Infinity; ,}
                 maxTime: 0); }
         }
         
@@ -816,7 +815,7 @@ export class CalculationEngine {
             averageCalculationTime: `${this.cacheStats.averageCalculationTime.toFixed(2})ms`;
             cacheConfig: this.cacheConfig;
             optimizationConfig: this.optimizationConfig;
-            topPerformingMethods: performanceSummary;
+           , topPerformingMethods: performanceSummary;
             frequentCalculations,
             batchQueueSize: this.batchQueue.size;
         },

@@ -1,6 +1,6 @@
-import { FocusNavigation } from './focus/FocusNavigation.js';''
-import { FocusRingRenderer } from './focus/FocusRingRenderer.js';''
-import { FocusTrapManager } from './focus/FocusTrapManager.js';
+import { FocusNavigation  } from './focus/FocusNavigation.js';''
+import { FocusRingRenderer  } from './focus/FocusRingRenderer.js';''
+import { FocusTrapManager  } from './focus/FocusTrapManager.js';
 
 /**
  * FocusManager (Main, Controller)
@@ -11,26 +11,26 @@ import { FocusTrapManager } from './focus/FocusTrapManager.js';
 // 型定義
 interface FocusConfig { autoUpdateElements: boolean,
     focusRingStyle: {
-        width: number;
+        widt;h: number;
         color: string;
         offset: number;
         borderRadius: number;
-        animated: boolean ,};
+       , animated: boolean ,};
     focusRingHighContrast: { width: number;
         color: string;
         backgroundColor: string;
-        textColor: string };
+       , textColor: string };
     announcements: { enabled: boolean;
         delay: number;
-        maxLength: number };
+       , maxLength: number };
     navigation: { wrapAround: boolean;
         skipDisabled: boolean;
-        respectTabIndex: boolean }
+       , respectTabIndex: boolean }
 
 interface FocusState { isKeyboardMode: boolean,
     lastFocusedElement: Element | null;
     focusChangeInProgress: boolean;
-    enabled: boolean ,}
+   , enabled: boolean ,}
 export class FocusManager {
     private accessibilityManager: any;
     private gameEngine: any;
@@ -39,7 +39,7 @@ export class FocusManager {
     private navigation: FocusNavigation;
     private renderer: FocusRingRenderer;
     private trapManager: FocusTrapManager;
-    private listeners: Map<string, Function[]>;
+    private, listeners: Map<string, Function[]>;
 
     constructor(accessibilityManager: any) {
         this.accessibilityManager = accessibilityManager;
@@ -48,11 +48,11 @@ export class FocusManager {
         // 基本設定
         this.config = {
             autoUpdateElements: true;
-            focusRingStyle: {
+           , focusRingStyle: {
                 width: 3,
                 color: '#4A90E2';
                 offset: 2;
-                borderRadius: 4;
+               , borderRadius: 4;
     ,}
                 animated: true }
             };
@@ -62,16 +62,16 @@ export class FocusManager {
                 textColor: '#FFFFFF' ,};
             announcements: { enabled: true;
                 delay: 100;
-                maxLength: 200 };
+               , maxLength: 200 };
             navigation: { wrapAround: true;
                 skipDisabled: true;
-                respectTabIndex: true }
+               , respectTabIndex: true }
         };
         // 状態管理
         this.state = { isKeyboardMode: false,
             lastFocusedElement: null;
             focusChangeInProgress: false;
-            enabled: true ,};
+           , enabled: true ,};
         // イベントリスナー管理
         this.eventListeners = new Map();
         this.mutationObserver = null;
@@ -242,7 +242,7 @@ export class FocusManager {
             ';
             // フォーカスイベントを発行
             this.emit('focusChanged', { element: element)
-                keyboardMode: this.state.isKeyboardMode),
+               , keyboardMode: this.state.isKeyboardMode),
             ' }'
 
         } catch (error) { }
@@ -292,7 +292,7 @@ export class FocusManager {
                 }
                 ';
                 // Enter/Spaceキー処理
-                if (event.key === 'Enter' || event.key === ' ') { this.handleActivationKey(event); }
+                if (event.key === 'Enter' || event.key === ', ') { this.handleActivationKey(event); }
 
                 }''
             } catch (error) { }
@@ -383,7 +383,7 @@ export class FocusManager {
             element.tagName === 'A' || '';
             element.getAttribute('role'') === 'button'') {'
 
-            if(event.key === 'Enter' || (event.key === ' ' && element.tagName === 'BUTTON) {
+            if(event.key === 'Enter' || (event.key === ', ' && element.tagName === 'BUTTON) {
                 element.click();
     }
                 event.preventDefault(); }
@@ -485,8 +485,7 @@ export class FocusManager {
         if (labelFor}) { return labelFor.textContent; }
         
         // テキストコンテンツ
-        if(element.textContent && element.textContent.trim() {"
-            ";
+        if(element.textContent && element.textContent.trim() {", ";
         }"
             return element.textContent.trim(");
         ";
@@ -512,8 +511,7 @@ export class FocusManager {
             return role;
         
         // デフォルトの役割
-        const tagRoles = { ''
-            'button': 'ボタン',
+        const tagRoles = { '', 'button': 'ボタン',
             'input': '入力フィールド',
             'select': '選択',
             'textarea': 'テキストエリア',
@@ -540,8 +538,7 @@ export class FocusManager {
             states.push('無効); }'
         }
 
-        if(element.checked) {'
-            ';
+        if(element.checked) {', ';
 
         }
 
@@ -554,8 +551,7 @@ export class FocusManager {
         } else if (element.getAttribute('aria-expanded'') === 'false'') { ''
             states.push('折りたたみ済み); }'
 
-        if(element.required) {'
-            ';
+        if(element.required) {', ';
 
         }
 
@@ -660,7 +656,7 @@ export class FocusManager {
         
         return { // 基本統計
             keyboardMode: this.state.isKeyboardMode;
-            enabled: this.state.enabled;
+           , enabled: this.state.enabled;
             // ナビゲーション統計
             ...navigationStats,
             

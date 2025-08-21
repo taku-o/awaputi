@@ -2,9 +2,9 @@
  * Syntax Validation Tests
  * 構文検証機能のテストスイート
  */
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
-import { HTMLJavaScriptChecker } from '../../../src/utils/syntax-validation/HTMLJavaScriptChecker';
-import { JavaScriptModuleValidator } from '../../../src/utils/syntax-validation/JavaScriptModuleValidator';
+import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
+import { HTMLJavaScriptChecker  } from '../../../src/utils/syntax-validation/HTMLJavaScriptChecker';
+import { JavaScriptModuleValidator  } from '../../../src/utils/syntax-validation/JavaScriptModuleValidator';
 // Test interfaces
 interface ValidationResult {
     isValid: boolean,
@@ -123,7 +123,7 @@ describe('Syntax Validation', (') => {
                 <html>
                 <body>
                     <script type="module">
-                        import { something } from './module.js';
+                        import { something  } from './module.js';
                     </script>
                 </body>
                 </html>
@@ -134,7 +134,7 @@ describe('Syntax Validation', (') => {
             expect(result.warnings.some((w: ValidationWarning') => w.type === 'MODULE_SCRIPT')).toBe(true);
         }');
         test('should validate escape sequences', (') => {
-            const escapeSequences = 'Valid: \\n\\t\\"\\\\  Invalid: \\z\\x\\u',
+            const escapeSequences = 'Valid: \\n\\t\\"\\\\ , Invalid: \\z\\x\\u',
             const errors = checker.validateEscapeSequences(escapeSequences) as ValidationError[];
             
             expect(errors.length).toBeGreaterThan(0);
@@ -160,7 +160,7 @@ describe('Syntax Validation', (') => {
         }');
         test('should validate valid ES6 module', async (') => {
             const validModule = `
-                import { Component } from './Component.js';
+                import { Component  } from './Component.js';
                 
                 export class TestClass extends Component {
                     constructor() {
@@ -198,7 +198,7 @@ describe('Syntax Validation', (') => {
         }');
         test('should validate import statements', async (') => {
             const moduleWithImports = `
-                import { Component } from './Component.js';
+                import { Component  } from './Component.js';
                 import defaultExport from './default-export.js';
                 import * as Utils from 'utils';
             `;
@@ -248,7 +248,7 @@ describe('Syntax Validation', (') => {
         }');
         test('should collect accurate statistics', async (') => {
             const moduleWithVariousElements = `
-                import { A, B } from './a.js';
+                import { A, B  } from './a.js';
                 import C from './c.js';
                 
                 const variable1 = 'test';
@@ -321,9 +321,9 @@ describe('Syntax Validation', (') => {
             const validator = new JavaScriptModuleValidator(');
             // LocalizationManager のような構造のモックテスト
             const localizationManagerMock = `
-                import { TranslationDataManager } from './localization-manager/TranslationDataManager.js';
-                import { CulturalAdaptationHandler } from './localization-manager/CulturalAdaptationHandler.js';
-                import { I18nIntegrationController } from './localization-manager/I18nIntegrationController.js';
+                import { TranslationDataManager  } from './localization-manager/TranslationDataManager.js';
+                import { CulturalAdaptationHandler  } from './localization-manager/CulturalAdaptationHandler.js';
+                import { I18nIntegrationController  } from './localization-manager/I18nIntegrationController.js';
                 export class LocalizationManager {
                     constructor(') {
                         this.currentLanguage = 'ja';

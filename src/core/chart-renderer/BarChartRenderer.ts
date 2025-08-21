@@ -32,13 +32,13 @@ export interface RawChartData { [key: string]: any,
 
 export interface ProcessedChartData extends ChartData { index: number,
     normalizedValue: number;
-    position: DataPosition
+   , position: DataPosition
     ,}
 
 export interface DataPosition { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 export interface ChartOptions { padding?: number;
     showAxes?: boolean;
@@ -69,12 +69,12 @@ export interface ThemeColors { primary: string,
     background: string;
     text: string;
     grid: string;
-    axis: string ,}
+   , axis: string ,}
 
 export interface FontTheme { family: string;
     size: number;
     weight: string;
-    color: string }
+   , color: string }
 
 export interface BarOptions { width?: number;
     gap?: number;
@@ -106,7 +106,7 @@ export interface LabelOptions { show?: boolean;
     font?: FontConfiguration;
     color?: string;
     rotation?: number;
-    format?: (value: any) => string ,}
+    format?: (valu;e: any) => string ,}
 }
 
 export interface AxisTitleOptions { text?: string;
@@ -156,11 +156,11 @@ export interface HoverOptions { enabled?: boolean;
     cursor?: string; }
 
 export interface ClickOptions { enabled?: boolean;
-    callback?: (data: ProcessedChartData, event: MouseEvent) => void ,}
+    callback?: (dat;a: ProcessedChartData, event: MouseEvent) => void ,}
 }
 
 export interface TooltipOptions { enabled?: boolean;
-    format?: (data: ProcessedChartData) => string;
+    format?: (dat;a: ProcessedChartData) => string;
     style?: TooltipStyle;
     ,}
 }
@@ -176,13 +176,13 @@ export interface TooltipStyle { background?: string;
 export interface ChartArea { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 export interface ChartScales { xScale: number;
     yScale: number;
     yMin: number;
     yMax: number;
-    yRange: number;
+   , yRange: number;
     xMin?: number;
     xMax?: number;
     xRange?: number; }
@@ -193,7 +193,7 @@ export interface BarData { x: number,
     height: number;
     value: number;
     color: string;
-    data: ProcessedChartData
+   , data: ProcessedChartData
     ,}
 
 export interface ChartRenderResult { type: ChartType;
@@ -202,49 +202,49 @@ export interface ChartRenderResult { type: ChartType;
     max: number;
     bars: BarData[];
     chartArea: ChartArea;
-    scales: ChartScales;
+   , scales: ChartScales;
     performance?: RenderPerformance;
     error?: string; }
 
 export interface RenderPerformance { renderTime: number,
     dataProcessingTime: number;
-    drawTime: number;
+   , drawTime: number;
     memoryUsage?: number ,}
 
 export interface LegendItem { label: string;
     color: string;
     series?: string;
-    visible: boolean }
+   , visible: boolean }
 
 export interface AxisLabel { text: string;
     x: number;
-    y: number;
+   , y: number;
     rotation?: number }
 
 export interface GridLine { x1: number;
     y1: number;
     x2: number;
     y2: number;
-    type: GridLineType
+   , type: GridLineType
     }
 
 export interface ChartBounds { minX: number;
     maxX: number;
     minY: number;
-    maxY: number }
+   , maxY: number }
 
 export interface ValidationResult { isValid: boolean;
     errors: ValidationError[];
-    warnings: ValidationWarning[]
+   , warnings: ValidationWarning[]
     }
 
 export interface ValidationError { field: string;
     message: string;
-    code: string }
+   , code: string }
 
 export interface ValidationWarning { field: string;
     message: string;
-    suggestion: string }
+   , suggestion: string }
 
 // 列挙型
 export type ChartType = 'bar' | 'line' | 'pie' | 'area' | 'scatter' | 'bubble';''
@@ -259,7 +259,7 @@ export const DEFAULT_CHART_OPTIONS: Partial<ChartOptions> = { padding: 20,
     showAxes: true;
     showGrid: true;
     showLegend: false;
-    fontSize: 12,
+   , fontSize: 12,
     fontFamily: 'Arial, sans-serif' } as const;
 ';
 
@@ -283,19 +283,19 @@ export const DEFAULT_THEME: ChartTheme = { colors: {''
 export const BAR_CONFIG = { DEFAULT_WIDTH_RATIO: 0.8,
     DEFAULT_GAP_RATIO: 0.1;
     MIN_BAR_HEIGHT: 1;
-    MAX_BARS_FOR_LABELS: 20 ,} as const;
+   , MAX_BARS_FOR_LABELS: 20 ,} as const;
 ';
 
 export const GRID_CONFIG = { DEFAULT_STEPS: 5,''
     DEFAULT_COLOR: '#E5E7EB';
-    DEFAULT_WIDTH: 0.5 ,} as const;
+   , DEFAULT_WIDTH: 0.5 ,} as const;
 ';
 
 export const AXIS_CONFIG = {;
     DEFAULT_COLOR: '#6B7280';
     DEFAULT_WIDTH: 1;
     TICK_LENGTH: 5;
-    LABEL_OFFSET: 15 } as const;
+   , LABEL_OFFSET: 15 } as const;
 // ユーティリティ関数
 export function validateChartData(data: any[]): ValidationResult { const errors: ValidationError[] = [],
     const warnings: ValidationWarning[] = [],
@@ -377,7 +377,7 @@ export class BarChartRenderer {
 
         this.performance = {
             renderTime: 0;
-            dataProcessingTime: 0;
+           , dataProcessingTime: 0;
     }
             drawTime: 0 }
         }
@@ -427,12 +427,11 @@ export class BarChartRenderer {
                 type: 'bar';
                 dataPoints: processedData.length;
                 min: scales.yMin;
-                max: scales.yMax;
+               , max: scales.yMax;
                 bars,
                 chartArea,
                 scales,
-                performance: { ...this.performance))'
-            ')';
+                performance: { ...this.performance))', ')';
         } catch (error) {
             console.error('Bar chart rendering failed:', error);
 
@@ -440,7 +439,7 @@ export class BarChartRenderer {
                 type: 'bar', ;
                 dataPoints: 0;
                 min: 0;
-                max: 0, };
+               , max: 0, };
                 bars: [], }
                 chartArea: { x: 0, y: 0, width: 0, height: 0 ,},
                 scales: { xScale: 0, yScale: 0, yMin: 0, yMax: 0, yRange: 0 ,},
@@ -455,7 +454,7 @@ export class BarChartRenderer {
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || DEFAULT_CHART_OPTIONS.padding!;
         return { x: padding,
             y: padding;
-            width: canvas.width - (padding * 2), };
+           , width: canvas.width - (padding * 2), };
             height: canvas.height - (padding * 2); }
         }
 
@@ -474,16 +473,16 @@ export class BarChartRenderer {
                     label: `Item ${index + 1}`;
                     index,
                     normalizedValue: 0;
-                    position: { x: 0, y: 0, width: 0, height: 0 ,} else {  processedItem = { }
+                   , position: { x: 0, y: 0, width: 0, height: 0 ,} else {  processedItem = { }
                     value: item.value || 0, }
                     label: item.label || `Item ${index + 1}`;
                     color: item.color;
                     series: item.series;
                     category: item.category;
-                    metadata: item.metadata;
+                   , metadata: item.metadata;
                     index,
                     normalizedValue: 0;
-                    position: { x: 0, y: 0, width: 0, height: 0 ,}
+                   , position: { x: 0, y: 0, width: 0, height: 0 ,}
             
             return processedItem;
         });
@@ -656,7 +655,7 @@ export class BarChartRenderer {
                 width: barWidth, ;
                 height: barHeight );
                 value: item.value);
-                color: barColor,);
+               , color: barColor,);
                 data: item ,});
         
         return bars;
@@ -672,7 +671,7 @@ export class BarChartRenderer {
         
         // 凡例項目の抽出 : undefined
         const legendItems: LegendItem[] = [],
-        const seriesMap = new Map<string, { color: string; count: number }>();
+        const seriesMap = new Map<string, { color: string;, count: number }>();
         
         data.forEach((item, index) => {  }
             const series = item.series || item.label || `Series ${index + 1}`;

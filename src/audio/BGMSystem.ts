@@ -1,8 +1,8 @@
-import { getErrorHandler } from '../utils/ErrorHandler';''
-import { getConfigurationManager } from '../core/ConfigurationManager';''
-import { BGMGenerator } from './BGMGenerator';''
-import { BGMPlayer } from './BGMPlayer';''
-import { BGMTransitionManager } from './BGMTransitionManager';
+import { getErrorHandler  } from '../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../core/ConfigurationManager';''
+import { BGMGenerator  } from './BGMGenerator';''
+import { BGMPlayer  } from './BGMPlayer';''
+import { BGMTransitionManager  } from './BGMTransitionManager';
 
 /**
  * BGMトラックメタデータインターフェース
@@ -10,7 +10,7 @@ import { BGMTransitionManager } from './BGMTransitionManager';
 interface BGMTrackMetadata { tempo: number,
     key: string;
     timeSignature: string;
-    genre: string ,}
+   , genre: string ,}
 
 /**
  * BGMトラックインターフェース
@@ -23,7 +23,7 @@ interface BGMTrack { id: string;
     fadeInDuration: number;
     fadeOutDuration: number;
     buffer: AudioBuffer | null;
-    metadata: BGMTrackMetadata
+   , metadata: BGMTrackMetadata
     }
 
 /**
@@ -32,7 +32,7 @@ interface BGMTrack { id: string;
 interface BGMTypeConfig { style: string;
     tempo: number;
     key: string;
-    duration: number }
+   , duration: number }
 
 /**
  * 再生オプションインターフェース
@@ -59,7 +59,7 @@ interface AudioManager { audioContext: AudioContext | null,
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): string | null;
+interface ConfigurationManager { watch(category: string, path: string, callback: (valu;e: any) => void): string | null;
     unwatch(watchId: string): void, }
 }
 
@@ -76,7 +76,7 @@ export class BGMSystem {
     private audioContext: AudioContext | null;
     private configManager: ConfigurationManager;
     // BGMトラック管理
-    private tracks: Map<string, BGMTrack>;
+    private, tracks: Map<string, BGMTrack>;
     private currentTrack: BGMTrack | null;
     // 状態管理（BGMPlayerと同期）
     private isPlaying: boolean;
@@ -94,7 +94,7 @@ export class BGMSystem {
     private bgmPlayer: BGMPlayer | null;
     private transitionManager: BGMTransitionManager | null;
     // 無効化フラグ
-    private disabled: boolean;
+    private, disabled: boolean;
     constructor(audioManager: AudioManager) {
 
         this.audioManager = audioManager;
@@ -205,11 +205,11 @@ export class BGMSystem {
                 fadeInDuration: 2.0;
                 fadeOutDuration: 2.0;
                 buffer: null;
-                metadata: {
+               , metadata: {
                     tempo: trackConfig.tempo;
-                    key: trackConfig.key,
+                   , key: trackConfig.key,
                     timeSignature: '4/4';
-                    genre: this._getGenreForStyle(trackConfig.style ,}
+                   , genre: this._getGenreForStyle(trackConfig.style ,}
             };
             ';
             // トラックを保存
@@ -219,7 +219,7 @@ export class BGMSystem {
             return track;"
         } catch (error) { getErrorHandler(").handleError(error, 'BGM_ERROR', {)'
                 operation: 'generateTrack');
-                trackName: trackName,);
+               , trackName: trackName,);
                 options: options ,});
             return null;
     
@@ -292,7 +292,7 @@ export class BGMSystem {
             console.log(`BGM "${trackName"}" started, playing via, BGMPlayer`});"
         } catch (error) { getErrorHandler(").handleError(error, 'BGM_ERROR', {)'
                 operation: 'playBGM');
-                trackName: trackName,);
+               , trackName: trackName,);
                 options: options ,});
         }
     }
@@ -304,8 +304,7 @@ export class BGMSystem {
      * @private
      */'
     private async _generateTrackBuffer(track: BGMTrack): Promise<AudioBuffer | null> { try {'
-            if(!this.bgmGenerator) {'
-                ';
+            if(!this.bgmGenerator) {', ';
 
             }
 
@@ -317,7 +316,7 @@ export class BGMSystem {
                 duration: track.duration;
                 tempo: track.metadata.tempo;
                 key: track.metadata.key;
-                timeSignature: track.metadata.timeSignature ,};
+               , timeSignature: track.metadata.timeSignature ,};
             const buffer = this.bgmGenerator.generateTrack(trackConfig);
             
             if(!buffer) {
@@ -437,7 +436,7 @@ export class BGMSystem {
             volume: playerState.volume;
             currentTime: playerState.currentTime;
             loopEnabled: playerState.loopEnabled;
-            playbackRate: playerState.playbackRate, };
+           , playbackRate: playerState.playbackRate, };
             stats: playerState.stats }
         }
     
@@ -460,7 +459,7 @@ export class BGMSystem {
 
             } catch (error') { getErrorHandler(').handleError(error, 'BGM_ERROR', {)'
                 operation: 'setVolume');
-                volume: volume,);
+               , volume: volume,);
                 fadeTime: fadeTime ,});
         }
     }
@@ -501,8 +500,7 @@ export class BGMSystem {
         ';
 
         try {'
-            if(!this.bgmPlayer) {'
-                ';
+            if(!this.bgmPlayer) {', ';
 
             }
 
@@ -532,7 +530,7 @@ export class BGMSystem {
             console.log(`Next, BGM track, queued: "${trackName"}"`});"
         } catch (error) { getErrorHandler(").handleError(error, 'BGM_ERROR', {)'
                 operation: 'queueNext');
-                trackName: trackName,);
+               , trackName: trackName,);
                 options: options ,});
         }
     }
@@ -544,8 +542,7 @@ export class BGMSystem {
      */
     async transitionTo(toTrack: string, options: TransitionOptions = { ): Promise<void> {'
         try {'
-            if(!this.transitionManager) {'
-                ';
+            if(!this.transitionManager) {', ';
 
             }
 
@@ -570,7 +567,7 @@ export class BGMSystem {
 
         } catch (error) { getErrorHandler(').handleError(error, 'BGM_ERROR', {)'
                 operation: 'transitionTo');
-                toTrack: toTrack,);
+               , toTrack: toTrack,);
                 options: options ,});
         }
     }
@@ -581,8 +578,7 @@ export class BGMSystem {
      * @param curve - カーブタイプ
      */'
     async fadeOut(duration: number, curve?: string): Promise<void> { try {'
-            if(!this.transitionManager) {'
-                ';
+            if(!this.transitionManager) {', ';
 
             }
 
@@ -594,7 +590,7 @@ export class BGMSystem {
 
         } catch (error) { getErrorHandler(').handleError(error, 'BGM_ERROR', {)'
                 operation: 'fadeOut');
-                duration: duration,);
+               , duration: duration,);
                 curve: curve ,});
         }
     }
@@ -607,8 +603,7 @@ export class BGMSystem {
      * @param targetVolume - 目標音量
      */'
     async fadeIn(trackName: string, duration: number, curve?: string, targetVolume?: number): Promise<void> { try {'
-            if(!this.transitionManager) {'
-                ';
+            if(!this.transitionManager) {', ';
 
             }
 
@@ -625,7 +620,7 @@ export class BGMSystem {
                 operation: 'fadeIn';
                 trackName: trackName);
                 duration: duration);
-                curve: curve,);
+               , curve: curve,);
                 targetVolume: targetVolume ,});
         }
     }
@@ -654,8 +649,7 @@ export class BGMSystem {
      * @param settings - トランジション設定
      */'
     updateTransitionSettings(settings: any): void { try {'
-            if(!this.transitionManager) {'
-                ';
+            if(!this.transitionManager) {', ';
 
             }
 
@@ -679,12 +673,12 @@ export class BGMSystem {
         name: string;
         style: string;
         duration: number;
-        metadata: BGMTrackMetadata
+       , metadata: BGMTrackMetadata
     ,}> { return Array.from(this.tracks.values().map(track => ({
             id: track.id;
             name: track.name);
             style: track.style);
-            duration: track.duration,);
+           , duration: track.duration,);
             metadata: track.metadata))) ,}
     }
     

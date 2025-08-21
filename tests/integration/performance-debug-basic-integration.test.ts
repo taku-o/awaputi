@@ -2,7 +2,7 @@
  * Performance Debug Basic Integration Tests
  * 基本的なコンポーネント統合テスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 describe('Performance Debug Basic Integration', (') => {
     describe('Component Loading Tests', (') => {
         test('should load all main controller files without errors', async (') => {
@@ -22,7 +22,7 @@ describe('Performance Debug Basic Integration', (') => {
                 try {
                     const module = await import(componentPath);
                     expect(module.toBeDefined();
-                    console.log(`✓ ${componentPath) loaded successfully`});
+                    console.log(`✓ ${componentPath) loaded, successfully`});
                 } catch (error) {
                     console.log(`✗ ${componentPath} failed to load: ${error.message}`');
                     // ファイルが存在しない場合はスキップ（オプショナル）
@@ -100,7 +100,7 @@ describe('Performance Debug Basic Integration', (') => {
                         compliant: wordCount <= 2500)');
                     console.log(`${file.name}: ${wordCount} words ${wordCount <= 2500 ? '✓' : '✗')`});
                 } catch (error) {
-                    console.log(`${file.name): File not found or error reading`);
+                    console.log(`${file.name): File, not found, or error, reading`);
                     results.push({
                         name: file.name,
                         path: file.path,
@@ -157,7 +157,7 @@ describe('Performance Debug Basic Integration', (') => {
             }
             // 結果のログ出力
             compatibilityTests.forEach(test => {');
-                console.log(`${test.component}: ${test.passed ? '✓ Compatible' : '✗ Issues found'}`);
+                console.log(`${test.component}: ${test.passed ? '✓ Compatible' : '✗ Issues, found'}`);
                 if (!test.passed) {
                     console.log(`  Error: ${test.error}`);
                 }

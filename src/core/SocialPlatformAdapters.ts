@@ -11,16 +11,16 @@ export class SocialPlatformAdapters {
             twitter: {
                 maxTextLength: 280;
                 hashtagLimit: 3;
-                urlLength: 23, // Twitter t.co短縮URL長
+               , urlLength: 23, // Twitter t.co短縮URL長
     }
                 imageSupported: true }
             };
             facebook: { maxTextLength: 63206;
                 hashtagSupported: false;
                 urlRequired: true;
-                imageSupported: true };
+               , imageSupported: true };
             webShare: { supported: this.isWebShareSupported();
-                filesSupported: navigator.canShare && navigator.canShare({ files: [] }
+               , filesSupported: navigator.canShare && navigator.canShare({ files: [] }
         }
 
     /**
@@ -68,7 +68,7 @@ export class SocialPlatformAdapters {
         let hashtags = shareData.hashtags || [];
         ';
         // テキスト長制限への対応
-        const hashtagText = hashtags.slice(0, config.hashtagLimit).join(' ');
+        const hashtagText = hashtags.slice(0, config.hashtagLimit).join(', ');
         const urlLength = shareData.url ? config.urlLength: 0,
         const availableLength = config.maxTextLength - urlLength - hashtagText.length - 5; // 余裕分
         
@@ -81,8 +81,7 @@ export class SocialPlatformAdapters {
         const params = new URLSearchParams();''
         if(text) params.append('text', text);''
         if(shareData.url) params.append('url', shareData.url);''
-        if(hashtags.length > 0) {'
-            ';
+        if(hashtags.length > 0) {', ';
 
         }
 
@@ -131,8 +130,7 @@ export class SocialPlatformAdapters {
 
         const params = new URLSearchParams();
 
-        if(shareData.url) {'
-            ';
+        if(shareData.url) {', ';
 
         }
 
@@ -169,7 +167,7 @@ export class SocialPlatformAdapters {
         const data = { : undefined
             title: shareData.title;
             text: shareData.description || shareData.text;
-            url: shareData.url ,};
+           , url: shareData.url ,};
 ';
 
         try {'
@@ -202,8 +200,7 @@ export class SocialPlatformAdapters {
                 hashtags.push('HighScore); }'
 
             }''
-            if(shareData.isPersonalBest) {'
-                ';
+            if(shareData.isPersonalBest) {', ';
 
             }
 
@@ -236,7 +233,7 @@ export class SocialPlatformAdapters {
         ';
         // 単語境界で切り詰め
         const truncated = text.substring(0, maxLength - 3);''
-        const lastSpace = truncated.lastIndexOf(' ');
+        const lastSpace = truncated.lastIndexOf(', ');
         
         if(lastSpace > maxLength * 0.7) {'
         ';
@@ -267,7 +264,7 @@ export class SocialPlatformAdapters {
             case 'twitter':;
                 // Twitter向け最適化
                 const hashtags = this.generateTwitterHashtags(shareData);''
-                const hashtagText = hashtags.map(tag => `#${tag)`'}.join(' '};
+                const hashtagText = hashtags.map(tag => `#${tag)`'}.join(', '};
                 const, availableLength = config.maxTextLength - hashtagText.length - 10; // URL分
                 
     }
@@ -296,7 +293,7 @@ export class SocialPlatformAdapters {
 
         const data = { title: shareData.title,
             text: shareData.text;
-            url: shareData.url ,};
+           , url: shareData.url ,};
         // ファイル共有対応
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files; }
 ';
@@ -347,7 +344,7 @@ export class SocialPlatformAdapters {
             twitter: this.getPlatformCapabilities('twitter''),
             facebook: this.getPlatformCapabilities('facebook''),
             webShare: this.getPlatformCapabilities('webShare);
-            currentPlatform: this.detectPlatform();
+           , currentPlatform: this.detectPlatform();
         }
 
     /**
@@ -389,8 +386,7 @@ export class SocialPlatformAdapters {
             return { valid: false, errors, warnings }
 ';
         // 必須フィールドの確認
-        if(!shareData.text && !shareData.title) {'
-            ';
+        if(!shareData.text && !shareData.title) {', ';
 
         }
 

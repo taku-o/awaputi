@@ -1,8 +1,8 @@
 /**
  * ConfigurationErrorHandler のテスト
  */
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { ConfigurationErrorHandler, getConfigurationErrorHandler } from '../../src/core/ConfigurationErrorHandler.js';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { ConfigurationErrorHandler, getConfigurationErrorHandler  } from '../../src/core/ConfigurationErrorHandler.js';
 // Error handling result interface
 interface ErrorHandlingResult {
     success: boolean,
@@ -22,7 +22,7 @@ interface ValidationContext {
     key: string,
     value: any,
     rule: {
-        type: string,
+        typ;e: string,
         min?: number;
         max?: number;
         maxLength?: number;
@@ -30,7 +30,7 @@ interface ValidationContext {
 }
 interface CalculationContext {
     calculationType: string,
-    params: { [key: string]: any };
+    params: { [ke;y: string]: any };
     expectedType: string,
     maxValue?: number;
 }
@@ -48,7 +48,7 @@ interface ErrorStats {
     recovered: number,
     failed: number,
     recoveryRate: string,
-    byType: { [key: string]: number };
+    byType: { [ke;y: string]: number };
 }
 // Fallback state interface
 interface FallbackState {
@@ -396,7 +396,7 @@ describe('ConfigurationErrorHandler', () => {
                 errorHandler.errorTypes.CONFIGURATION_ACCESS,
                 {
                     maxAttempts: 1;);
-                    strategy: (') => {
+                   , strategy: (') => {
                         throw new Error('復旧戦略エラー');
                     }
                 }

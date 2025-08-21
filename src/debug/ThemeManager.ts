@@ -16,21 +16,21 @@ interface ThemeColors { background: string,
     success: string;
     warning: string;
     error: string;
-    info: string ,}
+   , info: string ,}
 
 interface Theme { name: string;
-    colors: ThemeColors
+   , colors: ThemeColors
     }
 
 interface AvailableTheme { key: string;
-    name: string }
+   , name: string }
 
 type ThemeName = 'dark' | 'light' | 'highContrast';
 
 export class ThemeManager {
     private debugInterface: DebugInterface;
     private currentTheme: ThemeName;
-    private themes: Record<string, Theme>;
+    private, themes: Record<string, Theme>;
 
     constructor(debugInterface: DebugInterface) {'
         this.debugInterface = debugInterface;''
@@ -284,14 +284,14 @@ export class ThemeManager {
             
             .enhanced-debug-interface.theme-high-contrast button { background: var(--debug-bg) !important,
                 border: 2px solid var(--debug-border) !important;
-                color: var(--debug-text) !important ,}
+               , color: var(--debug-text) !important ,}
             
             .enhanced-debug-interface.theme-high-contrast button:hover { background: var(--debug-accent) !important;
-                color: var(--debug-bg) !important }
+               , color: var(--debug-bg) !important }
 
             /* CSS変数を使用するスタイル */
             .debug-panel { background: var(--debug-panel)
-                color: var(--debug-text);
+               , color: var(--debug-text);
                 border-color: var(--debug-border), }
 
             .test-result.test-success { color: var(--debug-success }
@@ -349,15 +349,14 @@ export class ThemeManager {
      */
     public addCustomTheme(name: string, colors: ThemeColors): void { this.themes[name] = {
             name: name;
-            colors: colors }
+           , colors: colors }
 
     /**
      * 破棄
      */''
     public destroy()';
         const style = document.getElementById('debug-theme-styles);
-        if(style) {'
-            ';
+        if(style) {', ';
 
         }
 

@@ -4,7 +4,7 @@
  * 設定値監視・同期、音量管理、ミュート状態管理、動的設定更新を担当
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 音響設定管理クラス
@@ -24,7 +24,7 @@ export class AudioConfigurationManager {
     currentConfig: any;
     changeListeners: Map<string, any>,
     lastLoggedMuteState: any;
-    syncState: any;
+   , syncState: any;
     constructor() {
 
         // 設定管理（外部から注入される）
@@ -52,15 +52,15 @@ export class AudioConfigurationManager {
             volumes: {
                 master: 0.8;
                 sfx: 0.7;
-                bgm: 0.5;
+               , bgm: 0.5;
     ,}
                 muted: false }
             };
             effects: { compression: true;
-                reverb: false };
+               , reverb: false };
             quality: { sampleRate: 44100;
                 bufferSize: 256;
-                maxConcurrentSounds: 32 }
+               , maxConcurrentSounds: 32 }
         };
         // 設定変更リスナー
         this.changeListeners = new Map();
@@ -71,7 +71,7 @@ export class AudioConfigurationManager {
         // 設定同期状態
         this.syncState = { isInitialized: false,
             lastSyncTime: 0;
-            syncInterval: null ,}
+           , syncInterval: null ,}
 
     /**
      * 依存関係設定
@@ -314,8 +314,7 @@ export class AudioConfigurationManager {
 
                     break;''
                 case 'sfx':;
-                    if(this.audioConfig && this.audioConfig.setSfxVolume) {'
-                        ';
+                    if(this.audioConfig && this.audioConfig.setSfxVolume) {', ';
 
                     }
 

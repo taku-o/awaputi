@@ -8,10 +8,10 @@
 
 import fs from 'fs';''
 import path from 'path';''
-import { ConfigurationParser } from './test-configuration/ConfigurationParser.js';''
-import { ExpectationGenerator } from './test-configuration/ExpectationGenerator.js';''
-import { TestFileOperations } from './test-configuration/TestFileOperations.js';''
-import { ConfigurationValidator } from './test-configuration/ConfigurationValidator.js';
+import { ConfigurationParser  } from './test-configuration/ConfigurationParser.js';''
+import { ExpectationGenerator  } from './test-configuration/ExpectationGenerator.js';''
+import { TestFileOperations  } from './test-configuration/TestFileOperations.js';''
+import { ConfigurationValidator  } from './test-configuration/ConfigurationValidator.js';
 
 // Type definitions
 interface TestConfigurationOptions { projectRoot?: string;
@@ -20,33 +20,33 @@ interface TestConfigurationOptions { projectRoot?: string;
     backupEnabled?: boolean;
     dryRun?: boolean; }
 
-interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void }
+interface ErrorHandler { handleError: (erro;r: Error, context: string, details?: any) => void }
 }
 
-interface ConfigurationManager { get: (namespace: string, path: string) => any ,}
+interface ConfigurationManager { get: (namespac;e: string, path: string) => any ,}
 }
 
 interface TestFilePatterns { bubble: string,
     gameBalance: string;
-    bubbleManager: string ,}
+   , bubbleManager: string ,}
 
 interface Component { initialized: boolean;
     parseAllConfigurations?: () => any;
-    generateTestCode?: (expectations: any, testType: string) => string | null;
-    updateTestFile?: (testType: string, testCode: string, options: any) => UpdateResult;
-    validateConfigurationSync?: (canonical: any) => ValidationResult;
+    generateTestCode?: (expectation;s: any, testType: string) => string | null;
+    updateTestFile?: (testTyp;e: string, testCode: string, options: any) => UpdateResult;
+    validateConfigurationSync?: (canonica;l: any) => ValidationResult;
     clearCache?: () => void;
     cleanup?: () => void;
     initialize?: () => Promise<void>; ,}
 }
 
 interface ComponentDefinition { name: string,
-    class: new (controller: TestConfigurationGenerator) => Component ,}
+    class: new (controlle;r: TestConfigurationGenerator) => Component ,}
 }
 
 interface ExpectationMetadata { extractedAt: number;
     sourceFiles: string[];
-    generatorVersion: string }
+   , generatorVersion: string }
 
 interface CanonicalExpectations { bubbleTypes: Record<string, any>;
     gameBalance: Record<string, any>;
@@ -65,21 +65,21 @@ interface UpdateResults { updated: UpdateResult[],
     }
     failed: Array<{ testType?: string; error: string ,}>,
     skipped: UpdateResult[];
-    backups: UpdateResult[];
+   , backups: UpdateResult[];
     }
 
 interface ValidationResult { valid: boolean,
     issues: string[];
     warnings: string[];
     bubbleTypesCount: number;
-    sourceFiles: string[] ,}
+   , sourceFiles: string[] ,}
 
 interface GenerationStatistics { totalExpectations: number;
     lastGenerated: number | null;
     bubbleTypesProcessed: number;
     sourceFilesProcessed: number;
     cacheSize: number;
-    componentsInitialized: number }
+   , componentsInitialized: number }
 
 export class TestConfigurationGenerator {
     private components: Map<string, Component>;
@@ -92,7 +92,7 @@ export class TestConfigurationGenerator {
     private backupEnabled: boolean;
     private dryRun: boolean;
     private testFilePatterns: TestFilePatterns;
-    private generatedExpectations: Map<string, any>;
+    private, generatedExpectations: Map<string, any>;
 
     constructor(options: TestConfigurationOptions = {) {
 
@@ -104,8 +104,7 @@ export class TestConfigurationGenerator {
         this.errorHandler = {}
             handleError: (error: Error, context: string, details?: any) => { }
                 console.error(`[ERROR] ${context}: ${error.message}`);''
-                if(details) {'
-                    ';
+                if(details) {', ';
 
                 }
 
@@ -212,7 +211,7 @@ export class TestConfigurationGenerator {
             gameBalance: {};
             metadata: { ''
                 extractedAt: Date.now(''';
-                generatorVersion: '1.0.0' })'
+               , generatorVersion: '1.0.0' })'
         };')'
         this.generatedExpectations.set('canonical', fallbackExpectations);
         return fallbackExpectations;
@@ -250,7 +249,7 @@ describe('${ testType} Tests', ('} => { ' }
                 const results: UpdateResults = {
                     updated: [];
                     failed: [];
-                    skipped: [];
+                   , skipped: [];
         }
                     backups: [] }
                 };
@@ -301,7 +300,7 @@ describe('${ testType} Tests', ('} => { ' }
 
                     failed: [{ error: (error, as Error').message }];
                     skipped: [];
-                    backups: [];
+                   , backups: [];
                 },
             }
         }
@@ -311,7 +310,7 @@ describe('${ testType} Tests', ('} => { ' }
 
             failed: [{ error: 'Components not available' }];
             skipped: [];
-            backups: [];
+           , backups: [];
         },
     }
 
@@ -332,7 +331,7 @@ describe('${ testType} Tests', ('} => { ' }
         return { valid: false,''
             issues: ['Component validation not available];
             warnings: [];
-            bubbleTypesCount: 0, };
+           , bubbleTypesCount: 0, };
             sourceFiles: [] }
         }
 

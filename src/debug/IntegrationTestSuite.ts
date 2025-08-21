@@ -7,7 +7,7 @@ interface TestResult { category: string,
     status: 'passed' | 'failed';
     message: string;
     duration: number;
-    timestamp: string;
+   , timestamp: string;
     error?: Error
     ,}
 
@@ -16,22 +16,22 @@ interface TestCategories { gameSystemIntegration: string;
     crossBrowserCompatibility: string;
     performanceIntegration: string;
     errorHandling: string;
-    memoryManagement: string }
+   , memoryManagement: string }
 
 interface CategoryStats { [category: string]: {
-        total: number;
+        tota;l: number;
         passed: number;
-        failed: number }
+       , failed: number }
 
 interface TestSummary { summary: {
-        total: number;
+        tota;l: number;
         passed: number;
         failed: number;
         successRate: number;
-        duration: number };
+       , duration: number };
     categoryStats: CategoryStats;
     results: TestResult[];
-    timestamp: string;
+   , timestamp: string;
 }
 
 interface GameEngine { enhancedDebugInterface?: any;
@@ -46,7 +46,7 @@ export class IntegrationTestSuite {
     private testResults: TestResult[] = [];
     private testRunning: boolean = false;
     private startTime: number | null = null;
-    private testCategories: TestCategories';
+    private, testCategories: TestCategories';
 
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
@@ -67,8 +67,7 @@ export class IntegrationTestSuite {
      * 全統合テストを実行
      */'
     async runAllTests(): Promise<TestSummary> { ''
-        if(this.testRunning) {'
-            ';
+        if(this.testRunning) {', ';
 
         }
 
@@ -111,8 +110,7 @@ export class IntegrationTestSuite {
             debugInterface.show();''
             await this.wait(100);
 
-            if(debugInterface.debugPanel.style.display === 'none'') {'
-                ';
+            if(debugInterface.debugPanel.style.display === 'none'') {', ';
 
             }
 
@@ -143,7 +141,7 @@ export class IntegrationTestSuite {
             if(overviewPanel) {
                 // オーバービューパネルでバブル情報が表示されているかチェック : undefined
             
-                const bubbleCount = bubbleManager.bubbles ? bubbleManager.bubbles.length: 0,' '
+                const bubbleCount = bubbleManager.bubbles ? bubbleManager.bubbles.length: 0,', '
                 console.log(`Current bubble count: ${bubbleCount,}`'});
             }
 
@@ -166,7 +164,7 @@ export class IntegrationTestSuite {
             if(consolePanel) {
                 // スコア設定コマンドのテスト（モック）
             }
-                const initialScore = scoreManager.score || 0; : undefined' '
+                const initialScore = scoreManager.score || 0; : undefined', '
                 console.log(`Initial, score: ${initialScore}`'});
                 ';
                 // デバッグコマンドが実行できることを確認
@@ -228,8 +226,7 @@ export class IntegrationTestSuite {
         await this.runTest(category, 'PerformanceOptimizer Compatibility', async () => {  const performanceOptimizer = this.gameEngine.performanceOptimizer;
             const debugInterface = this.gameEngine.enhancedDebugInterface;
 
-            if(!performanceOptimizer) {'
-                ';
+            if(!performanceOptimizer) {', ';
 
             }
 
@@ -262,8 +259,7 @@ export class IntegrationTestSuite {
         await this.runTest(category, 'Browser Feature Detection', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
             
             // 必須ブラウザ機能のチェック
-            const requiredFeatures = {''
-                'Performance API': !!window.performance,
+            const requiredFeatures = {'', 'Performance API': !!window.performance,
                 'LocalStorage': !!window.localStorage,
                 'Canvas': !!document.createElement('canvas'').getContext,
                 'RequestAnimationFrame': !!window.requestAnimationFrame,
@@ -534,7 +530,7 @@ export class IntegrationTestSuite {
             const endTime = performance.now(''';
                 status: 'passed);
                 message: testResult);
-                duration: duration,);
+               , duration: duration,);
                 timestamp: new Date().toISOString( ,};
 
             console.log(`✓ ${testName}: ${testResult} (${duration.toFixed(2})ms)`);
@@ -545,8 +541,8 @@ export class IntegrationTestSuite {
                 message: (error, as Error).message;
                 duration: duration;
                 timestamp: new Date().toISOString();
-                error: error as Error ,};
-            console.error(`✗ ${testName}: ${(error, as Error}).message} (${duration.toFixed(2})ms)`);
+               , error: error as Error ,};
+            console.error(`✗ ${testName}: ${(error, as, Error}).message} (${duration.toFixed(2})ms)`);
         }
 
         this.testResults.push(result);
@@ -593,15 +589,14 @@ export class IntegrationTestSuite {
             };
             categoryStats,
             results: this.testResults;
-            timestamp: new Date().toISOString();
+           , timestamp: new Date().toISOString();
         }
 
     /**
      * 特定カテゴリのテストを実行
      */'
     async runCategoryTests(category: keyof, TestCategories): Promise<TestSummary> { ''
-        if(this.testRunning) {'
-            ';
+        if(this.testRunning) {', ';
 
         }
 
@@ -619,7 +614,7 @@ export class IntegrationTestSuite {
             switch(category) {'
 
                 case 'gameSystemIntegration':'';
-                    await this.runGameSystemIntegrationTests(''';
+                    await, this.runGameSystemIntegrationTests(''';
                 case 'existingSystemCompatibility':'';
                     await, this.runExistingSystemCompatibilityTests(''';
                 case 'crossBrowserCompatibility':'';

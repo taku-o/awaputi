@@ -5,8 +5,8 @@
  * パフォーマンス低下時の自動品質調整を提供します。
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';''
-import { getConfigurationManager } from '../core/ConfigurationManager';
+import { getErrorHandler  } from '../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../core/ConfigurationManager';
 
 /**
  * パフォーマンスサンプルインターフェース
@@ -16,36 +16,36 @@ interface PerformanceSample { timestamp: number,
     cpu: number;
     memory: number;
     nodeCount: number;
-    frameRate: number | null ,}
+   , frameRate: number | null ,}
 /**
  * 監視設定インターフェース
  */
 interface MonitoringSettings { enabled: boolean,
     interval: number;
-    alertThresholds: {
-        cpuHigh: number;
+   , alertThresholds: {
+        cpuHig;h: number;
         cpuCritical: number;
         memoryHigh: number;
         memoryCritical: number;
         nodeCountHigh: number;
         nodeCountCritical: number;
         frameRateLow: number;
-        frameRateCritical: number 
+       , frameRateCritical: number 
 ,};
     autoAdjustment: { enabled: boolean;
         sensitivity: number;
         cooldownPeriod: number;
-        maxAdjustments: number 
+       , maxAdjustments: number 
 };
     historyRetention: { maxSamples: number;
-        maxDuration: number }
+       , maxDuration: number }
 
 /**
  * 監視状態インターフェース
  */
 interface MonitoringState { active: boolean,
     intervalId: NodeJS.Timeout | null;
-    lastAdjustment: number,
+   , lastAdjustment: number,
     adjustmentCount: number,
     performanceProfile: 'normal' | 'degraded' | 'critical' ,}
 /**
@@ -55,17 +55,17 @@ interface PerformanceProfile { name: string,
     qualityLevel: number;
     maxAudioNodes: number;
     sampleRate: number;
-    enableEffects: boolean ,}
+   , enableEffects: boolean ,}
 /**
  * アラート情報インターフェース
  */
 interface Alert { id: string,
     timestamp: number;
-    data: {
-        type: string;
+   , data: {
+        typ;e: string;
         level: string;
         value: number;
-        threshold: number 
+       , threshold: number 
 ,};
     resolved: boolean;
     resolvedAt?: number;
@@ -76,20 +76,20 @@ interface Alert { id: string,
  */
 interface AlertManager { activeAlerts: Map<string, Alert>;
     alertHistory: Alert[];
-    suppressedAlerts: Set<string>
+   , suppressedAlerts: Set<string>
     ,}
 /**
  * CPUベンチマークインターフェース
  */
 interface CPUBenchmark { baselineTime: number | null,
     calibrated: boolean;
-    testIterations: number ,}
+   , testIterations: number ,}
 /**
  * メモリモニターインターフェース
  */
 interface MemoryMonitor { jsHeapSize: number,
     audioBufferSize: number;
-    estimatedAudioMemory: number ,}
+   , estimatedAudioMemory: number ,}
 /**
  * AudioManager インターフェース
  */
@@ -100,7 +100,7 @@ interface AudioManager { activeSources?: Set<any>;
     cacheManager?: {;
         getCacheStats(): {
             memory: {
-                total: number ,};
+                tota;l: number ,};
         _performAutomaticCleanup(): void;
     };
     cleanupInactiveSources?(): void;
@@ -124,7 +124,7 @@ class PerformanceMetrics { private startTime: number
     private cpuTimes: number[];
     private memoryUsages: number[];
     private audioNodeCounts: number[];
-    private frameRates: number[];
+    private, frameRates: number[];
     constructor() {
 
         this.startTime = 0;
@@ -149,7 +149,7 @@ class PerformanceMetrics { private startTime: number
             cpu: cpu;
             memory: memory;
             nodeCount: nodeCount;
-            frameRate: frameRate 
+           , frameRate: frameRate 
 };
         this.samples.push(sample);
         this.cpuTimes.push(cpu);
@@ -222,14 +222,14 @@ export class AudioPerformanceMonitor {
     // パフォーマンスメトリクス
     private metrics: PerformanceMetrics;
     // アラート管理
-    private alertManager: AlertManager;
+    private, alertManager: AlertManager;
     // パフォーマンスプロファイル }
     private performanceProfiles: { [key: string]: PerformanceProfile 
     };
     // CPUベンチマーク用
     private cpuBenchmark: CPUBenchmark;
     // メモリ監視用
-    private memoryMonitor: MemoryMonitor;
+    private, memoryMonitor: MemoryMonitor;
     // アラートハンドラー
     private onAlert?: (alert: Alert) => void;
 
@@ -254,33 +254,33 @@ export class AudioPerformanceMonitor {
                 qualityLevel: 1.0;
                 maxAudioNodes: 100;
                 sampleRate: 44100;
-                enableEffects: true 
+               , enableEffects: true 
 ,};
             degraded: { ''
                 name: '軽量';
                 qualityLevel: 0.7;
                 maxAudioNodes: 50;
                 sampleRate: 22050;
-                enableEffects: true 
+               , enableEffects: true 
 };
             critical: { ''
                 name: '最低';
                 qualityLevel: 0.3;
                 maxAudioNodes: 20;
                 sampleRate: 11025;
-                enableEffects: false 
+               , enableEffects: false 
 }
         },
         
         // CPUベンチマーク用
         this.cpuBenchmark = { baselineTime: null,
             calibrated: false;
-            testIterations: 10000 
+           , testIterations: 10000 
 ,};
         // メモリ監視用
         this.memoryMonitor = { jsHeapSize: 0,
             audioBufferSize: 0;
-            estimatedAudioMemory: 0 ,}))
+           , estimatedAudioMemory: 0 ,}))
         this.initialize();
     }
     
@@ -584,8 +584,7 @@ export class AudioPerformanceMonitor {
         if(cpu > thresholds.cpuCritical || ';
 
             memory > thresholds.memoryCritical || ')';
-            nodes > thresholds.nodeCountCritical) {'
-            ';
+            nodes > thresholds.nodeCountCritical) {', ';
 
         }
 
@@ -594,8 +593,7 @@ export class AudioPerformanceMonitor {
         if(cpu > thresholds.cpuHigh || ';
 
             memory > thresholds.memoryHigh || ')';
-            nodes > thresholds.nodeCountHigh) {'
-            ';
+            nodes > thresholds.nodeCountHigh) {', ';
 
         }
 
@@ -694,8 +692,7 @@ export class AudioPerformanceMonitor {
             const currentProfile = this.monitoringState.performanceProfile;''
             let targetProfile: 'normal' | 'degraded' | 'critical' = currentProfile,
             // より軽量なプロファイルに切り替え
-            if(currentProfile === 'normal'') {'
-                ';
+            if(currentProfile === 'normal'') {', ';
 
             }
 
@@ -750,39 +747,39 @@ export class AudioPerformanceMonitor {
             this._checkAndTriggerAlert('cpu_high', currentCPU > thresholds.cpuHigh, { ''
                 type: 'cpu',)';
                 level: 'high')';
-                value: currentCPU,')';
+               , value: currentCPU,')';
                 threshold: thresholds.cpuHigh)'),
 
             this._checkAndTriggerAlert('cpu_critical', currentCPU > thresholds.cpuCritical, {''
                 type: 'cpu',)';
                 level: 'critical')';
-                value: currentCPU,')';
+               , value: currentCPU,')';
                 threshold: thresholds.cpuCritical)');
             ';
             // メモリ使用率アラート
             this._checkAndTriggerAlert('memory_high', currentMemory > thresholds.memoryHigh, {''
                 type: 'memory',)';
                 level: 'high')';
-                value: currentMemory,')';
+               , value: currentMemory,')';
                 threshold: thresholds.memoryHigh)'),
 
             this._checkAndTriggerAlert('memory_critical', currentMemory > thresholds.memoryCritical, {''
                 type: 'memory',)';
                 level: 'critical')';
-                value: currentMemory,')';
+               , value: currentMemory,')';
                 threshold: thresholds.memoryCritical)');
             ';
             // ノード数アラート
             this._checkAndTriggerAlert('nodes_high', currentNodes > thresholds.nodeCountHigh, {''
                 type: 'nodes',)';
                 level: 'high')';
-                value: currentNodes,')';
+               , value: currentNodes,')';
                 threshold: thresholds.nodeCountHigh)'),
 
             this._checkAndTriggerAlert('nodes_critical', currentNodes > thresholds.nodeCountCritical, {''
                 type: 'nodes',)';
                 level: 'critical');
-                value: currentNodes,);
+               , value: currentNodes,);
                 threshold: thresholds.nodeCountCritical ,}
 
         } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_PERFORMANCE_ERROR', {)'
@@ -821,7 +818,7 @@ export class AudioPerformanceMonitor {
                 id: alertId;
                 timestamp: Date.now();
                 data: alertData;
-                resolved: false 
+               , resolved: false 
 };
             this.alertManager.activeAlerts.set(alertId, alert);
             this.alertManager.alertHistory.push(alert);
@@ -879,7 +876,7 @@ export class AudioPerformanceMonitor {
     private _logProfileChange(oldProfile: string, newProfile: string): void { try {
             const logEntry = {''
                 timestamp: Date.now()';
-                    cpu: this.metrics.getLatest('cpuTime''),
+                   , cpu: this.metrics.getLatest('cpuTime''),
                     memory: this.metrics.getLatest('memoryUsage''),
                     nodes: this.metrics.getLatest('audioNodeCount'' ,}
             };
@@ -921,7 +918,7 @@ export class AudioPerformanceMonitor {
                     cpu: this.metrics.getLatest('cpuTime''),
                     memory: this.metrics.getLatest('memoryUsage''),
                     nodes: this.metrics.getLatest('audioNodeCount'');
-                    profile: this.monitoringState.performanceProfile;
+                   , profile: this.monitoringState.performanceProfile;
                 },
 
                 averages: { ''
@@ -940,10 +937,10 @@ export class AudioPerformanceMonitor {
                     nodes: this.metrics.getStandardDeviation('audioNodeCount ,};
                 monitoring: { active: this.monitoringState.active;
                     sampleCount: (this.metrics as any).samples.length;
-                    adjustmentCount: this.monitoringState.adjustmentCount 
+                   , adjustmentCount: this.monitoringState.adjustmentCount 
 };
                 alerts: { active: Array.from(this.alertManager.activeAlerts.values();
-                    history: this.alertManager.alertHistory.slice(-10) // 最新10件 
+                   , history: this.alertManager.alertHistory.slice(-10) // 最新10件 
 };
                 memory: { ...this.memoryMonitor ;
 },

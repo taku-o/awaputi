@@ -10,12 +10,12 @@
 interface CacheData { dataURL: string,
     timestamp: number;
     size: number;
-    configHash: string ,}
+   , configHash: string ,}
 
 interface CacheStats { totalEntries: number;
     totalSize: number;
     expiredCount?: number;
-    available: boolean;
+   , available: boolean;
     error?: string }
 
 interface FaviconConfig { backgroundColor?: string;
@@ -107,7 +107,7 @@ export default class FaviconCacheManager { /**
             backgroundColor: config.backgroundColor;
             textColor: config.textColor;
             text: config.text;
-            fontFamily: config.fontFamily };
+           , fontFamily: config.fontFamily };
         const configStr = JSON.stringify(hashableConfig);
         return this._simpleHash(configStr);
     }

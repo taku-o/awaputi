@@ -18,13 +18,13 @@
 export interface MainController { config: VisualFocusConfig,
     state: VisualFocusState;
     elements: VisualFocusElements;
-    cssClasses: CSSClasses
+   , cssClasses: CSSClasses
     ,}
 
 export interface VisualFocusConfig { focusRing: FocusRingConfig;
     navigationFeedback: NavigationFeedbackConfig;
     highContrast: HighContrastConfig;
-    animations: AnimationConfig
+   , animations: AnimationConfig
     }
 
 export interface FocusRingConfig { color: string;
@@ -32,46 +32,46 @@ export interface FocusRingConfig { color: string;
     offset: number;
     borderRadius: number;
     animationDuration: number;
-    enabled: boolean }
+   , enabled: boolean }
 
 export interface NavigationFeedbackConfig { fadeTimeout: number;
-    enabled: boolean }
+   , enabled: boolean }
 
 export interface HighContrastConfig { color: string;
     width: number;
-    enabled: boolean }
+   , enabled: boolean }
 
 export interface AnimationConfig { enabled: boolean;
     duration: number;
     easing: string;
-    reducedMotion: boolean }
+   , reducedMotion: boolean }
 
 export interface VisualFocusState { animationTimers: Map<string, number>,
     currentFocusElement: HTMLElement | null;
     isHighContrastMode: boolean;
-    keyboardMode: boolean ,}
+   , keyboardMode: boolean ,}
 
 export interface VisualFocusElements { focusRing: HTMLElement;
-    focusOverlay: HTMLElement
+   , focusOverlay: HTMLElement
     }
 
 export interface CSSClasses { keyboardMode: string;
     mouseMode: string;
     highContrast: string;
     focusRing: string;
-    focusOverlay: string }
+   , focusOverlay: string }
 
 export interface ElementBounds { left: number;
     top: number;
     width: number;
     height: number;
     right: number;
-    bottom: number }
+   , bottom: number }
 
 export interface ViewportBounds { top: number;
     left: number;
     bottom: number;
-    right: number }
+   , right: number }
 
 export interface EffectOptions { duration?: number;
     delay?: number;
@@ -84,7 +84,7 @@ export interface CustomEffectStyle { position: string,
     width: string;
     height: string;
     pointerEvents: string;
-    zIndex: string ,}
+   , zIndex: string ,}
 
 export interface RenderingOptimizationResult { shouldRender: boolean;
     reason?: string;
@@ -115,7 +115,7 @@ export const EFFECT_DURATIONS: Record<EffectType, number> = { pulse: 1000,
     ripple: 800;
     flash: 500;
     slide: 600;
-    zoom: 400 ,};
+   , zoom: 400 ,};
 ';
 
 export const CSS_ANIMATIONS: Record<EffectType, string> = {;
@@ -129,12 +129,12 @@ export const DEFAULT_EFFECT_OPTIONS: Required<EffectOptions> = { duration: 2000,
 
     delay: 0,
     easing: 'ease-in-out';
-    autoRemove: true ,};
+   , autoRemove: true ,};
 export const Z_INDEX = { FOCUS_RING: 9999,
     FOCUS_OVERLAY: 9998;
     CUSTOM_EFFECT: 9998;
     LANDMARK: 9997;
-    GROUP: 9996 ,} as const;
+   , GROUP: 9996 ,} as const;
 ';
 
 export const CSS_CLASSES = {;
@@ -152,13 +152,13 @@ export function getElementBounds(element: HTMLElement): ElementBounds { const re
         top: rect.top + scrollY;
         width: rect.width;
         height: rect.height;
-        right: rect.right + scrollX, };
+       , right: rect.right + scrollX, };
         bottom: rect.bottom + scrollY }
     }
 
 export function getViewportBounds(): ViewportBounds { return { top: 0,
         left: 0;
-        bottom: window.innerHeight, };
+       , bottom: window.innerHeight, };
         right: window.innerWidth }
     }
 
@@ -169,7 +169,7 @@ export function createCustomEffectStyles(;
     bounds: ElementBounds
     );
     effectType: EffectType);
-    config: FocusRingConfig'';
+   , config: FocusRingConfig'';
 '): CustomEffectStyle { const baseStyle: CustomEffectStyle = {''
         position: 'absolute' }
         left: `${bounds.left}px`;
@@ -177,7 +177,7 @@ export function createCustomEffectStyles(;
         width: `${bounds.width}px`;
         height: `${bounds.height}px`,''
         pointerEvents: 'none';
-        zIndex: Z_INDEX.CUSTOM_EFFECT.toString();
+       , zIndex: Z_INDEX.CUSTOM_EFFECT.toString();
     };
     
     return baseStyle;
@@ -185,8 +185,7 @@ export function createCustomEffectStyles(;
 
 export function getEffectCSS(effectType: EffectType, config: FocusRingConfig): string { const animation = CSS_ANIMATIONS[effectType] || CSS_ANIMATIONS.pulse;
 
-    switch(effectType) {'
-        ';
+    switch(effectType) {', ';
 
     }
 
@@ -206,13 +205,13 @@ export function getEffectCSS(effectType: EffectType, config: FocusRingConfig): s
         case 'ripple': return `;
                 border: 1px solid ${config.color}
                 border-radius: 50%;
-                animation: ${animation}
+               , animation: ${animation}
 
             `;''
         case 'flash': return `;
                 background-color: ${config.color};
                 opacity: 0.3;
-                animation: ${animation}
+               , animation: ${animation}
 
             `;''
         case 'slide': return `;
@@ -243,7 +242,7 @@ export class FocusEffectRenderer {
     private mainController: MainController;
     private config: VisualFocusConfig;
     private state: VisualFocusState;
-    private elements: VisualFocusElements;
+    private, elements: VisualFocusElements;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -397,7 +396,7 @@ export class FocusEffectRenderer {
     createCustomEffect(';
         element: HTMLElement, ')';
         effectType: EffectType = 'pulse')';
-        options: Partial<EffectOptions> = { ): HTMLElement {''
+       , options: Partial<EffectOptions> = { ): HTMLElement {''
         const bounds = getElementBounds(element }
         const opts: Required<EffectOptions> = { ...DEFAULT_EFFECT_OPTIONS, ...options;
 

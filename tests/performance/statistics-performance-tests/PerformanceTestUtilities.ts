@@ -46,7 +46,7 @@ export class PerformanceMeasurement {
                 max: Math.max(...durations),
                 average: durations.reduce((a, b) => a + b, 0) / durations.length,
                 median: this.calculateMedian(durations;);
-                p95: this.calculatePercentile(durations, 95),
+               , p95: this.calculatePercentile(durations, 95),
                 p99: this.calculatePercentile(durations, 99);
             },
             memory: {
@@ -82,7 +82,7 @@ export class DataGenerator {
         for (let i = 0; i < count; i++') {
             events.push({
                 type: 'bubble_popped';);
-                timestamp: Date.now() + i,
+               , timestamp: Date.now() + i,
                 data: {
                     bubbleType: bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)],
                     score: Math.floor(Math.random() * 1000) + 50,

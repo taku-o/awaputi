@@ -24,57 +24,57 @@ export interface MainController { focusManager: FocusManager,
     focusAccessibilitySupport: FocusAccessibilitySupport;
     focusEffectRenderer: FocusEffectRenderer;
     accessibilityManager?: AccessibilityManager;
-    handleFocusChange: (element: HTMLElement, index: number, keyboardMode: boolean) => void,
-    handleFocusLost: (element: HTMLElement) => void;
-    applyConfig: (config: any) => void ,}
+   , handleFocusChange: (elemen;t: HTMLElement, index: number, keyboardMode: boolean) => void,
+    handleFocusLost: (elemen;t: HTMLElement) => void;
+    applyConfig: (confi;g: any) => void ,}
 }
 
-export interface FocusManager { addEventListener: (event: string, handler: (data: any) => void) => void,
-    removeEventListener: (event: string, handler: (data: any) => void) => void ,}
+export interface FocusManager { addEventListener: (even;t: string, handler: (dat;a: any) => void) => void,
+    removeEventListener: (even;t: string, handler: (dat;a: any) => void) => void ,}
 }
 
 export interface FocusConfig { focusRing: FocusRingConfig,
     keyboard: KeyboardConfig;
-    mouse: MouseConfig
+   , mouse: MouseConfig
     ,}
 
 export interface FocusRingConfig { enabled: boolean;
     color: string;
     width: string;
-    offset: string }
+   , offset: string }
 
 export interface KeyboardConfig { shortcuts: KeyboardShortcuts;
-    navigation: NavigationSettings
+   , navigation: NavigationSettings
     }
 
 export interface MouseConfig { disableKeyboardHints: boolean;
-    clearEffectsOnClick: boolean }
+   , clearEffectsOnClick: boolean }
 
 export interface KeyboardShortcuts { help: string;
     contrast: string;
     focus: string;
-    escape: string }
+   , escape: string }
 
 export interface NavigationSettings { feedback: boolean;
-    directions: boolean }
+   , directions: boolean }
 
 export interface FocusState { keyboardHintVisible: boolean;
     isHighContrastMode: boolean;
     currentElement: HTMLElement | null;
-    keyboardMode: boolean }
+   , keyboardMode: boolean }
 
 export interface CSSClasses { focusRing: string;
     keyboardMode: string;
     mouseMode: string;
-    highContrast: string }
+   , highContrast: string }
 
 export interface FocusElements { navigationIndicator: HTMLElement;
     keyboardHint: HTMLElement;
-    announcement: HTMLElement
+   , announcement: HTMLElement
     }
 
-export interface FocusStateManager { setKeyboardMode: (enabled: boolean) => void;
-    setHighContrastMode: (enabled: boolean) => void }
+export interface FocusStateManager { setKeyboardMode: (enable;d: boolean) => void;
+    setHighContrastMode: (enable;d: boolean) => void }
 }
 
 export interface FocusAccessibilitySupport { toggleKeyboardHints: () => void;
@@ -86,13 +86,13 @@ export interface FocusEffectRenderer { clearAllEffects: () => void;
     adjustForAccessibility: () => void }
 }
 
-export interface AccessibilityManager { addEventListener: (event: string, handler: (data: any) => void) => void,
+export interface AccessibilityManager { addEventListener: (even;t: string, handler: (dat;a: any) => void) => void,
     isScreenReaderActive: () => boolean ,}
 }
 
 export interface FocusChangeEventData { element: HTMLElement;
     index: number;
-    keyboardMode: boolean }
+   , keyboardMode: boolean }
 
 export interface FocusLostEventData {
     element: HTMLElement;
@@ -105,13 +105,13 @@ export interface ConfigurationAppliedEventData {
 export interface DirectionInfo { key: string;
     direction: string;
     icon: string;
-    text: string }
+   , text: string }
 
 export interface ElementAccessibilityInfo { tagName: string;
     role: string | null;
     label: string | null;
     expanded: boolean | null;
-    selected: boolean | null }
+   , selected: boolean | null }
 
 export interface KeyboardEventHandlerOptions { preventDefault?: boolean;
     stopPropagation?: boolean; }
@@ -173,8 +173,7 @@ export function isElementVisible(element: HTMLElement): boolean {;
            style.opacity !== '0'; }
 
 export function getNavigationDirection(key: string, shiftKey: boolean): string | null {;
-    if(key === 'Tab'') {'
-        ';
+    if(key === 'Tab'') {', ';
 
     }
 
@@ -250,7 +249,7 @@ export class FocusEventHandler {
     private state: FocusState;
     private cssClasses: CSSClasses;
     // バインドされたイベントハンドラーの参照
-    private boundHandlers: Map<string, (event: Event) => void>;
+    private, boundHandlers: Map<string, (event: Event) => void>;
 
     constructor(mainController: MainController) {
 
@@ -398,8 +397,7 @@ export class FocusEventHandler {
         }
         ';
         // Alt+F - フォーカス表示の切り替え
-        if(event.altKey && event.key === 'f) {'
-            ';
+        if(event.altKey && event.key === 'f) {', ';
 
         }
 
@@ -504,11 +502,11 @@ export class FocusEventHandler {
      */
     getElementAccessibilityInfo(element: HTMLElement): ElementAccessibilityInfo { return { ''
             tagName: element.tagName.toLowerCase()';
-            role: element.getAttribute('role''),
+           , role: element.getAttribute('role''),
             label: element.getAttribute('aria-label'') || '';
                    element.getAttribute('title) || '';
                    element.textContent? .trim()';
-            expanded: element.hasAttribute('aria-expanded'') ?   : undefined'';
+           , expanded: element.hasAttribute('aria-expanded'') ?   : undefined'';
                      element.getAttribute('aria-expanded'') === 'true' : null,
             selected: element.hasAttribute('aria-selected'') ?   : undefined' ,};
 

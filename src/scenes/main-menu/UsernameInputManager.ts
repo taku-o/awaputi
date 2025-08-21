@@ -1,42 +1,42 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // インターフェース定義
 interface CanvasInfo { scale: number,
     displayWidth: number;
     displayHeight: number;
     actualWidth: number;
-    actualHeight: number;
+   , actualHeight: number;
     pixelRatio?: number ,}
 
 interface Coordinates { x: number;
-    y: number }
+   , y: number }
 
 interface BaseCoordinates { x: number;
-    y: number }
+   , y: number }
 
 interface Layout { title: Coordinates;
     description: Coordinates;
-    inputBox: {
-        x: number;
+   , inputBox: {
+        ;x: number;
         y: number;
         width: number;
-        height: number };
+       , height: number };
     buttons: { ok: {
             x: number;
             y: number;
             width: number;
-            height: number };
+           , height: number };
         cancel: { x: number;
             y: number;
             width: number;
-            height: number };
+           , height: number };
     helpText: Coordinates;
     }
 
 interface CacheStats { canvasInfoCached: boolean,
     canvasInfoCacheAge: number;
     coordinateCacheSize: number;
-    coordinateCacheMaxSize: number ,}
+   , coordinateCacheMaxSize: number ,}
 
 /**
  * Username Input Manager
@@ -44,7 +44,7 @@ interface CacheStats { canvasInfoCached: boolean,
  */
 export class UsernameInputManager {
     public gameEngine: any;
-    public errorHandler: any,
+    public, errorHandler: any,
     public usernameInput: string,
     public isEditingUsername: boolean,
     
@@ -53,7 +53,7 @@ export class UsernameInputManager {
     private _canvasInfoCacheTime: number;
     private _cacheValidDuration: number;
     // Coordinate transformation cache
-    private _coordinateCache: Map<string, Coordinates>;
+    private, _coordinateCache: Map<string, Coordinates>;
     private _maxCacheSize: number;
     constructor(gameEngine: any) {
 ';
@@ -92,8 +92,7 @@ export class UsernameInputManager {
                     this._canvasInfoCacheTime = now;
             }
                     return canvasInfo; catch (error) {
-            if(this.gameEngine.debug) {'
-                ';
+            if(this.gameEngine.debug) {', ';
 
             }
 
@@ -152,7 +151,7 @@ export class UsernameInputManager {
                 canvasInfo: {
         ,}
 
-                    scale: canvasInfo? .scale, : undefined' '
+                    scale: canvasInfo? .scale, : undefined', '
                     displaySize: canvasInfo ? `${canvasInfo.displayWidth}x${canvasInfo.displayHeight}` : 'N/A',)'
                     actualSize: canvasInfo ? `${canvasInfo.actualWidth}x${canvasInfo.actualHeight}` : 'N/A')
                     pixelRatio: canvasInfo? .pixelRatio;
@@ -211,8 +210,7 @@ export class UsernameInputManager {
      * ResponsiveCanvasManager座標システムを使用した描画
      */'
     renderWithResponsiveCoordinates(context: CanvasRenderingContext2D, canvasInfo: CanvasInfo): void { ''
-        if(this.gameEngine.debug) {'
-            ';
+        if(this.gameEngine.debug) {', ';
 
         }
 
@@ -285,8 +283,7 @@ export class UsernameInputManager {
      * フォールバック座標システムを使用した描画
      */'
     renderWithFallbackCoordinates(context: CanvasRenderingContext2D): void { ''
-        if(this.gameEngine.debug) {'
-            ';
+        if(this.gameEngine.debug) {', ';
 
         }
 

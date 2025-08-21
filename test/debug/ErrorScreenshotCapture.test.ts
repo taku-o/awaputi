@@ -1,12 +1,12 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * ErrorScreenshotCapture テストスイート'
  */''
-import { ErrorScreenshotCapture } from '../../src/debug/ErrorScreenshotCapture';
+import { ErrorScreenshotCapture  } from '../../src/debug/ErrorScreenshotCapture';
 // モックCanvas
 const createMockCanvas = () => ({ width: 800,
     height: 600);
-    getContext: jest.fn(() => ({
+   , getContext: jest.fn(() => ({
         drawImage: jest.fn(); }'
     }))),''
     toDataURL: jest.fn((') => 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA...');
@@ -37,8 +37,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
         (global as any).window = { innerWidth: 1920,
             innerHeight: 1080,
             devicePixelRatio: 1 }
-        },'
-        '';
+        },', '';
         screenshotCapture = new ErrorScreenshotCapture(mockGameEngine as any');'
         // コンソールのモック''
         jest.spyOn(console, 'log').mockImplementation('')';
@@ -78,8 +77,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
         }');''
         test('Canvas以外の場合はnullが返される', async (') => {  // Canvasを無効にする
             screenshotCapture.captureSettings.includeCanvas = false;
-            screenshotCapture.gameEngine.canvas = null;'
-            '';
+            screenshotCapture.gameEngine.canvas = null;', '';
             const testError = new Error('Test error'); }'
             const screenshot = await screenshotCapture.captureOnCriticalError(testError as any);' }'
             expect(screenshot.toBeNull(})');''
@@ -123,8 +121,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
             expect(mockTempCanvas.getContext).toHaveBeenCalled(); }'
             expect(screenshot).toBeDefined();' }'
         }');''
-        test('Canvasが利用できない場合はエラーが発生する', async () => {  screenshotCapture.gameEngine.canvas = null; }'
-            ' }'
+        test('Canvasが利用できない場合はエラーが発生する', async () => {  screenshotCapture.gameEngine.canvas = null; }', ' }'
             await expect(screenshotCapture.captureCanvasScreenshot(}')';'
                 .rejects.toThrow('Canvas not available');''
         }');'

@@ -1,9 +1,9 @@
-import { jest } from '@jest/globals';
-import { AccessibilityProfileComponent } from '../../../src/components/AccessibilityProfileComponent.js';
+import { jest  } from '@jest/globals';
+import { AccessibilityProfileComponent  } from '../../../src/components/AccessibilityProfileComponent.js';
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        get: jest.Mock<any, [string]>;
+        ge;t: jest.Mock<any, [string]>;
         set: jest.Mock<void, [string, any]>;
     };
     audioManager: {
@@ -26,7 +26,7 @@ interface MockAccessibilitySettingsManager {
     getCurrentProfile: jest.Mock<AccessibilityProfile | null, []>;
     getAvailableProfiles: jest.Mock<AccessibilityProfile[], []>;
     switchProfile: jest.Mock<boolean, [string]>;
-    getStats: jest.Mock<{ profilesUsed: number; currentProfile: string }, []>;
+    getStats: jest.Mock<{ profilesUse;d: number;, currentProfile: string }, []>;
 }
 interface ComponentStats {
     isInitialized: boolean,
@@ -233,7 +233,7 @@ describe('AccessibilityProfileComponent', () => {
         }');
         test('should handle keyboard events on dropdown', (') => {
             const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' }');
-            const spaceEvent = new KeyboardEvent('keydown', { key: ' ' }');
+            const spaceEvent = new KeyboardEvent('keydown', { key: ', ' }');
             const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
             component.handleDropdownKeydown(enterEvent);
             expect(enterEvent.preventDefault).toBeDefined();

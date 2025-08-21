@@ -1,23 +1,23 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getLocalizationManager } from '../core/LocalizationManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../core/LocalizationManager.js';
 
 interface GameEngine { version?: string;
     settingsManager?: SettingsManager;
     sceneManager?: {
         currentScene?: {
-            accessibilitySettingsManager?: AccessibilitySettingsManager;
+            accessibilitySettingsManage;r?: AccessibilitySettingsManager;
     };
 }
 
-interface SettingsManager { get: (key: string) => any,
-    set: (key: string, value: any) => void,
+interface SettingsManager { get: (ke;y: string) => any,
+    set: (ke;y: string, value: any) => void,
     save: () => void ,}
 }
 
 interface AccessibilitySettingsManager { currentProfile?: string;
     getExtendedAccessibilitySettings: () => AccessibilitySetting[];
     getStats: () => any;
-    importSettings: (file: File) => Promise<void> ,}
+    importSettings: (fil;e: File) => Promise<void> ,}
 }
 
 interface AccessibilitySetting { key: string;
@@ -25,7 +25,7 @@ interface AccessibilitySetting { key: string;
 ';
 
 interface ErrorHandler { ''
-    handleError: (error: Error, code: string, context?: any') => void }'
+    handleError: (erro;r: Error, code: string, context?: any') => void }'
 }
 
 interface LocalizationManager { // Define methods as needed }
@@ -34,24 +34,24 @@ interface ExportData { timestamp: string,
     version: string;
     gameVersion: string;
     source: string;
-    settings: Record<string, any>;
+   , settings: Record<string, any>;
     accessibility: Record<string, any>;
     metadata: {
-        userAgent: string;
+        userAgen;t: string;
         language: string;
-        exportedBy: string ,}
+       , exportedBy: string ,}
 
 interface ValidationResult { valid: boolean,
     error?: string }
 
 interface ApplyResult { appliedCount: number;
-    warnings: string[] }
+   , warnings: string[] }
 ';
 
 interface OperationRecord { ''
     type: 'export' | 'import';
     timestamp: number;
-    filename: string;
+   , filename: string;
     settingsCount?: number }
 
 interface Statistics { exportCount: number;
@@ -59,11 +59,11 @@ interface Statistics { exportCount: number;
     errorsCount: number;
     lastExport: string | null;
     lastImport: string | null;
-    sessionStart: number }
+   , sessionStart: number }
 
 interface ExtendedStatistics extends Statistics { lastOperation: OperationRecord | null;
     operationHistory: OperationRecord[];
-    sessionDuration: number }
+   , sessionDuration: number }
 
 type StatusType = 'ready' | 'processing' | 'success' | 'error';
 
@@ -89,7 +89,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
     private localizationManager: LocalizationManager;
     // ファイル操作設定
-    private readonly SUPPORTED_FORMATS: string[],
+    private readonly, SUPPORTED_FORMATS: string[],
     private readonly MAX_FILE_SIZE: number,
     private readonly EXPORT_FILENAME_PREFIX: string,
     
@@ -109,7 +109,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
     // AccessibilitySettingsManagerの参照
     private accessibilityManager: AccessibilitySettingsManager | undefined;
     // 統計情報
-    private stats: Statistics;
+    private, stats: Statistics;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -142,7 +142,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             importCount: 0;
             errorsCount: 0;
             lastExport: null);
-            lastImport: null ,}
+           , lastImport: null ,}
             sessionStart: Date.now(); }
         }
     
@@ -184,7 +184,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             flex-direction: column,
             gap: 15px;
             padding: 20px;
-            border: 1px solid #ddd;
+           , border: 1px solid #ddd;
             border-radius: 8px,
             background-color: #f9f9f9,
             font-family: Arial, sans-serif;
@@ -208,7 +208,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         description.style.cssText = `;
             font-size: 14px,
             color: #666;
-            margin: 0 0 15px 0,
+           , margin: 0 0 15px 0,
         `;''
         description.textContent = '設定をJSONファイルでエクスポート・インポートできます。';''
         this.container.appendChild(description);
@@ -218,7 +218,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         buttonContainer.className = 'button-container';
         buttonContainer.style.cssText = `;
             display: flex;
-            gap: 15px;
+           , gap: 15px;
             align-items: center,
         `;
         ';
@@ -230,7 +230,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             background: linear-gradient(135deg, #4CAF50, #45a049),
             color: white;
             border: none;
-            padding: 12px 24px;
+           , padding: 12px 24px;
             border-radius: 6px,
             cursor: pointer;
             font-size: 14px,
@@ -253,7 +253,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             background: linear-gradient(135deg, #2196F3, #1976D2),
             color: white;
             border: none;
-            padding: 12px 24px;
+           , padding: 12px 24px;
             border-radius: 6px,
             cursor: pointer;
             font-size: 14px,
@@ -283,7 +283,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         this.progressBar.className = 'progress-bar';
         this.progressBar.style.cssText = `;
             width: 100%;
-            height: 6px;
+           , height: 6px;
             background-color: #e0e0e0,
             border-radius: 3px,
             overflow: hidden;
@@ -294,9 +294,9 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         progressFill.className = 'progress-fill';
         progressFill.style.cssText = `;
             height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #45a049),
+           , background: linear-gradient(90deg, #4CAF50, #45a049),
             width: 0%;
-            transition: width 0.3s ease;
+           , transition: width 0.3s ease;
         `;
 
         this.progressBar.appendChild(progressFill);''
@@ -320,7 +320,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         this.infoPanel.style.cssText = `;
             font-size: 12px,
             color: #666;
-            padding: 10px;
+           , padding: 10px;
             background-color: #f0f0f0,
             border-radius: 4px,
             border-left: 4px solid #2196F3,
@@ -514,7 +514,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
                 type: 'import', ;
                 timestamp: Date.now( );
                 filename: file.name);
-                settingsCount: applyResult.appliedCount';
+               , settingsCount: applyResult.appliedCount';
             };')'
             this.operationHistory.push(this.lastOperation);
             ';
@@ -527,7 +527,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
                 filename: file.name}, }
                 timestamp: Date.now(});
                 settingsCount: applyResult.appliedCount;
-                warnings: applyResult.warnings;
+               , warnings: applyResult.warnings;
             }),
 
         } catch (error) { this.stats.errorsCount++;''
@@ -543,8 +543,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             this.setButtonsEnabled(true);
             ';
             // ファイル入力をリセット
-            if(this.fileInput) {'
-                ';
+            if(this.fileInput) {', ';
 
             }
 
@@ -566,13 +565,13 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      */'
     private async prepareExportData(): Promise<ExportData> { const exportData: ExportData = {''
             timestamp: new Date().toISOString(''';
-            version: '1.0.0',
+           , version: '1.0.0',
             gameVersion: this.gameEngine.version || '1.0.0',
             source: 'SettingsImportExportComponent', }
             settings: {};
             accessibility: {};
             metadata: { userAgent: navigator.userAgent;
-                language: navigator.language,
+               , language: navigator.language,
                 exportedBy: 'awaputi-bubble-pop-game' ,}))'
         // 一般設定の収集')'
         if(this.gameEngine.settingsManager) {'
@@ -621,7 +620,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      */'
     private generateExportFilename(): string { const now = new Date();''
         const dateStr = now.toISOString(').split('T)[0]; // YYYY-MM-DD
-        const timeStr = now.toTimeString(').split(' '')[0].replace(/:/g, ''); // HHMMSS }
+        const timeStr = now.toTimeString(').split(', '')[0].replace(/:/g, ''); // HHMMSS }
         return `${this.EXPORT_FILENAME_PREFIX}-${dateStr}-${timeStr}.json`;
     }
     
@@ -791,7 +790,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      * @param event - キーボードイベント'
      */''
     private handleKeydown(event: KeyboardEvent): void { ''
-        if(event.key === 'Enter' || event.key === ' ') {
+        if(event.key === 'Enter' || event.key === ', ') {
             event.preventDefault();
         }
             (event.target, as HTMLElement).click(); }
@@ -879,7 +878,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      */
     getStats(): ExtendedStatistics { return { ...this.stats,
             lastOperation: this.lastOperation;
-            operationHistory: this.operationHistory.slice(-10), // 最新10件 };
+           , operationHistory: this.operationHistory.slice(-10), // 最新10件 };
             sessionDuration: Date.now() - this.stats.sessionStart }
         }
     
@@ -900,8 +899,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      * @param visible - 表示するかどうか
      */
     setVisible(visible: boolean): void { ''
-        if(this.container) {'
-            ';
+        if(this.container) {', ';
 
         }
 
@@ -931,8 +929,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
                 this.importButton.removeEventListener('keydown', this.handleKeydown.bind(this); }
             }
 
-            if(this.fileInput) {'
-                ';
+            if(this.fileInput) {', ';
 
             }
 

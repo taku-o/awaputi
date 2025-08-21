@@ -5,23 +5,23 @@ interface ListenerOptions { once?: boolean;
 interface ListenerInfo { callback: EventCallback,
     once: boolean;
     priority: number;
-    id: string ,}
+   , id: string ,}
 
 interface EventHistoryEntry { event: string;
     data: any;
-    timestamp: number }
+   , timestamp: number }
 
 interface ErrorInfo { type: 'listener_error' | 'emit_error';
     error: Error;
     event: string;
     listenerId?: string;
     data?: any;
-    timestamp: number }
+   , timestamp: number }
 
 interface DebugInfo { eventNames: string[];
-    listenerCounts: Record<string, number>;
+   , listenerCounts: Record<string, number>;
     recentEvents: EventHistoryEntry[];
-    totalEvents: number ,}
+   , totalEvents: number ,}
 
 type EventCallback = (data: any, event: string) => boolean | void;
 type ErrorHandler = (errorInfo: ErrorInfo) => void;
@@ -39,7 +39,7 @@ export class ComponentEventBus {
     private eventHistory: EventHistoryEntry[];
     private maxHistorySize: number;
     // エラーハンドリング
-    private errorHandlers: ErrorHandler[];
+    private, errorHandlers: ErrorHandler[];
     constructor() {
 
         // イベントリスナーの管理
@@ -63,8 +63,7 @@ export class ComponentEventBus {
      * @returns リスナー削除用の関数
      */''
     on(event: string, callback: EventCallback, options: ListenerOptions = { )): UnsubscribeFunction {''
-        if(typeof, event !== 'string' || typeof, callback !== 'function'') {'
-            ';
+        if(typeof, event !== 'string' || typeof, callback !== 'function'') {', ';
 
         }
 
@@ -76,7 +75,7 @@ export class ComponentEventBus {
         const listenerInfo: ListenerInfo = { callback,
             once: options.once || false;
             priority: options.priority || 0;
-            id: this.generateListenerId( ,};
+           , id: this.generateListenerId( ,};
         
         this.listeners.get(event)!.push(listenerInfo);
         
@@ -196,7 +195,7 @@ export class ComponentEventBus {
      * @returns デバッグ情報
      */
     getDebugInfo(): DebugInfo { return { eventNames: this.getEventNames()
-            listenerCounts: Object.fromEntries();
+           , listenerCounts: Object.fromEntries();
                 this.getEventNames().map(event => [event, this.getListenerCount(event)]);
             ),
             recentEvents: this.eventHistory.slice(-10), };
@@ -219,7 +218,7 @@ export class ComponentEventBus {
     private addToHistory(event: string, data: any): void { this.eventHistory.push({)
             event);
             data: this.safeClone(data);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
         
         // 履歴サイズを制限
         if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift(); }
@@ -236,7 +235,7 @@ export class ComponentEventBus {
             error,
             event,
             listenerId: listener.id;
-            timestamp: Date.now( ,};
+           , timestamp: Date.now( ,};
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -261,7 +260,7 @@ export class ComponentEventBus {
             error,
             event,
             data: this.safeClone(data);
-            timestamp: Date.now( ,};
+           , timestamp: Date.now( ,};
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {

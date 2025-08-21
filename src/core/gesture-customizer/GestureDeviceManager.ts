@@ -10,17 +10,17 @@ export interface GestureConfig { enabled: boolean,
     keyboardSensitivity?: number;
     oneHandedMode?: boolean;
     deviceAdaptation: DeviceAdaptation;
-    gestureThresholds: GestureThresholds
+   , gestureThresholds: GestureThresholds
     ,}
 
 export interface DeviceAdaptation { touchscreenOptimized: boolean;
     mouseOptimized: boolean;
     keyboardOptimized: boolean;
-    gamepadOptimized: boolean }
+   , gamepadOptimized: boolean }
 
 export interface GestureThresholds { minDistance: number;
     angleThreshold: number;
-    minVelocity: number }
+   , minVelocity: number }
 
 export interface RecognitionState { isRecognizing: boolean;
     currentGesture: string | null;
@@ -29,7 +29,7 @@ export interface RecognitionState { isRecognizing: boolean;
     currentPosition: Position;
     touchPoints: TouchPoint[];
     velocity: Velocity;
-    pressure: number;
+   , pressure: number;
     scale?: number;
     edge?: EdgePosition;
     }
@@ -37,40 +37,40 @@ export interface RecognitionState { isRecognizing: boolean;
 export interface TouchPoint { id: number,
     x: number;
     y: number;
-    force: number ,}
+   , force: number ,}
 
 export interface Position { x: number;
-    y: number }
+   , y: number }
 
 export interface Velocity { x: number;
-    y: number }
+   , y: number }
 
 export interface DeviceSettings { touch: TouchSettings;
     mouse: MouseSettings;
     keyboard: KeyboardSettings;
-    gamepad: GamepadSettings
+   , gamepad: GamepadSettings
     }
 
 export interface TouchSettings { sensitivity: number;
     deadZone: number;
     multiTouchEnabled: boolean;
-    pressureEnabled: boolean }
+   , pressureEnabled: boolean }
 
 export interface MouseSettings { sensitivity: number;
     acceleration: number;
     rightClickEnabled: boolean;
-    wheelSensitivity: number }
+   , wheelSensitivity: number }
 
 export interface KeyboardSettings { sensitivity: number;
     repeatDelay: number;
     repeatRate: number;
     stickyKeys: boolean;
-    filterKeys: boolean }
+   , filterKeys: boolean }
 
 export interface GamepadSettings { enabled: boolean;
     deadZone: number;
     sensitivity: number;
-    vibrationEnabled: boolean }
+   , vibrationEnabled: boolean }
 
 export interface DeviceInfo { hasTouch: boolean;
     hasMouse: boolean;
@@ -78,38 +78,38 @@ export interface DeviceInfo { hasTouch: boolean;
     hasGamepad: boolean;
     screenSize: ScreenSize;
     devicePixelRatio: number;
-    orientation: string }
+   , orientation: string }
 
 export interface ScreenSize { width: number;
-    height: number }
+   , height: number }
 
 export interface KeyModifiers { ctrl: boolean;
     alt: boolean;
     shift: boolean;
-    meta: boolean }
+   , meta: boolean }
 
 export interface StickInput { x: number;
-    y: number }
+   , y: number }
 
 export interface GamepadButton { pressed: boolean;
     touched: boolean;
-    value: number }
+   , value: number }
 
-export interface BoundHandlers { touchStart: (event: TouchEvent) => void;
-    touchMove: (event: TouchEvent) => void;
-    touchEnd: (event: TouchEvent) => void;
-    touchCancel: (event: TouchEvent) => void;
-    mouseDown: (event: MouseEvent) => void;
-    mouseMove: (event: MouseEvent) => void;
-    mouseUp: (event: MouseEvent) => void;
-    wheel: (event: WheelEvent) => void;
-    contextMenu: (event: MouseEvent) => void;
-    keyDown: (event: KeyboardEvent) => void;
-    keyUp: (event: KeyboardEvent) => void;
-    gamepadConnected: (event: GamepadEvent) => void;
-    gamepadDisconnected: (event: GamepadEvent) => void;
-    resize: (event: Event) => void;
-    orientationChange: (event: Event) => void }
+export interface BoundHandlers { touchStart: (even;t: TouchEvent) => void;
+    touchMove: (even;t: TouchEvent) => void;
+    touchEnd: (even;t: TouchEvent) => void;
+    touchCancel: (even;t: TouchEvent) => void;
+    mouseDown: (even;t: MouseEvent) => void;
+    mouseMove: (even;t: MouseEvent) => void;
+    mouseUp: (even;t: MouseEvent) => void;
+    wheel: (even;t: WheelEvent) => void;
+    contextMenu: (even;t: MouseEvent) => void;
+    keyDown: (even;t: KeyboardEvent) => void;
+    keyUp: (even;t: KeyboardEvent) => void;
+    gamepadConnected: (even;t: GamepadEvent) => void;
+    gamepadDisconnected: (even;t: GamepadEvent) => void;
+    resize: (even;t: Event) => void;
+    orientationChange: (even;t: Event) => void }
 }
 
 export interface GestureEventData { type: GestureInputType;
@@ -140,12 +140,12 @@ export interface WheelGestureData extends GestureEventData {;
     deltaX: number;
     deltaY: number;
     deltaZ: number;
-    deltaMode: number }
+   , deltaMode: number }
 ';
 
 export interface KeyboardGestureData extends GestureEventData {;
     type: 'keyboard';
-    key: string;
+   , key: string;
     code?: string;
     modifiers?: KeyModifiers;
     combo?: string; }
@@ -165,7 +165,7 @@ export interface DeviceCapabilities { touch: boolean,
     keyboard: boolean;
     gamepad: boolean;
     multiTouch: boolean;
-    pressure: boolean ,}
+   , pressure: boolean ,}
 
 export interface DeviceSettingsUpdate { touch?: Partial<TouchSettings>;
     mouse?: Partial<MouseSettings>;
@@ -209,7 +209,7 @@ export class GestureDeviceManager {
     private deviceSettings: DeviceSettings;
     private deviceInfo: DeviceInfo | null;
     private boundHandlers: BoundHandlers;
-    private gamepadPollingActive: boolean;
+    private, gamepadPollingActive: boolean;
     private onGestureEvent?: GestureEventHandler;
 
     constructor(config: GestureConfig, recognitionState: RecognitionState) {
@@ -222,23 +222,23 @@ export class GestureDeviceManager {
             touch: {
                 sensitivity: 1.0;
                 deadZone: 5;
-                multiTouchEnabled: true;
+               , multiTouchEnabled: true;
     ,}
                 pressureEnabled: false }
             };
             mouse: { sensitivity: 1.0;
                 acceleration: 1.0;
                 rightClickEnabled: true;
-                wheelSensitivity: 1.0 };
+               , wheelSensitivity: 1.0 };
             keyboard: { sensitivity: 1.0;
                 repeatDelay: 500;
                 repeatRate: 50;
                 stickyKeys: false;
-                filterKeys: false };
+               , filterKeys: false };
             gamepad: { enabled: false;
                 deadZone: 0.1;
                 sensitivity: 1.0;
-                vibrationEnabled: true }
+               , vibrationEnabled: true }
         };
         // デバイス情報
         this.deviceInfo = null;
@@ -258,7 +258,7 @@ export class GestureDeviceManager {
             gamepadConnected: this.handleGamepadConnected.bind(this);
             gamepadDisconnected: this.handleGamepadDisconnected.bind(this);
             resize: this.handleScreenSizeChange.bind(this);
-            orientationChange: this.handleOrientationChange.bind(this ,};
+           , orientationChange: this.handleOrientationChange.bind(this ,};
         
         // ゲームパッドポーリング
         this.gamepadPollingActive = false;
@@ -318,8 +318,8 @@ export class GestureDeviceManager {
             hasMouse: matchMedia('(pointer: fine)'').matches,
             hasKeyboard: true, // 常に利用可能と仮定;
             hasGamepad: 'getGamepads' in navigator;
-            screenSize: { width: window.screen.width;
-                height: window.screen.height };
+           , screenSize: { width: window.screen.width;
+               , height: window.screen.height };
             devicePixelRatio: window.devicePixelRatio || 1,
             orientation: screen.orientation? .type || 'unknown';
         },
@@ -439,11 +439,11 @@ export class GestureDeviceManager {
         this.recognitionState.touchPoints = Array.from(event.touches).map(touch => ({
             id: touch.identifier);
             x: touch.clientX);
-            y: touch.clientY,);
+           , y: touch.clientY,);
             force: touch.force || 0)));
         this.recognitionState.startPosition = {
             x: this.recognitionState.touchPoints[0].x;
-            y: this.recognitionState.touchPoints[0].y ,}
+           , y: this.recognitionState.touchPoints[0].y ,}
         };
         // 片手モード用のエッジ検出
         if(this.config.oneHandedMode) {
@@ -457,7 +457,7 @@ export class GestureDeviceManager {
         // 上位に通知
         this.notifyGestureEvent('touchStart', { ')'
             type: 'touch');
-            points: this.recognitionState.touchPoints,);
+           , points: this.recognitionState.touchPoints,);
             startPosition: this.recognitionState.startPosition ,}
     
     /**
@@ -470,7 +470,7 @@ export class GestureDeviceManager {
         const currentTouches = Array.from(event.touches).map(touch => ({
             id: touch.identifier);
             x: touch.clientX);
-            y: touch.clientY,);
+           , y: touch.clientY,);
             force: touch.force || 0)));
         // 速度計算
         this.calculateVelocity(currentTouches);
@@ -478,7 +478,7 @@ export class GestureDeviceManager {
         // 現在位置の更新
         this.recognitionState.currentPosition = {
             x: currentTouches[0].x;
-            y: currentTouches[0].y ,}
+           , y: currentTouches[0].y ,}
         };
         // マルチタッチの処理
         if(currentTouches.length > 1) {
@@ -493,7 +493,7 @@ export class GestureDeviceManager {
         this.notifyGestureEvent('touchMove', { ''
             type: 'touch);
             points: currentTouches);
-            currentPosition: this.recognitionState.currentPosition,);
+           , currentPosition: this.recognitionState.currentPosition,);
             velocity: this.recognitionState.velocity ,}
     
     /**
@@ -517,7 +517,7 @@ export class GestureDeviceManager {
             touchPoints: this.recognitionState.touchPoints;
             velocity: this.recognitionState.velocity;
             fingers: this.recognitionState.touchPoints.length;
-            direction: this.calculateDirection(;
+           , direction: this.calculateDirection(;
                 this.recognitionState.startPosition)';
                 this.recognitionState.currentPosition)'';
             '),
@@ -550,7 +550,7 @@ export class GestureDeviceManager {
                 identifier: 0;
                 clientX: event.clientX;
                 clientY: event.clientY];
-                force: (event, as any).pressure || 0.5 }]
+               , force: (event, as any).pressure || 0.5 }]
             }] as Touch[]
         } as TouchEvent;
         this.handleTouchStart(mouseTouch);
@@ -569,7 +569,7 @@ export class GestureDeviceManager {
                 identifier: 0;
                 clientX: event.clientX;
                 clientY: event.clientY];
-                force: (event, as any).pressure || 0.5 }]
+               , force: (event, as any).pressure || 0.5 }]
             }] as Touch[]
         } as TouchEvent;
         this.handleTouchMove(mouseTouch);
@@ -595,8 +595,7 @@ export class GestureDeviceManager {
             deltaX: event.deltaX;
             deltaY: event.deltaY;
             deltaZ: event.deltaZ;
-            deltaMode: event.deltaMode }))'
-        ')';
+           , deltaMode: event.deltaMode }))', ')';
         this.notifyGestureEvent('wheel', wheelGesture);
     }
     
@@ -608,7 +607,7 @@ export class GestureDeviceManager {
             event.preventDefault(''';
             this.notifyGestureEvent('contextMenu', {)'
                 type: 'mouse');
-                x: event.clientX,);
+               , x: event.clientX,);
                 y: event.clientY ,}
     }
     
@@ -623,14 +622,14 @@ export class GestureDeviceManager {
             ctrl: event.ctrlKey;
             alt: event.altKey;
             shift: event.shiftKey;
-            meta: event.metaKey };
+           , meta: event.metaKey };
         const keyCombo = this.createKeyCombo(event.key, modifiers);
         
         // キーボードジェスチャーとして処理
         const keyboardGesture: KeyboardGestureData = { ''
             type: 'keyboard';
             key: event.key;
-            code: event.code;
+           , code: event.code;
             modifiers,
             combo: keyCombo ,};
         this.notifyGestureEvent('keyDown', keyboardGesture);
@@ -644,7 +643,7 @@ export class GestureDeviceManager {
 
         this.notifyGestureEvent('keyUp', {)'
             type: 'keyboard');
-            key: event.key,);
+           , key: event.key,);
             code: event.code ,}
     
     // ゲームパッド処理
@@ -709,10 +708,10 @@ export class GestureDeviceManager {
             y: Math.abs(gamepad.axes[3]) > this.deviceSettings.gamepad.deadZone ? gamepad.axes[3] : 0 ,};
         // ボタン入力
         const buttons: GamepadButton[] = gamepad.buttons.map(button => ({ pressed: button.pressed)
-            touched: button.touched,')';
+           , touched: button.touched,')';
             value: button.value))');
         // ゲームパッドジェスチャーとして処理
-        const gamepadGesture: GamepadGestureData = {''
+        const, gamepadGesture: GamepadGestureData = {''
             type: 'gamepad';
             leftStick,
             rightStick,
@@ -786,7 +785,7 @@ export class GestureDeviceManager {
         
         this.recognitionState.velocity = {
             x: dx / deltaTime;
-            y: dy / deltaTime }
+           , y: dy / deltaTime }
     
     /**
      * マルチタッチ処理
@@ -809,8 +808,7 @@ export class GestureDeviceManager {
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
         // エッジの判定
-        if(position.x < edgeThreshold) {'
-            ';
+        if(position.x < edgeThreshold) {', ';
 
         }
 
@@ -850,7 +848,7 @@ export class GestureDeviceManager {
         // デバイス情報を更新
         this.deviceInfo.screenSize = {
             width: window.screen.width;
-            height: window.screen.height };
+           , height: window.screen.height };
         this.notifyGestureEvent('screenSizeChange', { ')'
             type: 'touch', // ダミー型);
             screenSize: this.deviceInfo.screenSize ,}
@@ -919,7 +917,7 @@ export class GestureDeviceManager {
             return { touch: false,
                 mouse: false;
                 keyboard: false;
-                gamepad: false;
+               , gamepad: false;
         ,}
                 multiTouch: false, };
                 pressure: false }
@@ -929,7 +927,7 @@ export class GestureDeviceManager {
             mouse: info.hasMouse;
             keyboard: info.hasKeyboard;
             gamepad: info.hasGamepad;
-            multiTouch: this.deviceSettings.touch.multiTouchEnabled, };
+           , multiTouch: this.deviceSettings.touch.multiTouchEnabled, };
             pressure: this.deviceSettings.touch.pressureEnabled }
         }
     
@@ -957,8 +955,7 @@ export class GestureDeviceManager {
         window.removeEventListener('gamepaddisconnected', this.boundHandlers.gamepadDisconnected);''
         window.removeEventListener('resize', this.boundHandlers.resize);
 
-        if(screen.orientation) {'
-            ';
+        if(screen.orientation) {', ';
 
         }
 

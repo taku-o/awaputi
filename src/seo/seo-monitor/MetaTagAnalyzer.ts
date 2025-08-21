@@ -6,10 +6,10 @@
 
 interface MetaTagThresholds { metaTags: {
         titleLength: {
-            min: number;
-            max: number };
+            mi;n: number;
+           , max: number };
         descriptionLength: { min: number;
-            max: number };
+           , max: number };
 }
 
 interface MetaTagAlert { type: string,
@@ -18,12 +18,12 @@ interface MetaTagAlert { type: string,
     current?: number;
     threshold?: string;
     message: string;
-    timestamp: string ,}
+   , timestamp: string ,}
 
 interface MetaTags { title: string | null;
     description: string | null;
     keywords: string | null;
-    ogTags: Record<string, string>;
+   , ogTags: Record<string, string>;
     twitterTags: Record<string, string>;
     timestamp: string ,}
 
@@ -42,7 +42,7 @@ export class MetaTagAnalyzer {
                 keywords: this.extractKeywordsTag();
                 ogTags: this.extractOGTags();
                 twitterTags: this.extractTwitterTags();
-                timestamp: new Date().toISOString( };
+               , timestamp: new Date().toISOString( };
             
             return, metaTags;
 
@@ -163,8 +163,7 @@ export class MetaTagAnalyzer {
 });
         }
 
-        return Object.keys(ogTags).length > 0 ? ogTags : { ''
-            'og:title': 'BubblePop',
+        return Object.keys(ogTags).length > 0 ? ogTags : { '', 'og:title': 'BubblePop',
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
             'og:type': 'website' ,}
     
@@ -184,8 +183,7 @@ export class MetaTagAnalyzer {
 });
         }
 
-        return Object.keys(twitterTags).length > 0 ? twitterTags : { ''
-            'twitter:card': 'summary_large_image',
+        return Object.keys(twitterTags).length > 0 ? twitterTags : { '', 'twitter:card': 'summary_large_image',
             'twitter:title': 'BubblePop',
             'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム' ,}''
 }

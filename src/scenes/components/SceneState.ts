@@ -1,28 +1,28 @@
 // インターフェース定義
 interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean;
-    reducedMotion: boolean ,}
+   , reducedMotion: boolean ,}
 
 interface StatisticsDisplaySettings { showDashboard: boolean;
     showCharts: boolean;
     showDetailedStats: boolean;
     enableAnimations: boolean;
-    compactMode: boolean }
+   , compactMode: boolean }
 
 interface LayoutSettings { tabHeight: number;
     headerHeight: number;
     contentPadding: number;
-    scrollbarWidth: number }
+   , scrollbarWidth: number }
 
 interface UserPreferences { currentTab: string;
     statisticsViewMode: string;
     currentPeriodFilter: string;
     statisticsDisplaySettings: StatisticsDisplaySettings;
-    currentAchievementCategory: string }
+   , currentAchievementCategory: string }
 
 interface StateChange { key: string;
     value: any;
-    oldValue: any }
+   , oldValue: any }
 
 interface SerializedState { currentTab: string;
     showingDialog: string | null;
@@ -33,7 +33,7 @@ interface SerializedState { currentTab: string;
     accessibilitySettings: AccessibilitySettings;
     scrollPosition: number;
     selectedItem: number;
-    focusedElement: number }
+   , focusedElement: number }
 
 type DialogType = 'username' | 'export' | 'import' | null;''
 type ViewMode = 'dashboard' | 'charts' | 'details';''
@@ -82,7 +82,7 @@ export class SceneState {
     public errorMessage: string | null,
     private errorTimeout: NodeJS.Timeout | null;
     // レイアウト設定
-    public layout: LayoutSettings,
+    public, layout: LayoutSettings,
     // 変更通知のためのイベントリスナー
     private changeListeners: Map<string, ChangeListener[]>;
 
@@ -115,7 +115,7 @@ export class SceneState {
             showCharts: true;
             showDetailedStats: true;
             enableAnimations: true;
-            compactMode: false ,};
+           , compactMode: false ,};
         // データキャッシュ
         this.statisticsData = null;
         this.achievementsData = null;
@@ -124,7 +124,7 @@ export class SceneState {
         // アクセシビリティ設定
         this.accessibilitySettings = { highContrast: false,
             largeText: false;
-            reducedMotion: false ,};
+           , reducedMotion: false ,};
         // エラー状態管理
         this.errorMessage = null;
         this.errorTimeout = null;
@@ -133,7 +133,7 @@ export class SceneState {
         this.layout = { tabHeight: 60,
             headerHeight: 120;
             contentPadding: 20;
-            scrollbarWidth: 16 ,};
+           , scrollbarWidth: 16 ,};
         // 変更通知のためのイベントリスナー
         this.changeListeners = new Map();
         
@@ -310,8 +310,7 @@ export class SceneState {
         const oldMessage = this.errorMessage;
         this.errorMessage = null;
 
-        if(oldMessage) {'
-            ';
+        if(oldMessage) {', ';
 
         }
 
@@ -445,7 +444,7 @@ export class SceneState {
             statisticsDisplaySettings: this.statisticsDisplaySettings;
             accessibilitySettings: this.accessibilitySettings;
             scrollPosition: this.scrollPosition;
-            selectedItem: this.selectedItem, };
+           , selectedItem: this.selectedItem, };
             focusedElement: this.focusedElement }
         }
     

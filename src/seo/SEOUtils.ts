@@ -3,8 +3,8 @@
  * 
  * SEO関連の共通処理とヘルパー関数
  */
-import { SEOConfig, LanguageCode } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';
+import { SEOConfig, LanguageCode  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';
 
 // 画像最適化オプションインターフェース
 interface ImageOptimizationOptions { width?: number;
@@ -24,7 +24,7 @@ interface Schema { required?: string[];
 // スキーマ検証結果インターフェース
 interface ValidationResult<T = any> { isValid: boolean,
     errors: string[];
-    data: T
+   , data: T
     ,}
 
 /**
@@ -38,8 +38,7 @@ export function normalizeUrl(url: string): string { try {'
         
         // 末尾のスラッシュを削除
         let pathname = urlObj.pathname;''
-        if(pathname.length > 1 && pathname.endsWith('/) {'
-            ';
+        if(pathname.length > 1 && pathname.endsWith('/) {', ';
 
         }
 
@@ -66,8 +65,7 @@ export function createMetaTag(property: string, content: string): HTMLMetaElemen
 
         seoLogger.warn('Invalid meta tag parameters', { property, content };
         return null;
-    })'
-    ')';
+    })', ')';
     const meta = document.createElement('meta'');
 
     if (property.startsWith('og:'') || property.startsWith('article:)) { ''
@@ -87,8 +85,7 @@ export function createMetaTag(property: string, content: string): HTMLMetaElemen
  * メタコンテンツのサニタイズ'
  */''
 export function sanitizeMetaContent(content: string | number | boolean): string {;
-    if(typeof, content !== 'string) {'
-        ';
+    if(typeof, content !== 'string) {', ';
 
     }
 
@@ -141,8 +138,7 @@ export function generateJsonLd(data: any): string { try {
     } catch (error) { seoLogger.error('JSON-LD generation failed', error);
         
         // 最小限のスキーマを返す
-        return JSON.stringify({''
-            '@context': 'https://schema.org',)';
+        return JSON.stringify({'', '@context': 'https://schema.org',)';
             '@type': 'WebSite');
             name: SEOConfig.siteName,);
             url: SEOConfig.baseUrl ,}
@@ -175,7 +171,7 @@ export function truncateText(text: string, maxLength: number, suffix: string = '
     ';
     // 単語境界で切り詰め
     const truncated = text.substring(0, maxLength - suffix.length);''
-    const lastSpace = truncated.lastIndexOf(' ');
+    const lastSpace = truncated.lastIndexOf(', ');
     
     if (lastSpace > maxLength * 0.8) { return truncated.substring(0, lastSpace) + suffix; }
     
@@ -253,7 +249,7 @@ export function debounce<T extends (...args: any[]) => any>(;
 export function measurePerformance(operation: string) { return function(
         target: any);
         propertyKey: string);
-        descriptor: PropertyDescriptor;
+       , descriptor: PropertyDescriptor;
     ): PropertyDescriptor {
         const originalMethod = descriptor.value,
         
@@ -304,7 +300,7 @@ export function validateSchema<T = any>(data: any, schema: Schema): ValidationRe
         }
             // 型チェック }
             if (fieldSchema.type && typeof, value !== fieldSchema.type) { }
-                errors.push(`Invalid type for ${field}: expected ${fieldSchema.type}, got ${typeof value}`});
+                errors.push(`Invalid type for ${field}: expected ${fieldSchema.type}, got ${typeof, value}`});
             } else { validated[field] = value; }''
         } else if(fieldSchema.default !== undefined) { validated[field] = fieldSchema.default; }
     };

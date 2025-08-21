@@ -34,21 +34,21 @@ export interface AccessibilitySettings { highContrast: boolean,
     voiceGuidance: boolean;
     subtitles: boolean;
     profiles: AccessibilityProfile;
-    importExport: boolean ,}
+   , importExport: boolean ,}
 
 export interface ControlsSettings { keyboardEnabled: boolean;
     mouseEnabled: boolean;
-    touchEnabled: boolean }
+   , touchEnabled: boolean }
 
 export interface KeyboardShortcuts { pause: string[];
     menu: string[];
     settings: string[];
-    help: string[] }
+   , help: string[] }
 
 export interface UISettings { showFPS: boolean;
     showDebugInfo: boolean;
     animationSpeed: number;
-    uiScale: number }
+   , uiScale: number }
 
 export interface SocialSettings { enableSharing: boolean;
     autoPromptHighScore: boolean;
@@ -58,27 +58,13 @@ export interface SocialSettings { enableSharing: boolean;
     screenshotQuality: ScreenshotQuality;
     privacyLevel: PrivacyLevel;
     customMessage: string;
-    showWatermark: boolean }
+   , showWatermark: boolean }
 
-export interface NotificationSettings { 'challenges.enabled': boolean;''
-    'challenges.newChallenge': boolean;''
-    'challenges.challengeComplete': boolean;''
-    'challenges.dailyReminder': boolean;''
-    'challenges.weeklyReminder': boolean;''
-    'achievements.enabled': boolean;''
-    'achievements.unlocked': boolean;''
-    'achievements.progress': boolean;''
-    'achievements.rare': boolean;''
-    'leaderboard.enabled': boolean;''
-    'leaderboard.newRecord': boolean;''
-    'leaderboard.rankChange': boolean;''
-    'system.enabled': boolean;''
-    'system.updates': boolean;''
-    'system.maintenance': boolean; }
+export interface NotificationSettings { 'challenges.enabled': boolean;'', 'challenges.newChallenge': boolean;'', 'challenges.challengeComplete': boolean;'', 'challenges.dailyReminder': boolean;'', 'challenges.weeklyReminder': boolean;'', 'achievements.enabled': boolean;'', 'achievements.unlocked': boolean;'', 'achievements.progress': boolean;'', 'achievements.rare': boolean;'', 'leaderboard.enabled': boolean;'', 'leaderboard.newRecord': boolean;'', 'leaderboard.rankChange': boolean;'', 'system.enabled': boolean;'', 'system.updates': boolean;'', 'system.maintenance': boolean; }
 
 export interface PrivacySettings { dataCollection: boolean,
     analytics: boolean;
-    crashReports: boolean ,}
+   , crashReports: boolean ,}
 
 export interface DefaultSettings { masterVolume: number;
     sfxVolume: number;
@@ -92,25 +78,25 @@ export interface DefaultSettings { masterVolume: number;
     ui: UISettings;
     social: SocialSettings;
     notifications: NotificationSettings;
-    privacy: PrivacySettings
+   , privacy: PrivacySettings
     }
 
 export interface ParsedSettingKey { category: string;
     settingName: string;
     fullKey: string;
-    isLegacy: boolean }
+   , isLegacy: boolean }
 
 export interface ValidationResult { isValid: boolean;
-    errors: string[] }
+   , errors: string[] }
 
 export interface SettingsCount { total: number;
-    categories: number }
+   , categories: number }
 
 export interface DataManagerStats { totalSettings: number;
     categoriesCount: number;
     systemLanguage: string;
     defaultsGenerated: boolean;
-    structureValid: boolean }
+   , structureValid: boolean }
 
 export interface LegacyKeyMap { [key: string]: string, }
 ';
@@ -126,7 +112,7 @@ export type PrivacyLevel = 'public' | 'friends' | 'private';
 export class SettingsDataManager {
     private settingsManager: SettingsManager;
     private configManager: ConfigManager;
-    private validationRules: ValidationRules';
+    private, validationRules: ValidationRules';
 
     constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;
@@ -157,16 +143,16 @@ export class SettingsDataManager {
             language: this.detectSystemLanguage(''';
             quality: 'auto';
             // アクセシビリティ設定
-            accessibility: {
+           , accessibility: {
                 highContrast: false;
                 reducedMotion: false;
                 largeText: false;
                 screenReader: false;
-                colorBlindSupport: false,
+               , colorBlindSupport: false,
                 fontSize: 'medium',
                 contrastLevel: 'normal';
                 keyboardNavigation: true;
-                voiceGuidance: false,
+               , voiceGuidance: false,
                 subtitles: false,
                 profiles: 'default', };
                 importExport: false }
@@ -174,7 +160,7 @@ export class SettingsDataManager {
             // 操作設定
             controls: { keyboardEnabled: true;
                 mouseEnabled: true;
-                touchEnabled: true }))
+               , touchEnabled: true }))
             // キーボードショートカット（Issue #170で削除されたもの以外）
             keyboardShortcuts: { ''
                 pause: ['Space'],
@@ -188,20 +174,19 @@ export class SettingsDataManager {
             ui: { showFPS: false;
                 showDebugInfo: false;
                 animationSpeed: 1.0;
-                uiScale: 1.0 };
+               , uiScale: 1.0 };
             // ソーシャル共有設定
             social: { enableSharing: true;
                 autoPromptHighScore: true;
-                autoPromptAchievements: true,
+               , autoPromptAchievements: true,
                 defaultPlatform: 'auto', // 'auto', 'twitter', 'facebook', 'native'';
                 includeScreenshot: true,
                 screenshotQuality: 'high', // 'low', 'medium', 'high''';
                 privacyLevel: 'public', // 'public', 'friends', 'private''';
                 customMessage: '';
-                showWatermark: true ,};
+               , showWatermark: true ,};
             // 通知設定（平坦化構造）
-            notifications: { ''
-                'challenges.enabled': true,
+            notifications: { '', 'challenges.enabled': true,
                 'challenges.newChallenge': true,
                 'challenges.challengeComplete': true,
                 'challenges.dailyReminder': true,
@@ -220,7 +205,7 @@ export class SettingsDataManager {
             // プライバシー設定
             privacy: { dataCollection: true;
                 analytics: true;
-                crashReports: true }
+               , crashReports: true }
         }
     
     /**
@@ -286,7 +271,7 @@ export class SettingsDataManager {
             // レガシーキー形式（例: 'masterVolume'）'
             return { ''
                 category: 'legacy';
-                settingName: key;
+               , settingName: key;
         ,}
                 fullKey: key, };
                 isLegacy: true }
@@ -296,7 +281,7 @@ export class SettingsDataManager {
             // 新しい形式（例: 'audio.masterVolume'）
             return { category: parts[0],
                 settingName: parts[1];
-                fullKey: key, };
+               , fullKey: key, };
                 isLegacy: false }
             } else {
             // ネストされた形式（例: 'accessibility.highContrast'）'
@@ -390,8 +375,7 @@ export class SettingsDataManager {
     validateSettingsStructure(settings: any): ValidationResult { const errors: string[] = [],''
         const requiredCategories = ['accessibility', 'controls', 'ui', 'social', 'notifications'];
 
-        if(!settings || typeof, settings !== 'object'') {'
-            ';
+        if(!settings || typeof, settings !== 'object'') {', ';
 
         }
 
@@ -422,7 +406,7 @@ export class SettingsDataManager {
         return { totalSettings: settingsCount.total,
             categoriesCount: settingsCount.categories;
             systemLanguage: this.detectSystemLanguage();
-            defaultsGenerated: true, };
+           , defaultsGenerated: true, };
             structureValid: true }
         }
     

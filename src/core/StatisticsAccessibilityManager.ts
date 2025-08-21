@@ -13,9 +13,9 @@ export class StatisticsAccessibilityManager {
             screenReader: {
                 enabled: true;
                 verboseMode: false;
-                announcementDelay: 1000, // 1秒のデレイ;
+               , announcementDelay: 1000, // 1秒のデレイ;
                 maxAnnouncementLength: 300;
-                autoAnnouncements: true;
+               , autoAnnouncements: true;
     ,}
                 customDescriptions: true }
             };
@@ -23,20 +23,20 @@ export class StatisticsAccessibilityManager {
                 tabOrder: true;
                 shortcuts: true;
                 focusVisible: true;
-                skipLinks: true };
+               , skipLinks: true };
             visual: { highContrast: false;
                 largeText: false;
                 colorBlindSupport: true;
                 animations: true;
-                reducedMotion: false };
+               , reducedMotion: false };
             audio: { enabled: false;
                 soundCues: false;
                 speechSynthesis: false;
-                volume: 0.5 };
+               , volume: 0.5 };
             general: { timeout: 30000, // 30秒のタイムアウト
                 errorRecovery: true;
                 progressIndicators: true;
-                contextHelp: true ,}
+               , contextHelp: true ,}
         };
         // 状態管理
         this.state = { currentFocus: null,
@@ -45,7 +45,7 @@ export class StatisticsAccessibilityManager {
             isAnnouncing: false;
             lastAnnouncement: null;
             keyboardMode: false;
-            screenReaderActive: false ,};
+           , screenReaderActive: false ,};
         // ARIA要素管理
         this.ariaElements = new Map();
         this.liveRegions = new Map();
@@ -331,7 +331,7 @@ export class StatisticsAccessibilityManager {
                 padding: 0;
                 margin: -1px;
                 overflow: hidden;
-                clip: rect(0, 0, 0, 0),
+               , clip: rect(0, 0, 0, 0),
                 white-space: nowrap,
                 border: 0 ,}
             
@@ -339,7 +339,7 @@ export class StatisticsAccessibilityManager {
                 top: -1000px;
                 left: -1000px;
                 height: 1px;
-                width: 1px;
+               , width: 1px;
                 text-align: left,
                 overflow: hidden ,}
             
@@ -349,11 +349,11 @@ export class StatisticsAccessibilityManager {
                 top: 0;
                 width: auto;
                 height: auto;
-                overflow: visible;
+               , overflow: visible;
                 z-index: 9999,
                 background: #000;
                 color: #fff;
-                padding: 8px 16px;
+               , padding: 8px 16px;
                 text-decoration: none,
                 border-radius: 0 0 4px 0, }
         `;
@@ -509,8 +509,7 @@ export class StatisticsAccessibilityManager {
         document.addEventListener('touchstart', this.handleTouchStart.bind(this);
         ';
         // 統計データ更新イベント
-        if(this.statisticsManager) {'
-            ';
+        if(this.statisticsManager) {', ';
 
         }
 
@@ -532,8 +531,7 @@ export class StatisticsAccessibilityManager {
         }
         ';
         // 矢印キーナビゲーション
-        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(event.key) {'
-            ';
+        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(event.key) {', ';
 
         }
 
@@ -931,8 +929,7 @@ export class StatisticsAccessibilityManager {
     /**
      * トレンドテキストの生成'
      */''
-    generateTrendText(data) {'
-        ';
+    generateTrendText(data) {', ';
 
     }
 
@@ -941,8 +938,7 @@ export class StatisticsAccessibilityManager {
     /**
      * 比較テキストの生成'
      */''
-    generateComparisonText(data) {'
-        ';
+    generateComparisonText(data) {', ';
 
     }
 
@@ -1076,7 +1072,7 @@ export class StatisticsAccessibilityManager {
             reducedMotion: this.config.visual.reducedMotion;
             audioEnabled: this.config.audio.enabled;
             announcementCount: this.state.announcementQueue.length;
-            lastAnnouncement: this.state.lastAnnouncement;
+           , lastAnnouncement: this.state.lastAnnouncement;
     ,}
             focusableElementCount: this.focusableElements.length, };
             currentFocusIndex: this.currentFocusIndex }

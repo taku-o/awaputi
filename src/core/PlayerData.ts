@@ -11,7 +11,7 @@ function getErrorHandler(): ErrorHandler { if (!errorHandlerInstance) {
 function validateInput(value: any, type: string, constraints: any = {}): ValidationResult { const result: ValidationResult = {
         isValid: false;
         sanitizedValue: value;
-        errors: [] };
+       , errors: [] };
     if(type === 'number) {'
         const num = Number(value);''
         if(isNaN(num)) {''
@@ -78,13 +78,13 @@ interface OwnedItem { id: string,
 interface PlayerDataSave { username: string;
     ap: number;
     tap: number;
-    highScores: Record<string, number>;
+   , highScores: Record<string, number>;
     unlockedStages: string[];
-    ownedItems: (string | OwnedItem)[] ,}
+   , ownedItems: (string | OwnedItem)[] ,}
 
 interface ValidationResult { isValid: boolean;
     sanitizedValue: any;
-    errors: string[] }
+   , errors: string[] }
 
 interface ItemManager { useRevival(): boolean; }
 
@@ -128,7 +128,7 @@ export class PlayerData {
             const validation = validateInput(points, 'number', {
                 min: 0);
                 max: 1000000);
-                integer: true;
+               , integer: true;
             ),
 
             if (!validation.isValid) {' }'
@@ -156,7 +156,7 @@ export class PlayerData {
             const validation = validateInput(amount, 'number', {
                 min: 0);
                 max: this.maxHP);
-                integer: true;
+               , integer: true;
             ),
 
             if (!validation.isValid) {' }'
@@ -198,7 +198,7 @@ export class PlayerData {
             const validation = validateInput(amount, 'number', {
                 min: 0);
                 max: this.maxHP);
-                integer: true;
+               , integer: true;
             ),
 
             if (!validation.isValid) {' }'
@@ -243,7 +243,7 @@ export class PlayerData {
      */''
     save()';
             const validation = validateInput(this.username, 'string', { maxLength: 50)
-                escapeHtml: true;
+               , escapeHtml: true;
             ),
 
             if (!validation.isValid) {' }'
@@ -266,8 +266,7 @@ export class PlayerData {
             try {'
                 localStorage.setItem('bubblePop_playerData', JSON.stringify(data); } catch (storageError) { // LocalStorageが利用できない場合はフォールバックストレージを使用
                 const fallbackStorage = (window, as any).fallbackStorage;''
-                if(fallbackStorage) {'
-                    ';
+                if(fallbackStorage) {', ';
 
                 }
 
@@ -278,7 +277,7 @@ export class PlayerData {
                 operation: 'save',
                 data: 'playerData);
                 username: this.username);
-                ap: this.ap,);
+               , ap: this.ap,);
                 tap: this.tap ,});
         }
     }
@@ -290,8 +289,7 @@ export class PlayerData {
                 savedData = localStorage.getItem('bubblePop_playerData);
             } catch (storageError) { // LocalStorageが利用できない場合はフォールバックストレージを使用
                 const fallbackStorage = (window, as any).fallbackStorage;''
-                if(fallbackStorage) {'
-                    ';
+                if(fallbackStorage) {', ';
 
                 }
 
@@ -311,7 +309,7 @@ export class PlayerData {
                     getErrorHandler(').handleError(parseError, 'STORAGE_ERROR', { ')'
                         operation: 'parse',')';
                         data: 'playerData');
-                        savedData: savedData.substring(0, 100) // 最初の100文字のみログ });
+                       , savedData: savedData.substring(0, 100) // 最初の100文字のみログ });
                     return; // パースエラーの場合はデフォルト値を使用
                 }
                 
@@ -331,21 +329,21 @@ export class PlayerData {
             // ユーザー名を検証
             const usernameValidation = validateInput(data.username, 'string', {)
                 maxLength: 50)';
-                escapeHtml: true'';
+               , escapeHtml: true'';
             )');''
             this.username = usernameValidation.isValid ? usernameValidation.sanitizedValue: '',
             // APを検証
             const apValidation = validateInput(data.ap, 'number', {
                 min: 0);
                 max: 999999999)';
-                integer: true'';
+               , integer: true'';
             )'),
             this.ap = apValidation.isValid ? apValidation.sanitizedValue: 0,
             // TAPを検証
             const tapValidation = validateInput(data.tap, 'number', {
                 min: 0);
                 max: 999999999)';
-                integer: true'';
+               , integer: true'';
             )'),
             this.tap = tapValidation.isValid ? tapValidation.sanitizedValue: 0,
             // ハイスコアを検証
@@ -401,7 +399,7 @@ export class PlayerData {
         combo: number;
         totalHighScore: number;
         unlockedStagesCount: number;
-        itemsCount: number ,} { const totalHighScore = Object.values(this.highScores).reduce((sum, score) => sum + score, 0);
+       , itemsCount: number ,} { const totalHighScore = Object.values(this.highScores).reduce((sum, score) => sum + score, 0);
         
         return { username: this.username,
             currentHP: this.currentHP;
@@ -409,7 +407,7 @@ export class PlayerData {
             currentScore: this.currentScore;
             ap: this.ap;
             tap: this.tap;
-            combo: this.combo;
+           , combo: this.combo;
             totalHighScore,
             unlockedStagesCount: this.unlockedStages.length, };
             itemsCount: this.ownedItems.length }
@@ -543,7 +541,7 @@ export class PlayerData {
             const validation = validateInput(amount, 'number', {
                 min: 0);
                 max: 100000);
-                integer: true;
+               , integer: true;
             ),
 
             if (!validation.isValid) {' }'

@@ -1,14 +1,14 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * AnalyticsDashboard のテスト
  */
 // 手動でモック
 const mockChartRenderer = {
     createLineChart: jest.fn((') => ({ id: 'mock-line-chart' )));
-    createBarChart: jest.fn((') => ({ id: 'mock-bar-chart' )));
-    createPieChart: jest.fn((') => ({ id: 'mock-pie-chart' )));
-    createDoughnutChart: jest.fn((') => ({ id: 'mock-doughnut-chart' )));
-    updateChartData: jest.fn(() => true),
+   , createBarChart: jest.fn((') => ({ id: 'mock-bar-chart' )));
+   , createPieChart: jest.fn((') => ({ id: 'mock-pie-chart' )));
+   , createDoughnutChart: jest.fn((') => ({ id: 'mock-doughnut-chart' )));
+   , updateChartData: jest.fn(() => true),
         destroy: jest.fn();
 const mockDataVisualizer = {
     createScatterPlot: jest.fn(),
@@ -40,7 +40,7 @@ Object.defineProperty(global, 'document', {
         ))),
         head: {
             appendChild: jest.fn(),
-        },
+         },
         body: {
             appendChild: jest.fn(),
         removeChild: jest.fn(),

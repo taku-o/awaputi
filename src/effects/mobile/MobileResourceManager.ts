@@ -1,13 +1,13 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Type definitions for mobile resource management
 
 interface ResourcePool<T = any> { pool: T[],
     maxSize: number;
-    active: number ,}
+   , active: number ,}
 
 interface PooledResource { active: boolean;
-    pooled: boolean;
+   , pooled: boolean;
     [key: string]: any, }
 
 interface ParticleResource extends PooledResource { x: number,
@@ -19,38 +19,38 @@ interface ParticleResource extends PooledResource { x: number,
     opacity: number;
     life: number;
     maxLife: number;
-    type: string ,}
+   , type: string ,}
 
 interface TextureResource extends PooledResource { canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     width: number;
-    height: number }
+   , height: number }
 
 interface AnimationResource extends PooledResource { startTime: number;
     duration: number;
     elapsed: number;
     progress: number;
-    easing: string,
+   , easing: string,
     onComplete: (() => void') | null ,}'
 }
 
 interface SoundResource extends PooledResource { buffer: AudioBuffer | null;
     source: AudioBufferSourceNode | null;
-    gainNode: GainNode | null }
+   , gainNode: GainNode | null }
 
 type ResourceType = 'particles' | 'textures' | 'animations' | 'sounds';
 
 interface MemorySettings { maxHeapUsage: number,
     gcThreshold: number;
     cleanupInterval: number;
-    lowMemoryThreshold: number ,}
+   , lowMemoryThreshold: number ,}
 
 interface NetworkSettings { enabled: boolean;
     connection: NetworkConnection | null;
     dataUsageLimit: number;
     dataUsageCount: number;
     preferredFormats: string[];
-    compressionLevel: number }
+   , compressionLevel: number }
 ';
 
 interface NetworkConnection { ''
@@ -64,17 +64,17 @@ interface ResourceStatistics { memoryAllocated: number,
     cacheHits: number;
     cacheMisses: number;
     gcInvocations: number;
-    dataTransferred: number, }
-    poolSizes: Record<string, { total: number; active: number; maxSize: number }>,
+   , dataTransferred: number, }
+    poolSizes: Record<string, { total: number; active: number;, maxSize: number }>,
     cacheSizes: Record<string, number>;
     memoryUsage: number;
-    dataUsage: { transferred: number;
+   , dataUsage: { transferred: number;
         limit: number;
-        remaining: number }
+       , remaining: number }
 
 interface ResourceManagerState { initialized: boolean,
     memoryBudget: number;
-    networkAware: boolean ,}
+   , networkAware: boolean ,}
 
 interface CachedResource { _cacheTime: number;
     [key: string]: any, }
@@ -84,13 +84,13 @@ interface LoadedImageResource { canvas: HTMLCanvasElement,
     width: number;
     height: number;
     size: number;
-    url: string ,}
+   , url: string ,}
 
 interface LoadedAudioResource { buffer: AudioBuffer;
     context: AudioContext;
     duration: number;
     size: number;
-    url: string }
+   , url: string }
 
 interface ResourceSettings { memory?: Partial<MemorySettings>;
     network?: Partial<NetworkSettings>;
@@ -98,12 +98,12 @@ interface ResourceSettings { memory?: Partial<MemorySettings>;
 
 interface ResourceManagerReport { component: string,
     state: ResourceManagerState;
-    settings: {
-        memory: MemorySettings;
-        network: NetworkSettings ,};
+   , settings: {
+        memor;y: MemorySettings;
+       , network: NetworkSettings ,};
     statistics: ResourceStatistics;
-    resourcePools: Record<string, ResourcePool>;
-    cacheStatus: Record<string, { size: number; maxSize: number }>;
+   , resourcePools: Record<string, ResourcePool>;
+    cacheStatus: Record<string, { size: number;, maxSize: number }>;
 }
 
 declare global { interface Navigator {
@@ -111,9 +111,9 @@ declare global { interface Navigator {
     }
     
     interface Performance { memory?: {
-            totalJSHeapSize: number;
+            totalJSHeapSiz;e: number;
             usedJSHeapSize: number;
-            jsHeapSizeLimit: number ,}
+           , jsHeapSizeLimit: number ,}
     ';
 
     interface Window { ''
@@ -130,7 +130,7 @@ export class MobileResourceManager {
     private readonly state: ResourceManagerState = {
         initialized: false;
         memoryBudget: 0;
-        networkAware: false };
+       , networkAware: false };
     ';
 
     private readonly resourcePools = new Map<ResourceType, ResourcePool>([']';
@@ -146,7 +146,7 @@ export class MobileResourceManager {
         lowMemoryThreshold: 0.9 // 低メモリ警告閾値 ,};
     private networkSettings: NetworkSettings = { enabled: false
         connection: null;
-        dataUsageLimit: 10 * 1024 * 1024, // 10MB;
+       , dataUsageLimit: 10 * 1024 * 1024, // 10MB;
         dataUsageCount: 0,
         preferredFormats: ['webp', 'avif', 'jpg'],
         compressionLevel: 0.8 ,};
@@ -165,7 +165,7 @@ export class MobileResourceManager {
         cacheHits: 0;
         cacheMisses: 0;
         gcInvocations: 0;
-        dataTransferred: 0 ,};
+       , dataTransferred: 0 ,};
     constructor()';
         console.log('MobileResourceManager, initialized');
     }
@@ -348,11 +348,11 @@ export class MobileResourceManager {
     private createParticleResource(''';
             color: '#FFFFFF';
             opacity: 1;
-            life: 1,
+           , life: 1,
             maxLife: 1,
             type: 'basic';
             active: false;
-            pooled: true);
+           , pooled: true);
         })
     
     /**
@@ -364,8 +364,7 @@ export class MobileResourceManager {
         canvas.height = 32;
 
         const context = canvas.getContext('2d);''
-        if(!context) {'
-            ';
+        if(!context) {', ';
 
         }
 
@@ -376,7 +375,7 @@ export class MobileResourceManager {
             context: context;
             width: 32;
             height: 32;
-            active: false, };
+           , active: false, };
             pooled: true }
         }
     
@@ -387,7 +386,7 @@ export class MobileResourceManager {
             easing: 'linear';
             active: false;
             pooled: true;
-            onComplete: null);
+           , onComplete: null);
         })
     
     /**
@@ -396,7 +395,7 @@ export class MobileResourceManager {
     private createSoundResource(): SoundResource { return { buffer: null,
             source: null;
             gainNode: null;
-            active: false, };
+           , active: false, };
             pooled: true }
         }
     
@@ -460,8 +459,7 @@ export class MobileResourceManager {
      * リソース状態のリセット
      */''
     private resetResourceState(resource: PooledResource): void { // 基本プロパティのリセット
-        if('life' in, resource) {'
-            ';
+        if('life' in, resource) {', ';
 
         }
 
@@ -586,7 +584,7 @@ export class MobileResourceManager {
             textures: 20;
             sounds: 10;
             animations: 30;
-            effects: 50 ,};
+           , effects: 50 ,};
         return limits[type] || 20;
     }
     
@@ -839,8 +837,7 @@ export class MobileResourceManager {
                 const canvas = document.createElement('canvas'');''
                 const ctx = canvas.getContext('2d);
 
-                if(!ctx) {'
-                    ';
+                if(!ctx) {', ';
 
                 }
 
@@ -856,7 +853,7 @@ export class MobileResourceManager {
                     context: ctx;
                     width: img.width);
                     height: img.height);
-                    size: img.width * img.height * 4, // RGBA;
+                   , size: img.width * img.height * 4, // RGBA;
                     url: url;
                 ), };
             
@@ -872,8 +869,7 @@ export class MobileResourceManager {
      * 音声リソースの読み込み
      */
     private async loadAudioResource(url: string, options: Record<string, any>): Promise<LoadedAudioResource> { ''
-        if(!window.AudioContext && !window.webkitAudioContext) {'
-            ';
+        if(!window.AudioContext && !window.webkitAudioContext) {', ';
 
         }
 
@@ -890,7 +886,7 @@ export class MobileResourceManager {
         return { buffer: audioBuffer,
             context: audioContext;
             duration: audioBuffer.duration;
-            size: arrayBuffer.byteLength, };
+           , size: arrayBuffer.byteLength, };
             url: url }
         }
     
@@ -952,9 +948,9 @@ export class MobileResourceManager {
                 Array.from(this.caches.entries().map(([type, cache]) => [type, cache.size]);
             ),
             memoryUsage: this.getCurrentMemoryUsage();
-            dataUsage: { transferred: this.statistics.dataTransferred;
+           , dataUsage: { transferred: this.statistics.dataTransferred;
                 limit: this.networkSettings.dataUsageLimit;
-                remaining: Math.max(0, this.networkSettings.dataUsageLimit - this.networkSettings.dataUsageCount }
+               , remaining: Math.max(0, this.networkSettings.dataUsageLimit - this.networkSettings.dataUsageCount }
         }
     
     /**
@@ -981,13 +977,13 @@ export class MobileResourceManager {
      */''
     generateReport(''';
             component: 'MobileResourceManager';
-            state: { ...this.state;
+           , state: { ...this.state;
             settings: {
                 memory: { ...this.memorySettings;
                 network: { ...this.networkSettings))
             statistics: this.getStatistics();
             resourcePools: Object.fromEntries(this.resourcePools);
-            cacheStatus: Object.fromEntries();
+           , cacheStatus: Object.fromEntries();
                 Array.from(this.caches.entries().map(([type, cache]) => [type ];
                     { size: cache.size, maxSize: this.getMaxCacheSize(type) ,}]
                 ]);

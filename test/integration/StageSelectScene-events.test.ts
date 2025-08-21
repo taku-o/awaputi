@@ -1,11 +1,11 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest  } from '@jest/globals';
 /**
  * StageSelectScene Event Integration Tests
  * イベント表示とイベント選択機能の統合テスト'
  */''
-import { StageSelectScene } from '../../src/scenes/StageSelectScene';''
-import { EventStageManager } from '../../src/core/EventStageManager';''
-import { EventRankingManager } from '../../src/core/EventRankingManager';''
+import { StageSelectScene  } from '../../src/scenes/StageSelectScene';''
+import { EventStageManager  } from '../../src/core/EventStageManager';''
+import { EventRankingManager  } from '../../src/core/EventRankingManager';''
 describe('StageSelectScene Event Integration Tests', () => {  let stageSelectScene: any,
     let mockGameEngine: any,
     let mockEventStageManager: any,
@@ -51,24 +51,23 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
         mockCanvas = { width: 1024,'
             height: 768,'';
             getContext: jest.fn(''';
-            clearedStages: ['tutorial', 'stage1', 'stage2'],';
-            eventParticipationHistory: {''
-                'spring-cherry-blossom': {)
+           , clearedStages: ['tutorial', 'stage1', 'stage2'],';
+            eventParticipationHistory: {'', 'spring-cherry-blossom': {)
                     participationCount: 2);
-                    bestScore: 18000) }'
+                   , bestScore: 18000) }'
                 }),''
             getPlayerName: jest.fn(').mockReturnValue('TestPlayer'),
         };
         // Mock EventStageManager'
         mockEventStageManager = { ''
             getAvailableEvents: jest.fn(''';
-                    id: 'spring-cherry-blossom','';
+                   , id: 'spring-cherry-blossom','';
                     name: '桜の舞うステージ','';
                     type: 'seasonal',')';
                     season: 'spring',)';
                     isActive: true),'';
                     endTime: Date.now(''';
-                        requiredStages: ['tutorial'] }
+                       , requiredStages: ['tutorial'] }
                     },
                     rewards: {
                         participation: { ap: 100 },
@@ -80,7 +79,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                     name: '夏の花火ステージ','';
                     type: 'seasonal',')';
                     season: 'summer');
-                    isActive: false,);
+                   , isActive: false,);
                     startTime: Date.now() + 3600000, // 1 hour from now;
                     endTime: Date.now() + 86400000 * 7, // 7 days from now;
                     participationConditions: {
@@ -100,7 +99,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             getEventParticipationCount: jest.fn().mockReturnValue(2),';
             hasEventNotifications: jest.fn().mockReturnValue(true),'';
             getEventNotifications: jest.fn(''';
-                    eventId: 'spring-cherry-blossom',')';
+                   , eventId: 'spring-cherry-blossom',')';
                     type: 'EVENT_STARTED',')';
                     message: '桜イベントが開始されました'),
         timestamp: Date.now(); }
@@ -117,7 +116,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
         mockGameEngine = { canvas: mockCanvas,
             ctx: mockContext,);
             inputManager: mockInputManager);
-            playerData: mockPlayerData,);
+           , playerData: mockPlayerData,);
             eventStageManager: mockEventStageManager),
             eventRankingManager: new EventRankingManager({ playerData: mockPlayerData ),
             sceneManager: {
@@ -246,7 +245,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
         test('should prevent access when conditions are not met', (') => {  mockEventStageManager.validateEventStageAccess.mockReturnValue({'
                 canAccess: false,')';
                 reason: 'insufficient_level');
-                required: 10,) }
+               , required: 10,) }
                 current: 5); }'
             });''
             stageSelectScene.initialize('')';
@@ -404,7 +403,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                 id: `event-${i}`,'
                 name: `Event ${i}`,''
                 type: 'special');
-                isActive: true;
+               , isActive: true;
             }),
             mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents);
             stageSelectScene.initialize();
@@ -416,7 +415,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                 id: `event-${i}`,'
                 name: `Event ${i}`,''
                 type: 'special');
-                isActive: true;
+               , isActive: true;
             }),
             mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents);
             stageSelectScene.initialize();

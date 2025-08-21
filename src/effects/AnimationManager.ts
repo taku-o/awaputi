@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getEffectsConfig } from '../config/EffectsConfig.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getEffectsConfig  } from '../config/EffectsConfig.js';
 
 // Animation Manager types
 export interface AnimationConfig { enabled: boolean,
@@ -32,16 +32,16 @@ export interface Animation { id: number,
     endValues: AnimationTarget;
     duration: number;
     elapsed: number;
-    easing: string,
+   , easing: string,
     options?: AnimationOptions;''
     onComplete?: (') => void; }
 ';
 
 export type AnimationType = '';
-    | 'bubbleSpawn' '';
-    | 'bubbleDestroy' '';
-    | 'bubbleMovement' '';
-    | 'uiElement' '';
+    | 'bubbleSpawn', '';
+    | 'bubbleDestroy', '';
+    | 'bubbleMovement', '';
+    | 'uiElement', '';
     | 'scoreChange''';
     | 'menuExit''';
     | 'menuEnter''';
@@ -53,13 +53,13 @@ export interface PerformanceMetrics { frameTime: number,
     activeAnimations: number;
     totalAnimations: number;
     averageFrameTime: number;
-    maxFrameTime: number;
+   , maxFrameTime: number;
     memoryUsage?: number ,}
 ';
 
 export interface AnimationChainConfig {;
     type: 'bubble' | 'ui';
-    target: AnimationTarget;
+   , target: AnimationTarget;
     spawnType?: string;
     animationType?: string;
     duration?: number;
@@ -71,7 +71,7 @@ export interface QualitySettings {;
     quality: 'high' | 'medium' | 'low';
     maxAnimations: number;
     frameSkipping: boolean;
-    reducedEffects: boolean }
+   , reducedEffects: boolean }
 /**
  * アニメーション管理クラス (Refactored)
  * アニメーション統合管理システム - サブコンポーネント化により責任を分離し、保守性を向上
@@ -79,13 +79,13 @@ export interface QualitySettings {;
  * サブコンポーネント化により責任を分離：
  * - AnimationEngineCore: イージング、更新ループ、品質制御
  * - AnimationTypeHandlers: バブル、UI、メニュー、ローディングアニメーション処理
- * - AnimationRenderers: レンダリング処理（ローディング、エフェクト等）
+ * -, AnimationRenderers: レンダリング処理（ローディング、エフェクト等）
  */
 export class AnimationManager {
     private canvas: HTMLCanvasElement;
     private animations: Animation[];
     private animationId: number;
-    private effectsConfig: any }
+    private, effectsConfig: any }
     private easingFunctions: { [key: string]: (t: number) => number 
     };
     private subtleAnimations: any;
@@ -97,11 +97,11 @@ export class AnimationManager {
     private menuHandler: any;
     private loadingHandler: any;
     // アニメーションタイプ別設定
-    private typeSettings: { [key: string]: TypeSettings 
+    private, typeSettings: { [key: string]: TypeSettings 
     };
     // キューイングシステム
     private animationQueue: Animation[];
-    private maxConcurrentAnimations: number;
+    private, maxConcurrentAnimations: number;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
@@ -122,7 +122,7 @@ export class AnimationManager {
 
         ')';
         console.log('Animation configuration:', { queueSize: this.animationQueue.length)'
-            maxConcurrent: this.maxConcurrentAnimations,')';
+           , maxConcurrent: this.maxConcurrentAnimations,')';
             subtleConfig: this.subtleAnimations )'),
 
         console.log('[AnimationManager] アニメーション管理システムを初期化しました);
@@ -149,7 +149,7 @@ export class AnimationManager {
                     activeAnimations: this.animations.length;
                     totalAnimations: this.animationId;
                     averageFrameTime: 16.67);
-                    maxFrameTime: 33.33 
+                   , maxFrameTime: 33.33 
 ,});
                 setEasingFunctions: (_functions: any) => {};
                 dispose: () => {;
@@ -161,7 +161,7 @@ export class AnimationManager {
                     quality: 'high';
                     maxAnimations: 50;
                     frameSkipping: false);
-                    reducedEffects: false 
+                   , reducedEffects: false 
 });
             };
             ';
@@ -213,7 +213,7 @@ export class AnimationManager {
                         y: position? .y || this.canvas.height / 2, : undefined
                         width: size;
                         height: size;
-                        scale: 1
+                       , scale: 1
 ,}
                         alpha: 1 }
 
@@ -253,7 +253,7 @@ export class AnimationManager {
             endValues: endValues;
             duration: duration;
             elapsed: 0;
-            easing: easing, };
+           , easing: easing, };
             options: options ;
 }
         },
@@ -282,10 +282,9 @@ export class AnimationManager {
             height: target.height || 50;
             alpha: target.alpha || 1;
             scale: target.scale || 1;
-            rotation: target.rotation || 0 
+           , rotation: target.rotation || 0 
 };
-        switch(animationType) {'
-            ';
+        switch(animationType) {', ';
 
         }
 
@@ -315,10 +314,9 @@ export class AnimationManager {
             height: target.height || 50;
             alpha: target.alpha || 1;
             scale: target.scale || 1;
-            rotation: target.rotation || 0 
+           , rotation: target.rotation || 0 
 };
-        switch(animationType) {'
-            ';
+        switch(animationType) {', ';
 
         }
 
@@ -578,8 +576,7 @@ export class AnimationManager {
                 x: loadingAnimation.target.x || 0, ;
                 y: loadingAnimation.target.y || 0 );
                 alpha: 0);
-                scale: 1  ,},''
-            'pulse',')';
+               , scale: 1  ,},'', 'pulse',')';
             300')'';
             { intensity: 2.0, color: '#00FF00' )
         );

@@ -3,7 +3,7 @@
  * 遅延翻訳ローダー - 高度な遅延読み込みと最適化機能を持つ翻訳システム
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface LoadingStats { totalRequests: number,
@@ -12,13 +12,13 @@ export interface LoadingStats { totalRequests: number,
     bytesLoaded: number;
     bytesCompressed: number;
     loadTimes: number[];
-    memoryUsage: number ,}
+   , memoryUsage: number ,}
 
 export interface CacheItem { data: any;
     timestamp: number;
     size: number;
     compressed?: boolean;
-    lastAccess: number }
+   , lastAccess: number }
 ';
 
 export interface LoadOptions { forceReload?: boolean;''
@@ -31,7 +31,7 @@ export interface TranslationNamespace { [key: string]: any, }
 export interface PerformanceMonitor { slowLoadThreshold: number,
     maxConcurrentLoads: number;
     currentLoads: number;
-    loadQueue: Array<() => Promise<any>> ,}
+   , loadQueue: Array<() => Promise<any>> ,}
 }
 
 /**
@@ -42,7 +42,7 @@ export class LazyTranslationLoader {
     private baseURL: string;
     private translationFiles: string[];
     // 読み込み管理
-    private loadedTranslations: Map<string, TranslationNamespace>;
+    private, loadedTranslations: Map<string, TranslationNamespace>;
     private loadingPromises: Map<string, Promise<any>>;
     private loadedNamespaces: Set<string>;
     private pendingRequests: Map<string, Promise<any>>;
@@ -52,7 +52,7 @@ export class LazyTranslationLoader {
     private preloadCriticalFiles: string[];
     private loadOnDemandFiles: string[];
     // キャッシュシステム
-    private memoryCache: Map<string, CacheItem>;
+    private, memoryCache: Map<string, CacheItem>;
     private compressionEnabled: boolean;
     private maxCacheSize: number;
     private cacheTimeout: number;
@@ -62,7 +62,7 @@ export class LazyTranslationLoader {
     private unusedDataCleanupInterval: number;
     // 統計とモニタリング
     private stats: LoadingStats;
-    private performanceMonitor: PerformanceMonitor;
+    private, performanceMonitor: PerformanceMonitor;
 
     constructor(''';
         this.baseURL = '/src/locales/';
@@ -107,12 +107,12 @@ export class LazyTranslationLoader {
             bytesLoaded: 0;
             bytesCompressed: 0;
             loadTimes: [];
-            memoryUsage: 0 ,};
+           , memoryUsage: 0 ,};
         // パフォーマンス監視
         this.performanceMonitor = { slowLoadThreshold: 1000, // 1秒
             maxConcurrentLoads: 3;
             currentLoads: 0;
-            loadQueue: [] ,};
+           , loadQueue: [] ,};
         // 定期クリーンアップの開始
         this.startPeriodicCleanup();
     }
@@ -366,11 +366,10 @@ export class LazyTranslationLoader {
      */''
     _performBasicCompression(jsonString) {'
         // 不要な空白を削除
-        let compressed = jsonString.replace(/\s+/g, ' '');
+        let compressed = jsonString.replace(/\s+/g, ', '');
         
         // 共通パターンの圧縮
-        const commonPatterns = {''
-            'accessibility.': 'a11y.',
+        const commonPatterns = {'', 'accessibility.': 'a11y.',
             'settings.': 's.',
             'error.': 'e.',
     }
@@ -397,15 +396,13 @@ export class LazyTranslationLoader {
             let decompressed = compressedData.data;
             
             // パターンを復元
-            const patterns = {''
-                'a11y.': 'accessibility.',
+            const patterns = {'', 'a11y.': 'accessibility.',
                 's.': 'settings.',
                 'e.': 'error.',
                 'm.': 'menu.' };
 
             for(const [compressed, original] of Object.entries(patterns)) { ''
-                decompressed = decompressed.replace(new RegExp(compressed, 'g), original); }'
-            ';
+                decompressed = decompressed.replace(new RegExp(compressed, 'g), original); }', ';
 
             return JSON.parse(decompressed);''
         } catch (error) {
@@ -426,7 +423,7 @@ export class LazyTranslationLoader {
             data);
             timestamp: Date.now();
             accessCount: 0;
-            lastAccessed: Date.now( });
+           , lastAccessed: Date.now( });
     }
     
     /**
@@ -718,11 +715,11 @@ export class LazyTranslationLoader {
         return { totalRequests: this.stats.totalRequests,
             cacheHitRate: Math.round(cacheHitRate * 100) / 100;
             averageLoadTime: Math.round(avgLoadTime * 100) / 100;
-            memoryUsage: Math.round(this.stats.memoryUsage / 1024), // KB;
+           , memoryUsage: Math.round(this.stats.memoryUsage / 1024), // KB;
             compressionRatio: Math.round(compressionRatio * 100) / 100;
             loadedLanguages: this.loadedTranslations.size;
             loadedNamespaces: this.loadedNamespaces.size;
-            cacheEntries: this.memoryCache.size;
+           , cacheEntries: this.memoryCache.size;
     ,}
             currentLoads: this.performanceMonitor.currentLoads, };
             queuedLoads: this.performanceMonitor.loadQueue.length }

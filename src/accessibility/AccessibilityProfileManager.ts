@@ -4,7 +4,7 @@
  * 障害タイプ別プリセット・機械学習推奨システム
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for profile management
 interface ProfileConfig {
@@ -14,7 +14,7 @@ interface ProfileConfig {
     cloudSync: boolean;
     maxProfiles: number;
     autoSaveInterval: number;
-    profileAnalytics: boolean;
+   , profileAnalytics: boolean;
 }
 interface ProfileSettings { // Visual settings
     textScaling?: number;
@@ -65,7 +65,7 @@ interface ProfileCompatibility { screenReaders?: string[];
 interface AccessibilityProfile {
     id: string;
     name: string;
-    description: string,
+   , description: string,
     icon?: string;
     category: 'visual' | 'audio' | 'motor' | 'cognitive' | 'custom';
     settings: ProfileSettings;
@@ -74,7 +74,7 @@ interface AccessibilityProfile {
     isActive: boolean;
     createdAt: number;
     lastModified: number;
-    usageCount: number;
+   , usageCount: number;
     tags?: string[];
     metadata?: Record<string, any>; }
 
@@ -85,19 +85,19 @@ interface ProfileValidationResult {
     isValid: boolean;
     errors: string[];
     warnings: string[];
-    compatibility: {
-        supported: boolean;
-        missingFeatures: string[] }
+   , compatibility: {
+        supporte;d: boolean;
+       , missingFeatures: string[] }
 
 interface ProfileRecommendation {
     profileId: string;
     confidence: number;
     reason: string;
-    matchedFeatures: string[] }
+   , matchedFeatures: string[] }
 
 interface ProfileAnalytics {
     totalSwitches: number;
-    profileUsage: Map<string, number>;
+   , profileUsage: Map<string, number>;
     averageSessionDuration: Map<string, number>;
     featureUsage: Map<string, number>;
     performanceMetrics: Map<string, any> }
@@ -106,7 +106,7 @@ interface ProfileState { activeProfileId: string | null,
     previousProfileId: string | null;
     isDirty: boolean;
     lastSaved: number;
-    transitionInProgress: boolean;
+   , transitionInProgress: boolean;
 ,}
 ';
 
@@ -119,11 +119,11 @@ interface ProfileExportData {
     version: string;
     profile: AccessibilityProfile;
     exportDate: number;
-    checksum: string;
+   , checksum: string;
 }
 // AccessibilityManager interface (minimal, definition);
-interface AccessibilityManager { applySettings?: (settings: ProfileSettings) => void;
-    validateSettings?: (settings: ProfileSettings) => ProfileValidationResult;
+interface AccessibilityManager { applySettings?: (setting;s: ProfileSettings) => void;
+    validateSettings?: (setting;s: ProfileSettings) => ProfileValidationResult;
     gameEngine?: any; ,}
 }
 
@@ -131,7 +131,7 @@ export class AccessibilityProfileManager {
     private accessibilityManager: AccessibilityManager | null;
     private gameEngine: any;
     private config: ProfileConfig;
-    private presetProfiles: Record<string, PresetProfile>;
+    private, presetProfiles: Record<string, PresetProfile>;
     private userProfiles: Map<string, AccessibilityProfile>;
     private state: ProfileState;
     private analytics: ProfileAnalytics;
@@ -150,7 +150,7 @@ export class AccessibilityProfileManager {
             profileSharing: true;
             cloudSync: false;
             maxProfiles: 10;
-            autoSaveInterval: 30000, // 30秒
+           , autoSaveInterval: 30000, // 30秒
     }
     }
             profileAnalytics: true }
@@ -162,12 +162,12 @@ export class AccessibilityProfileManager {
                 description: '視覚障害や弱視の方向けの設定',
                 icon: '👁️‍🗨️',
                 category: 'visual';
-                settings: {'
+               , settings: {'
                     textScaling: 1.5,
                     colorContrast: 'high';
                     focusIndicators: true;
                     screenReaderSupport: true;
-                    keyboardNavigation: true,
+                   , keyboardNavigation: true,
                     audioFeedback: true,
                     motionReduction: 'reduced' ,};
                 compatibility: { ''
@@ -182,14 +182,14 @@ export class AccessibilityProfileManager {
                 description: '聴覚障害や難聴の方向けの設定',
                 icon: '🔇',
                 category: 'audio';
-                settings: {
+               , settings: {
                     visualFeedback: true;
                     showCaptions: true;
                     captionSize: 1.2;
                     vibrationSettings: true;
                     flashingAlerts: true;
                     soundVisualization: true;
-                    backgroundMusic: false ,};
+                   , backgroundMusic: false ,};
                 compatibility: { ''
                     devices: ['vibration', 'visualAlert'],
                     captionFormats: ['srt', 'webvtt] }
@@ -201,15 +201,15 @@ export class AccessibilityProfileManager {
                 description: '手足の運動機能に制限がある方向けの設定',
                 icon: '🦾',
                 category: 'motor';
-                settings: {
+               , settings: {
                     alternativeInput: true;
                     stickyKeys: true;
                     slowKeys: true;
                     keyRepeatDelay: 800;
-                    mouseSensitivity: 0.5,
+                   , mouseSensitivity: 0.5,
                     dwellTime: 1000,
                     timingAdjustments: 'extended';
-                    oneHandedMode: true ,};
+                   , oneHandedMode: true ,};
                 compatibility: { ''
                     inputDevices: ['switch', 'eyeTracker', 'headMouse'],
                     assistiveTech: ['onScreenKeyboard', 'voiceControl] }
@@ -229,7 +229,7 @@ export class AccessibilityProfileManager {
                     focusMode: true;
                     memoryAids: true;
                     taskBreakdown: true;
-                    errorRecovery: true ,};
+                   , errorRecovery: true ,};
                 compatibility: { ''
                     assistiveTech: ['textSimplifier', 'readingAssistant] }
 };
@@ -242,13 +242,13 @@ export class AccessibilityProfileManager {
             previousProfileId: null;
             isDirty: false;
             lastSaved: Date.now();
-            transitionInProgress: false ,};
+           , transitionInProgress: false ,};
         // 分析データ
         this.analytics = { totalSwitches: 0,
             profileUsage: new Map();
             averageSessionDuration: new Map();
             featureUsage: new Map();
-            performanceMetrics: new Map( ,};
+           , performanceMetrics: new Map( ,};
         
         // 自動保存タイマー
         this.autoSaveTimer = null;
@@ -307,12 +307,12 @@ export class AccessibilityProfileManager {
             category,
             settings: { ...settings)
             isPreset: false);
-            isActive: false,);
+           , isActive: false,);
             createdAt: Date.now();
             lastModified: Date.now();
             usageCount: 0;
             tags: [];
-            metadata: {,};
+           , metadata: {,};
         // バリデーション
         const validation = this.validateProfile(profile);
         if(!validation.isValid) { '
@@ -502,9 +502,9 @@ export class AccessibilityProfileManager {
         const result: ProfileValidationResult = { isValid: true,
             errors: [];
             warnings: [];
-            compatibility: {
+           , compatibility: {
                 supported: true;
-                missingFeatures: [] ,}
+               , missingFeatures: [] ,}
         };
         ;
         // 基本バリデーション
@@ -543,13 +543,13 @@ export class AccessibilityProfileManager {
         if(window.matchMedia('(prefers-reduced-motion: reduce)).matches) {'
             recommendations.push({)'
                 profileId: 'visual-impairment')';
-                confidence: 0.8,
+               , confidence: 0.8,
                 reason: 'システムで動きの軽減が有効になっています',')';
                 matchedFeatures: ['motionReduction])' ,}
 
         if(window.matchMedia('(prefers-contrast: high)).matches) { recommendations.push({)'
                 profileId: 'visual-impairment')';
-                confidence: 0.9,
+               , confidence: 0.9,
                 reason: 'システムで高コントラストが有効になっています',')';
                 matchedFeatures: ['colorContrast] ,}'
         
@@ -584,7 +584,7 @@ export class AccessibilityProfileManager {
             version: '1.0' }
             profile: { ...profile as AccessibilityProfile;
             exportDate: Date.now();
-            checksum: this.generateChecksum(profile);
+           , checksum: this.generateChecksum(profile);
         };
         
         return exportData;
@@ -636,7 +636,7 @@ export class AccessibilityProfileManager {
      */
     mergeProfiles(;
         sourceId: string)';
-        targetId: string,
+       , targetId: string,
         options: ProfileMergeOptions = { strategy: 'merge' ,}
     ): boolean { const source = this.getProfile(sourceId);
         const target = this.getProfile(targetId);
@@ -647,8 +647,7 @@ export class AccessibilityProfileManager {
         }
             return false;
 
-        switch(options.strategy') {'
-            ';
+        switch(options.strategy') {', ';
 
         }
 
@@ -691,11 +690,11 @@ export class AccessibilityProfileManager {
         if(action === 'deactivate' && this.state.activeProfileId === profileId) {
             // セッション時間の計算と記録
             const sessionStart = this.analytics.performanceMetrics.get(`${profileId)_start`) || Date.now();
-            const duration = Date.now() - sessionStart;
+            const, duration = Date.now() - sessionStart;
             
-            const avgDuration = this.analytics.averageSessionDuration.get(profileId) || 0;
-            const sessions = this.analytics.profileUsage.get(profileId) || 1;
-            const newAvg = (avgDuration * (sessions - 1} + duration} / sessions;
+            const, avgDuration = this.analytics.averageSessionDuration.get(profileId) || 0;
+            const, sessions = this.analytics.profileUsage.get(profileId) || 1;
+            const, newAvg = (avgDuration * (sessions - 1} + duration} / sessions;
         }
             ' }'
 
@@ -779,9 +778,9 @@ export class AccessibilityProfileManager {
     private async saveProfiles(): Promise<void> { try {
             const data = {
                 userProfiles: Array.from(this.userProfiles.entries();
-                analytics: {
+               , analytics: {
                     totalSwitches: this.analytics.totalSwitches;
-                    profileUsage: Array.from(this.analytics.profileUsage.entries(),
+                   , profileUsage: Array.from(this.analytics.profileUsage.entries(),
                     averageSessionDuration: Array.from(this.analytics.averageSessionDuration.entries() ,}
             };
 
@@ -818,8 +817,7 @@ export class AccessibilityProfileManager {
      * アクティブプロファイルの保存
      */'
     private saveActiveProfile(): void { try {'
-            if(this.state.activeProfileId) {'
-                ';
+            if(this.state.activeProfileId) {', ';
 
             }
 
@@ -852,9 +850,9 @@ export class AccessibilityProfileManager {
             ...preset,
             isPreset: true);
             isActive: this.state.activeProfileId === preset.id);
-            createdAt: 0,);
+           , createdAt: 0,);
             lastModified: 0);
-            usageCount: this.analytics.profileUsage.get(preset.id) || 0 ,}
+           , usageCount: this.analytics.profileUsage.get(preset.id) || 0 ,}
         });
         const users = Array.from(this.userProfiles.values();
         
@@ -870,7 +868,7 @@ export class AccessibilityProfileManager {
                    isActive: this.state.activeProfileId === profileId;
                    createdAt: 0;
                    lastModified: 0);
-                   usageCount: this.analytics.profileUsage.get(profileId) || 0 ,} : null);
+                  , usageCount: this.analytics.profileUsage.get(profileId) || 0 ,} : null);
     }
     
     /**
@@ -894,7 +892,7 @@ export class AccessibilityProfileManager {
     getAnalytics(): ProfileAnalytics { return { ...this.analytics,
             profileUsage: new Map(this.analytics.profileUsage);
             averageSessionDuration: new Map(this.analytics.averageSessionDuration);
-            featureUsage: new Map(this.analytics.featureUsage), };
+           , featureUsage: new Map(this.analytics.featureUsage), };
             performanceMetrics: new Map(this.analytics.performanceMetrics); }
         }
     

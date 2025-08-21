@@ -2,7 +2,7 @@
  * Settings to Main Menu Navigation Integration Test
  * Issue #166対応 - 設定画面からメインメニューへのナビゲーション統合テスト
  */
-import { jest, describe, beforeAll, beforeEach, afterEach, afterAll, test, expect } from '@jest/globals';
+import { jest, describe, beforeAll, beforeEach, afterEach, afterAll, test, expect  } from '@jest/globals';
 // Mock DOM environment
 const mockCanvas = {
     getContext: jest.fn(() => ({
@@ -10,7 +10,7 @@ const mockCanvas = {
         fillRect: jest.fn(),
         fillText: jest.fn(),
         measureText: jest.fn(() => ({ width: 100 )));
-        beginPath: jest.fn(),
+       , beginPath: jest.fn(),
         arc: jest.fn(),
         fill: jest.fn(),
         drawImage: jest.fn()
@@ -54,7 +54,7 @@ class MockSceneManager {
     switchScene(name {
         const scene = this.scenes.get(name);
         if (!scene) {
-            console.error(`Scene ${name) not found`});
+            console.error(`Scene ${name) not, found`});
             return false;
         }
         // Cleanup previous scene

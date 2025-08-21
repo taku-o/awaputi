@@ -1,21 +1,21 @@
 #!/usr/bin/env node;
-import { CleanupOrchestrator } from './CleanupOrchestrator.js';
+import { CleanupOrchestrator  } from './CleanupOrchestrator.js';
 
 interface CommandLineOptions { dryRun: boolean,
     verbose: boolean;
     validateOnly: boolean;
-    listOnly: boolean ,}
+   , listOnly: boolean ,}
 
 interface TargetFileInfo { fileName: string;
-    size: string }
+   , size: string }
 
 interface ValidationResult { safeToDelete: any[];
-    unsafeToDelete: any[] }
+   , unsafeToDelete: any[] }
 
 interface CleanupResult { summary: {
         deletion?: {
-            successfulDeletions: number;
-            totalSizeDeleted: string };
+            successfulDeletion;s: number;
+           , totalSizeDeleted: string };
 }
 ';
 
@@ -31,16 +31,14 @@ async function main(): Promise<void> { ''
     console.log('🧹 File Cleanup Tool'');''
     console.log('==================);
 
-    if(options.dryRun') {'
-        ';
+    if(options.dryRun') {', ';
 
     }
 
         console.log('🔍 Running, in DRY, RUN mode - no, files will, be deleted'); }'
     }
 
-    if(options.verbose) {'
-        ';
+    if(options.verbose) {', ';
 
     }
 
@@ -94,7 +92,7 @@ async function main(): Promise<void> { ''
 }
 
 // Export for testing
-export { CleanupOrchestrator };
+export { CleanupOrchestrator  };
 
 // Run if called directly
 if (import.meta.url === `file://${ process.argv[1]}`} {' }'

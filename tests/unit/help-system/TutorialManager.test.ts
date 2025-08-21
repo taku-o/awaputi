@@ -1,28 +1,28 @@
 /**
  * TutorialManager ユニットテスト
  */
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { TutorialManager } from '../../../src/core/help/TutorialManager';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { TutorialManager  } from '../../../src/core/help/TutorialManager';
 // Type definitions
 interface MockGameEngine {
     localizationManager: {
-        getCurrentLanguage: jest.Mock<() => string>;
-        getString: jest.Mock<(key: string) => string>
+        getCurrentLanguag;e: jest.Mock<() => string>;
+        getString: jest.Mock<(ke;y: string) => string>
     },
     sceneManager: {
         getCurrentScene: jest.Mock<() => MockScene>
     },
-    canvas: { width: number; height: number },
+    canvas: { width: number;, height: number },
     playerData: {
         getTutorialProgress: jest.Mock<() => Record<string, any>>;
         saveTutorialProgress: jest.Mock<(progress: TutorialProgress) => void>;
     };
 }
 interface MockScene {
-    constructor: { name: string };
+    constructor: { nam;e: string };
 }
 interface MockContentLoader {
-    loadTutorialData: jest.Mock<(id?: string) => Promise<Tutorial[]>>;
+    loadTutorialData: jest.Mock<(i;d?: string) => Promise<Tutorial[]>>;
     getCachedContent: jest.Mock,
 }
 interface TutorialStep {
@@ -62,8 +62,8 @@ interface MockElement {
     getBoundingClientRect: () => MockDOMRect;
 }
 interface MockDocument {
-    querySelector: jest.Mock<(selector: string) => MockElement | null>;
-    createElement: jest.Mock<(tagName: string) => {}>;
+    querySelector: jest.Mock<(selecto;r: string) => MockElement | null>;
+    createElement: jest.Mock<(tagNam;e: string) => {}>;
 }
 // Mock creation
 const mockGameEngine: MockGameEngine = {

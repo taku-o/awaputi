@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 interface QueueOptions { maxConcurrent?: number;
     queueTimeout?: number;
@@ -7,12 +7,12 @@ interface QueueOptions { maxConcurrent?: number;
 interface QueueStats { totalQueued: number,
     totalCompleted: number;
     totalFailed: number;
-    averageExecutionTime: number;
+   , averageExecutionTime: number;
     [key: string]: number, }
 
 interface QueueOperation { id: string,
     priority: number;
-    operation: () => Promise<unknown>;
+   , operation: () => Promise<unknown>;
     metadata?: unknown;
     [key: string]: unknown, }
 }
@@ -31,7 +31,7 @@ export class AsyncOperationQueue {
     private queueTimeout: number;
     private retryAttempts: number;
     private queue: QueueOperation[];
-    private activeOperations: Map<string, unknown>;
+    private, activeOperations: Map<string, unknown>;
     private completedOperations: Map<string, unknown>;
     private failedOperations: Map<string, unknown>;
     private stats: QueueStats;
@@ -53,7 +53,7 @@ export class AsyncOperationQueue {
             totalQueued: 0;
             totalCompleted: 0;
             totalFailed: 0;
-            averageExecutionTime: 0;
+           , averageExecutionTime: 0;
     ,}
             currentQueueSize: 0 }
         };
@@ -91,7 +91,7 @@ export class AsyncOperationQueue {
                 priority: options.priority || 'normal', // 'high', 'normal', 'low';
                 timeout: options.timeout || this.queueTimeout);
                 retryCount: 0);
-                maxRetries: options.maxRetries || this.retryAttempts,) }
+               , maxRetries: options.maxRetries || this.retryAttempts,) }
                 timestamp: Date.now(), }
                 metadata: options.metadata || {};
             ';
@@ -101,7 +101,7 @@ export class AsyncOperationQueue {
             this.stats.currentQueueSize = this.queue.length;
 
             this.emit('operationQueued', { id: operationId)
-                priority: queueItem.priority,);
+               , priority: queueItem.priority,);
                 queueSize: this.queue.length);
             // キュー処理をトリガー
             this.processQueue( ,});
@@ -199,7 +199,7 @@ export class AsyncOperationQueue {
         const startTime = Date.now(''';
             this.emit('operationStarted', {)
                 id: item.id);
-                priority: item.priority,);
+               , priority: item.priority,);
                 activeCount: this.activeOperations.size);
             // タイムアウト設定
             const timeoutPromise = new Promise((_, reject) => { ' }'
@@ -244,7 +244,7 @@ export class AsyncOperationQueue {
             this.emit('operationRetry', {
                 id: item.id);
                 retryCount: item.retryCount);
-                maxRetries: item.maxRetries,);
+               , maxRetries: item.maxRetries,);
                 error: error.message);
             // 指数バックオフでリトライ
             const delay = Math.min(1000 * Math.pow(2, item.retryCount - 1), 10000);
@@ -273,7 +273,7 @@ export class AsyncOperationQueue {
 
         getErrorHandler(').handleError(error, 'ASYNC_OPERATION_ERROR', {)
             operationId: item.id);
-            retryCount: item.retryCount,);
+           , retryCount: item.retryCount,);
             metadata: item.metadata);
         item.reject(error ,}
     
@@ -377,7 +377,7 @@ export class AsyncOperationQueue {
             isProcessing: this.isProcessing, }
             stats: { ...this.stats;
             recentCompleted: Array.from(this.completedOperations.values().slice(-10);
-            recentFailed: Array.from(this.failedOperations.values().slice(-5);
+           , recentFailed: Array.from(this.failedOperations.values().slice(-5);
         }
     
     /**

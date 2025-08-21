@@ -7,25 +7,25 @@
 interface ExecutionConfig { timeout: number,
     retries: number;
     concurrent: boolean;
-    parallelLimit: number ,}
+   , parallelLimit: number ,}
 
 interface ExecutionState { isRunning: boolean;
     currentSuite: string | null;
     currentTest: string | null;
     startTime: number | null;
-    abortController: AbortController | null }
+   , abortController: AbortController | null }
 
 interface ExecutionStats { totalTestsRun: number;
     averageTestTime: number;
     suitesExecuted: number;
     timeouts: number;
-    retries: number }
+   , retries: number }
 
 interface TestFunction { name: string;
-    run: (context?: TestContext) => Promise<TestResult>;
-    setup?: (context: TestContext) => Promise<void>;
-    cleanup?: (context: TestContext) => Promise<void>;
-    errorCleanup?: (context: TestContext, error: Error) => Promise<void> ,}
+   , run: (contex;t?: TestContext) => Promise<TestResult>;
+    setup?: (contex;t: TestContext) => Promise<void>;
+    cleanup?: (contex;t: TestContext) => Promise<void>;
+    errorCleanup?: (contex;t: TestContext, error: Error) => Promise<void> ,}
 }
 
 interface TestResult { passed: boolean,
@@ -36,7 +36,7 @@ interface TestResult { passed: boolean,
 interface TestContext { testSuite: any,
     deviceSimulator: any;
     utils: any;
-    startTime: number ,}
+   , startTime: number ,}
 
 interface TestSuiteInterface { getTests(): TestFunction[];
     }
@@ -47,18 +47,18 @@ interface ExecutionStateWithStats { isRunning: boolean,
     startTime: number | null;
     abortController: AbortController | null;
     stats: ExecutionStats;
-    duration: number ,}
+   , duration: number ,}
 
 interface DebugInfo { config: ExecutionConfig;
     state: ExecutionState;
     stats: ExecutionStats;
-    isRunning: boolean }
+   , isRunning: boolean }
 
 export class MobileTestRunner {
     private mobileTestSuite: any; // MobileTestSuite type would create circular dependency
     private executionConfig: ExecutionConfig;
     private executionState: ExecutionState;
-    private executionStats: ExecutionStats;
+    private, executionStats: ExecutionStats;
     constructor(mobileTestSuite: any) {
 
         this.mobileTestSuite = mobileTestSuite;
@@ -67,7 +67,7 @@ export class MobileTestRunner {
         this.executionConfig = {
             timeout: 30000, // 30秒;
             retries: 3;
-            concurrent: false;
+           , concurrent: false;
     ,}
             parallelLimit: 2 }
         };
@@ -76,21 +76,20 @@ export class MobileTestRunner {
             currentSuite: null;
             currentTest: null;
             startTime: null;
-            abortController: null ,};
+           , abortController: null ,};
         // 実行統計
         this.executionStats = { totalTestsRun: 0,
             averageTestTime: 0;
             suitesExecuted: 0;
             timeouts: 0;
-            retries: 0 ,}
+           , retries: 0 ,}
     
     /**
      * 全テスト実行
      */
     async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始);
 
-        if(this.executionState.isRunning') {'
-            ';
+        if(this.executionState.isRunning') {', ';
 
         }
 
@@ -127,7 +126,7 @@ export class MobileTestRunner {
         this.executionState.currentSuite = suiteName;
         
         try {
-            const tests = suite.getTests(};
+            const, tests = suite.getTests(};
             
             if (this.executionConfig.concurrent} { }
                 await this.runTestsConcurrently(suiteName, tests});
@@ -243,7 +242,7 @@ export class MobileTestRunner {
             testSuite: this.mobileTestSuite;
             deviceSimulator: this.mobileTestSuite.deviceSimulator;
             utils: this.mobileTestSuite.utils;
-            startTime: Date.now( };
+           , startTime: Date.now( };
         
         // テスト前処理
         await this.preTestSetup(test, context);
@@ -328,7 +327,7 @@ export class MobileTestRunner {
         this.mobileTestSuite.resetTestResults();
         
         try {
-            await this.runTestSuite(suiteName, suite};
+            await, this.runTestSuite(suiteName, suite};
             const report = this.mobileTestSuite.generateTestReport(}
             this.completeExecution(});
             
@@ -361,7 +360,7 @@ export class MobileTestRunner {
         this.mobileTestSuite.resetTestResults();
         
         try {
-            await this.runSingleTest(suiteName, test};
+            await, this.runSingleTest(suiteName, test};
             const report = this.mobileTestSuite.generateTestReport(}
             this.completeExecution(});
             
@@ -401,7 +400,7 @@ export class MobileTestRunner {
             averageTestTime: 0;
             suitesExecuted: 0;
             timeouts: 0;
-            retries: 0 }
+           , retries: 0 }
     
     /**
      * 実行完了処理

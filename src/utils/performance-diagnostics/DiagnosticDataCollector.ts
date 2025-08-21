@@ -16,14 +16,14 @@ interface DataSample { timestamp: number,
     memoryUsage: number;
     renderTime: number;
     networkLatency: number;
-    inputLag: number ,}
+   , inputLag: number ,}
 
 interface MetricData { values: number[];
     min: number;
     max: number;
     sum: number;
     count: number;
-    average: number }
+   , average: number }
 
 interface CollectionMetrics { [key: string]: MetricData;
     }
@@ -32,39 +32,39 @@ interface CollectedData { samples: DataSample[],
     metrics: CollectionMetrics;
     startTime: number;
     endTime: number;
-    collectionDuration: number ,}
+   , collectionDuration: number ,}
 
 interface DataSummary { duration: number;
     sampleCount: number;
     metricsCollected: number;
-    timeRange: {
-        start: number;
-        end: number };
+   , timeRange: {
+        star;t: number;
+       , end: number };
     dataQuality: DataQuality;
     }
 
 interface DataQuality { completeness: number,
     consistency: number;
     overall: number;
-    issues: DataQualityIssue[]
+   , issues: DataQualityIssue[]
     ,}
 
 interface DataQualityIssue { type: string;
     severity: 'low' | 'medium' | 'high';
     description: string;
-    impact: string }
+   , impact: string }
 
 interface TimeGap { start: number;
     end: number;
-    duration: number }
+   , duration: number }
 
 interface CollectionStatus { collecting: boolean;
     sampleCount: number;
     collectionDuration: number;
-    metricsCount: number }
+   , metricsCount: number }
 
 interface DiagnosticDataResult { rawData: CollectedData;
-    summary: DataSummary
+   , summary: DataSummary
     }
 
 interface MainController { // Define expected interface for main controller
@@ -78,7 +78,7 @@ export class DiagnosticDataCollector {
     private startTime: number | null;
     private endTime: number | null;
     private collectionInterval: NodeJS.Timeout | null;
-    private lastFrameTime: number | null;
+    private, lastFrameTime: number | null;
     private maxSamples?: number;
 
     constructor(mainController: MainController) {
@@ -132,7 +132,7 @@ export class DiagnosticDataCollector {
         return { samples: this.samples,
             metrics: this.metrics;
             startTime: this.startTime!;
-            endTime: this.endTime, };
+           , endTime: this.endTime, };
             collectionDuration: this.endTime - this.startTime! }
         }
 
@@ -149,7 +149,7 @@ export class DiagnosticDataCollector {
             memoryUsage: this.getCurrentMemoryUsage();
             renderTime: this.getCurrentRenderTime();
             networkLatency: this.getCurrentNetworkLatency();
-            inputLag: this.getCurrentInputLag( ,};
+           , inputLag: this.getCurrentInputLag( ,};
 
         this.samples.push(sample);
 
@@ -210,7 +210,7 @@ export class DiagnosticDataCollector {
                     min: value as number;
                     max: value as number;
                     sum: 0;
-                    count: 0;
+                   , count: 0;
             ,}
                     average: 0 }
                 }
@@ -250,7 +250,7 @@ export class DiagnosticDataCollector {
     summarizeCollectedData(data: CollectedData): DataSummary { return { duration: data.collectionDuration,
             sampleCount: data.samples.length;
             metricsCollected: Object.keys(data.metrics).length;
-            timeRange: {
+           , timeRange: {
                 start: data.startTime, };
                 end: data.endTime }
             };
@@ -265,7 +265,7 @@ export class DiagnosticDataCollector {
         
         return { completeness: completeness,
             consistency: consistency;
-            overall: (completeness + consistency) / 2, };
+           , overall: (completeness + consistency) / 2, };
             issues: this.identifyDataQualityIssues(data); }
         }
 
@@ -334,7 +334,7 @@ export class DiagnosticDataCollector {
             if (interval > expectedInterval * 2) {
                 gaps.push({)
                     start: samples[i - 1].timestamp);
-                    end: samples[i].timestamp, }
+                   , end: samples[i].timestamp, }
                     duration: interval); }
 }
         
@@ -346,7 +346,7 @@ export class DiagnosticDataCollector {
      */
     getCollectionStatus(): CollectionStatus { return { collecting: this.collecting,
             sampleCount: this.samples.length;
-            collectionDuration: this.collecting && this.startTime ?   : undefined
+           , collectionDuration: this.collecting && this.startTime ?   : undefined
                 performance.now() - this.startTime : 0, };
             metricsCount: Object.keys(this.metrics).length }
         }

@@ -2,8 +2,8 @@
  * ScreenshotCapture 単体テスト (Task 20.2)
  * 包括的なテストカバレッジでScreenshotCaptureの全機能をテスト
  */
-import { jest } from '@jest/globals';
-import { ScreenshotCapture } from '../../../src/core/ScreenshotCapture.js';
+import { jest  } from '@jest/globals';
+import { ScreenshotCapture  } from '../../../src/core/ScreenshotCapture.js';
 // Type definitions
 interface MockCanvasContext {
     drawImage: jest.Mock<void, [any, number, number]>;
@@ -66,8 +66,8 @@ interface BatchResult {
 }
 interface QueueItem {
     options: CaptureOptions,
-    resolve: (value: CaptureResult) => void;
-    reject: (reason: Error) => void;
+    resolve: (valu;e: CaptureResult) => void;
+    reject: (reaso;n: Error) => void;
 }
 interface CaptureHistoryItem {
     timestamp: number,
@@ -93,7 +93,7 @@ interface Config {
     maxWidth: number,
     maxHeight: number,
     quality?: {
-        high: number,
+        hig;h: number,
         medium: number,
         low: number,
     };
@@ -231,7 +231,7 @@ Object.defineProperty(global, 'performance', {
 Object.defineProperty(global, 'Worker', {
     value: class MockWorker {
         url: string;);
-        onmessage: ((event => void) | null = null};
+       , onmessage: ((event => void) | null = null};
         onerror: ((event => void) | null = null);
         constructor(url: string) {
             this.url = url;
@@ -660,7 +660,7 @@ describe('ScreenshotCapture', () => {
             // 履歴とキューにデータを追加
             screenshotCapture.captureHistory.push({
                 url: 'blob:test-url';);
-        timestamp: Date.now(),
+       , timestamp: Date.now(),
             });
             screenshotCapture.captureQueue.push({);
                 reject: jest.fn(),

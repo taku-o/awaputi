@@ -1,10 +1,10 @@
 /**
  * ヘルプシステム アクセシビリティテスト
  */
-import { jest } from '@jest/globals';
-import { HelpScene } from '../../src/scenes/HelpScene';
-import { TutorialOverlay } from '../../src/core/help/TutorialOverlay';
-import { TooltipSystem } from '../../src/core/help/TooltipSystem';
+import { jest  } from '@jest/globals';
+import { HelpScene  } from '../../src/scenes/HelpScene';
+import { TutorialOverlay  } from '../../src/core/help/TutorialOverlay';
+import { TooltipSystem  } from '../../src/core/help/TooltipSystem';
 // ARIA属性検証ヘルパー
 const validateARIA = (element') => {
     const requiredAttrs = ['role', 'aria-label', 'aria-describedby'];
@@ -30,7 +30,7 @@ const mockGameEngine = {
     }),
     sceneManager: {
         getCurrentScene: jest.fn((') => ({ constructor: { name: 'HelpScene' ) )));
-        switchScene: jest.fn(),
+       , switchScene: jest.fn(),
     helpManager: {
         getHelpSection: jest.fn(),
         searchContent: jest.fn(() => []);
@@ -344,7 +344,7 @@ describe('Help System Accessibility Tests', () => {
                 screenReaderOutput.push({
                     type: 'announcement',
                     text: text;);
-        timestamp: Date.now(),
+       , timestamp: Date.now(),
                 }');
             };
             // ヘルプシステムの操作をシミュレート
@@ -395,7 +395,7 @@ describe('Help System Accessibility Tests', () => {
             const displayText = cognitiveSettings.simplifiedLanguage 
                 ? helpContent.simpleDescription: helpContent.detailedDescription,
             expect(displayText').toBe('バブルをクリックして得点を得る'');
-            expect(displayText.split(' ').length).toBeLessThan(10); // 短い文章
+            expect(displayText.split(', ').length).toBeLessThan(10); // 短い文章
         });
     }
 }');

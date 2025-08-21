@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * データ復旧管理クラス - 自動・手動データ復旧システム
@@ -25,7 +25,7 @@ export class RecoveryManager {'
         this.config = {
             autoRecoveryEnabled: true;
             maxRecoveryAttempts: 3;
-            recoveryTimeout: 10000, // 10秒;
+           , recoveryTimeout: 10000, // 10秒;
             backupFallbackEnabled: true;
     ,}
             validationBeforeRecovery: true }
@@ -37,7 +37,7 @@ export class RecoveryManager {'
             autoRecoveries: 0;
             manualRecoveries: 0;
             averageRecoveryTime: 0;
-            lastRecovery: null ,};
+           , lastRecovery: null ,};
         // 現在の復旧状態
         this.isRecoveryInProgress = false;
         this.currentRecoverySession = null;
@@ -156,7 +156,7 @@ export class RecoveryManager {'
                     type: 'DETECTION_ERROR',' };
 
                     severity: 'HIGH', }
-                    message: `Corruption detection failed: ${error.message}`]
+                    message: `Corruption detection, failed: ${error.message}`]
                     error];
                 }]
             }
@@ -201,7 +201,7 @@ export class RecoveryManager {'
                                     type: 'MISSING_FIELD',' }
 
                                     severity: 'HIGH', })'
-                                    message: `Missing required field: ${field}`,')'
+                                    message: `Missing required, field: ${field}`,')'
                                     field)');
                             }
 }
@@ -230,7 +230,7 @@ export class RecoveryManager {'
             } catch (error) { issues.push({''
                 type: 'STRUCTURE_CHECK_ERROR',
                 severity: 'MEDIUM', })
-                message: `Structure check failed: ${error.message}`;)
+                message: `Structure check, failed: ${error.message}`;)
                 error);
             });
         }
@@ -254,7 +254,7 @@ export class RecoveryManager {'
                             type: 'LOGICAL_ERROR',
                             severity: 'MEDIUM',)';
                             message: 'Current HP exceeds max HP');
-                            currentHP: data.currentHP, }
+                           , currentHP: data.currentHP, }
                             maxHP: data.maxHP); }
                     }
                     ';
@@ -291,7 +291,7 @@ export class RecoveryManager {'
             } catch (error) { issues.push({''
                 type: 'LOGICAL_CHECK_ERROR',
                 severity: 'MEDIUM', })
-                message: `Logical check failed: ${error.message}`;)'
+                message: `Logical check, failed: ${error.message}`;)'
                 error);''
             }');
         }
@@ -304,8 +304,7 @@ export class RecoveryManager {'
      */''
     async recover(strategy = 'auto', options = { ) {'
         try {'
-            if(this.isRecoveryInProgress) {'
-                ';
+            if(this.isRecoveryInProgress) {', ';
 
             }
 
@@ -321,7 +320,7 @@ export class RecoveryManager {'
                 options,
                 startTime: Date.now();
                 attempts: 0;
-                issues: [] ,};
+               , issues: [] ,};
             const recoveryStrategy = this.recoveryStrategies.get(strategy);
             if(!recoveryStrategy) {
                 
@@ -480,7 +479,7 @@ export class RecoveryManager {'
             return { dataType,
                 corruptionReport: null;
                 availableBackups: 0;
-                options: [], };
+               , options: [], };
                 error: error.message }
             }
     }
@@ -678,8 +677,7 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
                 fixes.push('HP値の整合性を修正); }'
 
             }''
-            if(data.currentHP < 0 || data.ap < 0 || data.tap < 0) {'
-                ';
+            if(data.currentHP < 0 || data.ap < 0 || data.tap < 0) {', ';
 
             }
 
@@ -798,7 +796,7 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
                 maxHP: 100;
                 currentScore: 0;
                 ap: 0;
-                tap: 0;
+               , tap: 0;
         }
                 combo: 0, }
 

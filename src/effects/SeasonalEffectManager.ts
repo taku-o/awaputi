@@ -5,19 +5,19 @@
  * 季節テーマシステム、特別イベント効果、ホリデーテーマパーティクル効果を統合管理します。
  */
 
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getEffectQualityController } from './EffectQualityController.js';''
-import { ThemeManager } from './seasonal-effect-manager/ThemeManager.js';''
-import { SeasonDetector } from './seasonal-effect-manager/SeasonDetector.js';''
-import { CustomThemeManager } from './seasonal-effect-manager/CustomThemeManager.js';''
-import { SeasonalParticleRenderer } from './seasonal-effect-manager/SeasonalParticleRenderer.js';
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getEffectQualityController  } from './EffectQualityController.js';''
+import { ThemeManager  } from './seasonal-effect-manager/ThemeManager.js';''
+import { SeasonDetector  } from './seasonal-effect-manager/SeasonDetector.js';''
+import { CustomThemeManager  } from './seasonal-effect-manager/CustomThemeManager.js';''
+import { SeasonalParticleRenderer  } from './seasonal-effect-manager/SeasonalParticleRenderer.js';
 
 /**
  * Configuration Manager interface
  */
 interface ConfigurationManager { get<T>(key: string, defaultValue: T): T,
-    watch(key: string, callback: (value: any) => void): void ,}
+    watch(key: string, callback: (valu;e: any) => void): void ,}
 }
 
 /**
@@ -36,7 +36,7 @@ interface EffectQualityController { [key: string]: any, }
 interface ThemeInfo { season: string,
     event: string | null;
     theme: any;
-    isCustom: boolean ,}
+   , isCustom: boolean ,}
 
 /**
  * Effect statistics interface
@@ -44,7 +44,7 @@ interface ThemeInfo { season: string,
 interface EffectStats { particlesCreated: number;
     effectsTriggered: number;
     themeChanges: number;
-    customThemesLoaded: number }
+   , customThemesLoaded: number }
 
 /**
  * Settings data interface
@@ -52,7 +52,7 @@ interface EffectStats { particlesCreated: number;
 interface SettingsData { currentSeason?: string;
     customTheme?: any;
     settings?: {
-        seasonalEffectsEnabled?: boolean;
+        seasonalEffectsEnable;d?: boolean;
         autoSeasonDetection?: boolean;
         eventEffectsEnabled?: boolean;
         backgroundEffectEnabled?: boolean; };
@@ -68,11 +68,11 @@ interface DebugInfo { currentSeason: string,
     isCustomTheme: boolean;
     detectorStatus: any;
     effectStats: any;
-    componentStatus: {
-        themeManager: boolean;
+   , componentStatus: {
+        themeManage;r: boolean;
         seasonDetector: boolean;
         customThemeManager: boolean;
-        particleRenderer: boolean ,}
+       , particleRenderer: boolean ,}
 
 export class SeasonalEffectManager {
     private configManager: ConfigurationManager;
@@ -94,7 +94,7 @@ export class SeasonalEffectManager {
     private autoSeasonDetection: boolean;
     private eventEffectsEnabled: boolean;
     private customThemesEnabled: boolean;
-    private backgroundEffectEnabled: boolean;
+    private, backgroundEffectEnabled: boolean;
     constructor() {
 
         this.configManager = getConfigurationManager();
@@ -355,7 +355,7 @@ export class SeasonalEffectManager {
      */
     getCurrentTheme(): ThemeInfo { return { season: this.currentSeason,
             event: this.currentEvent;
-            theme: this.activeTheme, };
+           , theme: this.activeTheme, };
             isCustom: !!this.customTheme }
         }
     
@@ -405,10 +405,10 @@ export class SeasonalEffectManager {
             seasonal: seasonalSummary;
             themes: themeStats;
             customThemes: customThemeStats;
-            settings: {
+           , settings: {
                 seasonalEffectsEnabled: this.seasonalEffectsEnabled;
                 autoSeasonDetection: this.autoSeasonDetection;
-                eventEffectsEnabled: this.eventEffectsEnabled, };
+               , eventEffectsEnabled: this.eventEffectsEnabled, };
                 backgroundEffectEnabled: this.backgroundEffectEnabled }
 }
     
@@ -418,10 +418,10 @@ export class SeasonalEffectManager {
      */
     exportSettings(): any { return { currentSeason: this.currentSeason,
             customTheme: this.customTheme;
-            settings: {
+           , settings: {
                 seasonalEffectsEnabled: this.seasonalEffectsEnabled;
                 autoSeasonDetection: this.autoSeasonDetection;
-                eventEffectsEnabled: this.eventEffectsEnabled, };
+               , eventEffectsEnabled: this.eventEffectsEnabled, };
                 backgroundEffectEnabled: this.backgroundEffectEnabled }
             };
             customThemes: this.customThemeManager.createBackup();
@@ -479,14 +479,14 @@ export class SeasonalEffectManager {
      */
     getDebugInfo(): DebugInfo { return { currentSeason: this.currentSeason,
             currentEvent: this.currentEvent;
-            activeTheme: this.activeTheme? .name, : undefined
+           , activeTheme: this.activeTheme? .name, : undefined
             isCustomTheme: !!this.customTheme;
             detectorStatus: this.seasonDetector.getDetectorStatus();
             effectStats: this.getEffectStats();
-            componentStatus: {
+           , componentStatus: {
                 themeManager: !!this.themeManager;
                 seasonDetector: !!this.seasonDetector;
-                customThemeManager: !!this.customThemeManager, };
+               , customThemeManager: !!this.customThemeManager, };
                 particleRenderer: !!this.particleRenderer }
 }
 }

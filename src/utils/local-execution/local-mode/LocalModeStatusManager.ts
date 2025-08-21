@@ -29,23 +29,23 @@ interface ExecutionContext { isLocal: boolean,
     protocol: string;
     url: string;
     domain: string;
-    path: string;
+   , path: string;
     canUseCanvas?: boolean;
     canUseLocalStorage?: boolean;
     canUseModules?: boolean; ,}
 
 interface InitializationMetrics { startTime: number | null,
     endTime: number | null;
-    componentTimes: Record<string, number>;
+   , componentTimes: Record<string, number>;
     totalExecutionTime: number;
-    optimizationsApplied: string[] ,}
+   , optimizationsApplied: string[] ,}
 
 interface StatusInfo { isInitialized: boolean;
     isLocalMode: boolean;
     config: LocalModeConfig;
-    executionContext: {
-        protocol: string;
-        isLocal: boolean;
+   , executionContext: {
+        protoco;l: string;
+       , isLocal: boolean;
         canUseCanvas?: boolean;
         canUseLocalStorage?: boolean;
         canUseModules?: boolean; } | null;
@@ -56,11 +56,11 @@ interface HealthCheck { overall: 'healthy' | 'degraded' | 'unhealthy',
 
     checks: Record<string, {''
         status: 'pass' | 'warning' | 'fail';
-        message: string;
+       , message: string;
         value?: any ,}>;
     warnings: string[];
     errors: string[];
-    score: number;
+   , score: number;
 }
 
 interface ComponentDebugInfo { available: boolean,
@@ -73,27 +73,27 @@ interface ComponentDebugInfo { available: boolean,
 interface DebugInfo { status: StatusInfo,
     components: Record<string, ComponentDebugInfo>;
     performance: {
-        initializationMetrics: InitializationMetrics | null;
-        resourcePreloads: {
-            count: number;
-            promises: string[] ,};
+        initializationMetric;s: InitializationMetrics | null;
+       , resourcePreloads: {
+            coun;t: number;
+           , promises: string[] ,};
         componentCache: { size: number;
-            keys: string[] };
+           , keys: string[] };
     cache: { componentCache?: {
             size: number;
-            entries: [string, any][] };
+           , entries: [string, any][] };
         resourcePreloads?: { size: number;
-            keys: string[] };
+           , keys: string[] };
         error?: string;
     };
     errors: any;
     browser: any;
-    resources: any;
+   , resources: any;
 }
 
 interface ConfigChange { key: string,
     old: any;
-    new: any ,}
+   , new: any ,}
 
 export default class LocalModeStatusManager { /**
      * 状態情報取得
@@ -109,7 +109,7 @@ export default class LocalModeStatusManager { /**
                 isLocal: manager.executionContext.isLocal;
                 canUseCanvas: manager.executionContext.canUseCanvas;
                 canUseLocalStorage: manager.executionContext.canUseLocalStorage;
-                canUseModules: manager.executionContext.canUseModules } : null;
+               , canUseModules: manager.executionContext.canUseModules } : null;
             timestamp: new Date().toISOString();
         }
     
@@ -123,7 +123,7 @@ export default class LocalModeStatusManager { /**
             performance: this._getPerformanceDebugInfo(manager);
             cache: this._getCacheDebugInfo(manager);
             errors: this._getErrorDebugInfo();
-            browser: this._getBrowserDebugInfo(), };
+           , browser: this._getBrowserDebugInfo(), };
             resources: this._getResourceDebugInfo(manager); }
         }
     
@@ -160,7 +160,7 @@ export default class LocalModeStatusManager { /**
             checks: {};
             warnings: [];
             errors: [];
-            score: 0;
+           , score: 0;
         },
         
         // 初期化状態チェック
@@ -183,7 +183,7 @@ export default class LocalModeStatusManager { /**
 
                 health.checks[cap] = {' })'
                     status: supported ? 'pass' : 'warning',') 
-                    message: `${cap}: ${supported ? 'supported' : 'not supported'}`);
+                    message: `${cap}: ${supported ? 'supported' : 'not, supported'}`);
                 if(!supported) {
                     
                 }
@@ -199,11 +199,10 @@ export default class LocalModeStatusManager { /**
             health.checks.performance = { : undefined'
         
                 status: initTime < 5000 ? 'pass' : 'warning', 
-                message: `Initialization time: ${Math.round(initTime,})ms`;
+                message: `Initialization, time: ${Math.round(initTime,})ms`;
                 value: initTime';
             };''
-            if(initTime >= 5000) {'
-                ';
+            if(initTime >= 5000) {', ';
 
             }
 
@@ -217,8 +216,7 @@ export default class LocalModeStatusManager { /**
         health.score = totalCount > 0 ? Math.round((passCount / totalCount) * 100) : 0;
         ';
         // 全体状態判定
-        if(health.score >= 80) {'
-            ';
+        if(health.score >= 80) {', ';
 
         }
 
@@ -249,7 +247,7 @@ export default class LocalModeStatusManager { /**
                 
             components.localExecutionDetector = {
                 available: !!LocalExecutionDetector;
-                context: manager.executionContext || null } catch (error) { }
+               , context: manager.executionContext || null } catch (error) { }
 
             components.localExecutionDetector = { available: false, error: (error, as Error').message ,}'
         
@@ -260,7 +258,7 @@ export default class LocalModeStatusManager { /**
                 
             components.faviconGenerator = {
                 available: !!FaviconGenerator;
-                stats: FaviconGenerator? .getStats?.() || null } catch (error) { : undefined' '
+               , stats: FaviconGenerator? .getStats?.() || null } catch (error) { : undefined', '
             components.faviconGenerator = { available: false, error: (error, as Error').message ,}'
         
         // DeveloperGuidanceSystem
@@ -270,7 +268,7 @@ export default class LocalModeStatusManager { /**
                 
             components.developerGuidanceSystem = {
                 available: !!DeveloperGuidanceSystem;
-                initialized: DeveloperGuidanceSystem? .isInitialized || false } catch (error) { : undefined' '
+               , initialized: DeveloperGuidanceSystem? .isInitialized || false } catch (error) { : undefined', '
             components.developerGuidanceSystem = { available: false, error: (error, as Error').message ,}'
         
         // LocalExecutionErrorHandler
@@ -280,8 +278,8 @@ export default class LocalModeStatusManager { /**
                 
             components.localExecutionErrorHandler = {
                 available: !!LocalExecutionErrorHandler;
-                initialized: LocalExecutionErrorHandler? .isInitialized || false, : undefined
-                stats: LocalExecutionErrorHandler? .getDebugInfo?.() || null ,} catch (error) { : undefined' '
+               , initialized: LocalExecutionErrorHandler? .isInitialized || false, : undefined
+                stats: LocalExecutionErrorHandler? .getDebugInfo?.() || null ,} catch (error) { : undefined', '
             components.localExecutionErrorHandler = { available: false, error: (error, as Error').message ,}'
         
         // BrowserCompatibilityManager
@@ -291,7 +289,7 @@ export default class LocalModeStatusManager { /**
                 
             components.browserCompatibilityManager = {
                 available: !!BrowserCompatibilityManager;
-                support: BrowserCompatibilityManager? .getComprehensiveSupport?.() || null } catch (error) { : undefined 
+               , support: BrowserCompatibilityManager? .getComprehensiveSupport?.() || null } catch (error) { : undefined 
             components.browserCompatibilityManager = { available: false, error: (error, as Error).message ,}
         
         return components;
@@ -362,7 +360,7 @@ export default class LocalModeStatusManager { /**
      */
     private static _getResourceDebugInfo(manager: LocalModeManager) { return { config: manager.config,
             executionContext: manager.executionContext;
-            isInitialized: manager.isInitialized, };
+           , isInitialized: manager.isInitialized, };
             initializationPromise: !!manager.initializationPromise }
         }
     

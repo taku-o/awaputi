@@ -3,7 +3,7 @@
  * Contains legacy classes maintained for backward compatibility
  */
 
-import { getErrorHandler } from '../../core/ErrorHandler.js';
+import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // Type definitions
 interface MetricValue { timestamp: number,
@@ -12,14 +12,14 @@ interface MetricValue { timestamp: number,
 interface AlertEvent { alertId: string;
     metricId: string;
     value: number;
-    threshold: number,
+   , threshold: number,
     condition: 'above' | 'below' | 'equal';
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface Alert { metricId: string;
-    threshold: number,
+   , threshold: number,
     condition: 'above' | 'below' | 'equal',
-    callback?: (event: AlertEvent') => void;
+    callback?: (even;t: AlertEvent') => void;
     id: string ,}
 }
 
@@ -53,10 +53,10 @@ interface StreamConfig { bufferSize?: number;
 // パフォーマンスダッシュボード
 export class PerformanceDashboard {
     private container: HTMLElement | null;
-    private widgets: Map<string, any>;
+    private, widgets: Map<string, any>;
     private visible: boolean;
     private updateInterval: NodeJS.Timeout | null;
-    private charts: Map<string, any>;
+    private, charts: Map<string, any>;
 
     constructor() {
 
@@ -98,9 +98,9 @@ export class PerformanceDashboard {
             top: 10px;
             right: 10px;
             width: 300px;
-            background: rgba(0, 0, 0, 0.8),
+           , background: rgba(0, 0, 0, 0.8),
             color: white;
-            padding: 10px;
+           , padding: 10px;
             border-radius: 5px,
             font-family: monospace,
             font-size: 12px,
@@ -268,7 +268,7 @@ export class PerformanceHistoryTracker {
 export class PerformanceAlertManager {
     private alerts: Map<string, Alert>;
     private activeAlerts: AlertEvent[];
-    private alertHistory: AlertEvent[];
+    private, alertHistory: AlertEvent[];
     constructor() {
 
         this.alerts = new Map();
@@ -327,11 +327,11 @@ export class PerformanceAlertManager {
 
     triggerAlert(alert: Alert, value: number): void { const alertEvent: AlertEvent = {
             alertId: alert.id;
-            metricId: alert.metricId;
+           , metricId: alert.metricId;
             value,
             threshold: alert.threshold;
             condition: alert.condition;
-            timestamp: Date.now( ,};
+           , timestamp: Date.now( ,};
         
         this.activeAlerts.push(alertEvent);
         this.alertHistory.push(alertEvent);

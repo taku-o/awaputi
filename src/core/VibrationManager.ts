@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 振動管理クラス
@@ -15,22 +15,22 @@ export class VibrationManager {'
         this.config = { : undefined
             enabled: false;
             globalIntensity: 1.0;
-            maxDuration: 5000, // 最大振動時間（ミリ秒）;
+           , maxDuration: 5000, // 最大振動時間（ミリ秒）;
             cooldownPeriod: 100, // 連続振動間のクールダウン;
             deviceDetection: true;
             batteryConsideration: true;
-            accessibilityMode: false, // アクセシビリティ用強化モード;
+           , accessibilityMode: false, // アクセシビリティ用強化モード;
             patternLibrary: {
                 // 基本パターン
                 short: [100];
                 medium: [200];
                 long: [500];
-                double: [100, 100, 100],
+               , double: [100, 100, 100],
                 triple: [100, 100, 100, 100, 100],
                 
                 // ゲーム用パターン
                 bubblePop: [50];
-                bubbleBurst: [80, 50, 80],
+               , bubbleBurst: [80, 50, 80],
                 combo: [100, 50, 100, 50, 100],
                 bonus: [200, 100, 200],
                 damage: [300, 100, 300],
@@ -42,9 +42,9 @@ export class VibrationManager {'
                 // UI用パターン
                 click: [25];
                 hover: [15];
-                menuOpen: [75, 25, 75],
+               , menuOpen: [75, 25, 75],
                 menuClose: [75];
-                notification: [100, 50, 100],
+               , notification: [100, 50, 100],
                 warning: [200, 100, 200, 100, 200],
                 error: [300, 150, 300],
                 
@@ -66,7 +66,7 @@ export class VibrationManager {'
         // デバイス情報
         this.deviceInfo = { hasVibration: false,
             isGamepad: false;
-            batteryLevel: 1.0,
+           , batteryLevel: 1.0,
             performance: 'high' // 'low', 'medium', 'high' };
         
         // 振動状態管理
@@ -88,26 +88,26 @@ export class VibrationManager {'
             averageIntensity: 0;
             queuedVibrations: 0;
             batteryImpactEstimate: 0;
-            sessionStart: Date.now( ,};
+           , sessionStart: Date.now( ,};
         
         // ユーザー設定
         this.userPreferences = { enabled: false,
             globalIntensity: 0.8;
-            enabledCategories: {
+           , enabledCategories: {
                 game: true;
                 ui: true;
                 special: true;
-                ambient: false ,};
+               , ambient: false ,};
             customPatterns: new Map(),
             intensityByEvent: new Map(''';
-                alternatives: ['visual', 'audio'];
+               , alternatives: ['visual', 'audio'];
             },
             lowBattery: { enabled: true;
                 intensityReduction: 0.5;
-                patternSimplification: true };
+               , patternSimplification: true };
             lowPerformance: { enabled: true;
                 queueReduction: true;
-                patternOptimization: true }))'
+               , patternOptimization: true }))'
 
         console.log('VibrationManager, initialized);
         this.initialize();
@@ -696,7 +696,7 @@ export class VibrationManager {'
             pattern,
             options,
             startTime: Date.now();
-            promises: vibrationPromises ,};
+           , promises: vibrationPromises ,};
         this.vibrationQueue.push(vibrationData);
         this.activePattern = vibrationData;
         
@@ -767,7 +767,7 @@ export class VibrationManager {'
 
                     gamepad.vibrationActuator.playEffect('dual-rumble', {)
                         duration: duration);
-                        strongMagnitude: intensity,)
+                       , strongMagnitude: intensity,)
     }
                         weakMagnitude: intensity * 0.7).then(resolve).catch(reject); }
 } else if (gamepad.hapticActuators && gamepad.hapticActuators.length > 0) { // レガシー Haptic API
@@ -831,8 +831,7 @@ export class VibrationManager {'
         const alternatives = this.fallbackStrategies.noVibration.alternatives;
         ';
         // 視覚的フィードバック
-        if(alternatives.includes('visual) {'
-            ';
+        if(alternatives.includes('visual) {', ';
 
         }
 
@@ -853,7 +852,7 @@ export class VibrationManager {'
         if(this.audioAccessibilityManager? .visualFeedbackManager) {''
             this.audioAccessibilityManager.visualFeedbackManager.triggerManualFeedback('flash', { : undefined)'
                 color: '#ff6b6b');
-                intensity: options.intensity || 0.5, }
+               , intensity: options.intensity || 0.5, }
                 duration: 200); }
 }
     
@@ -1105,20 +1104,20 @@ export class VibrationManager {'
         
         return { : undefined
             timestamp: new Date().toISOString();
-            configuration: {
+           , configuration: {
                 enabled: this.config.enabled;
     ,}
                 globalIntensity: this.config.globalIntensity, };
                 enabledCategories: this.userPreferences.enabledCategories }
             };
             deviceInfo: this.getDeviceInfo();
-            statistics: { ...this.stats;
+           , statistics: { ...this.stats;
                 sessionDuration,
                 vibrationsPerMinute: this.stats.vibrationsTriggered / (sessionDuration / 60000);
                 averageVibrationTime: this.stats.totalVibrationTime / this.stats.vibrationsTriggered;
-                activeVibrations: this.vibrationQueue.length ,};
+               , activeVibrations: this.vibrationQueue.length ,};
             userPreferences: this.userPreferences;
-            fallbackStrategies: this.fallbackStrategies;
+           , fallbackStrategies: this.fallbackStrategies;
         },
     }
     

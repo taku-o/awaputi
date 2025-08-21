@@ -38,7 +38,7 @@ interface ContextInfo { startTime: number,
     hasCurrentScene: boolean;
     hasBubbleManager: boolean;
     hasScoreManager: boolean;
-    hasPlayerData: boolean ,}
+   , hasPlayerData: boolean ,}
 
 interface SafeContext { game?: GameEngine;
     scene?: Scene | null;
@@ -52,7 +52,7 @@ interface SafeContext { game?: GameEngine;
     error: typeof console.error;
     Math: typeof Math;
     Date: typeof Date;
-    JSON: typeof JSON ,}
+   , JSON: typeof JSON ,}
 
 type PermissionLevel = 'user' | 'admin' | 'system';
 
@@ -61,7 +61,7 @@ export class ExecutionContext {
     private variables: Map<string, any>;
     private history: HistoryAction[];
     private startTime: number;
-    private permissions: PermissionLevel;
+    private, permissions: PermissionLevel;
     private game?: GameEngine;
     private scene?: Scene | null;
     private bubbleManager?: BubbleManager | null;
@@ -119,10 +119,10 @@ export class ExecutionContext {
         // 履歴に記録
         this.history.push({ ''
             action: 'setVariable);
-            name: normalizedName);
+           , name: normalizedName);
             oldValue,);
             newValue: value);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
         
         return oldValue;
     }
@@ -156,7 +156,7 @@ export class ExecutionContext {
         if(deleted) {'
             this.history.push({)'
                 action: 'deleteVariable');
-                name: normalizedName,);
+               , name: normalizedName,);
                 oldValue);
         }
                 timestamp: Date.now(); }
@@ -206,7 +206,7 @@ export class ExecutionContext {
             action: 'setPermissions');
             oldPermissions,);
             newPermissions: permissions);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
         
         return oldPermissions;
     }
@@ -214,8 +214,7 @@ export class ExecutionContext {
     /**
      * 権限をチェック'
      */''
-    public hasPermission(requiredPermission: PermissionLevel): boolean { const permissionLevels: Record<PermissionLevel, number> = {''
-            'user': 0,
+    public hasPermission(requiredPermission: PermissionLevel): boolean { const permissionLevels: Record<PermissionLevel, number> = {'', 'user': 0,
             'admin': 1,
             'system': 2 };
         
@@ -232,8 +231,7 @@ export class ExecutionContext {
         if(!this.hasPermission('admin)) {''
             throw new Error('JavaScript, execution requires, admin permissions''); }
 
-        if(typeof, code !== 'string'') {'
-            ';
+        if(typeof, code !== 'string'') {', ';
 
         }
 
@@ -254,7 +252,7 @@ export class ExecutionContext {
                 log: console.log.bind(console);
                 info: console.info.bind(console);
                 warn: console.warn.bind(console);
-                error: console.error.bind(console);
+               , error: console.error.bind(console);
                 // 数学関数
                 Math,
                 Date,
@@ -264,7 +262,7 @@ export class ExecutionContext {
                 // window, document, eval, Function 等はアクセス不可 };
             // 関数として実行
             const func = new Function(...Object.keys(safeContext), `"use strict"; return(${ code);`);""
-            const result = func(...Object.values(safeContext));
+            const, result = func(...Object.values(safeContext));
             ";
             this.history.push({)"
                 action: 'executeJS'},
@@ -279,7 +277,7 @@ export class ExecutionContext {
                 action: 'executeJS'),
                 code: code.length > 100 ? code.substring(0, 100) + '...' : code,
                 success: false;
-                error: (error, as Error).message;
+               , error: (error, as Error).message;
                 timestamp: Date.now( ,});
             
             throw error;
@@ -297,7 +295,7 @@ export class ExecutionContext {
             hasGameEngine: !!this.gameEngine;
             hasCurrentScene: !!this.scene;
             hasBubbleManager: !!this.bubbleManager;
-            hasScoreManager: !!this.scoreManager, };
+           , hasScoreManager: !!this.scoreManager, };
             hasPlayerData: !!this.playerData }
         }
 

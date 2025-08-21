@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * 統一ヘルプスクリーンアクセスの統合テスト
  * Unified Help Screen Access Integration Tests
@@ -8,16 +8,16 @@ import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globa
  * - Test H key shortcut from different scenes
  * - Test F1 contextual help access  
  * - Test return navigation to correct previous screen
- * Requirements: 1.1, 1.2, 1.4, 4.1
+ *, Requirements: 1.1, 1.2, 1.4, 4.1
  */
-import { NavigationContextManager } from '../../src/core/navigation/NavigationContextManager';
-import { KeyboardShortcutRouter } from '../../src/core/navigation/KeyboardShortcutRouter';
+import { NavigationContextManager  } from '../../src/core/navigation/NavigationContextManager';
+import { KeyboardShortcutRouter  } from '../../src/core/navigation/KeyboardShortcutRouter';
 // Mock dependencies
 const mockGameEngine = {
     sceneManager: {
         switchScene: jest.fn().mockReturnValue(true;);
-        getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )));
-        getScene: jest.fn(),
+       , getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )));
+       , getScene: jest.fn(),
     localizationManager: {
         t: jest.fn((key, fallback) => fallback || key),
         getCurrentLanguage: (') => 'ja'

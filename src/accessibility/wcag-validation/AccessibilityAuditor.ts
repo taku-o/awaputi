@@ -9,62 +9,62 @@ interface AuditorConfig { enabled: boolean,
     quickAuditTests: string[];
     autoAudit: boolean;
     auditInterval: number;
-    issueThreshold: IssueThreshold
+   , issueThreshold: IssueThreshold
     ,}
 
 interface IssueThreshold { critical: number;
     high: number;
     medium: number;
-    low: number }
+   , low: number }
 
 interface AuditState { running: boolean;
     lastAudit: number | null;
     currentCategory: string | null;
-    results: Map<number, AuditResults>;
+   , results: Map<number, AuditResults>;
     history: AuditResults[]
     ,}
 
 interface GuidelineDefinition { name: string;
-    tests: string[] }
+   , tests: string[] }
 
 interface CategoryDefinition { name: string;
     description: string;
-    guidelines: Record<string, GuidelineDefinition> }
+   , guidelines: Record<string, GuidelineDefinition> }
 
 interface AuditSummary { totalIssues: number,
     criticalIssues: number;
     highIssues: number;
     mediumIssues: number;
     lowIssues: number;
-    overallScore: number ,}
+   , overallScore: number ,}
 
 interface AuditRecommendation { priority: 'critical' | 'high' | 'medium' | 'low';
     message: string;
-    action: string }
+   , action: string }
 
 interface AuditResults { timestamp: number;
-    categories: Record<string, CategoryResult>;
+   , categories: Record<string, CategoryResult>;
     summary: AuditSummary;
-    recommendations: AuditRecommendation[]
+   , recommendations: AuditRecommendation[]
     ,}
 
 interface CategoryResult { id: string;
     name: string;
     description: string;
-    guidelines: Record<string, GuidelineResult>;
+   , guidelines: Record<string, GuidelineResult>;
     issues: ClassifiedIssue[];
     warnings: any[];
     score: number;
     passed: number;
-    failed: number ,}
+   , failed: number ,}
 
 interface GuidelineResult { id: string;
     name: string;
-    tests: Record<string, TestResult>;
+   , tests: Record<string, TestResult>;
     issues: ClassifiedIssue[];
     warnings: any[];
     passed: number;
-    failed: number ,}
+   , failed: number ,}
 
 interface TestResult { passed: boolean;
     issues?: Issue[];
@@ -79,19 +79,19 @@ interface Issue { element?: Element;
 
 interface ClassifiedIssue extends Issue { ''
     severity: 'critical' | 'high' | 'medium' | 'low';
-    classification: IssueClassification
+   , classification: IssueClassification
     }
 
 interface IssueClassification { category: string;
     impact: string;
-    effort: string }
+   , effort: string }
 
 interface QuickAuditResult { timestamp: number;
     issues: ClassifiedIssue[];
     warnings: any[];
     passed: number;
     failed: number;
-    tests: Record<string, TestResult> }
+   , tests: Record<string, TestResult> }
 
 // Minimal interface for WCAGRuleEngine
 interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<TestResult>
@@ -100,10 +100,10 @@ interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<Tes
 export class AccessibilityAuditor {
     private config: AuditorConfig;
     private auditState: AuditState;
-    private categories: Record<string, CategoryDefinition>;
+    private, categories: Record<string, CategoryDefinition>;
     private issueClassifier: Record<string, string[]>;
     private auditTimer: number | null;
-    private ruleEngine: WCAGRuleEngine | null;
+    private, ruleEngine: WCAGRuleEngine | null;
 
     constructor(config: Partial<AuditorConfig> = {)) {
         this.config = {'
@@ -111,57 +111,40 @@ export class AccessibilityAuditor {
             auditCategories: ['perceivable', 'operable', 'understandable', 'robust'],
             quickAuditTests: ['altText', 'colorContrast', 'keyboardNavigation', 'nameRoleValue'],
             autoAudit: false;
-            auditInterval: 300000, // 5 minutes;
+           , auditInterval: 300000, // 5 minutes;
             issueThreshold: {
                 critical: 0;
                 high: 5;
                 medium: 10;
-                low: 20 ,};
+               , low: 20 ,};
             ...config;
 
         // Audit state management
         this.auditState = { running: false,
             lastAudit: null;
-            currentCategory: null,
+           , currentCategory: null,
             results: new Map(''';
-                name: 'Perceivable',
+               , name: 'Perceivable',
                 description: 'Information must be presentable in ways users can perceive',
-                guidelines: {' ,}'
-
-                    '1.1': { name: 'Text Alternatives', tests: ['altText', 'imageLabels', 'decorativeImages] },''
-                    '1.2': { name: 'Time-based Media', tests: ['audioControl] ,},''
-                    '1.3': { name: 'Adaptable', tests: ['headingStructure', 'meaningfulSequence', 'sensoryCues] },''
-                    '1.4': { name: 'Distinguishable', tests: ['colorContrast', 'textResize] }
+                guidelines: {' ,}', '1.1': { name: 'Text Alternatives', tests: ['altText', 'imageLabels', 'decorativeImages] },'', '1.2': { name: 'Time-based Media', tests: ['audioControl] ,},'', '1.3': { name: 'Adaptable', tests: ['headingStructure', 'meaningfulSequence', 'sensoryCues] },'', '1.4': { name: 'Distinguishable', tests: ['colorContrast', 'textResize] }
             },
 
             operable: { ''
                 name: 'Operable',
                 description: 'User interface components must be operable',
-                guidelines: {' ,}'
-
-                    '2.1': { name: 'Keyboard Accessible', tests: ['keyboardNavigation', 'noKeyboardTrap] },''
-                    '2.2': { name: 'Enough Time', tests: [] ,},''
-                    '2.3': { name: 'Seizures', tests: [] ,},''
-                    '2.4': { name: 'Navigable', tests: ['bypassBlocks', 'pageTitle', 'focusOrder', 'linkPurpose] },''
-                    '2.5': { name: 'Input Modalities', tests: [] ,}
+                guidelines: {' ,}', '2.1': { name: 'Keyboard Accessible', tests: ['keyboardNavigation', 'noKeyboardTrap] },'', '2.2': { name: 'Enough Time', tests: [] ,},'', '2.3': { name: 'Seizures', tests: [] ,},'', '2.4': { name: 'Navigable', tests: ['bypassBlocks', 'pageTitle', 'focusOrder', 'linkPurpose] },'', '2.5': { name: 'Input Modalities', tests: [] ,}
             },
 
             understandable: { ''
                 name: 'Understandable',
                 description: 'Information and UI operation must be understandable',
-                guidelines: {' ,}'
-
-                    '3.1': { name: 'Readable', tests: ['languageOfPage] ,},''
-                    '3.2': { name: 'Predictable', tests: ['onFocus', 'onInput', 'consistentNavigation] },''
-                    '3.3': { name: 'Input Assistance', tests: ['errorIdentification', 'labelsInstructions] }
+                guidelines: {' ,}', '3.1': { name: 'Readable', tests: ['languageOfPage] ,},'', '3.2': { name: 'Predictable', tests: ['onFocus', 'onInput', 'consistentNavigation] },'', '3.3': { name: 'Input Assistance', tests: ['errorIdentification', 'labelsInstructions] }
             },
 
             robust: { ''
                 name: 'Robust',)';
                 description: 'Content must be robust enough for various assistive technologies')';
-                guidelines: {' ,}'
-
-                    '4.1': { name: 'Compatible', tests: ['parsing', 'nameRoleValue', 'statusMessages] }
+               , guidelines: {' ,}', '4.1': { name: 'Compatible', tests: ['parsing', 'nameRoleValue', 'statusMessages] }
 };
 
         // Issue classification system
@@ -208,7 +191,7 @@ export class AccessibilityAuditor {
                 highIssues: 0;
                 mediumIssues: 0;
                 lowIssues: 0;
-                overallScore: 0 };
+               , overallScore: 0 };
             recommendations: [];
         },
 
@@ -249,7 +232,7 @@ export class AccessibilityAuditor {
             issues: [];
             warnings: [];
             passed: 0;
-            failed: 0, }
+           , failed: 0, }
             tests: {};
         for(const, testName of, this.config.quickAuditTests) {
 ';
@@ -292,13 +275,13 @@ export class AccessibilityAuditor {
 
         const categoryResult: CategoryResult = { id: categoryId,
             name: category.name;
-            description: category.description, }
+           , description: category.description, }
             guidelines: {};
             issues: [];
             warnings: [];
             score: 0;
             passed: 0;
-            failed: 0;
+           , failed: 0;
         },
 
         // Audit each guideline in the category
@@ -327,12 +310,12 @@ export class AccessibilityAuditor {
     private async auditGuideline(guidelineId: string, guideline: GuidelineDefinition, options: any = {}): Promise<GuidelineResult> {
         const guidelineResult: GuidelineResult = {
             id: guidelineId;
-            name: guideline.name, }
+           , name: guideline.name, }
             tests: {};
             issues: [];
             warnings: [];
             passed: 0;
-            failed: 0;
+           , failed: 0;
         },
 
         // Run each test in the guideline
@@ -369,9 +352,9 @@ export class AccessibilityAuditor {
             const classified: ClassifiedIssue = {)
                 ...issue);
                 severity: issue.severity || this.determineSeverity(issue);
-                classification: {
+               , classification: {
                     category: this.getIssueCategory(issue);
-                    impact: this.assessImpact(issue), }
+                   , impact: this.assessImpact(issue), }
                     effort: this.estimateFixEffort(issue); }
 };
 
@@ -446,8 +429,7 @@ export class AccessibilityAuditor {
     private estimateFixEffort(issue: Issue): string { ''
         const issueType = this.getIssueType(issue);
 
-        const effortMap: Record<string, string> = {''
-            'missing-alt': 'low',
+        const effortMap: Record<string, string> = {'', 'missing-alt': 'low',
             'keyboard-trap': 'high',
             'no-accessible-name': 'medium',
             'low-contrast': 'medium',

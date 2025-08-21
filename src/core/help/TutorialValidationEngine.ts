@@ -4,8 +4,8 @@
  * ステップ検証、インタラクション検出、タイムアウト処理を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
 export interface GameEngine { bubbleManager?: BubbleManager;
@@ -19,7 +19,7 @@ export interface BubbleManager { getBubbleById(id: string): Bubble | null, }
 
 export interface Bubble { id: string,
     type: string;
-    isPopped: boolean ,}
+   , isPopped: boolean ,}
 
 export interface ScoreManager { getCurrentCombo(): number;
     getCurrentScore(): number; }
@@ -28,7 +28,7 @@ export interface SceneManager { currentScene?: Scene;
     }
 
 export interface Scene {
-    constructor: { name: string }
+    constructor: { nam;e: string }
 
 export interface SettingsManager { getSetting(key: string): any, }
 
@@ -76,7 +76,7 @@ export type InteractionHandler = (...args: any[]) => void;
 export class TutorialValidationEngine {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
-    private interactionHandlers: Map<string, InteractionHandler>;
+    private, interactionHandlers: Map<string, InteractionHandler>;
     private validationFunctions: Map<string, ValidationFunction>;
     private stepTimer: number | null;
     constructor(gameEngine: GameEngine, loggingSystem?: LoggingSystem) {
@@ -103,7 +103,7 @@ export class TutorialValidationEngine {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`バリデーションエンジン初期化エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーションエンジン初期化エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -113,12 +113,12 @@ export class TutorialValidationEngine {
     setupValidationFunctions()';
         this.validationFunctions.set('validateBubblePop', async (actionResult, step, gameEngine) => {  const bubbleManager = gameEngine? .bubbleManager;' }
 
-            if(!bubbleManager) { : undefined' '
+            if(!bubbleManager) { : undefined', '
                 return { success: false, error: 'BubbleManager not available' ,}
             ';
 
             const bubbleId = actionResult? .bubbleId;''
-            if(!bubbleId) { : undefined' '
+            if(!bubbleId) { : undefined', '
                 return { success: false, error: '泡を正しくクリックしてください' ,}
             ';
 
@@ -151,7 +151,7 @@ export class TutorialValidationEngine {
         // 特殊泡を割るバリデーション
         this.validationFunctions.set('validateSpecialBubblePop', async (actionResult, step, gameEngine) => {  const bubbleType = actionResult? .bubbleType;' }
 
-            if(!bubbleType) { : undefined' '
+            if(!bubbleType) { : undefined', '
                 return { success: false, error: '泡の情報が取得できません' ,}
 
             const specialTypes = ['rainbow', 'pink', 'clock', 'electric', 'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'];''
@@ -167,7 +167,7 @@ export class TutorialValidationEngine {
         // コンボ達成バリデーション
         this.validationFunctions.set('validateCombo', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine? .scoreManager;' }
 
-            if(!scoreManager) { : undefined' '
+            if(!scoreManager) { : undefined', '
                 return { success: false, error: 'ScoreManager not available' ,}
             
             const currentCombo = scoreManager.getCurrentCombo();
@@ -192,7 +192,7 @@ export class TutorialValidationEngine {
 
             ' }'
 
-            if(!targetScene) { : undefined' '
+            if(!targetScene) { : undefined', '
                 return { success: false, error: 'ターゲットシーンが指定されていません' ,}
             
             if(currentScene === targetScene) {
@@ -211,7 +211,7 @@ export class TutorialValidationEngine {
         // スコア達成バリデーション
         this.validationFunctions.set('validateScore', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine? .scoreManager;' }
 
-            if(!scoreManager) { : undefined' '
+            if(!scoreManager) { : undefined', '
                 return { success: false, error: 'ScoreManager not available' ,}
             
             const currentScore = scoreManager.getCurrentScore();
@@ -242,7 +242,7 @@ export class TutorialValidationEngine {
             ';
 
             const settingsManager = gameEngine? .settingsManager;''
-            if(!settingsManager) { : undefined' '
+            if(!settingsManager) { : undefined', '
                 return { success: false, error: 'SettingsManager not available' ,}
             
             const currentValue = settingsManager.getSetting(targetSetting);
@@ -283,7 +283,7 @@ export class TutorialValidationEngine {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`ステップ検証エラー: ${step.id} - ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`ステップ検証エラー: ${step.id} - ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
 
             return { success: false,' };
 
@@ -306,8 +306,7 @@ export class TutorialValidationEngine {
             const actionType = step.action? .type;''
             if(!actionType) return null;
              : undefined';
-            const actionToValidation: Record<string, string> = { ''
-                'click_bubble': 'validateBubblePop',
+            const actionToValidation: Record<string, string> = { '', 'click_bubble': 'validateBubblePop',
                 'drag_bubble': 'validateBubbleDrag',
                 'click_special_bubble': 'validateSpecialBubblePop',
                 'achieve_combo': 'validateCombo',
@@ -319,7 +318,7 @@ export class TutorialValidationEngine {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`バリデーション関数決定エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーション関数決定エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
             return null;
     
     /**
@@ -335,8 +334,7 @@ export class TutorialValidationEngine {
             const actionType = step.action? .type;''
             if(!actionType) return 'wait_click';
              : undefined';
-            const actionToWait: Record<string, string> = { ''
-                'click_bubble': 'wait_bubble_click',
+            const actionToWait: Record<string, string> = { '', 'click_bubble': 'wait_bubble_click',
                 'drag_bubble': 'wait_bubble_drag',
                 'click_special_bubble': 'wait_special_bubble_click',
                 'achieve_combo': 'wait_combo',
@@ -348,7 +346,7 @@ export class TutorialValidationEngine {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`待機アクション決定エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine'');''
+            this.loggingSystem.log(`待機アクション決定エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine'');''
             return 'wait_click';
     
     /**
@@ -416,7 +414,7 @@ export class TutorialValidationEngine {
 
             } catch (err) { }
 
-            this.loggingSystem.log(`バリデーションエラー表示失敗: ${(err, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーションエラー表示失敗: ${(err, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -446,7 +444,7 @@ export class TutorialValidationEngine {
 
             } catch (error) { }
 
-            this.loggingSystem.log(`タイムアウトメッセージ表示失敗: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`タイムアウトメッセージ表示失敗: ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -462,7 +460,7 @@ export class TutorialValidationEngine {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`バリデーション関数登録エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーション関数登録エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -477,7 +475,7 @@ export class TutorialValidationEngine {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`バリデーション関数削除エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーション関数削除エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -499,7 +497,7 @@ export class TutorialValidationEngine {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`クリーンアップエラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`クリーンアップエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
 }
 

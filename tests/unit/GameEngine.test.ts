@@ -1,9 +1,9 @@
 /**
  * Unit tests for GameEngine class
  */
-import { jest } from '@jest/globals';
-import { MockFactory } from '../mocks/MockFactory.js';
-import { GameEngine } from '../../src/core/GameEngine.js';
+import { jest  } from '@jest/globals';
+import { MockFactory  } from '../mocks/MockFactory.js';
+import { GameEngine  } from '../../src/core/GameEngine.js';
 // Types
 interface CanvasInfo {
     actualWidth: number,
@@ -19,9 +19,9 @@ interface MockBubble {
     type: string,
 }
 interface MockLocalStorage {
-    getItem: jest.Mock<(key: string) => string | null>;
-    setItem: jest.Mock<(key: string, value: string) => void>;
-    removeItem: jest.Mock<(key: string) => void>;
+    getItem: jest.Mock<(ke;y: string) => string | null>;
+    setItem: jest.Mock<(ke;y: string, value: string) => void>;
+    removeItem: jest.Mock<(ke;y: string) => void>;
     clear: jest.Mock<(') => void>;
 }
 // Note: Mock imports removed to avoid path resolution issues

@@ -3,7 +3,7 @@
  * 回復戦略・グレースフルデグラデーション・エラーログ・レポーティング
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for error handling
 interface ErrorHandlerConfig { enabled: boolean,
@@ -13,7 +13,7 @@ interface ErrorHandlerConfig { enabled: boolean,
     fallbackModes: boolean;
     debugMode: boolean;
     maxRetries: number;
-    retryDelay: number,
+   , retryDelay: number,
     logLevel: 'all' | 'warn' | 'error' | 'none' ,}
 ';
 
@@ -21,22 +21,22 @@ interface ErrorCategory { ''
     severity: 'critical' | 'high' | 'medium' | 'low';
     autoRecover: boolean;
     fallback: string | null;
-    reportImmediately: boolean }
+   , reportImmediately: boolean }
 
 interface ErrorCategories { critical: ErrorCategory;
     functional: ErrorCategory;
     performance: ErrorCategory;
-    warning: ErrorCategory
+   , warning: ErrorCategory
     }
 }
 
 interface ErrorStats { totalErrors: number;
-    errorsByCategory: Map<string, number>;
+   , errorsByCategory: Map<string, number>;
     errorsByComponent: Map<string, number>;
     recoveryAttempts: number;
     successfulRecoveries: number;
     failedRecoveries: number;
-    fallbackActivations: number ,}
+   , fallbackActivations: number ,}
 ';
 
 interface RecoveryStrategy { ''
@@ -48,17 +48,17 @@ interface RecoveryStrategies { screenReader: RecoveryStrategy,
     visual: RecoveryStrategy;
     audio: RecoveryStrategy;
     motor: RecoveryStrategy;
-    cognitive: RecoveryStrategy;
+   , cognitive: RecoveryStrategy;
     [key: string]: RecoveryStrategy,
     }
 
 interface FallbackMode { name: string,
     features: string[];
-    disabled: string[] ,}
+   , disabled: string[] ,}
 
 interface FallbackModes { basicMode: FallbackMode;
     degradedMode: FallbackMode;
-    optimizedMode: FallbackMode;
+   , optimizedMode: FallbackMode;
     [key: string]: FallbackMode,
     }
 
@@ -69,7 +69,7 @@ interface ErrorInfo { id: string,
     context: any;
     category: ErrorCategory;
     categoryName: string;
-    message: string,
+   , message: string,
     stack?: string;''
     severity: 'critical' | 'high' | 'medium' | 'low';
     fallbackMode?: string;
@@ -81,7 +81,7 @@ interface ErrorReport { timestamp: number,
     message: string;
     userAgent: string;
     url: string;
-    gameState: any ,}
+   , gameState: any ,}
 
 interface GlobalErrorContext { filename?: string;
     lineno?: number;
@@ -91,7 +91,7 @@ interface GlobalErrorContext { filename?: string;
 
 // AccessibilityManager interface (minimal, definition);
 interface AccessibilityManager { screenReaderSupport?: {
-        reconnect: () => Promise<void> ,}
+        reconnec;t: () => Promise<void> ,}
     };
     gameEngine?: { getCurrentState?: () => any; }
     }
@@ -102,11 +102,11 @@ export class AccessibilityErrorHandler {
     private config: ErrorHandlerConfig;
     private errorCategories: ErrorCategories;
     private errorStats: ErrorStats;
-    private activeErrors: Map<string, ErrorInfo>;
+    private, activeErrors: Map<string, ErrorInfo>;
     private recoveryStrategies: RecoveryStrategies;
     private fallbackModes: FallbackModes;
     private errorLog: ErrorInfo[];
-    private maxLogSize: number;
+    private, maxLogSize: number;
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
@@ -121,7 +121,7 @@ export class AccessibilityErrorHandler {
             fallbackModes: true;
             debugMode: false;
             maxRetries: 3;
-            retryDelay: 1000;
+           , retryDelay: 1000;
     ,}
 
             logLevel: 'warn' }
@@ -132,25 +132,25 @@ export class AccessibilityErrorHandler {
                 severity: 'critical',
                 autoRecover: true,
                 fallback: 'basicMode';
-                reportImmediately: true ,};
+               , reportImmediately: true ,};
             // 機能エラー（特定機能が動作しない）
             functional: { ''
                 severity: 'high',
                 autoRecover: true,
                 fallback: 'degradedMode';
-                reportImmediately: false ,};
+               , reportImmediately: false ,};
             // パフォーマンスエラー（動作は継続）
             performance: { ''
                 severity: 'medium',
                 autoRecover: false,
                 fallback: 'optimizedMode';
-                reportImmediately: false ,};
+               , reportImmediately: false ,};
             // 警告レベル（ユーザー体験に軽微な影響）
             warning: { ''
                 severity: 'low';
                 autoRecover: false;
                 fallback: null;
-                reportImmediately: false }
+               , reportImmediately: false }
         };
         // エラー統計
         this.errorStats = { totalErrors: 0,
@@ -159,7 +159,7 @@ export class AccessibilityErrorHandler {
             recoveryAttempts: 0;
             successfulRecoveries: 0;
             failedRecoveries: 0;
-            fallbackActivations: 0 ,};
+           , fallbackActivations: 0 ,};
         // アクティブエラー
         this.activeErrors = new Map();
         
@@ -237,7 +237,7 @@ export class AccessibilityErrorHandler {
         window.addEventListener('error', (event: ErrorEvent) => { ''
             this.handleGlobalError(event.error, 'globalError', {)
                 filename: event.filename)';
-                lineno: event.lineno,' }'
+               , lineno: event.lineno,' }'
 
                 colno: event.colno); }
             };
@@ -342,7 +342,7 @@ export class AccessibilityErrorHandler {
             category: this.errorCategories[category];
             categoryName: category;
             message: errorMessage;
-            stack: error? .stack, : undefined };
+           , stack: error? .stack, : undefined };
             severity: this.errorCategories[category].severity }
         }
     
@@ -396,7 +396,7 @@ export class AccessibilityErrorHandler {
                 // 各戦略を順番に試行
                 for(const [strategyName, strategy] of Object.entries(strategies) {
                     console.log(`Attempting, recovery strategy: ${strategyName)`),
-                    await strategy();
+                    await, strategy();
                     
                     // 回復検証
                     if(await, this.verifyRecovery(errorInfo} {;
@@ -418,8 +418,7 @@ export class AccessibilityErrorHandler {
     /**
      * コンポーネントタイプの取得
      */''
-    private getComponentType(component: string): string { const componentMap: Record<string, string> = {''
-            'ScreenReaderSupport': 'screenReader',
+    private getComponentType(component: string): string { const componentMap: Record<string, string> = {'', 'ScreenReaderSupport': 'screenReader',
             'KeyboardAccessibilityManager': 'keyboard',
             'ContrastManager': 'visual',
             'VisualFeedbackManager': 'audio',
@@ -502,7 +501,7 @@ export class AccessibilityErrorHandler {
         // フォールバック状態の記録
         this.activeErrors.set(errorInfo.id, { ...errorInfo)
             fallbackMode: modeName);
-            activatedAt: Date.now( };
+           , activatedAt: Date.now( };
         
         return, true;
     }
@@ -559,11 +558,11 @@ export class AccessibilityErrorHandler {
         textOutput.style.cssText = `;
             position: fixed;
             top: 0;
-            left: 0;
+           , left: 0;
             z-index: 9999,
             background: rgba(0,0,0,0.8),
             color: white;
-            padding: 10px;
+           , padding: 10px;
             max-width: 300px,
         `;
         document.body.appendChild(textOutput);
@@ -664,7 +663,7 @@ export class AccessibilityErrorHandler {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%),
+           , transform: translate(-50%, -50%),
             z-index: 10000,
             pointer-events: none,
         `;
@@ -771,7 +770,7 @@ export class AccessibilityErrorHandler {
             message: errorInfo.message;
             userAgent: navigator.userAgent;
             url: window.location.href;
-            gameState: this.gameEngine? .getCurrentState?.() || null };
+           , gameState: this.gameEngine? .getCurrentState?.() || null };
         // レポートの送信（実装に応じて）
         this.sendErrorReport(report);
     }
@@ -810,7 +809,7 @@ export class AccessibilityErrorHandler {
             right: 20px;
             background: #f44336;
             color: white;
-            padding: 1rem;
+           , padding: 1rem;
             border-radius: 4px,
             z-index: 10001,
             max-width: 300px,
@@ -826,8 +825,8 @@ export class AccessibilityErrorHandler {
             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem;">
                 一部の機能が正常に動作しない可能性があります。";
             </p>"";
-            <button onclick="this.parentElement.remove(")" "";
-                    style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 2px; cursor: pointer;">
+            <button onclick="this.parentElement.remove(")", "";
+                    style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 2px;, cursor: pointer;">
                 閉じる;
             </button>;
         `;
@@ -858,7 +857,7 @@ export class AccessibilityErrorHandler {
     getErrorStats(): Record<string, any> { return { ...this.errorStats,
             errorsByCategory: Object.fromEntries(this.errorStats.errorsByCategory);
             errorsByComponent: Object.fromEntries(this.errorStats.errorsByComponent);
-            recoveryRate: this.errorStats.recoveryAttempts > 0 ?   : undefined ,};
+           , recoveryRate: this.errorStats.recoveryAttempts > 0 ?   : undefined ,};
                 (this.errorStats.successfulRecoveries / this.errorStats.recoveryAttempts) * 100 : 0 }
         },
     }
@@ -883,8 +882,7 @@ export class AccessibilityErrorHandler {
      * 設定の適用
      */
     applyConfig(config: { errorHandler?: Partial<ErrorHandlerConfig> ): void {
-        if(config.errorHandler) {'
-            ';
+        if(config.errorHandler) {', ';
 
         }
 

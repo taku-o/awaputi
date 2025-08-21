@@ -3,7 +3,7 @@
  * ヘルプコンテンツ管理 - コンテンツ読み込み、検索、状態管理
  */
 
-import { HelpTopic } from '../HelpScene.js';
+import { HelpTopic  } from '../HelpScene.js';
 
 /**
  * Help Content Manager
@@ -24,13 +24,13 @@ export class HelpContentManager {
     // ヘルプカテゴリ
     private categories: any[];
     // コンテンツキャッシュ
-    private contentCache: Map<string, any>;
+    private, contentCache: Map<string, any>;
     private searchCache: Map<string, any>;
     private maxCacheSize: number;
     // アナリティクス
     private helpAnalytics: any;
     private helpFeedbackSystem: any;
-    private helpEffectivenessAnalyzer: any;
+    private, helpEffectivenessAnalyzer: any;
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
@@ -160,7 +160,7 @@ export class HelpContentManager {
 
                             } else if(content.content && typeof, content.content === 'object) { // content.contentがオブジェクトの場合（overview, objective, basic_rules, tipsなど）'
                                 const contentValues = Object.values(content.content).filter(val => typeof, val === 'string'');''
-                                contentText = contentValues.join(' '');' }
+                                contentText = contentValues.join(', '');' }
 
                             } else if (content.answer && typeof, content.answer === 'string'') { // フォールバック: answer
                                 contentText = content.answer;' }'
@@ -173,9 +173,9 @@ export class HelpContentManager {
                         const searchItem = {
                             id: `${category.id}:${topic.id}`;
                             categoryId: category.id;
-                            topicId: topic.id,
+                           , topicId: topic.id,
                             title: topic.title || topic.question || '';
-                            content: contentText,
+                           , content: contentText,
                             category: category.id,
                             categoryName: this.gameEngine.localizationManager? .t(category.key, category.id) || category.id, : undefined';
                             tags: topic.tags || [],
@@ -183,7 +183,7 @@ export class HelpContentManager {
                             difficulty: topic.difficulty || 'beginner';
                             popularity: topic.popularity || 0;
                             lastUpdated: Date.now();
-                            searchKeywords: topic.searchKeywords || [];
+                           , searchKeywords: topic.searchKeywords || [];
                         },
                         
                         allContent.push(searchItem);
@@ -194,8 +194,7 @@ export class HelpContentManager {
 }
             ';
             // SearchEngineにコンテンツをインデックス
-            if(allContent.length > 0) {'
-                ';
+            if(allContent.length > 0) {', ';
 
             }
 
@@ -569,7 +568,7 @@ export class HelpContentManager {
             searchQuery: this.searchQuery;
             searchResults: [...searchResults];
             isSearching: this.isSearching;
-            categories: this.categories.map(cat => ({
+           , categories: this.categories.map(cat => ({
     ,})
                 ...cat,) };
                 topics: [...cat.topics])));
@@ -685,7 +684,7 @@ export class HelpSearchManager {
             ).map((topic: any) => ({
                 text: topic.title;
                 category: cat.id);
-                topicId: topic.id }
+               , topicId: topic.id }
             })
         ).slice(0, 5); // 最大5個の提案
     }

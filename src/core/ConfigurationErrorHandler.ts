@@ -5,9 +5,9 @@
  * エラー復旧機能を提供します。
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';''
-import { getLoggingSystem } from './LoggingSystem';''
-import { getValidationSystem } from './ValidationSystem';
+import { getErrorHandler  } from '../utils/ErrorHandler';''
+import { getLoggingSystem  } from './LoggingSystem';''
+import { getValidationSystem  } from './ValidationSystem';
 ';
 
 export enum ConfigErrorType {;
@@ -20,7 +20,7 @@ export enum ConfigErrorType {;
     DEPENDENCY_ERROR = 'DEPENDENCY_ERROR' }
 
 interface RecoveryStrategy { maxAttempts: number,
-    strategy: (error: Error, context: any) => RecoveryResult ,}
+    strategy: (erro;r: Error, context: any) => RecoveryResult ,}
 }
 
 interface RecoveryResult { success: boolean,
@@ -28,24 +28,24 @@ interface RecoveryResult { success: boolean,
     message: string ,}
 
 interface ErrorStats { total: number;
-    byType: Map<string, number>;
+   , byType: Map<string, number>;
     recovered: number;
     failed: number;
-    lastReset: number ,}
+   , lastReset: number ,}
 
 interface FallbackState { useDefaultValues: boolean;
     disableValidation: boolean;
     disableCache: boolean;
-    safeMode: boolean }
+   , safeMode: boolean }
 
 export class ConfigurationErrorHandler {
     private errorTypes = ConfigErrorType;
     private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>;
     private errorStats: ErrorStats;
-    private recoveryAttempts: Map<string, number>;
+    private, recoveryAttempts: Map<string, number>;
     private maxRecoveryAttempts: number = 3;
     private fallbackState: FallbackState;
-    private logger: any;
+    private, logger: any;
     constructor() {
 
         this.recoveryStrategies = new Map();
@@ -53,7 +53,7 @@ export class ConfigurationErrorHandler {
             total: 0;
             byType: new Map();
             recovered: 0;
-            failed: 0;
+           , failed: 0;
     ,}
             lastReset: Date.now(); }
         };
@@ -61,7 +61,7 @@ export class ConfigurationErrorHandler {
         this.fallbackState = { useDefaultValues: false,
             disableValidation: false;
             disableCache: false;
-            safeMode: false ,};
+           , safeMode: false ,};
         this.logger = getLoggingSystem();
         this._initialize();
     }
@@ -74,7 +74,7 @@ export class ConfigurationErrorHandler {
     private _setupRecoveryStrategies(): void { // 設定アクセスエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {)
             maxAttempts: 3);
-            strategy: (error: Error, context: any) => { ,}
+           , strategy: (error: Error, context: any) => { ,}
                 const { category, key, defaultValue } = context;
                 
                 if(defaultValue !== undefined && defaultValue !== null) {
@@ -159,7 +159,7 @@ export class ConfigurationErrorHandler {
             byType: new Map();
             recovered: 0;
             failed: 0;
-            lastReset: Date.now( }
+           , lastReset: Date.now( }
 }
 
 let instance: ConfigurationErrorHandler | null = null,

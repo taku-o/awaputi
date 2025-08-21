@@ -1,7 +1,7 @@
 /**
  * ソーシャルメディア個別対応テスト (Task, 4)
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Mock interfaces
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
 interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>,
@@ -13,12 +13,12 @@ interface MockGameEngine { statisticsManager: MockStatisticsManager;
     on: jest.Mock;
     off: jest.Mock;
     emit: jest.Mock;
-    isDebugMode: jest.Mock<boolean> }
+   , isDebugMode: jest.Mock<boolean> }
 interface MockNavigator { onLine: boolean;
     userAgent: string;
-    language: string }
+   , language: string }
 interface MockWindow { closed: boolean;
-    close: jest.Mock }
+   , close: jest.Mock }
 interface ShareData { type: string;
     score?: number;
     text?: string;
@@ -58,7 +58,7 @@ interface SocialSharingManagerInstance { shareContentGenerator: MockShareContent
     share(data: ShareData, options?: ShareOptions): Promise<ShareResult>;
     isWebShareSupported: jest.Mock<boolean>;
     updatePerformanceStats(action: string): void, }
-    getPerformanceStats(): { [key: string]: number | Date; lastUpdate: Date }
+    getPerformanceStats(): { [key: string]: number | Date;, lastUpdate: Date }
     initialize(): Promise<void>;
     cleanup(): void;
 }
@@ -82,7 +82,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             };
         seoMetaManager: { updateOpenGraphTags: jest.fn( };
             on: jest.fn();
-            off: jest.fn(),
+           , off: jest.fn(),
             emit: jest.fn(),
             isDebugMode: jest.fn<boolean>().mockReturnValue(false);
         };
@@ -104,7 +104,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
         // Window.openのモック
         window.open = jest.fn().mockReturnValue({ )
             closed: false);
-        close: jest.fn(),' }'
+       , close: jest.fn(),' }'
 
         } as unknown as Window') as any;
 
@@ -338,7 +338,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 expect.objectContaining({ ')'
                     title: 'BubblePop - 実績「テスト実績」解除！''),
                     description: expect.stringContaining('テスト実績);
-                    url: shareData.url ,});
+                   , url: shareData.url ,});
             );''
         }');''
         test('SEOMetaManagerが無い場合のエラーハンドリング', () => {  mockGameEngine.seoMetaManager = null; }
@@ -438,7 +438,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith('';
                 'twitterShareAttempt);
                 expect.objectContaining({ hasText: true)'
-                    hasUrl: false,')';
+                   , hasUrl: false,')';
                     dataType: 'score'),
             );' }'
 
@@ -455,7 +455,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith('';
                 'facebookShareAttempt);
                 expect.objectContaining({ hasUrl: true)'
-                    hasTitle: true,')';
+                   , hasTitle: true,')';
                     dataType: 'achievement'),
             );' }'
 

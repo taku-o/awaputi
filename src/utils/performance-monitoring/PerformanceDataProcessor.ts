@@ -8,18 +8,18 @@ interface DataPoint { x: number,
     y: number ,}
 
 interface AnalysisDataPoint { timestamp: number;
-    metrics: Map<string, any> }
+   , metrics: Map<string, any> }
 
 interface StatisticalProcessor { metrics?: string[];
     metricPairs?: [string, string][];
     method?: string;
-    calculate: (data: AnalysisDataPoint[]) => any ,}
+    calculate: (dat;a: AnalysisDataPoint[]) => any ,}
 }
 
 interface TrendData { trend: 'stable' | 'increasing' | 'decreasing';
     confidence: number;
     timestamp: number;
-    analyzer: string }
+   , analyzer: string }
 
 interface DescriptiveStats { count: number;
     mean: number;
@@ -29,24 +29,24 @@ interface DescriptiveStats { count: number;
     max: number;
     p25: number;
     p75: number;
-    p95: number }
+   , p95: number }
 
 interface HistogramData { bins: number[];
     binWidth: number;
     min: number;
-    max: number }
+   , max: number }
 
 interface OutlierData { outliers: number[], }
-    bounds: { lower: number; upper: number },
+    bounds: { lower: number;, upper: number },
     iqr: number;
 }
 
 interface StatisticalData { timestamp: number,
     stats: any;
-    dataPoints: number ,}
+   , dataPoints: number ,}
 
 interface HistoryPoint { timestamp: number;
-    value: number }
+   , value: number }
 ';
 
 interface TrendAnalyzer { ''
@@ -55,12 +55,12 @@ interface TrendAnalyzer { ''
     sensitivity?: number;
     alpha?: number;
 
-    history: HistoryPoint[],
+   , history: HistoryPoint[],
     trend: 'stable' | 'increasing' | 'decreasing' ,}
 
 interface MainController { trendAnalyzers: Map<string, TrendAnalyzer>;
     metricsCollector: {
-        getRecentAnalysisData(window: number): AnalysisDataPoint[] ,};
+        getRecentAnalysisData(windo;w: number): AnalysisDataPoint[] ,};
     analysisConfig: { statisticalWindow: number };
     errorHandler: any;
 }
@@ -68,7 +68,7 @@ interface MainController { trendAnalyzers: Map<string, TrendAnalyzer>;
 export class PerformanceDataProcessor {
     private mainController: MainController;
     private errorHandler: any;
-    private trends: Map<string, TrendData>;
+    private, trends: Map<string, TrendData>;
     private statisticalData: Map<string, StatisticalData>;
     private statisticalProcessors: Map<string, StatisticalProcessor>;
 
@@ -155,7 +155,7 @@ export class PerformanceDataProcessor {
                 // Store trend data
                 this.trends.set(metricId, { )
                     trend: analyzer.trend);
-                    confidence: this.calculateTrendConfidence(analyzer);
+                   , confidence: this.calculateTrendConfidence(analyzer);
                     timestamp,
                     analyzer: analyzer.type ,});
             } catch (error) {
@@ -314,7 +314,7 @@ export class PerformanceDataProcessor {
                 std: Math.sqrt(this.calculateVariance(values);
                 min: Math.min(...values);
                 max: Math.max(...values);
-                p25: this.calculatePercentile(values, 25),
+               , p25: this.calculatePercentile(values, 25),
                 p75: this.calculatePercentile(values, 75),
         
         }

@@ -3,9 +3,9 @@
  * Part of the StatisticsPerformance test split implementation
  */
 
-import { jest } from '@jest/globals';
-import { PerformanceTestUtils } from '../../utils/PerformanceTestUtils';
-import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilities';
+import { jest  } from '@jest/globals';
+import { PerformanceTestUtils  } from '../../utils/PerformanceTestUtils';
+import { PerformanceMeasurement, DataGenerator  } from './PerformanceTestUtilities';
 
 export class AnalysisRenderingPerformanceTests {
     constructor(mainTestSuite {
@@ -158,8 +158,7 @@ export class AnalysisRenderingPerformanceTests {
 
                         console.log(`Initial render performance (${env}, attempt ${attempt + 1):`, renderResult');
 
-                        // 環境対応要件: CI: 800ms, Local: 650ms, Prod: 500ms
-                        const maxTime = env === 'ci' ? 800 : env === 'local' ? 650 : 500;
+                        // 環境対応要件: CI: 800ms, Local: 650ms, Prod: 500ms, const maxTime = env === 'ci' ? 800 : env === 'local' ? 650 : 500;
                         expect(renderResult.averageTime).toBeLessThan(maxTime);
                         expect(renderResult.passed).toBe(true'});
                         
@@ -206,8 +205,7 @@ export class AnalysisRenderingPerformanceTests {
 
                         console.log(`Update render stats (${env}, attempt ${attempt + 1):`, updateResult');
 
-                        // 環境対応要件: CI: 150ms, Local: 120ms, Prod: 100ms
-                        const maxTime = env === 'ci' ? 150 : env === 'local' ? 120 : 100;
+                        // 環境対応要件: CI: 150ms, Local: 120ms, Prod: 100ms, const maxTime = env === 'ci' ? 150 : env === 'local' ? 120 : 100;
                         expect(updateResult.averageTime).toBeLessThan(maxTime);
                         expect(updateResult.passed).toBe(true'});
                         
@@ -243,7 +241,7 @@ export class AnalysisRenderingPerformanceTests {
 
                     const measurement = new PerformanceMeasurement(`render_${size.width}x${size.height)`);
                     
-                    const dataset = {
+                    const, dataset = {
                         labels: Array.from({ length: 50 ), (_, i}) => `Item ${i}`),
                         datasets: [{
                             data: Array.from({ length: 50 ), () => Math.random() * 1000);

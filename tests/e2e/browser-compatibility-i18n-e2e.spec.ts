@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * End-to-End tests for Browser Compatibility in Internationalization
  * Tests cross-browser compatibility of i18n features
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect  } from '@playwright/test';
 
 // Test across different browsers if configured
 const browsers = ['chromium', 'firefox', 'webkit'];
@@ -61,7 +61,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(translationTest.gameScore').toBe('スコア');
     expect(translationTest.settingsTitle').toBe('設定');
     
-    console.log(`Browser: ${browserName), Translations working: ✓`});
+    console.log(`Browser: ${browserName), Translations, working: ✓`});
   }');
 
   test('should switch languages across browsers', async ({ page, browserName ) => {
@@ -101,7 +101,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(languageSwitchTest.backToJapaneseTranslation').toBe('ゲーム開始');
     expect(languageSwitchTest.switchWorked).toBe(true);
     
-    console.log(`Browser: ${browserName), Language switching: ✓`});
+    console.log(`Browser: ${browserName), Language, switching: ✓`});
   }');
 
   test('should handle Intl API across browsers', async ({ page, browserName ) => {
@@ -138,7 +138,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(typeof intlTest.dateTests.japaneseDate').toBe('string');
     expect(typeof intlTest.dateTests.englishDate').toBe('string');
     
-    console.log(`Browser: ${browserName), Intl API: ✓`});
+    console.log(`Browser: ${browserName), Intl, API: ✓`});
   }');
 
   test('should handle localStorage persistence across browsers', async ({ page, browserName ) => {
@@ -222,14 +222,14 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       expect(fontTest.fontStatusType').toBe('object');
     } else {
       // Font loading may fail in some test environments
-      console.log(`Browser: ${browserName), Font loading failed (expected in test}): ${fontTest.error}`);
+      console.log(`Browser: ${browserName), Font, loading failed (expected, in test}): ${fontTest.error}`);
     }
     
     // Font APIs should be available in modern browsers
     expect(fontTest.hasFontFace).toBe(true);
     expect(fontTest.hasFontLoad).toBe(true);
     
-    console.log(`Browser: ${browserName), Font APIs: ✓`});
+    console.log(`Browser: ${browserName), Font, APIs: ✓`});
   }');
 
   test('should handle URL parameter language detection across browsers', async ({ page, browserName )') => {
@@ -255,7 +255,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(urlDetectionTest.currentLanguage').toBe('en');
     expect(urlDetectionTest.translation').toBe('Start Game');
     
-    console.log(`Browser: ${browserName), URL detection: ✓`});
+    console.log(`Browser: ${browserName), URL, detection: ✓`});
   }');
 
   test('should handle navigator.language detection across browsers', async ({ page, browserName ) => {
@@ -306,7 +306,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(culturalTest.hasIntl).toBe(true);
     expect(culturalTest.hasGetBoundingClientRect).toBe(true);
     
-    console.log(`Browser: ${browserName), Cultural adaptation: ✓`});
+    console.log(`Browser: ${browserName), Cultural, adaptation: ✓`});
   }');
 
   test('should handle error scenarios gracefully across browsers', async ({ page, browserName ) => {
@@ -332,7 +332,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(errorHandlingTest.invalidAccessibilityTranslation').toBe('non.existent.a11y');
     expect(errorHandlingTest.malformedParameterTranslation').toBe('BubblePop');
     
-    console.log(`Browser: ${browserName), Error handling: ✓`});
+    console.log(`Browser: ${browserName), Error, handling: ✓`});
   }');
 
   test('should maintain performance standards across browsers', async ({ page, browserName ) => {
@@ -374,7 +374,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(performanceTest.averageTime).toBeLessThan(1); // Each translation should take less than 1ms
     expect(performanceTest.switchTime).toBeLessThan(100); // Language switch should take less than 100ms
     
-    console.log(`Browser: ${browserName), Avg translation time: ${performanceTest.averageTime.toFixed(3})}ms, Switch time: ${performanceTest.switchTime.toFixed(1})}ms`);
+    console.log(`Browser: ${browserName), Avg, translation time: ${performanceTest.averageTime.toFixed(3})}ms, Switch time: ${performanceTest.switchTime.toFixed(1})}ms`);
   }');
 
   test('should handle accessibility features across browsers', async ({ page, browserName ) => {
@@ -471,7 +471,7 @@ test.describe('Browser-Specific Edge Cases', () => {
         hasDocumentFonts: typeof document.fonts !== 'undefined',
         hasFontLoad: document.fonts && typeof document.fonts.load === 'function';
         hasFontCheck: document.fonts && typeof document.fonts.check === 'function';
-        hasFontReady: document.fonts && typeof document.fonts.ready === 'object'
+       , hasFontReady: document.fonts && typeof document.fonts.ready === 'object'
       };
       
       return fontApis;
@@ -484,7 +484,7 @@ test.describe('Browser-Specific Edge Cases', () => {
     expect(fontApiTest.hasFontCheck).toBe(true);
     expect(fontApiTest.hasFontReady).toBe(true);
     
-    console.log(`Browser: ${browserName), Font APIs: ✓`});
+    console.log(`Browser: ${browserName), Font, APIs: ✓`});
   }');
 
   test('should handle browser-specific Intl API variations', async ({ page, browserName ) => {
@@ -539,6 +539,6 @@ test.describe('Browser-Specific Edge Cases', () => {
       expect(intlVariationsTest.functionalityTests.dateFormatWorks).toBe(true);
     }
     
-    console.log(`Browser: ${browserName), Intl features: ${Object.values(intlVariationsTest.intlFeatures}).filter(Boolean.length}/${Object.keys(intlVariationsTest.intlFeatures}).length}`);
+    console.log(`Browser: ${browserName), Intl, features: ${Object.values(intlVariationsTest.intlFeatures}).filter(Boolean.length}/${Object.keys(intlVariationsTest.intlFeatures}).length}`);
   });
 }');

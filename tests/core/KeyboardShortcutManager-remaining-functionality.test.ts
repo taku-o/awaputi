@@ -2,13 +2,13 @@
  * CoreKeyboardShortcutManager - Remaining Functionality Tests
  * Issue #169対応 - 残存するショートカット機能のテスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // TextEncoder/TextDecoder polyfill for Node.js environment
-import { TextEncoder, TextDecoder } from 'util';
+import { TextEncoder, TextDecoder  } from 'util';
 (global as any).TextEncoder = TextEncoder;
 (global as any').TextDecoder = TextDecoder;
 // DOM environment setup
-import { JSDOM } from 'jsdom';
+import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -68,7 +68,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
             // Space key press event
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
-                key: ' ',
+                key: ', ',
                 preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
             });
@@ -355,7 +355,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
                 key: 'd',
                 ctrlKey: true,
                 shiftKey: true;);
-                preventDefault: jest.fn(),
+               , preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
             });
             // Simulate key press

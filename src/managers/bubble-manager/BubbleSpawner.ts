@@ -1,6 +1,6 @@
-import { Bubble } from '../../bubbles/Bubble';''
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer';''
-import { getErrorHandler } from '../../utils/ErrorHandler';''
+import { Bubble  } from '../../bubbles/Bubble';''
+import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer';''
+import { getErrorHandler  } from '../../utils/ErrorHandler';''
 import type { BubbleSpawner as IBubbleSpawner, Position } from '../../types/game';
 
 /**
@@ -13,7 +13,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
     private maxBubbles: number = 20;
     private baseSpawnRate: number = 1.0;
     private spawnTimer: number = 0;
-    private spawnInterval: number = 2000; // 2秒間隔 ,}
+    private, spawnInterval: number = 2000; // 2秒間隔 ,}
     private specialSpawnRates: Record<string, number> = {};
 
     constructor(gameEngine: any, _config?: any) { this.gameEngine = gameEngine; }
@@ -131,8 +131,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      * ランダムな泡の種類を取得
      */'
     getRandomBubbleType(): string { ''
-        if(!this.stageConfig || !this.stageConfig.bubbleTypes) {'
-            ';
+        if(!this.stageConfig || !this.stageConfig.bubbleTypes) {', ';
 
         }
 
@@ -175,8 +174,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
     /**
      * 泡の種類による初期体力を取得
      */''
-    getBubbleHealthByType(type: string): number { const healthMap: Record<string, number> = {''
-            'normal': 1,
+    getBubbleHealthByType(type: string): number { const healthMap: Record<string, number> = {'', 'normal': 1,
             'stone': 2,
             'iron': 3,
             'diamond': 5,

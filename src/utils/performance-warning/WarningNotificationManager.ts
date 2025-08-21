@@ -3,20 +3,20 @@
  * Handles warning notification delivery, notification history, and user preferences
  */
 
-import { getErrorHandler } from '../../core/ErrorHandler.js';
+import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // 型定義
 interface WarningConfig { enabled: boolean,
     displayDuration: number;
     maxConcurrentWarnings: number;
-    cooldownPeriod: number,
+   , cooldownPeriod: number,
     position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
     style: 'modern' | 'minimal' | 'classic';
-    priorities: Record<string, PriorityConfig> }
+   , priorities: Record<string, PriorityConfig> }
 
 interface PriorityConfig { color: string,
     icon: string;
-    sound: boolean ,}
+   , sound: boolean ,}
 
 interface NotificationAction { label: string;
     action: () => void;
@@ -33,23 +33,23 @@ interface NotificationConfig { title?: string;
 interface Notification extends NotificationConfig { id: string,
     priority: string;
     timestamp: number;
-    dismissed: boolean ,}
+   , dismissed: boolean ,}
 
 interface NotificationHistoryEntry extends Notification { dismissedAt: number;
-    dismissReason: string }
+   , dismissReason: string }
 
 interface NotificationStats { totalNotifications: number;
-    notificationsByType: Map<string, number>;
+   , notificationsByType: Map<string, number>;
     notificationsByPriority: Map<string, number>;
     dismissedNotifications: number;
     autoResolvedNotifications: number;
     userActions: number;
     activeNotifications: number;
     recentNotifications: NotificationHistoryEntry[];
-    notificationsEnabled: boolean ,}
+   , notificationsEnabled: boolean ,}
 
 interface UIState { container: HTMLElement | null;
-    notificationElements: Map<string, HTMLElement>;
+   , notificationElements: Map<string, HTMLElement>;
     isInitialized: boolean ,}
 
 interface SuggestionData { title?: string;
@@ -63,9 +63,9 @@ export class WarningNotificationManager {
     private performanceWarningSystem: any;
     private errorHandler: any;
     private warningConfig: WarningConfig;
-    private activeNotifications: Map<string, Notification>;
+    private, activeNotifications: Map<string, Notification>;
     private notificationHistory: NotificationHistoryEntry[]';
-    private cooldowns: Map<string, number>;''
+    private, cooldowns: Map<string, number>;''
     private stats: Omit<NotificationStats, 'activeNotifications' | 'recentNotifications' | 'notificationsEnabled'>;
     private ui: UIState;
     private audioContext?: AudioContext;
@@ -99,11 +99,11 @@ export class WarningNotificationManager {
             notificationsByPriority: new Map();
             dismissedNotifications: 0;
             autoResolvedNotifications: 0;
-            userActions: 0 ,};
+           , userActions: 0 ,};
         // Notification UI elements
         this.ui = { container: null,
             notificationElements: new Map();
-            isInitialized: false ,};
+           , isInitialized: false ,};
         this.initializeNotificationSystem()';
         console.log('[WarningNotificationManager] Notification, management component, initialized);
     }
@@ -159,13 +159,13 @@ export class WarningNotificationManager {
                 right: 20px ,}
             
             .perf-warnings-top-left { top: 20px;
-                left: 20px }
+               , left: 20px }
             
             .perf-warnings-bottom-right { bottom: 20px;
-                right: 20px }
+               , right: 20px }
             
             .perf-warnings-bottom-left { bottom: 20px;
-                left: 20px }
+               , left: 20px }
             
             .perf-warning { pointer-events: auto;
                 margin-bottom: 10px,
@@ -176,7 +176,7 @@ export class WarningNotificationManager {
                 border-left: 4px solid,
                 max-width: 320px,
                 animation: slideIn 0.3s ease-out;
-                position: relative;
+               , position: relative;
                 font-size: 14px,
                 line-height: 1.4, }
             
@@ -209,20 +209,20 @@ export class WarningNotificationManager {
             .perf-warning-close { background: none,
                 border: none;
                 color: inherit;
-                cursor: pointer;
+               , cursor: pointer;
                 font-size: 18px,
                 padding: 0;
                 margin-left: 8px,
                 opacity: 0.7;
-                transition: opacity 0.2s ,}
+               , transition: opacity 0.2s ,}
             
             .perf-warning-close:hover { opacity: 1 }
             
             .perf-warning-message { margin-bottom: 8px;
-                opacity: 0.9 }
+               , opacity: 0.9 }
             
             .perf-warning-details { font-size: 12px;
-                opacity: 0.8;
+               , opacity: 0.8;
                 margin-bottom: 8px, }
             
             .perf-warning-actions { display: flex,
@@ -234,7 +234,7 @@ export class WarningNotificationManager {
                 border-radius: 4px,
                 background: rgba(255, 255, 255, 0.2),
                 color: inherit;
-                cursor: pointer;
+               , cursor: pointer;
                 font-size: 12px,
                 transition: background 0.2s ,}
             
@@ -244,7 +244,7 @@ export class WarningNotificationManager {
                 bottom: 0;
                 left: 0;
                 height: 2px;
-                background: rgba(255, 255, 255, 0.3),
+               , background: rgba(255, 255, 255, 0.3),
                 transition: width linear ,}
             
             @keyframes slideIn { from { }
@@ -266,8 +266,7 @@ export class WarningNotificationManager {
                 to {
                     transform: translateX(100%})
                     opacity: 0)';
-                }''
-            ');
+                }'', ');
 
         `;
 
@@ -307,7 +306,7 @@ export class WarningNotificationManager {
             ...config,
             actions: this.generateNotificationActions(config.suggestions || []);
             dismissed: false;
-            autoResolve: config.autoResolve !== false ,};
+           , autoResolve: config.autoResolve !== false ,};
         // Add to active notifications
         this.activeNotifications.set(id, notification);
         this.cooldowns.set(id, Date.now();
@@ -398,26 +397,25 @@ export class WarningNotificationManager {
         element.innerHTML = `'';
             <div class="perf-warning-header">"";
                 <span class="perf-warning-icon">${priorityConfig.icon}</span>""
-                <span class="perf-warning-title">${notification.title || 'Performance Warning'}</span>''
+                <span class="perf-warning-title">${notification.title || 'Performance, Warning'}</span>''
                 <button class="perf-warning-close">×</button>";
             </div>"";
             <div class="perf-warning-message">${notification.message || ''}</div>''
-            ${notification.details ? `<div class="perf-warning-details">${notification.details}</div>` : ''
+            ${notification.details ? `<div, class="perf-warning-details">${notification.details}</div>` : ''
             ${ notification.actions && notification.actions.length > 0 ? `''
-                <div class="perf-warning-actions">" }"
+                <div, class="perf-warning-actions">" }"
                     ${notification.actions.map(action => "})""
                         `<button class="perf-warning-action" data-action="${action.label}">${ action.label}</button>`" }"
                     ").join('''})'
                 </div> : undefined'';
             ` : ''}''
-            ${notification.autoResolve ? '<div class="perf-warning-progress"></div>' : ''
+            ${notification.autoResolve ? '<div, class="perf-warning-progress"></div>' : ''
         `;
         
-        // Add event listeners for actions
-        if(notification.actions) {
+        // Add, event listeners, for actions, if(notification.actions) {
 
             notification.actions.forEach(action => { ');''
-                const button = element.querySelector(`[data-action="${action.label}"]`} as, HTMLButtonElement;"
+                const, button = element.querySelector(`[data-action="${action.label}"]`} as, HTMLButtonElement;"
         }"
                 if (button") {" }"
                     button.addEventListener('click', () => { }
@@ -430,8 +428,7 @@ export class WarningNotificationManager {
         ';
         // Add close button listener
         const closeButton = element.querySelector('.perf-warning-close) as HTMLButtonElement;''
-        if(closeButton) {'
-            ';
+        if(closeButton) {', ';
 
         }
 
@@ -521,7 +518,7 @@ export class WarningNotificationManager {
         // Add to history
         const historyEntry: NotificationHistoryEntry = { ...notification,
             dismissedAt: Date.now();
-            dismissReason: reason ,};
+           , dismissReason: reason ,};
         this.notificationHistory.push(historyEntry);
         
         // Keep history manageable
@@ -641,7 +638,7 @@ export class WarningNotificationManager {
      */
     getNotificationStats(): NotificationStats { return { ...this.stats,
             activeNotifications: this.activeNotifications.size;
-            recentNotifications: this.notificationHistory.slice(-10), };
+           , recentNotifications: this.notificationHistory.slice(-10), };
             notificationsEnabled: this.warningConfig.enabled }
         }
     

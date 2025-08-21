@@ -1,35 +1,35 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getEffectQualityController } from './EffectQualityController.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getEffectQualityController  } from './EffectQualityController.js';
 
 // Type definitions for performance monitoring
 interface FrameRateBuffer { timestamps: number[],
     rates: number[];
     bufferSize: number;
-    currentRate: number ,}
+   , currentRate: number ,}
 
 interface MemoryUsageHistory { timestamp: number;
-    usage: number }
+   , usage: number }
 
 interface RenderStats { particlesRendered: number;
     effectsRendered: number;
     drawCalls: number;
-    lastResetTime: number }
+   , lastResetTime: number }
 
 interface CullingStats { totalEffects: number;
     culledEffects: number;
     visibleEffects: number;
-    offScreenEffects: number }
+   , offScreenEffects: number }
 
 interface WarningThresholds { lowFrameRate: number;
     highMemoryUsage: number;
     maxDrawCalls: number;
-    maxActiveParticles: number }
+   , maxActiveParticles: number }
 
 interface OptimizationSettings { cullOffScreen: boolean;
     cullDistance: number;
     maxVisibleParticles: number;
     reduceQualityThreshold: number;
-    emergencyCleanupThreshold: number }
+   , emergencyCleanupThreshold: number }
 
 interface PerformanceStats { frameRate: number;
     memoryUsage: number | null;
@@ -37,7 +37,7 @@ interface PerformanceStats { frameRate: number;
     cullingStats: CullingStats;
     activeEffects: number;
     cleanupQueueSize: number;
-    qualityLevel: string }
+   , qualityLevel: string }
 
 type RenderStatsType = 'particle' | 'effect' | 'drawCall';
 
@@ -45,7 +45,7 @@ type RenderStatsType = 'particle' | 'effect' | 'drawCall';
 interface Effect { x: number,
     y: number;
     width: number;
-    height: number,
+   , height: number,
     priority?: 'decorative' | 'important' | 'critical';
     poolable?: boolean;
     type?: string;
@@ -56,13 +56,13 @@ interface Effect { x: number,
 interface Viewport { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 // External dependencies interfaces
 interface ErrorHandler { handleError(error: Error, context?: any): void }
 
 interface EffectQualityController { updatePerformanceMetrics(currentTime: number, frameRate: number, memoryUsage?: number): void }
-    getActiveEffectCounts(): { particles: number; effects: number }
+    getActiveEffectCounts(): { particles: number;, effects: number }
     getCurrentQualityLevel(): string;
     setQualityLevel(level: string): void,
 }
@@ -70,7 +70,7 @@ interface EffectQualityController { updatePerformanceMetrics(currentTime: number
 // Browser performance memory interface
 interface PerformanceMemory { usedJSHeapSize: number,
     totalJSHeapSize: number;
-    jsHeapSizeLimit: number ,}
+   , jsHeapSizeLimit: number ,}
 
 // Extended Performance interface
 interface ExtendedPerformance extends Performance { memory?: PerformanceMemory;
@@ -93,7 +93,7 @@ export class EffectPerformanceMonitor {
     // フレームレート測定
     private frameTimestamps: number[] = [];
     private frameRateBuffer: number[] = [];
-    private readonly frameRateBufferSize: number = 60,
+    private readonly, frameRateBufferSize: number = 60,
     private currentFrameRate: number = 60;
     // メモリ使用量監視
     private memoryCheckInterval: number = 2000; // 2秒間隔
@@ -102,32 +102,32 @@ export class EffectPerformanceMonitor {
     private readonly memoryThreshold: number = 100 * 1024 * 1024; // 100MB
     
     // レンダリング統計
-    private renderStats: RenderStats = {
+    private, renderStats: RenderStats = {
         particlesRendered: 0;
         effectsRendered: 0;
         drawCalls: 0;
-        lastResetTime: 0 ,};
+       , lastResetTime: 0 ,};
     // カリング統計
     private cullingStats: CullingStats = { totalEffects: 0
         culledEffects: 0;
         visibleEffects: 0;
-        offScreenEffects: 0 };
+       , offScreenEffects: 0 };
     // パフォーマンス警告
     private readonly warningThresholds: WarningThresholds = { lowFrameRate: 30,
         highMemoryUsage: 80 * 1024 * 1024, // 80MB;
         maxDrawCalls: 1000;
-        maxActiveParticles: 300 ,};
+       , maxActiveParticles: 300 ,};
     // 最適化設定
     private optimizationSettings: OptimizationSettings = { cullOffScreen: true
-        cullDistance: 50, // 画面外50px以上はカリング;
+       , cullDistance: 50, // 画面外50px以上はカリング;
         maxVisibleParticles: 200;
-        reduceQualityThreshold: 25, // 25FPS以下で品質低下;
+       , reduceQualityThreshold: 25, // 25FPS以下で品質低下;
         emergencyCleanupThreshold: 20 // 20FPS以下で緊急クリーンアップ ,};
     // エフェクト管理
     private activeEffects: Map<string, Effect> = new Map();
     private effectPools: Map<string, Effect[]> = new Map();
     private cleanupQueue: string[] = [];
-    private performanceObserver: PerformanceObserver | null = null;
+    private, performanceObserver: PerformanceObserver | null = null;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -287,7 +287,7 @@ export class EffectPerformanceMonitor {
         
         this.memoryUsageHistory.push({);
             timestamp: performance.now();
-            usage: memoryUsage });
+           , usage: memoryUsage });
         // 履歴の制限
         if (this.memoryUsageHistory.length > 60) { this.memoryUsageHistory.shift(); }
         
@@ -485,7 +485,7 @@ export class EffectPerformanceMonitor {
             cullingStats: { ...this.cullingStats;
             activeEffects: this.activeEffects.size;
             cleanupQueueSize: this.cleanupQueue.length;
-            qualityLevel: this.qualityController.getCurrentQualityLevel();
+           , qualityLevel: this.qualityController.getCurrentQualityLevel();
         }
     
     /**

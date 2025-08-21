@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface PluralRule { categories: string[],
@@ -7,17 +7,17 @@ export interface PluralRule { categories: string[],
 export interface ContextualPattern { levels?: string[];
     categories?: string[];
     rules: Record<string, Record<string, string>>, }
-export interface GenerationPattern { condition: (data: any) => boolean,
-    generate: (data: any, lang: string) => string ,}
+export interface GenerationPattern { condition: (dat;a: any) => boolean,
+    generate: (dat;a: any, lang: string) => string ,}
 export interface GenerationRule { patterns: GenerationPattern[]
     }
 export interface TranslationMemoryEntry { translation: string,
     original: string;
     timestamp: number;
-    usage: number ,}
+   , usage: number ,}
 export interface MemoryConfig { maxEntries: number,
     expirationTime: number;
-    similarityThreshold: number ,}
+   , similarityThreshold: number ,}
 export interface FormatOptions { context?: string | null;
     forcePlural?: boolean;
     customRules?: any;
@@ -37,7 +37,7 @@ export interface SearchResult { similarity: number,
     translation: string;
     key: string;
     timestamp: number;
-    usage: number ,}
+   , usage: number ,}
 export interface FormatterStats { pluralizations: number,
     contextualTranslations: number;
     dynamicGenerations: number;
@@ -48,7 +48,7 @@ export interface FormatterStats { pluralizations: number,
     supportedLanguages: string[];
     contextualPatterns: number;
     generationRules: number;
-    hitRate: string ,}
+   , hitRate: string ,}
 /**
  * 高度なフォーマット機能 - 複雑な複数形ルール、文脈依存翻訳、動的翻訳生成
  */
@@ -58,17 +58,17 @@ export class AdvancedFormatterEngine {
     private generationRules: Map<string, GenerationRule>;
     private translationMemory: Map<string, TranslationMemoryEntry>;
     private memoryConfig: MemoryConfig;
-    private statistics: {
+    private, statistics: {
         pluralizations: number;
         contextualTranslations: number;
         dynamicGenerations: number;
         memoryHits: number;
-        memoryMisses: number ,};
+       , memoryMisses: number ,};
 
     constructor(''';
             ['ja', { ])'
                 categories: ['other])';
-                rules: {''
+               , rules: {''
                     other: (') => true '
 }
                 };
@@ -83,7 +83,7 @@ export class AdvancedFormatterEngine {
 ,}
                 };
                 examples: { one: [1];
-                    other: [0, 2, 3, 10, 100] }
+                   , other: [0, 2, 3, 10, 100] }
             }],
             // アラビア語（6つのカテゴリ）
             ['ar', { ]'
@@ -100,7 +100,7 @@ export class AdvancedFormatterEngine {
                 examples: { zero: [0];
                     one: [1];
                     two: [2];
-                    few: [3, 4, 5, 6, 7, 8, 9, 10, 103, 104],
+                   , few: [3, 4, 5, 6, 7, 8, 9, 10, 103, 104],
                     many: [11, 12, 13, 99, 111, 112],
                     other: [100, 101, 102, 200, 1000] }
             }],
@@ -144,15 +144,13 @@ export class AdvancedFormatterEngine {
         this.contextualPatterns = new Map<string, ContextualPattern>([// 敬語レベル（日本語）]';
             ['ja-politeness', { ]'
                 levels: ['casual', 'polite', 'formal', 'honorific'],
-                rules: {''
-                    'greeting.hello': {''
+                rules: {'', 'greeting.hello': {''
                         casual: 'やあ',
                         polite: 'こんにちは',
                         formal: 'お疲れ様です',
                         honorific: 'いらっしゃいませ' ,}
 
-                    },''
-                    'action.do': { ''
+                    },'', 'action.do': { ''
                         casual: 'する',
                         polite: 'します',
                         formal: 'いたします',
@@ -162,15 +160,13 @@ export class AdvancedFormatterEngine {
             // 親密度レベル（韓国語）
             ['ko-intimacy', { ]'
                 levels: ['formal', 'polite', 'intimate', 'casual'],
-                rules: {''
-                    'greeting.hello': {''
+                rules: {'', 'greeting.hello': {''
                         formal: '안녕하십니까',
                         polite: '안녕하세요',
                         intimate: '안녕',
                         casual: '야' ,}
 
-                    },''
-                    'question.how': { ''
+                    },'', 'question.how': { ''
                         formal: '어떻게 하십니까',
                         polite: '어떻게 해요',
                         intimate: '어떻게 해',
@@ -180,13 +176,11 @@ export class AdvancedFormatterEngine {
             // 性別依存（アラビア語）
             ['ar-gender', { ]'
                 categories: ['masculine', 'feminine])';
-                rules: {''
-                    'adjective.good': {''
+                rules: {'', 'adjective.good': {''
                         masculine: 'جيد',
                         feminine: 'جيدة' ,}
 
-                    },''
-                    'verb.went': { ''
+                    },'', 'verb.went': { ''
                         masculine: 'ذهب',
                         feminine: 'ذهبت' 
 ,}
@@ -245,7 +239,7 @@ export class AdvancedFormatterEngine {
             contextualTranslations: 0;
             dynamicGenerations: 0;
             memoryHits: 0;
-            memoryMisses: 0 
+           , memoryMisses: 0 
 ,};
         console.log('AdvancedFormatterEngine, initialized);
     }
@@ -281,7 +275,7 @@ export class AdvancedFormatterEngine {
             
             // プレースホルダーを置換
             translation = this.replacePlaceholders(translation, { count: count)
-                category: category,);
+               , category: category,);
                 language: language);
             // 結果をメモリに保存
             this.saveToMemory(memoryKey, translation);
@@ -290,7 +284,7 @@ export class AdvancedFormatterEngine {
             return translation;
              } catch (error) { getErrorHandler(').handleError(error as Error, 'PLURAL_FORMATTING_ERROR', {)
                 key: key);
-                count: count,);
+               , count: count,);
                 language: language ,});
             return `${key}[${count}]`;
     /**
@@ -337,7 +331,7 @@ export class AdvancedFormatterEngine {
             return translation;
              } catch (error) { getErrorHandler(').handleError(error as Error, 'CONTEXTUAL_FORMATTING_ERROR', {)
                 key: key);
-                context: context,);
+               , context: context,);
                 language: language ,});
             return `${key}[${JSON.stringify(context})]`;
     /**
@@ -402,7 +396,7 @@ export class AdvancedFormatterEngine {
 
         } catch (error) { getErrorHandler(').handleError(error as Error, 'DYNAMIC_GENERATION_ERROR', {)
                 type: type);
-                data: data,);
+               , data: data,);
                 language: language ,});
             return `[${type}:${JSON.stringify(data})]`;
     /**
@@ -433,7 +427,7 @@ export class AdvancedFormatterEngine {
                     original: entry.original;
                     translation: entry.translation);
                     key: key);
-                    timestamp: entry.timestamp, }
+                   , timestamp: entry.timestamp, }
                     usage: entry.usage || 0); }
         }
         
@@ -452,8 +446,7 @@ export class AdvancedFormatterEngine {
                 maxNestingLevel = 5,
                 customProcessors = new Map(); } = options;
             // 無限再帰防止
-            if(nestedLevel > maxNestingLevel) {'
-                ';
+            if(nestedLevel > maxNestingLevel) {', ';
 
             }
 
@@ -511,16 +504,14 @@ export class AdvancedFormatterEngine {
     ';
 
     private determinePluralCategory(count: number, pluralRule: PluralRule, forcePlural: boolean): string { ''
-        if(!pluralRule || !pluralRule.rules) {'
-            ';
+        if(!pluralRule || !pluralRule.rules) {', ';
 
         }
 
             return 'other';
         ';
         // 強制複数形の場合
-        if(forcePlural && count !== 1) {'
-            ';
+        if(forcePlural && count !== 1) {', ';
 
         }
 
@@ -545,8 +536,7 @@ export class AdvancedFormatterEngine {
     }
 
     private resolveDynamicContext(dynamicContext: any, parameters: Record<string, any>): string { // 動的コンテキストの解決ロジック
-        if(typeof, dynamicContext === 'function) {'
-            ';
+        if(typeof, dynamicContext === 'function) {', ';
 
         }
 
@@ -589,15 +579,13 @@ export class AdvancedFormatterEngine {
 
         }
 
-            parts.push(this.getNumberWord(millions, language) + ' ' + this.getUnitWord('million', language); }
-        if(thousands > 0) {'
-            ';
+            parts.push(this.getNumberWord(millions, language) + ', ' + this.getUnitWord('million', language); }
+        if(thousands > 0) {', ';
 
         }
 
             parts.push(this.getNumberWord(thousands, language) + ' ' + this.getUnitWord('thousand', language); }
-        if(hundreds > 0) {'
-            ';
+        if(hundreds > 0) {', ';
 
         }
 
@@ -611,10 +599,9 @@ export class AdvancedFormatterEngine {
 
         const remainder = number % 1000;
 
-        let result = this.getNumberWord(thousands, language) + ' ' + this.getUnitWord('thousand', language);
+        let result = this.getNumberWord(thousands, language) + ', ' + this.getUnitWord('thousand', language);
 
-        if(remainder > 0) {'
-            ';
+        if(remainder > 0) {', ';
 
         }
 
@@ -665,10 +652,7 @@ export class AdvancedFormatterEngine {
     }
 
     private getBaseTranslation(key: string, language: string): string { // モック実装 - 実際の実装では翻訳システムから取得
-        const mockTranslations: Record<string, Record<string, string>> = {' }'
-
-            'item.one': { ja: '1つのアイテム', en: 'one item', ar: 'عنصر واحد' ,},''
-            'item.other': { ja: '{count}つのアイテム', en: '{count} items', ar: '{count} عناصر' }
+        const mockTranslations: Record<string, Record<string, string>> = {' }', 'item.one': { ja: '1つのアイテム', en: 'one item', ar: 'عنصر واحد' ,},'', 'item.other': { ja: '{count}つのアイテム', en: '{count} items', ar: '{count} عناصر' }
         };
         
         return mockTranslations[key]? .[language] || key;
@@ -724,7 +708,7 @@ export class AdvancedFormatterEngine {
         this.translationMemory.set(key, { translation: translation)
             original: original || key);
             timestamp: Date.now();
-            usage: 1 
+           , usage: 1 
 });
     }
     
@@ -793,7 +777,7 @@ export class AdvancedFormatterEngine {
             memoryConfig: this.memoryConfig;
             supportedLanguages: Array.from(this.pluralRules.keys(');
             contextualPatterns: this.contextualPatterns.size;
-            generationRules: this.generationRules.size,
+           , generationRules: this.generationRules.size,
             hitRate: this.statistics.memoryHits + this.statistics.memoryMisses > 0 ?   : undefined' ,};
 
                 (this.statistics.memoryHits / (this.statistics.memoryHits + this.statistics.memoryMisses) * 100).toFixed(2) + '%' : '0%' }

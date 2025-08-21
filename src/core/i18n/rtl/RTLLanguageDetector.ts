@@ -1,10 +1,10 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // インターフェース定義
 interface RTLLanguageInfo { name: string,
     script: string,
     direction: 'rtl' | 'ltr';
-    family: string ,}
+   , family: string ,}
 
 interface BidiControlCharacters { LRM: string;  // Left-to-Right Mark
     RLM: string;  // Right-to-Left Mark
@@ -16,23 +16,23 @@ interface BidiControlCharacters { LRM: string;  // Left-to-Right Mark
     LRI: string;  // Left-to-Right Isolate
     RLI: string;  // Right-to-Left Isolate
     FSI: string;  // First Strong Isolate
-    PDI: string;  // Pop Directional Isolate }
+   , PDI: string;  // Pop Directional Isolate }
 
 interface RTLSettings { fontFamily: string,
     fontSize: string;
     lineHeight: string;
     textAlign: string;
     wordSpacing: string;
-    letterSpacing: string ,}
+   , letterSpacing: string ,}
 ';
 
 interface TextDirectionResult { ''
     direction: 'rtl' | 'ltr';
     confidence: number;
-    details: {
-        rtlChars: number;
+   , details: {
+        rtlChar;s: number;
         ltrChars: number;
-        neutralChars: number;
+       , neutralChars: number;
         rtlRatio?: number }
 
 interface BidiTextSegment { text: string,
@@ -49,7 +49,7 @@ interface RTLCSSOptions { includeLayout?: boolean;
     customProperties?: { [key: string]: string }
 
 interface RTLCSSResult { css: string;
-    isRTL: boolean;
+   , isRTL: boolean;
     language?: string;
     settings?: RTLSettings;
     }
@@ -58,12 +58,12 @@ interface RTLLanguageData { code: string,
     name: string,
     script: string,
     direction: 'rtl' | 'ltr';
-    family: string ,}
+   , family: string ,}
 
 interface RTLStats { supportedRTLLanguages: number;
     rtlCharacterRanges: number;
     bidiControlChars: number;
-    languageFamilies: string[] }
+   , languageFamilies: string[] }
 
 /**
  * RTL言語検出システム - Right-to-Left言語の識別と方向制御
@@ -72,7 +72,7 @@ export class RTLLanguageDetector {
     private rtlLanguages: Map<string, RTLLanguageInfo>;
     private rtlCharacterRanges: [number, number][];
     private bidiControlChars: BidiControlCharacters;
-    private rtlSettings: Map<string, RTLSettings>;
+    private, rtlSettings: Map<string, RTLSettings>;
 
     constructor()';
             ['ar', { name: 'Arabic', script: 'Arab', direction: 'rtl', family: 'arabic', ')],' }
@@ -239,7 +239,7 @@ export class RTLLanguageDetector {
             details: {
                 rtlChars: rtlCharCount;
                 ltrChars: ltrCharCount;
-                neutralChars: neutralCharCount, };
+               , neutralChars: neutralCharCount, };
                 rtlRatio: rtlRatio }
 }
     
@@ -338,9 +338,9 @@ export class RTLLanguageDetector {
         ';
 
         return { ''
-            css: css.join(' ');
+            css: css.join(', ');
             isRTL: true;
-            language: language, };
+           , language: language, };
             settings: settings }
         }
     
@@ -470,7 +470,7 @@ export class RTLLanguageDetector {
             name: info.name;
             script: info.script;
             direction: info.direction);
-            family: info.family ,}
+           , family: info.family ,}
         });
     }
     
@@ -494,7 +494,7 @@ export class RTLLanguageDetector {
     getStats(): RTLStats { return { supportedRTLLanguages: this.rtlLanguages.size,
             rtlCharacterRanges: this.rtlCharacterRanges.length;
             bidiControlChars: Object.keys(this.bidiControlChars).length;
-            languageFamilies: Array.from(new, Set(), };
+           , languageFamilies: Array.from(new, Set(), };
                 Array.from(this.rtlLanguages.values().map(info => info.family); }
         }
 }

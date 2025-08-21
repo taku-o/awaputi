@@ -1,22 +1,22 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { FocusManager } from './FocusManager.js';''
-import { KeyboardAccessibilityManager } from './KeyboardAccessibilityManager.js';''
-import { VisualFocusManager } from './VisualFocusManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { FocusManager  } from './FocusManager.js';''
+import { KeyboardAccessibilityManager  } from './KeyboardAccessibilityManager.js';''
+import { VisualFocusManager  } from './VisualFocusManager.js';
 
 // インターフェース定義
 interface GameEngine { keyboardShortcutManager?: any;
     isDebugMode?: () => boolean;''
-    addEventListener?: (event: string, callback: (event: any) => void') => void ,}'
+    addEventListener?: (even;t: string, callback: (even;t: any) => void') => void ,}'
 }
 
 interface SystemPreferences { reducedMotion: boolean,
     highContrast: boolean;
-    largeText: boolean,
+   , largeText: boolean,
     screenReader: boolean,
     colorScheme: 'light' | 'dark' ,}
 
-interface Manager { applyConfig?: (config: any) => void | Promise<void>;
-    setEnabled?: (enabled: boolean) => void;
+interface Manager { applyConfig?: (confi;g: any) => void | Promise<void>;
+    setEnabled?: (enable;d: boolean) => void;
     generateReport?: () => any;
     destroy?: () => void; ,}
 }
@@ -36,9 +36,9 @@ interface ComplianceResult { compliant: boolean,
     score?: number; }
 
 interface TestingFramework { runFullAudit: () => Promise<{
-        overallCompliance: boolean;
+        overallComplianc;e: boolean;
         issues: any[];
-        score: number }
+       , score: number }
     }>;
     destroy?: () => void;
 }
@@ -49,15 +49,15 @@ interface TestingFramework { runFullAudit: () => Promise<{
  */
 export class CoreAccessibilityManager {
     private gameEngine: GameEngine;
-    private managers: Map<string, Manager>;
+    private, managers: Map<string, Manager>;
     private config: AccessibilityConfiguration;
     private state: AccessibilityState;
     private testingFramework: TestingFramework | null;
-    private eventListeners: Map<string, Set<EventCallback>>;
+    private, eventListeners: Map<string, Set<EventCallback>>;
     private isInitialized: boolean;
     private isEnabled: boolean;
     private pendingConfiguration: any;
-    private managerRegistry: Map<string, Manager | null>;
+    private, managerRegistry: Map<string, Manager | null>;
     private managerDependencies: Map<string, string[]>;
 
     constructor(gameEngine: GameEngine) {
@@ -137,7 +137,7 @@ export class CoreAccessibilityManager {
         
         const preferences: SystemPreferences = { reducedMotion: false,
             highContrast: false;
-            largeText: false,
+           , largeText: false,
             screenReader: false,
             colorScheme: 'light' ,};
         ';
@@ -231,7 +231,7 @@ export class CoreAccessibilityManager {
      */''
     private detectLargeTextPreference()';
         const testElement = document.createElement('div'');''
-        testElement.style.cssText = 'font-size: 1rem; position: absolute; visibility: hidden;';
+        testElement.style.cssText = 'font-size: 1rem; position: absolute;, visibility: hidden;';
         document.body.appendChild(testElement);
         
         const fontSize = window.getComputedStyle(testElement).fontSize;
@@ -396,22 +396,22 @@ export class CoreAccessibilityManager {
     async initializeManager(managerType) { console.log(`Initializing ${managerType) manager...`);
         
         try {
-            let manager = null;
+            let, manager = null;
 
             switch(managerType') {'
 
                 case 'keyboard':;
                     // FocusManagerを先に初期化
-                    const focusManager = new FocusManager(this);
+                    const, focusManager = new, FocusManager(this);
                     
                     // KeyboardAccessibilityManagerを初期化（既存のKeyboardShortcutManagerを拡張）
-                    const keyboardAccessibilityManager = new KeyboardAccessibilityManager(;
+                    const, keyboardAccessibilityManager = new, KeyboardAccessibilityManager(;
                         this);
                         this.gameEngine.keyboardShortcutManager;
                     );
                     
                     // VisualFocusManagerを初期化
-                    const visualFocusManager = new VisualFocusManager(this, focusManager};
+                    const, visualFocusManager = new, VisualFocusManager(this, focusManager};
                     
                     // 統合管理オブジェクトを作成
                     manager = {
@@ -419,7 +419,7 @@ export class CoreAccessibilityManager {
                         accessibility: keyboardAccessibilityManager;
                         visual: visualFocusManager;
                         // 統一インターフェース
-                        applyConfig: (config} => { 
+                       , applyConfig: (config} => { 
             }
                             focusManager.applyConfig? .(config), }
                             keyboardAccessibilityManager.applyConfig?.(config); }
@@ -581,8 +581,7 @@ export class CoreAccessibilityManager {
      * WCAG準拠の検証
      */'
     async validateCompliance() { ''
-        if(!this.testingFramework) {'
-            ';
+        if(!this.testingFramework) {', ';
 
         }
 
@@ -598,7 +597,7 @@ export class CoreAccessibilityManager {
             this.state.complianceStatus = {'
                 wcag21AA: results.overallCompliance,
                 lastCheck: new Date()';
-            console.log('WCAG compliance validation completed:', this.state.complianceStatus);
+            console.log('WCAG compliance validation, completed:', this.state.complianceStatus);
             return results; catch (error) { getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {)'
                 operation: 'validateCompliance' ,});
             return { compliant: false, error: error.message ,}
@@ -610,10 +609,10 @@ export class CoreAccessibilityManager {
     generateReport() {
         const report = {
             timestamp: new Date().toISOString();
-            system: {
+           , system: {
                 userAgent: navigator.userAgent;
                 systemPreferences: this.state.systemPreferences;
-                screenSize: {
+               , screenSize: {
                     width: window.screen.width;
     }
                     height: window.screen.height }
@@ -623,10 +622,10 @@ export class CoreAccessibilityManager {
                 visual: this.config.visual;
                 audio: this.config.audio;
                 motor: this.config.motor;
-                cognitive: this.config.cognitive };
+               , cognitive: this.config.cognitive };
             managers: {};
             compliance: this.state.complianceStatus;
-            statistics: this.getUsageStatistics();
+           , statistics: this.getUsageStatistics();
         };
         ';
         // 各マネージャーからレポートデータを収集
@@ -646,7 +645,7 @@ export class CoreAccessibilityManager {
     getUsageStatistics() {
         return { initializationTime: this.state.initializationTime,
             managersCount: this.managers.size;
-            eventsEmitted: this.state.eventsEmitted || 0;
+           , eventsEmitted: this.state.eventsEmitted || 0;
     ,}
             errorsHandled: this.state.errorsHandled || 0, };
             configChanges: this.state.configChanges || 0 }
@@ -894,7 +893,7 @@ export class CoreAccessibilityManager {
                 left: -10000px;
                 width: 1px;
                 height: 1px;
-                overflow: hidden,
+               , overflow: hidden,
             `;
 
     }
@@ -948,7 +947,7 @@ export class CoreAccessibilityManager {
                 'Ctrl+Alt+H: ハイコントラスト切り替え',
                 'Alt+Shift+H: このヘルプを表示);
             ])';
-            features: ['';
+           , features: ['';
                 'キーボードナビゲーション対応',
                 'スクリーンリーダー対応',
                 'ハイコントラストモード',
@@ -1007,7 +1006,7 @@ export class AccessibilityConfiguration {
     constructor(''';
             navigationMode: '2d', // '1d', '2d', 'custom''';
             shortcuts: new Map(''';
-            tabOrder: 'logical' // 'logical', 'dom', 'custom' };
+           , tabOrder: 'logical' // 'logical', 'dom', 'custom' };
         ';
 
         this.screenReader = {;
@@ -1017,7 +1016,7 @@ export class AccessibilityConfiguration {
                 gameState: true;
                 score: true;
                 actions: true;
-                errors: true ,};
+               , errors: true ,};
             speechRate: 1.0,
             language: 'auto';
         },
@@ -1027,12 +1026,12 @@ export class AccessibilityConfiguration {
                 level: 'aa', // 'aa', 'aaa';
                 customColors: null ,};
             textScaling: { enabled: false;
-                scale: 1.0, // 0.8 - 2.0;
+               , scale: 1.0, // 0.8 - 2.0;
                 lineHeight: 1.4 ,};
             colorBlindness: { enabled: false,''
                 type: 'none', // 'protanopia', 'deuteranopia', 'tritanopia';
                 patterns: true;
-                shapes: true ,};
+               , shapes: true ,};
             motion: { reduced: false,''
                 level: 'none' // 'none', 'reduced', 'minimal' }
 
@@ -1048,30 +1047,30 @@ export class AccessibilityConfiguration {
             captions: { enabled: false,''
                 position: 'bottom', // 'top', 'bottom', 'overlay''';
                 size: 'medium';
-                background: true ,};
+               , background: true ,};
             vibration: { enabled: false;
-                intensity: 0.5, // 0.0 - 1.0;
+               , intensity: 0.5, // 0.0 - 1.0;
                 patterns: new Map(''';
-                dominantHand: 'right' // 'left', 'right' },
+               , dominantHand: 'right' // 'left', 'right' },
             sensitivity: { mouse: 1.0;
                 touch: 1.0;
-                keyboard: 1.0 };
+               , keyboard: 1.0 };
             timing: { clickDelay: 0;
                 holdDuration: 500;
-                doubleClickInterval: 300 };
+               , doubleClickInterval: 300 };
             alternativeInput: { switches: false;
                 eyeTracking: false;
-                voiceControl: false }
+               , voiceControl: false }
         };
         this.cognitive = { simplification: {'
                 enabled: false,
                 level: 'basic' // 'basic', 'intermediate', 'advanced' },
             help: { contextual: true;
                 tooltips: true;
-                tutorials: true };
+               , tutorials: true };
             errorHandling: { recovery: true;
                 suggestions: true;
-                prevention: true }
+               , prevention: true }
         }
 }
 
@@ -1090,7 +1089,7 @@ export class AccessibilityState {
     public initializationTime: number,
     public eventsEmitted: number,
     public errorsHandled: number);
-    public configChanges: number);
+    public, configChanges: number);
     constructor() {
         this.currentFocus = null;
         this.navigationHistory = [];
@@ -1102,7 +1101,7 @@ export class AccessibilityState {
         this.systemPreferences = {};
         this.complianceStatus = { wcag21AA: false,
             lastCheck: null;
-            issues: [] ,}
+           , issues: [] ,}
 
         };''
         this.initializationTime = Date.now(');

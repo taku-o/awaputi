@@ -14,7 +14,7 @@ export class AnalyticsErrorNotificationSystem {
             enableContextCollection: true;
             enableStackTrace: true;
             enableUserFeedback: true;
-            notificationTimeout: 8000, // 8秒;
+           , notificationTimeout: 8000, // 8秒;
             criticalErrorTimeout: 15000, // 15秒
     }
             ...options
@@ -48,7 +48,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '💥',
             color: '#f44336',)';
             severity: 'error')';
-            recoverable: false,')';
+           , recoverable: false,')';
             actions: ['詳細表示', 'レポート送信', '再読み込み])');
 
         this.errorTypes.set('network', {''
@@ -56,7 +56,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '🌐',
             color: '#ff9800',)';
             severity: 'warning')';
-            recoverable: true,')';
+           , recoverable: true,')';
             actions: ['再試行', '詳細表示', 'オフラインモード])');
 
         this.errorTypes.set('resource', {''
@@ -64,7 +64,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '📁',
             color: '#2196f3',)';
             severity: 'warning')';
-            recoverable: true,')';
+           , recoverable: true,')';
             actions: ['再読み込み', '詳細表示', 'キャッシュクリア])');
 
         this.errorTypes.set('permission', {''
@@ -72,7 +72,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '🔒',
             color: '#9c27b0',)';
             severity: 'warning')';
-            recoverable: false,')';
+           , recoverable: false,')';
             actions: ['権限設定', '詳細表示', 'ヘルプ])');
 
         this.errorTypes.set('storage', {''
@@ -80,7 +80,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '💾',
             color: '#607d8b',)';
             severity: 'error')';
-            recoverable: true,')';
+           , recoverable: true,')';
             actions: ['ストレージクリア', '詳細表示', 'データエクスポート])');
 
         this.errorTypes.set('performance', {''
@@ -88,7 +88,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '⚡',
             color: '#ff5722',)';
             severity: 'warning')';
-            recoverable: true,')';
+           , recoverable: true,')';
             actions: ['品質設定', '詳細表示', '最適化])');
 
         this.errorTypes.set('security', {''
@@ -96,7 +96,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '🛡️',
             color: '#d32f2f',)';
             severity: 'critical')';
-            recoverable: false,' }'
+           , recoverable: false,' }'
 
             actions: ['詳細表示', 'レポート送信', 'セキュリティヘルプ]); }
     }
@@ -139,7 +139,7 @@ export class AnalyticsErrorNotificationSystem {
                 border-left: 4px solid,
                 pointer-events: auto,
                 transform: translateX(100%);
-                animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
+               , animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
                 transition: all 0.3s ease;
                 backdrop-filter: blur(10px), }
             .error-notification.critical { animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
@@ -200,7 +200,7 @@ export class AnalyticsErrorNotificationSystem {
             .error-action { background: rgba(255, 255, 255, 0.15),
                 color: white;
                 border: none;
-                padding: 8px 12px;
+               , padding: 8px 12px;
                 border-radius: 6px,
                 cursor: pointer;
                 font-size: 12px,
@@ -213,11 +213,11 @@ export class AnalyticsErrorNotificationSystem {
             .error-close { background: none,
                 border: none;
                 color: #999;
-                cursor: pointer;
+               , cursor: pointer;
                 font-size: 20px,
                 padding: 4px;
                 width: 28px;
-                height: 28px;
+               , height: 28px;
                 border-radius: 50%,
                 display: flex;
                 align-items: center,
@@ -229,7 +229,7 @@ export class AnalyticsErrorNotificationSystem {
                 bottom: 0;
                 left: 0;
                 height: 3px;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent),
+               , background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent),
                 transition: width 0.1s linear;
                 border-radius: 0 0 12px 12px, }
             .error-timestamp { font-size: 10px,
@@ -244,7 +244,7 @@ export class AnalyticsErrorNotificationSystem {
                 margin-top: 8px, }
             .recovery-spinner { width: 12px,
                 height: 12px;
-                border: 2px solid rgba(76, 175, 80, 0.3),
+               , border: 2px solid rgba(76, 175, 80, 0.3),
                 border-top-color: #4caf50,
                 border-radius: 50%,
                 animation: spin 1s linear infinite ,}
@@ -285,7 +285,7 @@ export class AnalyticsErrorNotificationSystem {
                 filename: event.filename;
                 lineno: event.lineno);
                 colno: event.colno);
-                error: event.error,)';
+               , error: event.error,)';
                 stack: event.error? .stack), : undefined'';
                 timestamp: Date.now()';
         window.addEventListener('unhandledrejection', (event) => {'
@@ -306,7 +306,7 @@ export class AnalyticsErrorNotificationSystem {
                     message: `Failed to load ${event.target.tagName.toLowerCase(}): ${event.target.src || event.target.href}`;
                     element: event.target.tagName;
                     src: event.target.src || event.target.href;
-                    timestamp: Date.now();
+                   , timestamp: Date.now();
                 }
         }, true);
     }
@@ -351,7 +351,7 @@ export class AnalyticsErrorNotificationSystem {
             context: this.options.enableContextCollection ? this.collectContext() : null;
             stack: this.options.enableStackTrace ? errorData.stack : null;
             recoverable: errorType.recoverable;
-            actions: errorType.actions;
+           , actions: errorType.actions;
     }
             attempts: 0 }
         };
@@ -389,9 +389,9 @@ export class AnalyticsErrorNotificationSystem {
                 viewport: `${window.innerWidth}x${window.innerHeight}`;
                 language: navigator.language;
                 online: navigator.onLine;
-                memory: performance.memory ? { : undefined
+               , memory: performance.memory ? { : undefined
                     used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
-                    total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024 ,} : null;
+                   , total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024 ,} : null;
                 storage: this.getStorageInfo(),
             };''
         } catch (e) { }
@@ -406,7 +406,7 @@ export class AnalyticsErrorNotificationSystem {
         try {
             const localStorage = {
                 available: !!window.localStorage;
-                quota: null;
+               , quota: null;
     }
                 usage: null }
             };
@@ -463,7 +463,7 @@ export class AnalyticsErrorNotificationSystem {
                     <span class="error-icon">${errorType.icon}</span>
                     <span>${errorType.name}</span>"
                 </div>"";
-                <div style="display: flex; align-items: center; gap: 8px;">""
+                <div style="display: flex; align-items: center;, gap: 8px;">""
                     <span class="error-severity">${errorData.severity}</span>""
                     <button class="error-close" onclick="window.errorNotificationSystem? .dismissError('${errorData.id}''})">&times;</button>
                 </div>";
@@ -476,17 +476,17 @@ export class AnalyticsErrorNotificationSystem {
             ` : ''}
 
             ${ errorData.context ? `''
-                <div class="error-context">"";
-                    <div class="context-item"> : undefined";
+                <div, class="error-context">"";
+                    <div, class="context-item"> : undefined";
                         <span>URL:</span>" ,}"
                         <span>${errorData.context.url? .split('/}.pop('}) || 'Unknown'}</span>'
                     </div>'';
                     <div class="context-item"> : undefined";
                         <span>Time:</span>"";
-                        <span>${new Date(errorData.timestamp}.toLocaleTimeString("})</span>"
+                        <span>${new, Date(errorData.timestamp}.toLocaleTimeString("})</span>"
                     </div>";
                     ${ errorData.context.memory ? `""
-                        <div class="context-item"> : undefined
+                        <div, class="context-item"> : undefined
                             <span>Memory:</span> 
                             <span>${errorData.context.memory.used,}MB</span>"
                         </div>"";
@@ -508,7 +508,7 @@ export class AnalyticsErrorNotificationSystem {
             </div>'';
             <div id="recovery-status-${errorData.id}"></div>""
             <div class="error-timestamp">"";
-                ${new Date(errorData.timestamp}.toLocaleString("})"
+                ${new, Date(errorData.timestamp}.toLocaleString("})"
             </div>;
         `;
 ";
@@ -535,7 +535,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラー詳細のフォーマット
      */
-    formatErrorDetails(details) { return Object.entries(details) : undefined' '
+    formatErrorDetails(details) { return Object.entries(details) : undefined', '
             .map(([key, value]) => `${key}: ${value}`')''
             .join('<br>);
     }
@@ -669,13 +669,12 @@ export class AnalyticsErrorNotificationSystem {
         try {
             await fetch(this.options.errorReportingEndpoint, {)'
                 method: 'POST')';
-                headers: {''
-                    'Content-Type': 'application/json';
+               , headers: {'', 'Content-Type': 'application/json';
                 ),
                 body: JSON.stringify({)
                     error: errorData,);
                     userAgent: navigator.userAgent);
-                    timestamp: Date.now( ,};''
+                   , timestamp: Date.now( ,};''
         } catch (e) { console.warn('Failed to send error report:', e }
     }
 
@@ -734,8 +733,7 @@ export class AnalyticsErrorNotificationSystem {
             `タイプ: ${errorData.type}`,
 
             `重要度: ${errorData.severity}`,''
-            `時刻: ${ new Date(errorData.timestamp).toLocaleString(']'
-            ''];
+            `時刻: ${ new, Date(errorData.timestamp).toLocaleString(']', ''];
         ];)'
 ')';
         if(errorData.stack) {'

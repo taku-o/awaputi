@@ -1,6 +1,6 @@
-import { TranslationDataManager } from './localization-manager/TranslationDataManager.js';''
-import { CulturalAdaptationHandler } from './localization-manager/CulturalAdaptationHandler.js';''
-import { I18nIntegrationController } from './localization-manager/I18nIntegrationController.js';
+import { TranslationDataManager  } from './localization-manager/TranslationDataManager.js';''
+import { CulturalAdaptationHandler  } from './localization-manager/CulturalAdaptationHandler.js';''
+import { I18nIntegrationController  } from './localization-manager/I18nIntegrationController.js';
 
 /**
  * LocalizationManager - メインコントローラー
@@ -136,7 +136,7 @@ export class LocalizationManager {'
             this.integrationController.reportError(error, {''
                 operation: 'translate);
                 key: key);
-                language: this.currentLanguage,);
+               , language: this.currentLanguage,);
                 params: params ,});
             return key;
     
@@ -347,7 +347,7 @@ export class LocalizationManager {'
             supportedLanguages: this.getSupportedLanguages();
             translationStats: this.translationDataManager.getTranslationStats();
             culturalStats: this.culturalAdaptationHandler.getCulturalAdaptationStats();
-            integrationStatus: this.integrationController.getIntegrationStatus();
+           , integrationStatus: this.integrationController.getIntegrationStatus();
     ,}
             performanceStats: this.integrationController.getPerformanceStats(), };
             securityStats: this.integrationController.getSecurityStats(); }
@@ -364,12 +364,12 @@ export class LocalizationManager {'
             fallbackLanguage: this.fallbackLanguage);
             isRTL: this.isRTL();
             textDirection: this.getTextDirection();
-            components: { translationDataManager: !!this.translationDataManager;
+           , components: { translationDataManager: !!this.translationDataManager;
                 culturalAdaptationHandler: !!this.culturalAdaptationHandler;
-                integrationController: !!this.integrationController };
+               , integrationController: !!this.integrationController };
             stats: this.getLocalizationStats();
             cultural: this.culturalAdaptationHandler.getDebugInfo(this.currentLanguage);
-            integration: this.integrationController.getDiagnosticInfo();
+           , integration: this.integrationController.getDiagnosticInfo();
         }
     
     /**
@@ -395,9 +395,9 @@ export class LocalizationManager {'
         const integrationStatus = this.integrationController.getIntegrationStatus();''
         const translationStats = this.translationDataManager.getTranslationStats(''';
             status: 'healthy';
-            components: {
+           , components: {
                 translationDataManager: !!this.translationDataManager;
-                culturalAdaptationHandler: !!this.culturalAdaptationHandler;
+               , culturalAdaptationHandler: !!this.culturalAdaptationHandler;
     }
                 integrationController: !!this.integrationController }
             };
@@ -405,11 +405,11 @@ export class LocalizationManager {'
                 culturalAdaptation: true;
                 fileBasedLoading: integrationStatus.capabilities.fileBasedLoading;
                 performanceMonitoring: integrationStatus.capabilities.performanceMonitoring;
-                securityValidation: integrationStatus.capabilities.securityValidation })
+               , securityValidation: integrationStatus.capabilities.securityValidation })
             metrics: { supportedLanguages: translationStats.languageCount)
-                currentLanguage: this.currentLanguage,);
+               , currentLanguage: this.currentLanguage,);
                 rtlSupport: this.isRTL();
-                integrationSuccess: Object.values(integrationStatus.initialized).filter(Boolean).length ,};
+               , integrationSuccess: Object.values(integrationStatus.initialized).filter(Boolean).length ,};
             timestamp: new Date().toISOString();
         }
     

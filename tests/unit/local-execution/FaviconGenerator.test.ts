@@ -8,9 +8,9 @@
  * - Multiple favicon sizes generation
  * - Error handling and fallbacks
  * 
- * Requirements: 2.1, 2.2, 6.1, 6.2, 6.3
+ *, Requirements: 2.1, 2.2, 6.1, 6.2, 6.3
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 import FaviconGenerator from '../../../src/utils/local-execution/FaviconGenerator.js';
 // Type definitions
 interface MockContext {
@@ -49,7 +49,7 @@ interface MockLink {
 interface MockDocument {
     createElement: jest.Mock<MockCanvas | MockLink | any, [string]>;
     head?: {
-        appendChild: jest.Mock<void, [any]>;
+        appendChil;d: jest.Mock<void, [any]>;
         removeChild: jest.Mock<void, [any]>;
         querySelector: jest.Mock<MockLink | null, [string]>;
         querySelectorAll: jest.Mock<NodeListOf<MockLink>, [string]>;

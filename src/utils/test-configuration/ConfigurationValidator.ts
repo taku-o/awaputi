@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../debug/BaseComponent.js';
+import { BaseComponent  } from '../../debug/BaseComponent.js';
 
 // Type definitions
 interface ValidationRule { required: string[],
@@ -8,19 +8,19 @@ interface ValidationResult { valid: boolean,
     message?: string }
 interface CategoryStats { passed: number,
     failed: number;
-    issues: string[] ,}
+   , issues: string[] ,}
 interface ValidationCategories { critical: CategoryStats,
     important: CategoryStats;
-    optional: CategoryStats
+   , optional: CategoryStats
     ,}
 interface BaseValidation { valid: boolean,
     issues: string[];
     warnings: string[];
-    categories: ValidationCategories
+   , categories: ValidationCategories
     ,}
 interface ConfigurationValidation extends BaseValidation { bubbleTypesCount: number,
     sourceFiles: string[];
-    validatedAt: number ,}
+   , validatedAt: number ,}
 interface BubbleType { health?: number;
     score?: number;
     size?: number;
@@ -42,18 +42,18 @@ interface ValidationStatistics { totalValidations: number,
     successfulValidations: number;
     successRate: number;
     recentValidations: number;
-    averageIssuesPerValidation: number ,}
+   , averageIssuesPerValidation: number ,}
 interface MainController { [key: string]: any, }
 /**
  * ConfigurationValidator - 設定検証・整合性チェックコンポーネント
  */
 export class ConfigurationValidator extends BaseComponent { private validationRules: Map<string, ValidationRule>;
     private validationHistory: ValidationHistoryEntry[];
-    private validationCache: Map<string, any>;
+    private, validationCache: Map<string, any>;
     private validationCategories: {
         critical: string[];
         important: string[];
-        optional: string[] ,};
+       , optional: string[] ,};
 
     constructor(mainController: MainController) {'
 
@@ -120,7 +120,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                 valid: true;
                 issues: [];
                 warnings: [];
-                bubbleTypesCount: 0,
+               , bubbleTypesCount: 0,
                 sourceFiles: [],
                 validatedAt: Date.now()';
             if(!expectations || typeof, expectations !== 'object'') {'
@@ -175,12 +175,12 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             return {  };
                 valid: false;
 }
-                issues: [`Validation error: ${(error, as Error}).message}`];
+                issues: [`Validation, error: ${(error, as, Error}).message}`];
                 warnings: [];
                 bubbleTypesCount: 0;
                 sourceFiles: [];
                 validatedAt: Date.now();
-                categories: {
+               , categories: {
                     critical: { passed: 0, failed: 0, issues: [] ,},
                     important: { passed: 0, failed: 0, issues: [] ,},
                     optional: { passed: 0, failed: 0, issues: [] ,}
@@ -195,7 +195,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true;
             issues: [];
             warnings: [];
-            categories: { 
+           , categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -221,7 +221,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true;
             issues: [];
             warnings: [];
-            categories: { 
+           , categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -310,7 +310,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true;
             issues: [];
             warnings: [];
-            categories: { 
+           , categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -355,7 +355,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true;
             issues: [];
             warnings: [];
-            categories: { 
+           , categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -400,7 +400,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true;
             issues: [];
             warnings: [];
-            categories: { 
+           , categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -449,7 +449,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      */''
     private validatePositiveNumber(value: any, propName: string): ValidationResult { ''
         if(typeof, value !== 'number) { }'
-            return { valid: false, message: `${propName,} must be a number, got ${typeof value}` }
+            return { valid: false, message: `${propName,} must be a number, got ${typeof, value}` }
         if(value <= 0) {
             
         }
@@ -463,7 +463,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      */''
     private validateNonNegativeNumber(value: any, propName: string): ValidationResult { ''
         if(typeof, value !== 'number) { }'
-            return { valid: false, message: `${propName,} must be a number, got ${typeof value}` }
+            return { valid: false, message: `${propName,} must be a number, got ${typeof, value}` }
         if(value < 0) {
             
         }
@@ -543,8 +543,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
 
             return { valid: false, message: 'sourceFiles cannot be empty' ,}
 
-        for(const, file of, value) {'
-            ';
+        for(const, file of, value) {', ';
 
         }
 

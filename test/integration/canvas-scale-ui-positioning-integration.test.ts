@@ -2,8 +2,8 @@
  * Canvas Scale UI Positioning Integration Tests
  * キャンバススケール UI配置システムの統合テスト
  */
-import { jest } from '@jest/globals';''
-import { JSDOM } from 'jsdom';''
+import { jest  } from '@jest/globals';''
+import { JSDOM  } from 'jsdom';''
 describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
     let canvas: any,
     let responsiveCanvasManager: any,
@@ -100,8 +100,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
                 { width: 1920, height: 1080 } // デスクトップサイズ)]
             ]';
             );''
-            for(const size of resizeSizes') {'
-                '';
+            for(const size of resizeSizes') {', '';
                 Object.defineProperty(canvas, 'clientWidth', { value: size.width, configurable: true )'),''
                 Object.defineProperty(canvas, 'clientHeight', { value: size.height, configurable: true ),
                 responsiveCanvasManager.updateCanvasSize();
@@ -173,15 +172,14 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             const testScales = [{ width: 800, height: 600, scale: 1.0 },
                 { width: 1200, height: 900, scale: 1.5 },]
                 { width: 400, height: 300, scale: 0.5 }]
-            ];'
-            '';
+            ];', '';
             for(const testCase of testScales') {
                 
             }
                 simulateScreenSize(testCase.width, testCase.height};
                 );
                 const mockEvent = { clientX: 100)'
-                    clientY: 100,'';
+                   , clientY: 100,'';
                     type: 'click';
                 ),
                 

@@ -7,15 +7,15 @@
 interface InsightGenerator { priority: 'low' | 'medium' | 'high' | 'critical',
     frequency: number,
     lastGenerated: number,
-    generate: (data: AnalysisData') => Promise<Insight[]> | Insight[] ,}'
+    generate: (dat;a: AnalysisData') => Promise<Insight[]> | Insight[] ,}'
 }
 
 interface AnalysisData { timestamp: number;
-    metrics: Map<string, any>;
+   , metrics: Map<string, any>;
     history: AnalysisHistoryPoint[];
-    trends: Map<string, TrendData>;
+   , trends: Map<string, TrendData>;
     anomalies: Anomaly[];
-    baseline: Map<string, number>;
+   , baseline: Map<string, number>;
     stats: Map<string, StatisticalData> }
 
 interface AnalysisHistoryPoint { timestamp: number,
@@ -26,29 +26,29 @@ interface TrendData { ''
     trend: 'stable' | 'increasing' | 'decreasing';
     confidence: number;
     timestamp: number;
-    analyzer: string }
+   , analyzer: string }
 
 interface Anomaly { timestamp: number;
-    metricId: string,
+   , metricId: string,
     value: number,
     severity: 'low' | 'medium' | 'high' | 'critical';
     score: number;
-    type: string ,}
+   , type: string ,}
 
 interface StatisticalData { timestamp: number;
     stats: any;
-    dataPoints: number }
+   , dataPoints: number }
 ';
 
 interface Insight { ''
     type: 'bottleneck' | 'optimization' | 'degradation' | 'resource';
     category: string;
-    title: string,
+   , title: string,
     description: string,
     impact: 'low' | 'medium' | 'high' | 'critical',
     suggestions: string[],
     severity: 'low' | 'medium' | 'high' | 'critical';
-    metrics: Record<string, any>;
+   , metrics: Record<string, any>;
     timestamp?: number;
     generator?: string;
     priority?: string; }
@@ -57,28 +57,28 @@ interface ReportSummary { total_insights: number,
     recent_insights: number;
     critical_issues: number;
     high_priority_issues: number;
-    categories: Record<string, number> }
+   , categories: Record<string, number> }
 
 interface ReportInsights { recent: Insight[],
     critical: Insight[];
     high_priority: Insight[];
-    by_category: Record<string, Insight[]> }
+   , by_category: Record<string, Insight[]> }
 
 interface Recommendation { action: string,
 
     frequency: number,
     priority: 'low' | 'medium' | 'high';
-    description: string ,}
+   , description: string ,}
 
 interface PerformanceReport { timestamp: number;
     summary: ReportSummary;
     insights: ReportInsights;
-    recommendations: Recommendation[]
+   , recommendations: Recommendation[]
     }
 
 interface ExportedInsights { timestamp: number;
     insights: Insight[];
-    generators: Record<string, InsightGenerator> }
+   , generators: Record<string, InsightGenerator> }
 
 interface MainController { errorHandler: any,
     anomalies?: Anomaly[];
@@ -93,7 +93,7 @@ export class PerformanceReportGenerator {
     private mainController: MainController;
     private errorHandler: any;
     private insights: Insight[];
-    private insightGenerators: Map<string, InsightGenerator>;
+    private, insightGenerators: Map<string, InsightGenerator>;
 
     constructor(mainController: MainController) {
 
@@ -117,36 +117,36 @@ export class PerformanceReportGenerator {
     private initializeInsightGenerators(''';
         this.insightGenerators.set('bottlenecks', { ')'
             priority: 'high');
-            frequency: 30000, // 30 seconds);
+           , frequency: 30000, // 30 seconds);
             lastGenerated: 0);
-            generate: (data: AnalysisData) => this.generateBottleneckInsights(data);' ,}'
+           , generate: (data: AnalysisData) => this.generateBottleneckInsights(data);' ,}'
 
         }');
         ';
         // Optimization opportunities detector
         this.insightGenerators.set('optimization', { ')'
             priority: 'medium');
-            frequency: 60000, // 1 minute);
+           , frequency: 60000, // 1 minute);
             lastGenerated: 0);
-            generate: (data: AnalysisData) => this.generateOptimizationInsights(data);' ,}'
+           , generate: (data: AnalysisData) => this.generateOptimizationInsights(data);' ,}'
 
         }');
         ';
         // Performance degradation detector
         this.insightGenerators.set('degradation', { ')'
             priority: 'high');
-            frequency: 15000, // 15 seconds);
+           , frequency: 15000, // 15 seconds);
             lastGenerated: 0);
-            generate: (data: AnalysisData) => this.generateDegradationInsights(data);' ,}'
+           , generate: (data: AnalysisData) => this.generateDegradationInsights(data);' ,}'
 
         }');
         ';
         // Resource utilization analyzer
         this.insightGenerators.set('resources', { ')'
             priority: 'medium');
-            frequency: 45000, // 45 seconds);
+           , frequency: 45000, // 45 seconds);
             lastGenerated: 0);
-            generate: (data: AnalysisData) => this.generateResourceInsights(data) ,}
+           , generate: (data: AnalysisData) => this.generateResourceInsights(data) ,}
         });
     }
     
@@ -172,14 +172,14 @@ export class PerformanceReportGenerator {
                     trends: this.mainController.dataProcessor.getAllTrends();
                     anomalies: this.mainController.anomalies || [];
                     baseline: this.mainController.performanceBaseline;
-                    stats: this.mainController.dataProcessor.getAllStatisticalData(), });
+                   , stats: this.mainController.dataProcessor.getAllStatisticalData(), });
                 
                 if(insights && insights.length > 0) {
                 
                     this.insights.push(...insights.map(insight => ({
                         ...insight);
                         timestamp: currentTimestamp);
-                        generator: generatorId,);
+                       , generator: generatorId,);
                         priority: generator.priority)));
                 ,}
                     generator.lastGenerated = currentTimestamp; }
@@ -237,7 +237,7 @@ export class PerformanceReportGenerator {
                 metrics: { 
                     current: memoryUsed, ;
                     baseline: memoryBaseline;
-                    trend: memoryTrend.trend;
+                   , trend: memoryTrend.trend;
         ,}
                     confidence: memoryTrend.confidence  }
 
@@ -367,7 +367,7 @@ export class PerformanceReportGenerator {
                     impact: 'medium',
                     suggestions: ['memory_cleanup', 'investigate_leaks'],
                     severity: 'medium';
-                    metrics: { confidence: trendData.confidence, trend: trendData.trend, metric: metricId ,});
+                   , metrics: { confidence: trendData.confidence, trend: trendData.trend, metric: metricId ,});
             }
         }
         
@@ -381,7 +381,7 @@ export class PerformanceReportGenerator {
                 type: 'degradation',
                 category: 'stability',)';
                 title: 'Performance Instability Detected')';
-                description: `Multiple critical anomalies detected in the last 30 seconds`,
+               , description: `Multiple critical anomalies detected in the last 30 seconds`,
                 impact: 'critical',
                 suggestions: ['emergency_mode', 'restart_application'],
 
@@ -526,13 +526,13 @@ export class PerformanceReportGenerator {
                 total_insights: this.insights.length;
                 recent_insights: recentInsights.length;
                 critical_issues: criticalInsights.length;
-                high_priority_issues: highInsights.length, };
+               , high_priority_issues: highInsights.length, };
                 categories: this.getInsightCategorySummary(); }
             },
             insights: { recent: recentInsights;
                 critical: criticalInsights;
                 high_priority: highInsights;
-                by_category: this.groupInsightsByCategory(recentInsights };
+               , by_category: this.groupInsightsByCategory(recentInsights };
             recommendations: this.generateRecommendations(recentInsights);
         }
     
@@ -586,7 +586,7 @@ export class PerformanceReportGenerator {
         for(const [suggestion, count] of sortedSuggestions) {
             recommendations.push({)
                 action: suggestion)';
-                frequency: count,')';
+               , frequency: count,')';
                 priority: count >= 3 ? 'high' : count >= 2 ? 'medium' : 'low');
         ,}
                 description: this.getRecommendationDescription(suggestion); }
@@ -601,8 +601,7 @@ export class PerformanceReportGenerator {
      * @param suggestion - Suggestion key
      * @returns Human-readable description'
      */''
-    private getRecommendationDescription(suggestion: string): string { const descriptions: Record<string, string> = {''
-            'reduce_graphics_quality': 'Consider reducing graphics quality settings to improve performance',
+    private getRecommendationDescription(suggestion: string): string { const descriptions: Record<string, string> = {'', 'reduce_graphics_quality': 'Consider reducing graphics quality settings to improve performance',
             'optimize_rendering': 'Review rendering pipeline for optimization opportunities',
             'memory_cleanup': 'Perform memory cleanup and garbage collection',
             'check_memory_leaks': 'Investigate potential memory leaks',

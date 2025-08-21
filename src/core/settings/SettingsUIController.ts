@@ -6,7 +6,7 @@
 // 型定義
 export interface SettingsManager { configManager: ConfigManager,
     gameEngine: GameEngine;
-    errorHandler: ErrorHandler;
+   , errorHandler: ErrorHandler;
     addListener(setting: string, callback: SettingChangeCallback, options?: ListenerOptions): void;
     removeListenerById(id: string): void, }
 
@@ -49,21 +49,21 @@ export interface ParticleConfiguration {
 export interface UpdateStats { qualityChanges: number;
     languageChanges: number;
     scaleChanges: number;
-    lastUpdateTime: number }
+   , lastUpdateTime: number }
 
 export interface UICurrentSettings { quality: QualityLevel;
     language: string;
     uiScale: number;
     highContrast: boolean;
     reducedMotion: boolean;
-    largeText: boolean }
+   , largeText: boolean }
 
 export interface UIStatsResult { updateStats: UpdateStats;
-    currentSettings: UICurrentSettings
+   , currentSettings: UICurrentSettings
     }
 
 export interface UIComponent { onSettingChange?(setting: string, newValue: any, oldValue: any): void 
-export interface ListenerOptions { id?: string;
+export interface ListenerOptions { i;d?: string;
     priority?: ListenerPriority;
     ,}
 
@@ -79,7 +79,7 @@ export class SettingsUIController {
     private configManager: ConfigManager;
     private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
-    private updateStats: UpdateStats';
+    private, updateStats: UpdateStats';
 
     constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;
@@ -91,7 +91,7 @@ export class SettingsUIController {
         this.updateStats = {
             qualityChanges: 0;
             languageChanges: 0;
-            scaleChanges: 0;
+           , scaleChanges: 0;
     }
             lastUpdateTime: 0 }
         };
@@ -111,8 +111,7 @@ export class SettingsUIController {
             }
             ;
             // パフォーマンス最適化システムに通知
-            if(this.gameEngine && this.gameEngine.configurationManager) {'
-                ';
+            if(this.gameEngine && this.gameEngine.configurationManager) {', ';
 
             }
 
@@ -281,24 +280,24 @@ export class SettingsUIController {
 
                 case 'quality':'';
                 case 'ui.quality':'';
-                    this.applyQualityChange(newValue, as QualityLevel);
+                    this.applyQualityChange(newValue, as, QualityLevel);
                     break;
 
                 case 'language':'';
                 case 'ui.language':'';
-                    this.handleLanguageChange(newValue, as string);
+                    this.handleLanguageChange(newValue, as, string);
                     break;
 
                 case 'accessibility.highContrast':'';
-                    this.applyHighContrastMode(newValue, as boolean);
+                    this.applyHighContrastMode(newValue, as, boolean);
                     break;
 
                 case 'accessibility.reducedMotion':'';
-                    this.applyReducedMotionMode(newValue, as boolean);
+                    this.applyReducedMotionMode(newValue, as, boolean);
                     break;
 
                 case 'accessibility.largeText':'';
-                    this.applyLargeTextMode(newValue, as boolean};
+                    this.applyLargeTextMode(newValue, as, boolean};
                     break;
 
                 case 'ui.uiScale':'';
@@ -326,8 +325,7 @@ export class SettingsUIController {
             ';
             // 現在の設定値を取得して適用
             const quality = this.configManager.get('ui.quality);
-            if(quality) {'
-                ';
+            if(quality) {', ';
 
             }
 
@@ -344,8 +342,7 @@ export class SettingsUIController {
             }
 
             const highContrast = this.configManager.get('accessibility.highContrast);
-            if(highContrast !== undefined) {'
-                ';
+            if(highContrast !== undefined) {', ';
 
             }
 
@@ -362,8 +359,7 @@ export class SettingsUIController {
             }
 
             const largeText = this.configManager.get('accessibility.largeText);
-            if(largeText !== undefined) {'
-                ';
+            if(largeText !== undefined) {', ';
 
             }
 

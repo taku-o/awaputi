@@ -5,20 +5,20 @@
  * セキュリティ監査機能を提供
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface SecurityTestConfig { enabled: boolean,
     strictMode: boolean;
     timeoutMs: number;
     maxTestCases: number;
-    reportDetails: boolean ,}
+   , reportDetails: boolean ,}
 
 export interface TestCases { xssPayloads: string[];
     injectionPayloads: string[];
     parameterInjection: string[];
     longStrings: string[];
-    unicodePayloads: string[] }
+   , unicodePayloads: string[] }
 
 export interface TestResults { totalTests: number;
     passedTests: number;
@@ -26,12 +26,12 @@ export interface TestResults { totalTests: number;
     vulnerabilities: SecurityVulnerability[];
     startTime: number | null;
     endTime: number | null;
-    duration: number }
+   , duration: number }
 
 export interface SecurityVulnerability { type: string;
     timestamp: number;
     severity: VulnerabilitySeverity;
-    details: VulnerabilityDetails
+   , details: VulnerabilityDetails
     }
 
 export interface VulnerabilityDetails { input?: any;
@@ -48,24 +48,24 @@ export interface TestValidationResult { passed: boolean,
 export interface SecurityTestReport { summary: TestSummary;
     vulnerabilities: VulnerabilityReport;
     recommendations: SecurityRecommendation[];
-    timestamp: number }
+   , timestamp: number }
 
 export interface TestSummary { totalTests: number;
     passedTests: number;
     failedTests: number;
     successRate: number;
-    duration: number }
+   , duration: number }
 
 export interface VulnerabilityReport { total: number;
     high: number;
     medium: number;
     low: number;
-    details: SecurityVulnerability[]
+   , details: SecurityVulnerability[]
     }
 
 export interface SecurityRecommendation { priority: RecommendationPriority;
     message: string;
-    action: string }
+   , action: string }
 
 export interface I18nSecurityManager { sanitizeString(input: string): string;
     validateTranslationData(translations: Record<string, any>, source: string): ValidationResult,
@@ -79,7 +79,7 @@ export interface ValidationResult { isValid: boolean,
 
 export interface ValidationViolation { severity: VulnerabilitySeverity;
     type: string;
-    message: string }
+   , message: string }
 ';
 
 export interface CSPMetaElement {;
@@ -98,7 +98,7 @@ export class I18nSecurityTester {
     // テストケース
     private testCases: TestCases;
     // テスト結果
-    private testResults: TestResults;
+    private, testResults: TestResults;
 
     constructor(securityManager: I18nSecurityManager) {
         this.securityManager = securityManager;
@@ -108,7 +108,7 @@ export class I18nSecurityTester {
             enabled: true;
             strictMode: false;
             timeoutMs: 5000;
-            maxTestCases: 1000;
+           , maxTestCases: 1000;
     }
             reportDetails: true }
         };
@@ -153,8 +153,7 @@ export class I18nSecurityTester {
                 '<IMG SRC=# onmouseover="alert(\'xxs\'')">',
                 '<IMG SRC= onmouseover="alert(\'xxs\'')">',
                 '<IMG onmouseover="alert(\'xxs\'')">',
-                '<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>',]'
-                '<IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>'];
+                '<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>',]', '<IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>'];
             ],
 
             parameterInjection: ['';
@@ -183,8 +182,7 @@ export class I18nSecurityTester {
                 'A'.repeat(100000),  // 100KB;
                 'A'.repeat(1000000), // 1MB;
                 '\u0000'.repeat(10000), // null bytes;
-                '{ {'.repeat(10000),     // template injection]'
-                '<script>'.repeat(1000), // repeated script tags];
+                '{ {'.repeat(10000),     // template injection]', '<script>'.repeat(1000), // repeated script tags];
             ],
 
             unicodePayloads: ['';
@@ -204,7 +202,7 @@ export class I18nSecurityTester {
             vulnerabilities: [];
             startTime: null;
             endTime: null;
-            duration: 0 ,};
+           , duration: 0 ,};
         console.log('I18nSecurityTester, initialized');
     }
     
@@ -220,7 +218,7 @@ export class I18nSecurityTester {
             vulnerabilities: [];
             startTime: Date.now();
             endTime: null;
-            duration: 0 ,};
+           , duration: 0 ,};
         const testSuites: (() => Promise<void>)[] = [() => this.testXSSVulnerabilities(),
             () => this.testInjectionVulnerabilities(),
             () => this.testParameterValidation(),
@@ -318,11 +316,9 @@ export class I18nSecurityTester {
         console.log('Testing, content validation...'');
         ';
 
-        const maliciousTranslations: Record<string, any> = { ''
-            'test.xss': '<script>alert("XSS"")</script>',' }
+        const maliciousTranslations: Record<string, any> = { '', 'test.xss': '<script>alert("XSS"")</script>',' }
 
-            'test.injection': '{ {constructor.constructor("alert(1"))(" }',''
-            'test.html': '<iframe src="javascript:alert(1)"></iframe>',
+            'test.injection': '{ {constructor.constructor("alert(1"))(" }','', 'test.html': '<iframe src="javascript:alert(1)"></iframe>',
             'test.proto': { '__proto__': { polluted: true ,}
         };
         
@@ -434,7 +430,7 @@ export class I18nSecurityTester {
             } else { this.testResults.failedTests++;
                 this.recordVulnerability(testType, {)
                     input: input)';
-                    reason: result.reason,' }'
+                   , reason: result.reason,' }'
 
                     severity: result.severity || 'medium'); }
             } catch (error) { this.testResults.failedTests++;
@@ -476,9 +472,7 @@ export class I18nSecurityTester {
     /**
      * インジェクション保護の検証'
      */''
-    private validateInjectionProtection(result: any, payload: string): TestValidationResult { const safeTranslation = this.securityManager.generateSafeTranslation(' }'
-
-            'Test: {{value})'
+    private validateInjectionProtection(result: any, payload: string): TestValidationResult { const safeTranslation = this.securityManager.generateSafeTranslation(' }', 'Test: {{value})'
             { value: payload )
         );
         
@@ -515,8 +509,7 @@ export class I18nSecurityTester {
         return { passed: !keyExists, };
 
             reason: keyExists ?   : undefined' '
-                `Invalid parameter key "${key}" was not rejected` : ""
-                'Invalid parameter key properly rejected';
+                `Invalid parameter key "${key}" was not rejected` : "", 'Invalid parameter key properly rejected';
         },
     }
     
@@ -684,7 +677,7 @@ export class I18nSecurityTester {
             type: type),
             timestamp: Date.now()';
             severity: details.severity || 'medium');
-            details: details ,});
+           , details: details ,});
         console.warn(`Security vulnerability detected: ${type}`, details});
     }
     
@@ -695,7 +688,7 @@ export class I18nSecurityTester {
             summary: {
                 totalTests: this.testResults.totalTests;
                 passedTests: this.testResults.passedTests;
-                failedTests: this.testResults.failedTests,
+               , failedTests: this.testResults.failedTests,
                 successRate: this.testResults.totalTests > 0 ?   : undefined'';
                     Math.round((this.testResults.passedTests / this.testResults.totalTests) * 100') : 0,
                 duration: this.testResults.duration ,};
@@ -706,7 +699,7 @@ export class I18nSecurityTester {
                 details: this.testResults.vulnerabilities ,}
             };
             recommendations: this.generateSecurityRecommendations();
-            timestamp: Date.now();
+           , timestamp: Date.now();
         };
         
         this.logTestReport(report);

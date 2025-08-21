@@ -10,11 +10,11 @@ interface ErrorInfo { id: string,
     stack?: string;
     timestamp: string;
     context: string;
-    metadata: Record<string, any>;
+   , metadata: Record<string, any>;
     recovered?: boolean; }
 
 interface MainController { logger?: {
-        generateErrorId: () => string;
+        generateErrorI;d: () => string;
         getErrorLog: () => ErrorInfo[] ,}
     };
     isBrowser?: boolean;
@@ -24,8 +24,8 @@ interface MainController { logger?: {
 interface ErrorMetadata { userAgent?: string;
     url?: string;
     viewport?: {
-        width: number;
-        height: number ,};
+        widt;h: number;
+       , height: number ,};
     performanceNow?: number;
     memory?: { used?: number;
         total?: number;
@@ -52,26 +52,26 @@ interface PatternAnalysis { recurring: Record<string, number>;
     byContext: Record<string, number>;
     bySeverity: Record<string, number>;
     timeline: Array<{
-        timestamp: string;
+        timestam;p: string;
         context: string;
-        severity: string ,}>;
+       , severity: string ,}>;
     correlations: Array<{ type: string;
         description: string;
-        contexts: string[] }>;
+       , contexts: string[] }>;
 }
 
 interface AnalysisReport { errorId: string,
     severity: string;
     context: string;
-    analysis: {
-        isRecurring: boolean;
+   , analysis: {
+        isRecurrin;g: boolean;
         similarCount: number;
         riskLevel: string;
         impactAssessment: ImpactAssessment;
-        recommendedActions: string[] ,};
+       , recommendedActions: string[] ,};
     technical: { classification: ErrorClassification;
         rootCause: string;
-        affectedSystems: string[] };
+       , affectedSystems: string[] };
     timestamp: string;
 }
 
@@ -82,7 +82,7 @@ interface ImpactAssessment { userExperience: 'minimal' | 'moderate' | 'severe','
 interface ErrorClassification { category: string;
     type: string;
     source: string;
-    recoverable: boolean }
+   , recoverable: boolean }
 
 interface AnalyzerConfig { severityRules?: Record<string, string>;
     contextPatterns?: Record<string, string>; }
@@ -90,7 +90,7 @@ interface AnalyzerConfig { severityRules?: Record<string, string>;
 interface AnalyzerStats { severityRulesCount: number,
     contextPatternsCount: number;
     criticalPatternsCount: number;
-    highSeverityPatternsCount: number ,}
+   , highSeverityPatternsCount: number ,}
 
 type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
@@ -99,7 +99,7 @@ declare global { interface Window {
         gameEngine?: {
             currentScene?: {
                 constructor: {
-                    name: string ,};
+                    nam;e: string ,};
             performanceOptimizer?: { getCurrentFPS: () => number;
                 currentLevel: string;
                 currentQuality: string;
@@ -110,17 +110,17 @@ declare global { interface Window {
     }
 
     interface Performance { memory?: {
-            usedJSHeapSize: number;
+            usedJSHeapSiz;e: number;
             totalJSHeapSize: number;
-            jsHeapSizeLimit: number ,}
+           , jsHeapSizeLimit: number ,}
 }
 
 export class UtilsErrorAnalyzer {
     private mainController: MainController;
-    private contextPatterns: Map<string, RegExp>;
+    private, contextPatterns: Map<string, RegExp>;
     private severityRules: Map<string, string>;
     private criticalPatterns: RegExp[];
-    private highSeverityPatterns: RegExp[];
+    private, highSeverityPatterns: RegExp[];
 
     constructor(mainController: MainController) {
         this.mainController = mainController;
@@ -186,7 +186,7 @@ export class UtilsErrorAnalyzer {
                 id: errorId;
                 name: error.name;
                 message: error.message;
-                stack: error.stack;
+               , stack: error.stack;
                 timestamp,
         }
                 context: this.determineContext(error),' };
@@ -337,7 +337,7 @@ export class UtilsErrorAnalyzer {
             if(performance && performance.memory) {
                 metadata.memory = {
                     used: performance.memory.usedJSHeapSize;
-                    total: performance.memory.totalJSHeapSize;
+                   , total: performance.memory.totalJSHeapSize;
             }
                     limit: performance.memory.jsHeapSizeLimit }
                 }
@@ -367,7 +367,7 @@ export class UtilsErrorAnalyzer {
             if(gameEngine.performanceOptimizer) {
                 metadata.performance = { : undefined
                     level: gameEngine.performanceOptimizer.currentLevel;
-                    quality: gameEngine.performanceOptimizer.currentQuality;
+                   , quality: gameEngine.performanceOptimizer.currentQuality;
             ,}
                     optimizationsActive: gameEngine.performanceOptimizer.activeOptimizations }
                 }
@@ -391,8 +391,8 @@ export class UtilsErrorAnalyzer {
             recurring: new Map<string, number>(),
             byContext: new Map<string, number>(),
             bySeverity: new Map<string, number>(), }
-            timeline: [] as Array<{ timestamp: string; context: string; severity: string, }>,
-            correlations: [] as Array<{ type: string; description: string; contexts: string[], }>
+            timeline: [] as Array<{ timestamp: string; context: string;, severity: string, }>,
+            correlations: [] as Array<{ type: string; description: string;, contexts: string[], }>
         };
         
         // Analyze recurring patterns
@@ -407,7 +407,7 @@ export class UtilsErrorAnalyzer {
             patterns.byContext.set(error.context, (patterns.byContext.get(error.context) || 0) + 1);
             
             patterns.timeline.push({ timestamp: error.timestamp)
-                context: error.context,);
+               , context: error.context,);
                 severity); }
         
         // Find correlations (simplified);
@@ -427,7 +427,7 @@ export class UtilsErrorAnalyzer {
         return { recurring: Object.fromEntries(patterns.recurring),
             byContext: Object.fromEntries(patterns.byContext);
             bySeverity: Object.fromEntries(patterns.bySeverity);
-            timeline: patterns.timeline, };
+           , timeline: patterns.timeline, };
             correlations: patterns.correlations }
         }
     
@@ -442,7 +442,7 @@ export class UtilsErrorAnalyzer {
         return { errorId: errorInfo.id,
             severity,
             context: errorInfo.context;
-            analysis: {
+           , analysis: {
                 isRecurring: similar.length > 0;
                 similarCount: similar.length;
                 riskLevel: this.calculateRiskLevel(errorInfo, severity),
@@ -451,7 +451,7 @@ export class UtilsErrorAnalyzer {
             },
             technical: { classification: this.classifyError(errorInfo);
                 rootCause: this.identifyRootCause(errorInfo);
-                affectedSystems: this.identifyAffectedSystems(errorInfo };
+               , affectedSystems: this.identifyAffectedSystems(errorInfo };
             timestamp: new, Date().toISOString();
         }
     
@@ -605,7 +605,7 @@ export class UtilsErrorAnalyzer {
      */
     private classifyError(errorInfo: ErrorInfo): ErrorClassification { return { category: this.getCategoryFromContext(errorInfo.context),
             type: errorInfo.name;
-            source: this.identifyErrorSource(errorInfo), };
+           , source: this.identifyErrorSource(errorInfo), };
             recoverable: this.isRecoverable(errorInfo); }
         }
     
@@ -614,8 +614,7 @@ export class UtilsErrorAnalyzer {
      * @param context - Error context
      * @returns Error category'
      */''
-    private getCategoryFromContext(context: string): string { const categoryMap: Record<string, string> = {''
-            'CANVAS_ERROR': 'rendering',
+    private getCategoryFromContext(context: string): string { const categoryMap: Record<string, string> = {'', 'CANVAS_ERROR': 'rendering',
             'WEBGL_ERROR': 'rendering',
             'AUDIO_ERROR': 'media',
             'STORAGE_ERROR': 'data',
@@ -763,7 +762,7 @@ export class UtilsErrorAnalyzer {
      */
     getAnalyzerStats('): AnalyzerStats { return { severityRulesCount: this.severityRules.size,
             contextPatternsCount: this.contextPatterns.size;
-            criticalPatternsCount: this.criticalPatterns.length, };
+           , criticalPatternsCount: this.criticalPatterns.length, };
             highSeverityPatternsCount: this.highSeverityPatterns.length }
         }
     

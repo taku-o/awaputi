@@ -1,6 +1,6 @@
-import { RecoveryStrategies } from './statistics/RecoveryStrategies.js';''
-import { RecoveryValidation } from './statistics/RecoveryValidation.js';''
-import { RecoveryUserGuidance } from './statistics/RecoveryUserGuidance.js';
+import { RecoveryStrategies  } from './statistics/RecoveryStrategies.js';''
+import { RecoveryValidation  } from './statistics/RecoveryValidation.js';''
+import { RecoveryUserGuidance  } from './statistics/RecoveryUserGuidance.js';
 
 /**
  * 統計データ復旧クラス（Main Controller）
@@ -18,18 +18,18 @@ export class StatisticsDataRecovery {
                 autoRecoveryEnabled: true;
                 maxRetryAttempts: 3;
                 retryDelayMs: 1000;
-                backupRetentionDays: 30;
+               , backupRetentionDays: 30;
     ,}
                 corruptionThreshold: 0.7 // 70%以上のデータが有効であれば復旧可能 }
             };
             validation: { strictMode: false;
                 validateChecksums: true;
                 validateStructure: true;
-                validateRanges: true };
+               , validateRanges: true };
             notification: { showRecoveryProgress: true;
                 showSuccessMessage: true;
                 showFailureMessage: true;
-                autoCloseDelay: 5000 }
+               , autoCloseDelay: 5000 }
         };
         // 復旧状態管理
         this.recoveryState = { isRecovering: false,
@@ -37,7 +37,7 @@ export class StatisticsDataRecovery {
             progress: 0;
             lastRecoveryTime: null;
             recoveryHistory: [];
-            failedAttempts: 0 ,};
+           , failedAttempts: 0 ,};
         // サブコンポーネントの初期化（依存注入）
         this.strategies = new RecoveryStrategies(this);
         this.validation = new RecoveryValidation(this);
@@ -84,8 +84,7 @@ export class StatisticsDataRecovery {
             return false;
         ';
         // 重要度が低い場合はスキップ
-        if(severity === 'low) { return false; }'
-        ';
+        if(severity === 'low) { return false; }', ';
         // 最大試行回数を超えている場合はスキップ
         if(this.recoveryState.failedAttempts >= this.config.recovery.maxRetryAttempts) { return false; }
         ';
@@ -163,17 +162,17 @@ export class StatisticsDataRecovery {
             // データ取得・分析
             this.updateProgress('analyzing', 20);
 
-            const currentData = await this.statisticsManager.getAllStatistics();''
-            const analysis = await this.analyzeData(currentData);
+            const, currentData = await, this.statisticsManager.getAllStatistics();''
+            const, analysis = await, this.analyzeData(currentData);
             ';
             // 復旧戦略を実行
             this.updateProgress('recovering', 40);''
-            const result = await this.strategies.executeStrategy(strategy, analysis, options);
+            const, result = await, this.strategies.executeStrategy(strategy, analysis, options);
             ';
             // 結果を検証
             this.updateProgress('validating', 80);
             if(result.success && result.data) {
-                const validationResult = await this.validation.analyzeDataIntegrity(result.data};
+                const, validationResult = await, this.validation.analyzeDataIntegrity(result.data};
                 result.validationPassed = validationResult.isValid;
                 
                 if (validationResult.isValid} {
@@ -232,7 +231,7 @@ export class StatisticsDataRecovery {
             const actualChecksum = this.validation.calculateChecksum(data);
             analysis.checksum = {
                 expected: expectedChecksum;
-                actual: actualChecksum;
+               , actual: actualChecksum;
         }
                 matches: expectedChecksum === actualChecksum }
             }
@@ -253,16 +252,14 @@ export class StatisticsDataRecovery {
             return 'complete_loss';
         ';
         // チェックサム失敗
-        if(analysis.checksum && !analysis.checksum.matches) {'
-            ';
+        if(analysis.checksum && !analysis.checksum.matches) {', ';
 
         }
 
             return 'checksum_failure';
         ';
         // 構造破損
-        if(analysis.structure && !analysis.structure.isValid) {'
-            ';
+        if(analysis.structure && !analysis.structure.isValid) {', ';
 
         }
 
@@ -281,8 +278,7 @@ export class StatisticsDataRecovery {
         // バージョン不一致の可能性をチェック
         const currentVersion = this.statisticsManager.getDataVersion();
         const dataVersion = this.statisticsManager.getStoredDataVersion();''
-        if(currentVersion !== dataVersion) {'
-            ';
+        if(currentVersion !== dataVersion) {', ';
 
         }
 
@@ -402,7 +398,7 @@ export class StatisticsDataRecovery {
             timestamp: new Date().toISOString();
             success: false;
             error: error.message;
-            duration: this.recoveryState.lastRecoveryTime ?   : undefined
+           , duration: this.recoveryState.lastRecoveryTime ?   : undefined
     
                      Date.now(') - this.recoveryState.lastRecoveryTime : null }
         };
@@ -445,7 +441,7 @@ export class StatisticsDataRecovery {
             config: { ...this.config;
             strategies: this.strategies.getStrategyStats();
             validation: this.validation.getValidationStats();
-            guidance: this.userGuidance.getStats();
+           , guidance: this.userGuidance.getStats();
         }
     
     /**

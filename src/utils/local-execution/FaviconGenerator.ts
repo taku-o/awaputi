@@ -3,7 +3,7 @@
  * 
  * Main Controller Pattern: 軽量オーケストレーターとして各専用コンポーネントを統制
  * 
- * Requirements: 2.1, 2.2, 6.1, 6.2, 6.3
+ *, Requirements: 2.1, 2.2, 6.1, 6.2, 6.3
  * 
  * @author Claude Code
  * @version 1.0.0
@@ -29,13 +29,13 @@ interface FaviconDefaultConfig { sizes: number[],
     fontFamily: string;
     text: string;
     cacheEnabled: boolean;
-    enablePerformanceOptimizations: boolean ,}
+   , enablePerformanceOptimizations: boolean ,}
 
 interface GenerationResult { success: boolean;
     generated: number;
     cached: number;
     failed: number;
-    details: FaviconDetail[];
+   , details: FaviconDetail[];
     error?: string }
 ';
 
@@ -47,10 +47,10 @@ interface FaviconDetail { ''
 
 interface GenerationRequest { size: number,
     config: FaviconDefaultConfig;
-    configHash: string ,}
+   , configHash: string ,}
 
 interface CanvasInfo { canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D;
+   , ctx: CanvasRenderingContext2D;
     fromPool?: boolean;
     poolIndex?: number; }
 ';
@@ -69,9 +69,9 @@ interface FaviconData { ''
 
 interface Stats { cache: any;
     performance: any;
-    memoryCache: {
-        size: number;
-        keys: string[] }
+   , memoryCache: {
+        siz;e: number;
+       , keys: string[] }
 
 class FaviconGenerator { /**
      * デフォルト設定
@@ -83,7 +83,7 @@ class FaviconGenerator { /**
         fontFamily: 'Arial, sans-serif',
         text: 'B';
         cacheEnabled: true;
-        enablePerformanceOptimizations: true ,};
+       , enablePerformanceOptimizations: true ,};
     /**
      * 生成キャッシュ（メモリキャッシュ）
      */
@@ -102,7 +102,7 @@ class FaviconGenerator { /**
                 generated: 0;
                 cached: 0;
                 failed: 0;
-                details: [] ,};
+               , details: [] ,};
             // 既存favicon検証
             const validation = FaviconDOMManager.validateExistingFavicons();
             
@@ -142,7 +142,7 @@ class FaviconGenerator { /**
                     .filter(detail => detail.dataURL);
                     .map(detail => ({)
                         size: detail.size!)';
-                        dataURL: detail.dataURL!,')';
+                       , dataURL: detail.dataURL!,')';
                         type: detail.size === 'ico' ? 'ico' : 'png')));
                 FaviconDOMManager.removeExistingFavicons()
             ,}
@@ -157,12 +157,12 @@ class FaviconGenerator { /**
             return result;
 
         } catch (error) {
-            console.error('FaviconGenerator: Generation failed:', error);
+            console.error('FaviconGenerator: Generation, failed:', error);
             return { success: false,
                 generated: 0;
                 cached: 0;
                 failed: 1;
-                details: [], };
+               , details: [], };
                 error: (error, as Error).message }
             }
     }
@@ -193,7 +193,7 @@ class FaviconGenerator { /**
         
         return { cache: cacheStats,
             performance: performanceStats;
-            memoryCache: {
+           , memoryCache: {
                 size: this.generationCache.size, };
                 keys: Array.from(this.generationCache.keys(); }
 }

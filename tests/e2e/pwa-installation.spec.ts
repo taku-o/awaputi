@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * PWA Installation E2E Test
  * PWAインストールフローのE2Eテスト
  */
 
-import { test, expect  } from '@playwright/test';
+import { test, expect   } from '@playwright/test';
 
 test.describe('PWA Installation Flow', () => {
     test.beforeEach(async ({ page }') => {
@@ -206,7 +206,7 @@ test.describe('PWA Installation Flow', () => {
             // display-mode: standalone のシミュレーション
             Object.defineProperty(window, 'matchMedia', {
                 writable: true;);
-                value: (query') => {
+               , value: (query') => {
                     if (query === '(display-mode: standalone')') {
                         return {
                             matches: true,

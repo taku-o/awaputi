@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * Build Process Integration Tests
  * ビルドプロセスの統合テスト
  */
-import { HTMLJavaScriptChecker } from '../../../src/utils/syntax-validation/HTMLJavaScriptChecker';
-import { JavaScriptModuleValidator } from '../../../src/utils/syntax-validation/JavaScriptModuleValidator';
+import { HTMLJavaScriptChecker  } from '../../../src/utils/syntax-validation/HTMLJavaScriptChecker';
+import { JavaScriptModuleValidator  } from '../../../src/utils/syntax-validation/JavaScriptModuleValidator';
 import fs from 'fs/promises';
 import path from 'path';
 describe('Build Process Integration', () => {
@@ -50,9 +50,9 @@ describe('Build Process Integration', () => {
         test('LocalizationManager.js should parse correctly', async (') => {
             // LocalizationManager のモック構造テスト
             const localizationManager = `
-                import { TranslationDataManager } from './localization-manager/TranslationDataManager';
-                import { CulturalAdaptationHandler } from './localization-manager/CulturalAdaptationHandler';
-                import { I18nIntegrationController } from './localization-manager/I18nIntegrationController';
+                import { TranslationDataManager  } from './localization-manager/TranslationDataManager';
+                import { CulturalAdaptationHandler  } from './localization-manager/CulturalAdaptationHandler';
+                import { I18nIntegrationController  } from './localization-manager/I18nIntegrationController';
                 export class LocalizationManager {
                     constructor(') {
                         this.currentLanguage = 'ja';
@@ -224,7 +224,7 @@ describe('Build Process Integration', () => {
                 step: buildSteps[0],
                 success: htmlResult.isValid,
                 errors: htmlResult.errors.length);
-            // Step 2: JavaScript構文検証
+            // Step, 2: JavaScript構文検証
             const jsResult = await moduleValidator.validateModule(`
                 export class BuildTest {);
                     constructor(') {
@@ -236,17 +236,17 @@ describe('Build Process Integration', () => {
                 step: buildSteps[1],
                 success: jsResult.isValid,
                 errors: jsResult.errors.length);
-            // Step 3: リソース可用性チェック
+            // Step, 3: リソース可用性チェック
             buildResults.push({
                 step: buildSteps[2],
                 success: true, // favicon.ico作成済み
                 errors: 0);
-            // Step 4: 静的解析実行
+            // Step, 4: 静的解析実行
             buildResults.push({
                 step: buildSteps[3],
                 success: true,
                 errors: 0);
-            // Step 5: エラーレポート生成
+            // Step, 5: エラーレポート生成
             const totalErrors = buildResults.reduce((sum, result) => sum + result.errors, 0);
             buildResults.push({
                 step: buildSteps[4],

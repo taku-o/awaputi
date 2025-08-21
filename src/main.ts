@@ -1,7 +1,7 @@
-import { GameEngine } from './core/GameEngine.js';''
-import { getBrowserCompatibility, BrowserCompatibility } from './utils/BrowserCompatibility.js';''
-import { getErrorHandler, ErrorHandler } from './utils/ErrorHandler.js';''
-import { getConfigurationManager, ConfigurationManager } from './core/ConfigurationManager.js';''
+import { GameEngine  } from './core/GameEngine.js';''
+import { getBrowserCompatibility, BrowserCompatibility  } from './utils/BrowserCompatibility.js';''
+import { getErrorHandler, ErrorHandler  } from './utils/ErrorHandler.js';''
+import { getConfigurationManager, ConfigurationManager  } from './core/ConfigurationManager.js';''
 import LocalExecutionDetector from './utils/local-execution/LocalExecutionDetector.js';''
 import LocalModeManager from './utils/local-execution/LocalModeManager.js';''
 import LocalExecutionErrorHandler from './utils/local-execution/LocalExecutionErrorHandler.js';
@@ -11,12 +11,12 @@ import LocalExecutionErrorHandler from './utils/local-execution/LocalExecutionEr
  */
 interface DebugLogEntry { timestamp: string,
     message: string;
-    data: any ,}
+   , data: any ,}
 
 /**
  * デバッグロガーの型定義
  */
-interface DebugLogger { log: (message: string, data?: any) => void;
+interface DebugLogger { log: (messag;e: string, data?: any) => void;
     getLogs: () => DebugLogEntry[];
     showLogs: () => void ,}
 }
@@ -26,7 +26,7 @@ interface DebugLogger { log: (message: string, data?: any) => void;
  */
 class LoadingManager { private loadingScreen: HTMLElement | null
     private readonly loadingSteps: string[];
-    private currentStep: number';
+    private, currentStep: number';
 
     constructor()';
         this.loadingScreen = document.getElementById('loadingScreen'');
@@ -82,7 +82,7 @@ class LoadingManager { private loadingScreen: HTMLElement | null
                 padding: 10px 20px;
                 background: white;
                 color: red;
-                border: none;
+               , border: none;
                 border-radius: 5px,
                 cursor: pointer,
                 font-size: 16px,
@@ -130,7 +130,7 @@ function createDebugLogger(): DebugLogger { const logs: DebugLogEntry[] = [],
                     right: 10px;
                     width: 400px;
                     height: 300px;
-                    background: rgba(0,0,0,0.9),
+                   , background: rgba(0,0,0,0.9),
                     color: #00ff00;
                     font-family: monospace,
                     font-size: 10px,
@@ -145,9 +145,7 @@ function createDebugLogger(): DebugLogger { const logs: DebugLogEntry[] = [],
             }
             
             logElement.innerHTML = logs.map(log => )';
-                `<div>[${log.timestamp}] ${ log.message}</div>`' }'
-
-            ').join(''});
+                `<div>[${log.timestamp}] ${ log.message}</div>`' }', ').join(''});
             logElement.scrollTop = logElement.scrollHeight;
         }
     }
@@ -159,7 +157,7 @@ const debugLogger: DebugLogger = createDebugLogger(),
  */
 interface ExecutionContext { protocol: string,
     canUseModules: boolean;
-    supportedFeatures: string[] ,}
+   , supportedFeatures: string[] ,}
 
 /**
  * ローカルモードマネージャーのオプション型定義
@@ -167,7 +165,7 @@ interface ExecutionContext { protocol: string,
 interface LocalModeManagerOptions { enableMetaTagOptimization: boolean;
     enableFaviconGeneration: boolean;
     enableDeveloperGuidance: boolean;
-    debugMode: boolean }
+   , debugMode: boolean }
 
 /**
  * ローカル実行エラーハンドラーのオプション型定義
@@ -175,7 +173,7 @@ interface LocalModeManagerOptions { enableMetaTagOptimization: boolean;
 interface LocalExecutionErrorHandlerOptions { enableGlobalHandling: boolean;
     enableUserNotifications: boolean;
     enableDebugLogging: boolean;
-    enableFallbacks: boolean }
+   , enableFallbacks: boolean }
 
 /**
  * ゲーム初期化（非同期版）
@@ -188,19 +186,19 @@ async function initGame(): Promise<void> { ''
         loadingManager.nextStep();
         
         // ローカル実行検出
-        const isLocalExecution: boolean = LocalExecutionDetector.isLocalExecution(),
+        const, isLocalExecution: boolean = LocalExecutionDetector.isLocalExecution(),
         const executionContext: ExecutionContext = LocalExecutionDetector.getExecutionContext(''';
         debugLogger.log('🌐 実行環境情報', {
             isLocal: isLocalExecution);
             protocol: executionContext.protocol)';
-            canUseModules: executionContext.canUseModules,')';
+           , canUseModules: executionContext.canUseModules,')';
             supportedFeatures: executionContext.supportedFeatures)');
         // ローカル実行エラーハンドラーを初期化
-        const errorHandlerOptions: LocalExecutionErrorHandlerOptions = {
+        const, errorHandlerOptions: LocalExecutionErrorHandlerOptions = {
             enableGlobalHandling: true;
-            enableUserNotifications: true,
+           , enableUserNotifications: true,
             enableDebugLogging: localStorage.getItem('debug'') === 'true';
-            enableFallbacks: true ,}
+           , enableFallbacks: true ,}
 
         };''
         LocalExecutionErrorHandler.initialize(errorHandlerOptions);''
@@ -213,7 +211,7 @@ async function initGame(): Promise<void> { ''
             debugLogger.log('📁 ローカルファイル実行を検出、ローカルモード初期化中...'');
             const localModeOptions: LocalModeManagerOptions = {
                 enableMetaTagOptimization: true;
-                enableFaviconGeneration: true,
+               , enableFaviconGeneration: true,
                 enableDeveloperGuidance: true;
         ,}
 
@@ -223,8 +221,7 @@ async function initGame(): Promise<void> { ''
             ';
 
             const initSuccess: boolean = await localModeManager.initialize(),
-            if(initSuccess) {'
-                ';
+            if(initSuccess) {', ';
 
             }
 
@@ -281,12 +278,12 @@ async function initGame(): Promise<void> { ''
 
         }''
         debugLogger.log('✅ Canvas要素取得成功', { width: canvas.width)'
-            height: canvas.height,')';
+           , height: canvas.height,')';
             style: canvas.style.cssText )');
         ';
         // ステップ2: ConfigurationManager初期化
         debugLogger.log('⚙️ ステップ2: ConfigurationManager初期化開始);''
-        const configManager: ConfigurationManager = getConfigurationManager()';
+        const, configManager: ConfigurationManager = getConfigurationManager()';
         debugLogger.log('✅ ConfigurationManager初期化成功'');
         ';
         // ステップ3: ゲームエンジン初期化
@@ -340,8 +337,7 @@ async function initGame(): Promise<void> { ''
         if (localStorage.getItem('debug'') === 'true') { browserCompatibility.logDebugInfo(); }
         ';
         // 推奨事項があれば表示
-        if(compatibilityReport.recommendations.length > 0) {'
-            ';
+        if(compatibilityReport.recommendations.length > 0) {', ';
 
         }
 
@@ -349,8 +345,7 @@ async function initGame(): Promise<void> { ''
         }
         ';
         // 警告があれば表示
-        if(compatibilityReport.warnings.length > 0) {'
-            ';
+        if(compatibilityReport.warnings.length > 0) {', ';
 
         }
 
@@ -362,7 +357,7 @@ async function initGame(): Promise<void> { ''
     } catch (error) { const errorInfo = error as Error;''
         debugLogger.log('💥 エラー発生', { )
             message: errorInfo.message);
-            stack: errorInfo.stack,)';
+           , stack: errorInfo.stack,)';
             name: errorInfo.name ),' }'
 
         }');''
@@ -384,7 +379,7 @@ function setupErrorHandling(): void { // ErrorHandlerは自動的にグローバ
         const errorHandler: ErrorHandler = getErrorHandler(),
         errorHandler.handleError(new, Error(message), 'INITIALIZATION_ERROR', {''
             context: 'LoadingManager';
-            step: this.currentStep ,}
+           , step: this.currentStep ,}
         });
         ';
         // 元の処理を実行

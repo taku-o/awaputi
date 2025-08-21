@@ -3,34 +3,34 @@
  * アクセシビリティのためのコントラスト調整機能を提供
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 ';
 
 export interface ContrastConfig { enabled: boolean,''
     level: 'normal' | 'high' | 'maximum';
     customRatio: number;
     autoAdjust: boolean;
-    preserveColors: boolean ,}
+   , preserveColors: boolean ,}
 
 export interface ColorInfo { hex: string, }
-    rgb: { r: number; g: number; b: number },
+    rgb: { r: number; g: number;, b: number },
     luminance: number;
 }
 
 export class ContrastManager {
     private config: ContrastConfig;
-    private originalStyles: Map<HTMLElement, string> = new Map();
+    private, originalStyles: Map<HTMLElement, string> = new Map();
     private contrastRatios = {
         normal: 4.5;
         high: 7.0;
-        maximum: 21.0 ,};
+       , maximum: 21.0 ,};
     constructor(config: Partial<ContrastConfig> = { )) {
         this.config = {'
             enabled: false,
             level: 'normal';
             customRatio: 4.5;
             autoAdjust: false;
-            preserveColors: false;
+           , preserveColors: false;
             ...config;
 
         this.initialize();
@@ -76,8 +76,7 @@ export class ContrastManager {
 ';
 
     private handleSystemContrastChange(event: MediaQueryListEvent): void { if (this.config.autoAdjust) {''
-            if(event.matches) {'
-                ';
+            if(event.matches) {', ';
 
             }
 
@@ -214,7 +213,7 @@ export class ContrastManager {
         return null;
     }
 
-    private calculateLuminance(rgb: { r: number; g: number; b: number ): number { }
+    private calculateLuminance(rgb: { r: number; g: number;, b: number ): number { }
         const { r, g, b } = rgb;
         const [rs, gs, bs] = [r, g, b].map(c => {  )
             c = c / 255); }
@@ -230,8 +229,8 @@ export class ContrastManager {
         bgColor: ColorInfo
     );
         textColor: ColorInfo);
-        targetRatio: number;
-    ): { background: { r: number; g: number; b: number }; text: { r: number; g: number; b: number } { // 簡略版の色調整
+       , targetRatio: number;
+    ): { background: { r: number; g: number;, b: number }; text: { r: number; g: number;, b: number } { // 簡略版の色調整
         if(bgColor.luminance > textColor.luminance) {
             // 背景が明るい場合、テキストを暗くする
         }
@@ -243,7 +242,7 @@ export class ContrastManager {
                 text: { r: 255, g: 255, b: 255 ,}
     }
 
-    private rgbToHex(rgb: { r: number; g: number; b: number ): string { }
+    private rgbToHex(rgb: { r: number; g: number;, b: number ): string { }
         return `#${((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b}.toString(16}.slice(1})`;
     }
 

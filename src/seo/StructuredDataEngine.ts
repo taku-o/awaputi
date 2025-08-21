@@ -3,25 +3,22 @@
  * 
  * JSON-LD形式の構造化データを生成・管理
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl, LanguageCode } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';
+import { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl, LanguageCode  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';
 import { generateJsonLd, 
     normalizeLanguageCode,
     validateSchema,
-    measurePerformance' }'
+    measurePerformance'  }'
 
 } from './SEOUtils';
 
 // 基本スキーマインターフェース
-interface BaseSchema { ''
-    '@context': string;''
-    '@type': string;
+interface BaseSchema { '', '@context': string;'', '@type': string;
     [key: string]: any, }
 
 // VideoGameスキーマインターフェース
-interface VideoGameSchema extends BaseSchema { ''
-    '@type': 'VideoGame';
+interface VideoGameSchema extends BaseSchema { '', '@type': 'VideoGame';
     name: string;
     description: string;
     url: string;
@@ -30,64 +27,57 @@ interface VideoGameSchema extends BaseSchema { ''
     operatingSystem: string[];
     genre: string[];
     inLanguage: string[];
-    isAccessibleForFree: boolean;
+   , isAccessibleForFree: boolean;
     dateModified?: string;
     additionalProperty?: PropertyValue[];
     interactionStatistic?: InteractionCounter;
     ,}
 
 // PropertyValueインターフェース
-interface PropertyValue { ''
-    '@type': 'PropertyValue';
+interface PropertyValue { '', '@type': 'PropertyValue';
     name: string;
-    value: string | number ,}
+   , value: string | number ,}
 
 // InteractionCounterインターフェース
-interface InteractionCounter { ''
-    '@type': 'InteractionCounter';
+interface InteractionCounter { '', '@type': 'InteractionCounter';
     interactionType: string;
-    userInteractionCount: number ,}
+   , userInteractionCount: number ,}
 
 // Organizationスキーマインターフェース
-interface OrganizationSchema extends BaseSchema { ''
-    '@type': 'Organization';
+interface OrganizationSchema extends BaseSchema { '', '@type': 'Organization';
     name: string;
     url: string;
     logo: string;
-    sameAs: string[] ,}
+   , sameAs: string[] ,}
 
 // WebApplicationスキーマインターフェース
-interface WebApplicationSchema extends BaseSchema { ''
-    '@type': 'WebApplication';
+interface WebApplicationSchema extends BaseSchema { '', '@type': 'WebApplication';
     name: string;
     description: string;
     url: string;
     applicationCategory: string;
     operatingSystem: string[];
-    browserRequirements: string ,}
+   , browserRequirements: string ,}
 
 // BreadcrumbListスキーマインターフェース
-interface BreadcrumbListSchema extends BaseSchema { ''
-    '@type': 'BreadcrumbList';
+interface BreadcrumbListSchema extends BaseSchema { '', '@type': 'BreadcrumbList';
     itemListElement: ListItem[]
     ,}
 
 // ListItemインターフェース
-interface ListItem { ''
-    '@type': 'ListItem';
+interface ListItem { '', '@type': 'ListItem';
     position: number;
     name: string;
-    item: string ,}
+   , item: string ,}
 
 // Eventスキーマインターフェース
-interface EventSchema extends BaseSchema { ''
-    '@type': 'Event';
+interface EventSchema extends BaseSchema { '', '@type': 'Event';
     name: string;
     description: string;
     startDate: string;
     endDate: string;
     location: string;
-    organizer: OrganizationSchema
+   , organizer: OrganizationSchema
     ,}
 
 // ゲームプレイデータインターフェース
@@ -100,19 +90,19 @@ interface GameplayData { score?: number;
 
 // コンテキストインターフェース
 interface StructuredDataContext {
-    breadcrumbs?: Array<{ name: string; url: string ,}>;
+    breadcrumbs?: Array<{ nam;e: string;, url: string ,}>;
     event?: { name: string;
         description: string;
         startDate: string;
         endDate: string;
-        location: string };
+       , location: string };
     pageType?: string;
     gameState?: any;
 }
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
-    addLanguageChangeListener(callback: (lang: string) => void): void;
+    addLanguageChangeListener(callback: (lan;g: string) => void): void;
     t(key: string, defaultValue?: string): string;
     get(key: string, params?: Record<string, any>): string }
 }
@@ -128,7 +118,7 @@ export class StructuredDataEngine {
     private gameConfig: GameConfig | null;
     private baseUrl: string;
     private currentLang: LanguageCode;
-    private schemas: Map<string, SchemaGenerator>;
+    private, schemas: Map<string, SchemaGenerator>;
     private schemaCache: Map<string, BaseSchema>;
     private initialized: boolean;
     constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
@@ -252,11 +242,9 @@ export class StructuredDataEngine {
 ";
             // インタラクション統計が存在する場合は追加""
             if(gameplayData.score && gameplayData.score > 0) {"
-                enhancedSchema.interactionStatistic = {""
-                    "@type": "InteractionCounter",
+                enhancedSchema.interactionStatistic = {"", "@type": "InteractionCounter",
                     "interactionType": "http://schema.org/PlayAction","
-            }"
-                    "userInteractionCount": gameplayData.bubblesPopped || 0 }
+            }", "userInteractionCount": gameplayData.bubblesPopped || 0 }
                 }
 ";
             // 動的にスキーマを更新""
@@ -320,8 +308,7 @@ export class StructuredDataEngine {
                 return this.schemaCache.get(cacheKey) as VideoGameSchema;
             ';
 
-            const schema: VideoGameSchema = { ''
-                '@context': 'https://schema.org',
+            const schema: VideoGameSchema = { '', '@context': 'https://schema.org',
                 '@type': 'VideoGame',
                 name: this._getLocalizedText('game.name', SEOConfig.structuredData.game.name),
                 description: this._getLocalizedText('game.description', 'HTML5 Canvas を使用したバブルポップゲーム),
@@ -331,7 +318,7 @@ export class StructuredDataEngine {
                 operatingSystem: SEOConfig.structuredData.game.operatingSystem;
                 genre: SEOConfig.structuredData.game.genre;
                 inLanguage: SEOConfig.structuredData.game.inLanguage;
-                isAccessibleForFree: SEOConfig.structuredData.game.isAccessibleForFree ,};
+               , isAccessibleForFree: SEOConfig.structuredData.game.isAccessibleForFree ,};
             this.schemaCache.set(cacheKey, schema);
 
             return schema;''
@@ -343,13 +330,12 @@ export class StructuredDataEngine {
      * Organizationスキーマの生成'
      */''
     async generateOrganizationSchema(context: StructuredDataContext = {,}): Promise<OrganizationSchema | null> { try {
-            const schema: OrganizationSchema = {''
-                '@context': 'https://schema.org',
+            const schema: OrganizationSchema = {'', '@context': 'https://schema.org',
                 '@type': 'Organization',
                 name: SEOConfig.structuredData.organization.name;
                 url: SEOConfig.structuredData.organization.url;
                 logo: SEOConfig.structuredData.organization.logo;
-                sameAs: SEOConfig.structuredData.organization.sameAs ,};
+               , sameAs: SEOConfig.structuredData.organization.sameAs ,};
             ';
 
             return schema;''
@@ -361,15 +347,14 @@ export class StructuredDataEngine {
      * WebApplicationスキーマの生成'
      */''
     async generateWebApplicationSchema(context: StructuredDataContext = {,}): Promise<WebApplicationSchema | null> { try {
-            const schema: WebApplicationSchema = {''
-                '@context': 'https://schema.org',
+            const schema: WebApplicationSchema = {'', '@context': 'https://schema.org',
                 '@type': 'WebApplication',
                 name: this._getLocalizedText('app.name', SEOConfig.siteName),
                 description: this._getLocalizedText('app.description', 'BubblePop Web Application''),
                 url: this.baseUrl,
                 applicationCategory: SEOConfig.structuredData.webApplication.applicationCategory,
                 operatingSystem: ['Any'];
-                browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements ,};
+               , browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements ,};
             ';
 
             return schema;''
@@ -380,18 +365,16 @@ export class StructuredDataEngine {
     /**
      * BreadcrumbListスキーマの生成
      */'
-    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string; url: string ,}>): Promise<BreadcrumbListSchema | null> { try {'
-            const itemListElement: ListItem[] = breadcrumbs.map((crumb, index) => ({''
-                '@type': 'ListItem',
+    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string;, url: string ,}>): Promise<BreadcrumbListSchema | null> { try {'
+            const itemListElement: ListItem[] = breadcrumbs.map((crumb, index) => ({'', '@type': 'ListItem',
                 position: index + 1;
                 name: crumb.name)';
-                item: crumb.url' ,}'
+               , item: crumb.url' ,}'
 
             }');
             ';
 
-            const schema: BreadcrumbListSchema = { ''
-                '@context': 'https://schema.org',
+            const schema: BreadcrumbListSchema = { '', '@context': 'https://schema.org',
                 '@type': 'BreadcrumbList',
                 itemListElement };
             ';
@@ -408,21 +391,20 @@ export class StructuredDataEngine {
         description: string;
         startDate: string);
         endDate: string);
-        location: string ,}): Promise<EventSchema | null>;
+       , location: string ,}): Promise<EventSchema | null>;
 
         try { const organizer = await this.generateOrganizationSchema();''
             if(!organizer) return null;
             ';
 
-            const schema: EventSchema = {''
-                '@context': 'https://schema.org',
+            const schema: EventSchema = {'', '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: eventData.name;
                 description: eventData.description;
                 startDate: eventData.startDate;
                 endDate: eventData.endDate;
                 location: eventData.location;
-                organizer: organizer ,};
+               , organizer: organizer ,};
             ';
 
             return schema;''

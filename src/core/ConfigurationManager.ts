@@ -5,15 +5,15 @@
  * 設定の取得、設定、検証、監視機能を実装します。
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getCacheSystem } from './CacheSystem.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getCacheSystem  } from './CacheSystem.js';
 
 // Type definitions
 type ConfigurationValue = string | number | boolean | object | null | undefined;
 
-interface ValidationRule { validate: (value: ConfigurationValue) => boolean,
+interface ValidationRule { validate: (valu;e: ConfigurationValue) => boolean,
     errorMessage?: string;
-    transform?: (value: ConfigurationValue) => ConfigurationValue;
+    transform?: (valu;e: ConfigurationValue) => ConfigurationValue;
     type?: string;
     pattern?: RegExp;
     ,}
@@ -26,20 +26,20 @@ interface WatcherCallback { ''
 interface AccessStats { totalAccesses: number,
     cacheHits: number;
     cacheMisses: number;
-    frequentKeys: Map<string, number>;
+   , frequentKeys: Map<string, number>;
     lastOptimization: number ,}
 
 interface ChangeHistoryEntry { key: string;
     oldValue: ConfigurationValue;
     newValue: ConfigurationValue;
-    timestamp: number;
+   , timestamp: number;
     source?: string }
 
 interface BubbleTypeConfig { name: string;
     baseScore: number;
     maxAge: number;
     speed: number;
-    size: number }
+   , size: number }
 
 type ConfigurationCategory = 'game' | 'audio' | 'effects' | 'performance' | 'ui' | 'accessibility' | 'controls';
 
@@ -48,10 +48,10 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     private validationRules: Map<string, ValidationRule>;
     private defaultValues: Map<string, Map<string, ConfigurationValue>>;
     private changeHistory: ChangeHistoryEntry[];
-    private warningCache: Map<string, number>;
+    private, warningCache: Map<string, number>;
     private warningRateLimit: number;
     private cache: any; // CacheSystem type would be defined elsewhere
-    private accessStats: AccessStats;
+    private, accessStats: AccessStats;
     // 将来の拡張機能用 - 現在は未使用
     // @ts-ignore - 将来の実装で使用予定
     private __lazyLoaders!: Map<string, () => ConfigurationValue>;
@@ -82,7 +82,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         // 高速アクセス用キャッシュシステム
         this.cache = getCacheSystem({)
             maxSize: 500);
-            ttl: 300000, // 5分間キャッシュ;
+           , ttl: 300000, // 5分間キャッシュ;
             cleanupInterval: 60000 // 1分間隔でクリーンアップ;
         ),
         
@@ -91,7 +91,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             totalAccesses: 0;
             cacheHits: 0;
             cacheMisses: 0;
-            frequentKeys: new Map<string, number>(),
+           , frequentKeys: new Map<string, number>(),
     
     }
     }
@@ -253,7 +253,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         this.addValidationRule('ui.language', { );''
             validate: (value: ConfigurationValue') => '';
                 typeof value === 'string' && ['en', 'ja', 'ko', 'zh-CN', 'zh-TW].includes(value),
-            errorMessage: 'Language must be one of: en, ja, ko, zh-CN, zh-TW' }
+            errorMessage: 'Language must be one, of: en, ja, ko, zh-CN, zh-TW' }
         });
     }
     
@@ -488,7 +488,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
 
                 if(!rule.validate(value)) {' }'
 
-                    this._logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid value}`, key});
+                    this._logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid, value}`, key});
                     return false;
                 }
                 
@@ -632,7 +632,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     getChangeHistory(): Array<{ key: string,
         timestamp: number;
         oldValue: ConfigurationValue;
-        newValue: ConfigurationValue
+       , newValue: ConfigurationValue
     ,}> { return [...this.changeHistory];
 
     /**

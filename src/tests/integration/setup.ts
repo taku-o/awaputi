@@ -3,7 +3,7 @@
  * Issue #37 Task 21: 統合テスト実装
  */
 
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 
 // TypeScript向けのグローバル型拡張
 declare global { interface Window {
@@ -11,7 +11,7 @@ declare global { interface Window {
 }
     
     var testUtils: TestUtils;
-    var HTMLCanvasElement: { prototype: HTMLCanvasElement,
+    var, HTMLCanvasElement: { prototype: HTMLCanvasElement,
         new(): HTMLCanvasElement
     };
     var Image: { new(): MockImage;
@@ -42,7 +42,7 @@ interface MockCanvasRenderingContext2D { fillRect: jest.Mock,
     fill: jest.Mock;
     stroke: jest.Mock;
     fillText: jest.Mock;
-    strokeText: jest.Mock, }
+   , strokeText: jest.Mock, }
     measureText: jest.Mock<{ width: number }>;
     drawImage: jest.Mock;
     save: jest.Mock;
@@ -62,7 +62,7 @@ interface MockCanvasRenderingContext2D { fillRect: jest.Mock,
     textAlign: string;
     textBaseline: string;
     globalAlpha: number;
-    globalCompositeOperation: string;
+   , globalCompositeOperation: string;
 }
 
 interface MockImage { onload: (() => void) | null,
@@ -73,19 +73,19 @@ interface MockImage { onload: (() => void) | null,
     _src?: string ,}
 }
 
-interface MockFileReader { onload: ((event: any) => void) | null;
+interface MockFileReader { onload: ((even;t: any) => void) | null;
     onerror: (() => void) | null;
     onprogress: (() => void) | null;
     result: string | null;
     readyState: number;
-    readAsDataURL: (file: File) => void;
-    readAsText: (file: File) => void }
+    readAsDataURL: (fil;e: File) => void;
+    readAsText: (fil;e: File) => void }
 }
 
 interface MockBlob { size: number;
     type: string;
     parts: any[];
-    slice: (start?: number, end?: number, contentType?: string) => MockBlob;
+   , slice: (star;t?: number, end?: number, contentType?: string) => MockBlob;
     stream: () => ReadableStream;
     text: () => Promise<string>;
     arrayBuffer: () => Promise<ArrayBuffer> ,}
@@ -114,15 +114,15 @@ interface MockStorage { getItem: jest.Mock<string | null>;
     key: jest.Mock<string | null> }
 
 interface MockIndexedDB { open: jest.Mock;
-    deleteDatabase: jest.Mock }
+   , deleteDatabase: jest.Mock }
 
-interface TestUtils { waitForElement: (selector: string, timeout?: number) => Promise<Element>;
-    fireEvent: (element: Element, eventType: string, eventData?: any) => Event;''
-    waitFor: (conditionFn: () => boolean, timeout?: number') => Promise<void> }'
+interface TestUtils { waitForElement: (selecto;r: string, timeout?: number) => Promise<Element>;
+    fireEvent: (elemen;t: Element, eventType: string, eventData?: any) => Event;''
+    waitFor: (conditionF;n: () => boolean, timeout?: number') => Promise<void> }'
 }
 ';
 // DOM環境の強化
-import { TextEncoder, TextDecoder } from 'util';
+import { TextEncoder, TextDecoder  } from 'util';
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 ';
@@ -139,7 +139,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): M
             lineTo: jest.fn();
             arc: jest.fn();
             fill: jest.fn();
-            stroke: jest.fn();
+           , stroke: jest.fn();
     }
             // テキスト描画 }
             fillText: jest.fn(), };
@@ -153,9 +153,9 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): M
             translate: jest.fn();
             rotate: jest.fn();
             scale: jest.fn();
-            transform: jest.fn(),
+           , transform: jest.fn(),
             setTransform: jest.fn(''';
-            fillStyle: '#000000',
+           , fillStyle: '#000000',
             strokeStyle: '#000000',
             lineWidth: 1,
             font: '12px Arial',
@@ -164,12 +164,12 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): M
             globalAlpha: 1,)';
             globalCompositeOperation: 'source-over');
             // イメージデータ)
-            createImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
+           , createImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
                 width: 1;
-                height: 1 });
+               , height: 1 });
             getImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
                 width: 1;
-                height: 1 });
+               , height: 1 });
             putImageData: jest.fn();
         }
     return null;
@@ -217,7 +217,7 @@ global.File = class MockFileClass { bits: any[],
     name: string;
     type: string;
     size: number);
-    lastModified: number);
+   , lastModified: number);
 
     constructor(bits: any[], name: string, options: FilePropertyBag = {)) {
         this.bits = bits;
@@ -259,7 +259,7 @@ global.FileReader = class MockFileReaderClass implements MockFileReader { onload
 // Blob API モック
 global.Blob = class MockBlobClass implements MockBlob { size: number,
     type: string;
-    parts: any[];
+   , parts: any[];
     constructor(parts: any[] = [], options: BlobPropertyBag = {) {
     ';
 
@@ -327,7 +327,7 @@ Object.defineProperty(global.navigator, 'clipboard', {)
         writeText: jest.fn().mockResolvedValue(undefined),
         readText: jest.fn(').mockResolvedValue('test, text);
         write: jest.fn().mockResolvedValue(undefined);
-        read: jest.fn().mockResolvedValue([] ,};
+       , read: jest.fn().mockResolvedValue([] ,};
     writable: true'';
 }),
 // Permissions API モック
@@ -375,7 +375,7 @@ Object.defineProperty(global.performance, 'clearMeasures', { );
 Object.defineProperty(global.performance, 'memory', { value: {
         usedJSHeapSize: 10000000);
         totalJSHeapSize: 50000000);
-        jsHeapSizeLimit: 2000000000 },)
+       , jsHeapSizeLimit: 2000000000 },)
     writable: true);
 // ResizeObserver モック
 global.ResizeObserver = class MockResizeObserverClass implements MockResizeObserver { callback: ResizeObserverCallback,
@@ -402,7 +402,7 @@ global.IntersectionObserver = class MockIntersectionObserverClass implements Moc
     observe(): void { setTimeout(() => { 
             this.callback([{)
                 target: document.body);
-                isIntersecting: true,) }]
+               , isIntersecting: true,) }]
                 intersectionRatio: 1), }]
             } as IntersectionObserverEntry], this as IntersectionObserver);
         }, 0);
@@ -436,13 +436,13 @@ global.indexedDB = { open: jest.fn(() => {
             onsuccess: null;
             onerror: null;
             onupgradeneeded: null;
-            result: {
+           , result: {
                 transaction: jest.fn(() => ({
                     objectStore: jest.fn(() => ({
                         add: jest.fn();
                         put: jest.fn();
                         get: jest.fn();
-                        delete: jest.fn(), }
+                       , delete: jest.fn(), }
                         clear: jest.fn(); }
                     });
                 });
@@ -482,13 +482,13 @@ global.Element.prototype.animate = jest.fn(() => ({ play: jest.fn(),
     cancel: jest.fn();
     finish: jest.fn();
     addEventListener: jest.fn();
-    removeEventListener: jest.fn( ,} as Animation);
+   , removeEventListener: jest.fn( ,} as Animation);
 
 // Fetch API モック
 global.fetch = jest.fn(() =>;
     Promise.resolve({ ok: true)
         status: 200);
-        json: () => Promise.resolve({),''
+       , json: () => Promise.resolve({),''
         text: (') => Promise.resolve();
         blob: () => Promise.resolve(new, Blob() ,}
     } as Response)
@@ -501,7 +501,7 @@ global.console = { ...originalConsole,
     warn: jest.fn();
     error: jest.fn();
     info: jest.fn();
-    debug: jest.fn( ,};
+   , debug: jest.fn( ,};
 // テスト後のクリーンアップ
 afterEach(() => {  // DOM をクリーンアップ
     document.body.innerHTML = '';''

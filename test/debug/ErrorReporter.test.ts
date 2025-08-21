@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * ErrorReporter テストスイート'
  */''
-import { ErrorReporter } from '../../src/debug/ErrorReporter';'
+import { ErrorReporter  } from '../../src/debug/ErrorReporter';'
 // モックゲームエンジン''
 const createMockGameEngine = (') => ({ sceneManager: {' }'
         currentScene: { constructor: { name: 'TestScene' } }
@@ -11,7 +11,7 @@ const createMockGameEngine = (') => ({ sceneManager: {' }'
     isRunning: true,
     isPaused: false,
     targetFPS: 60);
-        bubbleManager: {
+       , bubbleManager: {
         bubbles: new Array(10})
     ),
     },
@@ -28,7 +28,7 @@ describe('ErrorReporter', () => {  let errorReporter: any,
         // Canvasモックを追加
         mockGameEngine.canvas = { width: 800,)
             height: 600);
-            getContext: jest.fn(() => ({
+           , getContext: jest.fn(() => ({
                 drawImage: jest.fn(); }'
     }))),''
             toDataURL: jest.fn((') => 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA...');
@@ -199,8 +199,7 @@ describe('ErrorReporter', () => {  let errorReporter: any,
             expect(console.group).toHaveBeenCalledTimes(2);''
         }');''
         test('通知設定に基づいてチャンネルが選択される', (') => {  ''
-            errorReporter.developerNotifications.channels = ['console'];'
-            ' }'
+            errorReporter.developerNotifications.channels = ['console'];', ' }'
             const testError = new Error('Channel test'); }
             errorReporter.collectEnhancedError(testError, { critical: true });'
             expect(console.group).toHaveBeenCalled();''
@@ -256,8 +255,7 @@ describe('ErrorReporter', () => {  let errorReporter: any,
             const repeatedError = new Error('High frequency error'); }
             for (let i = 0; i < 6; i++) { }
                 errorReporter.collectEnhancedError(repeatedError as any};)'
-            }')'
-            ');''
+            }')', ');''
             const report = errorReporter.generateErrorReport('session');
             expect(report.recommendations).toBeDefined();'
             expect(report.recommendations.length).toBeGreaterThan(0);''
@@ -283,15 +281,14 @@ describe('ErrorReporter', () => {  let errorReporter: any,
             const oldTimestamp = Date.now(''';
             errorReporter.errorPatterns.set('old_pattern', {')'
                 fingerprint: 'old_pattern');
-                count: 1,) }
+               , count: 1,) }
                 lastSeen: oldTimestamp); }'
             });''
             errorReporter.cleanupOldPatterns('')';
             expect(errorReporter.errorPatterns.has('old_pattern').toBe(false);''
         }');''
         test('destroyメソッドでリソースがクリーンアップされる', () => {  errorReporter.destroy();''
-            expect(localStorage.setItem').toHaveBeenCalledWith(' })'
-                'errorReporter_settings',) }'
+            expect(localStorage.setItem').toHaveBeenCalledWith(' })', 'errorReporter_settings',) }'
                 expect.any(String});''
         }');'
     }''
@@ -336,7 +333,7 @@ describe('ErrorCollector', () => {  let errorReporter: any,
             severity: 'low','';
             category: 'test','';
         timestamp: Date.now(''';
-            id: 'error_2','';
+           , id: 'error_2','';
             severity: 'high',')';
             category: 'critical',) }
         timestamp: Date.now(); }
@@ -384,8 +381,7 @@ describe('ErrorAnalyzer', () => {  let errorReporter: any,
                 fingerprint: 'trend_fingerprint',);
         timestamp: baseTimestamp + (i * 1000);
             }
-        }'
-        '';
+        }', '';
         expect(pattern.trend).toBeDefined('')';
         expect(['increasing', 'stable', 'decreasing']).toContain(pattern.trend);''
     }');'

@@ -54,7 +54,7 @@ export class AnalyticsTrendAnalyzer {
             // キャッシュに保存
             this.analysisCache.set(cacheKey, { )
                 data: trendResult);
-                timestamp: Date.now( });
+               , timestamp: Date.now( });
 
             return trendResult;
 
@@ -106,7 +106,7 @@ export class AnalyticsTrendAnalyzer {
             // キャッシュに保存
             this.analysisCache.set(cacheKey, { )
                 data: trendResult);
-                timestamp: Date.now( });
+               , timestamp: Date.now( });
 
             return trendResult;
 
@@ -134,12 +134,12 @@ export class AnalyticsTrendAnalyzer {
             period: period;
             dataType: dataType;
             dataPoints: data.length;
-            timeRange: {
+           , timeRange: {
                 start: new Date(Math.min(...data.map(d = > d.startTime) ,}
                 end: new Date(Math.max(...data.map(d => d.endTime || d.startTime)); }
             },
             metrics: { scoreImprovement: this.calculateScoreImprovement(timeSeriesData);
-                playTimeChange: this.calculatePlayTimeChange(timeSeriesData),
+               , playTimeChange: this.calculatePlayTimeChange(timeSeriesData),
                 accuracyChange: this.calculateAccuracyChange(timeSeriesData ,};
             trend: { ''
                 direction: null, // 'increasing', 'decreasing', 'stable';
@@ -176,7 +176,7 @@ export class AnalyticsTrendAnalyzer {
             return { timestamp: session.startTime,
                 score: session.finalScore || 0;
                 playTime: duration;
-                accuracy: accuracy;
+               , accuracy: accuracy;
     ,}
                 combo: session.maxCombo || 0, }
                 completed: session.completed || false, };
@@ -227,7 +227,7 @@ export class AnalyticsTrendAnalyzer {
                 sessionCount: totalSessions;
                 averageScore: avgScore;
                 averagePlayTime: avgPlayTime;
-                averageAccuracy: avgAccuracy, }
+               , averageAccuracy: avgAccuracy, }
                 completionRate: completionRate, };
                 maxCombo: Math.max(...values.map(v => v.combo); }
             }).sort((a, b) => a.period.localeCompare(b.period);
@@ -312,7 +312,7 @@ export class AnalyticsTrendAnalyzer {
 
         return { direction: direction,
             strength: strength;
-            confidence: rSquared, // R²値を信頼度として使用 };
+           , confidence: rSquared, // R²値を信頼度として使用 };
             slope: slope }
         }
 
@@ -412,7 +412,7 @@ export class AnalyticsTrendAnalyzer {
                 anomalies.push({
                     index: index;
                     value: value);
-                    zScore: zScore ,}
+                   , zScore: zScore ,}
 
                     timestamp: dataPoint.timestamp || dataPoint.period,') }'
 

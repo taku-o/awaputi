@@ -8,32 +8,32 @@ interface ARIAProcessorConfig { enabled: boolean,
     validateStructure: boolean;
     monitorLiveRegions: boolean;
     trackChanges: boolean;
-    strictValidation: boolean ,}
+   , strictValidation: boolean ,}
 
 interface RoleDefinition { requiredProps: string[];
-    allowedProps: string[] }
+   , allowedProps: string[] }
 
 interface LiveRegionData { element: Element;
     liveValue: string;
     atomic: boolean;
     relevant: string;
-    lastContent: string | null }
+   , lastContent: string | null }
 
 interface ValidationResults { passed: ValidationPass[];
     failed: ValidationIssue[];
     warnings: ValidationIssue[];
-    liveRegionUpdates: LiveRegionUpdate[]
+   , liveRegionUpdates: LiveRegionUpdate[]
     }
 
 interface ValidationPass { element: Element;
     message: string;
-    timestamp: number }
+   , timestamp: number }
 
 interface ValidationIssue { element: Element;
     severity: 'error' | 'warning';
     message: string;
     code: string;
-    timestamp: number }
+   , timestamp: number }
 
 interface LiveRegionUpdate { regionId: string;
     timestamp: number;
@@ -41,47 +41,47 @@ interface LiveRegionUpdate { regionId: string;
     liveValue: string;
     atomic: boolean;
     relevant: string;
-    mutations: MutationInfo[]
+   , mutations: MutationInfo[]
     }
 
 interface MutationInfo { type: string;
-    target: string }
+   , target: string }
 
 interface PerformanceMetrics { validationTime: number[];
     processedElements: number;
-    liveRegionUpdates: number }
+   , liveRegionUpdates: number }
 
 interface ValidationResult { results: ValidationResults;
-    performance: {
-        validationTime: number;
-        processedElements: number }
+   , performance: {
+        validationTim;e: number;
+       , processedElements: number }
 
 interface ValidationSummary { passed: number,
     failed: number;
     warnings: number;
-    liveRegionUpdates: number ,}
+   , liveRegionUpdates: number ,}
 
 interface LiveRegionStatus { monitored: number;
     updates: number;
-    regions: LiveRegionInfo[]
+   , regions: LiveRegionInfo[]
     }
 
 interface LiveRegionInfo { id: string;
     liveValue: string;
     atomic: boolean;
-    relevant: string }
+   , relevant: string }
 
 interface LiveRegionSettings { liveValue: string;
     atomic: boolean;
-    relevant: string }
+   , relevant: string }
 
 export class ARIAAttributeProcessor {
     private config: ARIAProcessorConfig;
-    private ariaRoles: Record<string, RoleDefinition>;
+    private, ariaRoles: Record<string, RoleDefinition>;
     private liveRegions: Map<string, LiveRegionData>;
     private liveRegionObservers: Map<string, MutationObserver>;
     private validationResults: ValidationResults;
-    private performance: PerformanceMetrics';
+    private, performance: PerformanceMetrics';
 
     constructor(config: Partial<ARIAProcessorConfig> = {)) {
         this.config = {
@@ -89,58 +89,19 @@ export class ARIAAttributeProcessor {
             validateStructure: true;
             monitorLiveRegions: true;
             trackChanges: true;
-            strictValidation: false;
+           , strictValidation: false;
             ...config;
 
         // ARIA role definitions and requirements
-        this.ariaRoles = { // Widget roles' ,}'
-
-            'button': { requiredProps: [], allowedProps: ['aria-expanded', 'aria-pressed] },''
-            'checkbox': { requiredProps: ['aria-checked], allowedProps: ['aria-describedby] ,},''
-            'combobox': { requiredProps: ['aria-expanded], allowedProps: ['aria-activedescendant', 'aria-autocomplete] },''
-            'slider': { requiredProps: ['aria-valuenow', 'aria-valuemin', 'aria-valuemax], allowedProps: ['aria-valuetext', 'aria-orientation] },''
-            'spinbutton': { requiredProps: ['aria-valuenow], allowedProps: ['aria-valuemin', 'aria-valuemax', 'aria-valuetext] },''
-            'textbox': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-autocomplete', 'aria-multiline', 'aria-placeholder', 'aria-readonly] },
+        this.ariaRoles = { // Widget roles' ,}', 'button': { requiredProps: [], allowedProps: ['aria-expanded', 'aria-pressed] },'', 'checkbox': { requiredProps: ['aria-checked], allowedProps: ['aria-describedby] ,},'', 'combobox': { requiredProps: ['aria-expanded], allowedProps: ['aria-activedescendant', 'aria-autocomplete] },'', 'slider': { requiredProps: ['aria-valuenow', 'aria-valuemin', 'aria-valuemax], allowedProps: ['aria-valuetext', 'aria-orientation] },'', 'spinbutton': { requiredProps: ['aria-valuenow], allowedProps: ['aria-valuemin', 'aria-valuemax', 'aria-valuetext] },'', 'textbox': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-autocomplete', 'aria-multiline', 'aria-placeholder', 'aria-readonly] },
             // Composite roles
-            'grid': { requiredProps: [], allowedProps: ['aria-level', 'aria-multiselectable', 'aria-readonly] },''
-            'listbox': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-multiselectable', 'aria-readonly', 'aria-required] },''
-            'menu': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation] },''
-            'menubar': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation] },''
-            'radiogroup': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation', 'aria-readonly', 'aria-required] },''
-            'tablist': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-level', 'aria-multiselectable', 'aria-orientation] },''
-            'tree': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-multiselectable', 'aria-orientation', 'aria-required] },''
-            'treegrid': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-level', 'aria-multiselectable', 'aria-orientation', 'aria-readonly', 'aria-required] },
+            'grid': { requiredProps: [], allowedProps: ['aria-level', 'aria-multiselectable', 'aria-readonly] },'', 'listbox': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-multiselectable', 'aria-readonly', 'aria-required] },'', 'menu': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation] },'', 'menubar': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation] },'', 'radiogroup': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation', 'aria-readonly', 'aria-required] },'', 'tablist': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-level', 'aria-multiselectable', 'aria-orientation] },'', 'tree': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-multiselectable', 'aria-orientation', 'aria-required] },'', 'treegrid': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-level', 'aria-multiselectable', 'aria-orientation', 'aria-readonly', 'aria-required] },
             // Document structure roles
-            'article': { requiredProps: [], allowedProps: ['aria-posinset', 'aria-setsize] },''
-            'definition': { requiredProps: [], allowedProps: [] ,},''
-            'directory': { requiredProps: [], allowedProps: [] ,},''
-            'document': { requiredProps: [], allowedProps: ['aria-expanded] ,},''
-            'group': { requiredProps: [], allowedProps: ['aria-activedescendant] ,},''
-            'heading': { requiredProps: [], allowedProps: ['aria-level] ,},''
-            'img': { requiredProps: [], allowedProps: [] ,},''
-            'list': { requiredProps: [], allowedProps: [] ,},''
-            'listitem': { requiredProps: [], allowedProps: ['aria-level', 'aria-posinset', 'aria-setsize] },''
-            'math': { requiredProps: [], allowedProps: [] ,},''
-            'note': { requiredProps: [], allowedProps: [] ,},''
-            'presentation': { requiredProps: [], allowedProps: [] ,},''
-            'region': { requiredProps: [], allowedProps: [] ,},''
-            'separator': { requiredProps: [], allowedProps: ['aria-orientation', 'aria-valuemax', 'aria-valuemin', 'aria-valuenow] },''
-            'toolbar': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation] },
+            'article': { requiredProps: [], allowedProps: ['aria-posinset', 'aria-setsize] },'', 'definition': { requiredProps: [], allowedProps: [] ,},'', 'directory': { requiredProps: [], allowedProps: [] ,},'', 'document': { requiredProps: [], allowedProps: ['aria-expanded] ,},'', 'group': { requiredProps: [], allowedProps: ['aria-activedescendant] ,},'', 'heading': { requiredProps: [], allowedProps: ['aria-level] ,},'', 'img': { requiredProps: [], allowedProps: [] ,},'', 'list': { requiredProps: [], allowedProps: [] ,},'', 'listitem': { requiredProps: [], allowedProps: ['aria-level', 'aria-posinset', 'aria-setsize] },'', 'math': { requiredProps: [], allowedProps: [] ,},'', 'note': { requiredProps: [], allowedProps: [] ,},'', 'presentation': { requiredProps: [], allowedProps: [] ,},'', 'region': { requiredProps: [], allowedProps: [] ,},'', 'separator': { requiredProps: [], allowedProps: ['aria-orientation', 'aria-valuemax', 'aria-valuemin', 'aria-valuenow] },'', 'toolbar': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-orientation] },
             // Landmark roles
-            'application': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-expanded] },''
-            'banner': { requiredProps: [], allowedProps: [] ,},''
-            'complementary': { requiredProps: [], allowedProps: [] ,},''
-            'contentinfo': { requiredProps: [], allowedProps: [] ,},''
-            'form': { requiredProps: [], allowedProps: [] ,},''
-            'main': { requiredProps: [], allowedProps: [] ,},''
-            'navigation': { requiredProps: [], allowedProps: [] ,},''
-            'search': { requiredProps: [], allowedProps: [] ,},
+            'application': { requiredProps: [], allowedProps: ['aria-activedescendant', 'aria-expanded] },'', 'banner': { requiredProps: [], allowedProps: [] ,},'', 'complementary': { requiredProps: [], allowedProps: [] ,},'', 'contentinfo': { requiredProps: [], allowedProps: [] ,},'', 'form': { requiredProps: [], allowedProps: [] ,},'', 'main': { requiredProps: [], allowedProps: [] ,},'', 'navigation': { requiredProps: [], allowedProps: [] ,},'', 'search': { requiredProps: [], allowedProps: [] ,},
             // Live region roles
-            'alert': { requiredProps: [], allowedProps: [] ,},''
-            'log': { requiredProps: [], allowedProps: [] ,},''
-            'marquee': { requiredProps: [], allowedProps: [] ,},''
-            'status': { requiredProps: [], allowedProps: [] ,},''
-            'timer': { requiredProps: [], allowedProps: [] ,};
+            'alert': { requiredProps: [], allowedProps: [] ,},'', 'log': { requiredProps: [], allowedProps: [] ,},'', 'marquee': { requiredProps: [], allowedProps: [] ,},'', 'status': { requiredProps: [], allowedProps: [] ,},'', 'timer': { requiredProps: [], allowedProps: [] ,};
 
         // Live region monitoring
         this.liveRegions = new Map();
@@ -150,11 +111,11 @@ export class ARIAAttributeProcessor {
         this.validationResults = { passed: [],
             failed: [];
             warnings: [];
-            liveRegionUpdates: [] ,};
+           , liveRegionUpdates: [] ,};
         // Performance metrics
         this.performance = { validationTime: [],
             processedElements: 0;
-            liveRegionUpdates: 0 ,}
+           , liveRegionUpdates: 0 ,}
 
     /**
      * Initialize ARIA attribute processing
@@ -175,7 +136,7 @@ export class ARIAAttributeProcessor {
             passed: [];
             failed: [];
             warnings: [];
-            liveRegionUpdates: [] ,};
+           , liveRegionUpdates: [] ,};
 ';
 
         const elementsWithAria = document.querySelectorAll(')';
@@ -241,8 +202,7 @@ export class ARIAAttributeProcessor {
 
                     'error'')' }
 
-                    `Missing required ARIA property: ${requiredProp} for role="${ role"}"`,""
-                    'missing-required-property' });
+                    `Missing required ARIA property: ${requiredProp} for role="${ role"}"`,"", 'missing-required-property' });
             }
         }
 
@@ -257,8 +217,7 @@ export class ARIAAttributeProcessor {
 
                         'warning'')' }
 
-                        `Property ${prop} not allowed for role="${ role"}"`,""
-                        'invalid-property'' }
+                        `Property ${prop} not allowed for role="${ role"}"`,"", 'invalid-property'' }
 
                     '});
                 }
@@ -328,7 +287,7 @@ export class ARIAAttributeProcessor {
 
             case 'aria-relevant':'';
                 const validRelevant = ['additions', 'removals', 'text', 'all'];''
-                const relevantValues = value.split(' ');
+                const relevantValues = value.split(', ');
 
                 for(const, val of, relevantValues) {'
                     ';
@@ -348,7 +307,7 @@ export class ARIAAttributeProcessor {
      * Validate ID references in ARIA attributes'
      */''
     private validateIdReferences(element: Element, attribute: string, value: string): void { ''
-        const ids = value.split(' ').filter(id => id.trim();
+        const ids = value.split(', ').filter(id => id.trim();
         
         for(const, id of, ids) {'
         ';
@@ -361,8 +320,7 @@ export class ARIAAttributeProcessor {
 
                     'error')' }
 
-                    `${attribute} references non-existent ID: ${ id'}`,''
-                    'invalid-id-reference' });
+                    `${attribute} references non-existent ID: ${ id'}`,'', 'invalid-id-reference' });
             }
 }
 
@@ -385,8 +343,7 @@ export class ARIAAttributeProcessor {
                     'error'')'';
                     `Element with role="${role"}" missing accessible name`,"
         
-        }"
-                    'missing-accessible-name'' }
+        }", 'missing-accessible-name'' }
 
                 '});
 
@@ -422,8 +379,7 @@ export class ARIAAttributeProcessor {
             return true; }
 ';
         // Check for aria-labelledby
-        if(element.hasAttribute('aria-labelledby) { return true; }'
-';
+        if(element.hasAttribute('aria-labelledby) { return true; }', ';
         // Check for associated label element
         if(element.id) {'
             ';
@@ -474,7 +430,7 @@ export class ARIAAttributeProcessor {
             });
 
             observer.observe(document.body, { childList: true)
-                subtree: true }
+               , subtree: true }
     }
 
     /**
@@ -501,7 +457,7 @@ export class ARIAAttributeProcessor {
 
         observer.observe(region, { childList: true)
             subtree: true);
-            characterData: true,);
+           , characterData: true,);
             attributes: false ,});
 
         this.liveRegionObservers.set(regionId, observer);
@@ -556,7 +512,7 @@ export class ARIAAttributeProcessor {
         element: Element;
         currentContent: string );
         previousContent: string);
-        settings: LiveRegionSettings;
+       , settings: LiveRegionSettings;
     ): string {
         const { liveValue, atomic, relevant } = settings;
 
@@ -566,7 +522,7 @@ export class ARIAAttributeProcessor {
             return currentContent;
 ;
         // Announce only changes based on relevant setting
-        const relevantTypes = relevant.split(' '');
+        const relevantTypes = relevant.split(', '');
 
         if (relevantTypes.includes('additions'') || relevantTypes.includes('all) { // For simplicity, announce new content
             return currentContent; }
@@ -588,8 +544,7 @@ export class ARIAAttributeProcessor {
         return ariaAttrs;
     }
 
-    private getImplicitRole(element: Element): string | null { const tagRoleMap: Record<string, string | null> = {''
-            'button': 'button',
+    private getImplicitRole(element: Element): string | null { const tagRoleMap: Record<string, string | null> = {'', 'button': 'button',
             'a': element.hasAttribute('href'') ? 'link' : null,
             'input': this.getInputRole(element, as HTMLInputElement),
             'textarea': 'textbox',
@@ -607,13 +562,11 @@ export class ARIAAttributeProcessor {
             'range': 'slider' };
 
         return roleMap[type] || 'textbox';
-    })'
-')';
+    })', ')';
     private getImplicitLiveValue(element: Element): string { ''
         const role = element.getAttribute('role'');
 
-        const liveRoles: Record<string, string> = {''
-            'alert': 'assertive',
+        const liveRoles: Record<string, string> = {'', 'alert': 'assertive',
             'status': 'polite',
             'log': 'polite' };
 
@@ -632,15 +585,14 @@ export class ARIAAttributeProcessor {
 ';
         // aria-labelledby
         if(element.hasAttribute('aria-labelledby)) { ''
-            const labelIds = element.getAttribute('aria-labelledby'')? .split(' ') || [];
+            const labelIds = element.getAttribute('aria-labelledby'')? .split(', ') || [];
 
             const labels = labelIds.map(id => { );
 
                 const labelElement = document.getElementById(id); : undefined' '
                 return labelElement ? labelElement.textContent?.trim(') : '';).filter(Boolean);
 
-            if(labels.length > 0) {'
-                ';
+            if(labels.length > 0) {', ';
 
             }
 
@@ -697,7 +649,7 @@ export class ARIAAttributeProcessor {
      */
     getValidationSummary(): ValidationSummary { return { passed: this.validationResults.passed.length,
             failed: this.validationResults.failed.length;
-            warnings: this.validationResults.warnings.length, };
+           , warnings: this.validationResults.warnings.length, };
             liveRegionUpdates: this.validationResults.liveRegionUpdates.length }
         }
 
@@ -706,10 +658,10 @@ export class ARIAAttributeProcessor {
      */
     getLiveRegionStatus(): LiveRegionStatus { return { monitored: this.liveRegions.size,
             updates: this.performance.liveRegionUpdates;
-            regions: Array.from(this.liveRegions.entries().map(([id, data]) => ({
+           , regions: Array.from(this.liveRegions.entries().map(([id, data]) => ({
                 id,
                 liveValue: data.liveValue);
-                atomic: data.atomic, };
+               , atomic: data.atomic, };
                 relevant: data.relevant }
             });
         }
@@ -729,7 +681,7 @@ export class ARIAAttributeProcessor {
             passed: [];
             failed: [];
             warnings: [];
-            liveRegionUpdates: [] }
+           , liveRegionUpdates: [] }
 
     /**
      * Destroy and cleanup

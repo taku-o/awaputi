@@ -4,13 +4,13 @@
  * 各専用コンポーネントを統合管理
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { Equalizer } from './Equalizer.js';''
-import { AudioChannelManager } from './components/AudioChannelManager.js';''
-import { AudioVolumeController } from './components/AudioVolumeController.js';''
-import { AudioFormatHandler } from './components/AudioFormatHandler.js';''
-import { AudioComponentPerformanceMonitor } from './components/AudioComponentPerformanceMonitor.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { Equalizer  } from './Equalizer.js';''
+import { AudioChannelManager  } from './components/AudioChannelManager.js';''
+import { AudioVolumeController  } from './components/AudioVolumeController.js';''
+import { AudioFormatHandler  } from './components/AudioFormatHandler.js';''
+import { AudioComponentPerformanceMonitor  } from './components/AudioComponentPerformanceMonitor.js';
 
 // Web Audio API型定義
 interface AudioManager {
@@ -19,20 +19,20 @@ interface AudioManager {
 
 interface ErrorHandler { handleError(error: Error, context: string): void ,}
 
-interface ConfigurationManager { watch(section: string, key: string, callback: (value: any) => void): (() => void) | null ,}
+interface ConfigurationManager { watch(section: string, key: string, callback: (valu;e: any) => void): (() => void) | null ,}
 }
 
 interface FadeOptions { targetVolume?: number;
     startVolume?: number;
     onComplete?: () => void;
-    onUpdate?: (progress: number) => void ,}
+    onUpdate?: (progres;s: number) => void ,}
 }
 
 interface AudioControllerStatus { initialized: boolean;
     channels: any | null;
     volume: any | null;
     format: any | null;
-    performance: any | null }
+   , performance: any | null }
 
 interface AudioConfiguration { channels?: any;
     fade?: any;
@@ -40,7 +40,7 @@ interface AudioConfiguration { channels?: any;
 
 interface QualityPerformanceInfo { currentQuality: number,
     performanceMetrics: any;
-    adaptiveMode: boolean ,}
+   , adaptiveMode: boolean ,}
 
 /**
  * AudioController - 高度な音響制御システムのメインコントローラー
@@ -59,7 +59,7 @@ export class AudioController {
     // レガシーシステム（互換性維持）
     private equalizer: Equalizer | null = null;
     // フェード操作管理（簡易版）
-    private activeTransitions: Map<string, any> = new Map();
+    private, activeTransitions: Map<string, any> = new Map();
     
     // 設定監視のID管理
     private configWatchers: Set<() => void> = new Set();
@@ -536,7 +536,7 @@ export class AudioController {
     getStatus(): AudioControllerStatus { return { initialized: this.isInitialized,
             channels: this.channelManager ? this.channelManager.getManagerState() : null;
             volume: this.volumeController ? this.volumeController.getFadeStatus() : null;
-            format: this.formatHandler ? this.formatHandler.getStatus() : null, };
+           , format: this.formatHandler ? this.formatHandler.getStatus() : null, };
             performance: this.performanceMonitor ? this.performanceMonitor.getStatus() : null 
         }
     

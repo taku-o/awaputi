@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * Bubble effect configuration interface
@@ -6,7 +6,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 interface BubbleEffectConfig { baseParticleCount: number,
     colors: string[];
     specialEffects: string[];
-    priority: number ,}
+   , priority: number ,}
 
 /**
  * Bubble effect configs map interface
@@ -36,13 +36,13 @@ interface Particle { x: number,
     gravity: number;
     friction: number;
     bounce?: number;
-    type: string;
+   , type: string;
     rotation?: number;
     rotationSpeed?: number;
     scale?: number;
     scaleSpeed?: number;
     maxTrailLength?: number; ,}
-    trail?: Array<{ x: number; y: number }>;
+    trail?: Array<{ x: number;, y: number }>;
     pulseSpeed?: number;
 }
 
@@ -70,7 +70,7 @@ interface ParticleManager { particles: Particle[],
  */
 export class BubbleEffectRenderer {
     private particleManager: ParticleManager;
-    private bubbleEffectConfigs: BubbleEffectConfigs';
+    private, bubbleEffectConfigs: BubbleEffectConfigs';
 
     constructor(particleManager: ParticleManager) {
         this.particleManager = particleManager;
@@ -637,8 +637,7 @@ export class BubbleEffectRenderer {
             particle.size = 2 + Math.random() * 2;
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length)];''
             particle.life = 600 + Math.random(''';
-            particle.type = 'circle';)'
-            ');
+            particle.type = 'circle';)', ');
 
         }
 

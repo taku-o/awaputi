@@ -17,7 +17,7 @@ export interface ValidationResult { valid: boolean,
     error?: string }
 
 export interface DataIntegrityResult { valid: boolean;
-    issues: string[] }
+   , issues: string[] }
 
 export interface VersionCompatibilityResult { compatible: boolean;
     error?: string }
@@ -27,7 +27,7 @@ export interface PlayerData { username?: string | null;
     tap: number;
     highScore: number;
     unlockedStages: string[];
-    ownedItems: string[] ,}
+   , ownedItems: string[] ,}
 
 export interface StatisticsData { totalPlayTime?: number;
     bubblesPopped?: number;
@@ -39,7 +39,7 @@ export interface AchievementData { id: string,
     unlockedAt?: string ,}
 
 export interface ImportData { version: string;
-    playerData: PlayerData;
+   , playerData: PlayerData;
     statistics?: StatisticsData;
     achievements?: AchievementData[];
     timestamp?: string;
@@ -54,20 +54,20 @@ export interface Layout { contentX: number,
     contentWidth: number;
     buttonY: number;
     x: number;
-    width: number ,}
+   , width: number ,}
 
 export interface MainController { data: {
-        parsedData?: ImportData;
+        parsedDat;a?: ImportData;
         error?: string;
         importData: string;
         importMethod: string;
-        step: string;
+       , step: string;
         importProgress?: number;
         processingText?: string;
         success?: boolean; };
     textSettings: { contentFont: string;
         contentColor: string;
-        errorColor: string };
+       , errorColor: string };
     gameEngine: { playerData: any;
         statisticsManager?: any;
         achievementManager?: any; };
@@ -86,7 +86,7 @@ export interface PlayerDataInterface { setUsername(username: string): void,
 
 export class ImportDataProcessor {
     private mainController: MainController;
-    private validationRules: ValidationRules;
+    private, validationRules: ValidationRules;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -94,13 +94,7 @@ export class ImportDataProcessor {
     }
         this.validationRules = { }
             version: { required: true, type: 'string' ,},''
-            playerData: { required: true, type: 'object' ,},''
-            'playerData.username': { required: false, type: 'string|null' ,},''
-            'playerData.ap': { required: true, type: 'number', min: 0 ,},''
-            'playerData.tap': { required: true, type: 'number', min: 0 ,},''
-            'playerData.highScore': { required: true, type: 'number', min: 0 ,},''
-            'playerData.unlockedStages': { required: true, type: 'array' ,},''
-            'playerData.ownedItems': { required: true, type: 'array' ,}
+            playerData: { required: true, type: 'object' ,},'', 'playerData.username': { required: false, type: 'string|null' ,},'', 'playerData.ap': { required: true, type: 'number', min: 0 ,},'', 'playerData.tap': { required: true, type: 'number', min: 0 ,},'', 'playerData.highScore': { required: true, type: 'number', min: 0 ,},'', 'playerData.unlockedStages': { required: true, type: 'array' ,},'', 'playerData.ownedItems': { required: true, type: 'array' ,}
 
     /**
      * 確認ステップを描画'
@@ -307,8 +301,7 @@ export class ImportDataProcessor {
         ';
         // 基本的な統計項目のチェック
         const requiredStats = ['totalPlayTime', 'bubblesPopped', 'gamesPlayed'];
-        for(const, stat of, requiredStats) {'
-            ';
+        for(const, stat of, requiredStats) {', ';
 
         }
 
@@ -505,8 +498,7 @@ export class ImportDataProcessor {
                 issues.push('APが総獲得APを上回っています); }'
             }
 
-            if(data.playerData.highScore < 0) {'
-                ';
+            if(data.playerData.highScore < 0) {', ';
 
             }
 
@@ -524,7 +516,7 @@ export class ImportDataProcessor {
             componentType: 'ImportDataProcessor',)';
             validationRules: Object.keys(this.validationRules),
             supportedFormats: ['json'];
-            maxDataSize: 1024 * 1024 // 1MB;
+           , maxDataSize: 1024 * 1024 // 1MB;
         },
     }''
 }

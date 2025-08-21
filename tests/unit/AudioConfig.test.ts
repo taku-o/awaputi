@@ -1,8 +1,8 @@
 /**
  * AudioConfig クラスのユニットテスト
  */
-import { describe, test, beforeEach, expect } from '@jest/globals';
-import { AudioConfig, getAudioConfig } from '../../src/config/AudioConfig.js';
+import { describe, test, beforeEach, expect  } from '@jest/globals';
+import { AudioConfig, getAudioConfig  } from '../../src/config/AudioConfig.js';
 // Type definitions for test objects
 interface VolumeConfig {
     master: number,
@@ -38,7 +38,7 @@ interface MockAudioManager {
     toggleMute?: () => void;
     isMuted: boolean,
     getStatus?: (') => {
-        masterVolume: number,
+        masterVolum;e: number,
         sfxVolume: number,
         bgmVolume: number,
         isMuted: boolean,

@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../ErrorHandler.js';
+import { getErrorHandler  } from '../ErrorHandler.js';
 
 // Type definitions
 interface DirtyRegionConfig { enabled?: boolean;
@@ -13,21 +13,21 @@ interface DirtyRegion { x: number,
     width: number;
     height: number;
     timestamp: number;
-    frame: number ,}
+   , frame: number ,}
 
 interface RegionHistory { frame: number;
     regions: DirtyRegion[];
-    timestamp: number }
+   , timestamp: number }
 
 interface RegionStats { totalRegions: number;
     mergedRegions: number;
     skippedRedraws: number;
     pixelsSaved: number;
-    performanceGain: number }
+   , performanceGain: number }
 
 interface Hotspot { x: number;
     y: number;
-    count: number }
+   , count: number }
 
 /**
  * Dirty Region Management System
@@ -45,7 +45,7 @@ export class AdvancedDirtyRegionManager {
     private expansionFactor: number;
     private regionHistory: RegionHistory[];
     private historySize: number;
-    private hotspots: Map<string, number>;
+    private, hotspots: Map<string, number>;
     private stats: RegionStats;
     constructor(config: DirtyRegionConfig = {) {
 
@@ -73,7 +73,7 @@ export class AdvancedDirtyRegionManager {
             totalRegions: 0;
             mergedRegions: 0;
             skippedRedraws: 0;
-            pixelsSaved: 0;
+           , pixelsSaved: 0;
     ,}
             performanceGain: 0 }
         }
@@ -100,7 +100,7 @@ export class AdvancedDirtyRegionManager {
                 width: finalWidth;
                 height: finalHeight;
                 timestamp: Date.now();
-                frame: this._getCurrentFrame( ,};
+               , frame: this._getCurrentFrame( ,};
             
             this.regions.add(region);
             this.stats.totalRegions++;
@@ -166,7 +166,7 @@ export class AdvancedDirtyRegionManager {
             if(this.regions.size > 0) {
                 this.regionHistory.push({);
                     frame: this._getCurrentFrame();
-                    regions: Array.from(this.regions);
+                   , regions: Array.from(this.regions);
             ,}
                     timestamp: Date.now(); }
                 });
@@ -229,7 +229,7 @@ export class AdvancedDirtyRegionManager {
             mergedRegions: 0;
             skippedRedraws: 0;
             pixelsSaved: 0;
-            performanceGain: 0 }
+           , performanceGain: 0 }
     
     // Private methods
     
@@ -264,7 +264,7 @@ export class AdvancedDirtyRegionManager {
             y,
             width: right - x;
             height: bottom - y;
-            timestamp: Math.max(region1.timestamp, region2.timestamp), };
+           , timestamp: Math.max(region1.timestamp, region2.timestamp), };
             frame: Math.max(region1.frame, region2.frame); }
         }
     

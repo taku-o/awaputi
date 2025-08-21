@@ -2,9 +2,9 @@
  * Enhanced Debug Interface Tests
  * EnhancedDebugInterface クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -110,15 +110,13 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
     }
                 this.debugInterface = debugInterface; }
                 this.activated = false; }
-            }'
-            '';
+            }', '';
             getDisplayName(''';
                 return 'Mock Panel';
             }
             );
             activate() { this.activated = true; }
-            }'
-            '';
+            }', '';
             destroy('')';
         test('should register new panel successfully', (') => {  ''
             const result = debugInterface.registerPanel('mock', MockPanel);''
@@ -136,8 +134,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
                 constructor('' })'
                     throw new Error('Test error''); }
                 }
-            }'
-            '';
+            }', '';
             const result = debugInterface.registerPanel('bad', BadPanel);
             expect(result).toBe(false as any);'
             expect(consoleErrorSpy.toHaveBeenCalled();''
@@ -195,8 +192,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
                 altKey: false,';
                 metaKey: false,' }'
                 key: 'X' }
-            },'
-            '';
+            },', '';
             expect(debugInterface.buildShortcutString(event)').toBe('ctrl+shift+x');''
         }');''
         test('should handle keyboard events correctly', () => {  ' }'
@@ -206,7 +202,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             const event = { ctrlKey: true,
                 shiftKey: true,);
                 altKey: false)';
-                metaKey: false,')';
+               , metaKey: false,')';
                 key: 'X'),
         preventDefault: jest.fn(); }
             };
@@ -264,8 +260,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
                 size: { width: 600, height: 800 },''
                 theme: 'light','';
                 activePanel: 'console';
-            },'
-            '';
+            },', '';
             localStorage.setItem('enhanced-debug-settings', JSON.stringify(settings);
             const newDebugInterface = new EnhancedDebugInterface(mockGameEngine as any);
             expect(newDebugInterface.position).toEqual({ x: 150, y: 250 ),'
@@ -280,8 +275,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             newDebugInterface.destroy();' }'
         }');''
         test('should not save settings when autoSave is disabled', () => { debugInterface.settings.autoSave = false; }'
-            debugInterface.saveSettings(}')'
-            ');''
+            debugInterface.saveSettings(}')', ');''
             expect(localStorage.getItem('enhanced-debug-settings'}).toBeNull();'
         }''
     }');''
@@ -324,8 +318,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
         }');''
         test('should return registered panels', () => { class MockPanel {' }'
                 getDisplayName(') { return 'Mock'; }
-            }'
-            '';
+            }', '';
             debugInterface.registerPanel('mock1', MockPanel');''
             debugInterface.registerPanel('mock2', MockPanel);''
             const panels = debugInterface.getRegisteredPanels('')';

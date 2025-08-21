@@ -2,15 +2,15 @@
  * Keyboard Shortcuts Documentation Validation Tests
  * Issue #169対応 - ドキュメント精度検証テスト
  */
-import { jest } from '@jest/globals';
-import { readFileSync } from 'fs';
+import { jest  } from '@jest/globals';
+import { readFileSync  } from 'fs';
 import path from 'path';
 // TextEncoder/TextDecoder polyfill for Node.js environment
-import { TextEncoder, TextDecoder } from 'util';
+import { TextEncoder, TextDecoder  } from 'util';
 (global as any).TextEncoder = TextEncoder;
 (global as any').TextDecoder = TextDecoder;
 // DOM environment setup
-import { JSDOM } from 'jsdom';
+import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -142,7 +142,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
                         documentationLower.includes('m'') && shortcut === 'mute';
                     
                     if (!isDocumented') {
-                        console.warn(`Major shortcut '${shortcut')' may not be documented`});
+                        console.warn(`Major shortcut '${shortcut')' may, not be, documented`});
                     }
                 }
             }
@@ -239,7 +239,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
             // Convert help text to a searchable format
             const allHelpText = Object.values(helpText)
                 .flat(')
-                .join(' ')
+                .join(', ')
                 .toLowerCase();
             // Verify essential shortcuts are included
             expect(allHelpText).toMatch(/space|スペース/); // Pause

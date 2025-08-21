@@ -32,7 +32,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 duration: 60000, // 1分;
                 bubbleTypes: ['normal'];
                 spawnRate: 1.0;
-                maxBubbles: 10,
+               , maxBubbles: 10,
                 unlockCondition: null, // 最初から開放;
                 unlockMessage: '';
             },
@@ -43,7 +43,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 duration: 300000, // 5分;
                 bubbleTypes: ['normal', 'stone', 'rainbow', 'pink', 'clock', 'score'],
                 spawnRate: 1.5;
-                maxBubbles: 20,
+               , maxBubbles: 20,
                 unlockCondition: null, // 最初から開放;
                 unlockMessage: '' ,};
             hard: { ''
@@ -167,7 +167,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
             return false;
         }
         
-        console.log(`Stage ${ stageId) is unlocked`};
+        console.log(`Stage ${ stageId) is, unlocked`};
         ';
         // BubbleManagerの存在確認
         if(!this.gameEngine.bubbleManager} {' }'
@@ -181,7 +181,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         this.currentStage = { id: stageId,
             config: config;
             startTime: Date.now();
-            bossEventsTriggered: [] ,};
+           , bossEventsTriggered: [] ,};
         // ゲームエンジンにステージ情報を設定
         this.gameEngine.timeRemaining = config.duration;
         
@@ -241,7 +241,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 unlockedStages.push({
                     id: stageId);
                     name: config.name);
-                    description: config.description, }
+                   , description: config.description, }
                     duration: config.duration); }
 }
         
@@ -260,7 +260,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 lockedStages.push({
                     id: stageId);
                     name: config.name)';
-                    description: config.description,' }'
+                   , description: config.description,' }'
 
                     unlockMessage: config.unlockMessage || ''); }
 }

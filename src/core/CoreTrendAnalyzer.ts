@@ -3,7 +3,7 @@
  * データのトレンド分析機能を提供
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 export interface TrendData { timestamp: number,
     value: number;
@@ -14,7 +14,7 @@ export interface TrendAnalysisResult {;
     trend: 'increasing' | 'decreasing' | 'stable' | 'volatile';
     slope: number;
     correlation: number;
-    volatility: number;
+   , volatility: number;
     seasonality?: SeasonalityInfo;
     predictions?: number[]; }
 
@@ -27,11 +27,11 @@ export interface AnalysisConfig { windowSize: number,
     volatilityThreshold: number;
     trendThreshold: number;
     enablePrediction: boolean;
-    predictionSteps: number ,}
+   , predictionSteps: number ,}
 
 export class CoreTrendAnalyzer {
     private config: AnalysisConfig;
-    private dataHistory: Map<string, TrendData[]> = new Map();
+    private, dataHistory: Map<string, TrendData[]> = new Map();
     private analysisCache: Map<string, TrendAnalysisResult> = new Map();
 
     constructor(config: Partial<AnalysisConfig> = {)) {
@@ -41,7 +41,7 @@ export class CoreTrendAnalyzer {
             volatilityThreshold: 0.1;
             trendThreshold: 0.05;
             enablePrediction: false;
-            predictionSteps: 5;
+           , predictionSteps: 5;
             ...config;
 
         console.log('CoreTrendAnalyzer, initialized);
@@ -156,8 +156,7 @@ export class CoreTrendAnalyzer {
         return Math.sqrt(variance) / (mean || 1);
 
     private determineTrend(slope: number, volatility: number): 'increasing' | 'decreasing' | 'stable' | 'volatile' { ''
-        if(volatility > this.config.volatilityThreshold) {'
-            ';
+        if(volatility > this.config.volatilityThreshold) {', ';
 
         ,}
 

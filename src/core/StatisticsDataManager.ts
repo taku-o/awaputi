@@ -4,7 +4,7 @@
  * データ構造管理、バックアップ、復旧機能を提供
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 統計データ管理クラス
@@ -33,7 +33,7 @@ export class StatisticsDataManager {'
             totalBubblesPopped: 0;
             totalBubblesMissed: 0;
             bubbleAccuracy: 0;
-            bubbleTypeStats: { normal: 0;
+           , bubbleTypeStats: { normal: 0;
                 stone: 0;
                 iron: 0;
                 diamond: 0;
@@ -53,20 +53,19 @@ export class StatisticsDataManager {'
                 magnetic: 0;
                 explosive: 0;
                 phantom: 0;
-                multiplier: 0 };
+               , multiplier: 0 };
             // 効率統計
             efficiencyStats: { bubblesPerMinute: 0;
                 bubblesPerSecond: 0;
                 peakEfficiency: 0;
                 efficiencyTrend: [];
                 bestEfficiencySession: 0;
-                worstEfficiencySession: Infinity };
+               , worstEfficiencySession: Infinity };
             // 反応時間統計
             reactionTimeStats: { average: 0;
                 fastest: Infinity;
                 slowest: 0;
-                distribution: {''
-                    'under_200ms': 0,
+               , distribution: {'', 'under_200ms': 0,
                     '200_500ms': 0,
                     '500_1000ms': 0,
                     'over_1000ms': 0 },
@@ -79,8 +78,7 @@ export class StatisticsDataManager {'
             averageCombo: 0;
             comboBreaks: 0;
             // コンボ詳細統計
-            comboDetailStats: { comboRanges: {''
-                    '1-5': 0,
+           , comboDetailStats: { comboRanges: {'', '1-5': 0,
                     '6-10': 0,
                     '11-20': 0,
                     '21-50': 0,
@@ -88,28 +86,28 @@ export class StatisticsDataManager {'
                 comboSuccessRate: 0;
                 averageComboLength: 0;
                 longestComboStreak: 0;
-                comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間;
+               , comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間;
             },
             
             // HP統計
             totalDamageTaken: 0;
             totalHpHealed: 0;
             timesRevived: 0;
-            lowHpTime: 0, // HP10以下の時間;
+           , lowHpTime: 0, // HP10以下の時間;
             // HP詳細統計
             hpDetailStats: { criticalHpEvents: 0, // HP5以下になった回数
                 nearDeathRecoveries: 0, // HP1から回復した回数;
                 perfectHealthGames: 0, // ダメージを受けなかったゲーム数;
                 averageDamagePerGame: 0;
                 maxDamageInSingleGame: 0;
-                healingEfficiency: 0 // 回復量/ダメージ量 ,};
+               , healingEfficiency: 0 // 回復量/ダメージ量 ,};
             // ステージ統計
             stageStats: {};
             stagesCompleted: 0;
             stagesFailed: 0;
             // ステージ詳細統計
-            stageDetailStats: { favoriteStage: null;
-                mostDifficultStage: null, }
+           , stageDetailStats: { favoriteStage: null;
+               , mostDifficultStage: null, }
                 fastestClearTime: {};
                 averageClearTime: {};
                 stageRetryCount: {};
@@ -129,51 +127,51 @@ export class StatisticsDataManager {'
             explosiveChains: 0;
             phantomBubbleInteractions: 0;
             // プレイヤー行動統計
-            playerBehaviorStats: { dragOperations: 0;
+           , playerBehaviorStats: { dragOperations: 0;
                 averageDragDistance: 0;
                 longestDrag: 0;
                 shortestDrag: Infinity;
                 dragAccuracy: 0;
-                rapidClickCount: 0, // 短時間での連続クリック;
+               , rapidClickCount: 0, // 短時間での連続クリック;
                 pauseCount: 0;
-                settingsChanges: 0 ,};
+               , settingsChanges: 0 ,};
             // 進捗統計
             progressStats: { achievementsUnlocked: 0;
                 totalAP: 0;
                 levelUps: 0;
                 itemsPurchased: 0;
                 tutorialsCompleted: 0;
-                hintsUsed: 0 }))
+               , hintsUsed: 0 }))
             // 時間統計
             timeStats: { playTimeByHour: new Array(24).fill(0);
-                playTimeByDay: new Array(7).fill(0),
+               , playTimeByDay: new Array(7).fill(0),
                 playTimeByMonth: new Array(12).fill(0);
                 peakPlayingHour: 0;
                 peakPlayingDay: 0;
                 firstPlayDate: null;
                 lastPlayDate: null;
-                longestBreak: 0, // 最長プレイ間隔;
+               , longestBreak: 0, // 最長プレイ間隔;
                 regularPlayStreak: 0 // 連続プレイ日数 ,};
             // デバイス・環境統計
             deviceStats: { isMobile: false,''
                 screenResolution: '',
                 browserInfo: '';
-                performanceMetrics: {
+               , performanceMetrics: {
                     averageFPS: 0;
                     memoryUsage: 0;
-                    loadTime: 0 ,}
+                   , loadTime: 0 ,}
             };
             // エラー・クラッシュ統計
             errorStats: { crashCount: 0;
                 errorCount: 0;
                 recoveryCount: 0;
-                lastErrorTime: null, }
+               , lastErrorTime: null, }
                 commonErrors: {};
             // ソーシャル統計（新規追加、将来の機能用）
             socialStats: { shareCount: 0;
                 challengesCompleted: 0;
                 communityRank: 0;
-                friendsConnected: 0 }
+               , friendsConnected: 0 }
         }
 
     /**
@@ -183,7 +181,7 @@ export class StatisticsDataManager {'
     initializeSessionStats() {
         return { gamesThisSession: 0,
             scoreThisSession: 0;
-            bubblesThisSession: 0;
+           , bubblesThisSession: 0;
     ,}
             playTimeThisSession: 0, };
             sessionStartTime: Date.now(); }
@@ -214,16 +212,14 @@ export class StatisticsDataManager {'
         }
         ';
         // データ型の検証
-        if(typeof, statistics.totalGamesPlayed !== 'number'') {'
-            ';
+        if(typeof, statistics.totalGamesPlayed !== 'number'') {', ';
 
         }
 
             issues.push('totalGamesPlayed, must be, a number''); }
         }
 
-        if(typeof, statistics.bubbleTypeStats !== 'object'') {'
-            ';
+        if(typeof, statistics.bubbleTypeStats !== 'object'') {', ';
 
         }
 
@@ -231,16 +227,14 @@ export class StatisticsDataManager {'
         }
         ';
         // 値の範囲検証
-        if(statistics.totalGamesPlayed < 0) {'
-            ';
+        if(statistics.totalGamesPlayed < 0) {', ';
 
         }
 
             issues.push('totalGamesPlayed, cannot be, negative); }'
         }
 
-        if(statistics.totalPlayTime < 0) {'
-            ';
+        if(statistics.totalPlayTime < 0) {', ';
 
         }
 
@@ -318,8 +312,7 @@ export class StatisticsDataManager {'
      * オブジェクトフィールドの修復
      * @param {Object} statistics - 修復対象の統計データ
      */''
-    repairObjectFields(statistics) {'
-        ';
+    repairObjectFields(statistics) {', ';
 
     }
 
@@ -336,9 +329,9 @@ export class StatisticsDataManager {'
                 isMobile: false,
                 screenResolution: '',
                 browserInfo: '';
-                performanceMetrics: {
+               , performanceMetrics: {
                     averageFPS: 0;
-                    memoryUsage: 0;
+                   , memoryUsage: 0;
         ,}
                     loadTime: 0 }
 }
@@ -374,7 +367,7 @@ export class StatisticsDataManager {'
         const checks = {
             bubbleAccuracy: this.checkBubbleAccuracy(statistics);
             averageCalculations: this.checkAverageCalculations(statistics);
-            timeConsistency: this.checkTimeConsistency(statistics);
+           , timeConsistency: this.checkTimeConsistency(statistics);
     }
             stageConsistency: this.checkStageConsistency(statistics); }
         };
@@ -493,7 +486,7 @@ export class StatisticsDataManager {'
         return { userAgent: navigator.userAgent,
             platform: navigator.platform;
             language: navigator.language;
-            cookieEnabled: navigator.cookieEnabled;
+           , cookieEnabled: navigator.cookieEnabled;
     ,}
             onLine: navigator.onLine, };
             timestamp: Date.now(); }

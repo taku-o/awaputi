@@ -5,14 +5,14 @@
  * 変更追跡、ロールバック機能を提供するシステムクラス。
  */
 
-import { BalanceChange } from '../models/BalanceChange.js';''
-import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
+import { BalanceChange  } from '../models/BalanceChange.js';''
+import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface DocumentationStatistics { totalChanges: number,
     appliedChanges: number;
     rolledBackChanges: number;
-    lastUpdate: number | null ,}
+   , lastUpdate: number | null ,}
 
 interface QueryOptions { propertyType?: string;
     author?: string;
@@ -30,22 +30,22 @@ interface QueryOptions { propertyType?: string;
 
 interface BubbleTypeStats { total: number,
     applied: number;
-    rolledBack: number;
+   , rolledBack: number;
     pending?: number ,}
 
 interface PropertyTypeStats { total: number;
     applied: number;
-    rolledBack: number }
+   , rolledBack: number }
 
 interface AuthorStats { total: number;
     applied: number;
-    rolledBack: number }
+   , rolledBack: number }
 
 interface TimelineEntry { date: string;
-    count: number }
+   , count: number }
 
 interface StatisticsReport { overview: DocumentationStatistics;
-    byBubbleType: Record<string, BubbleTypeStats>;
+   , byBubbleType: Record<string, BubbleTypeStats>;
     byPropertyType: Record<string, PropertyTypeStats>;
     byAuthor: Record<string, AuthorStats>;
     byChangeType: Record<string, number>;
@@ -53,16 +53,16 @@ interface StatisticsReport { overview: DocumentationStatistics;
     byReviewStatus: Record<string, number>;
     timeline: TimelineEntry[];
     recentChanges: string[];
-    generatedAt: number;
+   , generatedAt: number;
     error?: string ,}
 
 interface RelatedChangeInfo { id: string;
     relationship: string;
     summary: string;
-    impact: any }
+   , impact: any }
 
 interface RiskAssessment { level: string;
-    factors: string[] }
+   , factors: string[] }
 
 interface ImpactReport { change?: string;
     impact?: any;
@@ -70,7 +70,7 @@ interface ImpactReport { change?: string;
     affectedSystems?: string[];
     riskAssessment: RiskAssessment;
     recommendations: string[];
-    generatedAt: number;
+   , generatedAt: number;
     error?: string;
     changeId?: string; ,}
 
@@ -78,14 +78,14 @@ interface SystemIndexSizes { changes: number,
     bubbleTypes: number;
     propertyTypes: number;
     authors: number;
-    timeline: number ,}
+   , timeline: number ,}
 
 interface StorageInfo { available: boolean;
     autoSave: boolean;
-    maxHistorySize: number }
+   , maxHistorySize: number }
 
 interface SystemStatistics extends DocumentationStatistics { indexSizes: SystemIndexSizes;
-    storageInfo: StorageInfo
+   , storageInfo: StorageInfo
     }
 
 interface SystemSettings { maxHistorySize?: number;
@@ -95,11 +95,11 @@ interface SystemSettings { maxHistorySize?: number;
 interface StorageData { changes: any[],
     statistics: DocumentationStatistics;
     version: string;
-    savedAt: number ,}
+   , savedAt: number ,}
 
 export class BalanceChangeDocumentationSystem {
     private errorHandler: ErrorHandler;
-    private changes: Map<string, BalanceChange>;
+    private, changes: Map<string, BalanceChange>;
     private changesByBubble: Map<string, string[]>;
     private changesByProperty: Map<string, string[]>;
     private changesByAuthor: Map<string, string[]>;
@@ -108,7 +108,7 @@ export class BalanceChangeDocumentationSystem {
     private autoSaveEnabled: boolean;
     private storageKey: string;
     private storageAvailable: boolean = false;
-    private statistics: DocumentationStatistics;
+    private, statistics: DocumentationStatistics;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -123,7 +123,7 @@ export class BalanceChangeDocumentationSystem {
         this.statistics = {
             totalChanges: 0;
             appliedChanges: 0;
-            rolledBackChanges: 0;
+           , rolledBackChanges: 0;
     ,}
             lastUpdate: null }))
         this._initializeStorage();''
@@ -189,7 +189,7 @@ export class BalanceChangeDocumentationSystem {
                 changes: Array.from(this.changes.values().map(change => change.toJSON()),
                 statistics: this.statistics,
                 version: '1.0';
-                savedAt: Date.now() ,}
+               , savedAt: Date.now() ,}
             };
             
             localStorage.setItem(this.storageKey, JSON.stringify(data);
@@ -571,7 +571,7 @@ export class BalanceChangeDocumentationSystem {
                 byReviewStatus: {};
                 timeline: [];
                 recentChanges: [];
-                generatedAt: Date.now();
+               , generatedAt: Date.now();
             };
             
             const changes = Array.from(this.changes.values();
@@ -581,7 +581,7 @@ export class BalanceChangeDocumentationSystem {
                 const bubbleChanges = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
                 report.byBubbleType[bubbleType] = {
                     total: bubbleChanges.length;
-                    applied: bubbleChanges.filter(c => c.applied).length,
+                   , applied: bubbleChanges.filter(c => c.applied).length,
                     rolledBack: bubbleChanges.filter(c => c.rolledBack).length;
             ,}
 
@@ -593,7 +593,7 @@ export class BalanceChangeDocumentationSystem {
                 const propertyChanges = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
                 report.byPropertyType[propertyType] = {
                     total: propertyChanges.length;
-                    applied: propertyChanges.filter(c = > c.applied).length ,}
+                   , applied: propertyChanges.filter(c = > c.applied).length ,}
                     rolledBack: propertyChanges.filter(c => c.rolledBack).length }
                 }
             
@@ -602,7 +602,7 @@ export class BalanceChangeDocumentationSystem {
                 const authorChanges = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
                 report.byAuthor[author] = {
                     total: authorChanges.length;
-                    applied: authorChanges.filter(c = > c.applied).length ,}
+                   , applied: authorChanges.filter(c = > c.applied).length ,}
                     rolledBack: authorChanges.filter(c => c.rolledBack).length }
                 }
             
@@ -664,7 +664,7 @@ export class BalanceChangeDocumentationSystem {
                 byReviewStatus: {};
                 timeline: [];
                 recentChanges: [];
-                generatedAt: Date.now();
+               , generatedAt: Date.now();
             }
     }
     
@@ -683,18 +683,18 @@ export class BalanceChangeDocumentationSystem {
 
                     riskAssessment: { level: 'unknown', factors: [] ,},
                     recommendations: [];
-                    generatedAt: Date.now();
+                   , generatedAt: Date.now();
                 }
             
             const report: ImpactReport = { change: change.getSummary(),
                 impact: change.calculateImpact();
                 relatedChanges: [];
                 affectedSystems: change.affectedSystems;
-                riskAssessment: {
+               , riskAssessment: {
                     level: change.riskLevel;
-                    factors: [] ,};
+                   , factors: [] ,};
                 recommendations: [];
-                generatedAt: Date.now();
+               , generatedAt: Date.now();
             };
             
             // 関連する変更を詳細化
@@ -704,7 +704,7 @@ export class BalanceChangeDocumentationSystem {
                     report.relatedChanges.push({)
                         id: related.changeId,);
                         relationship: related.relationshipType);
-                        summary: relatedChange.getSummary();
+                       , summary: relatedChange.getSummary();
             ,}
                         impact: relatedChange.calculateImpact(); }
                     });
@@ -713,8 +713,7 @@ export class BalanceChangeDocumentationSystem {
             ;
             // リスク要因分析
             const impact = change.calculateImpact()';
-            if(impact.magnitude === 'critical'') {'
-                ';
+            if(impact.magnitude === 'critical'') {', ';
 
             }
 
@@ -723,16 +722,14 @@ export class BalanceChangeDocumentationSystem {
             } else if (impact.magnitude === 'high'') { ''
                 report.riskAssessment.factors.push('High, magnitude change (>50%)''); }
 
-            if(!change.applied && change.reviewStatus !== 'approved'') {'
-                ';
+            if(!change.applied && change.reviewStatus !== 'approved'') {', ';
 
             }
 
                 report.riskAssessment.factors.push('Change, not reviewed, or approved); }'
             }
 
-            if(change.relatedChanges.length > 0) {'
-                ';
+            if(change.relatedChanges.length > 0) {', ';
 
             }
 
@@ -749,8 +746,7 @@ export class BalanceChangeDocumentationSystem {
                 report.recommendations.push('Monitor, player feedback, and metrics, closely''); }
             }
 
-            if(change.reviewStatus === 'pending'') {'
-                ';
+            if(change.reviewStatus === 'pending'') {', ';
 
             }
 
@@ -798,7 +794,7 @@ export class BalanceChangeDocumentationSystem {
             this.errorHandler.handleError(error, 'DOCUMENTATION_MARKDOWN', {)
                 reportType,);
                 options); });
-            return `# Error\n\nFailed to generate ${reportType} report: ${error instanceof Error ? error.message : String(error})`;
+            return `# Error\n\nFailed to generate ${reportType} report: ${error, instanceof Error ? error.message : String(error})`;
     
     /**
      * 統計レポートのマークダウンを生成
@@ -814,7 +810,7 @@ export class BalanceChangeDocumentationSystem {
         markdown += `- **総変更数**: ${report.overview.totalChanges}\n`;
         markdown += `- **適用済み**: ${report.overview.appliedChanges}\n`;
         markdown += `- **ロールバック済み**: ${report.overview.rolledBackChanges}\n`;''
-        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new Date(report.overview.lastUpdate}.toLocaleString('ja-JP''}) : 'N/A'}\n\n`;
+        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new, Date(report.overview.lastUpdate}.toLocaleString('ja-JP''}) : 'N/A'}\n\n`;
         
         // バブルタイプ別
         if (Object.keys(report.byBubbleType).length > 0) { markdown += `## バブルタイプ別統計\n\n`;
@@ -921,12 +917,12 @@ export class BalanceChangeDocumentationSystem {
                 changes: this.changes.size;
                 bubbleTypes: this.changesByBubble.size;
                 propertyTypes: this.changesByProperty.size;
-                authors: this.changesByAuthor.size, };
+               , authors: this.changesByAuthor.size, };
                 timeline: this.changesByTimestamp.length }
             };
             storageInfo: { available: this.storageAvailable;
                 autoSave: this.autoSaveEnabled;
-                maxHistorySize: this.maxHistorySize }
+               , maxHistorySize: this.maxHistorySize }
         }
     
     /**
@@ -978,7 +974,7 @@ export class BalanceChangeDocumentationSystem {
                 totalChanges: 0;
                 appliedChanges: 0;
                 rolledBackChanges: 0;
-                lastUpdate: Date.now( ,};
+               , lastUpdate: Date.now( ,};
             
             if(this.storageAvailable) {
             ';

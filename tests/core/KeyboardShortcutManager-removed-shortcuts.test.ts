@@ -2,13 +2,13 @@
  * CoreKeyboardShortcutManager - Removed Shortcuts Tests
  * Issue #169対応 - 削除されたショートカット（S、H、I）のテスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // TextEncoder/TextDecoder polyfill for Node.js environment
-import { TextEncoder, TextDecoder } from 'util';
+import { TextEncoder, TextDecoder  } from 'util';
 (global as any).TextEncoder = TextEncoder;
 (global as any').TextDecoder = TextDecoder;
 // DOM environment setup
-import { JSDOM } from 'jsdom';
+import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -142,7 +142,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
             // Space key press event
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
-                key: ' ',
+                key: ', ',
                 preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
             }');
@@ -201,12 +201,12 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
             // Convert all help sections to a single string for easy searching
             const allHelpText = Object.values(helpText)
                 .flat(')
-                .join(' ')
+                .join(', ')
                 .toLowerCase();
             // Verify S, H, I shortcuts are not mentioned
             expect(allHelpText).not.toMatch(/keys?\s*s[:\s]/'); // "Key S:" or "Keys S:"
             expect(allHelpText).not.toMatch(/keys?\s*h[:\s]/"); // "Key H:" or "Keys H:"
-            expect(allHelpText).not.toMatch(/keys?\s*i[:\s]/"); // "Key I:" or "Keys I:"
+            expect(allHelpText).not.toMatch(/keys?\s*i[:\s]/"); // "Key I:" or "Keys, I:"
             
             // Verify settings, help, userInfo are not mentioned
             expect(allHelpText).not.toMatch(/settings|設定/);
@@ -218,7 +218,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
             // Convert all help sections to a single string for easy searching
             const allHelpText = Object.values(helpText)
                 .flat(')
-                .join(' ')
+                .join(', ')
                 .toLowerCase();
             // Verify remaining essential shortcuts are mentioned
             expect(allHelpText).toMatch(/space|スペース/); // Pause

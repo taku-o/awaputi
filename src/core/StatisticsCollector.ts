@@ -41,7 +41,7 @@ export class StatisticsCollector {
             type: eventType;
             category: category;
             data: data;
-            timestamp: Date.now();
+           , timestamp: Date.now();
     }
             sessionId: this.generateSessionId(); }
         };
@@ -63,7 +63,7 @@ export class StatisticsCollector {
             bubbleType: bubbleData.type;
             position: bubbleData.position);
             reactionTime: bubbleData.reactionTime);
-            comboMultiplier: bubbleData.comboMultiplier, }
+           , comboMultiplier: bubbleData.comboMultiplier, }
             scoreEarned: bubbleData.scoreEarned), this.eventCategories.BUBBLE); }
     }
     
@@ -73,7 +73,7 @@ export class StatisticsCollector {
     collectComboEvent(eventType, comboData) { this.collectEvent(eventType, {
             comboCount: comboData.count);
             comboMultiplier: comboData.multiplier);
-            comboBroken: comboData.broken, }
+           , comboBroken: comboData.broken, }
             totalScore: comboData.totalScore), this.eventCategories.COMBO); }
     }
     
@@ -83,7 +83,7 @@ export class StatisticsCollector {
     collectDamageEvent(eventType, damageData) { this.collectEvent(eventType, {
             damageAmount: damageData.amount);
             damageSource: damageData.source);
-            currentHP: damageData.currentHP, }
+           , currentHP: damageData.currentHP, }
             maxHP: damageData.maxHP), this.eventCategories.DAMAGE); }
     }
     
@@ -93,7 +93,7 @@ export class StatisticsCollector {
     collectHealEvent(eventType, healData) { this.collectEvent(eventType, {
             healAmount: healData.amount);
             healSource: healData.source);
-            currentHP: healData.currentHP, }
+           , currentHP: healData.currentHP, }
             maxHP: healData.maxHP), this.eventCategories.HEAL); }
     }
     
@@ -103,7 +103,7 @@ export class StatisticsCollector {
     collectSpecialEffectEvent(eventType, effectData) { this.collectEvent(eventType, {
             effectType: effectData.type);
             duration: effectData.duration);
-            intensity: effectData.intensity, }
+           , intensity: effectData.intensity, }
             triggeredBy: effectData.triggeredBy), this.eventCategories.SPECIAL_EFFECT); }
     }
     
@@ -113,7 +113,7 @@ export class StatisticsCollector {
     collectUserActionEvent(eventType, actionData) { this.collectEvent(eventType, {
             actionType: actionData.type);
             position: actionData.position);
-            timestamp: actionData.timestamp, }
+           , timestamp: actionData.timestamp, }
             inputDevice: actionData.inputDevice), this.eventCategories.USER_ACTION); }
     }
     
@@ -123,7 +123,7 @@ export class StatisticsCollector {
     collectPerformanceEvent(eventType, performanceData) { this.collectEvent(eventType, {
             frameRate: performanceData.frameRate);
             memoryUsage: performanceData.memoryUsage);
-            processingTime: performanceData.processingTime, }
+           , processingTime: performanceData.processingTime, }
             renderTime: performanceData.renderTime), this.eventCategories.PERFORMANCE); }
     }
     
@@ -378,7 +378,7 @@ export class StatisticsCollector {
             this.processingMetrics = {
                 totalProcessingTime: 0;
                 totalEventsProcessed: 0;
-                averageProcessingTime: 0;
+               , averageProcessingTime: 0;
     }
                 maxProcessingTime: 0 }
             }
@@ -427,7 +427,7 @@ export class StatisticsCollector {
         return { queueSize: this.eventQueue.length,
             bufferSize: Array.from(this.eventBuffer.values().reduce((sum, buffer) => sum + buffer.length, 0),
             processingMetrics: this.processingMetrics;
-            errorMetrics: this.errorMetrics;
+           , errorMetrics: this.errorMetrics;
     ,}
             sessionId: this.sessionId, };
             isProcessing: this.isProcessing }

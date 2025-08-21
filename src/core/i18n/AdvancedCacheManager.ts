@@ -17,28 +17,28 @@ export interface SetOptions { ttl?: number;
 export interface CacheMetadata { key: string,
     createdAt: number;
     lastAccessed: number;
-    accessCount: number,
+   , accessCount: number,
     ttl: number,
     priority: 'low' | 'normal' | 'high';
     originalSize: number;
     compressed: boolean;
     compressedSize?: number;
-    layer: CacheLayer
+   , layer: CacheLayer
     ,}
 
 export interface AccessPattern { totalAccesses: number;
     recentAccesses: number;
     lastAccessTime: number;
     accessIntervals: number[];
-    avgAccessInterval: number }
+   , avgAccessInterval: number }
 
 export interface EvictionCandidate { key: string;
     metadata: CacheMetadata;
     size: number;
-    score: number }
+   , score: number }
 
 export interface CacheStats { totalRequests: number;
-    hitsByLayer: Record<CacheLayer, number>,
+   , hitsByLayer: Record<CacheLayer, number>,
     misses: number;
     evictions: number;
     compressions: number;
@@ -46,31 +46,31 @@ export interface CacheStats { totalRequests: number;
     currentMemoryUsage: number;
     totalEntries: number;
     averageAccessTime: number;
-    accessTimes: number[] ,}
+   , accessTimes: number[] ,}
 
 export interface LayerDetails { entries: number;
     sizeKB: number;
-    hitRate: number }
+   , hitRate: number }
 
 export interface TopAccessPattern { key: string;
     totalAccesses: number;
-    avgInterval: number }
+   , avgInterval: number }
 
 export interface DetailedStats extends CacheStats { hitRate: number;
     memoryUsagePercent: number;
     memoryUsageKB: number;
     maxMemoryKB: number;
-    layerDistribution: Record<CacheLayer, number>,
+   , layerDistribution: Record<CacheLayer, number>,
     layerDetails: Record<CacheLayer, LayerDetails>,
     topAccessPatterns: TopAccessPattern[];
     performanceMode: PerformanceMode;
-    evictionStrategy: EvictionStrategy
+   , evictionStrategy: EvictionStrategy
     ,}
 
 export interface AdaptiveWeights { frequency: number;
     recency: number;
     size: number;
-    ttl: number }
+   , ttl: number }
 
 export interface ConfigurationUpdate { maxMemorySize?: number;
     performanceMode?: PerformanceMode;
@@ -88,7 +88,7 @@ export class AdvancedCacheManager {
     private defaultTTL: number;
     private cleanupInterval: number;
     // 多層キャッシュ構造
-    private layers: Record<CacheLayer, Map<string, string>>;
+    private, layers: Record<CacheLayer, Map<string, string>>;
     
     // メタデータ管理
     private metadata: Map<string, CacheMetadata>;
@@ -107,7 +107,7 @@ export class AdvancedCacheManager {
     private adaptiveWeights: AdaptiveWeights;
     // 圧縮とシリアライゼーション
     private compressionEnabled: boolean;
-    private serializationFormat: SerializationFormat;
+    private, serializationFormat: SerializationFormat;
     // 定期クリーンアップ
     private cleanupIntervalId?: number;
 
@@ -148,7 +148,7 @@ export class AdvancedCacheManager {
             currentMemoryUsage: 0;
             totalEntries: 0;
             averageAccessTime: 0;
-            accessTimes: [];
+           , accessTimes: [];
         },
         ;
         // 削除戦略設定
@@ -156,11 +156,10 @@ export class AdvancedCacheManager {
         this.adaptiveWeights = { frequency: 0.4,
             recency: 0.3;
             size: 0.2;
-            ttl: 0.1 ,};
+           , ttl: 0.1 ,};
         // 圧縮とシリアライゼーション
         this.compressionEnabled = true;''
-        this.serializationFormat = 'json'; // 'json', 'msgpack'
-        ';
+        this.serializationFormat = 'json'; // 'json', 'msgpack', ';
         // 定期クリーンアップの開始
         this.startPeriodicCleanup()';
         console.log('AdvancedCacheManager initialized with', Object.keys(this.layers).length, 'cache layers');
@@ -183,7 +182,7 @@ export class AdvancedCacheManager {
             const metadata: CacheMetadata = { key,
                 createdAt: Date.now(),
                 lastAccessed: Date.now(''';
-                layer: 'hot' // 初期値、後で更新 ,}))
+               , layer: 'hot' // 初期値、後で更新 ,}))
             // 圧縮判定)
             const shouldCompress = compress !== null ? compress: (this.compressionEnabled && dataSize > this.compressionThreshold);
             let finalValue = serializedValue;
@@ -372,8 +371,7 @@ export class AdvancedCacheManager {
 
                     return 'hot'; // 5KB }
                 }''
-                if(priority === 'low' || originalSize > 51200) {'
-                    ';
+                if(priority === 'low' || originalSize > 51200) {', ';
 
                 }
 
@@ -547,7 +545,7 @@ export class AdvancedCacheManager {
             recentAccesses: 0);
             lastAccessTime: Date.now();
             accessIntervals: [];
-            avgAccessInterval: 0 ,});
+           , avgAccessInterval: 0 ,});
     }
     
     /**
@@ -609,7 +607,7 @@ export class AdvancedCacheManager {
     private async _compress(data: string): Promise<string> { // 基本的な圧縮（実際の実装ではより高度な圧縮アルゴリズムを使用）
         try {
             // 簡単な文字列圧縮
-            return data.replace(/\s+/g, ' ').trim();' }
+            return data.replace(/\s+/g, ', ').trim();' }
 
         } catch (error) {
             console.warn('Compression failed:', error);
@@ -756,15 +754,15 @@ export class AdvancedCacheManager {
             memoryUsageKB: Math.round(this.stats.currentMemoryUsage / 1024);
             maxMemoryKB: Math.round(this.maxMemorySize / 1024);
             averageAccessTime: Math.round(this.stats.averageAccessTime * 100) / 100;
-            layerDistribution: {
+           , layerDistribution: {
                 hot: this.layers.hot.size;
-                warm: this.layers.warm.size, };
+               , warm: this.layers.warm.size, };
                 cold: this.layers.cold.size }
             };
             layerDetails: this._getLayerDetails();
             topAccessPatterns: this._getTopAccessPatterns();
             performanceMode: this.performanceMode;
-            evictionStrategy: this.evictionStrategy;
+           , evictionStrategy: this.evictionStrategy;
         },
     }
     
@@ -794,7 +792,7 @@ export class AdvancedCacheManager {
             
             layerDetails[layerName] = { entries: layerEntries,
                 sizeKB: Math.round(layerSize / 1024);
-                hitRate: this.stats.hitsByLayer[layerName] / Math.max(this.stats.totalRequests, 1) * 100 }
+               , hitRate: this.stats.hitsByLayer[layerName] / Math.max(this.stats.totalRequests, 1) * 100 }
         
         return layerDetails;
     }
@@ -808,7 +806,7 @@ export class AdvancedCacheManager {
             .map(([key, pattern]) => ({
                 key,
                 totalAccesses: pattern.totalAccesses);
-                avgInterval: Math.round(pattern.avgAccessInterval / 1000) // seconds ,}
+               , avgInterval: Math.round(pattern.avgAccessInterval / 1000) // seconds ,}
             });
     }
     

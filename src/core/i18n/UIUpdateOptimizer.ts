@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * UI更新最適化システム
@@ -36,14 +36,14 @@ export interface BatchResult { success: boolean,
 
 export interface BatchInfo { batchIndex: number,
     elements: number;
-    updateTime: number ,}
+   , updateTime: number ,}
 
 export interface ElementMeasurement { rect: DOMRect;
     computedStyle: CSSStyleDeclaration;
     offsetWidth: number;
     offsetHeight: number;
     scrollWidth: number;
-    scrollHeight: number;
+   , scrollHeight: number;
     timestamp?: number }
 
 export interface ElementUpdateSpec { element: HTMLElement;
@@ -51,7 +51,7 @@ export interface ElementUpdateSpec { element: HTMLElement;
     newText: string;
     measurement: ElementMeasurement;
     needsReflow: boolean;
-    preserveState: boolean }
+   , preserveState: boolean }
 
 export interface ElementState { value?: string;
     selectionStart?: number;
@@ -63,7 +63,7 @@ export interface OptimizationStrategies { separateReadWrite: boolean,
     deferNonCritical: boolean;
     reuseElements: boolean;
     minimizeReflow: boolean;
-    useVirtualDOM: boolean ,}
+   , useVirtualDOM: boolean ,}
 
 export interface PerformanceMetrics { updateCount: number;
     batchCount: number;
@@ -71,7 +71,7 @@ export interface PerformanceMetrics { updateCount: number;
     totalUpdateTime: number;
     reflowCount: number;
     repaintCount: number;
-    cacheHitRate: number }
+   , cacheHitRate: number }
 
 export interface UIUpdateStats { totalUpdates: number;
     batchedUpdates: number;
@@ -80,12 +80,12 @@ export interface UIUpdateStats { totalUpdates: number;
     cacheMisses: number;
     deferredUpdates: number;
     averageBatchSize: number;
-    totalBatchTime: number }
+   , totalBatchTime: number }
 
 export interface DetailedStats extends UIUpdateStats, PerformanceMetrics { cacheSize: number,
     visibleElements: number;
     deferredElements: number;
-    strategiesEnabled: string[] ,}
+   , strategiesEnabled: string[] ,}
 
 export interface UIOptimizerConfig { enabled?: boolean;
     batchMode?: boolean;
@@ -114,12 +114,12 @@ export class UIUpdateOptimizer {
     private maxBatchSize: number;
     private priorityLevels: PriorityLevel[];
     // バッチ処理管理
-    private pendingUpdates: Map<string, any>;
+    private, pendingUpdates: Map<string, any>;
     private updateQueue: any[];
     private batchTimer: NodeJS.Timeout | null;
     private processingBatch: boolean;
     // DOM測定キャッシュ
-    private measurementCache: Map<string, ElementMeasurement>;
+    private, measurementCache: Map<string, ElementMeasurement>;
     private layoutCache: Map<string, any>;
     private computedStyleCache: Map<string, any>;
     private cacheInvalidationTime: number;
@@ -128,7 +128,7 @@ export class UIUpdateOptimizer {
     // パフォーマンス監視
     private performanceMetrics: PerformanceMetrics;
     // 要素プール
-    private elementPool: Map<string, HTMLElement[]>;
+    private, elementPool: Map<string, HTMLElement[]>;
     private pooledElements: Set<HTMLElement>;
     // Intersection Observer
     private intersectionObserver: IntersectionObserver | null;
@@ -167,7 +167,7 @@ export class UIUpdateOptimizer {
             useDocumentFragment: true;
             deferNonCritical: true;
             reuseElements: true;
-            minimizeReflow: true;
+           , minimizeReflow: true;
     ,}
             useVirtualDOM: false // 将来の拡張用 }
         };
@@ -178,7 +178,7 @@ export class UIUpdateOptimizer {
             totalUpdateTime: 0;
             reflowCount: 0;
             repaintCount: 0;
-            cacheHitRate: 0 ,};
+           , cacheHitRate: 0 ,};
         // 要素プール
         this.elementPool = new Map<string, HTMLElement[]>();
         this.pooledElements = new Set<HTMLElement>();
@@ -199,7 +199,7 @@ export class UIUpdateOptimizer {
             cacheMisses: 0;
             deferredUpdates: 0;
             averageBatchSize: 0;
-            totalBatchTime: 0 ,};
+           , totalBatchTime: 0 ,};
         ;
         // 初期化
         this.initialize()';
@@ -227,7 +227,7 @@ export class UIUpdateOptimizer {
     async optimizeLanguageSwitchUpdate(;
         elements: HTMLElement[]
     );
-        translationData: Record<string, string>);
+       , translationData: Record<string, string>);
         options: UIUpdateOptions = { '): Promise<UpdateResult>;''
         const startTime = performance.now(''';
                 priority = 'normal',
@@ -270,7 +270,7 @@ export class UIUpdateOptimizer {
     private async processImmediateUpdate(;
         elements: HTMLElement[]
     );
-        translationData: Record<string, string>);
+       , translationData: Record<string, string>);
         options: UIUpdateOptions = { ): Promise<UpdateResult>;
         const startTime = performance.now();
         
@@ -302,11 +302,11 @@ export class UIUpdateOptimizer {
 
             return { success: true,''
                 type: 'immediate';
-                elementsUpdated: elements.length;
+               , elementsUpdated: elements.length;
                 updateTime, };
                 deferredElements: deferHidden.length }
             } catch (error) {
-            throw new Error(`Immediate, update failed: ${(error, as Error}).message}`);
+            throw new Error(`Immediate, update failed: ${(error, as, Error}).message}`);
         }
     }
     
@@ -316,7 +316,7 @@ export class UIUpdateOptimizer {
     private async processBatchedUpdate(;
         elements: HTMLElement[]
     );
-        translationData: Record<string, string>);
+       , translationData: Record<string, string>);
         options: UIUpdateOptions = {}
     ): Promise<UpdateResult>;
         const startTime = performance.now();
@@ -355,10 +355,10 @@ export class UIUpdateOptimizer {
                 elementsUpdated: elements.length;
                 batchCount: results.length;
                 updateTime: totalUpdateTime;
-                deferredElements: deferHidden.length, };
+               , deferredElements: deferHidden.length, };
                 batchResults: results }
             } catch (error) {
-            throw new Error(`Batched, update failed: ${(error, as Error}).message}`);
+            throw new Error(`Batched, update failed: ${(error, as, Error}).message}`);
         }
     }
     
@@ -402,8 +402,7 @@ export class UIUpdateOptimizer {
         if(element.classList.contains('low-priority)) return 'low';
         
         // 要素タイプでの判定
-        const tagPriority: Record<string, PriorityLevel> = { ''
-            'H1': 'critical', 'H2': 'high', 'H3': 'high',
+        const tagPriority: Record<string, PriorityLevel> = { '', 'H1': 'critical', 'H2': 'high', 'H3': 'high',
             'BUTTON': 'high', 'INPUT': 'high', 'LABEL': 'high',
             'P': 'normal', 'SPAN': 'normal', 'DIV': 'normal',
             'SMALL': 'low', 'FOOTER': 'low' };
@@ -417,7 +416,7 @@ export class UIUpdateOptimizer {
     private async processPriorityBatch(;
         elements: HTMLElement[]
     );
-        translationData: Record<string, string>);
+       , translationData: Record<string, string>);
         options: UIUpdateOptions;
     ): Promise<BatchResult>,
         const startTime = performance.now();
@@ -457,7 +456,7 @@ export class UIUpdateOptimizer {
                 priority,
                 batchCount: batches.length;
                 totalElements: elements.length;
-                updateTime: performance.now() - startTime, };
+               , updateTime: performance.now() - startTime, };
                 batches: batchResults }
             } catch (error) { return { success: false,
                 priority,
@@ -469,8 +468,7 @@ export class UIUpdateOptimizer {
     /**
      * 優先度に応じたバッチサイズを取得'
      */''
-    private getBatchSizeForPriority(priority: PriorityLevel): number { const batchSizes: Record<PriorityLevel, number> = {''
-            'critical': Math.floor(this.maxBatchSize * 0.3), // 30%;
+    private getBatchSizeForPriority(priority: PriorityLevel): number { const batchSizes: Record<PriorityLevel, number> = {'', 'critical': Math.floor(this.maxBatchSize * 0.3), // 30%;
             'high': Math.floor(this.maxBatchSize * 0.5),     // 50%;
             'normal': this.maxBatchSize,                     // 100%;
             'low': Math.floor(this.maxBatchSize * 1.5)      // 150% };
@@ -508,7 +506,7 @@ export class UIUpdateOptimizer {
                     computedStyle: window.getComputedStyle(element);
                     offsetWidth: element.offsetWidth;
                     offsetHeight: element.offsetHeight;
-                    scrollWidth: element.scrollWidth, }
+                   , scrollWidth: element.scrollWidth, }
                     scrollHeight: element.scrollHeight }
                 };
                 measurements.set(element, measurement);
@@ -528,7 +526,7 @@ export class UIUpdateOptimizer {
     private async prepareBatchUpdates(;
         elements: HTMLElement[]
     );
-        translationData: Record<string, string>);
+       , translationData: Record<string, string>);
         measurements: Map<HTMLElement, ElementMeasurement>;
     ): Promise<ElementUpdateSpec[]>;
         const updates: ElementUpdateSpec[] = [],
@@ -555,7 +553,7 @@ export class UIUpdateOptimizer {
     private async prepareElementUpdate(;
         element: HTMLElement
     );
-        translationData: Record<string, string>);
+       , translationData: Record<string, string>);
         measurement: ElementMeasurement;
     ): Promise<ElementUpdateSpec | null>,
         try { // 翻訳キーを取得
@@ -695,7 +693,7 @@ export class UIUpdateOptimizer {
     private scheduleDeferredUpdate(;
         elements: HTMLElement[]
     );
-        translationData: Record<string, string>);
+       , translationData: Record<string, string>);
         options: UIUpdateOptions;
     ): void { this.stats.deferredUpdates += elements.length,
         
@@ -727,7 +725,7 @@ export class UIUpdateOptimizer {
         element: HTMLElement;
         oldText: string );
         newText: string);
-        measurement: ElementMeasurement;
+       , measurement: ElementMeasurement;
     ): boolean { const lengthRatio = newText.length / Math.max(oldText.length, 1);
         // テキスト長が大幅に変わる場合
         if(lengthRatio < 0.5 || lengthRatio > 2.0) return true;
@@ -849,7 +847,7 @@ export class UIUpdateOptimizer {
             });
             
             this.mutationObserver.observe(document.body, { childList: true)
-                characterData: true,);
+               , characterData: true,);
                 subtree: true ,}
     }
     
@@ -904,7 +902,7 @@ export class UIUpdateOptimizer {
      */''
     getStats()';
             deferredElements: document.querySelectorAll('[data-deferred-update]).length;
-            strategiesEnabled: Object.entries(this.strategies);
+           , strategiesEnabled: Object.entries(this.strategies);
                 .filter(([, enabled]) => enabled);
                 .map(([strategy]) => strategy);
         }

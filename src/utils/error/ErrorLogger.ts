@@ -8,7 +8,7 @@ interface ErrorInfo { id: string,
     timestamp: string;
     context: string;
     message: string;
-    name: string;
+   , name: string;
     stack?: string;
     metadata?: Record<string, any>;
     recovered?: boolean; }
@@ -17,18 +17,18 @@ interface ErrorStats { total: number,
     byType: Map<string, number>;
     byContext: Map<string, number>;
     critical: number;
-    recovered: number ,}
+   , recovered: number ,}
 
 interface MainController { isBrowser?: boolean;
     isNode?: boolean;
-    determineSeverity?: (error: ErrorInfo) => string ,}
+    determineSeverity?: (erro;r: ErrorInfo) => string ,}
 }
 
 interface LogEntry { level: string;
     timestamp: string;
     id: string;
     context: string;
-    message: string;
+   , message: string;
     stack?: string;
     metadata?: Record<string, any>;
     [key: string]: any, }
@@ -36,8 +36,8 @@ interface LogEntry { level: string;
 interface ExportOptions { format?: 'json' | 'csv';
     includeStack?: boolean;
     timeRange?: {
-        start: number;
-        end: number ,} | null;
+        star;t: number;
+       , end: number ,} | null;
     severityFilter?: string | null;
     contextFilter?: string | null;
 }
@@ -47,23 +47,23 @@ interface HealthMetrics { totalErrors: number,
     criticalErrorsCount: number;
     logSizeUsage: number;
     recoveryRate: number;
-    lastErrorTime: string | null ,}
+   , lastErrorTime: string | null ,}
 
 interface ArchivedLogData { rotatedAt: string;
     errorCount: number;
     statistics: ErrorStats;
-    errors: ErrorInfo[]
+   , errors: ErrorInfo[]
     }
 
 interface ExportData { exportedAt: string;
     errorCount: number;
     statistics: ErrorStats;
-    errors: Array<{
-        id: string;
+   , errors: Array<{
+        i;d: string;
         timestamp: string;
         context: string;
         message: string;
-        name: string;
+       , name: string;
         metadata?: Record<string, any>;
         recovered?: boolean;
         stack?: string; }>;
@@ -75,7 +75,7 @@ export class ErrorLogger {
     private mainController: MainController;
     private errorLog: ErrorInfo[];
     private maxLogSize: number;
-    private errorStats: ErrorStats;
+    private, errorStats: ErrorStats;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -87,7 +87,7 @@ export class ErrorLogger {
         // Error statistics
         this.errorStats = {
             total: 0;
-            byType: new Map(),
+           , byType: new Map(),
             byContext: new Map(''
     ,})'
         console.log('[ErrorLogger] Error, logging component, initialized'), }'
@@ -132,7 +132,7 @@ export class ErrorLogger {
         console[logMethod as keyof Console](`[${severity}] ${errorInfo.context}: ${errorInfo.message}`, { id: errorInfo.id,
             timestamp: errorInfo.timestamp;
             metadata: errorInfo.metadata);
-            stack: errorInfo.stack ,});
+           , stack: errorInfo.stack ,});
     }
     
     /**
@@ -149,7 +149,7 @@ export class ErrorLogger {
             context: errorInfo.context;
             message: errorInfo.message;
             stack: errorInfo.stack;
-            metadata: errorInfo.metadata;
+           , metadata: errorInfo.metadata;
             ...additionalData;
         
         // Enhanced logging for different environments
@@ -162,10 +162,10 @@ export class ErrorLogger {
      * @param severity - Error severity
      */''
     private logBrowserError(logEntry: LogEntry, severity: string): void { const styles: Record<string, string> = {''
-            CRITICAL: 'color: white; background-color: red; font-weight: bold; padding: 2px 6px;',''
-            HIGH: 'color: white; background-color: orange; font-weight: bold; padding: 2px 6px;',''
-            MEDIUM: 'color: white; background-color: #ff9900; padding: 2px 6px;',''
-            LOW: 'color: #666; padding: 2px 6px;' ,};
+            CRITICAL: 'color: white; background-color: red; font-weight: bold;, padding: 2px 6px;',''
+            HIGH: 'color: white; background-color: orange; font-weight: bold;, padding: 2px 6px;',''
+            MEDIUM: 'color: white; background-color: #ff9900;, padding: 2px 6px;',''
+            LOW: 'color: #666;, padding: 2px 6px;' ,};
         ';
 
         console.log()'';
@@ -292,13 +292,13 @@ export class ErrorLogger {
         const exportData: ExportData = { exportedAt: new Date().toISOString(),
             errorCount: filteredErrors.length;
             statistics: this.getErrorStats();
-            errors: filteredErrors.map(error => ({
+           , errors: filteredErrors.map(error => ({
                 id: error.id;
                 timestamp: error.timestamp;
                 context: error.context;
                 message: error.message);
                 name: error.name);
-                metadata: error.metadata,);
+               , metadata: error.metadata,);
                 recovered: error.recovered);
                 ...(includeStack && { stack: error.stack ),' }'
 
@@ -324,8 +324,7 @@ export class ErrorLogger {
         for(const, error of, errors) {
         ';
 
-            const row = headers.map(header => { ')'
-        '
+            const row = headers.map(header => { ')', '
         }
 
                 let value = error[header]');' }
@@ -376,7 +375,7 @@ export class ErrorLogger {
      */
     rotateLog(): ArchivedLogData { const archived: ArchivedLogData = {
             rotatedAt: new Date().toISOString();
-            errorCount: this.errorLog.length, }
+           , errorCount: this.errorLog.length, }
             statistics: { ...this.getErrorStats();
             errors: [...this.errorLog];,
         

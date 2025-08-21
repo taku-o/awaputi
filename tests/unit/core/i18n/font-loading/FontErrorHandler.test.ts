@@ -1,5 +1,5 @@
-import { jest } from '@jest/globals';
-import { FontErrorHandler } from '../../../../../src/core/i18n/font-loading/FontErrorHandler.js';
+import { jest  } from '@jest/globals';
+import { FontErrorHandler  } from '../../../../../src/core/i18n/font-loading/FontErrorHandler.js';
 // Type definitions
 interface FontContext {
     source: string,
@@ -7,7 +7,7 @@ interface FontContext {
 }
 interface ErrorStats {
     [source: string]: {
-        [errorType: string]: number,
+        [errorTyp;e: string]: number,
     };
 }
 interface FontErrorConfig {
@@ -15,7 +15,7 @@ interface FontErrorConfig {
     suppressRepeated?: boolean;
     maxErrorsPerSource?: number;
     development?: {
-        verboseLogging?: boolean;
+        verboseLoggin;g?: boolean;
     };
 }
 interface ConsoleSpy {

@@ -8,17 +8,17 @@ interface BackupRecord { originalPath: string,
     lastModified: Date | null;
     backupTimestamp: string;
     backupCreated: boolean;
-    error: string | null ,}
+   , error: string | null ,}
 
 interface RemovalResult { deleted: boolean;
     error: string | null;
-    timestamp: string }
+   , timestamp: string }
 
 interface VerificationResult { verified: boolean;
-    error: string | null }
+   , error: string | null }
 
 interface RollbackResult { rolledBack: boolean;
-    error: string | null;
+   , error: string | null;
     restoredPath?: string }
 
 interface SafeRemovalResult { filePath: string;
@@ -29,7 +29,7 @@ interface SafeRemovalResult { filePath: string;
     timestamp: string;
     backupRecord: BackupRecord | null;
     removalResult: RemovalResult | null;
-    verificationResult: VerificationResult | null;
+   , verificationResult: VerificationResult | null;
     rollbackResult?: RollbackResult
     }
 
@@ -37,10 +37,10 @@ export interface DeletionResults { results: SafeRemovalResult[];
     totalFiles: number;
     successCount: number;
     failureCount: number;
-    timestamp: string }
+   , timestamp: string }
 
 interface BackupCleanupResult { cleanedCount: number;
-    totalOld: number;
+   , totalOld: number;
     cutoffDate?: string;
     error?: string; }
 
@@ -82,7 +82,7 @@ export class FileRemover {
                 lastModified: stats.mtime;
                 backupTimestamp: new Date().toISOString();
                 backupCreated: true;
-                error: null ,};
+               , error: null ,};
             // Save backup metadata
             const metadataPath = path.join(this.backupDirectory, `${timestamp}_${ fileName}.meta.json`}
             await fs.promises.writeFile(metadataPath, JSON.stringify(backupRecord, null, 2)});
@@ -96,9 +96,9 @@ export class FileRemover {
                 fileName: path.basename(filePath);
                 fileSize: 0;
                 lastModified: null;
-                backupTimestamp: new Date().toISOString(), };
+               , backupTimestamp: new Date().toISOString(), };
                 backupCreated: false, }
-                error: `Failed to create backup: ${errorMessage}`
+                error: `Failed to create, backup: ${errorMessage}`
             }
     }
 
@@ -113,7 +113,7 @@ export class FileRemover {
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return {  };
                 deleted: false, }
-                error: `Failed to delete file: ${errorMessage}`;
+                error: `Failed to delete, file: ${errorMessage}`;
                 timestamp: new Date().toISOString();
             }
     }
@@ -136,7 +136,7 @@ export class FileRemover {
                 }''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return { verified: false, 
-                error: `Error verifying removal: ${errorMessage,}`
+                error: `Error verifying, removal: ${errorMessage,}`
             };
 ';
 
@@ -160,7 +160,7 @@ export class FileRemover {
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return {  };
                 rolledBack: false, }
-                error: `Failed to rollback: ${errorMessage}`
+                error: `Failed to, rollback: ${errorMessage}`
             }
     }
 
@@ -173,7 +173,7 @@ export class FileRemover {
             timestamp: new Date().toISOString();
             backupRecord: null;
             removalResult: null;
-            verificationResult: null ,};
+           , verificationResult: null ,};
         try { // Step 1: Create backup
             const backupRecord = await this.createBackupRecord(filePath);
             result.backupRecord = backupRecord;
@@ -214,7 +214,7 @@ export class FileRemover {
                 result.rollbackResult = rollbackResult;''
             } catch (error) {
             const errorMessage = error instanceof Error ? error.message: 'Unknown error' 
-            result.error = `Unexpected error during removal: ${errorMessage}`;
+            result.error = `Unexpected error during, removal: ${errorMessage}`;
         }
 
         return result;

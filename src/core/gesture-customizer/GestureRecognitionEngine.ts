@@ -25,7 +25,7 @@ export interface GesturePattern { type: GestureType,
     action: string;
     alternatives?: string[];
     oneHandedOnly?: boolean;
-    customMatcher?: (gestureData: GestureData) => number ,}
+    customMatcher?: (gestureDat;a: GestureData) => number ,}
 }
 
 export interface GestureData { type?: GestureInputType;
@@ -50,22 +50,22 @@ export interface Position { x: number,
 export interface TouchPoint { id: number;
     x: number;
     y: number;
-    force: number }
+   , force: number }
 
 export interface RecognitionResult { gesture: string;
-    confidence: number;
+   , confidence: number;
     isPrediction?: boolean;
     pattern?: GesturePattern;
     alternativeActions?: string[]; }
 
-export interface GestureRecognizer { recognize: (gestureData: GestureData) => RecognitionResult | null }
+export interface GestureRecognizer { recognize: (gestureDat;a: GestureData) => RecognitionResult | null }
 }
 
 export interface EngineStats { totalPatterns: number,
     customPatterns: number;
     recognizers: number;
     recognitionThreshold: number;
-    bufferSize: number;
+   , bufferSize: number;
     recognitionRate?: number;
     averageConfidence?: number;
     successfulRecognitions?: number;
@@ -77,17 +77,17 @@ export interface PatternMatchingResult { matches: boolean,
 
 export interface ThresholdAdjustment { gesture: string,
     parameter: string;
-    oldRange: [number, number],
+   , oldRange: [number, number],
     newRange: [number, number],
     improvement: number ,}
 
 export interface RecognitionBuffer { data: GestureData[];
     maxSize: number;
-    currentIndex: number }
+   , currentIndex: number }
 
 // 列挙型
 export type GestureType = ;
-    | 'touch' | 'swipe' | 'pinch' | 'edgeSwipe' '';
+    | 'touch' | 'swipe' | 'pinch' | 'edgeSwipe', '';
     | 'cornerTap' | 'custom' | 'sequence';
 
 export type GestureInputType = 'touch' | 'mouse' | 'keyboard' | 'gamepad';
@@ -119,12 +119,12 @@ export function isOneHandedGesture(pattern: GesturePattern): boolean { return pa
 
 export class GestureRecognitionEngine {
     private config: GestureRecognitionConfig;
-    private gesturePatterns: Map<string, GesturePattern>;
+    private, gesturePatterns: Map<string, GesturePattern>;
     private customGestures: Map<string, GesturePattern>;
     private recognizers: Map<string, GestureRecognizer>;
     private recognitionThreshold: number;
     private maxBufferSize: number;
-    private gestureBuffer: GestureData[]';
+    private, gestureBuffer: GestureData[]';
 
     constructor(config: GestureRecognitionConfig = {)) {
         this.config = config;
@@ -133,7 +133,7 @@ export class GestureRecognitionEngine {
         this.gesturePatterns = new Map<string, GesturePattern>([// 基本ジェスチャー;
             ['tap', {''
                 type: 'touch'];
-                fingers: 1,];
+               , fingers: 1,];
                 duration: [50, 300],
                 movement: [0, 10],
                 action: 'click',
@@ -142,7 +142,7 @@ export class GestureRecognitionEngine {
             }],''
             ['longPress', { ''
                 type: 'touch'];
-                fingers: 1,];
+               , fingers: 1,];
                 duration: [800, 2000],
                 movement: [0, 15],
                 action: 'contextMenu',
@@ -151,7 +151,7 @@ export class GestureRecognitionEngine {
             }],''
             ['doubleTap', { ''
                 type: 'touch'];
-                fingers: 1,];
+               , fingers: 1,];
                 duration: [50, 200],
                 interval: [50, 400],
                 movement: [0, 20],
@@ -195,7 +195,7 @@ export class GestureRecognitionEngine {
             // マルチタッチジェスチャー
             ['pinchIn', { ''
                 type: 'pinch'];
-                fingers: 2,]';
+               , fingers: 2,]';
                 scale: [0.5, 1.0],
                 action: 'zoomOut',
                 alternatives: ['ctrl+-', 'minus] }
@@ -203,7 +203,7 @@ export class GestureRecognitionEngine {
             }],''
             ['pinchOut', { ''
                 type: 'pinch'];
-                fingers: 2,]';
+               , fingers: 2,]';
                 scale: [1.0, 2.0],
                 action: 'zoomIn',
                 alternatives: ['ctrl+=', 'plus] }
@@ -211,7 +211,7 @@ export class GestureRecognitionEngine {
             }],''
             ['twoFingerTap', { ''
                 type: 'touch'];
-                fingers: 2,];
+               , fingers: 2,];
                 duration: [50, 300],
                 movement: [0, 20],
                 action: 'rightClick',
@@ -220,7 +220,7 @@ export class GestureRecognitionEngine {
             }],''
             ['threeFingerTap', { ''
                 type: 'touch'];
-                fingers: 3,];
+               , fingers: 3,];
                 duration: [50, 300],
                 movement: [0, 30],
                 action: 'showMenu',
@@ -249,7 +249,7 @@ export class GestureRecognitionEngine {
                 corner: 'topRight',]';
                 size: [50, 50],
                 action: 'quickAction')';
-                oneHandedOnly: true,
+               , oneHandedOnly: true,
                 alternatives: ['doubleTap] ,}]'
         ]);
         // カスタマイズされたジェスチャー
@@ -629,7 +629,7 @@ export class GestureRecognitionEngine {
                 gesture: gestureName,
                 parameter: 'duration);
                 oldRange);
-                newRange: [...pattern.duration], }
+               , newRange: [...pattern.duration], }
                 improvement: adjustment); }
         }
         
@@ -643,7 +643,7 @@ export class GestureRecognitionEngine {
                 gesture: gestureName,
                 parameter: 'distance);
                 oldRange);
-                newRange: [...pattern.distance], }
+               , newRange: [...pattern.distance], }
                 improvement: adjustment); }
         }
         
@@ -739,7 +739,7 @@ export class GestureRecognitionEngine {
             // 拡張統計（将来の実装用）
             recognitionRate: undefined;
             averageConfidence: undefined;
-            successfulRecognitions: undefined, };
+           , successfulRecognitions: undefined, };
             failedRecognitions: undefined }
         }
     
@@ -808,7 +808,7 @@ export class GestureRecognitionEngine {
             config: this.config;
             recognitionThreshold: this.recognitionThreshold;
             maxBufferSize: this.maxBufferSize;
-            customGestures: Object.fromEntries(this.customGestures };
+           , customGestures: Object.fromEntries(this.customGestures };
         
         return JSON.stringify(config, null, 2);
     }

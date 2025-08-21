@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * MainMenuScene.test.js
  * 
@@ -6,7 +6,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * Issue #171 - Shop button main menu addition
  * Task 4 - MainMenuScene unit tests
  */
-import { MainMenuScene } from '../../src/scenes/MainMenuScene';
+import { MainMenuScene  } from '../../src/scenes/MainMenuScene';
 // DOM APIのモック
 const mockDocument = {
     fullscreenElement: null,
@@ -57,7 +57,7 @@ describe('MainMenuScene Shop Button Tests', () => {
             canvas: mockCanvas,
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true;);
-                switchScene: jest.fn(').mockReturnValue(true,
+               , switchScene: jest.fn(').mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'MainMenuScene' }
                 }),

@@ -6,7 +6,7 @@
  * 生成日時: 2025-07-27T05:47:08.417Z
  * 生成器バージョン: 1.0.0
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Types
 interface BaseScores {
     normal: number,
@@ -27,7 +27,7 @@ interface BubbleConfig {
 }
 interface GameBalanceConfig {
     scoring: {
-        baseScores: BaseScores,
+        baseScore;s: BaseScores,
         [key: string]: any
     },
     bubbles: {

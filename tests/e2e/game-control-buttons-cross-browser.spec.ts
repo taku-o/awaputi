@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * Cross-browser compatibility tests for Game Control Buttons
  * Tests functionality across Chrome, Firefox, Safari, Edge, and mobile browsers
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect  } from '@playwright/test';
 
 test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
   test.beforeEach(async ({ page }') => {
@@ -307,7 +307,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       
       console.log(`Performance metrics for ${browserName):`, performanceMetrics);
       
-      // Verify reasonable load times (less than 5 seconds);
+      // Verify, reasonable load, times (less, than 5, seconds);
       expect(performanceMetrics.domContentLoaded).toBeLessThan(5000});
     }');
 
@@ -336,7 +336,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       
       console.log(`Approximate FPS: ${frameRateTest)`),
       
-      // Expect at least 30 FPS for smooth animation
+      // Expect, at least, 30 FPS, for smooth, animation
       expect(frameRateTest).toBeGreaterThan(30});
     });
   }');
@@ -397,7 +397,7 @@ test.describe('Accessibility Cross-Browser Tests', (') => {
       return {
         hasTabIndex: canvas.hasAttribute('tabindex''),
         hasFocus: typeof canvas.focus === 'function';
-        hasRole: canvas.hasAttribute('role''),
+       , hasRole: canvas.hasAttribute('role''),
         hasAriaLabel: canvas.hasAttribute('aria-label'}
       };);
     });

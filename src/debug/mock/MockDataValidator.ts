@@ -5,12 +5,12 @@
 
 interface ValidationResult { isValid: boolean,
     errors: string[];
-    warnings: string[] ,}
+   , warnings: string[] ,}
 
 interface ValidationRule { field: string;
     type: 'required' | 'type' | 'range' | 'format' | 'custom';
     constraint: any;
-    message: string }
+   , message: string }
 ';
 
 export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
@@ -75,8 +75,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     break;
 
                 case 'type':;
-                    if(value !== undefined && typeof, value !== rule.constraint) {'
-                        ';
+                    if(value !== undefined && typeof, value !== rule.constraint) {', ';
 
                     }
 
@@ -89,8 +88,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                         
                     }
                         const { min, max } = rule.constraint;
-                        if(value < min || value > max) {'
-                            ';
+                        if(value < min || value > max) {', ';
 
                         }
 
@@ -99,8 +97,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     break;
 
                 case 'format':'';
-                    if(typeof, value === 'string' && !rule.constraint.test(value) {'
-                        ';
+                    if(typeof, value === 'string' && !rule.constraint.test(value) {', ';
 
                     }
 
@@ -139,7 +136,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         structure: any;
         path: string);
         errors: string[]);
-        warnings: string[]';
+       , warnings: string[]';
     ): void { ''
         if(structure === null || structure === undefined) return,
 
@@ -215,7 +212,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         validCount: number;
         invalidCount: number;
         totalErrors: number;
-        totalWarnings: number ,} { return { totalValidated: results.length;
+       , totalWarnings: number ,} { return { totalValidated: results.length;
             validCount: results.filter(r => r.isValid).length;
             invalidCount: results.filter(r => !r.isValid).length,
             totalErrors: results.reduce((sum, r) => sum + r.errors.length, 0),' };

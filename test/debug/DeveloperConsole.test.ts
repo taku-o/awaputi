@@ -3,8 +3,8 @@
  * DeveloperConsole クラスのユニットテスト
  * TypeScript移行 - Task 27対応
  */
-import { jest } from '@jest/globals';''
-import { JSDOM } from 'jsdom';'
+import { jest  } from '@jest/globals';''
+import { JSDOM  } from 'jsdom';'
 // DOM environment setup''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
@@ -37,7 +37,7 @@ interface PerformanceOptimizer { getCurrentFPS: MockFunction<number>; }
 }
 // Game engine interface
 interface MockGameEngine {
-    canvas: { mock: string }
+    canvas: { moc;k: string }
     sceneManager: { mock: string }
     inputManager: { mock: string }
     performanceOptimizer: PerformanceOptimizer,
@@ -62,8 +62,8 @@ interface CommandConfig { description?: string;
     aliases?: string[];
     category?: string;
     hidden?: boolean;
-    execute: (args: string[]) => any,
-    getCompletions?: (args: string[]) => string[]; }
+    execute: (arg;s: string[]) => any,
+    getCompletions?: (arg;s: string[]) => string[]; }
 }
 interface ParsedInput { command: string | null,
     args: string[]; }
@@ -130,8 +130,7 @@ interface CommandRegistry { commands: Map<string, CommandConfig>;
         getAllDefaults: jest.fn() as unknown as MockFunction<any>,
         validate: jest.fn() as unknown as MockFunction<boolean>,
         validateAll: jest.fn() as unknown as MockFunction<boolean> }'
-    })''
-'),';
+    })'', '),';
 // Import after mocking''
 const { DeveloperConsole, CommandRegistry } = await import('../../src/debug/DeveloperConsole.js') as unknown as { DeveloperConsole: new (gameEngine: MockGameEngine) => DeveloperConsole;'' }
     CommandRegistry: new (console: ConsoleLike') => CommandRegistry; }'
@@ -232,8 +231,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             expect(lines[lines.length - 2].type').toBe('info');' }'
             expect(lines[lines.length - 1].type').toBe('success'););' }'
         }');''
-        test('should limit output lines', (') => {  devConsole.output.maxLines = 3;'
-            '';
+        test('should limit output lines', (') => {  devConsole.output.maxLines = 3;', '';
             devConsole.print('Line 1'');''
             devConsole.print('Line 2'');''
             devConsole.print('Line 3'');''
@@ -339,8 +337,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             devConsole.navigateHistory(1);' }'
             expect(devConsole.inputElement.value').toBe('command2'););' }'
         }');''
-        test('should limit history size', (') => {  devConsole.state.maxHistorySize = 3;'
-            '';
+        test('should limit history size', (') => {  devConsole.state.maxHistorySize = 3;', '';
             devConsole.inputElement.value = 'command1';''
             devConsole.executeCommand(''';
             devConsole.inputElement.value = 'command2';''
@@ -357,8 +354,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             devConsole.inputElement.value = 'same command';''
             devConsole.executeCommand('' }')
             devConsole.inputElement.value = 'same command'; })'
-            devConsole.executeCommand(}')'
-            ');''
+            devConsole.executeCommand(}')', ');''
             expect(devConsole.state.history.filter(cmd => cmd === 'same command'}).toHaveLength(1');'
         }''
         test('should show command history', (') => {  ''
@@ -393,8 +389,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             expect(devConsole.state.visible).toBe(true);''
         }');''
         test('should handle Escape key to hide console', () => {  }'
-            devConsole.show(}')'
-            ');''
+            devConsole.show(}')', ');''
             const event = new KeyboardEvent('keydown', { key: 'Escape' }');''
             const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
             document.dispatchEvent(event);
@@ -469,7 +464,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
         test('should register custom command', (') => {''
             const result: boolean = devConsole.registerCommand('test', {') }'
                 description: 'Test command'),' }'
-                execute: (args: string[]') => `Test result: ${args.join(' '})}`
+                execute: (args: string[]') => `Test result: ${args.join(', '})}`
             }),'
             expect(result).toBe(true);''
             expect(devConsole.commandRegistry.getCommandNames()').toContain('test');''
@@ -563,7 +558,7 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
     describe('Command Execution', () => {  ''
         beforeEach((') => {' }'
             registry.register('echo', {);' }'
-                execute: (args: string[]') => args.join(' '}'),'
+                execute: (args: string[]') => args.join(', '}'),'
             }''
             registry.register('add', { );
                 execute: (args: string[]) => {  }
@@ -637,7 +632,7 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
             expect(parsed.args).toEqual([]);' }'
         }');''
         test('should handle whitespace-only input', (') => {  ''
-            const parsed: ParsedInput = registry.parseInput('   '),
+            const parsed: ParsedInput = registry.parseInput(', '),
             expect(parsed.command).toBeNull(); }'
             expect(parsed.args).toEqual([]);' }'
         }');'
@@ -771,8 +766,7 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
         test('should execute config.set command', async () => {  mockGameEngine.configurationManager.get.mockReturnValue(10); // original value'
             mockGameEngine.configurationManager.set.mockReturnValue(true);''
             const devConsole = new DeveloperConsole(mockGameEngine');''
-            await devConsole.execute('config.set game.scoring.baseScores.normal 25');'
-            '';
+            await devConsole.execute('config.set game.scoring.baseScores.normal 25');', '';
             expect(mockGameEngine.configurationManager.set').toHaveBeenCalledWith(')';
                 'game.scoring.baseScores.normal', );
                 25);

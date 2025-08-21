@@ -1,7 +1,7 @@
 /**
  * ShareContentGenerator テスト
  */
-import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';''
+import { describe, test, expect, jest, beforeEach, afterEach  } from '@jest/globals';''
 import type { ShareContentGenerator } from '../core/ShareContentGenerator';''
 import type { LocalizationManager } from '../core/LocalizationManager';
 // Mock interfaces
@@ -25,8 +25,8 @@ interface ChallengeData { name: string,
 interface GeneratedMessage { message: string,
     platform: string;
     language: string;
-    metadata: {
-        originalScore?: number;
+   , metadata: {
+        originalScor;e?: number;
         achievementId?: string;
         challengeType?: string;
         isFallback?: boolean;

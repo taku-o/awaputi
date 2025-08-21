@@ -20,7 +20,7 @@ export interface AccessibilityCategoryStats {
 
 export interface TranslationStats { loadedLanguages: string[];
     languageCount: number;
-    translations: Record<string, TranslationCategoryStats>,
+   , translations: Record<string, TranslationCategoryStats>,
     accessibilityTranslations: Record<string, AccessibilityCategoryStats>, }
 
 export interface TranslationSearchOptions { caseSensitive?: boolean;
@@ -30,13 +30,13 @@ export interface TranslationSearchOptions { caseSensitive?: boolean;
 export interface TranslationSearchResult { language: string,
     key: string;
     value: string | string[];
-    category: TranslationCategory
+   , category: TranslationCategory
     ,}
 
 export interface TranslationValidationResult { isValid: boolean;
     missingKeys: string[];
     extraKeys: string[];
-    invalidValues: string[] }
+   , invalidValues: string[] }
 
 export interface TranslationExportOptions { includeAccessibility?: boolean;
     format?: TranslationExportFormat;
@@ -44,17 +44,17 @@ export interface TranslationExportOptions { includeAccessibility?: boolean;
 
 export interface TranslationImportResult { success: boolean,
     importedLanguages: string[];
-    errors: string[] ,}
+   , errors: string[] ,}
 
 export interface BulkTranslationOperation { language: string;
     key: string;
     value: string | string[];
-    operation: TranslationOperation
+   , operation: TranslationOperation
     }
 
 export interface TranslationMergeResult { mergedKeys: number;
     conflictKeys: string[];
-    newKeys: number }
+   , newKeys: number }
 
 // 列挙型
 export type TranslationCategory = 'main' | 'accessibility';''
@@ -63,7 +63,7 @@ export type TranslationOperation = 'add' | 'update' | 'delete';
 ';
 // 定数
 export const SUPPORTED_LANGUAGES = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW] as const;
-export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
+export type SupportedLanguage = typeof | SUPPORTED_LANGUAGES[number];
 
 export const DEFAULT_FALLBACK_LANGUAGE: SupportedLanguage = 'en',
 
@@ -96,7 +96,7 @@ export class TranslationDataManager {
             'menu.settings': '設定',
             'menu.help': 'ヘルプ',
             'menu.userInfo': 'ユーザー情報',
-            'menu.controls': '↑↓: 選択  Enter: 決定  ESC: 終了',
+            'menu.controls': '↑↓: 選択  Enter: 決定 , ESC: 終了',
             'menu.clickInfo': 'クリックでも操作できます',
             // 設定画面
             'settings.title': '設定',
@@ -242,7 +242,7 @@ export class TranslationDataManager {
             'menu.settings': 'Settings',
             'menu.help': 'Help',
             'menu.userInfo': 'User Info',
-            'menu.controls': '↑↓: Select  Enter: Confirm  ESC: Exit',
+            'menu.controls': '↑↓: Select  Enter: Confirm , ESC: Exit',
             'menu.clickInfo': 'You can also use clicks',
             // Settings
             'settings.title': 'Settings',
@@ -338,8 +338,7 @@ export class TranslationDataManager {
             ],
             'help.bubbles': 'Normal(Blue) Stone(Gray) Iron(Brown) Diamond(White) Pink(Heal) Poison(Green) Spiky(Chain) Rainbow(Bonus) Clock(Time) S-shape(Score) Electric(Hinder) Escape(Move)',
 
-            // Help Categories(newly, added)''
-            'help.categories.gameplay': 'Game Basics',
+            // Help Categories(newly, added)'', 'help.categories.gameplay': 'Game Basics',
             'help.categories.bubbles': 'Bubble Types',
             'help.categories.controls': 'Controls',
             'help.categories.scoring': 'Scoring System',
@@ -372,8 +371,7 @@ export class TranslationDataManager {
             'error.audioNotSupported': 'Audio features are not available.',
             'error.storageNotSupported': 'Data storage is not available.',
 
-            // Common(newly, added)''
-            'common.back': 'Back',
+            // Common(newly, added)'', 'common.back': 'Back',
             // Confirm
             'confirm.yes': 'Yes',
             'confirm.no': 'No',
@@ -593,7 +591,7 @@ export class TranslationDataManager {
      */
     getTranslationStats(): TranslationStats { const stats: TranslationStats = {
             loadedLanguages: Array.from(this.loadedLanguages);
-            languageCount: this.loadedLanguages.size, }
+           , languageCount: this.loadedLanguages.size, }
             translations: {};
             accessibilityTranslations: {};
         // メイン翻訳の統計
@@ -629,7 +627,7 @@ export class TranslationDataManager {
         // メイン翻訳を検索
         for(const [language, translations] of this.translations.entries() {
             for(const [key, value] of Object.entries(translations) {''
-                const valueStr = Array.isArray(value) ? value.join(' ') : value;
+                const valueStr = Array.isArray(value) ? value.join(', ') : value;
                 const searchValue = caseSensitive ? valueStr: valueStr.toLowerCase(),
                 
                 const matches = exactMatch ;
@@ -681,7 +679,7 @@ export class TranslationDataManager {
             isValid: true;
             missingKeys: [];
             extraKeys: [];
-            invalidValues: [] };
+           , invalidValues: [] };
         const targetTranslations = this.translations.get(language);
         const referenceTranslations = this.translations.get(referenceLanguage);
         
@@ -779,7 +777,7 @@ export class TranslationDataManager {
     importTranslations(data: string, format: TranslationExportFormat = 'json): TranslationImportResult { const result: TranslationImportResult = {'
             success: false;
             importedLanguages: [];
-            errors: [] };
+           , errors: [] };
         try { let parsedData: Record<string, any>;
 
             switch(format) {'
@@ -813,13 +811,13 @@ export class TranslationDataManager {
                     
                     result.importedLanguages.push(language);
                 } catch (error) {
-                    result.errors.push(`Failed, to import, language ${language}: ${(error, as Error}).message}`);
+                    result.errors.push(`Failed, to import, language ${language}: ${(error, as, Error}).message}`);
                 }
             }
             
             result.success = result.importedLanguages.length > 0;
         } catch (error) {
-            result.errors.push(`Failed, to parse, data: ${(error, as Error}).message}`);
+            result.errors.push(`Failed, to parse, data: ${(error, as, Error}).message}`);
         }
         
         return result;
@@ -875,7 +873,7 @@ export class TranslationDataManager {
     mergeTranslationData(language: string, newData: TranslationData, overwrite: boolean = false): TranslationMergeResult { const result: TranslationMergeResult = {
             mergedKeys: 0;
             conflictKeys: [];
-            newKeys: 0 };
+           , newKeys: 0 };
         const existingData = this.translations.get(language) || {};
         
         for(const [key, value] of Object.entries(newData) {

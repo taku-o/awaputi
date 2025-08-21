@@ -24,12 +24,12 @@ interface StructuredDataResult { valid: boolean,
 
 interface IndexablePage { url: string,
     title: string;
-    priority: number ,}
+   , priority: number ,}
 
 interface SearchConsoleAPIReadiness { hasVerificationTag: boolean;
     hasGoogleAnalytics: boolean;
     hasSitemap: boolean;
-    hasRobotsTxt: boolean }
+   , hasRobotsTxt: boolean }
 
 interface SearchConsoleIntegrationData { timestamp: number;
     sitemap: SitemapValidationResult;
@@ -38,20 +38,20 @@ interface SearchConsoleIntegrationData { timestamp: number;
     pages: IndexablePage[];
     readyForIntegration: boolean;
     verificationMethods: string[];
-    apiReady: SearchConsoleAPIReadiness
+   , apiReady: SearchConsoleAPIReadiness
     }
 
 interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[]
     }
 
 declare global { interface Window {
-        gtag?: (...args: any[]) => void;
-        ga?: (...args: any[]) => void ,}
+        gtag?: (...arg;s: any[]) => void;
+        ga?: (...arg;s: any[]) => void ,}
 }
 
 export class SearchConsoleIntegrator {
     private config: SEOConfig;
-    private monitoringData: MonitoringData;
+    private, monitoringData: MonitoringData;
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
         this.config = config
@@ -71,7 +71,7 @@ export class SearchConsoleIntegrator {
                 structuredData: this.validateStructuredData();
                 pages: this.getIndexablePages();
                 readyForIntegration: true;
-                verificationMethods: ['HTML file upload',
+               , verificationMethods: ['HTML file upload',
                     'HTML tag',
                     'Domain name provider',]';
                     'Google Analytics'];
@@ -170,7 +170,7 @@ export class SearchConsoleIntegrator {
         return { ''
             hasVerificationTag: !!document.querySelector('meta[name="google-site-verification"]'');
             hasGoogleAnalytics: !!window.gtag || !!window.ga;
-            hasSitemap: true, };
+           , hasSitemap: true, };
             hasRobotsTxt: true }
         }''
 }

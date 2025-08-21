@@ -5,12 +5,12 @@
  * AudioManagerと新しいAudioConfigシステムの統合をテストします。
  * 音量設定の動的変更機能と設定システムとの連携を検証します。
  */
-// import { jest } from '@jest/globals';
-import { AudioManager } from '../../src/audio/AudioManager.js';
-import { getAudioConfig } from '../../src/config/AudioConfig.js';
-import { getConfigurationManager } from '../../src/core/ConfigurationManager.js';
+// import { jest  } from '@jest/globals';
+import { AudioManager  } from '../../src/audio/AudioManager.js';
+import { getAudioConfig  } from '../../src/config/AudioConfig.js';
+import { getConfigurationManager  } from '../../src/core/ConfigurationManager.js';
 // TODO: Mock types need to be properly exported from test types
-// import { MockAudioContext, MockAudioNode } from '../../src/types/test.js';
+// import { MockAudioContext, MockAudioNode  } from '../../src/types/test.js';
 interface MockFunction<T = any> extends Function {
     mockReturnValue: (value: T) => MockFunction<T>;
     mockImplementation: (impl: Function) => MockFunction<T>;
@@ -21,7 +21,7 @@ interface AudioManagerStatus {
     bgmVolume: number,
     isMuted: boolean,
     configSync: {
-        audioConfig: boolean,
+        audioConfi;g: boolean,
         configManager: boolean,
     };
 }

@@ -5,18 +5,18 @@
  * 全コンポーネント間の連携、設定変更の全システム反映、
  * パフォーマンス統合テストを実施します。
  */
-// import { jest } from '@jest/globals';
-import { ConfigurationManager } from '../../src/core/ConfigurationManager.js';
-import { CalculationEngine } from '../../src/core/CalculationEngine.js';
-import { GameConfig } from '../../src/config/GameConfig.js';
-import { AudioConfig } from '../../src/config/AudioConfig.js';
-import { EffectsConfig } from '../../src/config/EffectsConfig.js';
-import { PerformanceConfig } from '../../src/config/PerformanceConfig.js';
-import { ScoreCalculator } from '../../src/core/ScoreCalculator.js';
-import { BalanceCalculator } from '../../src/core/BalanceCalculator.js';
-import { EffectsCalculator } from '../../src/core/EffectsCalculator.js';
-import { ValidationSystem } from '../../src/core/ValidationSystem.js';
-import { LoggingSystem } from '../../src/core/LoggingSystem.js';
+// import { jest  } from '@jest/globals';
+import { ConfigurationManager  } from '../../src/core/ConfigurationManager.js';
+import { CalculationEngine  } from '../../src/core/CalculationEngine.js';
+import { GameConfig  } from '../../src/config/GameConfig.js';
+import { AudioConfig  } from '../../src/config/AudioConfig.js';
+import { EffectsConfig  } from '../../src/config/EffectsConfig.js';
+import { PerformanceConfig  } from '../../src/config/PerformanceConfig.js';
+import { ScoreCalculator  } from '../../src/core/ScoreCalculator.js';
+import { BalanceCalculator  } from '../../src/core/BalanceCalculator.js';
+import { EffectsCalculator  } from '../../src/core/EffectsCalculator.js';
+import { ValidationSystem  } from '../../src/core/ValidationSystem.js';
+import { LoggingSystem  } from '../../src/core/LoggingSystem.js';
 interface ConfigChangeEntry {
     category: string,
     key: string,
@@ -110,7 +110,7 @@ describe('Configuration System Integration Tests', () => {
                 bubbleType: 'normal',
                 ageRatio: 0.5);
             expect(cachedScore).toBe(score);
-            const cacheStats: CacheStats = calculationEngine.getCacheStats(),
+            const, cacheStats: CacheStats = calculationEngine.getCacheStats(),
             expect(cacheStats.hits).toBeGreaterThan(0);
         }');
         test('設定カテゴリクラス間の連携', (') => {

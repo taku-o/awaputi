@@ -5,12 +5,12 @@
  */
 
 // Jest types are globally available in test environment
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 ';
 // サブコンポーネントのインポート
-import { MobileTestRunner } from './mobile-test-suite/MobileTestRunner.js';''
-import { MobileDeviceSimulator } from './mobile-test-suite/MobileDeviceSimulator.js';''
-import { MobileTestReporter } from './mobile-test-suite/MobileTestReporter.js';
+import { MobileTestRunner  } from './mobile-test-suite/MobileTestRunner.js';''
+import { MobileDeviceSimulator  } from './mobile-test-suite/MobileDeviceSimulator.js';''
+import { MobileTestReporter  } from './mobile-test-suite/MobileTestReporter.js';
 
 // Type definitions
 interface TestResult { passed: boolean,
@@ -19,10 +19,10 @@ interface TestResult { passed: boolean,
     }
 
 interface TestFunction { name: string,
-    run: (context?: any) => Promise<TestResult>;
-    setup?: (context: any) => Promise<void>;
-    cleanup?: (context: any) => Promise<void>;
-    errorCleanup?: (context: any, error: Error) => Promise<void> ,}
+    run: (contex;t?: any) => Promise<TestResult>;
+    setup?: (contex;t: any) => Promise<void>;
+    cleanup?: (contex;t: any) => Promise<void>;
+    errorCleanup?: (contex;t: any, error: Error) => Promise<void> ,}
 }
 
 interface TestSuiteInterface { getTests(): TestFunction[];
@@ -32,54 +32,54 @@ interface TestResults { passed: number,
     failed: number;
     skipped: number;
     errors: TestError[];
-    performance: Map<string, PerformanceResult>;
+   , performance: Map<string, PerformanceResult>;
     compatibility: Map<string, CompatibilityResult> }
 
 interface TestError { suite: string,
     test: string;
     error: string;
     stack?: string;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface PerformanceResult { duration: number;
-    metrics: Record<string, any>;
+   , metrics: Record<string, any>;
     timestamp: number ,}
 
 interface CompatibilityResult { device: string;
     browser: string;
-    results: Record<string, any>;
+   , results: Record<string, any>;
     timestamp: number ,}
 
-interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event;
-    createTouch: (x: number, y: number, id?: number) => any;
-    createDeviceInfo: (device: string) => any;
-    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
-    wait: (ms: number) => Promise<void>;
-    randomDelay: (min: number, max: number) => Promise<void> ,}
+interface DeviceUtils { createTouchEvent: (typ;e: string, touches: any[]) => Event;
+    createTouch: (;x: number, y: number, id?: number) => any;
+    createDeviceInfo: (devic;e: string) => any;
+    measurePerformance: (testFunctio;n: () => Promise<void>) => Promise<number>;
+    wait: (m;s: number) => Promise<void>;
+    randomDelay: (mi;n: number, max: number) => Promise<void> ,}
 }
 
 interface DebugInfo { mainController: {
-        testSuites: string[];
-        testResultsSummary: {
-            passed: number;
+        testSuite;s: string[];
+       , testResultsSummary: {
+            passe;d: number;
             failed: number;
             errors: number;
             performance: number;
-            compatibility: number };
+           , compatibility: number };
     testRunner: any;
     deviceSimulator: any;
-    components: { testRunner: boolean;
+   , components: { testRunner: boolean;
         deviceSimulator: boolean;
-        testReporter: boolean }
+       , testReporter: boolean }
 
 interface HealthCheckResult { healthy: boolean,
     issues: string[];
-    componentStatus: {
-        testRunner: boolean;
+   , componentStatus: {
+        testRunne;r: boolean;
         deviceSimulator: boolean;
         testReporter: boolean;
         testSuites: number;
-        testContainer: boolean ,}
+       , testContainer: boolean ,}
 
 // 既存のテストスイートクラス（変更なし）
 class TouchTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
@@ -228,13 +228,13 @@ class CompatibilityTestSuite implements TestSuiteInterface { private mobileTestS
  */
 export class MobileTestSuite {
     private errorHandler: any;
-    public testResults: TestResults,
+    public, testResults: TestResults,
     public testSuites: Map<string, TestSuiteInterface>;
     public testContainer: HTMLElement | null,
     private testRunner: MobileTestRunner;
     private deviceSimulator: MobileDeviceSimulator;
     private testReporter: MobileTestReporter;
-    public utils: DeviceUtils,
+    public, utils: DeviceUtils,
     constructor() {
         this.errorHandler = getErrorHandler();
         
@@ -244,7 +244,7 @@ export class MobileTestSuite {
             failed: 0;
             skipped: 0;
             errors: [];
-            performance: new Map<string, PerformanceResult>(),
+           , performance: new Map<string, PerformanceResult>(),
     }
             compatibility: new Map<string, CompatibilityResult>(); }
         };
@@ -295,7 +295,7 @@ export class MobileTestSuite {
             left: -9999px;
             width: 375px;
             height: 667px;
-            overflow: hidden;
+           , overflow: hidden;
         `;
         document.body.appendChild(this.testContainer);
     }
@@ -392,7 +392,7 @@ export class MobileTestSuite {
             failed: 0;
             skipped: 0;
             errors: [];
-            performance: new Map<string, PerformanceResult>(),
+           , performance: new Map<string, PerformanceResult>(),
             compatibility: new Map<string, CompatibilityResult>( }
     
     /**
@@ -403,7 +403,7 @@ export class MobileTestSuite {
             test: testName || 'unknown',)';
             error: typeof error === 'string' ? error : error.message,')';
             stack: typeof error === 'object' && error.stack ? error.stack : undefined);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
     }
     
     /**
@@ -503,18 +503,18 @@ export class MobileTestSuite {
      */
     getDebugInfo(): DebugInfo { return { mainController: {
                 testSuites: Array.from(this.testSuites.keys();
-                testResultsSummary: {
+               , testResultsSummary: {
                     passed: this.testResults.passed;
                     failed: this.testResults.failed;
                     errors: this.testResults.errors.length;
-                    performance: this.testResults.performance.size, };
+                   , performance: this.testResults.performance.size, };
                     compatibility: this.testResults.compatibility.size }
 };
             testRunner: this.testRunner.getDebugInfo();
             deviceSimulator: this.deviceSimulator.getDebugInfo();
-            components: { testRunner: !!this.testRunner;
+           , components: { testRunner: !!this.testRunner;
                 deviceSimulator: !!this.deviceSimulator;
-                testReporter: !!this.testReporter }
+               , testReporter: !!this.testReporter }
         }
     
     /**
@@ -531,8 +531,7 @@ export class MobileTestSuite {
         if(this.testSuites.size === 0) issues.push('No, test suites, registered);
         ';
         // テストコンテナの確認
-        if(!this.testContainer || !this.testContainer.parentNode) {'
-            ';
+        if(!this.testContainer || !this.testContainer.parentNode) {', ';
 
         }
 
@@ -545,7 +544,7 @@ export class MobileTestSuite {
                 testRunner: !!this.testRunner;
                 deviceSimulator: !!this.deviceSimulator;
                 testReporter: !!this.testReporter;
-                testSuites: this.testSuites.size, };
+               , testSuites: this.testSuites.size, };
                 testContainer: !!this.testContainer }
 }
     

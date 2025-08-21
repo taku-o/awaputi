@@ -5,7 +5,7 @@
  * フォールバック機能とグレースフルデグラデーションを追加
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 class MobileSystemIntegrator { constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -26,20 +26,20 @@ class MobileSystemIntegrator { constructor(gameEngine) {
                 enabled: true;
                 maxRetries: 3;
                 retryDelay: 1000;
-                fallbackMode: true;
+               , fallbackMode: true;
     ,}
                 gracefulDegradation: true }
             };
             healthCheck: { interval: 30000, // 30秒間隔
                 enabled: true;
-                autoRepair: true ,};
+               , autoRepair: true ,};
             monitoring: { performanceThresholds: {
                     maxInitTime: 5000;
                     maxResponseTime: 100;
-                    maxMemoryUsage: 100 * 1024 * 1024, // 100MB;
+                   , maxMemoryUsage: 100 * 1024 * 1024, // 100MB;
                     minFPS: 30 ,};
                 errorThresholds: { maxErrorsPerMinute: 10;
-                    maxCriticalErrors: 3 }
+                   , maxCriticalErrors: 3 }
 };
         // システム状態
         this.systemState = { initialized: false,
@@ -48,7 +48,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             warnings: []);
             performance: new Map();
             components: new Map();
-            lastHealthCheck: null ,};
+           , lastHealthCheck: null ,};
         // エラーハンドリング
         this.errorHandlers = new Map();
         this.fallbackStrategies = new Map();
@@ -94,8 +94,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             
             console.log(`[MobileSystemIntegrator] モバイルシステム統合完了 (${initTime.toFixed(2})ms)`);
             // 初期化時間が閾値を超えた場合の警告
-            if(initTime > this.integrationConfig.monitoring.performanceThresholds.maxInitTime') {'
-                ';
+            if(initTime > this.integrationConfig.monitoring.performanceThresholds.maxInitTime') {', ';
 
             }
 
@@ -185,8 +184,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         
         // デバイス性能推定
         const hardwareConcurrency = navigator.hardwareConcurrency || 2;''
-        if(hardwareConcurrency < 2) {'
-            ';
+        if(hardwareConcurrency < 2) {', ';
 
         }
 
@@ -202,9 +200,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         const loadPromises = this.integrationConfig.loadOrder.map(async (componentName) => {  try {
                 const component = await this.loadComponent(componentName');''
                 this.mobileComponents.set(componentName, component);''
-                this.systemState.components.set(componentName, 'loaded); }'
-
-                ' }'
+                this.systemState.components.set(componentName, 'loaded); }', ' }'
 
                 console.log(`[MobileSystemIntegrator] ${componentName} 読み込み完了`'});''
                 return { componentName, status: 'success', component } catch (error) {
@@ -247,8 +243,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
      * 個別コンポーネント読み込み
      */'
     async loadComponent(componentName) { ''
-        switch(componentName) {'
-            ';
+        switch(componentName) {', ';
 
         }
 
@@ -312,7 +307,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
 
         return { name: componentName,''
             type: 'fallback';
-            enabled: false;
+           , enabled: false;
     ,}
             initialize: () => Promise.resolve() };
 
@@ -429,7 +424,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
                     const mobileEvent = new CustomEvent(`mobile:${eventType}`, { detail: {
                             component: componentName);
                             originalEvent: event);
-                            timestamp: Date.now( }
+                           , timestamp: Date.now( }
                     });
                     this.mobileEventBus.dispatchEvent(mobileEvent);
                 });
@@ -472,7 +467,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         this.sharedData = {
             deviceInfo: null;
             performanceMetrics: new Map();
-            userPreferences: new Map( }
+           , userPreferences: new Map( }
             systemStatus: new, Map(); }
         };
         
@@ -659,7 +654,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         this.errorHandlers.set('accessibility-error', { );
             handle: (error, context) => this.handleAccessibilityError(error, context),
             critical: false;
-            retryable: true ,}
+           , retryable: true ,}
         });
     }
     
@@ -701,7 +696,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         window.addEventListener('error', (event) => { ''
             this.handleGlobalError('javascript-error', event.error, {)
                 filename: event.filename);
-                lineno: event.lineno, }
+               , lineno: event.lineno, }
                 colno: event.colno); }
 
             });''
@@ -768,7 +763,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
     async performHealthCheck()';
             overall: 'healthy');
             components: new Map();
-            issues: [];
+           , issues: [];
         },
         
         // 各コンポーネントのヘルスチェック
@@ -795,8 +790,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         const errorCount = Array.from(healthStatus.components.values())'';
             .filter(status => status.status === 'error).length;
 
-        if(errorCount > 0) {'
-            ';
+        if(errorCount > 0) {', ';
 
         }
 
@@ -968,7 +962,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             const customEvent = new CustomEvent('basic-touch', {
                 detail: {
                     x: touch.clientX);
-                    y: touch.clientY ,}
+                   , y: touch.clientY ,}
                     type: event.type }
                 }
             );
@@ -1032,7 +1026,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             message,
             error: error ? error.message : null;
             stack: error ? error.stack : null;
-            timestamp: Date.now( ,}
+           , timestamp: Date.now( ,}
             components: Array.from(this.systemState.components.keys(); }
         };
         
@@ -1066,7 +1060,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             loading: this.systemState.loading;
             components: Object.fromEntries(this.systemState.components;
             errorCount: this.systemState.errors.length);
-            warningCount: this.systemState.warnings.length ,}
+           , warningCount: this.systemState.warnings.length ,}
             lastHealthCheck: this.systemState.lastHealthCheck,) };
             uptime: this.systemState.initialized ? Date.now() - this.initTimestamp : 0 
         }
@@ -1087,7 +1081,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             components: Array.from(this.mobileComponents.keys();
             sharedData: this.sharedData;
             errorHandlers: Array.from(this.errorHandlers.keys();
-            fallbackStrategies: Array.from(this.fallbackStrategies.keys(), };
+           , fallbackStrategies: Array.from(this.fallbackStrategies.keys(), };
             performance: this.performanceMonitor ? this.performanceMonitor.getMetrics() : null 
         }
     
@@ -1181,8 +1175,7 @@ class MobilePerformanceMonitor { constructor(integrator) {
 
     checkThresholds()';
         const fps = this.metrics.get('fps);''
-        if(fps && fps.value < thresholds.minFPS) {'
-            ';
+        if(fps && fps.value < thresholds.minFPS) {', ';
 
         }
 
@@ -1190,8 +1183,7 @@ class MobilePerformanceMonitor { constructor(integrator) {
         }
 
         const memory = this.metrics.get('memory);''
-        if(memory && memory.value > thresholds.maxMemoryUsage) {'
-            ';
+        if(memory && memory.value > thresholds.maxMemoryUsage) {', ';
 
         }
 
@@ -1225,4 +1217,4 @@ export function getMobileSystemIntegrator(gameEngine = null) { if (!mobileSystem
     return mobileSystemIntegratorInstance;
 }
 
-export { MobileSystemIntegrator };
+export { MobileSystemIntegrator  };

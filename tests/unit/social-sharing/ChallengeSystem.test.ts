@@ -2,8 +2,8 @@
  * ChallengeSystem 単体テスト (Task 20.4)
  * 包括的なテストカバレッジでChallengeSystemの全機能をテスト
  */
-import { jest } from '@jest/globals';
-import { ChallengeSystem } from '../../../src/core/ChallengeSystem.js';
+import { jest  } from '@jest/globals';
+import { ChallengeSystem  } from '../../../src/core/ChallengeSystem.js';
 // Type definitions
 interface MockLocalStorage {
     data: Record<string, string>;
@@ -37,7 +37,7 @@ interface ChallengeData {
     progressType: string,
     targetValue: number,
     reward: {
-        type: string,
+        typ;e: string,
         amount: number,
         itemId?: string;
     };
@@ -52,7 +52,7 @@ interface GameData {
     score: number,
     duration: number,
     bubbleStats: {
-        total: number
+        tota;l: number
     },
     maxCombo: number,
     accuracy?: number;
@@ -65,7 +65,7 @@ interface Challenge {
     progressType: string,
     targetValue: number,
     reward: {
-        type: string,
+        typ;e: string,
         amount: number,
         itemId?: string;
     };
@@ -390,7 +390,7 @@ describe('ChallengeSystem', () => {
             challengeSystem.completeChallenge('completion_test');
             expect(mockGameEngineInstance.emit').toHaveBeenCalledWith('challengeCompleted', expect.objectContaining({
                 challengeId: 'completion_test';);
-                challenge: expect.any(Object),
+               , challenge: expect.any(Object),
                 progress: expect.any(Object'),
                 reward: { type: 'ap', amount: 75 }
             })');
@@ -446,7 +446,7 @@ describe('ChallengeSystem', () => {
             challengeSystem.claimReward('reward_test');
             expect(mockGameEngineInstance.emit').toHaveBeenCalledWith('challengeRewardClaimed', expect.objectContaining({
                 challengeId: 'reward_test';);
-                challenge: expect.any(Object'),
+               , challenge: expect.any(Object'),
                 reward: { type: 'ap', amount: 150 }
             })');
         }

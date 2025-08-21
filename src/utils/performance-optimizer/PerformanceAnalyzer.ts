@@ -8,44 +8,44 @@
  * - 安定性推奨事項の生成
  */
 
-import { getErrorHandler } from '../ErrorHandler.js';
+import { getErrorHandler  } from '../ErrorHandler.js';
 
 // 型定義
 interface AnalyzerConfig { maxHistorySize?: number; }
 
 interface PredictionWeights { variance: number,
     trend: number;
-    memory: number ,}
+   , memory: number ,}
 
 interface PredictionModel { weights: PredictionWeights;
-    confidence: number }
+   , confidence: number }
 
 interface PerformanceSnapshot { timestamp: number;
     prediction: number;
-    actual: number | null }
+   , actual: number | null }
 
 interface StabilityAnalysis { frameTimeBuffer: number[];
     performanceSnapshots: PerformanceSnapshot[];
     issueHistory: any[];
-    predictionModel: PredictionModel
+   , predictionModel: PredictionModel
     }
 
 interface Stats { frameTimeVariance: number;
     stabilityScore: number;
     avgFrameTime: number;
-    performanceTrend: string }
+   , performanceTrend: string }
 
 interface FrameStabilityResult { stabilityScore: number;
     variance: number;
     trend: string;
-    confidence: number;
+   , confidence: number;
     frameCount?: number;
     recommendations?: string[];
     error?: boolean; }
 
 interface MemoryMetrics { pressure: number,
     trend: string;
-    available: number ,}
+   , available: number ,}
 
 interface RenderingMetrics {
     load: number;
@@ -53,7 +53,7 @@ interface RenderingMetrics {
 
 interface PredictionMetrics { currentStability: FrameStabilityResult;
     memoryPressure: number;
-    renderingLoad: number }
+   , renderingLoad: number }
 
 interface PerformancePrediction { timestamp: number;
     stability: FrameStabilityResult;
@@ -61,12 +61,12 @@ interface PerformancePrediction { timestamp: number;
     memoryRisk: number;
     degradationRisk: number;
     overallRisk: number;
-    recommendations: string[];
+   , recommendations: string[];
     error?: boolean }
 
 interface DetailedAnalysis { stats: Stats;
     frameHistory: number[];
-    stabilityAnalysis: StabilityAnalysis
+   , stabilityAnalysis: StabilityAnalysis
     }
 ';
 
@@ -81,7 +81,7 @@ export class PerformanceAnalyzer {
     private frameTimeHistory: number[];
     private maxHistorySize: number;
     private stabilityAnalysis: StabilityAnalysis;
-    private stats: Stats;
+    private, stats: Stats;
     constructor(config: AnalyzerConfig = {) {
 ';
 
@@ -177,7 +177,7 @@ export class PerformanceAnalyzer {
 
                 variance: 0,
                 trend: 'unknown';
-                confidence: 0.0, };
+               , confidence: 0.0, };
                 error: true }
             }
     }
@@ -226,7 +226,7 @@ export class PerformanceAnalyzer {
             // 次フレーム安定性予測
             const nextFrameStability = this.predictNextFrameStability({)
                 currentStability: stability);
-                memoryPressure: memoryMetrics.pressure,);
+               , memoryPressure: memoryMetrics.pressure,);
                 renderingLoad: renderingMetrics.load);
             // メモリ問題リスク予測
             const memoryRisk = this.predictMemoryIssueRisk(memoryMetrics);
@@ -315,7 +315,7 @@ export class PerformanceAnalyzer {
      * @param metrics - 総合メトリクス
      * @returns 低下リスクスコア（0-1）'
      */''
-    predictPerformanceDegradationRisk(metrics: { stability: FrameStabilityResult; memoryRisk: number; trend: string )): number {
+    predictPerformanceDegradationRisk(metrics: { stability: FrameStabilityResult; memoryRisk: number;, trend: string )): number {
         try { ,}
             const { stability, memoryRisk, trend } = metrics;
             
@@ -363,24 +363,21 @@ export class PerformanceAnalyzer {
      */
     generateStabilityRecommendations(stabilityScore: number, variance: number, trend: string): string[] { const recommendations: string[] = [],
 
-        if(stabilityScore < 0.5) {'
-            ';
+        if(stabilityScore < 0.5) {', ';
 
         }
 
             recommendations.push('フレーム安定性が低下しています。品質設定を下げることを検討してください。); }'
         }
 
-        if(variance > 10) {'
-            ';
+        if(variance > 10) {', ';
 
         }
 
             recommendations.push('フレーム時間のばらつきが大きいです。レンダリング負荷を軽減してください。''); }
         }
 
-        if(trend === 'degrading'') {'
-            ';
+        if(trend === 'degrading'') {', ';
 
         }
 
@@ -399,24 +396,21 @@ export class PerformanceAnalyzer {
      */
     generatePerformanceRecommendations(stability: FrameStabilityResult, memoryRisk: number, degradationRisk: number): string[] { const recommendations: string[] = [],
 
-        if(memoryRisk > 0.7) {'
-            ';
+        if(memoryRisk > 0.7) {', ';
 
         }
 
             recommendations.push('メモリ使用量が高レベルです。即座にリソースクリーンアップが必要です。); }'
         }
 
-        if(degradationRisk > 0.6) {'
-            ';
+        if(degradationRisk > 0.6) {', ';
 
         }
 
             recommendations.push('パフォーマンス低下リスクが高いです。品質設定の見直しが必要です。); }'
         }
 
-        if(stability.confidence < 0.3) {'
-            ';
+        if(stability.confidence < 0.3) {', ';
 
         }
 
@@ -432,7 +426,7 @@ export class PerformanceAnalyzer {
      */''
     gatherMemoryMetrics(''';
             trend: 'stable';
-            available: 0.7);
+           , available: 0.7);
         })
 
     /**
@@ -452,7 +446,7 @@ export class PerformanceAnalyzer {
             // 予測スナップショットを保存
             this.stabilityAnalysis.performanceSnapshots.push({)
                 timestamp: prediction.timestamp);
-                prediction: prediction.overallRisk,);
+               , prediction: prediction.overallRisk,);
                 actual: null // 後で実際の結果で更新);
             // 履歴制限
             if(this.stabilityAnalysis.performanceSnapshots.length > 100) {
@@ -486,8 +480,7 @@ export class PerformanceAnalyzer {
      */''
     reset(''';
                 performanceTrend: 'stable);
-            })'
-            ')';
+            })', ')';
         } catch (error) {
             this.errorHandler.logError('Failed to reset analyzer', error); }
 

@@ -4,12 +4,12 @@
  * 分離されたコンポーネントを統合してリーダーボード機能を提供
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
 import type { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LeaderboardRenderer } from './leaderboard/LeaderboardRenderer.js';''
-import { LeaderboardDataManager } from './leaderboard/LeaderboardDataManager.js';''
-import { LeaderboardAnimationController } from './leaderboard/LeaderboardAnimationController.js';''
-import { LeaderboardEventHandler } from './leaderboard/LeaderboardEventHandler.js';
+import { LeaderboardRenderer  } from './leaderboard/LeaderboardRenderer.js';''
+import { LeaderboardDataManager  } from './leaderboard/LeaderboardDataManager.js';''
+import { LeaderboardAnimationController  } from './leaderboard/LeaderboardAnimationController.js';''
+import { LeaderboardEventHandler  } from './leaderboard/LeaderboardEventHandler.js';
 
 /**
  * Game engine interface
@@ -28,7 +28,7 @@ interface CachedData { rankings: RankingEntry[],
 interface RankingEntry { playerId: string;
     playerName: string;
     score: number;
-    timestamp: string | Date;
+   , timestamp: string | Date;
     maxCombo?: number;
     accuracy?: number;
     [key: string]: any, }
@@ -46,7 +46,7 @@ interface UIState { currentView: string,
     showDetails: boolean;
     cachedData: CachedData | null;
     lastUpdateTime: number;
-    isLoading: boolean ,}
+   , isLoading: boolean ,}
 
 /**
  * Layout configuration interface
@@ -56,14 +56,14 @@ interface LayoutConfig { headerHeight: number;
     entryHeight: number;
     padding: number;
     scrollOffset: number;
-    maxVisibleEntries: number }
+   , maxVisibleEntries: number }
 
 /**
  * Touch interface
  */
 interface Touch { identifier: number;
     clientX: number;
-    clientY: number }
+   , clientY: number }
 
 /**
  * Event data interfaces
@@ -77,7 +77,7 @@ interface SortChangeData {
 }
 
 interface EntrySelectData { entry: RankingEntry;
-    index: number }
+   , index: number }
 
 interface DetailsToggleData { show: boolean;
     entry?: RankingEntry
@@ -103,7 +103,7 @@ interface RefreshOptions { sortBy: string,
  */
 interface Statistics { dataManager: any;
     animation: any;
-    eventHandler: any }
+   , eventHandler: any }
 
 /**
  * Config update interface
@@ -117,7 +117,7 @@ interface ConfigUpdate { layout?: Partial<LayoutConfig>;
 interface Bounds { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 /**
  * UI element interface
@@ -135,7 +135,7 @@ interface UIElements { tabs: UIElement[],
     sortOptions: UIElement[];
     entries: UIElement[];
     buttons: UIElement[];
-    scrollbar: UIElement | null ,}
+   , scrollbar: UIElement | null ,}
 
 export class LeaderboardUI {
     private gameEngine: GameEngine;
@@ -146,9 +146,9 @@ export class LeaderboardUI {
     private animationController: LeaderboardAnimationController;
     private eventHandler: LeaderboardEventHandler;
     // UI状態
-    private uiState: UIState = {''
+    private, uiState: UIState = {''
         currentView: 'overall';
-        currentStage: null,
+       , currentStage: null,
         currentPage: 0,
         sortBy: 'score';
         selectedEntry: null;
@@ -157,14 +157,14 @@ export class LeaderboardUI {
         showDetails: false;
         cachedData: null;
         lastUpdateTime: 0;
-        isLoading: false ,};
+       , isLoading: false ,};
     // レイアウト設定
     private layout: LayoutConfig = { headerHeight: 60
         tabHeight: 40;
         entryHeight: 50;
         padding: 20;
         scrollOffset: 0;
-        maxVisibleEntries: 8 };
+       , maxVisibleEntries: 8 };
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -298,11 +298,11 @@ export class LeaderboardUI {
         const tabWidth = (width - padding * 2) / tabs.length;
         const tabElements: UIElement[] = tabs.map((tab, index) => ({
             view: tab);
-            bounds: {
+           , bounds: {
                 x: x + padding + (index * tabWidth);
                 y: y + headerHeight;
                 width: tabWidth;
-                height: tabHeight ,}
+               , height: tabHeight ,}
 
             }''
         }');
@@ -312,11 +312,11 @@ export class LeaderboardUI {
         const sortWidth = (width - padding * 2) / sortOptions.length;
         const sortY = y + headerHeight + tabHeight;
         const sortElements: UIElement[] = sortOptions.map((sort, index) => ({ sortBy: sort)
-            bounds: {
+           , bounds: {
                 x: x + padding + (index * sortWidth);
                 y: sortY;
                 width: sortWidth;
-                height: 35 }
+               , height: 35 }
         });
         // エントリー境界
         const entryStartY = sortY + 35 + 30; // ソート + リストヘッダー
@@ -333,10 +333,10 @@ export class LeaderboardUI {
                 entryElements.push({
                     data: data.rankings[i]);
                     index: i);
-                    bounds: {)
+                   , bounds: {)
                         x: x + 5);
                         y: entryStartY + ((i - startIndex) * this.layout.entryHeight);
-                        width: width - 10;
+                       , width: width - 10;
         ,}
                         height: this.layout.entryHeight }
 });
@@ -347,13 +347,13 @@ export class LeaderboardUI {
         this.eventHandler.updateUIElements({ tabs: tabElements,
             sortOptions: sortElements;
             entries: entryElements;
-            buttons: [], // 必要に応じて追加;
+           , buttons: [], // 必要に応じて追加;
             scrollbar: data && data.rankings && data.rankings.length > this.layout.maxVisibleEntries ? { : undefined
                 bounds: {
                     x: x + width - 15;
                     y: y);
                     width: 15);
-                    height: height ,}) : null);
+                   , height: height ,}) : null);
     }
     
     /**
@@ -453,7 +453,7 @@ export class LeaderboardUI {
             
             const options: RefreshOptions = {
                 sortBy: this.uiState.sortBy;
-                stageId: this.uiState.currentStage };
+               , stageId: this.uiState.currentStage };
             const data = await this.dataManager.refreshData(this.uiState.currentView, options);
             
             if(data && !data.error) {

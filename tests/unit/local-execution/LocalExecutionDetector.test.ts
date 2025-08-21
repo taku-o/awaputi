@@ -8,9 +8,9 @@
  * - Execution context creation
  * - Edge cases and error handling
  * 
- * Requirements: 1.1, 2.1, 5.1
+ *, Requirements: 1.1, 2.1, 5.1
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 import LocalExecutionDetector from '../../../src/utils/local-execution/LocalExecutionDetector.js';
 // Type definitions
 interface MockLocation {
@@ -43,7 +43,7 @@ interface ExecutionContext {
     canUseCanvas: boolean,
     canUseLocalStorage: boolean,
     supportedFeatures: {
-        canvas: boolean,
+        canva;s: boolean,
         localStorage: boolean,
         modules: boolean
     },

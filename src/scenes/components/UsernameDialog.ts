@@ -1,22 +1,22 @@
 /**
  * ユーザー名変更ダイアログ
  */
-import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState } from './ScenesBaseDialog.js';
+import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState  } from './ScenesBaseDialog.js';
 
 // Type definitions for username dialog
 export interface UsernameValidation { allowedChars: RegExp,
     prohibitedWords: string[];
-    minLength: number ,}
+   , minLength: number ,}
 
 export interface TextSettings { contentFont: string;
-    contentColor: string }
+   , contentColor: string }
 
 export interface UsernameDialogData { currentUsername: string;
     newUsername: string;
-    error: string | null }
+   , error: string | null }
 
 export interface PlayerDataManager { getUsername: () => string;
-    setUsername: (username: string) => void }
+    setUsername: (usernam;e: string) => void }
 }
 
 export interface GameEngineWithPlayerData extends GameEngine { playerData: PlayerDataManager
@@ -33,7 +33,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     // テキスト設定
     private textSettings: TextSettings;
     // ダイアログデータ（型安全性のため再定義）
-    protected dialogData: UsernameDialogData,
+    protected, dialogData: UsernameDialogData,
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
 
         super(gameEngine, eventBus, state);
@@ -60,7 +60,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         this.dialogData = {;
             currentUsername: '',
             newUsername: '';
-            error: null ,}
+           , error: null ,}
     
     /**
      * ダイアログの初期化
@@ -85,7 +85,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     setupButtons(''';
                 text: '変更',)';
                 color: '#28A745');
-                callback: () => this.handleUsernameChange(),
+               , callback: () => this.handleUsernameChange(),
                 get disabled() { ''
                     return !this.isValidUsername(''';
                 text: 'キャンセル',)';
@@ -129,7 +129,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      */
     private renderUsernameInput(;
         context: CanvasRenderingContext2D);
-        layout: { contentX: number; contentWidth: number ), 
+       , layout: { contentX: number;, contentWidth: number ), 
         y: number'';
     '): void {'
         const inputWidth = layout.contentWidth - 120,
@@ -418,7 +418,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             if(this.onResult) {'
                 this.onResult({ : undefined''
                     action: 'change';
-                    data: {)
+                   , data: {)
                         oldUsername: this.dialogData.currentUsername ,}
                         newUsername: newUsername) }
                     });

@@ -1,5 +1,5 @@
-import { LeaderboardUI } from '../../ui/components/LeaderboardUI.js';''
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { LeaderboardUI  } from '../../ui/components/LeaderboardUI.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * リーダーボードタブコンポーネント
@@ -8,17 +8,17 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 interface LayoutConfig { padding: number,
     headerHeight: number;
-    footerHeight: number ,}
+   , footerHeight: number ,}
 
 interface LeaderboardData { currentView: string;
     currentStage: string;
     sortBy: string;
     cachedData: any;
-    lastUpdateTime: number }
+   , lastUpdateTime: number }
 
 interface LeaderboardStats { totalLeaderboards: number;
     totalPlayers: number;
-    cacheSize: number }
+   , cacheSize: number }
 
 interface GameEngine { leaderboardManager?: any;
     canvas: HTMLCanvasElement;
@@ -40,7 +40,7 @@ export class LeaderboardTab {
     private isInitialized: boolean = false;
     private isVisible: boolean = false;
     // レイアウト設定
-    private layout: LayoutConfig;
+    private, layout: LayoutConfig;
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
         this.gameEngine = gameEngine;
@@ -50,7 +50,7 @@ export class LeaderboardTab {
         // レイアウト設定
         this.layout = {
             padding: 20;
-            headerHeight: 40;
+           , headerHeight: 40;
     ,}
             footerHeight: 30 }
         };
@@ -64,8 +64,7 @@ export class LeaderboardTab {
             if (this.isInitialized') return;
             ';
             // LeaderboardManagerが利用可能かチェック
-            if(!this.gameEngine.leaderboardManager) {'
-                ';
+            if(!this.gameEngine.leaderboardManager) {', ';
 
             }
 
@@ -394,7 +393,7 @@ export class LeaderboardTab {
         return { currentView: this.leaderboardUI.currentView,
             currentStage: this.leaderboardUI.currentStage;
             sortBy: this.leaderboardUI.sortBy;
-            cachedData: this.leaderboardUI.cachedData, };
+           , cachedData: this.leaderboardUI.cachedData, };
             lastUpdateTime: this.leaderboardUI.lastUpdateTime }
         }
 

@@ -8,7 +8,7 @@ export class AnalyticsPerformanceMonitor {
         this.performanceMetrics = {
             fps: 0;
             memoryUsage: null;
-            errorCount: 0;
+           , errorCount: 0;
     }
             lastCheck: Date.now(); }
         };
@@ -93,7 +93,7 @@ export class AnalyticsPerformanceMonitor {
         const metrics = {
             fps: this.performanceMetrics.fps;
             memoryUsage: this.performanceMetrics.memoryUsage;
-            errorCount: this.performanceMetrics.errorCount;
+           , errorCount: this.performanceMetrics.errorCount;
     }
             timestamp: Date.now(); }
         };
@@ -119,12 +119,12 @@ export class AnalyticsPerformanceMonitor {
     }
 
                 severity: 'high', })
-                message: `Low FPS detected: ${metrics.fps}`,)'
+                message: `Low FPS, detected: ${metrics.fps}`,)'
                 value: metrics.fps);''
         } else if(metrics.fps < 45) { warnings.push({''
                 type: 'moderate_fps',
                 severity: 'medium', })
-                message: `Moderate FPS: ${metrics.fps}`,)
+                message: `Moderate, FPS: ${metrics.fps}`,)
                 value: metrics.fps);
         }
         
@@ -136,13 +136,13 @@ export class AnalyticsPerformanceMonitor {
                     type: 'high_memory_usage',' }
 
                     severity: 'high'), }
-                    message: `High memory usage: ${(memoryUsageRatio * 100}.toFixed(1})%`;
+                    message: `High memory, usage: ${(memoryUsageRatio * 100}.toFixed(1})%`;
                     value: memoryUsageRatio';
                 });''
             } else if(memoryUsageRatio > 0.6) { warnings.push({)'
                     type: 'moderate_memory_usage',')';
                     severity: 'medium'), }
-                    message: `Moderate memory usage: ${(memoryUsageRatio * 100}.toFixed(1})%`;
+                    message: `Moderate memory, usage: ${(memoryUsageRatio * 100}.toFixed(1})%`;
                     value: memoryUsageRatio;
                 }),
             }
@@ -155,7 +155,7 @@ export class AnalyticsPerformanceMonitor {
         }
 
                 severity: 'high', })
-                message: `High error count: ${metrics.errorCount}`,)
+                message: `High error, count: ${metrics.errorCount}`,)
                 value: metrics.errorCount);
         }
         
@@ -208,7 +208,7 @@ export class AnalyticsPerformanceMonitor {
         
         return { current: this.performanceMetrics.fps,
             average: Math.round(sum / fpsHistory.length);
-            min: Math.min(...fpsHistory), };
+           , min: Math.min(...fpsHistory), };
             max: Math.max(...fpsHistory);
         }
     
@@ -234,13 +234,13 @@ export class AnalyticsPerformanceMonitor {
         return { current: {
                 used: this.performanceMetrics.memoryUsage.used;
                 total: this.performanceMetrics.memoryUsage.total;
-                limit: this.performanceMetrics.memoryUsage.limit, };
+               , limit: this.performanceMetrics.memoryUsage.limit, };
                 usagePercent: (this.performanceMetrics.memoryUsage.used / this.performanceMetrics.memoryUsage.limit * 100).toFixed(1); }
             },
             average: { used: Math.round(avgUsed);
-                usagePercent: ((avgUsed / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1 };
+               , usagePercent: ((avgUsed / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1 };
             peak: { used: Math.max(...usedMemoryHistory);
-                usagePercent: ((Math.max(...usedMemoryHistory) / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1 }
+               , usagePercent: ((Math.max(...usedMemoryHistory) / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1 }
         }
     
     /**
@@ -256,13 +256,13 @@ export class AnalyticsPerformanceMonitor {
         return { timestamp: Date.now(),
             fps: fpsStats;
             memory: memoryStats;
-            errors: {
+           , errors: {
     ,}
                 count: this.performanceMetrics.errorCount, };
                 rate: this.calculateErrorRate(); }
             },
             warnings: { recent: recentWarnings;
-                summary: this.summarizeWarnings(recentWarnings };
+               , summary: this.summarizeWarnings(recentWarnings };
             health: this.calculateHealthScore(fpsStats, memoryStats);
         }
     
@@ -413,7 +413,7 @@ export class AnalyticsPerformanceMonitor {
         this.performanceMetrics = {
             fps: 0;
             memoryUsage: null;
-            errorCount: 0;
+           , errorCount: 0;
     }
             lastCheck: Date.now('); }
         };

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * SettingsScene-navigation.test.js
  * 
@@ -6,7 +6,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * Issue #163 - Duplicate help/settings screen consolidation
  * Task 8 - Context-aware navigation support for SettingsScene
  */
-import { SettingsScene } from '../../src/scenes/SettingsScene';
+import { SettingsScene  } from '../../src/scenes/SettingsScene';
 // DOM APIのモック
 const mockDocument = {
     fullscreenElement: null,
@@ -33,7 +33,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true;);
-                switchScene: jest.fn(').mockReturnValue(true,
+               , switchScene: jest.fn(').mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'SettingsScene' }
                 }
@@ -41,7 +41,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
             settingsManager: {),
                 save: jest.fn(),
                 get: jest.fn().mockReturnValue(true;);
-        set: jest.fn(),
+       , set: jest.fn(),
             },
             localizationManager: {
                 getCurrentLanguage: jest.fn(').mockReturnValue('ja'),

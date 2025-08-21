@@ -21,7 +21,7 @@ export interface MainController { accessibilityManager: AccessibilityManager,
     cssClasses: CSSClasses;
     state: FocusState;
     focusEffectRenderer: FocusEffectRenderer;
-    setupVisualStyles: () => void ,}
+   , setupVisualStyles: () => void ,}
 }
 
 export interface AccessibilityManager { isScreenReaderActive: () => boolean;
@@ -29,38 +29,38 @@ export interface AccessibilityManager { isScreenReaderActive: () => boolean;
 }
 
 export interface FocusManager { focusableElements: HTMLElement[] | null;
-    getCurrentFocusIndex: () => number }
+   , getCurrentFocusIndex: () => number }
 }
 
 export interface FocusStateConfig { focusRing: FocusRingConfig;
     visualCues: VisualCuesConfig;
     highContrast: HighContrastConfig;
-    navigation: NavigationConfig
+   , navigation: NavigationConfig
     }
 
 export interface FocusRingConfig { enabled: boolean;
     color: string;
     width: number;
-    style: string }
+   , style: string }
 
 export interface VisualCuesConfig { landmarkHighlight: boolean;
     groupIndicators: boolean;
     navigationPath: boolean;
-    breadcrumbs: boolean }
+   , breadcrumbs: boolean }
 
 export interface HighContrastConfig { enabled: boolean;
     color: string;
-    autoDetect: boolean }
+   , autoDetect: boolean }
 
 export interface NavigationConfig { trackPath: boolean;
     maxPathLength: number;
-    showDirection: boolean }
+   , showDirection: boolean }
 
 export interface CSSClasses { focusVisible: string;
     keyboardMode: string;
     mouseMode: string;
     highContrast: string;
-    navigationActive: string }
+   , navigationActive: string }
 
 export interface FocusState { currentFocusElement: HTMLElement | null;
     previousFocusElement: HTMLElement | null;
@@ -68,17 +68,17 @@ export interface FocusState { currentFocusElement: HTMLElement | null;
     isHighContrastMode: boolean;
     navigationPath: NavigationPathItem[];
     keyboardMode: boolean;
-    lastFocusChangeTime: number }
+   , lastFocusChangeTime: number }
 
-export interface FocusEffectRenderer { positionFocusRing: (element: HTMLElement) => void;
-    updateFocusOverlay: (element: HTMLElement) => void;
-    highlightLandmarks: (element: HTMLElement) => void;
-    updateGroupIndicators: (element: HTMLElement) => void }
+export interface FocusEffectRenderer { positionFocusRing: (elemen;t: HTMLElement) => void;
+    updateFocusOverlay: (elemen;t: HTMLElement) => void;
+    highlightLandmarks: (elemen;t: HTMLElement) => void;
+    updateGroupIndicators: (elemen;t: HTMLElement) => void }
 }
 
 export interface NavigationPathItem { element: HTMLElement;
     timestamp: number;
-    position: string | null;
+   , position: string | null;
     direction?: NavigationDirection;
     elementInfo?: ElementInfo;
     }
@@ -103,7 +103,7 @@ export interface ElementPosition { index: number,
 export interface SystemSettings { highContrast: boolean,
     reducedMotion: boolean;
     forcedColors: boolean;
-    screenReader: boolean ,}
+   , screenReader: boolean ,}
 
 export interface FocusStateReport { currentFocusElement: string | null;
     previousFocusElement: string | null;
@@ -112,13 +112,13 @@ export interface FocusStateReport { currentFocusElement: string | null;
     keyboardMode: boolean;
     keyboardHintVisible: boolean;
     lastChangeTime: number;
-    systemSettings: SystemSettings
+   , systemSettings: SystemSettings
     }
 
 export interface AccessibilityPreferences { highContrast: boolean;
     reducedMotion: boolean;
     screenReaderActive: boolean;
-    keyboardNavigation: boolean }
+   , keyboardNavigation: boolean }
 
 export interface FocusValidationResult { isValid: boolean;
     reason?: string;
@@ -132,7 +132,7 @@ export type ContainerType = 'section' | 'main' | 'nav' | 'aside' | 'form' | 'fie
 // 定数
 export const NAVIGATION_PATH_LIMITS = { MAX_LENGTH: 10,
     CLEANUP_THRESHOLD: 50;
-    MIN_TIME_BETWEEN_ENTRIES: 100 ,} as const;
+   , MIN_TIME_BETWEEN_ENTRIES: 100 ,} as const;
 export const DIRECTION_THRESHOLD = { MIN_MOVEMENT: 5,
     DIAGONAL_ANGLE: 30 ,} as const;
 ';
@@ -176,7 +176,7 @@ export function isValidFocusElement(element: any): element is HTMLElement { retu
 
 export function getElementInfo(element: HTMLElement): ElementInfo { return {;
         tagName: element.tagName.toLowerCase()';
-        role: element.getAttribute('role'') || undefined,
+       , role: element.getAttribute('role'') || undefined,
         ariaLabel: element.getAttribute('aria-label) || undefined, };
         textContent: element.textContent? .trim() || undefined }
     }
@@ -207,7 +207,7 @@ export function calculateDirection(fromRect: DOMRect, toRect: DOMRect): Navigati
 
             return { icon: DIRECTION_ICONS.UP, text: '上へ移動', angle, distance };
 
-export function findElementContainer(element: HTMLElement): { type: ContainerType; element: HTMLElement } | null { let current: HTMLElement | null = element,
+export function findElementContainer(element: HTMLElement): { type: ContainerType;, element: HTMLElement } | null { let current: HTMLElement | null = element,
     
     while(current && current !== document.body) {
     
@@ -247,7 +247,7 @@ export function getElementPosition(element: HTMLElement, focusManager: FocusMana
 
 export function detectSystemSettings(): SystemSettings { return { highContrast: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.HIGH_CONTRAST).matches : false,
         reducedMotion: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.REDUCED_MOTION).matches : false;
-        forcedColors: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.FORCED_COLORS).matches : false, };
+       , forcedColors: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.FORCED_COLORS).matches : false, };
         screenReader: false // 実際の検出は複雑なため、デフォルトはfalse }
     }
 
@@ -259,7 +259,7 @@ export class FocusStateManager {
     private cssClasses: CSSClasses;
     private state: FocusState;
     // システム設定の監視
-    private mediaQueryListeners: MediaQueryList[];
+    private, mediaQueryListeners: MediaQueryList[];
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -338,7 +338,7 @@ export class FocusStateManager {
         // パスアイテムの作成
         const pathItem: NavigationPathItem = { element,
             timestamp: currentTime;
-            position: this.getElementPosition(element);
+           , position: this.getElementPosition(element);
             direction,
             elementInfo: getElementInfo(element ,};
         
@@ -509,8 +509,7 @@ export class FocusStateManager {
      * モーション設定の適用
      */
     private applyMotionPreference(reducedMotion: boolean): void { ''
-        if(reducedMotion) {'
-            ';
+        if(reducedMotion) {', ';
 
         }
 
@@ -528,8 +527,7 @@ export class FocusStateManager {
      * 強制カラーの適用
      */'
     private applyForcedColors(enabled: boolean): void { ''
-        if(enabled) {'
-            ';
+        if(enabled) {', ';
 
         }
 
@@ -554,7 +552,7 @@ export class FocusStateManager {
             isHighContrastMode: this.state.isHighContrastMode;
             keyboardMode: document.body.classList.contains(this.cssClasses.keyboardMode);
             keyboardHintVisible: this.state.keyboardHintVisible;
-            lastChangeTime: this.state.lastFocusChangeTime, };
+           , lastChangeTime: this.state.lastFocusChangeTime, };
             systemSettings }
         }
 

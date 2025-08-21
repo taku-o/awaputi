@@ -3,7 +3,7 @@
  * 多言語メッセージテンプレート、地域別ソーシャルメディア対応を提供
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 export class SocialI18nManager {'
 
@@ -27,68 +27,62 @@ export class SocialI18nManager {'
             ],
             
             // 地域別設定
-            regionalSettings: {''
-                'ja': {''
+            regionalSettings: {'', 'ja': {''
                     platforms: ['twitter', 'line', 'facebook', 'copy'],
                     dateFormat: 'YYYY年MM月DD日',
                     numberFormat: '99,999',
                     currency: 'JPY';
-                    rtl: false,
+                   , rtl: false,
                     socialHosts: {''
                         twitter: 'twitter.com',
                         facebook: 'facebook.com' ,}
 
-                },''
-                'en': { ''
+                },'', 'en': { ''
                     platforms: ['twitter', 'facebook', 'reddit', 'copy'],
                     dateFormat: 'MM/DD/YYYY',
                     numberFormat: '99,999',
                     currency: 'USD';
-                    rtl: false,
+                   , rtl: false,
                     socialHosts: {''
                         twitter: 'twitter.com',
                         facebook: 'facebook.com' ,}
 
-                },''
-                'ko': { ''
+                },'', 'ko': { ''
                     platforms: ['twitter', 'facebook', 'kakaotalk', 'copy'],
                     dateFormat: 'YYYY년 MM월 DD일',
                     numberFormat: '99,999',
                     currency: 'KRW';
-                    rtl: false,
+                   , rtl: false,
                     socialHosts: {''
                         twitter: 'twitter.com',
                         facebook: 'facebook.com' ,}
 
-                },''
-                'zh-CN': { ''
+                },'', 'zh-CN': { ''
                     platforms: ['weibo', 'wechat', 'qq', 'copy'],
                     dateFormat: 'YYYY年MM月DD日',
                     numberFormat: '99,999',
                     currency: 'CNY';
-                    rtl: false,
+                   , rtl: false,
                     socialHosts: {''
                         weibo: 'weibo.com',
                         wechat: 'weixin.qq.com' ,}
 
-                },''
-                'zh-TW': { ''
+                },'', 'zh-TW': { ''
                     platforms: ['facebook', 'line', 'twitter', 'copy'],
                     dateFormat: 'YYYY年MM月DD日',
                     numberFormat: '99,999',
                     currency: 'TWD';
-                    rtl: false,
+                   , rtl: false,
                     socialHosts: {''
                         twitter: 'twitter.com',
                         facebook: 'facebook.com' ,}
 
-                },''
-                'ar': { ''
+                },'', 'ar': { ''
                     platforms: ['twitter', 'facebook', 'telegram', 'copy'],
                     dateFormat: 'DD/MM/YYYY',
                     numberFormat: '99,999',
                     currency: 'USD';
-                    rtl: true,
+                   , rtl: true,
                     socialHosts: {''
                         twitter: 'twitter.com',
                         facebook: 'facebook.com' ,}
@@ -96,27 +90,25 @@ export class SocialI18nManager {'
             // キャッシュ設定
             cache: { enabled: options.cache !== false;
                 maxSize: options.cacheSize || 1000;
-                ttl: options.cacheTtl || 3600000 // 1時間 };
+               , ttl: options.cacheTtl || 3600000 // 1時間 };
             // フォールバック設定
             fallback: { ''
                 language: options.fallbackLanguage || 'en';
-                enabled: options.fallback !== false }
+               , enabled: options.fallback !== false }
         };
         // 状態管理
         this.state = {;
             currentLanguage: 'ja',
             loadedLanguages: new Set(['ja]);
             loading: false;
-            error: null ,};
+           , error: null ,};
         // メッセージテンプレート
         this.messageTemplates = { // 基本共有メッセージ
             shareScore: {' }'
 
                 ja: 'BubblePopで{score}点を獲得しました！🎮 #{gameTitle} #{score}点',''
                 en: 'I scored {score} points in BubblePop! 🎮 #{gameTitle} #{score}points',''
-                ko: 'BubblePop에서 {score}점을 획득했습니다! 🎮 #{gameTitle} #{score}점';''
-                'zh-CN': '我在BubblePop中获得了{score}分！🎮 #{gameTitle} #{score}分',''
-                'zh-TW': '我在BubblePop中獲得了{score}分！🎮 #{gameTitle} #{score}分',''
+                ko: 'BubblePop에서 {score}점을 획득했습니다! 🎮 #{gameTitle} #{score}점';'', 'zh-CN': '我在BubblePop中获得了{score}分！🎮 #{gameTitle} #{score}分','', 'zh-TW': '我在BubblePop中獲得了{score}分！🎮 #{gameTitle} #{score}分',''
                 es: '¡Conseguí {score} puntos en BubblePop! 🎮 #{gameTitle} #{score}puntos',''
                 fr: "J'ai marqué {score} points dans BubblePop ! 🎮 #{gameTitle} #{score}points",""
                 de: 'Ich habe {score} Punkte in BubblePop erreicht! 🎮 #{gameTitle} #{score}Punkte',''
@@ -128,9 +120,7 @@ export class SocialI18nManager {'
 
                 ja: '🏆 新記録達成！BubblePopで{score}点の新ハイスコアを樹立しました！',''
                 en: '🏆 New High Score! Achieved {score} points in BubblePop!',''
-                ko: '🏆 신기록 달성! BubblePop에서 {score}점의 새로운 최고점수를 달성했습니다!';''
-                'zh-CN': '🏆 创新纪录！在BubblePop中创造了{score}分的新高分！',''
-                'zh-TW': '🏆 創新紀錄！在BubblePop中創造了{score}分的新高分！',''
+                ko: '🏆 신기록 달성! BubblePop에서 {score}점의 새로운 최고점수를 달성했습니다!';'', 'zh-CN': '🏆 创新纪录！在BubblePop中创造了{score}分的新高分！','', 'zh-TW': '🏆 創新紀錄！在BubblePop中創造了{score}分的新高分！',''
                 es: '🏆 ¡Nuevo récord! ¡Logré {score} puntos en BubblePop!',''
                 fr: "🏆 Nouveau record ! J'ai atteint {score} points dans BubblePop !",""
                 de: '🏆 Neuer Rekord! {score} Punkte in BubblePop erreicht!',''
@@ -141,14 +131,12 @@ export class SocialI18nManager {'
             achievement: { ' }'
 
                 ja: '🎖️ 実績「{achievementName}」を解除しました！BubblePopで新たな挑戦を達成！',''
-                en: '🎖️ Achievement unlocked: \"{achievementName}\"! Conquered a new challenge in BubblePop!',''
-                ko: '🎖️ 업적 \"{achievementName}\" 해제! BubblePop에서 새로운 도전을 달성했습니다!';''
-                'zh-CN': '🎖️ 解锁成就：\"{achievementName}\"！在BubblePop中完成了新挑战！',''
-                'zh-TW': '🎖️ 解鎖成就：\"{achievementName}\"！在BubblePop中完成了新挑戰！',''
-                es: '🎖️ ¡Logro desbloqueado: \"{achievementName}\"! ¡Conquisté un nuevo desafío en BubblePop!',''
+                en: '🎖️ Achievement, unlocked: \"{achievementName}\"! Conquered a new challenge in BubblePop!',''
+                ko: '🎖️ 업적 \"{achievementName}\" 해제! BubblePop에서 새로운 도전을 달성했습니다!';'', 'zh-CN': '🎖️ 解锁成就：\"{achievementName}\"！在BubblePop中完成了新挑战！','', 'zh-TW': '🎖️ 解鎖成就：\"{achievementName}\"！在BubblePop中完成了新挑戰！',''
+                es: '🎖️ ¡Logro, desbloqueado: \"{achievementName}\"! ¡Conquisté un nuevo desafío en BubblePop!',''
                 fr: '🎖️ Succès débloqué : \"{achievementName}\" ! Nouveau défi conquis dans BubblePop !',''
-                de: '🎖️ Erfolg freigeschaltet: \"{achievementName}\"! Neue Herausforderung in BubblePop gemeistert!',''
-                pt: '🎖️ Conquista desbloqueada: \"{achievementName}\"! Novo desafio conquistado no BubblePop!',''
+                de: '🎖️ Erfolg, freigeschaltet: \"{achievementName}\"! Neue Herausforderung in BubblePop gemeistert!',''
+                pt: '🎖️ Conquista, desbloqueada: \"{achievementName}\"! Novo desafio conquistado no BubblePop!',''
                 ru: '🎖️ Достижение разблокировано: \"{achievementName}\"! Покорил новый вызов в BubblePop!'
             };
             // チャレンジ完了
@@ -156,9 +144,7 @@ export class SocialI18nManager {'
 
                 ja: '✅ チャレンジ「{challengeName}」完了！{reward}を獲得しました！',''
                 en: '✅ Challenge \"{challengeName}\" completed! Earned {reward}!',''
-                ko: '✅ 챌린지 \"{challengeName}\" 완료! {reward}를 획득했습니다!';''
-                'zh-CN': '✅ 挑战 \"{challengeName}\" 完成！获得了{reward}！',''
-                'zh-TW': '✅ 挑戰 \"{challengeName}\" 完成！獲得了{reward}！',''
+                ko: '✅ 챌린지 \"{challengeName}\" 완료! {reward}를 획득했습니다!';'', 'zh-CN': '✅ 挑战 \"{challengeName}\" 完成！获得了{reward}！','', 'zh-TW': '✅ 挑戰 \"{challengeName}\" 完成！獲得了{reward}！',''
                 es: '✅ ¡Desafío \"{challengeName}\" completado! ¡Gané {reward}!',''
                 fr: "✅ Défi \"{challengeName}\" terminé ! J'ai gagné {reward} !",""
                 de: '✅ Herausforderung \"{challengeName}\" abgeschlossen! {reward} erhalten!',''
@@ -170,9 +156,7 @@ export class SocialI18nManager {'
 
                 ja: '🏅 BubblePopリーダーボードで{rank}位にランクイン！総スコア{totalScore}点',''
                 en: '🏅 Ranked #{rank} on BubblePop leaderboard! Total score: {totalScore}',''
-                ko: '🏅 BubblePop 리더보드에서 {rank}위에 랭크인! 총점 {totalScore}점';''
-                'zh-CN': '🏅 在BubblePop排行榜中排名第{rank}！总分{totalScore}分',''
-                'zh-TW': '🏅 在BubblePop排行榜中排名第{rank}！總分{totalScore}分',''
+                ko: '🏅 BubblePop 리더보드에서 {rank}위에 랭크인! 총점 {totalScore}점';'', 'zh-CN': '🏅 在BubblePop排行榜中排名第{rank}！总分{totalScore}分','', 'zh-TW': '🏅 在BubblePop排行榜中排名第{rank}！總分{totalScore}分',''
                 es: '🏅 ¡Clasificado #{rank} en la tabla de líderes de BubblePop! Puntuación total: {totalScore}',''
                 fr: '🏅 Classé #{rank} au classement BubblePop ! Score total : {totalScore}',''
                 de: '🏅 Platz #{rank} in der BubblePop-Bestenliste! Gesamtpunktzahl: {totalScore}',''
@@ -336,14 +320,14 @@ export class SocialI18nManager {'
         // フォーマッター
         this.formatters = { number: this.createNumberFormatter.bind(this),
             date: this.createDateFormatter.bind(this);
-            currency: this.createCurrencyFormatter.bind(this ,};
+           , currency: this.createCurrencyFormatter.bind(this ,};
         
         // 統計
         this.stats = { translationRequests: 0,
             cacheHits: 0;
             cacheMisses: 0;
             languageChanges: 0;
-            errors: 0 ,};
+           , errors: 0 ,};
         this.initialize()';
         this.log('SocialI18nManager初期化完了);
     }
@@ -682,7 +666,7 @@ export class SocialI18nManager {'
     getStats() {
         return { ...this.stats,
             cacheSize: this.cache.size;
-            cacheHitRate: this.stats.translationRequests > 0 '';
+           , cacheHitRate: this.stats.translationRequests > 0 '';
                 ? (this.stats.cacheHits / this.stats.translationRequests * 100).toFixed(2) + '%''';
                 : '0%',
             supportedLanguages: this.config.supportedLanguages.length;
@@ -731,8 +715,7 @@ export class SocialI18nManager {'
             timestamp: Date.now(); }
         };
 
-        if(ErrorHandler) {'
-            ';
+        if(ErrorHandler) {', ';
 
         }
 

@@ -8,7 +8,7 @@
 interface DecorativeBubble { x: number,
     y: number;
     size: number;
-    alpha: number ,}
+   , alpha: number ,}
 
 interface GeneratedAssets { standard: Map<number, Blob>;
     maskable: Map<number, Blob>;
@@ -17,7 +17,7 @@ interface GeneratedAssets { standard: Map<number, Blob>;
 
 export class PWAAssetGenerator {
     private canvas: HTMLCanvasElement | null;
-    private ctx: CanvasRenderingContext2D | null;
+    private, ctx: CanvasRenderingContext2D | null;
     constructor() {
 
         this.canvas = null;
@@ -33,8 +33,7 @@ export class PWAAssetGenerator {
     private initializeCanvas(): void { this.canvas = document.createElement('canvas'');''
         this.ctx = this.canvas.getContext('2d);
 
-        if(!this.ctx) {'
-            ';
+        if(!this.ctx) {', ';
 
         }
 
@@ -53,8 +52,7 @@ export class PWAAssetGenerator {
      * @returns 描画されたCanvas
      */'
     drawBubbleIcon(size: number, maskable: boolean = false): HTMLCanvasElement { ''
-        if(!this.canvas || !this.ctx) {'
-            ';
+        if(!this.canvas || !this.ctx) {', ';
 
         }
 
@@ -179,8 +177,7 @@ export class PWAAssetGenerator {
      * @returns 描画されたCanvas
      */'
     drawFaviconIcon(size: number): HTMLCanvasElement { ''
-        if(!this.canvas || !this.ctx) {'
-            ';
+        if(!this.canvas || !this.ctx) {', ';
 
         }
 
@@ -320,8 +317,7 @@ export class PWAAssetGenerator {
         const previewCanvas = document.createElement('canvas'');''
         const previewCtx = previewCanvas.getContext('2d);
 
-        if(!previewCtx) {'
-            ';
+        if(!previewCtx) {', ';
 
         }
 

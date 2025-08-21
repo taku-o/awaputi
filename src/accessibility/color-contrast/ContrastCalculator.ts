@@ -6,49 +6,49 @@
 // Interfaces for contrast calculation
 interface CalculatorConfig { wcagLevel: 'A' | 'AA' | 'AAA',
     enableCache: boolean;
-    highPrecision: boolean ,}
+   , highPrecision: boolean ,}
 
 interface RGB { r: number;
     g: number;
-    b: number }
+   , b: number }
 
 interface WCAGStandards { A: WCAGLevel;
     AA: WCAGLevel;
-    AAA: WCAGLevel
+   , AAA: WCAGLevel
     }
 
 interface WCAGLevel { normalText: number;
-    largeText: number }
+   , largeText: number }
 
 interface PerformanceMetrics { calculationTimes: number[];
     cacheHitRate: number;
-    totalCalculations: number }
+   , totalCalculations: number }
 
 interface WCAGValidation { passes: boolean;
     ratio: number;
     requirement: number;
     level: string;
     isLargeText: boolean;
-    grade: string }
+   , grade: string }
 
 interface LABColor { L: number;
     a: number;
-    b: number }
+   , b: number }
 
 interface ContrastRecommendation { type: string;
-    message: string,
+   , message: string,
     severity: 'low' | 'medium' | 'high' | 'critical';
-    actionable: boolean ,}
+   , actionable: boolean ,}
 
 interface ContrastAnalysis { contrastRatio: number;
     colorDifference: number;
     wcagValidation: WCAGValidation;
-    textProperties: {
-        fontSize: number;
+   , textProperties: {
+        fontSiz;e: number;
         fontWeight: number;
-        isLargeText: boolean };
+       , isLargeText: boolean };
     recommendations: ContrastRecommendation[];
-    timestamp: number;
+   , timestamp: number;
 }
 
 interface PerformanceReport { totalCalculations: number,
@@ -56,7 +56,7 @@ interface PerformanceReport { totalCalculations: number,
     cacheHitRate: number;
     cacheSize: number;
     fastestCalculation: number;
-    slowestCalculation: number ,}
+   , slowestCalculation: number ,}
 
 // Type for contrast result (for, compatibility with, ColorContrastAnalyzer);
 interface ContrastResult {
@@ -66,27 +66,27 @@ interface ContrastResult {
 export class ContrastCalculator {
     private config: CalculatorConfig;
     private wcagStandards: WCAGStandards;
-    private calculationCache: Map<string, number>;
+    private, calculationCache: Map<string, number>;
     private cacheHits: number;
     private cacheMisses: number;
     private performanceMetrics: PerformanceMetrics;
-    private initialized: boolean;
+    private, initialized: boolean;
 
     constructor(config: Partial<CalculatorConfig> = {)) {'
         this.config = {''
             wcagLevel: 'AA';
             enableCache: true;
-            highPrecision: false;
+           , highPrecision: false;
             ...config;
 
         // WCAGコントラスト基準
         this.wcagStandards = { A: {
                 normalText: 3.0;
-                largeText: 3.0 ,};
+               , largeText: 3.0 ,};
             AA: { normalText: 4.5;
-                largeText: 3.0 };
+               , largeText: 3.0 };
             AAA: { normalText: 7.0;
-                largeText: 4.5 }
+               , largeText: 4.5 }
         };
         // 計算結果キャッシュ
         this.calculationCache = new Map();
@@ -96,7 +96,7 @@ export class ContrastCalculator {
         // パフォーマンス測定
         this.performanceMetrics = { calculationTimes: [],
             cacheHitRate: 0;
-            totalCalculations: 0 ,};
+           , totalCalculations: 0 ,};
         this.initialized = false;
     }
 
@@ -116,15 +116,14 @@ export class ContrastCalculator {
             return true;' }'
 
         } catch (error) {
-            console.error('ContrastCalculator: Initialization error:', error);
+            console.error('ContrastCalculator: Initialization, error:', error);
             return false;
 
     /**
      * Calculate contrast ratio between two colors
      */'
     calculateContrastRatio(color1: RGB | string, color2: RGB | string): number { ''
-        if(!this.initialized) {'
-            ';
+        if(!this.initialized) {', ';
 
         ,}
 
@@ -170,7 +169,7 @@ export class ContrastCalculator {
             return finalRatio;
 
         } catch (error) {
-            console.error('ContrastCalculator: Contrast calculation error:', error);
+            console.error('ContrastCalculator: Contrast calculation, error:', error);
             throw error; }
     }
 
@@ -263,7 +262,7 @@ export class ContrastCalculator {
                 isLargeText: isLarge }
             };
             recommendations: this.generateContrastRecommendations(wcagValidation);
-            timestamp: Date.now();
+           , timestamp: Date.now();
         }
 
     // Private helper methods
@@ -276,8 +275,7 @@ export class ContrastCalculator {
             return { r: color.r, g: color.g, b: color.b ,}
 
         }''
-        if(typeof, color === 'string) {'
-            ';
+        if(typeof, color === 'string) {', ';
 
         }
 
@@ -382,7 +380,7 @@ export class ContrastCalculator {
 
                 message: `コントラスト比を${improvement.toFixed(1'})倍改善する必要があります`,''
                 severity: 'high';
-                actionable: true;
+               , actionable: true;
             }),
 
             if(validation.ratio < 3.0) { '
@@ -422,7 +420,7 @@ export class ContrastCalculator {
     private resetPerformanceMetrics(): void { this.performanceMetrics = {
             calculationTimes: [];
             cacheHitRate: 0;
-            totalCalculations: 0 };
+           , totalCalculations: 0 };
         this.cacheHits = 0;
         this.cacheMisses = 0;
     }
@@ -438,7 +436,7 @@ export class ContrastCalculator {
             averageCalculationTime: avgTime;
             cacheHitRate: this.performanceMetrics.cacheHitRate;
             cacheSize: this.calculationCache.size;
-            fastestCalculation: times.length > 0 ? Math.min(...times) : 0, };
+           , fastestCalculation: times.length > 0 ? Math.min(...times) : 0, };
             slowestCalculation: times.length > 0 ? Math.max(...times) : 0 
         }
 

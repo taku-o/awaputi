@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * HelpScene-navigation.test.js
  * 
@@ -6,7 +6,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * Issue #163 - Duplicate help/settings screen consolidation
  * Task 7 - Context-aware navigation support for HelpScene
  */
-import { HelpScene } from '../../src/scenes/HelpScene';
+import { HelpScene  } from '../../src/scenes/HelpScene';
 // DOM APIのモック
 const mockDocument = {
     fullscreenElement: null,
@@ -33,7 +33,7 @@ describe('HelpScene Context-Aware Navigation', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true;);
-                switchScene: jest.fn(').mockReturnValue(true,
+               , switchScene: jest.fn(').mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'HelpScene' }
                 }
@@ -60,7 +60,7 @@ describe('HelpScene Context-Aware Navigation', () => {
         jest.mock('../../src/scenes/help-scene/HelpContentManager.js', () => ({
             HelpContentManager: jest.fn().mockImplementation(() => ({
                 initialize: jest.fn().mockResolvedValue(true;);
-                getState: jest.fn().mockReturnValue({),
+               , getState: jest.fn().mockReturnValue({),
                 getHelpAnalytics: jest.fn().mockReturnValue({),
                     startHelpSession: jest.fn(),
         endHelpSession: jest.fn(),

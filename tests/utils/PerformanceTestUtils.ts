@@ -3,7 +3,7 @@
  * Provides stable performance testing with environment-specific thresholds and retry logic
  */
 
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 
 export class PerformanceTestUtils {
   /**
@@ -472,7 +472,7 @@ export class PerformanceTestUtils {
         break;
 
       default:
-        validation.issues.push(`Unknown test type: ${testType)`});
+        validation.issues.push(`Unknown test, type: ${testType)`});
     }
 
     return validation;

@@ -1,7 +1,7 @@
 /**
  * シーン管理クラス
  */
-import { Scene } from '../types/game';
+import { Scene  } from '../types/game';
 ';
 // Extended Scene interface for SceneManager integration
 interface ExtendedScene extends Omit<Scene, 'enter'> { setSceneManager(sceneManager: SceneManager): void,
@@ -12,10 +12,10 @@ interface SceneContextData { [key: string]: any, }
 export class SceneManager {
     // @ts-ignore - unused but kept for future implementation
     private __gameEngine: any; // GameEngine type would be defined elsewhere - prefixed with __ as unused
-    private scenes: Map<string, ExtendedScene>;
+    private, scenes: Map<string, ExtendedScene>;
     private currentScene: ExtendedScene | null;
     // @ts-ignore - unused but kept for future implementation
-    private __nextScene: ExtendedScene | null; // prefixed with __ as unused
+    private, __nextScene: ExtendedScene | null; // prefixed with __ as unused
     private lastUpdateDebugTime?: number;
     private lastSceneWarnTime?: number;
     

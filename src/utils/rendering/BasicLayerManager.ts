@@ -13,7 +13,7 @@
 interface BoundingBox { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface Layer { name: string;
     order: number;
@@ -38,10 +38,10 @@ interface LayerStats { totalLayers: number,
     cachedLayers: number;
     compositedLayers: number;
     cacheHitRate: number;
-    compositionTime: number ,}
+   , compositionTime: number ,}
 
 interface LayerManagerConfig { enabled: boolean;
-    layers: Map<string, Layer>;
+   , layers: Map<string, Layer>;
     layerOrder: string[];
     staticLayers: Set<string>;
     dynamicLayers: Set<string>;
@@ -52,7 +52,7 @@ interface LayerManagerConfig { enabled: boolean;
     compositionMode: 'simple' | 'smart' | 'advanced';
     blendOptimization: boolean;
     layerFusion: boolean;
-    layerProperties: Map<string, LayerProperties>;
+   , layerProperties: Map<string, LayerProperties>;
     stats: LayerStats
     ,}
 
@@ -62,7 +62,7 @@ interface RenderObject { type?: string;
     x: number;
     y: number;
     width: number;
-    height: number;
+   , height: number;
     rotation?: number;
     scale?: number;
     alpha?: number;
@@ -76,7 +76,7 @@ interface RenderObject { type?: string;
 interface DirtyRegion { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface ConfigurationOptions { enabled?: boolean;
     cacheEnabled?: boolean;
@@ -88,7 +88,7 @@ interface ConfigurationOptions { enabled?: boolean;
 
 export class BasicLayerManager {
     private canvas: HTMLCanvasElement;
-    private config: LayerManagerConfig;
+    private, config: LayerManagerConfig;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
@@ -103,17 +103,17 @@ export class BasicLayerManager {
             ;
             // Layer caching
             layerCache: new Map(''';
-            compositionMode: 'smart', // 'simple', 'smart', 'advanced);
+           , compositionMode: 'smart', // 'simple', 'smart', 'advanced);
             blendOptimization: true);
-            layerFusion: true, // Merge compatible layers;
+           , layerFusion: true, // Merge compatible layers;
             // Layer properties
             layerProperties: new Map();
             // Statistics
-            stats: {
+           , stats: {
                 totalLayers: 0;
                 cachedLayers: 0;
                 compositedLayers: 0;
-                cacheHitRate: 0;
+               , cacheHitRate: 0;
     ,}
                 compositionTime: 0 }
 };
@@ -141,7 +141,7 @@ export class BasicLayerManager {
             name,
             order,
             enabled: true;
-            visible: true,
+           , visible: true,
             opacity: 1.0,
             blendMode: 'source-over';
             // Layer canvas for caching
@@ -152,12 +152,12 @@ export class BasicLayerManager {
             cacheable: properties.cacheable || false;
             dirty: true;
             // Content tracking
-            objects: new Set(), }
+           , objects: new Set(), }
             boundingBox: { x: 0, y: 0, width: 0, height: 0 ,},
             
             // Performance tracking
             renderTime: 0;
-            complexity: 0;
+           , complexity: 0;
         },
         ;
         // Create layer canvas if cacheable

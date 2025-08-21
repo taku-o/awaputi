@@ -9,10 +9,10 @@ interface Layout { isMobile: boolean,
     contentPadding: number;
     tabHeight: number;
     headerHeight: number;
-    fontSize: {
-        title: number;
+   , fontSize: {
+        titl;e: number;
         tab: number;
-        content: number ,}
+       , content: number ,}
 
 // タブ情報のインターフェース
 interface Tab { id: string,
@@ -21,20 +21,20 @@ interface Tab { id: string,
 
 // ヒット領域のインターフェース
 interface HitAreas { tabs: TabArea[];
-    backButton: ButtonInfo | null }
+   , backButton: ButtonInfo | null }
 
 // タブ領域のインターフェース
 interface TabArea { id: string;
     x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 // ボタン情報のインターフェース
 interface ButtonInfo { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 // ゲームエンジンのインターフェース
 interface GameEngine {
@@ -42,8 +42,8 @@ interface GameEngine {
 }
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (data?: any) => void): void;
-    off(event: string, callback?: (data?: any) => void): void;
+interface EventBus { on(event: string, callback: (dat;a?: any) => void): void;
+    off(event: string, callback?: (dat;a?: any) => void): void;
     emit(event: string, data?: any): void }
 }
 
@@ -75,7 +75,7 @@ export class UserInfoRenderer {
     private headerHeight: number = 120;
     private contentPadding: number = 20;
     // キャッシュ
-    private cachedElements: Map<string, any> = new Map();
+    private, cachedElements: Map<string, any> = new Map();
     private lastRenderHash: string | null = null;
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
@@ -95,7 +95,7 @@ export class UserInfoRenderer {
         profileManager: ProfileManager
     );
         helpSystem: HelpSystem);
-        dialogManager: DialogManager;
+       , dialogManager: DialogManager;
     ): void { try {
             const canvas = context.canvas,
             
@@ -223,7 +223,7 @@ export class UserInfoRenderer {
         this.sceneState.set('backButton', {
             x: buttonX);
             y: buttonY);
-            width: buttonWidth,);
+           , width: buttonWidth,);
             height: buttonHeight ,}
     
     /**
@@ -287,9 +287,9 @@ export class UserInfoRenderer {
             contentPadding: isMobile ? 10 : this.contentPadding;
             tabHeight: isMobile ? 50 : this.tabHeight;
             headerHeight: isMobile ? 100 : this.headerHeight;
-            fontSize: {
+           , fontSize: {
                 title: isMobile ? 24 : 32;
-                tab: isMobile ? 14 : 16, };
+               , tab: isMobile ? 14 : 16, };
                 content: isMobile ? 12 : 14 
 }
     
@@ -312,7 +312,7 @@ export class UserInfoRenderer {
                 id: tab.id;
                 x: headerX + index * tabWidth);
                 y: headerY);
-                width: tabWidth, }
+               , width: tabWidth, }
                 height: layout.tabHeight); }
             };
         

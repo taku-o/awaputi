@@ -1,8 +1,8 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Type definitions for alternative feedback systems
 interface AccessibilityManager { getConfiguration(): AccessibilityConfiguration;
-    addEventListener?(event: string, handler: (event: any) => void): void;
+    addEventListener?(event: string, handler: (even;t: any) => void): void;
     removeEventListener?(event: string): void, 
 }
 ';
@@ -13,14 +13,14 @@ interface AudioManager { ''
 interface AlternativeFeedbackState { hapticEnabled: boolean,
     audioAlternativesEnabled: boolean;
     visualAlternativesEnabled: boolean;
-    deviceSupportsVibration: boolean;
+   , deviceSupportsVibration: boolean;
     audioContextSupported?: boolean;
     speechSynthesisSupported?: boolean; ,}
 
 // Accessibility configuration interface
 interface AccessibilityConfiguration { visual?: {
         highContrast?: {
-            enabled: boolean ,};
+            enable;d: boolean ,};
         colorBlindness?: { enabled: boolean };
         motion?: { reduced: boolean };
     audio?: { visualFeedback?: {
@@ -44,7 +44,7 @@ interface AudioAlternativePattern { ''
     type: 'tone' | 'sweep' | 'chord' | 'noise';
     frequency?: number;
     frequencies?: number[];
-    duration: number;
+   , duration: number;
     startFreq?: number;
     endFreq?: number;
     filterType?: BiquadFilterType;
@@ -58,7 +58,7 @@ interface VisualAlternativePattern { ''
     duration?: number;''
     position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
     size?: number; }
-    center?: { x: number; y: number }
+    center?: { x: number;, y: number }
     radius?: number;
 }
 
@@ -74,7 +74,7 @@ interface FeedbackOptions { hapticIntensity?: number;
 // Integrated feedback result
 interface FeedbackResult { ''
     type: 'haptic' | 'audio' | 'visual' | 'speech';
-    success: boolean }
+   , success: boolean }
 
 // Audio playback options
 interface AudioPlaybackOptions { volume?: number;
@@ -89,20 +89,20 @@ interface SpeechOptions { rate?: number;
 // Device capability detection
 interface DeviceCapabilities { vibration: boolean,
     audioContext: boolean;
-    speechSynthesis: boolean ,}
+   , speechSynthesis: boolean ,}
 
 // Alternative feedback report
 interface AlternativeFeedbackReport { component: string;
     state: AlternativeFeedbackState;
     deviceCapabilities: DeviceCapabilities;
-    patterns: {
-        hapticPatterns: number;
+   , patterns: {
+        hapticPattern;s: number;
         audioAlternatives: number;
-        visualAlternatives: number };
+       , visualAlternatives: number };
     features: { hapticFeedback: boolean;
         audioAlternatives: boolean;
         visualAlternatives: boolean;
-        speechAnnouncements: boolean }
+       , speechAnnouncements: boolean }
 
 /**
  * 代替フィードバック管理クラス
@@ -113,11 +113,11 @@ export class AlternativeFeedbackManager {
     private audioManager: AudioManager | null;
     private config: AccessibilityConfiguration | null = null;
     private audioContext: AudioContext | null = null;
-    private state: AlternativeFeedbackState = {
+    private, state: AlternativeFeedbackState = {
         hapticEnabled: false;
         audioAlternativesEnabled: false;
         visualAlternativesEnabled: false;
-        deviceSupportsVibration: false };
+       , deviceSupportsVibration: false };
     // 触覚フィードバックパターン
     private hapticPatterns = new Map<string, HapticPattern>([']';
         ['bubble-pop', [100, 50, 100]],
@@ -191,7 +191,7 @@ export class AlternativeFeedbackManager {
 
         console.log('Device capabilities detected:', {)
             vibration: this.state.deviceSupportsVibration);
-            audioContext: this.state.audioContextSupported,);
+           , audioContext: this.state.audioContextSupported,);
             speechSynthesis: this.state.speechSynthesisSupported ,}
     
     /**
@@ -335,8 +335,7 @@ export class AlternativeFeedbackManager {
                 break;
 
             case 'sweep':;
-                if(alternative.startFreq && alternative.endFreq) {'
-                    ';
+                if(alternative.startFreq && alternative.endFreq) {', ';
 
                 }
 
@@ -470,8 +469,7 @@ export class AlternativeFeedbackManager {
                 break;
 
             case 'corner-indicator':;
-                if(position && size) {'
-                    ';
+                if(position && size) {', ';
 
                 }
 
@@ -554,7 +552,7 @@ export class AlternativeFeedbackManager {
     /**
      * 呼吸する円の描画
      */
-    private renderBreathingCircle(context: CanvasRenderingContext2D, center: { x: number; y: number ), radius: number, color: string | undefined): void {
+    private renderBreathingCircle(context: CanvasRenderingContext2D, center: { x: number;, y: number ), radius: number, color: string | undefined): void {
         const canvas = context.canvas;
         const x = center.x * canvas.width / 100;
         const y = center.y * canvas.height / 100;
@@ -696,17 +694,17 @@ export class AlternativeFeedbackManager {
      */''
     generateReport(''';
             component: 'AlternativeFeedbackManager';
-            state: { ...this.state;
+           , state: { ...this.state;
             deviceCapabilities: { vibration: this.state.deviceSupportsVibration;
                 audioContext: this.state.audioContextSupported || false;
-                speechSynthesis: this.state.speechSynthesisSupported || false };
+               , speechSynthesis: this.state.speechSynthesisSupported || false };
             patterns: { hapticPatterns: this.hapticPatterns.size;
                 audioAlternatives: this.audioAlternatives.size;
-                visualAlternatives: this.visualAlternatives.size };
+               , visualAlternatives: this.visualAlternatives.size };
             features: { hapticFeedback: this.state.hapticEnabled;
                 audioAlternatives: this.state.audioAlternativesEnabled;
                 visualAlternatives: this.state.visualAlternativesEnabled;
-                speechAnnouncements: this.state.speechSynthesisSupported || false }))
+               , speechAnnouncements: this.state.speechSynthesisSupported || false }))
     }
     
     /**

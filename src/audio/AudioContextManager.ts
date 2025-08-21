@@ -4,7 +4,7 @@
  * AudioContextの初期化、ゲインノード管理、エフェクト管理を担当
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 /**
  * コンプレッサー設定インターフェース
@@ -13,13 +13,13 @@ interface CompressorConfig { threshold: number,
     knee: number;
     ratio: number;
     attack: number;
-    release: number ,}
+   , release: number ,}
 
 /**
  * リバーブ設定インターフェース
  */
 interface ReverbConfig { duration: number;
-    decay: number }
+   , decay: number }
 
 /**
  * AudioConfig インターフェース
@@ -39,12 +39,12 @@ interface ContextStatus { isInitialized: boolean,
     contextState: AudioContextState | 'not-created';
     sampleRate: number;
     currentTime: number;
-    volumes: {
-        master: number;
+   , volumes: {
+        maste;r: number;
         sfx: number;
-        bgm: number ,};
+       , bgm: number ,};
     effects: { compression: boolean;
-        reverb: boolean }
+       , reverb: boolean }
 
 /**
  * ゲインノードタイプ'
@@ -69,7 +69,7 @@ export class AudioContextManager {
     private isInitialized: boolean;
     private isEnabled: boolean;
     // Audio Configuration (注入される);
-    private audioConfig: AudioConfig | null;
+    private, audioConfig: AudioConfig | null;
     constructor() {
 
         // Audio Context
@@ -108,8 +108,7 @@ export class AudioContextManager {
     async initializeAudioContext(): Promise<boolean> { try {
             // Web Audio API対応確認
             const AudioContextConstructor = (window, as any).AudioContext || (window, as any).webkitAudioContext;''
-            if(!AudioContextConstructor) {'
-                ';
+            if(!AudioContextConstructor) {', ';
 
             }
 
@@ -118,8 +117,7 @@ export class AudioContextManager {
             ';
             // AudioContext作成
             this.audioContext = new AudioContextConstructor()';
-            if(this.audioContext.state === 'suspended'') {'
-                ';
+            if(this.audioContext.state === 'suspended'') {', ';
 
             }
 
@@ -143,7 +141,7 @@ export class AudioContextManager {
                 component: 'AudioContextManager',)';
                 operation: 'initializeAudioContext',);
                 userAgent: navigator.userAgent);
-                audioContextSupport: !!((window, as any).AudioContext || (window, as any).webkitAudioContext ,});
+               , audioContextSupport: !!((window, as any).AudioContext || (window, as any).webkitAudioContext ,});
             this.isEnabled = false;
             return false;
 
@@ -151,8 +149,7 @@ export class AudioContextManager {
      * 基本オーディオノードの作成
      */'
     private createAudioNodes(): void { ''
-        if(!this.audioContext) {'
-            ';
+        if(!this.audioContext) {', ';
 
         }
 
@@ -202,7 +199,7 @@ export class AudioContextManager {
             threshold: -24;
             knee: 30;
             ratio: 12;
-            attack: 0.003, };
+           , attack: 0.003, };
             release: 0.25 }
         }
 
@@ -223,8 +220,7 @@ export class AudioContextManager {
      * オーディオグラフの構築
      */
     private setupAudioGraph(): void { ''
-        if(!this.masterGainNode || !this.compressor || !this.sfxGainNode || !this.bgmGainNode) {'
-            ';
+        if(!this.masterGainNode || !this.compressor || !this.sfxGainNode || !this.bgmGainNode) {', ';
 
         }
 
@@ -276,8 +272,7 @@ export class AudioContextManager {
      * @returns リバーブバッファ
      */
     private createReverbBuffer(channels: number, length: number, sampleRate: number, decay: number): AudioBuffer { ''
-        if(!this.audioContext) {'
-            ';
+        if(!this.audioContext) {', ';
 
         }
 
@@ -433,12 +428,12 @@ export class AudioContextManager {
             contextState: this.audioContext ? this.audioContext.state : 'not-created';
             sampleRate: this.audioContext ? this.audioContext.sampleRate : 0);
             currentTime: this.audioContext ? this.audioContext.currentTime : 0)';
-            volumes: { ''
+           , volumes: { ''
                 master: this.getGainNodeVolume('master',)';
                 sfx: this.getGainNodeVolume('sfx',)';
                 bgm: this.getGainNodeVolume('bgm ,};
             effects: { compression: this.isCompressionEnabled()
-                reverb: this.isReverbEnabled( }
+               , reverb: this.isReverbEnabled( }
         }
 
     /**

@@ -42,7 +42,7 @@ export class DataComparator {
                 key: 'maxCombo',
                 displayName: '最大コンボ',
                 unit: '';
-                format: (value) => Math.round(value) ,}
+               , format: (value) => Math.round(value) ,}
 }
     
     /**
@@ -56,7 +56,7 @@ export class DataComparator {
         const comparison = {
             available: true;
             improvements: 0;
-            declines: 0;
+           , declines: 0;
     }
             unchanged: 0, }
             metrics: {};
@@ -86,7 +86,7 @@ export class DataComparator {
                 changePercent: changePercent;
                 trend: trend;
                 displayName: metric.displayName;
-                unit: metric.unit ,};
+               , unit: metric.unit ,};
             if (trend === 'improved'') comparison.improvements++;''
             else if(trend === 'declined) comparison.declines++;
             else comparison.unchanged++;
@@ -108,15 +108,14 @@ export class DataComparator {
         const comparison = {
             available: true;
             improvements: 0;
-            declines: 0;
+           , declines: 0;
     }
             unchanged: 0, }
             metrics: {};
 ';
 
         const relevantMetrics = [...metrics];''
-        if(current.completionRate !== undefined && past.completionRate !== undefined) {'
-            ';
+        if(current.completionRate !== undefined && past.completionRate !== undefined) {', ';
 
         }
 
@@ -149,7 +148,7 @@ export class DataComparator {
                 changePercent: changePercent;
                 trend: trend;
                 displayName: metric.displayName;
-                unit: metric.unit ,};
+               , unit: metric.unit ,};
             if (trend === 'improved'') comparison.improvements++;''
             else if(trend === 'declined) comparison.declines++;
             else comparison.unchanged++;
@@ -172,7 +171,7 @@ export class DataComparator {
         const comparison = {
             available: true;
             above_average: 0;
-            average: 0;
+           , average: 0;
     }
             below_average: 0, }
             metrics: {};
@@ -196,11 +195,11 @@ export class DataComparator {
 
             comparison.metrics[metricName] = {
                 current: metric.format(currentValue);
-                benchmark: {
+               , benchmark: {
                     median: metric.format(benchmarkStats.median);
                     percentile25: metric.format(benchmarkStats.percentile25);
                     percentile75: metric.format(benchmarkStats.percentile75);
-                    min: metric.format(benchmarkStats.min);
+                   , min: metric.format(benchmarkStats.min);
         ,}
                     max: metric.format(benchmarkStats.max); }
                 },
@@ -209,7 +208,7 @@ export class DataComparator {
                 difference: this.formatBenchmarkDifference(difference, differencePercent, metric),
                 differencePercent: differencePercent;
                 displayName: metric.displayName;
-                unit: metric.unit;
+               , unit: metric.unit;
             },
 
             if (performance === 'above_average'') comparison.above_average++;''
@@ -349,7 +348,7 @@ export class DataComparator {
             return { sessionCount: 0,
                 averageScore: 0;
                 averageAccuracy: 0;
-                averagePlayTime: 0;
+               , averagePlayTime: 0;
     ,}
                 completionRate: 0, };
                 maxCombo: 0 }
@@ -381,7 +380,7 @@ export class DataComparator {
             averageScore: totalScore / sessionData.length;
             averageAccuracy: totalAccuracy / sessionData.length;
             averagePlayTime: totalPlayTime / sessionData.length;
-            completionRate: completedSessions / sessionData.length, };
+           , completionRate: completedSessions / sessionData.length, };
             maxCombo: maxCombo }
         }''
 }

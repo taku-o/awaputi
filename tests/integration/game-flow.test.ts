@@ -2,11 +2,11 @@
  * Integration tests for game flow
  * TypeScript移行 - Task 25対応
  */
-import { jest } from '@jest/globals';
-import { GameEngine } from '../../src/core/GameEngine.js';
-import { Bubble } from '../../src/bubbles/Bubble.js';
-import { Position } from '../../src/types/bubble.js';
-// import { MockCanvasRenderingContext2D } from '../../src/types/test.js';
+import { jest  } from '@jest/globals';
+import { GameEngine  } from '../../src/core/GameEngine.js';
+import { Bubble  } from '../../src/bubbles/Bubble.js';
+import { Position  } from '../../src/types/bubble.js';
+// import { MockCanvasRenderingContext2D  } from '../../src/types/test.js';
 interface MockCanvas extends HTMLCanvasElement {
   width: number,
   height: number,
@@ -55,7 +55,7 @@ const createMockMouseEvent = (type: string, x: number, y: number): MockMouseEven
         stopPropagation: jest.fn(),
   } as any;
 };
-const createMockTouchEvent = (type: string, touches: Array<{ clientX: number; clientY: number }>): MockTouchEvent => {
+const createMockTouchEvent = (type: string, touches: Array<{ clientX: number;, clientY: number }>): MockTouchEvent => {
   return {
     type,
     touches: touches.map((touch) => ({

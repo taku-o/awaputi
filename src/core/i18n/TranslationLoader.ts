@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * 翻訳ローダー - 非同期翻訳ファイル読み込みシステム
@@ -20,21 +20,21 @@ export interface CachedTranslation { data: TranslationFileData,
     timestamp: number ,}
 
 export interface PreloadResult { loaded: string[];
-    failed: FailedLoad[]
+   , failed: FailedLoad[]
     }
 
 export interface FailedLoad { language: string;
-    error: Error
+   , error: Error
     }
 
 export interface LoaderStats { loadedLanguages: string[];
     translationFiles: string[];
     cache: CacheStats;
     baseURL: string;
-    pendingLoads: string[] }
+   , pendingLoads: string[] }
 
 export interface CacheStats { entries: number;
-    byLanguage: Record<string, number>, }
+   , byLanguage: Record<string, number>, }
 
 export interface FlattenedTranslations { [key: string]: any, }
 
@@ -48,7 +48,7 @@ export class TranslationLoader {
     
     // 設定
     private baseURL: string;
-    private translationFiles: string[];
+    private, translationFiles: string[];
     constructor() {
 
         this.loadedTranslations = new Map<string, FlattenedTranslations>();
@@ -193,7 +193,7 @@ export class TranslationLoader {
             // キャッシュに保存
             this.cache.set(cacheKey, { )
                 data: data);
-                timestamp: Date.now( });
+               , timestamp: Date.now( });
             
             return data;
         } catch (error) {
@@ -267,7 +267,7 @@ export class TranslationLoader {
             const data = await this._loadTranslationFile(language, category);
             return data ? (data.translations || data) : {} catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {)'
                 operation: 'loadCategory');
-                language: language,);
+               , language: language,);
                 category: category ,});
             return {};
     
@@ -379,7 +379,7 @@ export class TranslationLoader {
         return { loadedLanguages: this.getLoadedLanguages(),
             translationFiles: this.translationFiles;
             cache: cacheStats;
-            baseURL: this.baseURL, };
+           , baseURL: this.baseURL, };
             pendingLoads: Array.from(this.loadingPromises.keys(); }
         }
     

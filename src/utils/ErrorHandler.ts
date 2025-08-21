@@ -4,31 +4,31 @@
  * グレースフルデグラデーション、入力値検証、異常状態からの復旧処理を提供
  */
 
-import { ErrorLogger } from './error/ErrorLogger.js';''
-import { UtilsErrorReporter } from './error/UtilsErrorReporter.js';''
-import { ErrorRecovery } from './error/ErrorRecovery.js';''
-import { UtilsErrorAnalyzer } from './error/UtilsErrorAnalyzer.js';
+import { ErrorLogger  } from './error/ErrorLogger.js';''
+import { UtilsErrorReporter  } from './error/UtilsErrorReporter.js';''
+import { ErrorRecovery  } from './error/ErrorRecovery.js';''
+import { UtilsErrorAnalyzer  } from './error/UtilsErrorAnalyzer.js';
 
 // Type definitions
 interface ErrorInfo { id: string,
     message: string;
     stack?: string;
     context: string;
-    metadata: Record<string, any>;
+   , metadata: Record<string, any>;
     timestamp: number;
     severity?: string ,}
 
 interface ErrorStats { total: number;
-    byType: Map<string, number>;
+   , byType: Map<string, number>;
     byContext: Map<string, number>;
     critical: number;
-    recovered: number ,}
+   , recovered: number ,}
 
 interface FallbackState { audioDisabled: boolean;
     canvasDisabled: boolean;
     storageDisabled: boolean;
     reducedEffects: boolean;
-    safeMode: boolean }
+   , safeMode: boolean }
 
 type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
@@ -48,7 +48,7 @@ declare global { interface Performance {
 export class ErrorHandler {
     private isBrowser: boolean;
     private isNode: boolean;
-    public isInitialized: boolean,
+    public, isInitialized: boolean,
     
     // Sub-components
     public logger: ErrorLogger,
@@ -88,17 +88,17 @@ export class ErrorHandler {
         this.fallbackModes = new Map<string, boolean>();
         this.errorStats = {
             total: 0;
-            byType: new Map<string, number>(),
+           , byType: new Map<string, number>(),
             byContext: new Map<string, number>(),
             critical: 0;
-            recovered: 0 ,};
+           , recovered: 0 ,};
         // Delegated properties from sub-components
         this.recoveryStrategies = new Map<string, Function>();
         this.fallbackState = { audioDisabled: false,
             canvasDisabled: false;
             storageDisabled: false;
             reducedEffects: false;
-            safeMode: false ,};
+           , safeMode: false ,};
         this.initialize();
     }
     
@@ -134,7 +134,7 @@ export class ErrorHandler {
             this.handleError(event.error, 'GLOBAL_ERROR', {
                 filename: event.filename);
                 lineno: event.lineno);
-                colno: event.colno, }
+               , colno: event.colno, }
                 message: event.message); }
 
             });''
@@ -155,8 +155,7 @@ export class ErrorHandler {
 
             if(target && target !== (window, as any) { this.handleError();' }'
 
-                    new Error(`Resource, load failed: ${target.src || target.href}`), ''
-                    'RESOURCE_ERROR', ;
+                    new Error(`Resource, load failed: ${target.src || target.href}`), '', 'RESOURCE_ERROR', ;
                     { element: target.tagName,
                         source: target.src || target.href ,}
                 );
@@ -187,11 +186,10 @@ export class ErrorHandler {
                 if (usedMB / limitMB > 0.8) { }
                     this.handleError(');' }'
 
-                        new Error(`High, memory usage: ${Math.round(usedMB})MB / ${Math.round(limitMB})MB`'), ''
-                        'MEMORY_WARNING', ;
+                        new Error(`High, memory usage: ${Math.round(usedMB})MB / ${Math.round(limitMB})MB`'), '', 'MEMORY_WARNING', ;
                         { usedMB: Math.round(usedMB),
                             limitMB: Math.round(limitMB);
-                            percentage: Math.round((usedMB / limitMB) * 100 ,}
+                           , percentage: Math.round((usedMB / limitMB) * 100 ,}
                     );
                 }
             }, 10000); // Every 10 seconds
@@ -216,8 +214,7 @@ export class ErrorHandler {
                 if (fps < 30) { }
                     this.handleError();' }'
 
-                        new Error(`Low, FPS detected: ${fps}`'}), ''
-                        'PERFORMANCE_WARNING', ;
+                        new Error(`Low, FPS detected: ${fps}`'}), '', 'PERFORMANCE_WARNING', ;
                         { fps: fps,
                             timestamp: currentTime ,}
                     );
@@ -239,11 +236,11 @@ export class ErrorHandler {
             const normalizedError = this.analyzer.normalizeError(error);
             const errorInfo: ErrorInfo = {''
                 id: normalizedError.id || crypto.randomUUID()';
-                message: normalizedError.message || 'Unknown error',')';
+               , message: normalizedError.message || 'Unknown error',')';
                 timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now();
                 ...normalizedError,
                 context: context;
-                metadata: metadata ,};
+               , metadata: metadata ,};
             // Add to error log using logger
             this.logger.addToErrorLog(errorInfo);
             
@@ -263,7 +260,7 @@ export class ErrorHandler {
             if(severity === 'CRITICAL) { this.reporter.notifyUser(errorInfo);' }
 
             } catch (handlingError) { // Error in error handling - ultimate fallback
-            console.error('[ErrorHandler] Critical: Error in error handling:', handlingError);
+            console.error('[ErrorHandler] Critical: Error in error, handling:', handlingError);
             this.enableSafeMode(); }
     }
     
@@ -279,8 +276,8 @@ export class ErrorHandler {
             const safeMsg = document.createElement('div'');''
             safeMsg.textContent = 'Safe mode active: Some features may be disabled.',
             safeMsg.style.cssText = `;
-                position: fixed; top: 10px; right: 10px, 
-                background: #ff6b35; color: white, 
+                position: fixed; top: 10px;, right: 10px, 
+                background: #ff6b35;, color: white, 
                 padding: 10px; border-radius: 5px, 
                 z-index: 10000; font-family: Arial, sans-serif;
                 font-size: 14px; max-width: 300px,

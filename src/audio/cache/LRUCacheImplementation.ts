@@ -5,7 +5,7 @@
  * AudioCacheManager のサブコンポーネント
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * Cache statistics interface
@@ -13,7 +13,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
 export interface CacheStats { hits: number,
     misses: number;
     evictions: number;
-    totalAccesses: number;
+   , totalAccesses: number;
     hitRate?: number;
     currentSize?: number;
     maxSize?: number;
@@ -27,14 +27,14 @@ export interface CacheEntryInfo { key: string,
     hitCount: number;
     accessTime: number;
     size: number;
-    score: number ,}
+   , score: number ,}
 
 /**
  * Result of cache removal operations
  */
 export interface RemovalResult { removedCount: number;
     removedSize: number;
-    removedKeys: string[] }
+   , removedKeys: string[] }
 
 /**
  * LRUキャッシュノード
@@ -64,7 +64,7 @@ class CacheNode<T = any> { key: string;
  */
 export class LRUCache<T = any> { private readonly maxSize: number,
     private currentSize: number;
-    private readonly cache: Map<string, CacheNode<T>>;
+    private readonly, cache: Map<string, CacheNode<T>>;
     private readonly head: CacheNode<T>,
     private readonly tail: CacheNode<T>,
     private stats: CacheStats;
@@ -83,7 +83,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         this.stats = {
             hits: 0;
             misses: 0;
-            evictions: 0;
+           , evictions: 0;
     ,}
             totalAccesses: 0 }
         }
@@ -172,7 +172,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
             hits: 0;
             misses: 0;
             evictions: 0;
-            totalAccesses: 0 }
+           , totalAccesses: 0 }
     
     /**
      * ノードを先頭に移動
@@ -224,7 +224,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
             hitRate: hitRate;
             currentSize: this.currentSize;
             maxSize: this.maxSize;
-            entryCount: this.cache.size, };
+           , entryCount: this.cache.size, };
             memoryUsageRatio: this.currentSize / this.maxSize }
         }
     
@@ -274,7 +274,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
             entries.push({
                 key: key);
                 hitCount: node.hitCount);
-                accessTime: node.accessTime,);
+               , accessTime: node.accessTime,);
                 size: node.size);
         ,}
                 score: this.calculateEvictionScore(node); }

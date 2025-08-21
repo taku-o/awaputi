@@ -2,10 +2,10 @@
  * ヘルプタブコンポーネント
  * UserInfoSceneのヘルプ機能を担当
  */
-import { TabComponent } from './TabComponent';''
-import { GameEngine } from '../../core/GameEngine';''
-import { ComponentEventBus } from './ComponentEventBus';''
-import { SceneState } from './SceneState';
+import { TabComponent  } from './TabComponent';''
+import { GameEngine  } from '../../core/GameEngine';''
+import { ComponentEventBus  } from './ComponentEventBus';''
+import { SceneState  } from './SceneState';
 
 interface HelpSectionContent { title: string,
     content: string[] ,}
@@ -23,7 +23,7 @@ interface TextSettings { titleFont: string;
     headerColor: string;
     contentColor: string;
     questionColor: string;
-    answerColor: string }
+   , answerColor: string }
 ';
 export class HelpTab extends TabComponent { // ヘルプセクション
     private readonly helpSections: string[] = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];''
@@ -36,7 +36,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     private scrollPosition: number = 0;
     private maxScrollPosition: number = 0;
     // レイアウト設定
-    private readonly sectionButtonHeight: number = 40,
+    private readonly, sectionButtonHeight: number = 40,
     private readonly contentPadding: number = 20,
     private readonly lineHeight: number = 20,
     
@@ -174,7 +174,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
 
                 faq: { ')'
                     title: 'よくある質問')';
-                    content: ['';
+                   , content: ['';
                         '【Q: 実績が解除されません】',
                         'A: 条件を正確に満たしているか確認してください。',
                         '   一部の実績は複数回の条件達成が必要です。',
@@ -211,7 +211,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
      */''
     private createFallbackContent()';
                 title: 'ヘルプ')';
-                content: ['';
+               , content: ['';
                     'ヘルプコンテンツの読み込みに失敗しました。',]';
                     'ゲームを再起動して再度お試しください。'];
                 ];
@@ -545,7 +545,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
 
             this.contentRenderer.cleanup(''';
         titleFont: '18px bold sans-serif''';
-        headerFont: '14px bold sans-serif',
+       , headerFont: '14px bold sans-serif',
         contentFont: '14px sans-serif',
         titleColor: '#212529',
         headerColor: '#007BFF',

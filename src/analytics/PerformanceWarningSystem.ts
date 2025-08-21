@@ -10,10 +10,10 @@ export class PerformanceWarningSystem {
             enableVisualWarnings: true;
             enableAudioWarnings: false;
             enableBrowserNotifications: true;
-            warningDisplayDuration: 10000, // 10秒;
+           , warningDisplayDuration: 10000, // 10秒;
             criticalWarningDuration: 15000, // 15秒;
             maxVisibleWarnings: 5;
-            autoAcknowledge: false;
+           , autoAcknowledge: false;
     ,}
             ...options
         };
@@ -44,35 +44,35 @@ export class PerformanceWarningSystem {
             name: 'パフォーマンス',
             color: '#ff9800',)';
             icon: '⚠️')';
-            priority: 2,')';
+           , priority: 2,')';
             actions: ['詳細表示', '最適化提案])');
 
         this.warningCategories.set('memory', {''
             name: 'メモリ',
             color: '#f44336',)';
             icon: '🧠')';
-            priority: 3,')';
+           , priority: 3,')';
             actions: ['メモリクリア', '詳細表示])');
 
         this.warningCategories.set('fps', {''
             name: 'フレームレート',
             color: '#ff5722',)';
             icon: '🎯')';
-            priority: 2,')';
+           , priority: 2,')';
             actions: ['品質調整', '詳細表示])');
 
         this.warningCategories.set('error', {''
             name: 'エラー',
             color: '#d32f2f',)';
             icon: '❌')';
-            priority: 4,')';
+           , priority: 4,')';
             actions: ['エラー詳細', 'レポート送信])');
 
         this.warningCategories.set('network', {''
             name: 'ネットワーク',
             color: '#2196f3',)';
             icon: '🌐')';
-            priority: 1,' }'
+           , priority: 1,' }'
 
             actions: ['再試行', '詳細表示]); }
     }
@@ -116,7 +116,7 @@ export class PerformanceWarningSystem {
                 pointer-events: auto, }
                 transform: translateX(100%};
                 animation: slideInWarning 0.3s ease-out forwards;
-                transition: all 0.3s ease;
+               , transition: all 0.3s ease;
             }
             .warning-item.critical { animation: pulseWarning 1s infinite alternate }
             .warning-item.dismissing { animation: slideOutWarning 0.3s ease-in forwards }
@@ -128,7 +128,7 @@ export class PerformanceWarningSystem {
                 align-items: center,
                 gap: 8px);
                 font-weight: bold);
-                color: white ,}
+               , color: white ,}
             .warning-icon { font-size: 16px
             );
             .warning-severity {
@@ -154,7 +154,7 @@ export class PerformanceWarningSystem {
             .warning-action { background: rgba(255, 255, 255, 0.2),
                 color: white;
                 border: none;
-                padding: 6px 12px;
+               , padding: 6px 12px;
                 border-radius: 4px,
                 cursor: pointer;
                 font-size: 12px,
@@ -164,11 +164,11 @@ export class PerformanceWarningSystem {
             .warning-close { background: none,
                 border: none;
                 color: #999;
-                cursor: pointer;
+               , cursor: pointer;
                 font-size: 18px,
                 padding: 0;
                 width: 24px;
-                height: 24px;
+               , height: 24px;
                 border-radius: 50%,
                 display: flex;
                 align-items: center,
@@ -179,17 +179,17 @@ export class PerformanceWarningSystem {
                 bottom: 0;
                 left: 0;
                 height: 3px;
-                background: rgba(255, 255, 255, 0.5),
+               , background: rgba(255, 255, 255, 0.5),
                 transition: width 0.1s linear ,}
             .warning-timestamp { font-size: 11px;
-                color: #999;
+               , color: #999;
                 margin-top: 4px, }
             @keyframes slideInWarning {
-                from { transform: translateX(100%); opacity: 0, }
-                to { transform: translateX(0); opacity: 1 }
+                from { transform: translateX(100%);, opacity: 0, }
+                to { transform: translateX(0);, opacity: 1 }
             @keyframes slideOutWarning {
-                from { transform: translateX(0); opacity: 1, }
-                to { transform: translateX(100%); opacity: 0 }
+                from { transform: translateX(0);, opacity: 1, }
+                to { transform: translateX(100%);, opacity: 0 }
             @keyframes pulseWarning { from { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3 }
                 to { box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4 }
         `;
@@ -224,13 +224,13 @@ export class PerformanceWarningSystem {
     processAlert(alertData) {'
         const warningData = {''
             id: alertData.id || this.generateWarningId()';
-            type: alertData.type || 'performance',);
+           , type: alertData.type || 'performance',);
             severity: this.determineSeverity(alertData);
             title: this.generateTitle(alertData);
-            message: alertData.message,
+           , message: alertData.message,
             details: alertData.details,
             timestamp: alertData.timestamp || Date.now()';
-            source: alertData.source || 'unknown',);
+           , source: alertData.source || 'unknown',);
             category: this.determineCategory(alertData);
     ,}
             autoAcknowledge: this.shouldAutoAcknowledge(alertData); }
@@ -245,13 +245,13 @@ export class PerformanceWarningSystem {
     processPerformanceWarning(warningData) {'
         const processedWarning = {''
             id: this.generateWarningId(''';
-            type: 'performance',
+           , type: 'performance',
             severity: warningData.severity || 'warning',
             title: '⚠️ パフォーマンス警告',
             message: warningData.message || 'パフォーマンスの問題が検出されました',
             details: warningData.details,
             timestamp: Date.now(''';
-            source: 'performance_monitor';
+           , source: 'performance_monitor';
     ,}
 
             category: 'performance' }))
@@ -319,14 +319,14 @@ export class PerformanceWarningSystem {
                     <span class="warning-icon">${category.icon}</span>
                     <span>${warningData.title}</span>"
                 </div>"";
-                <div style="display: flex; align-items: center; gap: 8px;">""
+                <div style="display: flex; align-items: center;, gap: 8px;">""
                     <span class="warning-severity">${warningData.severity}</span>""
                     <button class="warning-close" onclick="window.performanceWarningSystem? .dismissWarning('${warningData.id}''})">&times;</button>
                 </div>";
             </div>"";
             <div class="warning-message">${warningData.message}</div>"
             ${ warningData.details ? `""
-                <div class="warning-details">" }"
+                <div, class="warning-details">" }"
                     ${this.formatWarningDetails(warningData.details"})"
                 </div> : undefined"";
             ` : ''}''
@@ -402,8 +402,7 @@ export class PerformanceWarningSystem {
             gainNode.connect(ctx.destination);
 
             // 警告レベルに応じた音程と長さ
-            const frequencies = {''
-                'info': 440,
+            const frequencies = {'', 'info': 440,
                 'warning': 660,
                 'error': 880,
     }
@@ -522,8 +521,7 @@ export class PerformanceWarningSystem {
     /**
      * 自動確認の判定'
      */''
-    shouldAutoAcknowledge(alertData) {'
-        ';
+    shouldAutoAcknowledge(alertData) {', ';
 
     }
 
@@ -604,8 +602,7 @@ export class PerformanceWarningSystem {
     /**
      * 最適化提案の表示
      */
-    showOptimizationSuggestions(warningData) {'
-        ';
+    showOptimizationSuggestions(warningData) {', ';
 
     }
 
@@ -712,8 +709,7 @@ export class PerformanceWarningSystem {
     }
 
         const warningElement = document.querySelector(`[data-warning-id="${warningId}"]`};" }"
-        if(warningElement"}) {"
-            ";
+        if(warningElement"}) {", ";
         }"
             warningElement.style.animation = 'pulseWarning 0.5s ease-in-out 3'; }
 }
@@ -729,7 +725,7 @@ export class PerformanceWarningSystem {
         const statistics = {
             totalWarnings: this.warningHistory.length;
             recentWarnings: recentWarnings.length;
-            activeWarnings: this.activeWarnings.size;
+           , activeWarnings: this.activeWarnings.size;
     }
             acknowledgedWarnings: this.acknowledgements.size, }
             warningsByType: {};

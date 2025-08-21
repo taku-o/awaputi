@@ -5,22 +5,22 @@
  * 変更の妥当性検証と影響分析機能を実装します。
  */
 
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getBalanceConfigurationValidator } from './BalanceConfigurationValidator.js';''
-import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getBalanceConfigurationValidator  } from './BalanceConfigurationValidator.js';''
+import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface RecommendedRange { min: number,
     max: number;
-    recommended: number | string ,}
+   , recommended: number | string ,}
 
 interface Guideline { category: string;
     property: string;
     description: string;
     principles: string[];
-    recommendedRanges: Record<string, RecommendedRange>;
+   , recommendedRanges: Record<string, RecommendedRange>;
     adjustmentSteps: number;
-    testingRequirements: string[];
+   , testingRequirements: string[];
     retrievedAt?: number ,}
 
 interface ChangeRecord { id: string;
@@ -28,7 +28,7 @@ interface ChangeRecord { id: string;
     change: any;
     rationale: string;
     author: string;
-    reviewStatus: string }
+   , reviewStatus: string }
 
 interface ValidationResult { validationId: string;
     isValid: boolean;
@@ -36,12 +36,12 @@ interface ValidationResult { validationId: string;
     recommendations: string[];
     impactAnalysis?: ImpactReport;
     guideline?: string;
-    timestamp: number;
+   , timestamp: number;
     error?: string }
 
 interface ValidationSubResult { isValid: boolean;
     issues: string[];
-    recommendations: string[] }
+   , recommendations: string[] }
 ';
 
 interface ImpactCalculation { ''
@@ -50,9 +50,9 @@ interface ImpactCalculation { ''
 interface ImpactRule { affectedSystems: string[],
     calculations: Record<string, ImpactCalculation>;
     thresholds: {
-        minor: number;
+        mino;r: number;
         moderate: number;
-        major: number ,}
+       , major: number ,}
 
 interface SystemImpact { system: string,
 
@@ -67,21 +67,21 @@ interface ImpactReport { changeId: string;
     propertyType: string;
     oldValue: any;
     newValue: any;
-    impacts: SystemImpact[],
+   , impacts: SystemImpact[],
     recommendations: string[],
     riskLevel: 'low' | 'minor' | 'moderate' | 'major';
-    timestamp: number;
+   , timestamp: number;
     error?: string ,}
 
 interface AdjustmentContext { bubbleType: string;
     propertyType: string;
-    configType: string }
+   , configType: string }
 
 interface ChangeContext { oldValue: any;
     newValue: any;
     configType: string;
     bubbleType: string;
-    propertyType: string }
+   , propertyType: string }
 
 interface HistoryFilters { bubbleType?: string;
     propertyType?: string;
@@ -91,13 +91,13 @@ interface HistoryFilters { bubbleType?: string;
 interface GuidelineInfo { key: string,
     category: string;
     property: string;
-    description: string ,}
+   , description: string ,}
 
 interface Statistics { totalChanges: number;
     recentChanges: number;
-    changesByType: Record<string, number>;
+   , changesByType: Record<string, number>;
     availableGuidelines: number;
-    impactRules: number ,}
+   , impactRules: number ,}
 
 interface DocumentChangeResult { success: boolean;
     changeId?: string;
@@ -108,9 +108,9 @@ export class BalanceGuidelinesManager {
     private configManager: any;
     private validator: any;
     private errorHandler: ErrorHandler;
-    private guidelines: Map<string, Guideline>;
+    private, guidelines: Map<string, Guideline>;
     private changeHistory: ChangeRecord[];
-    private impactRules: Map<string, ImpactRule>;
+    private, impactRules: Map<string, ImpactRule>;
     
     constructor() {
     
@@ -157,7 +157,7 @@ export class BalanceGuidelinesManager {
                 boss: { min: 5, max: 15, recommended: 8 ,},
                 special: { min: 1, max: 2, recommended: 1 ,})
             adjustmentSteps: 1)';
-            testingRequirements: ['';
+           , testingRequirements: ['';
                 '破壊時間の計測',
                 'プレイヤーストレス測定',]';
                 '難易度曲線の検証'')]';
@@ -182,7 +182,7 @@ export class BalanceGuidelinesManager {
                 boss: { min: 500, max: 1200, recommended: 800 ,},''
                 special: { min: 20, max: 500, recommended: 'varies' ,})
             adjustmentSteps: 5)';
-            testingRequirements: ['';
+           , testingRequirements: ['';
                 'スコア進行の検証',
                 'プレイ動機の測定',]';
                 '経済バランスの確認'')]';
@@ -207,7 +207,7 @@ export class BalanceGuidelinesManager {
                 boss: { min: 80, max: 120, recommended: 90 ,},''
                 special: { min: 40, max: 60, recommended: 'varies' ,})
             adjustmentSteps: 5)';
-            testingRequirements: ['';
+           , testingRequirements: ['';
                 'タップ精度の測定',
                 '画面密度の検証',]';
                 'アクセシビリティテスト'')]';
@@ -232,7 +232,7 @@ export class BalanceGuidelinesManager {
                 boss: { min: 30000, max: 40000, recommended: 35000 ,},''
                 special: { min: 8000, max: 25000, recommended: 'varies' ,})
             adjustmentSteps: 1000)';
-            testingRequirements: ['';
+           , testingRequirements: ['';
                 'プレッシャー感の測定',
                 'ゲームテンポの検証',]';
                 'ストレスレベルの確認'')]';
@@ -251,7 +251,7 @@ export class BalanceGuidelinesManager {
             recommendedRanges: { ,}
                 pink: { min: 15, max: 35, recommended: 25 ,})
             adjustmentSteps: 5)';
-            testingRequirements: ['';
+           , testingRequirements: ['';
                 '生存率の測定',
                 '難易度バランスの検証',]';
                 'プレイ時間の分析'')]';
@@ -269,7 +269,7 @@ export class BalanceGuidelinesManager {
             recommendedRanges: { ,}
                 poison: { min: 5, max: 15, recommended: 8 ,})
             adjustmentSteps: 1)';
-            testingRequirements: ['';
+           , testingRequirements: ['';
                 'プレイヤー死亡率の測定',
                 'フラストレーション度の確認',]';
                 'リスク認識の検証'')]';
@@ -289,7 +289,7 @@ export class BalanceGuidelinesManager {
                 comboMultiplier: { min: 1.5, max: 3.0, recommended: 2.5 ,},
                 ageBonus: { min: 1.5, max: 4.0, recommended: 2.0 ,})
             adjustmentSteps: 0.1)';
-            testingRequirements: ['';
+           , testingRequirements: ['';
                 'スコア分布の分析',
                 'プレイ継続率の測定',]';
                 '達成感の評価')];
@@ -309,7 +309,7 @@ export class BalanceGuidelinesManager {
             },
             thresholds: { minor: 0.2;
                 moderate: 0.5;
-                major: 1.0 }
+               , major: 1.0 }
 
             }''
         }');
@@ -324,7 +324,7 @@ export class BalanceGuidelinesManager {
             ,},
             thresholds: { minor: 0.15;
                 moderate: 0.3;
-                major: 0.5 }
+               , major: 0.5 }
 
             }''
         }');
@@ -339,7 +339,7 @@ export class BalanceGuidelinesManager {
             ,},
             thresholds: { minor: 0.1;
                 moderate: 0.2;
-                major: 0.3 }
+               , major: 0.3 }
         });
     }
     
@@ -425,7 +425,7 @@ export class BalanceGuidelinesManager {
                 isValid: false;
                 issues: [];
                 recommendations: [];
-                error: error instanceof Error ? error.message : String(error), };
+               , error: error instanceof Error ? error.message : String(error), };
                 timestamp: Date.now(); }
             }
     }
@@ -560,7 +560,7 @@ export class BalanceGuidelinesManager {
 
                 id: `change_${Date.now(})`,''
                 timestamp: Date.now(''';
-                author: 'system', // 実際の実装では認証情報から取得;
+               , author: 'system', // 実際の実装では認証情報から取得;
                 reviewStatus: 'pending);
             })
             );
@@ -692,8 +692,7 @@ export class BalanceGuidelinesManager {
                 maxMagnitude = impact.magnitude; }
 }
 
-        if(maxMagnitude >= thresholds.major) {'
-            ';
+        if(maxMagnitude >= thresholds.major) {', ';
 
         }
 
@@ -740,7 +739,7 @@ export class BalanceGuidelinesManager {
             key,
             category: guideline.category;
             property: guideline.property);
-            description: guideline.description ,}
+           , description: guideline.description ,}
         });
     }
     

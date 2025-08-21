@@ -2,8 +2,8 @@
  * Canvas Scale UI Positioning Visual Tests
  * キャンバススケール UI配置システムの視覚テスト
  */
-import { jest } from '@jest/globals';''
-import { JSDOM } from 'jsdom';''
+import { jest  } from '@jest/globals';''
+import { JSDOM  } from 'jsdom';''
 describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
     let canvas: any,
     let context: any,
@@ -28,8 +28,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
         (global as any).HTMLCanvasElement = dom.window.HTMLCanvasElement;
         (global as any).CanvasRenderingContext2D = dom.window.CanvasRenderingContext2D;"
         (global as any).performance = dom.window.performance;""
-        (global as any").requestAnimationFrame = dom.window.requestAnimationFrame;"
-        "";
+        (global as any").requestAnimationFrame = dom.window.requestAnimationFrame;", "";
         canvas = document.getElementById('gameCanvas');
     });
     beforeEach(async () => {  // Canvas contextのモックを各テスト前に再作成'
@@ -288,10 +287,10 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
             translate: jest.fn(),';
             rotate: jest.fn(),'';
             scale: jest.fn(''';
-            globalCompositeOperation: 'source-over','';
+           , globalCompositeOperation: 'source-over','';
             fillStyle: '#000',')';
             strokeStyle: '#000')';
-            lineWidth: 1,'';
+           , lineWidth: 1,'';
             font: '10px sans-serif','';
             textAlign: 'start','';
             textBaseline: 'alphabetic', };
@@ -324,13 +323,13 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
     }
     function createRenderingSnapshot(renderSnapshot) { return { textElements: renderSnapshot.fillTextCalls.map((call) => ({
                 text: call[0]);
-                x: call[1], };
+               , x: call[1], };
                 y: call[2] }
             }),
             rectangles: renderSnapshot.fillRectCalls.map((call) => ({ x: call[0],
                 y: call[1],
                 width: call[2]);
-                height: call[3] }
+               , height: call[3] }
             }),
             canvasInfo: renderSnapshot.canvasInfo;
         },

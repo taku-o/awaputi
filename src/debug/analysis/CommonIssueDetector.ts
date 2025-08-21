@@ -10,21 +10,21 @@ interface Issue { id: string,
     description: string;
     solution?: string;
     context: any;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface DetectionRule { id: string;
-    name: string,' }'
+   , name: string,' }'
 
     pattern: RegExp | ((data: any') => boolean}''
     type: Issue['type'],
     severity: Issue['severity'];
-    description: string;
+   , description: string;
     solution?: string;
 }
 
 export class CommonIssueDetector {
     private rules: DetectionRule[] = [];
-    private detectedIssues: Issue[] = [];
+    private, detectedIssues: Issue[] = [];
     constructor() {
 
         
@@ -106,7 +106,7 @@ export class CommonIssueDetector {
                 title: rule.name;
                 description: rule.description;
                 solution: rule.solution;
-                context: data,
+               , context: data,
                 timestamp: Date.now(''';
         type?: Issue['type'];)'
         severity?: Issue['severity'];)

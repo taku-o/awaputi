@@ -3,8 +3,8 @@
  * Tests button rendering, click detection, responsive positioning, 
  * accessibility features, and mobile touch handling
  */
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
-import { GameControlButtons } from '../../src/scenes/game-scene/GameControlButtons.js';
+import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
+import { GameControlButtons  } from '../../src/scenes/game-scene/GameControlButtons.js';
 // モック用の型定義
 interface MockCanvas {
     width: number,
@@ -27,7 +27,7 @@ interface ScaledCoordinates {
 }
 interface MockResponsiveCanvasManager {
     getCanvasInfo: jest.Mock<() => CanvasInfo>;
-    getScaledCoordinates: jest.Mock<(x: number, y: number) => ScaledCoordinates>;
+    getScaledCoordinates: jest.Mock<(;x: number, y: number) => ScaledCoordinates>;
 }
 interface MockGameEngine {
     canvas: MockCanvas,
@@ -39,7 +39,7 @@ interface MockUIManager {
 interface ButtonConfig {
     text: string,
     size: {
-        width: number,
+        widt;h: number,
         height: number,
     };
     position?: {
@@ -57,7 +57,7 @@ interface ButtonState {
     hoveredButton: string | null,
     activeButton: string | null,
     visibility: {
-        giveUp: boolean,
+        giveU;p: boolean,
         restart: boolean,
     };
 }
@@ -358,7 +358,7 @@ describe('GameControlButtons', () => {
         test('should handle Space key activation', (') => {
             (gameControlButtons.setKeyboardFocus('restart')');
             const event: TouchEvent = {
-                key: ' ',
+                key: ', ',
         preventDefault: jest.fn(),
             };
             

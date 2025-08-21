@@ -6,7 +6,7 @@ import type { BubbleDragSystem as IBubbleDragSystem,
 
 interface DragHistoryEntry { x: number,
     y: number;
-    time: number ,}
+   , time: number ,}
 
 /**
  * BubbleDragSystem - 泡ドラッグ操作システム
@@ -14,7 +14,7 @@ interface DragHistoryEntry { x: number,
  * 泡のドラッグ＆フリック操作、速度計算、軌跡描画を専門的に管理します
  */
 export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubble: Bubble | null = null
-    private isDragging: boolean = false;
+    private, isDragging: boolean = false;
     // @ts-ignore 将来のドラッグ機能拡張で使用予定 }
     private __dragStartPosition: Position = { x: 0, y: 0 ,}
     // @ts-ignore 将来のドラッグ機能拡張で使用予定
@@ -129,7 +129,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     calculateForceDirection(dragVector: Vector2, velocity: Vector2): Vector2 { // ドラッグベクトルと速度ベクトルを合成
         const combinedVector: Vector2 = {
             x: dragVector.x * 0.6 + velocity.x * 0.4;
-            y: dragVector.y * 0.6 + velocity.y * 0.4 };
+           , y: dragVector.y * 0.6 + velocity.y * 0.4 };
         const magnitude = Math.sqrt(combinedVector.x * combinedVector.x + combinedVector.y * combinedVector.y);
         if(magnitude === 0) {
             

@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
@@ -11,12 +11,12 @@ interface ClickableSlider { x: number;
     y: number;
     width: number;
     height: number;
-    settingKey: string }
+   , settingKey: string }
 
 interface ClickableButton { x: number;
     y: number;
     width: number;
-    height: number;
+   , height: number;
     settingKey?: string;
     isEnabled?: boolean;
     langCode?: string;
@@ -40,7 +40,7 @@ interface SettingsCallbacks { onChangeUsername: () => void,
  */
 export class MenuInputHandler {
     public gameEngine: any;
-    public errorHandler: any,
+    public, errorHandler: any,
 
     constructor(gameEngine: any) {
 
@@ -57,7 +57,7 @@ export class MenuInputHandler {
         event: MouseEvent;
         selectedMenuIndex: number );
         menuItems: MenuItemWithLabel[]);
-        onSelectCallback: (index: number) => void;
+       , onSelectCallback: (index: number) => void;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
             const coords = this.getClickCoordinates(event);
@@ -106,7 +106,7 @@ export class MenuInputHandler {
      */
     handleUsernameInputClick(;
         event: MouseEvent);
-        onConfirmCallback: () => void, ;
+       , onConfirmCallback: () => void, ;
         onCancelCallback: () => void;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
@@ -162,7 +162,7 @@ export class MenuInputHandler {
         event: MouseEvent
     );
         clickableElements: ClickableElements);
-        settingsCallbacks: SettingsCallbacks;
+       , settingsCallbacks: SettingsCallbacks;
     ): boolean { try {
             const coords = this.getClickCoordinates(event),
             const x = coords.x;
@@ -260,7 +260,7 @@ export class MenuInputHandler {
      */
     handleDataClearConfirmationClick(;
         event: MouseEvent);
-        onDeleteCallback: () => void, ;
+       , onDeleteCallback: () => void, ;
         onCancelCallback: () => void;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
@@ -299,7 +299,7 @@ export class MenuInputHandler {
      */
     handleBackButtonClick(;
         event: MouseEvent);
-        onBackCallback: () => void, ;
+       , onBackCallback: () => void, ;
         buttonY: number | null = null;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,

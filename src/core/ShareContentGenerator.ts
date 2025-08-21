@@ -3,7 +3,7 @@
  * メッセージテンプレート管理、多言語対応、プラットフォーム別最適化を行う
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 export class ShareContentGenerator {
     constructor(localizationManager, socialI18nManager = null) {
@@ -25,31 +25,23 @@ export class ShareContentGenerator {
                 twitter: {' }'
 
                     ja: "BubblePopで{score}点を達成！ あなたも挑戦してみませんか？ #BubblePop #ゲーム {url}",""
-                    en: "I scored {score} points in BubblePop! Can you beat it? #BubblePop #Game {url}"; : undefined""
-                    'zh-CN': "我在BubblePop中获得了{score}分！你能超越吗？ #BubblePop #游戏 {url}",""
-                    'zh-TW': "我在BubblePop中獲得了{score}分！你能超越嗎？ #BubblePop #遊戲 {url}",""
+                    en: "I scored {score} points in BubblePop! Can you beat it? #BubblePop #Game {url}"; : undefined"", 'zh-CN': "我在BubblePop中获得了{score}分！你能超越吗？ #BubblePop #游戏 {url}","", 'zh-TW': "我在BubblePop中獲得了{score}分！你能超越嗎？ #BubblePop #遊戲 {url}",""
                     ko: "BubblePop에서 {score}점을 달성했습니다! 도전해보시겠어요? #BubblePop #게임 {url}"
                 }, : undefined"
                 facebook: { " }"
                     ja: "BubblePopで{score}点を達成しました！",""
-                    en: "I scored {score} points in BubblePop!";""
-                    'zh-CN': "我在BubblePop中获得了{score}分！",""
-                    'zh-TW': "我在BubblePop中獲得了{score}分！",""
+                    en: "I scored {score} points in BubblePop!";"", 'zh-CN': "我在BubblePop中获得了{score}分！","", 'zh-TW': "我在BubblePop中獲得了{score}分！",""
                     ko: "BubblePop에서 {score}점을 달성했습니다!"
                 },"
                 generic: { " }"
                     ja: "BubblePopで{score}点を達成！",""
-                    en: "Scored {score} points in BubblePop!";""
-                    'zh-CN': "BubblePop获得{score}分！",""
-                    'zh-TW': "BubblePop獲得{score}分！",""
+                    en: "Scored {score} points in BubblePop!";"", 'zh-CN': "BubblePop获得{score}分！","", 'zh-TW': "BubblePop獲得{score}分！",""
                     ko: "BubblePop {score}점 달성!"
                 }
             },"
             achievement: { twitter: {" }"
                     ja: "BubblePopで実績「{name}」を解除！ {description} #BubblePop #実績 {url}",""
-                    en: "Unlocked achievement '{name}' in BubblePop! {description} #BubblePop #Achievement {url}";""
-                    'zh-CN': "在BubblePop中解锁成就「{name}」！{description} #BubblePop #成就 {url}",""
-                    'zh-TW': "在BubblePop中解鎖成就「{name}」！{description} #BubblePop #成就 {url}",""
+                    en: "Unlocked achievement '{name}' in BubblePop! {description} #BubblePop #Achievement {url}";"", 'zh-CN': "在BubblePop中解锁成就「{name}」！{description} #BubblePop #成就 {url}","", 'zh-TW': "在BubblePop中解鎖成就「{name}」！{description} #BubblePop #成就 {url}",""
                     ko: "BubblePop에서 업적 '{name}' 달성! {description} #BubblePop #업적 {url}"
                 },"
                 facebook: { ""
@@ -60,17 +52,13 @@ export class ShareContentGenerator {
                     ko: "BubblePop에서 새로운 업적을 달성했습니다!" ,},"
                 generic: { " }"
                     ja: "実績「{name}」を解除しました！",""
-                    en: "Achievement '{name}' unlocked!";""
-                    'zh-CN': "解锁成就「{name}」！",""
-                    'zh-TW': "解鎖成就「{name}」！",""
+                    en: "Achievement '{name}' unlocked!";"", 'zh-CN': "解锁成就「{name}」！","", 'zh-TW': "解鎖成就「{name}」！",""
                     ko: "업적 '{name}' 달성!"
                 }
             },"
             challenge: { twitter: {" }"
                     ja: "BubblePopのチャレンジ「{name}」をクリア！ {description} #BubblePop #チャレンジ {url}",""
-                    en: "Completed challenge '{name}' in BubblePop! {description} #BubblePop #Challenge {url}";""
-                    'zh-CN': "完成BubblePop挑战「{name}」！{description} #BubblePop #挑战 {url}",""
-                    'zh-TW': "完成BubblePop挑戰「{name}」！{description} #BubblePop #挑戰 {url}",""
+                    en: "Completed challenge '{name}' in BubblePop! {description} #BubblePop #Challenge {url}";"", 'zh-CN': "完成BubblePop挑战「{name}」！{description} #BubblePop #挑战 {url}","", 'zh-TW': "完成BubblePop挑戰「{name}」！{description} #BubblePop #挑戰 {url}",""
                     ko: "BubblePop 챌린지 '{name}' 클리어! {description} #BubblePop #챌린지 {url}"
                 },"
                 facebook: { ""
@@ -81,9 +69,7 @@ export class ShareContentGenerator {
                     ko: "BubblePop 챌린지를 완료했습니다!" ,},"
                 generic: { " }"
                     ja: "チャレンジ「{name}」をクリア！",""
-                    en: "Challenge '{name}' completed!";""
-                    'zh-CN': "完成挑战「{name}」！",""
-                    'zh-TW': "完成挑戰「{name}」！",""
+                    en: "Challenge '{name}' completed!";"", 'zh-CN': "完成挑战「{name}」！","", 'zh-TW': "完成挑戰「{name}」！",""
                     ko: "챌린지 '{name}' 완료!"
                 }
 }
@@ -118,7 +104,7 @@ export class ShareContentGenerator {
                 stage: scoreData.stage || '',
                 combo: scoreData.combo || '',
                 accuracy: scoreData.accuracy ? Math.round(scoreData.accuracy * 100) + '%' : '';
-                url: options.url || this.getGameUrl( ,};
+               , url: options.url || this.getGameUrl( ,};
             
             // メッセージの生成
             let message = this.interpolateTemplate(template, messageData);
@@ -134,10 +120,10 @@ export class ShareContentGenerator {
                 platform: platformKey;
                 language,
                 url: messageData.url;
-                metadata: {
+               , metadata: {
                     originalScore: scoreData.score;
                     generationTime: performance.now() - startTime;
-                    truncated: message.length < template.length ,}
+                   , truncated: message.length < template.length ,}
             };
             this.log(`スコアメッセージ生成完了`, result.metadata);
             return result;
@@ -179,7 +165,7 @@ export class ShareContentGenerator {
             const messageData = { name: achievementData.name,''
                 description: achievementData.description || '';
                 rarity: this.getAchievementRarity(achievementData);
-                url: options.url || this.getGameUrl( ,};
+               , url: options.url || this.getGameUrl( ,};
             ';
             // メッセージの生成
             let message = this.interpolateTemplate(template, messageData);
@@ -198,10 +184,10 @@ export class ShareContentGenerator {
                 platform: platformKey;
                 language,
                 url: messageData.url;
-                metadata: {
+               , metadata: {
                     achievementId: achievementData.id,
                     generationTime: performance.now(''';
-                    isRare: achievementData.rarity === 'legendary' ,}))
+                   , isRare: achievementData.rarity === 'legendary' ,}))
             );
             this.log(`実績メッセージ生成完了`, result.metadata);
             return result;
@@ -243,7 +229,7 @@ export class ShareContentGenerator {
             const messageData = { name: challengeData.name,''
                 description: challengeData.description || '',
                 type: challengeData.type || 'daily';
-                url: options.url || this.getGameUrl( ,};
+               , url: options.url || this.getGameUrl( ,};
             
             // メッセージの生成
             let message = this.interpolateTemplate(template, messageData);
@@ -260,7 +246,7 @@ export class ShareContentGenerator {
                 metadata: {
                     challengeId: challengeData.id;
                     challengeType: challengeData.type;
-                    generationTime: performance.now() - startTime ,}
+                   , generationTime: performance.now() - startTime ,}
             };
             this.log(`チャレンジメッセージ生成完了`, result.metadata);
             return result;
@@ -278,8 +264,7 @@ export class ShareContentGenerator {
     generateCustomMessage(type, data, customTemplate, platform = 'generic', options = { )) {
         try {
             // カスタムテンプレートの検証
-            if(!customTemplate || typeof, customTemplate !== 'string'') {'
-                ';
+            if(!customTemplate || typeof, customTemplate !== 'string'') {', ';
 
             }
 
@@ -341,7 +326,7 @@ export class ShareContentGenerator {
         result = result.replace(/\{[^}]+\)/g, ''');
         ';
         // 余分な空白を削除
-        result = result.replace(/\s+/g, ' ').trim();
+        result = result.replace(/\s+/g, ', ').trim();
         
         return result;
     }
@@ -387,7 +372,7 @@ export class ShareContentGenerator {
                 message = message.replace(tag, '');' }
 
             }');''
-            message = message.replace(/\s+/g, ' ').trim();
+            message = message.replace(/\s+/g, ', ').trim();
         }
         
         return message;
@@ -430,12 +415,12 @@ export class ShareContentGenerator {
         const truncateLength = maxLength - suffix.length;
         ';
         // 単語境界で切断を試行
-        const words = message.slice(0, truncateLength).split(' ');
+        const words = message.slice(0, truncateLength).split(', ');
 
         if(words.length > 1) {'
 
             words.pop()';
-            const truncated = words.join(' ');
+            const truncated = words.join(', ');
             if (truncated.length > 0) {
         }
                 return truncated + suffix;
@@ -502,8 +487,7 @@ export class ShareContentGenerator {
      * 実績のレア度取得
      */''
     getAchievementRarity(achievementData) {'
-        const rarities = {''
-            'ja': ['コモン', 'レア', 'エピック', 'レジェンダリー],
+        const rarities = {'', 'ja': ['コモン', 'レア', 'エピック', 'レジェンダリー],
             'en': ['Common', 'Rare', 'Epic', 'Legendary'],
             'zh-CN': ['普通', '稀有', '史诗', '传说],
             'zh-TW': ['普通', '稀有', '史詩', '傳說],
@@ -562,24 +546,19 @@ export class ShareContentGenerator {
 
         const language = this.getCurrentLanguage('' }
 
-                'zh-CN': `得分：${data.score || 0}分`,''
-                'zh-TW': `得分：${data.score || 0}分`,
+                'zh-CN': `得分：${data.score || 0}分`,'', 'zh-TW': `得分：${data.score || 0}分`,
                 ko: `점수: ${data.score || 0}점`
             };
             achievement: { ' }'
 
                 ja: `実績解除: ${data.name || '新しい実績'}`,''
-                en: `Achievement unlocked: ${data.name || 'New achievement'}`;''
-                'zh-CN': `成就解锁：${data.name || '新成就'}`,''
-                'zh-TW': `成就解鎖：${data.name || '新成就'}`,''
+                en: `Achievement, unlocked: ${data.name || 'New, achievement'}`;'', 'zh-CN': `成就解锁：${data.name || '新成就'}`,'', 'zh-TW': `成就解鎖：${data.name || '新成就'}`,''
                 ko: `업적 달성: ${data.name || '새 업적'}`
             };
             challenge: { ' }'
 
                 ja: `チャレンジクリア: ${data.name || '新しいチャレンジ'}`,''
-                en: `Challenge completed: ${data.name || 'New challenge'}`;''
-                'zh-CN': `挑战完成：${data.name || '新挑战'}`,''
-                'zh-TW': `挑戰完成：${data.name || '新挑戰'}`,''
+                en: `Challenge, completed: ${data.name || 'New, challenge'}`;'', 'zh-CN': `挑战完成：${data.name || '新挑战'}`,'', 'zh-TW': `挑戰完成：${data.name || '新挑戰'}`,''
                 ko: `챌린지 완료: ${data.name || '새 챌린지'}`
             }))'
         const message = fallbackMessages[type]? .[language] || '';
@@ -629,8 +608,7 @@ export class ShareContentGenerator {
         };
         ';
         // ErrorHandlerユーティリティの使用
-        if(ErrorHandler) {'
-            ';
+        if(ErrorHandler) {', ';
 
         }
 
@@ -683,7 +661,7 @@ export class ShareContentGenerator {
                 metadata: {
                     messageKey;
                     i18nGenerated: true;
-                    generationTime: performance.now() - startTime ,}
+                   , generationTime: performance.now() - startTime ,}
             };
             this.log(`I18nメッセージ生成完了: ${messageKey}`, result.metadata});
             return result;
@@ -835,8 +813,7 @@ export class ShareContentGenerator {
             ';
             // パス部分を調整
             const availableLength = maxLength - domain.length - 3; // '...'の分
-            if(path.length > availableLength) {'
-                ';
+            if(path.length > availableLength) {', ';
 
             }
 
@@ -888,7 +865,7 @@ export class ShareContentGenerator {
         
         return { generated: this.stats.generated,
             errors: this.stats.errors;
-            truncated: this.stats.truncated;
+           , truncated: this.stats.truncated;
             total,
     }
             successRate: parseFloat(successRate.toFixed(2), };

@@ -1,8 +1,8 @@
 /**
  * GameConfig クラスの単体テスト
  */
-import { jest } from '@jest/globals';
-import { GameConfig, getGameConfig } from '../../src/config/GameConfig.js';
+import { jest  } from '@jest/globals';
+import { GameConfig, getGameConfig  } from '../../src/config/GameConfig.js';
 // Types
 interface AgeBonusConfig {
     earlyBonus: number,
@@ -14,7 +14,7 @@ interface ComboConfig {
     maxMultiplier: number,
 }
 interface MockConfigManager {
-    get: jest.Mock<(category: string, key: string, defaultValue?: any) => any>;
+    get: jest.Mock<(categor;y: string, key: string, defaultValue?: any) => any>;
 }
 interface MockGameConfig extends GameConfig {
     getAgeBonusConfig: jest.Mock<() => AgeBonusConfig> | (() => AgeBonusConfig};

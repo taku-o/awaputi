@@ -22,7 +22,7 @@ export interface Achievement { id: string,
     category: CategoryType;
     type: AchievementType;
     condition: AchievementCondition;
-    reward: AchievementReward;
+   , reward: AchievementReward;
     difficulty?: DifficultyLevel;
     hidden?: boolean; ,}
 
@@ -45,12 +45,12 @@ export interface AchievementReward { ap: number,
 
 export interface RewardItem { type: ItemType,
     id: string;
-    quantity: number ,}
+   , quantity: number ,}
 
 export interface Category { name: string;
     description: string;
     icon: string;
-    color: string;
+   , color: string;
     priority?: number;
     unlockRequirements?: string[]; }
 
@@ -58,7 +58,7 @@ export interface AchievementStatistics { total: number,
     byCategory: Record<CategoryType, number>,
     byType: Record<AchievementType, number>,
     totalAP: number;
-    averageAP: number;
+   , averageAP: number;
     difficultyDistribution?: Record<DifficultyLevel, number> }
 
 export interface AchievementFilter { category?: CategoryType;
@@ -71,7 +71,7 @@ export interface AchievementFilter { category?: CategoryType;
 
 export interface AchievementSearchResult { achievements: Achievement[],
     totalCount: number;
-    categories: string[] ,}
+   , categories: string[] ,}
 
 // 列挙型
 export type CategoryType = ;
@@ -759,9 +759,9 @@ export class AchievementDefinitions {
             byCategory: {} as Record<CategoryType, number>,
             byType: { single: 0;
                 cumulative: 0;
-                progressive: 0 };
+               , progressive: 0 };
             totalAP: 0;
-            averageAP: 0;
+           , averageAP: 0;
         },
 
         // カテゴリ別統計

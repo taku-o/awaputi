@@ -1,5 +1,5 @@
-import { getLocalizationManager } from '../../core/LocalizationManager.js';''
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../../core/LocalizationManager.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
 import type { AudioManager } from '../../audio/AudioManager.js';''
 import type { ConfigurationManager } from '../../core/ConfigurationManager.js';''
 import type { LocalizationManager } from '../../core/LocalizationManager.js';''
@@ -29,7 +29,7 @@ interface VolumeSliderOptions { id: string,
     icon: string,
     category: 'master' | 'bgm' | 'sfx';
     defaultValue: number;
-    previewSound: string | null ,}
+   , previewSound: string | null ,}
 
 /**
  * Toggle Option Options
@@ -38,7 +38,7 @@ interface ToggleOptionOptions { id: string;
     label: string;
     icon: string;
     defaultValue: boolean;
-    onChange: (value: boolean) => void }
+   , onChange: (valu;e: boolean) => void }
 }
 
 /**
@@ -46,10 +46,10 @@ interface ToggleOptionOptions { id: string;
  */
 interface RadioGroupOptions { id: string;
     label: string;
-    icon: string, }
-    options: Array<{ value: string; label: string }>,
+   , icon: string, }
+    options: Array<{ value: string;, label: string }>,
     defaultValue: string;
-    onChange: (value: string) => void;
+   , onChange: (value: string) => void;
 }
 
 /**
@@ -57,10 +57,10 @@ interface RadioGroupOptions { id: string;
  */
 interface DropdownOptions { id: string,
     label: string;
-    icon: string, }
-    options: Array<{ value: number | string; label: string }>,
+   , icon: string, }
+    options: Array<{ value: number | string;, label: string }>,
     defaultValue: number | string;
-    onChange: (value: string) => void;
+   , onChange: (value: string) => void;
 }
 
 /**
@@ -71,9 +71,9 @@ interface VerticalSliderOptions { id: string,
     icon: string;
     min: number;
     max: number;
-    defaultValue: number,
+   , defaultValue: number,
     unit: string,
-    onChange: (value: number') => void ,}'
+    onChange: (valu;e: number') => void ,}'
 }
 
 /**
@@ -91,7 +91,7 @@ export class AudioSettingsTabRenderers {
     private uiComponentFactory: UIComponentFactory;
     private audioTestPanel: AudioTestPanel;
     private localizationManager: LocalizationManager;
-    private errorHandler: ErrorHandler;
+    private, errorHandler: ErrorHandler;
     constructor(audioManager: AudioManager, configManager: ConfigurationManager, uiComponentFactory: UIComponentFactory, audioTestPanel: AudioTestPanel) {
 
         this.audioManager = audioManager;
@@ -152,7 +152,7 @@ export class AudioSettingsTabRenderers {
             id: 'mute-all',)';
             label: 'audio.settings.volume.muteAll',')';
             icon: '🔇');
-            defaultValue: (this.audioManager, as any).isMuted || false;
+           , defaultValue: (this.audioManager, as any).isMuted || false;
             onChange: (value) => { 
                 (this.audioManager, as any).setMuted? .(value), }
                 this.uiComponentFactory.updateVolumeSliders(!value); }
@@ -182,9 +182,9 @@ export class AudioSettingsTabRenderers {
             id: 'quality-preset',
             label: 'audio.settings.quality.preset',)';
             icon: '🎚️')';
-            options: presets,')';
+           , options: presets,')';
             defaultValue: 'high');
-            onChange: (value) => {  ,}
+           , onChange: (value) => {  ,}
                 this._applyQualityPreset(value), }
 
             }''
@@ -209,14 +209,14 @@ export class AudioSettingsTabRenderers {
             id: 'sample-rate',
             label: 'audio.settings.quality.sampleRate',)';
             icon: '📊')';
-            options: [' ,}'
+           , options: [' ,}'
 
                 { value: 22050, label: '22.05 kHz' ,},')'
                 { value: 44100, label: '44.1 kHz' ,}')]'
                 { value: 48000, label: '48 kHz' )]
             ],
             defaultValue: 44100;
-            onChange: (value) => { ,}
+           , onChange: (value) => { ,}
                 (this.audioManager, as any).updateQualitySettings?.({ sampleRate: parseInt(value });
             }''
         }');
@@ -234,7 +234,7 @@ export class AudioSettingsTabRenderers {
                 { value: 2048, label: '2048(最高品質)' ,}]
             ],
             defaultValue: 512;
-            onChange: (value) => {  }
+           , onChange: (value) => {  }
                 (this.audioManager, as any).updateQualitySettings?.({ bufferSize: parseInt(value });
             }
         });
@@ -284,7 +284,7 @@ export class AudioSettingsTabRenderers {
             label: 'audio.settings.effects.environmental',')';
             icon: '🌿''),
             defaultValue: this.configManager.get('audio.effects.environmentalAudio) as boolean;
-            onChange: (value) => { 
+           , onChange: (value) => { 
                 if ((this.audioManager, as any).audioController) { ,}
                     (this.audioManager, as any).audioController.enableEnvironmentalAudio? .(value), }
 }
@@ -426,9 +426,9 @@ export class AudioSettingsTabRenderers {
                 icon: band.icon;
                 min: -12);
                 max: 12)';
-                defaultValue: 0,')';
+               , defaultValue: 0,')';
                 unit: 'dB');
-                onChange: (value) => {
+               , onChange: (value) => {
                     if ((this.audioManager, as any).audioController) { ,}
                         (this.audioManager, as any).audioController.setEqualizerBand? .(band.frequency, value); }
 }
@@ -443,7 +443,7 @@ export class AudioSettingsTabRenderers {
      * @private
      */ : undefined
     private _applyQualityPreset(preset: QualityPreset): void {
-        const presets: Record<QualityPreset, { sampleRate: number; bufferSize: number ,}> = {
+        const presets: Record<QualityPreset, { sampleRate: number;, bufferSize: number ,}> = {
             low: { sampleRate: 22050, bufferSize: 1024 ,},
             medium: { sampleRate: 44100, bufferSize: 512 ,},
             high: { sampleRate: 44100, bufferSize: 256 ,},

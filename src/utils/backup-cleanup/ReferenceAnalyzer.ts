@@ -5,36 +5,36 @@ import path from 'path';
 interface ReferenceContext { before: string[],
     target: string;
     after: string[];
-    lineNumber: number ,}
+   , lineNumber: number ,}
 
 interface ImportReference { file: string;
     line: number;
-    content: string,
+   , content: string,
     type: 'import';
-    context: ReferenceContext
+   , context: ReferenceContext
     ,}
 
 interface StringReference { file: string;
-    line: number,
+   , line: number,
     content: string,
     type: 'string';
     isReportFile: boolean;
-    context: ReferenceContext
+   , context: ReferenceContext
     ,}
 
 interface ImportSearchResult { filePath: string;
     importReferences: ImportReference[];
     searchedFiles: number;
-    hasImportReferences: boolean }
+   , hasImportReferences: boolean }
 
 interface StringSearchResult { filePath: string;
     stringReferences: StringReference[];
     activeReferences: StringReference[];
     reportFileReferences: StringReference[];
-    hasActiveStringReferences: boolean }
+   , hasActiveStringReferences: boolean }
 
 interface ReferencesByType { import: ImportReference[];
-    string: StringReference[]
+   , string: StringReference[]
     }
 
 interface ReferencesByLocation { [directory: string]: (ImportReference | StringReference)[], }
@@ -42,18 +42,18 @@ interface ReferencesByLocation { [directory: string]: (ImportReference | StringR
 interface ContextAnalysis { byType: ReferencesByType,
     byLocation: ReferencesByLocation;
     activeReferences: (ImportReference | StringReference)[];
-    reportReferences: (ImportReference | StringReference)[] ,}
+   , reportReferences: (ImportReference | StringReference)[] ,}
 
 interface SafetyWarning { level: string;
     message: string;
-    references: number }
+   , references: number }
 
 interface SafetyRecommendation { type: string;
-    message: string }
+   , message: string }
 
 interface SafetyAssessment { safeToDelete: boolean;
     warnings: SafetyWarning[];
-    recommendations: SafetyRecommendation[]
+   , recommendations: SafetyRecommendation[]
     }
 
 interface ReferenceSummary { totalReferences: number;
@@ -61,7 +61,7 @@ interface ReferenceSummary { totalReferences: number;
     stringReferences: number;
     activeReferences: number;
     reportFileReferences: number;
-    hasSafetyBlockingReferences: boolean }
+   , hasSafetyBlockingReferences: boolean }
 
 interface AnalysisInput { importAnalysis?: ImportSearchResult;
     stringAnalysis?: StringSearchResult;
@@ -73,7 +73,7 @@ interface ReferenceReport { filePath: string,
     stringAnalysis: StringSearchResult;
     contextAnalysis: ContextAnalysis;
     safetyAssessment: SafetyAssessment;
-    generatedAt: string ,}
+   , generatedAt: string ,}
 
 /**
  * ReferenceAnalyzer - バックアップファイルへの参照を分析するクラス
@@ -81,7 +81,7 @@ interface ReferenceReport { filePath: string,
  */
 export class ReferenceAnalyzer {
     private excludePatterns: RegExp[];
-    private searchExtensions: string[]';
+    private, searchExtensions: string[]';
 
     constructor(''';
         this.searchExtensions = ['.js', '.ts', '.jsx', '.tsx', '.mjs', '.json', '.md]; }
@@ -112,7 +112,7 @@ export class ReferenceAnalyzer {
                             file: searchFile,);
                             line: i + 1),
                             content: line.trim()';
-                            type: 'import', }
+                           , type: 'import', }
                             context: this.getContext(lines, i); }
                         });
                     }
@@ -153,7 +153,7 @@ export class ReferenceAnalyzer {
                             file: searchFile,);
                             line: i + 1),
                             content: line.trim()';
-                            type: 'string');
+                           , type: 'string');
                             isReportFile,);
         }
                             context: this.getContext(lines, i); }
@@ -220,7 +220,7 @@ export class ReferenceAnalyzer {
                 importReferences: importAnalysis.importReferences.length;
                 stringReferences: stringAnalysis.stringReferences.length;
                 activeReferences: contextAnalysis.activeReferences.length;
-                reportFileReferences: contextAnalysis.reportReferences.length, };
+               , reportFileReferences: contextAnalysis.reportReferences.length, };
                 hasSafetyBlockingReferences: contextAnalysis.activeReferences.length > 0 }
             };
             importAnalysis,
@@ -228,7 +228,7 @@ export class ReferenceAnalyzer {
             contextAnalysis,
             safetyAssessment: { safeToDelete: contextAnalysis.activeReferences.length === 0;
                 warnings: this.generateSafetyWarnings(contextAnalysis);
-                recommendations: this.generateSafetyRecommendations(contextAnalysis };
+               , recommendations: this.generateSafetyRecommendations(contextAnalysis };
             generatedAt: new, Date().toISOString();
         }
 
@@ -309,7 +309,7 @@ export class ReferenceAnalyzer {
         
         return { before: lines.slice(start, lineIndex),
             target: lines[lineIndex];
-            after: lines.slice(lineIndex + 1, end + 1), };
+           , after: lines.slice(lineIndex + 1, end + 1), };
             lineNumber: lineIndex + 1 }
         }
 
@@ -373,65 +373,65 @@ import path from 'path';
 // Type definitions
 interface Reference { file: string,
     line: number;
-    content: string,
+   , content: string,
     type: 'import' | 'string';
     isReportFile?: boolean;
-    context: ContextInfo
+   , context: ContextInfo
     ,}
 
 interface ContextInfo { before: string[];
     target: string;
     after: string[];
-    lineNumber: number }
+   , lineNumber: number }
 
 interface ImportAnalysisResult { filePath: string;
     importReferences: Reference[];
     searchedFiles: number;
-    hasImportReferences: boolean }
+   , hasImportReferences: boolean }
 
 interface StringAnalysisResult { filePath: string;
     stringReferences: Reference[];
     activeReferences: Reference[];
     reportFileReferences: Reference[];
-    hasActiveStringReferences: boolean }
+   , hasActiveStringReferences: boolean }
 
 interface ContextAnalysis { byType: {
-        import: Reference[];
-        string: Reference[] };
+        impor;t: Reference[];
+       , string: Reference[] };
     byLocation: Record<string, Reference[]>;
     activeReferences: Reference[];
-    reportReferences: Reference[];
+   , reportReferences: Reference[];
     }
 ';
 
 interface SafetyWarning { ''
     level: 'low' | 'medium' | 'high' | 'critical';
     message: string;
-    references: number }
+   , references: number }
 ';
 
 interface SafetyRecommendation { ''
     type: 'safe_deletion' | 'manual_review' | 'info';
-    message: string }
+   , message: string }
 
 interface SafetyAssessment { safeToDelete: boolean;
     warnings: SafetyWarning[];
-    recommendations: SafetyRecommendation[]
+   , recommendations: SafetyRecommendation[]
     }
 
 interface ReferenceReport { filePath: string;
-    summary: {
-        totalReferences: number;
+   , summary: {
+        totalReference;s: number;
         importReferences: number;
         stringReferences: number;
         activeReferences: number;
         reportFileReferences: number;
-        hasSafetyBlockingReferences: boolean };
+       , hasSafetyBlockingReferences: boolean };
     importAnalysis: ImportAnalysisResult;
     stringAnalysis: StringAnalysisResult;
     contextAnalysis: ContextAnalysis;
     safetyAssessment: SafetyAssessment;
-    generatedAt: string;
+   , generatedAt: string;
 }
 
 interface AnalysisInput { importAnalysis?: ImportAnalysisResult;
@@ -444,7 +444,7 @@ interface AnalysisInput { importAnalysis?: ImportAnalysisResult;
  */
 export class ReferenceAnalyzer {
     private excludePatterns: RegExp[];
-    private searchExtensions: string[]';
+    private, searchExtensions: string[]';
 
     constructor(''';
         this.searchExtensions = ['.js', '.ts', '.jsx', '.tsx', '.mjs', '.json', '.md]; }
@@ -579,7 +579,7 @@ export class ReferenceAnalyzer {
                 importReferences: importAnalysis.importReferences.length;
                 stringReferences: stringAnalysis.stringReferences.length;
                 activeReferences: contextAnalysis.activeReferences.length;
-                reportFileReferences: contextAnalysis.reportReferences.length, };
+               , reportFileReferences: contextAnalysis.reportReferences.length, };
                 hasSafetyBlockingReferences: contextAnalysis.activeReferences.length > 0 }
             };
             importAnalysis,
@@ -587,7 +587,7 @@ export class ReferenceAnalyzer {
             contextAnalysis,
             safetyAssessment: { safeToDelete: contextAnalysis.activeReferences.length === 0;
                 warnings: this.generateSafetyWarnings(contextAnalysis);
-                recommendations: this.generateSafetyRecommendations(contextAnalysis };
+               , recommendations: this.generateSafetyRecommendations(contextAnalysis };
             generatedAt: new, Date().toISOString();
         }
 
@@ -668,7 +668,7 @@ export class ReferenceAnalyzer {
         
         return { before: lines.slice(start, lineIndex),
             target: lines[lineIndex];
-            after: lines.slice(lineIndex + 1, end + 1), };
+           , after: lines.slice(lineIndex + 1, end + 1), };
             lineNumber: lineIndex + 1 }
         }
 

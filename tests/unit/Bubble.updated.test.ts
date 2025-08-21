@@ -6,8 +6,8 @@
  * 
  * 最終更新: 2025-07-27 (Task 7.2)
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
-import { Bubble } from '../../src/bubbles/Bubble';
+import { jest, describe, test, expect, beforeEach  } from '@jest/globals';
+import { Bubble  } from '../../src/bubbles/Bubble';
 // Type definitions
 interface MockCanvasContext {
     arc: jest.Mock,
@@ -31,12 +31,12 @@ interface MockCanvasContext {
     globalAlpha: number,
 }
 interface MockGameEngine {
-    canvas: { width: number; height: number },
+    canvas: { widt;h: number;, height: number },
     ctx: MockCanvasContext,
     currentStage: { name: string };
     getInputManager: jest.Mock<() => {
         isMousePressed: jest.Mock<() => boolean>;
-        getMousePosition: jest.Mock<(') => { x: number; y: number }>;
+        getMousePosition: jest.Mock<(') => { x: number;, y: number }>;
     }>;
 }
 interface BubbleConfig {
@@ -47,7 +47,7 @@ interface BubbleConfig {
     healAmount?: number;
     color?: string;
     effects?: {
-        intensity?: number;
+        intensit;y?: number;
         duration?: number;
     };
     escapeDistance?: number;

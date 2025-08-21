@@ -15,74 +15,74 @@ interface DeviceHardwareCPU { cores: number,
 
 interface DeviceHardwareMemory { total: number;
     available: number;
-    pressure: string }
+   , pressure: string }
 
 interface DeviceHardwareGPU { vendor: string;
-    renderer: string,
+   , renderer: string,
     performance: 'low' | 'medium' | 'high' | 'unknown' ,}
 
 interface DeviceHardwareDisplay { width: number;
     height: number;
     pixelRatio: number;
-    refreshRate: number }
+   , refreshRate: number }
 
 interface DeviceHardware { cpu: DeviceHardwareCPU;
     memory: DeviceHardwareMemory;
     gpu: DeviceHardwareGPU;
-    display: DeviceHardwareDisplay
+   , display: DeviceHardwareDisplay
     }
 
 interface DeviceBenchmarks { cpuScore: number;
     gpuScore: number;
     memoryScore: number;
     overallScore: number;
-    benchmarkComplete: boolean }
+   , benchmarkComplete: boolean }
 ';
 
 interface DeviceDetection { enabled: boolean,''
     deviceClass: 'low-end' | 'mid-range' | 'high-end' | 'flagship' | 'unknown';
-    isMobile: boolean,
+   , isMobile: boolean,
     isTablet: boolean,
     platform: 'ios' | 'android' | 'web' | 'unknown';
     hardware: DeviceHardware;
-    benchmarks: DeviceBenchmarks
+   , benchmarks: DeviceBenchmarks
     ,}
 
 interface PerformanceTargets { minFPS: number;
     targetFPS: number;
     optimalFPS: number;
     maxMemoryMB: number;
-    maxBatteryDrainPerHour: number }
+   , maxBatteryDrainPerHour: number }
 
 interface OptimizerConfig { enabled: boolean;
     autoDetection: boolean;
-    aggressiveOptimization: boolean,
+   , aggressiveOptimization: boolean,
     targets: PerformanceTargets,
     optimizationLevel: 'battery' | 'balanced' | 'performance';
-    adaptiveMode: boolean ,}
+   , adaptiveMode: boolean ,}
 
 interface PerformanceMetrics { fps: number;
     frameTime: number;
     memoryUsage: number;
     batteryDrain: number;
-    thermalState: string }
+   , thermalState: string }
 
 interface PerformanceHistoryEntry { timestamp: number;
     fps: number;
     frameTime: number;
     memoryUsage: number;
     batteryDrain: number;
-    thermalState: string }
+   , thermalState: string }
 
 interface OptimizationHistoryEntry { timestamp: number;
     reason: string;
-    levelBefore: string }
+   , levelBefore: string }
 
 interface PerformanceMonitoring { enabled: boolean;
     metrics: PerformanceMetrics;
     optimizationHistory: OptimizationHistoryEntry[];
     performanceHistory: PerformanceHistoryEntry[];
-    adaptiveAdjustments: number }
+   , adaptiveAdjustments: number }
 
 interface ComponentStats { resource?: any;
     render?: any;
@@ -94,7 +94,7 @@ interface PerformanceStatistics { device: DeviceDetection,
     metrics: PerformanceMetrics;
     components: ComponentStats;
     optimizationHistory: OptimizationHistoryEntry[];
-    performanceHistory: PerformanceHistoryEntry[]
+   , performanceHistory: PerformanceHistoryEntry[]
     ,}
 
 interface BatteryCallbacks { onLowBattery: () => void;
@@ -107,7 +107,7 @@ interface MobileResourceManager { handleMemoryPressureChange(id: string, pressur
     dispose(): void; }
 
 interface MobileRenderOptimizer { setQualityLevel(level: string): void, }
-    getRenderStatistics(): { frameStats: { fps: number; frameTime: number }
+    getRenderStatistics(): { frameStats: { fps: number;, frameTime: number }
     handlePerformanceIssue(): void;
     dispose(): void;
 }
@@ -119,7 +119,7 @@ interface MobileBatteryOptimizer { setPowerMode(mode: string): void,
     dispose(): void;
 }
 
-interface MobileMemoryManager { addMemoryPressureCallback(callback: (pressure: string) => void): void }
+interface MobileMemoryManager { addMemoryPressureCallback(callback: (pressur;e: string) => void): void }
     getMemoryStatistics(): { usage: { jsHeapSize: number }
     performAggressiveCleanup(): void;
     performStandardCleanup(): void;
@@ -149,7 +149,7 @@ class DummyMobileRenderOptimizer implements MobileRenderOptimizer { setQualityLe
         console.log(`[MobileRenderOptimizer] Quality, level set, to: ${level}`});
     }
     
-    getRenderStatistics(): { frameStats: { fps: number; frameTime: number } {
+    getRenderStatistics(): { frameStats: { fps: number;, frameTime: number } {
         return { frameStats: { fps: 60, frameTime: 16.67 ,}
     }
 
@@ -215,7 +215,7 @@ export class MobilePerformanceOptimizer {
     private resourceManager: MobileResourceManager | null;
     private renderOptimizer: MobileRenderOptimizer | null;
     private batteryOptimizer: MobileBatteryOptimizer | null;
-    private memoryManager: MobileMemoryManager | null;
+    private, memoryManager: MobileMemoryManager | null;
     constructor(') {
 ';
 
@@ -237,7 +237,7 @@ export class MobilePerformanceOptimizer {
                     cores: navigator.hardwareConcurrency || 2,
                     performance: 'unknown' // 'low', 'medium', 'high' },
                 memory: { total: 0;
-                    available: 0,
+                   , available: 0,
                     pressure: 'unknown' ,};
                 gpu: { ''
                     vendor: 'unknown',
@@ -246,14 +246,14 @@ export class MobilePerformanceOptimizer {
                 display: { width: window.screen? .width || 1920, : undefined
                     height: window.screen? .height || 1080, : undefined
                     pixelRatio: window.devicePixelRatio || 1;
-                    refreshRate: 60 ,}
+                   , refreshRate: 60 ,}
             };
             // Performance benchmarks
             benchmarks: { cpuScore: 0;
                 gpuScore: 0;
                 memoryScore: 0;
                 overallScore: 0;
-                benchmarkComplete: false }
+               , benchmarkComplete: false }
         };
         // Performance monitoring
         this.monitoring = { enabled: true,
@@ -263,12 +263,12 @@ export class MobilePerformanceOptimizer {
                 fps: 60;
                 frameTime: 16.67;
                 memoryUsage: 0;
-                batteryDrain: 0,
+               , batteryDrain: 0,
                 thermalState: 'normal' ,};
             // Optimization tracking
             optimizationHistory: [];
             performanceHistory: [];
-            adaptiveAdjustments: 0);
+           , adaptiveAdjustments: 0);
         })
         );
         // Specialized components (initialized, later);
@@ -597,8 +597,7 @@ export class MobilePerformanceOptimizer {
                            (benchmarks.gpuScore * gpuWeight) + ;
                            (benchmarks.memoryScore * memoryWeight);
         // Classify device
-        if(overallScore >= 0.8) {'
-            ';
+        if(overallScore >= 0.8) {', ';
 
         }
 
@@ -714,16 +713,14 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 30;
 
         ')';
-        if(this.renderOptimizer) {'
-            ';
+        if(this.renderOptimizer) {', ';
 
         }
 
             this.renderOptimizer.setQualityLevel('low); }'
         }
 
-        if(this.batteryOptimizer) {'
-            ';
+        if(this.batteryOptimizer) {', ';
 
         }
 
@@ -735,16 +732,14 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 40;
 
         ')';
-        if(this.renderOptimizer) {'
-            ';
+        if(this.renderOptimizer) {', ';
 
         }
 
             this.renderOptimizer.setQualityLevel('medium); }'
         }
 
-        if(this.batteryOptimizer) {'
-            ';
+        if(this.batteryOptimizer) {', ';
 
         }
 
@@ -756,16 +751,14 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 50;
 
         ')';
-        if(this.renderOptimizer) {'
-            ';
+        if(this.renderOptimizer) {', ';
 
         }
 
             this.renderOptimizer.setQualityLevel('high); }'
         }
 
-        if(this.batteryOptimizer) {'
-            ';
+        if(this.batteryOptimizer) {', ';
 
         }
 
@@ -777,16 +770,14 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 60;
 
         ')';
-        if(this.renderOptimizer) {'
-            ';
+        if(this.renderOptimizer) {', ';
 
         }
 
             this.renderOptimizer.setQualityLevel('ultra); }'
         }
 
-        if(this.batteryOptimizer) {'
-            ';
+        if(this.batteryOptimizer) {', ';
 
         }
 
@@ -865,24 +856,21 @@ export class MobilePerformanceOptimizer {
         // Check if performance is below targets
         const performanceIssues: string[] = [],
 
-        if(metrics.fps < targets.targetFPS') {'
-            ';
+        if(metrics.fps < targets.targetFPS') {', ';
 
         }
 
             performanceIssues.push('low_fps); }'
         }
 
-        if(metrics.memoryUsage > targets.maxMemoryMB * 0.8) {'
-            ';
+        if(metrics.memoryUsage > targets.maxMemoryMB * 0.8) {', ';
 
         }
 
             performanceIssues.push('high_memory); }'
         }
 
-        if(metrics.batteryDrain > targets.maxBatteryDrainPerHour) {'
-            ';
+        if(metrics.batteryDrain > targets.maxBatteryDrainPerHour) {', ';
 
         }
 
@@ -949,7 +937,7 @@ export class MobilePerformanceOptimizer {
     getPerformanceStatistics(): PerformanceStatistics { return { device: this.deviceDetection,
             config: this.config;
             metrics: this.monitoring.metrics;
-            components: {
+           , components: {
                 resource: this.resourceManager? .getResourceStatistics(, : undefined
                 render: this.renderOptimizer? .getRenderStatistics(, : undefined);
                 battery: this.batteryOptimizer? .getBatteryStatistics(, : undefined };

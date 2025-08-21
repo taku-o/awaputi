@@ -3,8 +3,8 @@
  * ヘルプシステムの使用状況を追跡・分析するクラス
  */
 
-import { LoggingSystem } from '../LoggingSystem.js';''
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
+import { LoggingSystem  } from '../LoggingSystem.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface GameEngine { helpManager?: HelpManager;
@@ -22,7 +22,7 @@ export interface AnalyticsConfig { sessionTimeout: number,
     maxEvents: number;
     enableRealTimeTracking: boolean;
     enableOfflineStorage: boolean;
-    dataRetentionDays: number ,}
+   , dataRetentionDays: number ,}
 export interface HelpUsageAnalytics { totalSessions: number,
     totalPageViews: number;
     uniqueUsers: Set<string>;
@@ -35,34 +35,34 @@ export interface ContentAnalytics { topicViews: Map<string, TopicViewStats>,
     categoryViews: Map<string, CategoryViewStats>, }
 export interface TopicViewStats { viewCount: number,
     totalViewTime: number;
-    exitCount: number ,}
+   , exitCount: number ,}
 export interface CategoryViewStats { viewCount: number,
     totalViewTime: number;
-    exitCount: number ,}
+   , exitCount: number ,}
 export interface TutorialUsageAnalytics { totalStarts: number,
     totalCompletions: number;
     completionRate: number;
     averageCompletionTime: number;
-    dropOffPoints: Map<string, number>,
+   , dropOffPoints: Map<string, number>,
     skipRates: Map<string, number>,
     retryRates: Map<string, number>, }
 export interface UserBehaviorAnalytics { navigationPatterns: Map<string, number>,
     timeSpentBySection: Map<string, TimeStats>,
     commonUserJourneys: Map<string, number>,
     bounceRate: number;
-    returnUserRate: number ,}
+   , returnUserRate: number ,}
 export interface TimeStats { total: number,
     count: number;
-    average: number ,}
+   , average: number ,}
 export interface EffectivenessAnalytics { helpfulnessRatings: Map<string, RatingData>,
     problemResolutionRate: number;
     userSatisfactionScore: number;
-    contentGaps: Map<string, number>,
+   , contentGaps: Map<string, number>,
     improvementSuggestions: ImprovementSuggestion[]
     ,}
 export interface RatingData { totalRatings: number,
     averageRating: number;
-    ratingCount: Record<number, number>, // 1-5の評価ごとの件数 }
+   , ratingCount: Record<number, number>, // 1-5の評価ごとの件数 }
 export interface ImprovementSuggestion { type: string,
     contentId?: string;
     query?: string;
@@ -72,7 +72,7 @@ export interface Analytics { helpUsage: HelpUsageAnalytics,
     content: ContentAnalytics;
     tutorialUsage: TutorialUsageAnalytics;
     userBehavior: UserBehaviorAnalytics;
-    effectiveness: EffectivenessAnalytics
+   , effectiveness: EffectivenessAnalytics
     ,}
 export interface HelpSession { id: string,
     startTime: number;
@@ -86,59 +86,59 @@ export interface HelpSession { id: string,
     pageViews: PageView[];
     searchQueries: SearchQuery[];
     currentPage: string | null;
-    lastActivityTime: number;
+   , lastActivityTime: number;
     active?: boolean ,}
 export interface AnalyticsEvent { type: string,
     data: any;
     timestamp: number;
-    sessionId: string | null ,}
+   , sessionId: string | null ,}
 export interface PageView { page: string,
     timestamp: number;
     data: any;
-    timeSpent: number ,}
+   , timeSpent: number ,}
 export interface SearchQuery { query: string,
     timestamp: number;
     resultCount: number;
-    results: SearchResult[]
+   , results: SearchResult[]
     ,}
 export interface SearchResult { id: string,
     title: string;
-    category: string ,}
+   , category: string ,}
 export interface CacheConfig { maxContentCacheSize: number,
     maxSearchCacheSize: number;
     cacheExpiryTime: number;
-    enableCompression: boolean ,}
+   , enableCompression: boolean ,}
 export interface CacheEntry { data: any,
     timestamp: number;
     accessCount: number;
-    compressed: boolean ,}
+   , compressed: boolean ,}
 export interface PerformanceMetrics { operations: Map<string, OperationMetrics>,
     cacheHitRate: number;
     averageResponseTime: number;
     errorRate: number;
-    memoryUsage: number ,}
+   , memoryUsage: number ,}
 export interface OperationMetrics { totalCalls: number,
     totalDuration: number;
     averageDuration: number;
     errorCount: number;
-    lastCall: number ,}
+   , lastCall: number ,}
 export interface ValidationResult { isValid: boolean,
     sanitizedData: any;
-    errors: string[] ,}
+   , errors: string[] ,}
 export interface ValidationComponents { analytics: boolean,
     feedback: boolean;
     search: boolean;
     content: boolean;
-    accessibility: boolean ,}
+   , accessibility: boolean ,}
 export interface SystemValidationResult { isValid: boolean,
     errors: string[];
     warnings: string[];
-    components: ValidationComponents
+   , components: ValidationComponents
     ,}
 export interface FallbackInterface { isActive: boolean,
     container: HTMLElement | null,
     content: Map<string, FallbackContent>,
-    keydownHandler?: (event: KeyboardEvent') => void ,}
+    keydownHandler?: (even;t: KeyboardEvent') => void ,}
 export interface FallbackContent { title: string,
     content: string[] ,}
 export interface UsageReport { generatedAt: number,
@@ -146,7 +146,7 @@ export interface UsageReport { generatedAt: number,
     usage: UsageReportData;
     effectiveness: EffectivenessReportData;
     performance: PerformanceReportData;
-    recommendations: ImprovementSuggestion[]
+   , recommendations: ImprovementSuggestion[]
     ,}
 export interface ReportPeriod { start: number,
     end: number ,}
@@ -155,16 +155,16 @@ export interface UsageReportData { totalSessions: number,
     averageSessionDuration: number;
     searchQueries: number;
     topCategories: TopItem[];
-    topSearches: TopItem[]
+   , topSearches: TopItem[]
     ,}
 export interface EffectivenessReportData { averageRating: number,
     totalFeedbacks: number;
     satisfactionScore: number;
-    problemAreas: ProblemArea[]
+   , problemAreas: ProblemArea[]
     ,}
 export interface PerformanceReportData { cacheHitRate: number,
     errorRate: number;
-    operationsCount: number ,}
+   , operationsCount: number ,}
 export interface TopItem { category?: string;
     topic?: string;
     query?: string;
@@ -178,9 +178,9 @@ export interface ProblemArea {;
     rating?: number;
 
     searchCount?: number;''
-    severity: 'high' | 'medium' | 'low' }
+   , severity: 'high' | 'medium' | 'low' }
 export interface ContentPerformance { [contentId: string]: {
-        averageRating: number,
+        averageRatin;g: number,
         totalRatings: number,
         helpfulness: 'high' | 'medium' | 'low' ,}
 
@@ -191,27 +191,27 @@ export interface ReportData { [key: string]: any, }
 export interface AnalyticsReport { generatedAt: number,
     reportType: string;
     period: string;
-    data: ReportData;
+   , data: ReportData;
     error?: string ,}
 export interface SummaryReportData { overview: {
-        totalHelpSessions: number;
+        totalHelpSession;s: number;
         totalPageViews: number;
         uniqueUsers: number;
         averageSessionDuration: number;
-        tutorialCompletionRate: number  }
+       , tutorialCompletionRate: number  }
 };
     topContent: { categories: TopItem[];
         topics: TopItem[];
-        searchQueries: TopItem[]  }
+       , searchQueries: TopItem[]  }
 };
     userSatisfaction: { averageRating: number;
-        totalFeedbacks: number; }
+       , totalFeedbacks: number; }
         satisfactionScore: number }
 
 export interface EffectivenessReportDetailed { contentPerformance: ContentPerformance,
     userBehavior: UserBehaviorReport;
     problemAreas: ProblemArea[];
-    improvements: ImprovementSuggestion[]
+   , improvements: ImprovementSuggestion[]
     ,}
 export interface SanitizationOptions { maxLength?: number;
     allowSpecialChars?: boolean;
@@ -230,13 +230,13 @@ export class HelpAnalytics {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     // 追跡対象イベント
-    private events: Map<string, AnalyticsEvent>;
+    private, events: Map<string, AnalyticsEvent>;
     private sessions: Map<string, HelpSession>;
     private currentSession: HelpSession | null;
     // 設定
     private config: AnalyticsConfig;
     // 追跡データ
-    private analytics: Analytics;
+    private, analytics: Analytics;
     // キャッシュ関連
     private contentCache?: Map<string, CacheEntry>;
     private searchCache?: Map<string, CacheEntry>;
@@ -263,7 +263,7 @@ export class HelpAnalytics {
             sessionTimeout: 30 * 60 * 1000, // 30分;
             maxEvents: 1000;
             enableRealTimeTracking: true;
-            enableOfflineStorage: true
+           , enableOfflineStorage: true
 ,}
             dataRetentionDays: 30 ;
 }
@@ -284,7 +284,7 @@ export class HelpAnalytics {
             tutorialUsage: { totalStarts: 0;
                 totalCompletions: 0;
                 completionRate: 0;
-                averageCompletionTime: 0; }
+               , averageCompletionTime: 0; }
                 dropOffPoints: new Map<string, number>(),
                 skipRates: new Map<string, number>(),
                 retryRates: new Map<string, number>( },
@@ -292,12 +292,12 @@ export class HelpAnalytics {
                 timeSpentBySection: new Map<string, TimeStats>(),
                 commonUserJourneys: new Map<string, number>(),
                 bounceRate: 0;
-                returnUserRate: 0 
+               , returnUserRate: 0 
 ,};
             effectiveness: { helpfulnessRatings: new Map<string, RatingData>(),
                 problemResolutionRate: 0;
                 userSatisfactionScore: 0;
-                contentGaps: new Map<string, number>(),
+               , contentGaps: new Map<string, number>(),
                 improvementSuggestions: [] 
 ,}
         },
@@ -412,7 +412,7 @@ export class HelpAnalytics {
                 pageViews: [];
                 searchQueries: [];
                 currentPage: null;
-                lastActivityTime: timestamp  }
+               , lastActivityTime: timestamp  }
 ,};
             this.sessions.set(sessionId, this.currentSession);
             this.analytics.helpUsage.totalSessions++;
@@ -451,7 +451,7 @@ export class HelpAnalytics {
             // 終了イベントの追跡
             this.trackEvent('help_session_end', { sessionId: this.currentSession.id;)
                 duration: duration);
-                exitPoint: exitPoint)'; }
+               , exitPoint: exitPoint)'; }
                 pageViews: this.currentSession.pageViews.length,')';
                 searchCount: this.currentSession.searchQueries.length)'),
             ' }'
@@ -474,7 +474,7 @@ export class HelpAnalytics {
             const pageView: PageView = { page: page;
                 timestamp: timestamp;
                 data: pageData;
-                timeSpent: 0  }
+               , timeSpent: 0  }
 ,};
             if(this.currentSession) {
             
@@ -516,7 +516,7 @@ export class HelpAnalytics {
             const timestamp = Date.now();
             const searchData: SearchQuery = { query: query;
                 timestamp: timestamp;
-                resultCount: resultCount; }
+               , resultCount: resultCount; }
                 results: results.map(r => ({ id: r.id, title: r.title, category: r.category )) ,}
             };
             
@@ -571,7 +571,7 @@ export class HelpAnalytics {
 
             this.trackEvent('tutorial_completion', {)
                 tutorialId: tutorialId)';
-                completionTime: completionTime,')';
+               , completionTime: completionTime,')';
                 stepsCompleted: stepsCompleted)'),
             ' }'
 
@@ -614,7 +614,7 @@ export class HelpAnalytics {
             const feedbackData = { contentId: contentId;
                 rating: rating;
                 feedback: feedback;
-                context: context; }
+               , context: context; }
                 timestamp: Date.now( ,};
             
             // 評価統計の更新)
@@ -651,8 +651,7 @@ export class HelpAnalytics {
             const categoryValidation = this.validateAndSanitizeData(categoryId, 'categoryId'');''
             const contextValidation = this.validateAndSanitizeData(context, 'context);
 
-            if(!categoryValidation.isValid) {'
-                ';
+            if(!categoryValidation.isValid) {', ';
 
             }
 
@@ -665,7 +664,7 @@ export class HelpAnalytics {
 
                 context: sanitizedContext,
                 timestamp: Date.now(''';)
-                sessionId: this.currentSession? .id || 'unknown' ,}))'
+               , sessionId: this.currentSession? .id || 'unknown' ,}))'
             // カテゴリ統計の更新')'
             this.updateCategoryStatistics(sanitizedCategoryId);
             ';
@@ -689,8 +688,7 @@ export class HelpAnalytics {
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
             const contextValidation = this.validateAndSanitizeData(exitContext, 'context);
 
-            if(!topicValidation.isValid) {'
-                ';
+            if(!topicValidation.isValid) {', ';
 
             }
 
@@ -707,11 +705,11 @@ export class HelpAnalytics {
                 content: sanitizedContent,
                 exitContext: sanitizedContext,
                 timestamp: Date.now(''';)
-                sessionId: this.currentSession? .id || 'unknown' ,}))
+               , sessionId: this.currentSession? .id || 'unknown' ,}))
             // トピック統計の更新)
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
                     viewCount: 0);
-                    totalViewTime: 0, }
+                   , totalViewTime: 0, }
                     exitCount: 0); }
             }
 
@@ -737,8 +735,7 @@ export class HelpAnalytics {
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
             const contextValidation = this.validateAndSanitizeData(viewContext, 'context);
 
-            if(!topicValidation.isValid) {'
-                ';
+            if(!topicValidation.isValid) {', ';
 
             }
 
@@ -755,11 +752,11 @@ export class HelpAnalytics {
                 content: sanitizedContent,
                 viewContext: sanitizedContext,
                 timestamp: Date.now(''';)
-                sessionId: this.currentSession? .id || 'unknown' ,}))
+               , sessionId: this.currentSession? .id || 'unknown' ,}))
             // トピック統計の更新)
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
                     viewCount: 0);
-                    totalViewTime: 0, }
+                   , totalViewTime: 0, }
                     exitCount: 0); }
             }
 
@@ -785,8 +782,7 @@ export class HelpAnalytics {
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
             const feedbackValidation = this.validateAndSanitizeData(feedback, 'feedback);
 
-            if(!topicValidation.isValid) {'
-                ';
+            if(!topicValidation.isValid) {', ';
 
             }
 
@@ -810,7 +806,7 @@ export class HelpAnalytics {
                 content: sanitizedContent,
                 feedback: sanitizedFeedback,
                 timestamp: Date.now(''';)
-                sessionId: this.currentSession? .id || 'unknown' ,}))'
+               , sessionId: this.currentSession? .id || 'unknown' ,}))'
             // フィードバック統計の更新')'
             if(sanitizedFeedback.rating) { '
 
@@ -834,8 +830,7 @@ export class HelpAnalytics {
             // データの検証とサニタイゼーション
             const queryValidation = this.validateAndSanitizeData(query, 'searchQuery);
 
-            if(!queryValidation.isValid) {'
-                ';
+            if(!queryValidation.isValid) {', ';
 
             }
 
@@ -863,7 +858,7 @@ export class HelpAnalytics {
     private validateAndSanitizeData(data: any, type: DataType): ValidationResult { try {
             const result: ValidationResult = { isValid: true;
                 sanitizedData: null;
-                errors: []  }
+               , errors: []  }
 },""
 
             switch(type) {""
@@ -961,8 +956,7 @@ export class HelpAnalytics {
             sanitized = sanitized.replace(/data:/gi, '');
 ';
             // 特殊文字の制限
-            if(!options.allowSpecialChars) {'
-                ';
+            if(!options.allowSpecialChars) {', ';
 
             }
 
@@ -973,7 +967,7 @@ export class HelpAnalytics {
 
             }
 
-                sanitized = sanitized.trim(').replace(/\s+/g, ' '); }
+                sanitized = sanitized.trim(').replace(/\s+/g, ', '); }
             // 長さ制限
             if (options.maxLength && sanitized.length > options.maxLength) { sanitized = sanitized.substring(0, options.maxLength); }
 ';
@@ -1007,8 +1001,7 @@ export class HelpAnalytics {
                     continue; }
 ';
                 // 値の処理
-                if(typeof, value === 'string) {'
-                    ';
+                if(typeof, value === 'string) {', ';
 
                 }
 
@@ -1046,8 +1039,7 @@ export class HelpAnalytics {
     private validateAnalyticsStructure(data: any): boolean { try {'
             const requiredSections = ['helpUsage', 'content', 'tutorialUsage', 'userBehavior', 'effectiveness'];
 
-            for(const, section of, requiredSections) {'
-                ';
+            for(const, section of, requiredSections) {', ';
 
             }
 
@@ -1128,7 +1120,7 @@ export class HelpAnalytics {
             this.contentCache = new Map<string, CacheEntry>();
             this.searchCache = new Map<string, CacheEntry>();
             this.cacheConfig = { maxContentCacheSize: 50;
-                maxSearchCacheSize: 100; }
+               , maxSearchCacheSize: 100; }
                 cacheExpiryTime: 15 * 60 * 1000, // 15分;
                 enableCompression: true 
 ,};
@@ -1155,7 +1147,7 @@ export class HelpAnalytics {
             const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(content) : content,
                 timestamp: Date.now();
                 accessCount: 0;
-                compressed: this.cacheConfig!.enableCompression 
+               , compressed: this.cacheConfig!.enableCompression 
 ,};
             // キャッシュサイズ制限
             if (this.contentCache!.size >= this.cacheConfig!.maxContentCacheSize) { this.evictLeastUsedContent(); }
@@ -1209,7 +1201,7 @@ export class HelpAnalytics {
             const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(results) : results,
                 timestamp: Date.now();
                 accessCount: 0;
-                compressed: this.cacheConfig!.enableCompression 
+               , compressed: this.cacheConfig!.enableCompression 
 ,};
             // キャッシュサイズ制限
             if (this.searchCache!.size >= this.cacheConfig!.maxSearchCacheSize) { this.evictLeastUsedSearchResults(); }
@@ -1259,7 +1251,7 @@ export class HelpAnalytics {
                 cacheHitRate: 0;
                 averageResponseTime: 0;
                 errorRate: 0;
-                memoryUsage: 0 
+               , memoryUsage: 0 
 ,};
             // 定期的なメトリクス収集
             setInterval(() => { this.collectPerformanceMetrics();' }'
@@ -1299,7 +1291,7 @@ export class HelpAnalytics {
             if(!this.performanceMetrics!.operations.has(operationName) {
                 this.performanceMetrics!.operations.set(operationName, { totalCalls: 0;)
                     totalDuration: 0);
-                    averageDuration: 0); }
+                   , averageDuration: 0); }
                     errorCount: 0, }
                     lastCall: 0); }
             const metrics = this.performanceMetrics!.operations.get(operationName)!;
@@ -1508,7 +1500,7 @@ export class HelpAnalytics {
             // 基本的なヘルプコンテンツ
             this.fallbackInterface.content.set('basic-help', { ')'
                 title: 'ゲームヘルプ（簡易版）')';
-                content: [ '';
+               , content: [ '';
                     '基本操作:',
                     '- 泡をクリックまたはタップして割る',
                     '- スペースキーでポーズ',
@@ -1543,13 +1535,13 @@ export class HelpAnalytics {
                 position: fixed;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%),
+               , transform: translate(-50%, -50%),
                 width: 80%;
                 max-width: 600px,
                 max-height: 80%,
                 background: rgba(0, 0, 0, 0.9),
                 color: white;
-                padding: 20px;
+               , padding: 20px;
                 border-radius: 10px,
                 font-family: Arial, sans-serif;
                 font-size: 14px,
@@ -1566,7 +1558,7 @@ export class HelpAnalytics {
             const title = document.createElement('h2'');
 
             title.textContent = helpContent.title;''
-            title.style.cssText = 'margin-top: 0; color: #4CAF50; text-align: center;';
+            title.style.cssText = 'margin-top: 0;, color: #4CAF50; text-align: center;';
             contentDiv.appendChild(title);
 
             helpContent.content.forEach(line => { ');''
@@ -1588,7 +1580,7 @@ export class HelpAnalytics {
                 padding: 10px 20px;
                 background: #4CAF50;
                 color: white;
-                border: none;
+               , border: none;
                 border-radius: 5px,
                 font-size: 14px,
                 cursor: pointer;
@@ -1650,12 +1642,12 @@ export class HelpAnalytics {
             const validationResult: SystemValidationResult = { isValid: true;
                 errors: [];
                 warnings: [];
-                components: {
+               , components: {
                     analytics: false;
                     feedback: false;
                     search: false;
                     content: false;
-                    accessibility: false  }
+                   , accessibility: false  }
 }
             },
             // アナリティクスコンポーネントの検証
@@ -1713,9 +1705,9 @@ export class HelpAnalytics {
             return { isValid: false,
                 errors: [(error, as Error).message];
                 warnings: [];
-                components: { analytics: false;
+               , components: { analytics: false;
                     feedback: false;
-                    search: false; }
+                   , search: false; }
                     content: false, };
                     accessibility: false ;
 }
@@ -1726,22 +1718,22 @@ export class HelpAnalytics {
      */
     generateUsageReport(): UsageReport | null { try {
             const report: UsageReport = { generatedAt: Date.now();
-                period: { }
+               , period: { }
                     start: Date.now() - (7 * 24 * 60 * 60 * 1000), // 7日前;
                     end: Date.now( ,};
                 usage: { totalSessions: this.analytics.helpUsage.totalSessions;
                     totalPageViews: this.analytics.helpUsage.totalPageViews;)
                     averageSessionDuration: this.calculateAverageSessionDuration();
                     searchQueries: this.analytics.helpUsage.searchQueries.size;
-                    topCategories: this.getTopCategories(5); }
+                   , topCategories: this.getTopCategories(5); }
                     topSearches: this.getTopSearchQueries(10 };)
                 effectiveness: { averageRating: this.calculateAverageRating();
                     totalFeedbacks: this.getTotalFeedbackCount();
-                    satisfactionScore: this.calculateSatisfactionScore(); }
+                   , satisfactionScore: this.calculateSatisfactionScore(); }
                     problemAreas: this.identifyProblemAreas( };
                 performance: { cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0;
                     errorRate: this.performanceMetrics ? this.performanceMetrics.errorRate : 0;
-                    operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0  }
+                   , operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0  }
 };)
                 recommendations: this.generateImprovementSuggestions();
             };
@@ -1760,7 +1752,7 @@ export class HelpAnalytics {
      */'
     private saveUsageReport(report: UsageReport): void { try { ,}
 
-            const reportKey = `help_usage_report_${new Date(report.generatedAt}.toISOString('}.split('T'})[0]}`;
+            const reportKey = `help_usage_report_${new, Date(report.generatedAt}.toISOString('}.split('T'})[0]}`;
             localStorage.setItem(reportKey, JSON.stringify(report);
 
             // 古いレポートのクリーンアップ（30日以上古いものを削除）
@@ -1826,7 +1818,7 @@ export class HelpAnalytics {
             const event: AnalyticsEvent = { type: eventType;
                 data: eventData;
                 timestamp: Date.now();
-                sessionId: this.currentSession ? this.currentSession.id : null  }
+               , sessionId: this.currentSession ? this.currentSession.id : null  }
 ,};
             // イベントキューに追加
             const eventId = this.generateEventId();
@@ -1856,10 +1848,9 @@ export class HelpAnalytics {
         try {
             const report: AnalyticsReport = {''
                 generatedAt: Date.now(''';
-                period: options.period || 'all'
+               , period: options.period || 'all'
 ,})
-                data: {}))'
-            ')';
+                data: {}))', ')';
             switch(reportType) {'
 
                 case 'summary':'';
@@ -1911,16 +1902,16 @@ export class HelpAnalytics {
         return { overview: {
                 totalHelpSessions: this.analytics.helpUsage.totalSessions;
                 totalPageViews: this.analytics.helpUsage.totalPageViews;
-                uniqueUsers: this.analytics.helpUsage.uniqueUsers.size; }
+               , uniqueUsers: this.analytics.helpUsage.uniqueUsers.size; }
                 averageSessionDuration: this.calculateAverageSessionDuration(), };
                 tutorialCompletionRate: Math.round(completionRate * 100) / 100 ;
 }
             },
             topContent: { categories: this.getTopCategories(5);
-                topics: this.getTopTopics(10); }
+               , topics: this.getTopTopics(10); }
                 searchQueries: this.getTopSearchQueries(10 };)
             userSatisfaction: { averageRating: this.calculateAverageRating();
-                totalFeedbacks: this.getTotalFeedbackCount(); }
+               , totalFeedbacks: this.getTotalFeedbackCount(); }
                 satisfactionScore: this.calculateSatisfactionScore( }
         }
 
@@ -1959,7 +1950,7 @@ export class HelpAnalytics {
     private generateEffectivenessReport(options: any = { ): EffectivenessReportDetailed {
         return { contentPerformance: this.analyzeContentPerformance(),
             userBehavior: this.analyzeUserBehavior();
-            problemAreas: this.identifyProblemAreas(), };
+           , problemAreas: this.identifyProblemAreas(), };
             improvements: this.generateImprovementSuggestions(); }
         }
     
@@ -1970,7 +1961,7 @@ export class HelpAnalytics {
             if (!this.config.enableOfflineStorage) return;
             
             const dataToSave: StoredAnalyticsData = { analytics: this.analytics;
-                sessions: Array.from(this.sessions.entries(); }
+               , sessions: Array.from(this.sessions.entries(); }
                 events: Array.from(this.events.entries().slice(-100), // 最新100件のみ;
                 lastSaved: Date.now()';
             localStorage.setItem('help_analytics_data', JSON.stringify(dataToSave));''
@@ -2197,7 +2188,7 @@ export class HelpAnalytics {
                 problems.push({'')
                     type: 'low_rating);
                     contentId: contentId)';
-                    rating: ratingData.averageRating,' }'
+                   , rating: ratingData.averageRating,' }'
 
                     severity: 'high'); }
         }
@@ -2207,7 +2198,7 @@ export class HelpAnalytics {
                 problems.push({'')
                     type: 'content_gap);
                     query: query)';
-                    searchCount: count,' }'
+                   , searchCount: count,' }'
 
                     severity: 'medium'); }
         }
@@ -2250,8 +2241,7 @@ export class HelpAnalytics {
      * クリーンアップ処理
      */'
     cleanup(): void { try {'
-            if(this.currentSession) {'
-                ';
+            if(this.currentSession) {', ';
 
             }
 

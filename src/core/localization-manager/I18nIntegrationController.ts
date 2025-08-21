@@ -11,7 +11,7 @@ export interface InitializationState { translationLoader: boolean,
     performanceMonitor: boolean;
     renderOptimizer: boolean;
     securityManager: boolean;
-    securityTester: boolean ,}
+   , securityTester: boolean ,}
 
 export interface TranslationLoader { loadLanguage(language: string): Promise<Record<string, any> | null>;
     destroy?(): void; }
@@ -28,7 +28,7 @@ export interface FontLoadingManager { applyFontToElement(element: HTMLElement, f
 
 export interface FontApplyResult { successful: number,
     failed: number;
-    total: number ,}
+   , total: number ,}
 
 export interface PerformanceMonitor { startMonitoring(language: string): void;
     stopMonitoring(): void;
@@ -78,11 +78,11 @@ export interface SecurityTestResult { passed: boolean,
 export interface SecurityTestDetails { testsRun: number;
     passed: number;
     failed: number;
-    warnings: number }
+   , warnings: number }
 
 export interface SecurityStats { security: boolean;
     validationsRun: number;
-    violationsFound: number;
+   , violationsFound: number;
     error?: string }
 
 export interface ErrorHandler { handleError(error: Error, context?: ErrorContext): void }
@@ -94,7 +94,7 @@ export interface ErrorContext { component?: string;
 
 export interface IntegrationStatus { initialized: InitializationState,
     components: ComponentAvailability;
-    capabilities: CapabilityAvailability
+   , capabilities: CapabilityAvailability
     ,}
 
 export interface ComponentAvailability { translationLoader: boolean;
@@ -104,7 +104,7 @@ export interface ComponentAvailability { translationLoader: boolean;
     renderOptimizer: boolean;
     securityManager: boolean;
     securityTester: boolean;
-    errorHandler: boolean }
+   , errorHandler: boolean }
 
 export interface CapabilityAvailability { fileBasedLoading: boolean;
     optimizedLoading: boolean;
@@ -113,17 +113,17 @@ export interface CapabilityAvailability { fileBasedLoading: boolean;
     renderOptimization: boolean;
     securityValidation: boolean;
     securityTesting: boolean;
-    errorHandling: boolean }
+   , errorHandling: boolean }
 
 export interface DiagnosticInfo { integrationStatus: IntegrationStatus;
     performanceStats: PerformanceStats;
     securityStats: SecurityStats;
     loadedComponents: string[];
     failedComponents: string[];
-    timestamp: string }
+   , timestamp: string }
 
 export interface SecurityValidationInput { isSecure: boolean;
-    warnings: string[] }
+   , warnings: string[] }
 
 // 列挙型
 export type SecuritySeverity = 'low' | 'medium' | 'high' | 'critical';
@@ -137,7 +137,7 @@ export class I18nIntegrationController {
     private securityManager: SecurityManager | null;
     private securityTester: SecurityTester | null;
     private errorHandler: ErrorHandler | null;
-    private initializationState: InitializationState;
+    private, initializationState: InitializationState;
     constructor() {
 
         // 外部コンポーネント（動的初期化）
@@ -156,7 +156,7 @@ export class I18nIntegrationController {
             fontManager: false;
             performanceMonitor: false;
             renderOptimizer: false;
-            securityManager: false;
+           , securityManager: false;
     }
             securityTester: false }
         };
@@ -402,7 +402,7 @@ export class I18nIntegrationController {
      * @param language 言語コード
      * @returns 検証結果
      */
-    validateTranslationSecurity(text: string, language: string): SecurityValidationInput { console.log(`I18nIntegrationController: Security manager available:`, !!this.securityManager);
+    validateTranslationSecurity(text: string, language: string): SecurityValidationInput { console.log(`I18nIntegrationController: Security manager, available:`, !!this.securityManager);
         
         if (!this.securityManager) { }
             console.log(`I18nIntegrationController: No security manager, allowing translations for ${language}`});
@@ -508,7 +508,7 @@ export class I18nIntegrationController {
                 performanceMonitor: !!this.performanceMonitor;
                 renderOptimizer: !!this.renderOptimizer;
                 securityManager: !!this.securityManager;
-                securityTester: !!this.securityTester, };
+               , securityTester: !!this.securityTester, };
                 errorHandler: !!this.errorHandler }
             };
             capabilities: { fileBasedLoading: !!this.translationLoader || !!this.optimizedLoader;
@@ -518,7 +518,7 @@ export class I18nIntegrationController {
                 renderOptimization: !!this.renderOptimizer;
                 securityValidation: !!this.securityManager;
                 securityTesting: !!this.securityTester;
-                errorHandling: !!this.errorHandler }
+               , errorHandling: !!this.errorHandler }
         }
     
     /**
@@ -528,7 +528,7 @@ export class I18nIntegrationController {
     getDiagnosticInfo(): DiagnosticInfo { return { integrationStatus: this.getIntegrationStatus(),
             performanceStats: this.getPerformanceStats();
             securityStats: this.getSecurityStats();
-            loadedComponents: Object.keys(this.initializationState).filter();
+           , loadedComponents: Object.keys(this.initializationState).filter();
                 key => this.initializationState[key as keyof InitializationState]),
             failedComponents: Object.keys(this.initializationState).filter();
                 key = > !this.initializationState[key as keyof InitializationState]) ,};

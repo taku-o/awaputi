@@ -13,10 +13,10 @@ export interface ValidationResult { passed: boolean,
     message: string;
     details?: any;
     suggestion?: string;
-    severity: 'error' | 'warning' ,}
+   , severity: 'error' | 'warning' ,}
 
 export interface ParameterDetails { expected: string[];
-    actual: string[];
+   , actual: string[];
     missing?: string[];
     extra?: string[]; }
 
@@ -24,16 +24,16 @@ export interface LengthDetails { sourceLength: number,
     translationLength: number;
     minLength: number;
     maxLength: number;
-    language: string ,}
+   , language: string ,}
 
 export interface LengthTolerance { min: number;
     max: number;
-    name: string }
+   , name: string }
 ';
 
 export interface FormatIssue {;
     type: 'html_tags' | 'markdown' | 'special_characters';
-    message: string;
+   , message: string;
     expected?: any;
     actual?: any;
     missing?: any;
@@ -44,24 +44,24 @@ export interface MarkdownElement { type: string,
 
 export interface CulturalRule { term: string;
     reason: string;
-    suggestion: string }
+   , suggestion: string }
 
 export interface CulturalRules { inappropriate: CulturalRule[];
-    sensitive: CulturalRule[]
+   , sensitive: CulturalRule[]
     }
 ';
 
 export interface CulturalIssue {;
     type: 'inappropriate' | 'sensitive';
     term: string;
-    reason: string,
+   , reason: string,
     suggestion: string,
     severity: 'error' | 'warning' ,}
 ';
 
 export interface CompletenessIssue {;
     type: 'untranslated_markers' | 'potential_untranslated' | 'too_short';
-    message: string;
+   , message: string;
     markers?: string[];
     commonWords?: string[]; }
 
@@ -156,7 +156,7 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
                 passed: false, }
                 message: `パラメータ数不一致（元: ${sourceParams.length}, 翻訳: ${translationParams.length}）`,
                 details: { expected: sourceParams;
-                    actual: translationParams }
+                   , actual: translationParams }
 
                 } as ParameterDetails,''
                 suggestion: `必要なパラメータ: ${sourceParams.join(', '})`,
@@ -192,7 +192,7 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
                 details: { missing: missingParams;
                     extra: extraParams;
                     expected: sourceParams;
-                    actual: translationParams }
+                   , actual: translationParams }
 
                 } as ParameterDetails,''
                 suggestion: `正しいパラメータ: ${sourceParams.join(', ''})`,
@@ -222,13 +222,7 @@ export class LengthValidationRule implements IValidationRule { public name: stri
         this.severity = 'warning';
         
         // 言語別の長さ許容率
-        this.lengthTolerances = {' }'
-
-            'en': { min: 0.7, max: 1.5, name: '英語' ,},''
-            'zh-CN': { min: 0.5, max: 1.2, name: '中国語簡体字' ,},''
-            'zh-TW': { min: 0.5, max: 1.2, name: '中国語繁体字' ,},''
-            'ko': { min: 0.8, max: 1.4, name: '韓国語' ,},''
-            'default': { min: 0.6, max: 1.8, name: 'その他' ,}
+        this.lengthTolerances = {' }', 'en': { min: 0.7, max: 1.5, name: '英語' ,},'', 'zh-CN': { min: 0.5, max: 1.2, name: '中国語簡体字' ,},'', 'zh-TW': { min: 0.5, max: 1.2, name: '中国語繁体字' ,},'', 'ko': { min: 0.8, max: 1.4, name: '韓国語' ,},'', 'default': { min: 0.6, max: 1.8, name: 'その他' ,}
     
     /**
      * 実際の文字数を計算（絵文字や特殊文字を考慮）'
@@ -272,11 +266,11 @@ export class LengthValidationRule implements IValidationRule { public name: stri
                     translationLength: translationLength;
                     minLength: minLength;
                     maxLength: maxLength;
-                    language: tolerance.name }
+                   , language: tolerance.name }
 
                 } as LengthDetails,''
                 suggestion: '翻訳が完全で、重要な情報が欠けていないか確認してください';
-                severity: this.severity;
+               , severity: this.severity;
             },
         }
         ';
@@ -288,11 +282,11 @@ export class LengthValidationRule implements IValidationRule { public name: stri
                     translationLength: translationLength;
                     minLength: minLength;
                     maxLength: maxLength;
-                    language: tolerance.name }
+                   , language: tolerance.name }
 
                 } as LengthDetails,''
                 suggestion: 'より簡潔で自然な表現を検討してください';
-                severity: this.severity;
+               , severity: this.severity;
             },
         }
         
@@ -300,7 +294,7 @@ export class LengthValidationRule implements IValidationRule { public name: stri
             message: `適切な長さです（${translationLength}文字, 範囲: ${minLength}-${maxLength}文字）`,
             details: { sourceLength: sourceLength;
                 translationLength: translationLength;
-                language: tolerance.name };
+               , language: tolerance.name };
             severity: this.severity;
         },
     }
@@ -413,7 +407,7 @@ export class FormatValidationRule implements IValidationRule { public name: stri
         if (JSON.stringify(sourceMarkdownTypes) !== JSON.stringify(translationMarkdownTypes)) { issues.push({''
                 type: 'markdown',)';
                 message: 'マークダウン記法が一致しません');
-                expected: sourceMarkdownTypes,);
+               , expected: sourceMarkdownTypes,);
                 actual: translationMarkdownTypes ,}
         
         // 特殊記号の検証
@@ -423,7 +417,7 @@ export class FormatValidationRule implements IValidationRule { public name: stri
         if (JSON.stringify(sourceSpecialChars) !== JSON.stringify(translationSpecialChars)) { issues.push({''
                 type: 'special_characters',)';
                 message: '括弧や特殊記号が一致しません');
-                expected: sourceSpecialChars,);
+               , expected: sourceSpecialChars,);
                 actual: translationSpecialChars ,}
 
         if(issues.length > 0) { return {  };
@@ -431,7 +425,7 @@ export class FormatValidationRule implements IValidationRule { public name: stri
                 message: `フォーマット検証で${issues.length}個の問題が見つかりました`;
                 details: issues,
                 suggestion: '原文のフォーマット要素を正確に翻訳に反映してください';
-                severity: this.severity;
+               , severity: this.severity;
             },
         }
         ';
@@ -472,8 +466,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                     { term: 'christmas', reason: '宗教的配慮', suggestion: 'holiday season を検討' ,},]'
                     { term: 'blind', reason: '障害に関する配慮', suggestion: 'visually impaired' ,}]
                 ]';
-            },''
-            'zh-CN': { inappropriate: [' }
+            },'', 'zh-CN': { inappropriate: [' }
 
                     { term: '台湾国', reason: '政治的に不適切', suggestion: '台湾地区' ,},]'
                     { term: '中华民国', reason: '政治的配慮', suggestion: '台湾' ,}]
@@ -481,8 +474,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                 sensitive: [']';
                     { term: '独立', reason: '政治的に敏感', suggestion: '慎重な表現を検討' ,}]
                 ]';
-            },''
-            'zh-TW': { inappropriate: [' }
+            },'', 'zh-TW': { inappropriate: [' }
 
                     { term: '大陆', reason: '中立的でない表現', suggestion: '中国大陆' ,},]'
                     { term: '内地', reason: '中立的でない表現', suggestion: '中国大陆' ,}]
@@ -490,8 +482,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                 sensitive: [']';
                     { term: '统一', reason: '政治的に敏感', suggestion: '慎重な表現を検討' ,}]
                 ]';
-            },''
-            'ko': { inappropriate: [' }
+            },'', 'ko': { inappropriate: [' }
 
                     { term: '왜놈', reason: '差別的表現', suggestion: '일본인' ,},''
                     { term: '쪽발이', reason: '差別的表現', suggestion: '일본인' ,},]'
@@ -536,7 +527,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                     type: 'inappropriate';
                     term: rule.term);
                     reason: rule.reason)';
-                    suggestion: rule.suggestion,' }'
+                   , suggestion: rule.suggestion,' }'
 
                     severity: 'error'); }
                 });
@@ -550,7 +541,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                     type: 'sensitive';
                     term: rule.term);
                     reason: rule.reason)';
-                    suggestion: rule.suggestion,' }'
+                   , suggestion: rule.suggestion,' }'
 
                     severity: 'warning'); }
                 });
@@ -567,8 +558,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
             if (inappropriateCount > 0) { }
                 message += `不適切な表現: ${inappropriateCount}個`;
             }
-            if(sensitiveCount > 0) {'
-                ';
+            if(sensitiveCount > 0) {', ';
 
             }
 
@@ -687,7 +677,7 @@ export class CompletenessValidationRule implements IValidationRule { public name
                 message: `翻訳完成度で${issues.length}個の問題が見つかりました`;
                 details: issues,
                 suggestion: '翻訳を完成させ、未翻訳マーカーを除去してください';
-                severity: this.severity;
+               , severity: this.severity;
             },
         }
         ';
@@ -842,7 +832,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
                 message: `翻訳一貫性で${issues.length}個の問題が見つかりました`;
                 details: issues,
                 suggestion: '翻訳全体の一貫性を確認し、統一された表現を使用してください';
-                severity: this.severity;
+               , severity: this.severity;
             },
         }
         ';

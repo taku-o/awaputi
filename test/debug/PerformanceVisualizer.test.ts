@@ -2,9 +2,9 @@
  * Performance Visualizer Tests
  * PerformanceVisualizer クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -76,7 +76,7 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
             averageFPS: 58,
             frameTime: 16.67,
             droppedFrames: 0);
-            fpsVariance: 2.5 }
+           , fpsVariance: 2.5 }
     }),
         memory: { usedMemory: 50.5,
             totalMemory: 100.0,
@@ -119,7 +119,7 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
     getStatistics: jest.fn(() => ({ totalSamples: 150,
         uptime: 60000,
         samplesPerSecond: 2.5);
-        totalErrors: 0 }
+       , totalErrors: 0 }
     })
 ),';
 // Import after mocking''
@@ -186,7 +186,7 @@ describe('PerformanceVisualizer', () => {
             visualizer.updateCharts(};)
             expect(addDataPointSpy.toHaveBeenCalledWith({ timestamp: expect.any(Number,)
                 value: 60);
-                threshold: { warning: 45,) }
+               , threshold: { warning: 45,) }
         critical: 30 }),
     });'
             }''
@@ -197,7 +197,7 @@ describe('PerformanceVisualizer', () => {
             visualizer.updateCharts(};)
             expect(addDataPointSpy.toHaveBeenCalledWith({ timestamp: expect.any(Number,)
                 value: 50.5);
-                threshold: { warning: 150,) }
+               , threshold: { warning: 150,) }
         critical: 180 }),
     });'
             }''
@@ -219,7 +219,7 @@ describe('PerformanceVisualizer', () => {
             visualizer.updateCharts(};)
             expect(updateHeatmapSpy.toHaveBeenCalledWith({ fps: 60,)
                 memory: 0.3);
-                frameTime: 16.67,);
+               , frameTime: 16.67,);
         timestamp: expect.any(Number); }
     });'
             }''
@@ -240,8 +240,7 @@ describe('PerformanceVisualizer', () => {
     }''
     describe('Rendering', (') => {  ''
         test('should render charts when visible', (') => {''
-            mockCanvas.style.display = 'block';'
-            '';
+            mockCanvas.style.display = 'block';', '';
             const updateChartsSpy = jest.spyOn(visualizer, 'updateCharts'');''
             const renderChartsSpy = jest.spyOn(visualizer, 'renderCharts');
             // Simulate animation frame
@@ -251,8 +250,7 @@ describe('PerformanceVisualizer', () => {
             expect(renderChartsSpy.toHaveBeenCalled();' }'
         }');''
         test('should not render when hidden', (') => {  ''
-            mockCanvas.style.display = 'none';'
-            '';
+            mockCanvas.style.display = 'none';', '';
             const updateChartsSpy = jest.spyOn(visualizer, 'updateCharts'');''
             const renderChartsSpy = jest.spyOn(visualizer, 'renderCharts');
             // Simulate animation frame
@@ -421,8 +419,7 @@ describe('PerformanceVisualizer', () => {
                 download: '','';
                 href: '', }
         click: jest.fn(); }
-            };'
-            '';
+            };', '';
             document.createElement = jest.fn((tagName') => {  ''
                 if (tagName === 'a'') return mockLink;''
                 if (tagName === 'canvas') return mockCanvas;

@@ -2,9 +2,9 @@
  * Keyboard Shortcut Manager Tests
  * KeyboardShortcutManager クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -145,7 +145,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(), }
+               , preventDefault: jest.fn(), }
         stopPropagation: jest.fn(); }
             });'
             const result = shortcutManager.execute(event);''
@@ -185,7 +185,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(),
+               , preventDefault: jest.fn(),
         stopPropagation: jest.fn();
             ),
             const result = shortcutManager.execute(event);'
@@ -201,7 +201,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(), }
+               , preventDefault: jest.fn(), }
         stopPropagation: jest.fn(); }
             });
             const initialStats = shortcutManager.getStatistics();
@@ -215,7 +215,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
     }''
     describe('Key Normalization', (') => {  ''
         test('should normalize special keys', (') => {''
-            expect(shortcutManager.normalizeKey(' ')').toBe('space'');''
+            expect(shortcutManager.normalizeKey(', ')').toBe('space'');''
             expect(shortcutManager.normalizeKey('Enter')').toBe('enter'');''
             expect(shortcutManager.normalizeKey('Escape')').toBe('escape');');' }'
             expect(shortcutManager.normalizeKey('ArrowUp')').toBe('up''); }'
@@ -282,7 +282,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event1 = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(), }
+               , preventDefault: jest.fn(), }
         stopPropagation: jest.fn(); }
             });
             const result1 = shortcutManager.execute(event1);'
@@ -292,7 +292,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event2 = new KeyboardEvent('keydown', { '');
                 key: 's',);
                 ctrlKey: true);
-                preventDefault: jest.fn(),
+               , preventDefault: jest.fn(),
         stopPropagation: jest.fn(); }
             });
             const result2 = shortcutManager.execute(event2);
@@ -307,7 +307,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event1 = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(), }
+               , preventDefault: jest.fn(), }
         stopPropagation: jest.fn(); }
             });
             shortcutManager.execute(event1);
@@ -324,7 +324,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event1 = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(), }
+               , preventDefault: jest.fn(), }
         stopPropagation: jest.fn(); }
             });'
             shortcutManager.execute(event1);''
@@ -333,7 +333,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event2 = new KeyboardEvent('keydown', { '');
                 key: 'z',);
                 ctrlKey: true);
-                preventDefault: jest.fn(),
+               , preventDefault: jest.fn(),
         stopPropagation: jest.fn(); }
             });
             const result2 = shortcutManager.execute(event2);
@@ -353,7 +353,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', { '');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(),
+               , preventDefault: jest.fn(),
         stopPropagation: jest.fn(); }
             });
             const result = shortcutManager.execute(event);
@@ -367,7 +367,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', { '');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(),
+               , preventDefault: jest.fn(),
         stopPropagation: jest.fn(); }
             });
             const result = shortcutManager.execute(event);
@@ -381,7 +381,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', { '');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(),
+               , preventDefault: jest.fn(),
         stopPropagation: jest.fn(); }
             });
             const result = shortcutManager.execute(event);
@@ -488,7 +488,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
-                preventDefault: jest.fn(), }
+               , preventDefault: jest.fn(), }
         stopPropagation: jest.fn(); }
             });
             shortcutManager.execute(event);

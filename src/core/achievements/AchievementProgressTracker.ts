@@ -35,27 +35,27 @@ export interface ProgressData { bubblesPopped?: number;
 export interface PerfectGameRecord { bubbles: number,
     missedBubbles: number;
     score: number;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 export interface SpeedChallengeRecord { bubbles: number;
     time: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface LowHpSurvivalRecord { hp: number;
     time: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface LowHpScoreRecord { hp: number;
     score: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface TimeSpecificScoreRecord { score: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface Achievement { id: string;
     name: string;
     description: string;
-    condition: AchievementCondition;
+   , condition: AchievementCondition;
     rewards?: AchievementReward[];
     category?: string;
     difficulty?: DifficultyLevel;
@@ -80,7 +80,7 @@ export interface AchievementReward { type: RewardType,
 export interface ConditionEvaluationResult { current: number;
     target: number;
     progress: number;
-    isComplete: boolean;
+   , isComplete: boolean;
     error?: string;
     bubbleType?: string;
     hp?: number;
@@ -94,7 +94,7 @@ export interface ConditionEvaluationResult { current: number;
 
 export interface ProgressHistoryEntry { eventType: EventType,
     data: any;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 export interface EventData { bubbleType?: string;
     score?: number;
@@ -114,15 +114,15 @@ export interface EventData { bubbleType?: string;
 
 export interface TrackerConfig { saveInterval: number,
     maxHistoryEntries: number;
-    debugMode: boolean ,}
+   , debugMode: boolean ,}
 
 export interface SaveData { progressData: ProgressData;
     unlockedAchievements: string[];
-    lastSaved: number }
+   , lastSaved: number }
 
 export interface AchievementUnlockedEvent { achievementId: string;
     achievement: Achievement;
-    timestamp: number }
+   , timestamp: number }
 
 // コールバック型
 export type ConditionEvaluator = (progress: ProgressData, condition: AchievementCondition) => ConditionEvaluationResult;
@@ -168,7 +168,7 @@ export class AchievementProgressTracker {
     private conditionEvaluators: Record<ConditionType, ConditionEvaluator>;
     private config: TrackerConfig;
     private progressHistory: ProgressHistoryEntry[];
-    private eventHandlers: Record<string, EventHandler[]>;
+    private, eventHandlers: Record<string, EventHandler[]>;
     private autoSaveInterval?: number;
 
     constructor() {
@@ -186,7 +186,7 @@ export class AchievementProgressTracker {
         // 進捗計算設定
         this.config = { saveInterval: 5000, // 5秒毎に保存
             maxHistoryEntries: 100;
-            debugMode: false ,};
+           , debugMode: false ,};
         // 進捗履歴
         this.progressHistory = [];
         
@@ -248,7 +248,7 @@ export class AchievementProgressTracker {
                 return { current,
                     target,
                     bubbleType: condition.bubbleType;
-                    progress: Math.min(current / target, 1), };
+                   , progress: Math.min(current / target, 1), };
                     isComplete: current >= target }
                 },
 
@@ -268,7 +268,7 @@ export class AchievementProgressTracker {
                 );
                 return { current: qualifying.length > 0 ? Math.max(...qualifying.map(r => r.time) : 0,
                     target: condition.time || 0;
-                    hp: condition.hp, }
+                   , hp: condition.hp, }
                     progress: qualifying.length > 0 ? 1 : 0, };
                     isComplete: qualifying.length > 0 }
                 },
@@ -280,7 +280,7 @@ export class AchievementProgressTracker {
                 );
                 return { current: qualifying.length > 0 ? Math.max(...qualifying.map(r => r.score) : 0,
                     target: condition.score || 0;
-                    hp: condition.hp, }
+                   , hp: condition.hp, }
                     progress: qualifying.length > 0 ? 1 : 0, };
                     isComplete: qualifying.length > 0 }
                 },
@@ -309,7 +309,7 @@ export class AchievementProgressTracker {
                 );
                 return { current: qualifying.length,
                     target: 1;
-                    minBubbles: condition.minBubbles, }
+                   , minBubbles: condition.minBubbles, }
                     progress: qualifying.length > 0 ? 1 : 0, };
                     isComplete: qualifying.length > 0 }
                 },
@@ -321,7 +321,7 @@ export class AchievementProgressTracker {
                 );
                 return { current: qualifying.length > 0 ? Math.min(...qualifying.map(r => r.time) : Infinity,
                     target: condition.time || 0;
-                    bubbles: condition.bubbles, }
+                   , bubbles: condition.bubbles, }
                     progress: qualifying.length > 0 ? 1 : 0, };
                     isComplete: qualifying.length > 0 }
                 },
@@ -389,7 +389,7 @@ export class AchievementProgressTracker {
                 );
                 return { current: completedStages.length,
                     target: requiredStages.length;
-                    requiredCount: condition.value;
+                   , requiredCount: condition.value;
                     completedStages,
                     progress: requiredStages.length > 0 ? completedStages.length / requiredStages.length : 0, };
                     isComplete: completedStages.length === requiredStages.length }
@@ -511,9 +511,9 @@ export class AchievementProgressTracker {
         if (data.missedBubbles === 0 && (data.bubblesPopped || 0) > 0) { if (!this.progressData.perfectGames) {
                 this.progressData.perfectGames = []; }
             this.progressData.perfectGames.push({ bubbles: data.bubblesPopped || 0)
-                missedBubbles: data.missedBubbles || 0,);
+               , missedBubbles: data.missedBubbles || 0,);
                 score: data.score || 0);
-                timestamp: Date.now( ,});
+               , timestamp: Date.now( ,});
         }
         
         // スピードチャレンジ
@@ -524,7 +524,7 @@ export class AchievementProgressTracker {
             }
             this.progressData.speedChallengeRecords.push({ bubbles: data.bubblesPopped)
                 time: data.gameTime);
-                timestamp: Date.now( });
+               , timestamp: Date.now( });
         }
         
         // アイテム未使用スコア
@@ -540,7 +540,7 @@ export class AchievementProgressTracker {
             }
             this.progressData.timeSpecificScoreRecords.push({ )
                 score: data.score);
-                timestamp: Date.now( });
+               , timestamp: Date.now( });
         }
         
         // 低HP記録
@@ -559,13 +559,13 @@ export class AchievementProgressTracker {
         }
         this.progressData.lowHpSurvivalRecords.push({ hp: data.lowestHp || 0)
             time: data.survivalTime || 0);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
         
         // 低HPスコア記録
         if (!this.progressData.lowHpScoreRecords) { this.progressData.lowHpScoreRecords = []; }
         this.progressData.lowHpScoreRecords.push({ hp: data.lowestHp || 0)
             score: data.score || 0);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
     }
 
     /**
@@ -622,9 +622,9 @@ export class AchievementProgressTracker {
             console.warn(`No, evaluator found, for condition, type: ${condition.type}`});
             return { current: 0,
                 target: 1;
-                progress: 0, };
+               , progress: 0, };
                 isComplete: false, }
-                error: `Unknown condition type: ${condition.type}`
+                error: `Unknown condition, type: ${condition.type}`
             }
         
         try { return evaluator(this.progressData, condition); } catch (error) {
@@ -632,7 +632,7 @@ export class AchievementProgressTracker {
             return { current: 0,
                 target: 1;
                 progress: 0;
-                isComplete: false, };
+               , isComplete: false, };
                 error: (error, as Error).message }
             }
     }
@@ -705,7 +705,7 @@ export class AchievementProgressTracker {
     saveProgressData(): void { try {
             const saveData: SaveData = {
                 progressData: this.progressData;
-                unlockedAchievements: Array.from(this.unlockedAchievements),
+               , unlockedAchievements: Array.from(this.unlockedAchievements),
                 lastSaved: Date.now()';
             localStorage.setItem('achievementProgress', JSON.stringify(saveData);' }
 

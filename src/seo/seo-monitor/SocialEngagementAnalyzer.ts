@@ -9,7 +9,7 @@ interface SEOConfig { [key: string]: any, }
 interface SocialEngagementData { timestamp: number,
     platforms: Record<string, number>;
     totalShares: number;
-    engagementRate: number;
+   , engagementRate: number;
     ogTags?: Record<string, string>;
     twitterCard?: Record<string, string>; }
 
@@ -18,11 +18,11 @@ interface MonitoringData { socialEngagement: SocialEngagementData[]
 
 interface SocialEngagementTrend { timestamp: number,
     totalShares: number;
-    engagementRate: number ,}
+   , engagementRate: number ,}
 
 export class SocialEngagementAnalyzer {
     private config: SEOConfig;
-    private monitoringData: MonitoringData;
+    private, monitoringData: MonitoringData;
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
         this.config = config
@@ -39,7 +39,7 @@ export class SocialEngagementAnalyzer {
                 timestamp: Date.now( }
                 platforms: {};
                 totalShares: 0;
-                engagementRate: 0;
+               , engagementRate: 0;
             },
 
             // ソーシャルメディアボタンのクリックトラッキング
@@ -107,8 +107,7 @@ export class SocialEngagementAnalyzer {
 });
         }
 
-        return Object.keys(ogTags).length > 0 ? ogTags : { ''
-            'og:title': 'BubblePop',
+        return Object.keys(ogTags).length > 0 ? ogTags : { '', 'og:title': 'BubblePop',
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
             'og:type': 'website' ,}
     
@@ -128,8 +127,7 @@ export class SocialEngagementAnalyzer {
 });
         }
 
-        return Object.keys(twitterTags).length > 0 ? twitterTags : { ''
-            'twitter:card': 'summary_large_image',
+        return Object.keys(twitterTags).length > 0 ? twitterTags : { '', 'twitter:card': 'summary_large_image',
             'twitter:title': 'BubblePop',
             'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム' ,}
     
@@ -158,7 +156,7 @@ export class SocialEngagementAnalyzer {
      */
     getSocialEngagementTrend(): SocialEngagementTrend[] { return this.monitoringData.socialEngagement.map(data => ({)
             timestamp: data.timestamp)';
-            totalShares: data.totalShares,')';
+           , totalShares: data.totalShares,')';
             engagementRate: data.engagementRate))') ,}'
 
     }''

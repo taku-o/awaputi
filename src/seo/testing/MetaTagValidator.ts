@@ -5,54 +5,52 @@
  * SEOTester のサブコンポーネント
  */
 
-import { seoLogger } from '../SEOLogger.js';''
-import { seoErrorHandler } from '../SEOErrorHandler.js';
+import { seoLogger  } from '../SEOLogger.js';''
+import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController { baseUrl: string,
     validationRules: Map<string, ValidationRules> }
 
 interface ValidationRules { required: string[],
     titleLength?: {
-        min: number;
-        max: number ,};
+        mi;n: number;
+       , max: number ,};
     descriptionLength?: { min: number;
-        max: number };
+       , max: number };
     cardTypes?: string[];
 }
 
 interface TestResult { name: string,
     passed: boolean;
-    message: string ,}
+   , message: string ,}
 
 interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
     failed: number;
-    warnings: number }
+   , warnings: number }
 
 interface MetaTags { title: string;
     description: string;
     charset: string;
-    keywords: string }
+   , keywords: string }
 ';
 
-interface OpenGraphTags { ''
-    'og: title': string,
+interface OpenGraphTags { '', 'og: title': string,
     'og: description': string,
     'og: image': string,
     'og: url': string,
     'og: type': string, }
 ';
 
-interface TwitterCardTags { ''
-    'twitter: card': string,
+interface TwitterCardTags { '', 'twitter: card': string,
     'twitter: title': string,
     'twitter: description': string,
     'twitter: image': string, }
 
 export class MetaTagValidator {
     private mainController: MainController;
-    private baseUrl: string;
+    private, baseUrl: string;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -70,14 +68,13 @@ export class MetaTagValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0);
+               , warnings: 0);
             })'
             // HTMLからメタタグを抽出（実際の実装では DOM から取得）
             const metaTags = await this._extractMetaTags();
             const rules = this.mainController.validationRules.get('metaTags);
 
-            if(!rules) {'
-                ';
+            if(!rules) {', ';
 
             }
 
@@ -86,7 +83,7 @@ export class MetaTagValidator {
             ';
             // 必須タグの存在確認
             for(const, requiredTag of, rules.required) { const test: TestResult = { }
-                    name: `Required meta tag: ${requiredTag}`;
+                    name: `Required meta, tag: ${requiredTag}`;
                     passed: false,
                     message: '';
                 },
@@ -159,15 +156,14 @@ export class MetaTagValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0);
+               , warnings: 0);
             ,})'
 
             const ogTags = await this._extractOpenGraphTags();
 
             const rules = this.mainController.validationRules.get('openGraph);
 
-            if(!rules) {'
-                ';
+            if(!rules) {', ';
 
             }
 
@@ -176,7 +172,7 @@ export class MetaTagValidator {
             ';
             // 必須OGタグの存在確認
             for(const, requiredTag of, rules.required) { const test: TestResult = { }
-                    name: `Required OG tag: ${requiredTag}`;
+                    name: `Required OG, tag: ${requiredTag}`;
                     passed: false,
                     message: '';
                 },
@@ -227,15 +223,14 @@ export class MetaTagValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0);
+               , warnings: 0);
             ,})'
 
             const twitterTags = await this._extractTwitterCardTags();
 
             const rules = this.mainController.validationRules.get('twitterCard);
 
-            if(!rules) {'
-                ';
+            if(!rules) {', ';
 
             }
 
@@ -244,7 +239,7 @@ export class MetaTagValidator {
             ';
             // 必須Twitterタグの存在確認
             for(const, requiredTag of, rules.required) { const test: TestResult = { }
-                    name: `Required Twitter tag: ${requiredTag}`;
+                    name: `Required Twitter, tag: ${requiredTag}`;
                     passed: false,
                     message: '';
                 },
@@ -295,7 +290,7 @@ export class MetaTagValidator {
                 tests: [];
                 passed: 0;
                 failed: 0;
-                warnings: 0);
+               , warnings: 0);
             ,})
             // 画像の最適化確認
             const socialImages = await this._extractSocialMediaImages();
@@ -350,8 +345,7 @@ export class MetaTagValidator {
     private async _extractOpenGraphTags(''';
             'og:title': 'BubblePop - 泡割りゲーム',
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
-            'og:image': `${this.baseUrl}/assets/images/og-image.png`,''
-            'og:url': this.baseUrl,
+            'og:image': `${this.baseUrl}/assets/images/og-image.png`,'', 'og:url': this.baseUrl,
             'og:type': 'website';
         }
     
@@ -371,9 +365,7 @@ export class MetaTagValidator {
      * @private'
      */''
     private async _extractSocialMediaImages(''';
-            'Open Graph': `${this.baseUrl}/assets/images/og-image.png`,''
-            'Twitter Card': `${this.baseUrl}/assets/images/twitter-card.png`,''
-            'LinkedIn': `${this.baseUrl}/assets/images/linkedin-share.png`
+            'Open Graph': `${this.baseUrl}/assets/images/og-image.png`,'', 'Twitter Card': `${this.baseUrl}/assets/images/twitter-card.png`,'', 'LinkedIn': `${this.baseUrl}/assets/images/linkedin-share.png`
         }
     
     /**

@@ -1,12 +1,12 @@
 /**
  * EffectsCalculator のテスト
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
-import { EffectsCalculator } from '../../src/core/EffectsCalculator.js';
+import { jest, describe, test, expect, beforeEach  } from '@jest/globals';
+import { EffectsCalculator  } from '../../src/core/EffectsCalculator.js';
 // Effects configuration interfaces
 interface EffectsConfig {
     particles: {
-        maxCount: number,
+        maxCoun;t: number,
         poolSize: number,
         quality: number,
         baseIntensity: number,

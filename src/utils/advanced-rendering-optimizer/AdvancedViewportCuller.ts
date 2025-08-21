@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../ErrorHandler.js';
+import { getErrorHandler  } from '../ErrorHandler.js';
 
 // Type definitions
 interface ViewportCullerConfig { enabled?: boolean;
@@ -9,43 +9,43 @@ interface ViewportCullerConfig { enabled?: boolean;
 interface Viewport { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface Frustum { left: number;
     right: number;
     top: number;
     bottom: number;
     near: number;
-    far: number }
+   , far: number }
 
 interface ObjectBounds { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface RenderableObject { id: string;
     bounds: ObjectBounds;
-    metadata: Record<string, any>;
+   , metadata: Record<string, any>;
     visible: boolean;
     lastCullCheck: number;
-    gridCells: Set<string>
+   , gridCells: Set<string>
     ,}
 
 interface CullingStats { totalObjects: number;
     culledObjects: number;
     cullingEfficiency: number;
     renderTime: number;
-    cullingTime: number }
+   , cullingTime: number }
 
 interface PerformanceEntry { timestamp: number;
     cullingTime: number;
     cullingEfficiency: number;
     totalObjects: number;
-    culledObjects: number }
+   , culledObjects: number }
 
 interface VisibleObjectData { id: string;
     bounds: ObjectBounds;
-    metadata: Record<string, any> }
+   , metadata: Record<string, any> }
 
 /**
  * Viewport Culling System
@@ -56,15 +56,15 @@ export class AdvancedViewportCuller {
     private enabled: boolean;
     private viewport: Viewport;
     private cullingMargin: number;
-    private spatialGrid: Map<string, Set<string>>;
+    private, spatialGrid: Map<string, Set<string>>;
     private gridSize: number;
-    private renderableObjects: Map<string, RenderableObject>;
+    private, renderableObjects: Map<string, RenderableObject>;
     private culledObjects: Set<string>;
     private visibilityCache: Map<string, boolean>;
     private frustum: Frustum;
     private stats: CullingStats;
     private performanceHistory: PerformanceEntry[];
-    private historySize: number;
+    private, historySize: number;
     constructor(config: ViewportCullerConfig = {) {
 
         this.errorHandler = getErrorHandler();
@@ -94,7 +94,7 @@ export class AdvancedViewportCuller {
             culledObjects: 0;
             cullingEfficiency: 0;
             renderTime: 0;
-            cullingTime: 0 ,};
+           , cullingTime: 0 ,};
         // Performance tracking
         this.performanceHistory = [];
         this.historySize = config.historySize || 60;
@@ -112,7 +112,7 @@ export class AdvancedViewportCuller {
                 top: y - this.cullingMargin;
                 bottom: y + height + this.cullingMargin;
                 near: 0;
-                far: 1000 ,};
+               , far: 1000 ,};
             // Clear visibility cache when viewport changes
             this.visibilityCache.clear();
             
@@ -135,7 +135,7 @@ export class AdvancedViewportCuller {
                 metadata;
                 visible: false;
                 lastCullCheck: 0;
-                gridCells: new Set<string>();
+               , gridCells: new Set<string>();
             };
             
             this.renderableObjects.set(id, object);
@@ -266,7 +266,7 @@ export class AdvancedViewportCuller {
             culledObjects: 0;
             cullingEfficiency: 0;
             renderTime: 0;
-            cullingTime: 0 };
+           , cullingTime: 0 };
         this.performanceHistory = [];
     }
     
@@ -359,7 +359,7 @@ export class AdvancedViewportCuller {
             cullingTime: this.stats.cullingTime;
             cullingEfficiency: this.stats.cullingEfficiency;
             totalObjects: this.stats.totalObjects;
-            culledObjects: this.stats.culledObjects };
+           , culledObjects: this.stats.culledObjects };
         this.performanceHistory.push(entry);
         
         if(this.performanceHistory.length > this.historySize) {

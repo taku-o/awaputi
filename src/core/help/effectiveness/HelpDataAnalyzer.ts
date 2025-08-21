@@ -14,11 +14,11 @@ export interface LoggingSystem { error(component: string, message: string, error
 
 export interface AnalyzerConfig { effectivenessThreshold: number,
     trendAnalysisPeriod: number;
-    improvementThreshold: number ,}
+   , improvementThreshold: number ,}
 
 export interface AnalysisData { usage: UsageAnalysis;
     engagement: EngagementAnalysis;
-    satisfaction: SatisfactionAnalysis
+   , satisfaction: SatisfactionAnalysis
     }
 
 export interface UsageAnalysis { summary?: UsageSummary;
@@ -27,67 +27,67 @@ export interface UsageAnalysis { summary?: UsageSummary;
 export interface UsageSummary { totalSessions: number,
     averageSessionDuration: number;
     pageViewsPerSession: number;
-    searchUsageRate: number ,}
+   , searchUsageRate: number ,}
 
 export interface EngagementAnalysis { summary?: EngagementSummary;
     }
 
 export interface EngagementSummary { averageTimePerTopic: number,
     interactionRate: number;
-    searchSuccessRate: number ,}
+   , searchSuccessRate: number ,}
 
 export interface SatisfactionAnalysis { summary?: SatisfactionSummary;
     }
 
 export interface SatisfactionSummary { averageRating: number,
     helpfulnessRate: number;
-    totalFeedbacks: number ,}
+   , totalFeedbacks: number ,}
 
 export interface EffectivenessScore { overall: number;
     breakdown: ScoreBreakdown;
     classification: EffectivenessClassification;
-    benchmark: BenchmarkComparison
+   , benchmark: BenchmarkComparison
     }
 
 export interface ScoreBreakdown { usage: ScoreComponent;
     engagement: ScoreComponent;
-    satisfaction: ScoreComponent
+   , satisfaction: ScoreComponent
     }
 
 export interface ScoreComponent { score: number;
     weight: number;
-    contribution: number }
+   , contribution: number }
 
 export type EffectivenessClassification = 'excellent' | 'good' | 'fair' | 'poor' | 'critical' | 'insufficient_data';
 
 export interface BenchmarkComparison { industry_average: number,
     good_practice: number;
-    excellent: number ,}
+   , excellent: number ,}
 
 export interface TrendAnalysis { usage: UsageTrends;
     satisfaction: SatisfactionTrends;
     content: ContentTrends;
-    predictions: TrendPredictions
+   , predictions: TrendPredictions
     }
 
 export interface UsageTrends { sessionGrowth: TrendData;
     durationTrend: TrendData;
-    searchTrend: TrendData
+   , searchTrend: TrendData
     }
 
 export interface SatisfactionTrends { ratingTrend: TrendData;
     helpfulnessTrend: TrendData;
-    feedbackVolumeTrend: TrendData
+   , feedbackVolumeTrend: TrendData
     }
 
 export interface ContentTrends { popularityTrend: TrendData;
     accessPatternTrend: TrendData;
-    completionTrend: TrendData
+   , completionTrend: TrendData
     }
 
 export interface TrendPredictions { usagePrediction: PredictionData;
     satisfactionPrediction: PredictionData;
-    riskAssessment: RiskAssessment
+   , riskAssessment: RiskAssessment
     }
 ';
 
@@ -101,18 +101,18 @@ export interface TrendData {;
 
 export interface PredictionData {;
     prediction: 'stable' | 'improving' | 'declining';
-    confidence: number }
+   , confidence: number }
 ';
 
 export interface RiskAssessment {;
     level: 'low' | 'medium' | 'high';
-    factors: string[] }
+   , factors: string[] }
 
 export interface Recommendation { type: string;
-    category: string,
+   , category: string,
     priority: 'high' | 'medium' | 'low';
     title: string;
-    description: string,
+   , description: string,
     actions: string[],
     expectedImpact: 'high' | 'medium' | 'low' ,}
 
@@ -133,12 +133,12 @@ export interface RawData { sessions: SessionData[],
 export interface AnalysisResults { usage: UsageAnalysis,
     engagement: EngagementAnalysis;
     satisfaction: SatisfactionAnalysis;
-    effectivenessScore: EffectivenessScore
+   , effectivenessScore: EffectivenessScore
     ,}
 
 export interface AnalysisStats { cacheSize: number;
     lastAnalysisTime: number;
-    config: AnalyzerConfig
+   , config: AnalyzerConfig
     }
 
 export class HelpDataAnalyzer {
@@ -146,7 +146,7 @@ export class HelpDataAnalyzer {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     private config: AnalyzerConfig;
-    private analysisCache: Map<string, any>;
+    private, analysisCache: Map<string, any>;
     private lastAnalysisTime: number;
     constructor(helpEffectivenessAnalyzer: HelpEffectivenessAnalyzer) {
 
@@ -178,7 +178,7 @@ export class HelpDataAnalyzer {
             const weights = {
                 usage: 0.25;
                 engagement: 0.35;
-                satisfaction: 0.40 };
+               , satisfaction: 0.40 };
             // 各指標のスコア計算（0-1の範囲）
             const usageScore = this.calculateUsageScore(analysisData.usage);
             const engagementScore = this.calculateEngagementScore(analysisData.engagement);
@@ -195,18 +195,18 @@ export class HelpDataAnalyzer {
                 breakdown: {
                     usage: {
                         score: usageScore;
-                        weight: weights.usage, };
+                       , weight: weights.usage, };
                         contribution: usageScore * weights.usage }
                     };
                     engagement: { score: engagementScore;
                         weight: weights.engagement;
-                        contribution: engagementScore * weights.engagement };
+                       , contribution: engagementScore * weights.engagement };
                     satisfaction: { score: satisfactionScore;
                         weight: weights.satisfaction;
-                        contribution: satisfactionScore * weights.satisfaction }
+                       , contribution: satisfactionScore * weights.satisfaction }
                 };
                 classification: this.classifyEffectiveness(overallScore);
-                benchmark: this.getBenchmarkComparison(overallScore);
+               , benchmark: this.getBenchmarkComparison(overallScore);
             } catch (error') {
             this.loggingSystem.error('HelpDataAnalyzer', 'Failed to calculate effectiveness score', error);' }
 
@@ -320,7 +320,7 @@ export class HelpDataAnalyzer {
     private getBenchmarkComparison(score: number): BenchmarkComparison { const benchmarks = {
             industry_average: 0.65;
             good_practice: 0.75;
-            excellent: 0.85 };
+           , excellent: 0.85 };
         return { industry_average: score - benchmarks.industry_average,
             good_practice: score - benchmarks.good_practice, };
             excellent: score - benchmarks.excellent }
@@ -337,7 +337,7 @@ export class HelpDataAnalyzer {
                 usage: this.calculateUsageTrends(rawData.sessions);
                 satisfaction: this.calculateSatisfactionTrends(rawData.interactions);
                 content: this.calculateContentTrends(rawData.sessions);
-                predictions: this.generateTrendPredictions(rawData };
+               , predictions: this.generateTrendPredictions(rawData };
             
             return, trends;
 
@@ -355,7 +355,7 @@ export class HelpDataAnalyzer {
         
         const trends: UsageTrends = { sessionGrowth: this.calculateSessionGrowthTrend(sessions),
             durationTrend: this.calculateDurationTrend(sessions);
-            searchTrend: this.calculateSearchTrend(sessions ,};
+           , searchTrend: this.calculateSearchTrend(sessions ,};
         
         return trends;
     }
@@ -370,7 +370,7 @@ export class HelpDataAnalyzer {
         
         const trends: SatisfactionTrends = { ratingTrend: this.calculateRatingTrend(interactions),
             helpfulnessTrend: this.calculateHelpfulnessTrend(interactions);
-            feedbackVolumeTrend: this.calculateFeedbackVolumeTrend(interactions ,};
+           , feedbackVolumeTrend: this.calculateFeedbackVolumeTrend(interactions ,};
         
         return trends;
     }
@@ -385,7 +385,7 @@ export class HelpDataAnalyzer {
         
         const trends: ContentTrends = { popularityTrend: this.calculateContentPopularityTrend(sessions),
             accessPatternTrend: this.calculateAccessPatternTrend(sessions);
-            completionTrend: this.calculateCompletionTrend(sessions ,};
+           , completionTrend: this.calculateCompletionTrend(sessions ,};
         
         return trends;
     }
@@ -399,7 +399,7 @@ export class HelpDataAnalyzer {
             const predictions: TrendPredictions = {
                 usagePrediction: this.predictUsageTrend(rawData.sessions);
                 satisfactionPrediction: this.predictSatisfactionTrend(rawData.interactions);
-                riskAssessment: this.assessTrendRisks(rawData };
+               , riskAssessment: this.assessTrendRisks(rawData };
             
             return, predictions;
 
@@ -454,7 +454,7 @@ export class HelpDataAnalyzer {
                 priority: 'high',
                 title: 'セッション時間の改善',)';
                 description: 'ユーザーのセッション時間が短いため、コンテンツの魅力度向上が必要です')';
-                actions: ['';
+               , actions: ['';
                     'より詳細で実用的なコンテンツの追加',
                     'インタラクティブな要素の導入',]';
                     'ユーザーの興味を引く関連コンテンツの表示']';
@@ -471,7 +471,7 @@ export class HelpDataAnalyzer {
                 priority: 'medium',
                 title: '検索機能の改善',)';
                 description: '検索機能の利用率が低いため、検索体験の向上が必要です')';
-                actions: ['';
+               , actions: ['';
                     '検索機能の視認性向上',
                     '検索サジェスト機能の追加',]';
                     '検索結果の関連性向上']';
@@ -500,7 +500,7 @@ export class HelpDataAnalyzer {
                 priority: 'high',
                 title: 'ユーザーインタラクションの促進',)';
                 description: 'ユーザーのインタラクション率が低いため、参加促進施策が必要です')';
-                actions: ['';
+               , actions: ['';
                     'フィードバック機能の改善',
                     'コメント・評価機能の追加',]';
                     'ソーシャル要素の導入']';
@@ -529,7 +529,7 @@ export class HelpDataAnalyzer {
                 priority: 'high',
                 title: 'コンテンツ品質の向上',)';
                 description: 'ユーザー評価が低いため、コンテンツ品質の改善が急務です')';
-                actions: ['';
+               , actions: ['';
                     '低評価コンテンツの見直し',
                     'ユーザーフィードバックの詳細分析',]';
                     '専門家によるコンテンツレビュー']';

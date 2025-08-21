@@ -60,7 +60,7 @@ interface Dialog { render(data?: any): void;
 export class DialogManager {
     private renderer: Renderer;
     private layoutManager: LayoutManager;
-    private dialogs: Map<string, Dialog>;
+    private, dialogs: Map<string, Dialog>;
 
     constructor(renderer: Renderer, layoutManager: LayoutManager) {
 
@@ -151,7 +151,7 @@ export class DataManagementBaseDialog implements Dialog { protected renderer: Re
 
         return { contentX: bounds.x + padding,
             contentY: bounds.y + padding + (title ? 50 : 0);
-            contentWidth: bounds.width - padding * 2, };
+           , contentWidth: bounds.width - padding * 2, };
             contentHeight: bounds.height - padding * 2 - (title ? 50 : 0); }
         }
 
@@ -211,7 +211,7 @@ export class BackupDialog extends DataManagementBaseDialog {;
             contentBounds.contentX, contentBounds.contentY + 80, { fontSize: 12,')'
                 color: autoBackupEnabled ? colors.success : colors.warning)');
         // Buttons
-        const buttons: ButtonDef[] = [' ,}'
+        const, buttons: ButtonDef[] = [' ,}'
 
             { text: 'Cancel', variant: 'secondary' ,},]'
             { text: 'Create Backup', variant: 'primary' ,}]
@@ -226,7 +226,7 @@ export class BackupDialog extends DataManagementBaseDialog {;
  */
 interface ExportDialogData extends BaseDialogData { formats?: string[];
     selectedFormat?: number; }
-    includeOptions?: { name: string; checked: boolean }[];
+    includeOptions?: { name: string;, checked: boolean }[];
 }
 
 /**
@@ -301,8 +301,8 @@ export class DataManagementExportDialog extends DataManagementBaseDialog {;
  * Import dialog data interface
  */
 interface ImportDialogData extends BaseDialogData {
-    selectedFile?: { name: string; size: number ,}
-    importOptions?: { name: string; checked: boolean }[];
+    selectedFile?: { name: string;, size: number ,}
+    importOptions?: { name: string;, checked: boolean }[];
 }
 
 /**
@@ -322,7 +322,7 @@ export class DataManagementImportDialog extends DataManagementBaseDialog {;
             contentBounds.contentX + contentBounds.contentWidth / 2, ;
             contentBounds.contentY + 50, {)
                 fontSize: 14)';
-                color: colors.textSecondary,')';
+               , color: colors.textSecondary,')';
                 align: 'center');
         // Selected file info
         if (data.selectedFile) { ,}
@@ -379,7 +379,7 @@ export class DataManagementImportDialog extends DataManagementBaseDialog {;
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);
 
-        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ' ' + sizes[i];
+        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i];
 
 /**
  * Clear data dialog data interface
@@ -397,7 +397,7 @@ export class ClearDataDialog extends DataManagementBaseDialog {;
         this.renderer.drawText('⚠️ Warning', ;
             contentBounds.contentX, contentBounds.contentY + 20, {)
                 fontSize: 16)';
-                color: colors.warning,')';
+               , color: colors.warning,')';
                 bold: true)'),
 
         this.renderer.drawText('This, will permanently, delete all, your game, data.);
@@ -408,7 +408,7 @@ export class ClearDataDialog extends DataManagementBaseDialog {;
         this.renderer.drawText('This action cannot be undone!', ;
             contentBounds.contentX, contentBounds.contentY + 80, {)
                 fontSize: 14)';
-                color: colors.danger,')';
+               , color: colors.danger,')';
                 bold: true)');
 ';
         // Data to be cleared
@@ -450,7 +450,7 @@ export class ClearDataDialog extends DataManagementBaseDialog {;
                 color: colors.text)");
         // Buttons
         const isConfirmed = confirmText === requiredText;"
-        const buttons: ButtonDef[] = [" ,}"
+        const, buttons: ButtonDef[] = [" ,}"
             { text: 'Cancel', variant: 'secondary' ,},]'
             { text: 'Delete All Data', variant: 'danger', enabled: isConfirmed ,}]
         ];
@@ -595,8 +595,7 @@ export class AlertDialog extends DataManagementBaseDialog {;
         const contentBounds = this.renderDialogFrame(bounds, title);''
         const colors = this.layoutManager.getColors(''';
         let, icon = '💬';
-        let, iconColor = colors.text;)'
-        ')';
+        let, iconColor = colors.text;)', ')';
         if(data.type === 'error'') {'
 
             icon = '❌';

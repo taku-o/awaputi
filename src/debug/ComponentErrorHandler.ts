@@ -51,7 +51,7 @@ export class ComponentErrorHandler {
      * @param {string} component - コンポーネント名
      * @returns {*} 回復処理の結果
      */'
-    static attemptRecovery(error: Error, component: string): { status: string; message: string } | null { ' }'
+    static attemptRecovery(error: Error, component: string): { status: string;, message: string } | null { ' }'
 
         console.warn(`[${component}] Attempting, recovery from ${ error.name}`'};
         ';
@@ -78,12 +78,7 @@ export class ComponentErrorHandler {
         console.warn(`[${component}] Providing, fallback functionality`'};
         
         // コンポーネントタイプに応じたフォールバック処理
-        const, fallbacks: FallbackMap = {' }'
-
-            'MockDataGenerator': (}) => ({}'),''
-            'DebugInterface': () => ({ render: () => {}'),''
-            'TestSupport': () => ({ execute: () => true }'),''
-            'default': () => null;
+        const, fallbacks: FallbackMap = {' }', 'MockDataGenerator': (}) => ({}'),'', 'DebugInterface': () => ({ render: () => {}'),'', 'TestSupport': () => ({ execute: () => true }'),'', 'default': () => null;
         };
         ';
 

@@ -2,8 +2,8 @@
  * Visual Effects Integration Tests
  * 視覚効果システムの統合テスト
  */
-import { jest } from '@jest/globals';''
-import { JSDOM } from 'jsdom';''
+import { jest  } from '@jest/globals';''
+import { JSDOM  } from 'jsdom';''
 describe('Visual Effects Integration Tests', () => {  let dom: any,
     let canvas: any,';
     let gameEngine: any,'';
@@ -94,8 +94,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             );
             // コンボエフェクトのテスト;
             for (let combo = 2; combo <= 15; combo++) { simulateComboEffect(combo); }'
-                await simulateFrames(10}')'
-            ');
+                await simulateFrames(10}')', ');
             ';
             // 特殊バブルエフェクトテスト';'
             const specialBubbles = ['rainbow', 'electric', 'spiky', 'diamond', 'boss'];
@@ -291,8 +290,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             gameEngine.enhancedParticleManager.createComboEffect(comboCount};)
         }
         );
-        if(gameEngine.enhancedEffectManager) {'
-            ';
+        if(gameEngine.enhancedEffectManager) {', ';
         }'
             if (comboCount >= 6') {' }'
                 gameEngine.enhancedEffectManager.screenFlash(500, 'rgba(255, 215, 0, 0.3')'};

@@ -1,8 +1,8 @@
 /**
  * Unit tests for BalanceConfigurationValidator
  */
-import { describe, test, beforeEach, expect, jest } from '@jest/globals';
-import { BalanceConfigurationValidator, getBalanceConfigurationValidator } from '../../src/utils/BalanceConfigurationValidator.js';
+import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
+import { BalanceConfigurationValidator, getBalanceConfigurationValidator  } from '../../src/utils/BalanceConfigurationValidator.js';
 // Type definitions for test objects
 interface MockErrorHandler {
     handleError: jest.Mock,
@@ -18,7 +18,7 @@ interface BubbleConfig {
 }
 interface ScoreConfig {
     baseScores?: {
-        [bubbleType: string]: number,
+        [bubbleTyp;e: string]: number,
     };
     combo?: {
         maxMultiplier: number,
@@ -125,7 +125,7 @@ describe('BalanceConfigurationValidator', () => {
         test('should reject invalid health value', (') => {
             const config: BubbleConfig = {
                 health: 0, // Invalid: below minimum
-                size: 50,
+               , size: 50,
                 maxAge: 12000,
                 score: 15
             };
@@ -140,7 +140,7 @@ describe('BalanceConfigurationValidator', () => {
             const config: BubbleConfig = {
                 health: 1,
                 size: 200, // Invalid: above maximum
-                maxAge: 12000,
+               , maxAge: 12000,
                 score: 15
             };
             const result: ValidationResult = validator.validateBubbleConfig('normal', config);
@@ -186,7 +186,7 @@ describe('BalanceConfigurationValidator', () => {
             const config: BubbleConfig = {
                 health: 1,
                 size: 45,
-                healAmount: 200 // Invalid: above maximum
+                healAmount: 200 //, Invalid: above maximum
             };
             const result: ValidationResult = validator.validateBubbleConfig('pink', config);
             expect(result.isValid).toBe(false);
@@ -244,7 +244,7 @@ describe('BalanceConfigurationValidator', () => {
             const scoreConfig: ScoreConfig = {
                 baseScores: {
                     normal: 0, // Invalid: below minimum
-                    stone: 25
+                   , stone: 25
                 }
             };
             const result: ValidationResult = validator.validateScoreConfig(scoreConfig),
@@ -256,7 +256,7 @@ describe('BalanceConfigurationValidator', () => {
             const scoreConfig: ScoreConfig = {
                 baseScores: {
                     normal: 25,
-                    stone: 20 // Warning: stone should be higher than normal
+                    stone: 20 //, Warning: stone should be higher than normal
                 }
             };
             const result: ValidationResult = validator.validateScoreConfig(scoreConfig),
@@ -279,7 +279,7 @@ describe('BalanceConfigurationValidator', () => {
         }');
         test('should reject invalid spawn rate', () => {
             const stageConfig: StageConfig = {
-                spawnRate: 15.0 // Invalid: above maximum
+                spawnRate: 15.0 //, Invalid: above maximum
             };
             const result: ValidationResult = validator.validateStageConfig(stageConfig),
             expect(result.isValid).toBe(false);
@@ -300,7 +300,7 @@ describe('BalanceConfigurationValidator', () => {
         }');
         test('should reject invalid cost multiplier', () => {
             const itemConfig: ItemConfig = {
-                costMultiplier: 5.0 // Invalid: above maximum
+                costMultiplier: 5.0 //, Invalid: above maximum
             };
             const result: ValidationResult = validator.validateItemConfig(itemConfig),
             expect(result.isValid).toBe(false);

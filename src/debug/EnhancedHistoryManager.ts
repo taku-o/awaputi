@@ -11,7 +11,7 @@ interface HistoryEntry { command: string,
     executionTime: number;
     errorMessage: string | null;
     commandName: string;
-    args: any[] ,}
+   , args: any[] ,}
 
 interface HistoryMetadata { success?: boolean;
     executionTime?: number;
@@ -25,10 +25,10 @@ interface HistorySettings { duplicateFilter: boolean,
 interface HistoryStatistics { totalCommands: number;
     successfulCommands: number;
     failedCommands: number;
-    averageExecutionTime: number }
+   , averageExecutionTime: number }
 
 interface ExtendedStatistics extends HistoryStatistics { successRate: string;
-    totalEntries: number }
+   , totalEntries: number }
 
 interface SearchOptions { limit?: number;
     successOnly?: boolean; }
@@ -50,7 +50,7 @@ export class EnhancedHistoryManager {
     private currentIndex: number;
     private maxHistorySize: number;
     private settings: HistorySettings;
-    private statistics: HistoryStatistics;
+    private, statistics: HistoryStatistics;
     constructor(console: Console) {
 
         this.console = console;
@@ -67,7 +67,7 @@ export class EnhancedHistoryManager {
         this.statistics = { totalCommands: 0,
             successfulCommands: 0;
             failedCommands: 0;
-            averageExecutionTime: 0 ,}
+           , averageExecutionTime: 0 ,}
 
     /**
      * コマンドを履歴に追加
@@ -78,9 +78,9 @@ export class EnhancedHistoryManager {
             timestamp: Date.now(;
             success: metadata.success !== false);
             executionTime: metadata.executionTime || 0)';
-            errorMessage: metadata.errorMessage || null,')';
-            commandName: metadata.commandName || command.split(' ')[0];
-            args: metadata.args || [] ,};
+           , errorMessage: metadata.errorMessage || null,')';
+            commandName: metadata.commandName || command.split(', ')[0];
+           , args: metadata.args || [] ,};
         // 重複フィルターが有効な場合
         if(this.settings.duplicateFilter) {
             const lastEntry = this.history[this.history.length - 1];
@@ -111,8 +111,7 @@ export class EnhancedHistoryManager {
 
         let newIndex = this.currentIndex;
 
-        if(direction === 'up) {'
-            ';
+        if(direction === 'up) {', ';
 
         }
 
@@ -187,8 +186,7 @@ export class EnhancedHistoryManager {
      * 履歴をエクスポート'
      */''
     public exportHistory(format: ExportFormat = 'json', options: ExportOptions = { ): string {''
-        if(!this.settings.exportEnabled) {'
-            ';
+        if(!this.settings.exportEnabled) {', ';
 
         }
 
@@ -270,7 +268,7 @@ export class EnhancedHistoryManager {
                 default: }
                     throw new Error(`Unsupported, import format: ${format}`});
             } catch (error) {
-            throw new Error(`Failed, to parse ${format} data: ${(error, as Error}).message}`);
+            throw new Error(`Failed, to parse ${format} data: ${(error, as, Error}).message}`);
         }
 
         if(!Array.isArray(importedEntries)) {;
@@ -291,8 +289,8 @@ export class EnhancedHistoryManager {
                 timestamp: entry.timestamp || Date.now(;
                 success: entry.success !== false);
                 executionTime: entry.executionTime || 0)';
-                errorMessage: entry.errorMessage || null,')';
-                commandName: entry.commandName || entry.command? .split(' '')[0] || '', : undefined
+               , errorMessage: entry.errorMessage || null,')';
+                commandName: entry.commandName || entry.command? .split(', '')[0] || '', : undefined
                 args: entry.args || [] ,});
             importCount++;
         }
@@ -317,7 +315,7 @@ export class EnhancedHistoryManager {
             totalCommands: 0;
             successfulCommands: 0;
             failedCommands: 0;
-            averageExecutionTime: 0 }
+           , averageExecutionTime: 0 }
 
     /**
      * 履歴をクリア

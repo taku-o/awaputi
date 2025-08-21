@@ -2,42 +2,42 @@
  * 共有UI統合テスト (Task, 7)
  * ShareButtonとShareDialogの統合動作をテスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Mock interfaces
 interface MockElement extends HTMLElement { click(): Promise<void>;
     }
 interface MockGameEngine { on: jest.Mock,
     off: jest.Mock;
-    emit: jest.Mock ,}
+   , emit: jest.Mock ,}
 interface MockSocialSharingManager { gameEngine: MockGameEngine;
     share: jest.Mock<Promise<ShareResult>>;
     shareViaTwitterUrl: jest.Mock<Promise<ShareResult>>;
     shareViaFacebookUrl: jest.Mock<Promise<ShareResult>> }
 interface ShareResult { success: boolean;
-    method: string }
+   , method: string }
 interface ShareData { type: string;
     score?: number;
     text?: string;
     name?: string; }
 interface ShareButtonElements { container: HTMLElement,
     mainButton: HTMLElement;
-    platformButtons: MockElement[]
+   , platformButtons: MockElement[]
     ,}
 interface ShareDialogElements { dialog: HTMLElement;
     backdrop: HTMLElement;
-    platforms: MockElement[]
+   , platforms: MockElement[]
     }
 interface ShareButtonInstance { socialSharingManager: MockSocialSharingManager | null, }
     state: { visible: boolean }
-    stats: { shares: number; shows: number; platforms: { twitter: number; facebook: number },
+    stats: { shares: number; shows: number;, platforms: { twitter: number;, facebook: number },
     elements: ShareButtonElements;
-    handlers: { keydown?: Function; resize?: Function },
+   , handlers: { keydown?: Function; resize?: Function },
     config: { theme: string; position?: string; platforms?: string[] }
     show(): void;
     hide(): void;
     showWithData(data: ShareData): void,
     expand(): void;
-    getStats(): { shares: number; shows: number; platforms: { twitter: number; facebook: number }
+    getStats(): { shares: number; shows: number;, platforms: { twitter: number;, facebook: number }
     destroy(): void;
     updateConfig(config: any): void,
     applyResponsiveStyles(): void;
@@ -46,13 +46,13 @@ interface ShareButtonInstance { socialSharingManager: MockSocialSharingManager |
     }
 interface ShareDialogInstance { socialSharingManager: MockSocialSharingManager | null, }
     state: { visible: boolean }
-    stats: { shares: number; shows: number; platforms: { twitter: number; facebook: number },
+    stats: { shares: number; shows: number;, platforms: { twitter: number;, facebook: number },
     elements: ShareDialogElements;
-    handlers: { keydown?: Function; resize?: Function },
+   , handlers: { keydown?: Function; resize?: Function },
     config: { theme: string; width?: number; platforms?: string[] }
     show(data: ShareData): Promise<void>,
     hide(): Promise<void>;
-    getStats(): { shares: number; shows: number; platforms: { twitter: number; facebook: number }
+    getStats(): { shares: number; shows: number;, platforms: { twitter: number;, facebook: number }
     destroy(): void;
     updateConfig(config: any): void,
     applyResponsiveStyles(): void;
@@ -82,7 +82,7 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
         // GameEngineのモック
         mockGameEngine = {
             on: jest.fn();
-            off: jest.fn(), }
+           , off: jest.fn(), }
         emit: jest.fn(); }
         };
         
@@ -96,20 +96,20 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
         // DOM APIのモック
         global.ResizeObserver = jest.fn().mockImplementation(() => ({ observe: jest.fn(),
             unobserve: jest.fn();
-        disconnect: jest.fn(),' }'
+       , disconnect: jest.fn(),' }'
 
         })') as any;
 
         Object.defineProperty(window, 'matchMedia', { )
             writable: true);
-            value: jest.fn().mockImplementation((query: string) => ({
+           , value: jest.fn().mockImplementation((query: string) => ({
                 matches: false;
                 media: query;
                 onchange: null);
                 addListener: jest.fn();
                 removeListener: jest.fn();
                 addEventListener: jest.fn();
-                removeEventListener: jest.fn(),
+               , removeEventListener: jest.fn(),
         dispatchEvent: jest.fn(),' }'
 
             }');
@@ -456,8 +456,7 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
         }');''
         test('プラットフォーム設定の統合', async () => {  shareButton.destroy();''
             shareDialog.destroy(''';
-            const platforms = ['twitter', 'facebook', 'copy']; })'
-            ') }'
+            const platforms = ['twitter', 'facebook', 'copy']; })', ') }'
 
             const { ShareButton } = await import('../core/ShareButton.js'') as { ShareButton: ShareButtonConstructor }''
             const { ShareDialog } = await import('../core/ShareDialog.js) as { ShareDialog: ShareDialogConstructor };

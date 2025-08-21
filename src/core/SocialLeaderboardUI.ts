@@ -16,33 +16,33 @@ export class SocialLeaderboardUI {
             showPagination: options.showPagination === true;
             itemsPerPage: options.itemsPerPage || 10;
             // スタイル設定
-            theme: options.theme || 'default', // default, minimal, gaming, elegant;
+           , theme: options.theme || 'default', // default, minimal, gaming, elegant;
             responsive: options.responsive !== false;
             animations: options.animations !== false;
             // アクセシビリティ設定
-            accessibility: {
+           , accessibility: {
                 enabled: options.accessibility !== false;
                 announcements: options.announcements !== false;
                 keyboardNavigation: options.keyboardNavigation !== false;
                 highContrast: options.highContrast === true;
-                reducedMotion: options.reducedMotion = == true ,}
+               , reducedMotion: options.reducedMotion = == true ,}
                 screenReaderDescriptions: options.screenReaderDescriptions !== false }
             };
             // 多言語設定
             localization: { enabled: options.localization !== false,''
                 defaultLanguage: options.defaultLanguage || 'ja';
-                rtlSupport: options.rtlSupport === true ,}
+               , rtlSupport: options.rtlSupport === true ,}
         };
         // 状態管理
         this.state = {;
             currentLeaderboard: 'overall';
             currentPage: 1;
-            selectedEntry: null,
+           , selectedEntry: null,
             focusedElement: null,
             sortOrder: 'desc',
             filterPeriod: 'all',
             searchQuery: '';
-            loading: false ,};
+           , loading: false ,};
         // DOM要素
         this.elements = { container: null,
             header: null;
@@ -51,14 +51,14 @@ export class SocialLeaderboardUI {
             entries: [];
             pagination: null;
             announcer: null;
-            loadingIndicator: null ,};
+           , loadingIndicator: null ,};
         // イベントハンドラー
         this.handlers = { keydown: this.handleKeydown.bind(this),
             click: this.handleClick.bind(this);
             focus: this.handleFocus.bind(this);
             resize: this.handleResize.bind(this);
             filterChange: this.handleFilterChange.bind(this);
-            searchInput: this.handleSearchInput.bind(this ,};
+           , searchInput: this.handleSearchInput.bind(this ,};
         
         // データキャッシュ
         this.cache = new Map();
@@ -68,7 +68,7 @@ export class SocialLeaderboardUI {
         this.stats = { renders: 0,
             interactions: 0;
             keyboardNavigations: 0;
-            searches: 0 ,};
+           , searches: 0 ,};
         this.initialize();
     }
     
@@ -136,7 +136,7 @@ export class SocialLeaderboardUI {
                 left: -10000px !important;
                 width: 1px !important;
                 height: 1px !important;
-                overflow: hidden !important;
+               , overflow: hidden !important;
         ,}
             `; }
         }
@@ -336,7 +336,7 @@ export class SocialLeaderboardUI {
                 border-radius: 8px,
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 padding: 24px;
-                margin: 16px 0;
+               , margin: 16px 0;
     ,}
                 font-family: system-ui, -apple-system, sans-serif; }
             }
@@ -347,14 +347,14 @@ export class SocialLeaderboardUI {
             .leaderboard-title { font-size: 24px,
                 font-weight: 600,
                 color: #333;
-                margin: 0 0 8px 0 ,}
+               , margin: 0 0 8px 0 ,}
             
             .leaderboard-subtitle { font-size: 14px;
                 color: #666;
-                margin: 0 }
+               , margin: 0 }
             
             .leaderboard-controls { display: flex;
-                gap: 16px;
+               , gap: 16px;
                 margin-bottom: 24px,
                 flex-wrap: wrap,
                 align-items: center, }
@@ -381,11 +381,11 @@ export class SocialLeaderboardUI {
             .refresh-button { padding: 8px 16px,
                 background: #007AFF;
                 color: white;
-                border: none;
+               , border: none;
                 border-radius: 4px,
                 font-size: 14px,
                 cursor: pointer;
-                transition: background-color 0.2s ,}
+               , transition: background-color 0.2s ,}
             
             .search-button:hover;
             .refresh-button:hover { background: #0056b3 }
@@ -399,13 +399,13 @@ export class SocialLeaderboardUI {
             .leaderboard-entry { display: flex,
                 align-items: center,
                 padding: 12px 16px;
-                border: 1px solid #eee;
+               , border: 1px solid #eee;
                 border-radius: 6px,
                 margin-bottom: 8px,
                 background: #fafafa;
                 transition: all 0.2s ease;
                 cursor: pointer;
-                position: relative ,}
+               , position: relative ,}
             
             .leaderboard-entry:hover { background: #f0f8ff;
                 border-color: #007AFF, }
@@ -429,14 +429,14 @@ export class SocialLeaderboardUI {
                 font-size: 16px,
                 font-weight: 500,
                 color: #333;
-                margin: 0 16px ,}
+               , margin: 0 16px ,}
             
             .entry-score { font-size: 16px;
                 font-weight: 600,
                 color: #007AFF ,}
             
             .entry-metadata { font-size: 12px;
-                color: #666;
+               , color: #666;
                 margin-top: 4px, }
             
             .leaderboard-pagination { display: flex,
@@ -447,11 +447,11 @@ export class SocialLeaderboardUI {
             
             .pagination-button { padding: 8px 16px,
                 background: #f8f9fa;
-                border: 1px solid #ddd;
+               , border: 1px solid #ddd;
                 border-radius: 4px,
                 font-size: 14px,
                 cursor: pointer;
-                transition: background-color 0.2s ,}
+               , transition: background-color 0.2s ,}
             
             .pagination-button:hover:not(:disabled) { background: #e9ecef }
             
@@ -462,18 +462,18 @@ export class SocialLeaderboardUI {
                 cursor: not-allowed ,}
             
             .page-info { font-size: 14px;
-                color: #666 }
+               , color: #666 }
             
             .loading-indicator { text-align: center;
-                padding: 40px }
+               , padding: 40px }
             
             .loading-spinner { width: 40px;
                 height: 40px;
-                border: 4px solid #f3f3f3;
+               , border: 4px solid #f3f3f3;
                 border-top: 4px solid #007AFF,
                 border-radius: 50%,
                 animation: spin 1s linear infinite;
-                margin: 0 auto 16px ,}
+               , margin: 0 auto 16px ,}
             
             @keyframes spin {
                 0% { transform: rotate(0deg), }
@@ -487,13 +487,13 @@ export class SocialLeaderboardUI {
                 width: 1px !important;
                 height: 1px !important;
                 overflow: hidden !important;
-                clip: rect(1px, 1px, 1px, 1px) !important,
+               , clip: rect(1px, 1px, 1px, 1px) !important,
                 clip-path: inset(50%) !important, }
             
             /* 高コントラストモード */
             .high-contrast-mode .social-leaderboard-ui { background: #000000 !important,
                 color: #ffffff !important;
-                border: 2px solid #ffffff !important ,}
+               , border: 2px solid #ffffff !important ,}
             
             .high-contrast-mode .leaderboard-entry { background: #333333 !important;
                 border-color: #ffffff !important,
@@ -511,7 +511,7 @@ export class SocialLeaderboardUI {
             /* レスポンシブ対応 */''
             @media(max-width: 768px) { .social-leaderboard-ui {
                     padding: 16px;
-                    margin: 8px 0 }
+                   , margin: 8px 0 }
                 
                 .leaderboard-controls { flex-direction: column;
                     align-items: stretch,
@@ -572,8 +572,7 @@ export class SocialLeaderboardUI {
 });
 
         }''
-        if(searchButton) {'
-            ';
+        if(searchButton) {', ';
 
         }
 
@@ -582,8 +581,7 @@ export class SocialLeaderboardUI {
         ';
         // 更新ボタン
         const refreshButton = this.elements.controls.querySelector('.refresh-button);''
-        if(refreshButton) {'
-            ';
+        if(refreshButton) {', ';
 
         }
 
@@ -602,8 +600,7 @@ export class SocialLeaderboardUI {
                 prevButton.addEventListener('click', () => this.goToPage(this.state.currentPage - 1); }
 
             }''
-            if(nextButton) {'
-                ';
+            if(nextButton) {', ';
 
             }
 
@@ -716,7 +713,7 @@ export class SocialLeaderboardUI {
         );
         for (let i = 0; i < Math.min(this.config.maxEntries, 5); i++) { mockEntries.push({)
                 rank: i + 1);
-                playerName: names[i] || `プレイヤー${i + 1)`;
+               , playerName: names[i] || `プレイヤー${i + 1)`;
                 score: (1000 - i * 100) + Math.floor(Math.random(,} * 100}, }
                 timestamp: Date.now() - (i * 3600000});
                 isCurrentPlayer: i === 2 // 3位を現在のプレイヤーとする;
@@ -793,8 +790,7 @@ export class SocialLeaderboardUI {
         // ランク
         const rank = document.createElement('div'');''
         rank.className = 'entry-rank';''
-        if(entry.rank <= 3) {'
-            ';
+        if(entry.rank <= 3) {', ';
 
         }
 
@@ -828,7 +824,7 @@ export class SocialLeaderboardUI {
         // イベントリスナー
         element.addEventListener('click', () => this.selectEntry(entry, element));''
         element.addEventListener('keydown', (event) => {  ''
-            if(event.key === 'Enter' || event.key === ' ') {
+            if(event.key === 'Enter' || event.key === ', ') {
                 
             }
                 event.preventDefault(); }
@@ -847,7 +843,7 @@ export class SocialLeaderboardUI {
         emptyState.style.cssText = `;
             text-align: center,
             padding: 40px;
-            color: #666;
+           , color: #666;
         `;
         ';
 
@@ -945,7 +941,7 @@ export class SocialLeaderboardUI {
                 event.preventDefault();''
                 this.focusLast(''';
             case 'Enter':)';
-            case ' ':')';
+            case ', ':')';
                 if(event.target.classList.contains('leaderboard-entry) {'
                     event.preventDefault();
     }
@@ -1109,8 +1105,7 @@ export class SocialLeaderboardUI {
             this.elements.loadingIndicator.setAttribute('aria-hidden', show ? 'false' : 'true); }
         }
 
-        if(this.elements.content) {'
-            ';
+        if(this.elements.content) {', ';
 
         }
 
@@ -1154,7 +1149,7 @@ export class SocialLeaderboardUI {
         
     }
         const event = new CustomEvent(`leaderboard-${type}`, { detail: data)
-            bubbles: true });
+           , bubbles: true });
         this.elements.container.dispatchEvent(event);
     }
     

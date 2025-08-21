@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * PWAFeatureTests - Basic PWA features, Service Worker, and installation tests
  * Part of the PWATestFramework split implementation
@@ -56,7 +56,7 @@ export class PWAFeatureTests {
             
             for (const tag of requiredMetaTags') {
                 const element = document.querySelector(`meta[name="${tag.name")"]`);
-                this.executor.assert(element !== null, `${tag.name) meta tag should exist`);
+                this.executor.assert(element !== null, `${tag.name) meta, tag should, exist`);
                 
                 if (tag.expected) {
                     this.executor.assert(element.content.includes(tag.expected}), 
@@ -278,7 +278,7 @@ export class PWAFeatureTests {
                             src: icon.src,
                             sizes: icon.sizes,
                             loaded: iconResponse.ok;');
-                            size: iconResponse.headers.get('content-length'') || 'unknown'
+                           , size: iconResponse.headers.get('content-length'') || 'unknown'
                         });
                     } catch (error) {
                         iconTests.push({
@@ -371,7 +371,7 @@ export class PWAFeatureTests {
                         href: splash.href,
                         media: splash.media,
                         loaded: response.ok;');
-                        size: response.headers.get('content-length'') || 'unknown'
+                       , size: response.headers.get('content-length'') || 'unknown'
                     });
                 } catch (error) {
                     splashTests.push({

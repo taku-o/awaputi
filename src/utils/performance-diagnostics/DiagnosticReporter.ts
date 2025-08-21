@@ -9,7 +9,7 @@ interface MainController { [key: string]: any, }
 interface DataCollection { duration: number,
     sampleCount: number;
     metricsCollected: number;
-    dataQuality: Record<string, any> }
+   , dataQuality: Record<string, any> }
 
 interface Bottleneck { type: string,
     severity: string;
@@ -18,12 +18,12 @@ interface Bottleneck { type: string,
 
 interface Anomaly { detectionType: string,
     severity: string;
-    metric: string;
+   , metric: string;
     [key: string]: any, }
 
 interface OverallAssessment { healthScore: number,
     performanceLevel: string;
-    criticalIssues: any[];
+   , criticalIssues: any[];
     [key: string]: any, }
 
 interface DiagnosticResults { dataCollection?: DataCollection;
@@ -36,8 +36,8 @@ interface DiagnosticResults { dataCollection?: DataCollection;
 interface DiagnosticSession { id: string,
     duration: number;
     results: DiagnosticResults;
-    options: {
-        detailLevel?: string;
+   , options: {
+        detailLeve;l?: string;
         [key: string]: any, };
     [key: string]: any,
 }
@@ -50,19 +50,19 @@ interface ReportSummary { sessionId: string,
     criticalIssues: number;
     bottlenecks: number;
     anomalies: number;
-    recommendations: number ,}
+   , recommendations: number ,}
 
 interface TechnicalDetails { dataCollection: {
-        duration: number;
+        duratio;n: number;
         sampleCount: number;
         metricsCollected: number;
-        dataQuality: Record<string, any> };
+       , dataQuality: Record<string, any> };
     bottleneckAnalysis: { totalBottlenecks: number;
         criticalBottlenecks: number;
-        categories: Record<string, number> };
+       , categories: Record<string, number> };
     anomalyDetection: { totalAnomalies: number;
         criticalAnomalies: number;
-        detectionTypes: Record<string, number> };
+       , detectionTypes: Record<string, number> };
     systemAssessment: OverallAssessment;
     }
 
@@ -71,7 +71,7 @@ interface Report { type: string,
     summary?: ReportSummary;
     technicalDetails?: TechnicalDetails;
     rawResults?: DiagnosticResults;
-    generatedAt: string ,}
+   , generatedAt: string ,}
 
 interface Recommendation { type: string;
     priority: 'high' | 'medium' | 'low';
@@ -81,13 +81,13 @@ interface Recommendation { type: string;
     actions: string[];
     estimatedImpact: string;
     implementationEffort: string;
-    timeToImplement: string }
+   , timeToImplement: string }
 
 interface ReportingCapabilities { reportTypes: string[];
     outputFormats: string[];
     recommendationTypes: string[];
     customTemplates: boolean;
-    realTimeReporting: boolean }
+   , realTimeReporting: boolean }
 
 interface ReportingConfig { reportTemplate?: string;
     recommendationSettings?: Record<string, any>;
@@ -99,7 +99,7 @@ interface ReportTemplate { generate(session: DiagnosticSession): Promise<Report>
 export class DiagnosticReporter {
     private mainController: MainController;
     private reportGenerator: DiagnosticReportGenerator;
-    private recommendationEngine: RecommendationEngine;
+    private, recommendationEngine: RecommendationEngine;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -142,7 +142,7 @@ export class DiagnosticReporter {
             sessionId: diagnosticSession.id,
             duration: diagnosticSession.duration,
             timestamp: new Date().toISOString(''';
-            performanceLevel: diagnosticSession.results.overallAssessment? .performanceLevel || 'unknown', : undefined
+           , performanceLevel: diagnosticSession.results.overallAssessment? .performanceLevel || 'unknown', : undefined
             criticalIssues: diagnosticSession.results.overallAssessment? .criticalIssues?.length || 0, : undefined
             bottlenecks: diagnosticSession.results.bottlenecks? .length || 0, : undefined
             anomalies: diagnosticSession.results.anomalies? .length || 0, : undefined
@@ -152,7 +152,7 @@ export class DiagnosticReporter {
         return { : undefined''
             type: 'summary',)';
             title: 'Performance Diagnostic Summary');
-            summary: summary, };
+           , summary: summary, };
             generatedAt: new Date().toISOString(); }
         }
     
@@ -181,7 +181,7 @@ export class DiagnosticReporter {
             type: 'technical',
             title: 'Technical Performance Analysis Report';
             technicalDetails: technicalDetails;
-            rawResults: diagnosticSession.results, };
+           , rawResults: diagnosticSession.results, };
             generatedAt: new Date().toISOString(); }
         }
     
@@ -248,7 +248,7 @@ export class DiagnosticReporter {
 
             lines.push(`  Critical, Issues: ${report.summary.criticalIssues)`),
 
-            lines.push(`  Total Bottlenecks: ${report.summary.bottlenecks,}`},
+            lines.push(`  Total, Bottlenecks: ${report.summary.bottlenecks,}`},
 
         }
 
@@ -263,7 +263,7 @@ export class DiagnosticReporter {
 
             lines.push(`  Data, Collection Duration: ${report.technicalDetails.dataCollection.duration)ms`),
 
-            lines.push(`  Samples Collected: ${report.technicalDetails.dataCollection.sampleCount,}`},
+            lines.push(`  Samples, Collected: ${report.technicalDetails.dataCollection.sampleCount,}`},
 
         }
 
@@ -280,7 +280,7 @@ export class DiagnosticReporter {
      */''
     formatReportAsHTML(report: Report): string { ''
         let html = `<div class="diagnostic-report">`;" }"
-        html += `<h1>${report.title || 'Diagnostic Report'}</h1>`;''
+        html += `<h1>${report.title || 'Diagnostic, Report'}</h1>`;''
         html += `<p class="generated-at">Generated: ${report.generatedAt}</p>`;"
 
         if(report.summary) {"
@@ -405,7 +405,7 @@ class RecommendationEngine { private generators: Map<string, any>;
                     category: 'rendering',
                     title: 'フレームレート最適化',)';
                     description: 'レンダリングパイプラインの最適化によりフレームレートを改善')';
-                    actions: ['';
+                   , actions: ['';
                         'AdaptiveQualityController の設定確認',
                         'レンダリング負荷の軽減',
                         'フレームペーシングの調整',]';
@@ -423,7 +423,7 @@ class RecommendationEngine { private generators: Map<string, any>;
                     category: 'memory_management',
                     title: 'メモリ使用量最適化',)';
                     description: 'メモリ管理の改善により安定性を向上')';
-                    actions: ['';
+                   , actions: ['';
                         'MemoryManager の設定見直し',
                         'オブジェクトプールの効率化',
                         'メモリリークの修正',]';
@@ -441,7 +441,7 @@ class RecommendationEngine { private generators: Map<string, any>;
                     category: 'rendering_optimization',
                     title: 'レンダリング効率改善',)';
                     description: 'レンダリング処理の最適化')';
-                    actions: ['';
+                   , actions: ['';
                         'ダーティリージョン管理の改善',
                         'バッチレンダリングの実装',
                         'レイヤー構成の最適化',]';

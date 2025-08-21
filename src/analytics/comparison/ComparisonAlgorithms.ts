@@ -9,7 +9,7 @@ export class ComparisonAlgorithms {
         // アルゴリズム設定
         this.algorithmConfig = {
             minSampleSize: 3;
-            trendThreshold: 0.05, // 5%;
+           , trendThreshold: 0.05, // 5%;
             confidenceLevel: 0.95;
     ,}
             outlierThreshold: 3 // 標準偏差の3倍 }
@@ -92,11 +92,11 @@ export class ComparisonAlgorithms {
             if (values.length > 0) {
                 benchmark[key] = {
                     min: values[0];
-                    percentile25: this.calculatePercentile(values, 25),
+                   , percentile25: this.calculatePercentile(values, 25),
                     median: this.calculatePercentile(values, 50),
                     percentile75: this.calculatePercentile(values, 75),
                     max: values[values.length - 1];
-                    mean: values.reduce((sum, val) => sum + val, 0) / values.length,
+                   , mean: values.reduce((sum, val) => sum + val, 0) / values.length,
                     stdDev: this.calculateStandardDeviation(values);
         ,}
                     count: values.length }
@@ -142,12 +142,12 @@ export class ComparisonAlgorithms {
         return { stageId: stageId,
             sessionCount: sessions.length;
             completionRate: completedSessions.length / sessions.length;
-            averageScore: scores.length > 0 ?   : undefined
+           , averageScore: scores.length > 0 ?   : undefined
                 scores.reduce((sum, s) => sum + s, 0) / scores.length : 0,
             averageAccuracy: accuracies.length > 0 ?   : undefined
                 accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length : 0,
             firstCompletionTime: this.findFirstCompletionTime(sessions);
-            averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions);
+           , averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions);
     ,}
             consistencyScore: this.calculateConsistencyScore(sessions), };
             estimatedDifficulty: this.estimateStageDifficulty(sessions); }

@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 /**
  * クラウドストレージ設定インターフェース
@@ -15,7 +15,7 @@ export interface CloudStorageConfig { provider?: string;
  */
 interface AuthData { token: string,
     userId: string;
-    expiresAt: string | number ,}
+   , expiresAt: string | number ,}
 
 /**
  * 同期キューアイテムインターフェース
@@ -25,7 +25,7 @@ interface SyncQueueItem { id: number,''
     key: string;
     data: any | null;
     timestamp: number;
-    retries: number ,}
+   , retries: number ,}
 
 /**
  * API レスポンスインターフェース
@@ -46,7 +46,7 @@ interface ApiResponse { success?: boolean;
 interface CloudMetadata { uploadedAt: number,
     userId: string;
     provider: string;
-    version: string ,}
+   , version: string ,}
 
 /**
  * 同期ステータスインターフェース
@@ -55,7 +55,7 @@ export interface SyncStatus { isOnline: boolean;
     isAuthenticated: boolean;
     queuedOperations: number;
     conflicts: number;
-    lastSync: string | null }
+   , lastSync: string | null }
 
 /**
  * クラウドストレージアダプター基盤
@@ -82,7 +82,7 @@ export class CloudStorageAdapter {
             timeout: options.timeout || 30000;
             retryAttempts: options.retryAttempts || 3;
             retryDelay: options.retryDelay || 1000;
-            chunkSize: options.chunkSize || 1024 * 1024, // 1MB chunks };
+           , chunkSize: options.chunkSize || 1024 * 1024, // 1MB chunks };
         
         this.authToken = null;
         this.userId = null;
@@ -167,8 +167,7 @@ export class CloudStorageAdapter {
      * 接続テスト
      */
     async testConnection(): Promise<boolean> { try {'
-            if(!this.config.apiEndpoint) {'
-                ';
+            if(!this.config.apiEndpoint) {', ';
 
             }
 
@@ -187,7 +186,7 @@ export class CloudStorageAdapter {
             throw new Error(`接続テストに失敗しました: ${response.message || '不明なエラー}`});
 
         } catch (error) {
-            console.warn('CloudStorageAdapter: Connection test failed:', (error as Error).message);
+            console.warn('CloudStorageAdapter: Connection test, failed:', (error as Error).message);
             throw error; }
     }
     
@@ -195,8 +194,7 @@ export class CloudStorageAdapter {
      * 認証処理（プレースホルダー）
      */'
     async authenticate(credentials: any): Promise<boolean> { try {'
-            if(!this.config.apiEndpoint) {'
-                ';
+            if(!this.config.apiEndpoint) {', ';
 
             }
 
@@ -214,7 +212,7 @@ export class CloudStorageAdapter {
                 // 認証情報の保存
                 const authData: AuthData = {
                     token: response.token;
-                    userId: response.userId;
+                   , userId: response.userId;
             }
 
                     expiresAt: response.expiresAt || (Date.now() + 24 * 60 * 60 * 1000') // 24時間 }'
@@ -260,7 +258,7 @@ export class CloudStorageAdapter {
             // API リクエスト
             const response = await this.makeRequest('PUT', `/data/${encodeURIComponent(key})`, { data: processedData,
                 timestamp: Date.now();
-                userId: this.userId ,});
+               , userId: this.userId ,});
             ;
             return response.success || false;
             ';
@@ -280,8 +278,7 @@ export class CloudStorageAdapter {
             if(!this.isAuthenticated()) {''
                 throw new Error('Not, authenticated); }'
 
-            if(!this.isOnline) {'
-                ';
+            if(!this.isOnline) {', ';
 
             }
 
@@ -343,8 +340,7 @@ export class CloudStorageAdapter {
             if(!this.isAuthenticated()) {''
                 throw new Error('Not, authenticated); }'
 
-            if(!this.isOnline) {'
-                ';
+            if(!this.isOnline) {', ';
 
             }
 
@@ -402,9 +398,8 @@ export class CloudStorageAdapter {
             for(let, i = 0; i < chunks.length; i++) { ' }'
 
                 await this.makeRequest('PUT', `/data/chunks/${chunkId}/${i}`, { chunk: chunks[i])'
-                    totalChunks: chunks.length,')';
-                    chunkIndex: i)' ,}'
-            ';
+                   , totalChunks: chunks.length,')';
+                    chunkIndex: i)' ,}', ';
             // チャンク完了の通知
             const response = await this.makeRequest('POST', `/data/chunks/${chunkId}/complete`, { key)
                 totalChunks: chunks.length);
@@ -449,7 +444,7 @@ export class CloudStorageAdapter {
             key,
             data,
             timestamp: Date.now();
-            retries: 0 ,});
+           , retries: 0 ,});
         console.log(`CloudStorageAdapter: Added ${operation} operation, to sync, queue`});
     }
     
@@ -459,11 +454,11 @@ export class CloudStorageAdapter {
     async processSyncQueue(): Promise<void> { if (!this.isOnline || !this.isAuthenticated() || this.syncQueue.length === 0) {
             return; }
         
-        console.log(`CloudStorageAdapter: Processing ${ this.syncQueue.length) queued operations`),
+        console.log(`CloudStorageAdapter: Processing ${ this.syncQueue.length) queued, operations`),
         
-        const processedItems: SyncQueueItem[] = [],
+        const, processedItems: SyncQueueItem[] = [],
         
-        for(const, item of, this.syncQueue) {
+        for(const, item, of, this.syncQueue) {
         ';
 
             try {'
@@ -503,8 +498,7 @@ export class CloudStorageAdapter {
             const url = `${this.config.apiEndpoint}${endpoint}`;
             const requestOptions: RequestInit = { method,
 
-                headers: {''
-                    'Content-Type': 'application/json',' }
+                headers: {'', 'Content-Type': 'application/json',' }
 
                     ...(this.authToken && { 'Authorization': `Bearer ${this.authToken}` }');
                 },
@@ -533,8 +527,7 @@ export class CloudStorageAdapter {
             return await response.json();
 
         } catch(error: any) {
-            if(error.name === 'AbortError'') {'
-                ';
+            if(error.name === 'AbortError'') {', ';
 
             }
 
@@ -579,8 +572,7 @@ export class CloudStorageAdapter {
      * ログアウト
      */'
     async logout(): Promise<void> { try {'
-            if(this.authToken && this.config.apiEndpoint) {'
-                ';
+            if(this.authToken && this.config.apiEndpoint) {', ';
 
             }
 

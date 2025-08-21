@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../debug/BaseComponent.js';''
+import { BaseComponent  } from '../../debug/BaseComponent.js';''
 import fs from 'fs';''
 import path from 'path';
 
@@ -7,24 +7,24 @@ interface MainController { testsDir: string,
     projectRoot: string;
     backupEnabled: boolean;
     dryRun: boolean;
-    testFilePatterns: Record<string, string>;
+   , testFilePatterns: Record<string, string>;
     [key: string]: any, }
 
 interface FileOperationOptions { silent?: boolean;
     encoding?: BufferEncoding;
     force?: boolean;
     recursive?: boolean;
-    filter?: (file: FileInfo) => boolean ,}
+    filter?: (fil;e: FileInfo) => boolean ,}
 }
 
 interface FileInfo { name: string;
     path: string;
     size: number;
     modified: Date;
-    extension: string }
+   , extension: string }
 
 interface BackupInfo extends FileInfo { originalFile: string;
-    backupDate: Date | null }
+   , backupDate: Date | null }
 
 interface OperationDetails { filePath?: string;
     size?: number;
@@ -35,13 +35,13 @@ interface OperationDetails { filePath?: string;
 
 interface OperationRecord { operation: string,
     details: OperationDetails;
-    timestamp: number ,}
+   , timestamp: number ,}
 
-interface FileOperations { read: (filePath: string, options?: FileOperationOptions) => string | null;
-    write: (filePath: string, content: string, options?: FileOperationOptions) => boolean;
-    backup: (filePath: string) => string | null;
-    restore: (backupPath: string, targetPath: string) => boolean,
-    delete: (filePath: string, options?: FileOperationOptions) => boolean }
+interface FileOperations { read: (filePat;h: string, options?: FileOperationOptions) => string | null;
+    write: (filePat;h: string, content: string, options?: FileOperationOptions) => boolean;
+    backup: (filePat;h: string) => string | null;
+    restore: (backupPat;h: string, targetPath: string) => boolean,
+    delete: (filePat;h: string, options?: FileOperationOptions) => boolean }
 }
 
 interface TestFileUpdateResult { success: boolean,
@@ -59,7 +59,7 @@ interface OperationStatistics { totalOperations: number,
 interface DirectorySizeInfo { totalFiles: number;
     totalSize: number;
     formattedSize: string;
-    files: FileInfo[]
+   , files: FileInfo[]
     }
 
 /**
@@ -69,7 +69,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     private projectRoot: string;
     private backupEnabled: boolean;
     private dryRun: boolean;
-    private testFilePatterns: Record<string, string>;
+    private, testFilePatterns: Record<string, string>;
     private operationHistory: OperationRecord[];
     private fileOperations!: FileOperations;
 
@@ -96,7 +96,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             write: this.writeFile.bind(this);
             backup: this.createBackup.bind(this);
             restore: this.restoreBackup.bind(this);
-            delete: this.deleteFile.bind(this }
+           , delete: this.deleteFile.bind(this }
 
     /**
      * ディレクトリ構造を確保'
@@ -147,7 +147,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             this.recordOperation('read', { filePath)
                 size: content.length);
-                timestamp: Date.now( });
+               , timestamp: Date.now( });
 
             return content;
 
@@ -226,7 +226,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             this.recordOperation('backup', { originalPath: filePath)
                 backupPath);
-                timestamp: Date.now( });
+               , timestamp: Date.now( });
 
             console.log(`[TestFileOperations] バックアップ作成: ${path.basename(backupPath})`);
             return backupPath;
@@ -373,7 +373,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                         path: filePath;
                         size: stat.size;
                         modified: stat.mtime;
-                        extension: path.extname(file };
+                       , extension: path.extname(file };
 
                     // フィルター適用
                     if(options.filter) {
@@ -497,7 +497,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);
 
-        return parseFloat((bytes / Math.pow(k, i).toFixed(2)) + ' ' + sizes[i]; }
+        return parseFloat((bytes / Math.pow(k, i).toFixed(2)) + ', ' + sizes[i]; }
 
     /**
      * ディレクトリサイズを計算

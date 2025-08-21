@@ -8,16 +8,16 @@ export class RenderingOptimizer {
         this.config = {
             offscreenCanvas: {
                 enabled: true;
-                cacheSize: 10, // 最大10個のオフスクリーンキャンバスをキャッシュ
+               , cacheSize: 10, // 最大10個のオフスクリーンキャンバスをキャッシュ
     }
                 reusable: true }
             };
             differentialUpdate: { enabled: true;
                 trackDirtyRegions: true;
-                mergeThreshold: 0.3, // 30%以上重複していればマージ;
+               , mergeThreshold: 0.3, // 30%以上重複していればマージ;
                 maxRegions: 20 // 最大20の差分領域を追跡 ,};
             viewportCulling: { enabled: true;
-                margin: 50, // ビューポート外でも50pxマージンは描画;
+               , margin: 50, // ビューポート外でも50pxマージンは描画;
                 enableOcclusion: true // オクルージョンカリング ,};
             performance: { targetFrameTime: 16, // 60fps = 16.67ms
                 warningThreshold: 20, // 20ms超過で警告;
@@ -25,7 +25,7 @@ export class RenderingOptimizer {
                 frameSkipping: true // 重い処理時のフレームスキップ ,};
             layering: { enabled: true;
                 maxLayers: 5;
-                autoOptimize: true // レイヤーの自動最適化 }
+               , autoOptimize: true // レイヤーの自動最適化 }
         };
         // オフスクリーンキャンバスプール
         this.offscreenCanvasPool = new Map();
@@ -46,7 +46,7 @@ export class RenderingOptimizer {
             skippedFrames: 0;
             dirtyRegionCount: 0;
             culledObjects: 0;
-            lastFrameTime: 0 ,};
+           , lastFrameTime: 0 ,};
         // レイヤー管理
         this.layers = new Map();
         this.layerOrder = [];
@@ -55,7 +55,7 @@ export class RenderingOptimizer {
         this.renderingState = { isRendering: false,
             lastRenderTime: 0;
             frameRequestId: null;
-            emergencyMode: false ,};
+           , emergencyMode: false ,};
         // オクルージョンカリング
         this.occlusionMap = new Map();
         
@@ -125,7 +125,7 @@ export class RenderingOptimizer {
             isDirty: false;
             visible: true;
             opacity: 1.0;
-            renderables: [];
+           , renderables: [];
     ,}
             lastUpdate: 0 }
         };
@@ -183,7 +183,7 @@ export class RenderingOptimizer {
             y: options.viewportY || 0;
             width: canvas.width;
             height: canvas.height;
-            scaleFactor: options.scaleFactor || 1;
+           , scaleFactor: options.scaleFactor || 1;
     }
             rotation: options.rotation || 0 }
         }
@@ -212,7 +212,7 @@ export class RenderingOptimizer {
             ...options,
             quality: 'low';
             skipAnimations: true;
-            skipEffects: true ,};
+           , skipEffects: true ,};
         return await this.renderDirect(context, culledRenderables, emergencyOptions);
     }
     
@@ -241,7 +241,7 @@ export class RenderingOptimizer {
         // 差分領域をクリア
         this.dirtyRegions.clear()';
             type: 'differential');
-            regionsUpdated: mergedRegions.length,);
+           , regionsUpdated: mergedRegions.length,);
             totalArea: mergedRegions.reduce((sum, region) => sum + (region.width * region.height), 0);
         }
     
@@ -383,7 +383,7 @@ export class RenderingOptimizer {
 
         return { ''
             type: 'layered';
-            layersRendered: this.layerOrder.length, };
+           , layersRendered: this.layerOrder.length, };
             totalRenderables: renderables.length }
         }
     
@@ -500,7 +500,7 @@ export class RenderingOptimizer {
 
         return { ''
             type: 'direct';
-            renderablesProcessed: culledRenderables.length, };
+           , renderablesProcessed: culledRenderables.length, };
             culledCount: renderables.length - culledRenderables.length }
         }
     
@@ -514,7 +514,7 @@ export class RenderingOptimizer {
         const extendedViewport = {
             x: this.viewport.x - margin;
             y: this.viewport.y - margin;
-            width: this.viewport.width + (margin * 2);
+           , width: this.viewport.width + (margin * 2);
     }
             height: this.viewport.height + (margin * 2); }
         };
@@ -597,7 +597,7 @@ export class RenderingOptimizer {
         if (renderable.id) {
             this.lastRenderState.set(renderable.id, {)
                 bounds: renderable.bounds);
-                lastRender: Date.now();
+               , lastRender: Date.now();
     ,}
                 version: renderable.version || 1 }
             });
@@ -617,7 +617,7 @@ export class RenderingOptimizer {
             this.dirtyRegions.clear();
             this.addDirtyRegion({)
                 x: 0, y: 0);
-                width: this.viewport.width, }
+               , width: this.viewport.width, }
                 height: this.viewport.height); }
 }
     
@@ -707,7 +707,7 @@ export class RenderingOptimizer {
             frameTimeHistory: [...this.frameTimeHistory];
             emergencyMode: this.renderingState.emergencyMode;
             dirtyRegionCount: this.dirtyRegions.size;
-            layerCount: this.layers.size;
+           , layerCount: this.layers.size;
     ,}
             canvasCacheSize: this.canvasCache.size, };
             offscreenCanvasSupported: this.offscreenCanvasSupported }

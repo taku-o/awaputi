@@ -42,7 +42,7 @@ export class DataAggregationProcessor {
             return this.createSuccessResponse(aggregatedData, {)
                 aggregationRules});
                 sourceDataCount: rawData.length);
-                aggregatedGroupCount: Object.keys(aggregatedData).length }
+               , aggregatedGroupCount: Object.keys(aggregatedData).length }
             });
         } catch (error) {
             console.error('Aggregation error:', error);''
@@ -121,7 +121,7 @@ export class DataAggregationProcessor {
                 aggregationRules,);
                 dataTypes);
                 totalGroups: this.countTotalGroups(finalResult);
-                cached: false ,});
+               , cached: false ,});
         } catch (error) {
             console.error('Advanced aggregation error:', error);''
             return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR); }'
@@ -164,7 +164,7 @@ export class DataAggregationProcessor {
                 aggregateBy,);
                 fillGaps);
                 startDate: new Date(startDate).getTime();
-                endDate: new Date(endDate).getTime( ,});
+               , endDate: new Date(endDate).getTime( ,});
             
             const responseTime = Math.max(performance.now() - startTime, 0.1);
             
@@ -203,13 +203,13 @@ export class DataAggregationProcessor {
                 overview: {
                     totalSessions: sessions.length;
                     totalInteractions: interactions.length;
-                    totalPerformanceRecords: performance.length;
+                   , totalPerformanceRecords: performance.length;
                     period ,}
                 },
                 sessionStats: this.calculateSessionStats(sessions);
                 interactionStats: this.calculateInteractionStats(interactions);
                 performanceStats: this.calculatePerformanceStats(performance);
-                generatedAt: new Date().toISOString();
+               , generatedAt: new Date().toISOString();
             };
             
             return summary;
@@ -374,7 +374,7 @@ export class DataAggregationProcessor {
         return { totalSessions: sessions.length,
             completedSessions: completedSessions.length;
             completionRate: completedSessions.length / sessions.length;
-            averageDuration: durations.reduce((sum, d) => sum + d, 0) / durations.length || 0,
+           , averageDuration: durations.reduce((sum, d) => sum + d, 0) / durations.length || 0,
             averageScore: scores.reduce((sum, s) => sum + s, 0) / scores.length || 0, };
             maxScore: scores.length > 0 ? Math.max(...scores) : 0 
         }
@@ -426,7 +426,7 @@ export class DataAggregationProcessor {
         
         return { : undefined
             totalRecords: performanceData.length;
-            averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
+           , averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
             minFPS: fpsValues.length > 0 ? Math.min(...fpsValues) : 0;
             maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0, };
             averageMemoryUsage: memoryValues.reduce((sum, mem) => sum + mem, 0) / memoryValues.length || 0 }
@@ -450,7 +450,7 @@ export class DataAggregationProcessor {
         return { groups: aggregatedResult,
             metadata: {
                 totalRecords: rawData.length;
-                processedRecords: rawData.length, };
+               , processedRecords: rawData.length, };
                 groupCount: Object.keys(aggregatedResult).length }
 }
     
@@ -481,7 +481,7 @@ export class DataAggregationProcessor {
             
             result.push({)
                 timestamp: timeKey);
-                datetime: new Date(timeKey).toISOString();
+               , datetime: new Date(timeKey).toISOString();
                 interval,
         
         }
@@ -508,8 +508,7 @@ export class DataAggregationProcessor {
     }
 
     getIntervalMilliseconds(interval) {'
-        const intervals = {''
-            'minute': 60 * 1000,
+        const intervals = {'', 'minute': 60 * 1000,
             'hour': 60 * 60 * 1000,
             'day': 24 * 60 * 60 * 1000,
             'week': 7 * 24 * 60 * 60 * 1000,

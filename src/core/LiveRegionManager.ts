@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * ライブリージョン管理クラス
@@ -24,18 +24,18 @@ export class LiveRegionManager {'
                 info: 'status' }
             };
             throttling: { enabled: true;
-                interval: 1000, // 1秒間隔;
+               , interval: 1000, // 1秒間隔;
                 maxQueue: 10;
-                deduplicationWindow: 3000 // 3秒以内の重複を削除 ,};
+               , deduplicationWindow: 3000 // 3秒以内の重複を削除 ,};
             deduplication: { enabled: true;
-                similarity: 0.8, // 80%以上類似で重複判定;
+               , similarity: 0.8, // 80%以上類似で重複判定;
                 messageHistory: 20 // 履歴保持数 ,};
             languages: { ''
                 primary: 'ja',
                 fallback: 'en' ,};
             accessibility: { respectUserPausedSpeech: true;
                 interruptOnUrgent: true;
-                verbosityControl: true }
+               , verbosityControl: true }
         };
         ';
         // ライブリージョン要素管理
@@ -72,7 +72,7 @@ export class LiveRegionManager {'
             }],''
             ['alert', { ')'
                 politeness: 'assertive')';
-                atomic: true,
+               , atomic: true,
                 relevant: 'all',
                 live: 'assertive',]';
                 role: 'alert'];
@@ -126,16 +126,15 @@ export class LiveRegionManager {'
             duplicatesRemoved: 0;
             throttledMessages: 0;
             queueOverflows: 0;
-            averageProcessingTime: 0,
+           , averageProcessingTime: 0,
             sessionStart: Date.now(''';
-            verbosity: 'normal', // 'minimal', 'normal', 'verbose';
+           , verbosity: 'normal', // 'minimal', 'normal', 'verbose';
             speed: 1.0;
             pitch: 1.0;
             volume: 1.0;
             pauseOnNavigation: false;
             groupSimilarMessages: true;
-            respectGamePause: true ,}))'
-        ')';
+           , respectGamePause: true ,}))', ')';
         console.log('LiveRegionManager, initialized);
         this.initialize();
     }
@@ -185,8 +184,7 @@ export class LiveRegionManager {'
             element.setAttribute('aria-atomic', config.atomic.toString());''
             element.setAttribute('aria-relevant', config.relevant);
 
-            if(config.role) {'
-                ';
+            if(config.role) {', ';
 
             }
 
@@ -224,7 +222,7 @@ export class LiveRegionManager {'
                 padding: 0 !important;
                 margin: -1px !important;
                 overflow: hidden !important;
-                clip: rect(0, 0, 0, 0) !important,
+               , clip: rect(0, 0, 0, 0) !important,
                 white-space: nowrap !important,
                 border: 0 !important ,}
             
@@ -239,7 +237,7 @@ export class LiveRegionManager {'
                 background: #f0f0f0;
                 border: 1px dashed #999;
                 padding: 4px;
-                margin: 2px;
+               , margin: 2px;
                 font-size: 12px,
                 color: #666 ,}
         `;
@@ -291,8 +289,7 @@ export class LiveRegionManager {'
         window.addEventListener('focus', () => { this.resumeAnnouncements(); });
         ';
         // Speech Synthesis 状態変更
-        if(window.speechSynthesis) {'
-            ';
+        if(window.speechSynthesis) {', ';
 
         }
 
@@ -479,15 +476,13 @@ export class LiveRegionManager {'
 
             return 'alert';
 
-        if(message.type === 'status'') {'
-            ';
+        if(message.type === 'status'') {', ';
 
         }
 
             return 'status';
 
-        if(message.type === 'log'') {'
-            ';
+        if(message.type === 'log'') {', ';
 
         }
 
@@ -568,7 +563,7 @@ export class LiveRegionManager {'
 
     }
 
-        return essential ? essential.join(' ') : text;
+        return essential ? essential.join(', ') : text;
     
     /**
      * 詳細情報の追加
@@ -645,7 +640,7 @@ export class LiveRegionManager {'
         // アクティブな通知として追跡
         this.activeAnnouncements.add({ region: region)
             text: text);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
     }
     
     /**
@@ -701,7 +696,7 @@ export class LiveRegionManager {'
             variables: options.variables;
             region: options.region;
             timestamp: Date.now();
-            id: this.generateMessageId( ,};
+           , id: this.generateMessageId( ,};
         
         // キューサイズチェック
         if(this.messageQueue.length >= this.config.throttling.maxQueue) {
@@ -835,8 +830,7 @@ export class LiveRegionManager {'
     /**
      * デバッグモードの切り替え'
      */''
-    toggleDebugMode(enabled) {'
-        ';
+    toggleDebugMode(enabled) {', ';
 
     }
 
@@ -859,13 +853,13 @@ export class LiveRegionManager {'
             stats: { ...this.stats;
                 queueSize: this.messageQueue.length;
                 activeRegions: this.liveRegions.size;
-                memoryUsage: {
+               , memoryUsage: {
                     messageHistory: this.messageHistory.length;
-                    activeAnnouncements: this.activeAnnouncements.size }
+                   , activeAnnouncements: this.activeAnnouncements.size }
             };
             userPreferences: this.userPreferences;
-            performance: { averageProcessingTime: this.stats.averageProcessingTime;
-                messagesPerMinute: this.stats.totalAnnouncements / ;
+           , performance: { averageProcessingTime: this.stats.averageProcessingTime;
+               , messagesPerMinute: this.stats.totalAnnouncements / ;
                     ((Date.now() - this.stats.sessionStart) / 60000), }
         }
     

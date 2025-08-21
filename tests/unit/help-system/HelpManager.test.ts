@@ -1,31 +1,31 @@
 /**
  * HelpManager ユニットテスト
  */
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { HelpManager } from '../../../src/core/help/HelpManager';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { HelpManager  } from '../../../src/core/help/HelpManager';
 // Type definitions
 interface MockGameEngine {
     localizationManager: {
-        getCurrentLanguage: jest.Mock<() => string>;
-        getString: jest.Mock<(key: string) => string>
+        getCurrentLanguag;e: jest.Mock<() => string>;
+        getString: jest.Mock<(ke;y: string) => string>
     },
     sceneManager: {
         getCurrentScene: jest.Mock<() => MockScene>
     },
-    canvas: { width: number; height: number };
+    canvas: { width: number;, height: number };
 }
 interface MockScene {
-    constructor: { name: string };
+    constructor: { nam;e: string };
 }
 interface MockContentLoader {
-    loadHelpContent: jest.Mock<(category: string, language: string) => Promise<HelpContent[]>>;
+    loadHelpContent: jest.Mock<(categor;y: string, language: string) => Promise<HelpContent[]>>;
     getCachedContent: jest.Mock,
     setCachedContent: jest.Mock,
 }
 interface MockSearchEngine {
-    search: jest.Mock<(query: string, options?: any) => Promise<SearchResult[]>>;
+    search: jest.Mock<(quer;y: string, options?: any) => Promise<SearchResult[]>>;
     indexContent: jest.Mock,
-    getSuggestions: jest.Mock<(query: string) => Promise<string[]>>;
+    getSuggestions: jest.Mock<(quer;y: string) => Promise<string[]>>;
 }
 interface HelpContent {
     id: string,

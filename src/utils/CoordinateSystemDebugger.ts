@@ -12,14 +12,14 @@ interface TrackedElement { x: number;
     width: number;
     height: number;
     color: string;
-    timestamp: number }
+   , timestamp: number }
 
 interface CoordinateEntry { baseX: number;
     baseY: number;
     scaledX: number;
     scaledY: number;
     context: string;
-    timestamp: Date
+   , timestamp: Date
     }
 
 interface ScaledCoordinateManager { getDebugInfo(): DebugInfo;
@@ -42,7 +42,7 @@ export class CoordinateSystemDebugger {
     private isEnabled: boolean;
     private showOverlays: boolean;
     private logLevel: LogLevel;
-    private trackedElements: Map<string, TrackedElement>;
+    private, trackedElements: Map<string, TrackedElement>;
     private coordinateHistory: CoordinateEntry[];
     private maxHistorySize: number;
     private debugUpdateInterval: NodeJS.Timeout | null;
@@ -50,7 +50,7 @@ export class CoordinateSystemDebugger {
         scaledCoordinateManager: ScaledCoordinateManager
     );
         uiPositionCalculator: UIPositionCalculator | null = null)';
-        inputCoordinateConverter: InputCoordinateConverter | null = null'';
+       , inputCoordinateConverter: InputCoordinateConverter | null = null'';
     ') {'
         this.scaledCoordinateManager = scaledCoordinateManager,
         this.uiPositionCalculator = uiPositionCalculator;
@@ -105,7 +105,7 @@ export class CoordinateSystemDebugger {
         this.debugPanel.style.cssText = `;
             position: fixed;
             top: 10px;
-            right: 10px,
+           , right: 10px,
             width: 320px,
             background: rgba(0, 0, 0, 0.9);
 
@@ -179,25 +179,25 @@ export class CoordinateSystemDebugger {
 
             <div style="margin-bottom: 15px;">"
                 <h4>🎮 Control Panel</h4>"";
-                <button onclick="window.coordinateDebugger.toggleOverlays(")" "";
+                <button onclick="window.coordinateDebugger.toggleOverlays(")", "";
                         style="background: ${this.showOverlays ? '#4CAF50' : '#757575'},
 
-                               color: white; border: none; padding: 5px 10px, ''
-                               border-radius: 4px; margin-right: 5px; cursor: pointer;">""
+                               color: white; border: none;, padding: 5px 10px, ''
+                               border-radius: 4px; margin-right: 5px;, cursor: pointer;">""
                     ${this.showOverlays ? 'Hide' : 'Show'} Overlays'
                 </button>'';
-                <button onclick="window.coordinateDebugger.logCurrentState(")" "";
-                        style="background: #FF9800; color: white; border: none, ""
-                               padding: 5px 10px; border-radius: 4px; cursor: pointer;">"
+                <button onclick="window.coordinateDebugger.logCurrentState(")", "";
+                        style="background: #FF9800; color: white;, border: none, ""
+                               padding: 5px 10px; border-radius: 4px;, cursor: pointer;">"
                     Log State;
                 </button>;
             </div>";
 
             <div style="margin-bottom: 15px;">""
                 <h4>📍 Tracked Elements (${ this.trackedElements.size)")</h4>""
-                <div style="max-height: 120px; overflow-y: auto; font-size: 11px;">""
+                <div, style="max-height: 120px; overflow-y: auto; font-size: 11px;">""
                     ${Array.from(this.trackedElements.entries(}.map(([id, element]"} => `" }"
-                        <div style="margin: 3px 0; padding: 3px; background: rgba(255,255,255,0.1"}); border-radius: 3px;">
+                        <div style="margin: 3px 0; padding: 3px;, background: rgba(255,255,255,0.1"}); border-radius: 3px;">
                             <strong>${id}</strong>: (${element.x.toFixed(1}), ${element.y.toFixed(1})) ;
                             ${element.width}×${element.height}"
                         </div>"";
@@ -208,7 +208,7 @@ export class CoordinateSystemDebugger {
 
             <div>'';
                 <h4>📋 Recent Coordinates(${ this.coordinateHistory.length))</h4>''
-                <div style="max-height: 100px; overflow-y: auto; font-size: 11px;">""
+                <div, style="max-height: 100px; overflow-y: auto; font-size: 11px;">""
                     ${this.coordinateHistory.slice(-5).map(entry => `}"
                         <div, style="margin: 2px, 0; color: #E0E0E0;">}
                             ${entry.timestamp.toLocaleTimeString(}): 
@@ -248,7 +248,7 @@ export class CoordinateSystemDebugger {
         this.overlayCanvas.id = 'coordinate-debug-overlay';
         this.overlayCanvas.style.cssText = `;
             position: absolute;
-            top: ${gameCanvas.offsetTop}px;
+           , top: ${gameCanvas.offsetTop}px;
             left: ${gameCanvas.offsetLeft}px;
             width: ${gameCanvas.offsetWidth}px;
             height: ${gameCanvas.offsetHeight}px;
@@ -460,9 +460,9 @@ export class CoordinateSystemDebugger {
             x: x;
             y: y);
             width: width);
-            height: height,);
+           , height: height,);
             color: color);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
         
         if(this.showOverlays) {
         ';
@@ -499,7 +499,7 @@ export class CoordinateSystemDebugger {
             scaledX: scaledX;
             scaledY: scaledY;
             context: context;
-            timestamp: new Date( };
+           , timestamp: new Date( };
         
         this.coordinateHistory.push(entry);
         
@@ -522,7 +522,7 @@ export class CoordinateSystemDebugger {
         const state = {
             timestamp: new Date().toISOString();
             canvasInfo: debugInfo.canvasInfo);
-            scaleFactor: debugInfo.scaleFactor,)';
+           , scaleFactor: debugInfo.scaleFactor,)';
             trackedElements: Array.from(this.trackedElements.entries(),
             coordinateHistory: this.coordinateHistory.slice(-10);
     ,}
@@ -576,8 +576,7 @@ export class CoordinateSystemDebugger {
         if (messageLevel >= currentLevel) { const timestamp = new Date().toLocaleTimeString(); }
             const prefix = `[CoordinateDebugger ${timestamp}]`;
 
-            switch(level) {'
-                ';
+            switch(level) {', ';
 
             }
 

@@ -3,8 +3,8 @@ import type { Achievement,
     AchievementConfig,
     AchievementProgressResult,
     AchievementStatistics } from '../types/game';''
-import { ProgressTracker } from './achievement/ProgressTracker.js';''
-import { PerformanceOptimizer } from './achievement/PerformanceOptimizer.js';
+import { ProgressTracker  } from './achievement/ProgressTracker.js';''
+import { PerformanceOptimizer  } from './achievement/PerformanceOptimizer.js';
 
 /**
  * AchievementManager - 実績管理システム
@@ -24,7 +24,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         this.config = {
             enableNotifications: true;
             enablePerformanceOptimization: true;
-            autoSave: true;
+           , autoSave: true;
     ,}
             debugMode: false }
         };
@@ -153,7 +153,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         this.notificationSystem.updateConfig({''
             position: 'top-right);
             fadeIn: true);
-            slideIn: true,);
+           , slideIn: true,);
             sound: true ,}
     
     /**
@@ -196,7 +196,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             }
             
             // キャッシュチェック
-            const cacheKey = `achievement_${(achievement, as Achievement}).id}_${eventType}`;
+            const cacheKey = `achievement_${(achievement, as, Achievement}).id}_${eventType}`;
             let progressResult = this.performanceOptimizer.getFromCache(cacheKey);
             
             if(!progressResult) {
@@ -241,8 +241,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      * 実績解除イベントを処理
      */'
     handleAchievementUnlocked(data: any): void { // 追加の処理が必要な場合はここに記述
-        if(this.config.debugMode) {'
-            ';
+        if(this.config.debugMode) {', ';
 
         }
 
@@ -253,8 +252,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      * 進捗更新イベントを処理
      */'
     handleProgressUpdated(data: any): void { // 追加の処理が必要な場合はここに記述
-        if(this.config.debugMode) {'
-            ';
+        if(this.config.debugMode) {', ';
 
         }
 
@@ -328,7 +326,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     getStatistics(): AchievementStatistics { const defaultStats = {
             total: 0;
             unlocked: 0;
-            unlockedPercentage: 0, }
+           , unlockedPercentage: 0, }
             categories: {};
             performance: {};
             byCategory: {};
@@ -341,7 +339,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         return { total: definitions.total,
             unlocked: unlocked.length;
             unlockedPercentage: (unlocked.length / definitions.total) * 100;
-            categories: definitions.byCategory;
+           , categories: definitions.byCategory;
             performance,
             byCategory: definitions.byCategory, };
             ...definitions
@@ -383,7 +381,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             progressData: this.getProgressData(), }
             performance: this.performanceOptimizer ? this.performanceOptimizer.getPerformanceStats() : {};
             notificationHistory: this.getNotificationHistory(5);
-            progressHistory: this.progressTracker ? this.progressTracker.getProgressHistory(10) : [];
+           , progressHistory: this.progressTracker ? this.progressTracker.getProgressHistory(10) : [];
         },
     }
     

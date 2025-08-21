@@ -22,7 +22,7 @@ interface Bottleneck { type: string,
     timestamp: number;
     value: number;
     threshold: number;
-    impact: string;
+   , impact: string;
     occurrences?: number;
     firstSeen?: number;
     lastSeen?: number;
@@ -34,12 +34,12 @@ interface Anomaly { ''
     severity: 'low' | 'medium' | 'high' | 'critical';
     description: string;
     metric: string;
-    deviation: number }
+   , deviation: number }
 
 interface RootCause { issue: string;
     potentialCauses: string[];
     confidence: number;
-    recommendedActions: string[] }
+   , recommendedActions: string[] }
 ';
 
 interface OverallAssessment { healthScore: number,''
@@ -47,21 +47,21 @@ interface OverallAssessment { healthScore: number,''
     criticalIssues: CriticalIssue[];
     majorConcerns: any[];
     improvements: any[];
-    summary: string ,}
+   , summary: string ,}
 
 interface CriticalIssue { type: string;
-    description: string;
+   , description: string;
     component?: string;
     impact?: string;
     metric?: string;
     deviation?: number; }
 
 interface CollectedData { rawData: {
-        samples: DataSample[];
-        metrics: Record<string, any>;
+        sample;s: DataSample[];
+       , metrics: Record<string, any>;
         startTime: number;
         endTime: number;
-        collectionDuration: number ,};
+       , collectionDuration: number ,};
     summary?: any;
 }
 
@@ -70,23 +70,23 @@ interface DataSample { timestamp: number,
     memoryUsage: number;
     renderTime: number;
     networkLatency: number;
-    inputLag: number ,}
+   , inputLag: number ,}
 
 interface AnalysisCapabilities { bottleneckAnalysis: boolean;
     anomalyDetection: boolean;
     rootCauseAnalysis: boolean;
     performanceAssessment: boolean;
-    supportedMetrics: string[] }
+   , supportedMetrics: string[] }
 
 interface AnalyzerConfig { bottleneckThresholds?: Record<string, any>;
     anomalyBaselines?: Record<string, any>; }
 
 interface Threshold { critical: number,
     high: number;
-    medium: number ,}
+   , medium: number ,}
 
 interface Baseline { mean: number;
-    stdDev: number }
+   , stdDev: number }
 
 export class DiagnosticAnalyzer {
     private mainController: MainController;
@@ -94,7 +94,7 @@ export class DiagnosticAnalyzer {
     private bottleneckIdentifier: BottleneckIdentifier;
     private issueAnalyzer: IssueAnalyzer;
     private anomalyDetector: AnomalyDetector;
-    private rootCauseAnalyzer: RootCauseAnalyzer;
+    private, rootCauseAnalyzer: RootCauseAnalyzer;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -164,7 +164,7 @@ export class DiagnosticAnalyzer {
             healthScore: 100,
             performanceLevel: 'excellent';
             criticalIssues: [];
-            majorConcerns: [],
+           , majorConcerns: [],
             improvements: [],
             summary: '' ,};
 ';
@@ -181,7 +181,7 @@ export class DiagnosticAnalyzer {
             assessment.criticalIssues.push(...criticalBottlenecks.map(b => ({''
                 type: 'bottleneck);
                 description: b.description);
-                component: b.component,)
+               , component: b.component,)
         }
                 impact: b.impact))); }
         }
@@ -199,7 +199,7 @@ export class DiagnosticAnalyzer {
             assessment.criticalIssues.push(...criticalAnomalies.map(a => ({''
                 type: 'anomaly);
                 description: a.description);
-                metric: a.metric,)
+               , metric: a.metric,)
         }
                 deviation: a.deviation))); }
         }
@@ -243,7 +243,7 @@ export class DiagnosticAnalyzer {
     async performQuickDiagnosis(collectedData: CollectedData): Promise<AnalysisResults> { const options: AnalysisOptions = {
             includeBottleneckAnalysis: true;
             includeAnomalyDetection: true;
-            includeRootCauseAnalysis: false };
+           , includeRootCauseAnalysis: false };
         return await this.runAnalyses(collectedData, options);
     }
 
@@ -494,7 +494,7 @@ class AnomalyDetector { private detectors: Map<string, any>;
 // 根本原因分析器
 class RootCauseAnalyzer { private correlationAnalyzer: CorrelationAnalyzer
     private causalityDetector: CausalityDetector;
-    private dependencyMapper: DependencyMapper;
+    private, dependencyMapper: DependencyMapper;
     constructor() {
 
         this.correlationAnalyzer = new CorrelationAnalyzer();
@@ -563,9 +563,9 @@ class FrameRateBottleneckDetector { ''
 
                     component: 'rendering_pipeline'),' }
 
-                    description: `Critical frame rate drop: ${sample.frameRate.toFixed(1'})fps`;
+                    description: `Critical frame rate, drop: ${sample.frameRate.toFixed(1'})fps`;
                     timestamp: sample.timestamp;
-                    value: sample.frameRate,
+                   , value: sample.frameRate,
                     threshold: frameRateThreshold.critical,
                     impact: 'severe_user_experience_degradation'';
                 });''
@@ -574,9 +574,9 @@ class FrameRateBottleneckDetector { ''
                     severity: 'high',')';
                     component: 'rendering_pipeline'),' }
 
-                    description: `Frame rate below target: ${sample.frameRate.toFixed(1'})fps`;
+                    description: `Frame rate below, target: ${sample.frameRate.toFixed(1'})fps`;
                     timestamp: sample.timestamp;
-                    value: sample.frameRate,
+                   , value: sample.frameRate,
                     threshold: frameRateThreshold.high,
                     impact: 'noticeable_performance_impact';
                 }),
@@ -596,7 +596,7 @@ class FrameRateBottleneckDetector { ''
                     occurrences: 1;
                     firstSeen: bottleneck.timestamp);
                     lastSeen: bottleneck.timestamp);
-                    minValue: bottleneck.value, }
+                   , minValue: bottleneck.value, }
                     maxValue: bottleneck.value); }
             } else {  const existing = grouped.get(key)!;
                 existing.occurrences = (existing.occurrences || 0) + 1;

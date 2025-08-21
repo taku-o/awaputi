@@ -8,8 +8,8 @@
  * @since Issue #163 - Task 10: Accessibility Settings Integration
  */
 
-import { getLoggingSystem } from '../../core/LoggingSystem';''
-import { GameEngine } from '../../types/gameEngine';
+import { getLoggingSystem  } from '../../core/LoggingSystem';''
+import { GameEngine  } from '../../types/gameEngine';
 
 // 型定義
 interface Profile { name: string,
@@ -30,31 +30,31 @@ interface ValidationResult { valid: boolean;
 interface Notification { message: string,
     type: NotificationType;
     timestamp: number;
-    id: string ,}
+   , id: string ,}
 
 interface Statistics { settingsChanged: number;
     profilesUsed: number;
     exportCount: number;
     importCount: number;
     validationErrors: number;
-    sessionStart: number }
+   , sessionStart: number }
 
 interface ExtendedStatistics extends Statistics { sessionDuration: number;
     profileCount: number;
     currentProfile: string;
     validationErrors: number;
-    notifications: number }
+   , notifications: number }
 
 interface ValidationError { key: string;
-    error: string }
+   , error: string }
 
 interface SettingOption { value: string;
-    label: string }
+   , label: string }
 
 interface AccessibilitySetting { key: string;
     label: string;
     type: SettingType;
-    description: string;
+   , description: string;
     validator?: string;
     min?: number;
     max?: number;
@@ -65,7 +65,7 @@ interface AccessibilitySetting { key: string;
 interface ExportData { timestamp: string,
     version: string;
     currentProfile: string;
-    settings: ProfileSettings;
+   , settings: ProfileSettings;
     ,}
     profiles?: { [key: string]: Profile }
 
@@ -73,7 +73,7 @@ interface ProfileInfo { name: string;
     displayName: string;
     description: string;
     isCustom: boolean;
-    created: number | null }
+   , created: number | null }
 
 // ゲームエンジンの拡張型
 interface ExtendedGameEngine extends GameEngine { settingsManager?: {
@@ -90,15 +90,15 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     private loggingSystem: any;
     ';
     // 設定プロファイル管理
-    private profiles: Map<string, Profile> = new Map(''';
+    private, profiles: Map<string, Profile> = new Map(''';
     private, currentProfile: string = 'default';
     private, profileHistory: ProfileHistoryEntry[] = [];
     // 設定検証機能)
-    private validators: Map<string, ValidatorFunction> = new Map();
+    private, validators: Map<string, ValidatorFunction> = new Map();
     private validationErrors: ValidationError[] = [];
     // リアルタイムプレビュー機能
     private previewEnabled: boolean = true;
-    private previewCallbacks: Map<string, PreviewCallback> = new Map();
+    private, previewCallbacks: Map<string, PreviewCallback> = new Map();
     
     // 設定統計
     private stats: Statistics = {
@@ -107,11 +107,11 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         exportCount: 0;
         importCount: 0;
         validationErrors: 0;
-        sessionStart: Date.now( ,};
+       , sessionStart: Date.now( ,};
     
     // 通知システム
     private notifications: Notification[] = [];
-    private notificationTimeout: NodeJS.Timeout | null = null;
+    private, notificationTimeout: NodeJS.Timeout | null = null;
     constructor(gameEngine: ExtendedGameEngine) {
     
         this.gameEngine = gameEngine;
@@ -273,8 +273,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         if(!this.profiles.has('default)) { ''
             this.profiles.set('default', {)'
                 name: 'デフォルト')';
-                settings: {''
-                    'accessibility.highContrast': false,
+               , settings: {'', 'accessibility.highContrast': false,
                     'accessibility.reducedMotion': false,
                     'accessibility.largeText': false,
                     'accessibility.screenReader': false,
@@ -292,8 +291,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         if(!this.profiles.has('highContrast)) { ''
             this.profiles.set('highContrast', {)'
                 name: '高コントラスト')';
-                settings: {''
-                    'accessibility.highContrast': true,
+               , settings: {'', 'accessibility.highContrast': true,
                     'accessibility.reducedMotion': false,
                     'accessibility.largeText': true,
                     'accessibility.screenReader': true,
@@ -311,8 +309,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         if(!this.profiles.has('motorImpairment)) { ''
             this.profiles.set('motorImpairment', {)'
                 name: '運動機能配慮')';
-                settings: {''
-                    'accessibility.highContrast': false,
+               , settings: {'', 'accessibility.highContrast': false,
                     'accessibility.reducedMotion': true,
                     'accessibility.largeText': true,
                     'accessibility.screenReader': false,
@@ -488,7 +485,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         // 現在のプロファイル履歴に追加
         this.profileHistory.push({ )
             profile: this.currentProfile);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
         
         // 履歴サイズ制限
         if (this.profileHistory.length > 10) { this.profileHistory.shift(); }
@@ -526,10 +523,10 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
 });
         
         this.profiles.set(name, { name: name)
-            description: description,);
+           , description: description,);
             settings: currentSettings);
             created: Date.now();
-            custom: true ,});
+           , custom: true ,});
         this.saveProfiles()';
         this.showNotification(`プロファイル '${name}' を作成しました`, 'success''});
         
@@ -543,7 +540,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             const exportData: ExportData = {''
                 timestamp: new Date(''';
                 version: '1.0.0';
-                currentProfile: this.currentProfile, }
+               , currentProfile: this.currentProfile, }
                 settings: {}))
             // 現在の設定を収集
             this.getExtendedAccessibilitySettings().forEach(setting => {  );
@@ -684,7 +681,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             message,
             type,
             timestamp: Date.now();
-            id: Math.random().toString(36).substr(2, 9 };
+           , id: Math.random().toString(36).substr(2, 9 };
         
         this.notifications.push(notification);
         
@@ -727,7 +724,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                 name,
                 displayName: profile.name,)';
                 description: profile.description || '');
-                isCustom: profile.custom || false,) }
+               , isCustom: profile.custom || false,) }
                 created: profile.created || null); }
             });
         });
@@ -752,7 +749,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             sessionDuration: Date.now() - this.stats.sessionStart;
             profileCount: this.profiles.size;
             currentProfile: this.currentProfile;
-            validationErrors: this.validationErrors.length, };
+           , validationErrors: this.validationErrors.length, };
             notifications: this.notifications.length }
         }
     

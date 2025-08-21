@@ -1,4 +1,4 @@
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer';
+import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer';
 import type { BubbleEffectProcessor as IBubbleEffectProcessor,
 
     Bubble' }'
@@ -125,10 +125,10 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
     /**
      * 泡を破裂させる
      */
-    private burstBubble(bubble: Bubble): void { console.log(`${bubble.type) bubble burst automatically`);
+    private burstBubble(bubble: Bubble): void { console.log(`${bubble.type) bubble, burst automatically`);
         
         // プレイヤーにダメージ
-        const damage = this.calculateBurstDamage(bubble);
+        const, damage = this.calculateBurstDamage(bubble);
         this.gameEngine.playerData.takeDamage(damage};
         
         // 新しいエフェクトシステムで爆発エフェクトを作成
@@ -143,8 +143,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
     /**
      * 破裂ダメージを計算
      */''
-    private calculateBurstDamage(bubble: Bubble): number { const baseDamage: Record<string, number> = {''
-            'normal': 5,
+    private calculateBurstDamage(bubble: Bubble): number { const baseDamage: Record<string, number> = {'', 'normal': 5,
             'stone': 8,
             'iron': 12,
             'diamond': 15,
@@ -271,7 +270,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
      * 大爆発効果（爆発の泡用）
      */
     private bigExplosion(centerX: number, centerY: number, radius: number, damage: number): void { const bubbles = this.gameEngine.bubbleManager.bubbles; }
-        const affectedBubbles: Array<{ bubble: Bubble; distance: number }> = [];
+        const affectedBubbles: Array<{ bubble: Bubble;, distance: number }> = [];
         
         bubbles.forEach((bubble: Bubble) => {  const dx = bubble.position.x - centerX;
             const dy = bubble.position.y - centerY;

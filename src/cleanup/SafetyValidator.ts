@@ -1,25 +1,25 @@
 import fs from 'fs';''
 import path from 'path';''
-import { ReferenceResult } from './ReferenceChecker.js';
+import { ReferenceResult  } from './ReferenceChecker.js';
 
 interface CurrentFileCheck { exists: boolean,
     currentFilePath: string;
-    error: string | null ,}
+   , error: string | null ,}
 ';
 
 interface Reference { ''
     type: 'import' | 'string';
-    context: string }
+   , context: string }
 
 interface ReferenceValidation { hasActiveReferences: boolean;
     activeReferences: Reference[];
-    inactiveReferences: Reference[]
+   , inactiveReferences: Reference[]
     }
 
 interface FileSizeValidation { valid: boolean;
     size: number;
     warnings: string[];
-    error: string | null }
+   , error: string | null }
 
 interface SafetyReportResult { filePath: string;
     currentFileExists: boolean;
@@ -31,10 +31,10 @@ interface SafetyReportResult { filePath: string;
     isSafeToDelete: boolean;
     warnings: string[];
     errors: string[];
-    details: {
-        currentFileCheck: CurrentFileCheck;
+   , details: {
+        currentFileChec;k: CurrentFileCheck;
         referenceCheck: ReferenceValidation;
-        sizeCheck: FileSizeValidation
+       , sizeCheck: FileSizeValidation
     }
 
 export interface SafetyResults { results: SafetyReportResult[],
@@ -42,11 +42,11 @@ export interface SafetyResults { results: SafetyReportResult[],
     safeToDelete: number;
     unsafeToDelete: number;
     totalWarnings: number;
-    totalErrors: number ,}
+   , totalErrors: number ,}
 
 export class SafetyValidator {
     private maxSafeFileSize: number;
-    private minFileSize: number;
+    private, minFileSize: number;
     constructor() {
 
         this.maxSafeFileSize = 100 * 1024 * 1024; // 100MB
@@ -64,7 +64,7 @@ export class SafetyValidator {
                 error: null }
             } catch (error) { return { exists: false, };
                 currentFilePath, }
-                error: `Current file does not exist: ${currentFilePath}`
+                error: `Current file does not, exist: ${currentFilePath}`
             }
     }
 
@@ -124,7 +124,7 @@ export class SafetyValidator {
             return { valid: false,
                 size: 0, };
                 warnings: [], }
-                error: `Cannot read file size: ${errorMessage}`
+                error: `Cannot read file, size: ${errorMessage}`
             }
     }
 ';
@@ -136,7 +136,7 @@ export class SafetyValidator {
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
 
         const i = Math.floor(Math.log(bytes) / Math.log(k);''
-        return parseFloat((bytes / Math.pow(k, i).toFixed(2)) + ' ' + sizes[i]; }
+        return parseFloat((bytes / Math.pow(k, i).toFixed(2)) + ', ' + sizes[i]; }
 
     async generateSafetyReport(filePath: string, referenceResult: ReferenceResult): Promise<SafetyReportResult> { const currentFileCheck = await this.validateCurrentFileExists(filePath);
         const referenceCheck = this.validateNoActiveReferences(referenceResult.references);
@@ -177,7 +177,7 @@ export class SafetyValidator {
             hasActiveReferences: referenceCheck.hasActiveReferences;
             activeReferencesCount: referenceCheck.activeReferences.length;
             activeReferences: referenceCheck.activeReferences;
-            fileSize: sizeCheck.size;
+           , fileSize: sizeCheck.size;
             isSafeToDelete,
             warnings,
             errors,

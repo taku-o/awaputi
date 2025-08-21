@@ -1,6 +1,6 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * ゲームコンテンツ説明生成クラス
@@ -8,7 +8,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  */
 export class GameContentDescriber {
     private config: BasicConfig;
-    private state: any';
+    private, state: any';
 
     constructor(screenReaderManager: any) {
         this.screenReaderManager = screenReaderManager;
@@ -22,9 +22,9 @@ export class GameContentDescriber {
             contextSensitive: true;
             includeInstructions: true;
             includeShortcuts: true;
-            updateFrequency: 2000, // 2秒間隔;
+           , updateFrequency: 2000, // 2秒間隔;
             maxDescriptionLength: 300;
-            priority: {''
+           , priority: {''
                 critical: ['gameOver', 'levelComplete', 'error'],
                 high: ['scoreChange', 'comboStart', 'specialBubble'],
                 normal: ['bubbleSpawn', 'timeUpdate'],
@@ -99,15 +99,15 @@ export class GameContentDescriber {
             lastBubbleCount: 0;
             lastScore: 0;
             lastCombo: 0;
-            sessionStats: {
+           , sessionStats: {
                 totalDescriptions: 0;
                 actionDescriptions: 0;
-                helpRequests: 0,
+               , helpRequests: 0,
                 startTime: Date.now(''';
                 verbosity: 'normal';
                 includeScores: true;
                 includeTime: true;
-                includeBubbleCounts: false ,}))
+               , includeBubbleCounts: false ,}))
         // バブル位置管理（空間的説明用）
         this.spatialInfo = {;
             bubblePositions: new Map()';
@@ -148,8 +148,7 @@ export class GameContentDescriber {
         }
         ';
         // GameEngineのイベントを監視
-        if(this.gameEngine.addEventListener) {'
-            ';
+        if(this.gameEngine.addEventListener) {', ';
 
         }
 
@@ -175,8 +174,7 @@ export class GameContentDescriber {
         }
         ';
         // BubbleManagerのイベント監視
-        if(this.gameEngine.bubbleManager) {'
-            ';
+        if(this.gameEngine.bubbleManager) {', ';
 
         }
 
@@ -190,8 +188,7 @@ export class GameContentDescriber {
         }
         ';
         // SceneManagerのイベント監視
-        if(this.gameEngine.sceneManager) {'
-            ';
+        if(this.gameEngine.sceneManager) {', ';
 
         }
 
@@ -274,7 +271,7 @@ export class GameContentDescriber {
             hp: 0;
             combo: 0;
             bubbleCount: 0;
-            level: 1);
+           , level: 1);
         })
         if (!this.gameEngine) { return defaultState; }
         ';
@@ -286,10 +283,10 @@ export class GameContentDescriber {
 
             return { ''
                 phase: scene.isPaused ? 'paused' : 'playing';
-                score: scene.scoreManager? .currentScore || 0, : undefined
+               , score: scene.scoreManager? .currentScore || 0, : undefined
                 timeLeft: scene.timeLeft || 0;
                 hp: scene.playerHP || 0;
-                combo: scene.scoreManager? .currentCombo || 0, : undefined
+               , combo: scene.scoreManager? .currentCombo || 0, : undefined
                 bubbleCount: scene.bubbleManager? .bubbles?.length || 0, : undefined };
                 level: scene.currentLevel || 1 }
 
@@ -456,8 +453,7 @@ export class GameContentDescriber {
      * シーン変更の処理'
      */''
     handleSceneChange(newScene, oldScene) {'
-        const sceneDescriptions = {''
-            'MainMenuScene': 'メインメニューに戻りました。',
+        const sceneDescriptions = {'', 'MainMenuScene': 'メインメニューに戻りました。',
             'GameScene': 'ゲーム画面に移動しました。',
             'StageSelectScene': 'ステージ選択画面です。',
             'ShopScene': 'ショップ画面です。',
@@ -490,7 +486,7 @@ export class GameContentDescriber {
             score: newState.score || 0;
             finalScore: newState.finalScore || newState.score || 0;
             timeLeft: Math.ceil((newState.timeLeft || 0) / 1000);
-            bubbleCount: newState.bubbleCount || 0,
+           , bubbleCount: newState.bubbleCount || 0,
             instructions: this.getContextualInstructions(phase),
             resumeInstruction: 'Spaceキーで再開できます。',
             restartInstruction: 'Enterキーで新しいゲームを開始できます。',
@@ -557,8 +553,7 @@ export class GameContentDescriber {
      * 特殊バブル説明の取得'
      */''
     getSpecialBubbleDescription(bubble) {'
-        const descriptions = {''
-            'rainbow': 'ボーナスタイムが発動します。',
+        const descriptions = {'', 'rainbow': 'ボーナスタイムが発動します。',
             'pink': 'HPが回復しました。',
             'clock': '時間が停止しました。',
             'electric': '画面が震動します。',
@@ -585,8 +580,7 @@ export class GameContentDescriber {
         ';
         // Canvas サイズを取得
         const canvas = document.querySelector('#game-canvas, canvas.game-canvas);''
-        if(!canvas) {'
-            ';
+        if(!canvas) {', ';
 
         }
 
@@ -614,8 +608,7 @@ export class GameContentDescriber {
      * 領域表示名の取得'
      */''
     getRegionDisplayName(regionName) {'
-        const displayNames = {''
-            'topLeft': '左上',
+        const displayNames = {'', 'topLeft': '左上',
             'topCenter': '上中央',
             'topRight': '右上',
             'middleLeft': '左',
@@ -638,7 +631,7 @@ export class GameContentDescriber {
         if (bubble.id) {
             this.spatialInfo.bubblePositions.set(bubble.id, {)
                 x: bubble.x);
-                y: bubble.y,);
+               , y: bubble.y,);
                 type: bubble.type);
     ,}
                 timestamp: Date.now(); }
@@ -704,8 +697,7 @@ export class GameContentDescriber {
      * 効果表示名の取得'
      */''
     getEffectDisplayName(effect) {'
-        const displayNames = {''
-            'bonusTime': 'ボーナスタイム',
+        const displayNames = {'', 'bonusTime': 'ボーナスタイム',
             'timeStop': '時間停止',
             'doubleScore': 'ダブルスコア',
             'shockWave': '衝撃波',
@@ -900,7 +892,7 @@ export class GameContentDescriber {
             recentActionsCount: this.state.recentActions.length;
             spatialBubblesTracked: this.spatialInfo.bubblePositions.size;
             userPreferences: this.state.userPreferences;
-            lastGameState: this.state.lastGameState;
+           , lastGameState: this.state.lastGameState;
         },
     }
     

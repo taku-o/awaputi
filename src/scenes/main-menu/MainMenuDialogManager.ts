@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // インターフェース定義
 interface DialogManagerConfig {
@@ -10,7 +10,7 @@ interface PlayerData { username: string,
     tap: number;
     unlockedStages: string[];
     ownedItems: any[];
-    highScores: Record<string, number> }
+   , highScores: Record<string, number> }
 
 interface StageConfig {
     name: string;
@@ -105,7 +105,7 @@ export class MainMenuDialogManager {
             context.fillText('ハイスコア:', infoX, infoY);
             infoY += lineHeight;
 
-            context.font = '16px Arial';''
+            context.font = '16px, Arial';''
             context.fillStyle = '#CCCCCC';
             
             if (Object.keys(playerData.highScores).length > 0) {

@@ -7,7 +7,7 @@
 interface ErrorInfo { id?: string;
     context: string;
     message: string;
-    timestamp: string;
+   , timestamp: string;
     name?: string;
     stack?: string;
     metadata?: Record<string, any>;
@@ -18,7 +18,7 @@ interface RecoveryResult { success: boolean,
 
 interface RecoveryStrategy { attempts: number;
     maxAttempts: number;
-    strategy: (error: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
+   , strategy: (erro;r: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
     fallback: () => void ,}
 }
 
@@ -26,10 +26,10 @@ interface FallbackState { audioDisabled: boolean;
     canvasDisabled: boolean;
     storageDisabled: boolean;
     reducedEffects: boolean;
-    safeMode: boolean }
+   , safeMode: boolean }
 
 interface MainController { reporter?: {
-        showFallbackUI: () => void ,}
+        showFallbackU;I: () => void ,}
     };
     logger?: { errorStats: {
             recovered: number };
@@ -39,7 +39,7 @@ interface MainController { reporter?: {
 
 interface RecoveryConfig { maxRecoveryAttempts?: number; }
 
-interface CustomRecoveryStrategy { strategy: (error: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
+interface CustomRecoveryStrategy { strategy: (erro;r: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
     fallback: () => void;
     maxAttempts?: number ,}
 }
@@ -48,10 +48,10 @@ interface RecoveryStats { strategies: number;
     totalAttempts: number;
     successfulRecoveries: number;
     fallbackState: FallbackState;
-    strategiesByContext: Record<string, {
+   , strategiesByContext: Record<string, {
         attempts: number;
         maxAttempts: number;
-        attemptsRemaining: number ,}>;
+       , attemptsRemaining: number ,}>;
 }
 
 interface TestResult { success: boolean,
@@ -63,12 +63,12 @@ interface TestResult { success: boolean,
 declare global { interface Window {
         memoryStorage?: Map<string, string>;
         fallbackStorage?: {
-            getItem: (key: string) => string | null;
-            setItem: (key: string, value: string) => void;
-            removeItem: (key: string) => void;
+            getItem: (ke;y: string) => string | null;
+            setItem: (ke;y: string, value: string) => void;
+            removeItem: (ke;y: string) => void;
             clear: () => void;
             length: number;
-            key: (index: number) => string | null ,}
+            key: (inde;x: number) => string | null ,}
         };
         gameEngine?: { particleManager?: {
                 setMaxParticles: (count: number) => void;
@@ -101,10 +101,10 @@ declare global { interface Window {
 export class ErrorRecovery {
     private mainController: MainController;
     private maxRecoveryAttempts: number;
-    private recoveryAttempts: Map<string, number>;
+    private, recoveryAttempts: Map<string, number>;
     private recoveryStrategies: Map<string, RecoveryStrategy>;
     private fallbackState: FallbackState;
-    private fallbackModes: Map<string, any>;
+    private, fallbackModes: Map<string, any>;
     private lastLoggedAudioDisableState: boolean | null;
     constructor(mainController: MainController) {
 
@@ -122,7 +122,7 @@ export class ErrorRecovery {
             audioDisabled: false;
             canvasDisabled: false;
             storageDisabled: false;
-            reducedEffects: false;
+           , reducedEffects: false;
     ,}
             safeMode: false }
         };
@@ -142,7 +142,7 @@ export class ErrorRecovery {
      */''
     private setupRecoveryStrategies()';
         this.recoveryStrategies.set('CANVAS_ERROR', { attempts: 0)'
-            maxAttempts: 2),
+           , maxAttempts: 2),
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Canvas error detected, attempting recovery:', error.message);
                 ';
@@ -162,7 +162,7 @@ export class ErrorRecovery {
 
                     parent? .replaceChild(newCanvas, canvas); }
 
-                     : undefined' '
+                     : undefined', '
                     return { success: true, message: 'Canvas recreated successfully' ,}
 
                 return { success: false, message: 'Canvas element not found' ,},
@@ -188,7 +188,7 @@ export class ErrorRecovery {
         ';
         // Storage-related error recovery
         this.recoveryStrategies.set('STORAGE_ERROR', { attempts: 0)'
-            maxAttempts: 1),
+           , maxAttempts: 1),
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Storage error detected, using memory storage:', error.message);' }
 
@@ -201,7 +201,7 @@ export class ErrorRecovery {
         ';
         // Memory-related error recovery
         this.recoveryStrategies.set('MEMORY_WARNING', { attempts: 0)'
-            maxAttempts: 1),
+           , maxAttempts: 1),
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Memory warning detected, reducing effects:', error.message);
 
@@ -219,7 +219,7 @@ export class ErrorRecovery {
         ';
         // Performance-related error recovery
         this.recoveryStrategies.set('PERFORMANCE_WARNING', { attempts: 0)'
-            maxAttempts: 2),
+           , maxAttempts: 2),
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Performance warning detected, optimizing:', error.message);' }
 
@@ -232,7 +232,7 @@ export class ErrorRecovery {
         ';
         // Network-related error recovery
         this.recoveryStrategies.set('NETWORK_ERROR', { attempts: 0)'
-            maxAttempts: 2),
+           , maxAttempts: 2),
             strategy: (error: ErrorInfo, context: string'): Promise<RecoveryResult> => { ''
                 console.warn('Network error detected, attempting recovery:', error.message) }
                 return this.attemptNetworkRecovery();,
@@ -243,7 +243,7 @@ export class ErrorRecovery {
         ';
         // WebGL-related error recovery
         this.recoveryStrategies.set('WEBGL_ERROR', { attempts: 0)'
-            maxAttempts: 1),
+           , maxAttempts: 1),
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('WebGL error detected, falling back to 2D:', error.message) }
                 return this.fallbackTo2DRendering();,
@@ -331,8 +331,7 @@ export class ErrorRecovery {
             }
             ;
             // Lower effect quality
-            if(window.gameEngine.effectManager) {'
-                ';
+            if(window.gameEngine.effectManager) {', ';
 
             }
 
@@ -473,7 +472,7 @@ export class ErrorRecovery {
 
             })'
             return { success: false, message: 'No renderer available' ,}) catch (error) { const errorMessage = error instanceof Error ? error.message: String(error 
-            return { success: false, message: `2D fallback failed: ${errorMessage,}` }
+            return { success: false, message: `2D fallback, failed: ${errorMessage,}` }
 }
     
     /**
@@ -505,16 +504,14 @@ export class ErrorRecovery {
      * @param strategy - Strategy configuration'
      */''
     addRecoveryStrategy(context: string, strategy: CustomRecoveryStrategy): void { ''
-        if(!strategy.strategy || typeof, strategy.strategy !== 'function'') {'
-            ';
+        if(!strategy.strategy || typeof, strategy.strategy !== 'function'') {', ';
 
         }
 
             throw new Error('Recovery, strategy must, have a, strategy function''); }
         }
 
-        if(!strategy.fallback || typeof, strategy.fallback !== 'function'') {'
-            ';
+        if(!strategy.fallback || typeof, strategy.fallback !== 'function'') {', ';
 
         }
 
@@ -523,7 +520,7 @@ export class ErrorRecovery {
         
         this.recoveryStrategies.set(context, { attempts: 0)
             maxAttempts: strategy.maxAttempts || 2);
-            strategy: strategy.strategy,);
+           , strategy: strategy.strategy,);
             fallback: strategy.fallback ,});
         
         console.log(`Custom, recovery strategy, added for, context: ${context}`});
@@ -583,7 +580,7 @@ export class ErrorRecovery {
     getRecoveryStats(): RecoveryStats { const stats: RecoveryStats = {
             strategies: this.recoveryStrategies.size;
             totalAttempts: 0;
-            successfulRecoveries: this.mainController.logger? .errorStats.recovered || 0, : undefined
+           , successfulRecoveries: this.mainController.logger? .errorStats.recovered || 0, : undefined
             fallbackState: this.getFallbackState(), 
             strategiesByContext: {,};
         for(const [context, strategy] of this.recoveryStrategies') {
@@ -591,7 +588,7 @@ export class ErrorRecovery {
             stats.totalAttempts += strategy.attempts;
             stats.strategiesByContext[context] = {
                 attempts: strategy.attempts;
-                maxAttempts: strategy.maxAttempts;
+               , maxAttempts: strategy.maxAttempts;
         }
                 attemptsRemaining: strategy.maxAttempts - strategy.attempts }
             }
@@ -616,7 +613,7 @@ export class ErrorRecovery {
      */
     async testRecoveryStrategy(context: string): Promise<TestResult> { const strategy = this.recoveryStrategies.get(context);
         if (!strategy) { }
-            return { success: false, message: `No strategy found for context: ${context,}` }
+            return { success: false, message: `No strategy found for, context: ${context,}` }
         }
         
         try { const mockError: ErrorInfo = {
@@ -627,7 +624,7 @@ export class ErrorRecovery {
 
             const result = await strategy.strategy(mockError, context');''
             return { success: true, message: 'Strategy test completed', result } catch (error) { const errorMessage = error instanceof Error ? error.message: String(error 
-            return { success: false, message: `Strategy test failed: ${errorMessage,}` }
+            return { success: false, message: `Strategy test, failed: ${errorMessage,}` }
 }
     
     /**

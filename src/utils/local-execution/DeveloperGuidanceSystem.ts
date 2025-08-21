@@ -20,11 +20,11 @@ interface GuidanceCommand { devServer: string,
 interface GuidanceConfig { showWarning: boolean;
     autoHide: boolean;
     hideDelay: number;
-    persistDismissal: boolean,
+   , persistDismissal: boolean,
     position: 'top' | 'bottom' | 'center',
     theme: 'blue' | 'red' | 'yellow' | 'green';
     commands: GuidanceCommand;
-    enableBrowserCompatibility: boolean;
+   , enableBrowserCompatibility: boolean;
     title?: string;
     message?: string;
     showCommands?: boolean;
@@ -39,14 +39,14 @@ interface FaviconInfo { rel: string,
     sizes?: string ,}
 
 interface DismissalInfo { dismissed: boolean;
-    dismissedAt: Date | null }
+   , dismissedAt: Date | null }
 
 interface DebugInfo { isPermanentlyDismissed: boolean;
     hasExistingGuidance: boolean;
     config: GuidanceConfig;
-    dismissalInfo: DismissalInfo;
+   , dismissalInfo: DismissalInfo;
     }
-    browserCompatibility: ComprehensiveSupportInfo | { error: string; available: false }
+    browserCompatibility: ComprehensiveSupportInfo | { error: string;, available: false }
 ';
 
 interface Recommendation { message: string,''
@@ -58,7 +58,7 @@ class DeveloperGuidanceSystem { /**
     static readonly DEFAULT_CONFIG: GuidanceConfig = {
         showWarning: true;
         autoHide: false;
-        hideDelay: 10000, // 10秒;
+       , hideDelay: 10000, // 10秒;
         persistDismissal: true,
         position: 'top' as const,
         theme: 'blue' as const,
@@ -117,7 +117,7 @@ class DeveloperGuidanceSystem { /**
             message: 'For the best development experience, please use a development server.',
             showCommands: true;
             showTroubleshooting: true;
-            showBrowserSpecificInfo: true ,};
+           , showBrowserSpecificInfo: true ,};
         this.showLocalExecutionWarning(guidanceConfig);
     }
 
@@ -132,15 +132,15 @@ class DeveloperGuidanceSystem { /**
                 ...this.DEFAULT_CONFIG, ;
                 ...config,
                 compatibilityInfo: compatibility;
-                showBrowserSpecificInfo: true ,};
+               , showBrowserSpecificInfo: true ,};
             // ブラウザ固有のメッセージ生成
             const customMessage: string = this._generateBrowserSpecificMessage(compatibility),
             
             const guidanceConfig: GuidanceConfig = { ...mergedConfig
-                title: `Browser Compatibility: ${compatibility.browser.name} ${compatibility.browser.version}`;
+                title: `Browser, Compatibility: ${compatibility.browser.name} ${compatibility.browser.version}`;
                 message: customMessage;
                 showCommands: true;
-                showTroubleshooting: true;
+               , showTroubleshooting: true;
             },
             
             this.showLocalExecutionWarning(guidanceConfig);
@@ -174,7 +174,7 @@ class DeveloperGuidanceSystem { /**
                 <div class="awaputi-guidance-header">"";
                     <div class="awaputi-guidance-icon">⚠️</div>"";
                     <div class="awaputi-guidance-title">"";
-                        ${mergedConfig.title || 'Local File Execution Detected'}
+                        ${mergedConfig.title || 'Local, File Execution, Detected'}
 
                     </div>'';
                     <button class="awaputi-guidance-close" title="Close">×</button>;
@@ -182,7 +182,7 @@ class DeveloperGuidanceSystem { /**
 
                 <div class="awaputi-guidance-body">"";
                     <p class="awaputi-guidance-message">"";
-                        ${mergedConfig.message || 'You are running the game directly from a file. For the best experience, please use a development server.'}
+                        ${mergedConfig.message || 'You, are running, the game, directly from, a file. For, the best, experience, please, use a, development server.'}
                     </p>;
                     ${this._createCommandsSection(mergedConfig})
                     ${this._createLimitationsSection(})'
@@ -256,8 +256,7 @@ class DeveloperGuidanceSystem { /**
      * @private
      */'
     private static _createCommandsSection(config: GuidanceConfig): string { ''
-        if(!config.showCommands && !config.commands) {'
-            ';
+        if(!config.showCommands && !config.commands) {', ';
 
         }
 
@@ -312,8 +311,7 @@ class DeveloperGuidanceSystem { /**
      * @private
      */"
     private static _createCompatibilitySection(config: GuidanceConfig): string { ""
-        if(!config.showBrowserSpecificInfo || !config.compatibilityInfo) {"
-            ";
+        if(!config.showBrowserSpecificInfo || !config.compatibilityInfo) {", ";
         }"
             return '';
 
@@ -384,8 +382,7 @@ class DeveloperGuidanceSystem { /**
      * @private
      */'
     private static _createTroubleshootingSection(config: GuidanceConfig): string { ''
-        if(!config.showTroubleshooting) {'
-            ';
+        if(!config.showTroubleshooting) {', ';
 
         }
 
@@ -431,8 +428,7 @@ class DeveloperGuidanceSystem { /**
 ';
         // ESCキーで閉じる : undefined
         const handleEscape = (e: KeyboardEvent') => {  ''
-            if(e.key === 'Escape) {'
-                ';
+            if(e.key === 'Escape) {', ';
 
             }
 
@@ -526,7 +522,7 @@ class DeveloperGuidanceSystem { /**
                 z-index: 10000,
                 max-width: 600px,
                 background: white;
-                border: 2px solid #2196F3,
+               , border: 2px solid #2196F3,
                 border-radius: 8px,
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);''
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -537,20 +533,20 @@ class DeveloperGuidanceSystem { /**
             );
             .awaputi-guidance-top { top: 20px,
                 left: 50%;
-                transform: translateX(-50%) translateY(-20px ,}
+               , transform: translateX(-50%) translateY(-20px ,}
             );
             .awaputi-guidance-show { opacity: 1 !important)
-                transform: translateX(-50%) translateY(0) !important }
+               , transform: translateX(-50%) translateY(0) !important }
             
             .awaputi-guidance-hide { opacity: 0 !important;
-                transform: translateX(-50%) translateY(-20px) !important }
+               , transform: translateX(-50%) translateY(-20px) !important }
             
             .awaputi-guidance-content { padding: 0 }
             
             .awaputi-guidance-header { display: flex;
                 align-items: center,
                 padding: 16px 20px;
-                background: linear-gradient(135deg, #2196F3, #21CBF3);
+               , background: linear-gradient(135deg, #2196F3, #21CBF3);
                 color: white;
                 border-radius: 6px 6px 0 0, }
             
@@ -563,12 +559,12 @@ class DeveloperGuidanceSystem { /**
             
             .awaputi-guidance-close { background: none,
                 border: none;
-                color: white;
+               , color: white;
                 font-size: 24px,
                 cursor: pointer;
                 padding: 0;
                 width: 30px;
-                height: 30px;
+               , height: 30px;
                 border-radius: 50%,
                 display: flex;
                 align-items: center,
@@ -604,7 +600,7 @@ class DeveloperGuidanceSystem { /**
             
             .awaputi-guidance-alternatives { list-style: none,
                 padding: 0;
-                margin: 0 ,}
+               , margin: 0 ,}
             
             .awaputi-guidance-alternatives li { display: flex;
                 align-items: center,
@@ -621,7 +617,7 @@ class DeveloperGuidanceSystem { /**
             .awaputi-guidance-copy { background: #2196F3,
                 color: white;
                 border: none;
-                padding: 6px 12px;
+               , padding: 6px 12px;
                 border-radius: 3px,
                 cursor: pointer;
                 font-size: 12px,
@@ -636,17 +632,17 @@ class DeveloperGuidanceSystem { /**
                 margin: 0 ,}
             
             .awaputi-guidance-limitations li { margin-bottom: 4px;
-                color: #666 }
+               , color: #666 }
             
             .awaputi-guidance-troubleshooting ul { list-style: disc;
                 padding-left: 20px,
                 margin: 0 ,}
             
             .awaputi-guidance-troubleshooting li { margin-bottom: 6px;
-                color: #666 }
+               , color: #666 }
             
             .awaputi-guidance-compatibility { background-color: #f8f9fa;
-                padding: 12px;
+               , padding: 12px;
                 border-radius: 4px,
                 border-left: 3px solid #17a2b8, }
             
@@ -658,7 +654,7 @@ class DeveloperGuidanceSystem { /**
                 color: #333 ,}
             
             .awaputi-support-badge { margin-left: 8px;
-                padding: 2px 8px;
+               , padding: 2px 8px;
                 border-radius: 12px,
                 font-size: 11px,
                 font-weight: 500,
@@ -668,7 +664,7 @@ class DeveloperGuidanceSystem { /**
                 color: #155724 ,}
             
             .awaputi-support-limited { background-color: #fff3cd;
-                color: #856404 }
+               , color: #856404 }
             
             .awaputi-features-support;
             .awaputi-restrictions,
@@ -690,7 +686,7 @@ class DeveloperGuidanceSystem { /**
                 justify-content: flex-end,
                 gap: 10px;
                 padding: 16px 20px;
-                background: #f9f9f9;
+               , background: #f9f9f9;
                 border-radius: 0 0 6px 6px,
                 border-top: 1px solid #eee, }
             
@@ -703,13 +699,13 @@ class DeveloperGuidanceSystem { /**
                 transition: all 0.2s ,}
             
             .awaputi-guidance-dismiss { background: white;
-                color: #666 }
+               , color: #666 }
             
             .awaputi-guidance-dismiss:hover { border-color: #999;
-                color: #333 }
+               , color: #333 }
             
             .awaputi-guidance-continue { background: #2196F3;
-                color: white;
+               , color: white;
                 border-color: #2196F3, }
             
             .awaputi-guidance-continue:hover { background: #1976D2,
@@ -719,7 +715,7 @@ class DeveloperGuidanceSystem { /**
                     max-width: calc(100vw - 40px),
                     left: 20px !important;
                     right: 20px;
-                    transform: translateY(-20px) !important ,}
+                   , transform: translateY(-20px) !important ,}
                 
                 .awaputi-guidance-show { transform: translateY(0) !important }
                 
@@ -754,8 +750,7 @@ class DeveloperGuidanceSystem { /**
 
             }''
         } else if (browserInfo.name === 'firefox'') { ''
-            if(window.location && window.location.protocol === 'file:'') {'
-                '
+            if(window.location && window.location.protocol === 'file:'') {', '
             }
 
                 message += 'Firefox restricts localStorage access for local files. '; }
@@ -766,8 +761,7 @@ class DeveloperGuidanceSystem { /**
 
 ';
         // Canvas API問題
-        if(!canvasSupport.available) {'
-            ';
+        if(!canvasSupport.available) {', ';
 
         }
 
@@ -776,8 +770,7 @@ class DeveloperGuidanceSystem { /**
 
 ';
         // ES6 modules問題
-        if(!modulesSupport.available && window.location.protocol === 'file:'') {'
-            ';
+        if(!modulesSupport.available && window.location.protocol === 'file:'') {', ';
 
         }
 
@@ -798,7 +791,7 @@ class DeveloperGuidanceSystem { /**
             hasExistingGuidance: !!document.getElementById('awaputi-local-execution-guidance);
             config: this.DEFAULT_CONFIG);
             dismissalInfo: this._getDismissalInfo();
-            browserCompatibility: this._getBrowserCompatibilityInfo();
+           , browserCompatibility: this._getBrowserCompatibilityInfo();
         }
 
     /**
@@ -806,7 +799,7 @@ class DeveloperGuidanceSystem { /**
      * @returns 互換性情報
      * @private
      */
-    private static _getBrowserCompatibilityInfo(): ComprehensiveSupportInfo | { error: string; available: false } { try {
+    private static _getBrowserCompatibilityInfo(): ComprehensiveSupportInfo | { error: string;, available: false } { try {
             return BrowserCompatibilityManager.getComprehensiveSupport(); } catch (error) { return { error: error.message, };
                 available: false }
             }

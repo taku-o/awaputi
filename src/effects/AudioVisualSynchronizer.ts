@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 
 // Type definitions for audio-visual synchronization
 interface ErrorHandler { handleError(error: Error, context: string): void ,}
@@ -15,13 +15,13 @@ interface AudioManager { playPopSound?(force: boolean, bubbleType: string): void
 interface ParticleManager { createAdvancedBubbleEffect?(x: number, y: number, bubbleType: string, bubbleSize: number, options: ParticleOptions): void,
     createEnhancedComboEffect?(x: number, y: number, comboCount: number, comboType: string): void,
     createSpecialBubbleEffect?(x: number, y: number, effectType: string, options: SpecialEffectOptions): void 
-interface EffectManager { addScreenFlash?(intensity: number, duration: number, color: string): void,
+interface EffectManager { addScreenFlash?(intensit;y: number, duration: number, color: string): void,
     addScreenZoom?(strength: number, duration: number): void 
 ';
 
 interface SeasonalManager { ''
     createSeasonalBubbleEffect?(x: number, y: number, effectType: string, density: number'): void '
-interface Systems { audioManager?: AudioManager;
+interface Systems { audioManage;r?: AudioManager;
     particleManager?: ParticleManager;
     effectManager?: EffectManager;
     seasonalManager?: SeasonalManager;
@@ -35,23 +35,23 @@ interface SpecialEffectOptions { branches?: number;
 
 interface EffectMapping { audioEvent: string,
     visualEffects: string[];
-    timing: {
-        delay: number;
+   , timing: {
+        dela;y: number;
         duration: number;
-        fadeOut: number ,};
+       , fadeOut: number ,};
     parameters: Record<string, string>;
 }
 
 interface ActiveAudioEffect { type: string,
     startTime: number;
     duration: number;
-    parameters: any ,}
+   , parameters: any ,}
 
 interface ScheduledEffect { effectType: string;
     x: number;
     y: number;
     executeTime: number;
-    parameters: any }
+   , parameters: any }
 
 interface SyncStats { syncEnabled: boolean;
     visualFeedbackEnabled: boolean;
@@ -60,7 +60,7 @@ interface SyncStats { syncEnabled: boolean;
     scheduledEffects: number;
     effectMappings: number;
     currentVolume: number;
-    currentFrequency: number }
+   , currentFrequency: number }
 
 type ParameterSource = 'audio_volume' | 'audio_frequency' | 'audio_bass' | 'audio_treble' | 'combo_count' | 'bubble_type';
 
@@ -90,13 +90,13 @@ export class AudioVisualSynchronizer {
     private audioContext: AudioContext | null;
     private analyserNode: AnalyserNode | null;
     // エフェクト同期マッピング
-    private effectMappings: Map<string, EffectMapping>;
+    private, effectMappings: Map<string, EffectMapping>;
     private activeAudioEffects: Map<string, ActiveAudioEffect>;
     private scheduledEffects: ScheduledEffect[];
     // タイミング管理
     private lastEffectTime: number;
     private effectQueue: any[];
-    private maxQueueSize: number;
+    private, maxQueueSize: number;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -189,7 +189,7 @@ export class AudioVisualSynchronizer {
             timing: {
                 delay: 0;
                 duration: 500;
-                fadeOut: 200 ,}))'
+               , fadeOut: 200 ,}))'
             parameters: { ''
                 particleCount: 'audio_volume',
                 flashIntensity: 'audio_frequency',
@@ -204,7 +204,7 @@ export class AudioVisualSynchronizer {
             timing: {
                 delay: 50;
                 duration: 1000;
-                fadeOut: 300 ,}))'
+               , fadeOut: 300 ,}))'
             parameters: { ''
                 particleIntensity: 'combo_count',
                 zoomStrength: 'audio_bass',
@@ -219,7 +219,7 @@ export class AudioVisualSynchronizer {
             timing: {
                 delay: 25;
                 duration: 750;
-                fadeOut: 250 ,}))'
+               , fadeOut: 250 ,}))'
             parameters: { ''
                 lightningBranches: 'audio_volume',
                 shockWaveRadius: 'audio_frequency',
@@ -233,7 +233,7 @@ export class AudioVisualSynchronizer {
             visualEffects: ['ambient_particles', 'color_pulse', 'gentle_movement'],
             timing: {
                 delay: 0;
-                duration: -1, // 継続;
+               , duration: -1, // 継続;
                 fadeOut: 500 ,}))
             parameters: { ''
                 ambientDensity: 'audio_volume',
@@ -311,7 +311,7 @@ export class AudioVisualSynchronizer {
             this.activeAudioEffects.set(effectId, { )
                 type: effectType);
                 startTime: performance.now();
-                duration: mapping.timing.duration);
+               , duration: mapping.timing.duration);
                 parameters });
 
         } catch (error) {
@@ -386,10 +386,9 @@ export class AudioVisualSynchronizer {
                             parameters.bubbleSize,
                             {  : undefined
                                 particleCount: parameters.particleCount 
-                                intensity: parameters.intensity  ,}
+                               , intensity: parameters.intensity  ,}
 
-                            }''
-                        ');
+                            }'', ');
                     }
 
                     break;
@@ -441,10 +440,9 @@ export class AudioVisualSynchronizer {
                             'lightning',
                             { : undefined
                                 branches: parameters.lightningBranches 
-                                intensity: parameters.intensity ,}
+                               , intensity: parameters.intensity ,}
 
-                            }''
-                        ');
+                            }'', ');
                     }
 
                     break;
@@ -673,7 +671,7 @@ export class AudioVisualSynchronizer {
             activeEffects: this.activeAudioEffects.size;
             scheduledEffects: this.scheduledEffects.length;
             effectMappings: this.effectMappings.size;
-            currentVolume: this._getAudioVolume(), };
+           , currentVolume: this._getAudioVolume(), };
             currentFrequency: this._getAudioFrequency(); }
         }
     
@@ -684,8 +682,7 @@ export class AudioVisualSynchronizer {
         this.scheduledEffects = [];
         // アクティブエフェクトをクリア
         this.activeAudioEffects.clear()';
-        if(this.audioContext && this.audioContext.state !== 'closed) {'
-            ';
+        if(this.audioContext && this.audioContext.state !== 'closed) {', ';
 
         }
 

@@ -1,9 +1,9 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
-import { DataManager } from '../../src/core/DataManager';
-import { CloudStorageAdapter } from '../../src/core/CloudStorageAdapter';
-import { SyncManager } from '../../src/core/SyncManager';
-import { OfflineManager } from '../../src/core/OfflineManager';
-import { DataStorage } from '../../src/core/DataStorage';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
+import { DataManager  } from '../../src/core/DataManager';
+import { CloudStorageAdapter  } from '../../src/core/CloudStorageAdapter';
+import { SyncManager  } from '../../src/core/SyncManager';
+import { OfflineManager  } from '../../src/core/OfflineManager';
+import { DataStorage  } from '../../src/core/DataStorage';
 describe('データ管理 - クラウド対応統合テスト', () => {
     let dataManager: any,
     let mockGameEngine: any,
@@ -114,7 +114,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             // API応答のモック
             mockFetch.mockResolvedValue({
                 ok: true;);
-                json: () => Promise.resolve({ success: true );
+               , json: () => Promise.resolve({ success: true );
             }
         }');
         test('ローカルデータがクラウドにアップロードされる', async (') => {

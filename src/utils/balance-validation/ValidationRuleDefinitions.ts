@@ -10,8 +10,8 @@ interface ValidationContext { bubbleType?: string;
     propertyType?: string;
     relatedValues?: Record<string, any>;
     canvasSize?: {
-        width: number;
-        height: number ,};
+        widt;h: number;
+       , height: number ,};
     [key: string]: any,
 }
 
@@ -23,16 +23,16 @@ interface RuleResult { valid: boolean,
 interface RuleDefinition { name: string,
     category: string,
     description: string,
-    check: (oldValue: any, newValue: any, context: ValidationContext') => boolean | RuleResult;''
+    check: (oldValu;e: any, newValue: any, context: ValidationContext') => boolean | RuleResult;''
     severity: 'low' | 'warning' | 'medium' | 'high' | 'critical';
     autoFix: boolean;
-    autoFixFn: ((oldValue: any, newValue: any, context: ValidationContext) => any) | null;
+    autoFixFn: ((oldValu;e: any, newValue: any, context: ValidationContext) => any) | null;
     enabled: boolean;
     priority: number ,}
 }
 
 interface BubbleHealthLimits { min: number;
-    max: number }
+   , max: number }
 
 interface ScoreLimits {
     max: number;
@@ -43,7 +43,7 @@ interface RuleCategories { VALUE_RANGE: string;
     COMPATIBILITY: string;
     PROGRESSION: string;
     SAFETY: string;
-    PERFORMANCE: string }
+   , PERFORMANCE: string }
 
 interface RuleFilters { category?: string;
     severity?: string;
@@ -53,24 +53,24 @@ interface RuleFilters { category?: string;
 interface RuleStatistics { totalRules: number,
     enabledRules: number;
     disabledRules: number;
-    byCategory: Record<string, number>;
+   , byCategory: Record<string, number>;
     bySeverity: Record<string, number>;
     autoFixableRules: number ,}
 
 interface RuleDefinitionOptions { category?: string;
 
     description?: string;''
-    check: (oldValue: any, newValue: any, context: ValidationContext') => boolean | RuleResult;''
+    check: (oldValu;e: any, newValue: any, context: ValidationContext') => boolean | RuleResult;''
     severity?: 'low' | 'warning' | 'medium' | 'high' | 'critical';
     autoFix?: boolean;
-    autoFixFn?: (oldValue: any, newValue: any, context: ValidationContext) => any;
+    autoFixFn?: (oldValu;e: any, newValue: any, context: ValidationContext) => any;
     enabled?: boolean;
     priority?: number; ,}
 }
 
 export class ValidationRuleDefinitions {
     private mainController: MainController;
-    private rules: Map<string, RuleDefinition>;
+    private, rules: Map<string, RuleDefinition>;
     public ruleCategories: RuleCategories,
     constructor(mainController: MainController) {
         this.mainController = mainController;
@@ -188,7 +188,7 @@ export class ValidationRuleDefinitions {
 
             },''
             severity: 'high';
-            autoFix: false;
+           , autoFix: false;
         }),
     }
     
@@ -237,7 +237,7 @@ export class ValidationRuleDefinitions {
                 const normalScore = context.relatedValues.normal? .score || 10;
                 const scoreRatio = newValue / normalScore;
                  : undefined
-                const expectedRatios: Record<string, { min: number; max: number }> = {
+                const expectedRatios: Record<string, { min: number;, max: number }> = {
                     normal: { min: 0.8, max: 1.2 ,},
                     stone: { min: 1.2, max: 2.0 ,},
                     iron: { min: 1.8, max: 3.0 ,},
@@ -260,7 +260,7 @@ export class ValidationRuleDefinitions {
 
             },''
             severity: 'medium';
-            autoFix: false;
+           , autoFix: false;
         }),
     }
     
@@ -301,7 +301,7 @@ export class ValidationRuleDefinitions {
             },''
             severity: 'high';
             autoFix: true;
-            autoFixFn: (oldValue, newValue, context) => {  }
+           , autoFixFn: (oldValue, newValue, context) => {  }
                 const canvasSize = context.canvasSize || { width: 800, height: 600 ,}
                 const maxSize = Math.min(canvasSize.width, canvasSize.height) * 0.3;
                 const minSize = 10;
@@ -358,7 +358,7 @@ export class ValidationRuleDefinitions {
 
             },''
             severity: 'medium';
-            autoFix: false;
+           , autoFix: false;
         }),
     }
     
@@ -403,7 +403,7 @@ export class ValidationRuleDefinitions {
             },''
             severity: 'medium';
             autoFix: true;
-            autoFixFn: (oldValue, newValue, context) => {  const maxTime = 600000;
+           , autoFixFn: (oldValue, newValue, context) => {  const maxTime = 600000;
                 const minTime = 100; }
                 return Math.max(minTime, Math.min(newValue, maxTime);''
         }');
@@ -441,7 +441,7 @@ export class ValidationRuleDefinitions {
 
             },''
             severity: 'medium';
-            autoFix: false;
+           , autoFix: false;
         }),
     }
     
@@ -479,7 +479,7 @@ export class ValidationRuleDefinitions {
             },''
             severity: 'medium';
             autoFix: true;
-            autoFixFn: (oldValue, newValue, context) => { return Math.max(1, Math.min(newValue, 50);''
+           , autoFixFn: (oldValue, newValue, context) => { return Math.max(1, Math.min(newValue, 50);''
         }');
         ';
         // Rainbow effect duration balance
@@ -514,7 +514,7 @@ export class ValidationRuleDefinitions {
 
             },''
             severity: 'medium';
-            autoFix: false;
+           , autoFix: false;
         }),
     }
     
@@ -526,8 +526,7 @@ export class ValidationRuleDefinitions {
             description: 'パフォーマンスへの影響をチェック'),
             check: (oldValue, newValue, context') => { '
                 // Particle count limitation
-                if(context.propertyType === 'particleCount'') {'
-                    '
+                if(context.propertyType === 'particleCount'') {', '
                 }
 
                     if(typeof, newValue === 'number' && newValue > 100) { }
@@ -596,7 +595,7 @@ export class ValidationRuleDefinitions {
 
             },''
             severity: 'medium';
-            autoFix: false;
+           , autoFix: false;
         }),
     }
     
@@ -604,16 +603,14 @@ export class ValidationRuleDefinitions {
      * Add validation rule'
      */''
     addRule(name: string, rule: RuleDefinitionOptions): void { ''
-        if(!name || typeof, name !== 'string'') {'
-            ';
+        if(!name || typeof, name !== 'string'') {', ';
 
         }
 
             throw new Error('Rule, name must, be a, non-empty, string''); }
         }
 
-        if(!rule || typeof, rule.check !== 'function'') {'
-            ';
+        if(!rule || typeof, rule.check !== 'function'') {', ';
 
         }
 
@@ -629,7 +626,7 @@ export class ValidationRuleDefinitions {
             autoFix: rule.autoFix || false;
             autoFixFn: rule.autoFixFn || null;
             enabled: rule.enabled !== false;
-            priority: rule.priority || 1 ,};
+           , priority: rule.priority || 1 ,};
         this.rules.set(name, ruleDefinition);
         console.log(`[ValidationRuleDefinitions] Rule, added: ${name}`});
     }
@@ -738,7 +735,7 @@ export class ValidationRuleDefinitions {
             size: 0.6;
             maxAge: 1.2;
             duration: 1.0;
-            intensity: 0.4 ,};
+           , intensity: 0.4 ,};
         const modifier = propertyModifiers[propertyType] || 1.0;
         return baseThreshold * modifier;
     }
@@ -784,7 +781,7 @@ export class ValidationRuleDefinitions {
     getStatistics(): RuleStatistics { const stats: RuleStatistics = {
             totalRules: this.rules.size;
             enabledRules: 0;
-            disabledRules: 0, }
+           , disabledRules: 0, }
             byCategory: {};
             bySeverity: {};
             autoFixableRules: 0;

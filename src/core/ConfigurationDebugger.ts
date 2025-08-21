@@ -5,14 +5,14 @@
  * デバッグモードでの詳細情報表示を提供します。
  */
 
-import { getLoggingSystem } from './LoggingSystem';
+import { getLoggingSystem  } from './LoggingSystem';
 
 /**
  * 使用状況追跡データ
  */
 interface UsageTracking { accessCount: Map<string, number>;
     accessHistory: AccessRecord[];
-    accessPatterns: Map<string, AccessPattern>;
+   , accessPatterns: Map<string, AccessPattern>;
     hotKeys: Set<string>;
     unusedKeys: Set<string>;
     lastAccess: Map<string, number> }
@@ -27,7 +27,7 @@ interface AccessRecord { timestamp: number,
     value: any;
     source: string;
     accessTime: number;
-    fromCache: boolean ,}
+   , fromCache: boolean ,}
 
 /**
  * アクセスパターン
@@ -35,14 +35,14 @@ interface AccessRecord { timestamp: number,
 interface AccessPattern { count: number;
     firstAccess: number;
     lastAccess: number;
-    intervals: number[] }
+   , intervals: number[] }
 
 /**
  * パフォーマンス追跡データ
  */
 interface PerformanceTracking { accessTimes: Map<string, number[]>;
     slowAccesses: SlowAccessRecord[];
-    cacheHitRates: Map<string, CacheHitRate>;
+   , cacheHitRates: Map<string, CacheHitRate>;
     validationTimes: Map<string, number> }
 
 /**
@@ -51,13 +51,13 @@ interface PerformanceTracking { accessTimes: Map<string, number[]>;
 interface SlowAccessRecord { timestamp: number,
     fullKey: string;
     accessTime: number;
-    fromCache: boolean ,}
+   , fromCache: boolean ,}
 
 /**
  * キャッシュヒット率
  */
 interface CacheHitRate { total: number;
-    hits: number }
+   , hits: number }
 
 /**
  * エラー追跡データ
@@ -74,13 +74,13 @@ interface ErrorTracking { errorsByKey: Map<string, ErrorRecord[]>;
 interface ErrorRecord { timestamp: number;
     errorType: string;
     errorMessage: string;
-    recovered: boolean }
+   , recovered: boolean }
 
 /**
  * 復旧統計
  */
 interface RecoveryStats { total: number;
-    recovered: number }
+   , recovered: number }
 
 /**
  * 重要なエラー記録
@@ -89,7 +89,7 @@ interface CriticalErrorRecord { timestamp: number;
     fullKey: string;
     errorType: string;
     errorMessage: string;
-    recovered: boolean }
+   , recovered: boolean }
 
 /**
  * デバッグ設定
@@ -101,7 +101,7 @@ interface DebugConfig { enabled: boolean;
     maxHistorySize: number;
     slowAccessThreshold: number;
     hotKeyThreshold: number;
-    reportInterval: number }
+   , reportInterval: number }
 
 /**
  * 統計情報
@@ -111,7 +111,7 @@ interface Statistics { totalAccesses: number;
     averageAccessTime: number;
     errorRate: number;
     cacheHitRate: number;
-    lastReset: number }
+   , lastReset: number }
 
 /**
  * レポートオプション
@@ -132,23 +132,23 @@ export interface KeyDetails { fullKey: string,
     isUnused: boolean;
     errors: ErrorRecord[];
     averageAccessTime: number;
-    cacheHitRate: number ,}
+   , cacheHitRate: number ,}
 
 class ConfigurationDebugger { private usageTracking: UsageTracking
     private performanceTracking: PerformanceTracking;
     private errorTracking: ErrorTracking;
     private debugConfig: DebugConfig;
     private statistics: Statistics;
-    private logger: any;
+    private, logger: any;
     constructor() {
 
         // 使用状況追跡
         this.usageTracking = {
             accessCount: new Map(;
             accessHistory: [];
-            accessPatterns: new, Map();
+           , accessPatterns: new, Map();
             hotKeys: new Set();
-            unusedKeys: new Set();
+           , unusedKeys: new Set();
     }
             lastAccess: new Map(); }
         };
@@ -157,20 +157,20 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
         this.performanceTracking = { accessTimes: new Map(,
             slowAccesses: []);
             cacheHitRates: new Map();
-            validationTimes: new Map( ,};
+           , validationTimes: new Map( ,};
         
         // エラー追跡
         this.errorTracking = { errorsByKey: new Map(,
             errorPatterns: new Map(;
             recoverySuccess: new Map(;
-            criticalErrors: [] ,};
+           , criticalErrors: [] ,};
         // デバッグ設定
         this.debugConfig = { enabled: this._isDebugMode(,
             trackUsage: true;
             trackPerformance: true;
             trackErrors: true;
             maxHistorySize: 1000;
-            slowAccessThreshold: 10, // ms;
+           , slowAccessThreshold: 10, // ms;
             hotKeyThreshold: 10, // アクセス回数;
             reportInterval: 60000 // 1分間隔 ,};
         // 統計情報
@@ -178,7 +178,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
             uniqueKeys: 0;
             averageAccessTime: 0);
             errorRate: 0);
-            cacheHitRate: 0,);
+           , cacheHitRate: 0,);
             lastReset: Date.now( ,};
         
         // ロギングシステム
@@ -209,7 +209,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
         value: any,
         source: string = 'unknown );
         accessTime: number = 0);
-        fromCache: boolean = false;
+       , fromCache: boolean = false;
     ): void { if (!this.debugConfig.enabled || !this.debugConfig.trackUsage) {
             return }
         
@@ -284,7 +284,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
         key: string, ;
         errorType: string );
         errorMessage: string);
-        recovered: boolean = false;
+       , recovered: boolean = false;
     ): void { if (!this.debugConfig.enabled || !this.debugConfig.trackErrors) {
             return }
         
@@ -450,7 +450,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
             isHotKey: this.usageTracking.hotKeys.has(fullKey);
             isUnused: this.usageTracking.unusedKeys.has(fullKey);
             errors: this.errorTracking.errorsByKey.get(fullKey) || [];
-            averageAccessTime: this.performanceTracking.accessTimes.get(fullKey)? .reduce((a, b) => a + b, 0) / ;
+           , averageAccessTime: this.performanceTracking.accessTimes.get(fullKey)? .reduce((a, b) => a + b, 0) / ;
                               (this.performanceTracking.accessTimes.get(fullKey)?.length || 1) || 0, : undefined
             cacheHitRate: (() => {  
                 const rate = this.performanceTracking.cacheHitRates.get(fullKey) ,};
@@ -488,7 +488,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
             totalAccesses: 0;
             uniqueKeys: 0;
             averageAccessTime: 0;
-            errorRate: 0,
+           , errorRate: 0,
             cacheHitRate: 0,
             lastReset: Date.now()';
         this.logger.info('デバッグ統計をリセット', null, 'ConfigurationDebugger); }
@@ -502,7 +502,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
         if(!this.usageTracking.accessPatterns.has(patternKey) { this.usageTracking.accessPatterns.set(patternKey, {
                 count: 0);
                 firstAccess: timestamp);
-                lastAccess: timestamp, }
+               , lastAccess: timestamp, }
                 intervals: []); }
         }
         
@@ -585,7 +585,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
             hotKeys: this.usageTracking.hotKeys.size;
             unusedKeys: this.usageTracking.unusedKeys.size;
             totalErrors: totalErrors;
-            errorRate: this.statistics.totalAccesses > 0 '';
+           , errorRate: this.statistics.totalAccesses > 0 '';
                 ? (totalErrors / this.statistics.totalAccesses * 100).toFixed(2) + '%''';
                 : '0%',
             averageAccessTime: averageAccessTime.toFixed(2) + 'ms',
@@ -604,11 +604,11 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
             .map(([key, count]) => ({
                 key,
                 accessCount: count);
-                lastAccess: new Date(this.usageTracking.lastAccess.get(key) || 0).toISOString() ,}
+               , lastAccess: new Date(this.usageTracking.lastAccess.get(key) || 0).toISOString() ,}
             });
         
         return { hotKeys: Array.from(this.usageTracking.hotKeys)
-            unusedKeys: Array.from(this.usageTracking.unusedKeys);
+           , unusedKeys: Array.from(this.usageTracking.unusedKeys);
             topAccessed,
             recentAccesses: this.usageTracking.accessHistory;
                 .slice(-10);
@@ -628,7 +628,7 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
                 key: access.fullKey,)';
                 accessTime: access.accessTime + 'ms',);
                 fromCache: access.fromCache);
-                timestamp: new Date(access.timestamp).toISOString() ,}
+               , timestamp: new Date(access.timestamp).toISOString() ,}
             });
         
         const cacheHitRates = Array.from(this.performanceTracking.cacheHitRates.entries()';
@@ -656,9 +656,9 @@ class ConfigurationDebugger { private usageTracking: UsageTracking
         const criticalErrors = this.errorTracking.criticalErrors;
             .slice(-topN);
             .map(error => ({ key: error.fullKey)
-                errorType: error.errorType,);
+               , errorType: error.errorType,);
                 recovered: error.recovered);
-                timestamp: new Date(error.timestamp).toISOString( ,});
+               , timestamp: new Date(error.timestamp).toISOString( ,});
         
         const recoveryRates = Array.from(this.errorTracking.recoverySuccess.entries()';
             .map(([key, stats]) => ({ key,''

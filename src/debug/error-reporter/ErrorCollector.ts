@@ -8,10 +8,10 @@ interface ErrorInfo { id: string,
     severity: string;
     category: string;
     message: string;
-    fingerprint: string;
+   , fingerprint: string;
     sessionId?: string;
     context?: {
-        component?: string; ,};
+        componen;t?: string; ,};
     stack?: string;
 }
 
@@ -31,7 +31,7 @@ interface CollectionFilters { enabled: boolean,
 interface CollectionMetrics { totalCollected: number;
     filtered: number;
     stored: number;
-    dropped: number }
+   , dropped: number }
 
 interface ErrorStatistics { total: number, }
     byCategory: { [category: string]: number }
@@ -43,25 +43,25 @@ interface ErrorStatistics { total: number, }
 
 interface MemoryUsage { estimated: number,
     errorCount: number;
-    maxCapacity: number ,}
+   , maxCapacity: number ,}
 
 interface ExportData { errors: ErrorInfo[];
     statistics: ErrorStatistics;
     filters: CollectionFilters;
-    exportedAt: number }
+   , exportedAt: number }
 
 interface ErrorReporter { errorStorage?: {
-        store: (error: ErrorInfo) => void ,}
+        store: (erro;r: ErrorInfo) => void ,}
     }
 
 export class ErrorCollector {
     private errorReporter: ErrorReporter;
-    private collectedErrors: ErrorInfo[] = [];
+    private, collectedErrors: ErrorInfo[] = [];
     private maxStorageSize = 1000;
     private categoryStats = new Map<string, number>();
     private severityStats = new Map<string, number>();
     private filters: CollectionFilters;
-    private collectionMetrics: CollectionMetrics;
+    private, collectionMetrics: CollectionMetrics;
     constructor(errorReporter: ErrorReporter) {
 
         this.errorReporter = errorReporter;
@@ -70,7 +70,7 @@ export class ErrorCollector {
         this.filters = {
             enabled: true;
             excludeCategories: new Set();
-            excludeSeverities: new Set();
+           , excludeSeverities: new Set();
     ,}
             excludePatterns: [] }
         };
@@ -78,7 +78,7 @@ export class ErrorCollector {
         this.collectionMetrics = { totalCollected: 0,
             filtered: 0;
             stored: 0;
-            dropped: 0 ,}
+           , dropped: 0 ,}
     
     /**
      * エラーの収集
@@ -279,7 +279,7 @@ export class ErrorCollector {
             errors: this.collectedErrors;
             statistics: this.getStatistics();
             filters: this.filters;
-            exportedAt: Date.now( };
+           , exportedAt: Date.now( };
 
         switch(format) {'
 

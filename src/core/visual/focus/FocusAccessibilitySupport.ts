@@ -18,25 +18,25 @@
 export interface MainController { config: MainControllerConfig,
     state: MainControllerState;
     elements: MainControllerElements;
-    focusStateManager: FocusStateManager;
+   , focusStateManager: FocusStateManager;
     accessibilityManager?: AccessibilityManager
     ,}
 
 export interface MainControllerConfig { navigationFeedback: NavigationFeedbackConfig;
     keyboardHints: KeyboardHintsConfig;
     visualCues: VisualCuesConfig;
-    announcements: AnnouncementsConfig
+   , announcements: AnnouncementsConfig
     }
 
 export interface NavigationFeedbackConfig { enabled: boolean;
     showDirection: boolean;
     showPosition: boolean;
-    fadeTimeout: number }
+   , fadeTimeout: number }
 
 export interface KeyboardHintsConfig { enabled: boolean;
     autoHide: boolean;
     hideDelay: number;
-    detailed: boolean }
+   , detailed: boolean }
 
 export interface VisualCuesConfig {
     breadcrumbs: boolean;
@@ -48,11 +48,11 @@ export interface AnnouncementsConfig {
 
 export interface MainControllerState { animationTimers: Map<string, number>,
     keyboardHintVisible: boolean;
-    currentFocusElement: HTMLElement | null ,}
+   , currentFocusElement: HTMLElement | null ,}
 
 export interface MainControllerElements { navigationIndicator: HTMLElement;
     keyboardHint: HTMLElement;
-    breadcrumbTrail: HTMLElement
+   , breadcrumbTrail: HTMLElement
     }
 
 export interface FocusStateManager { getNavigationDirection(): NavigationDirectionInfo | null;
@@ -74,14 +74,14 @@ export interface NavigationDirectionInfo { icon: string,
     text: string ,}
 
 export interface KeyboardHint { key: string;
-    description: string }
+   , description: string }
 
 export interface AccessibilityReport { totalFocusableElements: number;
     visibleFocusableElements: number;
     keyboardHintsEnabled: boolean;
     navigationFeedbackEnabled: boolean;
     breadcrumbsEnabled: boolean;
-    currentFocusPath: string[] | null }
+   , currentFocusPath: string[] | null }
 
 export interface AccessibilitySettings { announcements?: boolean;
     detailedHints?: boolean;
@@ -90,14 +90,14 @@ export interface AccessibilitySettings { announcements?: boolean;
 export interface ElementValidationResult { isValid: boolean,
     isFocusable: boolean;
     isVisible: boolean;
-    accessibility: ElementAccessibilityInfo
+   , accessibility: ElementAccessibilityInfo
     ,}
 
 export interface ElementAccessibilityInfo { hasAriaLabel: boolean;
     hasTitle: boolean;
     hasTextContent: boolean;
     role: string | null;
-    tabIndex: number | null }
+   , tabIndex: number | null }
 
 export interface ScreenReaderAnnouncementOptions { priority: AnnounceLevel;
     delay?: number;
@@ -109,7 +109,7 @@ export type AnnounceLevel = 'polite' | 'assertive' | 'off';''
 export type FeedbackType = 'navigation' | 'keyboardHint' | 'breadcrumb';
 
 export type ElementRole = '';
-    | 'button' | 'input' | 'select' | 'textarea' | 'link' | 'checkbox' '';
+    | 'button' | 'input' | 'select' | 'textarea' | 'link' | 'checkbox', '';
     | 'radio' | 'menuitem' | 'tab' | 'option' | 'generic';
 
 // 定数
@@ -126,18 +126,18 @@ export const FOCUSABLE_SELECTORS = [']';
 export const DEFAULT_NAVIGATION_FEEDBACK_CONFIG: NavigationFeedbackConfig = { enabled: true,
     showDirection: true;
     showPosition: true;
-    fadeTimeout: 2000 ,};
+   , fadeTimeout: 2000 ,};
 export const DEFAULT_KEYBOARD_HINTS_CONFIG: KeyboardHintsConfig = { enabled: true,
     autoHide: true;
     hideDelay: 5000;
-    detailed: false ,};
+   , detailed: false ,};
 export const DEFAULT_VISUAL_CUES_CONFIG: VisualCuesConfig = { breadcrumbs: true },
 
 export const DEFAULT_ANNOUNCEMENTS_CONFIG: AnnouncementsConfig = { enabled: true },
 
 export const KEYBOARD_HINT_LIMITS = { MAX_HINTS: 8,
     MAX_LABEL_LENGTH: 20;
-    MAX_PATH_DEPTH: 4 ,} as const;
+   , MAX_PATH_DEPTH: 4 ,} as const;
 export const SCREEN_READER_STYLES = `;
     position: absolute !important;
     width: 1px !important;
@@ -145,7 +145,7 @@ export const SCREEN_READER_STYLES = `;
     padding: 0 !important;
     margin: -1px !important;
     overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
+   , clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important,
     border: 0 !important;
 ` as const;
@@ -183,7 +183,7 @@ export function getElementLabel(element: HTMLElement): string {;
     return element.getAttribute('aria-label'') ||'';
            element.getAttribute('title) ||'';
            element.textContent? .trim()';
-           element.className.split(' ')[0] ||;
+           element.className.split(', ')[0] ||;
            element.tagName.toLowerCase(); }
 
  : undefined';
@@ -204,7 +204,7 @@ export class FocusAccessibilitySupport {
     private mainController: MainController;
     private config: MainControllerConfig;
     private state: MainControllerState;
-    private elements: MainControllerElements;
+    private, elements: MainControllerElements;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -383,8 +383,7 @@ export class FocusAccessibilitySupport {
                 hints.push(') }'
 
                     { key: '↑↓', description: '選択' ,}')''
-                    { key: 'Space', description: '開く' )''
-                ');
+                    { key: 'Space', description: '開く' )'', ');
                 break; ,}
 
         ';
@@ -435,12 +434,12 @@ export class FocusAccessibilitySupport {
     announceToScreenReader(';
         message: string, ')';
         priority: AnnounceLevel = 'polite')';
-        options: Partial<ScreenReaderAnnouncementOptions> = { ): void {''
+       , options: Partial<ScreenReaderAnnouncementOptions> = { ): void {''
         if(!this.config.announcements.enabled) return;
         const opts: ScreenReaderAnnouncementOptions = {
             priority,
             delay: 0;
-            clearAfter: 1000;
+           , clearAfter: 1000;
             ...options;
         ';
         // aria-live要素を使用してスクリーンリーダーに通知
@@ -506,7 +505,7 @@ export class FocusAccessibilitySupport {
             hasTitle: !!element.getAttribute('title),
             hasTextContent: !!element.textContent? .trim()';
             role: element.getAttribute('role);
-            tabIndex: element.tabIndex ,};
+           , tabIndex: element.tabIndex ,};
         return { isValid: isFocusable && isVisible,
             isFocusable,
             isVisible, };
@@ -540,7 +539,7 @@ export class FocusAccessibilitySupport {
             keyboardHintsEnabled: this.config.keyboardHints.enabled;
             navigationFeedbackEnabled: this.config.navigationFeedback.enabled;
             breadcrumbsEnabled: this.config.visualCues.breadcrumbs;
-            currentFocusPath: this.state.currentFocusElement ?   : undefined ,};
+           , currentFocusPath: this.state.currentFocusElement ?   : undefined ,};
                 this.generateElementPath(this.state.currentFocusElement) : null }
         },
     }

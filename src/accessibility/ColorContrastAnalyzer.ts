@@ -3,10 +3,10 @@
  * Orchestrates contrast calculation, color analysis, and color blindness simulation
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { ContrastCalculator } from './color-contrast/ContrastCalculator.js';''
-import { ColorAnalysisEngine } from './color-contrast/ColorAnalysisEngine.js';''
-import { ColorBlindnessSimulator } from './color-contrast/ColorBlindnessSimulator.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { ContrastCalculator  } from './color-contrast/ContrastCalculator.js';''
+import { ColorAnalysisEngine  } from './color-contrast/ColorAnalysisEngine.js';''
+import { ColorBlindnessSimulator  } from './color-contrast/ColorBlindnessSimulator.js';
 
 // Interfaces for color contrast analysis
 interface ColorContrastConfig { enabled: boolean,
@@ -15,13 +15,13 @@ interface ColorContrastConfig { enabled: boolean,
     includeImages: boolean;
     autoFix: boolean;
     colorBlindnessSimulation: boolean;
-    detailedReporting: boolean ,}
+   , detailedReporting: boolean ,}
 
 interface AnalysisResults { lastAnalysis: AnalysisReport | null;
     contrastIssues: ContrastIssue[];
     colorBlindnessIssues: ColorBlindnessIssue[];
     recommendations: Recommendation[];
-    statisticsReport: StatisticsReport | null }
+   , statisticsReport: StatisticsReport | null }
 
 interface AnalysisReport { timestamp: number;
     totalElements: number;
@@ -30,7 +30,7 @@ interface AnalysisReport { timestamp: number;
     wcagLevel: string;
     passRate: number;
     criticalIssues: number;
-    warnings: number }
+   , warnings: number }
 
 interface ContrastIssue { id: string;
     element: HTMLElement | null;
@@ -38,7 +38,7 @@ interface ContrastIssue { id: string;
     foregroundColor: string;
     backgroundColor: string;
     contrastRatio: number;
-    requiredRatio: number,
+   , requiredRatio: number,
     wcagLevel: string,
     severity: 'critical' | 'warning' | 'info';
     suggestion?: ColorSuggestion
@@ -46,19 +46,19 @@ interface ContrastIssue { id: string;
 
 interface ColorBlindnessIssue { id: string;
     element: HTMLElement | null;
-    selector: string, }
-    colorPair: { foreground: string; background: string },
+   , selector: string, }
+    colorPair: { foreground: string;, background: string },
 
     affectedTypes: ColorBlindnessType[],
     severity: 'critical' | 'warning' | 'info';
-    description: string;
+   , description: string;
 }
 ';
 
 interface ColorBlindnessType { ''
     type: 'protanopia' | 'deuteranopia' | 'tritanopia' | 'achromatopsia' | 'protanomaly' | 'deuteranomaly' | 'tritanomaly';
     name: string;
-    prevalence: number }
+   , prevalence: number }
 ';
 
 interface Recommendation { id: string,''
@@ -66,28 +66,28 @@ interface Recommendation { id: string,''
     priority: 'high' | 'medium' | 'low';
     title: string;
     description: string;
-    affectedElements: string[];
+   , affectedElements: string[];
     suggestedFix?: ColorFix
     ,}
 
 interface ColorSuggestion { foreground?: string;
     background?: string;
     contrastRatio: number;
-    improvement: number ,}
+   , improvement: number ,}
 ';
 
 interface ColorFix { ''
     type: 'color' | 'filter' | 'pattern';
     value: string;
-    cssProperty: string }
+   , cssProperty: string }
 
 interface StatisticsReport { timestamp: number;
-    summary: {
-        totalContrast: number;
+   , summary: {
+        totalContras;t: number;
         passedContrast: number;
         failedContrast: number;
         averageContrast: number;
-        colorBlindnessIssues: number };
+       , colorBlindnessIssues: number };
     byElement: Map<string, ElementStatistics>;
     byColor: Map<string, ColorStatistics>;
 }
@@ -95,50 +95,50 @@ interface StatisticsReport { timestamp: number;
 interface ElementStatistics { tagName: string,
     passCount: number;
     failCount: number;
-    averageContrast: number ,}
+   , averageContrast: number ,}
 
 interface ColorStatistics { color: string;
     usageCount: number;
     asBackground: number;
     asForeground: number;
     averageContrast: number;
-    issues: number }
+   , issues: number }
 
 interface AnalysisState { analyzing: boolean;
     realTimeEnabled: boolean;
     lastAnalysisTime: number | null;
-    analyzeScheduled: boolean }
+   , analyzeScheduled: boolean }
 
-interface EventHandlers { styleChanged: ((event: Event) => void) | null;
-    domChanged: ((mutations: MutationRecord[]) => void) | null;
-    resize: ((event: Event) => void) | null }
+interface EventHandlers { styleChanged: ((even;t: Event) => void) | null;
+    domChanged: ((mutation;s: MutationRecord[]) => void) | null;
+    resize: ((even;t: Event) => void) | null }
 }
 
 interface PerformanceMetrics { analysisCount: number;
     averageAnalysisTime: number;
-    lastAnalysisTime: number }
+   , lastAnalysisTime: number }
 
 interface ElementAnalysisResult { element: HTMLElement;
     foreground: string;
     background: string;
     contrastRatio: number;
     passes: boolean;
-    wcagLevel: string }
+   , wcagLevel: string }
 
 // Sub-component interfaces
 interface ContrastCalculatorConfig { wcagLevel: string;
     enableCache: boolean;
-    highPrecision: boolean }
+   , highPrecision: boolean }
 
 interface ColorAnalysisEngineConfig { enableDetailedAnalysis: boolean;
     includeImages: boolean;
     autoGenerateRecommendations: boolean;
-    analysisDepth: string }
+   , analysisDepth: string }
 
 interface ColorBlindnessSimulatorConfig { enableSimulation: boolean;
     includePartialColorBlindness: boolean;
     generateSuggestions: boolean;
-    accurateSimulation: boolean }
+   , accurateSimulation: boolean }
 
 // AccessibilityManager interface (minimal, definition);
 interface AccessibilityManager { gameEngine?: any; }
@@ -165,24 +165,24 @@ export class ColorContrastAnalyzer {
         // 色コントラスト設定
         this.config = { : undefined
             enabled: true;
-            realTimeAnalysis: true,
+           , realTimeAnalysis: true,
             wcagLevel: 'AA';
             includeImages: false;
             autoFix: false;
-            colorBlindnessSimulation: true;
+           , colorBlindnessSimulation: true;
     ,}
             detailedReporting: true }
         };
         // Initialize sub-components
         this.contrastCalculator = new ContrastCalculator({ wcagLevel: this.config.wcagLevel)
             enableCache: true);
-            highPrecision: false'';
+           , highPrecision: false'';
         )'),
 
         this.colorAnalysisEngine = new ColorAnalysisEngine({
             enableDetailedAnalysis: this.config.detailedReporting);
             includeImages: this.config.includeImages)';
-            autoGenerateRecommendations: true,
+           , autoGenerateRecommendations: true,
             analysisDepth: 'comprehensive';
         ),
 
@@ -190,7 +190,7 @@ export class ColorContrastAnalyzer {
             enableSimulation: this.config.colorBlindnessSimulation;
             includePartialColorBlindness: true);
             generateSuggestions: true);
-            accurateSimulation: true;
+           , accurateSimulation: true;
         ),
         
         // 分析結果の保存
@@ -199,20 +199,20 @@ export class ColorContrastAnalyzer {
             contrastIssues: [];
             colorBlindnessIssues: [];
             recommendations: [];
-            statisticsReport: null ,};
+           , statisticsReport: null ,};
         // 分析状態
         this.state = { analyzing: false,
             realTimeEnabled: false;
             lastAnalysisTime: null;
-            analyzeScheduled: false ,};
+           , analyzeScheduled: false ,};
         // イベントハンドラー
         this.eventHandlers = { styleChanged: null,
             domChanged: null;
-            resize: null ,};
+           , resize: null ,};
         // パフォーマンス監視
         this.performance = { analysisCount: 0,
             averageAnalysisTime: 0;
-            lastAnalysisTime: 0 ,};
+           , lastAnalysisTime: 0 ,};
         // その他の初期化
         this.observer = null;''
         this.analysisQueue = new Set()';
@@ -296,7 +296,7 @@ export class ColorContrastAnalyzer {
                 totalElements: elements.length;
                 elementsAnalyzed: analyzedCount;
                 issuesFound: this.results.contrastIssues.length + this.results.colorBlindnessIssues.length;
-                wcagLevel: this.config.wcagLevel,
+               , wcagLevel: this.config.wcagLevel,
                 passRate: analyzedCount > 0 ? ((analyzedCount - this.results.contrastIssues.length) / analyzedCount') * 100 : 0,
                 criticalIssues: this.results.contrastIssues.filter(i => i.severity === 'critical'').length,
                 warnings: this.results.contrastIssues.filter(i => i.severity === 'warning).length ,}'
@@ -418,10 +418,10 @@ export class ColorContrastAnalyzer {
             selector: this.getElementSelector(element);
             foregroundColor: result.foreground;
             backgroundColor: result.background;
-            contrastRatio: result.contrastRatio;
+           , contrastRatio: result.contrastRatio;
             requiredRatio,
             wcagLevel: this.config.wcagLevel;
-            severity: this.determineSeverity(result.contrastRatio, requiredRatio),
+           , severity: this.determineSeverity(result.contrastRatio, requiredRatio),
             suggestion: this.generateColorSuggestion(result.foreground, result.background, requiredRatio };
         
         this.results.contrastIssues.push(issue);
@@ -437,7 +437,7 @@ export class ColorContrastAnalyzer {
             colorPair: result.colorPair;
             affectedTypes: result.affectedTypes;
             severity: result.severity;
-            description: result.description ,};
+           , description: result.description ,};
         this.results.colorBlindnessIssues.push(issue);
     }
     
@@ -446,8 +446,7 @@ export class ColorContrastAnalyzer {
      */''
     private determineSeverity(actual: number, required: number): 'critical' | 'warning' | 'info' { const ratio = actual / required;
 
-        if(ratio < 0.5) {'
-            ';
+        if(ratio < 0.5) {', ';
 
         }
 
@@ -477,7 +476,7 @@ export class ColorContrastAnalyzer {
 
         if(element.className) { ' }'
 
-            return `.${element.className.split(' ''}.join('.'})`;
+            return `.${element.className.split(', ''}.join('.'})`;
         }
         
         return element.tagName.toLowerCase();
@@ -536,7 +535,7 @@ export class ColorContrastAnalyzer {
         
         this.observer.observe(document.body, { childList: true)
             subtree: true)';
-            attributes: true,')';
+           , attributes: true,')';
             attributeFilter: ['style', 'class] });
         
         // イベントリスナーの設定
@@ -602,8 +601,7 @@ export class ColorContrastAnalyzer {
      * リアルタイムリスナーの設定
      */
     private setupRealTimeListeners(): void { ''
-        if(this.eventHandlers.resize) {'
-            ';
+        if(this.eventHandlers.resize) {', ';
 
         }
 
@@ -614,8 +612,7 @@ export class ColorContrastAnalyzer {
      * リアルタイムリスナーの削除
      */'
     private removeRealTimeListeners(): void { ''
-        if(this.eventHandlers.resize) {'
-            ';
+        if(this.eventHandlers.resize) {', ';
 
         }
 
@@ -673,7 +670,7 @@ export class ColorContrastAnalyzer {
             const stats = byElement.get(tagName) || {
                 tagName, : undefined
                 passCount: 0;
-                failCount: 0, }
+               , failCount: 0, }
                 averageContrast: 0 }
             };
             stats.failCount++;
@@ -696,8 +693,8 @@ export class ColorContrastAnalyzer {
         this.results.statisticsReport = { timestamp: Date.now(),
             summary: {
                 totalContrast: this.results.contrastIssues.length;
-                passedContrast: 0, // TODO: Calculate from successful analyses;
-                failedContrast: this.results.contrastIssues.length,
+               , passedContrast: 0, // TODO: Calculate from successful analyses;
+               , failedContrast: this.results.contrastIssues.length,
                 averageContrast: this.calculateAverageContrast()';
     private updateColorStatistics(byColor: Map<string, ColorStatistics>, color: string, usage: 'foreground' | 'background', issue: ContrastIssue): void {''
         const stats = byColor.get(color) || {
@@ -706,7 +703,7 @@ export class ColorContrastAnalyzer {
             asBackground: 0;
             asForeground: 0;
             averageContrast: 0;
-            issues: 0 ,};
+           , issues: 0 ,};
         ';
 
         stats.usageCount++;''
@@ -759,7 +756,7 @@ export class ColorContrastAnalyzer {
 
             this.results.recommendations.push({);''
                 id: this.generateRecommendationId(''';
-                type: 'contrast',
+               , type: 'contrast',
                 priority: 'high';
         ,}
 
@@ -780,7 +777,7 @@ export class ColorContrastAnalyzer {
     private generateColorBlindnessRecommendations(): void { if (this.results.colorBlindnessIssues.length > 0) {'
             this.results.recommendations.push({);''
                 id: this.generateRecommendationId(''';
-                type: 'colorBlindness',
+               , type: 'colorBlindness',
                 priority: 'medium',
                 title: '色覚異常対応の改善', })'
                 description: `${this.results.colorBlindnessIssues.length}個の要素で色覚異常ユーザーにとって識別困難な色の組み合わせが検出されました。`,')'
@@ -801,7 +798,7 @@ export class ColorContrastAnalyzer {
         if(avgContrast < 4.5) {
             this.results.recommendations.push({);''
                 id: this.generateRecommendationId(''';
-                type: 'general',
+               , type: 'general',
                 priority: 'medium';
         ,})'
                 title: '全体的なコントラストの改善',') }
@@ -853,7 +850,7 @@ export class ColorContrastAnalyzer {
             issuesFound: 0;
             wcagLevel: this.config.wcagLevel;
             passRate: 0;
-            criticalIssues: 0, };
+           , criticalIssues: 0, };
             warnings: 0 }
         }
     

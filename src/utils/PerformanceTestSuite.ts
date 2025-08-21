@@ -6,9 +6,9 @@
  * Requirements: 5.1, 5.2, 5.3
  */
 
-import { PerformanceTestExecutor } from './performance-testing/PerformanceTestExecutor.js';''
-import { PerformanceMetricsCollector } from './performance-testing/PerformanceMetricsCollector.js';''
-import { PerformanceTestReporter } from './performance-testing/PerformanceTestReporter.js';
+import { PerformanceTestExecutor  } from './performance-testing/PerformanceTestExecutor.js';''
+import { PerformanceMetricsCollector  } from './performance-testing/PerformanceMetricsCollector.js';''
+import { PerformanceTestReporter  } from './performance-testing/PerformanceTestReporter.js';
 
 // Type definitions
 interface BaselineConfig { target: number,
@@ -30,20 +30,20 @@ interface Baselines { frameRate: BaselineConfig,
     memoryUsage: BaselineConfig;
     renderingEfficiency: BaselineConfig;
     networkPerformance: BaselineConfig;
-    batteryOptimization: BaselineConfig
+   , batteryOptimization: BaselineConfig
     ,}
 
 interface TestSession { id: number;
     startTime: number;
     endTime?: number;
-    results: Map<string, TestResult>;''
+   , results: Map<string, TestResult>;''
     status: 'running' | 'completed' | 'failed';
     error?: string ,}
 
 interface TestResult { category: string;
     tests: TestDetails;
     passed: boolean;
-    summary: string;
+   , summary: string;
     performanceMetrics?: PerformanceMetrics
     }
 
@@ -55,14 +55,14 @@ interface TestAnalysis { overallPassed: boolean,
     regressions: Regression[];
     improvements: Improvement[];
     recommendations: Recommendation[];
-    session: TestSession;
+   , session: TestSession;
     comparison?: BaselineComparison
     ,}
 
 interface Regression { category: string;
     metric: string;
     current: number;
-    baseline: number,
+   , baseline: number,
     degradation: number,
     severity: 'low' | 'medium' | 'high' | 'critical' ,}
 
@@ -70,35 +70,35 @@ interface Improvement { category: string;
     metric: string;
     current: number;
     baseline: number;
-    improvement: number }
+   , improvement: number }
 ';
 
 interface Recommendation { type: string,''
     priority: 'low' | 'medium' | 'high' | 'critical';
     description: string;
-    actions: string[];
+   , actions: string[];
     category?: string ,}
 
 interface BaselineComparison { frameRate: ComparisonResult;
     memory: ComparisonResult;
     rendering: ComparisonResult;
     network: ComparisonResult;
-    battery: ComparisonResult
+   , battery: ComparisonResult
     }
 
 interface ComparisonResult { current: number;
-    baseline: number,
+   , baseline: number,
     difference: number,
     status: 'improved' | 'degraded' | 'stable';
-    withinThreshold: boolean ,}
+   , withinThreshold: boolean ,}
 
 interface TestHistory { id: string;
     timestamp: number;
-    passed: boolean }
+   , passed: boolean }
 
 interface ErrorLog { timestamp: number;
     context: string;
-    error: string;
+   , error: string;
     stack?: string }
 
 interface FallbackResult { category?: string;
@@ -115,8 +115,8 @@ interface ExportOptions { includeRawData?: boolean;
     includeCharts?: boolean;
     includeRecommendations?: boolean;
     dateRange?: {
-        start: number;
-        end: number ,}
+        star;t: number;
+       , end: number ,}
 
 // Sub-component interfaces
 interface PerformanceTestExecutor { setupTestEnvironment(): Promise<void>;
@@ -142,7 +142,7 @@ interface PerformanceTestRunner { runTests?(): Promise<any>;
     }
 
 interface BenchmarkComparator { compare?(baseline: any, current: any): any 
-interface RegressionDetector { detectRegressions?(data: any): Regression[],
+interface RegressionDetector { detectRegressions?(dat;a: any): Regression[],
     
 interface ContinuousPerformanceMonitor { startMonitoring?(): void;
     stopMonitoring?(): void; }
@@ -168,7 +168,7 @@ interface GCMonitor { startMonitoring(): Promise<void>;
 interface GCStatistics { averagePauseTime: number,
     collectionCount: number;
     totalPauseTime: number;
-    memoryReclaimed: number ,}
+   , memoryReclaimed: number ,}
 
 interface MemoryPressureSimulator { applyPressure(): Promise<void>;
     releasePressure(): Promise<void>;
@@ -180,7 +180,7 @@ interface RenderOptimizer { measureDirtyRegionEfficiency(scenario: DirtyRegionTe
 interface DirtyRegionEfficiency { ratio: number,
     totalRegions: number;
     dirtyRegions: number;
-    pixelsRendered: number ,}
+   , pixelsRendered: number ,}
 
 interface DirtyRegionTestScenario { setup(): Promise<void>;
     }
@@ -191,7 +191,7 @@ interface ViewportCullingTester { measureCullingEfficiency(): Promise<CullingEff
 interface CullingEfficiency { cullRate: number,
     totalObjects: number;
     culledObjects: number;
-    renderTime: number ,}
+   , renderTime: number ,}
 
 interface LayerCompositionTester { measureCompositionPerformance(): Promise<CompositionPerformance>;
     }
@@ -199,7 +199,7 @@ interface LayerCompositionTester { measureCompositionPerformance(): Promise<Comp
 interface CompositionPerformance { compositionTime: number,
     layerCount: number;
     complexity: string;
-    optimizations: string[] ,}
+   , optimizations: string[] ,}
 
 interface RenderTimer { measureSingleRenderTime(): Promise<number>;
     }
@@ -232,7 +232,7 @@ export class PerformanceTestSuite {
     private testRunner: PerformanceTestRunner;
     private benchmarkComparator: BenchmarkComparator;
     private regressionDetector: RegressionDetector;
-    private continuousMonitor: ContinuousPerformanceMonitor;
+    private, continuousMonitor: ContinuousPerformanceMonitor;
     constructor() {
 
         this.testResults = new Map();
@@ -291,8 +291,7 @@ export class PerformanceTestSuite {
      * 包括的テストの実行（メイン公開API）
      */'
     async runComprehensiveTests(): Promise<TestAnalysis> { ''
-        if(!this.initialized) {'
-            ';
+        if(!this.initialized) {', ';
 
         }
 
@@ -303,7 +302,7 @@ export class PerformanceTestSuite {
 
             startTime: performance.now(),
             results: new Map(''';
-            status: 'running' ,}))
+           , status: 'running' ,}))
         try { // サブコンポーネントを使用してテストを実行
             const testSuites = [this.testExecutor.runFrameRateTests();
                 this.testExecutor.runMemoryTests(),
@@ -338,8 +337,7 @@ export class PerformanceTestSuite {
      * テスト結果の分析（メトリクス収集コンポーネントに委譲）
      */'
     analyzeTestResults(): TestAnalysis { ''
-        if(!this.currentSession) {'
-            ';
+        if(!this.currentSession) {', ';
 
         }
 
@@ -383,7 +381,7 @@ export class PerformanceTestSuite {
                     type: 'optimization',
                     priority: 'high',)';
                     description: 'フレームレート低下が検出されました。レンダリング最適化を実行してください。')';
-                    actions: ['';
+                   , actions: ['';
                         'AdaptiveQualityController による自動品質調整の確認',
                         'FrameStabilizer の設定見直し',]';
                         'オブジェクトプールの効率性確認'')]';
@@ -395,7 +393,7 @@ export class PerformanceTestSuite {
                     type: 'memory',
                     priority: 'high',)';
                     description: 'メモリ使用量の問題が検出されました。メモリ管理を確認してください。')';
-                    actions: ['';
+                   , actions: ['';
                         'MemoryManager による自動クリーンアップの実行',
                         'メモリリークの詳細調査',]';
                         'オブジェクトプールサイズの調整'')]';
@@ -407,7 +405,7 @@ export class PerformanceTestSuite {
                     type: 'rendering',
                     priority: 'medium',)';
                     description: 'レンダリング効率の低下が検出されました。')';
-                    actions: ['';
+                   , actions: ['';
                         'ダーティリージョン管理の確認',
                         'ビューポートカリングの最適化',]';
                         'レイヤー構成の見直し'')]';
@@ -419,7 +417,7 @@ export class PerformanceTestSuite {
                     type: 'network',
                     priority: 'medium',)';
                     description: 'ネットワークパフォーマンスの問題が検出されました。')';
-                    actions: ['';
+                   , actions: ['';
                         'ネットワーク接続の最適化',
                         'リクエスト頻度の調整',]';
                         'データ圧縮の検討'')]';
@@ -431,7 +429,7 @@ export class PerformanceTestSuite {
                     type: 'battery',
                     priority: 'low',)';
                     description: 'バッテリー効率の改善が必要です。')';
-                    actions: ['';
+                   , actions: ['';
                         '電力消費の最適化',
                         'バックグラウンド処理の削減',]';
                         'CPU使用率の監視')];
@@ -488,7 +486,7 @@ export class PerformanceTestSuite {
                     const result = JSON.parse(localStorage.getItem(key) || '{}');
                     history.push({ : undefined)
                         id: key);
-                        timestamp: result.session? .startTime || 0, : undefined)';
+                       , timestamp: result.session? .startTime || 0, : undefined)';
                         passed: result.overallPassed || false);' ,}'
 
                 } catch (error) { console.error('Failed to parse test history item:', error }
@@ -552,9 +550,9 @@ export class PerformanceTestSuite {
     handleError(error: Error, context: string): FallbackResult | null { console.error(`PerformanceTestSuite, Error in ${context):`, error);
         
         // エラーログ保存
-        const errorLog: ErrorLog = {''
+        const, errorLog: ErrorLog = {''
             timestamp: Date.now()';
-            const existingLogs: ErrorLog[] = JSON.parse(localStorage.getItem('performance_test_errors'') || '[]'),
+            const, existingLogs: ErrorLog[] = JSON.parse(localStorage.getItem('performance_test_errors'') || '[]'),
             existingLogs.push(errorLog};
             // 最新100件のエラーのみ保持
             if(existingLogs.length > 100} {
@@ -590,7 +588,7 @@ export class PerformanceTestSuite {
                 };''
             case 'metrics_collection': return { overallPassed: false;
                     regressions: [];
-                    improvements: [], };
+                   , improvements: [], };
                     recommendations: [] }
                 };
             default:;
@@ -670,4 +668,4 @@ class BatteryEfficiencyTester implements BatteryEfficiencyTester {'
     async measureEfficiency(): Promise<number> { return 0.85; }''
     getActiveOptimizations('): string[] { return ['cpu_throttling', 'screen_dimming']; }
 
-export { PerformanceTestSuite };
+export { PerformanceTestSuite  };

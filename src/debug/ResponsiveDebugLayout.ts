@@ -3,7 +3,7 @@
  */
 
 interface DebugInterface { debugPanel: HTMLElement,
-    switchPanel: (panelName: string) => void;
+    switchPanel: (panelNam;e: string) => void;
     activePanel: string;
     getAllPanels: () => DebugPanel[] ,}
 }
@@ -15,12 +15,12 @@ interface DebugPanel { element?: HTMLElement;
 interface Breakpoints { mobile: number,
     tablet: number;
     desktop: number;
-    large: number ,}
+   , large: number ,}
 
 interface MediaQueries { mobile: MediaQueryList;
     tablet: MediaQueryList;
     desktop: MediaQueryList;
-    large: MediaQueryList
+   , large: MediaQueryList
     }
 
 type BreakpointName = 'mobile' | 'tablet' | 'desktop' | 'large';''
@@ -31,7 +31,7 @@ export class ResponsiveDebugLayout {
     private currentBreakpoint: BreakpointName | null;
     private breakpoints: Breakpoints;
     private orientationLock: boolean;
-    private touchDevice: boolean;
+    private, touchDevice: boolean;
     private mediaQueries!: MediaQueries;
     private resizeHandler?: () => void;
     private orientationChangeHandler?: () => void;
@@ -42,7 +42,7 @@ export class ResponsiveDebugLayout {
         this.breakpoints = {
             mobile: 480;
             tablet: 768;
-            desktop: 1024;
+           , desktop: 1024;
     }
     }
             large: 1440 }
@@ -147,8 +147,7 @@ export class ResponsiveDebugLayout {
      */
     private getCurrentBreakpoint(): BreakpointName { const width = window.innerWidth;
 
-        if(width <= this.breakpoints.mobile) {'
-            ';
+        if(width <= this.breakpoints.mobile) {', ';
 
         }
 
@@ -307,8 +306,7 @@ export class ResponsiveDebugLayout {
                     <button class="tab-btn" data-panel="error">エラー</button>"";
                     <button class="tab-btn" data-panel="test">テスト</button>;
                 </div>;
-            `;"
-            ";
+            `;", ";
         }"
             this.debugInterface.debugPanel.insertBefore(tabNav, this.debugInterface.debugPanel.firstChild); }
         }
@@ -425,8 +423,7 @@ export class ResponsiveDebugLayout {
      * 画面向きを取得
      */'
     private getOrientation(): Orientation { ''
-        if(screen.orientation) {'
-            ';
+        if(screen.orientation) {', ';
 
         }
 
@@ -473,19 +470,19 @@ export class ResponsiveDebugLayout {
             
             .enhanced-debug-interface.layout-mobile .mobile-tab-nav { position: sticky,
                 top: 0;
-                background: rgba(0, 0, 0, 0.9);
+               , background: rgba(0, 0, 0, 0.9);
                 z-index: 1000,
                 margin: -10px -10px 10px -10px;
-                padding: 10px ,}
+               , padding: 10px ,}
             
             .enhanced-debug-interface.layout-mobile .tab-buttons { display: flex;
-                gap: 5px;
+               , gap: 5px;
                 overflow-x: auto, }
             
             .enhanced-debug-interface.layout-mobile .tab-btn { flex: 1,
                 min-width: 60px,
                 padding: 8px 12px;
-                background: rgba(255, 255, 255, 0.1);
+               , background: rgba(255, 255, 255, 0.1);
                 border: 1px solid rgba(255, 255, 255, 0.2);
                 color: white;
                 border-radius: 4px,
@@ -526,8 +523,7 @@ export class ResponsiveDebugLayout {
             window.removeEventListener('resize', this.resizeHandler); }
 
         }''
-        if(this.orientationChangeHandler) {'
-            ';
+        if(this.orientationChangeHandler) {', ';
 
         }
 

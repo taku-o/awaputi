@@ -4,7 +4,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date 
+    timeRange?: { star;t: Date, end: Date 
 ,}
     filters?: Record<string, any>;
     metrics?: string[];
@@ -40,7 +40,7 @@ export class SessionManager {
             playerLevel: sessionInfo.playerLevel;
             previousBestScore: sessionInfo.previousBestScore || 0;
             // セッション統計
-            stats: {
+           , stats: {
                 duration: 0;
                 bubblesPopped: 0;
                 bubblesMissed: 0;
@@ -50,7 +50,7 @@ export class SessionManager {
                 exitReason: null;
                 interactions: [];
                 scoreProgression: [];
-                itemsUsed: [] 
+               , itemsUsed: [] 
 ,}
         },
         
@@ -98,7 +98,7 @@ export class SessionManager {
             bubbleType: interactionData.bubbleType;
             action: interactionData.action;
             reactionTime: interactionData.reactionTime;
-            position: interactionData.position;
+           , position: interactionData.position;
     }
             score: interactionData.score' }'
 
@@ -122,7 +122,7 @@ export class SessionManager {
             score: scoreData.totalScore;
             scoreGain: scoreData.amount;
             source: scoreData.type;
-            multiplier: scoreData.multiplier
+           , multiplier: scoreData.multiplier
 }
             comboCount: scoreData.comboCount ;
 }
@@ -143,7 +143,7 @@ export class SessionManager {
             timestamp: Date.now();
             itemType: itemData.itemType;
             cost: itemData.cost;
-            effectiveness: itemData.effectiveness
+           , effectiveness: itemData.effectiveness
 }
             duration: itemData.duration ;
 }
@@ -206,7 +206,7 @@ export class SessionManager {
         if (recentSessions.length === 0) {
             return { totalSessions: 0,
                 averageDuration: 0;
-                averageScore: 0
+               , averageScore: 0
 ,}
                 completionRate: 0, };
                 averageAccuracy: 0 ;
@@ -230,7 +230,7 @@ export class SessionManager {
         return { totalSessions: recentSessions.length,
             averageDuration: totalDuration / recentSessions.length;
             averageScore: totalScore / recentSessions.length;
-            completionRate: completedSessions / recentSessions.length
+           , completionRate: completedSessions / recentSessions.length
 ,}
             averageAccuracy: averageAccuracy, };
             exitReasons: this.summarizeExitReasons(recentSessions); }

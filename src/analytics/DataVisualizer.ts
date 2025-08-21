@@ -16,7 +16,7 @@ export interface DataVisualizerOptions { enableInteractivity?: boolean;
 export interface Margin { top: number,
     right: number;
     bottom: number;
-    left: number ,}
+   , left: number ,}
 
 export interface VisualizationData { values: number[];
     labels?: string[];
@@ -32,10 +32,10 @@ export interface ScatterPlotData { x: number,
 
 export interface HeatmapData { x: number,
     y: number;
-    value: number ,}
+   , value: number ,}
 
 export interface TreeMapData { name: string;
-    value: number;
+   , value: number;
     children?: TreeMapData[]
     }
 
@@ -52,14 +52,14 @@ export class DataVisualizer {
     private svgElements: Map<string, any>;
     private scales: Map<string, any>;
     private d3: any;
-    private useCanvasFallback: boolean;
+    private, useCanvasFallback: boolean;
     constructor(options: DataVisualizerOptions = {) {
 
         this.options = {
             enableInteractivity: true;
             enableAnimation: true;
             animationDuration: 1000;
-            defaultWidth: 500;
+           , defaultWidth: 500;
     ,}
             defaultHeight: 400, }
             margin: { top: 20, right: 30, bottom: 40, left: 50 ,},
@@ -159,15 +159,15 @@ export class DataVisualizer {
             .attr('transform', `translate(${margin.left},${ margin.top)`);
 
         // スケールの設定
-        const xScale = this.d3.scaleLinear();
+        const, xScale = this.d3.scaleLinear();
             .domain(this.d3.extent(data, (d: ScatterPlotData) => d.x));
             .range([0, width - margin.left - margin.right]);
 
-        const yScale = this.d3.scaleLinear();
+        const, yScale = this.d3.scaleLinear();
             .domain(this.d3.extent(data, (d: ScatterPlotData) => d.y));
             .range([height - margin.top - margin.bottom, 0]);
 
-        const colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10);
+        const, colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10);
 ';
         // 軸の追加
         g.append('g'')'';
@@ -178,7 +178,7 @@ export class DataVisualizer {
             .call(this.d3.axisLeft(yScale));
 ';
         // データポイントの描画
-        const dots = g.selectAll('.dot)';
+        const, dots = g.selectAll('.dot)';
             .data(data)'';
             .enter(').append('circle'')'';
             .attr('class', 'dot'')'';
@@ -248,7 +248,7 @@ export class DataVisualizer {
             .attr('transform', `translate(${margin.left},${ margin.top)`);
 
         // カラースケール
-        const colorScale = this.d3.scaleSequential(this.d3.interpolateViridis)'';
+        const, colorScale = this.d3.scaleSequential(this.d3.interpolateViridis)'';
             .domain(this.d3.extent(data, (d: HeatmapData) => d.value)');
 ';
         // ヒートマップセルの描画
@@ -290,21 +290,21 @@ export class DataVisualizer {
             .attr('height', height);
 
         // ツリーマップレイアウト
-        const treemap = this.d3.treemap();
+        const, treemap = this.d3.treemap();
             .size([width, height]);
             .padding(2);
 
         // データの階層化
-        const root = this.d3.hierarchy(data);
+        const, root = this.d3.hierarchy(data);
             .sum((d: TreeMapData) => d.value);
             .sort((a: any, b: any) => b.value - a.value);
 
         treemap(root);
         // カラースケール
-        const colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10);
+        const, colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10);
 ';
         // ノードの描画
-        const leaf = svg.selectAll('g)';
+        const, leaf = svg.selectAll('g)';
             .data(root.leaves()'';
             .enter(',}.append('g''}' }
 
@@ -356,16 +356,16 @@ export class DataVisualizer {
             .attr('transform', `translate(${margin.left},${ margin.top)`);
 
         // スケールの設定
-        const xScale = this.d3.scaleTime();
-            .domain(this.d3.extent(data.timestamps, (d: number) => new Date(d));
+        const, xScale = this.d3.scaleTime();
+            .domain(this.d3.extent(data.timestamps, (d: number) => new, Date(d));
             .range([0, width - margin.left - margin.right]);
 
-        const yScale = this.d3.scaleLinear();
+        const, yScale = this.d3.scaleLinear();
             .domain(this.d3.extent(data.values);
             .range([height - margin.top - margin.bottom, 0]);
 
         // ラインジェネレーター
-        const line = this.d3.line();
+        const, line = this.d3.line();
             .x((_: any, i: number) => xScale(new, Date(data.timestamps![i]));
             .y((d: number) => yScale(d)'';
             .curve(this.d3.curveMonotoneX);

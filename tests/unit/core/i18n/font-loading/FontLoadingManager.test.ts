@@ -1,12 +1,12 @@
-import { jest } from '@jest/globals';
-import { FontLoadingManager } from '../../../../../src/core/i18n/font-loading/FontLoadingManager.js';
+import { jest  } from '@jest/globals';
+import { FontLoadingManager  } from '../../../../../src/core/i18n/font-loading/FontLoadingManager.js';
 // Mock dependencies
 jest.mock('../../../../../src/core/i18n/font-loading/FontSourceManager.js'');
 jest.mock('../../../../../src/core/i18n/font-loading/FontFallbackHandler.js'');
 jest.mock('../../../../../src/core/i18n/font-loading/FontErrorHandler.js'');
-import { FontSourceManager } from '../../../../../src/core/i18n/font-loading/FontSourceManager.js';
-import { FontFallbackHandler } from '../../../../../src/core/i18n/font-loading/FontFallbackHandler.js';
-import { FontErrorHandler } from '../../../../../src/core/i18n/font-loading/FontErrorHandler.js';
+import { FontSourceManager  } from '../../../../../src/core/i18n/font-loading/FontSourceManager.js';
+import { FontFallbackHandler  } from '../../../../../src/core/i18n/font-loading/FontFallbackHandler.js';
+import { FontErrorHandler  } from '../../../../../src/core/i18n/font-loading/FontErrorHandler.js';
 // Type definitions
 interface LoadResult {
     success: boolean,
@@ -41,7 +41,7 @@ interface MockErrorHandler {
 interface FontConfig {
     enabledSources?: string[];
     timeouts?: {
-        [source: string]: number,
+        [sourc;e: string]: number,
     };
     fallbackBehavior?: {
         useSystemFonts?: boolean;
@@ -49,7 +49,7 @@ interface FontConfig {
 }
 interface MockElement {
     style: {
-        fontFamily?: string;
+        fontFamil;y?: string;
     };
 }
 interface MultiElementResult {

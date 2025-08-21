@@ -4,8 +4,8 @@
  * SoundEffectSystemから分離されたサウンドプール機能
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler';''
-import { getConfigurationManager } from '../../core/ConfigurationManager';
+import { getErrorHandler  } from '../../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../../core/ConfigurationManager';
 
 /**
  * オーディオソースラッパーインターフェース
@@ -14,22 +14,22 @@ interface AudioSourceWrapper { source: AudioBufferSourceNode | null,
     gainNode: GainNode;
     isInUse: boolean;
     createdAt: number;
-    lastUsed: number ,}
+   , lastUsed: number ,}
 
 /**
  * サウンドバリエーションインターフェース
  */
 interface SoundVariation { buffer: AudioBuffer;
     playCount: number;
-    weight: number }
+   , weight: number }
 
 /**
  * サウンドエントリーインターフェース
  */
 interface SoundEntry { buffer: AudioBuffer;
-    variations: Map<string, SoundVariation>;
+   , variations: Map<string, SoundVariation>;
     playCount: number;
-    lastPlayed: number ,}
+   , lastPlayed: number ,}
 
 /**
  * カテゴリプールインターフェース
@@ -44,7 +44,7 @@ interface PoolConfig { maxPoolSize: number;
     maxActiveSources: number;
     poolCleanupInterval: number;
     sourceReuseDelay: number;
-    preloadedSounds: number }
+   , preloadedSounds: number }
 
 /**
  * 再生オプションインターフェース
@@ -73,7 +73,7 @@ interface PlaybackInstance { sourceWrapper: AudioSourceWrapper,''
  */
 interface CategoryStatistics { soundCount: number;
     maxSize: number;
-    totalPlayCount: number }
+   , totalPlayCount: number }
 
 /**
  * プール統計インターフェース
@@ -82,7 +82,7 @@ interface PoolStatistics { activeSources: number;
     maxActiveSources: number;
     poolSize: number;
     maxPoolSize: number;
-    categories: Record<string, CategoryStatistics>;
+   , categories: Record<string, CategoryStatistics>;
     availableSources: number ,}
 
 /**
@@ -106,7 +106,7 @@ export class SoundPoolManager {
     private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // サウンドプール管理
-    private soundPools: Map<string, any>;
+    private, soundPools: Map<string, any>;
     private activeSources: Set<AudioSourceWrapper>;
     private sourcePool: AudioSourceWrapper[];
     // プール設定
@@ -137,7 +137,7 @@ export class SoundPoolManager {
         this.poolConfig = {
             maxPoolSize: 100;
             maxActiveSources: 32;
-            poolCleanupInterval: 30000, // 30秒;
+           , poolCleanupInterval: 30000, // 30秒;
             sourceReuseDelay: 100, // 100ms
     }
             preloadedSounds: 50 }
@@ -188,7 +188,7 @@ export class SoundPoolManager {
     private createNewSource(): AudioSourceWrapper { return { source: null,
             gainNode: this.audioContext.createGain();
             isInUse: false;
-            createdAt: Date.now(), };
+           , createdAt: Date.now(), };
             lastUsed: 0 }
         }
     
@@ -208,14 +208,14 @@ export class SoundPoolManager {
                 buffer: audioBuffer);
                 variations: new Map();
                 playCount: 0;
-                lastPlayed: 0 });
+               , lastPlayed: 0 });
             // バリエーションを追加
             variations.forEach((variation, index) => {  }
                 const variationKey = `${soundKey}_var${index}`;
                 const soundEntry = pool.sounds.get(soundKey);
                 if(soundEntry) { soundEntry.variations.set(variationKey, {)
                         buffer: variation);
-                        playCount: 0, }
+                       , playCount: 0, }
                         weight: 1.0 // 再生重み); }
                     });
                 }
@@ -496,7 +496,7 @@ export class SoundPoolManager {
             categoryStats[category] = {)
                 soundCount: pool.sounds.size,);
                 maxSize: pool.maxSize);
-                totalPlayCount: Array.from(pool.sounds.values( ,}
+               , totalPlayCount: Array.from(pool.sounds.values( ,}
                     .reduce((sum, sound) => sum + sound.playCount, 0); }
             });
         
@@ -504,7 +504,7 @@ export class SoundPoolManager {
             maxActiveSources: this.poolConfig.maxActiveSources;
             poolSize: this.sourcePool.length;
             maxPoolSize: this.poolConfig.maxPoolSize;
-            categories: categoryStats, };
+           , categories: categoryStats, };
             availableSources: this.sourcePool.filter(wrapper => !wrapper.isInUse).length }
         }
     

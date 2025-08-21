@@ -7,14 +7,14 @@
 // 基本型定義
 export interface HelpContentSection { id: string,
     title: string;
-    content: string;
+   , content: string;
     tags?: string[];
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
     searchKeywords?: string[]; ,}
 
 export interface TutorialStep { id: string,
     title: string;
-    instructions: string;
+   , instructions: string;
     action?: string;
     target?: string;
     duration?: number;
@@ -22,20 +22,20 @@ export interface TutorialStep { id: string,
 
 export interface SearchHistoryEntry { query: string,
     language: string;
-    timestamp: number ,}
+   , timestamp: number ,}
 ';
 
 export interface UserPreferences { showTooltips: boolean,''
     tutorialSpeed: 'slow' | 'normal' | 'fast';
-    helpLanguage: string ,}
+   , helpLanguage: string ,}
 
 export interface UserStatistics { totalHelpViews: number;
     totalSearches: number;
     totalTutorialsCompleted: number;
-    timeSpentInHelp: number }
+   , timeSpentInHelp: number }
 
 export interface SearchResult { section: HelpContentSection;
-    score: number }
+   , score: number }
 
 export interface ProgressStatistics { completedTutorials: number;
     viewedHelpSections: number;
@@ -43,18 +43,18 @@ export interface ProgressStatistics { completedTutorials: number;
     totalHelpViews: number;
     timeSpentInHelp: number;
     achievements: number;
-    lastActivity: number }
+   , lastActivity: number }
 
 export interface CompletionRates { tutorialCompletionRate: number;
-    helpViewCompletionRate: number }
+   , helpViewCompletionRate: number }
 
 export interface SearchPatterns { commonQueries: Record<string, number>,
     languageDistribution: Record<string, number>,
     timeDistribution: {
-        morning: number;
+        mornin;g: number;
         afternoon: number;
         evening: number;
-        night: number ,}
+       , night: number ,}
 
 /**
  * ヘルプコンテンツモデル
@@ -186,7 +186,7 @@ export class HelpContentModel {
     toJSON(''';
     public, difficulty: 'beginner' | 'intermediate' | 'advanced);
     public tags: string[]);
-    public metadata: Record<string, any>;
+    public, metadata: Record<string, any>;
 
     constructor(data: Partial<TutorialModel> = { )) {''
         this.id = data.id || '';''
@@ -309,7 +309,7 @@ export class HelpContentModel {
     toJSON(''';
     public, difficulty: 'beginner' | 'intermediate' | 'advanced);
     public searchKeywords: string[]);
-    public metadata: Record<string, any>;
+    public, metadata: Record<string, any>;
 
     constructor(data: Partial<FAQModel> = { )) {''
         this.id = data.id || '';''
@@ -444,7 +444,7 @@ export class HelpContentModel {
             helpfulVotes: this.helpfulVotes;
             totalVotes: this.totalVotes;
             difficulty: this.difficulty;
-            searchKeywords: this.searchKeywords, };
+           , searchKeywords: this.searchKeywords, };
             metadata: this.metadata }
         }
 }
@@ -484,7 +484,7 @@ export class UserProgressModel {
         this.statistics = { totalHelpViews: 0,
             totalSearches: 0;
             totalTutorialsCompleted: 0;
-            timeSpentInHelp: 0;
+           , timeSpentInHelp: 0;
             ...data.statistics;
         this.achievements = data.achievements instanceof Set ?   : undefined
             data.achievements: new Set(data.achievements || [] 
@@ -571,7 +571,7 @@ export class UserProgressModel {
             totalSearches: this.statistics.totalSearches;
             totalHelpViews: this.statistics.totalHelpViews;
             timeSpentInHelp: this.statistics.timeSpentInHelp;
-            achievements: this.achievements.size, };
+           , achievements: this.achievements.size, };
             lastActivity: this.lastActivity }
         }
 
@@ -627,10 +627,10 @@ export class UserProgressModel {
     toJSON(): Record<string, any> { return { userId: this.userId,
             completedTutorials: Array.from(this.completedTutorials);
             viewedHelpSections: Array.from(this.viewedHelpSections);
-            searchHistory: this.searchHistory.slice(-20), // 最新20件のみ;
+           , searchHistory: this.searchHistory.slice(-20), // 最新20件のみ;
             preferences: this.preferences;
             lastActivity: this.lastActivity;
-            statistics: this.statistics, };
+           , statistics: this.statistics, };
             achievements: Array.from(this.achievements); }
         }
 
@@ -641,7 +641,7 @@ export class UserProgressModel {
     toLightweightData(): Record<string, any> { return { userId: this.userId,
             completedTutorials: Array.from(this.completedTutorials);
             preferences: this.preferences;
-            lastActivity: this.lastActivity, };
+           , lastActivity: this.lastActivity, };
             achievements: Array.from(this.achievements); }
         }
 }

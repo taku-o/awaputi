@@ -3,16 +3,16 @@
  * 
  * 動的なメタタグ管理と多言語対応を提供
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl, LanguageCode } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';
+import { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl, LanguageCode  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';
 import { createMetaTag, 
     sanitizeMetaContent, ;
     normalizeLanguageCode,
     truncateText,
     normalizeUrl,
     debounce,
-    measurePerformance' }'
+    measurePerformance'  }'
 
 } from './SEOUtils';
 
@@ -64,7 +64,7 @@ interface Metadata { language: LanguageCode,
     image: string;
     author: string;
     siteName: string;
-    type: string;
+   , type: string;
     twitterImage?: string;
     path?: string; ,}
 
@@ -76,11 +76,11 @@ interface LocalizedMetadata { language: string,
     siteName: string;
     locale: string;
     direction: string;
-    charset: string ,}
+   , charset: string ,}
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
-    addLanguageChangeListener(callback: (lang: string) => void): void;
+    addLanguageChangeListener(callback: (lan;g: string) => void): void;
     t(key: string, defaultValue?: string): string;
     get(key: string, params?: Record<string, any>): string;
     getTextDirection?(): string; }
@@ -93,7 +93,7 @@ interface GameConfig { [key: string]: any, }
 interface ValidationReport { timestamp: string,
     issues: string[];
     warnings: string[];
-    metadata: Record<string, string>;
+   , metadata: Record<string, string>;
     isValid: boolean ,}
 
 // 動的メタハンドラー型
@@ -104,10 +104,10 @@ export class SEOMetaManager {
     private gameConfig: GameConfig | null;
     private baseUrl: string;
     private currentLang: LanguageCode;
-    private metaCache: Map<string, string>;
+    private, metaCache: Map<string, string>;
     private dynamicMetaHandlers: Map<string, DynamicMetaHandler>;
     private initialized: boolean;
-    private debouncedUpdate: (context: MetadataContext) => void;
+    private, debouncedUpdate: (context: MetadataContext) => void;
     private currentLanguage?: string;
     
     constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
@@ -194,7 +194,7 @@ export class SEOMetaManager {
                     score: dynamicContent.currentScore || 0;
                     level: dynamicContent.level || 1;
                     playTime: dynamicContent.playingTime || 0;
-                    bubblesPopped: dynamicContent.bubblesPopped || 0 ,}
+                   , bubblesPopped: dynamicContent.bubblesPopped || 0 ,}
             };
             // 動的メタデータ生成
             const metadata = await this._generateDynamicMetadata(enhancedContext);
@@ -229,7 +229,7 @@ export class SEOMetaManager {
             
         }
 
-            const scoreText = this.localizationManager ?   : undefined' '
+            const scoreText = this.localizationManager ?   : undefined', '
                 this.localizationManager.get('seo.titleWithScore', { score: gameSession.score.toLocaleString( }) :
                 `スコア ${gameSession.score.toLocaleString(})`;
             dynamicTitle = `${dynamicTitle} - ${scoreText}`;
@@ -251,7 +251,7 @@ export class SEOMetaManager {
 
         return { title: dynamicTitle,
             description: dynamicDescription;
-            gameState: gameSession, };
+           , gameState: gameSession, };
             path: this._generateUrl({), }
 
     /**
@@ -261,8 +261,7 @@ export class SEOMetaManager {
             // スコアランクに基づいて画像を選択
             let imageUrl = '/assets/social/og-image.png'; // デフォルト
 
-            if(score >= 100000) {'
-                ';
+            if(score >= 100000) {', ';
 
             }
 
@@ -319,7 +318,7 @@ export class SEOMetaManager {
                 title: await this._getLocalizedTitle(context);
                 description: await this._getLocalizedDescription(context);
                 keywords: await this._getLocalizedKeywords(context);
-                siteName: await this._getLocalizedSiteName(),
+               , siteName: await this._getLocalizedSiteName(),
                 locale: this._getOGLocale(),
 
                 direction: this._getTextDirection('' ,};
@@ -333,8 +332,7 @@ export class SEOMetaManager {
      * ローカライズされたタイトル生成
      */'
     private async _getLocalizedTitle(context: MetadataContext = {,}): Promise<string> { ''
-        if(!this.localizationManager) {'
-            ';
+        if(!this.localizationManager) {', ';
 
         }
 
@@ -365,8 +363,7 @@ export class SEOMetaManager {
      * ローカライズされた説明文生成
      */'
     private async _getLocalizedDescription(context: MetadataContext = { ): Promise<string> {''
-        if(!this.localizationManager) {'
-            ';
+        if(!this.localizationManager) {', ';
 
         }
 
@@ -403,8 +400,7 @@ export class SEOMetaManager {
      * ローカライズされたキーワード生成
      */'
     private async _getLocalizedKeywords(context: MetadataContext): Promise<string> { ''
-        if(!this.localizationManager) {'
-            ';
+        if(!this.localizationManager) {', ';
 
         }
 
@@ -433,8 +429,7 @@ export class SEOMetaManager {
      * テキスト方向の取得
      */'
     private _getTextDirection(): string { ''
-        if(!this.localizationManager) {'
-            ';
+        if(!this.localizationManager) {', ';
 
         }
 
@@ -499,7 +494,7 @@ export class SEOMetaManager {
      */''
     private async _generateMetadata(context: MetadataContext): Promise<Metadata> { const metadata: Metadata = {
             language: this.currentLang;
-            url: this._generateUrl(context,
+           , url: this._generateUrl(context,
             timestamp: Date.now(,
             title: '',
             description: '',
@@ -508,7 +503,7 @@ export class SEOMetaManager {
             author: SEOConfig.metadata.author,
             siteName: await this._getLocalizedSiteName(''';
             type: context.type || 'website';
-            path: context.path ,}))
+           , path: context.path ,}))
         // タイトルの生成);
         metadata.title = await this._generateTitle(context);
         
@@ -645,13 +640,11 @@ export class SEOMetaManager {
     /**
      * Open Graphタグの更新'
      */''
-    private _updateOpenGraphTags(metadata: Metadata): void { const ogTags: Record<string, string | string[] | number> = {''
-            'og:title': metadata.title,
+    private _updateOpenGraphTags(metadata: Metadata): void { const ogTags: Record<string, string | string[] | number> = {'', 'og:title': metadata.title,
             'og:description': metadata.description,
             'og:image': metadata.image,' }
 
-            'og:image:alt': `${metadata.siteName} - ${metadata.title}`,''
-            'og:url': metadata.url,
+            'og:image:alt': `${metadata.siteName} - ${metadata.title}`,'', 'og:url': metadata.url,
             'og:type': metadata.type,
             'og:site_name': metadata.siteName,
             'og: locale': this._getOGLocale()';
@@ -664,8 +657,7 @@ export class SEOMetaManager {
             .filter(lang => lang !== this.currentLang);
             .map(lang => this._getOGLocale(lang);
 
-        if(altLocales.length > 0) {'
-            ';
+        if(altLocales.length > 0) {', ';
 
         }
 
@@ -690,8 +682,7 @@ export class SEOMetaManager {
     /**
      * Twitter Cardタグの更新'
      */''
-    private _updateTwitterCardTags(metadata: Metadata): void { const twitterTags: Record<string, string> = {''
-            'twitter:card': 'summary_large_image',
+    private _updateTwitterCardTags(metadata: Metadata): void { const twitterTags: Record<string, string> = {'', 'twitter:card': 'summary_large_image',
             'twitter:title': truncateText(metadata.title, 70), // Twitter制限;
             'twitter:description': truncateText(metadata.description, 200), // Twitter制限;
             'twitter:image': this._getTwitterImage(metadata),' }
@@ -857,8 +848,7 @@ export class SEOMetaManager {
      * ローカライズされたサイト名の取得
      */'
     private async _getLocalizedSiteName(): Promise<string> { ''
-        if(this.localizationManager) {'
-            ';
+        if(this.localizationManager) {', ';
 
         }
 
@@ -869,8 +859,7 @@ export class SEOMetaManager {
      * タグラインの取得
      */'
     private async _getTagline(): Promise<string> {;
-        if(this.localizationManager) {'
-            ';
+        if(this.localizationManager) {', ';
 
         }
 
@@ -918,8 +907,7 @@ export class SEOMetaManager {
     /**
      * Open Graphロケールの取得'
      */''
-    private _getOGLocale(lang: LanguageCode = this.currentLang): string { const localeMap: Record<LanguageCode, string> = {''
-            'ja': 'ja_JP',
+    private _getOGLocale(lang: LanguageCode = this.currentLang): string { const localeMap: Record<LanguageCode, string> = {'', 'ja': 'ja_JP',
             'en': 'en_US',
             'zh-CN': 'zh_CN',
             'zh-TW': 'zh_TW',

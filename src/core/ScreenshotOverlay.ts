@@ -3,7 +3,7 @@
  * スコア情報、ゲームロゴ、ウォーターマーク等をスクリーンショットに合成する
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 export class ScreenshotOverlay {'
 
@@ -18,24 +18,24 @@ export class ScreenshotOverlay {'
                 logoPosition: 'bottom-left',
                 watermarkPosition: 'bottom-right';
                 padding: 20;
-                cornerRadius: 10;
+               , cornerRadius: 10;
     ,}
                 transparency: 0.9 }
             };
             // スコア表示設定
             score: { enabled: true;
-                fontSize: 24,
+               , fontSize: 24,
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 'bold',
                 textColor: '#FFFFFF',
                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
                 borderColor: '#FFD700';
-                borderWidth: 2, }
+               , borderWidth: 2, }
 
                 padding: { x: 15, y: 10 ,},''
                 shadowColor: 'rgba(0, 0, 0, 0.5)',
                 shadowBlur: 5;
-                shadowOffset: { x: 2, y: 2 ,},
+               , shadowOffset: { x: 2, y: 2 ,},
             
             // ロゴ設定
             logo: { enabled: true,''
@@ -65,21 +65,21 @@ export class ScreenshotOverlay {'
             
             // 実績オーバーレイ設定
             achievement: { enabled: true;
-                fontSize: 20,
+               , fontSize: 20,
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 'bold',
                 textColor: '#FFD700',
                 backgroundColor: 'rgba(75, 0, 130, 0.8)',
                 borderColor: '#FFD700';
-                borderWidth: 2, }
+               , borderWidth: 2, }
                 padding: { x: 12, y: 8 ,},
                 iconSize: 24;
-                maxWidth: 300;
+               , maxWidth: 300;
             },
             
             // 統計情報設定
             stats: { enabled: false;
-                fontSize: 16,
+               , fontSize: 16,
                 fontFamily: 'Arial, sans-serif',
                 textColor: '#FFFFFF',
                 backgroundColor: 'rgba(0, 0, 0, 0.6)', }
@@ -613,14 +613,14 @@ export class ScreenshotOverlay {'
      */''
     wrapText(ctx, text, maxWidth) {'
 
-        const words = text.split(' ');
+        const words = text.split(', ');
         const lines = [];
 
         let currentLine = words[0];
 
         for(let, i = 1; i < words.length; i++) {'
             const word = words[i];''
-            const width = ctx.measureText(currentLine + ' ' + word).width;
+            const width = ctx.measureText(currentLine + ', ' + word).width;
 
             if(width < maxWidth) {'
     }
@@ -719,10 +719,10 @@ export class ScreenshotOverlay {'
                     backgroundColor: 'rgba(0, 255, 0, 0.8)',
                     borderColor: '#00FF00',
                     textColor: '#000000';
-                    fontSize: 28 ,};
+                   , fontSize: 28 ,};
                 logo: { ''
                     textColor: '#FF00FF';
-                    fontSize: 36 }
+                   , fontSize: 36 }
             };
             ';
 
@@ -814,8 +814,7 @@ export class ScreenshotOverlay {'
         };
         ';
         // ErrorHandlerユーティリティの使用
-        if(ErrorHandler) {'
-            ';
+        if(ErrorHandler) {', ';
 
         }
 

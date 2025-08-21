@@ -3,7 +3,7 @@
  * 視覚効果システムのEnd-to-Endテスト
  * TypeScript移行 - Task 27対応
  */
-import { test, expect, Page, Dialog } from '@playwright/test';
+import { test, expect, Page, Dialog  } from '@playwright/test';
 interface GameEngine { enhancedParticleManager?: {
         getActiveParticleCount(): number; }
     };
@@ -17,8 +17,7 @@ interface GameEngine { enhancedParticleManager?: {
     };'
     seasonalEffectManager?: { setTheme(theme: string): void,''
         getCurrentTheme('')';
-test.describe('Visual Effects E2E Tests', () => {  }'
-    ' }'
+test.describe('Visual Effects E2E Tests', () => {  }', ' }'
     test.beforeEach(async ({ page }: { page: Page }') => {  // ゲームページに移動''
         await page.goto('http: //localhost:8000''),';
         // ゲームが読み込まれるまで待機' };'
@@ -129,7 +128,7 @@ test.describe('Visual Effects E2E Tests', () => {  }'
         }');'
     }''
     test.describe('Mobile Performance', (') => { ' }'
-        test('should optimize effects for mobile viewport', async ({ page, browserName: __browserName }: { page: Page; browserName: string }) => { // モバイルビューポートに設定' }'
+        test('should optimize effects for mobile viewport', async ({ page, browserName: __browserName }: { page: Page;, browserName: string }) => { // モバイルビューポートに設定' }'
             await page.setViewportSize({ width: 375, height: 812 }');''
             await page.goto('http: //localhost:8000'),';'
             await page.waitForTimeout(2000');'
@@ -190,8 +189,7 @@ test.describe('Visual Effects E2E Tests', () => {  }'
             await page.keyboard.press('Control+Shift+E');''
             await page.waitForTimeout(500'); }'
             // ベンチマークを実行' }'
-            await page.click('#benchmark-effects'};)'
-            ')';
+            await page.click('#benchmark-effects'};)', ')';
             // アラートダイアログを処理');''
             page.on('dialog', async (dialog: Dialog) => { ' }'
                 expect(dialog.message(}').toContain('Benchmark Results');

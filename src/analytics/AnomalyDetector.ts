@@ -129,13 +129,13 @@ export class AnomalyDetector {
                 try {
                     const anomalies = await rule.detect({)
                         sessions: sessionData);
-                        interactions: interactionData,);
+                       , interactions: interactionData,);
                         performance: performanceData);
                     if (anomalies && anomalies.length > 0) {
                         detectionResults.push({
                             type: type);
                             severity: rule.severity);
-                            description: rule.description,);
+                           , description: rule.description,);
                             anomalies: anomalies);
             ,}
                             detectedAt: new Date(), });
@@ -167,7 +167,7 @@ export class AnomalyDetector {
                 severityBreakdown: this.calculateSeverityBreakdown(filteredResults);
                 summary: summary;
                 recommendations: recommendations;
-                detectionPeriod: {
+               , detectionPeriod: {
                     start: startDate, };
                     end: endDate }
 } catch (error) {
@@ -199,7 +199,7 @@ export class AnomalyDetector {
                     sessionId: session.sessionId;
                     timestamp: session.startTime;
                     value: session.finalScore);
-                    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev])
+                   , expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev])
     }
                     zScore: zScore,) }
                     deviation: session.finalScore - mean); }
@@ -230,7 +230,7 @@ export class AnomalyDetector {
                 drops.push({
                     sessionId: data.sessions[i].sessionId);
                     timestamp: data.sessions[i].startTime);
-                    currentAccuracy: currentAccuracy,);
+                   , currentAccuracy: currentAccuracy,);
                     previousAccuracy: recentAvg);
         ,}
                     dropPercentage: ((recentAvg - currentAccuracy) / recentAvg) * 100 }
@@ -269,7 +269,7 @@ export class AnomalyDetector {
                     sessionId: session.sessionId;
                     timestamp: session.startTime;
                     playTime: playTime);
-                    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
+                   , expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
 
                     zScore: zScore,') }'
 
@@ -309,7 +309,7 @@ export class AnomalyDetector {
                     timestamp: data.sessions[i].startTime;
                     currentCombo: currentCombo);
                     expectedCombo: windowMean);
-                    consistencyScore: consistency,)
+                   , consistencyScore: consistency,)
     }
                     variability: windowStdDev); }
 }
@@ -356,7 +356,7 @@ export class AnomalyDetector {
                     timestamp: interactions[0].timestamp,
                     anomalyType: 'slow_reactions';
                     averageReactionTime: mean);
-                    slowReactionCount: slowReactions.length)
+                   , slowReactionCount: slowReactions.length)
             ,}
                     totalReactions: reactionTimes.length,) }
                     slowReactionRatio: slowReactions.length / reactionTimes.length); }
@@ -393,7 +393,7 @@ export class AnomalyDetector {
                 anomalies.push({
                     date: date;
                     sessionCount: count);
-                    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
+                   , expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
 
                     zScore: zScore,') }'
 
@@ -454,7 +454,7 @@ export class AnomalyDetector {
 
             return [{ ''
                 timestamp: Date.now(']';
-                pattern: averageQuitTime < 60 ? 'early_quit' : 'mid_game_quit' }])
+               , pattern: averageQuitTime < 60 ? 'early_quit' : 'mid_game_quit' }])
             }])
         }
 

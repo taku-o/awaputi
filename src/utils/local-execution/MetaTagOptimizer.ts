@@ -19,9 +19,9 @@ interface FaviconInfo { rel: string,
     sizes?: string ,}
 
 interface MetaTagInfo { total: number;
-    byType: Record<string, number> }
-    problematicTags: Array<{ name: string; content: string }>,
-    localExecutionTags: Array<{ name: string; content: string }>;
+   , byType: Record<string, number> }
+    problematicTags: Array<{ name: string;, content: string }>,
+    localExecutionTags: Array<{ name: string;, content: string }>;
 }
 
 interface BrowserInfo { name: string,
@@ -29,7 +29,7 @@ interface BrowserInfo { name: string,
     isSupported: boolean;
     supportedFeatures: string[];
     restrictions: string[];
-    fallbacksRequired: string[] ,}
+   , fallbacksRequired: string[] ,}
 
 class MetaTagOptimizer { /**
      * ローカル実行用にメタタグを最適化
@@ -212,7 +212,7 @@ class MetaTagOptimizer { /**
 
         if(!existingTag) {"
 
-            const linkTag = document.createElement('link'');''
+            const, linkTag = document.createElement('link'');''
             linkTag.setAttribute('rel', faviconInfo.rel};''
             linkTag.setAttribute('href', faviconInfo.href};
 
@@ -225,8 +225,7 @@ class MetaTagOptimizer { /**
                 linkTag.setAttribute('type', faviconInfo.type});
             }
 
-            if(faviconInfo.sizes) {'
-                ';
+            if(faviconInfo.sizes) {', ';
 
             }
 
@@ -268,7 +267,7 @@ class MetaTagOptimizer { /**
         const metaTagInfo: MetaTagInfo = { total: allMetaTags.length }
             byType: {}
             problematicTags: [];
-            localExecutionTags: [];
+           , localExecutionTags: [];
         },
 
         allMetaTags.forEach(tag => {  ');''
@@ -344,8 +343,7 @@ class MetaTagOptimizer { /**
         this._addOrUpdateMetaTag('name', 'local-execution-supported-features'');''
             browserInfo.supportedFeatures.join(',};
 
-        if(browserInfo.restrictions && browserInfo.restrictions.length > 0} {'
-            ';
+        if(browserInfo.restrictions && browserInfo.restrictions.length > 0} {', ';
 
         }
 

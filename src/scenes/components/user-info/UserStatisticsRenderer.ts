@@ -4,12 +4,12 @@
  * UserInfoSceneから分離された統計表示機能を提供
  */
 
-import { CoreChartRenderer } from '../../../core/ChartRenderer';''
-import { StatisticsDashboard } from '../../../core/StatisticsDashboard';''
-import { StatisticsFilterManager } from '../../../core/StatisticsFilterManager';''
-import { StatisticsExporter } from '../../../core/StatisticsExporter';''
-import { GameEngine } from '../../../types/gameEngine';''
-import { EventBus } from '../../../types/eventBus';
+import { CoreChartRenderer  } from '../../../core/ChartRenderer';''
+import { StatisticsDashboard  } from '../../../core/StatisticsDashboard';''
+import { StatisticsFilterManager  } from '../../../core/StatisticsFilterManager';''
+import { StatisticsExporter  } from '../../../core/StatisticsExporter';''
+import { GameEngine  } from '../../../types/gameEngine';''
+import { EventBus  } from '../../../types/eventBus';
 
 // 統計データ関連の型定義
 interface StatisticsData { totalPlayTime?: number;
@@ -22,8 +22,8 @@ interface StatisticsData { totalPlayTime?: number;
     bubblesPopped?: number;
     itemsUsed?: number;
     apEarned?: number; }
-    scoreHistory?: Array<{ date: string; score: number }>;
-    playtimeByDay?: Array<{ day: string; time: number }>;
+    scoreHistory?: Array<{ date: string;, score: number }>;
+    playtimeByDay?: Array<{ day: string;, time: number }>;
     [key: string]: any,
 }
 
@@ -31,17 +31,17 @@ interface StatisticsDisplaySettings { showDashboard: boolean,
     showCharts: boolean;
     showDetailedStats: boolean;
     enableAnimations: boolean;
-    compactMode: boolean ,}
+   , compactMode: boolean ,}
 ';
 
 interface ResponsiveLayout { ''
     layout: 'mobile' | 'tablet' | 'desktop';
     columnCount: number;
     compactMode: boolean;
-    showCharts: boolean }
+   , showCharts: boolean }
 
 interface StatItem { label: string;
-    value: string }
+   , value: string }
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any;
@@ -73,11 +73,11 @@ export, class UserStatisticsRenderer {
     private, statisticsViewMode: StatisticsViewMode = 'dashboard''';
     private, currentPeriodFilter: PeriodFilter = 'last7days';
     private, statisticsDisplaySettings: StatisticsDisplaySettings = {
-        showDashboard: true;
+        showDashboar;d: true;
         showCharts: true;
         showDetailedStats: true;
         enableAnimations: true;
-        compactMode: false }
+       , compactMode: false }
     );
     private readonly contentPadding: number = 20);
     constructor(gameEngine: ExtendedGameEngine, eventBus: EventBus | null, sceneState: SceneState) {
@@ -166,15 +166,14 @@ export, class UserStatisticsRenderer {
                 }
                 ';
                 // イベントバスに通知
-                if(this.eventBus) {'
-                    ';
+                if(this.eventBus) {', ';
 
                 }
 
                     this.eventBus.emit('statisticsDataLoaded', this.statisticsData); }
 
                 }''
-            } catch (error) { console.error('UserStatisticsRenderer: loadStatisticsData error:', error }
+            } catch (error) { console.error('UserStatisticsRenderer: loadStatisticsData, error:', error }
     }
     
     /**
@@ -183,7 +182,7 @@ export, class UserStatisticsRenderer {
     public renderStatisticsWithComponent(;
         context: CanvasRenderingContext2D;
         y: number );
-        height: number);
+       , height: number);
         statisticsTabComponent?: StatisticsTabComponent;
     ): void { try {
             if(statisticsTabComponent && statisticsTabComponent.isActive) {
@@ -227,8 +226,7 @@ export, class UserStatisticsRenderer {
             dashboardCanvas.height = height;''
             const dashboardCtx = dashboardCanvas.getContext('2d);
 
-            if(!dashboardCtx) {'
-                ';
+            if(!dashboardCtx) {', ';
 
             }
 
@@ -332,10 +330,10 @@ export, class UserStatisticsRenderer {
      */
     private renderBasicStatistics(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number);
-        data: StatisticsData'';
+       , data: StatisticsData'';
     '): void { // セクション背景'
         context.fillStyle = '#1a1a2e';''
         context.fillRect(x, y, width, 160);
@@ -378,10 +376,10 @@ export, class UserStatisticsRenderer {
      */
     private renderAdvancedStatistics(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number)';
-        data: StatisticsData'';
+       , data: StatisticsData'';
     '): void { // セクション背景'
         context.fillStyle = '#1a1a2e';''
         context.fillRect(x, y, width, 160);
@@ -448,8 +446,7 @@ export, class UserStatisticsRenderer {
      * 統計データのエクスポート'
      */''
     public async exportStatistics(format: ExportFormat = 'json): Promise<any> {;
-        if(!this.statisticsExporter) {'
-            ';
+        if(!this.statisticsExporter) {', ';
 
         }
 
@@ -460,7 +457,7 @@ export, class UserStatisticsRenderer {
         try { return await this.statisticsExporter.export(format, this.statisticsData);' }'
 
         } catch (error) {
-            console.error('UserStatisticsRenderer: exportStatistics error:', error);
+            console.error('UserStatisticsRenderer: exportStatistics, error:', error);
             throw error; }
     }
     
@@ -471,7 +468,7 @@ export, class UserStatisticsRenderer {
         if(screenWidth < 600) {'
             return { ''
                 layout: 'mobile';
-                columnCount: 1;
+               , columnCount: 1;
         }
                 compactMode: true, };
                 showCharts: false }
@@ -480,11 +477,11 @@ export, class UserStatisticsRenderer {
         } else if(screenWidth < 1024) { return { ''
                 layout: 'tablet';
                 columnCount: 1;
-                compactMode: false, };
+               , compactMode: false, };
                 showCharts: true }
             } else {  return { ''
                 layout: 'desktop';
-                columnCount: 2, }
+               , columnCount: 2, }
                 compactMode: false, };
                 showCharts: true }
             }

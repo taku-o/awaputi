@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * ウィークリーチャレンジ管理クラス
@@ -13,7 +13,7 @@ export class WeeklyChallengeManager {
         this.config = {
             maxWeeklyChallenges: 2,
             resetTime: 1, // 月曜日 00:00(UTC);''
-            progressStorageKey: 'awaputi_weekly_challenges',
+           , progressStorageKey: 'awaputi_weekly_challenges',
             archiveStorageKey: 'awaputi_weekly_archive',
             maxArchiveWeeks: 12, // 過去12週間分を保持
     }
@@ -30,15 +30,12 @@ export class WeeklyChallengeManager {
                     'スコアマスターウィーク',]';
                     '週間ポイントハンター'];
                 ],
-                descriptions: [' ,}'
-
-                    '週間で合計{target}点を獲得しよう','', '1週間で{target}点の壁を突破しよう',]'
-                    '今週の目標：合計{target}点']
+                descriptions: [' ,}', '週間で合計{target}点を獲得しよう','', '1週間で{target}点の壁を突破しよう',]', '今週の目標：合計{target}点']
                 ],
                 baseDifficulty: { easy: 25000;
                     normal: 75000;
                     hard: 150000;
-                    expert: 300000 }
+                   , expert: 300000 }
             };
             // 総プレイ回数系チャレンジ
             totalPlayCount: { ''
@@ -49,15 +46,12 @@ export class WeeklyChallengeManager {
                     '継続の達人',]';
                     '週間ゲーマー'];
                 ],
-                descriptions: [' ,}'
-
-                    '1週間で{target}回プレイしよう','', '今週は{target}ゲーム挑戦だ',]'
-                    '週間{target}プレイを達成しよう']
+                descriptions: [' ,}', '1週間で{target}回プレイしよう','', '今週は{target}ゲーム挑戦だ',]', '週間{target}プレイを達成しよう']
                 ],
                 baseDifficulty: { easy: 15;
                     normal: 35;
                     hard: 70;
-                    expert: 140 }
+                   , expert: 140 }
             };
             // 総泡破壊数系チャレンジ
             totalBubblePop: { ''
@@ -68,15 +62,12 @@ export class WeeklyChallengeManager {
                     '泡の全滅者',]';
                     '週間ポップマスター'];
                 ],
-                descriptions: [' ,}'
-
-                    '1週間で{target}個の泡を割ろう','', '週間{target}ポップを達成しよう',]'
-                    '今週の目標：{target}個破壊']
+                descriptions: [' ,}', '1週間で{target}個の泡を割ろう','', '週間{target}ポップを達成しよう',]', '今週の目標：{target}個破壊']
                 ],
                 baseDifficulty: { easy: 1000;
                     normal: 3500;
                     hard: 8000;
-                    expert: 15000 }
+                   , expert: 15000 }
             };
             // 最高コンボ系チャレンジ
             bestCombo: { ''
@@ -87,15 +78,12 @@ export class WeeklyChallengeManager {
                     '連鎖の帝王',]';
                     '週間コンボマスター'];
                 ],
-                descriptions: [' ,}'
-
-                    '今週中に{target}コンボを達成しよう','', '週間最大{target}連鎖を目指そう',]'
-                    '{target}コンボの記録更新を狙おう']
+                descriptions: [' ,}', '今週中に{target}コンボを達成しよう','', '週間最大{target}連鎖を目指そう',]', '{target}コンボの記録更新を狙おう']
                 ],
                 baseDifficulty: { easy: 30;
                     normal: 75;
                     hard: 150;
-                    expert: 300 }
+                   , expert: 300 }
             };
             // 総プレイ時間系チャレンジ
             totalPlayTime: { ''
@@ -106,15 +94,12 @@ export class WeeklyChallengeManager {
                     '時間の支配者',]';
                     '週間エンデュランス'];
                 ],
-                descriptions: [' ,}'
-
-                    '1週間で合計{target}分プレイしよう','', '今週は{target}分間の挑戦だ',]'
-                    '週間{target}分プレイを達成しよう']
+                descriptions: [' ,}', '1週間で合計{target}分プレイしよう','', '今週は{target}分間の挑戦だ',]', '週間{target}分プレイを達成しよう']
                 ],
                 baseDifficulty: { easy: 120;
                     normal: 300;
                     hard: 600;
-                    expert: 1200 }
+                   , expert: 1200 }
             };
             // 連続日数系チャレンジ
             consecutiveDays: { ''
@@ -125,15 +110,12 @@ export class WeeklyChallengeManager {
                     '7日間チャレンジャー',]';
                     '継続は力なり'];
                 ],
-                descriptions: [' ,}'
-
-                    '{target}日連続でプレイしよう','', '連続{target}日プレイを達成しよう',]'
-                    '{target}日間毎日挑戦しよう']
+                descriptions: [' ,}', '{target}日連続でプレイしよう','', '連続{target}日プレイを達成しよう',]', '{target}日間毎日挑戦しよう']
                 ],
                 baseDifficulty: { easy: 4;
                     normal: 5;
                     hard: 6;
-                    expert: 7 }
+                   , expert: 7 }
 };
         // 報酬テーブル（週間チャレンジは報酬が豪華）
         this.rewardTables = { easy: [' }'
@@ -170,7 +152,7 @@ export class WeeklyChallengeManager {
             weeklyAveragePlayCount: 0;
             weeklyConsistency: 0;
             lastWeekCompletionRate: 0;
-            longestStreak: 0 ,};
+           , longestStreak: 0 ,};
         this.currentWeek = null;
         this.lastGenerationWeek = null;
         this.thisWeeksChallenges = [];
@@ -237,10 +219,10 @@ export class WeeklyChallengeManager {
             
             const archiveEntry = {
                 week: this.lastGenerationWeek;
-                challenges: this.thisWeeksChallenges.map(challenge => ({)
+               , challenges: this.thisWeeksChallenges.map(challenge => ({)
                     ...challenge);
                     progress: this.challengeSystem.playerProgress.get(challenge.id);
-                    completed: this.challengeSystem.completedChallenges.has(challenge.id) }
+                   , completed: this.challengeSystem.completedChallenges.has(challenge.id) }
                 });
                 stats: { ...this.weeklyStats;
                 archivedAt: Date.now();
@@ -321,9 +303,9 @@ export class WeeklyChallengeManager {
                 isActive: true;
                 category: template.category;
                 difficulty: difficulty;
-                metadata: {
+               , metadata: {
                     week: week;
-                    template: template,
+                   , template: template,
                     weeklyIndex: index,
                     isCumulative: template.progressType.includes('CUMULATIVE'') || template.progressType.includes('BEST''),
                     resetType: 'weekly' ,}
@@ -409,7 +391,7 @@ export class WeeklyChallengeManager {
             if (random <= currentWeight) {
                 return { type: reward.type,
                     amount: reward.amount;
-                    itemId: reward.itemId;
+                   , itemId: reward.itemId;
     ,}
                     titleId: reward.titleId, };
                     themeId: reward.themeId }
@@ -442,7 +424,7 @@ export class WeeklyChallengeManager {
             return { ...challenge,
                 progress: progress ? { : undefined
                     current: progress.currentValue;
-                    target: challenge.targetValue;
+                   , target: challenge.targetValue;
     ,}
                     percentage: Math.min(100, (progress.currentValue / challenge.targetValue) * 100), }
                     completed: progress.completed, };
@@ -472,7 +454,7 @@ export class WeeklyChallengeManager {
                 : 0,
             difficulty: this.calculateOptimalDifficulty();
             playDays: this.weeklyStats.playDays.size;
-            weekRemaining: this.getWeekEndTime() - Date.now();
+           , weekRemaining: this.getWeekEndTime() - Date.now();
         }
 
     /**
@@ -552,7 +534,7 @@ export class WeeklyChallengeManager {
      */
     resetWeeklyStats() { this.weeklyStats = { : undefined
             currentWeekStart: this.getWeekStartTime( 
-            playDays: new, Set(), }
+           , playDays: new, Set(), }
             cumulativeProgress: {};
             bestRecords: {}
 
@@ -607,7 +589,7 @@ export class WeeklyChallengeManager {
                 lastGenerationWeek: this.lastGenerationWeek;
                 currentWeek: this.currentWeek;
                 performance: this.playerPerformance;
-                weeklyStats: {
+               , weeklyStats: {
                     ...this.weeklyStats;
                     playDays: Array.from(this.weeklyStats.playDays };
                 timestamp: Date.now();

@@ -4,11 +4,11 @@
  * LocalizationManagerとの統合、言語フォールバック、コンテンツ同期を提供
  */
 
-import { getLocalizationManager } from '../LocalizationManager.js';''
-import { LoggingSystem } from '../LoggingSystem.js';''
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { ContentLoader, getContentLoader } from './ContentLoader.js';''
-import { SearchEngine, getSearchEngine } from './SearchEngine.js';
+import { getLocalizationManager  } from '../LocalizationManager.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { ContentLoader, getContentLoader  } from './ContentLoader.js';''
+import { SearchEngine, getSearchEngine  } from './SearchEngine.js';
 
 // 型定義
 export interface LocalizationManager { getCurrentLanguage(): string;
@@ -16,9 +16,9 @@ export interface LocalizationManager { getCurrentLanguage(): string;
     // その他必要なメソッド 
 export interface MultilingualConfig { supportedLanguages: string[],
     defaultLanguage: string;
-    fallbackChain: Record<string, string[]>,
+   , fallbackChain: Record<string, string[]>,
     autoTranslateThreshold: number;
-    contentSyncInterval: number ,}
+   , contentSyncInterval: number ,}
 
 export interface LanguageStats { contentCoverage: Map<string, number>,
     translationQuality: Map<string, number>,
@@ -29,25 +29,25 @@ export interface ContentCoverageInfo { language: string,
     totalContent: number;
     availableContent: number;
     coverage: number;
-    missingContent: string[] ,}
+   , missingContent: string[] ,}
 
 export interface TranslationResult { success: boolean;
     translatedText: string;
     confidence: number;
     fallbackUsed: boolean;
     sourceLanguage: string;
-    targetLanguage: string }
+   , targetLanguage: string }
 
 export interface ContentSyncResult { language: string;
     synced: number;
     failed: number;
-    errors: string[] }
+   , errors: string[] }
 
 export interface LanguageContent { helpContent: any;
     tutorialData: any[];
     faqData: any[];
     lastUpdated: number;
-    version: string }
+   , version: string }
 
 /**
  * 多言語コンテンツ管理クラス
@@ -60,7 +60,7 @@ export class MultilingualContentManager {
     // 言語設定
     private config: MultilingualConfig;
     // コンテンツ管理
-    private contentCache: Map<string, LanguageContent>;
+    private, contentCache: Map<string, LanguageContent>;
     private translationCache: Map<string, any>;
     private contentVersions: Map<string, string>;
     private syncQueue: Set<string>;
@@ -74,8 +74,7 @@ export class MultilingualContentManager {
         this.searchEngine = getSearchEngine(''';
             supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'],
             defaultLanguage: 'ja',
-            fallbackChain: {''
-                'ja': ['en'],
+            fallbackChain: {'', 'ja': ['en'],
                 'en': ['ja'],
                 'zh-CN': ['zh-TW', 'en', 'ja'],
                 'zh-TW': ['zh-CN', 'en', 'ja'],
@@ -298,7 +297,7 @@ export class MultilingualContentManager {
                     language,
                     totalContent: 0;
                     availableContent: 0;
-                    coverage: 0;
+                   , coverage: 0;
             ,}
                     missingContent: [] }
                 };
@@ -337,7 +336,7 @@ export class MultilingualContentManager {
             language,
             synced: 0;
             failed: 0;
-            errors: [] ,};
+           , errors: [] ,};
         ';
 
         try {'
@@ -353,7 +352,7 @@ export class MultilingualContentManager {
 
                 } catch (error) { result.failed++;' }'
 
-                    result.errors.push(`${contentType}: ${(error, as Error}).message}`');
+                    result.errors.push(`${contentType}: ${(error, as, Error}).message}`');
                 }
             }
 
@@ -362,7 +361,7 @@ export class MultilingualContentManager {
         } catch (error) { }
 
             this.loggingSystem.error('MultilingualContentManager', `Failed to sync content for ${language}`, error);
-            result.errors.push(`Sync, process failed: ${(error, as Error}).message}`);
+            result.errors.push(`Sync, process failed: ${(error, as, Error}).message}`);
         }
         
         return result;
@@ -380,7 +379,7 @@ export class MultilingualContentManager {
      */
     getLanguageStatistics(): LanguageStats { return { contentCoverage: new Map(this.languageStats.contentCoverage),
             translationQuality: new Map(this.languageStats.translationQuality);
-            userPreferences: new Map(this.languageStats.userPreferences), };
+           , userPreferences: new Map(this.languageStats.userPreferences), };
             fallbackUsage: new Map(this.languageStats.fallbackUsage); }
         }
 
@@ -394,9 +393,9 @@ export class MultilingualContentManager {
             const languageContent: LanguageContent = {
                 helpContent: null;
                 tutorialData: [];
-                faqData: [],
+               , faqData: [],
                 lastUpdated: Date.now(''';
-                version: '1.0.0' ,}))
+               , version: '1.0.0' ,}))
             // 並行してコンテンツを読み込み)
             const [helpContent, tutorialData, faqData] = await Promise.allSettled([);
                 this.contentLoader.loadHelpContent(language),
@@ -450,7 +449,7 @@ export class MultilingualContentManager {
         if(!languageContent) {
             languageContent = {
                 helpContent: null;
-                tutorialData: [],
+               , tutorialData: [],
                 faqData: [],
                 lastUpdated: Date.now(''
         ,}
@@ -703,8 +702,7 @@ export class MultilingualContentManager {
      * 言語変更リスナーの設定
      */'
     private setupLanguageChangeListeners(): void { try {'
-            if(this.localizationManager.on) {'
-                ';
+            if(this.localizationManager.on) {', ';
 
             }
 

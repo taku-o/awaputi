@@ -7,11 +7,11 @@ export interface HelpColors { background: string,
     highlight: string;
     border: string;
     button: string;
-    buttonHover: string ,}
+   , buttonHover: string ,}
 
 export interface HelpContent { title: string;
     icon: string;
-    content: string[] }
+   , content: string[] }
 
 export interface HelpContentMap { [key: string]: HelpContent;
     }
@@ -19,17 +19,17 @@ export interface HelpContentMap { [key: string]: HelpContent;
 export interface TutorialHighlight { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 export interface TutorialStep { title: string;
     content: string;
     target: string;
-    highlight: TutorialHighlight
+   , highlight: TutorialHighlight
     }
 
 export interface HelpState { isVisible: boolean;
     currentSection: string;
-    tutorialProgress: number }
+   , tutorialProgress: number }
 
 /**
  * 実績システムヘルプ・チュートリアルクラス
@@ -50,7 +50,7 @@ export class AchievementHelpSystem {
     // ヘルプコンテンツ
     private helpContent: HelpContentMap;
     // チュートリアルステップ
-    private tutorialSteps: TutorialStep[];
+    private, tutorialSteps: TutorialStep[];
     constructor(achievementManager: any) {
 
         this.achievementManager = achievementManager;
@@ -280,7 +280,7 @@ export class AchievementHelpSystem {
                 title: 'ようこそ実績システムへ！',
                 content: 'ゲームプレイで様々な実績を解除してAPを獲得しましょう。',
                 target: 'achievement-overview';
-                highlight: { x: 100, y: 100, width: 200, height: 50 ,},
+               , highlight: { x: 100, y: 100, width: 200, height: 50 ,},
 
             { ''
                 title: '実績カテゴリ',
@@ -342,8 +342,7 @@ export class AchievementHelpSystem {
         this.tutorialProgress = 0;
         ';
         // チュートリアル完了実績をトリガー
-        if(this.achievementManager) {'
-            ';
+        if(this.achievementManager) {', ';
 
         }
 
@@ -605,13 +604,13 @@ export class AchievementHelpSystem {
      * 文字列の折り返し描画
      */''
     private renderWrappedText(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number): void { ''
-        const words = text.split(' '');''
+        const words = text.split(', '');''
         let line = '';
         let currentY = y;
 
         for(let, n = 0; n < words.length; n++) {'
 
-            const testLine = line + words[n] + ' ';
+            const testLine = line + words[n] + ', ';
             const metrics = context.measureText(testLine);
             const testWidth = metrics.width;
 
@@ -619,7 +618,7 @@ export class AchievementHelpSystem {
 
             if (testWidth > maxWidth && n > 0) {''
                 context.fillText(line, x, currentY);''
-                line = words[n] + ' ';
+                line = words[n] + ', ';
         }
                 currentY += this.lineHeight; }
             } else { line = testLine; }
@@ -713,8 +712,7 @@ export class AchievementHelpSystem {
         if (!achievement) return;
         // 該当実績のカテゴリに応じたヘルプセクションを表示
         const category = this.achievementManager.getAchievementCategory(achievementId); : undefined 
-        const sectionMap: { [key: string]: string ,} = { ''
-            'score': 'categories',
+        const sectionMap: { [key: string]: string ,} = { '', 'score': 'categories',
             'play': 'categories',
             'technique': 'tips',
             'collection': 'categories',

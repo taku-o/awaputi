@@ -4,8 +4,8 @@
  * MobilePerformanceOptimizerから分離されたバッテリー最適化機能
  */
 
-import { getErrorHandler } from '../ErrorHandler.js';''
-import { getConfigurationManager } from '../../core/ConfigurationManager.js';
+import { getErrorHandler  } from '../ErrorHandler.js';''
+import { getConfigurationManager  } from '../../core/ConfigurationManager.js';
 ';
 // Type definitions
 type PowerMode = 'normal' | 'powersaver' | 'extreme';''
@@ -17,13 +17,13 @@ interface PowerModeSettings { name: PowerMode,
     renderQuality: RenderQuality;
     backgroundThrottling: boolean;
     networkOptimization: boolean;
-    screenBrightness: number ,}
+   , screenBrightness: number ,}
 
 interface BatteryMonitoringConfig { enabled: boolean;
     updateInterval: number;
     lowBatteryThreshold: number;
     criticalBatteryThreshold: number;
-    chargingDetection: boolean }
+   , chargingDetection: boolean }
 
 interface BatteryOptimizations { reducedFrameRate: boolean;
     backgroundThrottling: boolean;
@@ -32,76 +32,76 @@ interface BatteryOptimizations { reducedFrameRate: boolean;
     networkOptimization: boolean;
     cacheAggressive: boolean;
     suspendInactive: boolean;
-    minimizeWakeups: boolean }
+   , minimizeWakeups: boolean }
 
 interface ThermalManagement { enabled: boolean;
     temperatureThreshold: number;
     cooldownRequired: boolean;
-    throttleOnHeat: boolean }
+   , throttleOnHeat: boolean }
 
 interface BatteryConfig { enabled: boolean;
     monitoring: BatteryMonitoringConfig;
-    powerModes: Record<PowerMode, PowerModeSettings>;
+   , powerModes: Record<PowerMode, PowerModeSettings>;
     currentMode: PowerMode;
     autoModeSwitch: boolean;
     optimizations: BatteryOptimizations;
-    thermalManagement: ThermalManagement
+   , thermalManagement: ThermalManagement
     ,}
 
 interface BatteryData { level: number;
     charging: boolean;
     chargingTime: number;
     dischargingTime: number;
-    lastUpdate: number }
+   , lastUpdate: number }
 
 interface BatteryUsage { currentDrain: number;
     averageDrain: number;
     estimatedRemaining: number;
     drainHistory: DrainHistoryEntry[];
-    maxHistorySize: number }
+   , maxHistorySize: number }
 
 interface DrainHistoryEntry { timestamp: number;
-    drain: number }
+   , drain: number }
 
 interface PowerConsumption { cpu: number;
     gpu: number;
     screen: number;
     network: number;
     total: number;
-    baselinePower: number }
+   , baselinePower: number }
 
 interface BatteryHealth { capacity: number;
     cycleCount: number;
     temperature: number;
-    voltage: number }
+   , voltage: number }
 
 interface BatteryMonitoring { enabled: boolean;
     battery: BatteryData;
     usage: BatteryUsage;
     powerConsumption: PowerConsumption;
-    health: BatteryHealth
+   , health: BatteryHealth
     }
 
 interface PerformanceMetric { time: number;
-    value: number }
+   , value: number }
 
 interface PerformanceTracking { frameRateHistory: PerformanceMetric[];
     cpuUsageHistory: PerformanceMetric[];
     gpuUsageHistory: PerformanceMetric[];
     networkUsageHistory: PerformanceMetric[];
-    lastMeasurement: number }
+   , lastMeasurement: number }
 
 interface BatteryStatistics { battery: BatteryData;
     usage: BatteryUsage;
     powerConsumption: PowerConsumption;
     health: BatteryHealth;
     currentMode: PowerMode;
-    optimizations: BatteryOptimizations
+   , optimizations: BatteryOptimizations
     }
 
-interface BatteryCallbacks { onBatteryStateChange?: (state: BatteryState, level: number) => void;
-    onPowerModeChange?: (oldMode: PowerMode, newMode: PowerMode) => void;
-    onOptimizationApplied?: (optimization: string) => void ,}
+interface BatteryCallbacks { onBatteryStateChange?: (stat;e: BatteryState, level: number) => void;
+    onPowerModeChange?: (oldMod;e: PowerMode, newMode: PowerMode) => void;
+    onOptimizationApplied?: (optimizatio;n: string) => void ,}
 }
 
 export class MobileBatteryOptimizer {
@@ -109,7 +109,7 @@ export class MobileBatteryOptimizer {
     private configManager: any;
     private batteryConfig: BatteryConfig;
     private batteryMonitoring: BatteryMonitoring;
-    private performanceTracking: PerformanceTracking;
+    private, performanceTracking: PerformanceTracking;
     private batteryCallbacks?: BatteryCallbacks;
 
     constructor() {
@@ -121,7 +121,7 @@ export class MobileBatteryOptimizer {
                     frameRateLimit: 60,
                     renderQuality: 'high';
                     backgroundThrottling: false;
-                    networkOptimization: false;
+                   , networkOptimization: false;
     ,}
                     screenBrightness: 1.0 }
                 };
@@ -131,31 +131,31 @@ export class MobileBatteryOptimizer {
                     renderQuality: 'medium';
                     backgroundThrottling: true;
                     networkOptimization: true;
-                    screenBrightness: 0.7 ,};
+                   , screenBrightness: 0.7 ,};
                 extreme: { ''
                     name: 'extreme',
                     frameRateLimit: 15,
                     renderQuality: 'low';
                     backgroundThrottling: true;
                     networkOptimization: true;
-                    screenBrightness: 0.5 ,}
+                   , screenBrightness: 0.5 ,}
             };
             currentMode: 'normal';
             autoModeSwitch: true;
             // Battery optimizations
-            optimizations: { reducedFrameRate: false;
+           , optimizations: { reducedFrameRate: false;
                 backgroundThrottling: true;
                 cpuThrottling: false;
                 screenDimming: false;
                 networkOptimization: true;
                 cacheAggressive: true;
                 suspendInactive: true;
-                minimizeWakeups: true };
+               , minimizeWakeups: true };
             // Thermal management for battery
             thermalManagement: { enabled: true;
-                temperatureThreshold: 40, // Celsius;
+               , temperatureThreshold: 40, // Celsius;
                 cooldownRequired: false;
-                throttleOnHeat: true ,}
+               , throttleOnHeat: true ,}
         };
         // Battery monitoring state
         this.batteryMonitoring = { enabled: false,
@@ -167,24 +167,24 @@ export class MobileBatteryOptimizer {
                 chargingTime: Infinity
     );
                 dischargingTime: Infinity);
-                lastUpdate: Date.now( ,};
+               , lastUpdate: Date.now( ,};
             // Battery usage estimation
             usage: { currentDrain: 0, // mAh per hour
                 averageDrain: 0;
-                estimatedRemaining: 0, // hours;
+               , estimatedRemaining: 0, // hours;
                 drainHistory: [];
-                maxHistorySize: 100 ,};
+               , maxHistorySize: 100 ,};
             // Power consumption tracking
             powerConsumption: { cpu: 0;
                 gpu: 0;
                 screen: 0;
                 network: 0;
                 total: 0;
-                baselinePower: 50 // mAh baseline consumption };
+               , baselinePower: 50 // mAh baseline consumption };
             // Battery health estimation
             health: { capacity: 100, // percentage of original capacity
                 cycleCount: 0;
-                temperature: 25, // Celsius;
+               , temperature: 25, // Celsius;
                 voltage: 3.7 // Volts ,}
         };
         // Performance tracking for battery optimization
@@ -192,7 +192,7 @@ export class MobileBatteryOptimizer {
             cpuUsageHistory: [];
             gpuUsageHistory: [];
             networkUsageHistory: [];
-            lastMeasurement: Date.now( ,};
+           , lastMeasurement: Date.now( ,};
         
         // Initialize battery optimizer
         this.initializeBatteryOptimizer();
@@ -442,8 +442,7 @@ export class MobileBatteryOptimizer {
             return; }
         }
 
-        if(battery.level <= config.criticalBatteryThreshold) {'
-            ';
+        if(battery.level <= config.criticalBatteryThreshold) {', ';
 
         }
 
@@ -527,7 +526,7 @@ export class MobileBatteryOptimizer {
         // Add to history
         usage.drainHistory.push({);
             timestamp: Date.now();
-            drain: usage.currentDrain };
+           , drain: usage.currentDrain };
         // Limit history size
         if (usage.drainHistory.length > usage.maxHistorySize) { usage.drainHistory.shift(); }
         
@@ -616,8 +615,7 @@ export class MobileBatteryOptimizer {
 
         // Dispatch custom event' }'
 
-        if(typeof window !== 'undefined''}) {'
-            ';
+        if(typeof window !== 'undefined''}) {', ';
 
         }
 
@@ -635,7 +633,7 @@ export class MobileBatteryOptimizer {
             usage: this.batteryMonitoring.usage;
             powerConsumption: this.batteryMonitoring.powerConsumption;
             health: this.batteryMonitoring.health;
-            currentMode: this.batteryConfig.currentMode, };
+           , currentMode: this.batteryConfig.currentMode, };
             optimizations: this.batteryConfig.optimizations }
         }
     

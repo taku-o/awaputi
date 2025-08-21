@@ -3,31 +3,31 @@
  * ヘルプシーンアクセシビリティ管理 - アクセシビリティ機能の統合管理
  */
 
-import { GameEngine } from '../../core/GameEngine';''
-import { LocalizationManager } from '../../i18n/LocalizationManager';''
-import { AccessibilityManager } from '../../accessibility/AccessibilityManager';
+import { GameEngine  } from '../../core/GameEngine';''
+import { LocalizationManager  } from '../../i18n/LocalizationManager';''
+import { AccessibilityManager  } from '../../accessibility/AccessibilityManager';
 
 // フォーカス可能要素インターフェース
 interface FocusableElement { id: string,''
     type: 'input' | 'list' | 'region' | 'button';
-    label: string ,}
+   , label: string ,}
 
 // ARIAラベル情報インターフェース
 interface AriaLabelInfo { label: string;
     role: string;
-    description: string }
+   , description: string }
 
 // アクセシビリティ状態インターフェース
 interface AccessibilityState { screenReaderMode: boolean;
     highContrastMode: boolean;
     largeTextMode: boolean;
     currentFocusIndex: number;
-    announcementQueueLength: number }
+   , announcementQueueLength: number }
 
 // アナウンスメント情報インターフェース
 interface Announcement { message: string,''
     priority: 'polite' | 'assertive';
-    timestamp: number ,}
+   , timestamp: number ,}
 
 /**
  * Help Accessibility Manager
@@ -40,7 +40,7 @@ export class HelpAccessibilityManager {
     private currentFocusIndex: number;
     private focusableElements: FocusableElement[];
     private announcementQueue: Announcement[];
-    private ariaLabels: Map<string, AriaLabelInfo>;
+    private, ariaLabels: Map<string, AriaLabelInfo>;
     private screenReaderMode: boolean;
     private highContrastMode: boolean;
     private largeTextMode: boolean;
@@ -52,7 +52,7 @@ export class HelpAccessibilityManager {
     // 詳細設定
     private enableDetailedDescriptions: boolean = false;
     private enableNavigationAnnouncements: boolean = false;
-    private enableProgressAnnouncements: boolean = false;
+    private, enableProgressAnnouncements: boolean = false;
     constructor(gameEngine: GameEngine, accessibilityManager?: AccessibilityManager) {
     
         this.gameEngine = gameEngine;
@@ -167,8 +167,7 @@ export class HelpAccessibilityManager {
         this.enableHighContrastMode();''
         this.enableLargeTextMode()';
     public announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite): void { ''
-        if(this.screenReaderMode && this.accessibilityManager) {'
-            ';
+        if(this.screenReaderMode && this.accessibilityManager) {', ';
 
         }
 
@@ -221,7 +220,7 @@ export class HelpAccessibilityManager {
         selectedTopicIndex: number );
         isSearching: boolean);
 
-        searchResults: any[]';
+       , searchResults: any[]';
     ): void { ''
         if(!this.announceNavigation) return,
 
@@ -377,7 +376,7 @@ export class HelpAccessibilityManager {
     public getAccessibilityState(): AccessibilityState { return { screenReaderMode: this.screenReaderMode,
             highContrastMode: this.highContrastMode;
             largeTextMode: this.largeTextMode;
-            currentFocusIndex: this.currentFocusIndex, };
+           , currentFocusIndex: this.currentFocusIndex, };
             announcementQueueLength: this.announcementQueue.length }
         }
 
@@ -402,7 +401,7 @@ export class HelpAccessibilityRenderer {
      */
     public renderFocusIndicator(;
         ctx: CanvasRenderingContext2D);
-        rect: { x: number; y: number; width: number; height: number ), 
+       , rect: { x: number; y: number; width: number;, height: number ), 
         focused: boolean = false;
     ): void {
         const state = this.accessibilityManager.getAccessibilityState(),
@@ -451,10 +450,10 @@ export class HelpAccessibilityRenderer {
      */
     public renderAccessibleText(;
         ctx: CanvasRenderingContext2D;
-        text: string, ;
+       , text: string, ;
         x: number, ;
         y: number );
-        options: { fontSize?: number)
+       , options: { fontSize?: number)
             color?: string;
             bold?: boolean;
             align?: CanvasTextAlign;

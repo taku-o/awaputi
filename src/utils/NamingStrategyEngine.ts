@@ -10,43 +10,43 @@ interface DuplicateFile { fileName: string,
     paths: string[] ,}
 
 interface DuplicateClass { className: string;
-    locations: ClassLocation[]
+   , locations: ClassLocation[]
     }
 
 interface ClassLocation { file: string;
-    line: number;
+   , line: number;
     column?: number }
 
 interface FileNameResolution { originalPath: string;
     newPath: string;
     newFileName: string;
-    reason: string }
+   , reason: string }
 
 interface ClassNameResolution { location: ClassLocation;
     newClassName: string;
-    reason: string }
+   , reason: string }
 
 interface FileNameStrategy { originalName: string;
     conflicts: string[];
-    resolutions: FileNameResolution[]
+   , resolutions: FileNameResolution[]
     }
 
 interface ClassNameStrategy { originalClassName: string;
     conflicts: ClassLocation[];
-    resolutions: ClassNameResolution[]
+   , resolutions: ClassNameResolution[]
     }
 
 interface SpecialCaseMapping { [directoryKey: string]: string, }
 
 interface NamingConventions { class: string,
     file: string;
-    prefix: string ,}
+   , prefix: string ,}
 
 interface NameValidation { originalName: string;
-    newName: string,
+   , newName: string,
     type: 'class' | 'file';
     isValid: boolean;
-    issues: string[] ,}
+   , issues: string[] ,}
 ';
 
 interface Conflict { ''
@@ -66,7 +66,7 @@ interface StrategyEvaluation { strategy: FileNameStrategy | ClassNameStrategy;
     score: number;
     strengths: string[];
     weaknesses: string[];
-    recommendations: string[] }
+   , recommendations: string[] }
 
 export class NamingStrategyEngine {
     private readonly domainPrefixes: Map<string, string>;
@@ -118,7 +118,7 @@ export class NamingStrategyEngine {
 
             const strategy: FileNameStrategy = {
                 originalName: duplicate.fileName;
-                conflicts: duplicate.paths;
+               , conflicts: duplicate.paths;
         ,}
                 resolutions: [] }
             };
@@ -134,9 +134,9 @@ export class NamingStrategyEngine {
                 
                 strategy.resolutions.push({ )
                     originalPath: filePath);
-                    newPath: path.join(dirName, newFileName),
+                   , newPath: path.join(dirName, newFileName),
                     newFileName: newFileName, }
-                    reason: `Directory-based prefix: ${prefix}`
+                    reason: `Directory-based, prefix: ${prefix}`
                 });
             }
 
@@ -155,7 +155,7 @@ export class NamingStrategyEngine {
 
             const strategy: ClassNameStrategy = {
                 originalClassName: duplicate.className;
-                conflicts: duplicate.locations;
+               , conflicts: duplicate.locations;
         ,}
                 resolutions: [] }
             };
@@ -202,7 +202,7 @@ export class NamingStrategyEngine {
                 const domainResults = this.generateClassNameStrategy([duplicateClass]);''
                 results.push(...domainResults);'' else if (conflict.type === 'file' && conflict.fileName && conflict.paths) { const duplicateFile: DuplicateFile = {
                     fileName: conflict.fileName;
-                    paths: conflict.paths };
+                   , paths: conflict.paths };
                 const fileResults = this.generateFileNameStrategy([duplicateFile]);
                 results.push(...fileResults);
         }
@@ -221,7 +221,7 @@ export class NamingStrategyEngine {
                 originalName: nameInfo.original;
                 newName: nameInfo.new;
                 type: nameInfo.type;
-                isValid: true;
+               , isValid: true;
         ,}
                 issues: [] }
             };
@@ -357,7 +357,7 @@ export class NamingStrategyEngine {
             score: 0;
             strengths: [];
             weaknesses: [];
-            recommendations: [] ,};
+           , recommendations: [] ,};
         // 命名の一貫性をチェック
         const prefixes = strategy.resolutions.map(r => {  ')'
             const name = 'newClassName' in r ? r.newClassName: r.newFileName),
@@ -397,8 +397,7 @@ export class NamingStrategyEngine {
         const readabilityScore = this.evaluateReadability(strategy.resolutions);
         evaluation.score += readabilityScore;
 
-        if(readabilityScore >= 15) {'
-            ';
+        if(readabilityScore >= 15) {', ';
 
         }
 

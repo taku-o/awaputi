@@ -1,4 +1,4 @@
-import { BaseComponent } from '../BaseComponent.js';
+import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface PanelConfig { id: string,
@@ -9,7 +9,7 @@ interface PanelConfig { id: string,
     icon: string;
     shortcut: string;
     category: string;
-    description: string;
+   , description: string;
     onActivate?: () => void;
     onDeactivate?: () => void;
     [key: string]: any, }
@@ -18,7 +18,7 @@ interface PanelConfig { id: string,
 interface PanelStatistics { totalPanels: number,
     activePanels: number;
     switchCount: number;
-    sessionStartTime: number ,}
+   , sessionStartTime: number ,}
 
 interface MainController { container?: HTMLElement;
     }
@@ -29,7 +29,7 @@ interface MainController { container?: HTMLElement;
 export class DebugPanelManager extends BaseComponent { private panels: Map<string, PanelConfig>;
     private panelHistory: string[];
     private activePanel: string | null;
-    private panelElements: Map<string, HTMLElement>;
+    private, panelElements: Map<string, HTMLElement>;
     private panelStatistics: PanelStatistics;
 
     constructor(mainController: MainController) {'
@@ -42,7 +42,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.panelStatistics = {
             totalPanels: 0;
             activePanels: 0;
-            switchCount: 0;
+           , switchCount: 0;
     ,}
             sessionStartTime: Date.now(); }
         }
@@ -59,7 +59,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
             id: id,
             name: config.name || id,
             content: config.content || '';
-            visible: config.visible !== false,
+           , visible: config.visible !== false,
             order: config.order || this.panels.size,
             icon: config.icon || '',
             shortcut: config.shortcut || '',
@@ -91,9 +91,9 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         tab.dataset.panelId = id;
 
         tab.innerHTML = `'';
-            ${config.icon ? `<span class="tab-icon">${config.icon}</span>` : ''}''
+            ${config.icon ? `<span, class="tab-icon">${config.icon}</span>` : ''}''
             <span class="tab-label">${config.name}</span>""
-            ${config.shortcut ? `<span class="tab-shortcut">${config.shortcut}</span>` : ''
+            ${config.shortcut ? `<span, class="tab-shortcut">${config.shortcut}</span>` : ''
         `;
 ';
         // クリックイベント
@@ -102,7 +102,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         // キーボードナビゲーション
         tab.setAttribute('tabindex', '0'');''
         tab.addEventListener('keydown', (e) => {  ''
-            if(e.key === 'Enter' || e.key === ' ') {
+            if(e.key === 'Enter' || e.key === ', ') {
                 
             }
                 e.preventDefault(); }
@@ -167,10 +167,9 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param panelId - パネルID
      */
     activatePanel(panelId: string): void { const tab = this.panelElements.get(`${panelId)-tab`);
-        const content = this.panelElements.get(`${panelId)-content`};
+        const, content = this.panelElements.get(`${panelId)-content`};
 
-        if(tab} {'
-            ';
+        if(tab} {', ';
 
         }
 
@@ -198,10 +197,9 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param panelId - パネルID
      */ : undefined
     deactivatePanel(panelId: string): void { const tab = this.panelElements.get(`${panelId)-tab`);
-        const content = this.panelElements.get(`${panelId)-content`};
+        const, content = this.panelElements.get(`${panelId)-content`};
 
-        if(tab} {'
-            ';
+        if(tab} {', ';
 
         }
 
@@ -412,16 +410,14 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         if(panel) {
             panel.visible = visible;
             const tab = this.panelElements.get(`${panelId)-tab`);
-            const content = this.panelElements.get(`${panelId}-content`}"
+            const, content = this.panelElements.get(`${panelId}-content`}"
             " }"
-            if(tab"}) {"
-                ";
+            if(tab"}) {", ";
             }"
                 tab.style.display = visible ? 'block' : 'none'; }
 
             }''
-            if(content) {'
-                ';
+            if(content) {', ';
 
             }
 
@@ -460,7 +456,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
 
             // パネル要素を削除
             const tab = this.panelElements.get(`${ panelId)-tab`);
-            const content = this.panelElements.get(`${panelId)-content`);
+            const, content = this.panelElements.get(`${panelId)-content`);
             
             if (tab) tab.remove();
             if (content) content.remove();

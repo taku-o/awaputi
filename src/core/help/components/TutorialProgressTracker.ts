@@ -4,8 +4,8 @@
  * TutorialOverlayから分離された進捗管理・分析機能
  */
 
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../../LoggingSystem.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
 export interface ProgressData { sessionId: string,
@@ -22,29 +22,29 @@ export interface ProgressData { sessionId: string,
     stepTimings: Map<number, StepTiming>,
     userActions: UserAction[];
     errors: ErrorRecord[];
-    helpRequests: HelpRequest[],
+   , helpRequests: HelpRequest[],
     completionStatus: 'not_started' | 'in_progress' | 'completed' | 'abandoned' ,}
 
 export interface StepTiming { stepIndex: number;
     startTime: number;
     endTime?: number;
     duration?: number;
-    interactions: number }
+   , interactions: number }
 
 export interface UserAction { type: string;
     timestamp: number;
     stepIndex: number;
-    data: any }
+   , data: any }
 
 export interface ErrorRecord { message: string;
     timestamp: number;
     stepIndex: number;
     stack?: string;
-    context: string }
+   , context: string }
 
 export interface HelpRequest { type: string;
     timestamp: number;
-    stepIndex: number;
+   , stepIndex: number;
     query?: string }
 
 export interface SessionStats { totalInteractions: number;
@@ -53,11 +53,11 @@ export interface SessionStats { totalInteractions: number;
     helpRequestRate: number;
     skipRate: number;
     errorRate: number;
-    userEngagement: {
-        scrolls: number;
+   , userEngagement: {
+        scroll;s: number;
         clicks: number;
         keystrokes: number;
-        gestures: number }
+       , gestures: number }
 
 export interface AnalyticsConfig { trackDetailedActions: boolean,
     trackTimings: boolean;
@@ -66,11 +66,11 @@ export interface AnalyticsConfig { trackDetailedActions: boolean,
     sendToServer: boolean;
     serverEndpoint: string | null;
     batchSize: number;
-    batchInterval: number ,}
+   , batchInterval: number ,}
 
 export interface StorageKeys { progress: string;
     analytics: string;
-    userPreferences: string }
+   , userPreferences: string }
 
 export interface TutorialData { id: string;
     steps?: any[] }
@@ -79,12 +79,12 @@ export class TutorialProgressTracker {
     private errorHandler: any;
     private loggingSystem: LoggingSystem;
     private progressData: ProgressData;
-    private stepMetrics: Map<number, any>;
+    private, stepMetrics: Map<number, any>;
     private sessionStats: SessionStats;
     private analyticsConfig: AnalyticsConfig;
     private storageKeys: StorageKeys;
     private batchQueue: any[];
-    private batchTimer: number | null;
+    private, batchTimer: number | null;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -105,7 +105,7 @@ export class TutorialProgressTracker {
             revisitedSteps: new Set<number>(),
             stepTimings: new Map<number, StepTiming>('),
             userActions: [];
-            errors: [],
+           , errors: [],
             helpRequests: [];
     ,}
 
@@ -153,25 +153,25 @@ export class TutorialProgressTracker {
                 currentStep: 0;
                 totalSteps: tutorial.steps ? tutorial.steps.length : 0;
                 completedSteps: new Set();
-                skippedSteps: new Set(),
+               , skippedSteps: new Set(),
                 revisitedSteps: new Set(),
                 stepTimings: new Map(''';
-                completionStatus: 'in_progress' ,};
+               , completionStatus: 'in_progress' ,};
             this.sessionStats = { totalInteractions: 0,
                 averageStepTime: 0;
                 completionRate: 0;
                 helpRequestRate: 0;
                 skipRate: 0;
                 errorRate: 0;
-                userEngagement: {
+               , userEngagement: {
                     scrolls: 0;
                     clicks: 0;
                     keystrokes: 0;
-                    gestures: 0 ,}
+                   , gestures: 0 ,}
             };
             this.stepMetrics.clear()';
             this.recordEvent('tutorial_started', { tutorialId: tutorial.id)'
-                totalSteps: this.progressData.totalSteps,')';
+               , totalSteps: this.progressData.totalSteps,')';
                 userId: userId)'),
             ' }'
 
@@ -208,7 +208,7 @@ export class TutorialProgressTracker {
 
             this.recordEvent('step_started', { stepIndex: stepIndex)
                 stepTitle: stepData.title);
-                isRevisit: this.progressData.revisitedSteps.has(stepIndex });
+               , isRevisit: this.progressData.revisitedSteps.has(stepIndex });
 
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordStepStart); }'
@@ -228,12 +228,12 @@ export class TutorialProgressTracker {
             
             this.updateStepMetrics(stepIndex, {)
                 duration: stepDuration)';
-                completed: true,')';
+               , completed: true,')';
                 completionData: completionData)'),
 
             this.recordEvent('step_completed', {)
                 stepIndex: stepIndex);
-                duration: stepDuration,);
+               , duration: stepDuration,);
                 ...completionData);
             
             this.updateSessionStats();
@@ -281,7 +281,7 @@ export class TutorialProgressTracker {
             const action = {
                 type: actionType;
                 timestamp: Date.now();
-                stepIndex: this.progressData.currentStep;
+               , stepIndex: this.progressData.currentStep;
     }
                 data: actionData }
             };
@@ -311,7 +311,7 @@ export class TutorialProgressTracker {
                 message: error.message;
                 stack: error.stack;
                 context: context;
-                timestamp: Date.now();
+               , timestamp: Date.now();
     }
                 stepIndex: this.progressData.currentStep }
             };
@@ -333,7 +333,7 @@ export class TutorialProgressTracker {
             const helpRequest = {
                 type: helpType;
                 timestamp: Date.now();
-                stepIndex: this.progressData.currentStep;
+               , stepIndex: this.progressData.currentStep;
     }
                 data: helpData }
             };
@@ -366,7 +366,7 @@ export class TutorialProgressTracker {
             this.recordEvent('tutorial_ended', { completionType: completionType,
                 totalDuration: this.progressData.totalDuration);
                 completedSteps: this.progressData.completedSteps.size);
-                skippedSteps: this.progressData.skippedSteps.size,);
+               , skippedSteps: this.progressData.skippedSteps.size,);
                 totalSteps: this.progressData.totalSteps);
             this.generateFinalReport();
             this.saveProgress();
@@ -409,7 +409,7 @@ export class TutorialProgressTracker {
             interactions: 0;
             helpRequests: 0;
             errors: 0;
-            revisitCount: this.progressData.revisitedSteps.has(stepIndex) ? 1 : 0;
+           , revisitCount: this.progressData.revisitedSteps.has(stepIndex) ? 1 : 0;
     ,}
             stepData: stepData }
         });
@@ -521,13 +521,12 @@ export class TutorialProgressTracker {
 
             const response = await fetch(this.analyticsConfig.serverEndpoint, {)'
                 method: 'POST')';
-                headers: {''
-                    'Content-Type': 'application/json';
+               , headers: {'', 'Content-Type': 'application/json';
                 ),
                 body: JSON.stringify({)
                     sessionId: this.progressData.sessionId,);
                     events: dataToSend);
-                    timestamp: Date.now(), });
+                   , timestamp: Date.now(), });
             });
             ';
 
@@ -555,7 +554,7 @@ export class TutorialProgressTracker {
                     tutorialId: this.progressData.tutorialId;
                     userId: this.progressData.userId;
                     startTime: this.progressData.startTime;
-                    endTime: this.progressData.endTime;
+                   , endTime: this.progressData.endTime;
     }
                     totalDuration: this.progressData.totalDuration }
                 };
@@ -563,11 +562,11 @@ export class TutorialProgressTracker {
                     totalSteps: this.progressData.totalSteps;
                     completedSteps: this.progressData.completedSteps.size;
                     skippedSteps: this.progressData.skippedSteps.size;
-                    revisitedSteps: this.progressData.revisitedSteps.size };
+                   , revisitedSteps: this.progressData.revisitedSteps.size };
                 performance: { averageStepTime: this.sessionStats.averageStepTime;
                     totalInteractions: this.sessionStats.totalInteractions;
                     helpRequests: this.progressData.helpRequests.length;
-                    errors: this.progressData.errors.length };
+                   , errors: this.progressData.errors.length };
                 engagement: this.sessionStats.userEngagement,
                 stepDetails: Object.fromEntries(this.stepMetrics);
             };
@@ -593,7 +592,7 @@ export class TutorialProgressTracker {
                 ...this.progressData,
                 completedSteps: Array.from(this.progressData.completedSteps);
                 skippedSteps: Array.from(this.progressData.skippedSteps);
-                revisitedSteps: Array.from(this.progressData.revisitedSteps);
+               , revisitedSteps: Array.from(this.progressData.revisitedSteps);
     ,}
                 stepTimings: Object.fromEntries(this.progressData.stepTimings); }
             };
@@ -650,7 +649,7 @@ export class TutorialProgressTracker {
             completedSteps: this.progressData.completedSteps.size;
             skippedSteps: this.progressData.skippedSteps.size;
             completionRate: this.sessionStats.completionRate;
-            averageStepTime: this.sessionStats.averageStepTime;
+           , averageStepTime: this.sessionStats.averageStepTime;
     ,}
             totalDuration: Date.now() - this.progressData.startTime, };
             status: this.progressData.completionStatus }

@@ -10,26 +10,26 @@ export interface VoiceConfig { enabled: boolean,
     confidence: number;
     continuousListening: boolean;
     pushToTalk: boolean;
-    commands: Map<string, string>, }
+   , commands: Map<string, string>, }
 
 export interface VoiceState { isListening: boolean,
     recognition: SpeechRecognition | null;
     lastCommand: string | null;
     commandQueue: string[];
     confidence: number;
-    isInitialized: boolean ,}
+   , isInitialized: boolean ,}
 
 export interface VoiceStats { commandsRecognized: number;
     commandsExecuted: number;
     averageConfidence: number;
     listeningTime: number;
-    sessionStart: number }
+   , sessionStart: number }
 
 export interface DetailedVoiceStats extends VoiceStats { isListening: boolean;
     isInitialized: boolean;
     currentContext: string;
     lastCommand: string | null;
-    confidence: number }
+   , confidence: number }
 
 export interface CommandExecutionData { command: string;
     originalTranscript?: string;
@@ -44,25 +44,25 @@ export interface SimilarityResult { command: string | null,
     similarity: number ,}
 
 export interface VoiceUIElement extends HTMLElement { className: string;
-    style: CSSStyleDeclaration
+   , style: CSSStyleDeclaration
     }
 
 // Web Speech API関連型定義
 export interface SpeechRecognitionEvent { results: SpeechRecognitionResultList;
-    resultIndex: number }
+   , resultIndex: number }
 
 export interface SpeechRecognitionErrorEvent { error: SpeechRecognitionErrorCode;
     message?: string }
 
 export interface SpeechRecognitionResult { 0: SpeechRecognitionAlternative;
     isFinal: boolean;
-    length: number }
+   , length: number }
 
 export interface SpeechRecognitionAlternative { transcript: string;
-    confidence: number }
+   , confidence: number }
 
 export interface SpeechRecognitionResultList { [index: number]: SpeechRecognitionResult;
-    length: number }
+   , length: number }
 
 export interface ExtendedSpeechRecognition extends SpeechRecognition { continuous: boolean;
     interimResults: boolean;
@@ -77,28 +77,28 @@ export interface ExtendedSpeechRecognition extends SpeechRecognition { continuou
 
 // 列挙型
 export type SpeechRecognitionErrorCode = ;
-    | 'no-speech' | 'aborted' | 'audio-capture' '';
-    | 'network' | 'not-allowed' | 'service-not-allowed' '';
+    | 'no-speech' | 'aborted' | 'audio-capture', '';
+    | 'network' | 'not-allowed' | 'service-not-allowed', '';
     | 'bad-grammar' | 'language-not-supported';
 
 export type VoiceContext = 'default' | 'game' | 'menu' | 'settings';
 ';
 
 export type FeedbackType = '';
-    | 'listening_started' | 'listening_stopped' | 'no_match' '';
-    | 'low_confidence' | 'unknown_command' | 'command_executed' '';
-    | 'command_failed' | 'no_handler' | 'no_speech' '';
-    | 'microphone_error' | 'permission_denied' | 'network_error' '';
+    | 'listening_started' | 'listening_stopped' | 'no_match', '';
+    | 'low_confidence' | 'unknown_command' | 'command_executed', '';
+    | 'command_failed' | 'no_handler' | 'no_speech', '';
+    | 'microphone_error' | 'permission_denied' | 'network_error', '';
     | 'recognition_error';
 ';
 
 export type CommandAction = '';
-    | 'click' | 'pop' | 'select' | 'back' | 'next' '';
-    | 'menu' | 'pause' | 'resume' | 'up' | 'down' '';
-    | 'left' | 'right' | 'start' | 'stop' | 'yes' '';
-    | 'no' | 'cancel' | 'help' | 'use_item' | 'show_score' '';
-    | 'show_time' | 'show_settings' | 'new_game' | 'continue_game' '';
-    | 'settings' | 'exit' | 'volume' | 'voice_settings' '';
+    | 'click' | 'pop' | 'select' | 'back' | 'next', '';
+    | 'menu' | 'pause' | 'resume' | 'up' | 'down', '';
+    | 'left' | 'right' | 'start' | 'stop' | 'yes', '';
+    | 'no' | 'cancel' | 'help' | 'use_item' | 'show_score', '';
+    | 'show_time' | 'show_settings' | 'new_game' | 'continue_game', '';
+    | 'settings' | 'exit' | 'volume' | 'voice_settings', '';
     | 'display_settings' | 'save_settings' | 'reset_settings';
 
 // コールバック型
@@ -137,22 +137,19 @@ export const DEFAULT_VOICE_COMMANDS: Record<string, CommandAction> = {;
 // コンテキスト別コマンド
 export const CONTEXTUAL_COMMANDS: Record<VoiceContext, Record<string, CommandAction>> = {
     default: {};
-    game: { ''
-        'アイテム': 'use_item',
+    game: { '', 'アイテム': 'use_item',
         'アイテム使用': 'use_item',
         'スコア': 'show_score',
         '時間': 'show_time',
         '設定': 'show_settings' },
 
-    menu: { ''
-        '新しいゲーム': 'new_game',
+    menu: { '', '新しいゲーム': 'new_game',
         '続きから': 'continue_game',
         '設定': 'settings',
         'ヘルプ': 'help',
         '終了': 'exit' },
 
-    settings: { ''
-        '音量': 'volume',
+    settings: { '', '音量': 'volume',
         '音声設定': 'voice_settings',
         '画面設定': 'display_settings',
         '保存': 'save_settings',
@@ -242,11 +239,11 @@ export class VoiceInputController {
     private microphoneIndicator: VoiceUIElement | null;
     private commandHistory: VoiceUIElement | null;
     // コマンド処理
-    private commandHandlers: Map<CommandAction, CommandHandler>;
+    private, commandHandlers: Map<CommandAction, CommandHandler>;
     private contextualCommands: Map<VoiceContext, Map<string, CommandAction>>;
     private currentContext: VoiceContext;
     // 統計
-    private stats: VoiceStats;
+    private, stats: VoiceStats;
     constructor() {
 
         // 音声制御設定
@@ -255,7 +252,7 @@ export class VoiceInputController {
             language: DEFAULT_LANGUAGE;
             confidence: DEFAULT_CONFIDENCE;
             continuousListening: false;
-            pushToTalk: true;
+           , pushToTalk: true;
     ,}
             commands: new Map<string, string>(Object.entries(DEFAULT_VOICE_COMMANDS); }
         };
@@ -266,7 +263,7 @@ export class VoiceInputController {
             lastCommand: null;
             commandQueue: [];
             confidence: 0;
-            isInitialized: false ,};
+           , isInitialized: false ,};
         // 音声フィードバック
         this.speechSynthesis = null;
         this.voiceList = [];
@@ -286,7 +283,7 @@ export class VoiceInputController {
         this.stats = { commandsRecognized: 0,
             commandsExecuted: 0;
             averageConfidence: 0;
-            listeningTime: 0,
+           , listeningTime: 0,
             sessionStart: Date.now()';
         console.log('[VoiceInputController] Initialized'), }'
     
@@ -439,7 +436,7 @@ export class VoiceInputController {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 50px,
+           , width: 50px,
             height: 50px,
             background: rgba(0, 0, 0, 0.7),
             border: 2px solid #ccc;
@@ -449,7 +446,7 @@ export class VoiceInputController {
             justify-content: center,
             z-index: 10005,
             cursor: pointer;
-            transition: all 0.3s ease;
+           , transition: all 0.3s ease;
         `;
         
         // マイクアイコン
@@ -479,13 +476,13 @@ export class VoiceInputController {
             position: fixed;
             top: 80px;
             right: 20px;
-            width: 200px;
+           , width: 200px;
             max-height: 150px,
             background: rgba(0, 0, 0, 0.8),
             border: 1px solid #ccc;
             border-radius: 8px,
             padding: 10px;
-            color: white;
+           , color: white;
             font-size: 12px,
             overflow-y: auto,
             z-index: 10004,
@@ -504,13 +501,13 @@ export class VoiceInputController {
         this.voiceInterface.style.cssText = `;
             position: fixed;
             bottom: 20px;
-            right: 20px,
+           , right: 20px,
             width: 250px,
             background: rgba(0, 0, 0, 0.9),
             border: 2px solid #444;
             border-radius: 12px,
             padding: 15px;
-            color: white;
+           , color: white;
             z-index: 10003,
             display: none;
         `;
@@ -542,8 +539,7 @@ export class VoiceInputController {
             this.stats.averageConfidence = "";
                 (this.stats.averageConfidence + confidence") / 2;
         
-        }"
-            " }"
+        }", " }"
             console.log(`[VoiceInputController] Recognized: "${transcript}" (${(confidence * 100}.toFixed(1})%)`);
             
             if(confidence >= this.voiceConfig.confidence) {
@@ -827,15 +823,14 @@ export class VoiceInputController {
         entry.innerHTML = ` }
 
             <div>${transcript}</div>''
-            <div style="font-size: 10px; color: #aaa;">${(confidence * 100}.toFixed(1})%</div>
+            <div style="font-size: 10px;, color: #aaa;">${(confidence * 100}.toFixed(1})%</div>
         `;
         
         this.commandHistory.appendChild(entry);
         
         // 履歴サイズを制限
         const entries = this.commandHistory.children;
-        if(entries.length > COMMAND_HISTORY_LIMIT) {"
-            ";
+        if(entries.length > COMMAND_HISTORY_LIMIT) {", ";
         }"
             this.commandHistory.removeChild(entries[0]); }
         }"
@@ -868,9 +863,7 @@ export class VoiceInputController {
             commandList.innerHTML = commands.slice(0, COMMAND_DISPLAY_LIMIT).map(cmd => );
         }
 
-                `<div>• ${cmd}</div>`' }'
-
-            ').join(''});
+                `<div>• ${cmd}</div>`' }', ').join(''});
         }
         
         if(voiceStatus) {
@@ -907,7 +900,7 @@ export class VoiceInputController {
             isListening: this.voiceState.isListening;
             isInitialized: this.voiceState.isInitialized;
             currentContext: this.currentContext;
-            lastCommand: this.voiceState.lastCommand, };
+           , lastCommand: this.voiceState.lastCommand, };
             confidence: this.voiceState.confidence }
         }
     
@@ -979,16 +972,14 @@ export class VoiceInputController {
      * 音声インターフェースの表示切り替え
      */'
     toggleVoiceInterface(show: boolean): void { ''
-        if(this.voiceInterface) {'
-            ';
+        if(this.voiceInterface) {', ';
 
         }
 
             this.voiceInterface.style.display = show ? 'block' : 'none'; }
 
         }''
-        if(this.microphoneIndicator) {'
-            ';
+        if(this.microphoneIndicator) {', ';
 
         }
 

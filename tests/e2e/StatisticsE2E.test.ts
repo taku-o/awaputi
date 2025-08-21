@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * 統計機能E2E（End-to-End）テスト
  * Playwrightを使用した統計データ収集・表示・エクスポート・インポートの全フローテスト
  * レスポンシブ表示とアクセシビリティ機能のE2Eテスト
  */
-import { test, expect } from '@playwright/test';
+import { test, expect  } from '@playwright/test';
 // テスト設定
 const TEST_CONFIG = {
     baseURL: 'http://localhost:8000',
@@ -147,7 +147,7 @@ const ResponsiveHelper = {
             await page.setViewportSize(viewport);
             await page.waitForTimeout(500); // レイアウト調整を待機
             console.log(`Testing on ${device} (${viewport.width}x${viewport.height)`);
-            await testFunc(page, device'});
+            await, testFunc(page, device'});
         }
     }
 };
@@ -709,7 +709,7 @@ const E2ETestHelper = {
         // 画像のalt属性チェック
         const imagesWithoutAlt = await page.locator('img: not([alt]')').count(),
         if (imagesWithoutAlt > 0) {
-            issues.push(`${imagesWithoutAlt) images without alt text`'});
+            issues.push(`${imagesWithoutAlt) images, without alt, text`'});
         }
         
         // 見出し階層チェック
@@ -719,4 +719,4 @@ const E2ETestHelper = {
         return issues;
     }
 };
-export { GameplaySimulator, AccessibilityHelper, ResponsiveHelper, E2ETestHelper };
+export { GameplaySimulator, AccessibilityHelper, ResponsiveHelper, E2ETestHelper  };

@@ -9,7 +9,7 @@
 interface Bounds { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface QuadTreeObject { bounds: Bounds;
     [key: string]: any, }
@@ -20,7 +20,7 @@ export class QuadTree {
     private maxLevels: number;
     private level: number;
     private objects: QuadTreeObject[];
-    private nodes: QuadTree[];
+    private, nodes: QuadTree[];
     constructor(bounds: Bounds, maxObjects: number = 10, maxLevels: number = 5, level: number = 0) {
     
         this.bounds = bounds;
@@ -45,28 +45,28 @@ export class QuadTree {
             x: x + subWidth;
             y: y);
             width: subWidth);
-            height: subHeight;
+           , height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[1] = new QuadTree({
             x: x;
             y: y);
             width: subWidth);
-            height: subHeight;
+           , height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[2] = new QuadTree({
             x: x;
             y: y + subHeight);
             width: subWidth);
-            height: subHeight;
+           , height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[3] = new QuadTree({
             x: x + subWidth;
             y: y + subHeight);
             width: subWidth);
-            height: subHeight;
+           , height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1); }
     
     getIndex(bounds: Bounds): number { let index = -1;

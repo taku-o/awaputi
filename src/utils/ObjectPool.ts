@@ -9,7 +9,7 @@ interface PoolStats { created: number,
     returned: number;
     poolSize: number;
     activeCount: number;
-    efficiency: number ,}
+   , efficiency: number ,}
 interface Particle { x: number,
     y: number;
     vx: number;
@@ -19,10 +19,10 @@ interface Particle { x: number,
     size: number;
     color: string;
     type: string;
-    isActive: boolean ,}
+   , isActive: boolean ,}
 interface BubblePoolObject { type: string, }
-    position: { x: number; y: number },
-    velocity: { x: number; y: number },
+    position: { x: number;, y: number },
+    velocity: { x: number;, y: number },
     size: number;
     health: number;
     maxHealth: number;
@@ -33,7 +33,7 @@ interface BubblePoolObject { type: string, }
     clickCount: number;
     isEscaping: boolean;
     escapeSpeed: number;
-    lastMouseDistance: number;
+   , lastMouseDistance: number;
 }
 interface FloatingText { x: number,
     y: number;
@@ -47,7 +47,7 @@ interface FloatingText { x: number,
     maxLife: number;
     scale: number;
     opacity: number;
-    isActive: boolean ,}
+   , isActive: boolean ,}
 type CreateFunction<T> = () => T;
 type ResetFunction<T> = (obj: T) => void;
 
@@ -58,7 +58,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
     private stats: {
         created: number;
         reused: number;
-        returned: number };
+       , returned: number };
 
     constructor(createFunction: CreateFunction<T>, resetFunction: ResetFunction<T> | null = null, initialSize: number = 10) {
 
@@ -68,7 +68,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
         this.activeObjects = new Set<T>();
         this.stats = {
             created: 0;
-            reused: 0
+           , reused: 0
 }
             returned: 0 ;
 }
@@ -131,7 +131,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
      */
     getStats(): PoolStats { return { ...this.stats,
             poolSize: this.pool.length;
-            activeCount: this.activeObjects.size, };
+           , activeCount: this.activeObjects.size, };
             efficiency: this.stats.reused / (this.stats.reused + this.stats.created) * 100 ;
 }
         },
@@ -145,7 +145,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
         this.stats = {
             created: 0;
             reused: 0;
-            returned: 0 
+           , returned: 0 
 };
 }
 /**
@@ -156,7 +156,7 @@ export class ParticlePool extends ObjectPool<Particle> { constructor(initialSize
             (): Particle => ({
                 x: 0, y: 0, vx: 0, vy: 0,
                 life: 1.0, maxLife: 1.0);
-                size: 1, color: '#FFFFFF',
+               , size: 1, color: '#FFFFFF',
 
     }
 
@@ -200,7 +200,7 @@ export class BubblePool extends ObjectPool<BubblePoolObject> { constructor(initi
                 clickCount: 0;
                 isEscaping: false;
                 escapeSpeed: 0);
-                lastMouseDistance: Infinity';
+               , lastMouseDistance: Infinity';
             }),''
             (bubble: BubblePoolObject'): void => {  ''
                 bubble.type = 'normal';
@@ -332,12 +332,12 @@ export class PoolManager {
             // 効率が低い（再利用率50%未満）場合はプールサイズを縮小
             if (stats.efficiency < 50 && stats.poolSize > 10) { }
                 pool.resize(Math.max(10, Math.floor(stats.poolSize * 0.8)); }
-                console.log(`Optimized, pool ${name}: reduced, size to ${(pool, as any}).pool.length}`);
+                console.log(`Optimized, pool ${name}: reduced, size to ${(pool, as, any}).pool.length}`);
             }
             
             // 効率が高い（再利用率90%以上）かつプールが空になることが多い場合は拡張
             if (stats.efficiency > 90 && stats.poolSize < 100) { pool.resize(Math.min(100, Math.floor(stats.poolSize * 1.2)); }
-                console.log(`Optimized, pool ${name}: increased, size to ${(pool, as any}).pool.length}`);
+                console.log(`Optimized, pool ${name}: increased, size to ${(pool, as, any}).pool.length}`);
             }
         };
 }

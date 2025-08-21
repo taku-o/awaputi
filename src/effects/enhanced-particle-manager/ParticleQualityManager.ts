@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Types
 type ErrorHandler = ReturnType<typeof getErrorHandler>;
@@ -6,12 +6,12 @@ type ErrorHandler = ReturnType<typeof getErrorHandler>;
 // Export interfaces
 export interface QualitySettings { countMultiplier: number,
     sizeMultiplier: number;
-    complexityLevel: number ,}
+   , complexityLevel: number ,}
 
 export interface QualityLevels { low: QualitySettings;
     medium: QualitySettings;
     high: QualitySettings;
-    ultra: QualitySettings;
+   , ultra: QualitySettings;
     [key: string]: QualitySettings,
     }
 
@@ -21,14 +21,14 @@ export interface OptimizationSettings { batchRendering: boolean,
     interpolation: boolean;
     easingEnabled: boolean;
     colorPalettes: string[];
-    physicsEnhancements: boolean ,}
+   , physicsEnhancements: boolean ,}
 
 export interface ColorPalettes { default: string[];
     warm: string[];
     cool: string[];
     nature: string[];
     fire: string[];
-    ocean: string[];
+   , ocean: string[];
     [key: string]: string[], }
 
 export type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';''
@@ -42,13 +42,13 @@ export type EffectType = 'basic' | 'glow' | 'trail' | 'energy' | 'plasma';
 export class ParticleQualityManager {
     private errorHandler: ErrorHandler;
     // 品質設定
-    private readonly qualitySettings: QualityLevels,
+    private readonly, qualitySettings: QualityLevels,
     // 現在の品質レベル
     private currentQualityLevel: QualityLevel;
     // パフォーマンス最適化設定
     private optimizationSettings: OptimizationSettings;
     // 色パレット
-    private readonly colorPalettes: ColorPalettes,
+    private readonly, colorPalettes: ColorPalettes,
     constructor() {
 
         this.errorHandler = getErrorHandler(''';
@@ -61,7 +61,7 @@ export class ParticleQualityManager {
             smoothTransitions: false;
             interpolation: false;
             easingEnabled: false;
-            colorPalettes: [];
+           , colorPalettes: [];
     ,}
             physicsEnhancements: false }))
         // 色パレット
@@ -266,7 +266,7 @@ export class ParticleQualityManager {
             this.qualitySettings[name] = {
                 countMultiplier: settings.countMultiplier || 1.0;
                 sizeMultiplier: settings.sizeMultiplier || 1.0;
-                complexityLevel: settings.complexityLevel || 2 };
+               , complexityLevel: settings.complexityLevel || 2 };
             ';
 
             console.log(`[ParticleQualityManager] カスタム品質設定「${name}」を登録しました`});''

@@ -22,7 +22,7 @@ interface ValidationError { key: string,
 
 interface FileValidationResult { valid: boolean;
     file: string;
-    timestamp: number;
+   , timestamp: number;
     issues?: ValidationIssue[];
     error?: string; }
 
@@ -34,18 +34,18 @@ interface ValidationIssue { type: string,
 interface CategoryValidationResult { valid: boolean,
     category: string;
     issues: ValidationIssue[];
-    warnings: string[];
+   , warnings: string[];
     result?: SubValidationResult
     ,}
 
 interface SubValidationResult { valid: boolean;
-    issues: ValidationIssue[]
+   , issues: ValidationIssue[]
     }
 
 interface ValidatorStatus { rulesCount: number;
     validatorsCount: number;
     strictMode: boolean;
-    supportedTypes: string[] }
+   , supportedTypes: string[] }
 
 interface ValidatorConfig { strictMode?: boolean;
     customRules?: Record<string, ValidationRule>; }
@@ -57,7 +57,7 @@ type ValidatorFunction = (value: any, constraints: ValidationConstraints) => voi
 
 export class ConfigurationValidator {
     private mainController: MainController;
-    private validators: Map<string, ValidatorFunction>;
+    private, validators: Map<string, ValidatorFunction>;
     private rules: Map<string, ValidationRule>;
     private strictMode: boolean;
     constructor(mainController: MainController) {
@@ -236,7 +236,7 @@ export class ConfigurationValidator {
                 validator(value, rule.constraints || {); }
             
             return { valid: true } catch (error) {
-            throw new Error(`Validation, failed for ${key}: ${error, instanceof Error ? error.message : String(error})`);
+            throw new Error(`Validation, failed for ${key}: ${error, instanceof, Error ? error.message : String(error})`);
     
     /**
      * Validate multiple configuration changes
@@ -246,7 +246,7 @@ export class ConfigurationValidator {
     async validateConfigChanges(changes: Record<string, any>): Promise<ValidationResult> { const results: ValidationResult = {
             valid: true;
             errors: [];
-            warnings: [] };
+           , warnings: [] };
         for(const [key, value] of Object.entries(changes) {
 
             try {
@@ -279,7 +279,7 @@ export class ConfigurationValidator {
                 valid: true;
                 file,
                 timestamp: Date.now(;
-                issues: [] ,}))
+               , issues: [] ,}))
             // 基本的な検証')'
             if(!file || typeof, file !== 'string'') { validation.valid = false;
 
@@ -314,7 +314,7 @@ export class ConfigurationValidator {
             valid: true;
             category,
             issues: [];
-            warnings: [] ,};
+           , warnings: [] ,};
 ';
         // カテゴリ特有の検証ロジック
         switch(category) {'
@@ -534,7 +534,7 @@ export class ConfigurationValidator {
      */
     getValidatorStatus(): ValidatorStatus { return { rulesCount: this.rules.size,
             validatorsCount: this.validators.size;
-            strictMode: this.strictMode, };
+           , strictMode: this.strictMode, };
             supportedTypes: Array.from(this.validators.keys(); }
         }
     

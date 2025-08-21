@@ -4,18 +4,18 @@
  * チュートリアルの実行、進捗管理、ユーザーインタラクション検出を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../LoggingSystem.js';''
-import { CacheSystem } from '../CacheSystem.js';''
-import { ContentLoader, getContentLoader } from './components/ContentLoader.js';''
-import { TutorialModel } from './DataModels.js';''
-import { TutorialOverlay, getTutorialOverlay } from './TutorialOverlay.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';''
+import { CacheSystem  } from '../CacheSystem.js';''
+import { ContentLoader, getContentLoader  } from './components/ContentLoader.js';''
+import { TutorialModel  } from './DataModels.js';''
+import { TutorialOverlay, getTutorialOverlay  } from './TutorialOverlay.js';
 ';
 // 分割されたコンポーネントをインポート
-import { getTutorialAccessibilityManager } from './TutorialAccessibilityManager.js';''
-import { getTutorialStatsManager } from './TutorialStatsManager.js';''
-import { getTutorialProgressManager } from './TutorialProgressManager.js';''
-import { getTutorialValidationEngine } from './TutorialValidationEngine.js';
+import { getTutorialAccessibilityManager  } from './TutorialAccessibilityManager.js';''
+import { getTutorialStatsManager  } from './TutorialStatsManager.js';''
+import { getTutorialProgressManager  } from './TutorialProgressManager.js';''
+import { getTutorialValidationEngine  } from './TutorialValidationEngine.js';
 
 // 型定義
 export interface GameEngine { eventBus?: any;
@@ -24,20 +24,20 @@ export interface GameEngine { eventBus?: any;
 
 export interface TutorialStep { id: string,
     title: string;
-    instructions: string;
+   , instructions: string;
     action?: string;
     target?: string;
     duration?: number;
     validation?: string;
     timeout?: number;
     highlight?: string | object;''
-    validationFunction?: (...args: any[]') => boolean ,}'
+    validationFunction?: (...arg;s: any[]') => boolean ,}'
 }
 
 export interface Tutorial { id: string;
     title: string;
     description: string;
-    steps: TutorialStep[],
+   , steps: TutorialStep[],
     prerequisites?: string[];''
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
     estimatedTime?: number;
@@ -49,11 +49,11 @@ export interface TutorialConfig { autoAdvance: boolean,
     allowSkip: boolean;
     allowBackNavigation: boolean;
     defaultTimeout: number;
-    highlightEnabled: boolean ,}
+   , highlightEnabled: boolean ,}
 
 export interface TutorialProgress { tutorialId?: string;
     currentStep: number;
-    totalSteps: number;
+   , totalSteps: number;
     completedTutorials?: string[];
     currentTutorialId?: string; ,}
 
@@ -62,7 +62,7 @@ export interface AvailableTutorial { id: string,
     description: string,
     difficulty: 'beginner' | 'intermediate' | 'advanced';
     estimatedTime: number;
-    isCompleted: boolean ,}
+   , isCompleted: boolean ,}
 
 export interface ActionResult { timeout?: boolean;
     [key: string]: any, }
@@ -96,7 +96,7 @@ export interface TutorialProgressManager { startTutorial(tutorialId: string): vo
     destroy(): void;
 }
 
-export interface TutorialValidationEngine { determineValidationFunction(step: TutorialStep): ((...args: any[]) => boolean) | null;
+export interface TutorialValidationEngine { determineValidationFunction(step: TutorialStep): ((...arg;s: any[]) => boolean) | null;
     validateStep(step: TutorialStep, actionResult: ActionResult): Promise<ValidationResult>,
     showValidationError(error: string, overlay: TutorialOverlay, tutorial: Tutorial, currentStep: number): Promise<void>,
     setStepTimer(timeout: number, callback: () => void): void;
@@ -124,7 +124,7 @@ export class TutorialManager {
     // チュートリアル状態
     private currentTutorial: Tutorial | null;
     private currentStep: number;
-    private tutorialData: Map<string, Tutorial>;
+    private, tutorialData: Map<string, Tutorial>;
     
     // チュートリアル設定
     private config: TutorialConfig;
@@ -154,7 +154,7 @@ export class TutorialManager {
             showProgress: true;
             allowSkip: true;
             allowBackNavigation: true;
-            defaultTimeout: 30000;
+           , defaultTimeout: 30000;
     ,}
             highlightEnabled: true }
         };
@@ -259,8 +259,7 @@ export class TutorialManager {
      */
     skipTutorial(): void { try {
             const tutorialId = this.currentTutorial? .id;''
-            if(tutorialId) {'
-                ';
+            if(tutorialId) {', ';
 
             }
 
@@ -346,7 +345,7 @@ export class TutorialManager {
      */ : undefined
     async executeStep(stepIndex: number): Promise<void> { try {
             const step = this.currentTutorial? .steps[stepIndex];''
-            if(!step) { : undefined' '
+            if(!step) { : undefined', '
                 this.loggingSystem.error('TutorialManager', `Step not found: ${stepIndex,}`});
                 return;
             }
@@ -605,8 +604,7 @@ export class TutorialManager {
      * オーバーレイ統合を設定
      */'
     setupOverlayIntegration(): void { try {'
-            if(this.gameEngine && this.gameEngine.eventBus) {'
-                ';
+            if(this.gameEngine && this.gameEngine.eventBus) {', ';
 
             }
 
@@ -654,7 +652,7 @@ export class TutorialManager {
                     tutorials.push({
                         id);
                         title: tutorial.title)';
-                        description: tutorial.description,
+                       , description: tutorial.description,
                         difficulty: tutorial.difficulty || 'beginner',);
                         estimatedTime: tutorial.estimatedTime || 300000);
             ,}

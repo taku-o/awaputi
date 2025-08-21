@@ -20,23 +20,23 @@ export interface SimplificationRules { hideElements: HideElementsRules,
     effects: EffectRules;
     typography: TypographyRules;
     colors: ColorRules;
-    layout: LayoutRules
+   , layout: LayoutRules
     ,}
 
 export interface HideElementsRules { decorative: string[];
     secondary: string[];
     advanced: string[];
-    nonEssential: string[] }
+   , nonEssential: string[] }
 
 export interface AnimationRules { disable: string[];
-    reduce: AnimationReductionConfig
+   , reduce: AnimationReductionConfig
     }
 
 export interface AnimationReductionConfig { duration: string;
-    easing: string }
+   , easing: string }
 
 export interface EffectRules { disable: string[];
-    reduce: Record<string, string>, }
+   , reduce: Record<string, string>, }
 
 export interface TypographyRules { simplify: Record<string, string>,
     sizes: Record<string, string>, }
@@ -67,10 +67,10 @@ export interface SimplificationOperation { type: OperationType,
 export interface ActiveSimplification { level: SimplificationLevel,
     options: SimplificationOptions;
     operations: OperationResult[];
-    timestamp: number ,}
+   , timestamp: number ,}
 
 export interface OperationResult { success: boolean;
-    operation: OperationType;
+   , operation: OperationType;
     category?: ElementCategory;
     elementsAffected?: number;
     elements?: HTMLElement[];
@@ -79,7 +79,7 @@ export interface OperationResult { success: boolean;
 
 export interface OriginalState { element: HTMLElement,
     property: string;
-    value: string ,}
+   , value: string ,}
 
 export interface SimplificationResult { success: boolean;
     id?: string;
@@ -93,23 +93,23 @@ export interface RevertResult { success: boolean,
 
 export interface RevertAllResult { success: boolean,
     revertedSimplifications: number;
-    results: RevertResult[]
+   , results: RevertResult[]
     ,}
 
 export interface SimplificationStats { activeSimplifications: number;
     totalOperations: number;
     originalStatesStored: number;
-    observedElements: number }
+   , observedElements: number }
 
 export interface StyleInjection { id: string;
     css: string;
     element: HTMLStyleElement;
-    timestamp: number }
+   , timestamp: number }
 
 export interface ElementMatch { element: HTMLElement;
     selector: string;
     category: ElementCategory;
-    affectedProperties: string[] }
+   , affectedProperties: string[] }
 
 export interface TransformationContext { level: SimplificationLevel;
     options: SimplificationOptions;
@@ -120,31 +120,31 @@ export interface TransformationContext { level: SimplificationLevel;
 
 export interface ValidationResult { isValid: boolean;
     errors: ValidationError[];
-    warnings: ValidationWarning[]
+   , warnings: ValidationWarning[]
     }
 
 export interface ValidationError { field: string;
     message: string;
-    code: string }
+   , code: string }
 
 export interface ValidationWarning { field: string;
     message: string;
-    suggestion: string }
+   , suggestion: string }
 
 // 列挙型
 export type SimplificationLevel = 'none' | 'minimal' | 'moderate' | 'significant' | 'extreme';
 
 export type OperationType = '';
-    | 'hideElements' '';
-    | 'disableAnimations' '';
-    | 'reduceAnimations' '';
-    | 'disableEffects' '';
-    | 'reduceEffects' '';
-    | 'simplifyTypography' '';
-    | 'simplifyColors' '';
-    | 'simplifyLayout' '';
-    | 'applyHighContrast' '';
-    | 'applyMonochrome' '';
+    | 'hideElements', '';
+    | 'disableAnimations', '';
+    | 'reduceAnimations', '';
+    | 'disableEffects', '';
+    | 'reduceEffects', '';
+    | 'simplifyTypography', '';
+    | 'simplifyColors', '';
+    | 'simplifyLayout', '';
+    | 'applyHighContrast', '';
+    | 'applyMonochrome', '';
     | 'increaseFontSize';''
 export type ElementCategory = 'decorative' | 'secondary' | 'advanced' | 'nonEssential';
 
@@ -167,8 +167,7 @@ export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements:
             '.recommendation', '.trending', '.related-content'];
         ] },
 
-    animations: { disable: [']'
-            'animation', 'transition', 'transform'];
+    animations: { disable: [']', 'animation', 'transition', 'transform'];
         ],
         reduce: {''
             duration: '0.1s',
@@ -177,38 +176,32 @@ export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements:
     effects: { disable: ['', 'box-shadow', 'text-shadow', 'filter',]';
             'backdrop-filter', 'clip-path'];
         ],
-        reduce: {''
-            'box-shadow': 'none',
+        reduce: {'', 'box-shadow': 'none',
             'text-shadow': 'none',
             'filter': 'none' }
     },
 
-    typography: { simplify: {''
-            'font-family': 'Arial, sans-serif',
+    typography: { simplify: {'', 'font-family': 'Arial, sans-serif',
             'font-weight': 'normal',
             'text-decoration': 'none' },
 
-        sizes: { ''
-            'font-size': '14px',
+        sizes: { '', 'font-size': '14px',
             'line-height': '1.5' }
     },
 
-    colors: { highContrast: {''
-            'color': '#000000',
+    colors: { highContrast: {'', 'color': '#000000',
             'background-color': '#ffffff',
             'border-color': '#666666' },
 
         monochrome: { ''
             filter: 'grayscale(100%)' }
     };
-    layout: { simplify: {''
-            'padding': '8px',
+    layout: { simplify: {'', 'padding': '8px',
             'margin': '4px',
             'border-radius': '0px',
             'border': '1px solid #ccc' },
 
-        grid: { ''
-            'display': 'block',
+        grid: { '', 'display': 'block',
             'float': 'none',
             'position': 'static' }
 } as const;
@@ -223,7 +216,7 @@ export const OPERATION_PRIORITIES: Record<OperationType, number> = { hideElement
     simplifyLayout: 8;
     applyHighContrast: 9;
     applyMonochrome: 10;
-    increaseFontSize: 11 ,} as const;
+   , increaseFontSize: 11 ,} as const;
 export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
         *, *::before, *::after {
             animation-duration: 0.01ms !important,
@@ -262,7 +255,7 @@ export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
     SIMPLIFY_LAYOUT: `;
         * { border-radius: 0 !important,
             padding: 8px !important;
-            margin: 4px !important ,}
+           , margin: 4px !important ,}
     `;
     HIGH_CONTRAST: `;
         * { color: #000000 !important,
@@ -299,7 +292,7 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
 
             } catch (error) { errors.push({ })
                     field: `customSelectors[${index}]`)'
-                    message: `Invalid CSS selector: ${selector}`,')'
+                    message: `Invalid CSS, selector: ${selector}`,')'
                     code: 'INVALID_SELECTOR');
                 });
             }
@@ -315,7 +308,7 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
 
             } catch (error) { errors.push({ })
                     field: `preserveElements[${index}]`)'
-                    message: `Invalid CSS selector: ${selector}`,')'
+                    message: `Invalid CSS, selector: ${selector}`,')'
                     code: 'INVALID_PRESERVE_SELECTOR');
                 });
             }
@@ -385,7 +378,7 @@ export function findAffectedElements(selectors: string[]): ElementMatch[] { cons
 export class InterfaceSimplifier {
     private activeSimplifications: Map<string, ActiveSimplification>;
     private simplificationRules: SimplificationRules;
-    private originalStates: Map<string, OriginalState>;
+    private, originalStates: Map<string, OriginalState>;
     private observedElements: Set<HTMLElement>;
     private mutationObserver: MutationObserver;
     private appliedStyles: Map<string, StyleInjection>;
@@ -451,11 +444,11 @@ export class InterfaceSimplifier {
             this.activeSimplifications.set(simplificationId, { level)
                 options,);
                 operations: appliedOperations);
-                timestamp: Date.now( ,});
+               , timestamp: Date.now( ,});
 
             return { success: true,
                 id: simplificationId;
-                operationsApplied: appliedOperations.length, };
+               , operationsApplied: appliedOperations.length, };
                 details: appliedOperations }
             } catch (error) {
             console.error('Simplification failed:', error);
@@ -477,8 +470,7 @@ export class InterfaceSimplifier {
                 operations.push(') }'
 
                     { type: 'hideElements', target: 'decorative' ,}')''
-                    { type: 'reduceAnimations' )''
-                ');
+                    { type: 'reduceAnimations' )'', ');
 
                 break;
 
@@ -488,8 +480,7 @@ export class InterfaceSimplifier {
                     { type: 'hideElements', target: 'decorative' ,},)'
                     { type: 'hideElements', target: 'secondary' ,},')'
                     { type: 'disableAnimations' }')''
-                    { type: 'reduceEffects' )''
-                ');
+                    { type: 'reduceEffects' )'', ');
 
                 break;
 
@@ -501,8 +492,7 @@ export class InterfaceSimplifier {
                     { type: 'hideElements', target: 'advanced' ,},)'
                     { type: 'disableAnimations' },')'
                     { type: 'disableEffects' }')''
-                    { type: 'simplifyTypography' )''
-                ');
+                    { type: 'simplifyTypography' )'', ');
 
                 break;
 
@@ -522,22 +512,19 @@ export class InterfaceSimplifier {
                 break; }
 ';
         // カスタムオプションを追加
-        if(options.highContrast) {'
-            ';
+        if(options.highContrast) {', ';
 
         }
 
             operations.push({ type: 'applyHighContrast }'
 
-        if(options.monochrome) {'
-            ';
+        if(options.monochrome) {', ';
 
         }
 
             operations.push({ type: 'applyMonochrome }'
 
-        if(options.largeText) {'
-            ';
+        if(options.largeText) {', ';
 
         }
 
@@ -756,7 +743,7 @@ export class InterfaceSimplifier {
         this.appliedStyles.set(styleId, { id: styleId)
             css,);
             element: styleElement);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
         
         return styleElement;
     }

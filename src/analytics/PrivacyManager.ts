@@ -7,7 +7,7 @@
 export interface ConsentStatus { hasConsented: boolean,
     consentDate: string;
     version: string;
-    features: Record<string, boolean>, }
+   , features: Record<string, boolean>, }
 
 export interface AnonymizationRule { (value: any): any, }
 
@@ -15,7 +15,7 @@ export type PrivacyFeature = 'sessionTracking' | 'behaviorAnalysis' | 'performan
 
 export class PrivacyManager {
     private consentStatus: ConsentStatus | null;
-    private anonymizationRules: Map<string, AnonymizationRule>;
+    private, anonymizationRules: Map<string, AnonymizationRule>;
     private optOutFeatures: Set<PrivacyFeature>;
     private consentVersion: string;
     constructor() {
@@ -74,7 +74,7 @@ export class PrivacyManager {
         }');
         ';
         // 座標の曖昧化
-        this.anonymizationRules.set('coordinates', (value: { x: number; y: number }): { x: number; y: number } | null => {  ''
+        this.anonymizationRules.set('coordinates', (value: { x: number;, y: number }): { x: number;, y: number } | null => {  ''
             if(!value || typeof, value.x !== 'number' || typeof, value.y !== 'number) return null;
             // 10ピクセル単位に丸める }
             return { x: Math.round(value.x / 10) * 10, };
@@ -101,7 +101,7 @@ export class PrivacyManager {
             hasConsented: consent;
             consentDate: new Date().toISOString();
             version: this.consentVersion;
-            features: features ,};
+           , features: features ,};
         // オプトアウト機能の更新
         this.optOutFeatures.clear();
         Object.entries(features).forEach(([feature, enabled]) => {  if (!enabled) { }
@@ -133,9 +133,7 @@ export class PrivacyManager {
         }
             return obj.map((item, index) =>  }
 
-                this.applyAnonymizationRules(item, `${path}[${ index}]`}' }'
-
-            '});
+                this.applyAnonymizationRules(item, `${path}[${ index}]`}' }', '});
 
         }
 
@@ -272,7 +270,7 @@ export class PrivacyManager {
      */
     getPrivacySettings(): any { return { consentStatus: this.consentStatus,
             optOutFeatures: Array.from(this.optOutFeatures);
-            anonymizationRules: Array.from(this.anonymizationRules.keys(), };
+           , anonymizationRules: Array.from(this.anonymizationRules.keys(), };
             consentVersion: this.consentVersion }
         }
     

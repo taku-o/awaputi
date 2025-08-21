@@ -7,18 +7,18 @@ interface DebugInterface { debugPanel?: HTMLElement;
 
 interface FocusManagement { focusableElements: Element[],
     currentFocusIndex: number;
-    focusTrap: boolean ,}
+   , focusTrap: boolean ,}
 
 interface AccessibilityInfo { screenReaderDetected: boolean;
     keyboardNavigationEnabled: boolean;
     focusableElementsCount: number;
-    currentFocusIndex: number }
+   , currentFocusIndex: number }
 
 export class DebugAccessibilityManager {
     private debugInterface: DebugInterface;
     private isScreenReaderDetected: boolean;
     private keyboardNavigationEnabled: boolean;
-    private focusManagement: FocusManagement;
+    private, focusManagement: FocusManagement;
     constructor(debugInterface: DebugInterface) {
 
         this.debugInterface = debugInterface;
@@ -26,7 +26,7 @@ export class DebugAccessibilityManager {
         this.keyboardNavigationEnabled = true;
         this.focusManagement = {
             focusableElements: [];
-            currentFocusIndex: -1;
+           , currentFocusIndex: -1;
     }
             focusTrap: false }
         };
@@ -94,8 +94,7 @@ export class DebugAccessibilityManager {
 
             } else {
                 this.focusNext()';
-        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(key) {'
-            ';
+        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(key) {', ';
 
         }
 
@@ -104,7 +103,7 @@ export class DebugAccessibilityManager {
         }
 ';
         // Enterキーまたはスペースキーでアクティベート
-        if(key === 'Enter' || key === ' ') {
+        if(key === 'Enter' || key === ', ') {
             this.activateCurrentElement(event);
         }
             return; }
@@ -274,8 +273,7 @@ export class DebugAccessibilityManager {
         
         // フォーカストラップの設定
         const debugPanel = this.debugInterface.debugPanel;''
-        if(debugPanel) {'
-            ';
+        if(debugPanel) {', ';
 
         }
 
@@ -425,7 +423,7 @@ export class DebugAccessibilityManager {
                 padding: 0;
                 margin: -1px;
                 overflow: hidden;
-                clip: rect(0, 0, 0, 0),
+               , clip: rect(0, 0, 0, 0),
                 white-space: nowrap,
                 border: 0 ,}
 
@@ -458,7 +456,7 @@ export class DebugAccessibilityManager {
                 left: 6px;
                 background: #000;
                 color: #fff;
-                padding: 8px;
+               , padding: 8px;
                 text-decoration: none,
                 z-index: 10001,
                 border-radius: 4px, }
@@ -493,8 +491,7 @@ export class DebugAccessibilityManager {
 ';
         // コンテンツエリアにIDを設定
         const content = debugPanel.querySelector('.debug-content);''
-        if(content && !content.id) {'
-            ';
+        if(content && !content.id) {', ';
 
         }
 
@@ -534,7 +531,7 @@ export class DebugAccessibilityManager {
      */
     getAccessibilityInfo(): AccessibilityInfo { return { screenReaderDetected: this.isScreenReaderDetected,
             keyboardNavigationEnabled: this.keyboardNavigationEnabled;
-            focusableElementsCount: this.focusManagement.focusableElements.length, };
+           , focusableElementsCount: this.focusManagement.focusableElements.length, };
             currentFocusIndex: this.focusManagement.currentFocusIndex }
         }
 

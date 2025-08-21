@@ -8,7 +8,7 @@ export interface SettingsManager { configManager: ConfigManager,
     errorHandler: ErrorHandler;
     storageManager: StorageManager;
     validator: SettingsValidator;
-    dataManager: DataManager;
+   , dataManager: DataManager;
     set(key: string, value: any): Promise<void>,
     save(): Promise<void>;
     load(): Promise<void>;
@@ -42,7 +42,7 @@ export interface ExportMetadata { exportTime: string,
     version: string;
     gameVersion?: string;
     platform: string;
-    userAgent: string ,}
+   , userAgent: string ,}
 
 export interface ExportData { settings: Record<string, any>,
     metadata?: ExportMetadata;
@@ -51,37 +51,37 @@ export interface ExportData { settings: Record<string, any>,
 
 export interface ValidationResult { isValid: boolean,
     errors: string[];
-    warnings: string[];
+   , warnings: string[];
     settingsCount?: number ,}
 
 export interface BackupData { settings: Record<string, any>,
     timestamp: string;
-    version: string ,}
+   , version: string ,}
 
 export interface BackupInfo { id: string;
     timestamp: string;
-    settingsCount: number }
+   , settingsCount: number }
 
 export interface BackupHistoryItem { id: string;
     timestamp: string;
     version: string;
-    settingsCount: number }
+   , settingsCount: number }
 
 export interface RestoreResult { success: boolean;
     timestamp: string;
-    settingsRestored: number }
+   , settingsRestored: number }
 
 export interface ImportResult { imported: number;
     skipped: number;
     errors: number;
-    details: string[] }
+   , details: string[] }
 
 export interface ExportImportStats { exportCount: number;
     importCount: number;
     validationErrors: number;
     lastExportTime: number;
     lastImportTime: number;
-    backupCount: number }
+   , backupCount: number }
 
 // 列挙型
 export type ExportFormat = 'json' | 'compact';''
@@ -92,7 +92,7 @@ export class SettingsExportImport {
     private configManager: ConfigManager;
     private errorHandler: ErrorHandler';
     private storageManager: StorageManager'';
-    private stats: Omit<ExportImportStats, 'backupCount'>;
+    private, stats: Omit<ExportImportStats, 'backupCount'>;
     private gameEngine?: any;
 
     constructor(settingsManager: SettingsManager) {
@@ -106,7 +106,7 @@ export class SettingsExportImport {
             exportCount: 0;
             importCount: 0;
             validationErrors: 0;
-            lastExportTime: 0;
+           , lastExportTime: 0;
     ,}
             lastImportTime: 0 }
         };
@@ -138,7 +138,7 @@ export class SettingsExportImport {
                         version: '1.0.0',
                         gameVersion: this.gameEngine? .version || 'unknown', : undefined);
                         platform: navigator.platform);
-                        userAgent: navigator.userAgent ,}));
+                       , userAgent: navigator.userAgent ,}));
                 ...(includeBackups && { backups: this.storageManager.getBackupHistory( });
             };
             
@@ -192,7 +192,7 @@ export class SettingsExportImport {
             // JSONデータを解析
             let importData: any,
             try { importData = JSON.parse(settingsJson); } catch (parseError) {
-                throw new Error(`Invalid, JSON format: ${(parseError, as Error}).message}`);
+                throw new Error(`Invalid, JSON format: ${(parseError, as, Error}).message}`);
             }
             
             // データ検証
@@ -245,8 +245,7 @@ export class SettingsExportImport {
             
             // 設定データの検証
             const settingsData = importData.settings || importData;''
-            if(!settingsData || typeof, settingsData !== 'object'') {'
-                ';
+            if(!settingsData || typeof, settingsData !== 'object'') {', ';
 
             }
 
@@ -265,7 +264,7 @@ export class SettingsExportImport {
                         warnings.push(`Invalid, value for, setting '${key}': ${value}`});''
                     } catch (validationError) { }
 
-                    warnings.push(`Validation, error for '${key}': ${(validationError, as Error}).message}`);
+                    warnings.push(`Validation, error for '${key}': ${(validationError, as, Error}).message}`);
                 }
             }
             ';
@@ -291,7 +290,7 @@ export class SettingsExportImport {
                 warnings, };
                 settingsCount: Object.keys(settingsData).length }
             } catch (error) {
-            errors.push(`Validation, error: ${(error, as Error}).message}`);
+            errors.push(`Validation, error: ${(error, as, Error}).message}`);
             return { isValid: false, errors, warnings };
     
     /**
@@ -302,7 +301,7 @@ export class SettingsExportImport {
             const backupData: BackupData = {'
                 settings: this._getCurrentSettings(),
                 timestamp: new Date().toISOString(''';
-                version: '1.0.0' ,}))
+               , version: '1.0.0' ,}))
             // ストレージマネージャーを使用してバックアップ保存)
             const backupId = await this.storageManager.createBackup(backupData);
             
@@ -325,7 +324,7 @@ export class SettingsExportImport {
             console.log(`[SettingsExportImport] Restoring, from backup: ${backupIndex)`),
             
             // ストレージマネージャーを使用してバックアップ復元
-            const restoreResult = await this.storageManager.restoreFromBackup(backupIndex};
+            const, restoreResult = await, this.storageManager.restoreFromBackup(backupIndex};
             // 設定を再読み込み
             await, this.settingsManager.load(} };
 
@@ -376,7 +375,7 @@ export class SettingsExportImport {
             imported: 0;
             skipped: 0;
             errors: 0;
-            details: [] };
+           , details: [] };
         ';
 
         try {'
@@ -392,7 +391,7 @@ export class SettingsExportImport {
                             results.details.push(`Imported: ${key}`});
                         } catch (error) { results.errors++;' }'
 
-                            results.details.push(`Error, importing ${key}: ${(error, as Error}).message}`');
+                            results.details.push(`Error, importing ${key}: ${(error, as, Error}).message}`');
                         }
                     }
                     break;
@@ -414,7 +413,7 @@ export class SettingsExportImport {
                                 results.details.push(`Merged: ${key}`});
                             } catch (error) { results.errors++;' }'
 
-                                results.details.push(`Error, merging ${key}: ${(error, as Error}).message}`');
+                                results.details.push(`Error, merging ${key}: ${(error, as, Error}).message}`');
                             }
 }
                     break;
@@ -430,7 +429,7 @@ export class SettingsExportImport {
                                 results.imported++; }
                                 results.details.push(`Updated: ${key}`});
                             } catch (error) { results.errors++; }
-                                results.details.push(`Error, updating ${key}: ${(error, as Error}).message}`);
+                                results.details.push(`Error, updating ${key}: ${(error, as, Error}).message}`);
                             }
                         } else { results.skipped++; }
                             results.details.push(`Skipped (unchanged): ${key}`);
@@ -448,7 +447,7 @@ export class SettingsExportImport {
             return results;
             
         } catch (error) { results.errors++; }
-            results.details.push(`Import, error: ${(error, as Error}).message}`);
+            results.details.push(`Import, error: ${(error, as, Error}).message}`);
             throw error;
         }
     }

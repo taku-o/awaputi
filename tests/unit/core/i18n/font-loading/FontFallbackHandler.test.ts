@@ -1,16 +1,16 @@
-import { jest } from '@jest/globals';
-import { FontFallbackHandler } from '../../../../../src/core/i18n/font-loading/FontFallbackHandler.js';
+import { jest  } from '@jest/globals';
+import { FontFallbackHandler  } from '../../../../../src/core/i18n/font-loading/FontFallbackHandler.js';
 // Type definitions
 interface MockCanvasContext {
     font: string,
-    measureText: jest.Mock<{ width: number }, [string]>;
+    measureText: jest.Mock<{ widt;h: number }, [string]>;
 }
 interface MockCanvas {
     getContext: jest.Mock<MockCanvasContext, [string]>;
 }
 interface MockElement {
     style: {
-        fontFamily?: string;
+        fontFamil;y?: string;
     };
     getAttribute?: jest.Mock<string | null, [string]>;
     setAttribute?: jest.Mock<void, [string, string]>;
@@ -22,14 +22,14 @@ interface FallbackInfo {
 interface FallbackStats {
     totalApplied: number,
     byLanguage: {
-        [language: string]: number
+        [languag;e: string]: number
     },
     systemFontsCount: number,
     availableSystemFonts: string[],
 }
 interface FontFallbackConfig {
     development?: {
-        verboseLogging?: boolean;
+        verboseLoggin;g?: boolean;
     };
 }
 interface ConsoleSpy {
@@ -44,7 +44,7 @@ const mockCanvas: MockCanvas = {
 ');
 Object.defineProperty(document, 'createElement', {
     writable: true;);
-    value: jest.fn(() => mockCanvas);
+   , value: jest.fn(() => mockCanvas);
     })');
 describe('FontFallbackHandler', () => {
     let fontFallbackHandler: FontFallbackHandler,

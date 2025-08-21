@@ -11,11 +11,11 @@ interface NotificationSettings { enableNotifications: boolean,
     rankingNotifications: boolean;
     maxActiveNotifications: number;
     notificationDuration: number;
-    animationDuration: number;
+   , animationDuration: number;
     maxDisplayCount?: number ,}
 
 interface NotificationAction { text: string;
-    action: () => void }
+   , action: () => void }
 }
 
 interface NotificationData { id: string;
@@ -27,7 +27,7 @@ interface NotificationData { id: string;
     duration: number;
     actions: NotificationAction[];
     timestamp: number;
-    category: string;
+   , category: string;
     showTime?: number;
     expireTime?: number;
     expiresAt?: number; }
@@ -57,15 +57,15 @@ interface Achievement {
 }
 
 interface RankingData { improvement: number;
-    currentRank: number }
+   , currentRank: number }
 
 export class EventNotificationSystem {
     private gameEngine: any;
     private notificationQueue: NotificationData[] = [];
-    private activeNotifications: Map<string, NotificationData> = new Map();
+    private, activeNotifications: Map<string, NotificationData> = new Map();
     private notificationHistory: NotificationHistoryEntry[] = [];
     private notificationCheckInterval: number | null = null;
-    private settings: NotificationSettings;
+    private, settings: NotificationSettings;
     constructor(gameEngine: any) {
 
         this.gameEngine = gameEngine;
@@ -84,7 +84,7 @@ export class EventNotificationSystem {
             achievementNotifications: true;
             rankingNotifications: true;
             maxActiveNotifications: 3;
-            notificationDuration: 5000;
+           , notificationDuration: 5000;
     ,}
             animationDuration: 300 }
         };
@@ -123,15 +123,15 @@ export class EventNotificationSystem {
 
         const notificationData: NotificationData = { ''
             id: this.generateNotificationId(''';
-            type: notification.type || 'info',
+           , type: notification.type || 'info',
             title: notification.title || '',
             message: notification.message || '',
             icon: notification.icon || '📢',
             priority: notification.priority || 'normal';
-            duration: notification.duration || this.settings.notificationDuration,
+           , duration: notification.duration || this.settings.notificationDuration,
             actions: notification.actions || [],
             timestamp: Date.now(''';
-            category: notification.category || 'general' ,}))
+           , category: notification.category || 'general' ,}))
         // 優先度に基づいて挿入位置を決定)
         const insertIndex = this.findInsertIndex(notificationData.priority);
         this.notificationQueue.splice(insertIndex, 0, notificationData);
@@ -166,7 +166,7 @@ export class EventNotificationSystem {
 
                 { ''
                     text: '詳細を見る';
-                    action: () => this.showEventDetails(event.id) }]
+                   , action: () => this.showEventDetails(event.id) }]
                 }]
             ];
         });
@@ -190,9 +190,9 @@ export class EventNotificationSystem {
             icon: event.icon || '🏁',
             priority: 'normal',)';
             category: 'event')';
-            actions: results ? [{ : undefined')'
+           , actions: results ? [{ : undefined')'
                     text: '結果を見る');
-                    action: () => this.showEventResults(event.id) ,}]
+                   , action: () => this.showEventResults(event.id) ,}]
                 }]
             ] : [];
         });
@@ -238,9 +238,9 @@ export class EventNotificationSystem {
             icon: '👑',
             priority: 'normal',)';
             category: 'ranking')';
-            actions: [{')'
+           , actions: [{')'
                     text: 'ランキングを見る');
-                    action: () => this.showRanking() ,}]
+                   , action: () => this.showRanking() ,}]
                 }]
             ];
         });
@@ -397,8 +397,7 @@ export class EventNotificationSystem {
      * イベントアクション: イベント詳細表示
      */'
     private showEventDetails(eventId: string): void { ''
-        if(this.gameEngine.sceneManager) {'
-            ';
+        if(this.gameEngine.sceneManager) {', ';
 
         }
 
@@ -409,8 +408,7 @@ export class EventNotificationSystem {
      * イベントアクション: イベント結果表示
      */'
     private showEventResults(eventId: string): void { ''
-        if(this.gameEngine.sceneManager) {'
-            ';
+        if(this.gameEngine.sceneManager) {', ';
 
         }
 
@@ -421,8 +419,7 @@ export class EventNotificationSystem {
      * イベントアクション: 実績表示
      */'
     private showAchievements(): void { ''
-        if(this.gameEngine.sceneManager) {'
-            ';
+        if(this.gameEngine.sceneManager) {', ';
 
         }
 
@@ -433,8 +430,7 @@ export class EventNotificationSystem {
      * イベントアクション: ランキング表示
      */'
     private showRanking(): void { ''
-        if(this.gameEngine.sceneManager) {'
-            ';
+        if(this.gameEngine.sceneManager) {', ';
 
         }
 
@@ -476,7 +472,7 @@ export class EventNotificationSystem {
      * 通知をチェック（EventStageManager対応）
      * アクティブな通知と期限切れ通知を確認・管理
      */
-    checkNotifications(): { activeCount: number; queueCount: number; expiredCount: number } { try {
+    checkNotifications(): { activeCount: number; queueCount: number;, expiredCount: number } { try {
             const currentTime = Date.now();
             const expiredNotifications: string[] = [],
             

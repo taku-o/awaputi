@@ -1,23 +1,23 @@
-import { ChallengeUI } from '../../core/ChallengeUI';''
-import { ChallengeDetailModal } from '../../ui/components/ChallengeDetailModal';''
-import { GameEngine } from '../../core/GameEngine';''
-import { ComponentEventBus } from './ComponentEventBus';''
-import { SceneState } from './SceneState';
+import { ChallengeUI  } from '../../core/ChallengeUI';''
+import { ChallengeDetailModal  } from '../../ui/components/ChallengeDetailModal';''
+import { GameEngine  } from '../../core/GameEngine';''
+import { ComponentEventBus  } from './ComponentEventBus';''
+import { SceneState  } from './SceneState';
 
 interface LocalizationManager { translate(key: string): string, }
 
 interface ChallengeData { challengeId: string,
     challenge?: {
-        title?: string }
+        titl;e?: string }
 
-interface BoundHandlers { challengeClick: (data: any) => void,
-    challengeCompleted: (data: ChallengeData) => void;
-    challengeProgress: (data: any) => void;
+interface BoundHandlers { challengeClick: (dat;a: any) => void,
+    challengeCompleted: (dat;a: ChallengeData) => void;
+    challengeProgress: (dat;a: any) => void;
     refreshData: () => void ,}
 }
 
 interface ChallengeConfig { refreshInterval: number;
-    animationEnabled: boolean }
+   , animationEnabled: boolean }
 
 /**
  * チャレンジタブコンポーネント
@@ -35,7 +35,7 @@ export class ChallengesTab {
     private isVisible: boolean = false;
     private currentChallengeId: string | null = null;
     // 設定
-    private config: ChallengeConfig = {
+    private, config: ChallengeConfig = {
         refreshInterval: 30000, // 30秒;
         animationEnabled: true ,};
     // イベントハンドラー
@@ -50,7 +50,7 @@ export class ChallengesTab {
         this.boundHandlers = {
             challengeClick: this.onChallengeClick.bind(this);
             challengeCompleted: this.onChallengeCompleted.bind(this);
-            challengeProgress: this.onChallengeProgress.bind(this);
+           , challengeProgress: this.onChallengeProgress.bind(this);
     }
 
             refreshData: this.refreshData.bind(this); }
@@ -93,8 +93,7 @@ export class ChallengesTab {
      */'
     private createMockLocalizationManager(): LocalizationManager { return { ''
             translate: (key: string'): string => { '
-                const translations: Record<string, string> = {''
-                    'challenge.ui.title': 'チャレンジ',
+                const translations: Record<string, string> = {'', 'challenge.ui.title': 'チャレンジ',
                     'challenge.ui.refresh': '更新',
                     'challenge.ui.noChallenges': 'チャレンジがありません',
                     'challenge.filter.active': 'アクティブ',
@@ -211,8 +210,7 @@ export class ChallengesTab {
 
         if(floatingTextManager'}) {'
             floatingTextManager.show(';
-        })'
-                'チャレンジ完了!', : undefined') 
+        })', 'チャレンジ完了!', : undefined') 
                 { x: 400, y: 200 ,}')''
                 { color: '#2ecc71', fontSize: 24, duration: 3000 ) ,}
     }
@@ -337,8 +335,7 @@ export class ChallengesTab {
         console.error('[ChallengesTab] 初期化に失敗しました:', error);
         ';
         // エラー状態をシーンステートに設定
-        if(this.sceneState) {'
-            ';
+        if(this.sceneState) {', ';
 
         }
 

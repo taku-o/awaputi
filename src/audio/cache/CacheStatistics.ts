@@ -5,7 +5,7 @@
  * AudioCacheManager のサブコンポーネント
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * Operation counts interface
@@ -14,13 +14,13 @@ export interface OperationCounts { gets: number,
     sets: number;
     deletes: number;
     evictions: number;
-    cleanups: number ,}
+   , cleanups: number ,}
 /**
  * Category statistics interface
  */
 export interface CategoryStats { count: number,
     totalSize: number;
-    hitRate: number ,}
+   , hitRate: number ,}
 /**
  * Time series data point interfaces
  */
@@ -28,7 +28,7 @@ export interface HitRateDataPoint { timestamp: number,
     hitRate: number ,}
 export interface MemoryUsageDataPoint { timestamp: number,
     usage: number;
-    ratio: number ,}
+   , ratio: number ,}
 export interface LoadTimeDataPoint { timestamp: number,
     avgLoadTime: number ,}
 export interface RequestCountDataPoint { timestamp: number,
@@ -39,7 +39,7 @@ export interface RequestCountDataPoint { timestamp: number,
 export interface TimeSeriesData { hitRates: HitRateDataPoint[],
     memoryUsage: MemoryUsageDataPoint[];
     loadTimes: LoadTimeDataPoint[];
-    requestCounts: RequestCountDataPoint[]
+   , requestCounts: RequestCountDataPoint[]
     ,}
 /**
  * Statistics interface
@@ -50,10 +50,10 @@ export interface Statistics { totalRequests: number,
     memoryEfficiency: number;
     operationCounts: OperationCounts;
     timeSeriesData: TimeSeriesData;
-    categoryStats: {
-        audioBuffers: CategoryStats;
+   , categoryStats: {
+        audioBuffer;s: CategoryStats;
         metadata: CategoryStats;
-        chunks: CategoryStats
+       , chunks: CategoryStats
     ,}
 
 /**
@@ -63,8 +63,8 @@ export interface PerformanceSnapshot { timestamp: number,
     audioBuffer: any;
     metadata: any;
     chunk: any;
-    memory: {
-        total?: number;
+   , memory: {
+        tota;l?: number;
         max?: number;
         ratio?: number; ,};
     loader: { averageLoadTime?: number; };
@@ -72,7 +72,7 @@ export interface PerformanceSnapshot { timestamp: number,
         totalMisses: number;
         totalEvictions: number;
         totalMemoryUsage: number;
-        memoryEfficiency: number }
+       , memoryEfficiency: number }
 
 /**
  * Trend analysis result interface
@@ -81,10 +81,10 @@ export interface TrendAnalysis {;
     status: 'success' | 'insufficient_data' | 'error';
     period?: {;
         start: number;
-        end: number };
+       , end: number };
     trends?: { hitRate: TrendInfo;
         memoryUsage: TrendInfo;
-        loadTime: TrendInfo
+       , loadTime: TrendInfo
     }
 
 /**
@@ -99,20 +99,20 @@ export interface TrendInfo { start: number,
  */'
 export interface Recommendation { type: string,''
     priority: 'high' | 'medium' | 'low';
-    message: string ,}
+   , message: string ,}
 /**
  * Statistics summary interface
  */
 export interface StatisticsSummary { overview: {
-        totalRequests: number;
+        totalRequest;s: number;
         hitRatio: number;
         averageLoadTime: number;
-        memoryEfficiency: number 
+       , memoryEfficiency: number 
 };
     operations: OperationCounts;
-    categories: { audioBuffers: CategoryStats;
+   , categories: { audioBuffers: CategoryStats;
         metadata: CategoryStats;
-        chunks: CategoryStats 
+       , chunks: CategoryStats 
 };
     performance: { ''
         trends: Partial<TrendAnalysis['trends]>;
@@ -139,15 +139,15 @@ export class CacheStatistics {
     // 統計収集設定
     private readonly statsConfig = {
         maxHistorySize: 1000;
-        aggregationInterval: 60000, // 1分;
+       , aggregationInterval: 60000, // 1分;
         enableDetailedTracking: true 
 ,};
     // 統計データ
     private statistics: Statistics;
     // パフォーマンス監視
-    private performanceMonitor: { intervalId: NodeJS.Timeout | null
+    private, performanceMonitor: { intervalId: NodeJS.Timeout | null
         lastAggregation: number;
-        snapshots: PerformanceSnapshot[]
+       , snapshots: PerformanceSnapshot[]
     };
 
     constructor(mainController: MainController) {
@@ -160,11 +160,11 @@ export class CacheStatistics {
             hitRatio: 0;
             averageLoadTime: 0;
             memoryEfficiency: 0;
-            operationCounts: {
+           , operationCounts: {
                 gets: 0;
                 sets: 0;
                 deletes: 0;
-                evictions: 0
+               , evictions: 0
 }
                 cleanups: 0 ;
 }
@@ -172,7 +172,7 @@ export class CacheStatistics {
             timeSeriesData: { hitRates: [];
                 memoryUsage: [];
                 loadTimes: [];
-                requestCounts: [] 
+               , requestCounts: [] 
 };
             categoryStats: {
                 audioBuffers: { count: 0, totalSize: 0, hitRate: 0 ,},
@@ -183,7 +183,7 @@ export class CacheStatistics {
         // パフォーマンス監視
         this.performanceMonitor = { intervalId: null,
             lastAggregation: Date.now();
-            snapshots: [] 
+           , snapshots: [] 
 ,};
         this.startPerformanceMonitoring();
     }
@@ -230,12 +230,12 @@ export class CacheStatistics {
                 chunk: chunkStats;
                 memory: memoryUsage;
                 loader: loaderStats;
-                overall: {
+               , overall: {
                     totalHits: audioBufferStats.hits + metadataStats.hits + chunkStats.hits;
                     totalMisses: audioBufferStats.misses + metadataStats.misses + chunkStats.misses;
                     totalEvictions: audioBufferStats.evictions + metadataStats.evictions + chunkStats.evictions;
                     totalMemoryUsage: memoryUsage.total || 0;
-                    memoryEfficiency: this.calculateMemoryEfficiency(memoryUsage ,}
+                   , memoryEfficiency: this.calculateMemoryEfficiency(memoryUsage ,}
             };
             
             this.performanceMonitor.snapshots.push(snapshot);
@@ -290,7 +290,7 @@ export class CacheStatistics {
             sets: this.estimateSetOperations(snapshot);
             deletes: this.estimateDeleteOperations(snapshot);
             evictions: overall.totalEvictions;
-            cleanups: this.mainController.memoryManager? .performanceStats.cleanupOperations || 0 
+           , cleanups: this.mainController.memoryManager? .performanceStats.cleanupOperations || 0 
 ,}
     
     /**
@@ -332,17 +332,17 @@ export class CacheStatistics {
         this.statistics.categoryStats.audioBuffers = {
             count: snapshot.audioBuffer.entryCount;
             totalSize: snapshot.audioBuffer.currentSize;
-            hitRate: snapshot.audioBuffer.hitRate 
+           , hitRate: snapshot.audioBuffer.hitRate 
 };
         // メタデータ統計
         this.statistics.categoryStats.metadata = { count: snapshot.metadata.entryCount,
             totalSize: snapshot.metadata.currentSize;
-            hitRate: snapshot.metadata.hitRate 
+           , hitRate: snapshot.metadata.hitRate 
 ,};
         // チャンク統計
         this.statistics.categoryStats.chunks = { count: snapshot.chunk.entryCount,
             totalSize: snapshot.chunk.currentSize;
-            hitRate: snapshot.chunk.hitRate 
+           , hitRate: snapshot.chunk.hitRate 
 ,}
     
     /**
@@ -407,10 +407,10 @@ export class CacheStatistics {
                         end: last.overall.totalHits / (last.overall.totalHits + last.overall.totalMisses),
                         change: this.calculateTrendDirection('hitRate', recentSnapshots },
                     memoryUsage: { start: first.memory.total || 0;
-                        end: last.memory.total || 0,
+                       , end: last.memory.total || 0,
                         change: this.calculateTrendDirection('memoryUsage', recentSnapshots },
                     loadTime: { start: first.loader.averageLoadTime || 0;
-                        end: last.loader.averageLoadTime || 0,
+                       , end: last.loader.averageLoadTime || 0,
                         change: this.calculateTrendDirection('loadTime', recentSnapshots }
 } catch (error) {
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {)'
@@ -428,10 +428,9 @@ export class CacheStatistics {
      */'
     calculateTrendDirection(')';
         metric: 'hitRate' | 'memoryUsage' | 'loadTime')';
-        snapshots: PerformanceSnapshot[]'';
+       , snapshots: PerformanceSnapshot[]'';
     '): 'improving' | 'stable' | 'degrading' { ''
-        if(snapshots.length < 3) {'
-            ';
+        if(snapshots.length < 3) {', ';
 
         }
 
@@ -489,7 +488,7 @@ export class CacheStatistics {
         return { overview: {
                 totalRequests: this.statistics.totalRequests;
                 hitRatio: this.statistics.hitRatio;
-                averageLoadTime: this.statistics.averageLoadTime, };
+               , averageLoadTime: this.statistics.averageLoadTime, };
                 memoryEfficiency: this.statistics.memoryEfficiency ;
 }
             },
@@ -552,7 +551,7 @@ export class CacheStatistics {
             const data = {
                 summary: this.generateSummary();
                 timeSeriesData: this.statistics.timeSeriesData;
-                rawSnapshots: this.performanceMonitor.snapshots.slice(-100) // 最新100件 
+               , rawSnapshots: this.performanceMonitor.snapshots.slice(-100) // 最新100件 
 };
             switch(format) {'
 
@@ -617,7 +616,7 @@ export class CacheStatistics {
             this.statistics.timeSeriesData = { hitRates: [],
                 memoryUsage: [];
                 loadTimes: [];
-                requestCounts: [] 
+               , requestCounts: [] 
 ,};
             console.log('CacheStatistics, disposed);
 

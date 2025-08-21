@@ -14,7 +14,7 @@ interface ConfigMetadata { reason?: string;
 
 interface ConfigBackup { value: any,
     timestamp: number;
-    metadata: ConfigMetadata
+   , metadata: ConfigMetadata
     ,}
 
 interface ConfigProfile { created: number;
@@ -23,15 +23,15 @@ interface ConfigProfile { created: number;
 interface ConfigChangeNotification { key: string,
     newValue: any;
     oldValue: any;
-    metadata: ConfigMetadata
+   , metadata: ConfigMetadata
     ,}
 
 interface SetResult { success: boolean;
     oldValue: any;
-    newValue: any }
+   , newValue: any }
 
 interface ApplyResult { key: string;
-    status: 'success' | 'error';
+   , status: 'success' | 'error';
     result?: SetResult;
     error?: string; }
 
@@ -46,18 +46,18 @@ interface ResetResult { resetKeys: string[];
 
 interface ProfileResult { name: string,''
     status: 'created' | 'loaded', }
-    changes?: Record<string, { oldValue: any; newValue: any }>;
+    changes?: Record<string, { oldValue: any;, newValue: any }>;
 }
 
 interface RollbackResult { key: string,
     value: any;
     oldValue: any;
     originalTimestamp: number;
-    rollbackTimestamp: number ,}
+   , rollbackTimestamp: number ,}
 ';
 
 interface UpdateItem { id: string,''
-    handler: (data: any') => Promise<void>,
+    handler: (dat;a: any') => Promise<void>,
     data: any,
     priority: 'high' | 'normal' | 'low',
     queuedAt: number,
@@ -69,7 +69,7 @@ interface UpdateItem { id: string,''
 
 interface UpdateStatus { queueLength: number,
     updating: boolean;
-    recentUpdates: UpdateItem[]
+   , recentUpdates: UpdateItem[]
     ,}
 
 interface ApplierStatus { configCount: number;
@@ -77,7 +77,7 @@ interface ApplierStatus { configCount: number;
     listenerCount: number;
     updateQueueLength: number;
     updating: boolean;
-    backupCount: number }
+   , backupCount: number }
 
 interface ApplierConfiguration { maxBackupsPerKey?: number;
     updateInterval?: number; }
@@ -94,14 +94,14 @@ interface MainController { [key: string]: any }
 
 export class ConfigurationApplier {
     private mainController: MainController;
-    private config: Map<string, any>;
+    private, config: Map<string, any>;
     private profiles: Map<string, ConfigProfile>;
     private listeners: Map<ConfigCategory, Set<ConfigChangeCallback>>;
     private defaults: Map<string, any>;
     private updateQueue: UpdateItem[];
     private updating: boolean;
     private updateHistory: UpdateItem[];
-    private backups: Map<string, ConfigBackup[]>;
+    private, backups: Map<string, ConfigBackup[]>;
     private maxBackupsPerKey: number;
     constructor(mainController: MainController) {
 
@@ -241,7 +241,7 @@ export class ConfigurationApplier {
             const completedUpdate: UpdateItem = {'
                 ...update,
                 status: 'completed';
-                completedAt: Date.now( ,};
+               , completedAt: Date.now( ,};
             
             this.updateHistory.push(completedUpdate);
 
@@ -249,7 +249,7 @@ export class ConfigurationApplier {
                 ...update,
                 status: 'failed';
                 error: error instanceof Error ? error.message : String(error);
-                failedAt: Date.now( ,};
+               , failedAt: Date.now( ,};
             
             this.updateHistory.push(failedUpdate);
         }
@@ -306,7 +306,7 @@ export class ConfigurationApplier {
             } catch (error) { results.push({ )'
                     key, ')';
                     status: 'error' );
-                    error: error instanceof Error ? error.message : String(error ,});
+                   , error: error instanceof Error ? error.message : String(error ,});
             }
         }
         
@@ -495,7 +495,7 @@ export class ConfigurationApplier {
         }
         ';
 
-        const changes: Record<string, { oldValue: any; newValue: any }> = {}''
+        const changes: Record<string, { oldValue: any;, newValue: any }> = {}''
         for(const [key, value] of Object.entries(profile)) { ''
             if(key !== 'created) {'
                 const oldValue = this.config.get(key);''
@@ -541,7 +541,7 @@ export class ConfigurationApplier {
         await this.set(key, backup.value, { ')'
             reason: 'rollback',);
             originalTimestamp: backup.timestamp);
-            rollbackTimestamp: Date.now(), });
+           , rollbackTimestamp: Date.now(), });
 
         return { key,
             value: backup.value;
@@ -610,9 +610,9 @@ export class ConfigurationApplier {
      */
     getApplierStatus(): ApplierStatus { return { configCount: this.config.size,
             profileCount: this.profiles.size;
-            listenerCount: Array.from(this.listeners.values().reduce((sum, set) => sum + set.size, 0),
+           , listenerCount: Array.from(this.listeners.values().reduce((sum, set) => sum + set.size, 0),
             updateQueueLength: this.updateQueue.length;
-            updating: this.updating, };
+           , updating: this.updating, };
             backupCount: Array.from(this.backups.values().reduce((sum, arr) => sum + arr.length, 0); }
         }
     

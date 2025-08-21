@@ -1,6 +1,6 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * エクスポート管理クラス - データエクスポート機能
@@ -13,7 +13,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  */
 export class ExportManager {
     private config: BasicConfig;
-    private state: any';
+    private, state: any';
 
     constructor(dataStorage: any, validationManager: any = null) {
         this.storage = dataStorage;
@@ -27,7 +27,7 @@ export class ExportManager {
             includeMetadata: true;
             validateBeforeExport: true;
             compressLargeExports: true;
-            compressionThreshold: 10 * 1024, // 10KB
+           , compressionThreshold: 10 * 1024, // 10KB
     }
             maxExportSize: 50 * 1024 * 1024 // 50MB }
         };
@@ -37,7 +37,7 @@ export class ExportManager {
             failedExports: 0;
             averageExportSize: 0;
             averageExportTime: 0;
-            lastExport: null ,}))
+           , lastExport: null ,}))
         this.initialize();
     }
     
@@ -153,7 +153,7 @@ export class ExportManager {
                 size: result.size || dataSize;
                 duration,
                 filename: result.filename;
-                data: result.data, };
+               , data: result.data, };
                 metadata }
             };
             ';
@@ -238,7 +238,7 @@ export class ExportManager {
                        (this.config.compressLargeExports && dataSize > this.config.compressionThreshold),
             encrypted: format === 'encrypted';
             exportOptions: options;
-            timestamp: Date.now();
+           , timestamp: Date.now();
     ,}
             userAgent: navigator.userAgent, };
             platform: navigator.platform, }
@@ -249,8 +249,7 @@ export class ExportManager {
      * ファイルダウンロードの実行
      */'
     async downloadExport(exportResult, filename = null) { try {'
-            if(!exportResult.success) {'
-                ';
+            if(!exportResult.success) {', ';
 
             }
 
@@ -355,7 +354,7 @@ export class ExportManager {
     getExportHistory() { return { }
             statistics: { ...this.statistics;
             supportedFormats: Array.from(this.exportFormats.keys();
-            config: { ...this.config;
+           , config: { ...this.config;
     }
     
     /**
@@ -640,8 +639,7 @@ class TextExporter { constructor(exportManager: any) {
             text += `${dataType.toUpperCase()'
             text += '-'.repeat(30} + '\n';
 
-            if(typeof data === 'object} {'
-                ';
+            if(typeof data === 'object} {', ';
 
             }
 
@@ -659,7 +657,7 @@ class TextExporter { constructor(exportManager: any) {
     objectToText(obj, indent = 0) {'
 
         let text = '';''
-        const spaces = '  '.repeat(indent);
+        const spaces = ', '.repeat(indent);
 
         for(const [key, value] of Object.entries(obj)) {''
             if (typeof, value === 'object' && value !== null) {'

@@ -11,7 +11,7 @@ import type { AchievementNotificationSystem } from '../../core/achievements/Achi
 // Interfaces for Stage Data
 export interface StageInfo { id: string,
     name: string;
-    description: string;
+   , description: string;
     duration?: number;
     unlockMessage?: string; ,}
 
@@ -21,23 +21,23 @@ export interface StageSelectionState { selectedStageIndex: number,
 export interface StageUpdateResult { unlockedChanged: boolean;
     lockedChanged: boolean;
     unlockedCount: number;
-    lockedCount: number }
+   , lockedCount: number }
 
 export interface DebugInfo { selectedStageIndex: number;
     totalUnlockedStages: number;
     totalLockedStages: number;
     scrollOffset: number;
     maxVisibleStages: number;
-    visibleRange: {
-        start: number;
-        end: number }
+   , visibleRange: {
+        star;t: number;
+       , end: number }
 
 // Extended interfaces for game engine components
 interface ExtendedGameEngine { stageManager: StageManager,
     bubbleManager?: any;
     canvas: HTMLCanvasElement;
     playerData?: {
-        username?: string;
+        usernam;e?: string;
         ap?: number;
         tap?: number; ,};
     achievementNotificationSystem?: AchievementNotificationSystem & { queueNotification(notification: {
@@ -45,7 +45,7 @@ interface ExtendedGameEngine { stageManager: StageManager,
             title: string;
             message: string;
             icon: string);
-            duration: number);
+           , duration: number);
         ): void; }
 
 interface ExtendedStageSelectScene extends StageSelectScene { sceneManager: SceneManager
@@ -59,7 +59,7 @@ export class StageSelectDataManager {
     private unlockedStages: UnlockedStageInfo[] = [];
     private lockedStages: LockedStageInfo[] = [];
     private scrollOffset: number = 0;
-    private readonly maxVisibleStages: number = 8,
+    private readonly, maxVisibleStages: number = 8,
 
     constructor(stageSelectScene: StageSelectScene) {
 
@@ -122,8 +122,7 @@ export class StageSelectDataManager {
             const success = this.gameEngine.stageManager.startStage(selectedStage.id);
             console.log(`Stage, start result: ${ success')`},
 
-            if(success} {'
-                ';
+            if(success} {', ';
 
             }
 
@@ -226,18 +225,17 @@ export class StageSelectDataManager {
      */
     private renderStageItem(;
         context: CanvasRenderingContext2D;
-        stage: UnlockedStageInfo | LockedStageInfo, ;
+       , stage: UnlockedStageInfo | LockedStageInfo, ;
         x: number, ;
         y: number, ;
         width: number, ;
         height: number );
         isSelected: boolean);
-        isLocked: boolean;
+       , isLocked: boolean;
     ): void { context.save(),
         ;
         // 背景
-        if(isSelected) {'
-            ';
+        if(isSelected) {', ';
 
         }
 
@@ -302,7 +300,7 @@ export class StageSelectDataManager {
         context.textBaseline = 'bottom';
         )';
         const controlsY = canvas.height - 40;')'
-        context.fillText('↑↓: 選択  Enter: 決定  H: ヘルプ  ESC: 戻る', canvas.width / 2, controlsY);''
+        context.fillText('↑↓: 選択  Enter: 決定  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY);''
         context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
         
         context.restore(); }
@@ -313,7 +311,7 @@ export class StageSelectDataManager {
     public getStageData() { return { selectedStageIndex: this.selectedStageIndex,
             unlockedStages: this.unlockedStages;
             lockedStages: this.lockedStages;
-            scrollOffset: this.scrollOffset, };
+           , scrollOffset: this.scrollOffset, };
             maxVisibleStages: this.maxVisibleStages }
         }
 
@@ -353,7 +351,7 @@ export class StageSelectDataManager {
             totalLockedStages: this.lockedStages.length;
             scrollOffset: this.scrollOffset;
             maxVisibleStages: this.maxVisibleStages;
-            visibleRange: {
+           , visibleRange: {
                 start: this.scrollOffset, };
                 end: Math.min(this.scrollOffset + this.maxVisibleStages, this.unlockedStages.length + this.lockedStages.length); }
 }
@@ -394,7 +392,7 @@ export class StageSelectDataManager {
         
         return { unlockedChanged: newUnlockedCount !== currentUnlockedCount,
             lockedChanged: newLockedCount !== currentLockedCount;
-            unlockedCount: newUnlockedCount, };
+           , unlockedCount: newUnlockedCount, };
             lockedCount: newLockedCount }
         }
 

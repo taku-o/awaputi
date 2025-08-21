@@ -1,5 +1,5 @@
-interface ProgressCalculator { calculate: (current: number, increment: unknown, target: number, context?: CalculationContext) => number;
-    getPercentage: (current: number, target: number) => number ,}
+interface ProgressCalculator { calculate: (curren;t: number, increment: unknown, target: number, context?: CalculationContext) => number;
+    getPercentage: (curren;t: number, target: number) => number ,}
 }
 
 interface ConditionEvaluator { (value: unknown, condition: EvaluationCondition): boolean ,}
@@ -9,7 +9,7 @@ interface Validator { (value: unknown, ...args: unknown[]): boolean, }
 interface PerformanceStats { calculationCount: number,
     totalCalculationTime: number;
     averageCalculationTime: number;
-    errorCount: number ,}
+   , errorCount: number ,}
 
 interface CalculationContext { isConsecutive?: boolean;
     subConditions?: SubCondition[];
@@ -33,17 +33,17 @@ interface SubCondition { weight?: number; }
 
 interface Milestone { id: string,
     name: string;
-    percentage: number;
+   , percentage: number;
     reward?: unknown;
     achieved?: boolean; ,}
 
 interface ProgressResult { progress: number,
     percentage: number;
     milestones: Milestone[];
-    isComplete: boolean ,}
+   , isComplete: boolean ,}
 
 interface ConditionSet { conditions: EvaluationCondition[];
-    operator: 'AND' | 'OR' | 'XOR' | 'NOT' }
+   , operator: 'AND' | 'OR' | 'XOR' | 'NOT' }
 
 interface AchievementDefinition { target?: number; }
 
@@ -52,16 +52,16 @@ interface ProgressData { current?: unknown;
     milestones?: unknown; }
 
 interface DiagnosticsInfo { performance: PerformanceStats & {
-        registeredCalculators: number;
+        registeredCalculator;s: number;
         registeredEvaluators: number;
-        registeredValidators: number };
+       , registeredValidators: number };
     registrations: { calculators: string[];
         evaluators: string[];
-        validators: string[] };
+       , validators: string[] };
     memoryUsage: { calculators: number;
         evaluators: number;
         validators: number;
-        milestoneTrackers: number }
+       , milestoneTrackers: number }
 
 /**
  * 実績進捗計算エンジンクラス
@@ -86,7 +86,7 @@ export class AchievementProgressEngine {
         this.performanceStats = {
             calculationCount: 0;
             totalCalculationTime: 0;
-            averageCalculationTime: 0;
+           , averageCalculationTime: 0;
     ,}
             errorCount: 0 }
         };
@@ -408,7 +408,7 @@ export class AchievementProgressEngine {
                     milestones.push({
                         id: milestone.id);
                         name: milestone.name);
-                        percentage: milestone.percentage,);
+                       , percentage: milestone.percentage,);
                         reward: milestone.reward || null);
         ,}
                     milestone.achieved = true; }
@@ -427,8 +427,7 @@ export class AchievementProgressEngine {
         ';
         // 目標値の検証
         if(!this.validators.get('positive_number)(targetValue) || targetValue <= 0') { ''
-            throw new Error('Invalid, target value); }'
-        ';
+            throw new Error('Invalid, target value); }', ';
         // 新データの検証（型に応じて）
         if(newData !== null && newData !== undefined) {'
 
@@ -491,8 +490,7 @@ export class AchievementProgressEngine {
      * カスタム計算機を登録
      */'
     public registerCalculator(type: string, calculator: ProgressCalculator): void { ''
-        if(!calculator.calculate || !calculator.getPercentage) {'
-            ';
+        if(!calculator.calculate || !calculator.getPercentage) {', ';
 
         ,}
 
@@ -506,8 +504,7 @@ export class AchievementProgressEngine {
      * カスタム条件評価器を登録'
      */''
     public registerConditionEvaluator(type: string, evaluator: ConditionEvaluator): void { ''
-        if(typeof, evaluator !== 'function'') {'
-            ';
+        if(typeof, evaluator !== 'function'') {', ';
 
         }
 
@@ -521,8 +518,7 @@ export class AchievementProgressEngine {
      * カスタムバリデーターを登録'
      */''
     public registerValidator(type: string, validator: Validator): void { ''
-        if(typeof, validator !== 'function'') {'
-            ';
+        if(typeof, validator !== 'function'') {', ';
 
         }
 
@@ -542,9 +538,9 @@ export class AchievementProgressEngine {
     /**
      * パフォーマンス統計を取得
      */
-    public getPerformanceStats(): PerformanceStats & { registeredCalculators: number; registeredEvaluators: number; registeredValidators: number, } { return { ...this.performanceStats,
+    public getPerformanceStats(): PerformanceStats & { registeredCalculators: number; registeredEvaluators: number;, registeredValidators: number, } { return { ...this.performanceStats,
             registeredCalculators: this.calculators.size;
-            registeredEvaluators: this.conditionEvaluators.size, };
+           , registeredEvaluators: this.conditionEvaluators.size, };
             registeredValidators: this.validators.size }
         }
     
@@ -559,8 +555,7 @@ export class AchievementProgressEngine {
             if(!repaired.target) repaired.target = achievementDefinition.target || 1;
             ';
             // 型の修正
-            if(typeof, repaired.current !== 'number) {'
-                ';
+            if(typeof, repaired.current !== 'number) {', ';
 
             }
 
@@ -595,13 +590,13 @@ export class AchievementProgressEngine {
     public getDiagnostics(): DiagnosticsInfo { return { performance: this.getPerformanceStats(),
             registrations: {
                 calculators: Array.from(this.calculators.keys();
-                evaluators: Array.from(this.conditionEvaluators.keys(), };
+               , evaluators: Array.from(this.conditionEvaluators.keys(), };
                 validators: Array.from(this.validators.keys(); }
             },
             memoryUsage: { calculators: this.calculators.size;
                 evaluators: this.conditionEvaluators.size;
                 validators: this.validators.size;
-                milestoneTrackers: this.milestoneTrackers.size }
+               , milestoneTrackers: this.milestoneTrackers.size }
         }
     
     /**
@@ -611,5 +606,5 @@ export class AchievementProgressEngine {
             calculationCount: 0;
             totalCalculationTime: 0;
             averageCalculationTime: 0;
-            errorCount: 0 };
+           , errorCount: 0 };
         this.milestoneTrackers.clear(');

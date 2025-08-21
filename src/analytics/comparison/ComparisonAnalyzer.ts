@@ -6,7 +6,7 @@
 
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date 
+    timeRange?: { star;t: Date, end: Date 
 ,}
     filters?: Record<string, any>;
     metrics?: string[];
@@ -27,7 +27,7 @@ export class ComparisonAnalyzer {
                 score: 3;
                 accuracy: 2;
                 completionRate: 2;
-                playTime: 1
+               , playTime: 1
 ,}
                 maxCombo: 1 ;
 }
@@ -68,7 +68,7 @@ export class ComparisonAnalyzer {
 
         const suggestions = { summary: this.generateSuggestionSummary(comparisonResult),
             targetAreas: this.identifyWeakAreas(comparisonResult);
-            strongAreas: this.identifyStrongAreas(comparisonResult ,};
+           , strongAreas: this.identifyStrongAreas(comparisonResult ,};
 
         if(includeActionPlan) {
 
@@ -116,7 +116,7 @@ export class ComparisonAnalyzer {
                         type: 'past_comparison';
                         metric: metric);
                         currentValue: data.current);
-                        previousValue: data.past,)
+                       , previousValue: data.past,)
     }
                         decline: data.changePercent);
 }
@@ -136,7 +136,7 @@ export class ComparisonAnalyzer {
                         metric: metric;
                         currentValue: data.current);
                         benchmarkValue: data.benchmark.median);
-                        percentileRank: data.percentileRank,)
+                       , percentileRank: data.percentileRank,)
         }
                         improvementPotential: data.differencePercent);
 }
@@ -157,7 +157,7 @@ export class ComparisonAnalyzer {
                             type: 'stage_performance';
                             stageId: stageId;
                             metric: worstMetric.metric);
-                            currentValue: worstMetric.value)
+                           , currentValue: worstMetric.value)
         ,}
 
                             weakness: worstMetric.weakness,') }'
@@ -190,7 +190,7 @@ export class ComparisonAnalyzer {
                 if (data.trend === 'improved' && Math.abs(data.changePercent) > this.analysisConfig.strongAreaThreshold) {'
                     strongAreas.push({''
                         type: 'past_comparison);
-                        metric: metric)
+                       , metric: metric)
     ,}
                         currentValue: data.current,) }
                         improvement: data.changePercent); }
@@ -206,7 +206,7 @@ export class ComparisonAnalyzer {
                 if(data.performance === 'above_average' && data.percentileRank > 75) {'
                     strongAreas.push({''
                         type: 'benchmark_comparison);
-                        metric: metric)
+                       , metric: metric)
         ,}
                         currentValue: data.current,) }
                         percentileRank: data.percentileRank); }
@@ -230,7 +230,7 @@ export class ComparisonAnalyzer {
         const plan = {
             immediate: [];
             shortTerm: [];
-            longTerm: []
+           , longTerm: []
 }
             leverage: [] ;
 }
@@ -245,7 +245,7 @@ export class ComparisonAnalyzer {
                 priority: area.priority;
                 currentValue: area.currentValue;
                 targetImprovement: this.calculateTargetImprovement(area);
-                actions: this.generateMetricSpecificActions(area, metricInfo, difficultyPreference, timeHorizon),
+               , actions: this.generateMetricSpecificActions(area, metricInfo, difficultyPreference, timeHorizon),
                 estimatedEffort: this.estimateEffort(area, difficultyPreference), }
                 expectedTimeframe: this.calculateActionTimeframe(difficultyPreference, timeHorizon); }
             };
@@ -337,7 +337,7 @@ export class ComparisonAnalyzer {
 }
                 expectedImprovement: `${improvementRate}%`;
                 weeklyMilestone: weeklyProgress;
-                confidence: this.calculateConfidence(area, timeHorizon);
+               , confidence: this.calculateConfidence(area, timeHorizon);
             });
         
         return outcomes;
@@ -389,7 +389,7 @@ export class ComparisonAnalyzer {
     generateMotivationalElements(strongAreas, targetAreas, comparisonResult) {
         const elements = {
             achievements: [];
-            encouragement: []
+           , encouragement: []
 }
             milestones: [] ;
 }

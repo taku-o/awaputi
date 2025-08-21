@@ -25,7 +25,7 @@ export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = { scoreMultiplie
 
         effect: {''
             type: 'revival';
-            value: 1 ,}
+           , value: 1 ,}
     };
     rareRate: { ''
         id: 'rareRate',
@@ -65,10 +65,10 @@ export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = { scoreMultiplie
         name: 'コンボ強化',
         description: 'コンボ継続時間が1.5倍になります';
         cost: 80;
-        maxLevel: 3,
+       , maxLevel: 3,
         effect: {''
             type: 'comboBoost';
-            value: 1.5 ,}
+           , value: 1.5 ,}
     };
     reset: { ''
         id: 'reset',
@@ -78,7 +78,7 @@ export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = { scoreMultiplie
         maxLevel: 1,
         effect: {''
             type: 'reset';
-            value: 1 ,}
+           , value: 1 ,}
 };
 /**
  * ItemManager - アイテム管理システム

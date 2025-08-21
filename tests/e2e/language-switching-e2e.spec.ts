@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * 言語切り替えE2Eテスト
  * 
@@ -6,7 +6,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * WCAG 2.1 AA準拠のアクセシビリティ要件を含む
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect  } from '@playwright/test';
 
 // テスト設定
 const TEST_URL = 'http: //localhost:8000',
@@ -348,7 +348,7 @@ test.describe('言語切り替えE2Eテスト', () => {
                     if (text && (text.includes('{{'') || text.includes('}}')) {
                         untranslatedTexts.push({
                             element: el.tagName;);
-                            text: text.substring(0, 100);
+                           , text: text.substring(0, 100);
                         });
                     }
                 });

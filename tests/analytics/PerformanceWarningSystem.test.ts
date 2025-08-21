@@ -1,6 +1,6 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { PerformanceWarningSystem } from '../../src/analytics/PerformanceWarningSystem';
-import { RealtimeMonitor } from '../../src/analytics/RealtimeMonitor';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { PerformanceWarningSystem  } from '../../src/analytics/PerformanceWarningSystem';
+import { RealtimeMonitor  } from '../../src/analytics/RealtimeMonitor';
 // Web Audio API のモック
 (global as any).AudioContext = jest.fn() as jest.Mock.mockImplementation(() => ({
     createOscillator: jest.fn().mockReturnValue({),
@@ -80,7 +80,7 @@ describe('PerformanceWarningSystem', () => {
             const alertData = {
                 id: 'test-alert-1',
                 type: 'performance',
-                message: 'Low FPS detected: 25fps',
+                message: 'Low FPS, detected: 25fps',
                 details: { currentFPS: 25, threshold: 30 },
         timestamp: Date.now(),
             };

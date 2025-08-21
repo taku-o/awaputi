@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Types
 type ErrorHandler = ReturnType<typeof getErrorHandler>;
@@ -12,19 +12,13 @@ export interface ParticleType { renderMethod: string,
     ,}
 ;
 export interface ExtendedParticleTypes { // 高度な基本パーティクル
-    'advanced_circle': ParticleType;''
-    'glow_circle': ParticleType;''
-    'trail_particle': ParticleType;
+    'advanced_circle': ParticleType;'', 'glow_circle': ParticleType;'', 'trail_particle': ParticleType;
     ';
     // カスタム形状
-    'hexagon': ParticleType;''
-    'triangle': ParticleType;''
-    'cross': ParticleType;
+    'hexagon': ParticleType;'', 'triangle': ParticleType;'', 'cross': ParticleType;
     ';
     // 高級エフェクト
-    'energy_orb': ParticleType;''
-    'magic_sparkle': ParticleType;''
-    'plasma_burst': ParticleType;
+    'energy_orb': ParticleType;'', 'magic_sparkle': ParticleType;'', 'plasma_burst': ParticleType;
     
     [key: string]: ParticleType,
     }
@@ -32,11 +26,11 @@ export interface ExtendedParticleTypes { // 高度な基本パーティクル
 export interface RenderingSettings { batchRendering: boolean,
     antiAliasing: boolean;
     shadowQuality: ShadowQuality;
-    textureFiltering: TextureFiltering
+   , textureFiltering: TextureFiltering
     ,}
 
 export interface TrailPoint { x: number;
-    y: number;
+   , y: number;
     alpha?: number }
 
 export interface RenderableParticle { x: number;
@@ -44,7 +38,7 @@ export interface RenderableParticle { x: number;
     size?: number;
     color?: string;
     alpha?: number;
-    active: boolean;
+   , active: boolean;
     type?: string;
     gradient?: boolean;
     trail?: TrailPoint[];
@@ -63,7 +57,7 @@ export class ParticleRenderingEngine {
     private particleManager: ParticleManager;
     private errorHandler: ErrorHandler;
     // 拡張パーティクルタイプの定義
-    private readonly extendedParticleTypes: ExtendedParticleTypes,
+    private readonly, extendedParticleTypes: ExtendedParticleTypes,
     // レンダリング設定
     private renderingSettings: RenderingSettings;
     constructor(canvas: HTMLCanvasElement, particleManager: ParticleManager) {
@@ -75,17 +69,11 @@ export class ParticleRenderingEngine {
 
         this.errorHandler = getErrorHandler('' }
 
-            'advanced_circle': { renderMethod: 'renderAdvancedCircle', cost: 'low' ,},''
-            'glow_circle': { renderMethod: 'renderGlowCircle', cost: 'medium' ,},''
-            'trail_particle': { renderMethod: 'renderTrailParticle', cost: 'medium' ,},
+            'advanced_circle': { renderMethod: 'renderAdvancedCircle', cost: 'low' ,},'', 'glow_circle': { renderMethod: 'renderGlowCircle', cost: 'medium' ,},'', 'trail_particle': { renderMethod: 'renderTrailParticle', cost: 'medium' ,},
             // カスタム形状
-            'hexagon': { renderMethod: 'renderHexagon', cost: 'low' ,},''
-            'triangle': { renderMethod: 'renderTriangle', cost: 'low' ,},''
-            'cross': { renderMethod: 'renderCross', cost: 'low' ,},
+            'hexagon': { renderMethod: 'renderHexagon', cost: 'low' ,},'', 'triangle': { renderMethod: 'renderTriangle', cost: 'low' ,},'', 'cross': { renderMethod: 'renderCross', cost: 'low' ,},
             // 高級エフェクト
-            'energy_orb': { renderMethod: 'renderEnergyOrb', cost: 'high' ,},''
-            'magic_sparkle': { renderMethod: 'renderMagicSparkle', cost: 'high' ,},''
-            'plasma_burst': { renderMethod: 'renderPlasmaBurst', cost: 'high' ,};
+            'energy_orb': { renderMethod: 'renderEnergyOrb', cost: 'high' ,},'', 'magic_sparkle': { renderMethod: 'renderMagicSparkle', cost: 'high' ,},'', 'plasma_burst': { renderMethod: 'renderPlasmaBurst', cost: 'high' ,};
         
         // レンダリング設定
         this.renderingSettings = { batchRendering: false,
@@ -365,7 +353,7 @@ export class ParticleRenderingEngine {
             context.fill();
             
             // 内側のコア
-            const coreGradient = context.createRadialGradient();
+            const, coreGradient = context.createRadialGradient();
                 particle.x, particle.y, 0);
                 particle.x, particle.y, (particle.size || 2) * pulsation'';
             ');''

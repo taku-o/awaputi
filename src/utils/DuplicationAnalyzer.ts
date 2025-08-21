@@ -3,27 +3,27 @@
  * Issue #131 対応
  */
 
-import { promises as fs } from 'fs';''
+import { promises, as fs  } from 'fs';''
 import path from 'path';
 
 // Type definitions
 interface ClassDefinition { name: string,
     file: string;
-    line: number,
+   , line: number,
     type: 'export class' | 'class';
-    relativeFile: string ,}
+   , relativeFile: string ,}
 
 interface DuplicateFile { fileName: string;
     count: number;
-    paths: string[] }
+   , paths: string[] }
 
 interface DuplicateClass { className: string;
     count: number;
-    locations: ClassDefinition[]
+   , locations: ClassDefinition[]
     }
 
 interface ImpactAnalysis { scope: string;
-    potential_conflicts: string,
+   , potential_conflicts: string,
     maintenance_difficulty: 'low' | 'medium' | 'high',
     testing_complexity?: 'low' | 'medium' | 'high'; }
 ';
@@ -35,30 +35,30 @@ interface Conflict { ''
     locations?: ClassDefinition[];
 
     paths?: string[];''
-    priority: 'low' | 'medium' | 'high',
+   , priority: 'low' | 'medium' | 'high',
     riskLevel: 'low' | 'medium' | 'high';
-    impactAnalysis: ImpactAnalysis
+   , impactAnalysis: ImpactAnalysis
     ,}
 
 interface ConflictReport { analysis_date: string;
     project: string;
     total_files_analyzed: number;
     total_classes_found: number;
-    duplications: {
-        class_name_duplications: number;
+   , duplications: {
+        class_name_duplication;s: number;
         file_name_duplications: number;
         high_priority_conflicts: number;
-        medium_priority_conflicts: number };
+       , medium_priority_conflicts: number };
     conflicts: Conflict[];
-    summary: { most_critical: string[];
-        recommendations: string[] }
+   , summary: { most_critical: string[];
+       , recommendations: string[] }
 
 export class DuplicationAnalyzer {
     private sourceDir: string;
     private files: string[];
     private classes: ClassDefinition[];
     private duplicateFiles: DuplicateFile[];
-    private duplicateClasses: DuplicateClass[]';
+    private, duplicateClasses: DuplicateClass[]';
 
     constructor(sourceDir: string = 'src) {'
         this.sourceDir = sourceDir;
@@ -121,10 +121,10 @@ export class DuplicationAnalyzer {
             
             classes.push({)
                 name: className)';
-                file: filePath,')';
+               , file: filePath,')';
                 line: lineNumber'),
                 type: match[0].includes('export'') ? 'export class' : 'class';
-                relativeFile: path.relative(process.cwd(), filePath });
+               , relativeFile: path.relative(process.cwd(), filePath });
         }
 
         return classes;
@@ -156,7 +156,7 @@ export class DuplicationAnalyzer {
             .filter(([name, paths]) => paths.length > 1);
             .map(([name, paths]) => ({ fileName: name,
                 count: paths.length);
-                paths: paths ,});
+               , paths: paths ,});
         return this.duplicateFiles;
     }
 
@@ -180,7 +180,7 @@ export class DuplicationAnalyzer {
             .filter(([name, classes]) => classes.length > 1);
             .map(([name, classes]) => ({ className: name,
                 count: classes.length);
-                locations: classes ,});
+               , locations: classes ,});
         return this.duplicateClasses;
     }
 
@@ -196,7 +196,7 @@ export class DuplicationAnalyzer {
                 count: duplicate.count;
                 locations: duplicate.locations;
                 priority: this.calculatePriority(duplicate);
-                riskLevel: this.calculateRiskLevel(duplicate);
+               , riskLevel: this.calculateRiskLevel(duplicate);
         ,}
                 impactAnalysis: this.analyzeImpact(duplicate); }
             };
@@ -208,7 +208,7 @@ export class DuplicationAnalyzer {
             const conflict: Conflict = {''
                 type: 'file';
                 name: duplicate.fileName;
-                count: duplicate.count,
+               , count: duplicate.count,
                 paths: duplicate.paths,
                 priority: 'medium',
                 riskLevel: 'low',
@@ -289,7 +289,7 @@ export class DuplicationAnalyzer {
             analysis_date: new Date().toISOString(').split('T'')[0],
             project: 'awaputi';
             total_files_analyzed: this.files.length;
-            total_classes_found: this.classes.length,
+           , total_classes_found: this.classes.length,
             duplications: {''
                 class_name_duplications: conflicts.filter(c => c.type === 'class'').length,
                 file_name_duplications: conflicts.filter(c => c.type === 'file'').length,

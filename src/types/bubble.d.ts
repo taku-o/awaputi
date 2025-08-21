@@ -8,7 +8,7 @@ export interface Position { x: number,
     y: number ,}
 
 export interface Velocity { x: number;
-    y: number }
+   , y: number }
 
 // バブルタイプ定義
 export type BubbleType = ;
@@ -23,7 +23,7 @@ export interface BubbleConfig { health: number,
     size: number;
     maxAge: number;
     color: string;
-    score: number;
+   , score: number;
     // 特殊効果プロパティ（オプション）
     healAmount?: number;
     damageAmount?: number;
@@ -74,7 +74,7 @@ export interface BubbleInterface { // 基本プロパティ
     maxAge: number;
     isAlive: boolean;
     effects: BubbleEffect[];
-    clickCount: number;
+   , clickCount: number;
     // メソッド定義
     applyTypeConfig(): void;
     getTypeConfig(): BubbleConfig;

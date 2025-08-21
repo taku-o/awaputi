@@ -6,7 +6,7 @@
  * @author Claude Code
  * @version 1.0.0
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Type definitions
 interface BrowserInfo {
     name: string,
@@ -60,9 +60,9 @@ interface CanvasFallbackResult {
     size: number,
 }
 interface FallbackStorage {
-    getItem: (key: string) => string | null;
-    setItem: (key: string, value: string) => void;
-    removeItem: (key: string) => void;
+    getItem: (ke;y: string) => string | null;
+    setItem: (ke;y: string, value: string) => void;
+    removeItem: (ke;y: string) => void;
     clear: (') => void;
     _storageType: string,
 }
@@ -85,7 +85,7 @@ interface MockDocument {
     createElement: jest.Mock<MockCanvas | null, [string]>;
 }
 interface MockWindow {
-    location: { protocol: string };
+    location: { protoco;l: string };
     localStorage: Map<string, string>;
     Worker: Function,
 }
@@ -153,7 +153,7 @@ const BrowserCompatibilityManager = {
         return {
             available: true,
             dynamicImport: typeof import === 'function';
-            staticImport: true,
+           , staticImport: true,
             workerModules: typeof Worker !== 'undefined',
             fallbackMethod: null,
             errorMessage: null

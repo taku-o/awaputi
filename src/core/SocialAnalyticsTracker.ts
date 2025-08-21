@@ -11,7 +11,7 @@ export class SocialAnalyticsTracker {
             shareRequests: 0;
             successfulShares: 0;
             failedShares: 0;
-            averageResponseTime: 0;
+           , averageResponseTime: 0;
     }
             platformBreakdown: { }
                 twitter: { requests: 0, successes: 0, failures: 0 ,},
@@ -31,17 +31,17 @@ export class SocialAnalyticsTracker {
             sharePromptAccepts: 0;
             sharePromptDismissals: 0;
             screenshotCaptures: 0;
-            averageTimeToShare: 0 ,};
+           , averageTimeToShare: 0 ,};
         // 国際化統計
         this.i18nStats = { languageUsage: new Map(),
             regionUsage: new Map();
             translationRequests: 0;
             translationErrors: 0;
-            cachedTranslations: 0 ,};
+           , cachedTranslations: 0 ,};
         // タイムスタンプ記録
         this.timestamps = { sessionStart: Date.now(),
             lastShareAttempt: null;
-            lastSuccessfulShare: null ,};
+           , lastSuccessfulShare: null ,};
         // イベント履歴（最新100件）
         this.eventHistory = [];
         this.maxHistorySize = 100;
@@ -95,12 +95,12 @@ export class SocialAnalyticsTracker {
         // 最近のエラー履歴
         const errorRecord = { type: errorType,
             timestamp: Date.now();
-            data: errorData ,};
+           , data: errorData ,};
         this.errorStats.recent.push(errorRecord);
         if (this.errorStats.recent.length > 50) { this.errorStats.recent.shift(); }
 
         this.addToHistory({ action: 'error)'
-            timestamp: errorRecord.timestamp,);
+           , timestamp: errorRecord.timestamp,);
             data: errorRecord ,}
 
     /**
@@ -131,7 +131,7 @@ export class SocialAnalyticsTracker {
 
         this.addToHistory({ )
             action: behavior);
-            timestamp: Date.now();
+           , timestamp: Date.now();
             data });
     }
 
@@ -227,7 +227,7 @@ export class SocialAnalyticsTracker {
         if (!this.performanceStats.platformBreakdown[platform]) {
             this.performanceStats.platformBreakdown[platform] = {
                 requests: 0;
-                successes: 0;
+               , successes: 0;
     }
                 failures: 0 }
             }
@@ -326,7 +326,7 @@ export class SocialAnalyticsTracker {
             regionUsage: Object.fromEntries(this.i18nStats.regionUsage);
             translationRequests: this.i18nStats.translationRequests;
             translationErrors: this.i18nStats.translationErrors;
-            cachedTranslations: this.i18nStats.cachedTranslations;
+           , cachedTranslations: this.i18nStats.cachedTranslations;
     ,}
             cacheHitRate: this.i18nStats.translationRequests > 0 ? };
                 (this.i18nStats.cachedTranslations / this.i18nStats.translationRequests) * 100 : 0 
@@ -348,7 +348,7 @@ export class SocialAnalyticsTracker {
             errors: this.getErrorStats();
             userBehavior: this.getUserBehaviorStats();
             i18n: this.getI18nStats();
-            recentEvents: this.eventHistory.slice(-10);
+           , recentEvents: this.eventHistory.slice(-10);
         }
 
     /**
@@ -365,7 +365,7 @@ export class SocialAnalyticsTracker {
 
                 version: '1.0' }),)
             data: this.generateReport();
-            rawEvents: this.eventHistory;
+           , rawEvents: this.eventHistory;
         },
     }
 
@@ -376,7 +376,7 @@ export class SocialAnalyticsTracker {
         this.performanceStats = {
             shareRequests: 0;
             successfulShares: 0;
-            failedShares: 0;
+           , failedShares: 0;
     }
             averageResponseTime: 0, }
             platformBreakdown: {};
@@ -390,12 +390,12 @@ export class SocialAnalyticsTracker {
             sharePromptAccepts: 0;
             sharePromptDismissals: 0;
             screenshotCaptures: 0;
-            averageTimeToShare: 0 ,};
+           , averageTimeToShare: 0 ,};
         this.i18nStats = { languageUsage: new Map(),
             regionUsage: new Map();
             translationRequests: 0;
             translationErrors: 0;
-            cachedTranslations: 0 ,};
+           , cachedTranslations: 0 ,};
         this.eventHistory = [];
         this.timestamps.sessionStart = Date.now();
     }

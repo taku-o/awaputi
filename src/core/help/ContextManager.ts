@@ -4,14 +4,14 @@
  * 現在の状況に応じた適切なヘルプコンテンツの提供を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
 export interface GameEngine { sceneManager?: {
         currentScene?: {
             constructor: {
-                name: string ,};
+                nam;e: string ,};
     };
     eventBus?: any;
     state?: any;
@@ -25,7 +25,7 @@ export interface Context { scene: string,
     gameState: GameState;
     userInterface: UIState;
     userAction: UserAction | null;
-    timestamp: number;
+   , timestamp: number;
     [key: string]: any, }
 
 export interface GameState { isPlaying?: boolean;
@@ -41,52 +41,52 @@ export interface UIState { activeDialogs: number,
 
 export interface UserAction { type: string,
     data: any;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 export interface UserActivity { isActive: boolean;
     idleTime: number;
-    recentActions: UserAction[]
+   , recentActions: UserAction[]
     }
 
 export interface HelpItem { id: string;
     title: string;
-    priority: number }
+   , priority: number }
 
 export interface TooltipData { element: HTMLElement;
     content: string | TooltipContent;
     options: TooltipOptions;
-    registered: number }
+   , registered: number }
 ';
 
 export interface TooltipContent { html?: string;''
     toString(''';
     severity: 'low' | 'medium' | 'high';
-    description: string ,}
+   , description: string ,}
 
 export interface BehaviorPatterns { clickFrequency: number;
     averageIdleTime: number;
     commonTargets: string[];
-    strugglingAreas: string[] }
+   , strugglingAreas: string[] }
 
 export interface SmartHelp { type: string;
     struggles: Struggle[];
     help: HelpContent;
     confidence: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface HelpContent { title: string;
-    suggestions: HelpSuggestion[]
+   , suggestions: HelpSuggestion[]
     }
 
 export interface HelpSuggestion { text: string;
-    action: string }
+   , action: string }
 
 export interface Position { x: number;
-    y: number }
+   , y: number }
 
 export interface UserBehaviorTracker { actions: UserAction[]
     )
-    patterns: Map<string, any>);
+   , patterns: Map<string, any>);
     lastActivity: number | null ,}
 
 export type ContextDetector = (context: Context) => any;
@@ -101,17 +101,17 @@ export class ContextManager {
     // コンテキスト検出
     private currentContext: Context | null;
     private contextHistory: (Context | null)[];
-    private contextDetectors: Map<string, ContextDetector>;
+    private, contextDetectors: Map<string, ContextDetector>;
     
     // ツールチップ管理
     private activeTooltips: Map<string, ActiveTooltip>;
     private tooltipRegistry: Map<string, TooltipData>;
     private tooltipElements: Map<string, HTMLElement>;
     private currentTooltip: string | null;
-    private contextCache: Map<string, any>;
+    private, contextCache: Map<string, any>;
     private tooltipConfig: TooltipOptions;
     // 動的ヘルプ
-    private helpProviders: Map<string, HelpProvider>;
+    private, helpProviders: Map<string, HelpProvider>;
     private userBehaviorTracker: UserBehaviorTracker;
     constructor(gameEngine: GameEngine) {
 
@@ -132,7 +132,7 @@ export class ContextManager {
         this.tooltipConfig = {
             showDelay: 800;
             hideDelay: 300;
-            maxWidth: 300;
+           , maxWidth: 300;
     ,}
             maxHeight: 200 }
         };
@@ -176,7 +176,7 @@ export class ContextManager {
                 gameState: this.getGameState();
                 userInterface: this.getUIState();
                 userAction: this.getLastUserAction();
-                timestamp: Date.now( };
+               , timestamp: Date.now( };
 
             // コンテキスト検出器を実行
             for(const [name, detector] of this.contextDetectors.entries() {
@@ -309,7 +309,7 @@ export class ContextManager {
             // アクティブツールチップに追加
             this.activeTooltips.set(tooltipId, { )
                 element: tooltip);
-                showTime: Date.now(), }
+               , showTime: Date.now(), }
                 position: { x, y });
             // 自動非表示タイマー
             setTimeout(() => this.hideTooltip(tooltipId), options.autoHide || 5000');
@@ -331,8 +331,7 @@ export class ContextManager {
             // 状態ベースの提案
             const stateKey = this.getStateKey(currentState);
 
-            const actionMap: Record<string, ActionSuggestion[]> = {''
-                'MainMenuScene': [' }
+            const actionMap: Record<string, ActionSuggestion[]> = {'', 'MainMenuScene': [' }
 
                     { action: 'start_game', label: 'ゲームを開始', priority: 1 ,},''
                     { action: 'view_tutorial', label: 'チュートリアルを見る', priority: 2 ,},]'
@@ -498,8 +497,7 @@ export class ContextManager {
      * @returns シーン名
      */'
     private getCurrentScene(): string { ''
-        if(this.gameEngine && this.gameEngine.sceneManager) {'
-            ';
+        if(this.gameEngine && this.gameEngine.sceneManager) {', ';
 
         }
 
@@ -583,11 +581,7 @@ export class ContextManager {
      * @returns アクションヘルプ
      */''
     private getActionHelp(action: UserAction): HelpItem[] { // アクションタイプベースのヘルプマッピング
-        const actionHelpMap: Record<string, HelpItem[]> = {' }'
-
-            'click': [{ id: 'click_help', title: 'クリック操作について', priority: 1 ,}],''
-            'drag': [{ id: 'drag_help', title: 'ドラッグ操作について', priority: 1 ,}],''
-            'bubble_pop': [{ id: 'bubble_pop_help', title: '泡を割るコツ', priority: 1 ,}]
+        const actionHelpMap: Record<string, HelpItem[]> = {' }', 'click': [{ id: 'click_help', title: 'クリック操作について', priority: 1 ,}],'', 'drag': [{ id: 'drag_help', title: 'ドラッグ操作について', priority: 1 ,}],'', 'bubble_pop': [{ id: 'bubble_pop_help', title: '泡を割るコツ', priority: 1 ,}]
         };
 
         return actionHelpMap[action.type] || [];
@@ -600,8 +594,7 @@ export class ContextManager {
      */
     private getSituationalHelp(context: Context): HelpItem[] { const help: HelpItem[] = [],
         // スコアが低い場合
-        if(context.gameState && context.gameState.score && context.gameState.score < 100) {'
-            ';
+        if(context.gameState && context.gameState.score && context.gameState.score < 100) {', ';
 
         }
 
@@ -687,9 +680,9 @@ export class ContextManager {
         tooltip.className = 'context-tooltip';
         tooltip.style.cssText = `;
             position: fixed;
-            background: rgba(0, 0, 0, 0.9),
+           , background: rgba(0, 0, 0, 0.9),
             color: white;
-            padding: 8px 12px;
+           , padding: 8px 12px;
             border-radius: 6px,
             font-size: 14px, }
             max-width: ${options.maxWidth || this.tooltipConfig.maxWidth}px;
@@ -801,7 +794,7 @@ export class ContextManager {
             clickFrequency: 0;
             averageIdleTime: 0;
             commonTargets: [];
-            strugglingAreas: [] };
+           , strugglingAreas: [] };
 ';
 
         const actions = this.userBehaviorTracker.actions;''
@@ -854,7 +847,7 @@ export class ContextManager {
      */''
     private generateHelpForStruggles(struggles: Struggle[]): HelpContent { const helpContent: HelpContent = {''
             title: 'お困りではありませんか？';
-            suggestions: [] };
+           , suggestions: [] };
 ';
 
         struggles.forEach(struggle => {  );''

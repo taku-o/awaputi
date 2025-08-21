@@ -1,6 +1,6 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { ComparisonEngine } from '../../../src/analytics/ComparisonEngine';
-import { ComparisonEngine as CoreComparisonEngine } from '../../../src/core/ComparisonEngine';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { ComparisonEngine  } from '../../../src/analytics/ComparisonEngine';
+import { ComparisonEngine, as CoreComparisonEngine  } from '../../../src/core/ComparisonEngine';
 
 // モックStorageManager - 高度機能テスト用
 class MockStorageManager {

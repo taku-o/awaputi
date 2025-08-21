@@ -2,13 +2,13 @@
  * CoreKeyboardShortcutManager - Integration Tests
  * Issue #169対応 - KeyboardShortcutManager初期化の統合テスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // TextEncoder/TextDecoder polyfill for Node.js environment
-import { TextEncoder, TextDecoder } from 'util';
+import { TextEncoder, TextDecoder  } from 'util';
 (global as any).TextEncoder = TextEncoder;
 (global as any').TextDecoder = TextDecoder;
 // DOM environment setup
-import { JSDOM } from 'jsdom';
+import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -131,7 +131,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             // Create and dispatch a real keydown event
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
-                key: ' ',
+                key: ', ',
                 bubbles: true,
                 cancelable: true
             );
@@ -145,7 +145,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             // Create and dispatch a keyup event
             const event = new KeyboardEvent('keyup', {
                 code: 'Space',
-                key: ' '
+                key: ', '
             });
             // This should not throw an error
             expect(() => {
@@ -217,7 +217,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             // Create a space key event
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
-                key: ' '
+                key: ', '
             );
             // This should not crash the application
             expect(() => {
@@ -321,7 +321,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             // Try to execute a shortcut
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
-                key: ' '
+                key: ', '
             );
             shortcutManager.handleKeyDown(event);
             // Verify shortcut was not executed

@@ -4,7 +4,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date 
+    timeRange?: { star;t: Date, end: Date 
 ,}
     filters?: Record<string, any>;
     metrics?: string[];
@@ -21,16 +21,16 @@ export class PlayerBehaviorAnalyzer {
         this.playerBehavior = {
             sessionData: null;
             interactionPatterns: [];
-            skillProgression: {
+           , skillProgression: {
                 accuracyHistory: [];
-                reactionTimeHistory: []
+               , reactionTimeHistory: []
 }
                 comboHistory: [] ;
 }
             },
             playStyle: { aggressive: 0;
                 defensive: 0;
-                strategic: 0 
+               , strategic: 0 
 }
         },
         
@@ -51,7 +51,7 @@ export class PlayerBehaviorAnalyzer {
             initialSkillLevel: this.getPlayerSkillLevel();
             previousBestScore: sessionInfo.previousBestScore || 0;
             sessionId: sessionId;
-            playerSettings: {
+           , playerSettings: {
                 soundEnabled: sessionInfo.soundEnabled
 }
                 effectsEnabled: sessionInfo.effectsEnabled ;
@@ -71,7 +71,7 @@ export class PlayerBehaviorAnalyzer {
             bubblesPopped: 0;
             bubblesMissed: 0;
             scoreProgression: [];
-            exitEvents: [] 
+           , exitEvents: [] 
 ,}
     
     /**
@@ -86,7 +86,7 @@ export class PlayerBehaviorAnalyzer {
             reactionTime: bubbleData.reactionTime || null;
             accuracy: bubbleData.action === 'popped' ? 1 : 0
 
-            position: bubbleData.position || null ;
+           , position: bubbleData.position || null ;
 }
         },
         
@@ -161,7 +161,7 @@ export class PlayerBehaviorAnalyzer {
             case 'score_update':';
                 stats.scoreProgression.push({ );''
                     timestamp: Date.now()';
-                    source: behaviorData.source || 'unknown' });
+                   , source: behaviorData.source || 'unknown' });
                 break;
         }
     /**
@@ -173,22 +173,22 @@ export class PlayerBehaviorAnalyzer {
         const exitInfo = {''
             timestamp: Date.now(''';
             exitReason: exitData.reason || 'unknown';
-            exitPoint: {
+           , exitPoint: {
                 stageProgress: exitData.stageProgress || 0;
                 timeRemaining: exitData.timeRemaining || 0;
-                playerHP: exitData.playerHP || 0
+               , playerHP: exitData.playerHP || 0
 }
                 currentScore: exitData.currentScore || 0 ;
 }
             },
             playerSituation: { isInCombat: exitData.isInCombat || false)
                 recentFailures: exitData.recentFailures || 0);
-                comboBroken: exitData.comboBroken || false,);
+               , comboBroken: exitData.comboBroken || false,);
                 lowHP: (exitData.playerHP || 100) < 30 
 ,};
             gameState: { activeBubbles: exitData.activeBubbles || 0;
                 nextBubbleTypes: exitData.nextBubbleTypes || [];
-                activeItems: exitData.activeItems || [] 
+               , activeItems: exitData.activeItems || [] 
 }
         },
         
@@ -295,7 +295,7 @@ export class PlayerBehaviorAnalyzer {
         return { accuracy: stats.clickCount > 0 ? stats.successfulClicks / stats.clickCount : 0,
             averageReactionTime: stats.averageReactionTime;
             maxCombo: stats.maxCombo;
-            bubblesPopped: stats.bubblesPopped, };
+           , bubblesPopped: stats.bubblesPopped, };
             itemsUsed: stats.itemsUsed ;
 }
         },
@@ -377,7 +377,7 @@ export class PlayerBehaviorAnalyzer {
             trend: accuracyTrend > 0.05 || speedTrend > 0.05 ? 'improving' : '';
                    (accuracyTrend < -0.05 || speedTrend < -0.05 ? 'declining' : 'stable'),
             accuracyTrend: accuracyTrend;
-            speedTrend: speedTrend, };
+           , speedTrend: speedTrend, };
             segments: segments.length ;
 }
         },

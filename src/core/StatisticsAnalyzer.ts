@@ -24,10 +24,10 @@ export class StatisticsAnalyzer {
             // 分析品質設定
             qualityThresholds: { minDataPoints: 5;
                 confidenceThreshold: 0.6;
-                significanceLevel: 0.05 };
+               , significanceLevel: 0.05 };
             // キャッシュ設定
             cache: { enabled: true;
-                ttl: 300000, // 5分;
+               , ttl: 300000, // 5分;
                 maxSize: 100 ,}
         };
         // 分析結果キャッシュ
@@ -95,9 +95,9 @@ export class StatisticsAnalyzer {
             // 統合分析結果
             integratedAnalysis: null;
             // メタデータ
-            metadata: {)
+           , metadata: {)
                 dataQuality: null);
-                analysisConfidence: null,);
+               , analysisConfidence: null,);
                 componentsAvailable: this.getComponentsStatus( ,}
         };
         
@@ -131,7 +131,7 @@ export class StatisticsAnalyzer {
             console.error('Comprehensive analysis failed:', error);
             analysisResult.error = {
                 message: error.message;
-                stack: error.stack ,}
+               , stack: error.stack ,}
         
         return analysisResult;
     }
@@ -257,7 +257,7 @@ export class StatisticsAnalyzer {
             overallPerformanceScore: this.calculateOverallPerformanceScore(analysisResult);
             keyFindings: this.extractKeyFindings(analysisResult);
             priorityAreas: this.identifyPriorityAreas(analysisResult);
-            actionPlan: this.generateActionPlan(analysisResult);
+           , actionPlan: this.generateActionPlan(analysisResult);
     }
             progressSummary: this.generateProgressSummary(analysisResult); }
         };
@@ -342,7 +342,7 @@ export class StatisticsAnalyzer {
             highPriorityInsights.forEach(insight => { '
                 findings.push({''
                     type: 'insight);
-                    category: insight.type)
+                   , category: insight.type)
         ,}
                     finding: insight.description,) }
                     significance: insight.priority); }
@@ -365,7 +365,7 @@ export class StatisticsAnalyzer {
                 areas.push({''
                     area: 'accuracy',)';
                     priority: 'high')';
-                    currentValue: stats.bubbles.accuracy,
+                   , currentValue: stats.bubbles.accuracy,
                     targetValue: '80%+',' }
 
                     impact: 'high'); }
@@ -389,7 +389,7 @@ export class StatisticsAnalyzer {
                 areas.push({''
                     area: 'combo_performance',)';
                     priority: 'medium')';
-                    currentValue: stats.combos.highestCombo,
+                   , currentValue: stats.combos.highestCombo,
                     targetValue: '15+',' }
 
                     impact: 'medium'); }
@@ -450,7 +450,7 @@ export class StatisticsAnalyzer {
         return { totalGamesPlayed: stats.basic.totalGamesPlayed,
             totalPlayTime: stats.basic.totalPlayTime;
             currentLevel: this.calculatePlayerLevel(stats);
-            achievements: stats.progress.achievementsUnlocked;
+           , achievements: stats.progress.achievementsUnlocked;
     ,}
             recentTrend: this.getRecentTrendSummary(analysisResult), };
             nextMilestone: this.getNextMilestone(stats); }
@@ -485,7 +485,7 @@ export class StatisticsAnalyzer {
         
         this.analysisCache.set(key, { )
             result: result);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
     }
     
     generateAnalysisId() {

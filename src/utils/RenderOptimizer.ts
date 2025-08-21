@@ -7,19 +7,19 @@
 interface Viewport { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 interface Region { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 interface RenderStats { totalObjects: number,
     renderedObjects: number;
     culledObjects: number;
     dirtyRegions: number;
-    renderTime: number ,}
+   , renderTime: number ,}
 interface RenderObject { id?: string;
     x: number;
-    y: number;
+   , y: number;
     width?: number;
     height?: number;
     size?: number;
@@ -28,21 +28,21 @@ interface RenderObject { id?: string;
     scale?: number;
     opacity?: number;
     type?: string;
-    render?: (ctx: CanvasRenderingContext2D) => void ,}
+    render?: (ct;x: CanvasRenderingContext2D) => void ,}
 interface Layer { canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D;
     zIndex: number;
     isDirty: boolean;
-    objects: RenderObject[]
+   , objects: RenderObject[]
     ,}
 interface PerformanceStats { fps: number,
     deltaTime: number;
     frameCount: number;
     avgFrameTime: number;
-    memoryUsage: {
-        usedJSHeapSize: number;
+   , memoryUsage: {
+        usedJSHeapSiz;e: number;
         totalJSHeapSize: number;
-        jsHeapSizeLimit: number ,}
+       , jsHeapSizeLimit: number ,}
 
 export class RenderOptimizer {
     private canvas: HTMLCanvasElement;
@@ -50,7 +50,7 @@ export class RenderOptimizer {
     private width: number;
     private height: number;
     // 差分レンダリング用
-    private dirtyRegions: Region[] }
+    private, dirtyRegions: Region[] }
     private lastFrameObjects: Map<string, RenderObject & { layer: string }>;
     private currentFrameObjects: Map<string, RenderObject & { layer: string }>;
     
@@ -63,7 +63,7 @@ export class RenderOptimizer {
     private stats: RenderStats;
     // オフスクリーンキャンバス
     private offscreenCanvas: HTMLCanvasElement;
-    private offscreenContext: CanvasRenderingContext2D;
+    private, offscreenContext: CanvasRenderingContext2D;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
@@ -88,8 +88,7 @@ export class RenderOptimizer {
 
         this.offscreenCanvas.height = this.height;''
         const offscreenContext = this.offscreenCanvas.getContext('2d);''
-        if(!offscreenContext) {'
-            ';
+        if(!offscreenContext) {', ';
 
         }
 
@@ -116,7 +115,7 @@ export class RenderOptimizer {
             this.layers.set(layerName, { canvas: canvas,
                 context: context);
                 zIndex: zIndex);
-                isDirty: false,);
+               , isDirty: false,);
                 objects: []);
             // zIndexでソート
             this.layerOrder = Array.from(this.layers.keys().sort((a, b) => { 
@@ -164,7 +163,7 @@ export class RenderOptimizer {
     getObjectBounds(obj: RenderObject): Region { const size = obj.size || 50;
         return { x: obj.x - size / 2,
             y: obj.y - size / 2;
-            width: size, };
+           , width: size, };
             height: size ;
 }
         },
@@ -222,7 +221,7 @@ export class RenderOptimizer {
         
         return { x: left,
             y: top;
-            width: right - left, };
+           , width: right - left, };
             height: bottom - top ;
 }
         },
@@ -303,7 +302,7 @@ export class RenderOptimizer {
             renderedObjects: 0;
             culledObjects: 0;
             dirtyRegions: this.dirtyRegions.length;
-            renderTime: 0 
+           , renderTime: 0 
 };
         // 変更検出
         this.detectChanges();
@@ -431,10 +430,10 @@ export class PerformanceMonitor {
     private deltaTime: number;
     private frameTimeHistory: number[];
     private maxHistorySize: number;
-    private memoryUsage: {
+    private, memoryUsage: {
         usedJSHeapSize: number;
         totalJSHeapSize: number;
-        jsHeapSizeLimit: number };
+       , jsHeapSizeLimit: number };
 
     constructor() {
 
@@ -447,7 +446,7 @@ export class PerformanceMonitor {
         
         this.memoryUsage = {
             usedJSHeapSize: 0;
-            totalJSHeapSize: 0
+           , totalJSHeapSize: 0
 }
             jsHeapSizeLimit: 0 ;
 }
@@ -487,7 +486,7 @@ export class PerformanceMonitor {
     getStats(): PerformanceStats { return { fps: Math.round(this.fps),
             deltaTime: Math.round(this.deltaTime);
             frameCount: this.frameCount;
-            avgFrameTime: Math.round(this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length), };
+           , avgFrameTime: Math.round(this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length), };
             memoryUsage: this.memoryUsage ;
 }
         },
@@ -499,8 +498,7 @@ export class PerformanceMonitor {
      */
     getWarnings(): string[] { const warnings: string[] = [],
 
-        if(this.fps < 30) {'
-            ';
+        if(this.fps < 30) {', ';
 
         }
 
@@ -508,16 +506,14 @@ export class PerformanceMonitor {
 
         }
 
-        if(this.deltaTime > 50) {'
-            ';
+        if(this.deltaTime > 50) {', ';
 
         }
 
             warnings.push('High, frame time: ' + Math.round(this.deltaTime) + 'ms'); }
         }
 
-        if(this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8) {'
-            ';
+        if(this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8) {', ';
 
         }
 

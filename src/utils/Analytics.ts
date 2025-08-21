@@ -12,11 +12,11 @@ interface EventData { event_category?: string;
 
 interface WebVitalMetric { name: string,
     id: string;
-    value: number ,}
+   , value: number ,}
 
 interface MemoryInfo { used: number;
     total: number;
-    limit: number }
+   , limit: number }
 
 interface PerformanceDetails { fps?: number;
     timestamp?: number;
@@ -28,22 +28,22 @@ interface ErrorData { error_message: string,
     session_id: string;
     timestamp: number;
     user_agent: string;
-    url: string ,}
+   , url: string ,}
 
 // グローバル変数の型定義
 declare global { const __PROD__: boolean;
-    const __DEV__: boolean,
+    const, __DEV__: boolean,
     const __ANALYTICS_ID__: string,
     const __SENTRY_DSN__: string,
     const __VERSION__: string,
     const __BUILD_TIME__: string,
     
     interface Window {
-        gtag?: (command: string, targetId: string, parameters?: any) => void;
+        gtag?: (comman;d: string, targetId: string, parameters?: any) => void;
         Sentry?: {
-            init: (config: any) => void;
-            setTag: (key: string, value: string) => void,
-            captureException: (error: Error, options?: any) => void }
+            init: (confi;g: any) => void;
+            setTag: (ke;y: string, value: string) => void,
+            captureException: (erro;r: Error, options?: any) => void }
         };
         webVitals?: { getCLS: (callback: (metric: WebVitalMetric) => void) => void;
             getFID: (callback: (metric: WebVitalMetric) => void) => void;
@@ -53,14 +53,14 @@ declare global { const __PROD__: boolean;
         }
 
     interface Performance { memory?: {
-            usedJSHeapSize: number;
+            usedJSHeapSiz;e: number;
             totalJSHeapSize: number;
-            jsHeapSizeLimit: number ,}
+           , jsHeapSizeLimit: number ,}
 }
 
 class Analytics { private isEnabled: boolean
     private sessionId: string;
-    private startTime: number;
+    private, startTime: number;
     constructor() {
 
         this.isEnabled = (typeof, __PROD__ !== 'undefined' ? __PROD__ : false') && '';
@@ -89,7 +89,7 @@ class Analytics { private isEnabled: boolean
             window.gtag('config', analyticsId, {''
                 page_title: 'BubblePop Game);
                 page_location: window.location.href)';
-                custom_map: {'
+               , custom_map: {'
         ,}
 
                     custom_parameter_1: 'game_version'') }
@@ -98,7 +98,7 @@ class Analytics { private isEnabled: boolean
             ';
             // Set custom dimensions
             window.gtag('config', analyticsId, { game_version: version)
-                build_time: buildTime }
+               , build_time: buildTime }
     }
 
     /**
@@ -161,11 +161,10 @@ class Analytics { private isEnabled: boolean
             event_category: 'game';
             event_label: eventName;
             session_id: this.sessionId;
-            game_version: version;
+           , game_version: version;
             ...parameters;
 
-        if(typeof, window.gtag !== 'undefined'') {'
-            ';
+        if(typeof, window.gtag !== 'undefined'') {', ';
 
         ,}
 
@@ -174,8 +173,7 @@ class Analytics { private isEnabled: boolean
 ';
         // Also log to console in development
         const isDev = typeof __DEV__ !== 'undefined' ? __DEV__: false,
-        if(isDev) {'
-            ';
+        if(isDev) {', ';
 
         }
 
@@ -188,7 +186,7 @@ class Analytics { private isEnabled: boolean
     trackGameStart(stageName: string): void { ''
         this.trackEvent('game_start', {)
             stage_name: stageName);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
     }
 
     /**
@@ -198,7 +196,7 @@ class Analytics { private isEnabled: boolean
         this.trackEvent('game_end', {
             stage_name: stageName);
             final_score: score)';
-            game_duration: duration,')';
+           , game_duration: duration,')';
             end_reason: reason, // 'completed', 'game_over', 'quit');
             timestamp: Date.now( ,});
     }
@@ -219,7 +217,7 @@ class Analytics { private isEnabled: boolean
         this.trackEvent('performance_issue', {)
             issue_type: issueType);
             details: JSON.stringify(details);
-            user_agent: navigator.userAgent,)';
+           , user_agent: navigator.userAgent,)';
             timestamp: Date.now(),' }'
 
         }');
@@ -234,7 +232,7 @@ class Analytics { private isEnabled: boolean
         const errorData: ErrorData = {'
             error_message: error.message,
             error_stack: error.stack || '';
-            context: context,
+           , context: context,
             session_id: this.sessionId,
             timestamp: Date.now()';
         if(typeof, window.Sentry !== 'undefined) {'
@@ -251,7 +249,7 @@ class Analytics { private isEnabled: boolean
 
             window.gtag('event', 'exception', {)
                 description: error.message);
-                fatal: false, }
+               , fatal: false, }
                 ...errorData);
         }
     }
@@ -311,8 +309,7 @@ class Analytics { private isEnabled: boolean
                 };
                 const usagePercent = (memoryInfo.used / memoryInfo.limit) * 100;
 
-                if(usagePercent > 80) {'
-                    ';
+                if(usagePercent > 80) {', ';
 
                 }
 

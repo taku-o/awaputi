@@ -6,7 +6,7 @@ interface BasicConfig { [key: string]: any, }
  */
 export class EventRankingManager {
     private config: BasicConfig;
-    private state: any;
+    private, state: any;
     constructor(gameEngine: any) {
 
         this.gameEngine = gameEngine
@@ -46,7 +46,7 @@ export class EventRankingManager {
      */''
     initializeRankingTiers(''';
                 name: 'Legend';
-                minRank: 1,
+               , minRank: 1,
                 maxRank: 3,
                 icon: '👑',
                 color: '#FFD700',
@@ -54,7 +54,7 @@ export class EventRankingManager {
 
             { ''
                 name: 'Master';
-                minRank: 4,
+               , minRank: 4,
                 maxRank: 10,
                 icon: '💎',
                 color: '#C0C0C0',' }
@@ -63,7 +63,7 @@ export class EventRankingManager {
 
             { ''
                 name: 'Expert';
-                minRank: 11,
+               , minRank: 11,
                 maxRank: 25,
                 icon: '🥇',
                 color: '#CD7F32',' }
@@ -72,7 +72,7 @@ export class EventRankingManager {
 
             { ''
                 name: 'Advanced';
-                minRank: 26,
+               , minRank: 26,
                 maxRank: 50,
                 icon: '🥈',
                 color: '#4682B4',' }
@@ -82,7 +82,7 @@ export class EventRankingManager {
             { ''
                 name: 'Intermediate);
                 minRank: 51)';
-                maxRank: 100,
+               , maxRank: 100,
                 icon: '🥉',
                 color: '#228B22',' }
 
@@ -109,7 +109,7 @@ export class EventRankingManager {
                 lastUpdate: Date.now();
                 totalParticipants: 0;
                 averageScore: 0;
-                topScore: 0;
+               , topScore: 0;
             },
         }
         
@@ -126,7 +126,7 @@ export class EventRankingManager {
                 score, }
                 stats: { ...stats;
                 timestamp: Date.now();
-                rank: 0, // 後で計算;
+               , rank: 0, // 後で計算;
                 improved: score > previousScore;
             ,},
             
@@ -201,7 +201,7 @@ export class EventRankingManager {
             return { eventId,
                 players: [];
                 totalParticipants: 0;
-                averageScore: 0;
+               , averageScore: 0;
         ,}
                 topScore: 0, };
                 lastUpdate: Date.now(); }
@@ -223,11 +223,11 @@ export class EventRankingManager {
             totalParticipants: ranking.totalParticipants;
             averageScore: ranking.averageScore;
             topScore: ranking.topScore;
-            lastUpdate: ranking.lastUpdate ,};
+           , lastUpdate: ranking.lastUpdate ,};
         // キャッシュに保存
         this.leaderboardCache.set(cacheKey, { )
             data: leaderboard);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
         
         return leaderboard;
     }
@@ -278,7 +278,7 @@ export class EventRankingManager {
                     playerId: player.playerId;
                     playerName: player.playerName);
                     rank: player.rank);
-                    tier: tier.name,);
+                   , tier: tier.name,);
                     rewards: rewards);
             ,}
                 // 通知を送信 }
@@ -298,7 +298,7 @@ export class EventRankingManager {
     grantRankingRewards(playerId, eventId, tierRewards, rank) {
         const rewards = {
             ap: tierRewards.ap || 0;
-            items: [...(tierRewards.items || [])];
+           , items: [...(tierRewards.items || [])];
     }
             special: [] }
         };
@@ -345,7 +345,7 @@ export class EventRankingManager {
 
             message: `${message'}\n${rewardText.join('、'})を獲得`;
             icon: tier.icon;
-            duration: 6000;
+           , duration: 6000;
         }),
     }
     
@@ -376,7 +376,7 @@ export class EventRankingManager {
                 playerId, }
                 eventHistory: {};
                 totalEvents: 0;
-                bestRanks: {};
+               , bestRanks: {};
                 averageRank: 0;
             },
         }
@@ -389,7 +389,7 @@ export class EventRankingManager {
         playerRanking.eventHistory[eventId] = { eventId,
             bestScore: score;
             bestStats: stats;
-            participationCount: (playerRanking.eventHistory[eventId]? .participationCount || 0) + 1, : undefined
+           , participationCount: (playerRanking.eventHistory[eventId]? .participationCount || 0) + 1, : undefined
             lastParticipation: Date.now( ,}
     
     /**
@@ -453,7 +453,7 @@ export class EventRankingManager {
         this.rewardDistributionHistory[eventId] = { eventId, : undefined
             distributionDate: Date.now();
             rewardedPlayers: rewardedPlayers.length;
-            playerRewards: rewardedPlayers ,};
+           , playerRewards: rewardedPlayers ,};
         this.save();
     }
     

@@ -21,7 +21,7 @@ export interface HelpDisplayConfig { position: HelpPosition,
     dismissible: boolean;
     persistent: boolean;
     maxWidth: number;
-    fontSize: FontSize
+   , fontSize: FontSize
     ,}
 
 export interface HelpContent { title?: string;
@@ -38,7 +38,7 @@ export interface HelpContent { title?: string;
 
 export interface HelpStep { step: number,
     title: string;
-    description: string;
+   , description: string;
     visual?: string;
     keyboardAlternative?: string;
     tips?: string[];
@@ -56,18 +56,18 @@ export interface BubbleTypeInfo { name: string,
     effect: string;
     points: number;
     strategy: string;
-    visual: string;
+   , visual: string;
     warning?: boolean ,}
 
 export interface StrategyInfo { name: string;
     description: string;
     techniques: string[];
     difficulty: HelpDifficulty;
-    effectiveness: EffectivenessLevel
+   , effectiveness: EffectivenessLevel
     }
 
 export interface AccessibilityFeature { name: string;
-    description: string;
+   , description: string;
     shortcuts?: Record<string, string>;
     features?: string[];
     options?: string[]; }
@@ -82,75 +82,75 @@ export interface HelpDisplayOptions { targetElement?: HTMLElement;
 
 export interface ActiveHelp { content: HelpContent,
     options: HelpDisplayOptions;
-    timestamp: Date
+   , timestamp: Date
     ,}
 
 export interface HelpQueue { content: HelpContent;
     options: HelpDisplayOptions;
     priority: DisplayPriority;
-    id: string }
+   , id: string }
 
 export interface DisplayElementsConfig { container: HTMLElement;
-    overlay: HTMLElement;
+   , overlay: HTMLElement;
     closeButton?: HTMLButtonElement
     }
 
 export interface ResponsiveBreakpoints { mobile: number;
     tablet: number;
-    desktop: number }
+   , desktop: number }
 
 export interface AnimationConfig { duration: number;
-    easing: string;
+   , easing: string;
     delay?: number }
 
 export interface PositionConstraints { minDistance: number;
     maxDistance: number;
     preferredSide: PositionSide;
-    fallbackSides: PositionSide[]
+   , fallbackSides: PositionSide[]
     }
 
 export interface FontSizeMap { small: string;
     medium: string;
     large: string;
-    xl: string }
+   , xl: string }
 
 export interface MediaQueryHandler { query: MediaQueryList;
-    handler: () => void }
+   , handler: () => void }
 }
 
 export interface TabNavigationState { focusableElements: HTMLElement[];
     currentIndex: number;
-    trapped: boolean }
+   , trapped: boolean }
 
 export interface AutoHideTimer { id: number | null;
     duration: number;
-    paused: boolean }
+   , paused: boolean }
 
 export interface HelpDimensions { width: number;
     height: number;
     maxWidth: number;
-    maxHeight: number }
+   , maxHeight: number }
 
 export interface ViewportConstraints { width: number;
     height: number;
     scrollX: number;
-    scrollY: number }
+   , scrollY: number }
 
 export interface ElementBounds { top: number;
     left: number;
     bottom: number;
     right: number;
     width: number;
-    height: number }
+   , height: number }
 
 export interface CalculatedPosition { top: number;
     left: number;
     transform?: string;
-    side: PositionSide
+   , side: PositionSide
     }
 
 export interface AnimationState { inProgress: boolean;
-    type: AnimationType | null;
+   , type: AnimationType | null;
     startTime?: number;
     duration?: number; }
 
@@ -170,12 +170,12 @@ export const DEFAULT_DISPLAY_CONFIG: HelpDisplayConfig = {;
     animation: 'slide';
     duration: 3000;
     dismissible: true;
-    persistent: false,
+   , persistent: false,
     maxWidth: 400,
     fontSize: 'medium' ,} as const;
 export const RESPONSIVE_BREAKPOINTS: ResponsiveBreakpoints = { mobile: 768,
     tablet: 1024;
-    desktop: 1200 ,} as const;
+   , desktop: 1200 ,} as const;
 ';
 
 export const FONT_SIZES: FontSizeMap = {;
@@ -219,7 +219,7 @@ export const HELP_OVERLAY_STYLES = `;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+   , background: rgba(0, 0, 0, 0.5);
     z-index: 9999,
     display: none;
     pointer-events: auto,
@@ -230,20 +230,20 @@ export function calculateOptimalPosition(;
     targetRect: DOMRect
     );
     helpDimensions: HelpDimensions);
-    viewport: ViewportConstraints'';
+   , viewport: ViewportConstraints'';
 '): CalculatedPosition { const positions = {'
         bottom: {'
             top: targetRect.bottom + POSITION_CONSTRAINTS.minDistance,
             left: targetRect.left,
             side: 'bottom' as PositionSide ,};
         top: { top: targetRect.top - helpDimensions.height - POSITION_CONSTRAINTS.minDistance;
-            left: targetRect.left,
+           , left: targetRect.left,
             side: 'top' as PositionSide ,};
         right: { top: targetRect.top;
-            left: targetRect.right + POSITION_CONSTRAINTS.minDistance,
+           , left: targetRect.right + POSITION_CONSTRAINTS.minDistance,
             side: 'right' as PositionSide ,};
         left: { top: targetRect.top;
-            left: targetRect.left - helpDimensions.width - POSITION_CONSTRAINTS.minDistance,
+           , left: targetRect.left - helpDimensions.width - POSITION_CONSTRAINTS.minDistance,
             side: 'left' as PositionSide ,}
     };
     // 優先順位に従ってチェック
@@ -269,7 +269,7 @@ export function isPositionValid(;
     position: CalculatedPosition
     );
     dimensions: HelpDimensions);
-    viewport: ViewportConstraints;
+   , viewport: ViewportConstraints;
     ): boolean { return position.top >= 0 &&
            position.left >= 0 &&;
            position.top + dimensions.height <= viewport.height &&;
@@ -279,7 +279,7 @@ export function adjustPositionForViewport(;
     position: CalculatedPosition
     );
     dimensions: HelpDimensions);
-    viewport: ViewportConstraints;
+   , viewport: ViewportConstraints;
     ): CalculatedPosition {
     const adjusted = { ...position,
 
@@ -342,11 +342,11 @@ export class HelpDisplayController {
             type: null ,};
         this.autoHideTimer = { id: null,
             duration: 0;
-            paused: false ,};
+           , paused: false ,};
         this.mediaQueryHandlers = [];
         this.tabNavigationState = { focusableElements: [],
             currentIndex: 0;
-            trapped: false ,};
+           , trapped: false ,};
         // デバウンスされたメソッド
         this.debouncedUpdatePosition = debounce(this.updatePosition.bind(this), 100);
         this.debouncedHandleResize = debounce(this.handleResponsiveChange.bind(this), 150);
@@ -526,7 +526,7 @@ export class HelpDisplayController {
             content,
             options,
             priority: options.priority || 'normal';
-            id: generateUniqueId( ,};
+           , id: generateUniqueId( ,};
 
         // 優先度順でソート
         this.helpQueue.push(queueItem);
@@ -543,12 +543,12 @@ export class HelpDisplayController {
         // タイトル
         if(content.title) {' }'
 
-            html += `<h3 style="margin: 0 0 12px 0; font-size: 1.2em; color: #fff;">${this.escapeHtml(content.title})</h3>`;
+            html += `<h3 style="margin: 0 0 12px 0; font-size: 1.2em;, color: #fff;">${this.escapeHtml(content.title})</h3>`;
         }
         ";
         // 説明""
         if (content.description) { " }"
-            html += `<p style="margin: 0 0 12px 0; color: #ccc;">${this.escapeHtml(content.description})</p>`;
+            html += `<p style="margin: 0 0 12px 0;, color: #ccc;">${this.escapeHtml(content.description})</p>`;
         }
         ";
         // ステップ""
@@ -589,8 +589,8 @@ export class HelpDisplayController {
         if(content.sections && content.sections.length > 0) { content.sections.forEach(section => { ') }'
 
                 html += `<div style="margin-bottom: 12px;">")" }"
-                    <h4 style="margin: 0 0 4px 0; color: #fff;">${this.escapeHtml(section.title"})</h4>""
-                    <p style="margin: 0; color: #ccc;">${this.escapeHtml(section.content})</p>"
+                    <h4 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(section.title"})</h4>""
+                    <p style="margin: 0;, color: #ccc;">${this.escapeHtml(section.content})</p>"
                 `;""
                 if(section.details) {"
 
@@ -600,8 +600,8 @@ export class HelpDisplayController {
 
                     Object.entries(section.details).forEach(([key, value]) => {' }'
 
-                        html += `<dt style="display: inline; color: #fff;">${this.escapeHtml(key"}):</dt> `;""
-                        html += `<dd style="display: inline; color: #ccc; margin-right: 12px;">${this.escapeHtml(value"})</dd>`;"
+                        html += `<dt style="display: inline;, color: #fff;">${this.escapeHtml(key"}):</dt> `;""
+                        html += `<dd style="display: inline;, color: #ccc; margin-right: 12px;">${this.escapeHtml(value"})</dd>`;"
                     };""
                     html += '</dl>';
 
@@ -631,7 +631,7 @@ export class HelpDisplayController {
             content.bubbleTypes.forEach(bubble => { ' })'
                 const warningClass = bubble.warning ? ' style="color: #ffcc00;"' : '';') }
 
-                html += `<div style="margin-bottom: 8px; padding: 8px; border-left: 3px solid ${bubble.color};">)""
+                html += `<div style="margin-bottom: 8px;, padding: 8px; border-left: 3px solid ${bubble.color};">)""
                     <strong${warningClass}>${this.escapeHtml(bubble.name})</strong> (${bubble.points}pt")<br>""
                     <span style="color: #ccc;">${this.escapeHtml(bubble.effect"})</span><br>""
                     <small style="color: #aaa;">${this.escapeHtml(bubble.strategy"})</small>
@@ -649,8 +649,8 @@ export class HelpDisplayController {
             content.strategies.forEach(strategy => { ' }'
 
                 html += `<div, style="margin-bottom: 12px;">)" }"
-                    <h5 style="margin: 0 0 4px 0; color: #fff;">${this.escapeHtml(strategy.name"})</h5>""
-                    <p style="margin: 0 0 8px 0; color: #ccc;">${this.escapeHtml(strategy.description"})</p>""
+                    <h5 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(strategy.name"})</h5>""
+                    <p style="margin: 0 0 8px 0;, color: #ccc;">${this.escapeHtml(strategy.description"})</p>""
                     <ul style="margin: 0; padding-left: 16px;">"
                 `;""
                 strategy.techniques.forEach(technique => { ");" }"
@@ -672,8 +672,8 @@ export class HelpDisplayController {
             content.features.forEach(feature => { ' }'
 
                 html += `<div, style="margin-bottom: 8px;">)" }"
-                    <h5 style="margin: 0 0 4px 0; color: #fff;">${this.escapeHtml(feature.name"})</h5>""
-                    <p style="margin: 0; color: #ccc;">${this.escapeHtml(feature.description})</p>"
+                    <h5 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(feature.name"})</h5>""
+                    <p style="margin: 0;, color: #ccc;">${this.escapeHtml(feature.description})</p>"
                 `;""
                 if(feature.shortcuts) {"
 
@@ -683,8 +683,8 @@ export class HelpDisplayController {
 
                     Object.entries(feature.shortcuts).forEach(([key, desc]) => {' }'
 
-                        html += `<dt style="display: inline; color: #fff; font-family: monospace;">${this.escapeHtml(key"}):</dt> `;""
-                        html += `<dd style="display: inline; color: #ccc; margin-right: 12px;">${this.escapeHtml(desc"})</dd>`;"
+                        html += `<dt style="display: inline;, color: #fff; font-family: monospace;">${this.escapeHtml(key"}):</dt> `;""
+                        html += `<dd style="display: inline;, color: #ccc; margin-right: 12px;">${this.escapeHtml(desc"})</dd>`;"
                     };""
                     html += '</dl>';
 
@@ -725,7 +725,7 @@ export class HelpDisplayController {
         if(this.displayConfig.dismissible || options.dismissible) {'
             html += `<button '';
                 class="help-close-button""";
-                style="position: absolute; top: 8px; right: 8px; background: none; border: none; color: #ccc; font-size: 18px; cursor: pointer; padding: 4px; width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center;"""
+                style="position: absolute; top: 8px; right: 8px; background: none; border: none; color: #ccc; font-size: 18px; cursor: pointer; padding: 4px; width: 32px; height: 32px; border-radius: 4px;, display: flex; align-items: center; justify-content: center;"""
                 aria-label="ヘルプを閉じる""";
                 type="button";
         }
@@ -736,8 +736,7 @@ export class HelpDisplayController {
         ";
         // 閉じるボタンのイベントリスナーを設定""
         const closeButton = this.helpContainer.querySelector('.help-close-button) as HTMLButtonElement;''
-        if(closeButton) {'
-            ';
+        if(closeButton) {', ';
 
         }
 
@@ -756,8 +755,7 @@ export class HelpDisplayController {
      * 位置を計算'
      */''
     private calculatePosition(targetElement?: HTMLElement): void { ''
-        if(this.displayConfig.position === 'fixed) {'
-            ';
+        if(this.displayConfig.position === 'fixed) {', ';
 
         }
 
@@ -790,11 +788,11 @@ export class HelpDisplayController {
             width: containerRect.width || this.displayConfig.maxWidth;
             height: containerRect.height || 200;
             maxWidth: this.displayConfig.maxWidth;
-            maxHeight: window.innerHeight * 0.8 };
+           , maxHeight: window.innerHeight * 0.8 };
         const viewport: ViewportConstraints = { width: window.innerWidth,
             height: window.innerHeight;
             scrollX: window.scrollX;
-            scrollY: window.scrollY ,};
+           , scrollY: window.scrollY ,};
         ';
 
         let position = calculateOptimalPosition(targetRect, helpDimensions, viewport);''
@@ -831,8 +829,7 @@ export class HelpDisplayController {
         this.helpContainer.style.display = 'block';
 
         ')';
-        if(this.displayConfig.position === 'overlay'') {'
-            ';
+        if(this.displayConfig.position === 'overlay'') {', ';
 
         }
 
@@ -959,7 +956,7 @@ export class HelpDisplayController {
                 this.hideHelp(), }
             }, this.displayConfig.duration),
             duration: this.displayConfig.duration;
-            paused: false;
+           , paused: false;
         },
     }
 

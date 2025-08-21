@@ -2,9 +2,9 @@
 interface PerformanceDataAnalyzer { errorHandler: any,
     baselineCalibrated: boolean;
     calibrationTarget: number;
-    performanceBaseline: Map<string, number>;
+   , performanceBaseline: Map<string, number>;
     analysisConfig: {
-        adaptiveThresholds: boolean ,}
+        adaptiveThreshold;s: boolean ,}
 
 interface DataPoint { timestamp: number,
     metrics: Map<string, any>;
@@ -16,19 +16,19 @@ interface CollectionStats { historySize: number,
     calibrationComplete: boolean;
     calibrationProgress: number;
     oldestDataPoint: number | null;
-    newestDataPoint: number | null ,}
+   , newestDataPoint: number | null ,}
 
 interface ExportData { exportedAt: number;
     timeWindow: number | null;
     dataPoints: number;
-    data: Array<{
-        timestamp: number;
-        metrics: Record<string, any> }>;
+   , data: Array<{
+        timestam;p: number;
+       , metrics: Record<string, any> }>;
 }
 
 interface ImportDataFormat { data: Array<{
-        timestamp: number;
-        metrics: Record<string, any> }>;
+        timestam;p: number;
+       , metrics: Record<string, any> }>;
 }
 
 /**
@@ -58,7 +58,7 @@ export class PerformanceMetricsCollector {
     private mainController: PerformanceDataAnalyzer;
     private errorHandler: any;
     private analysisHistory: DataPoint[];
-    private calibrationSamples: Map<string, any>[];
+    private, calibrationSamples: Map<string, any>[];
 
     /**
      * Creates a new PerformanceMetricsCollector instance
@@ -254,7 +254,7 @@ export class PerformanceMetricsCollector {
             calibrationSamples: this.calibrationSamples.length;
             calibrationComplete: this.mainController.baselineCalibrated;
             calibrationProgress: this.calibrationSamples.length / this.mainController.calibrationTarget;
-            oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null, };
+           , oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null, };
             newestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[this.analysisHistory.length - 1].timestamp : null 
         }
     
@@ -286,7 +286,7 @@ export class PerformanceMetricsCollector {
         return { exportedAt: Date.now(),
             timeWindow,
             dataPoints: dataToExport.length;
-            data: dataToExport.map(point = > ({)
+           , data: dataToExport.map(point = > ({)
                 timestamp: point.timestamp ,};
                 metrics: Object.fromEntries(point.metrics); }
             }');
@@ -302,7 +302,7 @@ export class PerformanceMetricsCollector {
             
             const importedPoints: DataPoint[] = importData.data.map(point => ({ )
                 timestamp: point.timestamp);
-                metrics: new Map(Object.entries(point.metrics });
+               , metrics: new Map(Object.entries(point.metrics });
             
             this.analysisHistory.push(...importedPoints);
             

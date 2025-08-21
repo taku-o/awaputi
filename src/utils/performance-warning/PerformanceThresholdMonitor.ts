@@ -3,40 +3,40 @@
  * Handles real-time performance tracking, threshold violation detection, and monitoring configuration
  */
 
-import { getErrorHandler } from '../../core/ErrorHandler.js';
+import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // 型定義
 interface PerformanceThresholds { fps: {
-        critical: number;
+        critica;l: number;
         warning: number;
         good: number;
-        excellent: number };
+       , excellent: number };
     frameTime: { critical: number;
         warning: number;
         good: number;
-        excellent: number };
+       , excellent: number };
     memory: { critical: number;
         warning: number;
         good: number;
-        excellent: number };
+       , excellent: number };
     stability: { critical: number;
         warning: number;
         good: number;
-        excellent: number };
+       , excellent: number };
     variance: { critical: number;
         warning: number;
         good: number;
-        excellent: number }
+       , excellent: number }
 
 interface MonitoringConfig { enabled: boolean,
     interval: number;
     lastCheck: number;
     metricsBuffer: MetricsData[];
-    bufferSize: number ,}
+   , bufferSize: number ,}
 
 interface ViolationTracking { active: Map<string, ViolationData>;
     history: ViolationHistoryEntry[];
-    cooldowns: Map<string, number>;
+   , cooldowns: Map<string, number>;
     consecutiveCounts: Map<string, number> }
 
 interface MetricsData { timestamp: number,
@@ -44,7 +44,7 @@ interface MetricsData { timestamp: number,
     frameTime: number;
     memory: MemoryInfo;
     stability: number;
-    variance: number;
+   , variance: number;
     memoryHealthScore?: number;
     leakRisk?: string;
     stabilityScore?: number;
@@ -54,7 +54,7 @@ interface MetricsData { timestamp: number,
 interface MemoryInfo { used: number,
     total: number;
     limit?: number;
-    pressure: number ,}
+   , pressure: number ,}
 
 interface ViolationData { id: string;
     severity: string;
@@ -62,7 +62,7 @@ interface ViolationData { id: string;
     lastDetected: number;
     count: number;
     data: any;
-    resolved: boolean;
+   , resolved: boolean;
     escalated?: boolean;
     escalatedAt?: number; }
 
@@ -74,7 +74,7 @@ interface MonitoringStats { activeViolations: number;
     metricsBufferSize: number;
     monitoringEnabled: boolean;
     lastCheck: number;
-    thresholds: PerformanceThresholds
+   , thresholds: PerformanceThresholds
     }
 
 export class PerformanceThresholdMonitor {
@@ -83,7 +83,7 @@ export class PerformanceThresholdMonitor {
     private thresholds: PerformanceThresholds;
     private monitoring: MonitoringConfig;
     private violations: ViolationTracking;
-    private monitoringInterval: NodeJS.Timeout | null = null;
+    private, monitoringInterval: NodeJS.Timeout | null = null;
     constructor(performanceWarningSystem: any) {
 
         this.performanceWarningSystem = performanceWarningSystem;
@@ -94,7 +94,7 @@ export class PerformanceThresholdMonitor {
             fps: {
                 critical: 20;
                 warning: 30;
-                good: 45;
+               , good: 45;
     }
                 excellent: 55 }
             };
@@ -120,11 +120,11 @@ export class PerformanceThresholdMonitor {
             interval: 1000, // 1 second;
             lastCheck: 0;
             metricsBuffer: [];
-            bufferSize: 60 // 1 minute of data ,};
+           , bufferSize: 60 // 1 minute of data ,};
         // Violation tracking
         this.violations = { active: new Map(),
             history: [];
-            cooldowns: new Map(),
+           , cooldowns: new Map(),
             consecutiveCounts: new Map()';
         console.log('[PerformanceThresholdMonitor] Threshold, monitoring component, initialized'), }'
     
@@ -188,11 +188,11 @@ export class PerformanceThresholdMonitor {
      */
     gatherPerformanceMetrics(): MetricsData { const metrics: MetricsData = {
             fps: 60;
-            frameTime: 16.67, }
+           , frameTime: 16.67, }
             memory: { used: 0, total: 0, pressure: 0 ,},
             stability: 1.0;
             variance: 0;
-            timestamp: Date.now();
+           , timestamp: Date.now();
         };
         
         try { // Try to get metrics from PerformanceOptimizer
@@ -213,7 +213,7 @@ export class PerformanceThresholdMonitor {
                     used: memInfo.usedJSHeapSize;
                     total: memInfo.totalJSHeapSize;
                     limit: memInfo.jsHeapSizeLimit;
-                    pressure: memInfo.jsHeapSizeLimit > 0 ?   : undefined
+                   , pressure: memInfo.jsHeapSizeLimit > 0 ?   : undefined
                         memInfo.usedJSHeapSize / memInfo.jsHeapSizeLimit : 0 }
             
             // Try to get metrics from MemoryManager
@@ -282,7 +282,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('fps_critical', 'critical', {''
                 metric: 'fps);
                 value: fps)';
-                threshold: thresholds.critical,' }'
+               , threshold: thresholds.critical,' }'
 
                 severity: 'critical');' }
 
@@ -290,7 +290,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('fps_warning', 'warning', {''
                 metric: 'fps);
                 value: fps)';
-                threshold: thresholds.warning,')';
+               , threshold: thresholds.warning,')';
                 severity: 'warning')' ,}
 
         } else {  // Clear violations if performance improves
@@ -311,25 +311,25 @@ export class PerformanceThresholdMonitor {
 
             this.recordViolation('memory_critical', 'critical', {''
                 metric: 'memory_pressure';
-                value: memory.pressure,
+               , value: memory.pressure,
                 threshold: thresholds.critical,
                 severity: 'critical';
-                details: {
+               , details: {
                     used: memory.used);
-                    total: memory.total ,}
+                   , total: memory.total ,}
                     limit: memory.limit) }
 
                 });''
         } else if(memory.pressure > thresholds.warning) { ''
             this.recordViolation('memory_warning', 'warning', {''
                 metric: 'memory_pressure';
-                value: memory.pressure,
+               , value: memory.pressure,
                 threshold: thresholds.warning,
                 severity: 'warning';
-                details: {
+               , details: {
                     used: memory.used);
                     total: memory.total)';
-                    limit: memory.limit' ,}'
+                   , limit: memory.limit' ,}'
 
                 })');
         } else {
@@ -351,7 +351,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('stability_critical', 'critical', {''
                 metric: 'stability_score);
                 value: stability)';
-                threshold: thresholds.critical,' }'
+               , threshold: thresholds.critical,' }'
 
                 severity: 'critical');' }
 
@@ -359,7 +359,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('stability_warning', 'warning', {''
                 metric: 'stability_score);
                 value: stability)';
-                threshold: thresholds.warning,')';
+               , threshold: thresholds.warning,')';
                 severity: 'warning')' ,}
 
         } else {
@@ -381,7 +381,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('variance_critical', 'critical', {''
                 metric: 'frame_variance);
                 value: variance)';
-                threshold: thresholds.critical,' }'
+               , threshold: thresholds.critical,' }'
 
                 severity: 'critical');' }
 
@@ -389,7 +389,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('variance_warning', 'warning', {''
                 metric: 'frame_variance);
                 value: variance)';
-                threshold: thresholds.warning,')';
+               , threshold: thresholds.warning,')';
                 severity: 'warning')' ,}
 
         } else {
@@ -407,7 +407,7 @@ export class PerformanceThresholdMonitor {
 
             this.recordViolation('zone_critical', 'critical', {)'
                 metric: 'performance_zone')';
-                value: zone,
+               , value: zone,
                 threshold: 'optimal',' }
 
                 severity: 'critical')');' }
@@ -415,7 +415,7 @@ export class PerformanceThresholdMonitor {
         } else if (zone === 'poor'') { ''
             this.recordViolation('zone_poor', 'warning', {)'
                 metric: 'performance_zone')';
-                value: zone,
+               , value: zone,
                 threshold: 'good',')';
                 severity: 'warning')' ,}
 
@@ -434,7 +434,7 @@ export class PerformanceThresholdMonitor {
 
             this.recordViolation('leak_critical', 'critical', {)'
                 metric: 'memory_leak_risk')';
-                value: leakRisk,
+               , value: leakRisk,
                 threshold: 'low',' }
 
                 severity: 'critical')');' }
@@ -442,7 +442,7 @@ export class PerformanceThresholdMonitor {
         } else if (leakRisk === 'high'') { ''
             this.recordViolation('leak_high', 'warning', {)'
                 metric: 'memory_leak_risk')';
-                value: leakRisk,
+               , value: leakRisk,
                 threshold: 'medium',')';
                 severity: 'warning')' ,}
 
@@ -462,7 +462,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('jitter_critical', 'critical', {''
                 metric: 'jitter_level);
                 value: jitterLevel)';
-                threshold: 8,' }'
+               , threshold: 8,' }'
 
                 severity: 'critical');' }
 
@@ -470,7 +470,7 @@ export class PerformanceThresholdMonitor {
             this.recordViolation('jitter_warning', 'warning', {''
                 metric: 'jitter_level);
                 value: jitterLevel)';
-                threshold: 5,')';
+               , threshold: 5,')';
                 severity: 'warning')' ,}
 
         } else {
@@ -509,7 +509,7 @@ export class PerformanceThresholdMonitor {
                 firstDetected: now;
                 lastDetected: now;
                 count: 1;
-                data: violationData, }
+               , data: violationData, }
                 resolved: false }
             };
             this.violations.active.set(violationId, violation);
@@ -678,7 +678,7 @@ export class PerformanceThresholdMonitor {
             totalViolationsDetected: this.violations.history.length + this.violations.active.size;
             metricsBufferSize: this.monitoring.metricsBuffer.length;
             monitoringEnabled: this.monitoring.enabled;
-            lastCheck: this.monitoring.lastCheck, };
+           , lastCheck: this.monitoring.lastCheck, };
             thresholds: this.thresholds }
         }
     

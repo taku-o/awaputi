@@ -1,4 +1,4 @@
-import { DashboardWidgetRenderer } from './statistics/DashboardWidgetRenderer.js';
+import { DashboardWidgetRenderer  } from './statistics/DashboardWidgetRenderer.js';
 
 /**
  * 統計ダッシュボードクラス（Main Controller）
@@ -15,7 +15,7 @@ export class StatisticsDashboard {
             layout: {
                 rows: 3;
                 columns: 4;
-                gridGap: 10;
+               , gridGap: 10;
     ,}
                 padding: 20 }
             };
@@ -66,13 +66,13 @@ export class StatisticsDashboard {
         // イベントハンドラ
         this.eventHandlers = new Map(''';
             easing: 'ease-in-out';
-            stagger: 50;
+           , stagger: 50;
         },
         
         // 更新状態管理
         this.updateState = { isUpdating: false,
             lastUpdateTime: 0;
-            updateInterval: 5000, // 5秒間隔;
+           , updateInterval: 5000, // 5秒間隔;
             autoUpdate: false ,}))
         this.initialize();
     }
@@ -122,9 +122,9 @@ export class StatisticsDashboard {
 
             return Promise.all(renderPromises).then(results => ({ ')'
                 type: 'dashboard');
-                widgets: results,);
+               , widgets: results,);
                 layout: layout);
-                timestamp: Date.now( ,});
+               , timestamp: Date.now( ,});
 
         } catch (error) {
             console.error('Dashboard rendering failed:', error);
@@ -318,7 +318,7 @@ export class StatisticsDashboard {
                         if(completedCount === renderPromises.length) {'
                             resolve({''
                                 type: 'dashboard';
-                                widgets: results;
+                               , widgets: results;
     ,})
                                 animated: true) }
                                 timestamp: Date.now(); }
@@ -431,8 +431,7 @@ export class StatisticsDashboard {
      * イベントリスナーの設定'
      */''
     setupEventListeners()';
-        if (typeof, window !== 'undefined'') {'
-        ';
+        if (typeof, window !== 'undefined'') {', ';
 
     }
 

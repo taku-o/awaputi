@@ -8,7 +8,7 @@ interface ValidationResult { category: string,
     status: 'passed' | 'failed';
     message: string;
     duration: number;
-    timestamp: string;
+   , timestamp: string;
     error?: Error
     ,}
 
@@ -16,26 +16,26 @@ interface PerformanceMetrics { averageFPS: number;
     averageFrameTime: number;
     frameCount: number;
     duration: number;
-    memoryUsage: number }
+   , memoryUsage: number }
 
 interface PerformanceImpact { fpsImpact: number;
     frameTimeImpact: number;
     memoryImpact: number;
-    overallImpact: number }
+   , overallImpact: number }
 
 interface PerformanceTargets { debugOverhead: number;
     memoryIncrease: number;
     initializationTime: number;
     panelSwitchTime: number;
     testExecutionTime: number;
-    frameRateImpact: number }
+   , frameRateImpact: number }
 
 interface CompatibilityTargets { browsers: string[];
     features: string[];
-    screenSizes: {
-        width: number;
+   , screenSizes: {
+        widt;h: number;
         height: number;
-        name: string }[];
+       , name: string }[];
 }
 
 interface ValidationCategories { performance: string,
@@ -43,24 +43,24 @@ interface ValidationCategories { performance: string,
     memory: string;
     accessibility: string;
     security: string;
-    stability: string ,}
+   , stability: string ,}
 
 interface CategoryStats { [category: string]: {
-        total: number;
+        tota;l: number;
         passed: number;
-        failed: number }
+       , failed: number }
 
 interface ValidationSummary { summary: {
-        total: number;
+        tota;l: number;
         passed: number;
         failed: number;
         successRate: number;
-        duration: number };
+       , duration: number };
     categoryStats: CategoryStats;
     results: ValidationResult[];
     timestamp: string;
     targets: PerformanceTargets;
-    compatibility: CompatibilityTargets;
+   , compatibility: CompatibilityTargets;
     }
 ';
 
@@ -76,7 +76,7 @@ export class FinalValidationSuite {
     private startTime: number | null = null;
     private validationCategories: ValidationCategories;
     private performanceTargets: PerformanceTargets;
-    private compatibilityTargets: CompatibilityTargets';
+    private, compatibilityTargets: CompatibilityTargets';
 
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
@@ -116,8 +116,7 @@ export class FinalValidationSuite {
      * 全最終検証を実行
      */'
     async runFinalValidation(): Promise<ValidationSummary> { ''
-        if(this.validationRunning) {'
-            ';
+        if(this.validationRunning) {', ';
 
         }
 
@@ -476,8 +475,7 @@ export class FinalValidationSuite {
                 'button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
             );
 
-            if(tabableElements.length === 0) {'
-                ';
+            if(tabableElements.length === 0) {', ';
 
             }
 
@@ -628,8 +626,7 @@ export class FinalValidationSuite {
                 throw new Error('Debug, interface modified, global console, object); }'
             }
 
-            if(window.performance !== originalPerformance) {'
-                ';
+            if(window.performance !== originalPerformance) {', ';
 
             }
 
@@ -660,8 +657,7 @@ export class FinalValidationSuite {
                 debugInterface.switchPanel('nonexistent-panel);
                 ';
                 // 無効なテーマ設定
-                if(debugInterface.themeManager) {'
-                    ';
+                if(debugInterface.themeManager) {', ';
 
                 }
 
@@ -669,8 +665,7 @@ export class FinalValidationSuite {
                 }
                 ';
                 // 無効なショートカット登録
-                if(debugInterface.keyboardShortcutManager) {'
-                    ';
+                if(debugInterface.keyboardShortcutManager) {', ';
 
                 }
 
@@ -742,8 +737,7 @@ export class FinalValidationSuite {
             // 複数の非同期操作を同時実行
             concurrentPromises.push()';
                 this.simulateConcurrentOperation('panel-switching', async () => {''
-                    for(let, i = 0; i < 10; i++) {'
-                        ';
+                    for(let, i = 0; i < 10; i++) {', ';
 
                     }
 
@@ -802,7 +796,7 @@ export class FinalValidationSuite {
             const endTime = performance.now(''';
                 status: 'passed);
                 message: validationResult);
-                duration: duration,);
+               , duration: duration,);
                 timestamp: new Date().toISOString( ,};
 
             console.log(`✓ ${validationName}: ${validationResult} (${duration.toFixed(2})ms)`);
@@ -813,8 +807,8 @@ export class FinalValidationSuite {
                 message: (error, as Error).message;
                 duration: duration;
                 timestamp: new Date().toISOString();
-                error: error as Error ,};
-            console.error(`✗ ${validationName}: ${(error, as Error}).message} (${duration.toFixed(2})ms)`);
+               , error: error as Error ,};
+            console.error(`✗ ${validationName}: ${(error, as, Error}).message} (${duration.toFixed(2})ms)`);
         }
 
         this.validationResults.push(result);
@@ -827,7 +821,7 @@ export class FinalValidationSuite {
     private async measurePerformance(duration: number): Promise<PerformanceMetrics> { const metrics = {
             fps: [] as number[];
             frameTime: [] as number[];
-            memoryUsage: [] as number[] };
+           , memoryUsage: [] as number[] };
         const startTime = performance.now();
         let frameCount = 0;
         let lastFrameTime = startTime;
@@ -852,7 +846,7 @@ export class FinalValidationSuite {
                         averageFrameTime: metrics.frameTime.reduce((a, b) => a + b, 0) / metrics.frameTime.length,
                         frameCount: frameCount;
                         duration: currentTime - startTime;
-                        memoryUsage: metrics.memoryUsage.length > 0 ?   : undefined 
+                       , memoryUsage: metrics.memoryUsage.length > 0 ?   : undefined 
                             metrics.memoryUsage[metrics.memoryUsage.length - 1] - metrics.memoryUsage[0] : 0 ,}
                     });
                 }
@@ -882,7 +876,7 @@ export class FinalValidationSuite {
             await operation('' }
 
             return { name, status: 'success' ,}) catch (error) {;
-            throw new Error(`${name}: ${(error, as Error}).message}`);
+            throw new Error(`${name}: ${(error, as, Error}).message}`);
         }
     }
 
@@ -921,7 +915,7 @@ export class FinalValidationSuite {
             results: this.validationResults;
             timestamp: new Date().toISOString();
             targets: this.performanceTargets;
-            compatibility: this.compatibilityTargets;
+           , compatibility: this.compatibilityTargets;
         },
     }
 

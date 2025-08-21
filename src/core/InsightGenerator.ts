@@ -15,23 +15,23 @@ export interface PriorityLevel {;
     LOW: 'low',
     INFORMATIONAL: 'informational' ,}
 export interface InsightConfig { thresholds: {
-        significant_change: number;
+        significant_chang;e: number;
         concerning_decline: number;
         excellent_improvement: number;
         volatility_warning: number;
-        streak_achievement: number 
+       , streak_achievement: number 
 };
     patterns: { min_data_points: number;
         trend_consistency: number;
         cycle_detection_window: number;
-        outlier_threshold: number 
+       , outlier_threshold: number 
 };
     recommendations: { max_recommendations: number;
         action_confidence_threshold: number;
-        priority_scoring_weights: {
+       , priority_scoring_weights: {
             impact: number;
             urgency: number;
-            feasibility: number };
+           , feasibility: number };
 }
 
 export interface Insight { id: string,
@@ -40,7 +40,7 @@ export interface Insight { id: string,
     description: string;
     priority: string;
     timestamp: number;
-    context: Record<string, any>,
+   , context: Record<string, any>,
     confidence: number ,}
 export interface Recommendation { id: string,
     type: string;
@@ -49,7 +49,7 @@ export interface Recommendation { id: string,
     actionItems: string[];
     priority: string;
     estimatedImpact: string;
-    timeToImplement: string ,}
+   , timeToImplement: string ,}
 export interface StatisticsData { basic?: any;
     bubbles?: any;
     combos?: any;
@@ -65,11 +65,11 @@ export interface InsightResult { generationId: string,
     insights: Insight[];
     recommendations: Recommendation[];
     summary: any;
-    metadata: {
-        totalInsights: number;
+   , metadata: {
+        totalInsight;s: number;
         criticalInsights: number;
         dataQuality: any;
-        analysisConfidence: number ,}
+       , analysisConfidence: number ,}
 
 /**
  * 洞察生成クラス
@@ -79,7 +79,7 @@ export class InsightGenerator {
     private insightTypes: InsightType;
     private priorityLevels: PriorityLevel;
     private insightConfigs: InsightConfig;
-    private insightTemplates: Record<string, any>;
+    private, insightTemplates: Record<string, any>;
 
     constructor(''';
             PERFORMANCE: 'performance',
@@ -112,15 +112,15 @@ export class InsightGenerator {
             patterns: { min_data_points: 5;
                 trend_consistency: 0.7;
                 cycle_detection_window: 14;
-                outlier_threshold: 2.5 
+               , outlier_threshold: 2.5 
 };
             // 推奨事項生成設定
             recommendations: { max_recommendations: 5;
                 action_confidence_threshold: 0.6;
-                priority_scoring_weights: {
+               , priority_scoring_weights: {
                     impact: 0.4;
                     urgency: 0.3;
-                    feasibility: 0.3 
+                   , feasibility: 0.3 
 }
             }))
         // 洞察テンプレート
@@ -168,7 +168,7 @@ export class InsightGenerator {
             recommendations: recommendations;
             summary: summary;
             // メタデータ
-            metadata: {
+           , metadata: {
                 totalInsights: filteredInsights.length;
                 criticalInsights: filteredInsights.filter(i => i.priority === this.priorityLevels.CRITICAL).length;
                 dataQuality: this.assessDataQuality(statisticsData), };
@@ -613,7 +613,7 @@ export class InsightGenerator {
         // 一般的な推奨事項
         if (statisticsData.bubbles && parseFloat(statisticsData.bubbles.accuracy) < 70) { recommendations.push({);''
                 id: this.generateRecommendationId(''';
-                type: 'skill_improvement',
+               , type: 'skill_improvement',
                 title: '精度向上のための練習',
                 description: '短時間の集中練習セッションで精度を向上させましょう。',
                 actionItems: ['';
@@ -639,7 +639,7 @@ export class InsightGenerator {
             description: description;
             priority: priority;
             timestamp: Date.now();
-            context: context, };
+           , context: context, };
             confidence: this.calculateInsightConfidence(context); }
         }
 
@@ -647,7 +647,7 @@ export class InsightGenerator {
         if(insight.context.metric === 'accuracy' && insight.context.value < 60) {'
             return { ''
                 id: this.generateRecommendationId(''';
-                type: 'accuracy_improvement',
+               , type: 'accuracy_improvement',
                 title: '精度向上のための集中練習',
                 description: '短時間の練習で精度を改善しましょう。',
                 actionItems: ['ゆっくりと正確にクリック', '画面の中央に集中],
@@ -690,7 +690,7 @@ export class InsightGenerator {
         return { totalInsights: insights.length,
             byCategory: categories;
             byPriority: priorities;
-            topInsight: insights[0] || null, };
+           , topInsight: insights[0] || null, };
             keyTakeaways: this.extractKeyTakeaways(insights); }
         }
     

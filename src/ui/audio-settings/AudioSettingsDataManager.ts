@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
-import { getLocalizationManager } from '../../core/LocalizationManager.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../../core/LocalizationManager.js';''
 import type { AudioManager } from '../../audio/AudioManager.js';''
 import type { ConfigurationManager } from '../../core/ConfigurationManager.js';''
 import type { ErrorHandler } from '../../utils/ErrorHandler.js';''
@@ -10,11 +10,11 @@ import type { LocalizationManager } from '../../core/LocalizationManager.js';
  */
 interface AudioSettingsFile { version: string,
     timestamp: string;
-    volumes: {
-        master: number;
+   , volumes: {
+        maste;r: number;
         bgm: number;
         sfx: number;
-        muted: boolean ,};
+       , muted: boolean ,};
     quality?: { sampleRate?: number;
         bufferSize?: number;
         compression?: boolean; };
@@ -48,7 +48,7 @@ export class AudioSettingsDataManager {
     private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     // 通知コールバック
-    private onNotification: NotificationCallback | null = null;
+    private, onNotification: NotificationCallback | null = null;
     constructor(audioManager: AudioManager, configManager: ConfigurationManager) {
 
         this.audioManager = audioManager;
@@ -70,7 +70,7 @@ export class AudioSettingsDataManager {
     async exportSettings(''';
                 version: '1.0',
                 timestamp: new Date(''';
-                    master: this.audioManager.getVolume('master',
+                   , master: this.audioManager.getVolume('master',
                     bgm: this.audioManager.getVolume('bgm',)';
                     sfx: this.audioManager.getVolume('sfx',)';
                     muted: this.configManager.get('audio.volumes.muted'');
@@ -100,7 +100,7 @@ export class AudioSettingsDataManager {
 
             const a = document.createElement('a);
             a.href = url; }
-            a.download = `awaputi-audio-settings-${new Date(}.toISOString(}.slice(0, 10}).json`;
+            a.download = `awaputi-audio-settings-${new, Date(}.toISOString(}.slice(0, 10}).json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -158,8 +158,7 @@ export class AudioSettingsDataManager {
                         ';
                         // 設定ファイルを検証
                         if(!this.validateSettingsFile(settings)) {''
-                            throw new Error('Invalid, settings file, format); }'
-                        ';
+                            throw new Error('Invalid, settings file, format); }', ';
                         // 確認ダイアログ
                         const confirm = window.confirm()';
                             this.localizationManager.getText('audio.settings.import.confirm);
@@ -305,8 +304,7 @@ export class AudioSettingsDataManager {
                     await this.configManager.set('audio.quality.sampleRate', settings.quality.sampleRate); }
 
                 }''
-                if(settings.quality.bufferSize) {'
-                    ';
+                if(settings.quality.bufferSize) {', ';
 
                 }
 
@@ -322,16 +320,14 @@ export class AudioSettingsDataManager {
                     await this.configManager.set('audio.effects.reverb', settings.effects.reverb); }
 
                 }''
-                if('compression' in, settings.effects) {'
-                    ';
+                if('compression' in, settings.effects) {', ';
 
                 }
 
                     await this.configManager.set('audio.effects.compression', settings.effects.compression); }
 
                 }''
-                if('environmentalAudio' in, settings.effects) {'
-                    ';
+                if('environmentalAudio' in, settings.effects) {', ';
 
                 }
 

@@ -1,5 +1,5 @@
-import { Scene } from '../core/Scene';''
-import { ITEM_DEFINITIONS } from '../core/ItemSystem';''
+import { Scene  } from '../core/Scene';''
+import { ITEM_DEFINITIONS  } from '../core/ItemSystem';''
 import type { ItemDefinition, ItemInfo } from '../types/game';
 
 /**
@@ -8,7 +8,7 @@ import type { ItemDefinition, ItemInfo } from '../types/game';
 export class ShopScene extends Scene { private selectedItemIndex: number = 0
     private scrollOffset: number = 0;
     private maxVisibleItems: number = 6;
-    private availableItems: ItemDefinition[] = [];
+    private, availableItems: ItemDefinition[] = [];
     constructor(gameEngine: any) {
     
         super(gameEngine);
@@ -112,8 +112,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     private renderItemCard(context: CanvasRenderingContext2D, itemInfo: ItemInfo, x: number, y: number, width: number, height: number, isSelected: boolean): void { ''
         context.save()';
         let bgColor = '#333333';')'
-        if(isSelected) {'
-            ';
+        if(isSelected) {', ';
 
         }
 
@@ -145,8 +144,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             itemName += ` (Lv.${itemInfo.currentLevel})`;
 
         }''
-        if(itemInfo.isMaxLevel) {'
-            ';
+        if(itemInfo.isMaxLevel) {', ';
 
         }
 
@@ -248,7 +246,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         context.textBaseline = 'bottom';
         )';
         const controlsY = canvas.height - 40;')'
-        context.fillText('↑↓: 選択  Enter: 購入  H: ヘルプ  ESC: 戻る', canvas.width / 2, controlsY);''
+        context.fillText('↑↓: 選択  Enter: 購入  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY);''
         context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
         
         context.restore(); }

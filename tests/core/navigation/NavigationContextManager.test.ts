@@ -1,11 +1,11 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * NavigationContextManager.test.js
  * 
  * NavigationContextManagerの単体テスト
  * Issue #163 - Duplicate help/settings screen consolidation
  */
-import { NavigationContextManager } from '../../../src/core/navigation/NavigationContextManager';
+import { NavigationContextManager  } from '../../../src/core/navigation/NavigationContextManager';
 describe('NavigationContextManager', () => {
     let navigationManager: any,
     let mockGameEngine: any,
@@ -15,7 +15,7 @@ describe('NavigationContextManager', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true;);
-                switchScene: jest.fn().mockReturnValue(true
+               , switchScene: jest.fn().mockReturnValue(true
             }
         };
         );

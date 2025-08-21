@@ -28,21 +28,21 @@ export interface DefaultStatistics { totalScore: number,
     comboStats: ComboStats;
     achievementStats: AchievementStats;
     timeStats: TimeStats;
-    sessionStats: SessionStats;
+   , sessionStats: SessionStats;
     [key: string]: any, }
 
 export interface BubbleStats { normal: number,
     electric: number;
     diamond: number;
-    rainbow: number;
+   , rainbow: number;
     [key: string]: number, }
 
 export interface ComboStats { maxCombo: number,
     totalCombos: number;
-    averageCombo: number ,}
+   , averageCombo: number ,}
 
 export interface AchievementStats { total: number;
-    unlocked: number;
+   , unlocked: number;
     progress?: Record<string, any> }
 
 export interface TimeStats { playTime: number,
@@ -53,7 +53,7 @@ export interface SessionStats { recentSessions?: SessionData[];
 
 export interface SessionData { timestamp: number,
     duration: number;
-    score: number;
+   , score: number;
     [key: string]: any, }
 
 export interface BackupData { data: any,
@@ -62,11 +62,11 @@ export interface BackupData { data: any,
 
 export interface HistoricalDataEntry { timestamp: number;
     data: any;
-    source: string }
+   , source: string }
 
 export interface IntegrityAnalysis { isValid: boolean;
     validFieldsRatio: number;
-    invalidFields: string[];
+   , invalidFields: string[];
     [key: string]: any, }
 
 export interface RecoveryAnalysis { corruptedData?: any;
@@ -93,13 +93,13 @@ export interface StructureDamage { missingFields?: string[];
 
 export interface TypeError { field: string,
     expected: string;
-    actual: string ,}
+   , actual: string ,}
 
 export interface RecoveryResult { success: boolean;
     data?: any;
     repairLog?: string[];
     migrationLog?: string[];
-    recoveryMethod: RecoveryMethod;
+   , recoveryMethod: RecoveryMethod;
     error?: string;
     corruptionLevel?: number;
     fieldsRepaired?: number;
@@ -129,11 +129,11 @@ export interface ConversionResult { data: any,
 
 export interface StrategyStats { totalStrategies: number;
     availableStrategies: string[];
-    recoveryPriority: string[] }
+   , recoveryPriority: string[] }
 
 export interface FieldTemplates { bubbleStats: BubbleStats;
     comboStats: ComboStats;
-    achievementStats: AchievementStats;
+   , achievementStats: AchievementStats;
     [key: string]: any, }
 
 // コールバック型
@@ -144,12 +144,12 @@ export interface RecoveryOptions { [key: string]: any, }
 
 // 列挙型
 export type RecoveryMethod = ;
-    | 'corruption_repair' '';
-    | 'partial_loss_recovery' '';
-    | 'version_migration' '';
-    | 'checksum_recalculation' '';
+    | 'corruption_repair', '';
+    | 'partial_loss_recovery', '';
+    | 'version_migration', '';
+    | 'checksum_recalculation', '';
     | 'checksum_recovery''';
-    | 'structure_rebuild' '';
+    | 'structure_rebuild', '';
     | 'complete_recovery';
 
 export type DataSource = 'backup' | 'history' | 'default';''
@@ -159,7 +159,7 @@ export class RecoveryStrategies {
     private dataRecovery: DataRecovery;
     private statisticsManager: StatisticsManager;
     private errorHandler: ErrorHandler;
-    private strategies: Map<string, RecoveryStrategy>;
+    private, strategies: Map<string, RecoveryStrategy>;
     private recoveryPriority: string[]';
 
     constructor(dataRecovery: DataRecovery) {
@@ -213,7 +213,7 @@ export class RecoveryStrategies {
             console.log(`[RecoveryStrategies] Executing, strategy: ${ strategyName)`),
             this.dataRecovery.updateProgress(`recovery_${strategyName)`, 0);
             
-            const result = await strategy(analysis, options);
+            const, result = await, strategy(analysis, options);
             
             this.dataRecovery.updateProgress(`recovery_${strategyName}`, 100}
             console.log(`[RecoveryStrategies] Strategy completed: ${strategyName}`});
@@ -323,7 +323,7 @@ export class RecoveryStrategies {
                 data: recoveredData,
                 repairLog,
                 recoveryMethod: 'partial_loss_recovery';
-                fieldsRecovered: missingFields.length, };
+               , fieldsRecovered: missingFields.length, };
                 dataIntegrity }
             } catch (error) {
             console.error('[RecoveryStrategies] Partial loss recovery failed:', error);
@@ -374,7 +374,7 @@ export class RecoveryStrategies {
                 data: migratedData,
                 migrationLog,
                 recoveryMethod: 'version_migration';
-                fromVersion: dataVersion, };
+               , fromVersion: dataVersion, };
                 toVersion: currentVersion }
             } catch (error) {
             console.error('[RecoveryStrategies] Version mismatch recovery failed:', error);
@@ -420,7 +420,7 @@ export class RecoveryStrategies {
                 } else { // データに問題がある場合は破損として処理
                 return await this.recoverFromCorruption({)
                     corruptedData: data);
-                    corruptionLevel: 1 - integrityCheck.validFieldsRatio, }
+                   , corruptionLevel: 1 - integrityCheck.validFieldsRatio, }
                     corruptedFields: integrityCheck.invalidFields), options);' }'
 
             } catch (error) {
@@ -456,7 +456,7 @@ export class RecoveryStrategies {
             for(const, field of, structureDamage? .missingFields || []) {
                 const defaultValue = this._getDefaultFieldValue(field);
             }
-                recoveredData[field] = defaultValue; : undefined' '
+                recoveredData[field] = defaultValue; : undefined', '
                 repairLog.push(`Added, missing field, with default: ${field}`'});
             }
             
@@ -564,7 +564,7 @@ export class RecoveryStrategies {
                     return { success: true, data: repairedArray ,},
                     
                 default:;
-                    return { success: false, error: `Unknown field type: ${fieldType,}` }
+                    return { success: false, error: `Unknown field, type: ${fieldType,}` }
             } catch (error) {
             return { success: false, error: (error, as Error).message ,}
     }
@@ -609,8 +609,8 @@ export class RecoveryStrategies {
             
             // バージョン固有のマイグレーション処理をここに追加
             // 現在は基本的なフィールド追加のみ実装
-            const currentStructure = this.statisticsManager.getDefaultStatistics();
-            for(const [key, value] of Object.entries(currentStructure} {
+            const, currentStructure = this.statisticsManager.getDefaultStatistics();
+            for(const [key, value] of, Object.entries(currentStructure} {
                 if(!(key in migratedData} {
             }
                     migratedData[key] = value; }
@@ -666,8 +666,7 @@ export class RecoveryStrategies {
      * @private
      */''
     private _repairNumericField(value: any): number { ''
-        if(typeof, value === 'number' && !isNaN(value) {'
-            ';
+        if(typeof, value === 'number' && !isNaN(value) {', ';
 
         }
 

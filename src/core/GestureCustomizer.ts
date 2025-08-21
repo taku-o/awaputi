@@ -1,9 +1,9 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { GestureRecognitionEngine } from './gesture-customizer/GestureRecognitionEngine.js';''
-import { GestureDeviceManager } from './gesture-customizer/GestureDeviceManager.js';''
-import { GestureAdaptationSystem } from './gesture-customizer/GestureAdaptationSystem.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { GestureRecognitionEngine  } from './gesture-customizer/GestureRecognitionEngine.js';''
+import { GestureDeviceManager  } from './gesture-customizer/GestureDeviceManager.js';''
+import { GestureAdaptationSystem  } from './gesture-customizer/GestureAdaptationSystem.js';
 
 /**
  * GestureCustomizer - ジェスチャーカスタマイザーメインコントローラー
@@ -13,7 +13,7 @@ import { GestureAdaptationSystem } from './gesture-customizer/GestureAdaptationS
  */
 export class GestureCustomizer {
     private config: BasicConfig;
-    private state: any;
+    private, state: any;
     constructor(motorAccessibilityManager: any) {
 
         this.motorAccessibilityManager = motorAccessibilityManager;
@@ -28,7 +28,7 @@ export class GestureCustomizer {
             touchSensitivity: 1.0;
             mouseSensitivity: 1.0;
             keyboardSensitivity: 1.0;
-            gestureThresholds: {
+           , gestureThresholds: {
                 minDistance: 20,      // 最小移動距離（ピクセル）;
                 maxTime: 1000,        // 最大ジェスチャー時間（ミリ秒）;
                 minVelocity: 0.1,     // 最小速度（ピクセル/ミリ秒）;
@@ -41,25 +41,25 @@ export class GestureCustomizer {
                 simplifiedMode: false;
                 singleFingerOnly: false;
                 dwellActivation: false;
-                dwellTime: 800 };
+               , dwellTime: 800 };
             deviceAdaptation: { autoDetect: true;
                 touchscreenOptimized: false;
                 mouseOptimized: true;
                 keyboardOptimized: false;
-                gamepadOptimized: false }
+               , gamepadOptimized: false }
         };
         // ジェスチャー認識状態
         this.recognitionState = { isRecognizing: false,
             currentGesture: null;
-            startTime: 0, }
+           , startTime: 0, }
             startPosition: { x: 0, y: 0 ,},
             currentPosition: { x: 0, y: 0 ,},
             touchPoints: [];
-            velocity: { x: 0, y: 0 ,},
+           , velocity: { x: 0, y: 0 ,},
             pressure: 0;
             gestureHistory: [];
             edge: null;
-            scale: 1.0;
+           , scale: 1.0;
         },
         
         // 専門化されたコンポーネントを初期化
@@ -164,7 +164,7 @@ export class GestureCustomizer {
         // キーコンボをジェスチャーとして処理
         const gestureData = {''
             type: 'keyboard';
-            combo: keyboardGesture.combo;
+           , combo: keyboardGesture.combo;
     }
             modifiers: keyboardGesture.modifiers }
         };
@@ -172,7 +172,7 @@ export class GestureCustomizer {
 
         this.executeAlternativeAction({ ')'
             type: 'key');
-            key: keyboardGesture.key,);
+           , key: keyboardGesture.key,);
             modifiers: keyboardGesture.modifiers), gestureData }
     
     /**
@@ -183,11 +183,10 @@ export class GestureCustomizer {
 
         if (Math.abs(leftStick.x) > 0.5 || Math.abs(leftStick.y) > 0.5) { const gestureData = {''
                 type: 'gamepad';
-                direction: Math.atan2(leftStick.y, leftStick.x) * 180 / Math.PI,
+               , direction: Math.atan2(leftStick.y, leftStick.x) * 180 / Math.PI,
                 magnitude: Math.sqrt(leftStick.x * leftStick.x + leftStick.y * leftStick.y ,};
 
-            if(leftStick.y < -0.5) {'
-                ';
+            if(leftStick.y < -0.5) {', ';
 
             }
 
@@ -328,7 +327,7 @@ export class GestureCustomizer {
                 cancelable: true;
                 view: window);
                 clientX: position.x);
-                clientY: position.y;
+               , clientY: position.y;
             ),
     }
             element.dispatchEvent(clickEvent); }
@@ -357,7 +356,7 @@ export class GestureCustomizer {
                 cancelable: true;
                 view: window);
                 clientX: position.x);
-                clientY: position.y;
+               , clientY: position.y;
             ),
     }
             element.dispatchEvent(contextEvent); }
@@ -372,7 +371,7 @@ export class GestureCustomizer {
         const wheelEvent = new WheelEvent('wheel', {
             bubbles: true);
             cancelable: true);
-            view: window,);
+           , view: window,);
             deltaY: deltaY * deviceSettings.mouse.wheelSensitivity;
         ),
         
@@ -402,7 +401,7 @@ export class GestureCustomizer {
             ctrlKey: modifiers.ctrl || false;
             altKey: modifiers.alt || false);
             shiftKey: modifiers.shift || false);
-            metaKey: modifiers.meta || false;
+           , metaKey: modifiers.meta || false;
         ),
         
         document.dispatchEvent(keyEvent);
@@ -415,7 +414,7 @@ export class GestureCustomizer {
                 key: key;
                 ctrlKey: modifiers.ctrl || false;
                 altKey: modifiers.alt || false);
-                shiftKey: modifiers.shift || false) ,}
+               , shiftKey: modifiers.shift || false) ,}
                 metaKey: modifiers.meta || false }
             });
             document.dispatchEvent(keyUpEvent);
@@ -593,7 +592,7 @@ export class GestureCustomizer {
         
         return { : undefined
             timestamp: new Date().toISOString();
-            configuration: {
+           , configuration: {
                 enabled: this.config.enabled;
     ,}
                 oneHandedMode: adaptationStatus.oneHandedMode, };
@@ -603,10 +602,10 @@ export class GestureCustomizer {
                 sessionDuration,
                 gesturesPerMinute: stats.gesturesRecognized / (sessionDuration / 60000);
                 successRate: stats.successfulGestures / stats.gesturesRecognized;
-                engineStats: engineStats ,};
+               , engineStats: engineStats ,};
             userProfile: adaptationStatus.userProfile;
             deviceInfo: deviceInfo;
-            adaptationSystem: adaptationStatus;
+           , adaptationSystem: adaptationStatus;
         },
     }
     

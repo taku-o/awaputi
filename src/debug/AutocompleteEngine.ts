@@ -8,13 +8,13 @@ interface Console { commands?: Map<string, any>;
 
 interface Suggestion { text: string,
     type: 'exact' | 'prefix' | 'partial';
-    score: number ,}
+   , score: number ,}
 
 export class AutocompleteEngine {
     private console: Console | null;
-    private cache: Map<string, string[]>;
+    private, cache: Map<string, string[]>;
     private lastUpdate: number;
-    private cacheTimeout: number;
+    private, cacheTimeout: number;
     constructor(console: Console) {
 
         this.console = console;
@@ -89,7 +89,7 @@ export class AutocompleteEngine {
             .map(cmd => ({)'
                 text: cmd,')';
                 type: 'partial' as const);
-                score: 800 - cmd.length - cmd.toLowerCase().indexOf(input) * 10 ,}
+               , score: 800 - cmd.length - cmd.toLowerCase().indexOf(input) * 10 ,}
             });
         suggestions.push(...partialMatches);
 

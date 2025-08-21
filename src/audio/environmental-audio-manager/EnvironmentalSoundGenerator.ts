@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * Sound characteristics interface (from, BiomeDefinitionManager)
@@ -6,7 +6,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
 export interface SoundCharacteristics { frequency: number,
     amplitude: number;
     noiseLevel: number;
-    modulation: number ,}
+   , modulation: number ,}
 
 /**
  * EnvironmentalSoundGenerator - 環境音生成システム
@@ -15,7 +15,7 @@ export interface SoundCharacteristics { frequency: number,
  */
 export class EnvironmentalSoundGenerator {
     private readonly audioContext: AudioContext;
-    private readonly environmentBuffers: Map<string, AudioBuffer>;
+    private readonly, environmentBuffers: Map<string, AudioBuffer>;
 
     constructor(audioContext: AudioContext) {
 
@@ -31,8 +31,7 @@ export class EnvironmentalSoundGenerator {
     generateBasicEnvironmentalSounds(): void { try {
             // 風音の生成
             const windBuffer = this._generateWindSound();''
-            if(windBuffer) {'
-                ';
+            if(windBuffer) {', ';
 
             }
 
@@ -41,8 +40,7 @@ export class EnvironmentalSoundGenerator {
             
             // 波音の生成
             const waveBuffer = this._generateWaveSound();''
-            if(waveBuffer) {'
-                ';
+            if(waveBuffer) {', ';
 
             }
 
@@ -51,8 +49,7 @@ export class EnvironmentalSoundGenerator {
             
             // 雨音の生成
             const rainBuffer = this._generateRainSound();''
-            if(rainBuffer) {'
-                ';
+            if(rainBuffer) {', ';
 
             }
 
@@ -61,8 +58,7 @@ export class EnvironmentalSoundGenerator {
             
             // 森の音の生成
             const forestBuffer = this._generateForestSound();''
-            if(forestBuffer) {'
-                ';
+            if(forestBuffer) {', ';
 
             }
 
@@ -71,8 +67,7 @@ export class EnvironmentalSoundGenerator {
             
             // 機械音の生成
             const machineryBuffer = this._generateMachinerySound();''
-            if(machineryBuffer) {'
-                ';
+            if(machineryBuffer) {', ';
 
             }
 
@@ -81,8 +76,7 @@ export class EnvironmentalSoundGenerator {
             
             // 洞窟の共鳴音の生成
             const caveBuffer = this._generateCaveResonanceSound();''
-            if(caveBuffer) {'
-                ';
+            if(caveBuffer) {', ';
 
             }
 
@@ -408,7 +402,7 @@ export class EnvironmentalSoundGenerator {
                 frequency: 1.0;
                 amplitude: 0.3;
                 noiseLevel: 0.2;
-                modulation: 0.1 ,};
+               , modulation: 0.1 ,};
             const soundChars = characteristics || defaultCharacteristics;
             
             for(let, i = 0; i < buffer.length; i++) {

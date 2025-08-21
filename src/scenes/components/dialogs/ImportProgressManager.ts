@@ -7,20 +7,20 @@
 
 export interface ProgressStep { id: string,
     label: string;
-    duration: number ,}
+   , duration: number ,}
 
 export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
     x: number;
-    width: number }
+   , width: number }
 
 export interface ProgressStatus { currentStep: number;
     stepProgress: number;
     overallProgress: number;
     currentStepLabel: string;
-    cancelled: boolean }
+   , cancelled: boolean }
 
 export interface ComponentStatus { componentType: string;
     totalSteps: number;
@@ -28,20 +28,20 @@ export interface ComponentStatus { componentType: string;
     stepProgress: number;
     overallProgress: number;
     cancelled: boolean;
-    estimatedTimeRemaining: number }
+   , estimatedTimeRemaining: number }
 
 export interface MainController { data: {
-        step: string;
-        importProgress: number;
+        ste;p: string;
+       , importProgress: number;
         error?: string;
         processingText?: string;
         success?: boolean;
         parsedData?: any; };
     textSettings: { contentFont: string;
-        contentColor: string };
+       , contentColor: string };
     importDataProcessor: {
         validateImportData(data: any): Promise<{ valid: boolean; error?: string }>;
-        checkDataIntegrity(data: any): { valid: boolean; issues: string[] }
+        checkDataIntegrity(data: any): { valid: boolean;, issues: string[] }
         restoreData(data: any): Promise<void>,
     };
     setupButtons(): void;
@@ -52,7 +52,7 @@ export class ImportProgressManager {
     private progressSteps: ProgressStep[];
     private currentStepIndex: number;
     private stepProgress: number;
-    private cancelled: boolean;
+    private, cancelled: boolean;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -242,8 +242,7 @@ export class ImportProgressManager {
                 
                 await this.executeStep(step, i);
 
-                if(this.cancelled) {'
-                    ';
+                if(this.cancelled) {', ';
 
                 }
 
@@ -331,8 +330,7 @@ export class ImportProgressManager {
         
         // データの完全性チェック
         const integrityCheck = this.mainController.importDataProcessor.checkDataIntegrity(this.mainController.data.parsedData);''
-        if(!integrityCheck.valid && integrityCheck.issues.length > 0) {'
-            ';
+        if(!integrityCheck.valid && integrityCheck.issues.length > 0) {', ';
 
         }
 
@@ -457,5 +455,5 @@ export class ImportProgressManager {
             currentStep: this.currentStepIndex;
             stepProgress: this.stepProgress);
             overallProgress: this.mainController.data.importProgress || 0)';
-            cancelled: this.cancelled,
+           , cancelled: this.cancelled,
             estimatedTimeRemaining: this.getEstimatedTimeRemaining('));

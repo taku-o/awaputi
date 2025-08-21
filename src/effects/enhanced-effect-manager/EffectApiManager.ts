@@ -1,32 +1,32 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * レンダリング設定インターフェース
  */
 interface RenderSettings { enableLighting: boolean,
     enableShadows: boolean;
-    enableReflections: boolean,
+   , enableReflections: boolean,
     enablePostProcessing: boolean,
     qualityLevel: 'low' | 'medium' | 'high' | 'ultra';
     enableBatching: boolean;
     reducedEffects: boolean;
     transitionSmoothing: boolean;
-    transitionDuration: number ,}
+   , transitionDuration: number ,}
 
 /**
  * 拡張変換状態インターフェース
  */
 interface EnhancedTransform { depthOfField: number;
-    motionBlur: {
-        x: number;
+   , motionBlur: {
+        ;x: number;
         y: number;
-        intensity: number };
+       , intensity: number };
     chromatic: number;
     vignette: number;
     noise: number;
     scanlines: number;
-    glitch: { intensity: number;
-        frequency: number }
+   , glitch: { intensity: number;
+       , frequency: number }
 
 /**
  * 遷移効果オプションインターフェース
@@ -40,7 +40,7 @@ interface TransitionOptions { ''
     slideDirection?: 'left' | 'right' | 'up' | 'down';''
     zoomType?: 'in' | 'out'; }
 
-    center?: { x: number; y: number }''
+    center?: { x: number;, y: number }''
     pattern?: 'horizontal' | 'vertical' | 'circular' | 'diamond';
     noiseScale?: number;
     threshold?: number;
@@ -55,7 +55,7 @@ interface TransitionEffect { id: number,''
     transitionType: string;
     duration: number;
     elapsed: number;
-    options: TransitionOptions
+   , options: TransitionOptions
     ,}
 
 /**
@@ -63,7 +63,7 @@ interface TransitionEffect { id: number,''
  */
 interface EffectController { effectId: number;
     transitionEffects: TransitionEffect[];
-    performanceMetrics: Record<string, any> }
+   , performanceMetrics: Record<string, any> }
 
 /**
  * Effect API Manager
@@ -74,7 +74,7 @@ export class EffectApiManager {
     private effectController: EffectController;
     private errorHandler: any;
     private renderSettings: RenderSettings;
-    private enhancedTransform: EnhancedTransform;
+    private, enhancedTransform: EnhancedTransform;
     constructor(canvas: HTMLCanvasElement, effectController: EffectController) {
 
         this.canvas = canvas;
@@ -84,7 +84,7 @@ export class EffectApiManager {
             qualityLevel: 'high', // 'low', 'medium', 'high', 'ultra';
             enableBatching: false;
             reducedEffects: false;
-            transitionSmoothing: false;
+           , transitionSmoothing: false;
     ,}
             transitionDuration: 300 }
         };
@@ -95,7 +95,7 @@ export class EffectApiManager {
             vignette: 0;
             noise: 0);
             scanlines: 0);
-            glitch: { intensity: 0, frequency: 0 ,};
+           , glitch: { intensity: 0, frequency: 0 ,};
 
         console.log('[EffectApiManager] API管理システムを初期化しました');
     }
@@ -114,12 +114,12 @@ export class EffectApiManager {
                 type: 'transition',
                 transitionType: type, // 'fade', 'slide', 'zoom', 'wipe', 'dissolve';
                 duration: duration;
-                elapsed: 0,
+               , elapsed: 0,
                 options: {''
                     direction: options.direction || 'in', // 'in', 'out', 'cross''';
                     easing: options.easing || 'easeInOut',
                     color: options.color || '#000000';
-                    intensity: options.intensity || 1.0;
+                   , intensity: options.intensity || 1.0;
                     ...options
             ,};
             
@@ -151,7 +151,7 @@ export class EffectApiManager {
     /**
      * ズーム遷移効果'
      */''
-    addZoomTransition(duration: number, zoomType: 'in' | 'out' = 'in', center: { x: number; y: number ) | null = null'): number { }
+    addZoomTransition(duration: number, zoomType: 'in' | 'out' = 'in', center: { x: number;, y: number ) | null = null'): number { }
 
         const centerPoint = center || { x: this.canvas.width / 2, y: this.canvas.height / 2 ,}''
         return this.addTransitionEffect('zoom', duration, { ')'
@@ -340,7 +340,7 @@ export class EffectApiManager {
     /**
      * 現在の設定を取得
      */
-    getCurrentSettings(): { renderSettings: RenderSettings; enhancedTransform: EnhancedTransform } { return { }
+    getCurrentSettings(): { renderSettings: RenderSettings;, enhancedTransform: EnhancedTransform } { return { }
             renderSettings: { ...this.renderSettings;
             enhancedTransform: { ...this.enhancedTransform;
     }

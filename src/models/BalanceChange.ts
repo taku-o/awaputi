@@ -5,11 +5,11 @@
  * 変更の追跡、影響分析、ロールバック機能を提供します。
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 ';
 
 interface ErrorHandler { ''
-    handleError: (error: Error, code: string, context?: any') => void }'
+    handleError: (erro;r: Error, code: string, context?: any') => void }'
 }
 
 interface BalanceChangeData { id?: string;
@@ -44,19 +44,19 @@ interface BalanceChangeData { id?: string;
 
 interface RelatedChange { changeId: string,
     relationshipType: string;
-    addedAt: number ,}
+   , addedAt: number ,}
 
 interface ValidationResult { isValid: boolean;
     errors: string[];
     warnings: string[];
-    timestamp: number;
+   , timestamp: number;
     error?: string }
 
 interface ImpactCalculation { numerical: number;
-    percentage: number,
+   , percentage: number,
     direction: 'increase' | 'decrease' | 'neutral' | 'unknown',
     magnitude: 'low' | 'medium' | 'high' | 'critical' | 'unknown';
-    description: string;
+   , description: string;
     error?: string ,}
 
 type ChangeType = 'create' | 'delete' | 'increase' | 'decrease' | 'modify' | 'no_change';''
@@ -67,7 +67,7 @@ type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 export class BalanceChange {
     private errorHandler: ErrorHandler;
     // 必須フィールド
-    public readonly id: string,
+    public readonly, id: string,
     public readonly timestamp: number,
     public configType: string | null,
     public bubbleType: string | null,
@@ -184,15 +184,13 @@ export class BalanceChange {
      * @private
      */'
     private _determineChangeType(oldValue: any, newValue: any): ChangeType { ''
-        if(oldValue === undefined || oldValue === null) {'
-            ';
+        if(oldValue === undefined || oldValue === null) {', ';
 
         }
 
             return 'create';
 
-        if(newValue === undefined || newValue === null) {'
-            ';
+        if(newValue === undefined || newValue === null) {', ';
 
         }
 
@@ -210,8 +208,7 @@ export class BalanceChange {
 
                 return 'no_change';
 
-        if(oldValue !== newValue) {'
-            ';
+        if(oldValue !== newValue) {', ';
 
         }
 
@@ -229,31 +226,27 @@ export class BalanceChange {
         
         try {
             // 必須フィールドの検証
-            if(!this.configType) {'
-                '
+            if(!this.configType) {', '
             }
 
                 errors.push('configType, is required); }'
             }
 
-            if(!this.bubbleType) {'
-                ';
+            if(!this.bubbleType) {', ';
 
             }
 
                 errors.push('bubbleType, is required); }'
             }
 
-            if(!this.propertyType) {'
-                ';
+            if(!this.propertyType) {', ';
 
             }
 
                 errors.push('propertyType, is required); }'
             }
 
-            if(this.oldValue === undefined && this.newValue === undefined) {'
-                ';
+            if(this.oldValue === undefined && this.newValue === undefined) {', ';
 
             }
 
@@ -262,8 +255,7 @@ export class BalanceChange {
             ';
             // 作成者の検証
             if(!this.author || this.author.trim() === ''') { ''
-                warnings.push('Author, information is, missing); }'
-            ';
+                warnings.push('Author, information is, missing); }', ';
             // 理由の検証
             if(!this.rationale || this.rationale.trim() === ''') { ''
                 warnings.push('Rationale, for change, is not, provided''); }
@@ -278,8 +270,7 @@ export class BalanceChange {
                     warnings.push('Large, change detected (>200%). Consider gradual adjustment.'); }
                 }
 
-                if(this.newValue <= 0 && this.oldValue > 0) {'
-                    ';
+                if(this.newValue <= 0 && this.oldValue > 0) {', ';
 
                 }
 
@@ -302,7 +293,7 @@ export class BalanceChange {
             } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_VALIDATION', {)
                 changeId: this.id);
-                configType: this.configType,)';
+               , configType: this.configType,)';
                 bubbleType: this.bubbleType),' }'
 
             }');
@@ -310,7 +301,7 @@ export class BalanceChange {
 
             return { isValid: false,''
                 errors: ['Validation failed due to error];
-                warnings: [],
+               , warnings: [],
                 error: (error, as Error).message,
                 timestamp: Date.now()';
     markAsApplied(appliedBy: string = 'system): boolean {'
@@ -479,8 +470,7 @@ export class BalanceChange {
                 ';
 
                 const absPercentage = Math.abs(impact.percentage);''
-                if(absPercentage >= 100) {'
-                    ';
+                if(absPercentage >= 100) {', ';
 
                 }
 
@@ -510,7 +500,7 @@ export class BalanceChange {
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_IMPACT', {)
                 changeId: this.id);
-                oldValue: this.oldValue,)';
+               , oldValue: this.oldValue,)';
                 newValue: this.newValue),' }'
 
             }');
@@ -556,7 +546,7 @@ export class BalanceChange {
             appliedAt: this.appliedAt;
             appliedBy: this.appliedBy;
             severity: this.severity;
-            riskLevel: this.riskLevel, };
+           , riskLevel: this.riskLevel, };
             affectedSystems: this.affectedSystems }
         }
     
@@ -573,7 +563,7 @@ export class BalanceChange {
 
         } catch (error) {
             console.error('[BalanceChange] JSON復元エラー:', error); }
-            throw new Error(`Failed, to restore, BalanceChange from, JSON: ${(error, as Error}).message}`);
+            throw new Error(`Failed, to restore, BalanceChange from, JSON: ${(error, as, Error}).message}`);
         }
     }
     
@@ -647,14 +637,14 @@ export class BalanceChange {
         console.log(`  Rolled, Back: ${this.rolledBack)`),
 
         console.log(`  Severity: ${this.severity)`),''
-        console.log(`  Risk Level: ${this.riskLevel,}`'},' }
+        console.log(`  Risk, Level: ${this.riskLevel,}`'},' }
 
         console.log(`  Tags: ${this.tags.join(', '})`);
         
         const impact = this.calculateImpact();
         console.log(`  Impact: ${impact.description} (${ impact.magnitude)`);
 
-        const validation = this.validate();
+        const, validation = this.validate();
 
         console.log(`  Valid: ${validation.isValid)`},''
         if(validation.errors.length > 0} {' }'

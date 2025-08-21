@@ -21,14 +21,14 @@ interface BrowserInfo { name: string,
     isSupported: boolean;
     supportedFeatures: string[];
     restrictions: string[];
-    fallbacksRequired: string[] ,}
+   , fallbacksRequired: string[] ,}
 
 interface CanvasSupport { available: boolean;
     context2d: boolean;
     toDataURL: boolean;
     toBlob: boolean;
     fallbackMethod: string | null;
-    errorMessage: string | null }
+   , errorMessage: string | null }
 
 interface LocalStorageSupport { available: boolean;
     readable: boolean;
@@ -36,50 +36,50 @@ interface LocalStorageSupport { available: boolean;
     quotaExceeded: boolean;
     fallbackMethod: string | null;
     errorMessage: string | null;
-    estimatedQuota: number }
+   , estimatedQuota: number }
 
 interface ModulesSupport { available: boolean;
     dynamicImport: boolean;
     staticImport: boolean;
     workerModules: boolean;
     fallbackMethod: string | null;
-    errorMessage: string | null }
+   , errorMessage: string | null }
 
 interface FallbackConfig { canvas: {
-        enableSVGFallback: boolean;
+        enableSVGFallbac;k: boolean;
         enableStaticIconFallback: boolean;
-        enableTextFallback: boolean };
+       , enableTextFallback: boolean };
     localStorage: { enableCookieFallback: boolean;
         enableMemoryFallback: boolean;
-        enableNoStorageFallback: boolean };
+       , enableNoStorageFallback: boolean };
     modules: { enableBundleFallback: boolean;
         enableInlineFallback: boolean;
-        enableLegacyScriptFallback: boolean }
+       , enableLegacyScriptFallback: boolean }
 
 interface CanvasFallbackResult { success: boolean,
     dataUrl?: string;
     method: string;
-    size: number;
+   , size: number;
     warning?: string;
     error?: string;
     recommendation?: string; ,}
 
-interface StorageFallback { getItem: (key: string) => string | null,
-    setItem: (key: string, value: string) => void,
-    removeItem: (key: string) => void;
+interface StorageFallback { getItem: (ke;y: string) => string | null,
+    setItem: (ke;y: string, value: string) => void,
+    removeItem: (ke;y: string) => void;
     clear?: () => void;
     _storageType: string ,}
 }
 
 interface Recommendation { type: string;
     message: string;
-    priority: 'high' | 'medium' | 'low' }
+   , priority: 'high' | 'medium' | 'low' }
 
 interface ComprehensiveSupport { browser: BrowserInfo;
     canvas: CanvasSupport;
     localStorage: LocalStorageSupport;
     modules: ModulesSupport;
-    recommendations: Recommendation[]
+   , recommendations: Recommendation[]
     }
 
 class BrowserCompatibilityManager { /**
@@ -99,13 +99,13 @@ class BrowserCompatibilityManager { /**
     static FALLBACK_CONFIG: FallbackConfig = { canvas: {
             enableSVGFallback: true;
             enableStaticIconFallback: true;
-            enableTextFallback: true };
+           , enableTextFallback: true };
         localStorage: { enableCookieFallback: true;
             enableMemoryFallback: true;
-            enableNoStorageFallback: true };
+           , enableNoStorageFallback: true };
         modules: { enableBundleFallback: true;
             enableInlineFallback: true;
-            enableLegacyScriptFallback: true }
+           , enableLegacyScriptFallback: true }
     };
     /**
      * ブラウザ情報とサポート状況を取得'
@@ -116,7 +116,7 @@ class BrowserCompatibilityManager { /**
                 isSupported: false;
                 supportedFeatures: [];
                 restrictions: [];
-                fallbacksRequired: []);
+               , fallbacksRequired: []);
             })'
             // Chrome detection
             if (userAgent.includes('Chrome'') && !userAgent.includes('Edg) { ''
@@ -170,7 +170,7 @@ class BrowserCompatibilityManager { /**
                 name: 'unknown';
                 version: 0;
                 isSupported: false;
-                supportedFeatures: [],
+               , supportedFeatures: [],
                 restrictions: [],' };
 
                 fallbacksRequired: ['all] }'
@@ -315,7 +315,7 @@ class BrowserCompatibilityManager { /**
             staticImport: false;
             workerModules: false;
             fallbackMethod: null;
-            errorMessage: null };
+           , errorMessage: null };
 ';
 
         try {'
@@ -576,8 +576,7 @@ class BrowserCompatibilityManager { /**
      */''
     static _determineFallbacksRequired(browserInfo: BrowserInfo): string[] { const fallbacks: string[] = [],
         // 古いブラウザ向けの包括的フォールバック
-        if(browserInfo.name === 'ie' || browserInfo.version < 50) {'
-            ';
+        if(browserInfo.name === 'ie' || browserInfo.version < 50) {', ';
 
         }
 
@@ -615,7 +614,7 @@ class BrowserCompatibilityManager { /**
     static getComprehensiveSupport(): ComprehensiveSupport { return { browser: this.getBrowserInfo(,
             canvas: this.getCanvasSupport();
             localStorage: this.getLocalStorageSupport();
-            modules: this.getModulesSupport( ,};
+           , modules: this.getModulesSupport( ,};
             recommendations: this._generateRecommendations(); }
         }
 

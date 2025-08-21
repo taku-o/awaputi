@@ -7,7 +7,7 @@
  * @since Issue #170 - Task 1.2: AccessibilityProfileComponent Integration Example
  */
 
-import { AccessibilityProfileComponent } from '../AccessibilityProfileComponent.js';
+import { AccessibilityProfileComponent  } from '../AccessibilityProfileComponent.js';
 
 interface GameEngine { // Define game engine interface properties as needed }
 
@@ -16,20 +16,20 @@ interface SettingItem { key: string,
     type: string;
     component: string;
     description: string;
-    category: string ,}
+   , category: string ,}
 
 interface ProfileInfo { name: string;
-    description: string }
+   , description: string }
 
 interface ProfileChangeDetail { profileId: string;
-    timestamp: number }
+   , timestamp: number }
 
 /**
  * SettingsSceneでAccessibilityProfileComponentを統合する例
  */
 export class AccessibilityProfileIntegrationExample {
     private gameEngine: GameEngine;
-    private accessibilityProfileComponent: AccessibilityProfileComponent | null;
+    private, accessibilityProfileComponent: AccessibilityProfileComponent | null;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine

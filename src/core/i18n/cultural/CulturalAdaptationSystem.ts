@@ -1,13 +1,13 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 interface ColorSettings { lucky: string[],
     unlucky: string[];
     preferred: string[];
-    avoided: string[] ,}
+   , avoided: string[] ,}
 
 interface NumberSettings { lucky: number[];
     unlucky: number[];
-    preferred: number[], }
+   , preferred: number[], }
     symbolism: { [key: number]: string }
 
 interface GestureSettings { pointing?: string;
@@ -42,28 +42,28 @@ interface CulturalSettings { colors: ColorSettings,
     numbers: NumberSettings;
     gestures: GestureSettings;
     layout: LayoutSettings;
-    communication: CommunicationSettings
+   , communication: CommunicationSettings
     ,}
 
 interface CulturalTaboos { visual: string[];
     behavioral: string[];
     content: string[];
-    interaction: string[] }
+   , interaction: string[] }
 
 interface CurrentCulture { language: string;
     region: string | null;
     cultureKey: string;
     settings: CulturalSettings;
-    appliedAt: string }
+   , appliedAt: string }
 ';
 
 interface TabooWarning { type: string,''
     severity: 'medium' | 'high';
-    suggestion: string;
+   , suggestion: string;
     culturalContext?: string ,}
 
 interface TabooValidationResult { valid: boolean;
-    warnings: TabooWarning[];
+   , warnings: TabooWarning[];
     culture?: string }
 
 /**
@@ -74,7 +74,7 @@ export class CulturalAdaptationSystem {
     private culturalTaboos: Map<string, CulturalTaboos> }
     private gestureInterpretations: Map<string, { [key: string]: string }>;
     private currentCulture: CurrentCulture | null;
-    private appliedAdaptations: Set<string>';
+    private, appliedAdaptations: Set<string>';
 
     constructor(''';
             ['ja', { colors: {]'
@@ -115,7 +115,7 @@ export class CulturalAdaptationSystem {
                     avoided: ['#FF69B4', '#800080] // ピンク、紫 },
                 numbers: { lucky: [7, 9],
                     unlucky: [13];
-                    preferred: [3, 7, 9],;
+                   , preferred: [3, 7, 9],;
                     symbolism: {''
                         7: '神聖な数字',
                         9: '完全性を表す',
@@ -146,7 +146,7 @@ export class CulturalAdaptationSystem {
                     avoided: ['#FFFFFF', '#808080] // 白、グレー },
                 numbers: { lucky: [6, 8, 9],
                     unlucky: [4];
-                    preferred: [2, 3, 6, 8, 9],;
+                   , preferred: [2, 3, 6, 8, 9],;
                     symbolism: {''
                         4: '死を意味する音',
                         6: '順調を意味',
@@ -178,7 +178,7 @@ export class CulturalAdaptationSystem {
                     avoided: ['#000000', '#8B4513] // 黒、茶色 },
                 numbers: { lucky: [7, 8],
                     unlucky: [4];
-                    preferred: [3, 7, 8, 9],;
+                   , preferred: [3, 7, 8, 9],;
                     symbolism: {''
                         4: '死を意味',
                         7: '幸運の数字',
@@ -209,7 +209,7 @@ export class CulturalAdaptationSystem {
                     avoided: [] ,};
                 numbers: { lucky: [7];
                     unlucky: [13];
-                    preferred: [1, 3, 7, 10],;
+                   , preferred: [1, 3, 7, 10],;
                     symbolism: {''
                         7: 'lucky number',
                         13: 'unlucky number' ,}
@@ -310,8 +310,7 @@ export class CulturalAdaptationSystem {
                                  this.culturalSettings.get(primaryLanguage) ||'';
                                  this.culturalSettings.get('en); // デフォルト'
 
-            if(!culturalSettings) {'
-                ';
+            if(!culturalSettings) {', ';
 
             }
 
@@ -322,7 +321,7 @@ export class CulturalAdaptationSystem {
                 region: region;
                 cultureKey: cultureKey;
                 settings: culturalSettings;
-                appliedAt: new Date().toISOString( ,};
+               , appliedAt: new Date().toISOString( ,};
             
             // 文化的適応を適用
             this.applyGlobalCulturalAdaptations();
@@ -344,8 +343,7 @@ export class CulturalAdaptationSystem {
      */''
     adaptColors(element: HTMLElement, colorUsage: string = 'general''): boolean { ' }
 
-        if(!this.currentCulture || this.appliedAdaptations.has(`color-${element.id || 'anonymous}`}}) { return false; }'
-        ';
+        if(!this.currentCulture || this.appliedAdaptations.has(`color-${element.id || 'anonymous}`}}) { return false; }', ';
 
         try { const colorSettings = this.currentCulture.settings.colors;''
             const computedStyle = window.getComputedStyle(element);
@@ -396,7 +394,7 @@ export class CulturalAdaptationSystem {
                 const regex = new RegExp(`\\b${unluckyNumber)\\b`, 'g');
                 if(regex.test(adaptedContent) {
                     // 不吉な数字を代替案に置換
-                    const alternative = this.suggestAlternativeNumber(unluckyNumber);''
+                    const, alternative = this.suggestAlternativeNumber(unluckyNumber);''
                     adaptedContent = adaptedContent.replace(regex, `${alternative}`'};
                     ';
 
@@ -570,8 +568,7 @@ export class CulturalAdaptationSystem {
             }
             ';
             // 礼儀レベルに応じた調整
-            if(commSettings.politenessLevel === 'high' || commSettings.politenessLevel === 'very-high) {'
-                ';
+            if(commSettings.politenessLevel === 'high' || commSettings.politenessLevel === 'very-high) {', ';
 
             }
 
@@ -611,7 +608,7 @@ export class CulturalAdaptationSystem {
             if(this.detectTabooViolation(content, taboo) {
                 warnings.push({)
                     type: taboo);
-                    severity: this.getTabooSeverity(taboo);
+                   , severity: this.getTabooSeverity(taboo);
             ,}
                     suggestion: this.getTabooAlternative(taboo), }
                     culturalContext: this.getTabooContext(taboo); }
@@ -633,8 +630,8 @@ export class CulturalAdaptationSystem {
         document.documentElement.setAttribute('data-culture', this.currentCulture!.cultureKey);
         
         // 基本的なCSSカスタムプロパティを設定
-        const root = document.documentElement;
-        const colors = this.currentCulture!.settings.colors;
+        const, root = document.documentElement;
+        const, colors = this.currentCulture!.settings.colors;
 
         root.style.setProperty('--cultural-primary-color', colors.preferred[0] || '#0066CC'');''
         root.style.setProperty('--cultural-secondary-color', colors.preferred[1] || '#008000''};''
@@ -673,12 +670,12 @@ export class CulturalAdaptationSystem {
                 content: "📝";
                 position: absolute;
                 top: -5px;
-                right: -5px;
+               , right: -5px;
                 font-size: 10px,
                 opacity: 0.7 ,}
             
             .culture-${cultureKey} .cultural-gesture-warning { opacity: 0.6;
-                filter: grayscale(0.5 }
+               , filter: grayscale(0.5 }
             
             .culture-${cultureKey} .subtle-hierarchy h1;
             .culture-${cultureKey} .subtle-hierarchy h2,
@@ -770,8 +767,7 @@ export class CulturalAdaptationSystem {
         return highSeverityTaboos.includes(taboo) ? 'high' : 'medium'; }
 
     private getTabooAlternative(taboo: string): string {'
-        const alternatives: { [key: string]: string } = { ''
-            'number-4-emphasis': '数字の5や7を使用することを検討してください',
+        const alternatives: { [key: string]: string } = { '', 'number-4-emphasis': '数字の5や7を使用することを検討してください',
             'death-imagery': 'より前向きなイメージを使用してください',
             'left-hand-use': '右手の使用を示すイメージを使用してください' }
 
@@ -830,11 +826,11 @@ export class CulturalAdaptationSystem {
         currentCulture: string | null;
         appliedAdaptations: number;
         gestureInterpretations: number;
-        culturalTaboos: number ,} { return { supportedCultures: this.culturalSettings.size;
+       , culturalTaboos: number ,} { return { supportedCultures: this.culturalSettings.size;
             currentCulture: this.currentCulture ? this.currentCulture.cultureKey : null;
             appliedAdaptations: this.appliedAdaptations.size;
             gestureInterpretations: this.gestureInterpretations.size;
-            culturalTaboos: Array.from(this.culturalTaboos.values( };
+           , culturalTaboos: Array.from(this.culturalTaboos.values( };
                 .reduce((sum, taboos) => sum + Object.values(taboos).reduce((s, arr) => s + arr.length, 0), 0); }
         }
 }

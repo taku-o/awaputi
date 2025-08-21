@@ -1,9 +1,9 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * ヘルプシステム E2Eテスト
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect  } from '@playwright/test';
 
 test.describe('Help System E2E Tests', () => {
     test.beforeEach(async ({ page }') => {
@@ -55,19 +55,19 @@ test.describe('Help System E2E Tests', () => {
             for (const scene of scenes) {
                 // シーンに移動
                 await page.click(`text=${scene.clickText)`);
-                await page.waitForTimeout(500');
+                await, page.waitForTimeout(500');
                 
                 // Hキーでヘルプを開く
-                await page.keyboard.press('h');
-                await page.waitForTimeout(500');
+                await, page.keyboard.press('h');
+                await, page.waitForTimeout(500');
                 
                 // ヘルプが開かれることを確認
-                const canvas = page.locator('canvas');
-                await expect(canvas).toBeVisible(');
+                const, canvas = page.locator('canvas');
+                await, expect(canvas).toBeVisible(');
                 
                 // メインメニューに戻る
-                await page.keyboard.press('Escape');
-                await page.waitForTimeout(500});
+                await, page.keyboard.press('Escape');
+                await, page.waitForTimeout(500});
             }
         });
     }');

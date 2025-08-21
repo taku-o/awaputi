@@ -13,7 +13,7 @@ export interface SeasonalParticle { x: number,
     color: string;
     life: number;
     decay: number;
-    type: string;
+   , type: string;
     rotation?: number;
     rotationSpeed?: number;
     gravity?: number;
@@ -42,18 +42,18 @@ export interface SeasonalEffect { id: string,
     y: number;
     config: EffectConfig;
     createdTime: number;
-    particles: SeasonalParticle[]
+   , particles: SeasonalParticle[]
     ,}
 
 export interface EffectConfig { colors: string[];
-    particleTypes: string[];
+   , particleTypes: string[];
     size?: number;
     intensity?: number;
     particleCount?: number; }
 
 // テーマ設定の型定義
 export interface ThemeConfig { colors: {
-        primary: string[];
+        primar;y: string[];
         accent?: string[] };
     particles: { types: string[] };
     effects: { bubbleDestruction: string;
@@ -68,12 +68,12 @@ export interface ErrorHandler { handleError(error: Error, context: string): void
 
 export interface EffectStatistics { activeEffects: number,
     totalParticles: number;
-    memoryUsage: number ,}
+   , memoryUsage: number ,}
 
 export class SeasonalParticleRenderer {
     private qualityController: QualityController | null;
     private errorHandler: ErrorHandler | null;
-    private activeSeasonalEffects: Map<string, SeasonalEffect>;
+    private, activeSeasonalEffects: Map<string, SeasonalEffect>;
     private seasonalParticles: SeasonalParticle[];
     constructor(qualityController?: QualityController, errorHandler?: ErrorHandler) {
     
@@ -111,12 +111,11 @@ export class SeasonalParticleRenderer {
                 colors);
                 particleTypes,);
                 size: bubbleSize);
-                intensity: this._getEffectIntensity( ,});
+               , intensity: this._getEffectIntensity( ,});
             ';
 
         } catch (error) {
-            if(this.errorHandler) {'
-                ';
+            if(this.errorHandler) {', ';
 
             }
 
@@ -154,8 +153,7 @@ export class SeasonalParticleRenderer {
             ';
 
         } catch (error) {
-            if(this.errorHandler) {'
-                ';
+            if(this.errorHandler) {', ';
 
             }
 
@@ -180,7 +178,7 @@ export class SeasonalParticleRenderer {
             y: y;
             config: config;
             createdTime: performance.now();
-            particles: [] ,};
+           , particles: [] ,};
         ';
         // エフェクトタイプに応じたパーティクル生成
         switch(effectType) {'
@@ -239,10 +237,10 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 3 + Math.random()';
-                type: 'cherry_blossom',);
+               , type: 'cherry_blossom',);
                 rotation: Math.random() * Math.PI * 2;
         ,}
                 rotationSpeed: (Math.random() - 0.5) * 0.1 }
@@ -266,11 +264,11 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity - 1, // 上向きの初速;
                 size: 2 + Math.random(''';
                 type: 'water_drop);
-                gravity: 0.15 ,}
+               , gravity: 0.15 ,}
                 bounce: 0.3) }
             });
         }
@@ -292,12 +290,12 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 4 + Math.random()';
-                type: 'maple_leaf',);
+               , type: 'maple_leaf',);
                 rotation: Math.random() * Math.PI * 2;
-                rotationSpeed: (Math.random() - 0.5) * 0.15;
+               , rotationSpeed: (Math.random() - 0.5) * 0.15;
         ,}
                 flutter: Math.random() * 0.1 }
             });
@@ -320,11 +318,11 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 2 + Math.random()';
                 type: 'ice_crystal');
-                sparkle: true, }
+               , sparkle: true, }
                 sparkleIntensity: 0.5 + Math.random() * 0.5 }
             });
         }
@@ -346,12 +344,12 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 3 + Math.random(''';
                 type: 'firework';
                 brightness: 1.0);
-                trail: true ,}
+               , trail: true ,}
                 trailLength: 5) }
             });
         }
@@ -373,11 +371,11 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity - 0.5,
                 size: 4 + Math.random(''';
                 type: 'heart);
-                pulse: true ,}
+               , pulse: true ,}
                 pulseSpeed: 0.1) }
             });
         }
@@ -399,12 +397,12 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 5 + Math.random(''';
                 type: 'ghost';
                 opacity: 0.7);
-                wobble: true ,}
+               , wobble: true ,}
                 wobbleAmplitude: 1) }
             });
         }
@@ -426,11 +424,11 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 3 + Math.random(''';
                 type: 'christmas_star);
-                twinkle: true ,}
+               , twinkle: true ,}
                 twinkleSpeed: 0.15) }
             });
         }
@@ -452,7 +450,7 @@ export class SeasonalParticleRenderer {
             effect.particles.push({)
                 x: effect.x,);
                 y: effect.y);
-                vx: Math.cos(angle) * velocity,
+               , vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 3 + Math.random(''
         ,})'

@@ -1,7 +1,7 @@
 /**
  * SocialSharingManager 基盤テスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Mock interfaces
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
 interface MockAchievementManager { getAchievements: jest.Mock }
@@ -12,27 +12,27 @@ interface MockGameEngine { statisticsManager: MockStatisticsManager,
     on: jest.Mock;
     off: jest.Mock;
     emit: jest.Mock;
-    isDebugMode: jest.Mock<boolean> ,}
+   , isDebugMode: jest.Mock<boolean> ,}
 interface MockLocalStorage { getItem: jest.Mock<string | null>;
     setItem: jest.Mock;
     removeItem: jest.Mock }
 interface ShareSettings { enabled: boolean;
     autoPrompt: boolean;
-    shareOnHighScore: boolean }
+   , shareOnHighScore: boolean }
 interface PerformanceStats { shareRequests: number;
     successfulShares: number;
-    failedShares: number }
+   , failedShares: number }
 interface GameData { score: number;
     isHighScore: boolean;
-    stage: string }
+   , stage: string }
 interface ScoreData { score: number;
-    stage: string }
+   , stage: string }
 interface AchievementData { id: string;
-    name: string;
+   , name: string;
     description?: string }
 interface ShareResult { type: string;
-    content: {
-        score?: number;
+   , content: {
+        scor;e?: number;
         message: string;
         achievement?: AchievementData
     };
@@ -45,9 +45,9 @@ interface DebugInfo { settings: ShareSettings,
     systemIntegration: { gameEngine: boolean;
         statisticsManager: boolean;
         achievementManager: boolean;
-        localizationManager: boolean };
+       , localizationManager: boolean };
     platform: string;
-    onlineStatus: boolean;
+   , onlineStatus: boolean;
 }
 interface MockShareContentGenerator { generateScoreMessage?: jest.Mock;
     generateAchievementMessage?: jest.Mock; }
@@ -57,7 +57,7 @@ interface SocialSharingManagerInstance { gameEngine: MockGameEngine,
     statisticsManager?: MockStatisticsManager;
     achievementManager?: MockAchievementManager;
     localizationManager?: MockLocalizationManager;
-    shareContentGenerator: MockShareContentGenerator | null;
+   , shareContentGenerator: MockShareContentGenerator | null;
     initialize(): Promise<void>;
     loadSettings(): Promise<void>;
     saveSettings(): Promise<void>;
@@ -91,7 +91,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             localizationManager: { ''
                 translate: jest.fn<string>().mockReturnValue('test, message };
             on: jest.fn();
-            off: jest.fn(),
+           , off: jest.fn(),
             emit: jest.fn(),
             isDebugMode: jest.fn<boolean>().mockReturnValue(false);
         };
@@ -206,7 +206,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(gameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith(')';
                 'gameEnd');
                 expect.objectContaining({ score: 1000)
-                    wasShared: false),
+                   , wasShared: false),
             );' }'
 
         }');''

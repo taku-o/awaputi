@@ -14,13 +14,13 @@ export interface MemoryUsage { translations: number,
     cache: number;
     metadata: number;
     other: number;
-    total: number ,}
+   , total: number ,}
 
 export interface OptimizationStrategies { stringDeduplication: boolean;
     objectPooling: boolean;
     lazyLoading: boolean;
     compressionThreshold: number;
-    weakReferences: boolean }
+   , weakReferences: boolean }
 
 export interface OptimizationStats { totalOptimizations: number;
     memoryFreed: number;
@@ -29,7 +29,7 @@ export interface OptimizationStats { totalOptimizations: number;
     gcRuns: number;
     lastGcTime: number;
     averageGcTime: number;
-    memoryPressureEvents: number }
+   , memoryPressureEvents: number }
 
 export type MemoryPressureHandler = () => void;
 
@@ -45,7 +45,7 @@ export class MemoryOptimizer {
     // メモリ追跡
     private memoryUsage: MemoryUsage;
     // オブジェクト参照管理
-    private objectReferences: WeakMap<object, any>;
+    private, objectReferences: WeakMap<object, any>;
     private stringPool: Map<string, string>;
     private translationPool: Map<string, any>;
     
@@ -71,7 +71,7 @@ export class MemoryOptimizer {
             translations: 0;
             cache: 0;
             metadata: 0;
-            other: 0;
+           , other: 0;
     ,}
             total: 0 }
         };
@@ -84,7 +84,7 @@ export class MemoryOptimizer {
         this.optimizationStrategies = { stringDeduplication: true,
             objectPooling: true;
             lazyLoading: true;
-            compressionThreshold: 1024, // 1KB;
+           , compressionThreshold: 1024, // 1KB;
             weakReferences: true ,};
         // 統計情報
         this.stats = { totalOptimizations: 0,
@@ -94,7 +94,7 @@ export class MemoryOptimizer {
             gcRuns: 0;
             lastGcTime: 0;
             averageGcTime: 0;
-            memoryPressureEvents: 0 ,};
+           , memoryPressureEvents: 0 ,};
         // メモリ圧迫対応
         this.memoryPressureHandlers = new Set<MemoryPressureHandler>();
         this.isUnderMemoryPressure = false;
@@ -590,7 +590,7 @@ export class MemoryOptimizer {
             maxMemoryMB: Math.round(this.maxMemoryUsage / 1024 / 1024);
             totalMB: Math.round(this.memoryUsage.total / 1024 / 1024);
             isUnderPressure: this.isUnderMemoryPressure;
-            stringPoolSize: this.stringPool.size;
+           , stringPoolSize: this.stringPool.size;
     ,}
             translationPoolSize: this.translationPool.size, };
             weakReferencesCount: this.objectReferences.size }
@@ -605,14 +605,14 @@ export class MemoryOptimizer {
         return { ...this.stats,
             memoryUsage,
             optimizationStrategies: this.optimizationStrategies;
-            thresholds: {
+           , thresholds: {
     ,}
                 warning: this.warningThreshold, };
                 critical: this.criticalThreshold }
             };
             performance: { averageGcTime: Math.round(this.stats.averageGcTime * 100) / 100;
                 lastGcTime: Math.round(this.stats.lastGcTime * 100) / 100;
-                gcFrequency: this.stats.gcRuns / Math.max((Date.now() - this.stats.lastGcTime) / 1000, 1 }
+               , gcFrequency: this.stats.gcRuns / Math.max((Date.now() - this.stats.lastGcTime) / 1000, 1 }
         }
     
     /**
@@ -646,27 +646,25 @@ export class MemoryOptimizer {
         const report = {
             timestamp: new Date().toISOString();
             memoryUsage: stats.memoryUsage;
-            optimizations: {
+           , optimizations: {
                 total: stats.totalOptimizations;
                 stringsDeduped: stats.stringsDeduped;
-                objectsPooled: stats.objectsPooled;
+               , objectsPooled: stats.objectsPooled;
     }
                 memoryFreedMB: Math.round(stats.memoryFreed / 1024 / 1024); }
             },
             performance: stats.performance;
-            recommendations: [];
+           , recommendations: [];
         },
         // 推奨事項を生成
-        if(stats.memoryUsage.usagePercent > 80) {'
-            ';
+        if(stats.memoryUsage.usagePercent > 80) {', ';
 
         }
 
             report.recommendations.push('Consider, increasing memory, limit or, improving cleanup, frequency); }'
         }
 
-        if(stats.performance.averageGcTime > 50) {'
-            ';
+        if(stats.performance.averageGcTime > 50) {', ';
 
         }
 

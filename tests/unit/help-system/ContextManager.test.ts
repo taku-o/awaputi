@@ -1,12 +1,12 @@
 /**
  * ContextManager ユニットテスト
  */
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { ContextManager } from '../../../src/core/help/ContextManager';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { ContextManager  } from '../../../src/core/help/ContextManager';
 // Type definitions
 interface MockGameEngine {
     sceneManager: {
-        getCurrentScene: jest.Mock<() => MockScene>
+        getCurrentScen;e: jest.Mock<() => MockScene>
     },
     bubbleManager: {
         getBubbles: jest.Mock<() => any[]>;
@@ -16,10 +16,10 @@ interface MockGameEngine {
         getCurrentScore: jest.Mock<() => number>;
         getCurrentCombo: jest.Mock<() => number>
     },
-    canvas: { width: number; height: number };
+    canvas: { width: number;, height: number };
 }
 interface MockScene {
-    constructor: { name: string };
+    constructor: { nam;e: string };
     getCurrentState: jest.Mock<(') => SceneState>;
 }
 interface SceneState {

@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 
 // エラーハンドラー型定義
 interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
@@ -7,7 +7,7 @@ interface ErrorHandler { handleError(error: Error, type: string, context?: any):
 // 設定管理型定義
 interface ConfigurationManager { get(category: string, key: string, defaultValue?: any): any;
     set(category: string, key: string, value: any): void,
-    watch(category: string, key: string, callback: (value: any) => void): any;
+    watch(category: string, key: string, callback: (valu;e: any) => void): any;
     unwatch(watchId: any): void, }
 }
 
@@ -23,7 +23,7 @@ interface AudioController { setVolume(category: string, volume: number): void, }
 // プリセット種別型定義
 interface PresetTypes { BUILTIN: string,
     USER: string;
-    TEMPORARY: string ,}
+   , TEMPORARY: string ,}
 
 // 音量設定型定義
 interface VolumeSettings { master: number;
@@ -31,28 +31,28 @@ interface VolumeSettings { master: number;
     sfx: number;
     ui: number;
     achievement: number;
-    game: number }
+   , game: number }
 
 // イコライザーバンド設定型定義
 interface EqualizerBands { bass: number;
     lowMid: number;
     mid: number;
     highMid: number;
-    treble: number }
+   , treble: number }
 
 // イコライザー設定型定義
 interface EqualizerSettings { enabled: boolean;
-    bands: EqualizerBands
+   , bands: EqualizerBands
     }
 
 // エフェクト設定型定義
 interface EffectSettings { reverb: boolean;
-    compression: boolean }
+   , compression: boolean }
 
 // プリセット設定型定義
 interface PresetSettings { volumes: VolumeSettings;
     equalizer: EqualizerSettings;
-    effects: EffectSettings
+   , effects: EffectSettings
     }
 
 // プリセットデータ型定義
@@ -63,36 +63,36 @@ interface PresetData { id: string;
     settings: PresetSettings;
     tags: string[];
     createdAt: number;
-    updatedAt: number }
+   , updatedAt: number }
 
 // 現在のプリセット情報型定義
 interface CurrentPreset { id: string;
     name: string;
     type: string;
-    appliedAt: number }
+   , appliedAt: number }
 
 // プリセット履歴項目型定義
 interface PresetHistoryItem { id: string;
-    appliedAt: number;
+   , appliedAt: number;
     preset?: PresetData | null }
 
 // プリセット数型定義
 interface PresetCounts { builtin: number;
     user: number;
     temporary: number;
-    total: number }
+   , total: number }
 
 // プリセット管理状態型定義
 interface PresetManagerStatus { initialized: boolean;
     presetCounts: PresetCounts;
     currentPreset: CurrentPreset | null;
     historySize: number;
-    configWatchers: number }
+   , configWatchers: number }
 
 // エクスポートデータ型定義
 interface ExportData { version: string;
     exportedAt: number;
-    preset: PresetData
+   , preset: PresetData
     }
 
 // インポートデータ型定義
@@ -118,7 +118,7 @@ export class PresetManager {
     // プリセット種別
     private presetTypes: PresetTypes;
     // 事前定義プリセット
-    private builtinPresets: Map<string, PresetData>;
+    private, builtinPresets: Map<string, PresetData>;
     
     // ユーザー定義プリセット
     private userPresets: Map<string, PresetData>;
@@ -132,7 +132,7 @@ export class PresetManager {
     private presetHistory: PresetHistoryItem[];
     private maxHistorySize: number;
     // 設定監視用
-    private configWatchers: Set<any>;
+    private, configWatchers: Set<any>;
     constructor(audioController: AudioController) {
 ';
 
@@ -197,16 +197,16 @@ export class PresetManager {
                 name: 'ゲーム',
                 description: 'ゲームプレイに最適化された音響設定';
                 type: this.presetTypes.BUILTIN;
-                settings: {
+               , settings: {
                     volumes: {
                         master: 0.8;
                         bgm: 0.6;
                         sfx: 0.9;
                         ui: 0.7;
                         achievement: 1.0;
-                        game: 0.8 ,};
+                       , game: 0.8 ,};
                     equalizer: { enabled: true;
-                        bands: {
+                       , bands: {
                             bass: 3,      // 低音強化（爆発音等）;
                             lowMid: 1,    // 中低音軽微強化;
                             mid: 0,       // 中音フラット;
@@ -214,8 +214,7 @@ export class PresetManager {
                             treble: 5     // 高音強化（効果音等） ,}
                     })
                     effects: { reverb: true)
-                        compression: true })''
-                '),
+                       , compression: true })'', '),
                 tags: ['gaming', 'action', 'immersive'],
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
@@ -227,16 +226,16 @@ export class PresetManager {
                 name: '音楽',
                 description: '音楽鑑賞に最適化された音響設定';
                 type: this.presetTypes.BUILTIN;
-                settings: {
+               , settings: {
                     volumes: {
                         master: 0.7;
                         bgm: 0.9;
                         sfx: 0.3;
                         ui: 0.4;
                         achievement: 0.6;
-                        game: 0.3 ,};
+                       , game: 0.3 ,};
                     equalizer: { enabled: true;
-                        bands: {
+                       , bands: {
                             bass: 4,      // 低音重視;
                             lowMid: 2,    // 中低音強化;
                             mid: -1,      // 中音軽微カット;
@@ -244,8 +243,7 @@ export class PresetManager {
                             treble: 5     // 高音強化（クリア感） ,}
                     })
                     effects: { reverb: true)
-                        compression: false  // 音楽では圧縮を避ける })''
-                '),
+                       , compression: false  // 音楽では圧縮を避ける })'', '),
                 tags: ['music', 'audio', 'quality'],
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
@@ -257,16 +255,16 @@ export class PresetManager {
                 name: '映画',
                 description: '映画・動画鑑賞に最適化された音響設定';
                 type: this.presetTypes.BUILTIN;
-                settings: {
+               , settings: {
                     volumes: {
                         master: 0.8;
                         bgm: 0.8;
                         sfx: 0.7;
                         ui: 0.3;
                         achievement: 0.5;
-                        game: 0.6 ,};
+                       , game: 0.6 ,};
                     equalizer: { enabled: true;
-                        bands: {
+                       , bands: {
                             bass: 6,      // 低音大幅強化（迫力）;
                             lowMid: 3,    // 中低音強化;
                             mid: -2,      // 中音カット（クリア感）;
@@ -274,8 +272,7 @@ export class PresetManager {
                             treble: 4     // 高音強化（臨場感） ,}
                     })
                     effects: { reverb: true)
-                        compression: true })''
-                '),
+                       , compression: true })'', '),
                 tags: ['movie', 'cinematic', 'immersive'],
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
@@ -287,24 +284,23 @@ export class PresetManager {
                 name: 'ボーカル',
                 description: '音声・会話の明瞭度を重視した設定';
                 type: this.presetTypes.BUILTIN;
-                settings: {
+               , settings: {
                     volumes: {
                         master: 0.8;
                         bgm: 0.4;
                         sfx: 0.5;
                         ui: 0.6;
                         achievement: 0.7;
-                        game: 0.6 ,};
+                       , game: 0.6 ,};
                     equalizer: { enabled: true;
-                        bands: {
+                       , bands: {
                             bass: -3,     // 低音カット;
                             lowMid: 1,    // 中低音軽微強化;
                             mid: 5,       // 中音大幅強化（音声帯域）;
                             highMid: 4,   // 中高音強化（子音明瞭化）;
                             treble: 1     // 高音軽微強化 ,}))
                     effects: { reverb: false,  // リバーブは音声を不明瞭にする
-                        compression: true ,})''
-                '),
+                        compression: true ,})'', '),
                 tags: ['vocal', 'speech', 'clarity'],
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
@@ -316,16 +312,16 @@ export class PresetManager {
                 name: '低音ブースト',
                 description: '低音を大幅に強化したパワフルな設定';
                 type: this.presetTypes.BUILTIN;
-                settings: {
+               , settings: {
                     volumes: {
                         master: 0.7,  // マスター音量を下げて歪みを防止;
                         bgm: 0.8;
                         sfx: 0.8;
                         ui: 0.6;
                         achievement: 0.8;
-                        game: 0.7 ,};
+                       , game: 0.7 ,};
                     equalizer: { enabled: true;
-                        bands: {
+                       , bands: {
                             bass: 8,      // 低音最大レベル強化;
                             lowMid: 4,    // 中低音強化;
                             mid: 0,       // 中音フラット;
@@ -333,8 +329,7 @@ export class PresetManager {
                             treble: 1     // 高音軽微強化 ,}
                     })
                     effects: { reverb: true)
-                        compression: true  // 歪みを抑制 })''
-                '),
+                       , compression: true  // 歪みを抑制 })'', '),
                 tags: ['bass', 'powerful', 'enhanced'],
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
@@ -346,24 +341,23 @@ export class PresetManager {
                 name: '高音ブースト',
                 description: '高音域を強化したクリアで鮮明な設定';
                 type: this.presetTypes.BUILTIN;
-                settings: {
+               , settings: {
                     volumes: {
                         master: 0.8;
                         bgm: 0.7;
                         sfx: 0.8;
                         ui: 0.8;
                         achievement: 0.9;
-                        game: 0.7 ,};
+                       , game: 0.7 ,};
                     equalizer: { enabled: true;
-                        bands: {
+                       , bands: {
                             bass: 0,      // 低音フラット;
                             lowMid: -1,   // 中低音軽微カット;
                             mid: 1,       // 中音軽微強化;
                             highMid: 4,   // 中高音強化;
                             treble: 8     // 高音最大レベル強化 ,}))
                     effects: { reverb: false,  // リバーブは高音の明瞭度を下げる
-                        compression: false ,})''
-                '),
+                        compression: false ,})'', '),
                 tags: ['treble', 'bright', 'clear'],
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
@@ -375,28 +369,27 @@ export class PresetManager {
                 name: 'フラット',
                 description: 'すべての周波数を均等にした中立的な設定';
                 type: this.presetTypes.BUILTIN;
-                settings: {
+               , settings: {
                     volumes: {
                         master: 0.7;
                         bgm: 0.7;
                         sfx: 0.7;
                         ui: 0.7;
                         achievement: 0.7;
-                        game: 0.7 ,};
+                       , game: 0.7 ,};
                     equalizer: { enabled: false,  // イコライザーは無効
                         bands: {
                             bass: 0;
                             lowMid: 0;
                             mid: 0;
                             highMid: 0;
-                            treble: 0 ,}
+                           , treble: 0 ,}
                     })
                     effects: { reverb: false)
-                        compression: false })''
-                '),
+                       , compression: false })'', '),
                 tags: ['neutral', 'flat', 'original'],
                 createdAt: Date.now();
-                updatedAt: Date.now();
+               , updatedAt: Date.now();
             });
             
             console.log(`${this.builtinPresets.size} builtin, presets initialized`});
@@ -575,8 +568,7 @@ export class PresetManager {
                     this.audioController.audioManager.setAudioEffect('reverb', settings.effects.reverb); }
 
                 }''
-                if(typeof, settings.effects.compression === 'boolean'') {'
-                    ';
+                if(typeof, settings.effects.compression === 'boolean'') {', ';
 
                 }
 
@@ -587,13 +579,12 @@ export class PresetManager {
             this.currentPreset = { id: presetId,
                 name: preset.name;
                 type: preset.type;
-                appliedAt: Date.now( ,};
+               , appliedAt: Date.now( ,};
             
             // 履歴に追加
             this._addToHistory(presetId);
             // 最後に適用したプリセットとして保存
-            if(saveAsLast) {'
-                ';
+            if(saveAsLast) {', ';
 
             }
 
@@ -624,8 +615,7 @@ export class PresetManager {
     saveCurrentAsPreset(name: string, description: string = '', tags: string[] = [], isTemporary: boolean = false): string | null { try {
             // 現在の設定を取得
             const currentSettings = this._getCurrentSettings();''
-            if(!currentSettings) {'
-                ';
+            if(!currentSettings) {', ';
 
             }
 
@@ -643,7 +633,7 @@ export class PresetManager {
                 settings: currentSettings;
                 tags: tags;
                 createdAt: Date.now();
-                updatedAt: Date.now( ,};
+               , updatedAt: Date.now( ,};
             
             // プリセットを保存
             if (isTemporary) { this.temporaryPresets.set(presetId, presetData); } else {  this.userPresets.set(presetId, presetData); }
@@ -678,15 +668,15 @@ export class PresetManager {
             return { volumes: volumes,
                 equalizer: {
                     enabled: equalizerEnabled;
-                    bands: {
+                   , bands: {
                         bass: equalizerGains[0] || 0;
                         lowMid: equalizerGains[1] || 0;
                         mid: equalizerGains[2] || 0;
-                        highMid: equalizerGains[3] || 0, };
+                       , highMid: equalizerGains[3] || 0, };
                         treble: equalizerGains[4] || 0 }
 };
                 effects: { reverb: reverbEnabled;
-                    compression: compressionEnabled }
+                   , compression: compressionEnabled }
             } catch (error) { getErrorHandler(').handleError(error as Error, 'AUDIO_ERROR', {)'
                 operation: '_getCurrentSettings',')';
                 component: 'PresetManager' ,});
@@ -748,7 +738,7 @@ export class PresetManager {
             // 新しい履歴項目を先頭に追加
             this.presetHistory.unshift({)
                 id: presetId);
-                appliedAt: Date.now() }
+               , appliedAt: Date.now() }
             });
             
             // 履歴サイズを制限
@@ -951,11 +941,11 @@ export class PresetManager {
             // プリセットデータを複製
             const newPresetData: PresetData = { ...sourcePreset,
                 id: newPresetId;
-                name: newName, }
+               , name: newName, }
                 description: `${sourcePreset.description} (コピー)`;
                 type: isTemporary ? this.presetTypes.TEMPORARY : this.presetTypes.USER;
                 createdAt: Date.now();
-                updatedAt: Date.now();
+               , updatedAt: Date.now();
             };
             
             // プリセットを保存
@@ -970,7 +960,7 @@ export class PresetManager {
         } catch (error) { getErrorHandler(').handleError(error as Error, 'AUDIO_ERROR', {''
                 operation: 'duplicatePreset',)';
                 component: 'PresetManager');
-                sourcePresetId: sourcePresetId,);
+               , sourcePresetId: sourcePresetId,);
                 newName: newName ,});
             return null;
     
@@ -1007,7 +997,7 @@ export class PresetManager {
             return { ''
                 version: '1.0';
                 exportedAt: Date.now();
-                preset: {
+               , preset: {
                     ...preset, };
                     type: this.presetTypes.USER // エクスポート時はユーザータイプに変換 }
 } catch (error) { getErrorHandler(').handleError(error as Error, 'AUDIO_ERROR', {''
@@ -1045,7 +1035,7 @@ export class PresetManager {
                 name: name;
                 type: this.presetTypes.USER;
                 createdAt: Date.now();
-                updatedAt: Date.now( ,};
+               , updatedAt: Date.now( ,};
             // 妥当性を検証
             if(!this._validatePresetData(newPresetData)) { ''
                 throw new Error('Invalid, preset data, for import); }'
@@ -1071,12 +1061,12 @@ export class PresetManager {
             presetCounts: {
                 builtin: this.builtinPresets.size;
                 user: this.userPresets.size;
-                temporary: this.temporaryPresets.size, };
+               , temporary: this.temporaryPresets.size, };
                 total: this.builtinPresets.size + this.userPresets.size + this.temporaryPresets.size }
             };
             currentPreset: this.currentPreset;
             historySize: this.presetHistory.length;
-            configWatchers: this.configWatchers.size;
+           , configWatchers: this.configWatchers.size;
         },
     }
     

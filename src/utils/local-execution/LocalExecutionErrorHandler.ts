@@ -12,7 +12,7 @@
 
 import DeveloperGuidanceSystem from './DeveloperGuidanceSystem.js';''
 import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';''
-import { ErrorHandler } from '../ErrorHandler.js';
+import { ErrorHandler  } from '../ErrorHandler.js';
 
 // Type definitions
 interface ErrorHandlerConfig { enableGlobalHandling?: boolean;
@@ -27,11 +27,11 @@ interface ErrorPattern { [key: string]: RegExp[],
 interface ErrorAnalysis { category: string,
     message: string,
     severity: 'low' | 'medium' | 'high';
-    recoverable: boolean ,}
+   , recoverable: boolean ,}
 
 interface BrowserInfo { name: string;
     version: number;
-    isSupported: boolean }
+   , isSupported: boolean }
 
 interface CompatibilityInfo { browser: BrowserInfo;
     }
@@ -44,34 +44,34 @@ interface CompatibilityInfo { browser: BrowserInfo;
 interface CompatibilityErrorInfo { category: string,
     feature: string;
     browserInfo: BrowserInfo;
-    supportInfo: Record<string, any>;
+   , supportInfo: Record<string, any>;
     userMessage: string;
-    fallbackAvailable: boolean ,}
+   , fallbackAvailable: boolean ,}
 
 interface SecurityErrorInfo { category: string;
     policy: string;
     userMessage: string;
-    canOptimize: boolean }
+   , canOptimize: boolean }
 
 interface FallbackContent { title: string;
     message: string;
-    action: string }
+   , action: string }
 
 interface DebugInfo { isInitialized: boolean;
     config: ErrorHandlerConfig;
-    errorCategories: Record<string, string>;
+   , errorCategories: Record<string, string>;
     handledGuidanceTypes: string[] ,}
 ';
 
 interface ErrorCategory { name: string,''
     severity: 'LOW' | 'MEDIUM' | 'HIGH';
     recoverable: boolean;
-    userNotification: boolean ,}
+   , userNotification: boolean ,}
 
 interface UserMessage { title: string;
     message: string;
     action: string;
-    showTechnicalDetails: boolean }
+   , showTechnicalDetails: boolean }
 
 interface LocalExecutionConfig { errorCategories: Record<string, ErrorCategory> }
 
@@ -129,7 +129,7 @@ declare global { interface Window {
     /**
      * 設定オプション
      */
-    private static config: ErrorHandlerConfig = {}
+    private static, config: ErrorHandlerConfig = {}
     /**
      * エラーハンドラーを初期化
      */
@@ -144,7 +144,7 @@ declare global { interface Window {
             enableUserNotifications: true;
             enableDebugLogging: false;
             enableFallbacks: true;
-            enableMainErrorHandlerIntegration: true ,};
+           , enableMainErrorHandlerIntegration: true ,};
         this.config = { ...defaultConfig, ...config;
 
         // 既存のErrorHandlerインスタンスを保持
@@ -215,7 +215,7 @@ declare global { interface Window {
         // 既存のErrorHandlerシステムにも報告
         this._reportToMainErrorHandler(error, 'LOCAL_EXECUTION_COMPATIBILITY', { feature )
             browserInfo: errorInfo.browserInfo);
-            fallbackAvailable: errorInfo.fallbackAvailable,);
+           , fallbackAvailable: errorInfo.fallbackAvailable,);
             localExecution: true);
         // ユーザー通知
         if(this.config.enableUserNotifications) {
@@ -348,7 +348,7 @@ declare global { interface Window {
         if(this.config.enableUserNotifications && !this._isGuidanceShown('cors)) {'
             DeveloperGuidanceSystem.showDeveloperServerGuidance({''
                 title: 'CORS Error Detected', })
-                message: `Cross-origin request blocked for: ${resource}`)'
+                message: `Cross-origin request blocked, for: ${resource}`)'
                 showTroubleshooting: true,')';
                 autoHide: false)'),
 
@@ -386,7 +386,7 @@ declare global { interface Window {
                 error,);
                 resource);
                 timestamp: new Date().toISOString();
-                userAgent: navigator.userAgent ,}
+               , userAgent: navigator.userAgent ,}
                 location: window.location.href) }
             });
         }
@@ -398,8 +398,7 @@ declare global { interface Window {
     private static _handleGlobalError(event: ErrorEvent): void { const error = event.error || event.message;''
         const errorInfo = this._analyzeError(error);
 
-        if(errorInfo.category !== 'unknown'') {'
-            ';
+        if(errorInfo.category !== 'unknown'') {', ';
 
         }
 
@@ -440,7 +439,7 @@ declare global { interface Window {
             DeveloperGuidanceSystem.showDeveloperServerGuidance({''
                 title: 'ES6 Module Loading Error',)';
                 message: 'ES6 modules cannot be loaded from file:// URLs. Please use a development server.')';
-                showCommands: true,')';
+               , showCommands: true,')';
                 showTroubleshooting: true)'),
 
             this._markGuidanceShown('module); }'
@@ -476,8 +475,7 @@ declare global { interface Window {
         }
 ';
         // CSS ファイルの場合
-        if(resource.includes('.css) {'
-            ';
+        if(resource.includes('.css) {', ';
 
         }
 
@@ -498,7 +496,7 @@ declare global { interface Window {
             canvas: 'Canvas API is not supported. Some visual features may not work.',
             localStorage: 'Local storage is not available. Settings cannot be saved.',
             serviceWorker: 'Service Worker is not supported. Offline functionality is disabled.';''
-            modules: 'ES6 modules are not supported. Please use a modern browser or development server.' ,}
+           , modules: 'ES6 modules are not supported. Please use a modern browser or development server.' ,}
         };
         return messages[feature] || `${feature} is not supported in this environment.`;
     }
@@ -506,8 +504,7 @@ declare global { interface Window {
     /**
      * セキュリティメッセージを生成'
      */''
-    private static _generateSecurityMessage(policy: string): string { const messages: Record<string, string> = {''
-            'X-Frame-Options': 'X-Frame-Options policy is blocking content. This has been optimized for local execution.',
+    private static _generateSecurityMessage(policy: string): string { const messages: Record<string, string> = {'', 'X-Frame-Options': 'X-Frame-Options policy is blocking content. This has been optimized for local execution.',
             'Content-Security-Policy': 'Content Security Policy restrictions detected. Local execution policy applied.',
             'CORS': 'Cross-origin restrictions are preventing resource loading. Please use a development server.' };
 
@@ -605,7 +602,7 @@ declare global { interface Window {
      */
     static getDebugInfo(): DebugInfo { return { isInitialized: this.isInitialized,
             config: this.config;
-            errorCategories: this.ERROR_CATEGORIES, };
+           , errorCategories: this.ERROR_CATEGORIES, };
             handledGuidanceTypes: this._getHandledGuidanceTypes(); }
         }
 
@@ -613,8 +610,7 @@ declare global { interface Window {
      * 処理済みガイダンスタイプを取得'
      */''
     private static _getHandledGuidanceTypes()';
-            for(const type of ['cors', 'module', 'resource', 'security]) {'
-                ';
+            for(const type of ['cors', 'module', 'resource', 'security]) {', ';
 
             }
 
@@ -645,7 +641,7 @@ declare global { interface Window {
             this._log('Successfully, integrated with, main ErrorHandler, system);
 
         } catch (error) {
-            console.warn('LocalExecutionErrorHandler: Failed to integrate with main ErrorHandler:', error);
+            console.warn('LocalExecutionErrorHandler: Failed to integrate with main, ErrorHandler:', error);
             // 統合に失敗しても独立して動作 }
     }
 
@@ -655,7 +651,7 @@ declare global { interface Window {
     private static _reportToMainErrorHandler(;
         error: Error | string );
         context: string);
-        metadata: Record<string, any> = { ): void {
+       , metadata: Record<string, any> = { ): void {
         if(!this.config.enableMainErrorHandlerIntegration) {
             
         }
@@ -702,22 +698,22 @@ declare global { interface Window {
                         name: 'Local Execution CORS Error',
                         severity: 'HIGH';
                         recoverable: true;
-                        userNotification: true ,};
+                       , userNotification: true ,};
                     LOCAL_EXECUTION_RESOURCE: { ''
                         name: 'Local Execution Resource Error',
                         severity: 'MEDIUM';
                         recoverable: true;
-                        userNotification: false ,};
+                       , userNotification: false ,};
                     LOCAL_EXECUTION_COMPATIBILITY: { ''
                         name: 'Local Execution Browser Compatibility Error',
                         severity: 'MEDIUM';
                         recoverable: true;
-                        userNotification: true ,};
+                       , userNotification: true ,};
                     LOCAL_EXECUTION_SECURITY: { ''
                         name: 'Local Execution Security Policy Error',
                         severity: 'LOW';
                         recoverable: true;
-                        userNotification: false ,}
+                       , userNotification: false ,}
 };
             // メインのErrorHandlerに設定を適用
             this.errorHandlerInstance.configure({ localExecution: localExecutionConfig ),
@@ -740,23 +736,23 @@ declare global { interface Window {
                         title: 'Local File Restriction',
                         message: 'This application needs to be run from a development server for full functionality.';''
                         action: 'Please run "npm run dev" or use a local HTTP server.';
-                        showTechnicalDetails: false ,}
+                       , showTechnicalDetails: false ,}
                     };
                     LOCAL_EXECUTION_RESOURCE: { ''
                         title: 'Resource Loading Issue',
                         message: 'Some resources could not be loaded in local file mode.',
                         action: 'Using fallback content. Consider running a development server.';
-                        showTechnicalDetails: false ,};
+                       , showTechnicalDetails: false ,};
                     LOCAL_EXECUTION_COMPATIBILITY: { ''
                         title: 'Browser Compatibility',
                         message: 'Some features may not work in your current browser.',
                         action: 'Update your browser or enable fallback features.';
-                        showTechnicalDetails: true ,};
+                       , showTechnicalDetails: true ,};
                     LOCAL_EXECUTION_SECURITY: { ''
                         title: 'Security Policy Adjustment',
                         message: 'Security settings have been automatically adjusted for local execution.',
                         action: 'No action needed. Settings will be restored when using a server.';
-                        showTechnicalDetails: false ,}
+                       , showTechnicalDetails: false ,}
 };
             // メインのErrorHandlerに設定を適用
             this.errorHandlerInstance.configure({ messages: messageConfig ),
@@ -772,7 +768,7 @@ declare global { interface Window {
             canvas: compatibility.canvas ? compatibility.canvas.fallbackMethod : null;
             localStorage: compatibility.localStorage ? compatibility.localStorage.fallbackMethod : null;
             modules: compatibility.modules ? compatibility.modules.fallbackMethod : null;
-            serviceWorker: false // Service Worker has no fallback in local execution ,};
+           , serviceWorker: false // Service Worker has no fallback in local execution ,};
         return Boolean(fallbackMap[feature]);
     }
 
@@ -832,7 +828,7 @@ declare global { interface Window {
     private static _showCompatibilityError(errorInfo: CompatibilityErrorInfo): void { DeveloperGuidanceSystem.showBrowserCompatibilityGuidance({
             feature: errorInfo.feature);
             browserInfo: errorInfo.browserInfo);
-            message: errorInfo.userMessage,);
+           , message: errorInfo.userMessage,);
             fallbackAvailable: errorInfo.fallbackAvailable ,}
 
     /**
@@ -841,7 +837,7 @@ declare global { interface Window {
     private static _showSecurityErrorGuidance(errorInfo: SecurityErrorInfo): void { DeveloperGuidanceSystem.showDeveloperServerGuidance({''
             title: 'Security, Policy Adjustment);
             message: errorInfo.userMessage);
-            showTroubleshooting: false,);
+           , showTroubleshooting: false,);
             autoHide: true ,}
 
     /**
@@ -851,9 +847,9 @@ declare global { interface Window {
         if(!this._isGuidanceShown('resource)) {'
             DeveloperGuidanceSystem.showDeveloperServerGuidance({''
                 title: 'Critical Resource Loading Error', }
-                message: `Failed to load critical resource: ${resource}`)
+                message: `Failed to load critical, resource: ${resource}`)
                 showCommands: true)';
-                showTroubleshooting: true,')';
+               , showTroubleshooting: true,')';
                 autoHide: false)'),
 
             this._markGuidanceShown('resource);
@@ -882,15 +878,15 @@ declare global { interface Window {
                 font-family: Arial, sans-serif;"
                 font-size: 14px,
             ">" }"
-                <h4 style="margin: 0 0 10px 0; color: #856404;">${content.title}</h4>""
-                <p style="margin: 0 0 10px 0; color: #856404;">${content.message}</p>""
+                <h4 style="margin: 0 0 10px 0;, color: #856404;">${content.title}</h4>""
+                <p style="margin: 0 0 10px 0;, color: #856404;">${content.message}</p>""
                 <small style="color: #856404; font-style: italic;">${content.action}</small>""
                 <button onclick="this.parentElement.parentElement.remove(")" style=";
                     position: absolute;
                     top: 5px;
                     right: 5px;
                     background: none;
-                    border: none;
+                   , border: none;
                     font-size: 18px,
                     cursor: pointer,
                     color: #856404,

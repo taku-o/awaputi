@@ -3,8 +3,8 @@
  * Implements statistical validation, trend monitoring, and detailed error reporting
  */
 
-import { jest } from '@jest/globals';
-import { getPerformanceThresholds, validatePerformanceResult } from '../config/performance-thresholds';
+import { jest  } from '@jest/globals';
+import { getPerformanceThresholds, validatePerformanceResult  } from '../config/performance-thresholds';
 
 export class PerformanceRetryHandler {
   constructor(options = {)') {
@@ -67,7 +67,7 @@ export class PerformanceRetryHandler {
         result,
         executionContext,
         retryInfo: this.buildRetryInfo(executionContext;);
-        statisticalAnalysis: this.performStatisticalAnalysis(testName, result),
+       , statisticalAnalysis: this.performStatisticalAnalysis(testName, result),
         trendAnalysis: testOptions.enableTrendMonitoring ?   : undefined
           this.performTrendAnalysis(testName: any): null
       };
@@ -133,7 +133,7 @@ export class PerformanceRetryHandler {
             return this.aggregateResults(results, validationResult);
           } else if (attempt < options.maxRetries) {
             // Results inconsistent, continue retrying
-            console.warn(`Statistical inconsistency detected in ${executionContext.testName), continuing retries...`});
+            console.warn(`Statistical inconsistency detected in ${executionContext.testName), continuing, retries...`});
             continue;
           }
         }
@@ -355,7 +355,7 @@ export class PerformanceRetryHandler {
     if (!this.failurePatterns.has(testName) {
       this.failurePatterns.set(testName, {
         totalFailures: 0;);
-        errorTypes: new Map(),
+       , errorTypes: new Map(),
         failuresByAttempt: new Map(),
         lastFailures: []
       });
@@ -601,7 +601,7 @@ export class PerformanceRetryHandler {
         .sort(([,a], [,b]) => b - a)[0];
       
       if (mostCommonError && mostCommonError[1] > failurePattern.totalFailures * 0.6) {
-        recommendations.push(`Recurring error pattern detected: ${mostCommonError[0]). Specific investigation needed.`});
+        recommendations.push(`Recurring error pattern detected: ${mostCommonError[0]). Specific, investigation needed.`});
       }
     }
 
@@ -650,10 +650,10 @@ export class PerformanceRetryHandler {
       .filter(([_, test]) => !test.isConsistent)
       .map(([name, test]) => `${name} (CV: ${(test.coefficientOfVariation * 100).toFixed(1})}%)`);
 
-    let report = `Statistical Analysis: ${consistentMetrics.length}/${Object.keys(statisticalTests.length) metrics consistent\n`;
+    let report = `Statistical Analysis: ${consistentMetrics.length}/${Object.keys(statisticalTests.length) metrics, consistent\n`;
     
     if (consistentMetrics.length > 0') {
-      report += `Consistent metrics: ${consistentMetrics.join(', '})}\n`;
+      report += `Consistent, metrics: ${consistentMetrics.join(', '})}\n`;
     }
     
     if (inconsistentMetrics.length > 0') {

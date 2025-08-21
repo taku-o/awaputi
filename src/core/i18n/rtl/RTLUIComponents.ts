@@ -1,6 +1,6 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';''
-import { getRTLLanguageDetector } from './RTLLanguageDetector.js';''
-import { getRTLLayoutManager } from './RTLLayoutManager.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
+import { getRTLLanguageDetector  } from './RTLLanguageDetector.js';''
+import { getRTLLayoutManager  } from './RTLLayoutManager.js';
 
 // インターフェース定義
 interface ComponentFactory { (options: any): HTMLElement | null, }
@@ -13,17 +13,17 @@ interface RTLStyles { direction: string,
 interface DefaultRTLStyles { input: RTLStyles,
     button: RTLStyles;
     menu: RTLStyles;
-    dialog: RTLStyles
+   , dialog: RTLStyles
     ,}
 
 interface RegisteredComponent { id: string;
     type: string;
     element: HTMLElement;
     options: any;
-    createdAt: string }
+   , createdAt: string }
 
 interface CreateComponentResult { component: HTMLElement;
-    componentId: string }
+   , componentId: string }
 
 interface InputOptions { type?: string;
     placeholder?: string;
@@ -117,7 +117,7 @@ interface TooltipOptions { text?: string;''
 
 interface DropdownItem { href?: string;
     text?: string;
-    onClick?: (event: Event) => void ,}
+    onClick?: (even;t: Event) => void ,}
 }
 
 interface DropdownOptions { trigger?: string;
@@ -128,10 +128,10 @@ interface DropdownOptions { trigger?: string;
 
 interface ComponentStats { availableComponentTypes: string[],
     registeredComponentsCount: number;
-    registeredComponents: {
-        id: string;
+   , registeredComponents: {
+        i;d: string;
         type: string;
-        createdAt: string ,}[];
+       , createdAt: string ,}[];
 }
 
 /**
@@ -140,9 +140,9 @@ interface ComponentStats { availableComponentTypes: string[],
 export class RTLUIComponents {
     private rtlDetector: any;
     private layoutManager: any;
-    private componentFactories: Map<string, ComponentFactory>;
+    private, componentFactories: Map<string, ComponentFactory>;
     private defaultRTLStyles: DefaultRTLStyles;
-    private registeredComponents: Map<string, RegisteredComponent>;
+    private, registeredComponents: Map<string, RegisteredComponent>;
 
     constructor() {
 ';
@@ -208,9 +208,9 @@ export class RTLUIComponents {
             const componentId = this.generateComponentId(type);
             this.registeredComponents.set(componentId, { id: componentId)
                 type: type);
-                element: component,);
+               , element: component,);
                 options: options);
-                createdAt: new Date().toISOString( ,});
+               , createdAt: new Date().toISOString( ,});
             
             // RTLレイアウトを適用
             this.layoutManager.applyRTLLayout(component, { componentType: type)
@@ -401,7 +401,7 @@ export class RTLUIComponents {
                     const submenuResult = this.createRTLComponent('menu', {
                         items: item.submenu);
                         orientation: orientation)';
-                        language: language,')';
+                       , language: language,')';
                         className: 'rtl-submenu');
                     if (submenuResult) {
                 ,}
@@ -445,8 +445,7 @@ export class RTLUIComponents {
 
             const a = document.createElement('a'');
 
-            if(typeof, link === 'string'') {'
-                ';
+            if(typeof, link === 'string'') {', ';
 
             }
 
@@ -522,8 +521,7 @@ export class RTLUIComponents {
 
             } else {
                 const a = document.createElement('a'');''
-                if(typeof, item === 'string'') {'
-                    ';
+                if(typeof, item === 'string'') {', ';
 
                 }
 
@@ -712,8 +710,7 @@ export class RTLUIComponents {
 
                     btn.className = `rtl-dialog-button ${button.type || ''}`;''
                     btn.textContent = button.text || '';''
-                    if(button.onClick) {'
-                        ';
+                    if(button.onClick) {', ';
 
                     }
 
@@ -791,8 +788,7 @@ export class RTLUIComponents {
             const itemEl = document.createElement('a'');''
             itemEl.className = 'rtl-dropdown-item';
 
-            if(typeof, item === 'string'') {'
-                ';
+            if(typeof, item === 'string'') {', ';
 
             }
 
@@ -915,9 +911,9 @@ export class RTLUIComponents {
      */
     getStats(): ComponentStats { return { availableComponentTypes: Array.from(this.componentFactories.keys(),
             registeredComponentsCount: this.registeredComponents.size;
-            registeredComponents: this.getAllComponents().map(comp => ({)
+           , registeredComponents: this.getAllComponents().map(comp => ({)
                 id: comp.id);
-                type: comp.type,) };
+               , type: comp.type,) };
                 createdAt: comp.createdAt))); }
         }
 }

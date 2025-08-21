@@ -8,9 +8,9 @@
  * @since Issue #163 - Duplicate help/settings screen consolidation
  */
 
-import { NavigationContextManager } from './NavigationContextManager.js';''
-import { getLoggingSystem } from '../LoggingSystem.js';''
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
+import { NavigationContextManager  } from './NavigationContextManager.js';''
+import { getLoggingSystem  } from '../LoggingSystem.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // NavigationContextManager.ts からの型をインポート
 import type { GameEngine, 
@@ -25,7 +25,7 @@ import type { GameEngine,
 // 型定義
 export interface ShortcutDefinition { action: ShortcutAction,
     scene: SceneName | null;
-    description: string;
+   , description: string;
     enabled?: boolean;
     priority?: ShortcutPriority;
     ,}
@@ -35,7 +35,7 @@ export interface KeyboardShortcutConfig { enableLogging: boolean,
     preventDefaultBehavior: boolean;
     enableContextualRouting: boolean;
     allowSceneOverride: boolean;
-    debounceDelay: number ,}
+   , debounceDelay: number ,}
 
 export interface RouterState { isActive: boolean;
     lastKeyTime: number;
@@ -46,7 +46,7 @@ export interface RouterState { isActive: boolean;
 export interface ShortcutExecutionContext { currentScene: string;
     event: KeyboardEvent;
     keyCombo: string;
-    timestamp: number }
+   , timestamp: number }
 
 export interface NavigationOptions { contextual?: boolean;
     documentation?: boolean;
@@ -59,12 +59,12 @@ export interface ShortcutDebugInfo { shortcuts: Array<[string, ShortcutDefinitio
     modifierShortcuts: Array<[string, ShortcutDefinition]>,
     state: RouterState;
     config: KeyboardShortcutConfig;
-    navigationContext: any ,}
+   , navigationContext: any ,}
 
-export interface SceneManager { switchScene: (sceneName: string, options?: any) => boolean,
+export interface SceneManager { switchScene: (sceneNam;e: string, options?: any) => boolean,
     currentScene?: {
         constructor: {
-            name: string ,}
+            nam;e: string ,}
         };''
     getCurrentScene?: (') => string;
 }
@@ -74,9 +74,9 @@ export interface ExtendedGameEngine extends GameEngine { sceneManager?: SceneMan
 
 // 列挙型
 export type ShortcutAction = '';
-    | 'contextualHelp' | 'documentationHelp' | 'quickHelp' '';
-    | 'goBack' | 'fullscreen' | 'toggleSettings' '';
-    | 'openUserInfo' | 'showMenu' | 'pauseGame' '';
+    | 'contextualHelp' | 'documentationHelp' | 'quickHelp', '';
+    | 'goBack' | 'fullscreen' | 'toggleSettings', '';
+    | 'openUserInfo' | 'showMenu' | 'pauseGame', '';
     | 'screenshot' | 'debugMode' | 'customAction';
 
 export type ModifierKey = 'ctrlKey' | 'shiftKey' | 'altKey' | 'metaKey';
@@ -99,7 +99,7 @@ export const DEFAULT_SHORTCUT_CONFIG: KeyboardShortcutConfig = { enableLogging: 
     preventDefaultBehavior: true;
     enableContextualRouting: true;
     allowSceneOverride: false;
-    debounceDelay: DEFAULT_DEBOUNCE_DELAY ,};
+   , debounceDelay: DEFAULT_DEBOUNCE_DELAY ,};
 // デフォルトショートカット
 export const DEFAULT_SHORTCUTS: Array<[string, ShortcutDefinition]> = [']';
     ['F1', { action: 'contextualHelp', scene: 'help', description: 'Show contextual help' ,}],''
@@ -148,13 +148,13 @@ export class KeyboardShortcutRouter {
     // NavigationContextManagerのインスタンス
     private navigationContext: NavigationContextManager;
     // ショートカットマッピング
-    private shortcuts: Map<string, ShortcutDefinition>;
+    private, shortcuts: Map<string, ShortcutDefinition>;
     private modifierShortcuts: Map<string, ShortcutDefinition>;
     
     // 設定
     private config: KeyboardShortcutConfig;
     // 状態管理
-    private state: RouterState;
+    private, state: RouterState;
     // イベントハンドラー
     private keydownHandler!: (event: KeyboardEvent) => void;
     private keyupHandler!: (event: KeyboardEvent) => void;
@@ -195,8 +195,7 @@ export class KeyboardShortcutRouter {
             this.setupEventListeners();
             this.state.isActive = true;
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 
@@ -349,8 +348,7 @@ export class KeyboardShortcutRouter {
 
             const currentScene = this.getCurrentScene();
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 
@@ -361,7 +359,7 @@ export class KeyboardShortcutRouter {
             const context: ShortcutExecutionContext = { currentScene,
                 event,
                 keyCombo: this.generateKeyCombo(event);
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
 
             switch(shortcut.action) {'
 
@@ -510,7 +508,7 @@ export class KeyboardShortcutRouter {
         targetScene: SceneName;
         currentScene: string );
         accessMethod: string | ShortcutAction);
-        additionalData: NavigationOptions = { ): boolean {
+       , additionalData: NavigationOptions = { ): boolean {
         try {
             // ナビゲーションコンテキストをプッシュ
             this.navigationContext.pushContext(currentScene, accessMethod, additionalData);
@@ -603,8 +601,8 @@ export class KeyboardShortcutRouter {
     /**
      * すべてのショートカットを取得
      */
-    getAllShortcuts(): { key: string; shortcut: ShortcutDefinition }[] {
-        const all: { key: string; shortcut: ShortcutDefinition }[] = [];
+    getAllShortcuts(): { key: string;, shortcut: ShortcutDefinition }[] {
+        const all: { key: string;, shortcut: ShortcutDefinition }[] = [];
         
         this.shortcuts.forEach((shortcut, key) => {  }
             all.push({ key, shortcut });
@@ -625,7 +623,7 @@ export class KeyboardShortcutRouter {
     /**
      * 特定のアクションのショートカットを取得
      */
-    getShortcutsByAction(action: ShortcutAction): { key: string; shortcut: ShortcutDefinition }[] { return this.getAllShortcuts().filter(item => item.shortcut.action === action);
+    getShortcutsByAction(action: ShortcutAction): { key: string;, shortcut: ShortcutDefinition }[] { return this.getAllShortcuts().filter(item => item.shortcut.action === action);
     
     /**
      * 設定の更新
@@ -639,8 +637,7 @@ export class KeyboardShortcutRouter {
 
         this.config = { ...this.config, ...newConfig;
 
-        if(this.config.enableLogging) {'
-            ';
+        if(this.config.enableLogging) {', ';
 
         }
 
@@ -683,7 +680,7 @@ export class KeyboardShortcutRouter {
      */
     getDebugInfo(): ShortcutDebugInfo { return { shortcuts: Array.from(this.shortcuts.entries(),
             modifierShortcuts: Array.from(this.modifierShortcuts.entries();
-            state: {
+           , state: {
                 ...this.state;
                 pressedKeys: new Set(this.state.pressedKeys), };
                 activeModifiers: new Set(this.state.activeModifiers); }
@@ -704,8 +701,7 @@ export class KeyboardShortcutRouter {
                     window.removeEventListener('keydown', this.keydownHandler); }
 
                 }''
-                if(this.keyupHandler) {'
-                    ';
+                if(this.keyupHandler) {', ';
 
                 }
 
@@ -729,8 +725,7 @@ export class KeyboardShortcutRouter {
             // ナビゲーションコンテキストのクリーンアップ
             this.navigationContext.cleanup();
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 

@@ -3,12 +3,12 @@
  * 
  * SEO関連アセットの最適化とパフォーマンス監視機能を提供
  */
-import { SEOConfig, getBaseUrl } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';
+import { SEOConfig, getBaseUrl  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';
 import { measurePerformance,
 
-    generateCacheKey ' }'
+    generateCacheKey '  }'
 
 } from './SEOUtils';
 
@@ -25,7 +25,7 @@ interface PerformanceMetrics { loadTime: number,
     largestContentfulPaint: number;
     firstInputDelay: number;
     cumulativeLayoutShift: number;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 // 最適化結果インターフェース
 interface OptimizationResult { success: boolean;
@@ -38,7 +38,7 @@ interface OptimizationResult { success: boolean;
 // 読み込みタスクインターフェース
 interface LoadingTask { id: string,''
     status: 'pending' | 'loading' | 'completed' | 'failed';
-    startTime: number;
+   , startTime: number;
     endTime?: number;
     result?: any;
     error?: Error;
@@ -46,12 +46,12 @@ interface LoadingTask { id: string,''
 
 export class SEOPerformanceOptimizer {
     private baseUrl: string;
-    private imageCache: Map<string, string>;
+    private, imageCache: Map<string, string>;
     private metadataCache: Map<string, any>;
     private compressionCache: Map<string, OptimizationResult>;
     private loadingTasks: Map<string, LoadingTask>;
     private performanceObserver: PerformanceObserver | null;
-    private metrics: PerformanceMetrics[];
+    private, metrics: PerformanceMetrics[];
     constructor() {
     
         this.baseUrl = getBaseUrl();
@@ -167,7 +167,7 @@ export class SEOPerformanceOptimizer {
             return result;
         } catch (error) { const result: OptimizationResult = {
                 success: false;
-                error: (error, as Error).message };
+               , error: (error, as Error).message };
             this.compressionCache.set(cacheKey, result);
             return result;
     
@@ -246,7 +246,7 @@ export class SEOPerformanceOptimizer {
             firstContentfulPaint: 0;
             largestContentfulPaint: 0;
             firstInputDelay: 0;
-            cumulativeLayoutShift: 0,
+           , cumulativeLayoutShift: 0,
             timestamp: Date.now()';
         if(typeof, window !== 'undefined' && window.performance) {'
 
@@ -267,10 +267,10 @@ export class SEOPerformanceOptimizer {
     getPerformanceStats(): { averageLoadTime: number,
         averageFCP: number;
         metricsCount: number;
-        cacheHitRate: number ,} { if (this.metrics.length === 0) {
+       , cacheHitRate: number ,} { if (this.metrics.length === 0) {
             return { averageLoadTime: 0;
                 averageFCP: 0;
-                metricsCount: 0, };
+               , metricsCount: 0, };
                 cacheHitRate: 0 }
             }
         
@@ -279,7 +279,7 @@ export class SEOPerformanceOptimizer {
         
         return { averageLoadTime: totalLoadTime / this.metrics.length,
             averageFCP: totalFCP / this.metrics.length;
-            metricsCount: this.metrics.length, };
+           , metricsCount: this.metrics.length, };
             cacheHitRate: this.imageCache.size > 0 ? 0.8 : 0 // 簡易計算 
         }
     

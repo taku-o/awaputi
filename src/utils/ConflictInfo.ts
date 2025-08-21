@@ -15,7 +15,7 @@ interface ConflictSummary { name: string,
     status: ConflictStatus;
     filesCount: number;
     progress: string;
-    canResolve: boolean ,}
+   , canResolve: boolean ,}
 
 interface ConflictJSON { name: string;
     type: ConflictType;
@@ -24,14 +24,14 @@ interface ConflictJSON { name: string;
     strategy: string | null;
     newNames: string[];
     status: ConflictStatus;
-    dependencies: Array<{
-        name: string;
+   , dependencies: Array<{
+        nam;e: string;
         type: ConflictType;
-        status: ConflictStatus
+       , status: ConflictStatus
     }>;
     progress: number;
     createdAt: string;
-    updatedAt: string;
+   , updatedAt: string;
 }
 
 interface RenameOperationJSON { type: OperationType,
@@ -43,11 +43,11 @@ interface RenameOperationJSON { type: OperationType,
     canExecute: boolean;
     dependenciesCount: number;
     createdAt: string;
-    executedAt: string | null ,}
+   , executedAt: string | null ,}
 
 export class ConflictInfo {
     public name: string;
-    public type: ConflictType,
+    public, type: ConflictType,
     public files: string[],
     public severity: SeverityLevel,
     public strategy: string | null,
@@ -126,12 +126,12 @@ export class ConflictInfo {
             strategy: this.strategy;
             newNames: this.newNames;
             status: this.status;
-            dependencies: this.dependencies.map(dep => ({)
+           , dependencies: this.dependencies.map(dep => ({)
                 name: dep.name);
-                type: dep.type,);
+               , type: dep.type,);
                 status: dep.status)));
             progress: this.getProgress();
-            createdAt: this.createdAt.toISOString(), };
+           , createdAt: this.createdAt.toISOString(), };
             updatedAt: this.updatedAt.toISOString(); }
         }
 
@@ -141,7 +141,7 @@ export class ConflictInfo {
     getSummary(): ConflictSummary { return { name: this.name,
             type: this.type;
             severity: this.severity;
-            status: this.status, };
+           , status: this.status, };
             filesCount: Array.isArray(this.files) ? this.files.length : 0, 
             progress: `${this.getProgress(})%`;
             canResolve: this.canResolve();
@@ -217,7 +217,7 @@ export class RenameOperation {
             status: this.status;
             error: this.error;
             canExecute: this.canExecute();
-            dependenciesCount: this.dependencies.length,
+           , dependenciesCount: this.dependencies.length,
             createdAt: this.createdAt.toISOString(),' };
 
             executedAt: this.executedAt ? this.executedAt.toISOString(') }'

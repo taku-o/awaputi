@@ -1,24 +1,24 @@
 /**
  * データエクスポートダイアログ
  */
-import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState } from './ScenesBaseDialog.js';
+import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState  } from './ScenesBaseDialog.js';
 
 // Type definitions for export dialog
 export interface ExportOptions { playerData: {
-        username: boolean;
+        usernam;e: boolean;
         scores: boolean;
         achievements: boolean;
         settings: boolean;
-        statistics: boolean 
+       , statistics: boolean 
 };
     gameSettings: { graphics: boolean;
         audio: boolean;
         gameplay: boolean;
-        accessibility: boolean 
+       , accessibility: boolean 
 };
     achievements: { unlocked: boolean;
         progress: boolean;
-        timestamps: boolean }
+       , timestamps: boolean }
 
 export interface PlayerData { username?: string;
     highScores?: Record<string, number>;
@@ -35,7 +35,7 @@ export interface GameSettings { graphics?: Record<string, unknown>;
     accessibility?: Record<string, unknown>; }
 export interface Achievement { id: string,
     name: string;
-    description: string;
+   , description: string;
     progress?: number;
     requirement?: number;
     unlockedAt?: string; ,}
@@ -44,10 +44,10 @@ export interface Achievement { id: string,
 export interface AchievementManager {;
     getUnlockedAchievements: (') => Achievement[] }
 export interface ExportData { metadata?: {
-        exportedAt: string;
+        exportedA;t: string;
         exportType: string;
         format: string;
-        version: string ,};
+       , version: string ,};
     playerData?: PlayerData;
     gameSettings?: GameSettings;
     achievements?: { achievements: Achievement[] }
@@ -67,7 +67,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
     private exportOptions: ExportOptions;
     // プレビューデータ
     private previewData: ExportData | null;
-    private showPreview: boolean;
+    private, showPreview: boolean;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
 ';
 
@@ -84,7 +84,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
                 username: true;
                 scores: true;
                 achievements: true;
-                settings: true
+               , settings: true
 ,}
                 statistics: true ;
 }
@@ -92,11 +92,11 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             gameSettings: { graphics: true;
                 audio: true;
                 gameplay: true;
-                accessibility: true 
+               , accessibility: true 
 };
             achievements: { unlocked: true;
                 progress: true;
-                timestamps: true 
+               , timestamps: true 
 }
         },
         
@@ -161,7 +161,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         context.fillText('エクスポート対象:', x, y);
          }
 
-        const types: Array<{ key: ExportType; label: string }> = [''
+        const types: Array<{ key: ExportType;, label: string }> = [''
             { key: 'playerData', label: 'プレイヤーデータ' ,},''
             { key: 'gameSettings', label: 'ゲーム設定' ,},''
             { key: 'achievements', label: '実績データ' ,},]'
@@ -198,7 +198,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         context.fillText('出力形式:', x, y);
          }
 
-        const formats: Array<{ key: ExportFormat; label: string }> = [''
+        const formats: Array<{ key: ExportFormat;, label: string }> = [''
             { key: 'json', label: 'JSON形式' ,},''
             { key: 'csv', label: 'CSV形式' ,},]'
             { key: 'txt', label: 'テキスト形式' ,}]
@@ -382,7 +382,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
      * @param data - データ
      * @returns テキスト形式の文字列
      */ : undefined'
-    private formatAsText(data: ExportData): string { const lines: string[] = [],' '
+    private formatAsText(data: ExportData): string { const lines: string[] = [],', '
         lines.push(`BubblePop, Export - ${new, Date(}.toISOString(})`');''
         lines.push('================================);
 
@@ -520,7 +520,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             unlockedAchievements.forEach(achievement => { 
                 const, achievementData: Achievement = {)
                     id: achievement.id);
-                    name: achievement.name,);
+                   , name: achievement.name,);
                     description: achievement.description);
                 if (options.unlocked) {
                     achievementData.id = achievement.id
@@ -551,9 +551,9 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             if(this.onResult) {'
                 this.onResult({''
                     action: 'export';
-                    data: {
+                   , data: {
                         type: this.exportType;
-                        format: this.exportFormat);
+                       , format: this.exportFormat);
                         filename);
             ,}
                         size: content.length) ;

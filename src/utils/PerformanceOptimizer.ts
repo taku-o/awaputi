@@ -29,7 +29,7 @@ interface OptimizationConfig { targetFPS?: number;
     adaptiveMode?: boolean;
     optimizationInterval?: number;
     maxBubbles: number;
-    maxParticles: number ,}
+   , maxParticles: number ,}
 
 interface QualityConfig { renderQuality: number;
     particleQuality: number;
@@ -37,7 +37,7 @@ interface QualityConfig { renderQuality: number;
     audioQuality: number;
     enableShadows: boolean;
     enableBlur: boolean;
-    enableAntiAliasing: boolean;
+   , enableAntiAliasing: boolean;
     shadowsEnabled?: boolean;
     antialiasing?: boolean;
     backgroundEffects?: boolean;
@@ -114,10 +114,10 @@ interface PerformanceStats { currentFPS: number,
     memoryPressureLevel: number;
     ;
     // トレンド
-    performanceTrend: 'improving' | 'stable' | 'degrading',
+   , performanceTrend: 'improving' | 'stable' | 'degrading',
     stabilityTrend: 'improving' | 'stable' | 'degrading';
     issuesPredicted: number;
-    issuesActual: number ,}
+   , issuesActual: number ,}
 
 interface PerformanceSettings { maxBubbles: number;
     maxParticles: number;
@@ -126,10 +126,10 @@ interface PerformanceSettings { maxBubbles: number;
     shadowsEnabled: boolean;
     antialiasing: boolean;
     backgroundEffects: boolean;
-    audioProcessing: boolean }
+   , audioProcessing: boolean }
 );
 interface ComponentConfig { maxHistorySize: number)'
-    targetFPS: number,
+   , targetFPS: number,
     performanceLevel: 'low' | 'medium' | 'high' ,}
 
 type PerformanceLevel = 'low' | 'medium' | 'high';
@@ -161,7 +161,7 @@ export class PerformanceOptimizer {
     private __lastLoggedStabilizerZone!: string | null;
     
     // 統合コンポーネント
-    private frameStabilizer: any;
+    private, frameStabilizer: any;
     // サブコンポーネント
     private analyzer!: PerformanceAnalyzer;
     private adaptiveController!: PerformanceAdaptiveController;
@@ -226,7 +226,7 @@ export class PerformanceOptimizer {
             const componentConfig: ComponentConfig = {
                 maxHistorySize: this.maxHistorySize;
                 targetFPS: this.targetFPS;
-                performanceLevel: this.performanceLevel };
+               , performanceLevel: this.performanceLevel };
             // フレーム解析コンポーネント
             this.analyzer = new PerformanceAnalyzer(componentConfig);
             
@@ -253,7 +253,7 @@ export class PerformanceOptimizer {
             performanceTrend: 'stable',
             stabilityTrend: 'stable';
             issuesPredicted: 0;
-            issuesActual: 0);
+           , issuesActual: 0);
         })
     
     /**
@@ -279,7 +279,7 @@ export class PerformanceOptimizer {
                 shadowsEnabled: qualityConfig.shadowsEnabled || false;
                 antialiasing: qualityConfig.antialiasing || false;
                 backgroundEffects: qualityConfig.backgroundEffects || true;
-                audioProcessing: qualityConfig.audioProcessing || true ,},"
+               , audioProcessing: qualityConfig.audioProcessing || true ,},"
 
         } catch (error") { this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {)'
                 component: 'PerformanceOptimizer',')';
@@ -307,7 +307,7 @@ export class PerformanceOptimizer {
             shadowsEnabled: false;
             antialiasing: false;
             backgroundEffects: true;
-            audioProcessing: true }
+           , audioProcessing: true }
     
     /**
      * 設定変更の監視を設定"

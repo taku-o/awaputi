@@ -1,17 +1,17 @@
-import { BaseComponent } from '../BaseComponent.js';
+import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface FailurePattern { name: string,
     keywords: string[];
-    category: string,
+   , category: string,
     severity: 'low' | 'medium' | 'high' | 'critical';
-    description: string ,}
+   , description: string ,}
 
 interface IdentifiedPattern extends FailurePattern { id: string;
-    confidence: number }
+   , confidence: number }
 
 interface PatternStatistics { totalPatterns: number;
-    patternsByCategory: Record<string, number>;
+   , patternsByCategory: Record<string, number>;
     patternsBySeverity: Record<string, number> }
 
 interface MainController { [key: string]: any, }

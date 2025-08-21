@@ -3,7 +3,7 @@
  * フォント管理クラス - 多言語対応のフォント読み込みと管理
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface FontConfig { primary: FontSpec,
@@ -12,7 +12,7 @@ export interface FontConfig { primary: FontSpec,
 
 export interface FontSpec { family: string,
     weight: string;
-    style: string;
+   , style: string;
     url?: string;
     display?: string; ,}
 ';
@@ -20,7 +20,7 @@ export interface FontSpec { family: string,
 export interface LoadedFont { family: string,''
     status: 'loading' | 'loaded' | 'error';
     timestamp: number;
-    config: FontConfig
+   , config: FontConfig
     ,}
 
 /**
@@ -53,8 +53,7 @@ export class FontManager {
      * 初期化
      */''
     initialize()';
-            if('fonts' in, document) {'
-        ';
+            if('fonts' in, document) {', ';
 
     }
 
@@ -100,7 +99,7 @@ export class FontManager {
                 family: 'Source Han Sans CN',
                 weight: '400',)';
                 style: 'normal')';
-                url: null, // ローカルフォント使用;
+               , url: null, // ローカルフォント使用;
                 fallback: ['Microsoft YaHei', 'SimHei', 'sans-serif]' }
 
             })');
@@ -117,7 +116,7 @@ export class FontManager {
                 family: 'Source Han Sans TW',
                 weight: '400',)';
                 style: 'normal')';
-                url: null, // ローカルフォント使用;
+               , url: null, // ローカルフォント使用;
                 fallback: ['Microsoft JhengHei', 'PMingLiU', 'sans-serif]' }
 
             })');
@@ -134,7 +133,7 @@ export class FontManager {
                 family: 'Source Han Sans K',
                 weight: '400',)';
                 style: 'normal')';
-                url: null, // ローカルフォント使用;
+               , url: null, // ローカルフォント使用;
                 fallback: ['Malgun Gothic', 'Gulim', 'sans-serif]' }
 
             })');
@@ -192,7 +191,7 @@ export class FontManager {
                 this.loadedFonts.set(fontKey, font);
                 return result; } finally { this.loadingPromises.delete(fontKey); } catch (error) { getErrorHandler(').handleError(error, 'FONT_MANAGER_ERROR', {)'
                 operation: 'loadFontsForLanguage');
-                language: language,);
+               , language: language,);
                 priority: priority ,});
             return false;
     
@@ -410,8 +409,7 @@ export class FontManager {
      * 言語固有のCSSを取得'
      */''
     getLanguageSpecificCSS(language) {'
-        const styles = {''
-            'ja': `;
+        const styles = {'', 'ja': `;
                 body {
                     line-height: 1.7 ,}
                     letter-spacing: 0.05em, }
@@ -457,7 +455,7 @@ export class FontManager {
             loaded.push({
                 key: key);
                 family: font.family);
-                weight: font.weight, }
+               , weight: font.weight, }
                 style: font.style); }
         }
         
@@ -494,12 +492,12 @@ export class FontManager {
                 const primaryLoaded = await this.loadFontsForLanguage(language, 'primary'');
                 results.push({)
                     language: language)';
-                    loaded: primaryLoaded,' }'
+                   , loaded: primaryLoaded,' }'
 
                     priority: 'primary'); }
             } catch (error) { results.push({)
                     language: language);
-                    loaded: false,);
+                   , loaded: false,);
                     error: error.message ,});
             }
         }

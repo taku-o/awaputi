@@ -4,7 +4,7 @@
  * BGMSystem、SoundEffectSystem、AudioController、AudioVisualizer統合とシーン連携を担当
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * サブシステム統合・委譲クラス
@@ -21,7 +21,7 @@ export class AudioSubsystemCoordinator {
     subsystemStates: any;
     currentScene: any;
     sceneTransitionInProgress: boolean;
-    performanceMetrics: any;
+   , performanceMetrics: any;
     constructor() {
 
         // 初期化状態
@@ -55,7 +55,7 @@ export class AudioSubsystemCoordinator {
         this.performanceMetrics = { sceneTransitions: 0,
             delegatedCalls: 0;
             errors: 0;
-            lastUpdateTime: 0 ,}
+           , lastUpdateTime: 0 ,}
 
     /**
      * AudioManager参照設定
@@ -234,8 +234,7 @@ export class AudioSubsystemCoordinator {
             }
             ';
             // 効果音システムのシーン変更
-            if(this.soundEffectSystem && this.subsystemStates.sfx.initialized) {'
-                ';
+            if(this.soundEffectSystem && this.subsystemStates.sfx.initialized) {', ';
 
             }
 
@@ -243,8 +242,7 @@ export class AudioSubsystemCoordinator {
             }
             ';
             // 音響制御システムのシーン変更
-            if(this.audioController && this.subsystemStates.controller.initialized) {'
-                ';
+            if(this.audioController && this.subsystemStates.controller.initialized) {', ';
 
             }
 
@@ -252,8 +250,7 @@ export class AudioSubsystemCoordinator {
             }
             ';
             // 音響視覚化システムのシーン変更
-            if(this.audioVisualizer && this.subsystemStates.visualizer.initialized) {'
-                ';
+            if(this.audioVisualizer && this.subsystemStates.visualizer.initialized) {', ';
 
             }
 
@@ -261,8 +258,7 @@ export class AudioSubsystemCoordinator {
             }
             ';
             // アクセシビリティ支援システムのシーン変更
-            if(this.accessibilitySupport && this.subsystemStates.accessibility.initialized) {'
-                ';
+            if(this.accessibilitySupport && this.subsystemStates.accessibility.initialized) {', ';
 
             }
 
@@ -417,7 +413,7 @@ export class AudioSubsystemCoordinator {
                 operation: 'delegateToVisualizer';
                 method);
                 args);
-                visualizerAvailable: !!this.audioVisualizer,);
+               , visualizerAvailable: !!this.audioVisualizer,);
                 visualizerInitialized: this.subsystemStates.visualizer.initialized ,});
             return null;
 
@@ -460,7 +456,7 @@ export class AudioSubsystemCoordinator {
         return { ...this.subsystemStates,
             currentScene: this.currentScene;
             sceneTransitionInProgress: this.sceneTransitionInProgress;
-            performance: {
+           , performance: {
     ,}
                 ...this.performanceMetrics, };
                 uptime: Date.now() - this.performanceMetrics.lastUpdateTime }
@@ -614,7 +610,7 @@ export class AudioSubsystemCoordinator {
         this.performanceMetrics = {
             sceneTransitions: 0;
             delegatedCalls: 0;
-            errors: 0;
+           , errors: 0;
     }
             lastUpdateTime: 0 }
         }

@@ -11,10 +11,10 @@ export interface EyeTrackingConfig { enabled: boolean,
     gazeTolerance: number;
     smoothingFactor: number;
     blinkDetection: boolean;
-    blinkThreshold: number ,}
+   , blinkThreshold: number ,}
 
 export interface GazePoint { x: number;
-    y: number }
+   , y: number }
 
 export interface GazeData extends GazePoint { timestamp: number }
 
@@ -22,32 +22,32 @@ export interface CalibrationPoint extends GazePoint { id?: string; }
 
 export interface CalibrationData { points: CalibrationPoint[],
     accuracy: number;
-    completed: boolean ,}
+   , completed: boolean ,}
 
 export interface EyeState { isCalibrated: boolean;
     currentGaze: GazePoint;
     dwellTimer: number | null;
     gazeHistory: GazeData[];
     lastBlink: number;
-    calibrationData: CalibrationData
+   , calibrationData: CalibrationData
     }
 
 export interface EyeTrackingStats { gazeEvents: number;
     dwellActivations: number;
     calibrationAttempts: number;
     averageAccuracy: number;
-    blinkEvents: number }
+   , blinkEvents: number }
 
 export interface DetailedEyeTrackingStats extends EyeTrackingStats { isCalibrated: boolean;
     calibrationAccuracy: number;
     currentGaze: GazePoint;
-    gazeHistoryLength: number }
+   , gazeHistoryLength: number }
 
 export interface CalibrationResult { success: boolean;
-    accuracy: number }
+   , accuracy: number }
 
 export interface ElementActivationData { element: HTMLElement;
-    position: GazePoint
+   , position: GazePoint
     }
 
 export interface FeedbackData { [key: string]: any, }
@@ -63,19 +63,19 @@ export interface EyeFeature { x: number,
     y: number;
     width: number;
     height: number;
-    confidence: number ,}
+   , confidence: number ,}
 
-export interface WebGazerInstance { setGazeListener: (callback: GazeListenerCallback) => WebGazerInstance;
-    removeGazeListener: (callback: GazeListenerCallback) => WebGazerInstance;
+export interface WebGazerInstance { setGazeListener: (callbac;k: GazeListenerCallback) => WebGazerInstance;
+    removeGazeListener: (callbac;k: GazeListenerCallback) => WebGazerInstance;
     begin: () => Promise<void>;
     end: () => WebGazerInstance;
-    showPredictionPoints: (show: boolean) => WebGazerInstance;
-    setRegression: (regression: RegressionType) => WebGazerInstance;
-    setTracker: (tracker: TrackerType) => WebGazerInstance;
-    recordScreenPosition: (x: number, y: number, type: string) => WebGazerInstance,
+    showPredictionPoints: (sho;w: boolean) => WebGazerInstance;
+    setRegression: (regressio;n: RegressionType) => WebGazerInstance;
+    setTracker: (tracke;r: TrackerType) => WebGazerInstance;
+    recordScreenPosition: (;x: number, y: number, type: string) => WebGazerInstance,
     params: {
-        imgWidth: number;
-        imgHeight: number ,}
+        imgWidt;h: number;
+       , imgHeight: number ,}
     }
 
 export interface TrackingUIElement extends HTMLElement { className: string,
@@ -87,7 +87,7 @@ export type RegressionType = 'ridge' | 'weightedRidge' | 'threadedRidge';''
 export type TrackerType = 'clmtrackr' | 'js_objectdetect' | 'TFFacemesh';
 
 export type FeedbackType = '';
-    | 'dwell_activated' | 'blink_detected' | 'double_blink' '';
+    | 'dwell_activated' | 'blink_detected' | 'double_blink', '';
     | 'element_activated' | 'calibration_started' | 'calibration_completed';
 ';
 // コールバック型
@@ -125,9 +125,9 @@ export const DWELL_PROGRESS_KEYFRAMES = `;
 
 export const PULSE_KEYFRAMES = `;
     @keyframes pulse {
-        0% { transform: scale(1); opacity: 1 }
-        50% { transform: scale(1.2); opacity: 0.7, }
-        100% { transform: scale(1); opacity: 1 }
+        0% { transform: scale(1);, opacity: 1 }
+        50% { transform: scale(1.2);, opacity: 0.7, }
+        100% { transform: scale(1);, opacity: 1 }
 `;
 ';
 // 型ガード
@@ -179,7 +179,7 @@ export class EyeTrackingController {
     private webgazer: WebGazerInstance | null;
     private webgazerLoaded: boolean;
     // 統計
-    private stats: EyeTrackingStats;
+    private, stats: EyeTrackingStats;
 
     constructor()';
         console.log('[EyeTrackingController] Initialized'); }'
@@ -274,13 +274,13 @@ export class EyeTrackingController {
             position: fixed;
             width: 20px;
             height: 20px;
-            border: 2px solid rgba(255, 0, 0, 0.8),
+           , border: 2px solid rgba(255, 0, 0, 0.8),
             border-radius: 50%,
             background: rgba(255, 0, 0, 0.3),
             pointer-events: none,
             z-index: 10001,
             display: none;
-            transform: translate(-50%, -50%),
+           , transform: translate(-50%, -50%),
             transition: all 0.1s ease;
         `;
         
@@ -297,12 +297,12 @@ export class EyeTrackingController {
             position: fixed;
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(0, 255, 0, 0.8),
+           , border: 3px solid rgba(0, 255, 0, 0.8),
             border-radius: 50%,
             pointer-events: none,
             z-index: 10002,
             display: none;
-            transform: translate(-50%, -50%),
+           , transform: translate(-50%, -50%),
             animation: dwell-progress 0.8s linear;
         `;
         
@@ -336,7 +336,7 @@ export class EyeTrackingController {
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.8),
+           , background: rgba(0, 0, 0, 0.8),
             z-index: 10010,
             display: none;
             justify-content: center,
@@ -385,7 +385,7 @@ export class EyeTrackingController {
     private updateGazeHistory(gazeData: GazePoint, timestamp: number): void { const gazeEntry: GazeData = {
             x: gazeData.x;
             y: gazeData.y;
-            timestamp: timestamp };
+           , timestamp: timestamp };
         this.eyeState.gazeHistory.push(gazeEntry);
         
         // 履歴サイズを制限
@@ -463,7 +463,7 @@ export class EyeTrackingController {
             }, 100');
 
             this.provideFeedback('element_activated', { element: element.tagName )
-                position: gazeData } as ElementActivationData);
+               , position: gazeData } as ElementActivationData);
         }
     }
     
@@ -500,8 +500,7 @@ export class EyeTrackingController {
      * 滞留インジケーターを隠す
      */
     private hideDwellIndicator(): void { ''
-        if(this.dwellIndicator) {'
-            ';
+        if(this.dwellIndicator) {', ';
 
         }
 
@@ -581,8 +580,7 @@ export class EyeTrackingController {
      * キャリブレーションインターフェースを表示
      */'
     private showCalibrationInterface(): void { ''
-        if(this.calibrationInterface) {'
-            ';
+        if(this.calibrationInterface) {', ';
 
         }
 
@@ -593,8 +591,7 @@ export class EyeTrackingController {
      * キャリブレーションインターフェースを隠す
      */'
     private hideCalibrationInterface(): void { ''
-        if(this.calibrationInterface) {'
-            ';
+        if(this.calibrationInterface) {', ';
 
         }
 
@@ -652,7 +649,7 @@ export class EyeTrackingController {
                 top: ${point.y - 15}px;
                 width: 30px;
                 height: 30px;
-                background: red;
+               , background: red;
                 border-radius: 50%,
                 z-index: 10011,
                 animation: pulse 1s infinite;
@@ -775,7 +772,7 @@ export class EyeTrackingController {
             ...this.eyeState, }
             currentGaze: { ...this.eyeState.currentGaze;
             gazeHistory: [...this.eyeState.gazeHistory];
-            calibrationData: { ...this.eyeState.calibrationData;
+           , calibrationData: { ...this.eyeState.calibrationData;
                 points: [...this.eyeState.calibrationData.points]
         }
     
@@ -783,8 +780,7 @@ export class EyeTrackingController {
      * 視線ポインターの表示切り替え
      */'
     toggleGazePointer(show: boolean): void { ''
-        if(this.gazePointer) {'
-            ';
+        if(this.gazePointer) {', ';
 
         }
 
@@ -795,8 +791,7 @@ export class EyeTrackingController {
      * 滞留インジケーターの表示切り替え
      */'
     toggleDwellIndicator(show: boolean): void { ''
-        if(this.dwellIndicator) {'
-            ';
+        if(this.dwellIndicator) {', ';
 
         }
 

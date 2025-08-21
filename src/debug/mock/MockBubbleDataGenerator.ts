@@ -8,8 +8,8 @@ interface BubbleData { id: string,
     y: number;
     radius: number;
     color: string;
-    type: string, }
-    velocity: { x: number; y: number },
+   , type: string, }
+    velocity: { x: number;, y: number },
     timestamp: number;
 }
 
@@ -18,7 +18,7 @@ interface GenerationOptions { count?: number;
     maxRadius?: number;
     colors?: string[];
     types?: string[]; }
-    bounds?: { width: number; height: number }
+    bounds?: { width: number;, height: number }
 
 export class MockBubbleDataGenerator {
     private defaultColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff];''
@@ -37,7 +37,7 @@ export class MockBubbleDataGenerator {
             radius: minRadius + Math.random() * (maxRadius - minRadius);
             color: colors[Math.floor(Math.random() * colors.length)];
             type: types[Math.floor(Math.random() * types.length)];
-            velocity: {
+           , velocity: {
                 x: (Math.random() - 0.5) * 200, };
                 y: (Math.random() - 0.5) * 200 }
             };

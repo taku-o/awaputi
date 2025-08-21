@@ -2,9 +2,9 @@
  * Game State Commands Tests
  * GameStateCommands クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -23,7 +23,7 @@ const mockGameEngine = { isRunning: false,
     resume: jest.fn(),';
     reset: jest.fn(),'';
     stop: jest.fn('')';
-        currentScene: 'game') }
+       , currentScene: 'game') }
     }),
     performanceOptimizer: { getCurrentFPS: jest.fn(() => 60); }
     }),
@@ -40,7 +40,7 @@ const mockGameEngine = { isRunning: false,
             normal: 15,
             stone: 5,
             rainbow: 3);
-            boss: 2 }
+           , boss: 2 }
     })
     ),';
     playerData: { ''
@@ -521,8 +521,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             expect(undoItem.command').toBe('test-command');'
             expect(undoItem.state).toEqual(state);''
         }');''
-        test('should limit undo stack size', (') => {  gameStateCommands.safetyChecks.maxUndoSize = 2; }'
-            ' }'
+        test('should limit undo stack size', (') => {  gameStateCommands.safetyChecks.maxUndoSize = 2; }', ' }'
             gameStateCommands.addToUndoStack('cmd1', {}');''
             gameStateCommands.addToUndoStack('cmd2', {}');''
             gameStateCommands.addToUndoStack('cmd3', {});'
@@ -570,8 +569,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
                 currentScene: 'game', }
                 score: { current: 5000, combo: 10 },)
                 bubbles: { count: 30 })
-            })'
-            ')';
+            })', ')';
             const formatted = gameStateCommands.formatGameState(state');''
             expect(formatted.toContain('Game State'');''
             expect(formatted.toContain('Running: true''),'';
@@ -588,8 +586,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             ';
             const setScoreCommand = mockConsole.registerCommand.mock.calls.find(')';
                 call => call[0] === 'set-score')'';
-            ')[1];'
-            '';
+            ')[1];', '';
             const result = setScoreCommand.execute(['1000']);''
             expect(result').toBe('Score manager not available');''
         }');''
@@ -599,8 +596,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             }');'
             const setScoreCommand = mockConsole.registerCommand.mock.calls.find(')';
                 call => call[0] === 'set-score')'';
-            ')[1];'
-            '';
+            ')[1];', '';
             const result = setScoreCommand.execute(['1000']);''
             expect(result').toContain('Failed to set score');''
         }');''
@@ -610,8 +606,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             }');'
             const runTestCommand = mockConsole.registerCommand.mock.calls.find(')';
                 call => call[0] === 'run-test')'';
-            ')[1];'
-            '';
+            ')[1];', '';
             const result = runTestCommand.execute(['stress']);''
             expect(result').toContain('Test failed');''
         }');'

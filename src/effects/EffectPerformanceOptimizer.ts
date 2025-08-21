@@ -58,22 +58,22 @@ interface OptimizationSettings { enableFrameSkipping: boolean,
     enableRenderingOptimization: boolean;
     maxParticlesPerFrame: number;
     targetFPS: number;
-    minFPS: number ,}
+   , minFPS: number ,}
 
 interface OptimizationStats { framesSkipped: number;
     qualityAdjustments: number;
     memoryCleanups: number;
-    renderOptimizations: number }
+   , renderOptimizations: number }
 
 interface ExtendedOptimizationStats extends OptimizationStats { currentFPS: number;
     memoryUsage: number;
     particleCount: number;
-    isOptimizing: boolean }
+   , isOptimizing: boolean }
 
 interface DebugInfo { enabled: boolean;
     settings: OptimizationSettings;
     stats: ExtendedOptimizationStats;
-    frameTimeHistory: number[] }
+   , frameTimeHistory: number[] }
 
 type OptimizationReason = 'fps' | 'memory' | 'particles' | 'manual';
 
@@ -84,7 +84,7 @@ export class EffectPerformanceOptimizer {
     private stats: OptimizationStats;
     private lastFrameTime: number;
     private frameTimeHistory: number[];
-    private isOptimizing: boolean;
+    private, isOptimizing: boolean;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -97,7 +97,7 @@ export class EffectPerformanceOptimizer {
             enableMemoryOptimization: true;
             enableRenderingOptimization: true;
             maxParticlesPerFrame: 500;
-            targetFPS: 60;
+           , targetFPS: 60;
     }
             minFPS: 30 }
         };
@@ -105,7 +105,7 @@ export class EffectPerformanceOptimizer {
         this.stats = { framesSkipped: 0,
             qualityAdjustments: 0;
             memoryCleanups: 0;
-            renderOptimizations: 0 ,};
+           , renderOptimizations: 0 ,};
         this.lastFrameTime = performance.now();
         this.frameTimeHistory = [];
         this.isOptimizing = false;
@@ -189,8 +189,7 @@ export class EffectPerformanceOptimizer {
     }
 ;
     private emergencyOptimization(): void { // 最低品質に設定
-        if(this.gameEngine.effectQualityController) {'
-            ';
+        if(this.gameEngine.effectQualityController) {', ';
 
         }
 
@@ -349,7 +348,7 @@ export class EffectPerformanceOptimizer {
     public getOptimizationStats(): ExtendedOptimizationStats { return { ...this.stats,
             currentFPS: this.getCurrentFPS(;
             memoryUsage: this.getCurrentMemoryUsage(;
-            particleCount: this.getActiveParticleCount(, };
+           , particleCount: this.getActiveParticleCount(, };
             isOptimizing: this.isOptimizing }))
     }
 );
@@ -357,7 +356,7 @@ export class EffectPerformanceOptimizer {
             framesSkipped: 0;
             qualityAdjustments: 0;
             memoryCleanups: 0;
-            renderOptimizations: 0 }
+           , renderOptimizations: 0 }
 
     // 設定管理
     public updateSettings(newSettings: Partial<OptimizationSettings>): void { this.optimizationSettings = {
@@ -379,7 +378,7 @@ export class EffectPerformanceOptimizer {
     // デバッグメソッド
     public getDebugInfo(): DebugInfo { return { enabled: this.enabled,
             settings: this.optimizationSettings;
-            stats: this.getOptimizationStats(, };
+           , stats: this.getOptimizationStats(, };
 
             frameTimeHistory: this.frameTimeHistory.slice(-10) // 最新10フレーム }
         }

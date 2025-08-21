@@ -3,7 +3,7 @@
  * 初回ユーザー向けアクセシビリティ機能紹介・設定・チュートリアル
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for onboarding structures
 interface OnboardingConfig { enabled: boolean,
@@ -12,7 +12,7 @@ interface OnboardingConfig { enabled: boolean,
     skipOption: boolean;
     progressTracking: boolean;
     adaptiveContent: boolean;
-    language: string ,}
+   , language: string ,}
 
 interface OnboardingStep { id: string;
     title: string;
@@ -21,7 +21,7 @@ interface OnboardingStep { id: string;
     completed: boolean;
     skippable: boolean;
     duration: number;
-    content: StepContent;
+   , content: StepContent;
     validation?: () => boolean;''
     action?: (') => void; }'
 }
@@ -41,7 +41,7 @@ interface UserPreferences { needsScreenReader: boolean,
     needsReducedMotion: boolean;
     needsCaptions: boolean;
     needsSimplifiedUI: boolean;
-    preferredLanguage: string ,}
+   , preferredLanguage: string ,}
 
 interface OnboardingProgress { currentStep: number;
     completedSteps: string[];
@@ -49,7 +49,7 @@ interface OnboardingProgress { currentStep: number;
     startTime: number;
     lastActiveTime: number;
     preferences: UserPreferences;
-    assessmentResults: AssessmentResults
+   , assessmentResults: AssessmentResults
     }
 ';
 
@@ -61,11 +61,11 @@ interface AssessmentResults { ''
 
 interface AnimationState { currentAnimation: string | null;
     isAnimating: boolean;
-    animationQueue: string[] }
+   , animationQueue: string[] }
 
 // AccessibilityManager interface (minimal, definition);
-interface AccessibilityManager { applyProfile?: (profile: any) => void;
-    saveProfile?: (profile: any) => void;
+interface AccessibilityManager { applyProfile?: (profil;e: any) => void;
+    saveProfile?: (profil;e: any) => void;
     gameEngine?: any; ,}
 }
 
@@ -78,7 +78,7 @@ export class AccessibilityOnboarding {
     private currentStepIndex: number;
     private onboardingContainer: HTMLElement | null;
     private isActive: boolean;
-    private animationState: AnimationState;
+    private, animationState: AnimationState;
     private onCompleteCallback?: () => void;
     private onSkipCallback?: () => void;
 
@@ -93,7 +93,7 @@ export class AccessibilityOnboarding {
             showOnAccessibilityRequest: true;
             skipOption: true;
             progressTracking: true;
-            adaptiveContent: true;
+           , adaptiveContent: true;
     }
     }
 
@@ -116,7 +116,7 @@ export class AccessibilityOnboarding {
                 actionRequired: false;
                 completed: false;
                 skippable: false;
-                duration: 5000,
+               , duration: 5000,
                 content: { ''
                     type: 'intro',
                     visual: 'welcome-animation',
@@ -130,10 +130,10 @@ export class AccessibilityOnboarding {
                 actionRequired: true;
                 completed: false;
                 skippable: true;
-                duration: 60000,
+               , duration: 60000,
                 content: {)'
                     type: 'configuration');
-                    interactive: true ,}
+                   , interactive: true ,}
 
                 },''
                 action: () => this.runNeedsAssessment(''';
@@ -143,11 +143,11 @@ export class AccessibilityOnboarding {
                 actionRequired: false;
                 completed: false;
                 skippable: true;
-                duration: 30000,
+               , duration: 30000,
                 content: { ''
                     type: 'feature',)';
                     visual: 'visual-features-demo');
-                    interactive: true ,}
+                   , interactive: true ,}
 
                 },')'
                 validation: (') => this.progress.preferences.needsHighContrast || ;
@@ -162,10 +162,10 @@ export class AccessibilityOnboarding {
                 actionRequired: true;
                 completed: false;
                 skippable: true;
-                duration: 45000,
+               , duration: 45000,
                 content: {''
                     type: 'practice';
-                    interactive: true ,};
+                   , interactive: true ,};
                 action: () => this.practiceKeyboardNavigation(),
                 validation: (') => this.progress.preferences.needsKeyboardNav;
             },
@@ -178,11 +178,11 @@ export class AccessibilityOnboarding {
                 actionRequired: false;
                 completed: false;
                 skippable: true;
-                duration: 40000,
+               , duration: 40000,
                 content: {''
                     type: 'feature',
                     audio: 'screen-reader-guide';
-                    interactive: true ,}
+                   , interactive: true ,}
 
                 },''
                 validation: (') => this.progress.preferences.needsScreenReader;
@@ -196,11 +196,11 @@ export class AccessibilityOnboarding {
                 actionRequired: false;
                 completed: false;
                 skippable: true;
-                duration: 25000,
+               , duration: 25000,
                 content: {''
                     type: 'feature',
                     visual: 'caption-demo';
-                    interactive: true ,}
+                   , interactive: true ,}
 
                 },''
                 validation: (') => this.progress.preferences.needsCaptions;
@@ -214,11 +214,11 @@ export class AccessibilityOnboarding {
                 actionRequired: false;
                 completed: false;
                 skippable: true;
-                duration: 20000,
+               , duration: 20000,
                 content: {''
                     type: 'feature',
                     visual: 'simplified-ui-demo';
-                    interactive: true ,}
+                   , interactive: true ,}
 
                 },''
                 validation: (') => this.progress.preferences.needsSimplifiedUI;
@@ -232,10 +232,10 @@ export class AccessibilityOnboarding {
                 actionRequired: true;
                 completed: false;
                 skippable: true;
-                duration: 60000,
+               , duration: 60000,
                 content: {''
                     type: 'configuration';
-                    interactive: true ,}
+                   , interactive: true ,}
 
                 },''
                 action: () => this.showCustomizationPanel(''';
@@ -245,10 +245,10 @@ export class AccessibilityOnboarding {
                 actionRequired: true;
                 completed: false;
                 skippable: true;
-                duration: 120000,
+               , duration: 120000,
                 content: { ')'
                     type: 'practice');
-                    interactive: true }
+                   , interactive: true }
 
                 },')'
                 action: () => this.startPracticeSession(''';
@@ -258,7 +258,7 @@ export class AccessibilityOnboarding {
                 actionRequired: false;
                 completed: false;
                 skippable: false;
-                duration: 10000,
+               , duration: 10000,
                 content: { ''
                     type: 'summary',
                     visual: 'completion-animation' ,}
@@ -271,7 +271,7 @@ export class AccessibilityOnboarding {
      */)
     private createInitialProgress(): OnboardingProgress { return { currentStep: 0,
             completedSteps: [];
-            skippedSteps: [],
+           , skippedSteps: [],
             startTime: Date.now(),
             lastActiveTime: Date.now('' ,};
 
@@ -373,7 +373,7 @@ export class AccessibilityOnboarding {
                 top: 0;
                 left: 0;
                 right: 0;
-                bottom: 0;
+               , bottom: 0;
                 z-index: 10000,
                 display: flex;
                 align-items: center,
@@ -384,7 +384,7 @@ export class AccessibilityOnboarding {
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba(0, 0, 0, 0.8), }
+               , background: rgba(0, 0, 0, 0.8), }
             
             .onboarding-content { position: relative,
                 background: white;
@@ -406,14 +406,14 @@ export class AccessibilityOnboarding {
                 color: #333 ,}
             
             .onboarding-close { background: none;
-                border: none;
+               , border: none;
                 font-size: 2rem,
                 cursor: pointer;
                 color: #666;
                 padding: 0;
                 width: 40px;
                 height: 40px;
-                display: flex;
+               , display: flex;
                 align-items: center,
                 justify-content: center,
                 border-radius: 4px,
@@ -447,10 +447,10 @@ export class AccessibilityOnboarding {
             
             .progress-fill { height: 100%,
                 background: #4CAF50;
-                transition: width 0.3s ease ,}
+               , transition: width 0.3s ease ,}
             
             .progress-text { font-size: 0.9rem;
-                color: #666 }
+               , color: #666 }
             
             .onboarding-controls { display: flex;
                 justify-content: space-between,
@@ -461,15 +461,15 @@ export class AccessibilityOnboarding {
                 border-radius: 4px,
                 font-size: 1rem,
                 cursor: pointer;
-                transition: all 0.2s ,}
+               , transition: all 0.2s ,}
             
             .btn-primary { background: #2196F3;
-                color: white }
+               , color: white }
             
             .btn-primary:hover { background: #1976D2 }
             
             .btn-secondary { background: #f0f0f0;
-                color: #333 }
+               , color: #333 }
             
             .btn-secondary:hover { background: #e0e0e0 }
             
@@ -478,14 +478,14 @@ export class AccessibilityOnboarding {
             /* アクセシビリティ向けスタイル */
             @media (prefers-reduced-motion: reduce) { * {
                     animation: none !important;
-                    transition: none !important }
+                   , transition: none !important }
             }
             
             @media (prefers-contrast: high) { .onboarding-content {
                     border: 2px solid black }
                 
                 .btn-primary { background: black;
-                    color: white }
+                   , color: white }
             }
         `;
         document.head.appendChild(style);
@@ -670,7 +670,7 @@ export class AccessibilityOnboarding {
             width: 100%;
             height: 200px;
             background: #f0f0f0;
-            display: flex;
+           , display: flex;
             align-items: center,
             justify-content: center,
             border-radius: 4px,
@@ -998,7 +998,7 @@ export class AccessibilityOnboarding {
             preferences: this.progress.preferences);
             assessmentResults: this.progress.assessmentResults);
             createdAt: Date.now();
-            onboardingCompleted: true;
+           , onboardingCompleted: true;
         },
     }
     

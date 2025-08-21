@@ -1,8 +1,8 @@
-import { FileScanner, FileInfo } from './FileScanner.js';''
-import { ReferenceChecker, ReferenceResult } from './ReferenceChecker.js';''
-import { SafetyValidator, SafetyResults } from './SafetyValidator.js';''
-import { FileRemover, DeletionResults } from './FileRemover.js';''
-import { ReportGenerator, ScanReport, ReferenceReport, SafetyReport, DeletionReport, SummaryReport } from './ReportGenerator.js';''
+import { FileScanner, FileInfo  } from './FileScanner.js';''
+import { ReferenceChecker, ReferenceResult  } from './ReferenceChecker.js';''
+import { SafetyValidator, SafetyResults  } from './SafetyValidator.js';''
+import { FileRemover, DeletionResults  } from './FileRemover.js';''
+import { ReportGenerator, ScanReport, ReferenceReport, SafetyReport, DeletionReport, SummaryReport  } from './ReportGenerator.js';''
 import fs from 'fs';''
 import path from 'path';
 
@@ -18,18 +18,18 @@ interface CleanupResults { scanReport: ScanReport | null,
     referenceReport: ReferenceReport | null;
     safetyReport: SafetyReport | null;
     deletionReport: DeletionReport | null;
-    summaryReport: SummaryReport | null ,}
+   , summaryReport: SummaryReport | null ,}
 
 type LogLevel = 'info' | 'warn' | 'error';
 
 interface ValidationOnlyResult { safeToDelete: any[],
     unsafeToDelete: any[];
-    summary: any ,}
+   , summary: any ,}
 
 interface TargetFileInfo { fileName: string;
     filePath: string;
     size: string;
-    lastModified: string }
+   , lastModified: string }
 
 export class CleanupOrchestrator {
     private options: Required<CleanupOptions>;
@@ -47,7 +47,7 @@ export class CleanupOrchestrator {
             patterns: options.patterns || ['*_old*', '*_original*],
             extensions: options.extensions || ['.js];
             rootPath: options.rootPath || process.cwd();
-            autoSaveReports: options.autoSaveReports !== false;
+           , autoSaveReports: options.autoSaveReports !== false;
             ...options;
 
         this.fileScanner = new FileScanner();
@@ -78,7 +78,7 @@ export class CleanupOrchestrator {
             // Step 3: Validate safety
             await this.validateSafety();
             
-            // Step 4: Execute deletion (if, not dry, run);
+            // Step, 4: Execute deletion (if, not dry, run);
             if(!this.options.dryRun) {
 
                 await this.executeDelection();
@@ -92,8 +92,7 @@ export class CleanupOrchestrator {
 
             this.log('File cleanup process completed successfully', 'info);
 
-            if(!this.results.summaryReport) {'
-                ';
+            if(!this.results.summaryReport) {', ';
 
             }
 
@@ -119,7 +118,7 @@ export class CleanupOrchestrator {
 
         this.results.scanReport = this.reportGenerator.generateScanReport(scannedFiles);
 
-        this.log(`Found ${ scannedFiles.length) files matching criteria`, 'info'};
+        this.log(`Found ${ scannedFiles.length) files, matching criteria`, 'info'};
         
         if(this.options.verbose} {
         
@@ -139,8 +138,7 @@ export class CleanupOrchestrator {
     async checkReferences()';
         this.log('Checking file references...', 'info);
 
-        if(!this.results.scanReport) {'
-            ';
+        if(!this.results.scanReport) {', ';
 
         }
 
@@ -182,8 +180,7 @@ export class CleanupOrchestrator {
     async validateSafety()';
         this.log('Validating file safety for deletion...', 'info);
 
-        if(!this.results.scanReport || !this.results.referenceReport) {'
-            ';
+        if(!this.results.scanReport || !this.results.referenceReport) {', ';
 
         }
 
@@ -199,7 +196,7 @@ export class CleanupOrchestrator {
         const safetyResults = await this.safetyValidator.validateBatch(filePaths, referenceResults);
         this.results.safetyReport = this.reportGenerator.generateSafetyReport(safetyResults);
 
-        this.log(`Safety, validation completed: ${safetyResults.safeToDelete}/${ safetyResults.totalFiles) files safe to delete`, 'info'};
+        this.log(`Safety, validation completed: ${safetyResults.safeToDelete}/${ safetyResults.totalFiles) files, safe to, delete`, 'info'};
         ';
 
         if (safetyResults.totalErrors > 0} {' }'
@@ -219,8 +216,7 @@ export class CleanupOrchestrator {
     async executeDelection()';
         this.log('Executing file deletion...', 'info);
 
-        if(!this.results.safetyReport) {'
-            ';
+        if(!this.results.safetyReport) {', ';
 
         }
 
@@ -235,7 +231,7 @@ export class CleanupOrchestrator {
             this.results.deletionReport = this.reportGenerator.generateDeletionReport({
                 results: []);
                 totalFiles: 0);
-                successCount: 0,);
+               , successCount: 0,);
                 failureCount: 0);
         ,}
                 timestamp: new Date().toISOString(); }
@@ -350,7 +346,7 @@ export class CleanupOrchestrator {
             fileName: file.fileName,);
             filePath: file.filePath);
             size: this.reportGenerator.formatBytes(file.fileSize);
-            lastModified: file.lastModified.toISOString() ,}
+           , lastModified: file.lastModified.toISOString() ,}
         });
     }
 
@@ -359,8 +355,7 @@ export class CleanupOrchestrator {
         await this.validateSafety();
         await this.generateReports();
 
-        if(!this.results.safetyReport || !this.results.summaryReport) {'
-            ';
+        if(!this.results.safetyReport || !this.results.summaryReport) {', ';
 
         }
 

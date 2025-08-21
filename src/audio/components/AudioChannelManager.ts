@@ -4,9 +4,9 @@
  * AudioControllerから分離されたチャンネル管理・音量制御機能
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler';''
-import { getConfigurationManager } from '../../core/ConfigurationManager';''
-import { LoggingSystem } from '../../core/LoggingSystem';
+import { getErrorHandler  } from '../../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../../core/ConfigurationManager';''
+import { LoggingSystem  } from '../../core/LoggingSystem';
 
 /**
  * チャンネル名の型定義'
@@ -21,7 +21,7 @@ interface VolumeMap { master: number,
     sfx: number;
     ui: number;
     voice: number;
-    environmental: number ,}
+   , environmental: number ,}
 
 /**
  * ミュート状態マップインターフェース
@@ -31,7 +31,7 @@ interface MuteStateMap { master: boolean;
     sfx: boolean;
     ui: boolean;
     voice: boolean;
-    environmental: boolean }
+   , environmental: boolean }
 
 /**
  * ゲインノードマップインターフェース
@@ -41,7 +41,7 @@ interface GainNodeMap { master: GainNode | null;
     sfx: GainNode | null;
     ui: GainNode | null;
     voice: GainNode | null;
-    environmental: GainNode | null }
+   , environmental: GainNode | null }
 
 /**
  * チャンネル設定インターフェース
@@ -50,7 +50,7 @@ interface ChannelConfig { defaultVolumes: VolumeMap;
     volumeStep: number;
     minVolume: number;
     maxVolume: number;
-    fadeStep: number }
+   , fadeStep: number }
 
 /**
  * マネージャー状態インターフェース
@@ -59,14 +59,14 @@ interface ManagerState { volumes: VolumeMap;
     muteStates: MuteStateMap;
     effectiveVolumes: VolumeMap;
     channelConfig: ChannelConfig;
-    availableChannels: string[] }
+   , availableChannels: string[] }
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager { get(category: string): any;
     set(category: string, path: string, value: any): void,
-    watch(category: string, path: string, callback: (value: any) => void): string | null ,}
+    watch(category: string, path: string, callback: (valu;e: any) => void): string | null ,}
 }
 
 /**
@@ -108,7 +108,7 @@ export class AudioChannelManager {
             music: null;
             sfx: null;
             ui: null;
-            voice: null;
+           , voice: null;
     ,}
             environmental: null }
         };
@@ -118,14 +118,14 @@ export class AudioChannelManager {
             sfx: 0.8;
             ui: 0.6;
             voice: 1.0;
-            environmental: 0.5 ,};
+           , environmental: 0.5 ,};
         // ミュート状態
         this.muteStates = { master: false,
             music: false;
             sfx: false;
             ui: false;
             voice: false;
-            environmental: false ,};
+           , environmental: false ,};
         // 前回の音量（ミュート解除時の復元用）
         this.previousVolumes = { ...this.volumes;
         
@@ -139,11 +139,11 @@ export class AudioChannelManager {
                 sfx: 0.8;
                 ui: 0.6;
                 voice: 1.0;
-                environmental: 0.5 };
+               , environmental: 0.5 };
             volumeStep: 0.1;
             minVolume: 0.0;
             maxVolume: 2.0;
-            fadeStep: 0.02;
+           , fadeStep: 0.02;
         },
         
         this.initialize();
@@ -426,7 +426,7 @@ export class AudioChannelManager {
                 }');
             }
 
-            this.loggingSystem.info('AudioChannelManager', `Volume reset: ${channel || 'all channels'}`);''
+            this.loggingSystem.info('AudioChannelManager', `Volume reset: ${channel || 'all, channels'}`);''
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.resetVolume); }'
     }
@@ -447,7 +447,7 @@ export class AudioChannelManager {
                 }');
             }
 
-            this.loggingSystem.info('AudioChannelManager', `Mute reset: ${channel || 'all channels'}`);''
+            this.loggingSystem.info('AudioChannelManager', `Mute reset: ${channel || 'all, channels'}`);''
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.resetMute); }'
     }
@@ -474,7 +474,7 @@ export class AudioChannelManager {
     getManagerState(): ManagerState { return { volumes: this.getAllVolumes(),
             muteStates: this.getAllMuteStates();
             effectiveVolumes: this.getEffectiveVolumes();
-            channelConfig: this.channelConfig, };
+           , channelConfig: this.channelConfig, };
             availableChannels: Object.keys(this.gainNodes); }
         }
     
@@ -515,8 +515,7 @@ export class AudioChannelManager {
      * @param audioManager - AudioManagerインスタンス'
      */''
     integrateWithAudioManager(audioManager: AudioManager): void { try {'
-            if(audioManager && typeof, audioManager.registerGainNodes === 'function) {'
-                ';
+            if(audioManager && typeof, audioManager.registerGainNodes === 'function) {', ';
 
             }
 

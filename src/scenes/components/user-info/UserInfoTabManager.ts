@@ -4,18 +4,18 @@
  * UserInfoSceneから分離されたタブ管理機能を提供
  */
 
-import { HelpTab } from '../HelpTab.js';''
-import { HelpSectionSelector } from '../HelpSectionSelector.js';''
-import { ManagementTab } from '../ManagementTab.js';''
-import { AchievementsTab } from '../AchievementsTab.js';''
-import { StatisticsTab } from '../StatisticsTab.js';''
-import { LeaderboardTab } from '../LeaderboardTab.js';''
-import { ChallengesTab } from '../ChallengesTab.js';
+import { HelpTab  } from '../HelpTab.js';''
+import { HelpSectionSelector  } from '../HelpSectionSelector.js';''
+import { ManagementTab  } from '../ManagementTab.js';''
+import { AchievementsTab  } from '../AchievementsTab.js';''
+import { StatisticsTab  } from '../StatisticsTab.js';''
+import { LeaderboardTab  } from '../LeaderboardTab.js';''
+import { ChallengesTab  } from '../ChallengesTab.js';
 
 // タブ情報のインターフェース
 interface Tab { id: string,
     name: string;
-    icon: string ,}
+   , icon: string ,}
 
 // タブコンポーネントのインターフェース
 interface TabComponent { initialize(): void;
@@ -34,8 +34,8 @@ interface GameEngine { canvas: HTMLCanvasElement,
     settingsManager?: any; }
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (data?: any) => void): void;
-    off(event: string, callback?: (data?: any) => void): void;
+interface EventBus { on(event: string, callback: (dat;a?: any) => void): void;
+    off(event: string, callback?: (dat;a?: any) => void): void;
     emit(event: string, data?: any): void }
 }
 
@@ -54,7 +54,7 @@ export class UserInfoTabManager {
     private tabTransitioning: boolean = false;
     private lastTabSwitch: number = 0;
     // コンポーネント工場とキャッシュ
-    private componentFactory: Map<string, () => TabComponent> = new Map();
+    private, componentFactory: Map<string, () => TabComponent> = new Map();
     private componentCache: Map<string, TabComponent> = new Map();''
     private tabComponents: Map<string, TabComponent> = new Map('' }
 
@@ -268,10 +268,10 @@ export class UserInfoTabManager {
      */
     public renderTabContent(;
         ctx: CanvasRenderingContext2D;
-        contentX: number, ;
+       , contentX: number, ;
         contentY: number );
         contentWidth: number);
-        contentHeight: number;
+       , contentHeight: number;
     ): void { const activeComponent = this.getActiveTabComponent(),
         if(!activeComponent) {
 
@@ -289,10 +289,10 @@ export class UserInfoTabManager {
      */
     public renderTabHeaders(;
         ctx: CanvasRenderingContext2D;
-        headerX: number, ;
+       , headerX: number, ;
         headerY: number );
         headerWidth: number);
-        headerHeight: number;
+       , headerHeight: number;
     ): void { const tabWidth = headerWidth / this.tabs.length,
 
         this.tabs.forEach((tab, index) => { 
@@ -327,10 +327,10 @@ export class UserInfoTabManager {
      */
     private renderNoContent(;
         ctx: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number)';
-        height: number'';
+       , height: number'';
     '): void { ''
         ctx.fillStyle = '#333333';''
         ctx.fillRect(x, y, width, height);
@@ -350,7 +350,7 @@ export class UserInfoTabManager {
         headerX: number, ;
         headerY: number );
         headerWidth: number);
-        headerHeight: number;
+       , headerHeight: number;
     ): boolean { if (y < headerY || y > headerY + headerHeight) {
             return false, }
         
@@ -377,7 +377,7 @@ export class UserInfoTabManager {
         contentX: number, ;
         contentY: number );
         contentWidth: number);
-        contentHeight: number';
+       , contentHeight: number';
     ): boolean { ''
         const activeComponent = this.getActiveTabComponent()';
         if(activeComponent && typeof, activeComponent.handleClick === 'function) {'

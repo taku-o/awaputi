@@ -1,13 +1,13 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getLocalizationManager } from '../core/LocalizationManager.js';''
-import { AudioTestPanel } from './AudioTestPanel.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getLocalizationManager  } from '../core/LocalizationManager.js';''
+import { AudioTestPanel  } from './AudioTestPanel.js';
 ';
 // サブコンポーネントのインポート
-import { AudioSettingsTabManager } from './audio-settings/AudioSettingsTabManager.js';''
-import { AudioSettingsTabRenderers } from './audio-settings/AudioSettingsTabRenderers.js';''
-import { AudioSettingsUIComponentFactory } from './audio-settings/AudioSettingsUIComponentFactory.js';''
-import { AudioSettingsDataManager } from './audio-settings/AudioSettingsDataManager.js';
+import { AudioSettingsTabManager  } from './audio-settings/AudioSettingsTabManager.js';''
+import { AudioSettingsTabRenderers  } from './audio-settings/AudioSettingsTabRenderers.js';''
+import { AudioSettingsUIComponentFactory  } from './audio-settings/AudioSettingsUIComponentFactory.js';''
+import { AudioSettingsDataManager  } from './audio-settings/AudioSettingsDataManager.js';
 
 // Audio Settings UI types
 export interface AudioSettingsUIState { isOpen: boolean,
@@ -17,16 +17,16 @@ export interface AudioSettingsUIComponents { audioTestPanel: AudioTestPanel;
     tabManager: AudioSettingsTabManager;
     uiComponentFactory: AudioSettingsUIComponentFactory;
     tabRenderers: AudioSettingsTabRenderers;
-    dataManager: AudioSettingsDataManager
+   , dataManager: AudioSettingsDataManager
     }
 
 export interface NotificationColors { bg: string;
     border: string;
-    text: string }
+   , text: string }
 
 export interface NotificationColorsMap { success: NotificationColors;
     error: NotificationColors;
-    info: NotificationColors
+   , info: NotificationColors
     }
 
 /**
@@ -37,14 +37,14 @@ export interface NotificationColorsMap { success: NotificationColors;
  * - AudioSettingsTabManager: タブナビゲーション、タブ切り替え処理
  * - AudioSettingsTabRenderers: 各タブのコンテンツ描画処理
  * - AudioSettingsUIComponentFactory: UI要素作成、イベント処理
- * - AudioSettingsDataManager: インポート・エクスポート、設定検証処理
+ * -, AudioSettingsDataManager: インポート・エクスポート、設定検証処理
  */
 export class AudioSettingsUI implements AudioSettingsUIState { private audioManager: any
     private configManager: any;
     private localizationManager: any;
     private errorHandler: any;
     // UI要素
-    public container: HTMLElement | null,
+    public, container: HTMLElement | null,
     public isOpen: boolean,
     
     // Components
@@ -160,7 +160,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%),
+           , transform: translate(-50%, -50%),
             width: 600px;
             max-width: 90vw,
             max-height: 80vh,
@@ -243,11 +243,11 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         closeButton.style.cssText = `;
             background: none;
             border: none;
-            color: #ffffff;
+           , color: #ffffff;
             font-size: 24px,
             cursor: pointer;
             padding: 5px 10px;
-            transition: all 0.3s ease,
+           , transition: all 0.3s ease,
         `;''
         closeButton.addEventListener('click', () => this.close());''
         closeButton.addEventListener('mouseenter', () => {  ''
@@ -294,7 +294,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             background-color: rgba(255, 0, 0, 0.2);
             border: 2px solid #ff0000;
             color: #ff0000;
-            padding: 10px 20px;
+           , padding: 10px 20px;
             border-radius: 8px,
             cursor: pointer;
             font-size: 16px,
@@ -321,7 +321,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         const middleGroup = document.createElement('div'');
         middleGroup.style.cssText = `;
             display: flex;
-            gap: 10px;
+           , gap: 10px;
         `;
         ';
         // インポートボタン
@@ -333,7 +333,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             background-color: rgba(0, 255, 0, 0.2);
             border: 2px solid #00ff00;
             color: #00ff00;
-            padding: 10px 15px;
+           , padding: 10px 15px;
             border-radius: 8px,
             cursor: pointer;
             font-size: 14px,
@@ -365,7 +365,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             background-color: rgba(0, 255, 255, 0.2);
             border: 2px solid #00ffff;
             color: #00ffff;
-            padding: 10px 15px;
+           , padding: 10px 15px;
             border-radius: 8px,
             cursor: pointer;
             font-size: 14px,
@@ -395,7 +395,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             color: #00ff00;
             font-size: 14px,
             opacity: 0;
-            transition: opacity 0.3s ease,
+           , transition: opacity 0.3s ease,
         `;''
         saveStatus.id = 'audio-settings-save-status';
         footer.appendChild(saveStatus);
@@ -469,7 +469,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         notification.style.cssText = `;
             position: fixed;
             top: 20px;
-            right: 20px;
+           , right: 20px;
             background-color: ${color.bg},
             border: 2px solid ${color.border};
             color: ${color.text};
@@ -487,11 +487,11 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             style.id = 'audio-notification-styles';
             style.textContent = `;
                 @keyframes slideInFromRight { }
-                    from { transform: translateX(100%); opacity: 0, }
-                    to { transform: translateX(0); opacity: 1 }
+                    from { transform: translateX(100%);, opacity: 0, }
+                    to { transform: translateX(0);, opacity: 1 }
                 @keyframes slideOutToRight {
-                    from { transform: translateX(0); opacity: 1, }
-                    to { transform: translateX(100%); opacity: 0 }
+                    from { transform: translateX(0);, opacity: 1, }
+                    to { transform: translateX(100%);, opacity: 0 }
             `;
             document.head.appendChild(style);
         }
@@ -613,8 +613,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         });
         this.configWatchers.clear();
         // イベントリスナーを削除
-        if(this.escapeHandler) {'
-            ';
+        if(this.escapeHandler) {', ';
 
         }
 

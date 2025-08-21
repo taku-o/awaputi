@@ -2,12 +2,12 @@
  * Phase G パフォーマンステスト
  * 分割前後のパフォーマンス比較テスト
  */
-import { jest } from '@jest/globals';
-import { performance } from 'perf_hooks';
+import { jest  } from '@jest/globals';
+import { performance  } from 'perf_hooks';
 // 分割後のクラス
-import { AudioAccessibilitySupport } from '../../src/audio/accessibility/AudioAccessibilitySupport';
-import { VisualFocusManager } from '../../src/core/VisualFocusManager';
-import { VisualFeedbackManager } from '../../src/core/VisualFeedbackManager';
+import { AudioAccessibilitySupport  } from '../../src/audio/accessibility/AudioAccessibilitySupport';
+import { VisualFocusManager  } from '../../src/core/VisualFocusManager';
+import { VisualFeedbackManager  } from '../../src/core/VisualFeedbackManager';
 describe('Phase G Performance Tests', () => {
     const iterations = 1000;
     const warmupIterations = 100;
@@ -175,7 +175,7 @@ describe('Phase G Performance Tests', () => {
                 },
                 {
                     name: 'playAudioCue';);
-                    fn: (') => instance.playAudioCue('success'');
+                   , fn: (') => instance.playAudioCue('success'');
                 },
                 {
                     name: 'announceText',
@@ -258,7 +258,7 @@ describe('Phase G Performance Tests', () => {
                 {
                     name: 'updateStyle',
                     fn: (') => instance.updateStyle({ color: '#00ff00';
-        width: 4 })');
+       , width: 4 })');
                 },
                 {
                     name: 'handleKeyPress',

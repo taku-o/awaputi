@@ -1,4 +1,4 @@
-import { SettingsImportExportComponent } from '../SettingsImportExportComponent.js';
+import { SettingsImportExportComponent  } from '../SettingsImportExportComponent.js';
 
 /**
  * SettingsImportExportComponent 統合例
@@ -14,7 +14,7 @@ interface GameEngine { // Define game engine interface properties as needed }
 
 interface SettingItem { key: string,
     label: string;
-    type: string;
+   , type: string;
     component?: string;
     description?: string;
     category?: string; ,}
@@ -31,7 +31,7 @@ interface ExtendedSettingItems { accessibility: SettingItem[]
 export class SettingsImportExportIntegrationExample {
     private gameEngine: GameEngine;
     private settingsImportExportComponent: SettingsImportExportComponent | null;
-    private isIntegrated: boolean;
+    private, isIntegrated: boolean;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -148,7 +148,7 @@ export class SettingsImportExportIntegrationExample {
         this.requestSettingsRefresh(''';
         this.recordAnalytics('settings_imported', {
             filename: detail.filename);
-            settingsCount: detail.settingsCount,}';
+           , settingsCount: detail.settingsCount,}';
             warnings: detail.warnings,'} }'
 
             timestamp: detail.timestamp)'});

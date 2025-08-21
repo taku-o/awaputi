@@ -4,7 +4,7 @@
  * UserInfoSceneから分離されたデータ管理機能を提供
  */
 
-import { StatisticsExporter } from '../../../core/StatisticsExporter.js';
+import { StatisticsExporter  } from '../../../core/StatisticsExporter.js';
 
 // インターフェース定義
 interface ExportSettings { format: ExportFormat,
@@ -12,17 +12,17 @@ interface ExportSettings { format: ExportFormat,
     includeAchievements: boolean;
     includeSettings: boolean;
     anonymize: boolean;
-    compress: boolean ,}
+   , compress: boolean ,}
 
 interface ImportSettings { mergeStrategy: MergeStrategy;
     backupBeforeImport: boolean;
     validateData: boolean;
-    preserveUserSettings: boolean }
+   , preserveUserSettings: boolean }
 
 interface ExportMetadata { exportVersion: string;
     timestamp: string;
     gameVersion: string;
-    format: string }
+   , format: string }
 
 interface PlayerData { username?: string;
     ap?: number;
@@ -42,7 +42,7 @@ interface ExportData { metadata: ExportMetadata,
 
 interface ProcessedExportData { data: string,
     filename: string;
-    mimeType: string ,}
+   , mimeType: string ,}
 
 interface ValidationResult { isValid: boolean;
     data?: any;
@@ -50,10 +50,10 @@ interface ValidationResult { isValid: boolean;
 
 interface ImportResult { success: boolean,
     restored: {
-        playerData: boolean;
+        playerDat;a: boolean;
         statistics: boolean;
         achievements: boolean;
-        settings: boolean ,};
+       , settings: boolean ,};
     errors: string[];
 }
 
@@ -61,12 +61,12 @@ interface ImportDataEntry { originalData: any,
     processedData: any;
     result: ImportResult;
     options: ImportSettings;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface ExportState { isExporting: boolean;
     isImporting: boolean;
     lastExportData: ProcessedExportData | null;
-    lastImportData: ImportDataEntry | null }
+   , lastImportData: ImportDataEntry | null }
 
 interface GameEngine { version?: string;
     playerData?: any;
@@ -74,7 +74,7 @@ interface GameEngine { version?: string;
     achievementManager?: any;
     settingsManager?: any; }
 
-interface EventBus { on(event: string, callback: (...args: any[]) => void): void;
+interface EventBus { on(event: string, callback: (...arg;s: any[]) => void): void;
     off(event: string): void,
     emit(event: string, ...args: any[]): void, }
 }
@@ -101,7 +101,7 @@ export class UserDataExporter {
     // 統計エクスポーター
     private statisticsExporter: StatisticsExporter | null;
     // レイアウト設定
-    private contentPadding: number;
+    private, contentPadding: number;
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
         this.gameEngine = gameEngine;
@@ -120,7 +120,7 @@ export class UserDataExporter {
             includeStatistics: true;
             includeAchievements: true;
             includeSettings: true;
-            anonymize: false;
+           , anonymize: false;
     ,}
             compress: false }
         };
@@ -130,7 +130,7 @@ export class UserDataExporter {
             mergeStrategy: 'replace';
             backupBeforeImport: true;
             validateData: true;
-            preserveUserSettings: false };
+           , preserveUserSettings: false };
         // 統計エクスポーター
         this.statisticsExporter = null;
         
@@ -150,8 +150,7 @@ export class UserDataExporter {
      * イベントリスナーをセットアップ
      */
     private setupEventListeners(): void { ''
-        if(this.eventBus) {'
-            ';
+        if(this.eventBus) {', ';
 
         }
 
@@ -382,7 +381,7 @@ export class UserDataExporter {
             this.eventBus.emit('showStatisticsExportDialog', {''
                 selectedFormat: 'json);
                 includeMetadata: true);
-                includeTimeSeriesData: true, }
+               , includeTimeSeriesData: true, }
                 anonymizeData: false); }
 }
     
@@ -395,7 +394,7 @@ export class UserDataExporter {
             this.eventBus.emit('showStatisticsImportDialog', {'
                 selectedFile: null,)';
                 mergeStrategy: 'append');
-                backupBeforeImport: true, }
+               , backupBeforeImport: true, }
                 validateData: true); }
 }
     
@@ -444,7 +443,7 @@ export class UserDataExporter {
 
                 this.eventBus.emit('dataExported', {)
                     data: processedData);
-                    format: mergedOptions.format, }
+                   , format: mergedOptions.format, }
                     options: mergedOptions); }
             }
             
@@ -453,8 +452,7 @@ export class UserDataExporter {
         } catch (error) {
             console.error('Export error:', error);
 
-            if(this.eventBus) {'
-                ';
+            if(this.eventBus) {', ';
 
             }
 
@@ -498,7 +496,7 @@ export class UserDataExporter {
                 processedData: validationResult.data;
                 result: importResult;
                 options: mergedOptions;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             // イベントバスに通知
             if(this.eventBus') { '
 
@@ -512,8 +510,7 @@ export class UserDataExporter {
         } catch (error) {
             console.error('Import error:', error);
 
-            if(this.eventBus) {'
-                ';
+            if(this.eventBus) {', ';
 
             }
 
@@ -532,20 +529,20 @@ export class UserDataExporter {
                 exportVersion: '1.0',
                 timestamp: new Date(''';
                 gameVersion: this.gameEngine.version || '1.0.0';
-                format: options.format ,}))'
+               , format: options.format ,}))'
         // プレイヤーデータ
         if(this.gameEngine.playerData) {'
             exportData.playerData = {''
                 username: this.gameEngine.playerData.username || '';
                 ap: this.gameEngine.playerData.ap || 0;
                 tap: this.gameEngine.playerData.tap || 0;
-                level: this.gameEngine.playerData.level || 1;
+               , level: this.gameEngine.playerData.level || 1;
         }
                 experience: this.gameEngine.playerData.experience || 0, }
                 highScores: this.gameEngine.playerData.highScores || {};
                 unlockedStages: this.gameEngine.playerData.unlockedStages || [];
                 ownedItems: this.gameEngine.playerData.ownedItems || [];
-                settings: this.gameEngine.playerData.settings || {}
+               , settings: this.gameEngine.playerData.settings || {}
         
         // 統計データ（オプション）
         if (options.includeStatistics && this.gameEngine.statisticsManager) { exportData.statistics = this.gameEngine.statisticsManager.getDetailedStatistics(); }
@@ -644,8 +641,7 @@ export class UserDataExporter {
         }
         ';
         // 統計データ（概要）
-        if(data.statistics) {'
-            ';
+        if(data.statistics) {', ';
 
         }
 
@@ -719,8 +715,7 @@ export class UserDataExporter {
                     console.warn('Export, version not, found in, metadata'); }'
                 }
 
-                if(!parsedData.metadata.timestamp) {'
-                    ';
+                if(!parsedData.metadata.timestamp) {', ';
 
                 }
 
@@ -750,7 +745,7 @@ export class UserDataExporter {
                 data: parsedData }
             } catch (error) { return {  };
                 isValid: false, }
-                error: `データ検証エラー: ${(error, as Error}).message}`
+                error: `データ検証エラー: ${(error, as, Error}).message}`
             }
     }
     
@@ -759,11 +754,11 @@ export class UserDataExporter {
      */
     private async processImportData(data: any, options: ImportSettings): Promise<ImportResult> { const result: ImportResult = {
             success: false;
-            restored: {
+           , restored: {
                 playerData: false;
                 statistics: false;
                 achievements: false;
-                settings: false };
+               , settings: false };
             errors: [];
         },
         
@@ -774,7 +769,7 @@ export class UserDataExporter {
             }
                     result.restored.playerData = true; }
                 } catch (error) {
-                    result.errors.push(`プレイヤーデータ復元エラー: ${(error, as Error}).message}`);
+                    result.errors.push(`プレイヤーデータ復元エラー: ${(error, as, Error}).message}`);
                 }
             }
             
@@ -785,7 +780,7 @@ export class UserDataExporter {
             }
                     result.restored.statistics = true; }
                 } catch (error) {
-                    result.errors.push(`統計データ復元エラー: ${(error, as Error}).message}`);
+                    result.errors.push(`統計データ復元エラー: ${(error, as, Error}).message}`);
                 }
             }
             
@@ -796,7 +791,7 @@ export class UserDataExporter {
             }
                     result.restored.achievements = true; }
                 } catch (error) {
-                    result.errors.push(`実績データ復元エラー: ${(error, as Error}).message}`);
+                    result.errors.push(`実績データ復元エラー: ${(error, as, Error}).message}`);
                 }
             }
             
@@ -807,7 +802,7 @@ export class UserDataExporter {
             }
                     result.restored.settings = true; }
                 } catch (error) {
-                    result.errors.push(`設定データ復元エラー: ${(error, as Error}).message}`);
+                    result.errors.push(`設定データ復元エラー: ${(error, as, Error}).message}`);
                 }
             }
             
@@ -817,7 +812,7 @@ export class UserDataExporter {
             result.success = result.errors.length === 0;
             
         } catch (error) {
-            result.errors.push(`インポート処理エラー: ${(error, as Error}).message}`);
+            result.errors.push(`インポート処理エラー: ${(error, as, Error}).message}`);
             result.success = false;
         }
         
@@ -828,8 +823,7 @@ export class UserDataExporter {
      * プレイヤーデータの復元
      */
     private async restorePlayerData(playerData: PlayerData, options: ImportSettings): Promise<void> { ''
-        if(!this.gameEngine.playerData) {'
-            ';
+        if(!this.gameEngine.playerData) {', ';
 
         }
 
@@ -878,8 +872,7 @@ export class UserDataExporter {
      * 統計データの復元
      */
     private async restoreStatisticsData(statisticsData: any, options: ImportSettings): Promise<void> { ''
-        if(!this.gameEngine.statisticsManager) {'
-            ';
+        if(!this.gameEngine.statisticsManager) {', ';
 
         }
 
@@ -894,8 +887,7 @@ export class UserDataExporter {
      * 実績データの復元
      */
     private async restoreAchievementsData(achievementsData: any, options: ImportSettings): Promise<void> { ''
-        if(!this.gameEngine.achievementManager) {'
-            ';
+        if(!this.gameEngine.achievementManager) {', ';
 
         }
 
@@ -910,8 +902,7 @@ export class UserDataExporter {
      * 設定データの復元
      */
     private async restoreSettingsData(settingsData: any, options: ImportSettings): Promise<void> { ''
-        if(!this.gameEngine.settingsManager) {'
-            ';
+        if(!this.gameEngine.settingsManager) {', ';
 
         }
 
@@ -948,7 +939,7 @@ export class UserDataExporter {
             includeAchievements: true;
             includeSettings: true);
             anonymize: false);
-            compress: true);
+           , compress: true);
         // ローカルストレージにバックアップを保存
         const backupKey = `backup_${Date.now(})`;
         localStorage.setItem(backupKey, JSON.stringify(backupData);
@@ -988,8 +979,7 @@ export class UserDataExporter {
      * データの匿名化
      */
     private anonymizeData(data: ExportData): void { ''
-        if(data.playerData) {'
-            ';
+        if(data.playerData) {', ';
 
         }
 
@@ -1007,8 +997,7 @@ export class UserDataExporter {
      * 統計エクスポートの実行
      */
     async performStatisticsExport(options: any): Promise<any> { ''
-        if(!this.statisticsExporter) {'
-            ';
+        if(!this.statisticsExporter) {', ';
 
         }
 
@@ -1089,8 +1078,7 @@ export class UserDataExporter {
     ';
 
     private showError(message: string): void { ''
-        if(this.eventBus) {'
-            ';
+        if(this.eventBus) {', ';
 
         }
 
@@ -1116,7 +1104,7 @@ export class UserDataExporter {
      */
     getExportState(): ExportState { return { isExporting: this.isExporting,
             isImporting: this.isImporting;
-            lastExportData: this.lastExportData, };
+           , lastExportData: this.lastExportData, };
             lastImportData: this.lastImportData }
         }
     

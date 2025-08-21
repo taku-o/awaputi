@@ -1,24 +1,24 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
 import type { ErrorHandler } from '../utils/ErrorHandler.js';
 import { UIStateManager, 
     DialogStateManager, ;
     OperationStateManager,
 
-    BackupStatusManager ' }'
+    BackupStatusManager '  }'
 
 } from './data-management-ui/DataManagementStateManager.js';
 import { UILayoutManager, 
     UIRenderer,
 
-    ViewRenderer ' }'
+    ViewRenderer '  }'
 
 } from './data-management-ui/DataManagementRenderer.js';''
-import { DialogManager } from './data-management-ui/DataManagementDialogs.js';
+import { DialogManager  } from './data-management-ui/DataManagementDialogs.js';
 
 /**
  * Data manager interface
  */
-interface DataManager { on?(event: string, callback: (data: any) => void): void;
+interface DataManager { on?(event: string, callback: (dat;a: any) => void): void;
     backup?: any;
     export?: any;
     import?: any; ,}
@@ -30,7 +30,7 @@ interface DataManager { on?(event: string, callback: (data: any) => void): void;
 interface Config { autoRefresh: boolean,
     refreshInterval: number;
     enableAnimations: boolean;
-    showAdvancedOptions: boolean ,}
+   , showAdvancedOptions: boolean ,}
 
 /**
  * Status interface
@@ -40,7 +40,7 @@ interface Status { visible: boolean;
     selectedItem: number;
     dialogVisible: boolean;
     operationInProgress: boolean;
-    backupStatus: any }
+   , backupStatus: any }
 
 /**
  * Bounds interface
@@ -48,7 +48,7 @@ interface Status { visible: boolean;
 interface Bounds { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 /**
  * データ管理UI (Refactored)
@@ -57,7 +57,7 @@ interface Bounds { x: number;
  * サブコンポーネント化により責任を分離し、保守性を向上
  * - DataManagementStateManager: 状態管理システム
  * - DataManagementRenderer: レンダリングシステム
- * - DataManagementDialogs: ダイアログシステム
+ * -, DataManagementDialogs: ダイアログシステム
  * 
  * 責任:
  * - バックアップ状況表示機能の提供
@@ -78,15 +78,15 @@ export class DataManagementUI {
     private dialogManager!: DialogManager;
     
     // Main configuration
-    private config: Config = {
+    private, config: Config = {
         autoRefresh: true;
-        refreshInterval: 30000, // 30 seconds;
+       , refreshInterval: 30000, // 30 seconds;
         enableAnimations: true;
-        showAdvancedOptions: false ,};
+       , showAdvancedOptions: false ,};
     // Canvas and input
     private canvas: HTMLCanvasElement | null = null;
     private lastInputTime: number = 0;
-    private inputCooldown: number = 150;
+    private, inputCooldown: number = 150;
     private refreshInterval?: NodeJS.Timer;
 
     constructor(dataManager: DataManager) {
@@ -200,7 +200,7 @@ export class DataManagementUI {
                     title: `${data.type} in progress`;
                     message: data.message);
                     progress: 0);
-                    startTime: data.startTime,)';
+                   , startTime: data.startTime,)';
                     cancellable: true),
                 }');''
             } else if(action === 'progress) { this.dialogState.setDialogData({)'
@@ -209,8 +209,7 @@ export class DataManagementUI {
 
             } else if(action === 'end) { ''
                 this.dialogState.hideDialog()';
-                if(data.result === 'success) {'
-                    ';
+                if(data.result === 'success) {', ';
 
                 }
 
@@ -361,7 +360,7 @@ export class DataManagementUI {
         this.uiRenderer.drawText('⚠️ ' + errorMessage, ;
             bounds.x + 20, bounds.y + bounds.height + 35, {)'
                 fontSize: 14)';
-                color: colors.danger,
+               , color: colors.danger,
                 align: 'left',')';
                 baseline: 'middle' ,}
     
@@ -465,7 +464,7 @@ export class DataManagementUI {
                 case 3: // Import Data;
                     this.showImportDialog();
                     break;
-                case 4: // Clear Data;
+                case, 4: // Clear Data;
                     this.showClearDataDialog();
         }
                     break; }
@@ -523,7 +522,7 @@ export class DataManagementUI {
         this.dialogState.showDialog('export', {;
             formats: ['JSON', 'CSV', 'XML]);
             selectedFormat: 0)';
-            includeOptions: [' ,}'
+           , includeOptions: [' ,}'
 
                 { name: 'Game Progress', checked: true ,},''
                 { name: 'Settings', checked: true ,},]'
@@ -559,7 +558,7 @@ export class DataManagementUI {
 
             this.backupStatus.addBackupToHistory({ );''
                 id: Date.now()';
-                type: 'manual'' }
+               , type: 'manual'' }
 
             }');
             this.operationState.endOperation('success', 'Backup created successfully);
@@ -644,7 +643,7 @@ export class DataManagementUI {
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);
 
-        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ' ' + sizes[i]; }
+        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i]; }
     
     // Configuration
     configure(newConfig: Partial<Config>): void { Object.assign(this.config, newConfig); }
@@ -658,7 +657,7 @@ export class DataManagementUI {
             currentView: this.uiState.getCurrentView();
             selectedItem: this.uiState.getSelectedItem();
             dialogVisible: this.dialogState.isDialogVisible();
-            operationInProgress: this.operationState.isOperationInProgress(), };
+           , operationInProgress: this.operationState.isOperationInProgress(), };
             backupStatus: this.backupStatus.getBackupStatus(); }
         }
     

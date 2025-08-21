@@ -7,37 +7,37 @@
 interface ValidationError { type: string,
     message: string;
     line: number;
-    column: number ,}
+   , column: number ,}
 
 interface ValidationWarning { type: string;
     message: string;
     line: number;
-    column: number }
+   , column: number }
 
 interface ValidationStatistics { imports: number;
     exports: number;
     classes: number;
     functions: number;
-    variables: number }
+   , variables: number }
 }
 
 interface ValidationResult { isValid: boolean;
     errors: ValidationError[];
     warnings: ValidationWarning[];
     statistics: ValidationStatistics;
-    filePath: string }
+   , filePath: string }
 
 interface BracketPair { open: string;
     close: string;
-    name: string }
+   , name: string }
 
 interface StackItem { char: string;
-    index: number }
+   , index: number }
 
 export class JavaScriptModuleValidator {
     private errors: ValidationError[];
     private warnings: ValidationWarning[];
-    private statistics: ValidationStatistics;
+    private, statistics: ValidationStatistics;
     constructor() {
 
         this.errors = [];
@@ -46,7 +46,7 @@ export class JavaScriptModuleValidator {
             imports: 0;
             exports: 0;
             classes: 0;
-            functions: 0;
+           , functions: 0;
     }
     }
             variables: 0 }
@@ -62,7 +62,7 @@ export class JavaScriptModuleValidator {
             exports: 0;
             classes: 0;
             functions: 0;
-            variables: 0 }
+           , variables: 0 }
         };
         try { // 基本的な構文チェック
             await this.validateSyntax(moduleContent);
@@ -85,20 +85,20 @@ export class JavaScriptModuleValidator {
             return { isValid: this.errors.length === 0,
                 errors: this.errors;
                 warnings: this.warnings;
-                statistics: this.statistics, };
+               , statistics: this.statistics, };
                 filePath }
             };''
         } catch (error) { this.errors.push({)'
                 type: 'VALIDATION_ERROR'), }
-                message: `モジュール検証エラー: ${(error, as Error}).message}`;
+                message: `モジュール検証エラー: ${(error, as, Error}).message}`;
                 line: 0;
-                column: 0;
+               , column: 0;
             }),
 
             return { isValid: false,
                 errors: this.errors;
                 warnings: this.warnings;
-                statistics: this.statistics, };
+               , statistics: this.statistics, };
                 filePath }
             }
     }
@@ -122,7 +122,7 @@ export class JavaScriptModuleValidator {
 
         } catch (error) { this.errors.push({)'
                 type: 'SYNTAX_ERROR'), }
-                message: `構文エラー: ${(error, as Error}).message}`;
+                message: `構文エラー: ${(error, as, Error}).message}`;
                 line: this.findErrorLine(error as Error, content),
                 column: 0;
             }),
@@ -155,7 +155,7 @@ export class JavaScriptModuleValidator {
 
             unexpectedTokens.forEach(token => {  this.errors.push({)'
                     type: 'UNEXPECTED_TOKEN');
-                    message: `予期しないトークン: ${token}`, }
+                   , message: `予期しないトークン: ${token}`, }
                     line: lineNumber, }
                     column: line.indexOf(token});
                 });
@@ -188,7 +188,7 @@ export class JavaScriptModuleValidator {
             if(beforeChar === '=' && afterChar === '='') {'
                 this.errors.push({)'
                     type: 'INVALID_COMPARISON_OPERATOR');
-                    message: `無効な比較演算子: ${match[0]} (前後に = がある}`;
+                   , message: `無効な比較演算子: ${match[0]} (前後に = がある}`;
             }
                     line: lineNumber, }
                     column: this.getColumnNumber(content, match.index});
@@ -270,12 +270,12 @@ export class JavaScriptModuleValidator {
      * エクスポート文の個別検証'
      */''
     validateExportStatement(statement: string, content: string, index: number): void { // 名前付きエクスポートとデフォルトエクスポートのチェック
-        if (statement.includes('export, default'') && statement.includes('export {)) {'
+        if (statement.includes('export, default'') && statement.includes('export { )) {'
             this.warnings.push({)'
                 type: 'MIXED_EXPORT_WARNING',')';
                 message: '同一行にデフォルトエクスポートと名前付きエクスポートが混在');
-                line: this.getLineNumber(content, index),
-                column: 0 ,});
+               , line: this.getLineNumber(content, index),
+                column: 0 , });
         }
     }
 
@@ -304,7 +304,7 @@ export class JavaScriptModuleValidator {
         if(!/^[A-Z][a-zA-Z0-9]*$/.test(className)) {'
             this.warnings.push({)'
                 type: 'CLASS_NAMING_WARNING');
-                message: `クラス名の命名規則警告: ${className} (PascalCaseを推奨}`, }
+               , message: `クラス名の命名規則警告: ${className} (PascalCaseを推奨}`, }
                 line: this.getLineNumber(content, startIndex}),
                 column: 0;
             }),
@@ -370,8 +370,7 @@ export class JavaScriptModuleValidator {
     }
  : undefined';
     getLineNumber(content: string, index: number): number { ''
-        return content.substring(0, index).split('\n).length; }'
-';
+        return content.substring(0, index).split('\n).length; }', ';
 
     getColumnNumber(content: string, index: number): number { ''
         const beforeContent = content.substring(0, index);''
@@ -387,8 +386,7 @@ export class JavaScriptModuleValidator {
      */
     generateSummary(result: ValidationResult): string { const parts: string[] = [],
 
-        if(result.isValid) {'
-            ';
+        if(result.isValid) {', ';
 
         }
 

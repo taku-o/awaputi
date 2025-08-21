@@ -1,7 +1,7 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { RealtimeDashboard } from '../../src/analytics/RealtimeDashboard';
-import { PerformanceWarningSystem } from '../../src/analytics/PerformanceWarningSystem';
-import { DeveloperAlertSystem } from '../../src/analytics/DeveloperAlertSystem';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { RealtimeDashboard  } from '../../src/analytics/RealtimeDashboard';
+import { PerformanceWarningSystem  } from '../../src/analytics/PerformanceWarningSystem';
+import { DeveloperAlertSystem  } from '../../src/analytics/DeveloperAlertSystem';
 // Chart.js のモック
 (global as any).Chart = jest.fn() as jest.Mock.mockImplementation(() => ({
     destroy: jest.fn(),
@@ -466,7 +466,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
                 if (i % 20 === 0') {
                     errorSystem.handleError({
                         errorType: 'javascript';);
-                        message: `Error ${i)`,
+                       , message: `Error ${i)`,
         timestamp: Date.now(});
                     });
                 }
@@ -492,7 +492,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
                 errorSystem.handleError({
                     errorType: 'network',
                     message: 'Load test error';);
-        timestamp: Date.now(),
+       , timestamp: Date.now(),
                 }');
                 developerAlertSystem.analyzeData({
                     gameBalance: { some: 'data' };

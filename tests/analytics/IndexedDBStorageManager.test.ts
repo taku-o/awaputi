@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * IndexedDBStorageManager のテスト
  */
-import { IndexedDBStorageManager } from '../../src/analytics/IndexedDBStorageManager';
+import { IndexedDBStorageManager  } from '../../src/analytics/IndexedDBStorageManager';
 // IndexedDBのモック
 class MockIDBDatabase {
     constructor() {
@@ -277,13 +277,13 @@ describe('IndexedDBStorageManager', () => {
             const store = manager.db.stores.get('sessions'');
             store.data.set('test-session-1', {
                 sessionId: 'test-session-1';);
-                startTime: Date.now(') - 1000,
+               , startTime: Date.now(') - 1000,
                 stageId: 'normal',
                 completed: true
             }');
             store.data.set('test-session-2', {
                 sessionId: 'test-session-2';);
-                startTime: Date.now('),
+               , startTime: Date.now('),
                 stageId: 'hard',
                 completed: false
             }');

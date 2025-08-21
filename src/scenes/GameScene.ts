@@ -5,13 +5,13 @@
  * ゲーム状態管理、UI管理、視覚化、パフォーマンス監視を統合して管理します。
  */
 
-import { Scene } from '../core/Scene.js';''
-import { GameInputManager } from './GameInputManager.js';''
-import { FloatingTextManager } from '../ui/FloatingTextManager.js';''
-import { GameStateManager } from './game-scene/GameStateManager.js';''
-import { GameUIManager } from './game-scene/GameUIManager.js';''
-import { GameVisualizationManager } from './game-scene/GameVisualizationManager.js';''
-import { GamePerformanceMonitor } from './game-scene/GamePerformanceMonitor.js';
+import { Scene  } from '../core/Scene.js';''
+import { GameInputManager  } from './GameInputManager.js';''
+import { FloatingTextManager  } from '../ui/FloatingTextManager.js';''
+import { GameStateManager  } from './game-scene/GameStateManager.js';''
+import { GameUIManager  } from './game-scene/GameUIManager.js';''
+import { GameVisualizationManager  } from './game-scene/GameVisualizationManager.js';''
+import { GamePerformanceMonitor  } from './game-scene/GamePerformanceMonitor.js';
 
 // Game Scene specific types
 export interface GameSceneState { isPaused: boolean,
@@ -25,20 +25,20 @@ export interface GameSceneComponents { inputManager: GameInputManager,
     stateManager: GameStateManager;
     uiManager: GameUIManager;
     visualizationManager: GameVisualizationManager;
-    performanceMonitor: GamePerformanceMonitor
+   , performanceMonitor: GamePerformanceMonitor
     ,}
 export interface GameSceneStats { state: any,
     ui: any;
     visualization: any;
-    performance: any ,}
+   , performance: any ,}
 export interface GameSceneDebugInfo { scene: string,
     isPaused: boolean;
     isGameOver: boolean;
-    components: {
-        stateManager: any;
+   , components: {
+        stateManage;r: any;
         uiManager: any;
         visualizationManager: any;
-        performanceMonitor: any 
+       , performanceMonitor: any 
 ,};
     gameStats: GameSceneStats;
 }
@@ -422,8 +422,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
             console.log(`[DEBUG] createDragParticles called: x=${x}, y=${y}, intensity=${ intensity)`'};
             ';
             // 基本パーティクルマネージャーでクリックエフェクトを作成
-            if(this.gameEngine.particleManager && typeof, this.gameEngine.particleManager.createComboEffect === 'function''} {'
-                ';
+            if(this.gameEngine.particleManager && typeof, this.gameEngine.particleManager.createComboEffect === 'function''} {', ';
 
             }
 
@@ -450,7 +449,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
                     this.gameEngine.enhancedParticleManager.createParticle(x, y, vx, vy, {)'
                         color: '#FFD700');
                         size: 3 + Math.random() * 2;
-                        lifetime: 500 + Math.random() * 300;
+                       , lifetime: 500 + Math.random() * 300;
             ,}
 
                         fadeOut: true' }'
@@ -501,7 +500,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      */
     getGameStats(): GameSceneStats { return { state: this.stateManager.getGameStats(),
             ui: this.uiManager.getUIState();
-            visualization: this.visualizationManager.getVisualizationStats(), };
+           , visualization: this.visualizationManager.getVisualizationStats(), };
             performance: this.performanceMonitor.getPerformanceStats(); }
         }
     
@@ -518,10 +517,10 @@ export class GameScene extends Scene implements GameSceneState { // State proper
             scene: 'GameScene';
             isPaused: this.isPaused);
             isGameOver: this.gameEngine.isGameOver);
-            components: { stateManager: this.stateManager.getDebugInfo();
+           , components: { stateManager: this.stateManager.getDebugInfo();
                 uiManager: this.uiManager.getUIState();
                 visualizationManager: this.visualizationManager.getVisualizationStats();
-                performanceMonitor: this.performanceMonitor.getPerformanceStats( };
+               , performanceMonitor: this.performanceMonitor.getPerformanceStats( };
             gameStats: this.getGameStats();
         }
     
@@ -530,8 +529,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @param settings - 設定オブジェクト
      */
     updateSettings(settings: { performance?: PerformanceSettings ): void {
-        if(settings.performance) {'
-            ';
+        if(settings.performance) {', ';
 
         }
 

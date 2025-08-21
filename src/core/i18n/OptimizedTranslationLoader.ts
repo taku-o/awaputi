@@ -5,7 +5,7 @@
  * メモリ使用量最適化を実装
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface LoadOptions { priority?: LoadPriority;
@@ -16,10 +16,10 @@ export interface LoadOptions { priority?: LoadPriority;
 export interface CacheEntry { data: any,
     timestamp: number;
     accessCount: number;
-    size: number ,}
+   , size: number ,}
 
 export interface PreloadResult { language: string;
-    success: boolean;
+   , success: boolean;
     data?: any;
     error?: Error;
     }
@@ -33,11 +33,11 @@ export interface MemoryInfo { usedJSHeapSize: number,
     jsHeapSizeLimit?: number ,}
 
 export interface FileLoadResult { file: string;
-    data: any | null }
+   , data: any | null }
 
 export interface PerformanceStats { cache: CacheStats;
     network: NetworkStats;
-    loadTimes: Record<string, string>,
+   , loadTimes: Record<string, string>,
     memory: MemoryStats
     ,}
 
@@ -45,14 +45,14 @@ export interface CacheStats { hitRate: string;
     totalRequests: number;
     cacheHits: number;
     cacheSize: number;
-    maxCacheSize: number }
+   , maxCacheSize: number }
 
 export interface NetworkStats { requests: number;
     totalBytesLoaded: number;
-    averageBytesPerRequest: number }
+   , averageBytesPerRequest: number }
 
 export interface MemoryStats { pressure: boolean;
-    cacheMemoryUsage: number }
+   , cacheMemoryUsage: number }
 
 export interface TranslationData { [key: string]: any;
     _compressed?: boolean;
@@ -60,12 +60,12 @@ export interface TranslationData { [key: string]: any;
 
 export interface LoadPromiseData { language: string,
     startTime: number;
-    promise: Promise<any>
+   , promise: Promise<any>
     ,}
 
 export interface CompressionSupport { compressionSupported: boolean;
     compressionEnabled: boolean;
-    compressionThreshold: number }
+   , compressionThreshold: number }
 
 // Navigator型拡張
 declare global { interface Navigator {
@@ -87,17 +87,17 @@ export class OptimizedTranslationLoader {
     private compressionEnabled: boolean;
     private lazyLoadEnabled: boolean;
     // キャッシュ設定
-    private memoryCache: Map<string, CacheEntry>;
+    private, memoryCache: Map<string, CacheEntry>;
     private maxCacheSize: number;
     private cacheHitRate: number;
     private totalRequests: number;
     private cacheHits: number;
     // パフォーマンス監視
-    private loadTimes: Map<string, number[]>;
+    private, loadTimes: Map<string, number[]>;
     private networkRequests: number;
     private totalBytesLoaded: number;
     // 優先度管理
-    private priorityQueue: Map<string, LoadPriority>;
+    private, priorityQueue: Map<string, LoadPriority>;
     private preloadQueue: string[];
     // 圧縮設定
     private compressionThreshold: number;
@@ -105,7 +105,7 @@ export class OptimizedTranslationLoader {
     private serviceWorkerSupported: boolean;
     private compressionSupported: boolean;
     private networkConnection: NetworkConnection;
-    private memoryInfo: MemoryInfo;
+    private, memoryInfo: MemoryInfo;
     // 現在の言語取得関数（オプション）
     private getCurrentLanguage?: () => string;
 
@@ -162,7 +162,7 @@ export class OptimizedTranslationLoader {
         // メモリ状態の監視
         this.memoryInfo = performance.memory || { usedJSHeapSize: 0, totalJSHeapSize: 0 ,})'
         console.log('OptimizedTranslationLoader initialized', { serviceWorker: this.serviceWorkerSupported)
-            compression: this.compressionSupported,);
+           , compression: this.compressionSupported,);
             networkType: this.networkConnection.effectiveType ,}
     
     /**
@@ -214,7 +214,7 @@ export class OptimizedTranslationLoader {
         } catch (error) { this.loadingPromises.delete(language);''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOAD_ERROR', {)'
                 operation: 'loadLanguage');
-                language: language,);
+               , language: language,);
                 options: options ,});
             throw error;
         }
@@ -332,8 +332,7 @@ export class OptimizedTranslationLoader {
             const response = await fetch(url, {'
                 signal: controller.signal,)';
                 cache: options.noCache ? 'no-cache' : 'default')';
-                headers: {''
-                    'Accept': 'application/json',
+               , headers: {'', 'Accept': 'application/json',
                     'Accept-Encoding': 'gzip, br, deflate' }
                 };
             );
@@ -348,8 +347,7 @@ export class OptimizedTranslationLoader {
             ';
             // レスポンスサイズの記録
             const contentLength = response.headers.get('content-length);
-            if(contentLength) {'
-                ';
+            if(contentLength) {', ';
 
             }
 
@@ -473,7 +471,7 @@ export class OptimizedTranslationLoader {
             data: data);
             timestamp: Date.now();
             accessCount: 0;
-            size: this.estimateDataSize(data });
+           , size: this.estimateDataSize(data });
     }
     
     /**
@@ -541,8 +539,7 @@ export class OptimizedTranslationLoader {
         ';
         // ネットワーク状態に基づく判定
         if(this.networkConnection.effectiveType === 'slow-2g' || ')';
-            this.networkConnection.effectiveType === '2g'') {'
-            ';
+            this.networkConnection.effectiveType === '2g'') {', ';
 
         }
 
@@ -553,8 +550,7 @@ export class OptimizedTranslationLoader {
             return 'chunked'; }
         ';
         // 優先度に基づく判定
-        if(priority === 'high' || priority === 'critical'') {'
-            ';
+        if(priority === 'high' || priority === 'critical'') {', ';
 
         }
 
@@ -580,16 +576,14 @@ export class OptimizedTranslationLoader {
      */'
     private getPriority(language: string): LoadPriority { // 現在の言語は高優先度
         const currentLanguage = this.getCurrentLanguage? .(') || 'ja';''
-        if(language === currentLanguage) {'
-            ';
+        if(language === currentLanguage) {', ';
 
         }
 
             return 'high';
         ';
         // フォールバック言語は中優先度
-        if(language === 'en' || language === 'ja'') {'
-            ';
+        if(language === 'en' || language === 'ja'') {', ';
 
         }
 
@@ -673,14 +667,14 @@ export class OptimizedTranslationLoader {
                 totalRequests: this.totalRequests;
                 cacheHits: this.cacheHits;
                 cacheSize: this.memoryCache.size;
-                maxCacheSize: this.maxCacheSize };
+               , maxCacheSize: this.maxCacheSize };
             network: { requests: this.networkRequests;
                 totalBytesLoaded: this.totalBytesLoaded;
-                averageBytesPerRequest: this.networkRequests > 0 ?   : undefined
+               , averageBytesPerRequest: this.networkRequests > 0 ?   : undefined
                     Math.round(this.totalBytesLoaded / this.networkRequests) : 0 };
             loadTimes: {};
             memory: { pressure: this.isMemoryPressure();
-                cacheMemoryUsage: Array.from(this.memoryCache.values();
+               , cacheMemoryUsage: Array.from(this.memoryCache.values();
                     .reduce((total, cache) => total + cache.size, 0); }
 };
         

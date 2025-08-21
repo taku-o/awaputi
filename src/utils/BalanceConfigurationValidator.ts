@@ -5,23 +5,23 @@
  * 論理的整合性とゲームプレイの品質を保証します。
  */
 
-import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
+import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface ValidationRule { type: string,
     min?: number;
     max?: number;
     description: string;
-    category: string ,}
+   , category: string ,}
 
 interface ValidationError { property: string;
     value: any;
     error: string;
-    rule: string;
+   , rule: string;
     details?: string }
 
 interface ValidationWarning { property: string;
-    message: string }
+   , message: string }
 
 interface ValidationResult { validationId: string;
     bubbleType?: string;
@@ -29,24 +29,24 @@ interface ValidationResult { validationId: string;
     errors: ValidationError[];
     warnings: ValidationWarning[];
     executionTime: number;
-    timestamp: number }
+   , timestamp: number }
 
 interface PropertyValidationResult { isValid: boolean;
-    error: string | null }
+   , error: string | null }
 
 interface LogicalValidationResult { errors: ValidationError[];
-    warnings: ValidationWarning[]
+   , warnings: ValidationWarning[]
     }
 
 interface ErrorStatistics { totalValidations: number;
     failedValidations: number;
-    errorsByType: Map<string, number>;
+   , errorsByType: Map<string, number>;
     errorsByBubbleType: Map<string, number> }
 
 interface ValidationStatistics { totalValidations: number,
     failedValidations: number;
     successRate: string;
-    errorsByType: Record<string, number>;
+   , errorsByType: Record<string, number>;
     errorsByBubbleType: Record<string, number>;
     recentValidations: ValidationResult[]
     ,}
@@ -77,9 +77,9 @@ interface ItemConfig { baseCost?: number;
 
 export class BalanceConfigurationValidator {
     private errorHandler: ErrorHandler;
-    private validationRules: Map<string, ValidationRule>;
+    private, validationRules: Map<string, ValidationRule>;
     private validationHistory: ValidationResult[];
-    private errorStats: ErrorStatistics;
+    private, errorStats: ErrorStatistics;
     constructor() {
     
         this.errorHandler = getErrorHandler();
@@ -94,7 +94,7 @@ export class BalanceConfigurationValidator {
         this.errorStats = {
             totalValidations: 0;
             failedValidations: 0;
-            errorsByType: new Map();
+           , errorsByType: new Map();
     ,}
             errorsByBubbleType: new Map(); }
         };
@@ -125,28 +125,28 @@ export class BalanceConfigurationValidator {
         this.validationRules.set('bubble.health', { ''
             type: 'number);
             min: 1)';
-            max: 20,
+           , max: 20,
             description: 'Bubble health must be between 1 and 20',')';
             category: 'bubble')'),
 
         this.validationRules.set('bubble.size', {''
             type: 'number);
             min: 20)';
-            max: 150,
+           , max: 150,
             description: 'Bubble size must be between 20 and 150 pixels',')';
             category: 'bubble')'),
 
         this.validationRules.set('bubble.maxAge', {''
             type: 'number);
             min: 3000)';
-            max: 60000,
+           , max: 60000,
             description: 'Bubble max age must be between 3 and 60 seconds',')';
             category: 'bubble')'),
 
         this.validationRules.set('bubble.score', {''
             type: 'number);
             min: 1)';
-            max: 2000,
+           , max: 2000,
             description: 'Bubble score must be between 1 and 2000',')';
             category: 'bubble')');
         ';
@@ -154,35 +154,35 @@ export class BalanceConfigurationValidator {
         this.validationRules.set('bubble.healAmount', {''
             type: 'number);
             min: 5)';
-            max: 100,
+           , max: 100,
             description: 'Heal amount must be between 5 and 100',')';
             category: 'bubble')'),
 
         this.validationRules.set('bubble.damageAmount', {''
             type: 'number);
             min: 1)';
-            max: 50,
+           , max: 50,
             description: 'Damage amount must be between 1 and 50',')';
             category: 'bubble')'),
 
         this.validationRules.set('bubble.shakeIntensity', {''
             type: 'number);
             min: 5)';
-            max: 50,
+           , max: 50,
             description: 'Shake intensity must be between 5 and 50',')';
             category: 'bubble')'),
 
         this.validationRules.set('bubble.disableDuration', {''
             type: 'number);
             min: 500)';
-            max: 5000,
+           , max: 5000,
             description: 'Disable duration must be between 0.5 and 5 seconds',')';
             category: 'bubble')'),
 
         this.validationRules.set('bubble.bonusTimeMs', {''
             type: 'number);
             min: 2000)';
-            max: 15000,
+           , max: 15000,
             description: 'Bonus time must be between 2 and 15 seconds',')';
             category: 'bubble' ,}
     
@@ -193,21 +193,21 @@ export class BalanceConfigurationValidator {
         this.validationRules.set('score.baseScore', { ''
             type: 'number);
             min: 1)';
-            max: 2000,
+           , max: 2000,
             description: 'Base score must be between 1 and 2000',')';
             category: 'score')'),
 
         this.validationRules.set('score.comboMultiplier', {''
             type: 'number);
             min: 1.0)';
-            max: 10.0,
+           , max: 10.0,
             description: 'Combo multiplier must be between 1.0 and 10.0',')';
             category: 'score')'),
 
         this.validationRules.set('score.ageBonus', {''
             type: 'number);
             min: 1.0)';
-            max: 5.0,
+           , max: 5.0,
             description: 'Age bonus must be between 1.0 and 5.0',')';
             category: 'score' ,}
     
@@ -218,21 +218,21 @@ export class BalanceConfigurationValidator {
         this.validationRules.set('stage.spawnRate', { ''
             type: 'number);
             min: 0.1)';
-            max: 10.0,
+           , max: 10.0,
             description: 'Spawn rate must be between 0.1 and 10.0',')';
             category: 'stage')'),
 
         this.validationRules.set('stage.maxBubbles', {''
             type: 'number);
             min: 5)';
-            max: 100,
+           , max: 100,
             description: 'Max bubbles must be between 5 and 100',')';
             category: 'stage')'),
 
         this.validationRules.set('stage.unlockRequirement', {''
             type: 'number);
             min: 0)';
-            max: 100000,
+           , max: 100000,
             description: 'Unlock requirement must be between 0 and 100000',')';
             category: 'stage' ,}
     
@@ -243,21 +243,21 @@ export class BalanceConfigurationValidator {
         this.validationRules.set('item.baseCost', { ''
             type: 'number);
             min: 10)';
-            max: 1000,
+           , max: 1000,
             description: 'Item base cost must be between 10 and 1000',')';
             category: 'item')'),
 
         this.validationRules.set('item.costMultiplier', {''
             type: 'number);
             min: 1.0)';
-            max: 3.0,
+           , max: 3.0,
             description: 'Cost multiplier must be between 1.0 and 3.0',')';
             category: 'item')'),
 
         this.validationRules.set('item.maxLevel', {''
             type: 'number);
             min: 1)';
-            max: 10,
+           , max: 10,
             description: 'Max level must be between 1 and 10',')';
             category: 'item' ,}
     
@@ -280,7 +280,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'health);
                         value: config.health)';
-                        error: healthValidation.error!,' }'
+                       , error: healthValidation.error!,' }'
 
                         rule: 'bubble.health); }'
 }
@@ -292,7 +292,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'size);
                         value: config.size)';
-                        error: sizeValidation.error!,' }'
+                       , error: sizeValidation.error!,' }'
 
                         rule: 'bubble.size); }'
 }
@@ -304,7 +304,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'maxAge);
                         value: config.maxAge)';
-                        error: maxAgeValidation.error!,' }'
+                       , error: maxAgeValidation.error!,' }'
 
                         rule: 'bubble.maxAge); }'
 }
@@ -316,7 +316,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'score);
                         value: config.score)';
-                        error: scoreValidation.error!,' }'
+                       , error: scoreValidation.error!,' }'
 
                         rule: 'bubble.score); }'
 }
@@ -337,7 +337,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             // 統計を更新
             if(!result.isValid) {
@@ -372,7 +372,7 @@ export class BalanceConfigurationValidator {
                 }],
                 warnings: [];
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now();
+               , timestamp: Date.now();
             }
     }
     
@@ -398,7 +398,7 @@ export class BalanceConfigurationValidator {
                         errors.push({ }
                             property: `baseScores.${bubbleType}`)
                             value: baseScore)';
-                            error: validation.error!,')';
+                           , error: validation.error!,')';
                             rule: 'score.baseScore);
                     }
 }
@@ -410,7 +410,7 @@ export class BalanceConfigurationValidator {
                         errors.push({''
                             property: 'combo.maxMultiplier);
                             value: scoreConfig.combo.maxMultiplier)';
-                            error: validation.error!,' }'
+                           , error: validation.error!,' }'
 
                             rule: 'score.comboMultiplier); }'
 }
@@ -426,7 +426,7 @@ export class BalanceConfigurationValidator {
                         errors.push({ }
                             property: `ageBonus.${bonusType}`)
                             value: bonusValue)';
-                            error: validation.error!,')';
+                           , error: validation.error!,')';
                             rule: 'score.ageBonus);
                     }
 }
@@ -441,7 +441,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             if (!result.isValid) { this.errorStats.failedValidations++; }
             
@@ -467,7 +467,7 @@ export class BalanceConfigurationValidator {
                 }];
                 warnings: [];
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now();
+               , timestamp: Date.now();
             }
     }
     
@@ -490,7 +490,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'spawnRate);
                         value: stageConfig.spawnRate)';
-                        error: validation.error!,' }'
+                       , error: validation.error!,' }'
 
                         rule: 'stage.spawnRate); }'
 }
@@ -503,7 +503,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'maxBubbles);
                         value: stageConfig.maxBubbles)';
-                        error: validation.error!,' }'
+                       , error: validation.error!,' }'
 
                         rule: 'stage.maxBubbles); }'
 }
@@ -516,7 +516,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'unlockRequirement);
                         value: stageConfig.unlockRequirement)';
-                        error: validation.error!,' }'
+                       , error: validation.error!,' }'
 
                         rule: 'stage.unlockRequirement); }'
 }
@@ -526,7 +526,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             if (!result.isValid) { this.errorStats.failedValidations++; }
             
@@ -552,7 +552,7 @@ export class BalanceConfigurationValidator {
                 }];
                 warnings: [];
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now();
+               , timestamp: Date.now();
             }
     }
     
@@ -575,7 +575,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'baseCost);
                         value: itemConfig.baseCost)';
-                        error: validation.error!,' }'
+                       , error: validation.error!,' }'
 
                         rule: 'item.baseCost); }'
 }
@@ -588,7 +588,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'costMultiplier);
                         value: itemConfig.costMultiplier)';
-                        error: validation.error!,' }'
+                       , error: validation.error!,' }'
 
                         rule: 'item.costMultiplier); }'
 }
@@ -601,7 +601,7 @@ export class BalanceConfigurationValidator {
                     errors.push({''
                         property: 'maxLevel);
                         value: itemConfig.maxLevel)';
-                        error: validation.error!,' }'
+                       , error: validation.error!,' }'
 
                         rule: 'item.maxLevel); }'
 }
@@ -611,7 +611,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             if (!result.isValid) { this.errorStats.failedValidations++; }
             
@@ -637,7 +637,7 @@ export class BalanceConfigurationValidator {
                 }];
                 warnings: [];
                 executionTime: Date.now() - startTime;
-                timestamp: Date.now();
+               , timestamp: Date.now();
             }
     }
     
@@ -651,7 +651,7 @@ export class BalanceConfigurationValidator {
         // 型チェック
         if(rule.type && typeof, value !== rule.type) { return {  };
                 isValid: false, }
-                error: `Expected ${rule.type}, got ${typeof value}`
+                error: `Expected ${rule.type}, got ${typeof, value}`
             }
         ';
         // 数値範囲チェック
@@ -684,7 +684,7 @@ export class BalanceConfigurationValidator {
                         errors.push({''
                             property: 'healAmount);
                             value: config.healAmount)';
-                            error: validation.error!,' }'
+                           , error: validation.error!,' }'
 
                             rule: 'bubble.healAmount)'); }
 }
@@ -698,7 +698,7 @@ export class BalanceConfigurationValidator {
                         errors.push({''
                             property: 'damageAmount);
                             value: config.damageAmount)';
-                            error: validation.error!,' }'
+                           , error: validation.error!,' }'
 
                             rule: 'bubble.damageAmount)'); }
 }
@@ -712,7 +712,7 @@ export class BalanceConfigurationValidator {
                         errors.push({''
                             property: 'shakeIntensity);
                             value: config.shakeIntensity)';
-                            error: validation.error!,' }'
+                           , error: validation.error!,' }'
 
                             rule: 'bubble.shakeIntensity); }'
 }''
@@ -723,7 +723,7 @@ export class BalanceConfigurationValidator {
                         errors.push({''
                             property: 'disableDuration);
                             value: config.disableDuration)';
-                            error: validation.error!,' }'
+                           , error: validation.error!,' }'
 
                             rule: 'bubble.disableDuration)'); }
 }
@@ -737,7 +737,7 @@ export class BalanceConfigurationValidator {
                         errors.push({''
                             property: 'bonusTimeMs);
                             value: config.bonusTimeMs)';
-                            error: validation.error!,' }'
+                           , error: validation.error!,' }'
 
                             rule: 'bubble.bonusTimeMs); }'
 }
@@ -888,7 +888,7 @@ export class BalanceConfigurationValidator {
             successRate: `${successRate.toFixed(2})%`;
             errorsByType: Object.fromEntries(this.errorStats.errorsByType);
             errorsByBubbleType: Object.fromEntries(this.errorStats.errorsByBubbleType);
-            recentValidations: this.validationHistory.slice(-10);
+           , recentValidations: this.validationHistory.slice(-10);
         }
     
     /**

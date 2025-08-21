@@ -16,59 +16,59 @@ interface ReportTemplate { sections: string[],
 interface TestSession { id: string;
     startTime: number;
     endTime: number;
-    results: Map<string, TestCategoryResults> }
+   , results: Map<string, TestCategoryResults> }
 
 interface TestCategoryResults { passed: boolean,
     summary: any;
-    tests: Record<string, TestResult> }
+   , tests: Record<string, TestResult> }
 
 interface TestResult { passed: boolean,
     result: number;
-    expected: number;
+   , expected: number;
     details?: any ,}
 
 interface Analysis { session: TestSession;
     overallPassed: boolean;
     regressions: RegressionEntry[];
     improvements: ImprovementEntry[];
-    comparison: Map<string, ComparisonResult>;
+   , comparison: Map<string, ComparisonResult>;
     statistics: TestStatistics;
-    recommendations: RecommendationEntry[]
+   , recommendations: RecommendationEntry[]
     ,}
 
 interface RegressionEntry { category: string;
     test: string;
     result: number;
     expected: number;
-    severity: SeverityLevel
+   , severity: SeverityLevel
     }
 
 interface ImprovementEntry { category: string;
     test: string;
-    improvement: number }
+   , improvement: number }
 
 interface ComparisonResult { current: TestCategoryResults;
     baseline: any;
-    deviation: Record<string, number> }
+   , deviation: Record<string, number> }
 
 interface TestStatistics { totalTests: number,
     passedTests: number;
     failedTests: number;
-    categories: Map<string, CategoryStatistics>;
+   , categories: Map<string, CategoryStatistics>;
     performance: any;
-    passRate: number ,}
+   , passRate: number ,}
 
 interface CategoryStatistics { total: number;
     passed: number;
     failed: number;
     averageResult: number;
-    metrics: number[];
+   , metrics: number[];
     variance?: number;
     standardDeviation?: number; }
 
 interface RecommendationEntry { priority: Priority,
     type: RecommendationType;
-    description: string;
+   , description: string;
     action?: string ,}
 
 interface ReportMetadata { generated_at: string;
@@ -78,62 +78,62 @@ interface ReportMetadata { generated_at: string;
     total_tests: number;
     passed_tests: number;
     tool_version: string;
-    environment: EnvironmentInfo
+   , environment: EnvironmentInfo
     }
 
 interface EnvironmentInfo { user_agent: string;
     platform: string;
     language: string;
     hardware_concurrency: number | string;
-    connection: ConnectionInfo | string }
+   , connection: ConnectionInfo | string }
 
 interface ConnectionInfo { effective_type: string;
-    downlink: number }
+   , downlink: number }
 
 interface Report { metadata: ReportMetadata;
-    sections: Record<string, any>;
+   , sections: Record<string, any>;
     formatted_output?: string;
     export_formats?: {
-        json: string;
+        jso;n: string;
         csv: string;
-        markdown: string ,}
+       , markdown: string ,}
 
 interface OverviewSection { title: string,
     summary: {
-        overall_status: string;
+        overall_statu;s: string;
         pass_rate: string;
         total_categories: number;
         execution_time: string;
-        timestamp: string ,};
+       , timestamp: string ,};
     category_summary: Record<string, CategorySummary>;
     key_findings: string[];
 }
 
 interface CategorySummary { status: string,
     test_count: number;
-    pass_rate: number ,}
+   , pass_rate: number ,}
 
 interface DetailedTestResult { status: string;
     result: number;
     expected: number;
     details: any;
-    deviation: number }
+   , deviation: number }
 
 interface KeyMetrics { frameRate: any;
     memory: any;
     rendering: any;
     network: any;
-    battery: any }
+   , battery: any }
 
 interface OptimizationOpportunity { area: string;
     description: string;
-    potential_impact: string }
+   , potential_impact: string }
 
 interface CriticalIssue { category: string;
     test: string;
     severity: SeverityLevel;
     impact: string;
-    recommended_action: string }
+   , recommended_action: string }
 
 interface StatisticsData { count: number;
     mean: number;
@@ -142,17 +142,17 @@ interface StatisticsData { count: number;
     standard_deviation: number;
     min: number;
     max: number;
-    percentiles: {
-        p25: number;
+   , percentiles: {
+        p2;5: number;
         p50: number;
         p75: number;
         p90: number;
         p95: number;
-        p99: number }
+       , p99: number }
 
 interface TestHistoryEntry { timestamp: number,
     results: any;
-    metadata: any ,}
+   , metadata: any ,}
 
 interface ExportOptions { template?: string; }
 
@@ -163,7 +163,7 @@ type RecommendationType = 'configuration' | 'setting' | 'architecture' | 'refact
 type ExportFormat = 'json' | 'csv' | 'html' | 'markdown';
 export class PerformanceTestReporter {
     private performanceTestSuite: PerformanceTestSuite;
-    private reportTemplates: Map<string, ReportTemplate>;
+    private, reportTemplates: Map<string, ReportTemplate>;
 
     constructor(performanceTestSuite: PerformanceTestSuite) {
 
@@ -211,7 +211,7 @@ export class PerformanceTestReporter {
     generateMetadata(analysis: Analysis): ReportMetadata { return { ''
             generated_at: new Date()';
             overall_result: analysis.overallPassed ? 'PASSED' : 'FAILED')';
-            total_tests: this.calculateTotalTests(analysis.session.results),
+           , total_tests: this.calculateTotalTests(analysis.session.results),
             passed_tests: this.calculatePassedTests(analysis.session.results),
             tool_version: '1.0.0', };
             environment: this.getEnvironmentInfo(); }
@@ -247,7 +247,7 @@ export class PerformanceTestReporter {
                 return this.generateTechnicalAnalysisSection(analysis);
         }
             default: }
-                return { error: `Unknown section: ${sectionName}` }
+                return { error: `Unknown, section: ${sectionName}` }
 }
 
     /**
@@ -264,11 +264,11 @@ export class PerformanceTestReporter {
                 overall_status: analysis.overallPassed ? 'PASSED' : 'FAILED', 
                 pass_rate: `${passRate.toFixed(1})%`;
                 total_categories: analysis.session.results.size;
-                execution_time: `${((analysis.session.endTime - analysis.session.startTime} / 1000}.toFixed(2})s`;
+               , execution_time: `${((analysis.session.endTime - analysis.session.startTime} / 1000}.toFixed(2})s`;
                 timestamp: new Date(analysis.session.startTime).toISOString();
             },
             category_summary: this.generateCategorySummary(analysis.session.results);
-            key_findings: this.generateKeyFindings(analysis);
+           , key_findings: this.generateKeyFindings(analysis);
         }
 
     /**
@@ -286,7 +286,7 @@ export class PerformanceTestReporter {
             for(const [testName, testResult] of Object.entries(results.tests)) { detailedResults[category].tests[testName] = {''
                     status: testResult.passed ? 'PASSED' : 'FAILED';
                     result: testResult.result;
-                    expected: testResult.expected, }
+                   , expected: testResult.expected, }
 
                     details: testResult.details || {}''
                     deviation: this.calculateDeviation(testResult.result, testResult.expected);
@@ -304,16 +304,16 @@ export class PerformanceTestReporter {
      */''
     generateAnalysisSection(analysis: Analysis): any { return { ''
             title: 'Performance Analysis';
-            regressions: {'
+           , regressions: {'
                 count: analysis.regressions.length,
                 critical: analysis.regressions.filter(r = > r.severity === 'critical'').length;''
                 high: analysis.regressions.filter(r => r.severity === 'high).length ,};
                 details: analysis.regressions }
             };
             improvements: { count: analysis.improvements.length;
-                details: analysis.improvements };
+               , details: analysis.improvements };
             baseline_comparison: this.formatBaselineComparison(analysis.comparison);
-            trends: this.analyzeTrends(analysis);
+           , trends: this.analyzeTrends(analysis);
         }
 
     /**
@@ -323,7 +323,7 @@ export class PerformanceTestReporter {
             title: 'Recommendations';
             priority_recommendations: this.prioritizeRecommendations(analysis.recommendations);
             quick_fixes: this.identifyQuickFixes(analysis.recommendations);
-            long_term_improvements: this.identifyLongTermImprovements(analysis.recommendations };
+           , long_term_improvements: this.identifyLongTermImprovements(analysis.recommendations };
             optimization_opportunities: this.identifyOptimizationOpportunities(analysis); }
         }
 
@@ -335,7 +335,7 @@ export class PerformanceTestReporter {
             title: 'Test History',);
             recent_runs: history.slice(0, 10),
             trend_analysis: this.analyzeHistoricalTrends(history);
-            performance_evolution: this.analyzePerformanceEvolution(history ,}
+           , performance_evolution: this.analyzePerformanceEvolution(history ,}
 
     /**
      * キーメトリクスセクション生成
@@ -349,7 +349,7 @@ export class PerformanceTestReporter {
             frame_rate: keyMetrics.frameRate;
             memory_usage: keyMetrics.memory;
             rendering_performance: keyMetrics.rendering;
-            network_performance: keyMetrics.network, };
+           , network_performance: keyMetrics.network, };
             battery_efficiency: keyMetrics.battery }
         }
 
@@ -363,11 +363,11 @@ export class PerformanceTestReporter {
         return { ''
             title: 'Critical Issues';
             count: criticalIssues.length;
-            issues: criticalIssues.map(issue => ({)
+           , issues: criticalIssues.map(issue => ({)
                 category: issue.category);
-                test: issue.test,);
+               , test: issue.test,);
                 severity: issue.severity);
-                impact: this.assessImpact(issue) ,};
+               , impact: this.assessImpact(issue) ,};
                 recommended_action: this.getRecommendedAction(issue); }
             });
         }
@@ -377,7 +377,7 @@ export class PerformanceTestReporter {
      */''
     generateRawDataSection(analysis: Analysis): any { return { ''
             title: 'Raw Test Data';
-            session_data: analysis.session, };
+           , session_data: analysis.session, };
             baseline_data: Object.fromEntries(this.performanceTestSuite.baselines) }
             collected_metrics: this.performanceTestSuite.metricsCollector? .getCollectedMetrics() || {}
 
@@ -398,7 +398,7 @@ export class PerformanceTestReporter {
                 standard_deviation: Math.sqrt(this.calculateVariance(values);
                 min: Math.min(...values);
                 max: Math.max(...values);
-                percentiles: {
+               , percentiles: {
                     p25: this.calculatePercentile(values, 25),
                     p50: this.calculatePercentile(values, 50),
                     p75: this.calculatePercentile(values, 75),
@@ -413,7 +413,7 @@ export class PerformanceTestReporter {
 
         return { ''
             title: 'Statistical Analysis';
-            category_statistics: statistics, };
+           , category_statistics: statistics, };
             overall_statistics: this.calculateOverallStatistics(analysis.session.results); }
         }
 
@@ -422,7 +422,7 @@ export class PerformanceTestReporter {
      */''
     generateCorrelationsSection(analysis: Analysis): any { return { ''
             title: 'Performance Correlations';
-            category_correlations: this.calculateCategoryCorrelations(analysis.session.results };
+           , category_correlations: this.calculateCategoryCorrelations(analysis.session.results };
             metric_correlations: this.calculateMetricCorrelations(analysis.session.results); }
         }
 
@@ -433,7 +433,7 @@ export class PerformanceTestReporter {
             title: 'Technical Analysis';
             performance_bottlenecks: this.identifyBottlenecks(analysis);
             resource_utilization: this.analyzeResourceUtilization(analysis);
-            optimization_potential: this.assessOptimizationPotential(analysis };
+           , optimization_potential: this.assessOptimizationPotential(analysis };
             technical_recommendations: this.generateTechnicalRecommendations(analysis); }
         }
 
@@ -457,7 +457,7 @@ export class PerformanceTestReporter {
      */
     formatDetailedReport(report: Report): Report { return { ...report,
             formatted_output: this.generateHTMLReport(report);
-            export_formats: {)
+           , export_formats: {)
                 json: JSON.stringify(report, null, 2),
                 csv: this.convertToCSV(report ,};
                 markdown: this.convertToMarkdown(report); }
@@ -473,13 +473,13 @@ export class PerformanceTestReporter {
     <title>Performance Test Report</title>;
     <style> }
         body { font-family: Arial, sans-serif; margin: 20px, }
-        .header { background: #f5f5f5; padding: 20px; border-radius: 5px, }
+        .header { background: #f5f5f5;, padding: 20px; border-radius: 5px, }
         .section { margin: 20px 0, }
         .passed { color: green; font-weight: bold, }
         .failed { color: red; font-weight: bold, }
-        .critical { background: #ffebee; padding: 10px; border-left: 4px solid #f44336, }
-        .table { border-collapse: collapse; width: 100%, }
-        .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left, }
+        .critical { background: #ffebee;, padding: 10px; border-left: 4px solid #f44336, }
+        .table { border-collapse: collapse;, width: 100%, }
+        .table th, .table td { border: 1px solid #ddd;, padding: 8px; text-align: left, }
         .table th { background-color: #f2f2f2, }
     </style>;
 </head>';
@@ -618,7 +618,7 @@ export class PerformanceTestReporter {
         for(const [category, categoryResults] of results) {'
             summary[category] = {''
                 status: categoryResults.passed ? 'PASSED' : 'FAILED';
-                test_count: Object.keys(categoryResults.tests).length;
+               , test_count: Object.keys(categoryResults.tests).length;
         }
                 pass_rate: this.calculateCategoryPassRate(categoryResults); }
             }
@@ -653,7 +653,7 @@ export class PerformanceTestReporter {
 
     getEnvironmentInfo(''';
             hardware_concurrency: navigator.hardwareConcurrency || 'unknown';
-            connection: navigator.connection ? { : undefined
+           , connection: navigator.connection ? { : undefined
                 effective_type: navigator.connection.effectiveType,
                 downlink: navigator.connection.downlink' ,}'
 
@@ -887,8 +887,7 @@ export class PerformanceTestReporter {
     /**
      * メトリクス相関計算
      */''
-    calculateMetricCorrelations(results: Map<string, TestCategoryResults>): Record<string, number> { return { ''
-            'frameRate_memory': 0.3,
+    calculateMetricCorrelations(results: Map<string, TestCategoryResults>): Record<string, number> { return { '', 'frameRate_memory': 0.3,
             'memory_rendering': 0.7,' };
 
             'rendering_network': 0.1 }
@@ -937,16 +936,14 @@ export class PerformanceTestReporter {
      */
     generateTechnicalRecommendations(analysis: Analysis): string[] { const recommendations: string[] = [],
 
-        if(analysis.regressions.length > 0) {'
-            ';
+        if(analysis.regressions.length > 0) {', ';
 
         }
 
             recommendations.push('Investigate, performance regressions); }'
 
         }''
-        if(analysis.improvements.length > 0) {'
-            ';
+        if(analysis.improvements.length > 0) {', ';
 
         }
 
@@ -988,7 +985,7 @@ export class PerformanceTestReporter {
             
             summary[category] = {
                 total: testCount;
-                passed: passedCount,
+               , passed: passedCount,
                 failed: testCount - passedCount,
                 pass_rate: testCount > 0 ? (passedCount / testCount') * 100 : 0;
         ,}

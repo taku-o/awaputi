@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * UserInfoSceneコンポーネント統合テスト
  * 各タブコンポーネント間の相互作用を検証
@@ -71,7 +71,7 @@ class MockGameEngine {
         );
         this.playerData = {
             getData: global.jest.fn((') => ({ username: 'TestUser' )));
-        saveData: global.jest.fn();
+       , saveData: global.jest.fn();
         this.errorHandler = {
             handleError: global.jest.fn(),
     }');

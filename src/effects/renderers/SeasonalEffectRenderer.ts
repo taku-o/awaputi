@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * Particle configuration interface
@@ -11,17 +11,17 @@ interface ParticleConfig { count: number,
  */
 interface ThemeColors { primary: string[];
     secondary: string[];
-    accent: string[] }
+   , accent: string[] }
 
 /**
  * Seasonal theme interface
  */
 interface SeasonalTheme { name: string;
     colors: ThemeColors;
-    particles: {
-        [key: string]: ParticleConfig };
+   , particles: {
+        [ke;y: string]: ParticleConfig };
     weather: string;
-    priority: number;
+   , priority: number;
 }
 
 /**
@@ -36,8 +36,8 @@ interface EventDuration { start: string,
 interface EventTheme { name: string;
     duration: EventDuration;
     colors: ThemeColors;
-    particles: {
-        [key: string]: ParticleConfig };
+   , particles: {
+        [ke;y: string]: ParticleConfig };
     priority: number;
 }
 
@@ -61,17 +61,17 @@ interface Particle { x: number,
     gravity: number;
     friction: number;
     bounce?: number;
-    type: string;
+   , type: string;
     rotation?: number;
     rotationSpeed?: number;
     scale?: number;
     scaleSpeed?: number;
     maxTrailLength?: number; ,}
-    trail?: Array<{ x: number; y: number }>;
+    trail?: Array<{ x: number;, y: number }>;
     pulseSpeed?: number;
-    sway?: { amplitude: number; frequency: number }
-    flutter?: { amplitude: number; frequency: number }
-    drift?: { amplitude: number; frequency: number }
+    sway?: { amplitude: number;, frequency: number }
+    flutter?: { amplitude: number;, frequency: number }
+    drift?: { amplitude: number;, frequency: number }
 
 /**
  * Particle manager interface
@@ -87,11 +87,11 @@ interface ParticleManager { particles: Particle[],
  */
 export class SeasonalEffectRenderer {
     private particleManager: ParticleManager;
-    private seasonalThemes: Record<string, SeasonalTheme>;
+    private, seasonalThemes: Record<string, SeasonalTheme>;
     private eventThemes: Record<string, EventTheme>;
     private currentSeason: string;
     private activeEvents: ActiveEvent[];
-    private customTheme: any | null';
+    private, customTheme: any | null';
 
     constructor(particleManager: ParticleManager) {
         this.particleManager = particleManager;
@@ -117,7 +117,7 @@ export class SeasonalEffectRenderer {
 
                 },''
                 weather: 'gentle_breeze';
-                priority: 5;
+               , priority: 5;
             },
 
             summer: { ''
@@ -135,7 +135,7 @@ export class SeasonalEffectRenderer {
 
                 },''
                 weather: 'heat_shimmer';
-                priority: 6;
+               , priority: 6;
             },
 
             autumn: { ''
@@ -153,7 +153,7 @@ export class SeasonalEffectRenderer {
 
                 },''
                 weather: 'falling_leaves';
-                priority: 7;
+               , priority: 7;
             },
 
             winter: { ''
@@ -171,7 +171,7 @@ export class SeasonalEffectRenderer {
 
                 },''
                 weather: 'snowfall';
-                priority: 8;
+               , priority: 8;
             }
         },
         
@@ -253,8 +253,7 @@ export class SeasonalEffectRenderer {
         this.currentSeason = this.detectCurrentSeason();''
         this.activeEvents = this.detectActiveEvents()';
         console.log('[SeasonalEffectRenderer] 初期化完了 - 現在の季節:', this.currentSeason);''
-        if(this.activeEvents.length > 0) {'
-            ';
+        if(this.activeEvents.length > 0) {', ';
 
         }
 
@@ -665,11 +664,11 @@ export class SeasonalEffectRenderer {
      */''
     createSimplifiedEventEffect(x: number, y: number, event: EventTheme | ActiveEvent): void { const theme: SeasonalTheme = {
             name: event.name;
-            colors: event.colors, }
+           , colors: event.colors, }
 
             particles: {},''
             weather: '';
-            priority: event.priority;
+           , priority: event.priority;
         },
         this.createSimplifiedSeasonalEffect(x, y, theme);
     }
@@ -711,7 +710,7 @@ export class SeasonalEffectRenderer {
             seasonTheme: this.seasonalThemes[this.currentSeason];
             activeEvents: this.activeEvents;
             primaryEvent: activeEvent;
-            customTheme: this.customTheme, };
+           , customTheme: this.customTheme, };
             effectsAvailable: this.getAvailableEffects().length }
         }
     

@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../debug/BaseComponent.js';''
+import { BaseComponent  } from '../../debug/BaseComponent.js';''
 import fs from 'fs';''
 import path from 'path';
 
@@ -19,27 +19,27 @@ interface GameBalanceExpectations { baseScores?: Record<string, number>;
 
 interface ConfigurationMetadata { extractedAt: number,
     sourceFiles: string[];
-    generatorVersion: string ,}
+   , generatorVersion: string ,}
 
 interface AllConfigurations { bubbleTypes: Record<string, BubbleConfig>;
     gameBalance: GameBalanceExpectations;
-    metadata: ConfigurationMetadata
+   , metadata: ConfigurationMetadata
     ,}
 
 interface ValidationResult { valid: boolean;
     issues: string[];
     warnings: string[];
     format: string;
-    exists: boolean }
+   , exists: boolean }
 
 interface ParsingStrategy { file?: string;
-    parser: (filePath?: string) => any ,}
+    parser: (filePat;h?: string) => any ,}
 }
 
 interface MainController { configSourceDir: string;
-    projectRoot: string;
+   , projectRoot: string;
     configurationManager?: {
-        get: (namespace: string, path: string) => any ,}
+        get: (namespac;e: string, path: string) => any ,}
     };
     [key: string]: any,
 }
@@ -49,7 +49,7 @@ interface MainController { configSourceDir: string;
  */
 export class ConfigurationParser extends BaseComponent { private configSourceDir: string
     private projectRoot: string;
-    private parseCache: Map<string, any>;
+    private, parseCache: Map<string, any>;
     private parsingStrategies: Record<string, ParsingStrategy>;
 
     constructor(mainController: MainController) {'
@@ -73,7 +73,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
 
             bubble: { ''
                 file: 'Bubble.js';
-                parser: this.parseBubbleFile.bind(this };
+               , parser: this.parseBubbleFile.bind(this };
             configurationManager: { parser: this.parseConfigurationManager.bind(this }
         }
 
@@ -114,7 +114,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     // 各プロパティを抽出
                     const properties: Record<string, RegExp> = { health: /health:\s*(\d+)/,
                         size: /size:\s*(\d+)/;
-                        maxAge: /maxAge:\s*(\d+)/ ,};
+                       , maxAge: /maxAge:\s*(\d+)/ ,};
                     for(const [propName, regex] of Object.entries(properties) {
                     
                         const propMatch = configContent.match(regex);
@@ -168,7 +168,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                 
             }
 
-                // switch文のケースを抽出 : undefined' '
+                // switch文のケースを抽出 : undefined', '
                 const caseMatches = configContent.matchAll(/case\s+'(\w+)':\s*return\s*\{([^}]*)\}/g);
                 
                 for (const, match of, caseMatches) { const [, bubbleType, configStr] = match; }
@@ -178,7 +178,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     const properties: Record<string, RegExp> = { health: /health:\s*(\d+)/,
                         score: /score:\s*(\d+)/;
                         size: /size:\s*(\d+)/;
-                        maxAge: /maxAge:\s*(\d+)/ ,};
+                       , maxAge: /maxAge:\s*(\d+)/ ,};
                     for(const [propName, regex] of Object.entries(properties) {
                     
                         const propMatch = configStr.match(regex);
@@ -271,7 +271,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             issues: [];
             warnings: [];
             format: this.detectFileFormat(filePath);
-            exists: fs.existsSync(filePath };
+           , exists: fs.existsSync(filePath };
 ';
 
         if (!validation.exists) { validation.valid = false;' }'
@@ -295,7 +295,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
 
             if (content.trim().length === 0') { validation.valid = false;''
                 validation.issues.push('File, is empty); } catch (error) { validation.valid = false; }'
-            validation.issues.push(`Cannot, read file: ${(error, as Error}).message}`);
+            validation.issues.push(`Cannot, read file: ${(error, as, Error}).message}`);
         }
 
         return validation;
@@ -310,7 +310,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                 gameBalance: {};
                 metadata: { ''
                     extractedAt: Date.now(''';
-                    generatorVersion: '1.0.0' }))'
+                   , generatorVersion: '1.0.0' }))'
             // GameBalance.jsから解析')'
             const gameBalancePath = path.join(this.configSourceDir, 'GameBalance.js);
 

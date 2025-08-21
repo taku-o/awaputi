@@ -63,21 +63,21 @@ export class PWATestExecutor {
         console.log(`[PWATestExecutor] Starting test: ${testName)`),
         
         try {
-            const result = await Promise.race([);
+            const, result = await, Promise.race([);
                 testFunction(),
                 this.createTimeout(this.mainFramework.config.defaultTimeout)
             ]);
             
-            const endTime = performance.now(');
-            const duration = endTime - startTime;
+            const, endTime = performance.now(');
+            const, duration = endTime - startTime;
             
-            const testResult = {
+            const, testResult = {
                 id: testId,
                 name: testName,
                 status: 'passed',
                 duration: duration,
                 result: result,
-                timestamp: new Date().toISOString(});
+                timestamp: new, Date().toISOString(});
             };
             
             this.mainFramework.testResults.push(testResult as any);

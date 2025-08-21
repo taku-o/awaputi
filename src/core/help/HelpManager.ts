@@ -4,11 +4,11 @@
  * コンテンツ読み込み、検索、コンテキスト対応ヘルプを統合管理
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { getLocalizationManager } from '../LocalizationManager.js';''
-import { CacheSystem } from '../CacheSystem.js';''
-import { LoggingSystem } from '../LoggingSystem.js';''
-import { SearchEngine } from './SearchEngine.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../LocalizationManager.js';''
+import { CacheSystem  } from '../CacheSystem.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';''
+import { SearchEngine  } from './SearchEngine.js';
 
 // 型定義
 export interface HelpContent { category: string,
@@ -18,16 +18,16 @@ export interface HelpContent { category: string,
     version: string;
     lastUpdated?: string;
     isPlaceholder?: boolean;
-    topics: HelpTopic[]
+   , topics: HelpTopic[]
     ,}
 
 export interface HelpTopic { id: string;
     title: string;
     description: string;
-    content: TopicContent,
+   , content: TopicContent,
     difficulty: 'beginner' | 'intermediate' | 'advanced';
     estimatedReadTime: number;
-    tags: string[];
+   , tags: string[];
     searchKeywords?: string[] ,}
 
 export interface TopicContent { message?: string;
@@ -39,16 +39,16 @@ export interface TopicContent { message?: string;
 
 export interface UserProgress { viewedSections: Set<string>,
     searchHistory: SearchHistoryEntry[];
-    lastAccessed: number | null ,}
+   , lastAccessed: number | null ,}
 
 export interface SearchHistoryEntry { query: string;
     timestamp: number;
-    language: string }
+   , language: string }
 
 export interface SearchResult { section: HelpTopic;
     score: number;
     category: string;
-    language: string }
+   , language: string }
 
 export interface SearchFilters { language?: string;
 
@@ -58,7 +58,7 @@ export interface SearchFilters { language?: string;
 
 export interface ContextualHelpResult { section: HelpTopic,
     context: string;
-    suggestions: HelpTopic[]
+   , suggestions: HelpTopic[]
     ,}
 
 export interface TopicDetails { id: string;
@@ -66,18 +66,18 @@ export interface TopicDetails { id: string;
     description: string;
     category: string;
     language: string;
-    content: TopicContent
+   , content: TopicContent
     }
 
 export interface UserHelpProgress { viewedSections: string[];
     searchCount: number;
     lastAccessed: number | null;
-    totalSections: number }
+   , totalSections: number }
 
 export interface PlaceholderMessages { title: string;
     description: string;
     content: string;
-    fallbackNote: string }
+   , fallbackNote: string }
 
 export interface LocalizationManager { getCurrentLanguage(): string; }
 
@@ -94,7 +94,7 @@ export class HelpManager {
     private cacheSystem: CacheSystem;
     private loggingSystem: LoggingSystem;
     private searchEngine: SearchEngine;
-    private helpContent: Map<string, HelpContent>;
+    private, helpContent: Map<string, HelpContent>;
     private userProgress: UserProgress;
     constructor(gameEngine: GameEngine) {
 
@@ -234,8 +234,7 @@ export class HelpManager {
 
         // レガシーパスの確認
         const legacyContent = await this.tryLoadLegacyContent(category);''
-        if(legacyContent) {'
-            ';
+        if(legacyContent) {', ';
 
         }
 
@@ -298,16 +297,16 @@ export class HelpManager {
         
         return { category: category,
             title: messages.title;
-            description: messages.description,
+           , description: messages.description,
             language: language,
             version: "0.0.1-placeholder",
             lastUpdated: new Date().toISOString(").split('T'')[0];
-            isPlaceholder: true,
+           , isPlaceholder: true,
             topics: [{''
                     id: 'placeholder_info';
                     title: messages.title;
                     description: messages.description;
-                    content: {
+                   , content: {
                         message: messages.content,
                         note: messages.fallbackNote,' };
 
@@ -315,7 +314,7 @@ export class HelpManager {
 
                     },''
                     difficulty: 'beginner]';
-                    estimatedReadTime: 30,']';
+                   , estimatedReadTime: 30,']';
                     tags: ['placeholder', 'info'];
                 }
             ];
@@ -380,8 +379,8 @@ export class HelpManager {
                 if (!key.endsWith(`_${language)`) continue;
 
                 if (content.topics) {
-                    for (const, section of, content.topics) {
-                        const score = this.calculateSearchScore(section, query);
+                    for (const, section, of, content.topics) {
+                        const, score = this.calculateSearchScore(section, query);
                         if (score > 0) {
                             results.push({}
                                 section,}
@@ -490,10 +489,10 @@ export class HelpManager {
                 description: topic.description || '';
                 category,
                 language: lang;
-                content: topic.content || {'
+               , content: topic.content || {'
                     title: topic.title,)';
                     content: 'コンテンツを読み込み中...');
-                    isEmpty: true ,})));
+                   , isEmpty: true ,})));
         } catch (error) { }
 
             this.loggingSystem.error('HelpManager', `Failed to get category topics: ${category}`, error);
@@ -556,7 +555,7 @@ export class HelpManager {
      */
     getUserHelpProgress(): UserHelpProgress { return { viewedSections: Array.from(this.userProgress.viewedSections),
             searchCount: this.userProgress.searchHistory.length;
-            lastAccessed: this.userProgress.lastAccessed, };
+           , lastAccessed: this.userProgress.lastAccessed, };
             totalSections: this.getTotalSectionCount(); }
         }
 
@@ -577,14 +576,13 @@ export class HelpManager {
 ';
             // 必須フィールドチェック
             const requiredFields = ['category', 'title', 'description', 'language', 'version', 'topics'];
-            for(const, field of, requiredFields) {'
-                ';
+            for(const, field of, requiredFields) {', ';
 
             }
 
                 if(!(field, in content)) {' }'
 
-                    this.loggingSystem.debug('HelpManager', `Content validation failed: Missing required field: ${field}`});
+                    this.loggingSystem.debug('HelpManager', `Content validation failed: Missing required, field: ${field}`});
                     return false;
 ';
             // topics配列チェック
@@ -602,14 +600,14 @@ export class HelpManager {
             // 言語コードの検証
             if(!this.validateLanguageCode(content.language)) { ' }'
 
-                this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid language code: ${content.language}`});
+                this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid language, code: ${content.language}`});
                 return false;
             }
 ';
             // バージョン形式の検証
             if(!this.validateVersion(content.version)) { ' }'
 
-                this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid version format: ${content.version}`});
+                this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid version, format: ${content.version}`});
                 return false;
             }
 ';
@@ -713,7 +711,7 @@ export class HelpManager {
 
                 content: { content: 'このセクションのヘルプコンテンツを読み込めませんでした。' },''
                 difficulty: 'beginner]';
-                estimatedReadTime: 30,']';
+               , estimatedReadTime: 30,']';
                 tags: ['error'];
             }]
         },
@@ -835,7 +833,7 @@ export class HelpManager {
                     title: topic.title;
                     description: topic.description);
                     category: categoryId);
-                    language: currentLanguage,)
+                   , language: currentLanguage,)
             }
                     content: topic.content))); }
             }
@@ -942,7 +940,7 @@ export class HelpManager {
                 title: topic.title;
                 description: topic.description;
                 category: categoryId;
-                language: language, };
+               , language: language, };
                 content: topic.content }
 
             };''

@@ -12,29 +12,29 @@ interface CullingConfig { distanceCulling: boolean,
     maxCullingDistance: number;
     nearCullingDistance: number;
     maxAge: number;
-    ageBasedCulling: boolean ,}
+   , ageBasedCulling: boolean ,}
 
 interface ImportanceFactors {
-    distance: { weight: number; inverted: boolean },
-    size: { weight: number; inverted: boolean },
-    opacity: { weight: number; inverted: boolean },
-    velocity: { weight: number; inverted: boolean },
-    age: { weight: number; inverted: boolean },
-    screenArea: { weight: number; inverted: boolean },
-    effectPriority: { weight: number; inverted: boolean }
+    distance: { weigh;t: number;, inverted: boolean },
+    size: { weight: number;, inverted: boolean },
+    opacity: { weight: number;, inverted: boolean },
+    velocity: { weight: number;, inverted: boolean },
+    age: { weight: number;, inverted: boolean },
+    screenArea: { weight: number;, inverted: boolean },
+    effectPriority: { weight: number;, inverted: boolean }
 
 interface ImportanceThresholds { veryHigh: number,
     high: number;
     medium: number;
     low: number;
-    veryLow: number ,}
+   , veryLow: number ,}
 
 interface ImportanceScoring { enabled: boolean;
     factors: ImportanceFactors;
-    scoreCache: Map<string, number>;
+   , scoreCache: Map<string, number>;
     cacheValidFrames: number;
     currentFrame: number;
-    thresholds: ImportanceThresholds
+   , thresholds: ImportanceThresholds
     ,}
 
 interface CullingStats { totalParticles: number;
@@ -47,7 +47,7 @@ interface CullingStats { totalParticles: number;
     cullingEfficiency: number;
     cullingTime: number;
     averageCullingTime: number;
-    scoringTime: number }
+   , scoringTime: number }
 
 interface OcclusionSystem { enabled: boolean;
     occluders: Set<OccluderBounds>;
@@ -58,18 +58,18 @@ interface OcclusionSystem { enabled: boolean;
 interface OccluderBounds { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface CameraInfo { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface ParticleVelocity { x: number;
-    y: number }
+   , y: number }
 
 interface CullableParticle { x: number;
-    y: number;
+   , y: number;
     size?: number;
     birthTime?: number;
     opacity?: number;
@@ -93,7 +93,7 @@ export class ParticleCullingSystem {
     private cullingConfig: CullingConfig;
     private importanceScoring: ImportanceScoring;
     private stats: CullingStats;
-    private occlusionSystem: OcclusionSystem;
+    private, occlusionSystem: OcclusionSystem;
     constructor(config: ParticleCullingSystemConfig = {) {
 
         // Culling configuration
@@ -107,7 +107,7 @@ export class ParticleCullingSystem {
             maxCullingDistance: config.maxCullingDistance || 1500;
             nearCullingDistance: config.nearCullingDistance || 50;
             // Age thresholds
-            maxAge: config.maxAge || 10.0, // seconds
+           , maxAge: config.maxAge || 10.0, // seconds
     }
             ageBasedCulling: config.ageBasedCulling || true }
         };
@@ -129,11 +129,11 @@ export class ParticleCullingSystem {
             cacheValidFrames: 3;
             currentFrame: 0;
             // Score thresholds
-            thresholds: { veryHigh: 0.8;
+           , thresholds: { veryHigh: 0.8;
                 high: 0.6;
                 medium: 0.4;
                 low: 0.2;
-                veryLow: 0.1 }
+               , veryLow: 0.1 }
         };
         // Culling statistics
         this.stats = { totalParticles: 0,
@@ -147,7 +147,7 @@ export class ParticleCullingSystem {
             // Performance tracking
             cullingTime: 0;
             averageCullingTime: 0;
-            scoringTime: 0 ,};
+           , scoringTime: 0 ,};
         // Occlusion system
         this.occlusionSystem = { enabled: this.cullingConfig.occlusionCulling,
             occluders: new Set<OccluderBounds>();

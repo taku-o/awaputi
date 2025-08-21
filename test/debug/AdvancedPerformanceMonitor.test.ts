@@ -2,9 +2,9 @@
  * Advanced Performance Monitor Tests
  * AdvancedPerformanceMonitor クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;
@@ -29,7 +29,7 @@ jest.mock('../src/config/PerformanceConfig.js', () => ({ getPerformanceConfig: j
             maxHistorySize: 1000,'';
             performanceLevel: 'high',
             adaptiveMode: true);
-            optimizationInterval: 100 }
+           , optimizationInterval: 100 }
     }))),
         getQualityConfig: jest.fn(() => ({ ))), }'
     })''
@@ -62,8 +62,7 @@ const mockGameEngine = { canvas: {
     enhancedEffectManager: { getActiveEffectCount: jest.fn(() => 5); }
     }),
     scoreManager: { getScore: jest.fn(() => 1500); }'
-    })''
-');'
+    })'', ');'
 // Import after mocking''
 const { AdvancedPerformanceMonitor } = await import('../../src/debug/AdvancedPerformanceMonitor.js'');''
 describe('AdvancedPerformanceMonitor', () => {  let monitor: any,

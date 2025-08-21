@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * Background effect type'
@@ -12,7 +12,7 @@ interface BackgroundEffectOptions { density: number,
     speed: number;
     color: string;
     size: number;
-    opacity: number ,}
+   , opacity: number ,}
 
 /**
  * Background effect interface
@@ -20,7 +20,7 @@ interface BackgroundEffectOptions { density: number,
 interface BackgroundEffect { effectType: BackgroundEffectType;
     enabled: boolean;
     intensity: number;
-    options: BackgroundEffectOptions
+   , options: BackgroundEffectOptions
     }
 
 /**
@@ -34,7 +34,7 @@ interface ErrorHandler { handleError(error: any, details?: any): void }
  */
 export class BackgroundEffectRenderer {
     private canvas: HTMLCanvasElement;
-    private errorHandler: ErrorHandler;
+    private, errorHandler: ErrorHandler;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas

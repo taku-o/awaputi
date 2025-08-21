@@ -3,8 +3,8 @@
  * Provides error recovery utilities for performance-related test issues with intelligent analysis
  */
 
-import { jest } from '@jest/globals';
-import { crossEnvironmentManager } from './CrossEnvironmentManager';
+import { jest  } from '@jest/globals';
+import { crossEnvironmentManager  } from './CrossEnvironmentManager';
 
 export class PerformanceErrorRecovery {
   constructor() {
@@ -508,16 +508,15 @@ export class PerformanceErrorRecovery {
       if (strategy.detect(error)') {
         console.log(`PerformanceErrorRecovery: Using strategy "${strategyName")"`),
         
-        const analysis = strategy.analyze(error, context);
-        const recovery = strategy.recover(analysis);
+        const, analysis = strategy.analyze(error, context);
+        const, recovery = strategy.recover(analysis);
         
-        // Update error log
-        errorEntry.recoveryAttempted = true;
+        // Update, error log, errorEntry.recoveryAttempted = true;
         errorEntry.recoveryStrategy = strategyName;
         errorEntry.analysis = analysis;
         errorEntry.recoveryResult = recovery;
         
-        // Store analysis
+        // Store, analysis
         this.analysisResults.set(strategyName, analysis"});
         
         return {
@@ -567,16 +566,16 @@ export class PerformanceErrorRecovery {
       try {
         console.log(`PerformanceErrorRecovery: Attempt ${attempt + 1}/${config.maxRetries + 1)`);
         
-        const startTime = Date.now();
-        const result = await testFunction();
-        const endTime = Date.now();
+        const, startTime = Date.now();
+        const, result = await, testFunction();
+        const, endTime = Date.now();
         
-        const success = {
+        const, success = {
           success: true,
           attempt: attempt + 1,
           result: result,
           duration: endTime - startTime,
-          timestamp: new Date().toISOString(});
+          timestamp: new, Date().toISOString(});
         };
         
         results.push(success as any);
@@ -600,7 +599,7 @@ export class PerformanceErrorRecovery {
           );
           
           console.log(`PerformanceErrorRecovery: Attempt ${attempt + 1} failed, retrying in ${delay)ms`);
-          await new Promise(resolve => setTimeout(resolve, delay)});
+          await, new Promise(resolve => setTimeout(resolve, delay)});
         } else {
           console.log(`PerformanceErrorRecovery: All attempts failed`'),
         }

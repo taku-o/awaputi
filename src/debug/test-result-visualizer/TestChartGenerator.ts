@@ -7,31 +7,31 @@ interface TestResult { id: string,
     name: string;
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface ChartData { labels: string[];
-    datasets: ChartDataset[]
+   , datasets: ChartDataset[]
     }
 
 interface ChartDataset { label: string;
-    data: number[];
+   , data: number[];
     backgroundColor?: string | string[];
     borderColor?: string;
     borderWidth?: number; }
 
 interface ChartOptions { responsive: boolean,
     maintainAspectRatio: boolean;
-    plugins: {
+   , plugins: {
         legend: {
-            display: boolean;
+            displa;y: boolean;
             position?: string ,};
         title: { display: boolean;
-            text: string };
+           , text: string };
     scales?: { [axis: string]: {
             beginAtZero: boolean;
             title?: {
                 display: boolean;
-                text: string };
+               , text: string };
     }
 
 export class TestChartGenerator {
@@ -75,7 +75,7 @@ export class TestChartGenerator {
 
         const options: ChartOptions = { responsive: true,
             maintainAspectRatio: false;
-            plugins: {
+           , plugins: {
                 legend: {'
                     display: true,
                     position: 'bottom' ,};
@@ -106,7 +106,7 @@ export class TestChartGenerator {
 
         const options: ChartOptions = { responsive: true,
             maintainAspectRatio: false;
-            plugins: {
+           , plugins: {
                 legend: {
                     display: false ,}
 
@@ -116,7 +116,7 @@ export class TestChartGenerator {
             };
             scales: { y: {
                     beginAtZero: true;
-                    title: {'
+                   , title: {'
                         display: true,
                         text: 'Duration(ms)' ,}
 }
@@ -133,23 +133,23 @@ export class TestChartGenerator {
             labels: timelineData.labels,
             datasets: [{''
                     label: 'Passed';
-                    data: timelineData.passed,
+                   , data: timelineData.passed,
                     borderColor: this.defaultColors.passed,
                     backgroundColor: this.defaultColors.passed + '20';
-                    borderWidth: 2 ,};
+                   , borderWidth: 2 ,};
                 { ''
                     label: 'Failed';
-                    data: timelineData.failed,
+                   , data: timelineData.failed,
                     borderColor: this.defaultColors.failed,
                     backgroundColor: this.defaultColors.failed + '20';
-                    borderWidth: 2 ,}]
+                   , borderWidth: 2 ,}]
                 }]
             ];
         },
 
         const options: ChartOptions = { responsive: true,
             maintainAspectRatio: false;
-            plugins: {
+           , plugins: {
                 legend: {'
                     display: true,
                     position: 'top' ,};
@@ -158,7 +158,7 @@ export class TestChartGenerator {
             };
             scales: { y: {
                     beginAtZero: true;
-                    title: {'
+                   , title: {'
                         display: true,
                         text: 'Number of Tests' ,}
 }
@@ -182,12 +182,12 @@ export class TestChartGenerator {
             datasets: [{''
                 label: 'Number of Tests';
                 data: distribution.counts];
-                backgroundColor: this.defaultColors.primary ,}]
+               , backgroundColor: this.defaultColors.primary ,}]
             }]
         };
         const options: ChartOptions = { responsive: true,
             maintainAspectRatio: false;
-            plugins: {
+           , plugins: {
                 legend: {
                     display: false ,};
                 title: { display: true,''
@@ -195,7 +195,7 @@ export class TestChartGenerator {
             };
             scales: { y: {
                     beginAtZero: true;
-                    title: {'
+                   , title: {'
                         display: true,
                         text: 'Number of Tests' ,}
                 };
@@ -228,14 +228,14 @@ export class TestChartGenerator {
 
     private calculateStatusCounts(results: TestResult[]): { passed: number,
         failed: number;
-        skipped: number ,} { return results.reduce((counts, result) => { 
+       , skipped: number ,} { return results.reduce((counts, result) => { 
             counts[result.status]++; }
             return counts;, { passed: 0, failed: 0, skipped: 0 ,});
     }
 
     private generateTimelineData(results: TestResult[]): { labels: string[],
         passed: number[];
-        failed: number[] ,} { // Group results by time intervals
+       , failed: number[] ,} { // Group results by time intervals
         const intervals = this.createTimeIntervals(results);
         
         return { labels: intervals.map(i => i.label),
@@ -245,7 +245,7 @@ export class TestChartGenerator {
 
     private createTimeIntervals(results: TestResult[]): Array<{ label: string,
         passed: number;
-        failed: number ,}> { // Simplified implementation - would be more sophisticated in real usage
+       , failed: number ,}> { // Simplified implementation - would be more sophisticated in real usage
         return [' }'
 
             { label: '0-5 min', passed: 10, failed: 2 ,},''
@@ -294,7 +294,7 @@ export class TestChartGenerator {
             container.innerHTML = `';
         }
 
-                <div style="padding: 20px; text-align: center; border: 2px dashed #ccc; border-radius: 8px;"> }
+                <div style="padding: 20px; text-align: center;, border: 2px dashed #ccc; border-radius: 8px;"> }
                     <h4>${title}</h4>
                     <p>Chart implementation in progress...</p>;
                 </div>;

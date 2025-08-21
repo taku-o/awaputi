@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Types
 type ErrorHandler = ReturnType<typeof getErrorHandler>;
@@ -10,34 +10,34 @@ export interface PhysicsSettings { gravity: number,
     airResistance: number;
     collisionDetection: boolean;
     magneticFields: MagneticField[];
-    windForce: Vector2D
+   , windForce: Vector2D
     ,}
 
 export interface AnimationSettings { interpolation: boolean;
     easingEnabled: boolean;
     smoothRotation: boolean;
-    smoothScaling: boolean }
+   , smoothScaling: boolean }
 
 export interface MagneticField { x: number;
     y: number;
     strength: number;
     radius: number;
-    radiusSquared: number }
+   , radiusSquared: number }
 
 export interface Vector2D { x: number;
-    y: number }
+   , y: number }
 
 export interface Boundaries { left: number;
     right: number;
     top: number;
-    bottom: number }
+   , bottom: number }
 
 export interface TrailPoint { x: number;
-    y: number;
+   , y: number;
     alpha?: number }
 
 export interface PulsationConfig { speed: number;
-    amplitude: number }
+   , amplitude: number }
 
 export interface Particle { x: number;
     y: number;
@@ -49,7 +49,7 @@ export interface Particle { x: number;
     maxLife: number;
     alpha: number;
     active: boolean;
-    type: string;
+   , type: string;
     rotation?: number;
     rotationSpeed?: number;
     baseScale?: number;
@@ -64,7 +64,7 @@ export interface Particle { x: number;
 
 export interface BackgroundParticle extends Particle {;
     type: 'background';
-    gravityAffected: false }
+   , gravityAffected: false }
 
 export type BackgroundTheme = 'default' | 'stars' | 'snow' | 'sakura' | 'ocean';
 
@@ -84,7 +84,7 @@ export class ParticlePhysicsEngine {
     private backgroundParticles: BackgroundParticle[];
     private backgroundEnabled: boolean;
     private backgroundDensity: number;
-    private backgroundTheme: BackgroundTheme;
+    private, backgroundTheme: BackgroundTheme;
     // タイミングプロファイル
     private timingProfiles?: TimingProfiles;
 
@@ -342,11 +342,11 @@ export class ParticlePhysicsEngine {
                 vy: (Math.random() - 0.5) * 0.2;
                 size: Math.random() * 2 + 0.5;
                 color: this.getBackgroundParticleColor();
-                alpha: Math.random() * 0.3 + 0.1,
+               , alpha: Math.random() * 0.3 + 0.1,
                 life: Math.random() * 5000 + 2000,
                 maxLife: Math.random(''';
                 type: 'background';
-                gravityAffected: false ,}))
+               , gravityAffected: false ,}))
             )';
             this.backgroundParticles.push(particle);''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'

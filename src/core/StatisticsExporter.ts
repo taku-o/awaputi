@@ -11,22 +11,22 @@ export class StatisticsExporter {
             formats: ['json', 'csv', 'txt'],
             includeMetadata: true;
             includeSensitiveData: false;
-            compressData: false,
+           , compressData: false,
             maxFileSize: 50 * 1024 * 1024, // 50MB制限
     }
 
-            dateFormat: 'YYYY-MM-DD HH:mm:ss' }
+            dateFormat: 'YYYY-MM-DD, HH:mm:ss' }
         };
         // プライバシー設定
         this.privacySettings = { excludePersonalInfo: true,
             anonymizeUserData: true;
             excludeIpAddresses: true;
-            excludeDeviceInfo: false ,};
+           , excludeDeviceInfo: false ,};
         // データ変換設定
         this.transformSettings = { roundNumbers: true,
             decimals: 2;
             normalizeTimestamps: true;
-            includeCalculatedFields: true ,};
+           , includeCalculatedFields: true ,};
         // インポート設定
         this.importConfig = { validateSchema: true,''
             mergeStrategy: 'append', // 'overwrite', 'append', 'merge''';
@@ -37,7 +37,7 @@ export class StatisticsExporter {
             isImporting: false;
             lastExportTime: null;
             lastImportTime: null;
-            exportHistory: [] ,};
+           , exportHistory: [] ,};
         // データ検証スキーマ
         this.validationSchema = this.createValidationSchema();
     }
@@ -56,11 +56,11 @@ export class StatisticsExporter {
             // JSONデータの構築
             const jsonData = {''
                 metadata: this.generateMetadata(mergedOptions);
-                statistics: statisticsData,
+               , statistics: statisticsData,
                 schema: {''
                     version: '1.0',
                     format: 'json';
-                    exported: new Date().toISOString( ,}
+                   , exported: new Date().toISOString( ,}
             };
             
             // データのサニタイゼーション
@@ -82,7 +82,7 @@ export class StatisticsExporter {
                 filename: this.generateFilename('json', mergedOptions),
                 size: jsonString.length;
                 recordCount: this.countRecords(sanitizedData.statistics);
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -107,8 +107,7 @@ export class StatisticsExporter {
             // CSVデータの生成
             const csvSections = [];
             // 基本統計セクション
-            if(statisticsData.gamePlayStats) {'
-                ';
+            if(statisticsData.gamePlayStats) {', ';
 
             }
 
@@ -116,8 +115,7 @@ export class StatisticsExporter {
             }
             ';
             // スコア統計セクション
-            if(statisticsData.scoreStats) {'
-                ';
+            if(statisticsData.scoreStats) {', ';
 
             }
 
@@ -125,8 +123,7 @@ export class StatisticsExporter {
             }
             ';
             // バブル統計セクション
-            if(statisticsData.bubbleStats) {'
-                ';
+            if(statisticsData.bubbleStats) {', ';
 
             }
 
@@ -134,8 +131,7 @@ export class StatisticsExporter {
             }
             ';
             // コンボ統計セクション
-            if(statisticsData.comboStats) {'
-                ';
+            if(statisticsData.comboStats) {', ';
 
             }
 
@@ -161,7 +157,7 @@ export class StatisticsExporter {
                 filename: this.generateFilename('csv', mergedOptions),
                 size: csvString.length;
                 recordCount: this.countRecords(statisticsData);
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -213,7 +209,7 @@ export class StatisticsExporter {
                 filename: this.generateFilename('txt', mergedOptions),
                 size: textString.length;
                 recordCount: this.countRecords(statisticsData);
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -271,7 +267,7 @@ export class StatisticsExporter {
                 mergeStrategy: mergedOptions.mergeStrategy;
                 conflicts: mergeResult.conflicts || [];
                 backup: backupData ? backupData.id : null;
-                timestamp: Date.now( ,};
+               , timestamp: Date.now( ,};
             
             this.exportState.lastImportTime = Date.now();
             return importResult;
@@ -466,7 +462,7 @@ export class StatisticsExporter {
 
             '=' * 50,' }
 
-            `エクスポート日時: ${new Date('}.toLocaleString('ja-JP''})`,
+            `エクスポート日時: ${new, Date('}.toLocaleString('ja-JP''})`,
             `フォーマット: テキスト`];
             `バージョン: 1.0`];
         ];
@@ -528,8 +524,7 @@ export class StatisticsExporter {
         }
         ';
         // スコア統計
-        if(data.scoreStats) {'
-            ';
+        if(data.scoreStats) {', ';
 
         }
 
@@ -537,8 +532,7 @@ export class StatisticsExporter {
         }
         ';
         // バブル統計
-        if(data.bubbleStats) {'
-            ';
+        if(data.bubbleStats) {', ';
 
         }
 
@@ -574,10 +568,10 @@ export class StatisticsExporter {
     generateMetadata(options) {'
         return { ''
             exportedAt: new Date().toISOString(''';
-            version: '1.0',
+           , version: '1.0',
             gameVersion: 'Awaputi v1.0',
             format: options.format || 'unknown';
-            includeMetadata: options.includeMetadata;
+           , includeMetadata: options.includeMetadata;
     ,}
             privacySettings: this.privacySettings, };
             recordCount: null // 後で設定 }))

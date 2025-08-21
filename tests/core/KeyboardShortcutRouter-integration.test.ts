@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * KeyboardShortcutRouter-integration.test.js
  * 
@@ -6,7 +6,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * Issue #163 - Duplicate help/settings screen consolidation  
  * Task 11 - Update keyboard shortcut handling to route to unified scenes
  */
-import { CoreKeyboardShortcutManager } from '../../src/core/KeyboardShortcutManager';
+import { CoreKeyboardShortcutManager  } from '../../src/core/KeyboardShortcutManager';
 // DOM APIのモック
 const mockDocument = {
     addEventListener: jest.fn(),
@@ -29,7 +29,7 @@ describe('KeyboardShortcut Router Integration', () => {
         // Mock SceneManager
         mockSceneManager = {
             switchScene: jest.fn().mockReturnValue(true;);
-            getCurrentScene: jest.fn(').mockReturnValue({
+           , getCurrentScene: jest.fn(').mockReturnValue({
                 constructor: { name: 'TestScene' });
     });
         };

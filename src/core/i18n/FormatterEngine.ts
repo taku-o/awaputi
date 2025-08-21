@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
-import { getRegionalSettingsManager } from './RegionalSettingsManager.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getRegionalSettingsManager  } from './RegionalSettingsManager.js';
 
 /**
  * フォーマッターエンジン - 地域化対応のテキストフォーマット
@@ -72,13 +72,13 @@ export interface RegionalSettings { language: string,
     dateFormat: DateFormatSettings;
     timeFormat: TimeFormatSettings;
     currencyFormat: CurrencyFormatSettings;
-    regionInfo: RegionInfo
+   , regionInfo: RegionInfo
     ,}
 
 export interface FormatterStats { availableFormatters: string[];
     regionalSettings: any;
     supportedLanguages: string[];
-    supportedRegions: string[] }
+   , supportedRegions: string[] }
 
 export interface PluralObject { zero?: string;
     one?: string;
@@ -117,7 +117,7 @@ export interface FormatterConfiguration { enabled?: boolean;
     cacheResults?: boolean; }
 
 export interface AdvancedFormatPattern { pattern: RegExp,
-    replacement: (match: string, ...groups: string[]) => string,
+    replacement: (matc;h: string, ...groups: string[]) => string,
     priority: number ,}
 }
 
@@ -127,7 +127,7 @@ export interface FormatterRegistry { [name: string]: FormatterInterface;
 export class FormatterEngine {
     private formatters: Map<string, FormatterInterface>;
     private regionalSettingsManager: any;
-    private configuration: FormatterConfiguration';
+    private, configuration: FormatterConfiguration';
 
     constructor(''';
             ['number', new NumberFormatter(''';
@@ -143,7 +143,7 @@ export class FormatterEngine {
             defaultLanguage: 'en';
             defaultRegion: null;
             fallbackFormats: true;
-            cacheResults: false ,}))
+           , cacheResults: false ,}))
     }
     
     /**
@@ -171,7 +171,7 @@ export class FormatterEngine {
         } catch (error) { getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {''
                 operation: 'format);
                 text: text);
-                language: language,);
+               , language: language,);
                 region: region ,});
             return String(text);
     
@@ -191,8 +191,7 @@ export class FormatterEngine {
          }
         // 数値フォーマット: {{number:key}
         formatted = formatted.replace(/\{\{number:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -203,8 +202,7 @@ export class FormatterEngine {
         
         // 日付フォーマット: {{date:key}
         formatted = formatted.replace(/\{\{date:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -215,8 +213,7 @@ export class FormatterEngine {
         
         // 通貨フォーマット: {{currency:key}
         formatted = formatted.replace(/\{\{currency:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -227,8 +224,7 @@ export class FormatterEngine {
         
         // 相対時間フォーマット: {{relative:key}
         formatted = formatted.replace(/\{\{relative:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -256,8 +252,7 @@ export class FormatterEngine {
         // 複数形フォーマット: {{plural:key:count}
         formatted = formatted.replace(/\{\{plural:(\w+):(\w+)\}\}/g, (match, key, countKey) => {  const count = params[countKey];
             const baseText = params[key];''
-            if(count !== undefined && baseText !== undefined) {'
-                ';
+            if(count !== undefined && baseText !== undefined) {', ';
 
             }
 
@@ -273,8 +268,7 @@ export class FormatterEngine {
      * フォーマッターを追加'
      */''
     addFormatter(name: string, formatter: FormatterInterface): boolean { try {'
-            if(typeof, formatter.format !== 'function'') {'
-                ';
+            if(typeof, formatter.format !== 'function'') {', ';
 
             }
 
@@ -328,7 +322,7 @@ export class FormatterEngine {
         } catch (error) { getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {''
                 operation: 'formatWithRegionalSettings);
                 text: text);
-                language: language,);
+               , language: language,);
                 region: region ,});
             return String(text);
     
@@ -339,8 +333,7 @@ export class FormatterEngine {
          }
         // 数値フォーマット（地域設定適用）: {{number:key:format}
         formatted = formatted.replace(/\{\{number:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -351,8 +344,7 @@ export class FormatterEngine {
          : undefined
         // 日付フォーマット（地域設定適用）: {{date:key:format
         formatted = formatted.replace(/\{\{date:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -363,8 +355,7 @@ export class FormatterEngine {
          : undefined
         // 通貨フォーマット（地域設定適用）: {{currency:key:format
         formatted = formatted.replace(/\{\{currency:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -375,8 +366,7 @@ export class FormatterEngine {
          : undefined
         // 時刻フォーマット（地域設定適用）: {{time:key:format
         formatted = formatted.replace(/\{\{time:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
-            if(value !== undefined) {'
-                ';
+            if(value !== undefined) {', ';
 
             }
 
@@ -400,7 +390,7 @@ export class FormatterEngine {
         
         return { availableFormatters: this.getAvailableFormatters(),
             regionalSettings: regionalStats;
-            supportedLanguages: regionalStats.supportedLanguages, };
+           , supportedLanguages: regionalStats.supportedLanguages, };
             supportedRegions: regionalStats.supportedRegions }
         }
     
@@ -440,8 +430,7 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
      */''
     formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format: string = 'default): string { try {'
             const number = Number(value);
-            if(isNaN(number) {'
-                ';
+            if(isNaN(number) {', ';
 
             }
 
@@ -472,8 +461,7 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
         }
         ';
 
-        const localeMap: Record<string, string> = { ''
-            'ja': 'ja-JP',
+        const localeMap: Record<string, string> = { '', 'ja': 'ja-JP',
             'en': 'en-US',
             'zh-CN': 'zh-CN',
             'zh-TW': 'zh-TW',
@@ -587,8 +575,7 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
         }
         ';
 
-        const localeMap: Record<string, string> = { ''
-            'ja': 'ja-JP',
+        const localeMap: Record<string, string> = { '', 'ja': 'ja-JP',
             'en': 'en-US',
             'zh-CN': 'zh-CN',
             'zh-TW': 'zh-TW',
@@ -626,8 +613,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
         }
         ';
 
-        const localeMap: Record<string, string> = { ''
-            'ja': 'ja-JP',
+        const localeMap: Record<string, string> = { '', 'ja': 'ja-JP',
             'en': 'en-US',
             'zh-CN': 'zh-CN',
             'zh-TW': 'zh-TW',
@@ -641,8 +627,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
      */''
     formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format: string = 'default): string { try {'
             const number = Number(value);
-            if(isNaN(number) {'
-                ';
+            if(isNaN(number) {', ';
 
             }
 
@@ -661,11 +646,11 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
             let formatted: string,
             if (position === 'before'') { ' }
 
-                formatted = `${sign}${symbol}${space ? ' ' : ''}${formattedNumber}`;
+                formatted = `${sign}${symbol}${space ? ', ' : ''}${formattedNumber}`;
 
             } else { }'
 
-                formatted = `${sign}${formattedNumber}${space ? ' ' : ''}${symbol}`;
+                formatted = `${sign}${formattedNumber}${space ? ', ' : ''}${symbol}`;
             }
             
             return formatted;
@@ -676,8 +661,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
             return `${code} ${value}`;
 
      : undefined'';
-    getCurrencyCode(language: string, region?: string | null): string { const currencyMap: Record<string, string> = {''
-            'ja': 'JPY',
+    getCurrencyCode(language: string, region?: string | null): string { const currencyMap: Record<string, string> = {'', 'ja': 'JPY',
             'ja-JP': 'JPY',
             'en': 'USD',
             'en-US': 'USD',
@@ -731,8 +715,7 @@ export class RelativeTimeFormatter implements RelativeTimeFormatterInterface { f
         }
         ';
 
-        const localeMap: Record<string, string> = { ''
-            'ja': 'ja-JP',
+        const localeMap: Record<string, string> = { '', 'ja': 'ja-JP',
             'en': 'en-US',
             'zh-CN': 'zh-CN',
             'zh-TW': 'zh-TW',
@@ -772,8 +755,7 @@ export class ListFormatter implements ListFormatterInterface { format(value: any
         }
         ';
 
-        const localeMap: Record<string, string> = { ''
-            'ja': 'ja-JP',
+        const localeMap: Record<string, string> = { '', 'ja': 'ja-JP',
             'en': 'en-US',
             'zh-CN': 'zh-CN',
             'zh-TW': 'zh-TW',
@@ -823,8 +805,7 @@ export class PluralFormatter implements PluralFormatterInterface { format(text: 
     }
 
     makeEnglishPlural(text: string): string { // 簡単な英語複数形ルール
-        if(text.endsWith('y) {'
-            ';
+        if(text.endsWith('y) {', ';
 
         }
 

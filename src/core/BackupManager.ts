@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 interface DataStorage { [key: string]: unknown, }
 
@@ -8,7 +8,7 @@ interface BackupConfig { autoBackupInterval: number,
     maxBackups: number;
     maxBackupAge: number;
     compressionEnabled: boolean;
-    encryptionEnabled: boolean ,}
+   , encryptionEnabled: boolean ,}
 
 interface BackupJob { [key: string]: unknown, }
 
@@ -28,7 +28,7 @@ export class BackupManager {
     private config: BackupConfig;
     private backupQueue: BackupJob[];
     private isBackupInProgress: boolean;
-    private autoBackupTimer: ReturnType<typeof setInterval> | null';
+    private, autoBackupTimer: ReturnType<typeof setInterval> | null';
 
     constructor(dataStorage: DataStorage, validationManager: ValidationManager | null = null) {
         this.storage = dataStorage;
@@ -58,7 +58,7 @@ export class BackupManager {
             autoBackups: 0;
             manualBackups: 0;
             averageBackupSize: 0;
-            averageBackupTime: 0 ,};
+           , averageBackupTime: 0 ,};
         this.initialize();
     }
     
@@ -86,8 +86,7 @@ export class BackupManager {
      */''
     async createBackup(dataType = 'all', options = { ) {'
         try {'
-            if(this.isBackupInProgress && !options.force) {'
-                ';
+            if(this.isBackupInProgress && !options.force) {', ';
 
             }
 
@@ -172,7 +171,7 @@ export class BackupManager {
      */''
     async createAutoBackup()';
             const result = await this.createBackup('all', { automatic: true)
-                validate: true);
+               , validate: true);
             if(result.success) {
             
                 
@@ -205,32 +204,28 @@ export class BackupManager {
     async collectBackupData(dataType) { try { }
             const backupData = {};
 
-            if(dataType === 'all' || dataType === 'playerData'') {'
-                ';
+            if(dataType === 'all' || dataType === 'playerData'') {', ';
 
             }
 
                 backupData.playerData = await this.storage.load('playerData''); }
             }
 
-            if(dataType === 'all' || dataType === 'settings'') {'
-                ';
+            if(dataType === 'all' || dataType === 'settings'') {', ';
 
             }
 
                 backupData.settings = await this.storage.load('settings''); }
             }
 
-            if(dataType === 'all' || dataType === 'statistics'') {'
-                ';
+            if(dataType === 'all' || dataType === 'statistics'') {', ';
 
             }
 
                 backupData.statistics = await this.storage.load('statistics''); }
             }
 
-            if(dataType === 'all' || dataType === 'achievements'') {'
-                ';
+            if(dataType === 'all' || dataType === 'achievements'') {', ';
 
             }
 
@@ -258,17 +253,17 @@ export class BackupManager {
     createBackupMetadata(dataType, data, options = { ) {'
         return { version: this.version,''
             timestamp: Date.now()';
-            gameVersion: window.GAME_VERSION || '1.0.0',);
+           , gameVersion: window.GAME_VERSION || '1.0.0',);
             dataTypes: Object.keys(data),
             dataType,
             size: JSON.stringify(data).length;
-            checksum: null, // ValidationManagerで設定;
+           , checksum: null, // ValidationManagerで設定;
             automatic: options.automatic || false;
             manual: options.manual || false;
             compressed: this.config.compressionEnabled;
             encrypted: this.config.encryptionEnabled;
             userAgent: navigator.userAgent;
-            platform: navigator.platform;
+           , platform: navigator.platform;
     ,}
             language: navigator.language,' };
 
@@ -314,7 +309,7 @@ export class BackupManager {
                 timestamp: metadata.timestamp;
                 dataType: metadata.dataType);
                 size: metadata.size);
-                automatic: metadata.automatic,);
+               , automatic: metadata.automatic,);
                 description: metadata.description);
             // 履歴の制限（最大100件）
             if(this.backupHistory.length > 100) {

@@ -14,91 +14,91 @@
  * Created: Phase G.4 (Issue #103)
  */
 
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface VisualFeedbackManager { config: FeedbackManagerConfig,
     elements: FeedbackElements;
-    state: FeedbackManagerState
+   , state: FeedbackManagerState
     ,}
 
 export interface FeedbackManagerConfig { animations: AnimationGlobalConfig;
     performance: PerformanceConfig;
-    accessibility: AccessibilityConfig
+   , accessibility: AccessibilityConfig
     }
 
 export interface AnimationGlobalConfig { maxConcurrent: number;
     reducedMotion: boolean;
     hardwareAcceleration: boolean;
-    respectUserPreferences: boolean }
+   , respectUserPreferences: boolean }
 
 export interface PerformanceConfig { maxAnimationDuration: number;
     maxFrameRate: number;
-    lowPowerMode: boolean }
+   , lowPowerMode: boolean }
 
 export interface AccessibilityConfig { respectReducedMotion: boolean;
     highContrast: boolean;
-    alternativeText: boolean }
+   , alternativeText: boolean }
 
 export interface FeedbackElements { container: HTMLElement;
     overlay: HTMLElement;
-    statusDisplay: HTMLElement
+   , statusDisplay: HTMLElement
     }
 
 export interface FeedbackManagerState { activeAnimations: Map<string, AnimationEffect>,
     animationQueue: AnimationQueueItem[];
-    performance: PerformanceMetrics
+   , performance: PerformanceMetrics
     ,}
 
 export interface AnimationConfig { flash: FlashAnimationConfig;
     glow: GlowAnimationConfig;
     pulse: PulseAnimationConfig;
     ripple: RippleAnimationConfig;
-    shake: ShakeAnimationConfig
+   , shake: ShakeAnimationConfig
     }
 
 export interface FlashAnimationConfig { defaultDuration: number;
     easingFunction: string;
     maxIntensity: number;
-    fadeOutRatio: number }
+   , fadeOutRatio: number }
 
 export interface GlowAnimationConfig { defaultDuration: number;
     easingFunction: string;
     maxGlowSize: number;
-    opacityRange: OpacityRange
+   , opacityRange: OpacityRange
     }
 
 export interface PulseAnimationConfig { defaultDuration: number;
     easingFunction: string;
     iterationsPerSecond: number;
     scaleRange: ScaleRange;
-    intensityRange: IntensityRange
+   , intensityRange: IntensityRange
     }
 
 export interface RippleAnimationConfig { defaultDuration: number;
     easingFunction: string;
     minSize: number;
     maxSize: number;
-    borderWidth: number }
+   , borderWidth: number }
 
 export interface ShakeAnimationConfig { defaultDuration: number;
     easingFunction: string;
     stepInterval: number;
-    maxDistance: number }
+   , maxDistance: number }
 
 export interface OpacityRange { min: number;
-    max: number }
+   , max: number }
 
 export interface ScaleRange { min: number;
-    max: number }
+   , max: number }
 
 export interface IntensityRange { min: number;
-    max: number }
+   , max: number }
 
 export interface EffectOptions { id: string;
     target: HTMLElement;
     color: string;
-    intensity: number;
+   , intensity: number;
     duration?: number;
     delay?: number;
     easing?: string; }
@@ -128,7 +128,7 @@ export interface ShakeEffectOptions extends EffectOptions { maxDistance?: number
 export interface AnimationEffect { id: string,
     target: HTMLElement;
     type: EffectType;
-    animation: Animation,
+   , animation: Animation,
     cleanup: (') => void;
     startTime: number;
     duration: number;
@@ -138,28 +138,28 @@ export interface AnimationEffect { id: string,
 
 export interface AnimationQueueItem { effect: EffectOptions;
     priority: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface PerformanceMetrics { totalAnimations: number;
     activeCount: number;
     averageDuration: number;
     droppedFrames: number;
-    memoryUsage: number }
+   , memoryUsage: number }
 
 export interface AnimationStatistics { activeAnimations: number;
     supportedTypes: EffectType[];
     config: AnimationConfig;
     performance: PerformanceMetrics;
-    byType: Record<EffectType, AnimationTypeStats>, }
+   , byType: Record<EffectType, AnimationTypeStats>, }
 
 export interface AnimationTypeStats { count: number,
     totalDuration: number;
     averageIntensity: number;
-    successRate: number ,}
+   , successRate: number ,}
 
 export interface CleanupResult { cleaned: number;
     failed: number;
-    errors: Error[]
+   , errors: Error[]
     }
 
 export interface AnimationValidationResult { isValid: boolean;
@@ -178,15 +178,15 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { flash: {
         defaultDuration: 300,
         easingFunction: 'ease-out';
         maxIntensity: 1.0;
-        fadeOutRatio: 0.7 ,};
+       , fadeOutRatio: 0.7 ,};
     glow: { defaultDuration: 500,''
         easingFunction: 'ease-out';
-        maxGlowSize: 50, }
+       , maxGlowSize: 50, }
         opacityRange: { min: 0, max: 0.8 ,},
 
     pulse: { defaultDuration: 800,''
         easingFunction: 'ease-out';
-        iterationsPerSecond: 2.5, }
+       , iterationsPerSecond: 2.5, }
         scaleRange: { min: 0.8, max: 1.3 ,},
         intensityRange: { min: 0.3, max: 1.0 ,},
 
@@ -194,20 +194,20 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { flash: {
         easingFunction: 'ease-out';
         minSize: 20;
         maxSize: 200;
-        borderWidth: 2 ,};
+       , borderWidth: 2 ,};
     shake: { defaultDuration: 200,''
         easingFunction: 'ease-out';
         stepInterval: 50;
-        maxDistance: 10 ,}
+       , maxDistance: 10 ,}
 } as const;
 export const PERFORMANCE_LIMITS = { MAX_CONCURRENT_ANIMATIONS: 5,
     MAX_ANIMATION_DURATION: 5000;
     CLEANUP_INTERVAL: 1000;
-    MEMORY_THRESHOLD: 50 * 1024 * 1024 // 50MB ,} as const;
+   , MEMORY_THRESHOLD: 50 * 1024 * 1024 // 50MB ,} as const;
 export const ANIMATION_PRIORITIES: Record<Priority, number> = { low: 1,
     normal: 2;
     high: 3;
-    critical: 4 ,} as const;
+   , critical: 4 ,} as const;
 ';
 
 export const CSS_PROPERTIES = {;
@@ -254,8 +254,7 @@ export function normalizeIntensity(intensity: number): number { return Math.max(
 ';
 
 export function createAnimationKeyframes(type: EffectType, options: EffectOptions): Keyframe[] {;
-    switch(type) {'
-        ';
+    switch(type) {', ';
 
     }
 
@@ -323,9 +322,9 @@ export function shouldUseReducedMotion()';
 
 export class FeedbackAnimationManager {
     private mainController: VisualFeedbackManager;
-    private activeAnimations: Map<string, AnimationEffect>;
+    private, activeAnimations: Map<string, AnimationEffect>;
     private animationConfig: AnimationConfig;
-    private performanceMetrics: PerformanceMetrics;
+    private, performanceMetrics: PerformanceMetrics;
     constructor(mainController: VisualFeedbackManager) {
 ';
 
@@ -376,7 +375,7 @@ export class FeedbackAnimationManager {
                 animation,
                 cleanup,
                 startTime: Date.now();
-                duration: timing.duration as number;
+               , duration: timing.duration as number;
                 options ,};
             
             this.activeAnimations.set(options.id, effect);
@@ -432,7 +431,7 @@ export class FeedbackAnimationManager {
                 animation,
                 cleanup,
                 startTime: Date.now();
-                duration: timing.duration as number;
+               , duration: timing.duration as number;
                 options ,};
             
             this.activeAnimations.set(options.id, effect);
@@ -459,11 +458,11 @@ export class FeedbackAnimationManager {
             const originalTransform = options.target.style.transform;
             const pulseIntensity = 0.3 + (normalizeIntensity(options.intensity) * 0.7);
             
-            options.target.style.background = `radial-gradient(circle, ${ options.color) 0%, transparent 70%)`;
+            options.target.style.background = `radial-gradient(circle, ${ options.color) 0%, transparent, 70%)`;
             ';
 
-            const duration = options.duration || this.animationConfig.pulse.defaultDuration;''
-            const iterations = options.iterations || Math.ceil(duration / 400};
+            const, duration = options.duration || this.animationConfig.pulse.defaultDuration;''
+            const, iterations = options.iterations || Math.ceil(duration / 400};
 
             const keyframes = createAnimationKeyframes('pulse', options};
             const timing = { }
@@ -492,7 +491,7 @@ export class FeedbackAnimationManager {
                 animation,
                 cleanup,
                 startTime: Date.now();
-                duration: timing.duration as number;
+               , duration: timing.duration as number;
                 options ,};
             
             this.activeAnimations.set(options.id, effect);
@@ -525,9 +524,9 @@ export class FeedbackAnimationManager {
             
             ripple.style.cssText = `;
                 position: absolute;
-                border: ${config.borderWidth}px solid ${options.color}
+               , border: ${config.borderWidth}px solid ${options.color}
                 border-radius: 50%;
-                width: ${startSize}px;
+               , width: ${startSize}px;
                 height: ${startSize}px;
                 top: ${options.originY || 50}%;
                 left: ${options.originX || 50}%;
@@ -575,7 +574,7 @@ export class FeedbackAnimationManager {
                 animation,
                 cleanup,
                 startTime: Date.now();
-                duration: timing.duration as number;
+               , duration: timing.duration as number;
                 options ,};
             
             this.activeAnimations.set(options.id, effect);
@@ -639,7 +638,7 @@ export class FeedbackAnimationManager {
                 animation,
                 cleanup,
                 startTime: Date.now();
-                duration: timing.duration as number;
+               , duration: timing.duration as number;
                 options ,};
             
             this.activeAnimations.set(options.id, effect);
@@ -659,7 +658,7 @@ export class FeedbackAnimationManager {
     stopAllAnimations(): CleanupResult { const result: CleanupResult = {
             cleaned: 0;
             failed: 0;
-            errors: [] };
+           , errors: [] };
         ';
 
         try {'
@@ -749,7 +748,7 @@ export class FeedbackAnimationManager {
         return { activeAnimations: this.activeAnimations.size,
             supportedTypes: Object.keys(this.animationConfig) as EffectType[];
             config: this.animationConfig;
-            performance: this.performanceMetrics, };
+           , performance: this.performanceMetrics, };
             byType }
         }
 

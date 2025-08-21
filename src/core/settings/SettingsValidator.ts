@@ -12,7 +12,7 @@ export interface ValidationRule { type?: string;
     max?: number;
     maxLength?: number;
     enum?: any[];
-    validator?: (value: any) => boolean;
+    validator?: (valu;e: any) => boolean;
     properties?: Record<string, ValidationRule>; }
 }
 
@@ -26,12 +26,12 @@ export interface ValidationResult { isValid: boolean,
 
 export interface MultipleValidationResult { isValid: boolean;
     errors: string[];
-    results: Record<string, ValidationResult>,
+   , results: Record<string, ValidationResult>,
     sanitizedSettings: Record<string, any>, }
 
 export interface SettingsObjectValidationResult { isValid: boolean,
     errors: string[];
-    sanitizedSettings: Record<string, any>, }
+   , sanitizedSettings: Record<string, any>, }
 
 export interface KeyParseResult { isValid: boolean,
     error?: string;
@@ -50,14 +50,14 @@ export interface AccessibilitySettings { highContrast: boolean,
     reducedMotion: boolean;
     largeText: boolean;
     screenReader: boolean;
-    colorBlindSupport: boolean ,}
+   , colorBlindSupport: boolean ,}
 
 export interface ValidationStats { totalRules: number;
     nestedRules: number;
     supportedTypes: string[];
     supportedLanguages: string[];
     supportedQualities: string[];
-    validationFeatures: string[] }
+   , validationFeatures: string[] }
 
 // 列挙型
 export type ExpectedType = 'string' | 'number' | 'boolean' | 'object' | 'array';''
@@ -69,7 +69,7 @@ export type PrivacyLevel = 'public' | 'friends' | 'private';
 
 export class SettingsValidator {
     private settingsManager: SettingsManager;
-    private validationRules: ValidationRules';
+    private, validationRules: ValidationRules';
 
     constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;
@@ -143,7 +143,7 @@ export class SettingsValidator {
             return this._validateByRule(value, rule, key);
         } catch (error) { return {  };
                 isValid: false, }
-                errors: [`Validation error: ${(error, as Error}).message}`];
+                errors: [`Validation, error: ${(error, as, Error}).message}`];
                 sanitizedValue: null;
             },
         }
@@ -162,7 +162,7 @@ export class SettingsValidator {
 
         // 型チェック
         if(rule.type && !this._checkType(value, rule.type as ExpectedType) { }
-            errors.push(`Expected ${rule.type}, got ${ typeof value}`};' }'
+            errors.push(`Expected ${rule.type}, got ${ typeof, value}`};' }'
 
             sanitizedValue = this._getDefaultForType(rule.type as ExpectedType'});
         }
@@ -202,7 +202,7 @@ export class SettingsValidator {
                     errors.push(`Custom, validation failed, for value: ${value}`);
                     sanitizedValue = this._getDefaultForType(rule.type, as ExpectedType);
                 } catch (error) {
-                errors.push(`Custom, validator error: ${(error, as Error}).message}`);''
+                errors.push(`Custom, validator error: ${(error, as, Error}).message}`);''
                 sanitizedValue = this._getDefaultForType(rule.type, as ExpectedType);
             }
         }
@@ -346,7 +346,7 @@ export class SettingsValidator {
     getValidationRulesForCategory(category: string): Record<string, ValidationRule> { const categoryMappings: Record<string, Record<string, ValidationRule>> = {
             audio: {
                 masterVolume: this.validationRules.masterVolume;
-                sfxVolume: this.validationRules.sfxVolume,
+               , sfxVolume: this.validationRules.sfxVolume,
                 bgmVolume: this.validationRules.bgmVolume,' }'
 
                 isMuted: { type: 'boolean' };
@@ -428,7 +428,7 @@ export class SettingsValidator {
 
             sanitizedValue: defaultLanguage,' }'
 
-            errors: [`Unsupported language: ${language}. Supported: ${supportedLanguages.join(', '})`]
+            errors: [`Unsupported, language: ${language}. Supported: ${supportedLanguages.join(', '})`]
         }
 
     /**
@@ -459,7 +459,7 @@ export class SettingsValidator {
 
             sanitizedValue: defaultQuality,' }'
 
-            errors: [`Invalid quality: ${quality}. Supported: ${supportedQualities.join(', '})`]
+            errors: [`Invalid, quality: ${quality}. Supported: ${supportedQualities.join(', '})`]
         }
 
     /**
@@ -473,7 +473,7 @@ export class SettingsValidator {
                 sanitizedValue: {
                     highContrast: false;
                     reducedMotion: false;
-                    largeText: false;
+                   , largeText: false;
         ,}
                     screenReader: false, };
                     colorBlindSupport: false }
@@ -487,7 +487,7 @@ export class SettingsValidator {
             reducedMotion: false;
             largeText: false;
             screenReader: false;
-            colorBlindSupport: false ,};
+           , colorBlindSupport: false ,};
         const errors: string[] = [],
         const booleanFields: (keyof, AccessibilitySettings')[] = ['highContrast', 'reducedMotion', 'largeText', 'screenReader', 'colorBlindSupport'];
 
@@ -502,7 +502,7 @@ export class SettingsValidator {
 
                 } else { sanitized[field] = false;' }'
 
-                    errors.push(`${field} must be boolean, got ${typeof accessibility[field]}`'});
+                    errors.push(`${field} must be boolean, got ${typeof, accessibility[field]}`'});
                 }
             } else { sanitized[field] = false; }
         }

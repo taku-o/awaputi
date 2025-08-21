@@ -1,7 +1,7 @@
 /**
  * ConfigurationErrorHandler の基本テスト
  */
-import { jest, describe, test, expect, beforeAll } from '@jest/globals';
+import { jest, describe, test, expect, beforeAll  } from '@jest/globals';
 // Interfaces for Configuration Error Handler
 interface ErrorStats {
     total: number,
@@ -35,7 +35,7 @@ interface CalculationParams {
 // Type definitions for the Configuration Error Handler
 interface ConfigurationErrorHandlerType {
     errorTypes: {
-        CONFIGURATION_ACCESS: string,
+        CONFIGURATION_ACCES;S: string,
         CALCULATION_ERROR: string,
         CACHE_ERROR: string
     },

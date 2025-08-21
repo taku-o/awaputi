@@ -14,13 +14,13 @@
 //     getStatisticsCalculator, 
 //     getStatisticsTimeSeriesManager, 
 //     getStatisticsExporter,
-//     getStatisticsEventHandler  }
+//     getStatisticsEventHandler   }
 // } from './statistics/index.js';
 
 // Type definitions
 interface BubbleData { type: string,
     score: number, }
-    position?: { x: number; y: number }
+    position?: { x: number;, y: number }
     size?: number;
 }
 
@@ -39,8 +39,8 @@ interface EffectData { type: string;
     intensity?: number; }
 
 interface DragData {
-    startPosition: { x: number; y: number },
-    endPosition: { x: number; y: number },
+    startPosition: { ;x: number;, y: number },
+    endPosition: { x: number;, y: number },
     duration: number;
 }
 
@@ -53,13 +53,13 @@ interface ApData { amount: number;
 
 interface ItemData { id: string;
     name: string;
-    cost: number }
+   , cost: number }
 
 interface GameEndData { finalScore: number;
     playTime: number;
     completed: boolean;
     stageId: string;
-    bubblesPopped: number }
+   , bubblesPopped: number }
 
 interface Statistics { totalGamesPlayed: number;
     totalScore: number;
@@ -69,17 +69,17 @@ interface Statistics { totalGamesPlayed: number;
     stagesFailed: number;
     totalBubblesPopped: number;
     totalBubblesMissed: number;
-    bubbleTypeStats: Record<string, number>;
+   , bubbleTypeStats: Record<string, number>;
     averageScore: number;
-    bubbleAccuracy: number ,}
+   , bubbleAccuracy: number ,}
 
 interface SessionStats { bubblesThisSession: number;
     missedThisSession: number;
     scoreThisSession: number;
-    startTime: number }
+   , startTime: number }
 
 interface ValidationResult { isValid: boolean;
-    repaired: Statistics
+   , repaired: Statistics
     }
 
 interface GenerateTestStatisticsOptions { gamesCount?: number;
@@ -137,7 +137,7 @@ export class StatisticsManager {
     private collector: StatisticsCollector | null;
     private analyzer: StatisticsAnalyzer | null;
     private statistics: Statistics;
-    private sessionStats: SessionStats;
+    private, sessionStats: SessionStats;
     constructor(gameEngine: GameEngine) {
     
         this.__gameEngine = gameEngine;
@@ -175,16 +175,16 @@ export class StatisticsManager {
                 highestScore: 0;
                 stagesCompleted: 0;
                 stagesFailed: 0;
-                totalBubblesPopped: 0, };
+               , totalBubblesPopped: 0, };
                 totalBubblesMissed: 0, }
                 bubbleTypeStats: { normal: 0, fast: 0, large: 0, bonus: 0 ,},
                 averageScore: 0);
-                bubbleAccuracy: 0;
+               , bubbleAccuracy: 0;
             }),
             initializeSessionStats: () => ({ bubblesThisSession: 0;
                 missedThisSession: 0;
                 scoreThisSession: 0);
-                startTime: Date.now( });
+               , startTime: Date.now( });
             validateStatistics: (stats: Statistics) => ({ isValid: true, repaired: stats ,});
         }
     
@@ -256,8 +256,7 @@ export class StatisticsManager {
     onGameStart(stageId: string): void { try {
             this.eventHandler.onGameStart(stageId);
             // StatisticsCollectorでのイベント収集
-            if(this.collector) {'
-                ';
+            if(this.collector) {', ';
 
             }
 
@@ -281,8 +280,7 @@ export class StatisticsManager {
                 { stageId: data.stageId, bubbles: data.bubblesPopped )
             );
             // StatisticsCollectorでのイベント収集
-            if(this.collector) {'
-                ';
+            if(this.collector) {', ';
 
             ,}
 
@@ -671,7 +669,7 @@ export class StatisticsManager {
             const totalMinutes = (this.statistics.totalPlayTime || 0) / 60000;
             ';
 
-            return totalMinutes > 0 ? totalClicks / totalMinutes: 0,' '
+            return totalMinutes > 0 ? totalClicks / totalMinutes: 0,', '
         } catch (error) {
             console.error('Error calculating clicks per minute:', error);
             return 0;

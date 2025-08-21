@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * HelpScene-contextual.test.js
  * 
@@ -6,8 +6,8 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * Issue #163 - Duplicate help/settings screen consolidation  
  * Task 9 - Contextual Help System Integration
  */
-import { HelpScene } from '../../src/scenes/HelpScene';
-import { ContextualHelpManager } from '../../src/scenes/help-scene/ContextualHelpManager';
+import { HelpScene  } from '../../src/scenes/HelpScene';
+import { ContextualHelpManager  } from '../../src/scenes/help-scene/ContextualHelpManager';
 // DOM APIのモック
 const mockDocument = {
     fullscreenElement: null,
@@ -34,7 +34,7 @@ describe('HelpScene Contextual Help Integration', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true;);
-                switchScene: jest.fn(').mockReturnValue(true,
+               , switchScene: jest.fn(').mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'HelpScene' }
                 }
@@ -61,7 +61,7 @@ describe('HelpScene Contextual Help Integration', () => {
         jest.mock('../../src/scenes/help-scene/HelpContentManager.js', () => ({
             HelpContentManager: jest.fn().mockImplementation(() => ({
                 initialize: jest.fn().mockResolvedValue(true;);
-                getState: jest.fn().mockReturnValue({),
+               , getState: jest.fn().mockReturnValue({),
                 getHelpAnalytics: jest.fn().mockReturnValue({),
                     startHelpSession: jest.fn(),
         endHelpSession: jest.fn(),

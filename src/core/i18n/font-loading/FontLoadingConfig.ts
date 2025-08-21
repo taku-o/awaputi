@@ -6,31 +6,31 @@
 // 型定義
 export interface FontLoadingConfigData { enabledSources: string[],
     timeouts: {
-        google: number;
+        googl;e: number;
         local: number;
-        system: number 
+       , system: number 
 ,};
     fallbackBehavior: { useSystemFonts: boolean;
         suppressErrors: boolean;
-        maxRetries: number 
+       , maxRetries: number 
 };
     logging: { level: string;
         suppressRepeated: boolean;
-        maxErrorsPerSource: number 
+       , maxErrorsPerSource: number 
 };
     development: { disableExternalFonts: boolean;
-        verboseLogging: boolean 
+       , verboseLogging: boolean 
 };
     fontSources: { google: {
             baseUrl: string;
             weights: string[];
-            display: string 
+           , display: string 
 };
         local: { fontDirectory: string;
-            formats: string[] };
+           , formats: string[] };
     performance: { preloadCommonFonts: boolean;
         cacheFontResults: boolean;
-        maxCacheSize: number }
+       , maxCacheSize: number }
 
 export type ConfigChangeListener = (config: FontLoadingConfigData) => void;
 
@@ -54,19 +54,19 @@ export class FontLoadingConfig {
             timeouts: {
                 google: 3000;
                 local: 1000;
-                system: 500 
+               , system: 500 
 ,};
             fallbackBehavior: { useSystemFonts: true;
                 suppressErrors: true;
-                maxRetries: 1 
+               , maxRetries: 1 
 };
             logging: { ''
                 level: 'warn';
                 suppressRepeated: true;
-                maxErrorsPerSource: 3 
+               , maxErrorsPerSource: 3 
 };
             development: { disableExternalFonts: false;
-                verboseLogging: false 
+               , verboseLogging: false 
 };
             fontSources: { google: {''
                     baseUrl: 'https://fonts.googleapis.com/css2',
@@ -79,7 +79,7 @@ export class FontLoadingConfig {
             },
             performance: { preloadCommonFonts: true;
                 cacheFontResults: true;
-                maxCacheSize: 50 
+               , maxCacheSize: 50 
 }
         },
 
@@ -125,7 +125,7 @@ export class FontLoadingConfig {
             ['logging.maxErrorsPerSource', { ''
                 type: 'number);
                 min: 1)];
-                max: 10];
+               , max: 10];
             )];
         ]), }
     get(path: string): any { return this._getNestedValue(this.config, path); }
@@ -141,7 +141,7 @@ export class FontLoadingConfig {
         return true;
     }
 
-    update(updates: Record<string, any>): { success: boolean; results: Record<string, boolean>; errors: Record<string, string> } {
+    update(updates: Record<string, any>): { success: boolean;, results: Record<string, boolean>; errors: Record<string, string> } {
         const results: Record<string, boolean> = {};
         const errors: Record<string, string> = {};
 
@@ -186,8 +186,7 @@ export class FontLoadingConfig {
         const lastKey = keys.pop()!;
         let current = obj;
 
-        for(const, key of, keys) {'
-            ';
+        for(const, key of, keys) {', ';
 
         }
 
@@ -211,11 +210,11 @@ export class FontLoadingConfig {
             
 
         }
-            return { valid: false, error: `Expected ${rule.type,}, got ${typeof value}` }
+            return { valid: false, error: `Expected ${rule.type,}, got ${typeof, value}` }
 
         if(rule.allowedValues && !rule.allowedValues.includes(value)) { ' }'
 
-            return { valid: false, error: `Value must be one of: ${rule.allowedValues.join(', '})` }
+            return { valid: false, error: `Value must be one, of: ${rule.allowedValues.join(', '})` }
 
         if(rule.min !== undefined && value < rule.min) {
 
@@ -236,7 +235,7 @@ export class FontLoadingConfig {
             for (const, item of, value) {
         }
                 if(!rule.allowedValues.includes(item) { }
-                    return { valid: false, error: `Array contains invalid value: ${item,}` };
+                    return { valid: false, error: `Array contains invalid, value: ${item,}` };
 }
         return { valid: true }
 
@@ -292,8 +291,8 @@ export class FontLoadingConfig {
             console.error('[FontLoadingConfig] Import failed:', error);
             return false;
 
-    validate(): { valid: boolean; errors: Array<{ path: string; value: any; error: string ,}> } {
-        const errors: Array<{ path: string; value: any; error: string }> = [];
+    validate(): { valid: boolean;, errors: Array<{ path: string; value: any;, error: string ,}> } {
+        const errors: Array<{ path: string; value: any;, error: string }> = [];
 
         for(const [path, rule] of this.validationRules) { const value = this._getNestedValue(this.config, path);
             const validation = this._validateValue(path, value);
@@ -301,7 +300,7 @@ export class FontLoadingConfig {
             if (!validation.valid) {
                 errors.push({)
                     path: path);
-                    value: value, }
+                   , value: value, }
                     error: validation.error!); }
         }
 
@@ -322,7 +321,7 @@ export class FontLoadingConfig {
             developmentMode: this.get('development.verboseLogging''),
             offlineMode: !this.get('enabledSources'').includes('google);
             configSize: JSON.stringify(this.config).length;
-            listeners: this.listeners.size;
+           , listeners: this.listeners.size;
         },
     }
 ';

@@ -1,9 +1,9 @@
-import { BackupFileInvestigator } from './BackupFileInvestigator.js';''
-import { ReferenceAnalyzer } from './ReferenceAnalyzer.js';''
-import { SafetyVerifier } from './SafetyVerifier.js';''
-import { SequentialFileRemover } from './SequentialFileRemover.js';''
-import { IntegrityValidator } from './IntegrityValidator.js';''
-import { CleanupReporter } from './CleanupReporter.js';
+import { BackupFileInvestigator  } from './BackupFileInvestigator.js';''
+import { ReferenceAnalyzer  } from './ReferenceAnalyzer.js';''
+import { SafetyVerifier  } from './SafetyVerifier.js';''
+import { SequentialFileRemover  } from './SequentialFileRemover.js';''
+import { IntegrityValidator  } from './IntegrityValidator.js';''
+import { CleanupReporter  } from './CleanupReporter.js';
 
 // Type definitions
 interface CleanupOptions { dryRun?: boolean;
@@ -16,14 +16,14 @@ interface CleanupOptions { dryRun?: boolean;
 interface FileInvestigationResult { filePath: string,
     exists: boolean;
     currentFileExists: boolean;
-    investigationFailed: boolean;
+   , investigationFailed: boolean;
     sizeAnalysis?: {
-        bytes: number;
-        wordCount: number ,}
+        byte;s: number;
+       , wordCount: number ,}
 
 interface ReferenceAnalysisResult { filePath: string,
     safetyAssessment: {
-        safeToDelete: boolean ,}
+        safeToDelet;e: boolean ,}
 
 interface SafetyVerificationResult { filePath: string,
     overallSafety: boolean ,}
@@ -33,46 +33,46 @@ interface InvestigationPhaseResult { investigationResults: FileInvestigationResu
     investigationSummary: any;
     safeFiles: FileInvestigationResult[];
     totalFiles: number;
-    safeForDeletion: number }
+   , safeForDeletion: number }
 
 interface SafetyPhaseResult { verificationResults: SafetyVerificationResult[];
     safetyReport: any;
     verifiedSafeFiles: FileInvestigationResult[];
     totalCandidates: number;
-    verifiedSafe: number }
+   , verifiedSafe: number }
 
 interface DeletionResult { status: string;
     filePath?: string }
 
 interface DeletionPhaseResult { deletionResults: {
-        deletions: DeletionResult[] };
+        deletion;s: DeletionResult[] };
     deletionSummary: any;
     sizeReduction: any;
     successfulDeletions: DeletionResult[];
-    failedDeletions: DeletionResult[];
+   , failedDeletions: DeletionResult[];
     }
 
 interface IntegrityValidationResult { buildIntegrity: any,
     basicTests: any;
     importResolution: any;
-    coreFeatures: any ,}
+   , coreFeatures: any ,}
 
 interface IntegrityPhaseResult { validationResults: IntegrityValidationResult;
-    integrityReport: {
+   , integrityReport: {
         summary: {
-            overallIntegrity: boolean };
+            overallIntegrit;y: boolean };
     overallIntegrityStatus: boolean;
 }
 
 interface ReportingPhaseResult { finalReport: any,
     recoveryInstructions: any;
-    reportFileName: string ,}
+   , reportFileName: string ,}
 
 interface ExecutionState { phase: string;
     startTime: string | null;
     endTime: string | null;
-    results: {
-        investigation?: InvestigationPhaseResult;
+   , results: {
+        investigatio;n?: InvestigationPhaseResult;
         safety?: SafetyPhaseResult;
         deletion?: DeletionPhaseResult;
         integrity?: IntegrityPhaseResult;
@@ -86,16 +86,16 @@ interface ErrorRecoveryResult { recovered: boolean,
 
 interface FinalResult { status: string;
     executionState: ExecutionState;
-    summary: {
-        totalExecutionTime: number | null;
+   , summary: {
+        totalExecutionTim;e: number | null;
         phase: string;
         filesProcessed: number;
         filesDeleted: number;
-        errorsEncountered: number };
+       , errorsEncountered: number };
     recommendations: string[];
-    dryRun: boolean;
+   , dryRun: boolean;
     error?: { message: string;
-        phase: string }
+       , phase: string }
 
 /**
  * CleanupOrchestrator - バックアップファイルクリーンアップの総合調整クラス
@@ -115,7 +115,7 @@ export class CleanupOrchestrator {
         this.options = {
             dryRun: options.dryRun || false;
             verbose: options.verbose || false;
-            safetyMode: options.safetyMode !== false, // デフォルトは安全モード;
+           , safetyMode: options.safetyMode !== false, // デフォルトは安全モード;
             confirmationRequired: options.confirmationRequired !== false,
             reportOutputDir: options.reportOutputDir || './.kiro/reports';
             ...options;
@@ -130,7 +130,7 @@ export class CleanupOrchestrator {
             phase: 'initialized';
             startTime: null;
             endTime: null;
-            results: {,};
+           , results: {,};
             errors: []);
         })'
 
@@ -148,7 +148,7 @@ export class CleanupOrchestrator {
 
         try { // Phase, 1: 調査フェーズ)'
             this.executionState.phase = 'investigation';')'
-            this.log('Phase 1: Investigation - Starting file investigation...', 'info);
+            this.log('Phase, 1: Investigation - Starting file investigation...', 'info);
             const investigationResults = await this.runInvestigationPhase();
             this.executionState.results.investigation = investigationResults;
 
@@ -162,7 +162,7 @@ export class CleanupOrchestrator {
 ';
             // Phase 2: 安全性検証フェーズ
             this.executionState.phase = 'safety_verification';''
-            this.log('Phase 2: Safety Verification - Verifying deletion safety...', 'info);
+            this.log('Phase, 2: Safety Verification - Verifying deletion safety...', 'info);
             const safetyResults = await this.runSafetyVerificationPhase(investigationResults.safeFiles);
             this.executionState.results.safety = safetyResults;
 
@@ -185,7 +185,7 @@ export class CleanupOrchestrator {
                     return this.generateFinalResult('user_cancelled);
 
             // Phase 3: 削除実行フェーズ（ドライランでない場合のみ）
-            let deletionResults: DeletionPhaseResult | null = null,
+            let, deletionResults: DeletionPhaseResult | null = null,
             if(!this.options.dryRun) {'
 
                 this.executionState.phase = 'deletion';''
@@ -200,7 +200,7 @@ export class CleanupOrchestrator {
             }
 
             // Phase 4: 整合性確認フェーズ（削除実行後のみ）
-            let integrityResults: IntegrityPhaseResult | null = null,
+            let, integrityResults: IntegrityPhaseResult | null = null,
             if(!this.options.dryRun && deletionResults) {'
 
                 this.executionState.phase = 'integrity_validation';''
@@ -213,7 +213,7 @@ export class CleanupOrchestrator {
             this.executionState.endTime = new Date().toISOString()';
             return this.generateFinalResult('success); catch (error) { }'
 
-            this.log(`Cleanup, process failed: ${(error, as Error'}).message}`, 'error');''
+            this.log(`Cleanup, process failed: ${(error, as, Error'}).message}`, 'error');''
             this.executionState.errors.push(error);''
             this.executionState.phase = 'failed';''
             this.executionState.endTime = new Date().toISOString()';
@@ -263,14 +263,14 @@ export class CleanupOrchestrator {
      * 安全性検証フェーズの実行
      */
     async runSafetyVerificationPhase(candidateFiles: FileInvestigationResult[]): Promise<SafetyPhaseResult> { ''
-        this.log(`Verifying, safety for ${candidateFiles.length) candidate files...`, 'info');
+        this.log(`Verifying, safety for ${candidateFiles.length) candidate, files...`, 'info');
         
-        const verificationResults: SafetyVerificationResult[] = [],
+        const, verificationResults: SafetyVerificationResult[] = [],
         
-        for(const, file of, candidateFiles) {
+        for(const, file, of, candidateFiles) {
         ';
 
-            this.log(`Safety verification for ${file.filePath}...`, 'verbose'}
+            this.log(`Safety, verification for ${file.filePath}...`, 'verbose'}
             const verification = await this.safetyVerifier.verifyDeletionSafety(file.filePath); }
             verificationResults.push(verification});
         }
@@ -294,10 +294,10 @@ export class CleanupOrchestrator {
      * 削除実行フェーズの実行
      */
     async runDeletionPhase(verifiedFiles: FileInvestigationResult[]): Promise<DeletionPhaseResult> { ''
-        this.log(`Executing, deletion for ${verifiedFiles.length) verified files...`, 'info');
+        this.log(`Executing, deletion for ${verifiedFiles.length) verified, files...`, 'info');
         
         // 段階的安全削除実行
-        const deletionResults = await this.fileRemover.removeFilesSafely(verifiedFiles};
+        const, deletionResults = await, this.fileRemover.removeFilesSafely(verifiedFiles};
         
         // 削除サマリー生成
         const deletionSummary = await this.reporter.generateDeletionSummary(deletionResults};
@@ -325,7 +325,7 @@ export class CleanupOrchestrator {
         const validationResults: IntegrityValidationResult = { buildIntegrity: await this.integrityValidator.validateBuildIntegrity(),
             basicTests: await this.integrityValidator.runBasicTests();
             importResolution: await this.integrityValidator.checkImportResolution();
-            coreFeatures: await this.integrityValidator.validateCoreFeatures(), };
+           , coreFeatures: await this.integrityValidator.validateCoreFeatures(), };
 
         // 整合性レポート生成
         const integrityReport = await this.integrityValidator.generateIntegrityReport(validationResults);
@@ -387,7 +387,7 @@ export class CleanupOrchestrator {
     async interruptProcess(reason: string): Promise<FinalResult> { ''
         this.log(`Process, interrupted: ${reason)`, 'warn'');''
         this.executionState.phase = 'interrupted';
-        this.executionState.endTime = new Date().toISOString();
+        this.executionState.endTime = new, Date().toISOString();
         
         // 緊急レポート生成
         if(this.executionState.results.investigation} {
@@ -437,16 +437,16 @@ export class CleanupOrchestrator {
     generateFinalResult(status: string, error: Error | null = null): FinalResult { const result: FinalResult = {
             status,
             executionState: this.executionState;
-            summary: {
+           , summary: {
                 totalExecutionTime: this.executionState.endTime ?   : undefined
                     new Date(this.executionState.endTime).getTime() - new Date(this.executionState.startTime!).getTime() : ;
                     null,
                 phase: this.executionState.phase;
-                filesProcessed: this.executionState.results.investigation? .totalFiles || 0, : undefined
+               , filesProcessed: this.executionState.results.investigation? .totalFiles || 0, : undefined
                 filesDeleted: this.executionState.results.deletion? .successfulDeletions?.length || 0, : undefined
                 errorsEncountered: this.executionState.errors.length ,};
             recommendations: this.generateRecommendations(status);
-            dryRun: this.options.dryRun;
+           , dryRun: this.options.dryRun;
         },
 
         if(error) {

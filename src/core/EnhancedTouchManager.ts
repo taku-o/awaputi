@@ -1,8 +1,8 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { getConfigurationManager } from './ConfigurationManager.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
+import { getConfigurationManager  } from './ConfigurationManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getBrowserCompatibility  } from '../utils/BrowserCompatibility.js';
 
 /**
  * Enhanced Touch Manager
@@ -10,7 +10,7 @@ import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
  */
 export class EnhancedTouchManager {
     private config: BasicConfig;
-    private state: any;
+    private, state: any;
     constructor(canvas, gameEngine: any) {
 
         this.canvas = canvas;
@@ -26,28 +26,28 @@ export class EnhancedTouchManager {
         this.gestureThresholds = {
             swipe: { 
                 minDistance: 50;
-                maxTime: 500;
+               , maxTime: 500;
     ,}
                 minVelocity: 0.5 }
             };
             pinch: { minScale: 0.1;
                 maxScale: 3.0;
-                minDistance: 30 };
+               , minDistance: 30 };
             longPress: { duration: 500;
-                maxMovement: 10 };
+               , maxMovement: 10 };
             doubleTap: { maxInterval: 300;
-                maxDistance: 25 }
+               , maxDistance: 25 }
         };
         // タッチ状態管理
         this.touchState = { touches: new Map(), // タッチポイントのMap
             activeGestures: new Set(), // アクティブなジェスチャー;
             gestureHistory: [], // ジェスチャー履歴;
             lastTapTime: 0;
-            tapCount: 0 ,};
+           , tapCount: 0 ,};
         // パフォーマンス最適化
         this.touchPool = { pool: [],
             maxSize: 50;
-            active: new Set( ,};
+           , active: new Set( ,};
         
         // 誤タッチ防止設定
         this.accidentalTouchPrevention = { enabled: true,
@@ -62,7 +62,7 @@ export class EnhancedTouchManager {
             onSwipe: null;
             onPinch: null;
             onLongPress: null;
-            onDoubleTap: null ,};
+           , onDoubleTap: null ,};
         this.initialize();
     }
     
@@ -105,7 +105,7 @@ export class EnhancedTouchManager {
                 timestamp: 0;
                 startTime: 0;
                 pressure: 1.0);
-                radius: { x: 0, y: 0 ,})
+               , radius: { x: 0, y: 0 ,})
                 force: 0,);
                 isActive: false);
         }
@@ -341,7 +341,7 @@ export class EnhancedTouchManager {
                 clientX: event.clientX;
                 clientY: event.clientY;
                 force: event.pressure;
-                radiusX: event.width / 2;
+               , radiusX: event.width / 2;
     }
                 radiusY: event.height / 2 }
             };
@@ -358,7 +358,7 @@ export class EnhancedTouchManager {
             const fakeTouch = {
                 identifier: event.pointerId;
                 clientX: event.clientX;
-                clientY: event.clientY;
+               , clientY: event.clientY;
     }
                 force: event.pressure }
             };
@@ -430,9 +430,9 @@ export class EnhancedTouchManager {
                 timestamp: 0;
                 startTime: 0;
                 pressure: 1.0;
-                radius: { x: 0, y: 0 ,},
+               , radius: { x: 0, y: 0 ,},
                 force: 0;
-                isActive: false;
+               , isActive: false;
             },
             this.touchPool.active.add(touch);
             return touch;
@@ -655,7 +655,7 @@ export class EnhancedTouchManager {
         this.touchState.pinchData = {
             initialDistance,
             currentDistance: initialDistance;
-            scale: 1.0;
+           , scale: 1.0;
     ,}
 
             center: this.calculateCenter(touches[0].position, touches[1].position); }
@@ -808,7 +808,7 @@ export class EnhancedTouchManager {
             pointerSupported: window.PointerEvent !== undefined;
             multiTouchEnabled: this.multiTouchEnabled);
             sensitivity: this.touchSensitivity);
-            activeGestures: Array.from(this.touchState.activeGestures);
+           , activeGestures: Array.from(this.touchState.activeGestures);
     ,}
             activeTouches: this.touchState.touches.size }
         }
@@ -830,13 +830,13 @@ export class EnhancedTouchManager {
         return { touchCount: this.touchState.touches.size,
             touches: Array.from(this.touchState.touches.values().map(t => ({)
                 id: t.id);
-                position: { ...t.position );
+               , position: { ...t.position );
     ,}
                 pressure: t.pressure, };
                 duration: Date.now() - t.startTime }
             });
             activeGestures: Array.from(this.touchState.activeGestures);
-            lastGesture: this.touchState.gestureHistory[this.touchState.gestureHistory.length - 1];
+           , lastGesture: this.touchState.gestureHistory[this.touchState.gestureHistory.length - 1];
         },
     }
     

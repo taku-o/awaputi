@@ -4,8 +4,8 @@
  * コンテキスト対応ヘルプの提供
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
 export interface GameEngine { canvas?: HTMLCanvasElement;
@@ -28,7 +28,7 @@ export class TooltipSystem {
     private canvas: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D | null;
     // ツールチップ管理
-    private activeTooltips: Map<string, TooltipInfo>;
+    private, activeTooltips: Map<string, TooltipInfo>;
     private tooltipQueue: TooltipInfo[];
     private hoveredElements: Set<string>;
     // ツールチップ設定
@@ -85,19 +85,16 @@ export class TooltipSystem {
         this.positionStrategies = {;
             'top': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({
                 x: rect.left + rect.width / 2 - tooltipSize.width / 2)';
-                y: rect.top - tooltipSize.height - 8' ,}'
+               , y: rect.top - tooltipSize.height - 8' ,}'
 
-            }'),''
-            'bottom': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({ x: rect.left + rect.width / 2 - tooltipSize.width / 2)'
-                y: rect.bottom + 8' }'
+            }'),'', 'bottom': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({ x: rect.left + rect.width / 2 - tooltipSize.width / 2)'
+               , y: rect.bottom + 8' }'
 
-            }'),''
-            'left': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({ x: rect.left - tooltipSize.width - 8)'
-                y: rect.top + rect.height / 2 - tooltipSize.height / 2' }'
+            }'),'', 'left': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({ x: rect.left - tooltipSize.width - 8)'
+               , y: rect.top + rect.height / 2 - tooltipSize.height / 2' }'
 
-            }'),''
-            'right': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({ x: rect.right + 8)
-                y: rect.top + rect.height / 2 - tooltipSize.height / 2 });
+            }'),'', 'right': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({ x: rect.right + 8)
+               , y: rect.top + rect.height / 2 - tooltipSize.height / 2 });
         };
         
         this.initialize();
@@ -154,7 +151,7 @@ export class TooltipSystem {
      */''
     setupDefaultTooltips(''';
             id: 'score_display);
-            bounds: { x: 10, y: 10, width: 150, height: 30 ,})'
+           , bounds: { x: 10, y: 10, width: 150, height: 30 ,})'
             content: { ''
                 title: 'スコア',
                 description: '現在のスコアを表示します。泡を割ったりコンボを決めると増加します。' ,}
@@ -192,13 +189,13 @@ export class TooltipSystem {
     registerTooltipArea(config: TooltipConfig): void { try {
             const tooltipInfo: TooltipInfo = {
                 id: config.id;
-                bounds: config.bounds,
+               , bounds: config.bounds,
                 content: config.content,
                 position: config.position || 'top';
                 showDelay: config.showDelay || this.config.showDelay;
                 enabled: config.enabled !== false;
                 conditions: config.conditions || null;
-                priority: config.priority || 0 ,};
+               , priority: config.priority || 0 ,};
             this.activeTooltips.set(config.id, tooltipInfo);''
             this.loggingSystem.debug('TooltipSystem', `Tooltip area registered: ${config.id}`});''
         } catch (error) { }
@@ -320,7 +317,7 @@ export class TooltipSystem {
             this.animations.set(tooltip.id, { tooltip: tooltip,
                 showTimer: showTimer as any);
                 element: null);
-                fadeAnimation: null,);
+               , fadeAnimation: null,);
                 animationType: animationType ,});
 
         } catch (error) { }
@@ -406,7 +403,7 @@ export class TooltipSystem {
         }"
 
         if (content.shortcut) { " }"
-            html += `<div style="margin-top: 6px; opacity: 0.8; font-size: ${this.config.fontSize - 1}px;">ショートカット: <kbd style="background: rgba(255,255,255,0.2); padding: 2px 4px; border-radius: 3px;">${this.escapeHTML(content.shortcut})</kbd></div>`;
+            html += `<div style="margin-top: 6px;, opacity: 0.8; font-size: ${this.config.fontSize - 1}px;">ショートカット: <kbd style="background: rgba(255,255,255,0.2); padding: 2px 4px; border-radius: 3px;">${this.escapeHTML(content.shortcut})</kbd></div>`;
         }
         
         return html || content.toString();
@@ -430,7 +427,7 @@ export class TooltipSystem {
                 right: canvasRect.left + tooltip.bounds.x + tooltip.bounds.width;
                 bottom: canvasRect.top + tooltip.bounds.y + tooltip.bounds.height;
                 width: tooltip.bounds.width;
-                height: tooltip.bounds.height };
+               , height: tooltip.bounds.height };
             const tooltipSize = { width: elementRect.width,
                 height: elementRect.height ,};
             // 位置戦略の適用
@@ -455,7 +452,7 @@ export class TooltipSystem {
      */
     adjustPositionForViewport(position: TooltipPosition, tooltipSize: TooltipSize): TooltipPosition { const viewport = {
             width: window.innerWidth;
-            height: window.innerHeight };
+           , height: window.innerHeight };
         const margin = 8;
         
         // 左右の調整
@@ -603,21 +600,21 @@ export class TooltipSystem {
             case 'bounceIn':;
                 element.style.opacity = effectiveProgress;
 
-                const bounceScale = isOut ? effectiveProgress: this.easeOutBounce(effectiveProgress),
+                const, bounceScale = isOut ? effectiveProgress: this.easeOutBounce(effectiveProgress),
                 element.style.transform = `scale(${bounceScale))`;
                 break;
 
             case 'rotateIn':;
                 element.style.opacity = effectiveProgress;
-                const rotation = (1 - effectiveProgress) * -180;
+                const, rotation = (1 - effectiveProgress) * -180;
 
-                const scale = 0.8 + effectiveProgress * 0.2;''
+                const, scale = 0.8 + effectiveProgress * 0.2;''
                 element.style.transform = `rotate(${rotation)deg) scale(${scale))`;
                 break;
 
             case 'elastic':;
                 element.style.opacity = effectiveProgress;
-                const elasticScale = isOut ? effectiveProgress: this.easeOutElastic(effectiveProgress,},
+                const, elasticScale = isOut ? effectiveProgress: this.easeOutElastic(effectiveProgress,},
                 element.style.transform = `scale(${elasticScale}`;
                 break;
                 
@@ -704,8 +701,7 @@ export class TooltipSystem {
      * @param enterAnimationType - 入場アニメーションタイプ
      * @returns 退場アニメーションタイプ'
      */''
-    getExitAnimationType(enterAnimationType: AnimationType): AnimationType { const exitAnimationMap: Record<AnimationType, AnimationType> = {''
-            'fadeUp': 'fadeDown',
+    getExitAnimationType(enterAnimationType: AnimationType): AnimationType { const exitAnimationMap: Record<AnimationType, AnimationType> = {'', 'fadeUp': 'fadeDown',
             'fadeDown': 'fadeUp',
             'fadeLeft': 'fadeRight',
             'fadeRight': 'fadeLeft',

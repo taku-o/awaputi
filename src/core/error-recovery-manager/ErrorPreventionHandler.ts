@@ -20,17 +20,17 @@ export interface PreventionConfig { doubleClickPrevention: number,
     safetyDelays: SafetyDelayConfig;
     warningThresholds: WarningThresholdConfig;
     rapidClickThreshold: number;
-    maxClickHistorySize: number ,}
+   , maxClickHistorySize: number ,}
 
 export interface SafetyDelayConfig { gameReset: number;
     destructiveAction: number;
     criticalAction: number;
-    settingsChange: number }
+   , settingsChange: number }
 
 export interface WarningThresholdConfig { lowHP: number;
     lowScore: number;
     timeRunningOut: number;
-    highErrorRate: number }
+   , highErrorRate: number }
 
 export interface PreventionState { lastClickTimes: Map<string, number>,
     clickHistories: Map<string, number[]>,
@@ -41,7 +41,7 @@ export interface PreventionState { lastClickTimes: Map<string, number>,
 export interface CriticalActionDefinition { classes: string[];
     attributes: string[];
     patterns: string[];
-    selectors: string[] }
+   , selectors: string[] }
 
 export interface UIComponents { confirmDialog: HTMLElement;
     warningBanner?: HTMLElement;
@@ -64,7 +64,7 @@ export interface GameStateWarning { type: WarningType;
     message: string;
     suggestion?: string;
     timestamp: number;
-    acknowledged: boolean }
+   , acknowledged: boolean }
 
 export interface GameState { hp: number;
     maxHp: number;
@@ -73,14 +73,14 @@ export interface GameState { hp: number;
     combo: number;
     level: number;
     errors: number;
-    totalActions: number }
+   , totalActions: number }
 
 export interface PreventionActionInfo { type: PreventionType;
     subtype: string;
     severity: WarningSeverity;
     element: HTMLElement;
     message: string;
-    timestamp: number;
+   , timestamp: number;
     preventionTime?: number;
     metadata?: Record<string, any>; }
 
@@ -101,12 +101,12 @@ export interface PreventionStatistics { preventedDoubleClicks: number,
     warningsGenerated: number;
     actionsConfirmed: number;
     actionsCancelled: number;
-    averageConfirmationTime: number ,}
+   , averageConfirmationTime: number ,}
 
 export interface ElementIdentifier { id?: string;
     className?: string;
     tagName: string, }
-    position: { x: number; y: number }
+    position: { x: number;, y: number }
     textContent?: string;
 }
 
@@ -114,13 +114,13 @@ export interface ClickAnalysis { isDoubleClick: boolean,
     isRapidClick: boolean;
     timeSinceLastClick: number;
     clickFrequency: number;
-    pattern: ClickPattern
+   , pattern: ClickPattern
     ,}
 
 export interface ConfirmationResult { confirmed: boolean;
     timestamp: number;
     responseTime: number;
-    element: HTMLElement
+   , element: HTMLElement
     }
 
 // 列挙型
@@ -133,17 +133,17 @@ export type ClickPattern = 'normal' | 'double' | 'rapid' | 'spam' | 'accidental'
 // 定数
 export const DEFAULT_PREVENTION_CONFIG: PreventionConfig = { doubleClickPrevention: 300,
     confirmCriticalActions: true;
-    safetyDelays: {
+   , safetyDelays: {
         gameReset: 1000;
         destructiveAction: 500;
         criticalAction: 200;
-        settingsChange: 100 ,};
+       , settingsChange: 100 ,};
     warningThresholds: { lowHP: 20;
         lowScore: 100;
         timeRunningOut: 10000;
-        highErrorRate: 0.3 };
+       , highErrorRate: 0.3 };
     rapidClickThreshold: 5;
-    maxClickHistorySize: 10;
+   , maxClickHistorySize: 10;
 } as const,
 
 export const CRITICAL_ACTIONS: CriticalActionDefinition = {;
@@ -171,7 +171,7 @@ export const CLICK_THRESHOLDS = { DOUBLE_CLICK_MAX: 500,
     RAPID_CLICK_WINDOW: 1000;
     RAPID_CLICK_COUNT: 5;
     SPAM_CLICK_COUNT: 10;
-    ACCIDENTAL_CLICK_THRESHOLD: 50 ,} as const;
+   , ACCIDENTAL_CLICK_THRESHOLD: 50 ,} as const;
 // ユーティリティ関数
 export function generateElementId(element: HTMLElement): string {;
     if(element.id) return element.id;
@@ -195,7 +195,7 @@ export function analyzeClickPattern(clickHistory: number[], currentTime: number)
     if(clickHistory.length === 0) {
         return { isDoubleClick: false,
             isRapidClick: false;
-            timeSinceLastClick: 0;
+           , timeSinceLastClick: 0;
     ,}
 
             clickFrequency: 0,' };
@@ -215,8 +215,7 @@ export function analyzeClickPattern(clickHistory: number[], currentTime: number)
     const isDoubleClick = timeSinceLastClick < CLICK_THRESHOLDS.DOUBLE_CLICK_MAX;
     const isRapidClick = clickFrequency >= CLICK_THRESHOLDS.RAPID_CLICK_COUNT;
 
-    if(clickFrequency >= CLICK_THRESHOLDS.SPAM_CLICK_COUNT) {'
-        ';
+    if(clickFrequency >= CLICK_THRESHOLDS.SPAM_CLICK_COUNT) {', ';
 
     }
 
@@ -286,7 +285,7 @@ export function createConfirmationEvent(element: HTMLElement, confirmed: boolean
             confirmed);
             timestamp: Date.now( ,};
         bubbles: true;
-        cancelable: false;
+       , cancelable: false;
     }),
 }
 
@@ -295,7 +294,7 @@ export class ErrorPreventionHandler {
     private ui: UIComponents;
     private state: PreventionState;
     private criticalActions: CriticalActionDefinition;
-    private statistics: PreventionStatistics;
+    private, statistics: PreventionStatistics;
     // コールバック関数
     public onPreventionAction?: (actionInfo: PreventionActionInfo) => void;
     public onWarningGenerated?: (warning: GameStateWarning) => void;
@@ -342,7 +341,7 @@ export class ErrorPreventionHandler {
                 severity: 'low',
                 element,
                 message: '同じ要素を短時間で複数回クリックしました);
-                timestamp: now ,}
+               , timestamp: now ,}
                 preventionTime: analysis.timeSinceLastClick,) }
                 metadata: { pattern: analysis.pattern });
             return false;
@@ -357,7 +356,7 @@ export class ErrorPreventionHandler {
                 element,
                 message: analysis.pattern === 'spam' ? 'スパムクリックが検出されました' : 'クリックが速すぎます';
                 timestamp: now;
-                metadata: { )
+               , metadata: { )
                     pattern: analysis.pattern ,}
                     frequency: analysis.clickFrequency) }
                 });
@@ -479,8 +478,7 @@ export class ErrorPreventionHandler {
         ';
         // フォーカス管理（キャンセルボタンから開始）
         const cancelBtn = dialog.querySelector('.confirm-btn.cancel) as HTMLButtonElement;
-        if(cancelBtn) {'
-            ';
+        if(cancelBtn) {', ';
 
         }
 
@@ -616,7 +614,7 @@ export class ErrorPreventionHandler {
             // 確認済みクリックイベントを作成
             const clickEvent = new MouseEvent('click', {
                 bubbles: true);
-                cancelable: true) ,}
+               , cancelable: true) ,}
                 view: window }
             });
             // 確認済みフラグを設定
@@ -647,7 +645,7 @@ export class ErrorPreventionHandler {
             severity: 'low')';
             element,')';
             message: 'ユーザーがアクションをキャンセルしました');
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
     }
 
     /**
@@ -677,7 +675,7 @@ export class ErrorPreventionHandler {
                 severity: gameState.hp <= this.state.warningThresholds.lowHP / 2 ? 'critical' : 'high',
                 message: 'HPが危険レベルです',)';
                 suggestion: 'ピンクバブルでHP回復を推奨');
-                timestamp: now, }
+               , timestamp: now, }
                 acknowledged: false); }
         }
         ';
@@ -688,7 +686,7 @@ export class ErrorPreventionHandler {
                 severity: 'medium',
                 message: 'スコアが低めです',)';
                 suggestion: 'コンボを狙ってスコアアップ');
-                timestamp: now, }
+               , timestamp: now, }
                 acknowledged: false); }
         }
         ';
@@ -701,7 +699,7 @@ export class ErrorPreventionHandler {
                 severity,
                 message: '残り時間が少なくなっています',)';
                 suggestion: '集中してプレイしてください');
-                timestamp: now, }
+               , timestamp: now, }
                 acknowledged: false); }
         }
         
@@ -713,7 +711,7 @@ export class ErrorPreventionHandler {
                 severity: errorRate >= 0.5 ? 'high' : 'medium',
                 message: 'エラー率が高くなっています',)';
                 suggestion: 'ゆっくりと正確な操作を心がけてください');
-                timestamp: now, }
+               , timestamp: now, }
                 acknowledged: false); }
         }
         

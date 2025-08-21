@@ -6,16 +6,16 @@
 // Configuration change interfaces
 interface GlobalConfigChange { key: string,
     newValue: any;
-    oldValue: any;
+   , oldValue: any;
     metadata?: {
-        timestamp: number;
+        timestam;p: number;
         source?: string;
         reason?: string; ,}
 
 interface ConfigFileChange { type: 'modified' | 'added' | 'deleted',
     file: string;
     key?: string;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 // Configuration recommendation interfaces
 interface ConfigRecommendation { key: string;
@@ -23,7 +23,7 @@ interface ConfigRecommendation { key: string;
     reason: string;
     confidence: number;
     autoApply: boolean;
-    impact: string,
+   , impact: string,
     priority: 'low' | 'medium' | 'high' | 'critical' ,}
 ';
 
@@ -34,14 +34,14 @@ interface ConfigNotification { ''
     oldValue?: any;
     metadata?: any;
     recommendation?: ConfigRecommendation;
-    timestamp: number }
+   , timestamp: number }
 
 // System integration interfaces
 interface OptimizationSystems { frameStabilizer: any | null;
     memoryManager: any | null;
     qualityController: any | null;
     renderOptimizer: any | null;
-    mobileOptimizer: any | null }
+   , mobileOptimizer: any | null }
 
 interface ActiveIntegrations { configurationManager: boolean;
     frameStabilizer: boolean;
@@ -49,13 +49,13 @@ interface ActiveIntegrations { configurationManager: boolean;
     qualityController: boolean;
     renderOptimizer: boolean;
     mobileOptimizer: boolean;
-    monitoringSystem: boolean }
+   , monitoringSystem: boolean }
 
 interface MonitorStatus { integrations: ActiveIntegrations;
     lastSyncTime: number | null;
     pendingChanges: SyncChange[];
     watchingFiles: boolean;
-    notificationSubscribers: number }
+   , notificationSubscribers: number }
 
 // Sync change interfaces
 interface SyncChange { ''
@@ -63,13 +63,13 @@ interface SyncChange { ''
     key?: string;
     value?: any;
     file?: string;
-    timestamp: number }
+   , timestamp: number }
 
 // Manager interfaces
 interface MainController { configManager?: any;
     backupManager?: any;
     validationEngine?: any;
-    applyConfigChange?: (key: string, value: any, options?: any) => Promise<void>;
+    applyConfigChange?: (ke;y: string, value: any, options?: any) => Promise<void>;
     [key: string]: any, }
 }
 
@@ -102,7 +102,7 @@ export class ConfigurationMonitor {
     private configWatcher: ConfigFileWatcher | null;
     private syncManager: ConfigSyncManager;
     private notificationSystem: ConfigNotificationSystem;
-    private errorHandler: ErrorHandler | null;
+    private, errorHandler: ErrorHandler | null;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -110,7 +110,7 @@ export class ConfigurationMonitor {
             frameStabilizer: null;
             memoryManager: null;
             qualityController: null;
-            renderOptimizer: null;
+           , renderOptimizer: null;
     }
             mobileOptimizer: null }
         };
@@ -347,7 +347,7 @@ export class ConfigurationMonitor {
                 if(this.mainController.applyConfigChange) {'
                     await this.mainController.applyConfigChange(recommendation.key, recommendation.value, {)'
                         reason: 'performance_feedback');
-                        confidence: recommendation.confidence, }
+                       , confidence: recommendation.confidence, }
                         automatic: true); }
 } else {  // 手動承認が必要な推奨事項; }
                 await this.notificationSystem.notifyRecommendation(recommendation); }
@@ -369,7 +369,7 @@ export class ConfigurationMonitor {
                     value: true,
                     reason: 'Low frame rate detected);
                     confidence: 0.9)';
-                    autoApply: true,
+                   , autoApply: true,
                     impact: 'Should improve frame rate',')';
                     priority: 'high')');
 ';
@@ -379,7 +379,7 @@ export class ConfigurationMonitor {
                     value: 'medium',
                     reason: 'Reduce quality to improve performance);
                     confidence: 0.8)';
-                    autoApply: false,
+                   , autoApply: false,
                     impact: 'Will improve performance but reduce visual quality',' }
 
                     priority: 'medium')'); }
@@ -395,7 +395,7 @@ export class ConfigurationMonitor {
                     value: true,
                     reason: 'High memory usage detected);
                     confidence: 0.85)';
-                    autoApply: true,
+                   , autoApply: true,
                     impact: 'Will reduce memory usage',')';
                     priority: 'high')');
 ';
@@ -405,7 +405,7 @@ export class ConfigurationMonitor {
                     value: 30000, // 30秒間隔;
                     reason: 'Increase GC frequency for better memory management);
                     confidence: 0.7)';
-                    autoApply: false,
+                   , autoApply: false,
                     impact: 'May cause periodic frame drops but will improve memory stability',' }
 
                     priority: 'medium')'); }
@@ -420,7 +420,7 @@ export class ConfigurationMonitor {
                     value: true,
                     reason: 'High CPU usage detected);
                     confidence: 0.8)';
-                    autoApply: true,
+                   , autoApply: true,
                     impact: 'Should reduce CPU usage',' }
 
                     priority: 'high'); }
@@ -527,8 +527,7 @@ export class ConfigurationMonitor {
                 break;
 
             case 'memoryManagement':;
-                if(this.optimizationSystems.memoryManager) {'
-                    ';
+                if(this.optimizationSystems.memoryManager) {', ';
 
                 }
 
@@ -537,8 +536,7 @@ export class ConfigurationMonitor {
                 break;
 
             case 'qualityControl':;
-                if(this.optimizationSystems.qualityController) {'
-                    ';
+                if(this.optimizationSystems.qualityController) {', ';
 
                 }
 
@@ -547,8 +545,7 @@ export class ConfigurationMonitor {
                 break;
 
             case 'rendering':;
-                if(this.optimizationSystems.renderOptimizer) {'
-                    ';
+                if(this.optimizationSystems.renderOptimizer) {', ';
 
                 }
 
@@ -584,7 +581,7 @@ export class ConfigurationMonitor {
             memoryManager: !!this.optimizationSystems.memoryManager;
             qualityController: !!this.optimizationSystems.qualityController;
             renderOptimizer: !!this.optimizationSystems.renderOptimizer;
-            mobileOptimizer: !!this.optimizationSystems.mobileOptimizer, };
+           , mobileOptimizer: !!this.optimizationSystems.mobileOptimizer, };
             monitoringSystem: !!this.monitoringSystem }
         }
     
@@ -595,7 +592,7 @@ export class ConfigurationMonitor {
     getMonitorStatus(): MonitorStatus { return { integrations: this.getActiveIntegrations(,
             lastSyncTime: this.syncManager.getLastSyncTime();
             pendingChanges: this.syncManager.getPendingChanges();
-            watchingFiles: !!this.configWatcher, };
+           , watchingFiles: !!this.configWatcher, };
             notificationSubscribers: this.notificationSystem.getSubscriberCount(); }
         }
     

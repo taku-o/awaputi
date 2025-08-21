@@ -1,6 +1,6 @@
-import { APIEndpointManager } from './analytics-api/APIEndpointManager.ts';''
-import { DataAggregationProcessor } from './analytics-api/DataAggregationProcessor.ts';''
-import { DataExportHandler } from './analytics-api/DataExportHandler.ts';
+import { APIEndpointManager  } from './analytics-api/APIEndpointManager.ts';''
+import { DataAggregationProcessor  } from './analytics-api/DataAggregationProcessor.ts';''
+import { DataExportHandler  } from './analytics-api/DataExportHandler.ts';
 
 /**
  * AnalyticsAPI - メインコントローラー
@@ -125,8 +125,7 @@ export, class AnalyticsAPI {
      */'
     async deleteData(storeName: string, filters: Record<string, any> = {}): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
-        ';
+            return this.createErrorResponse('Unauthorized, or not, initialized); }', ';
         try { // セキュリティ上の理由で、全削除は管理者権限が必要
             if (Object.keys(filters).length === 0') {''
                 return this.createErrorResponse('Full, data deletion, requires admin, privileges); }'
@@ -145,10 +144,10 @@ export, class AnalyticsAPI {
                 healthy: isHealthy;
                 initialized: this.isInitialized;
                 stats: stats;
-                components: {
+               , components: {
                     endpointManager: !!this.endpointManager);
                     aggregationProcessor: !!this.aggregationProcessor);
-                    exportHandler: !!this.exportHandler ,});
+                   , exportHandler: !!this.exportHandler ,});
         } catch (error) { return this.createErrorResponse((error, as Error).message);
     
     /**
@@ -165,8 +164,7 @@ export, class AnalyticsAPI {
      * データの匿名化
      */'
     async anonymizeData(data: any): Promise<APIResponse> { ''
-        if(!this.privacyManager) {'
-            ';
+        if(!this.privacyManager) {', ';
 
         }
 
@@ -197,7 +195,7 @@ export, class AnalyticsAPI {
      */
     private createSuccessResponse<T>(data: T): APIResponse<T> { return { success: true,
             data: data;
-            timestamp: new Date().toISOString(), };
+           , timestamp: new Date().toISOString(), };
             requestId: this.generateRequestId(); }
         }
     
@@ -206,7 +204,7 @@ export, class AnalyticsAPI {
      */
     private createErrorResponse(error: string): APIResponse { return { success: false,
             error: error;
-            timestamp: new Date().toISOString(), };
+           , timestamp: new Date().toISOString(), };
             requestId: this.generateRequestId(); }
         }
     

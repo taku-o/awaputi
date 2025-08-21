@@ -1,4 +1,4 @@
-import { BaseComponent } from '../BaseComponent.js';
+import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface ThemeColors { primary: string,
@@ -9,20 +9,20 @@ interface ThemeColors { primary: string,
     background: string;
     surface: string;
     text: string;
-    textSecondary: string ,}
+   , textSecondary: string ,}
 
 interface ThemeFonts { primary: string;
     size: string;
-    lineHeight: string }
+   , lineHeight: string }
 
 interface Theme { name: string;
     colors: ThemeColors;
-    fonts: ThemeFonts
+   , fonts: ThemeFonts
     }
 
 interface Breakpoints { mobile: number;
     tablet: number;
-    desktop: number }
+   , desktop: number }
 ';
 
 interface OrientationData { ''
@@ -31,16 +31,16 @@ interface OrientationData { ''
 
 interface ResponsiveLayout { currentBreakpoint: string;
     isTouchDevice: boolean;
-    orientation: string }
+   , orientation: string }
 
 interface PerformanceData { fps: number;
     memory: number;
     cpu: number;
-    network: NetworkData
+   , network: NetworkData
     }
 
 interface NetworkData { download: number;
-    upload: number }
+   , upload: number }
 
 interface MainController { container?: HTMLElement;
     }
@@ -53,7 +53,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     private currentTheme: string;
     private responsiveLayout: ResponsiveLayout | null;
     private breakpoints: Breakpoints;
-    private orientationData: OrientationData';
+    private, orientationData: OrientationData';
 
     constructor(mainController: MainController) {'
 
@@ -65,7 +65,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         this.responsiveLayout = null;
         this.breakpoints = {
             mobile: 768;
-            tablet: 1024;
+           , tablet: 1024;
     ,}
             desktop: 1200 }
         };
@@ -225,7 +225,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 color: var(--text-secondary-color);
                 border: none;
                 padding: 8px 16px;
-                cursor: pointer, }
+               , cursor: pointer, }
                 border-right: 1px solid var(--primary-color})
                 transition: all 0.2s ease);
             }
@@ -234,7 +234,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 color: var(--text-color ,}
 
             .debug-tab.active { background-color: var(--primary-color);
-                color: var(--text-color);
+               , color: var(--text-color);
                 font-weight: bold, }
 
             .debug-content {
@@ -274,7 +274,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 background-color: var(--surface-color),
                 color: var(--text-color);
                 border: 1px solid var(--primary-color);
-                padding: 8px;
+               , padding: 8px;
                 border-radius: 4px,
                 font-family: var(--font-family), }
 
@@ -285,7 +285,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 color: var(--text-secondary-color ,}
 
             .panel-statistics { display: flex;
-                gap: 16px;
+               , gap: 16px;
                 font-size: 10px,
                 color: var(--text-secondary-color ,}
         `;
@@ -305,7 +305,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                     bottom: 0 !important;
                     right: 0 !important;
                     top: auto !important;
-                    left: 0 !important;
+                   , left: 0 !important;
                     border-radius: 8px 8px 0 0, }
 
                 .debug-tabs { overflow-x: auto,
@@ -326,7 +326,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
             /* Tablet styles */
             @media (min-width: ${this.breakpoints.mobile + 1)px} and (max-width: ${this.breakpoints.tablet}px}) { .debug-interface {
                     width: 80vw !important;
-                    height: 60vh !important }
+                   , height: 60vh !important }
 
                 .performance-charts { grid-template-columns: repeat(2, 1fr }
             }
@@ -334,7 +334,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
             /* Desktop styles */
             @media (min-width: ${this.breakpoints.desktop}px}) { .debug-interface {
                     width: 60vw;
-                    height: 70vh }
+                   , height: 70vh }
 
                 .performance-charts { grid-template-columns: repeat(3, 1fr }
             }
@@ -345,7 +345,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
 
                 .debug-tabs { flex-direction: column;
                     width: 120px;
-                    float: left }
+                   , float: left }
 
                 .debug-content { margin-left: 120px, }
             }
@@ -410,7 +410,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 <div style="font-size: 18px;">${memory.toFixed(1"})MB</div>""
                 <div style="font-size: 12px;">Memory Usage</div>""
                 <div style="width: 100%; height: 4px; background: var(--surface-color); margin: 4px 0;">""
-                    <div style="width: ${percentage}%; height: 100%; background: ${color};"></div>
+                    <div style="width: ${percentage}%; height: 100%;, background: ${color};"></div>
                 </div>;
             </div>;
         `;
@@ -433,7 +433,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 <div style="font-size: 18px;">${cpu.toFixed(1"})%</div>""
                 <div style="font-size: 12px;">CPU Usage</div>""
                 <div style="width: 100%; height: 4px; background: var(--surface-color); margin: 4px 0;">""
-                    <div style="width: ${cpu}%; height: 100%; background: ${color};"></div>
+                    <div style="width: ${cpu}%; height: 100%;, background: ${color};"></div>
                 </div>;
             </div>;
         `;
@@ -514,8 +514,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         container.classList.add(this.responsiveLayout.orientation);
 ';
         // タッチデバイスクラス
-        if(this.responsiveLayout.isTouchDevice) {'
-            ';
+        if(this.responsiveLayout.isTouchDevice) {', ';
 
         }
 

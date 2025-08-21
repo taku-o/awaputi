@@ -3,7 +3,7 @@
  * SettingsSceneでの実装パターンを示します
  */
 
-import { VolumeControlComponent } from '../VolumeControlComponent.js';
+import { VolumeControlComponent  } from '../VolumeControlComponent.js';
 
 interface GameEngine { // Define game engine interface properties as needed }
 
@@ -13,7 +13,7 @@ interface GameEngine { // Define game engine interface properties as needed }
 export class VolumeControlIntegrationExample {
     private gameEngine: GameEngine;
     private volumeControl: VolumeControlComponent | null;
-    private container: HTMLElement | null;
+    private, container: HTMLElement | null;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;

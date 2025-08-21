@@ -2,8 +2,8 @@
  * Game Engine Utilities
  * ユーティリティ・レスポンシブ・クリーンアップ機能を担当
  */
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';''
-// import { getMemoryManager } from '../../utils/MemoryManager.js';
+import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';''
+// import { getMemoryManager  } from '../../utils/MemoryManager.js';
 
 interface GameEngine { performanceMonitor?: any;
     performanceStats?: any;
@@ -38,7 +38,7 @@ export class GameEngineUtilities {
         
         this.gameEngine.performanceStats = { : undefined
             fps: perfStats.fps || 0;
-            renderTime: this.gameEngine.performanceStats? .renderTime || 0, : undefined
+           , renderTime: this.gameEngine.performanceStats? .renderTime || 0, : undefined
             updateTime: this.gameEngine.performanceStats? .updateTime || 0, : undefined';
             memoryUsage: perfStats.memoryUsage? .usedJSHeapSize || 0, : undefined'';
             performanceLevel: (optimizerStats, as any').performanceLevel || 'medium' ,}
@@ -93,12 +93,12 @@ export class GameEngineUtilities {
     getSystemInfo(): object { return { userAgent: navigator.userAgent,
             platform: navigator.platform;
             language: navigator.language;
-            screenResolution: {
+           , screenResolution: {
                 width: window.screen.width, };
                 height: window.screen.height }
             };
             windowSize: { width: window.innerWidth;
-                height: window.innerHeight };
+               , height: window.innerHeight };
             devicePixelRatio: window.devicePixelRatio || 1,
             memory: (navigator, as any').deviceMemory || 'unknown',
             hardwareConcurrency: navigator.hardwareConcurrency || 'unknown';

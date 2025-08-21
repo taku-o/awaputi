@@ -5,7 +5,7 @@
 
 // 型定義
 export interface FocusManager { gameEngine: GameEngine,
-    emit: (event: string, data: any) => void ,}
+    emit: (even;t: string, data: any) => void ,}
 }
 
 export interface GameEngine { // GameEngineインターフェースの基本定義
@@ -13,51 +13,51 @@ export interface GameEngine { // GameEngineインターフェースの基本定�
 
 export interface Navigation2DConfig { enabled: boolean,
     grid: NavigationGrid | null;
-    currentPosition: GridPosition
+   , currentPosition: GridPosition
     ,}
 
 export interface NavigationGrid { rows: number;
     columns: number;
-    elements: HTMLElement[][]
+   , elements: HTMLElement[][]
     }
 
 export interface GridPosition { x: number;
-    y: number }
+   , y: number }
 
 export interface KeyboardNavigationConfig { enabled: boolean;
     wrapAround: boolean;
     arrowKeysEnabled: boolean;
-    homeEndEnabled: boolean }
+   , homeEndEnabled: boolean }
 
 export interface FocusableElementsUpdateEvent { count: number;
-    previousCount: number }
+   , previousCount: number }
 
 export interface NavigationStats { focusableElementsCount: number;
     currentFocusIndex: number;
     focusHistoryLength: number;
     navigation2DEnabled: boolean;
     keyboardNavigationEnabled: boolean;
-    wrapAroundEnabled: boolean }
+   , wrapAroundEnabled: boolean }
 
 export interface ElementRect { left: number;
     top: number;
     right: number;
     bottom: number;
     width: number;
-    height: number }
+   , height: number }
 
 export interface Point2D { x: number;
-    y: number }
+   , y: number }
 
 export interface NavigationScoreCalculation { distance: number;
     alignment: number;
     totalScore: number;
-    isValidDirection: boolean }
+   , isValidDirection: boolean }
 
 export interface ViewportInfo { height: number;
     scrollTop: number;
     visibleTop: number;
-    visibleBottom: number }
+   , visibleBottom: number }
 
 export interface FocusValidationResult { isValid: boolean;
     reason?: string;
@@ -67,7 +67,7 @@ export interface FocusValidationResult { isValid: boolean;
 export interface NavigationContext { currentElement: HTMLElement | null,
     targetElement: HTMLElement | null;
     direction: NavigationDirection;
-    method: NavigationMethod
+   , method: NavigationMethod
     ,}
 
 // 列挙型
@@ -75,7 +75,7 @@ export type NavigationDirection = 'up' | 'down' | 'left' | 'right' | 'forward' |
 export type NavigationMethod = 'tab' | 'arrow' | 'page' | 'home_end' | 'programmatic';
 
 export type FocusableElementType = '';
-    | 'anchor' | 'button' | 'input' | 'select' | 'textarea' '';
+    | 'anchor' | 'button' | 'input' | 'select' | 'textarea', '';
     | 'contenteditable' | 'audio' | 'video' | 'summary' | 'iframe' | 'custom';
 
 // 定数
@@ -93,10 +93,10 @@ export const FOCUSABLE_SELECTORS = [']';
     'iframe:not([tabindex="-1"])';
 ] as const;
 
-export const DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = { enabled: true,
+export const, DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = { enabled: true,
     wrapAround: true;
     arrowKeysEnabled: true;
-    homeEndEnabled: true ,};
+   , homeEndEnabled: true ,};
 export const DEFAULT_2D_CONFIG: Navigation2DConfig = { enabled: false,
     grid: null, }
     currentPosition: { x: 0, y: 0 ,};
@@ -134,7 +134,7 @@ export function isElementInViewport(element: HTMLElement, viewport?: ViewportInf
         height: window.innerHeight;
         scrollTop: window.pageYOffset;
         visibleTop: 0;
-        visibleBottom: window.innerHeight };
+       , visibleBottom: window.innerHeight };
     return rect.bottom >= vp.visibleTop && rect.top <= vp.visibleBottom;
 }
 
@@ -181,12 +181,12 @@ export class FocusNavigation {
     private focusableElements: HTMLElement[] = [];
     private currentFocusIndex: number = -1;
     private focusHistory: HTMLElement[] = [];
-    private readonly maxHistorySize: number = DEFAULT_MAX_HISTORY_SIZE,
+    private readonly, maxHistorySize: number = DEFAULT_MAX_HISTORY_SIZE,
     
     // 2Dナビゲーション設定
     private navigation2D: Navigation2DConfig;
     // キーボードナビゲーション設定
-    private keyboardNavigation: KeyboardNavigationConfig;
+    private, keyboardNavigation: KeyboardNavigationConfig;
 
     constructor(focusManager: FocusManager) {
         this.focusManager = focusManager;
@@ -636,7 +636,7 @@ export class FocusNavigation {
             height: window.innerHeight;
             scrollTop: window.pageYOffset;
             visibleTop: 0;
-            visibleBottom: window.innerHeight };
+           , visibleBottom: window.innerHeight };
         return this.focusableElements.filter(element => );
             isElementInViewport(element, viewportInfo);
     }
@@ -712,7 +712,7 @@ export class FocusNavigation {
             currentFocusIndex: this.currentFocusIndex;
             focusHistoryLength: this.focusHistory.length;
             navigation2DEnabled: this.navigation2D.enabled;
-            keyboardNavigationEnabled: this.keyboardNavigation.enabled, };
+           , keyboardNavigationEnabled: this.keyboardNavigation.enabled, };
             wrapAroundEnabled: this.keyboardNavigation.wrapAround }
         }
     
@@ -721,7 +721,7 @@ export class FocusNavigation {
      */'
     getNavigationContext(): NavigationContext { return { ''
             currentElement: this.getCurrentFocusedElement(''';
-            direction: 'forward',' };
+           , direction: 'forward',' };
 
             method: 'programmatic' }))
     }

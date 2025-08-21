@@ -6,7 +6,7 @@
  * - PerformanceMetricsCollectors: 各種メトリクス収集システム
  * - PerformanceAnalysisSystem: 分析とレポート生成システム
  * 
- * Requirements: 5.4, 7.4
+ *, Requirements: 5.4, 7.4
  */
 
 import { FrameMetricsCollector, 
@@ -15,12 +15,12 @@ import { FrameMetricsCollector,
     NetworkMetricsCollector, ;
     UserInteractionCollector, ;
     ResourceMetricsCollector, ;
-    CustomMetricsCollector  } from './performance-profiler/PerformanceMetricsCollectors.js';
+    CustomMetricsCollector   } from './performance-profiler/PerformanceMetricsCollectors.js';
 
 import { PerformanceAnalyzer, 
     PerformanceReporter,
 
-    PerformanceDashboard ' }'
+    PerformanceDashboard '  }'
 
 } from './performance-profiler/PerformanceAnalysisSystem.js';
 
@@ -43,15 +43,15 @@ interface ProfilerConfig { autoStart: boolean,
     analysisInterval: number;
     maxSessionDuration: number;
     enableDashboard: boolean;
-    enableAutoReports: boolean ,}
+   , enableAutoReports: boolean ,}
 
 interface MetricData { [key: string]: any;
-    collectedAt: number }
+   , collectedAt: number }
 
 interface PerformanceAnalysis { overall: {
-        score: number;
+        scor;e: number;
         grade: string;
-        healthStatus: string };
+       , healthStatus: string };
     bottlenecks: Array<{ severity: string;
         [key: string]: any, }>;
     [key: string]: any,
@@ -61,7 +61,7 @@ interface ProfilingSession { id: string,
     startTime: number;
     startTimestamp: number;
     options: ProfilingSessionOptions;
-    metrics: Map<number, MetricData>;
+   , metrics: Map<number, MetricData>;
     analyses: PerformanceAnalysis[]
     ,}
 
@@ -70,26 +70,26 @@ interface SessionSummary extends ProfilingSession { endTime: number;
     duration: number;
     reason: string;
     totalMetricsCollected: number;
-    totalAnalyses: number;
+   , totalAnalyses: number;
     finalAnalysis?: PerformanceAnalysis | null }
 
 interface SessionData { sessions: SessionSummary[];
     currentSession: ProfilingSession | null;
-    maxSessions: number }
+   , maxSessions: number }
 
 interface ProfilerStatus { initialized: boolean;
     activeSession: boolean;
-    sessionId: string | null, }
-    collectors: Record<string, { enabled: boolean; status: string }>,
+   , sessionId: string | null, }
+    collectors: Record<string, { enabled: boolean;, status: string }>,
     totalSessions: number;
-    totalMetrics: number;
+   , totalMetrics: number;
 }
 
 export class PerformanceProfiler {
     private metrics: Map<number, MetricData>;
     private profilingSession: ProfilingSession | null;
     private initialized: boolean;
-    private collectors: Map<string, MetricCollector>;
+    private, collectors: Map<string, MetricCollector>;
     private analyzer: PerformanceAnalyzer;
     private reporter: PerformanceReporter;
     private dashboard: PerformanceDashboard;
@@ -97,7 +97,7 @@ export class PerformanceProfiler {
     private sessionData: SessionData;
     private collectionInterval: NodeJS.Timeout | null = null;
     private analysisInterval: NodeJS.Timeout | null = null;
-    private sessionTimeout: NodeJS.Timeout | null = null;
+    private, sessionTimeout: NodeJS.Timeout | null = null;
     constructor() {
 
         this.metrics = new Map();
@@ -113,7 +113,7 @@ export class PerformanceProfiler {
             autoStart: true;
             collectionInterval: 1000;
             analysisInterval: 5000;
-            maxSessionDuration: 300000, // 5 minutes;
+           , maxSessionDuration: 300000, // 5 minutes;
             enableDashboard: false;
     ,}
             enableAutoReports: false }
@@ -121,7 +121,7 @@ export class PerformanceProfiler {
         // Session management
         this.sessionData = { sessions: [],
             currentSession: null;
-            maxSessions: 10 ,};
+           , maxSessions: 10 ,};
         // Initialize profiler
         this.initializeProfiler();
     }
@@ -193,8 +193,7 @@ export class PerformanceProfiler {
 ';
 
     async startProfiling(options: ProfilingSessionOptions = {}): Promise<ProfilingSession> { ''
-        if(!this.initialized) {'
-            ';
+        if(!this.initialized) {', ';
 
         }
 
@@ -211,13 +210,13 @@ export class PerformanceProfiler {
             id: `session_${Date.now(})`;
             startTime: performance.now();
             startTimestamp: Date.now();
-            options: { duration: options.duration || this.config.maxSessionDuration;
+           , options: { duration: options.duration || this.config.maxSessionDuration;
                 collectionInterval: options.collectionInterval || this.config.collectionInterval;
                 analysisInterval: options.analysisInterval || this.config.analysisInterval;
-                enableDashboard: options.enableDashboard || this.config.enableDashboard;
+               , enableDashboard: options.enableDashboard || this.config.enableDashboard;
                 ...options,
             metrics: new Map();
-            analyses: [];
+           , analyses: [];
         ,},
 
         // Start collection intervals
@@ -306,7 +305,7 @@ export class PerformanceProfiler {
 
             console.log('Performance analysis completed', {)
                 score: analysis.overall.score);
-                grade: analysis.overall.grade,);
+               , grade: analysis.overall.grade,);
                 bottlenecks: analysis.bottlenecks.length),
 ' }'
 
@@ -317,24 +316,21 @@ export class PerformanceProfiler {
         const critical = analysis.bottlenecks.filter(b => b.severity === 'critical'');''
         const high = analysis.bottlenecks.filter(b => b.severity === 'high);
 
-        if(critical.length > 0) {'
-            ';
+        if(critical.length > 0) {', ';
 
         }
 
             console.error('Critical performance issues detected:', critical); }
         }
 
-        if(high.length > 0) {'
-            ';
+        if(high.length > 0) {', ';
 
         }
 
             console.warn('High priority performance issues detected:', high); }
         }
 
-        if(analysis.overall.healthStatus === 'critical'') {'
-            ';
+        if(analysis.overall.healthStatus === 'critical'') {', ';
 
         }
 
@@ -406,7 +402,7 @@ export class PerformanceProfiler {
             reason,
             totalMetricsCollected: this.profilingSession.metrics.size;
             totalAnalyses: this.profilingSession.analyses.length;
-            finalAnalysis: this.getLatestAnalysis( ,};
+           , finalAnalysis: this.getLatestAnalysis( ,};
 
         // Store completed session
         this.sessionData.sessions.push(sessionSummary);
@@ -443,8 +439,7 @@ export class PerformanceProfiler {
     getSessionHistory(')';
     generateReport(templateName: string = 'summary', options: any = { ): any {'
         const analysis = this.getLatestAnalysis();''
-        if(!analysis) {'
-            ';
+        if(!analysis) {', ';
 
         }
 
@@ -513,7 +508,7 @@ export class PerformanceProfiler {
     // Status and diagnostics
     getStatus(): ProfilerStatus { return { initialized: this.initialized,
             activeSession: !!this.profilingSession;
-            sessionId: this.profilingSession? .id || null, : undefined
+           , sessionId: this.profilingSession? .id || null, : undefined
             collectors: Object.fromEntries(),
                 Array.from(this.collectors.entries().map(([name]) => [};
 
@@ -522,14 +517,13 @@ export class PerformanceProfiler {
                 ]);
             ),
             totalSessions: this.sessionData.sessions.length;
-            totalMetrics: this.metrics.size;
+           , totalMetrics: this.metrics.size;
         },
     }
 
     // Cleanup
     destroy(): void { // Stop any active session
-        if(this.profilingSession) {'
-            ';
+        if(this.profilingSession) {', ';
 
         }
 
@@ -561,7 +555,7 @@ export class PerformanceProfiler {
 }
 
 // Compatibility exports
-export { PerformanceProfiler as default };
+export { PerformanceProfiler, as default  };
 
 // Global instance management
 let _performanceProfiler: PerformanceProfiler | any = null,

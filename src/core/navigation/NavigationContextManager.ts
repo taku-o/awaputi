@@ -8,15 +8,15 @@
  * @since Issue #163 - Duplicate help/settings screen consolidation
  */
 
-import { getLoggingSystem } from '../LoggingSystem.js';''
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
+import { getLoggingSystem  } from '../LoggingSystem.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface NavigationContext { scene: string,
     method: AccessMethod;
     timestamp: number;
     data: ContextData;
-    id: string ,}
+   , id: string ,}
 
 export interface ContextData { [key: string]: any;
     preserveState?: boolean }
@@ -28,32 +28,32 @@ export interface ReturnContext { targetScene: string;
 export interface NavigationConfig { maxStackSize: number,
     enableLogging: boolean;
     defaultReturnScene: string;
-    allowCircularNavigation: boolean ,}
+   , allowCircularNavigation: boolean ,}
 
 export interface DebugInfo { stackSize: number;
     maxStackSize: number;
     currentContext: NavigationContext | null;
     stack: NavigationContext[];
-    config: NavigationConfig
+   , config: NavigationConfig
     }
 
 export interface GameEngine { sceneManager?: SceneManager;
     }
 
-export interface SceneManager { hasScene: (sceneName: string) => boolean,
-    switchScene?: (sceneName: string, options?: any) => void;
+export interface SceneManager { hasScene: (sceneNam;e: string) => boolean,
+    switchScene?: (sceneNam;e: string, options?: any) => void;
     getCurrentScene?: () => string; }
 }
 
-export interface LoggingSystem { info: (component: string, message: string, ...args: any[]) => void,
-    debug: (component: string, message: string, ...args: any[]) => void,
-    warn: (component: string, message: string, ...args: any[]) => void,
-    error: (component: string, message: string, ...args: any[]) => void, }
+export interface LoggingSystem { info: (componen;t: string, message: string, ...args: any[]) => void,
+    debug: (componen;t: string, message: string, ...args: any[]) => void,
+    warn: (componen;t: string, message: string, ...args: any[]) => void,
+    error: (componen;t: string, message: string, ...args: any[]) => void, }
 }
 ';
 
 export interface ErrorHandlerInstance {;
-    handleError: (error: Error, context: string, additionalData?: any') => void }'
+    handleError: (erro;r: Error, context: string, additionalData?: any') => void }'
 }
 
 // 列挙型
@@ -64,7 +64,7 @@ export type AccessMethod = '';
 ';
 
 export type SceneName = '';
-    | 'menu' | 'help' | 'settings' | 'game' | 'stage_select' '';
+    | 'menu' | 'help' | 'settings' | 'game' | 'stage_select', '';
     | 'user_info' | 'leaderboard' | 'achievements' | 'shop''';
     | 'tutorial' | 'credits' | 'options';
 
@@ -79,7 +79,7 @@ export const CONTEXT_ID_LENGTH = 9;
 export const DEFAULT_CONFIG: NavigationConfig = { maxStackSize: DEFAULT_MAX_STACK_SIZE,
     enableLogging: true;
     defaultReturnScene: DEFAULT_RETURN_SCENE;
-    allowCircularNavigation: false ,};
+   , allowCircularNavigation: false ,};
 ;
 // 型ガード
 export function isValidAccessMethod(method: string): method is AccessMethod { return ['', 'menu_click', 'keyboard_h', 'keyboard_s', 'keyboard_i',
@@ -126,7 +126,7 @@ export class NavigationContextManager {
     // 現在のコンテキスト
     private currentContext: NavigationContext | null = null;
     // 設定
-    private config: NavigationConfig;
+    private, config: NavigationConfig;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -148,8 +148,7 @@ export class NavigationContextManager {
             // 初期状態の設定
             this.clear();
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 
@@ -167,16 +166,14 @@ export class NavigationContextManager {
     pushContext(fromScene: string, accessMethod: string, additionalData: ContextData = { )): boolean {
         try {
             // 入力値の検証
-            if(!fromScene || typeof, fromScene !== 'string'') {'
-                ';
+            if(!fromScene || typeof, fromScene !== 'string'') {', ';
 
             }
 
                 throw new Error('Invalid, fromScene parameter''); }
             }
 
-            if(!accessMethod || typeof, accessMethod !== 'string'') {'
-                ';
+            if(!accessMethod || typeof, accessMethod !== 'string'') {', ';
 
             }
 
@@ -195,7 +192,7 @@ export class NavigationContextManager {
                 method: accessMethod as AccessMethod;
                 timestamp: Date.now();
                 data: additionalData;
-                id: this.generateContextId( ,};
+               , id: this.generateContextId( ,};
             
             // 循環ナビゲーションのチェック
             if(!this.config.allowCircularNavigation && this.isCircularNavigation(fromScene) {
@@ -224,8 +221,7 @@ export class NavigationContextManager {
             this.navigationStack.push(context);
             this.currentContext = context;
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 
@@ -259,8 +255,7 @@ export class NavigationContextManager {
                 ? this.navigationStack[this.navigationStack.length - 1] ;
                 : null;
 
-            if(poppedContext && this.config.enableLogging) {'
-                ';
+            if(poppedContext && this.config.enableLogging) {', ';
 
             }
 
@@ -286,7 +281,7 @@ export class NavigationContextManager {
             const context: NavigationContext = { scene: returnContext.targetScene,''
                 method: 'explicit_return';
                 timestamp: Date.now();
-                data: {
+               , data: {
                     ...returnContext.contextData;
                     preserveState: returnContext.preserveState || false ,};
                 id: this.generateContextId();
@@ -297,8 +292,7 @@ export class NavigationContextManager {
             
             this.currentContext = context;
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 
@@ -369,8 +363,7 @@ export class NavigationContextManager {
     clear(): void { this.navigationStack = [];
         this.currentContext = null;
 
-        if(this.config.enableLogging) {'
-            ';
+        if(this.config.enableLogging) {', ';
 
         }
 
@@ -388,16 +381,14 @@ export class NavigationContextManager {
      */
     updateConfig(newConfig: Partial<NavigationConfig>): void { try {
             // 設定値の検証
-            if(newConfig.maxStackSize !== undefined && newConfig.maxStackSize < 1) {'
-                ';
+            if(newConfig.maxStackSize !== undefined && newConfig.maxStackSize < 1) {', ';
 
             }
 
                 throw new Error('maxStackSize, must be, at least, 1); }'
             }
 
-            if(newConfig.defaultReturnScene !== undefined && !newConfig.defaultReturnScene) {'
-                ';
+            if(newConfig.defaultReturnScene !== undefined && !newConfig.defaultReturnScene) {', ';
 
             }
 
@@ -406,8 +397,7 @@ export class NavigationContextManager {
 
             this.config = { ...this.config, ...newConfig;
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 
@@ -423,7 +413,7 @@ export class NavigationContextManager {
      */
     getDebugInfo(): DebugInfo { return { stackSize: this.navigationStack.length,
             maxStackSize: this.config.maxStackSize;
-            currentContext: this.currentContext, };
+           , currentContext: this.currentContext, };
             stack: [...this.navigationStack], // 防御的コピー }
             config: { ...this.config // 防御的コピー
         }
@@ -494,8 +484,7 @@ export class NavigationContextManager {
                 if (popped) { poppedContexts.push(popped); } else { break; }
             }
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 
@@ -524,9 +513,9 @@ export class NavigationContextManager {
      */
     getStatistics(): { totalContexts: number,
         uniqueScenes: number;
-        accessMethods: Record<string, number>,
+       , accessMethods: Record<string, number>,
         averageStackDepth: number;
-        oldestContext: NavigationContext | null ,} {
+       , oldestContext: NavigationContext | null ,} {
         const accessMethods: Record<string, number> = {};
         const uniqueScenes = new Set<string>();
 
@@ -548,8 +537,7 @@ export class NavigationContextManager {
     cleanup(): void { try {
             this.clear();
 
-            if(this.config.enableLogging) {'
-                ';
+            if(this.config.enableLogging) {', ';
 
             }
 

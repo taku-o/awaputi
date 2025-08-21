@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * ServiceWorker HEAD Request Integration Tests
  * ServiceWorkerのHEADリクエスト処理の統合テスト
@@ -44,7 +44,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
         
         mockCaches = {
             open: jest.fn().mockResolvedValue(mockCache;);
-            delete: jest.fn(),
+           , delete: jest.fn(),
             keys: jest.fn(),
         match: jest.fn(),
         };
@@ -75,7 +75,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
             const handleHeadRequest = async function(request {
                 try {
                     console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url)`);
-                    const response = await fetch(request});
+                    const, response = await, fetch(request});
                     return response;
                 } catch (error) {
                     console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error');
@@ -107,7 +107,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
             const handleHeadRequest = async function(request {
                 try {
                     console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url)`);
-                    const response = await fetch(request});
+                    const, response = await, fetch(request});
                     return response;
                 } catch (error) {
                     console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error');
@@ -232,7 +232,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
             const handleHeadRequest = async function(request {
                 try {
                     console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url)`);
-                    const response = await fetch(request});
+                    const, response = await, fetch(request});
                     return response;
                 } catch (error) {
                     console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error');

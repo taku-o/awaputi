@@ -45,16 +45,16 @@
  * Refactored: Phase F.4 - Main Controller Pattern
  */'
 
-import { SEOConfig, getBaseUrl } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';''
-import { measurePerformance } from './SEOUtils';
+import { SEOConfig, getBaseUrl  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';''
+import { measurePerformance  } from './SEOUtils';
 ';
 // Import sub-components
-import { MetaTagValidator } from './testing/MetaTagValidator';''
-import { StructuredDataValidator } from './testing/StructuredDataValidator';''
-import { PerformanceValidator } from './testing/PerformanceValidator';''
-import { SEOReportGenerator } from './testing/SEOReportGenerator';
+import { MetaTagValidator  } from './testing/MetaTagValidator';''
+import { StructuredDataValidator  } from './testing/StructuredDataValidator';''
+import { PerformanceValidator  } from './testing/PerformanceValidator';''
+import { SEOReportGenerator  } from './testing/SEOReportGenerator';
 
 // テストオプションインターフェース
 interface ComprehensiveTestOptions { includeMetaTags?: boolean;
@@ -69,27 +69,27 @@ interface ComprehensiveTestOptions { includeMetaTags?: boolean;
 interface ValidationRule { [key: string]: any, }
 
 interface MetaTagValidationRule extends ValidationRule { required: string[], }
-    titleLength: { min: number; max: number },
-    descriptionLength: { min: number; max: number },
+    titleLength: { min: number;, max: number },
+    descriptionLength: { min: number;, max: number },
     keywordsCount: { max: number }
 
 interface OpenGraphValidationRule extends ValidationRule { required: string[], }
-    imageMinSize: { width: number; height: number },
+    imageMinSize: { width: number;, height: number },
     titleLength: { max: number }
     descriptionLength: { max: number }
 
 interface TwitterCardValidationRule extends ValidationRule { required: string[];
-    cardTypes: string[], }
+   , cardTypes: string[], }
     titleLength: { max: number }
     descriptionLength: { max: number }
 
 interface StructuredDataValidationRule extends ValidationRule { required: string[];
     allowedContexts: string[];
-    videoGameProperties: string[] }
+   , videoGameProperties: string[] }
 
 interface HreflangValidationRule extends ValidationRule { requiredLanguages: string[];
     requiresXDefault: boolean;
-    validLanguageCodes: RegExp
+   , validLanguageCodes: RegExp
     }
 
 // パフォーマンスメトリクスインターフェース
@@ -97,46 +97,46 @@ interface PerformanceMetrics { testExecutionTime: number;
     validationErrors: number;
     validationWarnings: number;
     totalTests: number;
-    passedTests: number }
+   , passedTests: number }
 
 // テスト結果インターフェース
 interface TestResult { category: string;
     tests?: TestCase[];
     passed: number;
     failed: number;
-    warnings: number;
+   , warnings: number;
     score?: number;
     details?: any; }
 ';
 
 interface TestCase { name: string,''
     status: 'passed' | 'failed' | 'warning';
-    message: string;
+   , message: string;
     details?: any ,}
 
 // 集約結果インターフェース
 interface AggregatedTestResults { summary: {
-        totalTests: number;
+        totalTest;s: number;
         passedTests: number;
         failedTests: number;
-        warnings: number };
+       , warnings: number };
     categories: Record<string, TestResult>;
     overallScore: number;
-    timestamp: string;
+   , timestamp: string;
     executionTime?: number;
 }
 
 // システム状態インターフェース
 interface SystemStatus { initialized: boolean,
     baseUrl: string;
-    components: {''
-        metaValidator: 'active' | 'inactive',
+   , components: {''
+        metaValidato;r: 'active' | 'inactive',
         structuredDataValidator: 'active' | 'inactive',
         performanceValidator: 'active' | 'inactive',
         reportGenerator: 'active' | 'inactive' ,};
     validationRulesCount: number;
     performanceMetrics: PerformanceMetrics;
-    testResultsCount: number;
+   , testResultsCount: number;
 }
 
 // システム統計インターフェース
@@ -145,21 +145,21 @@ interface SystemStatistics { totalTestsRun: number,
     averageExecutionTime: number;
     validationRulesConfigured: number;
     lastTestTimestamp: number | null;
-    componentsActive: number ,}
+   , componentsActive: number ,}
 ;
 // レポート形式タイプ
 type ReportFormat = 'json' | 'html' | 'csv';
 
 export class SEOTester {
     private baseUrl: string;
-    private testResults: Map<string, TestResult>;
+    private, testResults: Map<string, TestResult>;
     private validationRules: Map<string, ValidationRule>;
     private performanceMetrics: PerformanceMetrics;
     // Sub-components
     private metaValidator: MetaTagValidator;
     private structuredDataValidator: StructuredDataValidator;
     private performanceValidator: PerformanceValidator;
-    private reportGenerator: SEOReportGenerator;
+    private, reportGenerator: SEOReportGenerator;
     constructor() {
     
         this.baseUrl = getBaseUrl();
@@ -169,7 +169,7 @@ export class SEOTester {
             testExecutionTime: 0;
             validationErrors: 0;
             validationWarnings: 0;
-            totalTests: 0;
+           , totalTests: 0;
     ,}
             passedTests: 0 }
         };
@@ -400,7 +400,7 @@ export class SEOTester {
                 reportGenerator: this.reportGenerator ? 'active' : 'inactive';
             },
             validationRulesCount: this.validationRules.size;
-            performanceMetrics: { ...this.performanceMetrics;
+           , performanceMetrics: { ...this.performanceMetrics;
             testResultsCount: this.testResults.size);
         })
     
@@ -411,7 +411,7 @@ export class SEOTester {
             totalPassedTests: this.performanceMetrics.passedTests;
             averageExecutionTime: this.performanceMetrics.testExecutionTime;
             validationRulesConfigured: this.validationRules.size;
-            lastTestTimestamp: this.testResults.size > 0 ? Date.now() : null, };
+           , lastTestTimestamp: this.testResults.size > 0 ? Date.now() : null, };
             componentsActive: 4 // metaValidator, structuredDataValidator, performanceValidator, reportGenerator }
         }
     
@@ -427,10 +427,10 @@ export class SEOTester {
                 totalTests: 0;
                 passedTests: 0;
                 failedTests: 0;
-                warnings: 0 };
+               , warnings: 0 };
             categories: {};
             overallScore: 0;
-            timestamp: new Date().toISOString();
+           , timestamp: new Date().toISOString();
         };
 
         results.forEach((result, index) => {  ''

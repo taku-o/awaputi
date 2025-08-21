@@ -2,7 +2,7 @@
  * Performance Tests for Username Input Manager Coordinate Calculations
  * Tests for Issue #143 - Username input positioning fix
  */
-import { jest } from '@jest/globals';''
+import { jest  } from '@jest/globals';''
 describe('Username Input Performance Tests', () => {  let usernameInputManager: any,
     let mockGameEngine: any,
     let mockResponsiveCanvasManager: any,
@@ -15,7 +15,7 @@ describe('Username Input Performance Tests', () => {  let usernameInputManager: 
             this.usernameInput = '';
             this.isEditingUsername = false;
             
-            // Performance optimization: Canvas info cache
+            // Performance, optimization: Canvas info cache
             this._canvasInfoCache = null;
             this._canvasInfoCacheTime = 0;
             this._cacheValidDuration = 16; // ~1 frame at 60fps
@@ -70,7 +70,7 @@ describe('Username Input Performance Tests', () => {  let usernameInputManager: 
             // Calculate transformation
             const { scale } = canvasInfo;)
             const result = { x: baseX * scale)
-        y: baseY * scale }
+       , y: baseY * scale }
             };)
             // Cache result (with size limit);
             if(this._coordinateCache.size >= this._maxCacheSize) {
@@ -122,7 +122,7 @@ describe('Username Input Performance Tests', () => {  let usernameInputManager: 
                 displayWidth: 800,
                 displayHeight: 600,);
                 actualWidth: 1200);
-                actualHeight: 900,);
+               , actualHeight: 900,);
                 pixelRatio: 2); }
         };
         // Mock GameEngine
@@ -351,7 +351,7 @@ describe('Username Input Performance Tests', () => {  let usernameInputManager: 
                 displayWidth: 1600,
                 displayHeight: 1200,);
                 actualWidth: 1600);
-                actualHeight: 1200,);
+               , actualHeight: 1200,);
                 pixelRatio: 1),
             const startTime = performance.now();
             // New canvas info should be retrieved and cached

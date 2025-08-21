@@ -7,25 +7,25 @@
 interface AnimationState { isActive: boolean,
     startTime: number;
     duration: number;
-    progress: number ,}
+   , progress: number ,}
 
 interface ContentTransitionState extends AnimationState { fromContent: any;
     toContent: any;
-    type: 'slide' | 'fade' | 'scale' }
+   , type: 'slide' | 'fade' | 'scale' }
 
 interface CategoryTransitionState extends AnimationState { fromIndex: number;
-    toIndex: number }
+   , toIndex: number }
 
 interface SearchTransitionState extends AnimationState { isEntering: boolean }
 
 interface FocusTransitionState extends AnimationState { fromIndex: number;
-    toIndex: number }
+   , toIndex: number }
 
 // アニメーション集合インターフェース
 interface AnimationCollection { contentTransition: ContentTransitionState;
     categoryTransition: CategoryTransitionState;
     searchTransition: SearchTransitionState;
-    focusTransition: FocusTransitionState
+   , focusTransition: FocusTransitionState
     }
 ;
 // イージング関数タイプ
@@ -41,7 +41,7 @@ export class HelpAnimationManager {
     private animations: AnimationCollection;
     // アニメーション設定
     private enableAnimations: boolean;
-    private easingFunctions: Record<EasingType, EasingFunction>;
+    private, easingFunctions: Record<EasingType, EasingFunction>;
 
     constructor(''';
                 type: 'slide' // 'slide', 'fade', 'scale' },
@@ -50,18 +50,18 @@ export class HelpAnimationManager {
                 duration: 200;
                 fromIndex: 0;
                 toIndex: 0;
-                progress: 0 };
+               , progress: 0 };
             searchTransition: { isActive: false;
                 startTime: 0;
                 duration: 250;
                 isEntering: true;
-                progress: 0 };
+               , progress: 0 };
             focusTransition: { isActive: false;
                 startTime: 0;
                 duration: 150;
                 fromIndex: 0;
                 toIndex: 0;
-                progress: 0 }))
+               , progress: 0 }))
         // アニメーション設定
         this.enableAnimations = true;
         this.easingFunctions = { linear: (t: number) => t,
@@ -90,7 +90,7 @@ export class HelpAnimationManager {
             fromContent: this.getCurrentContent(;
             toContent: newContent;
             progress: 0;
-            type: transitionType ,}))
+           , type: transitionType ,}))
         return this.animations.contentTransition;
     }
 
@@ -104,7 +104,7 @@ export class HelpAnimationManager {
 
         this.animations.categoryTransition = { isActive: true,
             startTime: performance.now(;
-            duration: 200;
+           , duration: 200;
             fromIndex,
             toIndex,
             progress: 0 ,}))
@@ -119,7 +119,7 @@ export class HelpAnimationManager {
 
         this.animations.searchTransition = { isActive: true,
             startTime: performance.now(;
-            duration: 250;
+           , duration: 250;
             isEntering,
             progress: 0 ,}))
         return this.animations.searchTransition;
@@ -133,7 +133,7 @@ export class HelpAnimationManager {
 
         this.animations.focusTransition = { isActive: true,
             startTime: performance.now(;
-            duration: 150;
+           , duration: 150;
             fromIndex,
             toIndex,
             progress: 0 ,}))
@@ -255,7 +255,7 @@ export class HelpAnimationManager {
     /**
      * プリセットアニメーション'
      */''
-    public getSlideTransitionOffset(progress: number, direction: 'horizontal' | 'vertical' = 'horizontal''): { x: number; y: number } { ''
+    public getSlideTransitionOffset(progress: number, direction: 'horizontal' | 'vertical' = 'horizontal''): { x: number;, y: number } { ''
         const easedProgress = this.applyEasing(progress, 'easeOut);''
         const offset = (1 - easedProgress') * 100;
 
@@ -296,7 +296,7 @@ export class HelpTransitionRenderer {
      */
     public renderContentTransition(;
         ctx: CanvasRenderingContext2D);
-        contentArea: { x: number; y: number; width: number; height: number ),
+       , contentArea: { x: number; y: number; width: number;, height: number ),
 
         renderer: any'';
     '): boolean {''
@@ -337,9 +337,9 @@ export class HelpTransitionRenderer {
      */
     private renderSlideTransition(;
         ctx: CanvasRenderingContext2D);
-        contentArea: { x: number; y: number; width: number; height: number ),
+       , contentArea: { x: number; y: number; width: number;, height: number ),
         transition: ContentTransitionState;
-        progress: number, ;
+       , progress: number, ;
         renderer: any;
     ): void {
         const slideOffset = contentArea.width * (1 - progress),
@@ -369,9 +369,9 @@ export class HelpTransitionRenderer {
      */
     private renderFadeTransition(;
         ctx: CanvasRenderingContext2D);
-        contentArea: { x: number; y: number; width: number; height: number ),
+       , contentArea: { x: number; y: number; width: number;, height: number ),
         transition: ContentTransitionState;
-        progress: number, ;
+       , progress: number, ;
         renderer: any;
     ): void {
         // 前のコンテンツ（フェードアウト）
@@ -397,9 +397,9 @@ export class HelpTransitionRenderer {
      */
     private renderScaleTransition(;
         ctx: CanvasRenderingContext2D);
-        contentArea: { x: number; y: number; width: number; height: number ),
+       , contentArea: { x: number; y: number; width: number;, height: number ),
         transition: ContentTransitionState;
-        progress: number, ;
+       , progress: number, ;
         renderer: any;
     ): void {
         const centerX = contentArea.x + contentArea.width / 2,
@@ -437,7 +437,7 @@ export class HelpTransitionRenderer {
         ctx: CanvasRenderingContext2D;
         categories: any[] );
         layout: any);
-        selectedCategory: string'';
+       , selectedCategory: string'';
     '): boolean { ''
         const transition = this.animationManager.getAnimationState('categoryTransition);''
         if(!transition || !transition.isActive) {
@@ -521,7 +521,7 @@ export class HelpTransitionRenderer {
 
     private renderCategoryHighlight(;
         ctx: CanvasRenderingContext2D);
-        sidebarLayout: { x: number; y: number; width: number; height: number ),
+       , sidebarLayout: { x: number; y: number; width: number;, height: number ),
 
         categoryIndex: number'';
     '): void {'

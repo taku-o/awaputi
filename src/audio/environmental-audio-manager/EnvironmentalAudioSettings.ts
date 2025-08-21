@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * Environmental audio settings interface
@@ -9,7 +9,7 @@ export interface EnvironmentalSettings { enabled: boolean,
     layerCount: number;
     biomeBlending: boolean;
     weatherEffects: boolean;
-    timeOfDayVariation: boolean ,}
+   , timeOfDayVariation: boolean ,}
 
 /**
  * Performance data interface
@@ -17,13 +17,13 @@ export interface EnvironmentalSettings { enabled: boolean,
 export interface PerformanceData { activeLayers: number;
     cpuUsage: number;
     memoryUsage: number;
-    lastUpdate: number }
+   , lastUpdate: number }
 
 /**
  * System status interface
  */
 export interface SystemStatus extends EnvironmentalSettings { configWatchers: number;
-    performance: PerformanceData & {
+   , performance: PerformanceData & {
         memoryUsageMB: string };
     [key: string]: any; // For additional data
 }
@@ -39,7 +39,7 @@ export type VolumeCallback = (volume: number) => void;
  */
 interface ConfigManager { get(category: string, key: string): any,
     set(category: string, key: string, value: any): void,
-    watch(category: string, key: string, callback: (value: any) => void): string | null;
+    watch(category: string, key: string, callback: (valu;e: any) => void): string | null;
     unwatch(watchId: string): void, }
 }
 
@@ -53,7 +53,7 @@ export class EnvironmentalAudioSettings {
     // 環境音設定
     private settings: EnvironmentalSettings;
     // 設定監視用
-    private readonly configWatchers: Set<string>,
+    private readonly, configWatchers: Set<string>,
     
     // パフォーマンス監視
     private performanceData: PerformanceData;
@@ -68,7 +68,7 @@ export class EnvironmentalAudioSettings {
             fadeTime: 2.0;
             layerCount: 3;
             biomeBlending: true;
-            weatherEffects: true;
+           , weatherEffects: true;
     ,}
             timeOfDayVariation: true }
         };
@@ -79,7 +79,7 @@ export class EnvironmentalAudioSettings {
         this.performanceData = { activeLayers: 0,
             cpuUsage: 0;
             memoryUsage: 0;
-            lastUpdate: 0 ,};
+           , lastUpdate: 0 ,};
         this.initialize();
     }
     
@@ -112,7 +112,7 @@ export class EnvironmentalAudioSettings {
                 layerCount: envSettings.layerCount || 3;
                 biomeBlending: envSettings.biomeBlending !== false;
                 weatherEffects: envSettings.weatherEffects !== false;
-                timeOfDayVariation: envSettings.timeOfDayVariation !== false ,};
+               , timeOfDayVariation: envSettings.timeOfDayVariation !== false ,};
             console.log('Environmental audio settings loaded:', this.settings);
 
         } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_ERROR', {)'
@@ -287,7 +287,7 @@ export class EnvironmentalAudioSettings {
             activeLayers: activeLayers;
             cpuUsage: cpuUsage;
             memoryUsage: memoryUsage;
-            lastUpdate: Date.now( }
+           , lastUpdate: Date.now( }
     
     /**
      * 設定を取得
@@ -315,7 +315,7 @@ export class EnvironmentalAudioSettings {
             weatherEffects: this.settings.weatherEffects;
             timeOfDayVariation: this.settings.timeOfDayVariation;
             configWatchers: this.configWatchers.size;
-            performance: {
+           , performance: {
                 ...this.performanceData, };
                 memoryUsageMB: ((additionalData.generatedSounds || 0) * 0.5).toFixed(1) // 推定値 }
             };
@@ -346,7 +346,7 @@ export class EnvironmentalAudioSettings {
                 layerCount: 3;
                 biomeBlending: true;
                 weatherEffects: true;
-                timeOfDayVariation: true };
+               , timeOfDayVariation: true };
             this.saveAllSettings()';
             console.log('Environmental, audio settings, reset to, defaults);
 

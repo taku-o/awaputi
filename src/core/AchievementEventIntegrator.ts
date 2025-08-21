@@ -4,7 +4,7 @@ interface GameEngine { achievementManager?: any;
     scoreManager?: any;
     sceneManager?: {
         scenes?: {
-            game?: any; };
+            gam;e?: any; };
     statisticsManager?: any;
     itemSystem?: any;
     playerData?: { hp: number }
@@ -16,16 +16,16 @@ interface GameEndData { finalScore: number,
     playTime: number;
     accuracy: number;
     itemsUsed: boolean;
-    hp: number ,}
+   , hp: number ,}
 
 interface BubbleEvent { bubbleType: string, }
-    position: { x: number; y: number },
+    position: { x: number;, y: number },
     reactionTime: number;
 }
 
 interface StageData { stageId: string,
     clearTime: number;
-    score: number ,}
+   , score: number ,}
 
 interface SessionData {
     sessionDuration: number;
@@ -38,7 +38,7 @@ export class AchievementEventIntegrator {
     private gameEngine: GameEngine;
     private achievementManager: any;
     private sessionStartTime: number;
-    private isIntegrated: boolean;
+    private, isIntegrated: boolean;
     private speedCheckInterval?: NodeJS.Timeout;
     private lowHpStartTime?: number | null;
 
@@ -265,8 +265,7 @@ export class AchievementEventIntegrator {
      * 泡が割れた時のイベント処理'
      */''
     private handleBubblePopped(bubbleType: string, data: BubbleEvent): void { ''
-        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {'
-            ';
+        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {', ';
 
         }
 
@@ -281,8 +280,7 @@ export class AchievementEventIntegrator {
      * ゲーム終了時のイベント処理'
      */''
     private handleGameEnd(gameData: GameEndData): void { ''
-        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {'
-            ';
+        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {', ';
 
         }
 
@@ -329,8 +327,7 @@ export class AchievementEventIntegrator {
      * ステージクリア時のイベント処理'
      */''
     private handleStageCleared(stageId: string, data: StageData): void { ''
-        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {'
-            ';
+        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {', ';
 
         }
 
@@ -351,8 +348,7 @@ export class AchievementEventIntegrator {
      * セッション終了時のイベント処理'
      */''
     private handleSessionEnd(data: SessionData): void { ''
-        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {'
-            ';
+        if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {', ';
 
         }
 
@@ -397,8 +393,7 @@ export class AchievementEventIntegrator {
      * 精度実績をチェック
      */'
     private checkAccuracyAchievements(gameData: GameEndData): void { // 95%と99%の精度実績をチェック
-        if(gameData.accuracy >= 95) {'
-            ';
+        if(gameData.accuracy >= 95) {', ';
 
         }
 
@@ -413,8 +408,7 @@ export class AchievementEventIntegrator {
      */'
     private checkNightTimePlay(gameData: GameEndData): void { const hour = new Date().getHours();''
         if ((hour >= 23 || hour < 5) && gameData.finalScore >= 1000') {''
-            if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {'
-                ';
+            if(this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {', ';
 
             }
 

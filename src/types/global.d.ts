@@ -8,18 +8,18 @@ export interface Position { x: number,
   y: number ,}
 
 export interface Size { width: number;
-  height: number }
+ , height: number }
 
 export interface Dimensions extends Position, Size {}
 
 export interface Rectangle { x: number,
   y: number;
   width: number;
-  height: number ,}
+ , height: number ,}
 
 export interface Color { r: number;
   g: number;
-  b: number;
+ , b: number;
   a?: number }
 
 // Event and callback types
@@ -50,7 +50,7 @@ export interface GameState { isRunning: boolean,
   isPaused: boolean;
   score: number;
   level: number;
-  lives: number;
+ , lives: number;
   time?: number ,}
 
 export interface PlayerData { name: string;
@@ -58,12 +58,12 @@ export interface PlayerData { name: string;
   currentScore: number;
   level: number;
   achievements: string[];
-  statistics: Record<string, number>, }
+ , statistics: Record<string, number>, }
 
 // UI and interaction types
 export interface UIComponent { element?: HTMLElement;
   visible: boolean;
-  enabled: boolean;
+ , enabled: boolean;
   update(deltaTime: number): void,
   render(): void;
   destroy(): void; }
@@ -91,19 +91,19 @@ export interface AudioResource extends ResourceLoader { url: string,
 export interface ImageResource extends ResourceLoader { url: string,
   image?: HTMLImageElement;
   width: number;
-  height: number ,}
+ , height: number ,}
 
 // Animation and timing types
 export interface Animation { duration: number;
   elapsed: number;
-  isComplete: boolean;
+ , isComplete: boolean;
   update(deltaTime: number): void,
   reset(): void }
 
 export interface Tween extends Animation { from: number,
   to: number;
   current: number;
-  easing: (t: number) => number ,}
+ , easing: (t: number) => number ,}
 }
 
 // Utility types
@@ -127,12 +127,12 @@ export interface Vector3 extends Vector2 { z: number }
 
 export interface Transform { position: Vector2;
   rotation: number;
-  scale: Vector2
+ , scale: Vector2
     }
 
 // Global constants type definitions
 declare global { const __DEV__: boolean;
-  const __PROD__: boolean,
+  const, __PROD__: boolean,
   const __VERSION__: string,
   const __BUILD_TIME__: string,
   const __ANALYTICS_ID__: string,
@@ -150,7 +150,7 @@ export interface CanvasContext { canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D;
   width: number;
   height: number;
-  devicePixelRatio: number ,}
+ , devicePixelRatio: number ,}
 
 export interface RenderOptions { alpha?: boolean;
   antialias?: boolean;
@@ -168,7 +168,7 @@ export interface StorageAdapter { getItem(key: string): string | null,
 // Internationalization
 export interface I18nResource { locale: string,
   namespace: string;
-  resources: Record<string, string | Record<string, string>>, }
+ , resources: Record<string, string | Record<string, string>>, }
 
 export interface I18nManager { currentLocale: string,
   supportedLocales: string[];

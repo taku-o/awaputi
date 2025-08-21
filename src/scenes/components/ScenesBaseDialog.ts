@@ -18,7 +18,7 @@ export interface DialogLayout { x: number,
     padding: number;
     titleHeight: number;
     buttonHeight: number;
-    buttonSpacing: number;
+   , buttonSpacing: number;
     borderColor?: string;
     backgroundColor?: string;
     fontSize?: number; ,}
@@ -34,7 +34,7 @@ export interface AccessibilitySettings { highContrast?: boolean;
     reducedMotion?: boolean; }
 
 export interface GameEngine { errorHandler?: {
-        error: (message: string, error: Error) => void ,}
+        error: (messag;e: string, error: Error) => void ,}
     };
     canvas?: HTMLCanvasElement;
     playerData?: unknown;
@@ -42,15 +42,15 @@ export interface GameEngine { errorHandler?: {
     achievementManager?: unknown;
 }
 
-export interface EventBus { emit: (event: string, data?: unknown) => void,
-    on: (event: string, callback: (data?: unknown) => void) => void ,}
+export interface EventBus { emit: (even;t: string, data?: unknown) => void,
+    on: (even;t: string, callback: (dat;a?: unknown) => void) => void ,}
 }
 
 export interface GameState { accessibilitySettings?: AccessibilitySettings;
     showingDialog?: string | null;
     dialogData?: DialogData;
-    onChange?: (key: string, callback: (value: unknown) => void) => void;
-    set?: (key: string, value: unknown, notify?: boolean) => void }
+    onChange?: (ke;y: string, callback: (valu;e: unknown) => void) => void;
+    set?: (ke;y: string, value: unknown, notify?: boolean) => void }
 }
 
 /**
@@ -94,7 +94,7 @@ export class ScenesBaseDialog {
             padding: 20;
             titleHeight: 40;
             buttonHeight: 35;
-            buttonSpacing: 10 ,};
+           , buttonSpacing: 10 ,};
         // イベントリスナー
         this.onResult = null;
         this.onError = null;
@@ -227,12 +227,12 @@ export class ScenesBaseDialog {
      */
     protected renderButton(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number, ;
         width: number, ;
         height: number );
         button: DialogButton)';
-        isSelected: boolean'';
+       , isSelected: boolean'';
     '): void { // ボタン背景'
         context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC',
         this.roundRect(context, x, y, width, height, 5);''
@@ -296,7 +296,7 @@ export class ScenesBaseDialog {
 
                 break;''
             case 'Enter':'';
-            case ' ':'';
+            case ', ':'';
                 this.handleButtonClick(this.selectedButton);
 
                 return true;''
@@ -356,8 +356,7 @@ export class ScenesBaseDialog {
      * OK処理
      */'
     protected handleOK(): void { ''
-        if(this.onResult) {'
-            ';
+        if(this.onResult) {', ';
 
         }
 
@@ -368,8 +367,7 @@ export class ScenesBaseDialog {
      * キャンセル処理
      */'
     protected handleCancel(): void { ''
-        if(this.onResult) {'
-            ';
+        if(this.onResult) {', ';
 
         }
 
@@ -409,18 +407,18 @@ export class ScenesBaseDialog {
      * @returns 行配列'
      */''
     protected wrapText(context: CanvasRenderingContext2D, text: string, maxWidth: number): string[] { ''
-        const words = text.split(' ');
+        const words = text.split(', ');
         const lines: string[] = [],
 
         let currentLine = words[0];
 
         for(let, i = 1; i < words.length; i++) {'
             const word = words[i];''
-            const width = context.measureText(currentLine + ' ' + word).width;''
+            const width = context.measureText(currentLine + ', ' + word).width;''
             if(width < maxWidth) {'
         }
 
-                currentLine += ' ' + word; }
+                currentLine += ', ' + word; }
             } else {  lines.push(currentLine); }
                 currentLine = word; }
 }
@@ -439,11 +437,11 @@ export class ScenesBaseDialog {
      */
     protected roundRect(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number, ;
         width: number );
         height: number);
-        radius: number;
+       , radius: number;
     ): void { context.beginPath(),
         context.moveTo(x + radius, y);
         context.lineTo(x + width - radius, y);

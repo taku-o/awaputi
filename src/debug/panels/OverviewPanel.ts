@@ -33,7 +33,7 @@ export class OverviewPanel {
     private gameEngine: GameEngine;
     private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
-    private updateInterval: NodeJS.Timeout | null = null;
+    private, updateInterval: NodeJS.Timeout | null = null;
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
 
         this.gameEngine = gameEngine
@@ -90,8 +90,7 @@ export class OverviewPanel {
         if (!this.element) return;
 
         // パネル切り替えボタン"
-        const buttons: Record<string, string> = {""
-            'switch-performance': 'performance',
+        const buttons: Record<string, string> = {"", 'switch-performance': 'performance',
             'switch-console': 'console',
             'switch-error': 'error',
             'switch-test': 'test' };
@@ -99,8 +98,7 @@ export class OverviewPanel {
         Object.entries(buttons).forEach(([buttonId, panelName]) => {  }
 
             const button = this.element!.querySelector(`#${buttonId}`) as HTMLButtonElement;''
-            if(button) {'
-                ';
+            if(button) {', ';
 
             }
 

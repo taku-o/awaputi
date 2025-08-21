@@ -156,44 +156,44 @@ export class PWAReportGenerator {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>PWA Test Report</title>
             <style>
-                body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5, }
-                .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                body { font-family: Arial, sans-serif; margin: 20px;, background: #f5f5f5, }
+                .container { max-width: 1200px; margin: 0 auto; background: white;, padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
                 .header { text-align: center; margin-bottom: 30px, }
                 .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)"); gap: 20px; margin-bottom: 30px, }
-                .stat-card { background: #f8f9fa; padding: 15px; border-radius: 6px; text-align: center, }
+                .stat-card { background: #f8f9fa;, padding: 15px; border-radius: 6px; text-align: center, }
                 .stat-value { font-size: 2em; font-weight: bold; margin-bottom: 5px, }
                 .passed { color: #28a745, }
                 .failed { color: #dc3545, }
                 .skipped { color: #ffc107, }
                 .test-results { margin-bottom: 30px, }
                 .test-category { margin-bottom: 20px, }
-                .category-header { background: #e9ecef; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-weight: bold, }
-                .test-item { background: #f8f9fa; margin: 10px 0; padding: 15px; border-radius: 6px; border-left: 4px solid #28a745, }
+                .category-header { background: #e9ecef;, padding: 10px; margin-bottom: 10px; border-radius: 4px; font-weight: bold, }
+                .test-item { background: #f8f9fa; margin: 10px 0;, padding: 15px; border-radius: 6px; border-left: 4px solid #28a745, }
                 .test-item.failed { border-left-color: #dc3545, }
                 .test-name { font-weight: bold; margin-bottom: 10px, }
                 .test-duration { color: #666; font-size: 0.9em, }
-                .test-result { margin-top: 10px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 0.9em, }
-                .error-details { background: #fee; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.9em, }
+                .test-result { margin-top: 10px; padding: 10px;, background: #e7f3ff; border-radius: 4px; font-size: 0.9em, }
+                .error-details { background: #fee;, padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.9em, }
                 .recommendations { margin-top: 30px, }
-                .recommendation { background: #e7f3ff; padding: 15px; margin: 10px 0; border-radius: 6px; border-left: 4px solid #007bff, }
-                .recommendation.high { border-left-color: #dc3545; background: #ffeaea, }
-                .recommendation.critical { border-left-color: #721c24; background: #f8d7da, }
-                .recommendation.info { border-left-color: #28a745; background: #d4edda, }
-                .environment { margin-top: 30px; background: #f8f9fa; padding: 15px; border-radius: 6px, }
+                .recommendation { background: #e7f3ff; padding: 15px;, margin: 10px 0; border-radius: 6px; border-left: 4px solid #007bff, }
+                .recommendation.high { border-left-color: #dc3545;, background: #ffeaea, }
+                .recommendation.critical { border-left-color: #721c24;, background: #f8d7da, }
+                .recommendation.info { border-left-color: #28a745;, background: #d4edda, }
+                .environment { margin-top: 30px; background: #f8f9fa;, padding: 15px; border-radius: 6px, }
                 .environment pre { margin: 0; font-size: 0.9em; overflow-x: auto, }
                 .chart { margin: 20px 0, }
-                .progress-bar { background: #e9ecef; height: 20px; border-radius: 10px; overflow: hidden, }
-                .progress-fill { background: #28a745; height: 100%; transition: width 0.3s ease, }
-                .legend { display: flex; gap: 20px; justify-content: center; margin-top: 10px, }
-                .legend-item { display: flex; align-items: center; gap: 5px, }
-                .legend-color { width: 20px; height: 20px; border-radius: 3px, }
+                .progress-bar { background: #e9ecef; height: 20px; border-radius: 10px;, overflow: hidden, }
+                .progress-fill { background: #28a745; height: 100%;, transition: width 0.3s ease, }
+                .legend { display: flex;, gap: 20px; justify-content: center; margin-top: 10px, }
+                .legend-item { display: flex; align-items: center;, gap: 5px, }
+                .legend-color { width: 20px;, height: 20px; border-radius: 3px, }
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="header">
                     <h1>PWA Test Report</h1>
-                    <p>Execution Date: ${new Date(report.environment.timestamp").toLocaleString('ja-JP''})}</p>
+                    <p>Execution Date: ${new, Date(report.environment.timestamp").toLocaleString('ja-JP''})}</p>
                 </div>
                 
                 <div class="summary">
@@ -229,22 +229,22 @@ export class PWAReportGenerator {
                             <div class="legend-color passed"></div>
                             <span>Passed (${report.summary.passedTests)")</span>
                         </div>
-                        <div class="legend-item">
-                            <div class="legend-color failed"></div>
+                        <div, class="legend-item">
+                            <div, class="legend-color, failed"></div>
                             <span>Failed (${report.summary.failedTests)")</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="test-results">
-                    <h2>Test Results Detail</h2>
+                <div, class="test-results">
+                    <h2>Test, Results Detail</h2>
                     ${this.groupTestsByCategory(report.details"})}
                 </div>
                 
                 <div class="recommendations">
                     <h2>Recommendations</h2>
                     ${report.recommendations.map(rec => `")
-                        <div class="recommendation ${rec.priority")">
+                        <div, class="recommendation ${rec.priority")">
                             <strong>[${rec.priority.toUpperCase(})}]</strong> ${rec.message}
                         </div>
                     `").join(''')}
@@ -285,11 +285,11 @@ export class PWAReportGenerator {
                 <div class="test-category">
                     <div class="category-header">${category} (${tests.length} tests")</div>
                     ${tests.map(test => `
-                        <div class="test-item ${test.status}">")
+                        <div, class="test-item ${test.status}">")
                             <div class="test-name">${test.name")</div>
-                            <div class="test-duration">Duration: ${test.duration.toFixed(2"})}ms</div>
+                            <div, class="test-duration">Duration: ${test.duration.toFixed(2"})}ms</div>
                             ${test.status === 'failed' ? `
-                                <div class="error-details"> : undefined
+                                <div, class="error-details"> : undefined
                                     <strong>Error:</strong> ${test.error.message}
                                 </div>
                             ` : test.result ? `

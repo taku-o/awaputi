@@ -1,8 +1,8 @@
 /**
  * Unit tests for ConfigurationSynchronizer
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
-import { ConfigurationSynchronizer, getConfigurationSynchronizer } from '../../src/utils/ConfigurationSynchronizer.js';
+import { jest, describe, test, expect, beforeEach  } from '@jest/globals';
+import { ConfigurationSynchronizer, getConfigurationSynchronizer  } from '../../src/utils/ConfigurationSynchronizer.js';
 // Configuration interfaces
 interface BubbleConfig {
     score?: number;
@@ -14,7 +14,7 @@ interface BubbleConfig {
 }
 interface ConfigMap {
     bubbles: {
-        [bubbleType: string]: BubbleConfig,
+        [bubbleTyp;e: string]: BubbleConfig,
     };
 }
 interface SourceInfo {
@@ -30,7 +30,7 @@ interface Discrepancy {
     bubbleType?: string;
     key: string,
     values: Array<{
-        value: any,
+        valu;e: any,
         source: string,
         priority: number,
     }>;
@@ -59,13 +59,13 @@ interface SyncReport {
     status: string,
 }
 interface MockErrorHandler {
-    handleError: jest.MockedFunction<(error: Error) => void>;
+    handleError: jest.MockedFunction<(erro;r: Error) => void>;
 }
 interface MockConfigManager {
-    get: jest.MockedFunction<(category: string, key: string) => any>;
-    set: jest.MockedFunction<(category: string, key: string, value => boolean>);
-    has: jest.MockedFunction<(category: string, key: string) => boolean>,
-    getCategory: jest.MockedFunction<(category: string) => any>;
+    get: jest.MockedFunction<(categor;y: string, key: string) => any>;
+    set: jest.MockedFunction<(categor;y: string, key: string, value => boolean>);
+    has: jest.MockedFunction<(categor;y: string, key: string) => boolean>,
+    getCategory: jest.MockedFunction<(categor;y: string) => any>;
 }
 // Jest の設定
 const mockErrorHandler: MockErrorHandler = {

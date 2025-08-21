@@ -12,21 +12,21 @@ interface DragParticle { x: number,
     life: number;
     decay: number;
     size: number;
-    color: string ,}
+   , color: string ,}
 
 interface DragVisualization { isActive: boolean, }
-    startPosition: { x: number; y: number },
-    currentPosition: { x: number; y: number },
+    startPosition: { x: number;, y: number },
+    currentPosition: { x: number;, y: number },
     targetBubble: Bubble | null;
     forceIndicator: number;
     particles: DragParticle[];
     duration: number;
-    intensity: number;
+   , intensity: number;
 }
 
 interface Bubble { x: number,
     y: number;
-    size: number ,}
+   , size: number ,}
 
 interface PlayerData {
     currentScore: number;
@@ -42,18 +42,18 @@ interface GameEngine { canvas: HTMLCanvasElement,
     screenShakeRemaining: number;
     screenShakeIntensity: number;
     playerData: PlayerData;
-    bubbleManager: BubbleManager
+   , bubbleManager: BubbleManager
     ,}
 
 interface VisualizationStats { isDragging: boolean;
     dragParticles: number;
     forceIndicator: number;
     screenShakeActive: boolean;
-    screenShakeIntensity: number }
+   , screenShakeIntensity: number }
 
 export class GameVisualizationManager {
     private gameEngine: GameEngine;
-    private dragVisualization: DragVisualization;
+    private, dragVisualization: DragVisualization;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -67,7 +67,7 @@ export class GameVisualizationManager {
             forceIndicator: 0;
             particles: [];
             duration: 0;
-            intensity: 1;
+           , intensity: 1;
         },
     }
     
@@ -82,7 +82,7 @@ export class GameVisualizationManager {
             forceIndicator: 0;
             particles: [];
             duration: 0;
-            intensity: 1;
+           , intensity: 1;
         },
     }
     
@@ -160,7 +160,7 @@ export class GameVisualizationManager {
             vy: (Math.random() - 0.5) * 2;
             life: 1.0;
             decay: 0.02;
-            size: 2 + Math.random() * 3, }
+           , size: 2 + Math.random() * 3, }
             color: `hsl(${60 + Math.random(}) * 60}, 70%, 60%)`
         });
     }
@@ -270,7 +270,7 @@ export class GameVisualizationManager {
      * @param start - 開始位置
      * @param current - 現在位置
      */
-    private renderDragTrajectory(context: CanvasRenderingContext2D, start: { x: number; y: number }, current: { x: number; y: number ): void {
+    private renderDragTrajectory(context: CanvasRenderingContext2D, start: { x: number;, y: number }, current: { x: number;, y: number ): void {
         const alpha = 0.6 + 0.4 * Math.sin(Date.now() * 0.01);
         
         // グラデーション軌道線
@@ -295,7 +295,7 @@ export class GameVisualizationManager {
      * @param start - 開始位置
      * @param current - 現在位置
      */
-    private renderForceIndicator(context: CanvasRenderingContext2D, start: { x: number; y: number }, current: { x: number; y: number ): void {
+    private renderForceIndicator(context: CanvasRenderingContext2D, start: { x: number;, y: number }, current: { x: number;, y: number ): void {
         const intensity = this.dragVisualization.forceIndicator;
         if (intensity < 0.1) return;
         

@@ -23,7 +23,7 @@ export class ScoreCalculator {
                 spiky: 85;
                 cracked: 30;
                 escaping: 50;
-                boss: 800;
+               , boss: 800;
     }
                 score: 250 }
             };
@@ -31,7 +31,7 @@ export class ScoreCalculator {
                 maxMultiplier: 2.5;
                 bonusInterval: 5;
                 bonusMultiplier: 8;
-                baseTimeout: 2000 };
+               , baseTimeout: 2000 };
             ageBonus: { earlyBonus: 2.0,    // 発生直後ボーナス（10%以内）
                 lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）;
                 midBonus: 1.5       // 中盤ボーナス（50-70%） ,}
@@ -163,7 +163,7 @@ export class ScoreCalculator {
                 age: this.calculateAgeBonus(ageRatio);
                 combo: comboMultiplier;
                 special: specialMultiplier;
-                item: itemMultiplier, };
+               , item: itemMultiplier, };
                 total: totalMultiplier }
             };
             breakdown: { bubbleType;
@@ -212,7 +212,7 @@ export class ScoreCalculator {
             return { total: 0,
                 average: 0;
                 highest: 0;
-                lowest: 0;
+               , lowest: 0;
     ,}
                 comboCount: 0, };
                 bonusCount: 0 }
@@ -265,7 +265,7 @@ export class ScoreCalculator {
         const strategy = { ''
             priority: 'normal';
             targetBubbles: [];
-            reasoning: [] };
+           , reasoning: [] };
         ';
         // コンボが高い場合は継続を優先
         if(currentCombo >= 3) {'

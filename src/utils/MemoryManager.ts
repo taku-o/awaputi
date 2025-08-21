@@ -22,11 +22,11 @@ interface MemoryStats { objectsCreated: number,
     // Current state
     currentMemoryPressure: number;
     leakRiskLevel: 'low' | 'medium' | 'high' | 'critical';
-    memoryHealthScore: number ,}
+   , memoryHealthScore: number ,}
 
 interface TrackedObject { id: string;
     type: string;
-    createdAt: number;
+   , createdAt: number;
     lastAccessed?: number;
     size?: number; }
 
@@ -37,7 +37,7 @@ interface TrackedObject { id: string;
  * サブコンポーネント化により責任を分離し、保守性を向上
  * - LeakDetector: メモリリーク検出
  * - ProactiveCleanupManager: プロアクティブクリーンアップ
- * - MemoryUsageAnalyzer: 使用パターン解析
+ * -, MemoryUsageAnalyzer: 使用パターン解析
  */
 export class MemoryManager {
     private trackedObjects: WeakMap<object, TrackedObject>;
@@ -48,7 +48,7 @@ export class MemoryManager {
     private usageAnalyzer!: MemoryUsageAnalyzer;
     
     // Statistics
-    public stats: MemoryStats,
+    public, stats: MemoryStats,
     constructor(config: MemoryManagerConfig = {) {
         // Basic tracking
         this.trackedObjects = new WeakMap<object, TrackedObject>();
@@ -70,7 +70,7 @@ export class MemoryManager {
             memoryPressureEvents: 0;
             cleanupEfficiency: 1.0;
             // Current state
-            currentMemoryPressure: 0,
+           , currentMemoryPressure: 0,
             leakRiskLevel: 'low';
     ,}
             memoryHealthScore: 1.0 }
@@ -147,7 +147,7 @@ export class MemoryManager {
                 id: this.generateObjectId();
                 type,
                 createdAt: Date.now();
-                size: this.estimateObjectSize(obj ,};
+               , size: this.estimateObjectSize(obj ,};
             
             this.trackedObjects.set(obj, trackedInfo);
             this.stats.objectsCreated++;
@@ -311,7 +311,7 @@ export class MemoryManager {
      */
     getMemoryReport(): any { return { stats: this.getStats(),
             usageReport: this.usageAnalyzer.getUsageReport();
-            leakReport: this.leakDetector.getLeakReport(), };
+           , leakReport: this.leakDetector.getLeakReport(), };
             cleanupReport: (this.proactiveCleanup, as any).getCleanupReport ? (this.proactiveCleanup, as any).getCleanupReport() : null 
         }
     
@@ -464,7 +464,7 @@ class ProactiveCleanupManager { private cleanupHandlers: Map<string, () => void>
     performIntelligentCleanup(_usageReport: any, leakReport: any): any { const result = {
             performedActions: [] as string[];
             freedMemory: 0;
-            timestamp: new Date().toISOString( };
+           , timestamp: new Date().toISOString( };
         // 基本クリーンアップ実行
         this.performCleanup()';
         result.performedActions.push('basic_cleanup);

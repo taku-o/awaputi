@@ -2,8 +2,8 @@
  * LeaderboardManager 単体テスト (Task 20.3)
  * 包括的なテストカバレッジでLeaderboardManagerの全機能をテスト
  */
-import { jest } from '@jest/globals';
-import { LeaderboardManager } from '../../../src/core/LeaderboardManager.js';
+import { jest  } from '@jest/globals';
+import { LeaderboardManager  } from '../../../src/core/LeaderboardManager.js';
 // Type definitions
 interface MockLocalStorage {
     data: Record<string, string>;
@@ -19,7 +19,7 @@ interface MockStatisticsManager {
 interface MockGameEngine {
     statisticsManager: MockStatisticsManager,
     settings: {
-        playerName: string,
+        playerNam;e: string,
     };
 }
 interface ScoreData {
@@ -247,7 +247,7 @@ describe('LeaderboardManager', () => {
                 await leaderboardManager.addScore('test', {
                     playerId: `player${i}`;
                     score: 1000 + i * 100;);
-                    timestamp: Date.now() + i
+                   , timestamp: Date.now() + i
                 }');
             }
             
@@ -689,7 +689,7 @@ function createMockLeaderboardData(count: number = 5): LeaderboardEntry[] {
             playerId: `player${i}`;
             playerName: `Player ${i}`;
             score: 10000 - i * 1000;);
-            timestamp: Date.now() + i
+           , timestamp: Date.now() + i
         }');
     }
     return data;

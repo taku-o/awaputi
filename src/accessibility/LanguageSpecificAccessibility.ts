@@ -3,7 +3,7 @@
  * RTL言語サポート、言語固有キーボードショートカット、文化的に適応したアクセシビリティ
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for language-specific accessibility
 interface LanguageAccessibilityConfig { enabled: boolean,
@@ -11,10 +11,10 @@ interface LanguageAccessibilityConfig { enabled: boolean,
     adaptKeyboardLayouts: boolean;
     culturalMetaphors: boolean;
     rtlSupport: boolean;
-    bidirectionalText: boolean ,}
+   , bidirectionalText: boolean ,}
 
 interface KeyboardLayout { name: string;
-    shortcuts: Record<string, string>;
+   , shortcuts: Record<string, string>;
     navigationKeys: Record<string, string>;''
     direction?: 'ltr' | 'rtl'; }
 
@@ -22,10 +22,10 @@ interface KeyboardLayouts { [language: string]: KeyboardLayout,
     }
 
 interface CulturalMetaphor { directions: {
-        next: string;
+        nex;t: string;
         previous: string;
         forward: string;
-        backward: string };
+       , backward: string };
     gestures: Record<string, string>;
     colors: Record<string, string>;
 }
@@ -47,7 +47,7 @@ interface LanguageInfo { language: string,''
     direction: 'ltr' | 'rtl';
     isRTL: boolean;
     keyboardLayout: string;
-    culturalMetaphors: CulturalMetaphor | Record<string, never> }
+   , culturalMetaphors: CulturalMetaphor | Record<string, never> }
 
 interface ElementDescription { type?: string;
     text?: string;
@@ -58,8 +58,8 @@ interface ElementDescription { type?: string;
 // AccessibilityManager interface (minimal, definition);
 interface AccessibilityManager { gameEngine?: any;
     localizationManager?: {
-        getCurrentLanguage: () => string;
-        ta11y: (key: string) => string | undefined ,}
+        getCurrentLanguag;e: () => string;
+        ta11y: (ke;y: string) => string | undefined ,}
     };
     keyboardAccessibilityManager?: any;
     gameContentDescriber?: { updateGestureDescriptions: (gestures: Record<string, string>) => void }
@@ -80,7 +80,7 @@ export class LanguageSpecificAccessibility {
     private currentLanguage: string;
     private currentLayout: KeyboardLayout | null;
     private currentMetaphors: CulturalMetaphor | null;
-    private rtlAdaptation: RTLAdaptation;
+    private, rtlAdaptation: RTLAdaptation;
     private navigationKeyMapping?: NavigationKeyMapping;
     private keyboardEventHandler?: (event: KeyboardEvent) => void;
 
@@ -95,7 +95,7 @@ export class LanguageSpecificAccessibility {
             autoDetectLanguage: true;
             adaptKeyboardLayouts: true;
             culturalMetaphors: true;
-            rtlSupport: true;
+           , rtlSupport: true;
     }
     }
             bidirectionalText: true }
@@ -107,18 +107,15 @@ export class LanguageSpecificAccessibility {
         
         // 言語固有キーボードレイアウト
         this.keyboardLayouts = { ''
-            // QWERTY(英語)''
-            'en': {''
+            // QWERTY(英語)'', 'en': {''
                 name: 'QWERTY',
-                shortcuts: {''
-                    'pause': 'KeyP',
+                shortcuts: {'', 'pause': 'KeyP',
                     'menu': 'KeyM',
                     'help': 'KeyH',
                     'settings': 'KeyS',
                     'fullscreen': 'F11' },
 
-                navigationKeys: { ''
-                    'up': 'ArrowUp',
+                navigationKeys: { '', 'up': 'ArrowUp',
                     'down': 'ArrowDown',
                     'left': 'ArrowLeft',
                     'right': 'ArrowRight',
@@ -126,18 +123,15 @@ export class LanguageSpecificAccessibility {
                     'back': 'Escape' }
             },
 
-            // QWERTZ(ドイツ語)''
-            'de': { ''
+            // QWERTZ(ドイツ語)'', 'de': { ''
                 name: 'QWERTZ',
-                shortcuts: {''
-                    'pause': 'KeyP',
+                shortcuts: {'', 'pause': 'KeyP',
                     'menu': 'KeyM',
                     'hilfe': 'KeyH',
                     'einstellungen': 'KeyE',
                     'vollbild': 'F11' },
 
-                navigationKeys: { ''
-                    'hoch': 'ArrowUp',
+                navigationKeys: { '', 'hoch': 'ArrowUp',
                     'runter': 'ArrowDown',
                     'links': 'ArrowLeft',
                     'rechts': 'ArrowRight',
@@ -145,18 +139,15 @@ export class LanguageSpecificAccessibility {
                     'zurueck': 'Escape' }
             },
 
-            // AZERTY(フランス語)''
-            'fr': { ''
+            // AZERTY(フランス語)'', 'fr': { ''
                 name: 'AZERTY',
-                shortcuts: {''
-                    'pause': 'KeyP',
+                shortcuts: {'', 'pause': 'KeyP',
                     'menu': 'KeyM',
                     'aide': 'KeyA',
                     'parametres': 'KeyP',
                     'pleinEcran': 'F11' },
 
-                navigationKeys: { ''
-                    'haut': 'ArrowUp',
+                navigationKeys: { '', 'haut': 'ArrowUp',
                     'bas': 'ArrowDown',
                     'gauche': 'ArrowLeft',
                     'droite': 'ArrowRight',
@@ -166,15 +157,13 @@ export class LanguageSpecificAccessibility {
             // 日本語キーボード
             'ja': { ''
                 name: 'JIS',
-                shortcuts: {''
-                    'ポーズ': 'KeyP',
+                shortcuts: {'', 'ポーズ': 'KeyP',
                     'メニュー': 'KeyM',
                     'ヘルプ': 'KeyH',
                     '設定': 'KeyS',
                     'フルスクリーン': 'F11' },
 
-                navigationKeys: { ''
-                    '上': 'ArrowUp',
+                navigationKeys: { '', '上': 'ArrowUp',
                     '下': 'ArrowDown',
                     '左': 'ArrowLeft',
                     '右': 'ArrowRight',
@@ -184,8 +173,7 @@ export class LanguageSpecificAccessibility {
             // アラビア語キーボード
             'ar': { ''
                 name: 'Arabic',
-                shortcuts: {''
-                    'ايقاف': 'KeyP',
+                shortcuts: {'', 'ايقاف': 'KeyP',
                     'قائمة': 'KeyM',
                     'مساعدة': 'KeyH',
                     'اعدادات': 'KeyS',
@@ -205,15 +193,13 @@ export class LanguageSpecificAccessibility {
             // ヘブライ語キーボード
             'he': { ''
                 name: 'Hebrew',
-                shortcuts: {''
-                    'השהיה': 'KeyP',
+                shortcuts: {'', 'השהיה': 'KeyP',
                     'תפריט': 'KeyM',
                     'עזרה': 'KeyH',
                     'הגדרות': 'KeyS',
                     'מסך מלא': 'F11' },
 
-                navigationKeys: { ''
-                    'למעלה': 'ArrowUp',
+                navigationKeys: { '', 'למעלה': 'ArrowUp',
                     'למטה': 'ArrowDown',
                     'שמאל': 'ArrowLeft',
                     'ימין': 'ArrowRight',
@@ -527,8 +513,7 @@ export class LanguageSpecificAccessibility {
             }
             ';
             // GameEngineのキーボードマネージャーとの統合確認
-            if(this.gameEngine && this.gameEngine.keyboardShortcutManager) {'
-                ';
+            if(this.gameEngine && this.gameEngine.keyboardShortcutManager) {', ';
 
             }
 
@@ -618,8 +603,7 @@ export class LanguageSpecificAccessibility {
     /**
      * 意味に対応する色の取得
      */''
-    private getColorForMeaning(meaning: string): string { const colorMap: Record<string, string> = {''
-            'error': '#ff0000',
+    private getColorForMeaning(meaning: string): string { const colorMap: Record<string, string> = {'', 'error': '#ff0000',
             'success': '#00ff00',
             'warning': '#ffff00',
             'information': '#0000ff' };
@@ -727,8 +711,7 @@ export class LanguageSpecificAccessibility {
     private getStatusDescription(element: ElementDescription, metaphors: CulturalMetaphor): string { const colors = metaphors.colors;
         const status = element.status;
 
-        if(status === 'error'') {'
-            ';
+        if(status === 'error'') {', ';
 
         }
 
@@ -777,8 +760,7 @@ export class LanguageSpecificAccessibility {
         // 適応された要素のリセット
         this.rtlAdaptation.elements.forEach(element => { );
             const originalStyle = this.rtlAdaptation.originalStyles.get(element);''
-            if(originalStyle) {'
-                ';
+            if(originalStyle) {', ';
 
             }
 
@@ -791,8 +773,7 @@ export class LanguageSpecificAccessibility {
         this.rtlAdaptation.applied = false;
         this.rtlAdaptation.elements.clear();''
         this.rtlAdaptation.originalStyles.clear(''';
-        this.currentDirection = 'ltr';)'
-        ')';
+        this.currentDirection = 'ltr';)', ')';
         console.log('RTL, adaptation reset');
     }
     
@@ -833,8 +814,7 @@ export class LanguageSpecificAccessibility {
      * 設定の適用
      */
     applyConfig(config: { languageSpecific?: Partial<LanguageAccessibilityConfig> ): void {
-        if(config.languageSpecific) {'
-            ';
+        if(config.languageSpecific) {', ';
 
         }
 
@@ -871,8 +851,7 @@ export class LanguageSpecificAccessibility {
         ';
         // RTL適応のリセット
         this.resetRTLAdaptation()';
-        if(this.keyboardEventHandler && typeof, document !== 'undefined'') {'
-            ';
+        if(this.keyboardEventHandler && typeof, document !== 'undefined'') {', ';
 
         }
 

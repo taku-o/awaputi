@@ -1,20 +1,20 @@
 // 型定義
 export interface FontFallbackConfig { development?: {
-        verboseLogging?: boolean; }
+        verboseLoggin;g?: boolean; }
 
 export interface FallbackInfo { language: string,
     originalFont: string | null;
     fallbackChain: string[];
-    appliedAt: number ,}
+   , appliedAt: number ,}
 
 export interface FallbackStats { totalApplied: number;
-    byLanguage: Record<string, number>,
+   , byLanguage: Record<string, number>,
     systemFontsCount: number;
-    availableSystemFonts: string[] ,}
+   , availableSystemFonts: string[] ,}
 
 export class FontFallbackHandler {
     private config: FontFallbackConfig;
-    private fallbackChains: Record<string, string[]>;
+    private, fallbackChains: Record<string, string[]>;
     private systemFonts: Set<string>;
     private appliedFallbacks: Map<HTMLElement, FallbackInfo>;
 
@@ -28,8 +28,7 @@ export class FontFallbackHandler {
         this.appliedFallbacks = new Map<HTMLElement, FallbackInfo>(); }
     }
 
-    private _initializeFallbackChains(): Record<string, string[]> { return { 'ja': ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'MS Gothic', 'sans-serif],''
-            'zh-CN': ['Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'SimHei', 'sans-serif],
+    private _initializeFallbackChains(): Record<string, string[]> { return { 'ja': ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'MS Gothic', 'sans-serif],'', 'zh-CN': ['Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'SimHei', 'sans-serif],
             'zh-TW': ['Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'PMingLiU', 'sans-serif],
             'ko': ['Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Dotum', 'sans-serif],
             'ar': ['Noto Sans Arabic', 'Tahoma', 'Arial Unicode MS', 'sans-serif],
@@ -101,9 +100,9 @@ export class FontFallbackHandler {
         element.style.fontFamily = fontFamily;
         
         this.appliedFallbacks.set(element, { language: language)
-            originalFont: originalFont,);
+           , originalFont: originalFont,);
             fallbackChain: fallbackChain);
-            appliedAt: Date.now( ,});
+           , appliedAt: Date.now( ,});
 
         if (this.config.development? .verboseLogging) { : undefined 
             console.log(`[FontFallbackHandler] Applied, fallback for ${language}: ${fontFamily}`});
@@ -175,7 +174,7 @@ export class FontFallbackHandler {
             totalApplied: this.appliedFallbacks.size }
             byLanguage: {};
             systemFontsCount: this.systemFonts.size;
-            availableSystemFonts: Array.from(this.systemFonts);
+           , availableSystemFonts: Array.from(this.systemFonts);
         };
 
         for(const [element, info] of this.appliedFallbacks.entries() {

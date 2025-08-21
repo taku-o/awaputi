@@ -1,16 +1,16 @@
-import { EffectManager } from './EffectManager.js';''
-import { getEffectsConfig } from '../config/EffectsConfig.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { AccessibilityEffectIntegrator } from './accessibility/AccessibilityEffectIntegrator.js';
+import { EffectManager  } from './EffectManager.js';''
+import { getEffectsConfig  } from '../config/EffectsConfig.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { AccessibilityEffectIntegrator  } from './accessibility/AccessibilityEffectIntegrator.js';
 ';
 // サブコンポーネントのインポート
-import { EffectTransitionRenderer } from './enhanced-effect-manager/EffectTransitionRenderer.js';''
-import { LightingSystemRenderer } from './enhanced-effect-manager/LightingSystemRenderer.js';''
-import { ReflectionRenderer } from './enhanced-effect-manager/ReflectionRenderer.js';''
-import { BackgroundEffectRenderer } from './enhanced-effect-manager/BackgroundEffectRenderer.js';''
-import { PostProcessingRenderer } from './enhanced-effect-manager/PostProcessingRenderer.js';''
-import { EnhancedEffectController } from './enhanced-effect-manager/EnhancedEffectController.js';''
-import { EffectApiManager } from './enhanced-effect-manager/EffectApiManager.js';
+import { EffectTransitionRenderer  } from './enhanced-effect-manager/EffectTransitionRenderer.js';''
+import { LightingSystemRenderer  } from './enhanced-effect-manager/LightingSystemRenderer.js';''
+import { ReflectionRenderer  } from './enhanced-effect-manager/ReflectionRenderer.js';''
+import { BackgroundEffectRenderer  } from './enhanced-effect-manager/BackgroundEffectRenderer.js';''
+import { PostProcessingRenderer  } from './enhanced-effect-manager/PostProcessingRenderer.js';''
+import { EnhancedEffectController  } from './enhanced-effect-manager/EnhancedEffectController.js';''
+import { EffectApiManager  } from './enhanced-effect-manager/EffectApiManager.js';
 
 // Type definitions for enhanced effect management and coordination
 interface Canvas extends HTMLCanvasElement {}
@@ -22,7 +22,7 @@ interface AccessibilityOptions { reducedMotion?: boolean;
 interface TransitionOptions { easing?: string;
     direction?: string;
     color?: string; }
-    center?: { x: number; y: number } | null;
+    center?: { x: number;, y: number } | null;
     noiseScale?: number;
     threshold?: number;
     pattern?: string;
@@ -31,19 +31,19 @@ interface TransitionOptions { easing?: string;
 interface ShadowObject { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface LightSource { x: number;
     y: number;
     intensity: number;
     color: string;
     radius: number;
-    type: string }
+   , type: string }
 
 interface ReflectionObject { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface BackgroundEffectOptions { intensity?: number;
     color?: string;
@@ -55,29 +55,29 @@ interface RenderSettings { enableLighting: boolean,
     enableReflections: boolean;
     enablePostProcessing: boolean;
     quality: string;
-    optimization: boolean ,}
+   , optimization: boolean ,}
 
 interface EnhancedTransform { scale: number;
-    rotation: number, }
-    translate: { x: number; y: number }
+   , rotation: number, }
+    translate: { x: number;, y: number }
 
 interface TransitionEffect { id: string,
     type: string;
     duration: number;
     startTime: number;
-    options: TransitionOptions
+   , options: TransitionOptions
     ,}
 
 interface Shadow { id: string;
     object: ShadowObject;
-    lightSource: LightSource
+   , lightSource: LightSource
     }
 
 interface Reflection { id: string;
     object: ReflectionObject;
     surfaceY: number;
     intensity: number;
-    distortion: number }
+   , distortion: number }
 
 interface WaterRipple { id: string;
     x: number;
@@ -86,20 +86,20 @@ interface WaterRipple { id: string;
     speed: number;
     intensity: number;
     currentRadius: number;
-    startTime: number }
+   , startTime: number }
 
 interface BackgroundEffect { id: string;
     type: string;
-    options: BackgroundEffectOptions
+   , options: BackgroundEffectOptions
     }
 
 interface PerformanceMetrics { renderTime: number;
     effectCount: number;
-    fps: number }
+   , fps: number }
 
 interface CurrentSettings { renderSettings: RenderSettings;
     effectCount: number;
-    quality: string }
+   , quality: string }
 
 /**
  * 拡張画面効果管理クラス (Main, Controller Pattern)
@@ -112,7 +112,7 @@ interface CurrentSettings { renderSettings: RenderSettings;
  * - LightingSystemRenderer: 光源効果システム
  * - ReflectionRenderer: 反射効果処理
  * - BackgroundEffectRenderer: 背景環境効果
- * - PostProcessingRenderer: ポストプロセッシング効果
+ * -, PostProcessingRenderer: ポストプロセッシング効果
  */
 export class EnhancedEffectManager extends EffectManager { private effectController: EnhancedEffectController
     private apiManager: EffectApiManager;
@@ -122,7 +122,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     private backgroundRenderer: BackgroundEffectRenderer;
     private postProcessingRenderer: PostProcessingRenderer;
     private accessibilityIntegrator: AccessibilityEffectIntegrator | null;
-    private accessibilityEnabled: boolean;
+    private, accessibilityEnabled: boolean;
     constructor(canvas: Canvas) {
 
         super(canvas);
@@ -185,7 +185,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     public addSlideTransition(duration: number, direction: string = 'left', easing: string = 'easeInOut): string { ''
         return this.apiManager.addSlideTransition(duration, direction, easing); }
 
-    public addZoomTransition(duration: number, zoomType: string = 'in', center: { x: number; y: number ) | null = null): string {''
+    public addZoomTransition(duration: number, zoomType: string = 'in', center: { x: number;, y: number ) | null = null): string {''
         return this.apiManager.addZoomTransition(duration, zoomType, center }
 
     public addWipeTransition(duration: number, pattern: string = 'horizontal', direction: string = 'left): string { return this.apiManager.addWipeTransition(duration, pattern, direction); }

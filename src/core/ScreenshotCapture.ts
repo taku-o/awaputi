@@ -3,7 +3,7 @@
  * Canvasキャプチャ、画像フォーマット変換、品質・サイズ最適化を行う
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 export class ScreenshotCapture {'
 
@@ -13,20 +13,20 @@ export class ScreenshotCapture {'
         // 設定
         this.config = {''
             defaultFormat: 'png';
-            quality: {
+           , quality: {
                 high: 0.92;
-                medium: 0.8;
+               , medium: 0.8;
     }
                 low: 0.6 }
             };
             maxWidth: 1200;
             maxHeight: 630;
-            compression: {
+           , compression: {
                 png: { quality: 1.0 };
                 jpeg: { quality: 0.8 };
                 webp: { quality: 0.8 };
             optimization: { enabled: true;
-                targetSizeKB: 500, // 500KB以下に最適化;
+               , targetSizeKB: 500, // 500KB以下に最適化;
                 maxAttempts: 3 ,}
         };
         // キャプチャ状態
@@ -41,7 +41,7 @@ export class ScreenshotCapture {'
             totalTime: 0;
             averageTime: 0;
             totalSize: 0;
-            averageSize: 0 ,};
+           , averageSize: 0 ,};
         // オーバーレイ機能 (Task, 6);
         this.overlayEnabled = true;
         this.screenshotOverlay = null;
@@ -57,8 +57,7 @@ export class ScreenshotCapture {'
      */
     async captureGameCanvas(options = { ) {'
         try {'
-            if(this.capturing) {'
-                ';
+            if(this.capturing) {', ';
 
             }
 
@@ -71,15 +70,14 @@ export class ScreenshotCapture {'
                 quality: options.quality || 'high';
                 maxWidth: options.maxWidth || this.config.maxWidth);
                 maxHeight: options.maxHeight || this.config.maxHeight);
-                optimize: options.optimize !== false,);
+               , optimize: options.optimize !== false,);
                 filename: options.filename || this.generateFilename();
-                includeUI: options.includeUI !== false;
+               , includeUI: options.includeUI !== false;
             },
             
             // ゲームCanvasの取得
             const canvas = this.getGameCanvas();''
-            if(!canvas) {'
-                ';
+            if(!canvas) {', ';
 
             }
 
@@ -99,7 +97,7 @@ export class ScreenshotCapture {'
                 format: captureOptions.format;
                 size: screenshotData.size;
                 width: screenshotData.width;
-                height: screenshotData.height;
+               , height: screenshotData.height;
                 captureTime ,};
             
             this.captureHistory.unshift(captureInfo);
@@ -128,8 +126,7 @@ export class ScreenshotCapture {'
     async captureRegion(x, y, width, height, options = { ) {
         try {
             const canvas = this.getGameCanvas();''
-            if(!canvas) {'
-                ';
+            if(!canvas) {', ';
 
             }
 
@@ -145,8 +142,7 @@ export class ScreenshotCapture {'
             width = Math.min(width, canvasWidth - x);
             height = Math.min(height, canvasHeight - y);
 
-            if(width <= 0 || height <= 0) {'
-                ';
+            if(width <= 0 || height <= 0) {', ';
 
             }
 
@@ -168,7 +164,7 @@ export class ScreenshotCapture {'
                 quality: 'high';
                 maxWidth: this.config.maxWidth;
                 maxHeight: this.config.maxHeight;
-                optimize: true,
+               , optimize: true,
                 ...options,
                 filename: options.filename || this.generateFilename('region ,};
             
@@ -371,7 +367,7 @@ export class ScreenshotCapture {'
                 width: targetCanvas.width;
                 height: targetCanvas.height;
                 filename: options.filename;
-                optimized: options.optimize && imageData.optimized, };
+               , optimized: options.optimize && imageData.optimized, };
                 originalSize: imageData.originalSize || imageData.size }
             } catch (error) {
             this.handleError('SCREENSHOT_CREATION_FAILED', error, options);
@@ -424,8 +420,7 @@ export class ScreenshotCapture {'
      */
     async createPNG(canvas) { return new Promise((resolve, reject) => { 
             canvas.toBlob(async (blob) => {''
-                if(!blob) {'
-                    ';
+                if(!blob) {', ';
 
                 }
 
@@ -441,7 +436,7 @@ export class ScreenshotCapture {'
                         blob: blob;
                         url: url);
                         size: blob.size);
-                        optimized: false;
+                       , optimized: false;
                     ), }
 
                 } catch (error) {
@@ -457,8 +452,7 @@ export class ScreenshotCapture {'
      */
     async createJPEG(canvas, quality) { return new Promise((resolve, reject) => { '
             canvas.toBlob(async (blob) => {''
-                if(!blob) {'
-                    ';
+                if(!blob) {', ';
 
                 }
 
@@ -474,7 +468,7 @@ export class ScreenshotCapture {'
                         blob: blob;
                         url: url);
                         size: blob.size);
-                        optimized: false;
+                       , optimized: false;
                     ), }
 
                 } catch (error) {
@@ -497,8 +491,7 @@ export class ScreenshotCapture {'
             ';
 
             canvas.toBlob(async (blob) => {  ''
-                if(!blob) {'
-                    ';
+                if(!blob) {', ';
 
                 }
 
@@ -514,7 +507,7 @@ export class ScreenshotCapture {'
                         blob: blob;
                         url: url);
                         size: blob.size);
-                        optimized: false;
+                       , optimized: false;
                     ), }
 
                 } catch (error) {
@@ -808,7 +801,7 @@ export class ScreenshotCapture {'
                     try { // ここで重い画像処理を実行
                         const result = {
                             processed: true;
-                            timestamp: Date.now( };
+                           , timestamp: Date.now( };
                         
                         self.postMessage({ success: true, data: result ,} catch (error) { }
 
@@ -896,8 +889,7 @@ export class ScreenshotCapture {'
      */
     async queueCapture(options = { ) {
         return new Promise((resolve, reject) => { ''
-            if(this.captureQueue.length >= this.maxQueueSize) {'
-                ';
+            if(this.captureQueue.length >= this.maxQueueSize) {', ';
 
             }
 
@@ -954,12 +946,12 @@ export class ScreenshotCapture {'
             return { captureHistory: {
                     count: this.captureHistory.length;
                     totalSizeBytes: totalSize;
-                    totalSizeKB: Math.round(totalSize / 1024), };
+                   , totalSizeKB: Math.round(totalSize / 1024), };
                     totalSizeMB: Math.round(totalSize / (1024 * 1024); }
                 },
                 queue: { size: this.captureQueue ? this.captureQueue.length : 0;
                     maxSize: this.maxQueueSize || 0;
-                    isProcessing: this.isProcessingQueue || false };
+                   , isProcessing: this.isProcessingQueue || false };
                 stats: { ...this.stats;
                     memoryEfficiency: this.stats.totalSize > 0 ?   : undefined
                         Math.round((this.stats.successes / this.stats.totalSize) * 1024) : 0 

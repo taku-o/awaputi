@@ -3,15 +3,15 @@
  * Issue #131 対応
  */
 
-import { promises as fs } from 'fs';''
+import { promises, as fs  } from 'fs';''
 import path from 'path';''
-import { execSync } from 'child_process';
+import { execSync  } from 'child_process';
 
 // Type definitions
 interface BackupMetadata { gitBranch: string,
     gitCommit: string;
     nodeVersion: string;
-    platform: NodeJS.Platform ,}
+   , platform: NodeJS.Platform ,}
 
 interface BackupFileInfo { originalPath: string;
     relativePath: string;
@@ -19,7 +19,7 @@ interface BackupFileInfo { originalPath: string;
     size: number;
     modifiedTime: Date;
     backupTime: Date;
-    checksum: string }
+   , checksum: string }
 
 interface BackupOperation { timestamp: Date;
     [key: string]: any, }
@@ -30,7 +30,7 @@ interface BackupSession { id: string,
     backupDir: string;
     files: BackupFileInfo[];
     operations: BackupOperation[];
-    metadata: BackupMetadata
+   , metadata: BackupMetadata
     ,}
 ';
 
@@ -54,7 +54,7 @@ interface BackupSessionInfo { id: string,
     startTime: Date | string;
     endTime?: Date | string;
     fileCount: number;
-    operationCount: number ,}
+   , operationCount: number ,}
 ';
 
 interface VerificationResult { file: string,''
@@ -66,7 +66,7 @@ interface VerificationResult { file: string,''
 export class BackupManager {
     private backupRoot: string;
     private currentBackupId: string | null;
-    private backups: Map<string, BackupSession>;
+    private, backups: Map<string, BackupSession>;
 
     constructor() {
 ';
@@ -92,11 +92,11 @@ export class BackupManager {
             backupDir: backupDir;
             files: [];
             operations: [];
-            metadata: {
+           , metadata: {
                 gitBranch: this.getCurrentGitBranch();
                 gitCommit: this.getCurrentGitCommit();
                 nodeVersion: process.version;
-                platform: process.platform ,}
+               , platform: process.platform ,}
         };
 ;
         this.backups.set(this.currentBackupId, session);
@@ -112,8 +112,7 @@ export class BackupManager {
      * ファイルの完全バックアップを作成
      */
     public async createFullBackup(filePaths: string[]): Promise<BackupResult[]> { ''
-        if(!this.currentBackupId) {'
-            ';
+        if(!this.currentBackupId) {', ';
 
         }
 
@@ -122,8 +121,7 @@ export class BackupManager {
 ';
 
         const session = this.backups.get(this.currentBackupId);''
-        if(!session) {'
-            ';
+        if(!session) {', ';
 
         }
 
@@ -145,7 +143,7 @@ export class BackupManager {
             } catch (error) { results.push({ )'
                     file: filePath, ')';
                     status: 'failed' );
-                    error: error instanceof Error ? error.message : String(error ,});
+                   , error: error instanceof Error ? error.message : String(error ,});
             }
         }
 
@@ -178,7 +176,7 @@ export class BackupManager {
             size: stats.size;
             modifiedTime: stats.mtime;
             backupTime: new Date();
-            checksum: await this.calculateChecksum(filePath), };
+           , checksum: await this.calculateChecksum(filePath), };
 
         return backupInfo;
     }
@@ -235,12 +233,12 @@ export class BackupManager {
             } catch (error) { results.push({ )'
                     file: fileInfo.originalPath, ')';
                     status: 'failed' );
-                    error: error instanceof Error ? error.message : String(error ,});
+                   , error: error instanceof Error ? error.message : String(error ,});
                 ';
 
                 console.error(`✗ Failed to restore: ${ fileInfo.relativePath}`},' }'
 
-                console.error(`  Error: ${error instanceof Error ? error.message : String(error})`');
+                console.error(`  Error: ${error, instanceof Error ? error.message : String(error})`');
             }
         }
 
@@ -334,7 +332,7 @@ export class BackupManager {
                             name: metadata.name;
                             startTime: metadata.startTime);
                             endTime: metadata.endTime);
-                            fileCount: metadata.files, }
+                           , fileCount: metadata.files, }
                             operationCount: metadata.operations? .length || 0); }
                     } catch (error) { : undefined 
                         console.warn(`Could not read metadata for backup: ${dir.name,}`);
@@ -367,7 +365,7 @@ export class BackupManager {
                 deletedCount++; }
                 console.log(`Deleted, old backup: ${session.id}`});
             } catch (error) {
-                console.error(`Failed, to delete, backup ${session.id}: ${error, instanceof Error ? error.message : String(error})`);
+                console.error(`Failed, to delete, backup ${session.id}: ${error, instanceof, Error ? error.message : String(error})`);
             }
         }
 
@@ -422,7 +420,7 @@ export class BackupManager {
                 results.push({'
                     file: fileInfo.relativePath,)';
                     status: isValid ? 'valid' : 'corrupted');
-                    checksum: currentChecksum,);
+                   , checksum: currentChecksum,);
                     expectedChecksum: fileInfo.checksum);
         ,}
 
@@ -431,7 +429,7 @@ export class BackupManager {
             } catch (error) { results.push({)'
                     file: fileInfo.relativePath,')';
                     status: 'missing'),
-                    error: error instanceof Error ? error.message : String(error),' '
+                    error: error instanceof Error ? error.message : String(error),', '
                 }');
             }
         }
@@ -441,7 +439,7 @@ export class BackupManager {
         const missingCount = results.filter(r => r.status === 'missing).length;
 
         console.log(`Backup, verification completed:);
-  Valid: ${validCount})'
+ , Valid: ${validCount})'
   Corrupted: ${corruptedCount});''
   Missing: ${missingCount}`'});
         return results;

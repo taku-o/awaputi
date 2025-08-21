@@ -14,12 +14,12 @@
  * Created: Phase G.4 (Issue #103)
  */
 
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface VisualFeedbackManager { config: FeedbackSystemConfig,
     userPreferences: UserPreferences;
-    feedbackElements: Map<string, HTMLElement>,
+   , feedbackElements: Map<string, HTMLElement>,
     gameEngine: GameEngine;
     audioAccessibilityManager: AudioAccessibilityManager;
     feedbackContainer: HTMLElement;
@@ -27,7 +27,7 @@ export interface VisualFeedbackManager { config: FeedbackSystemConfig,
     canvasContext: CanvasRenderingContext2D;
     audioContext: AudioContext;
     analyser: AnalyserNode;
-    dataArray: Uint8Array
+   , dataArray: Uint8Array
     ,}
 
 export interface FeedbackSystemConfig { enabled: boolean;
@@ -35,38 +35,38 @@ export interface FeedbackSystemConfig { enabled: boolean;
     positioning: PositioningConfig;
     accessibility: AccessibilityConfig;
     performance: PerformanceConfig;
-    animations: AnimationSystemConfig
+   , animations: AnimationSystemConfig
     }
 
 export interface PositioningConfig { screenEdges: boolean;
     gameArea: boolean;
     customPositions: boolean;
-    relativeToViewport: boolean }
+   , relativeToViewport: boolean }
 
 export interface AccessibilityConfig { respectReducedMotion: boolean;
     highContrast: boolean;
     alternativeText: boolean;
     audioFeedback: boolean;
-    keyboardNavigation: boolean }
+   , keyboardNavigation: boolean }
 
 export interface PerformanceConfig { maxConcurrentEffects: number;
     frameRate: number;
     gpuAcceleration: boolean;
-    memoryThreshold: number }
+   , memoryThreshold: number }
 
 export interface AnimationSystemConfig { defaultDuration: number;
     easingFunction: string;
     hardwareAcceleration: boolean;
-    batchUpdates: boolean }
+   , batchUpdates: boolean }
 
 export interface UserPreferences { enabled: boolean;
     globalIntensity: number;
     preferredPatterns: EffectPattern[];
-    colorPreferences: Map<string, string>,
+   , colorPreferences: Map<string, string>,
     reducedMotion: boolean;
     audioVisualization: boolean;
     gameEventFeedback: boolean;
-    customMappings: Map<string, EventMapping>,
+   , customMappings: Map<string, EventMapping>,
     accessibilitySettings: UserAccessibilitySettings
     ,}
 
@@ -74,7 +74,7 @@ export interface UserAccessibilitySettings { screenReader: boolean;
     highContrast: boolean;
     largeText: boolean;
     reducedAnimation: boolean;
-    audioDescriptions: boolean }
+   , audioDescriptions: boolean }
 
 export interface GameEngine { audioManager?: AudioManager;
     canvasElement?: HTMLCanvasElement;
@@ -89,17 +89,17 @@ export interface AudioManager { audioContext?: AudioContext;
 
 export interface AudioAccessibilityManager { isEnabled: () => boolean,
     getVolume: () => number;
-    setVolume: (volume: number) => void ,}
+    setVolume: (volum;e: number) => void ,}
 }
 ';
 
-export interface EventSystem { addEventListener: (event: string, handler: (data: any) => void) => void,''
-    removeEventListener: (event: string, handler: (data: any) => void') => void ,}'
+export interface EventSystem { addEventListener: (even;t: string, handler: (dat;a: any) => void) => void,''
+    removeEventListener: (even;t: string, handler: (dat;a: any) => void') => void ,}'
 }
 
 export interface EventMapping { effectType: EffectPattern,
     color: string;
-    intensity: number;
+   , intensity: number;
     duration?: number;
     position?: PositionPreference;
     conditions?: TriggerCondition[];
@@ -107,54 +107,54 @@ export interface EventMapping { effectType: EffectPattern,
 
 export interface TriggerCondition { property: string,
     operator: ComparisonOperator;
-    value: any ,}
+   , value: any ,}
 
 export interface PositionPreference { area: PositionArea;
     alignment: Alignment;
-    offset: Offset
+   , offset: Offset
     }
 
 export interface Offset { x: number;
-    y: number }
+   , y: number }
 
 export interface EdgeFeedbackElement { element: HTMLElement;
     edge: EdgeType;
     isActive: boolean;
-    lastUpdate: number }
+   , lastUpdate: number }
 
 export interface GameAreaFeedback { overlay: HTMLElement;
     gameCanvas: HTMLElement;
     gameContainer: HTMLElement;
-    isActive: boolean }
+   , isActive: boolean }
 
 export interface VisualizationCanvas { canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     width: number;
     height: number;
     frameRate: number;
-    isActive: boolean }
+   , isActive: boolean }
 
 export interface AudioAnalysisSetup { audioContext: AudioContext;
     analyser: AnalyserNode;
     dataArray: Uint8Array;
     connected: boolean;
-    sampleRate: number }
+   , sampleRate: number }
 
 export interface ConfigurationState { config: FeedbackSystemConfig;
     userPreferences: SerializableUserPreferences;
     elements: ElementsState;
     audio: AudioState;
-    performance: PerformanceState
+   , performance: PerformanceState
     }
 
 export interface SerializableUserPreferences { enabled: boolean;
     globalIntensity: number;
     preferredPatterns: EffectPattern[];
-    colorPreferences: Array<[string, string]>,
+   , colorPreferences: Array<[string, string]>,
     reducedMotion: boolean;
     audioVisualization: boolean;
     gameEventFeedback: boolean;
-    customMappings: Array<[string, EventMapping]>,
+   , customMappings: Array<[string, EventMapping]>,
     accessibilitySettings: UserAccessibilitySettings
     ,}
 
@@ -162,30 +162,30 @@ export interface ElementsState { containerCreated: boolean;
     visualizationCanvasCreated: boolean;
     edgeElementsCount: number;
     gameAreaSetup: boolean;
-    totalElements: number }
+   , totalElements: number }
 
 export interface AudioState { contextInitialized: boolean;
     analyserCreated: boolean;
     gameAudioConnected: boolean;
-    sampleRate: number }
+   , sampleRate: number }
 
 export interface PerformanceState { memoryUsage: number;
     activeElements: number;
     frameRate: number;
-    lastUpdate: number }
+   , lastUpdate: number }
 
 export interface ConfigUpdateResult { success: boolean;
     changedProperties: string[];
-    errors: Error[]
+   , errors: Error[]
     }
 
 export interface ValidationResult { isValid: boolean;
-    issues: ValidationIssue[]
+   , issues: ValidationIssue[]
     }
 
 export interface ValidationIssue { property: string;
     message: string;
-    severity: IssueSeverity
+   , severity: IssueSeverity
     }
 ';
 // 列挙型
@@ -203,18 +203,18 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = { enabled: false,
     preferredPatterns: ['flash', 'glow', 'pulse'],
     colorPreferences: new Map();
     reducedMotion: false;
-    audioVisualization: true,
+   , audioVisualization: true,
     gameEventFeedback: true,
     customMappings: new Map()';
-        BACKGROUND: 'rgba(0, 0, 0, 0.8)',
+       , BACKGROUND: 'rgba(0, 0, 0, 0.8)',
         BORDER_RADIUS: '8px',
         OPACITY: '0.8';
-        Z_INDEX: 10000 ,}
+       , Z_INDEX: 10000 ,}
 } as const;
 export const AUDIO_ANALYSIS_CONFIG = { FFT_SIZE: 256,
     SAMPLE_RATE: 44100;
     FREQUENCY_BINS: 128;
-    SMOOTHING_TIME_CONSTANT: 0.8 ,} as const;
+   , SMOOTHING_TIME_CONSTANT: 0.8 ,} as const;
 export const CONFIG_STORAGE_KEY = 'visualFeedback_preferences';''
 export const CONFIG_VERSION = '1.0.0';
 
@@ -253,7 +253,7 @@ export function createEdgeStyles(edge: EdgeType): string { const baseStyles = `
         position: absolute;
         background: transparent;
         opacity: 0;
-        transition: opacity 0.1s ease;
+       , transition: opacity 0.1s ease;
     `;
     
     return baseStyles + EDGE_STYLES[edge]; }
@@ -265,7 +265,7 @@ export function serializeUserPreferences(preferences: UserPreferences): Serializ
         reducedMotion: preferences.reducedMotion;
         audioVisualization: preferences.audioVisualization;
         gameEventFeedback: preferences.gameEventFeedback;
-        customMappings: Array.from(preferences.customMappings.entries(), };
+       , customMappings: Array.from(preferences.customMappings.entries(), };
         accessibilitySettings: preferences.accessibilitySettings }
     }
 
@@ -276,7 +276,7 @@ export function deserializeUserPreferences(data: SerializableUserPreferences): U
         reducedMotion: data.reducedMotion;
         audioVisualization: data.audioVisualization;
         gameEventFeedback: data.gameEventFeedback;
-        customMappings: new Map(data.customMappings), };
+       , customMappings: new Map(data.customMappings), };
         accessibilitySettings: data.accessibilitySettings }
     }
 
@@ -286,7 +286,7 @@ export class FeedbackConfigManager {
     private mainController: VisualFeedbackManager;
     private config: FeedbackSystemConfig;
     private userPreferences: UserPreferences;
-    private feedbackElements: Map<string, HTMLElement>;
+    private, feedbackElements: Map<string, HTMLElement>;
     private gameEngine: GameEngine;
     private audioAccessibilityManager: AudioAccessibilityManager;
     // DOM要素
@@ -296,7 +296,7 @@ export class FeedbackConfigManager {
     // Audio API
     private audioContext: AudioContext | null = null;
     private analyser: AnalyserNode | null = null;
-    private dataArray: Uint8Array | null = null;
+    private, dataArray: Uint8Array | null = null;
 
     constructor(mainController: VisualFeedbackManager) {
         this.mainController = mainController;
@@ -373,7 +373,7 @@ export class FeedbackConfigManager {
                 top: 0;
                 left: 0;
                 width: 100vw;
-                height: 100vh;
+               , height: 100vh;
                 pointer-events: none,
                 z-index: 9999,
                 overflow: hidden;
@@ -447,15 +447,14 @@ export class FeedbackConfigManager {
             width: 100%;
             height: 100%;
             background: transparent;
-            opacity: 0;
+           , opacity: 0;
             border-radius: 8px,
             transition: all 0.2s ease;
         `;
         
         // ゲームキャンバスの親要素に追加
         const gameContainer = gameCanvas.parentElement;''
-        if(gameContainer && gameContainer.style.position !== 'relative'') {'
-            ';
+        if(gameContainer && gameContainer.style.position !== 'relative'') {', ';
 
         }
 
@@ -480,7 +479,7 @@ export class FeedbackConfigManager {
         this.visualCanvas.id = 'audio-visualization-canvas';
         this.visualCanvas.style.cssText = `;
             position: fixed;
-            bottom: ${CANVAS_CONFIG.POSITION.BOTTOM}px;
+           , bottom: ${CANVAS_CONFIG.POSITION.BOTTOM}px;
             right: ${CANVAS_CONFIG.POSITION.RIGHT}px;
             width: ${CANVAS_CONFIG.DEFAULT_WIDTH}px;
             height: ${CANVAS_CONFIG.DEFAULT_HEIGHT}px;
@@ -570,12 +569,11 @@ export class FeedbackConfigManager {
     updateConfig(newConfig: Partial<FeedbackSystemConfig>): ConfigUpdateResult { const result: ConfigUpdateResult = {
             success: false;
             changedProperties: [];
-            errors: [] };
+           , errors: [] };
         ';
 
         try {'
-            if(!newConfig) {'
-                ';
+            if(!newConfig) {', ';
 
             }
 
@@ -669,20 +667,20 @@ export class FeedbackConfigManager {
     getConfigurationState(): ConfigurationState { return { }
             config: { ...this.config;
             userPreferences: serializeUserPreferences(this.userPreferences);
-            elements: { containerCreated: !!this.feedbackContainer;
-                visualizationCanvasCreated: !!this.visualCanvas,
+           , elements: { containerCreated: !!this.feedbackContainer;
+               , visualizationCanvasCreated: !!this.visualCanvas,
                 edgeElementsCount: Array.from(this.feedbackElements.keys())'';
                     .filter(key => key.startsWith('edge-)).length,
                 gameAreaSetup: this.feedbackElements.has('game-area);
-                totalElements: this.feedbackElements.size ,}
+               , totalElements: this.feedbackElements.size ,}
             };
             audio: { contextInitialized: !!this.audioContext;
                 analyserCreated: !!this.analyser;
-                gameAudioConnected: !!(this.gameEngine? .audioManager?.audioContext), : undefined
+               , gameAudioConnected: !!(this.gameEngine? .audioManager?.audioContext), : undefined
                 sampleRate: this.audioContext? .sampleRate || 0 ,}, : undefined
             performance: { memoryUsage: 0, // 実際の実装では performance.memory を使用
                 activeElements: this.feedbackElements.size;
-                frameRate: 60, // 実際の実装では測定値を使用;
+               , frameRate: 60, // 実際の実装では測定値を使用;
                 lastUpdate: Date.now( ,}
         }
 

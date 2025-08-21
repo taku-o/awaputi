@@ -12,7 +12,7 @@ interface LayoutConfig { padding: number,
     dialogPadding: number;
     buttonHeight: number;
     buttonWidth: number;
-    sectionSpacing: number ,}
+   , sectionSpacing: number ,}
 
 /**
  * Color theme interface
@@ -27,7 +27,7 @@ interface ColorTheme { background: string;
     text: string;
     textSecondary: string;
     border: string;
-    overlay: string }
+   , overlay: string }
 
 /**
  * Bounds interface
@@ -35,19 +35,19 @@ interface ColorTheme { background: string;
 interface Bounds { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 /**
  * Button position interface
  */
 interface ButtonPosition { x: number;
-    width: number }
+   , width: number }
 
 /**
  * Text metrics interface
  */
 interface TextMetrics { width: number;
-    height: number }
+   , height: number }
 
 /**
  * Text options interface
@@ -82,7 +82,7 @@ interface ProgressBarOptions { backgroundColor?: string;
 interface BackupStatus { lastBackup?: string | number | Date;
     backupCount: number;
     totalSize: number;
-    autoBackupEnabled: boolean ,}
+   , autoBackupEnabled: boolean ,}
 
 /**
  * Export options interface
@@ -108,7 +108,7 @@ export class UILayoutManager {
     private ctx: CanvasRenderingContext2D | null = null';
 
     constructor(''';
-            background: '#0f0f1a',
+           , background: '#0f0f1a',
             cardBackground: '#1a1a2e',
             primary: '#4a90e2',
             secondary: '#6bb0ff',
@@ -183,7 +183,7 @@ export class UILayoutManager {
 export, class UIRenderer {
     private, layoutManager: UILayoutManager;
     private, canvas: HTMLCanvasElement | null = null;
-    ctx: CanvasRenderingContext2D | null = null;
+   , ctx: CanvasRenderingContext2D | null = null;
     constructor(layoutManager: UILayoutManager) {
         this.layoutManager = layoutManager }
 
@@ -301,7 +301,7 @@ export, class UIRenderer {
         // Text
         if(showText && text) { this.drawText(text, x + width / 2, y + height / 2, {)
                 fontSize: 12)';
-                color: colors.text,
+               , color: colors.text,
                 align: 'center',
                 baseline: 'middle', }
                 bold: true); }
@@ -351,7 +351,7 @@ export, class UIRenderer {
 
         // Title
         this.drawText(title, bounds.x + padding, bounds.y + 30, { fontSize: 24)
-            color: colors.text,
+           , color: colors.text,
             align: 'left',
             baseline: 'middle',')';
             bold: true)');
@@ -359,7 +359,7 @@ export, class UIRenderer {
         // Close button
         this.drawText('×', bounds.x + bounds.width - 30, bounds.y + 30, {)
             fontSize: 20)';
-            color: colors.textSecondary,
+           , color: colors.textSecondary,
             align: 'center',
             baseline: 'middle',')';
             bold: true)' ,}'
@@ -394,7 +394,7 @@ export, class UIRenderer {
         // Status text
         if(text) { this.drawText(text, x + 20, y, {)
                 fontSize: 12)';
-                color: colors.textSecondary,
+               , color: colors.textSecondary,
                 align: 'left',' }
 
                 baseline: 'top'); }
@@ -441,14 +441,14 @@ export, class UIRenderer {
  }
 
         this.ctx.font = `${fontSize}px Arial, sans-serif`;''
-        const words = text.split(' '');
+        const words = text.split(', '');
 
         const lines: string[] = [],
         let currentLine = '';
 
         for(const, word of, words) {'
 
-            const testLine = currentLine + (currentLine ? ' ' : '') + word;
+            const testLine = currentLine + (currentLine ? ', ' : '') + word;
             const metrics = this.ctx.measureText(testLine);
 
             if (metrics.width > maxWidth && currentLine) {
@@ -468,7 +468,7 @@ export, class UIRenderer {
  */
 export class ViewRenderer {
     private uiRenderer: UIRenderer;
-    private layoutManager: UILayoutManager;
+    private, layoutManager: UILayoutManager;
     constructor(uiRenderer: UIRenderer, layoutManager: UILayoutManager) {
 
         this.uiRenderer = uiRenderer
@@ -497,14 +497,14 @@ export class ViewRenderer {
 ';
         // Title
         this.uiRenderer.drawText('Backup Status', x + padding, y + padding, { fontSize: 18)
-            bold: true);
+           , bold: true);
         // Last backup
         const lastBackupText = backupStatus.lastBackup '';
             ? new Date(backupStatus.lastBackup).toLocaleString(''';
             : 'Never';
          })
         this.uiRenderer.drawText(`Last Backup: ${lastBackupText}`, x + padding, y + padding + 25, { fontSize: 14)
-            color: colors.textSecondary);
+           , color: colors.textSecondary);
         // Backup count and size
         const sizeText = this.formatFileSize(backupStatus.totalSize }
         this.uiRenderer.drawText(`${backupStatus.backupCount} backups (${sizeText}})`, x + padding, y + padding + 45, { fontSize: 14,
@@ -531,7 +531,7 @@ export class ViewRenderer {
         this.uiRenderer.drawText('Quick Actions', x + padding, y + padding, { fontSize: 18,)'
             bold: true)');
         // Action buttons
-        const actions: ActionDef[] = [' ,}'
+        const, actions: ActionDef[] = [' ,}'
 
             { text: 'Create Backup', variant: 'primary' ,},''
             { text: 'Export Data', variant: 'secondary' ,},''
@@ -577,7 +577,7 @@ export class ViewRenderer {
             bold: true)');
 ';
         // Format options
-        const formats: string[] = ['JSON', 'CSV', 'XML'];
+        const, formats: string[] = ['JSON', 'CSV', 'XML'];
         formats.forEach((format, index) => { 
             const itemY = y + padding + 40 + index * 30;
             const isSelected = selectedItem === index;
@@ -599,5 +599,5 @@ export class ViewRenderer {
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);
 
-        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ' ' + sizes[i];''
+        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i];''
 }

@@ -4,11 +4,11 @@
  * LocalizationManager、OptimizedTranslationLoader、
  * I18nPerformanceMonitor、I18nRenderOptimizerの統合動作テスト
  */
-import { jest } from '@jest/globals';
-import { LocalizationManager } from '../../src/core/LocalizationManager';
-import { OptimizedTranslationLoader } from '../../src/core/i18n/OptimizedTranslationLoader';
-import { I18nPerformanceMonitor } from '../../src/core/i18n/I18nPerformanceMonitor';
-import { I18nRenderOptimizer } from '../../src/core/i18n/I18nRenderOptimizer';
+import { jest  } from '@jest/globals';
+import { LocalizationManager  } from '../../src/core/LocalizationManager';
+import { OptimizedTranslationLoader  } from '../../src/core/i18n/OptimizedTranslationLoader';
+import { I18nPerformanceMonitor  } from '../../src/core/i18n/I18nPerformanceMonitor';
+import { I18nRenderOptimizer  } from '../../src/core/i18n/I18nRenderOptimizer';
 describe('Performance Optimization Integration Tests', () => {
     let localizationManager: any,
     let mockDOM: any,
@@ -42,7 +42,7 @@ describe('Performance Optimization Integration Tests', () => {
         global.window = {
             matchMedia: jest.fn().mockReturnValue({
                 matches: false;);
-        addListener: jest.fn(),
+       , addListener: jest.fn(),
             }),
             addEventListener: jest.fn(),
             removeEventListener: jest.fn(),
@@ -61,7 +61,7 @@ describe('Performance Optimization Integration Tests', () => {
             })),
             fetch: jest.fn().mockResolvedValue({
                 ok: true;);
-                json: jest.fn(').mockResolvedValue({
+               , json: jest.fn(').mockResolvedValue({
                     'test.key': 'Test Value'),
                 headers: {
                     get: jest.fn(').mockReturnValue('application/json'),

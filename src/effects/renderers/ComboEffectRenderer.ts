@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * Combo tier configuration interface
@@ -10,7 +10,7 @@ interface ComboTier { minCombo: number,
     colors: string[];
     effects: string[];
     screenEffects: string[];
-    priority: number ,}
+   , priority: number ,}
 
 /**
  * Combo tiers interface
@@ -28,7 +28,7 @@ interface ComboTierWithKey extends ComboTier { key: string }
  */
 interface ComboBreakEffect { fadeParticleCount: number,
     fadeColor: string;
-    fadeDuration: number ,}
+   , fadeDuration: number ,}
 
 /**
  * Particle interface
@@ -45,13 +45,13 @@ interface Particle { x: number;
     gravity: number;
     friction: number;
     bounce?: number;
-    type: string;
+   , type: string;
     rotation?: number;
     rotationSpeed?: number;
     scale?: number;
     scaleSpeed?: number;
     maxTrailLength?: number; }
-    trail?: Array<{ x: number; y: number }>;
+    trail?: Array<{ x: number;, y: number }>;
     pulseSpeed?: number;
 }
 
@@ -82,7 +82,7 @@ export class ComboEffectRenderer {
     private comboTiers: ComboTiers;
     private effectQueue: any[];
     private isProcessingQueue: boolean;
-    private comboBreakEffect: ComboBreakEffect';
+    private, comboBreakEffect: ComboBreakEffect';
 
     constructor(particleManager: ParticleManager) {
         this.particleManager = particleManager;
@@ -91,7 +91,7 @@ export class ComboEffectRenderer {
         this.comboTiers = {
             basic: { // 2-5コンボ
                 minCombo: 2;
-                maxCombo: 5,
+               , maxCombo: 5,
                 name: '基本',
                 particleCount: 8,
                 colors: ['#FFD700', '#FFA500],
@@ -102,16 +102,16 @@ export class ComboEffectRenderer {
             };
             enhanced: { // 6-10コンボ
                 minCombo: 6;
-                maxCombo: 10,
+               , maxCombo: 10,
                 name: '強化',
                 particleCount: 15,
                 colors: ['#FFD700', '#FFA500', '#FF8C00', '#FF4500],
                 effects: ['golden_particles', 'enhanced_sparkle', 'screen_flash'],
                 screenEffects: ['flash'];
-                priority: 7 ,};
+               , priority: 7 ,};
             spectacular: { // 11+コンボ
                 minCombo: 11;
-                maxCombo: Infinity,
+               , maxCombo: Infinity,
                 name: '絶大',
                 particleCount: 25,
                 colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],
@@ -126,7 +126,7 @@ export class ComboEffectRenderer {
         // コンボブレイク時の演出
         this.comboBreakEffect = { fadeParticleCount: 5,''
             fadeColor: '#666666';
-            fadeDuration: 800 ,};
+           , fadeDuration: 800 ,};
         console.log('[ComboEffectRenderer] 初期化完了'');
     }
     
@@ -463,8 +463,7 @@ export class ComboEffectRenderer {
             particle.type = 'star';
             particle.scale = 1.5;
             particle.scaleSpeed = -0.5;
-            particle.pulseSpeed = 5;)'
-            ');
+            particle.pulseSpeed = 5;)', ');
 
         }
 
@@ -634,7 +633,7 @@ export class ComboEffectRenderer {
     getPerformanceStats(): object { return { ''
             comboTiers: Object.keys(this.comboTiers).length;
             effectQueueLength: this.effectQueue.length;
-            isProcessingQueue: this.isProcessingQueue,
+           , isProcessingQueue: this.isProcessingQueue,
             availableEffects: ['';
                 'golden_particles', 'sparkle', 'enhanced_sparkle', ]';
                 'rainbow_burst', 'magical_explosion', 'combo_break'] };

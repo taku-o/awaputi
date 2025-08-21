@@ -22,23 +22,23 @@ export interface TriggerConfig { onHover: boolean,
     onRequest: boolean;
     onFirstVisit: boolean;
     onInactivity: number;
-    onMultipleErrors: number ,}
+   , onMultipleErrors: number ,}
 
 export interface UserBehaviorTracking { errorCount: number;
     inactivityTimer: number | null;
     lastActivity: number;
     visitCount: number;
     stuckDetection: StuckDetectionData;
-    hoverTracking: HoverTrackingData
+   , hoverTracking: HoverTrackingData
     }
 
 export interface StuckDetectionData { sameElementClicks: number;
     lastClickedElement: HTMLElement | null;
-    timeThreshold: number }
+   , timeThreshold: number }
 
 export interface HoverTrackingData { currentElement: HTMLElement | null;
     hoverStartTime: number | null;
-    hoverThreshold: number }
+   , hoverThreshold: number }
 
 export interface TriggerContext { targetElement?: HTMLElement;
     duration?: number;
@@ -60,29 +60,29 @@ export interface SessionContext { sessionDuration: number,
     interactionCount: number;
     errorHistory: ErrorRecord[];
     userAgent: string;
-    viewport: ViewportInfo
+   , viewport: ViewportInfo
     ,}
 
 export interface ErrorRecord { timestamp: number;
     type: string;
     message: string;
     element?: HTMLElement;
-    resolved: boolean }
+   , resolved: boolean }
 
 export interface ViewportInfo { width: number;
     height: number;
-    devicePixelRatio: number;
+   , devicePixelRatio: number;
     orientation?: string }
 
 export interface TriggerCallback { (triggerType: TriggerType, context: TriggerContext): void ,}
 
-export interface EventListenerRegistry { hoverHandler?: (event: MouseEvent) => void;
-    hoverLeaveHandler?: (event: MouseEvent) => void;
-    focusHandler?: (event: FocusEvent) => void;
-    errorHandler?: (event: ErrorEvent | PromiseRejectionEvent) => void;
-    clickHandler?: (event: MouseEvent) => void;
-    activityHandler?: (event: Event) => void;
-    keyHandler?: (event: KeyboardEvent) => void;
+export interface EventListenerRegistry { hoverHandler?: (even;t: MouseEvent) => void;
+    hoverLeaveHandler?: (even;t: MouseEvent) => void;
+    focusHandler?: (even;t: FocusEvent) => void;
+    errorHandler?: (even;t: ErrorEvent | PromiseRejectionEvent) => void;
+    clickHandler?: (even;t: MouseEvent) => void;
+    activityHandler?: (even;t: Event) => void;
+    keyHandler?: (even;t: KeyboardEvent) => void;
     events?: string[]; ,}
 }
 
@@ -92,44 +92,44 @@ export interface TriggerStatistics { errorCount: number,
     inactivityDuration: number;
     triggersActive: string[];
     triggerHistory: TriggerHistoryEntry[];
-    sessionStats: SessionStatistics
+   , sessionStats: SessionStatistics
     ,}
 
 export interface TriggerHistoryEntry { timestamp: number;
     type: TriggerType;
     context: TriggerContext;
-    resolved: boolean }
+   , resolved: boolean }
 
 export interface SessionStatistics { startTime: number;
     duration: number;
-    triggerCount: Record<TriggerType, number>,
+   , triggerCount: Record<TriggerType, number>,
     averageResponseTime: number;
-    userEngagement: EngagementMetrics
+   , userEngagement: EngagementMetrics
     ,}
 
 export interface EngagementMetrics { mouseMovements: number;
     keystrokes: number;
     clicks: number;
     scrollEvents: number;
-    focusChanges: number }
+   , focusChanges: number }
 
 export interface TriggerSensitivity { hover: SensitivityLevel;
     focus: SensitivityLevel;
     stuck: SensitivityLevel;
     inactivity: SensitivityLevel;
-    error: SensitivityLevel
+   , error: SensitivityLevel
     }
 
 export interface AdaptiveTriggerConfig { enabled: boolean;
     learningRate: number;
     adaptationThreshold: number;
-    sensitivityAdjustment: TriggerSensitivity
+   , sensitivityAdjustment: TriggerSensitivity
     }
 
 export interface AnalyticsData { trigger_type: TriggerType;
     context: string;
     timestamp: number;
-    session_id: string;
+   , session_id: string;
     user_id?: string }
 
 // 列挙型
@@ -146,7 +146,7 @@ export const DEFAULT_TRIGGER_CONFIG: TriggerConfig = { onHover: true,
     onRequest: true;
     onFirstVisit: true;
     onInactivity: 5000;
-    onMultipleErrors: 3 ,} as const;
+   , onMultipleErrors: 3 ,} as const;
 ';
 
 export const INTERACTIVE_ELEMENTS = {;
@@ -164,15 +164,15 @@ export const TRIGGER_SENSITIVITY_THRESHOLDS = { hover: {
         low: 3000;
         medium: 2000;
         high: 1000;
-        adaptive: 1500 };
+       , adaptive: 1500 };
     stuck: { low: 5;
         medium: 3;
         high: 2;
-        adaptive: 3 };
+       , adaptive: 3 };
     inactivity: { low: 10000;
         medium: 5000;
         high: 2000;
-        adaptive: 5000 }
+       , adaptive: 5000 }
 } as const;
 ';
 
@@ -221,7 +221,7 @@ export function serializeTriggerContext(context: TriggerContext): string { const
             tagName: context.targetElement.tagName;
             id: context.targetElement.id;
             className: context.targetElement.className;
-            textContent: context.targetElement.textContent? .slice(0, 100); : undefined } : null
+           , textContent: context.targetElement.textContent? .slice(0, 100); : undefined } : null
     };
     return JSON.stringify(serializable);
 }
@@ -229,7 +229,7 @@ export function serializeTriggerContext(context: TriggerContext): string { const
 export class HelpTriggerManager {
     private triggers: TriggerConfig;
     private userBehavior: UserBehaviorTracking;
-    private triggerCallbacks: Map<string, TriggerCallback>;
+    private, triggerCallbacks: Map<string, TriggerCallback>;
     private activeListeners: Map<string, EventListenerRegistry>;
     
     private sessionContext: SessionContext;
@@ -237,7 +237,7 @@ export class HelpTriggerManager {
     private engagementMetrics: EngagementMetrics;
     private adaptiveConfig: AdaptiveTriggerConfig;
     private sessionId: string;
-    private sessionStartTime: number;
+    private, sessionStartTime: number;
     constructor() { ,}
         this.triggers = { ...DEFAULT_TRIGGER_CONFIG;
         this.triggerCallbacks = new Map();
@@ -249,9 +249,9 @@ export class HelpTriggerManager {
         
         this.userBehavior = { errorCount: 0,
             inactivityTimer: null;
-            lastActivity: Date.now(),
+           , lastActivity: Date.now(),
             visitCount: this.getVisitCount(''';
-                hover: 'adaptive',
+               , hover: 'adaptive',
                 focus: 'adaptive',
                 stuck: 'adaptive',
                 inactivity: 'adaptive',
@@ -286,7 +286,7 @@ export class HelpTriggerManager {
         window.addEventListener('resize', () => {  this.sessionContext.viewport = {
                 width: window.innerWidth;
                 height: window.innerHeight;
-                devicePixelRatio: window.devicePixelRatio || 1, }
+               , devicePixelRatio: window.devicePixelRatio || 1, }
                 orientation: screen.orientation? .type }
             };
     }
@@ -371,7 +371,7 @@ export class HelpTriggerManager {
 
             const errorRecord: ErrorRecord = {''
                 timestamp: Date.now()';
-                type: error.type || 'unhandledrejection',')';
+               , type: error.type || 'unhandledrejection',')';
                 message: 'message' in error ? error.message : String(error.reason), 
                 resolved: false ,}
             };
@@ -379,7 +379,7 @@ export class HelpTriggerManager {
 
             this.triggerHelp('error', { errorType: errorRecord.type)
                 errorCount: this.userBehavior.errorCount)';
-                immediate: true,
+               , immediate: true,
                 priority: 'high',')';
                 triggerSource: 'system');
             ';
@@ -418,7 +418,7 @@ export class HelpTriggerManager {
                 if(stuckData.sameElementClicks >= threshold) {''
                     this.triggerHelp('stuck', {)
                         targetElement: target)';
-                        clickCount: stuckData.sameElementClicks,
+                       , clickCount: stuckData.sameElementClicks,
                         priority: 'high',')';
                         triggerSource: 'adaptive');
             ,}
@@ -515,7 +515,7 @@ export class HelpTriggerManager {
                 this.triggerHelp('request', {'
                     targetElement: document.activeElement as HTMLElement,)';
                     priority: 'high')';
-                    userRequested: true,' }'
+                   , userRequested: true,' }'
 
                     triggerSource: 'user'); }
                 }
@@ -566,7 +566,7 @@ export class HelpTriggerManager {
         const historyEntry: TriggerHistoryEntry = { timestamp: Date.now(),
             type: triggerType;
             context: enhancedContext;
-            resolved: false ,};
+           , resolved: false ,};
         this.triggerHistory.push(historyEntry);
         
         // 履歴サイズを制限
@@ -681,8 +681,7 @@ export class HelpTriggerManager {
      */
     private sendAnalytics(data: AnalyticsData): void { try {
             // GameAnalyticsが利用可能な場合
-            if(window.gameAnalytics && window.gameAnalytics.trackEvent) {'
-                ';
+            if(window.gameAnalytics && window.gameAnalytics.trackEvent) {', ';
 
             }
 
@@ -690,8 +689,7 @@ export class HelpTriggerManager {
             }
             ';
             // カスタムアナリティクスエンドポイントが利用可能な場合
-            if(window.customAnalytics && window.customAnalytics.track) {'
-                ';
+            if(window.customAnalytics && window.customAnalytics.track) {', ';
 
             }
 
@@ -783,8 +781,7 @@ export class HelpTriggerManager {
                     document.removeEventListener('mouseover', listeners.hoverHandler); }
 
                 }''
-                if(listeners.hoverLeaveHandler) {'
-                    ';
+                if(listeners.hoverLeaveHandler) {', ';
 
                 }
 
@@ -793,8 +790,7 @@ export class HelpTriggerManager {
                 break;
 
             case 'focus':'';
-                if(listeners.focusHandler) {'
-                    ';
+                if(listeners.focusHandler) {', ';
 
                 }
 
@@ -814,8 +810,7 @@ export class HelpTriggerManager {
                 break;
 
             case 'stuck':'';
-                if(listeners.clickHandler) {'
-                    ';
+                if(listeners.clickHandler) {', ';
 
                 }
 
@@ -829,8 +824,7 @@ export class HelpTriggerManager {
                     }''
                 this.stopInactivityTimer()';
             case 'keyboard':')';
-                if(listeners.keyHandler) {'
-                    ';
+                if(listeners.keyHandler) {', ';
 
                 }
 
@@ -900,7 +894,7 @@ export class HelpTriggerManager {
             visitCount: this.userBehavior.visitCount;
             lastActivity: this.userBehavior.lastActivity;
             inactivityDuration: Date.now() - this.userBehavior.lastActivity;
-            triggersActive: Object.keys(this.triggers).filter(key => this.triggers[key, as keyof, TriggerConfig]);
+           , triggersActive: Object.keys(this.triggers).filter(key => this.triggers[key, as keyof, TriggerConfig]);
             triggerHistory: [...this.triggerHistory], };
             sessionStats: this.getSessionStatistics(); }
         }

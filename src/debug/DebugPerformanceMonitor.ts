@@ -4,52 +4,52 @@
 
 interface DebugInterface { debugPanel?: HTMLElement;
     accessibilityManager?: {
-        announceToScreenReader(message: string, priority: string): void ,}
+        announceToScreenReader(messag;e: string, priority: string): void ,}
 
 interface PerformanceMetric { timestamp: number,
     value: number ,}
 
 interface OperationCounts { panelSwitches: number;
     modalOpens: number;
-    settingsChanges: number;
+   , settingsChanges: number;
     [key: string]: number, }
 
 interface PerformanceThresholds { renderTimeWarning: number,
     renderTimeCritical: number;
     memoryWarning: number;
-    memoryCritical: number ,}
+   , memoryCritical: number ,}
 
 interface PerformanceMetrics { renderTime: PerformanceMetric[];
     updateTime: PerformanceMetric[];
     memoryUsage: PerformanceMetric[];
-    operationCounts: OperationCounts;
+   , operationCounts: OperationCounts;
     [key: string]: PerformanceMetric[] | OperationCounts, }
 
 interface MetricStats { current: number,
     average: number;
     min: number;
     max: number;
-    count: number ,}
+   , count: number ,}
 
 interface PerformanceStats { uptime: number;
     monitoringEnabled: boolean;
     operationCounts: OperationCounts;
-    currentMetrics: Record<string, MetricStats> }
+   , currentMetrics: Record<string, MetricStats> }
 
 interface ImpactEvaluation { level: 'minimal' | 'low' | 'moderate' | 'high',
     score: number;
     issues: string[];
-    recommendations: string[] ,}
+   , recommendations: string[] ,}
 
 interface OptimizationSuggestions { impact: ImpactEvaluation;
-    suggestions: string[] }
+   , suggestions: string[] }
 
 interface PerformanceReport { timestamp: string;
     uptime: number;
     performance: PerformanceStats;
     impact: ImpactEvaluation;
     suggestions: string[];
-    thresholds: PerformanceThresholds
+   , thresholds: PerformanceThresholds
     }
 
 export class DebugPerformanceMonitor {
@@ -61,7 +61,7 @@ export class DebugPerformanceMonitor {
     private measurementInterval: number;
     private maxMetricHistory: number;
     private performanceObserver: PerformanceObserver | null;
-    private startTime: number;
+    private, startTime: number;
     constructor(debugInterface: DebugInterface) {
 
         this.debugInterface = debugInterface;
@@ -69,9 +69,9 @@ export class DebugPerformanceMonitor {
             renderTime: [];
             updateTime: [];
             memoryUsage: [];
-            operationCounts: {
+           , operationCounts: {
                 panelSwitches: 0;
-                modalOpens: 0;
+               , modalOpens: 0;
     }
                 settingsChanges: 0 }
 };
@@ -213,7 +213,7 @@ export class DebugPerformanceMonitor {
         const metricArray = this.metrics[type] as PerformanceMetric[];
         metricArray.push({ );
             timestamp: performance.now();
-            value: value };
+           , value: value };
         // 古いメトリクスを削除
         if (metricArray.length > this.maxMetricHistory) { metricArray.shift(); }
     }
@@ -293,7 +293,7 @@ export class DebugPerformanceMonitor {
      */
     getPerformanceStats(): PerformanceStats { const stats: PerformanceStats = {
             uptime: performance.now() - this.startTime;
-            monitoringEnabled: this.monitoringEnabled, }
+           , monitoringEnabled: this.monitoringEnabled, }
             operationCounts: { ...this.metrics.operationCounts;
             currentMetrics: {};
         ';
@@ -306,9 +306,9 @@ export class DebugPerformanceMonitor {
                 const recentValues = metricArray.slice(-10).map(v => v.value);
                 stats.currentMetrics[type] = {
                     current: recentValues[recentValues.length - 1];
-                    average: recentValues.reduce((a, b) => a + b, 0) / recentValues.length,
+                   , average: recentValues.reduce((a, b) => a + b, 0) / recentValues.length,
                     min: Math.min(...recentValues);
-                    max: Math.max(...recentValues);
+                   , max: Math.max(...recentValues);
             ,}
                     count: metricArray.length }
                 }
@@ -333,7 +333,7 @@ export class DebugPerformanceMonitor {
             level: 'minimal';
             score: 0;
             issues: [];
-            recommendations: [] }))
+           , recommendations: [] }))
         // メモリ使用量評価)
         if(stats.currentMetrics.memoryUsage) {
             const memUsage = stats.currentMetrics.memoryUsage.current;''
@@ -407,7 +407,7 @@ export class DebugPerformanceMonitor {
             uptime: stats.uptime;
             performance: stats;
             impact: optimization.impact;
-            suggestions: optimization.suggestions, };
+           , suggestions: optimization.suggestions, };
             thresholds: this.thresholds }
         }
 

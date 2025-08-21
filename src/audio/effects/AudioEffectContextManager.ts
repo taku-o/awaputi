@@ -4,8 +4,8 @@
  * SoundEffectSystemから分離されたエフェクト用オーディオコンテキスト管理機能
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../../core/ConfigurationManager.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../../core/ConfigurationManager.js';
 
 // Type definitions for audio effect context management
 interface ErrorHandler { handleError(error: Error, context: string): void ,}
@@ -21,23 +21,23 @@ interface ContextConfig { sampleRate: number,
     enableAnalyser: boolean;
     enableCompressor: boolean;
     enableWorklet: boolean;
-    maxChannels: number ,}
+   , maxChannels: number ,}
 
 interface WorkletConfig { enabled: boolean;
     processorName: string;
-    bufferSize: number }
+   , bufferSize: number }
 
 interface BrowserSupport { audioContext: boolean;
     audioWorklet: boolean;
     mediaDevices: boolean;
-    webAudio: boolean }
+   , webAudio: boolean }
 
 type ContextState = 'created' | 'running' | 'suspended' | 'closed' | 'unavailable';''
 type VolumeType = 'master' | 'music' | 'sfx';
 
 interface AnalyserData { frequencyData: Uint8Array,
     bufferLength: number;
-    sampleRate: number ,}
+   , sampleRate: number ,}
 
 interface ContextStatistics { isInitialized: boolean;
     contextState: ContextState;
@@ -45,13 +45,13 @@ interface ContextStatistics { isInitialized: boolean;
     sampleRate: number;
     currentTime: number;
     browserSupport: BrowserSupport;
-    volumes: {
-        master: number;
+   , volumes: {
+        maste;r: number;
         music: number;
-        sfx: number };
+       , sfx: number };
     workletEnabled: boolean;
     analyserEnabled: boolean;
-    compressorEnabled: boolean;
+   , compressorEnabled: boolean;
 }
 
 export class AudioEffectContextManager {
@@ -69,22 +69,22 @@ export class AudioEffectContextManager {
     private analyser: AnalyserNode | null = null;
     private compressor: DynamicsCompressorNode | null = null;
     // 設定
-    private contextConfig: ContextConfig = {
+    private, contextConfig: ContextConfig = {
         sampleRate: 44100'';
-        latencyHint: 'interactive', // 'balanced', 'interactive', 'playback';
+       , latencyHint: 'interactive', // 'balanced', 'interactive', 'playback';
         enableAnalyser: true;
         enableCompressor: true;
         enableWorklet: false;
-        maxChannels: 32 ,};
+       , maxChannels: 32 ,};
     // オーディオワークレット設定
     private workletConfig: WorkletConfig = { enabled: false''
         processorName: 'sound-effect-processor';
-        bufferSize: 256 };
+       , bufferSize: 256 };
     // ブラウザ互換性チェック
     private browserSupport: BrowserSupport = { audioContext: false
         audioWorklet: false;
         mediaDevices: false;
-        webAudio: false };
+       , webAudio: false };
     ;
     // 状態管理
     private contextState: ContextState = 'created';
@@ -166,8 +166,7 @@ export class AudioEffectContextManager {
             ;
             // イベントリスナーを設定
             this.setupEventListeners(''';
-            this.contextState = 'running';)'
-            ')';
+            this.contextState = 'running';)', ')';
             console.log('[AudioContextManager] Audio, context initialized, successfully);
             console.log(`[AudioContextManager] Sample rate: ${this.audioContext!.sampleRate}Hz, State: ${this.audioContext!.state}`});
             
@@ -185,8 +184,7 @@ export class AudioEffectContextManager {
     private async createAudioContext(): Promise<void> { const windowWithWebkit = window as WindowWithWebkitAudioContext;
         const AudioContextClass = window.AudioContext || windowWithWebkit.webkitAudioContext;
 
-        if(!AudioContextClass) {'
-            ';
+        if(!AudioContextClass) {', ';
 
         }
 
@@ -283,7 +281,7 @@ export class AudioEffectContextManager {
             this.audioWorklet = new AudioWorkletNode(this.audioContext, this.workletConfig.processorName, { numberOfInputs: 1,
                 numberOfOutputs: 1);
                 channelCount: 2);
-                processorOptions: {
+               , processorOptions: {
                     bufferSize: this.workletConfig.bufferSize ,}
             );
             // ワークレットを音声チェーンに接続
@@ -519,7 +517,7 @@ export class AudioEffectContextManager {
             ,},
             workletEnabled: this.workletConfig.enabled;
             analyserEnabled: this.contextConfig.enableAnalyser;
-            compressorEnabled: this.contextConfig.enableCompressor;
+           , compressorEnabled: this.contextConfig.enableCompressor;
         },
     }
     
@@ -568,8 +566,7 @@ export class AudioEffectContextManager {
             this.musicGainNode = null;
             this.sfxGainNode = null;
             this.analyser = null;
-            this.compressor = null;)'
-            ')';
+            this.compressor = null;)', ')';
             console.log('[AudioContextManager] Audio, context manager, disposed');
             }
 

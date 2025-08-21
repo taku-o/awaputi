@@ -2,8 +2,8 @@
  * InputCoordinateConverter のテスト
  * Issue #177 Canvas Scale UI Positioning 入力座標変換のテスト
  */
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
-import { InputCoordinateConverter } from '../../src/utils/InputCoordinateConverter.js';
+import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
+import { InputCoordinateConverter  } from '../../src/utils/InputCoordinateConverter.js';
 // 型定義
 interface CanvasInfo {
     scaleFactor: number,
@@ -400,7 +400,7 @@ describe('InputCoordinateConverter', () => {
                     type: 'click');
                 const converted = (inputCoordinateConverter.convertMouseEvent(mockEvent) as ConvertedMouseEvent);
                 // 逆変換で元の値に戻ることを確認
-                const backToScaled: Coordinates = {
+                const, backToScaled: Coordinates = {
                     x: converted.baseX * 0.8,
                     y: converted.baseY * 0.8
                 };

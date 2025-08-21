@@ -4,17 +4,17 @@
  * UI状態、フィードバック、アニメーション、フローティングテキストなどの専門的な管理を行います
  */
 
-import { GameControlButtons } from './GameControlButtons.js';''
-import { ConfirmationDialog } from './ConfirmationDialog.js';''
-import { ScaledCoordinateManager } from '../../utils/ScaledCoordinateManager.js';''
-import { UIPositionCalculator } from '../../utils/UIPositionCalculator.js';''
-import { ScaledRenderingContext } from '../../utils/ScaledRenderingContext.js';''
-import { CoordinateSystemDebugger } from '../../utils/CoordinateSystemDebugger.js';''
-import { FloatingTextManager } from '../../managers/FloatingTextManager.js';''
-import { ResponsiveCanvasManager } from '../../managers/ResponsiveCanvasManager.js';''
-import { SceneManager } from '../../managers/SceneManager.js';''
-import { GameScene } from '../GameScene.js';''
-import { GameStateManager } from './GameStateManager.js';
+import { GameControlButtons  } from './GameControlButtons.js';''
+import { ConfirmationDialog  } from './ConfirmationDialog.js';''
+import { ScaledCoordinateManager  } from '../../utils/ScaledCoordinateManager.js';''
+import { UIPositionCalculator  } from '../../utils/UIPositionCalculator.js';''
+import { ScaledRenderingContext  } from '../../utils/ScaledRenderingContext.js';''
+import { CoordinateSystemDebugger  } from '../../utils/CoordinateSystemDebugger.js';''
+import { FloatingTextManager  } from '../../managers/FloatingTextManager.js';''
+import { ResponsiveCanvasManager  } from '../../managers/ResponsiveCanvasManager.js';''
+import { SceneManager  } from '../../managers/SceneManager.js';''
+import { GameScene  } from '../GameScene.js';''
+import { GameStateManager  } from './GameStateManager.js';
 
 // Type definitions
 interface UIState { showingDetailedInfo: boolean,
@@ -23,23 +23,23 @@ interface UIState { showingDetailedInfo: boolean,
     hpFlashTimer: number;
     timeWarningActive: boolean;
     scoreAnimationTimer: number;
-    lastScore: number ,}
+   , lastScore: number ,}
 
 interface GameState { isGameStarted: boolean;
     isGameOver: boolean;
-    isPaused: boolean; }
+   , isPaused: boolean; }
     isPreGame: boolean }
 
 interface PlayerData { currentHP: number;
-    maxHP: number; }
+   , maxHP: number; }
     currentScore: number }
 
 interface TimeWarnings { timeWarning: boolean;
-    urgentWarning: boolean; }
+   , urgentWarning: boolean; }
     message: string | null }
 
 interface Item { effect: {
-        type: string; }
+        typ;e: string; }
         value: number }
 
 // Extended GameEngine interface
@@ -47,7 +47,7 @@ interface GameEngine { canvas: HTMLCanvasElement,
     responsiveCanvasManager?: ResponsiveCanvasManager;
     sceneManager?: SceneManager;
     playerData: PlayerData;
-    scoreManager: {
+   , scoreManager: {
         getCombo(): number, };
     bubbleManager: { getBubbleCount(): number, };
     gameStateManager?: GameStateManager;
@@ -57,7 +57,7 @@ interface GameEngine { canvas: HTMLCanvasElement,
     timeStopRemaining: number;
     scoreMultiplier: number;
     screenShakeRemaining: number;
-    screenShakeIntensity: number;
+   , screenShakeIntensity: number;
     handleGiveUp?(): void;
     handleRestart?(): void;
 }
@@ -71,7 +71,7 @@ export class GameUIManager {
     private gameControlButtons: GameControlButtons;
     private confirmationDialog: ConfirmationDialog;
     // Coordinate system components
-    public scaledCoordinateManager: ScaledCoordinateManager,
+    public, scaledCoordinateManager: ScaledCoordinateManager,
     public uiPositionCalculator: UIPositionCalculator,
     private scaledRenderingContext: ScaledRenderingContext | null = null;
     private coordinateDebugger?: CoordinateSystemDebugger;
@@ -90,7 +90,7 @@ export class GameUIManager {
             comboFlashTimer: 0;
             hpFlashTimer: 0;
             timeWarningActive: false;
-            scoreAnimationTimer: 0; }
+           , scoreAnimationTimer: 0; }
     ,}
             lastScore: 0 }
         };
@@ -98,7 +98,7 @@ export class GameUIManager {
         this.lastGameState = { isGameStarted: false,
             isGameOver: false;
             isPaused: false;
-            isPreGame: true ,};
+           , isPreGame: true ,};
         // ゲームコントロールボタンとダイアログを初期化
         this.initializeControlButtons();
     }
@@ -295,8 +295,7 @@ export class GameUIManager {
 
             ');' }
 
-        } else if (type === 'restart'') { this.confirmationDialog.show(')'
-                'restart');
+        } else if (type === 'restart'') { this.confirmationDialog.show(')', 'restart');
                 () => this.executeRestart(),
                 () => this.cancelAction(); }
 }
@@ -350,7 +349,7 @@ export class GameUIManager {
             comboFlashTimer: 0;
             hpFlashTimer: 0;
             timeWarningActive: false;
-            scoreAnimationTimer: 0; }
+           , scoreAnimationTimer: 0; }
             lastScore: 0 };
         this.floatingTextManager.clear();
     }
@@ -408,7 +407,7 @@ export class GameUIManager {
         return { : undefined
             isGameStarted: gameStats? .isGameStarted || false, : undefined
             isGameOver: this.gameEngine.isGameOver || false;
-            isPaused: scene? .isPaused || false, : undefined };
+           , isPaused: scene? .isPaused || false, : undefined };
             isPreGame: !(gameStats? .isGameStarted || false); }
         }
     
@@ -621,8 +620,7 @@ export class GameUIManager {
             const baseY = scorePosition.y / this.scaledCoordinateManager.getScaleFactor() / scoreScale; }
             scaledContext.fillText(`スコア: ${playerData.currentScore.toLocaleString(})`, baseX, baseY);
             // デバッグ用エレメントトラッキング
-            if(this.coordinateDebugger) {'
-                ';
+            if(this.coordinateDebugger) {', ';
 
             }
 
@@ -952,8 +950,7 @@ export class GameUIManager {
             }
             ';
             // スコア倍率表示
-            if(this.gameEngine.scoreMultiplier > 1) {'
-                ';
+            if(this.gameEngine.scoreMultiplier > 1) {', ';
 
             }
 

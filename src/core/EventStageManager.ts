@@ -4,26 +4,26 @@
  * 各種イベントコンポーネントを統合管理
  * Updated: 2024 with load() method for GameEngineInitializer compatibility
  */
-// import { EventRankingManager } from './EventRankingManager.js'; // 未使用インポート
-import { SeasonalEventManager, type SeasonalEventData, type SeasonInfo } from './events/SeasonalEventManager.js';''
-import { EventNotificationSystem, type NotificationData } from './events/EventNotificationSystem.js';''
-import { EventHistoryManager, type HistoryEntry, type DetailedStatistics } from './events/EventHistoryManager.js';''
-import { EventRankingSystem } from './events/EventRankingSystem.js';''
-import { GameEngine } from './GameEngine';
+// import { EventRankingManager  } from './EventRankingManager.js'; // 未使用インポート
+import { SeasonalEventManager, type, SeasonalEventData, type, SeasonInfo  } from './events/SeasonalEventManager.js';''
+import { EventNotificationSystem, type, NotificationData  } from './events/EventNotificationSystem.js';''
+import { EventHistoryManager, type, HistoryEntry, type, DetailedStatistics  } from './events/EventHistoryManager.js';''
+import { EventRankingSystem  } from './events/EventRankingSystem.js';''
+import { GameEngine  } from './GameEngine';
 
 interface EventStage { id: string,
     name: string;
     description: string;
     icon: string;
-    type: string;
+   , type: string;
     duration?: number;
     targetScore?: number;
     rewards?: {
-        ap?: number;
+        a;p?: number;
         completion?: {
-            ap: number ,};
+            a;p: number ,};
         highScore?: { threshold: number;
-            ap: number };
+           , ap: number };
         items?: string[];
         badges?: string[];
     };
@@ -51,13 +51,13 @@ interface EventStage { id: string,
 
 export class EventStageManager {
     private gameEngine: GameEngine;
-    private eventStages: Record<string, EventStage>;
+    private, eventStages: Record<string, EventStage>;
     private activeEvents: Map<string, any>;
     private seasonalEventManager: SeasonalEventManager;
     private notificationSystem: EventNotificationSystem;
     private historyManager: EventHistoryManager;
     private rankingSystem: EventRankingSystem;
-    public eventRankingManager: EventRankingSystem,
+    public, eventRankingManager: EventRankingSystem,
     // private _eventHistory: any[]; // 将来使用予定（現在未使用）
 
     constructor(gameEngine: GameEngine) {
@@ -103,13 +103,13 @@ export class EventStageManager {
                 bubbleTypes: ['normal', 'stone', 'golden', 'golden', 'golden', 'rainbow', 'pink'],
                 spawnRate: 2.0;
                 maxBubbles: 25;
-                specialRules: { goldenSpawnRate: 0.4;
-                    globalScoreMultiplier: 2.0 };
+               , specialRules: { goldenSpawnRate: 0.4;
+                   , globalScoreMultiplier: 2.0 };
                 rewards: {
                     completion: { ap: 200 };
                     highScore: { threshold: 15000, ap: 300 ,},
                 availability: { startDate: null;
-                    endDate: null,
+                   , endDate: null,
                     recurring: 'weekly' ,}
             };
             ';
@@ -124,15 +124,15 @@ export class EventStageManager {
                 bubbleTypes: ['normal', 'phantom', 'phantom', 'phantom', 'electric', 'poison'],
                 spawnRate: 2.2;
                 maxBubbles: 30;
-                specialRules: {
+               , specialRules: {
                     phantomSpawnRate: 0.5;
                     reducedVisibility: true;
-                    nightMode: true ,};
+                   , nightMode: true ,};
                 rewards: {
                     completion: { ap: 250 };
                     survivalBonus: { ap: 100 };
                 availability: { startDate: null;
-                    endDate: null,
+                   , endDate: null,
                     recurring: 'monthly' ,}
             };
             ';
@@ -147,14 +147,14 @@ export class EventStageManager {
                 bubbleTypes: ['rainbow', 'rainbow', 'rainbow', 'normal', 'golden'],
                 spawnRate: 1.8;
                 maxBubbles: 20;
-                specialRules: {
+               , specialRules: {
                     rainbowChainBonus: 3.0;
-                    cascadeMultiplier: 1.5 ,};
+                   , cascadeMultiplier: 1.5 ,};
                 rewards: {
                     completion: { ap: 180 };
                     chainBonus: { threshold: 10, ap: 200 ,},
                 availability: { startDate: null;
-                    endDate: null,
+                   , endDate: null,
                     recurring: 'weekly' ,}
             }))
     }
@@ -241,7 +241,7 @@ export class EventStageManager {
             this.activeEvents.set(eventId, {)
                 ...event);
                 startTime: Date.now();
-                endTime: Date.now() + (event.duration || 300000) // デフォルト5分 ,});
+               , endTime: Date.now() + (event.duration || 300000) // デフォルト5分 ,});
             console.log(`Event, started: ${event.name}`});
             return true;
 
@@ -297,16 +297,14 @@ export class EventStageManager {
                 this.gameEngine.bubbleManager.setSpecialBubbleSpawnRate('golden', specialRules.goldenSpawnRate); }
             }
 
-            if(specialRules.phantomSpawnRate) {'
-                ';
+            if(specialRules.phantomSpawnRate) {', ';
 
             }
 
                 this.gameEngine.bubbleManager.setSpecialBubbleSpawnRate('phantom', specialRules.phantomSpawnRate); }
             }
 
-            if(specialRules.rainbowChainBonus) {'
-                ';
+            if(specialRules.rainbowChainBonus) {', ';
 
             }
 

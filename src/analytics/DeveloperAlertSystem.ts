@@ -12,11 +12,11 @@ export class DeveloperAlertSystem {
             enableConsoleLogging: true;
             enableEmailNotifications: false;
             enableWebhookNotifications: false;
-            minSeverityLevel: 'warning', // info, warning, error, critical;
+           , minSeverityLevel: 'warning', // info, warning, error, critical;
             alertRetentionDays: 30;
             webhookUrl: null;
             emailEndpoint: null;
-            maxAlertsPerHour: 10;
+           , maxAlertsPerHour: 10;
     ,}
             ...options
         };
@@ -52,7 +52,7 @@ export class DeveloperAlertSystem {
             icon: '🎮',
             color: '#2196f3',)';
             defaultSeverity: 'warning')';
-            checks: ['';
+           , checks: ['';
                 'unusualScoreProgression',
                 'abnormalSessionLength',
                 'repetitiveActions',]';
@@ -65,7 +65,7 @@ export class DeveloperAlertSystem {
             icon: '⚡',
             color: '#ff9800', ')';
             defaultSeverity: 'error')';
-            checks: ['';
+           , checks: ['';
                 'lowFrameRate',
                 'highMemoryUsage',
                 'longLoadTimes',]';
@@ -78,7 +78,7 @@ export class DeveloperAlertSystem {
             icon: '🛡️',
             color: '#f44336',)';
             defaultSeverity: 'critical')';
-            checks: ['';
+           , checks: ['';
                 'suspiciousActivity',
                 'dataManipulation',
                 'unauthorizedAccess',]';
@@ -91,7 +91,7 @@ export class DeveloperAlertSystem {
             icon: '📊',
             color: '#9c27b0',)';
             defaultSeverity: 'warning')';
-            checks: ['';
+           , checks: ['';
                 'dataInconsistency',
                 'missingData',
                 'corruptedData',]';
@@ -104,7 +104,7 @@ export class DeveloperAlertSystem {
             icon: '💼',
             color: '#607d8b',)';
             defaultSeverity: 'info')';
-            checks: ['';
+           , checks: ['';
                 'userEngagementDrop',
                 'retentionRateChange',
                 'conversionRateChange',]';
@@ -175,7 +175,7 @@ export class DeveloperAlertSystem {
                         checkType: checkType;
                         severity: result.severity || category.defaultSeverity);
                         message: result.message);
-                        data: result.alertData, }
+                       , data: result.alertData, }
                         recommendations: result.recommendations || []); }
 }
         }
@@ -188,29 +188,29 @@ export class DeveloperAlertSystem {
 
         switch (`${category}.${ checkType)`') {''
             case 'gameplay.unusualScoreProgression':'';
-                return this.checkUnusualScoreProgression(data);''
+                return, this.checkUnusualScoreProgression(data);''
             case 'gameplay.abnormalSessionLength':'';
-                return this.checkAbnormalSessionLength(data);''
+                return, this.checkAbnormalSessionLength(data);''
             case 'gameplay.repetitiveActions':'';
-                return this.checkRepetitiveActions(data);''
+                return, this.checkRepetitiveActions(data);''
             case 'gameplay.impossibleAchievements':'';
-                return this.checkImpossibleAchievements(data);''
+                return, this.checkImpossibleAchievements(data);''
             case 'performance.lowFrameRate':'';
-                return this.checkLowFrameRate(data);''
+                return, this.checkLowFrameRate(data);''
             case 'performance.highMemoryUsage':'';
-                return this.checkHighMemoryUsage(data);''
+                return, this.checkHighMemoryUsage(data);''
             case 'performance.longLoadTimes':'';
-                return this.checkLongLoadTimes(data);''
+                return, this.checkLongLoadTimes(data);''
             case 'performance.frequentErrors':'';
-                return this.checkFrequentErrors(data);''
+                return, this.checkFrequentErrors(data);''
             case 'security.suspiciousActivity':'';
-                return this.checkSuspiciousActivity(data);''
+                return, this.checkSuspiciousActivity(data);''
             case 'security.dataManipulation':'';
-                return this.checkDataManipulation(data);''
+                return, this.checkDataManipulation(data);''
             case 'data.dataInconsistency':'';
-                return this.checkDataInconsistency(data);''
+                return, this.checkDataInconsistency(data);''
             case 'data.missingData':'';
-                return this.checkMissingData(data};''
+                return, this.checkMissingData(data};''
             case 'business.userEngagementDrop':'';
                 return, this.checkUserEngagementDrop(data};''
             case 'business.retentionRateChange': }
@@ -616,7 +616,7 @@ export class DeveloperAlertSystem {
         const alert = {'
             id: this.generateAlertId(),
             timestamp: Date.now(''';
-            status: 'new';
+           , status: 'new';
     ,}
             acknowledged: false }))
         // フィルターチェック)
@@ -675,10 +675,9 @@ export class DeveloperAlertSystem {
         console.group(`${emoji} [${alert.severity.toUpperCase(})] ${alert.message}`); : undefined
         console.log(`%cカテゴリ: ${category?.name || alert.category}`, `color: ${color}`});
         console.log(`%cチェック: ${alert.checkType}`, `color: ${ color}`}, }
-        console.log(`%c時刻: ${new Date(alert.timestamp}.toLocaleString(})`, `color: ${color}`);
+        console.log(`%c時刻: ${new, Date(alert.timestamp}.toLocaleString(})`, `color: ${color}`);
 
-        if(alert.data) {'
-            ';
+        if(alert.data) {', ';
 
         }
 
@@ -703,14 +702,13 @@ export class DeveloperAlertSystem {
     async sendWebhookNotification(alert) { try {
             await fetch(this.options.webhookUrl, {)'
                 method: 'POST')';
-                headers: {''
-                    'Content-Type': 'application/json';
+               , headers: {'', 'Content-Type': 'application/json';
                 ),
                 body: JSON.stringify({);
 
                     alert);''
                     timestamp: Date.now()';
-                    source: 'BubblePop Analytics' ,});
+                   , source: 'BubblePop Analytics' ,});
             });''
         } catch (error) { console.warn('Failed to send webhook notification:', error }
     }
@@ -721,8 +719,7 @@ export class DeveloperAlertSystem {
     async sendEmailNotification(alert) { try {
             await fetch(this.options.emailEndpoint, {''
                 method: 'POST',
-                headers: {''
-                    'Content-Type': 'application/json' ,}))'
+                headers: {'', 'Content-Type': 'application/json' ,}))'
                 body: JSON.stringify({ ')'
                     to: 'developer@example.com), }'
                     subject: `[${alert.severity.toUpperCase(})] ${alert.message}`;
@@ -744,7 +741,7 @@ export class DeveloperAlertSystem {
         body += `カテゴリ: ${category? .name || alert.category}\n`; : undefined
         body += `重要度: ${alert.severity}\n`;
         body += `メッセージ: ${alert.message}\n`;
-        body += `時刻: ${new Date(alert.timestamp}.toLocaleString(})\n\n`;
+        body += `時刻: ${new, Date(alert.timestamp}.toLocaleString(})\n\n`;
         
         if(alert.data) {
         
@@ -881,7 +878,7 @@ export class DeveloperAlertSystem {
             severity: warningData.severity || 'warning', }
             message: `パフォーマンス警告: ${warningData.message}`)
             data: warningData)';
-            recommendations: ['';
+           , recommendations: ['';
                 'パフォーマンス最適化の実行を検討してください',]';
                 'リソース使用量の監視を強化してください')];
             ]);
@@ -897,9 +894,9 @@ export class DeveloperAlertSystem {
     ,}
 
             severity: errorData.severity = == 'critical' ? 'critical' : 'error' 
-            message: `エラー発生: ${errorData.message}`)
+           , message: `エラー発生: ${errorData.message}`)
             data: errorData)';
-            recommendations: ['';
+           , recommendations: ['';
                 'エラーログの詳細調査が必要です',]';
                 'エラー原因の特定と修正を行ってください')];
             ]);

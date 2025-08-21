@@ -4,8 +4,8 @@
  * TutorialOverlayから分離されたステップ管理機能
  */
 
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../../LoggingSystem.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
 export interface TutorialDefinition { id: string,
@@ -36,7 +36,7 @@ export interface ProgressData { startTime: number | null,
     ,}
 
 export interface FailedValidation { stepIndex: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface StepManagerConfig { allowSkipping: boolean;
     allowBackNavigation: boolean;
@@ -44,7 +44,7 @@ export interface StepManagerConfig { allowSkipping: boolean;
     autoAdvanceDelay: number;
     validateOnAdvance: boolean;
     saveProgress: boolean;
-    maxRetries: number }
+   , maxRetries: number }
 
 export interface ProgressInfo { currentStep: number;
     totalSteps: number;
@@ -56,20 +56,20 @@ export interface ProgressInfo { currentStep: number;
     stepDescription: string | undefined;
     canGoNext: boolean;
     canGoPrevious: boolean;
-    canSkip: boolean }
+   , canSkip: boolean }
 
 export interface StepStatistics { averageStepDuration: number;
     longestStep: number;
     shortestStep: number;
     failedValidations: number;
-    completionRate: number }
+   , completionRate: number }
 
 export interface SavedProgress { tutorialId: string;
     completedSteps: number[];
     skippedSteps: number[];
     totalDuration: number;
     stepDurations: number[];
-    completedAt: number }
+   , completedAt: number }
 
 export interface ErrorHandler { handleError(error: Error, context: string): void ,}
 
@@ -85,7 +85,7 @@ export class TutorialStepManager {
     private stepValidators: Map<number, StepValidator>;
     private stepCallbacks: Map<number, StepCallback>;
     private progressData: ProgressData;
-    private config: StepManagerConfig;
+    private, config: StepManagerConfig;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -109,7 +109,7 @@ export class TutorialStepManager {
             stepStartTime: null;
             stepDurations: [];
             totalDuration: 0;
-            skippedSteps: new Set<number>();
+           , skippedSteps: new Set<number>();
     ,}
             failedValidations: [] }
         };
@@ -120,7 +120,7 @@ export class TutorialStepManager {
             autoAdvanceDelay: 3000;
             validateOnAdvance: true;
             saveProgress: true;
-            maxRetries: 3 ,}
+           , maxRetries: 3 ,}
     
     /**
      * チュートリアルを開始
@@ -302,8 +302,7 @@ export class TutorialStepManager {
             ';
             // コールバック実行
             const callback = this.stepCallbacks.get(this.stepIndex);''
-            if(callback && typeof, callback === 'function) {'
-                ';
+            if(callback && typeof, callback === 'function) {', ';
 
             }
 
@@ -353,7 +352,7 @@ export class TutorialStepManager {
                 tutorial: this.currentTutorial? .id, : undefined
                 totalSteps: this.totalSteps);
                 completedSteps: this.completedSteps.size);
-                skippedSteps: this.progressData.skippedSteps.size,);
+               , skippedSteps: this.progressData.skippedSteps.size,);
                 totalDuration: this.progressData.totalDuration);
             // 進捗保存
             if(this.config.saveProgress) {
@@ -374,7 +373,7 @@ export class TutorialStepManager {
                 skippedSteps: Array.from(this.progressData.skippedSteps);
                 totalDuration: this.progressData.totalDuration;
                 stepDurations: this.progressData.stepDurations;
-                completedAt: Date.now();
+               , completedAt: Date.now();
             };
 
             localStorage.setItem(progressKey, JSON.stringify(progressData));''
@@ -449,7 +448,7 @@ export class TutorialStepManager {
         this.progressData = {
             startTime: null;
             stepStartTime: null;
-            stepDurations: [],
+           , stepDurations: [],
             totalDuration: 0,
             skippedSteps: new Set<number>(');
             failedValidations: [] ,};

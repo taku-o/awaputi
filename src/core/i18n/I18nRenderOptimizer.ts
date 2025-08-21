@@ -6,7 +6,7 @@
  * フォント読み込み最適化、レイアウト調整の最適化を提供
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface OptimizationConfig { batchUpdates: boolean,
@@ -15,16 +15,16 @@ export interface OptimizationConfig { batchUpdates: boolean,
     asyncFontLoading: boolean;
     layoutCaching: boolean;
     debounceDelay: number;
-    renderQueueSize: number ,}
+   , renderQueueSize: number ,}
 export interface RenderMetrics { frameCount: number,
     dropCount: number;
     averageFrameTime: number;
     lastFrameTime: number;
-    renderingTime: number ,}
+   , renderingTime: number ,}
 export interface DOMOptimization { reuseElements: boolean,
     poolElements: boolean;
     minimalUpdates: boolean;
-    batchDOMOperations: boolean ,}
+   , batchDOMOperations: boolean ,}
 export interface FontLoadingManager { getInstance(config: any): FontLoadingManager,
     initialize(): Promise<void>
     }
@@ -35,30 +35,30 @@ export interface FontLoadingManager { getInstance(config: any): FontLoadingManag
 export interface LayoutInfo { textDirection: string,
     fontMetrics: FontMetrics;
     estimatedTextLengths: number;
-    layoutAdjustments: LayoutAdjustments
+   , layoutAdjustments: LayoutAdjustments
     ,}
 export interface FontMetrics { [char: string]: {
-        width: number;
-        height: number 
+        widt;h: number;
+       , height: number 
 };
     words: { [word: string]: {
             width: number;
-            height: number };
+           , height: number };
 }
 
 export interface LayoutAdjustments { padding: {
-        top: number;
+        to;p: number;
         right: number;
         bottom: number;
-        left: number 
+       , left: number 
 };
     margin: { top: number;
         right: number;
         bottom: number;
-        left: number 
+       , left: number 
 };
     lineHeight: number;
-    letterSpacing: string;
+   , letterSpacing: string;
     textAlign?: string;
     direction?: string;
 }
@@ -66,19 +66,19 @@ export interface LayoutAdjustments { padding: {
 export interface LanguageSwitchResult { success: boolean,
     renderTime: number;
     layoutInfo: LayoutInfo;
-    updateResult: VirtualUpdate[]
+   , updateResult: VirtualUpdate[]
     ,}
 export interface VirtualUpdate { element: Element,
     currentText: string;
     newText: string;
-    currentAttrs: Record<string, string>,
+   , currentAttrs: Record<string, string>,
     newAttrs: Record<string, string>,
     layoutInfo: ElementLayoutInfo
     ,}
 export interface ElementLayoutInfo { adjustments: LayoutAdjustments,
     textMetrics: {
-        estimatedWidth: number;
-        estimatedHeight: number ,}
+        estimatedWidt;h: number;
+       , estimatedHeight: number ,}
 
 export interface RenderUpdate { element: Element,
     operation: string;
@@ -96,7 +96,7 @@ export class I18nRenderOptimizer {
     private isRendering: boolean;
     private renderRequestId: number | null;
     // フォント管理
-    private fontCache: Map<string, any>;
+    private, fontCache: Map<string, any>;
     private fontLoadPromises: Map<string, Promise<any>>;
     private preloadedFonts: Set<string>;
     // レイアウトキャッシュ
@@ -108,7 +108,7 @@ export class I18nRenderOptimizer {
     // DOM 最適化
     private domOptimization: DOMOptimization;
     // 要素プール
-    private elementPools: Map<string, Element[]>;
+    private, elementPools: Map<string, Element[]>;
     
     // フォント読み込みマネージャー
     private fontLoadingManager: FontLoadingManager | null;
@@ -117,7 +117,7 @@ export class I18nRenderOptimizer {
     private batchStartTime: number;
     private animationDisabled: boolean;
     private renderingPaused: boolean;
-    private scheduleRender: () => void;
+    private, scheduleRender: () => void;
 
     constructor() {
 
@@ -153,13 +153,13 @@ export class I18nRenderOptimizer {
             dropCount: 0;
             averageFrameTime: 0;
             lastFrameTime: 0;
-            renderingTime: 0 
+           , renderingTime: 0 
 ,};
         // DOM 最適化
         this.domOptimization = { reuseElements: true,
             poolElements: true;
             minimalUpdates: true;
-            batchDOMOperations: true 
+           , batchDOMOperations: true 
 ,};
         // 要素プール
         this.elementPools = new Map<string, Element[]>();
@@ -196,16 +196,16 @@ export class I18nRenderOptimizer {
                 timeouts: {
                     google: 3000;
                     local: 1000;
-                    system: 500 
+                   , system: 500 
 ,};
                 fallbackBehavior: { useSystemFonts: true;
                     suppressErrors: true;
-                    maxRetries: 1 
+                   , maxRetries: 1 
 };
                 logging: { ''
                     level: 'warn';
                     suppressRepeated: true;
-                    maxErrorsPerSource: 3 
+                   , maxErrorsPerSource: 3 
 };
                 development: { disableExternalFonts: false, // CSP修正によりGoogle Fontsを許可
                     verboseLogging: false 
@@ -439,7 +439,7 @@ export class I18nRenderOptimizer {
         const layoutInfo = { textDirection: this.getTextDirection(language),
             fontMetrics: await this.calculateFontMetrics(language);
             estimatedTextLengths: this.estimateTextLengths(language);
-            layoutAdjustments: this.calculateLayoutAdjustments(language), };
+           , layoutAdjustments: this.calculateLayoutAdjustments(language), };
         
         // キャッシュに保存
         this.layoutCache.set(cacheKey, layoutInfo);
@@ -467,7 +467,7 @@ export class I18nRenderOptimizer {
         testElement.style.cssText = `;
             position: absolute;
             left: -9999px;
-            top: -9999px;
+           , top: -9999px;
             font-family: ${fontFamily}
             font-size: 16px,
             line-height: 1.5,
@@ -518,8 +518,7 @@ export class I18nRenderOptimizer {
      * テキスト長の推定
      */''
     private estimateTextLengths(language: string): number { // 言語固有のテキスト長推定
-        const lengthFactors: Record<string, number> = {''
-            'ja': 0.8,   // 日本語は比較的短い;
+        const lengthFactors: Record<string, number> = {'', 'ja': 0.8,   // 日本語は比較的短い;
             'en': 1.0,   // 英語を基準;
             'de': 1.3,   // ドイツ語は長い;
             'fr': 1.2,   // フランス語は少し長い;
@@ -802,7 +801,7 @@ export class I18nRenderOptimizer {
     optimizeForViewport() {
         const viewport = {
             width: window.innerWidth;
-            height: window.innerHeight
+           , height: window.innerHeight
 }
             devicePixelRatio: window.devicePixelRatio || 1 ;
 }
@@ -906,8 +905,7 @@ export class I18nRenderOptimizer {
      * ユーティリティメソッド
      */'
 
-    private getLanguageFontFamily(language: string): string { const fontMap: Record<string, string> = {''
-            'ja': 'Noto Sans JP',
+    private getLanguageFontFamily(language: string): string { const fontMap: Record<string, string> = {'', 'ja': 'Noto Sans JP',
             'zh-CN': 'Noto Sans SC',
             'zh-TW': 'Noto Sans TC',
             'ko': 'Noto Sans KR',
@@ -918,8 +916,7 @@ export class I18nRenderOptimizer {
         return fontMap[language] || fontMap.default;
     }
 
-    private getLanguageByFont(fontFamily: string): string { const reverseMap: Record<string, string> = {''
-            'Noto Sans JP': 'ja',
+    private getLanguageByFont(fontFamily: string): string { const reverseMap: Record<string, string> = {'', 'Noto Sans JP': 'ja',
             'Noto Sans SC': 'zh-CN',
             'Noto Sans TC': 'zh-TW',
             'Noto Sans KR': 'ko',
@@ -965,11 +962,11 @@ export class I18nRenderOptimizer {
             cacheStats: { layoutCacheSize: this.layoutCache.size;
                 measurementCacheSize: this.measurementCache.size;
                 fontCacheSize: this.fontCache.size;
-                preloadedFonts: this.preloadedFonts.size 
+               , preloadedFonts: this.preloadedFonts.size 
 };
             renderQueue: { queueSize: this.renderQueue.length;
                 isRendering: this.isRendering;
-                isPaused: this.renderingPaused 
+               , isPaused: this.renderingPaused 
 }
         },
     }

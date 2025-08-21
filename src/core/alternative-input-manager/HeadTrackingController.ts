@@ -12,53 +12,53 @@ export interface HeadTrackingConfig { enabled: boolean,
     calibrationTime: number;
     gestureRecognition: boolean;
     invertX: boolean;
-    invertY: boolean ,}
+   , invertY: boolean ,}
 export interface Position3D { x: number,
     y: number;
-    z: number ,}
+   , z: number ,}
 export interface FaceLandmark { x: number,
     y: number;
-    z: number ,}
+   , z: number ,}
 export interface FaceLandmarks { noseTip: FaceLandmark,
     leftEye: FaceLandmark;
     rightEye: FaceLandmark;
-    chin: FaceLandmark
+   , chin: FaceLandmark
     ,}
 export interface HeadPosition { x: number,
     y: number;
     z: number;
     center: Position3D;
-    landmarks: FaceLandmarks
+   , landmarks: FaceLandmarks
     ,}
 export interface HeadState { isCalibrated: boolean,
     neutralPosition: Position3D | null;
     currentPosition: Position3D;
     gestureBuffer: GestureBufferEntry[];
     isTracking: boolean;
-    lastUpdate: number ,}
+   , lastUpdate: number ,}
 export interface GestureBufferEntry { position: Position3D,
     timestamp: number ,}
 export interface GesturePattern { pattern: GesturePatternType,
     threshold: number;
-    duration: number ,}
+   , duration: number ,}
 export interface GestureRecognition { enabled: boolean,
     gestures: Map<string, GesturePattern>,
     recognizedGestures: GestureEvent[];
-    gestureCallbacks: Map<string, GestureCallback>, }
+   , gestureCallbacks: Map<string, GestureCallback>, }
 export interface GestureEvent { name: string,
     timestamp: number;
-    position: Position3D
+   , position: Position3D
     ,}
 export interface HeadTrackingStats { trackingFrames: number,
     gesturesRecognized: number;
     averagePosition: Position3D;
     trackingAccuracy: number;
-    sessionStart: number ,}
+   , sessionStart: number ,}
 export interface DetailedHeadTrackingStats extends HeadTrackingStats { isCalibrated: boolean,
     isTracking: boolean;
     currentPosition: Position3D;
     neutralPosition: Position3D | null;
-    recentGestures: GestureEvent[]
+   , recentGestures: GestureEvent[]
     ,}
 export interface CalibrationResult { success: boolean,
     error?: string }
@@ -70,8 +70,8 @@ export interface NavigationFeedbackData extends FeedbackData { direction: Naviga
 // MediaPipe関連型定義
 export interface MediaPipeFaceMeshResults { multiFaceLandmarks: FaceLandmark[][]
     }
-export interface MediaPipeFaceMesh { setOptions: (options: FaceMeshOptions) => void,
-    onResults: (callback: (results: MediaPipeFaceMeshResults) => void) => void
+export interface MediaPipeFaceMesh { setOptions: (option;s: FaceMeshOptions) => void,
+    onResults: (callback: (result;s: MediaPipeFaceMeshResults) => void) => void
 ,}
     send: (input: { image: HTMLVideoElement }) => Promise<void>;
 }
@@ -79,11 +79,11 @@ export interface MediaPipeFaceMesh { setOptions: (options: FaceMeshOptions) => v
 export interface FaceMeshOptions { maxNumFaces: number,
     refineLandmarks: boolean;
     minDetectionConfidence: number;
-    minTrackingConfidence: number ,}
+   , minTrackingConfidence: number ,}
 export interface MediaPipeCamera { start: () => void }
 export interface CameraOptions { onFrame: () => Promise<void>,
     width: number;
-    height: number ,}
+   , height: number ,}
 // WebRTC関連型定義
 export interface MediaStreamConstraints { video: { 
 }
@@ -97,20 +97,20 @@ export interface TrackingUIElement extends HTMLElement { className: string,
     ,}
 // 列挙型
 export type GesturePatternType = ;
-    | 'y_oscillation' | 'x_oscillation' '';
-    | 'z_negative' | 'z_positive' '';
+    | 'y_oscillation' | 'x_oscillation', '';
+    | 'z_negative' | 'z_positive', '';
     | 'y_positive' | 'y_negative';
 
 export type NavigationDirection = 'left' | 'right' | 'up' | 'down';
 ';
 
 export type FeedbackType = '';
-    | 'gesture_recognized' | 'head_click' '';
+    | 'gesture_recognized' | 'head_click', '';
     | 'head_cancel' | 'head_navigation';
 ';
 
 export type GestureName = '';
-    | 'nod' | 'shake' | 'tilt_left' | 'tilt_right' '';
+    | 'nod' | 'shake' | 'tilt_left' | 'tilt_right', '';
     | 'lean_forward' | 'lean_back';
 ';
 // コールバック型
@@ -138,7 +138,7 @@ export const MEDIAPIPE_SCRIPTS: string[] = ['';
 ];
 
 // ジェスチャーパターン定義
-export const DEFAULT_GESTURE_PATTERNS: Record<GestureName, GesturePattern> = { ' }'
+export const, DEFAULT_GESTURE_PATTERNS: Record<GestureName, GesturePattern> = { ' }'
 
     nod: { pattern: 'y_oscillation', threshold: 0.3, duration: 1000 ,},''
     shake: { pattern: 'x_oscillation', threshold: 0.3, duration: 1000 ,},''
@@ -213,7 +213,7 @@ export class HeadTrackingController {
     private headPointer: TrackingUIElement | null;
     private calibrationInterface: TrackingUIElement | null;
     // 統計
-    private stats: HeadTrackingStats;
+    private, stats: HeadTrackingStats;
     constructor() {
 
         // ヘッドトラッキング設定
@@ -224,7 +224,7 @@ export class HeadTrackingController {
             smoothing: DEFAULT_SMOOTHING;
             calibrationTime: DEFAULT_CALIBRATION_TIME;
             gestureRecognition: true;
-            invertX: false
+           , invertX: false
 }
             invertY: false ;
 }
@@ -237,7 +237,7 @@ export class HeadTrackingController {
             currentPosition: { x: 0, y: 0, z: 0 ,},
             gestureBuffer: [];
             isTracking: false;
-            lastUpdate: 0;
+           , lastUpdate: 0;
         },
         
         // ジェスチャー認識
@@ -245,7 +245,7 @@ export class HeadTrackingController {
             gestures: new Map<string, GesturePattern>(;
                 Object.entries(DEFAULT_GESTURE_PATTERNS),
             recognizedGestures: [];
-            gestureCallbacks: new Map<string, GestureCallback>( };
+           , gestureCallbacks: new Map<string, GestureCallback>( };
         
         // WebRTC メディアストリーム
         this.mediaStream = null;
@@ -316,7 +316,7 @@ export class HeadTrackingController {
                 top: -1000px;
                 left: -1000px;
                 width: 640px;
-                height: 480px;
+               , height: 480px;
             `;
             this.videoElement.srcObject = this.mediaStream;
             this.videoElement.autoplay = true;
@@ -327,7 +327,7 @@ export class HeadTrackingController {
             console.log('[HeadTrackingController] Camera, setup completed');''
         } catch (error) { }
 
-            throw new Error(`Camera, setup failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`);
+            throw new Error(`Camera, setup failed: ${error, instanceof, Error ? error.message : 'Unknown, error'}`);
         }
     /**
      * MediaPipe Face Meshをロード
@@ -347,7 +347,7 @@ export class HeadTrackingController {
             const options: FaceMeshOptions = { maxNumFaces: 1,
                 refineLandmarks: true;
                 minDetectionConfidence: 0.5;
-                minTrackingConfidence: 0.5 
+               , minTrackingConfidence: 0.5 
 ,};
             this.faceMesh.setOptions(options);
             ';
@@ -361,7 +361,7 @@ export class HeadTrackingController {
             console.log('[HeadTrackingController] Face, Mesh loaded');''
         } catch (error) { }
 
-            throw new Error(`Face, Mesh loading, failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`);
+            throw new Error(`Face, Mesh loading, failed: ${error, instanceof, Error ? error.message : 'Unknown, error'}`);
         }
     /**
      * MediaPipeスクリプトをロード
@@ -397,7 +397,7 @@ export class HeadTrackingController {
                 }
             },
             width: 640;
-            height: 480;
+           , height: 480;
         },
         ;
         const camera = new window.Camera(this.videoElement, cameraOptions);
@@ -476,7 +476,7 @@ export class HeadTrackingController {
         
         const smoothed: Position3D = { x: current.x * factor + applyDeadZone(position.x) * (1 - factor),
             y: current.y * factor + applyDeadZone(position.y) * (1 - factor);
-            z: current.z * factor + applyDeadZone(position.z) * (1 - factor ,};
+           , z: current.z * factor + applyDeadZone(position.z) * (1 - factor ,};
         
         // 感度調整
         const sensitivity = this.headTrackingConfig.sensitivity;
@@ -632,13 +632,13 @@ export class HeadTrackingController {
             position: fixed;
             width: 30px;
             height: 30px;
-            border: 2px solid rgba(0, 255, 255, 0.8),
+           , border: 2px solid rgba(0, 255, 255, 0.8),
             border-radius: 50%,
             background: rgba(0, 255, 255, 0.2),
             pointer-events: none,
             z-index: 10006,
             display: none;
-            transform: translate(-50%, -50%),
+           , transform: translate(-50%, -50%),
             transition: all 0.1s ease;
         `;
         
@@ -655,11 +655,11 @@ export class HeadTrackingController {
             top: 20px;
             left: 20px;
             width: 200px;
-            background: rgba(0, 0, 0, 0.8),
+           , background: rgba(0, 0, 0, 0.8),
             border: 1px solid #555;
             border-radius: 8px,
             padding: 10px;
-            color: white;
+           , color: white;
             font-size: 12px,
             z-index: 10007,
             display: none;
@@ -678,7 +678,7 @@ export class HeadTrackingController {
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.9),
+           , background: rgba(0, 0, 0, 0.9),
             z-index: 10020,
             display: none;
             justify-content: center,
@@ -782,8 +782,7 @@ export class HeadTrackingController {
         const clickY = centerY + (position.y * window.innerHeight * 0.3);
 
         const element = document.elementFromPoint(clickX, clickY) as HTMLElement;''
-        if(element && typeof, element.click === 'function) {'
-            ';
+        if(element && typeof, element.click === 'function) {', ';
 
         }
 
@@ -856,8 +855,7 @@ export class HeadTrackingController {
      * キャリブレーションインターフェースを隠す
      */'
     private hideCalibrationInterface(): void { ''
-        if(this.calibrationInterface) {'
-            ';
+        if(this.calibrationInterface) {', ';
 
         }
 
@@ -893,8 +891,8 @@ export class HeadTrackingController {
                                 <p>Keep your head in neutral position...</p>
 
                                 <p>Progress: ${progress}%</p>''
-                                <div style="width: 200px; height: 10px; background: #333; border-radius: 5px; margin: 10px auto;">""
-                                    <div style="width: ${progress}%; height: 100%; background: #0f0; border-radius: 5px; transition: width 0.1s;"></div>
+                                <div style="width: 200px; height: 10px; background: #333; border-radius: 5px;, margin: 10px auto;">""
+                                    <div style="width: ${progress}%; height: 100%; background: #0f0; border-radius: 5px;, transition: width 0.1s;"></div>
                                 </div>;
                             </div>;
                         `;
@@ -1002,16 +1000,14 @@ export class HeadTrackingController {
      * トラッキングインターフェースの表示切り替え
      */'
     toggleTrackingInterface(show: boolean): void { ''
-        if(this.trackingInterface) {'
-            ';
+        if(this.trackingInterface) {', ';
 
         }
 
             this.trackingInterface.style.display = show ? 'block' : 'none'; }
 
         }''
-        if(this.headPointer) {'
-            ';
+        if(this.headPointer) {', ';
 
         }
 

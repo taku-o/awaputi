@@ -12,7 +12,7 @@ interface ServiceWorkerMessage { type: string,
 
 interface ServiceWorkerStats { registration: boolean,
     active: boolean;
-    updateAvailable: boolean;
+   , updateAvailable: boolean;
     scope?: string;
     error?: string;
     [key: string]: any, }
@@ -32,9 +32,9 @@ interface AppManifestConfig { name?: string;
     orientation?: string;
     scope?: string;
     icons?: Array<{
-        src: string;
+        sr;c: string;
         sizes: string;
-        type: string ,}>;
+       , type: string ,}>;
     categories?: string[];
     lang?: string;
     dir?: string;
@@ -44,7 +44,7 @@ export class PWAServiceWorkerManager {
     private pwaManager: any;
     private registration: ServiceWorkerRegistration | null = null;
     private isRegistering: boolean = false;
-    private updateAvailable: boolean = false;
+    private, updateAvailable: boolean = false;
     private updateCheckInterval?: number;
 
     constructor(pwaManager: any) {
@@ -80,7 +80,7 @@ export class PWAServiceWorkerManager {
 ;
 
             this.registration = registration;''
-            console.log('[PWAServiceWorkerManager] Service Worker registered successfully:', registration.scope);
+            console.log('[PWAServiceWorkerManager] Service Worker registered, successfully:', registration.scope);
 
             // Service Workerの状態監視開始
             this.monitorServiceWorkerState();
@@ -145,8 +145,7 @@ export class PWAServiceWorkerManager {
      * Service Worker更新の適用
      */'
     applyServiceWorkerUpdate(): void { ''
-        if(this.registration && this.registration.waiting) {'
-            ';
+        if(this.registration && this.registration.waiting) {', ';
 
         }
 
@@ -263,8 +262,7 @@ export class PWAServiceWorkerManager {
      * @returns {Promise<Object>} レスポンス
      */'
     async postMessage(message: ServiceWorkerMessage): Promise<any> { ''
-        if(!this.registration || !this.registration.active) {'
-            ';
+        if(!this.registration || !this.registration.active) {', ';
 
         }
 
@@ -294,7 +292,7 @@ export class PWAServiceWorkerManager {
         try {
             const result = await this.postMessage({)'
                 type: 'CACHE_MANAGEMENT');
-                action: action,);
+               , action: action,);
                 options: options);
  ,};
             console.log(`[PWAServiceWorkerManager] Cache ${action} completed:`, result});
@@ -333,7 +331,7 @@ export class PWAServiceWorkerManager {
             return { registration: !!this.registration,
                 active: !!this.registration? .active, : undefined
                 updateAvailable: this.updateAvailable;
-                scope: this.registration? .scope, };
+               , scope: this.registration? .scope, };
                 ...result
 
             }; : undefined''
@@ -342,7 +340,7 @@ export class PWAServiceWorkerManager {
             return { registration: !!this.registration,
                 active: !!this.registration? .active, : undefined
                 updateAvailable: this.updateAvailable;
-                scope: this.registration? .scope, : undefined };
+               , scope: this.registration? .scope, : undefined };
                 error: error.message }
             }
     }
@@ -375,8 +373,7 @@ export class PWAServiceWorkerManager {
      */''
     async checkAppManifest()';
             const manifestLink = document.querySelector('link[rel="manifest"]) as HTMLLinkElement;''
-            if(!manifestLink) {'
-                ';
+            if(!manifestLink) {', ';
 
             }
 
@@ -467,8 +464,7 @@ export class PWAServiceWorkerManager {
             this.updateCheckInterval = undefined; }
 ';
         // Service Workerイベントリスナーの削除
-        if(this.registration) {'
-            ';
+        if(this.registration) {', ';
 
         }
 

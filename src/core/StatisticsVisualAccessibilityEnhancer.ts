@@ -12,10 +12,10 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.config = {
             contrast: {
                 enabled: false;
-                level: 'normal', // normal, high, maximum;
+               , level: 'normal', // normal, high, maximum;
                 ratio: {
                     normal: 4.5;
-                    high: 7.0;
+                   , high: 7.0;
     ,}
                     maximum: 21.0 }
                 },''
@@ -24,34 +24,34 @@ export class StatisticsVisualAccessibilityEnhancer {
                 accentColor: '#0066cc';
             },
             fontSize: { enabled: false;
-                scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%;
+               , scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%;
                 minSize: 12;
                 maxSize: 48;
                 lineHeight: 1.4;
-                letterSpacing: 0 ,};
+               , letterSpacing: 0 ,};
             colorSupport: { enabled: true,''
                 colorBlindnessType: 'none', // none, protanopia, deuteranopia, tritanopia, monochrome;
                 patternSupport: true;
                 shapeSupport: true;
                 symbolSupport: true;
-                textureSupport: true ,};
+               , textureSupport: true ,};
             magnification: { enabled: false;
-                level: 1.0, // 1.0-3.0;
+               , level: 1.0, // 1.0-3.0;
                 followFocus: true;
-                smoothTransition: true, }
+               , smoothTransition: true, }
                 zoomArea: { x: 0, y: 0, width: 200, height: 200 ,},
             focus: { enabled: true;
-                thickness: 3,
+               , thickness: 3,
                 color: '#4A90E2',
                 style: 'solid', // solid, dashed, dotted;
                 radius: 4;
                 offset: 2;
-                animation: true ,};
+               , animation: true ,};
             motion: { reducedMotion: false;
                 animationDuration: 300;
                 transitionDuration: 200;
                 parallaxDisabled: false;
-                autoplayDisabled: false }
+               , autoplayDisabled: false }
         };
         // カラーパレット管理
         this.colorPalettes = { normal: {''
@@ -201,7 +201,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             position: fixed;
             width: 200px;
             height: 200px;
-            border: 2px solid #4A90E2;
+           , border: 2px solid #4A90E2;
             border-radius: 50%,
             background: white;
             pointer-events: none,
@@ -216,7 +216,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         magnifierCanvas.height = 200;
         magnifierCanvas.style.cssText = `;
             width: 100%;
-            height: 100%;
+           , height: 100%;
             transform-origin: center,
         `;
         
@@ -235,7 +235,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             pointer-events: none,
             z-index: 9999,
             display: none;
-            border: ${this.config.focus.thickness}px ${this.config.focus.style} ${this.config.focus.color}
+           , border: ${this.config.focus.thickness}px ${this.config.focus.style} ${this.config.focus.color}
             border-radius: ${this.config.focus.radius}px;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.8), 0 0 8px rgba(74,144,226,0.4);
             transition: all var(--accessibility-transition-duration) ease;
@@ -308,8 +308,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             document.body.classList.remove(cls); }
         };
 
-        if(this.config.colorSupport.colorBlindnessType !== 'none) {'
-            ';
+        if(this.config.colorSupport.colorBlindnessType !== 'none) {', ';
 
         }
 
@@ -537,8 +536,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             }');
 
             window.matchMedia('(prefers-color-scheme: dark)'').addEventListener('change', (e) => {  ''
-                if(e.matches) {'
-                    ';
+                if(e.matches) {', ';
 
                 }
 
@@ -770,8 +768,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.focusIndicator.style.width = `${rect.width + (this.config.focus.offset * 2})px`;
         this.focusIndicator.style.height = `${rect.height + (this.config.focus.offset * 2})px`;
 
-        if(this.config.focus.animation) {'
-            ';
+        if(this.config.focus.animation) {', ';
 
         }
 
@@ -983,7 +980,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             colorBlindnessSupport: this.config.colorSupport.colorBlindnessType;
             magnificationEnabled: this.config.magnification.enabled;
             reducedMotion: this.config.motion.reducedMotion;
-            focusIndicatorEnabled: this.config.focus.enabled;
+           , focusIndicatorEnabled: this.config.focus.enabled;
     ,}
             patternSupportEnabled: this.config.colorSupport.patternSupport, };
             symbolSupportEnabled: this.config.colorSupport.symbolSupport }

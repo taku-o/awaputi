@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Type definitions for visual effect accessibility management
 interface EffectManager { enhancedParticleManager?: EnhancedParticleManager;
@@ -7,28 +7,28 @@ interface EffectManager { enhancedParticleManager?: EnhancedParticleManager;
     }
 
 interface AccessibilityManager { getConfiguration(): AccessibilityConfiguration;
-    addEventListener?(event: string, handler: (event: any) => void): void;
+    addEventListener?(event: string, handler: (even;t: any) => void): void;
     removeEventListener?(event: string): void, 
 }
 
-interface EnhancedParticleManager { createParticle?: (x: number, y: number, options?: ParticleOptions) => any;
-    renderParticle?: (context: CanvasRenderingContext2D, particle: Particle) => void ,}
+interface EnhancedParticleManager { createParticle?: (;x: number, y: number, options?: ParticleOptions) => any;
+    renderParticle?: (contex;t: CanvasRenderingContext2D, particle: Particle) => void ,}
 }
 
-interface EnhancedEffectManager { addEffect?: (effectType: string, options?: EffectOptions) => any;
-    renderEffect?: (context: CanvasRenderingContext2D, effect: Effect) => void ,}
+interface EnhancedEffectManager { addEffect?: (effectTyp;e: string, options?: EffectOptions) => any;
+    renderEffect?: (contex;t: CanvasRenderingContext2D, effect: Effect) => void ,}
 }
 ';
 
 interface AnimationManager { ''
-    createAnimation?: (element: any, animationType: string, duration: number, options?: AnimationOptions') => any }'
+    createAnimation?: (elemen;t: any, animationType: string, duration: number, options?: AnimationOptions') => any }'
 }
 
 // Visual accessibility state
 interface VisualAccessibilityState { highContrastActive: boolean,
     colorBlindnessMode: ColorBlindnessType;
     motionReduced: boolean;
-    visualAlertsEnabled: boolean ,}
+   , visualAlertsEnabled: boolean ,}
 ;
 // Color blindness types
 type ColorBlindnessType = 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia';
@@ -36,7 +36,7 @@ type ColorBlindnessType = 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia';
 // Accessibility configuration
 interface AccessibilityConfiguration { visual: {
         highContrast: {
-            enabled: boolean;
+            enable;d: boolean;
             level?: string;
             customColors?: any; };
         colorBlindness: { enabled: boolean;
@@ -61,8 +61,8 @@ interface ParticleOptions { color?: string;
     count?: number;
     lifetime?: number;
     movement?: {
-        type: string;
-        speed: number ,};''
+        typ;e: string;
+       , speed: number ,};''
     patternType?: 'dot' | 'stripe' | 'cross';
     usePattern?: boolean;
     [key: string]: any,
@@ -83,7 +83,7 @@ interface AnimationOptions { duration?: number;
 // Particle and effect data structures
 interface Particle { x: number,
     y: number;
-    size: number;
+   , size: number;
     color?: string;
     patternType?: string;
     usePattern?: boolean;
@@ -98,7 +98,7 @@ type ColorFilter = (color: string') => string;
 // RGB color interface
 interface RGBColor { r: number,
     g: number;
-    b: number ,}
+   , b: number ,}
 
 // High contrast color palette
 interface HighContrastColors { background: string;
@@ -107,17 +107,17 @@ interface HighContrastColors { background: string;
     error: string;
     success: string;
     warning: string;
-    info: string }
+   , info: string }
 
 // Reduced motion settings
 interface ReducedMotionSettings { particleCount: number;
     animationDuration: number;
     disableEffects: string[];
-    enableAlternatives: boolean }
+   , enableAlternatives: boolean }
 
 // System preference change event
 interface SystemPreferenceChangeEvent { preference: string;
-    value: any }
+   , value: any }
 
 // Animation configuration result
 interface AnimationConfigResult { duration: number;
@@ -127,20 +127,20 @@ interface AnimationConfigResult { duration: number;
 interface AccessibilityConfigResult { highContrastActive: boolean,
     colorBlindnessMode: ColorBlindnessType;
     motionReduced: boolean;
-    visualAlertsEnabled: boolean ,}
+   , visualAlertsEnabled: boolean ,}
 
 // Visual effect accessibility report
 interface VisualAccessibilityReport { component: string;
     state: VisualAccessibilityState;
     configuration: AccessibilityConfigResult;
-    features: {
-        highContrast: boolean;
+   , features: {
+        highContras;t: boolean;
         colorBlindnessSupport: boolean;
         motionReduction: boolean;
         visualAlerts: boolean;
-        patternSupport: boolean };
+       , patternSupport: boolean };
     statistics: { filtersApplied: number;
-        alternativeEffectsCreated: number }
+       , alternativeEffectsCreated: number }
 
 /**
  * 視覚効果のアクセシビリティサポート管理クラス
@@ -150,11 +150,11 @@ export class VisualEffectAccessibilityManager {
     private effectManager: EffectManager | null;
     private accessibilityManager: AccessibilityManager | null;
     private config: AccessibilityConfiguration | null = null;
-    private state: VisualAccessibilityState = {
+    private, state: VisualAccessibilityState = {
         highContrastActive: false'';
         colorBlindnessMode: 'none';
         motionReduced: false;
-        visualAlertsEnabled: false };
+       , visualAlertsEnabled: false };
     // 色覚異常対応のカラーマップ
     private colorBlindnessFilters = new Map<ColorBlindnessType, ColorFilter>(['';
         ['protanopia', this.createProtanopiaFilter('])';
@@ -441,12 +441,7 @@ export class VisualEffectAccessibilityManager {
     /**
      * 代替エフェクトの作成
      */''
-    private createAlternativeEffect(originalType: string, options: EffectOptions): EffectOptions { const alternatives: Record<string, Partial<EffectOptions>> = {' }'
-
-            'shake': { type: 'glow', intensity: 0.8, duration: 500 ,},''
-            'flash': { type: 'border', color: this.highContrastColors.accent, thickness: 3 ,},''
-            'zoom': { type: 'scale', factor: 1.1, duration: 300 ,},''
-            'blur': { type: 'opacity', factor: 0.8, duration: 200 ,};
+    private createAlternativeEffect(originalType: string, options: EffectOptions): EffectOptions { const alternatives: Record<string, Partial<EffectOptions>> = {' }', 'shake': { type: 'glow', intensity: 0.8, duration: 500 ,},'', 'flash': { type: 'border', color: this.highContrastColors.accent, thickness: 3 ,},'', 'zoom': { type: 'scale', factor: 1.1, duration: 300 ,},'', 'blur': { type: 'opacity', factor: 0.8, duration: 200 ,};
         
         const alternative = alternatives[originalType];
         if(alternative) {
@@ -464,7 +459,7 @@ export class VisualEffectAccessibilityManager {
     private createColorChangeAnimation(options: AnimationOptions): AnimationConfigResult { return { ''
             type: 'colorChange',
             fromColor: options.fromColor || '#FFFFFF';
-            toColor: options.toColor || this.highContrastColors.accent,
+           , toColor: options.toColor || this.highContrastColors.accent,
             duration: options.duration || 300,' };
 
             easing: 'ease-in-out' }
@@ -487,8 +482,7 @@ export class VisualEffectAccessibilityManager {
     /**
      * パターン付きパーティクルの描画
      */''
-    private renderParticleWithPattern(context: CanvasRenderingContext2D, particle: Particle): void { const patterns = {''
-            'dot': this.createDotPattern,
+    private renderParticleWithPattern(context: CanvasRenderingContext2D, particle: Particle): void { const patterns = {'', 'dot': this.createDotPattern,
             'stripe': this.createStripePattern,
             'cross': this.createCrossPattern };
 
@@ -711,7 +705,7 @@ export class VisualEffectAccessibilityManager {
      */
     getConfiguration(): AccessibilityConfigResult { return { highContrastActive: this.state.highContrastActive,
             colorBlindnessMode: this.state.colorBlindnessMode;
-            motionReduced: this.state.motionReduced, };
+           , motionReduced: this.state.motionReduced, };
             visualAlertsEnabled: this.state.visualAlertsEnabled }
         }
     
@@ -720,15 +714,15 @@ export class VisualEffectAccessibilityManager {
      */''
     generateReport(''';
             component: 'VisualEffectAccessibilityManager);
-            state: { ...this.state)
+           , state: { ...this.state)
             configuration: this.getConfiguration();
-            features: { highContrast: true;
+           , features: { highContrast: true;
                 colorBlindnessSupport: true;
                 motionReduction: true;
                 visualAlerts: true;
-                patternSupport: true };
+               , patternSupport: true };
             statistics: { filtersApplied: this.colorBlindnessFilters.size;
-                alternativeEffectsCreated: this.reducedMotionSettings.disableEffects.length }
+               , alternativeEffectsCreated: this.reducedMotionSettings.disableEffects.length }
         }
     
     /**

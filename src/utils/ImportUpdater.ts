@@ -3,7 +3,7 @@
  * Issue #131 対応
  */
 
-import { promises as fs } from 'fs';''
+import { promises, as fs  } from 'fs';''
 import path from 'path';
 
 // Type definitions
@@ -12,7 +12,7 @@ interface ImportPatterns { namedImport: RegExp,
     namespaceImport: RegExp;
     sideEffectImport: RegExp;
     dynamicImport: RegExp;
-    requireCall: RegExp
+   , requireCall: RegExp
     ,}
 ';
 
@@ -23,7 +23,7 @@ interface ImportInfo { ''
     fullMatch: string;
     lineNumber: number;
     startIndex: number;
-    endIndex: number;
+   , endIndex: number;
     containingFile?: string }
 
 interface ImportSearchResults { byClassName: Map<string, ImportInfo[]>;
@@ -39,11 +39,11 @@ interface UpdateResult { file: string,''
 interface ValidationIssue { type: string,
     line: number;
     content: string;
-    message: string ,}
+   , message: string ,}
 
 interface ImportPathInfo { path: string;
     line: number;
-    type: string }
+   , type: string }
 
 export class ImportUpdater {
     private cache: Map<string, any>;
@@ -126,7 +126,7 @@ export class ImportUpdater {
                     sourcePath: sourcePath;
                     fullMatch: match[0]);
                     lineNumber: lineNumber);
-                    startIndex: match.index,)
+                   , startIndex: match.index,)
             }
                     endIndex: match.index + match[0].length); }
 }
@@ -140,7 +140,7 @@ export class ImportUpdater {
                 sourcePath: match[2];
                 fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index, }
+               , startIndex: match.index, }
                 endIndex: match.index + match[0].length); }
         }
 
@@ -153,7 +153,7 @@ export class ImportUpdater {
                 sourcePath: match[2];
                 fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index, }
+               , startIndex: match.index, }
                 endIndex: match.index + match[0].length); }
         }
 
@@ -166,7 +166,7 @@ export class ImportUpdater {
                 sourcePath: match[1];
                 fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index, }
+               , startIndex: match.index, }
                 endIndex: match.index + match[0].length); }
         }
 
@@ -179,7 +179,7 @@ export class ImportUpdater {
                 sourcePath: match[1];
                 fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index, }
+               , startIndex: match.index, }
                 endIndex: match.index + match[0].length); }
         }
 
@@ -293,8 +293,7 @@ export class ImportUpdater {
      */
     updateNamedImportsInContent(content: string, oldName: string, newName: string): string { // 名前付きインポートのパターンをより厳密に
         const namedImportPattern = new RegExp(' })'
-            `import\\s*\\{([^}]*\\b${oldName}\\b[^)]*')\\}\\s*from\\s*(['"\`][^'"\`]+['"\`]")`,""
-            'g';
+            `import\\s*\\{([^}]*\\b${oldName}\\b[^)]*')\\}\\s*from\\s*(['"\`][^'"\`]+['"\`]")`,"", 'g';
         );
         ';
 
@@ -305,7 +304,7 @@ export class ImportUpdater {
                 new RegExp(`\\b${oldName}\\b`, 'g),
                 newName;
             );
-            return `import { ${updatedImportList.trim(}) } from ${fromClause}`;
+            return `import { ${updatedImportList.trim( }) } from ${fromClause}`;
         });
     }
 
@@ -325,26 +324,26 @@ export class ImportUpdater {
                     issues.push({''
                         type: 'missing_from);
                         line: i + 1)';
-                        content: line,' }'
+                       , content: line,' }'
 
                         message: 'Import statement missing "from" clause')'); }
 }
             ';
             // 閉じ括弧の不一致
             if (line.includes('import { '') && !line.includes())) {'
-                let foundClosing = false;''
+                let, foundClosing = false;''
                 for(let, j = i + 1; j < lines.length && j < i + 5; j++) {'
 
                     if(lines[j].includes()) {
                         foundClosing = true;
-                }
+                 }
                         break; }
 }''
                 if(!foundClosing) { '
                     issues.push({''
                         type: 'unclosed_brace);
                         line: i + 1)';
-                        content: line,' }'
+                       , content: line,' }'
 
                         message: 'Unclosed brace in import statement'); }
 }
@@ -357,11 +356,11 @@ export class ImportUpdater {
         for(const, circular of, circularImports) { '
             issues.push({''
                 type: 'circular_dependency);
-                line: circular.line }
+               , line: circular.line }
 
                 content: circular.path,') }'
 
-                message: `Potential circular dependency detected: ${circular.path}`)');
+                message: `Potential circular dependency, detected: ${circular.path}`)');
         }
         
         return issues;
@@ -419,8 +418,7 @@ export class ImportUpdater {
         let relativePath = path.relative(fromDir, toPath);
         ';
         // 拡張子を除去（.jsファイルの場合）
-        if(relativePath.endsWith('.js) {'
-            ';
+        if(relativePath.endsWith('.js) {', ';
 
         }
 
@@ -500,7 +498,7 @@ export class ImportUpdater {
                 if (sourcePath) {
                     paths.push({)
                         path: sourcePath);
-                        line: this.findLineNumber(content, match.index),
+                       , line: this.findLineNumber(content, match.index),
         
         }
                         type: patternName }

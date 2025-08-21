@@ -12,44 +12,44 @@ interface NotificationChannel { enabled: boolean,
 interface NotificationChannels { console: NotificationChannel;
     ui: NotificationChannel;
     storage: NotificationChannel;
-    webhook: NotificationChannel
+   , webhook: NotificationChannel
     }
 
 interface RateLimit { maxPerMinute: number;
     maxPerHour: number;
-    burstLimit: number }
+   , burstLimit: number }
 
 interface NotificationFilters { categories: string[];
     severities: string[];
     patterns: string[];
-    excludePatterns: string[] }
+   , excludePatterns: string[] }
 
 interface NotificationThreshold { count: number;
-    timeWindow: number }
+   , timeWindow: number }
 
 interface NotificationThresholds { critical: NotificationThreshold;
     high: NotificationThreshold;
     medium: NotificationThreshold;
-    low: NotificationThreshold
+   , low: NotificationThreshold
     }
 
 interface AggregationConfig { enabled: boolean;
     windowSize: number;
-    maxAggregatedNotifications: number }
+   , maxAggregatedNotifications: number }
 
 interface NotificationConfig { enabled: boolean;
     channels: NotificationChannels;
     rateLimit: RateLimit;
     filters: NotificationFilters;
     thresholds: NotificationThresholds;
-    aggregation: AggregationConfig
+   , aggregation: AggregationConfig
     }
 
 interface RateLimitCounter { count: number;
-    resetTime: number }
+   , resetTime: number }
 
 interface RateLimitCounters { minute: RateLimitCounter;
-    hour: RateLimitCounter
+   , hour: RateLimitCounter
     }
 
 interface NotificationError { id: string;
@@ -57,7 +57,7 @@ interface NotificationError { id: string;
     severity: string;
     category: string;
     fingerprint: string;
-    count: number;
+   , count: number;
     gameState?: any }
 
 interface Notification { id: string;
@@ -65,38 +65,38 @@ interface Notification { id: string;
     type: string;
     error: NotificationError;
     additionalInfo?: any;
-    channels: string[] }
+   , channels: string[] }
 
 interface AggregatedNotification { key: string;
     notifications: Notification[];
     firstSeen: number;
-    lastSeen: number }
+   , lastSeen: number }
 
 interface UINotificationData { element: HTMLElement;
-    timestamp: number }
+   , timestamp: number }
 
 interface StoredNotification { id: string;
     timestamp: number;
     type: string;
-    error: NotificationError
+   , error: NotificationError
     }
 
 interface WebhookPayload { timestamp: number;
     type: string;
     error: NotificationError;
-    gameInfo: {
-        sessionId: string;
-        gameState: any }
+   , gameInfo: {
+        sessionI;d: string;
+       , gameState: any }
 
 export class DebugErrorNotificationSystem {
     private errorReporter: DebugErrorReporter;
     private notificationConfig: NotificationConfig;
     private notificationHistory: Notification[];
     private rateLimitCounter: RateLimitCounters;
-    private pendingNotifications: Map<string, AggregatedNotification>;
+    private, pendingNotifications: Map<string, AggregatedNotification>;
     private aggregationTimer: NodeJS.Timeout | null;
     private uiContainer: HTMLElement | null;
-    private activeUINotifications: Map<string, UINotificationData>;
+    private, activeUINotifications: Map<string, UINotificationData>;
     private rateLimitExceededNotificationSent?: boolean;
 
     constructor(errorReporter: DebugErrorReporter) {
@@ -113,7 +113,7 @@ export class DebugErrorNotificationSystem {
                 webhook: { enabled: false, url: undefined, level: 'critical' ,},
             rateLimit: { maxPerMinute: 10;
                 maxPerHour: 100;
-                burstLimit: 5 };
+               , burstLimit: 5 };
             filters: { categories: [], // 空の場合は全カテゴリを通知
                 severities: ['medium', 'high', 'critical'],
                 patterns: [], // 特定パターンのみ通知;
@@ -125,7 +125,7 @@ export class DebugErrorNotificationSystem {
                 low: { count: 10, timeWindow: 1800000 ,} // 30分
             },
             aggregation: { enabled: true;
-                windowSize: 60000, // 1分;
+               , windowSize: 60000, // 1分;
                 maxAggregatedNotifications: 5 ,}
         };
         // 通知履歴とレート制限
@@ -263,7 +263,7 @@ export class DebugErrorNotificationSystem {
      */
     private createNotification(error: NotificationError, type: string, additionalInfo: any): Notification { const notification: Notification = {
             id: this.generateNotificationId();
-            timestamp: Date.now();
+           , timestamp: Date.now();
             type,
             error: {
                 id: error.id;
@@ -271,7 +271,7 @@ export class DebugErrorNotificationSystem {
                 severity: error.severity;
                 category: error.category;
                 fingerprint: error.fingerprint;
-                count: this.getErrorCount(error.fingerprint ,};
+               , count: this.getErrorCount(error.fingerprint ,};
             additionalInfo,
             channels: this.determineChannels(error, type);
         };
@@ -323,7 +323,7 @@ export class DebugErrorNotificationSystem {
         if(!this.pendingNotifications.has(key) { this.pendingNotifications.set(key, {
                 key);
                 notifications: []);
-                firstSeen: notification.timestamp, }
+               , firstSeen: notification.timestamp, }
                 lastSeen: notification.timestamp); }
         }
         
@@ -364,22 +364,22 @@ export class DebugErrorNotificationSystem {
 
         return { id: this.generateNotificationId(),''
             timestamp: Date.now(''';
-            type: 'aggregated',
+           , type: 'aggregated',
             error: {''
                 id: '';
                 category: firstNotification.error.category;
                 severity: firstNotification.error.severity);
                 count: notifications.length)';
-                timespan: group.lastSeen - group.firstSeen,')';
+               , timespan: group.lastSeen - group.firstSeen,')';
                 messages: [...new Set(notifications.map(n => n.error.message)].slice(0, 3),
                 message: '',' };
 
                 fingerprint: '' }
             };
             aggregatedNotifications: notifications.map(n => ({ id: n.id)
-                timestamp: n.timestamp,);
+               , timestamp: n.timestamp,);
                 message: n.error.message)));
-            channels: firstNotification.channels ,}
+           , channels: firstNotification.channels ,}
     
     /**
      * 通知の送信
@@ -434,7 +434,7 @@ export class DebugErrorNotificationSystem {
             
         }
             console.group(`🔔 Aggregated, Notifications - ${error.category.toUpperCase(})`);
-            console.warn(`${error.count) errors in ${((error, as any}.timespan / 1000}.toFixed(1})s`);
+            console.warn(`${error.count) errors, in ${((error, as, any}.timespan / 1000}.toFixed(1})s`);
             (error, as any).messages.forEach((message: string) => console.log(`• ${ message}`}
             console.groupEnd(});
         } else { const emoji = this.getSeverityEmoji(error.severity); }
@@ -500,7 +500,7 @@ export class DebugErrorNotificationSystem {
                 <div class="notification-body">;
                     <p><strong>${notification.error.count} errors</strong> in ${notification.error.category}</p>"
                     <ul>"";
-                        ${((notification.error, as any}.messages || []}.map((msg: string}) => `<li>${msg}</li>`").join(''')}
+                        ${((notification.error, as, any}.messages || []}.map((msg: string}) => `<li>${msg}</li>`").join(''')}
                     </ul>;
                 </div>;
             `;
@@ -544,7 +544,7 @@ export class DebugErrorNotificationSystem {
             stored.push({
                 id: notification.id);
                 timestamp: notification.timestamp);
-                type: notification.type,);
+               , type: notification.type,);
                 error: notification.error);
             // 最新100件のみ保持
             if(stored.length > 100) {
@@ -569,16 +569,15 @@ export class DebugErrorNotificationSystem {
                 timestamp: notification.timestamp;
                 type: notification.type;
                 error: notification.error;
-                gameInfo: {
+               , gameInfo: {
                     sessionId: this.errorReporter.sessionId;
-                    gameState: notification.error.gameState }
+                   , gameState: notification.error.gameState }
             };
             ';
 
             await fetch(webhookUrl, { ')'
                 method: 'POST')';
-                headers: {''
-                    'Content-Type': 'application/json';
+               , headers: {'', 'Content-Type': 'application/json';
                 ),
                 body: JSON.stringify(payload), };''
         } catch (error) { console.warn('Webhook notification failed:', (error as Error).message }
@@ -594,7 +593,7 @@ export class DebugErrorNotificationSystem {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 350px;
+           , width: 350px;
             max-height: 80vh,
             overflow-y: auto,
             z-index: 10001,
@@ -615,7 +614,7 @@ export class DebugErrorNotificationSystem {
                 border: none;
                 font-size: 18px,
                 cursor: pointer;
-                padding: 0;
+               , padding: 0;
                 margin-left: auto, }
             .notification-header { display: flex,
                 align-items: center,
@@ -624,8 +623,8 @@ export class DebugErrorNotificationSystem {
             .notification-body { font-size: 12px,
                 line-height: 1.4, }
             @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0, }
-                to { transform: translateX(0); opacity: 1 }
+                from { transform: translateX(100%);, opacity: 0, }
+                to { transform: translateX(0);, opacity: 1 }
         `;
         
         document.head.appendChild(style);
@@ -673,7 +672,7 @@ export class DebugErrorNotificationSystem {
             critical: 3;
             high: 2;
             medium: 1.5;
-            low: 1 ,};
+           , low: 1 ,};
         return baseDuration * (severityMultiplier[notification.error.severity] || 1);
     }
     
@@ -725,14 +724,14 @@ export class DebugErrorNotificationSystem {
         this.sendConsoleNotification({)'
             id: ''),
             timestamp: Date.now(''';
-            type: 'rate_limit',
+           , type: 'rate_limit',
             error: {''
                 id: '',
                 message: 'Notification rate limit exceeded. Some notifications may be suppressed.',
                 severity: 'medium',
                 category: 'system',
                 fingerprint: '';
-                count: 1 ,};
+               , count: 1 ,};
             channels: []);
         })
         this.rateLimitExceededNotificationSent = true;

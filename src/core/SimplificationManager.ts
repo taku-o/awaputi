@@ -5,10 +5,10 @@
  * WCAG 2.1 AAガイドラインに準拠した認知アクセシビリティ機能を実装します。
  */
 
-import { SimplificationModeController } from './simplification-manager/SimplificationModeController.js';''
-import { UIComplexityAnalyzer } from './simplification-manager/UIComplexityAnalyzer.js';''
-import { InterfaceSimplifier } from './simplification-manager/InterfaceSimplifier.js';''
-import { AdaptiveSimplificationEngine } from './simplification-manager/AdaptiveSimplificationEngine.js';
+import { SimplificationModeController  } from './simplification-manager/SimplificationModeController.js';''
+import { UIComplexityAnalyzer  } from './simplification-manager/UIComplexityAnalyzer.js';''
+import { InterfaceSimplifier  } from './simplification-manager/InterfaceSimplifier.js';''
+import { AdaptiveSimplificationEngine  } from './simplification-manager/AdaptiveSimplificationEngine.js';
 
 export class SimplificationManager {
     /**
@@ -25,7 +25,7 @@ export class SimplificationManager {
         this.interfaceSimplifier = new InterfaceSimplifier();''
         this.adaptiveEngine = new AdaptiveSimplificationEngine(''';
             defaultMode: 'standard';
-            autoSimplification: false;
+           , autoSimplification: false;
     }
             adaptiveComplexity: true }
         };
@@ -35,7 +35,7 @@ export class SimplificationManager {
             userPreferences: {})
             sessionMetrics: { startTime: Date.now();
                 simplificationCount: 0;
-                userSatisfaction: null }
+               , userSatisfaction: null }
         };
         this.setupEventListeners();
     }
@@ -193,7 +193,7 @@ export class SimplificationManager {
         if(analysis) {''
             this.logEvent('complexity_analyzed', {)
                 overallScore: analysis.overallComplexity.score);
-                level: analysis.overallComplexity.level,);
+               , level: analysis.overallComplexity.level,);
                 recommendationsCount: analysis.recommendations.length);
             // 自動簡素化が有効な場合
             if (this.config.autoSimplification) {
@@ -387,7 +387,7 @@ export class SimplificationManager {
             mode: this.modeController.getStats();
             complexity: this.complexityAnalyzer.getStats();
             simplification: this.interfaceSimplifier.getStats();
-            adaptive: this.adaptiveEngine.getStats();
+           , adaptive: this.adaptiveEngine.getStats();
         }
 
     /**
@@ -462,7 +462,7 @@ export class SimplificationManager {
         this.modeController.reset();''
         this.adaptiveEngine.reset(''';
             defaultMode: 'standard';
-            autoSimplification: false;
+           , autoSimplification: false;
     }
             adaptiveComplexity: true }
         };

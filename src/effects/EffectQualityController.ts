@@ -1,10 +1,10 @@
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Type definitions for quality control system
 interface ConfigurationManager { get<T = any>(key: string, defaultValue?: T): T;
     set<T = any>(key: string, value: T): void,
-    watch<T = any>(key: string, callback: (newValue: T) => void): ConfigWatchListener
+    watch<T = any>(key: string, callback: (newValu;e: T) => void): ConfigWatchListener
     ,}
 }
 
@@ -25,29 +25,29 @@ interface QualitySettings { particleCountMultiplier: number,
     reflectionEnabled: boolean;
     blurEnabled: boolean;
     backgroundParticles: boolean;
-    frameRateTarget: number ,}
+   , frameRateTarget: number ,}
 
 interface EffectPriorities { critical: number;    // ゲームプレイに必須
     important: number;   // ユーザー体験に重要
     normal: number;      // 標準エフェクト
-    decorative: number;  // 装飾的エフェクト }
+   , decorative: number;  // 装飾的エフェクト }
 
 interface EffectLimits { maxActiveParticles: number,
     maxActiveEffects: number;
     maxScreenEffects: number;
-    maxBackgroundParticles: number ,}
+   , maxBackgroundParticles: number ,}
 
 interface ActiveEffectCounts { particles: number;
     effects: number;
     screenEffects: number;
-    backgroundParticles: number }
+   , backgroundParticles: number }
 
 interface PerformanceStats { averageFrameRate: number;
     averageMemoryUsage: number;
     currentQuality: QualityLevelType;
     autoAdjustEnabled: boolean;
     effectCounts: ActiveEffectCounts;
-    effectLimits: EffectLimits
+   , effectLimits: EffectLimits
     }
 
 interface DebugInfo { currentQuality: QualityLevelType;
@@ -57,7 +57,7 @@ interface DebugInfo { currentQuality: QualityLevelType;
     activeEffectCounts: ActiveEffectCounts;
     effectLimits: EffectLimits;
     autoAdjustEnabled: boolean;
-    lastAdjustTime: number }
+   , lastAdjustTime: number }
 
 /**
  * エフェクト品質制御クラス
@@ -69,7 +69,7 @@ export class EffectQualityController {
     private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // 品質レベル定義
-    private readonly qualityLevels: Record<QualityLevelType, QualitySettings> = {
+    private readonly, qualityLevels: Record<QualityLevelType, QualitySettings> = {
         low: {
             particleCountMultiplier: 0.25;
             particleSizeMultiplier: 0.8;
@@ -80,7 +80,7 @@ export class EffectQualityController {
             reflectionEnabled: false;
             blurEnabled: false;
             backgroundParticles: false;
-            frameRateTarget: 30 ,};
+           , frameRateTarget: 30 ,};
         medium: { particleCountMultiplier: 0.5;
             particleSizeMultiplier: 0.9;
             particleComplexity: 2;
@@ -90,7 +90,7 @@ export class EffectQualityController {
             reflectionEnabled: false;
             blurEnabled: true;
             backgroundParticles: true;
-            frameRateTarget: 45 };
+           , frameRateTarget: 45 };
         high: { particleCountMultiplier: 1.0;
             particleSizeMultiplier: 1.0;
             particleComplexity: 3;
@@ -100,7 +100,7 @@ export class EffectQualityController {
             reflectionEnabled: true;
             blurEnabled: true;
             backgroundParticles: true;
-            frameRateTarget: 60 };
+           , frameRateTarget: 60 };
         ultra: { particleCountMultiplier: 1.5;
             particleSizeMultiplier: 1.2;
             particleComplexity: 4;
@@ -110,7 +110,7 @@ export class EffectQualityController {
             reflectionEnabled: true;
             blurEnabled: true;
             backgroundParticles: true;
-            frameRateTarget: 60 }
+           , frameRateTarget: 60 }
     };
     ;
     // 現在の品質設定
@@ -125,7 +125,7 @@ export class EffectQualityController {
     private readonly performanceCheckInterval: number = 1000; // 1秒間隔
     private lastPerformanceCheck: number = 0;
     // エフェクト優先度システム
-    private readonly effectPriorities: EffectPriorities = { critical: 3,    // ゲームプレイに必須
+    private readonly, effectPriorities: EffectPriorities = { critical: 3,    // ゲームプレイに必須
         important: 2,   // ユーザー体験に重要;
         normal: 1,      // 標準エフェクト;
         decorative: 0   // 装飾的エフェクト ,};
@@ -133,12 +133,12 @@ export class EffectQualityController {
     private effectLimits: EffectLimits = { maxActiveParticles: 500
         maxActiveEffects: 20;
         maxScreenEffects: 5;
-        maxBackgroundParticles: 50 };
+       , maxBackgroundParticles: 50 };
     // 現在のエフェクトカウント
     private activeEffectCounts: ActiveEffectCounts = { particles: 0
         effects: 0;
         screenEffects: 0;
-        backgroundParticles: 0 };
+       , backgroundParticles: 0 };
     constructor() {
 
         this.configManager = getConfigurationManager();
@@ -411,7 +411,7 @@ export class EffectQualityController {
         
         return { averageFrameRate: avgFrameRate,
             averageMemoryUsage: avgMemoryUsage;
-            currentQuality: this.currentQuality, };
+           , currentQuality: this.currentQuality, };
             autoAdjustEnabled: this.autoAdjustEnabled, }
             effectCounts: { ...this.activeEffectCounts;
             effectLimits: { ...this.effectLimits;
@@ -423,12 +423,12 @@ export class EffectQualityController {
      */
     public getDebugInfo(): DebugInfo { return { currentQuality: this.currentQuality,
             qualitySettings: this.getCurrentQualitySettings();
-            frameRateHistory: [...this.frameRateHistory], };
+           , frameRateHistory: [...this.frameRateHistory], };
             memoryUsageHistory: [...this.memoryUsageHistory], }
             activeEffectCounts: { ...this.activeEffectCounts;
             effectLimits: { ...this.effectLimits;
             autoAdjustEnabled: this.autoAdjustEnabled;
-            lastAdjustTime: this.lastAdjustTime;
+           , lastAdjustTime: this.lastAdjustTime;
         },
     }
     
@@ -441,7 +441,7 @@ export class EffectQualityController {
             particles: 0;
             effects: 0;
             screenEffects: 0;
-            backgroundParticles: 0 }
+           , backgroundParticles: 0 }
 }
 
 // シングルトンインスタンスの作成と管理

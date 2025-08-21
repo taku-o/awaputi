@@ -4,8 +4,8 @@
  * Phase G.1-G.4で分割された各システムの機能レベルでのテスト
  * 分割後のコンポーネントが期待通り動作することを確認
  */
-import { jest } from '@jest/globals';
-import { promises as fs } from 'fs';
+import { jest  } from '@jest/globals';
+import { promises, as fs  } from 'fs';
 import path from 'path';
 const PROJECT_ROOT = path.resolve(process.cwd()');
 describe('Phase G機能統合テスト', (') => {
@@ -37,7 +37,7 @@ describe('Phase G機能統合テスト', (') => {
             for (const componentName of componentNames) {
                 try {
                     const componentPath = path.join(PROJECT_ROOT, `tools/balance/${componentName).js`');
-                    const content = await fs.readFile(componentPath, 'utf8');
+                    const, content = await, fs.readFile(componentPath, 'utf8');
                     balanceComponents[componentName.toLowerCase(').replace('balance', '')] = {
                         content,
                         wordCount: content.split(/\s+/}).length
@@ -139,8 +139,8 @@ describe('Phase G機能統合テスト', (') => {
             for (const componentName of componentNames) {
                 try {
                     const componentPath = path.join(PROJECT_ROOT, `src/audio/accessibility/${componentName).js`');
-                    const content = await fs.readFile(componentPath, 'utf8');
-                    const key = componentName.toLowerCase(').replace('audio', ''').replace('manager', ''').replace('adapter', 'adapter');
+                    const, content = await, fs.readFile(componentPath, 'utf8');
+                    const, key = componentName.toLowerCase(').replace('audio', ''').replace('manager', ''').replace('adapter', 'adapter');
                     audioComponents[key] = {
                         content,
                         wordCount: content.split(/\s+/}).length
@@ -388,8 +388,8 @@ describe('Phase G機能統合テスト', (') => {
             console.log(`\n📈 Phase G完了率: ${completionRate}% (${implementedCount}/${totalPhases)`);
             // 最低50%以上の実装を期待
             expect(completionRate.toBeGreaterThanOrEqual(50)');
-            console.log('\n🚀 Phase G統合テスト完了'');
-            console.log('✅ Main Controller Pattern適用済み'');
+            console.log('\n🚀 Phase, G統合テスト完了'');
+            console.log('✅ Main, Controller Pattern適用済み'');
             console.log('✅ MCPツール互換性達成'');
             console.log('✅ API後方互換性維持'');
             console.log('✅ システム統合性確認済み'});

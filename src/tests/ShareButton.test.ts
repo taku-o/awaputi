@@ -1,18 +1,18 @@
 /**
  * 共有ボタンコンポーネントテスト (Task, 7)
  */
-import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';''
+import { describe, test, expect, jest, beforeEach, afterEach  } from '@jest/globals';''
 import type { ShareButton } from '../core/ShareButton';''
 import type { SocialSharingManager } from '../core/SocialSharingManager';''
 import type { GameEngine } from '../core/GameEngine';
 // Mock interfaces
 interface MockGameEngine extends Partial<GameEngine> { on: jest.Mock,
     off: jest.Mock;
-    emit: jest.Mock ,}
+   , emit: jest.Mock ,}
 interface MockSocialSharingManager extends Partial<SocialSharingManager> { gameEngine: MockGameEngine;
     share: jest.Mock;
     shareViaTwitterUrl: jest.Mock;
-    shareViaFacebookUrl: jest.Mock }
+   , shareViaFacebookUrl: jest.Mock }
 interface ShareData { type: string;
     score?: number;
     text?: string;
@@ -33,7 +33,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
         // GameEngineのモック
         mockGameEngine = {
             on: jest.fn();
-            off: jest.fn(), }
+           , off: jest.fn(), }
         emit: jest.fn(); }
         };
         
@@ -47,7 +47,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
         // ResizeObserverのモック
         global.ResizeObserver = jest.fn().mockImplementation(() => ({ observe: jest.fn(),
             unobserve: jest.fn();
-        disconnect: jest.fn(),' }'
+       , disconnect: jest.fn(),' }'
 
         })') as any;
         ';
@@ -61,7 +61,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
                 addListener: jest.fn();
                 removeListener: jest.fn();
                 addEventListener: jest.fn();
-                removeEventListener: jest.fn(),
+               , removeEventListener: jest.fn(),
         dispatchEvent: jest.fn(),' }'
 
             }');
@@ -113,8 +113,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
                 position: 'top-left',
                 theme: 'gaming',
                 platforms: ['twitter', 'copy'], }
-                autoHide: true }))'
-            ')';
+                autoHide: true }))', ')';
             const { ShareButton } = await import('../core/ShareButton.js);
 
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, customOptions);''
@@ -310,7 +309,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
 
             shareButton.collapse() }
 
-            const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
+            const spaceEvent = new KeyboardEvent('keydown', { key: ', ' });
 
             shareButton.elements.mainButton.dispatchEvent(spaceEvent);
 
@@ -361,8 +360,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
 
         }''
         test('スクリーンリーダー用アナウンサーが機能する', () => {  shareButton.show();''
-            if(shareButton.elements.announcer) {'
-                ';
+            if(shareButton.elements.announcer) {', ';
 
             }
 
@@ -455,7 +453,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
                     addListener: jest.fn();
                     removeListener: jest.fn();
                     addEventListener: jest.fn();
-                    removeEventListener: jest.fn(), }
+                   , removeEventListener: jest.fn(), }
         dispatchEvent: jest.fn(); }
                 });
             }

@@ -1,17 +1,17 @@
 /**
  * ゲーム専用入力管理クラス
  */
-import { InputManager } from '../core/InputManager';''
-import { EnhancedTouchManager } from '../core/EnhancedTouchManager';''
-import { getBrowserCompatibility } from '../utils/BrowserCompatibility';''
-import { InputCoordinateConverter } from '../utils/InputCoordinateConverter';
+import { InputManager  } from '../core/InputManager';''
+import { EnhancedTouchManager  } from '../core/EnhancedTouchManager';''
+import { getBrowserCompatibility  } from '../utils/BrowserCompatibility';''
+import { InputCoordinateConverter  } from '../utils/InputCoordinateConverter';
 
 interface Position { x: number,
     y: number;
     originalEvent?: MouseEvent | TouchEvent ,}
 
 interface DragVector { x: number;
-    y: number }
+   , y: number }
 
 interface TouchData {
     position: Position;
@@ -28,7 +28,7 @@ interface GestureData { position?: Position;
 
 export class GameInputManager extends InputManager { private gameScene: any
     private gameEngine: any;
-    private inputCoordinateConverter: InputCoordinateConverter | null = null;
+    private, inputCoordinateConverter: InputCoordinateConverter | null = null;
     private enhancedTouchManager?: EnhancedTouchManager;
     
     constructor(canvas: HTMLCanvasElement, gameScene: any) {
@@ -80,7 +80,7 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent, as MouseEvent);
                 convertedPosition = {
                     x: converted.x;
-                    y: converted.y };''
+                   , y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for click, using original position', error }
         
         // 泡のクリック処理（変換された座標を使用）
@@ -102,7 +102,7 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent, as MouseEvent);
                 convertedPosition = {
                     x: converted.x;
-                    y: converted.y };''
+                   , y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for pointer move, using original position', error }
         
         // マウス位置の更新（変換された座標を使用）
@@ -121,15 +121,14 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(startPosition.originalEvent, as MouseEvent);
                 convertedPosition = {
                     x: converted.x;
-                    y: converted.y };''
+                   , y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for drag start, using original position', error }
         ';
         // ドラッグ対象の泡を検索（変換された座標を使用）
         const targetBubble = this.gameEngine.bubbleManager.handleDragStart(convertedPosition.x, convertedPosition.y);
         ';
         // ビジュアルフィードバックを開始（変換された座標を使用）
-        if(this.gameScene && typeof, this.gameScene.startDragVisualization === 'function) {'
-            ';
+        if(this.gameScene && typeof, this.gameScene.startDragVisualization === 'function) {', ';
 
         }
 
@@ -152,7 +151,7 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(currentPosition.originalEvent, as MouseEvent);
                 convertedPosition = {
                     x: converted.x;
-                    y: converted.y };''
+                   , y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for drag move, using original position', error }
         ';
         // ビジュアルフィードバックを更新（変換された座標を使用）
@@ -325,8 +324,7 @@ export class GameInputManager extends InputManager { private gameScene: any
      */
     private handleLongPressGesture(gestureData: GestureData): void { if (this.gameScene.isPaused || this.gameEngine.isGameOver) return;
         // 長押しで特殊アクション（例：時間停止効果）
-        if(this.gameEngine.activateSpecialPower && gestureData.position) {'
-            ';
+        if(this.gameEngine.activateSpecialPower && gestureData.position) {', ';
 
         }
 

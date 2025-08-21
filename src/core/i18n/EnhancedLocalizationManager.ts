@@ -1,9 +1,9 @@
-import { LocalizationManager } from '../LocalizationManager.js';''
-import { LanguageDetector } from './LanguageDetector.js';''
-import { TranslationCache } from './TranslationCache.js';''
-import { TranslationLoader } from './TranslationLoader.js';''
-import { FormatterEngine } from './FormatterEngine.js';''
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { LocalizationManager  } from '../LocalizationManager.js';''
+import { LanguageDetector  } from './LanguageDetector.js';''
+import { TranslationCache  } from './TranslationCache.js';''
+import { TranslationLoader  } from './TranslationLoader.js';''
+import { FormatterEngine  } from './FormatterEngine.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * 拡張ローカライゼーション管理クラス - 高度な多言語対応システム
@@ -31,19 +31,19 @@ export interface PerformanceMetrics { translationCalls: number,
     cacheHits: number;
     cacheMisses: number;
     loadTimes: number[];
-    averageLoadTime: number ,}
+   , averageLoadTime: number ,}
 
 export interface DetailedPerformanceMetrics extends PerformanceMetrics { cacheHitRate: number;
     totalCacheRequests: number;
     averageTranslationTime: number;
     peakLoadTime: number;
-    loadTimeDistribution: LoadTimeDistribution
+   , loadTimeDistribution: LoadTimeDistribution
     }
 
 export interface LoadTimeDistribution { min: number;
     max: number;
     median: number;
-    percentile95: number }
+   , percentile95: number }
 
 export interface EnhancedStats { performance: PerformanceMetrics;
     cache: any;
@@ -54,11 +54,11 @@ export interface EnhancedStats { performance: PerformanceMetrics;
     translationsLoaded: number;
     supportedLanguages: string[];
     currentLanguage: string;
-    fallbackLanguage: string }
+   , fallbackLanguage: string }
 
 export interface HealthCheckResult { healthy: boolean;
     issues: string[];
-    timestamp: string;
+   , timestamp: string;
     score?: number;
     details?: HealthCheckDetails;
     }
@@ -66,19 +66,19 @@ export interface HealthCheckResult { healthy: boolean;
 export interface HealthCheckDetails { basicTranslation: boolean,
     cachePerformance: boolean;
     languageSupport: boolean;
-    dataIntegrity: boolean;
+   , dataIntegrity: boolean;
     memoryUsage?: number;
     responseTime?: number; ,}
 
 export interface LoadingPromise { promise: Promise<boolean>,
     startTime: number;
-    language: string ,}
+   , language: string ,}
 
 export interface TranslationRequest { key: string;
     params: TranslationParams;
     options: TranslationOptions;
     timestamp: number;
-    language: string }
+   , language: string }
 
 export interface LanguageSupportOptions { autoLoad?: boolean;
     fallbackToDefault?: boolean;
@@ -88,7 +88,7 @@ export interface LanguageSupportOptions { autoLoad?: boolean;
 export interface TranslationValidation { isValid: boolean,
     errors: string[];
     warnings: string[];
-    coverage: number ,}
+   , coverage: number ,}
 
 export interface LanguageMetadata { code: string;
     name: string;
@@ -96,7 +96,7 @@ export interface LanguageMetadata { code: string;
     isRTL: boolean;
     isLoaded: boolean;
     loadTime?: number;
-    translationCount: number;
+   , translationCount: number;
     lastUpdated?: Date
     }
 
@@ -122,7 +122,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
     private performanceMetrics: PerformanceMetrics;
     // 設定
     private translationMode: TranslationMode;
-    private loadingStrategy: LoadingStrategy;
+    private, loadingStrategy: LoadingStrategy;
     constructor() {
 
         super();
@@ -144,7 +144,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             translationCalls: 0;
             cacheHits: 0;
             cacheMisses: 0;
-            loadTimes: [];
+           , loadTimes: [];
     ,}
             averageLoadTime: 0 }
         };
@@ -284,7 +284,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
         } catch (error) { getErrorHandler(').handleError(error as Error, 'LOCALIZATION_ERROR', {''
                 operation: 'translate);
                 key: key);
-                language: options.language || this.currentLanguage,);
+               , language: options.language || this.currentLanguage,);
                 params: params ,});
             this.recordTranslationTime(performance.now() - startTime);
             return key;
@@ -364,16 +364,14 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             // FormatterEngineの複数形機能を使用
             const baseTranslation = this.t(key, params, { ...options, format: false )),
 
-            const formatted = this.formatterEngine.format(' }'
-
-                '{{plural:text:count})'
+            const formatted = this.formatterEngine.format(' }', '{{plural:text:count})'
                 { text: baseTranslation, count: count, ...params ),
                 language;
             );
             
             return formatted; catch (error) { getErrorHandler(').handleError(error as Error, 'LOCALIZATION_ERROR', {)'
                 operation: 'translatePlural');
-                key: key,);
+               , key: key,);
                 count: count ,});
             return this.t(key, { ...params, count ), options);
     
@@ -530,7 +528,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             isValid: true;
             errors: [];
             warnings: [];
-            coverage: 0 };
+           , coverage: 0 };
         ';
 
         try {'
@@ -542,8 +540,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             ';
 
             const keys = Object.keys(translationData);''
-            if(keys.length === 0) {'
-                ';
+            if(keys.length === 0) {', ';
 
             }
 
@@ -575,7 +572,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             }
                 validation.warnings.push(`Low, translation coverage: ${validation.coverage.toFixed(1})%`);
             } catch (error) { validation.isValid = false; }
-            validation.errors.push(`Validation, error: ${(error, as Error}).message}`);
+            validation.errors.push(`Validation, error: ${(error, as, Error}).message}`);
         }
         
         return validation;
@@ -643,7 +640,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             return { code: normalized,
                 name: this._getLanguageDisplayName(normalized);
                 nativeName: this._getLanguageNativeName(normalized);
-                isRTL: this._isRTLLanguage(normalized);
+               , isRTL: this._isRTLLanguage(normalized);
                 isLoaded,
                 translationCount, };
                 lastUpdated: this._getLanguageLastUpdated(normalized); }
@@ -654,8 +651,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
     /**
      * 言語の表示名を取得'
      */''
-    private _getLanguageDisplayName(language: string): string { const displayNames: Record<string, string> = {''
-            'en': 'English',
+    private _getLanguageDisplayName(language: string): string { const displayNames: Record<string, string> = {'', 'en': 'English',
             'ja': 'Japanese',
             'ko': 'Korean',
             'zh-CN': 'Chinese(Simplified)',
@@ -666,8 +662,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
     /**
      * 言語のネイティブ名を取得'
      */''
-    private _getLanguageNativeName(language: string): string { const nativeNames: Record<string, string> = {''
-            'en': 'English',
+    private _getLanguageNativeName(language: string): string { const nativeNames: Record<string, string> = {'', 'en': 'English',
             'ja': '日本語',
             'ko': '한국어',
             'zh-CN': '简体中文',
@@ -723,7 +718,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
                 ? (this.performanceMetrics.cacheHits / this.performanceMetrics.translationCalls) * 100 ;
                 : 0,
             totalCacheRequests: this.performanceMetrics.cacheHits + this.performanceMetrics.cacheMisses;
-            averageTranslationTime: 0, // 実装必要;
+           , averageTranslationTime: 0, // 実装必要;
             peakLoadTime: Math.max(...loadTimes, 0),
             loadTimeDistribution: {
                 min: Math.min(...sortedTimes, 0),
@@ -749,7 +744,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             changeListeners: this.changeListeners.size;
             translationsLoaded: this.getLoadedLanguages().length;
             supportedLanguages: this.languageDetector.getSupportedLanguages();
-            currentLanguage: this.currentLanguage, };
+           , currentLanguage: this.currentLanguage, };
             fallbackLanguage: this.fallbackLanguage }
         }
     
@@ -785,8 +780,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             const loadedLanguages = this.translationLoader.getLoadedLanguages();
             details.languageSupport = loadedLanguages.length > 0;
 
-            if(!details.languageSupport) {'
-                ';
+            if(!details.languageSupport) {', ';
 
             }
 
@@ -803,7 +797,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             }
                 issues.push(`Current, language not, supported: ${this.currentLanguage}`});
             } catch (error) {
-            issues.push(`Health, check error: ${(error, as Error}).message}`);
+            issues.push(`Health, check error: ${(error, as, Error}).message}`);
         }
         
         const score = Object.values(details).filter(Boolean).length / Object.keys(details).length * 100;
@@ -811,7 +805,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
         return { healthy: issues.length === 0,
             issues: issues;
             timestamp: new Date().toISOString();
-            score: Math.round(score), };
+           , score: Math.round(score), };
             details }
         }
     

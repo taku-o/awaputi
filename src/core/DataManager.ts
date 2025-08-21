@@ -1,8 +1,8 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getAsyncOperationQueue } from './AsyncOperationQueue.js';''
-import { getChunkProcessor } from './ChunkProcessor.js';''
-import { getDataCache } from './DataCache.js';''
-import { DataStorageManager } from './data/DataStorageManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getAsyncOperationQueue  } from './AsyncOperationQueue.js';''
+import { getChunkProcessor  } from './ChunkProcessor.js';''
+import { getDataCache  } from './DataCache.js';''
+import { DataStorageManager  } from './data/DataStorageManager.js';
 
 /**
  * データ管理クラス - 包括的なデータ管理システムの中央制御
@@ -17,14 +17,14 @@ import { DataStorageManager } from './data/DataStorageManager.js';
 interface DataManagerStatus { lastBackup: number | null,
     lastValidation: number | null;
     operationInProgress: boolean;
-    errors: Error[]
+   , errors: Error[]
     ,}
 
 interface CloudConfig { enabled: boolean;
     provider: string;
     apiEndpoint: string | null;
     autoSync: boolean;
-    conflictResolution: string }
+   , conflictResolution: string }
 ';
 
 interface SaveOptions { useCache?: boolean;''
@@ -50,7 +50,7 @@ interface SaveResult { result: any,
     duration: number ,}
 
 interface LoadResult { result: any;
-    duration: number }
+   , duration: number }
 
 interface PlayerDataInterface { username: string;
     currentHP: number;
@@ -62,32 +62,32 @@ interface PlayerDataInterface { username: string;
     highScores: any[];
     unlockedStages: any[];
     ownedItems: any[];
-    save: () => Promise<any> }
+   , save: () => Promise<any> }
 }
 
 interface SettingsManagerInterface { save: () => Promise<any>;
-    get: (key: string) => any;
+    get: (ke;y: string) => any;
     getAllSettings: () => any }
 }
 
 interface StatisticsManagerInterface { statistics: any;
     sessionStats: any;
-    save: () => Promise<any> }
+   , save: () => Promise<any> }
 }
 
-interface StorageInterface { save: (key: string, data: any) => Promise<any>;
-    load: (key: string) => Promise<any>;
-    remove: (key: string) => Promise<void>;
+interface StorageInterface { save: (ke;y: string, data: any) => Promise<any>;
+    load: (ke;y: string) => Promise<any>;
+    remove: (ke;y: string) => Promise<void>;
     destroy?: () => void ,}
 }
 
-interface CloudStorageInterface { authenticate: (credentials: any) => Promise<boolean>;
+interface CloudStorageInterface { authenticate: (credential;s: any) => Promise<boolean>;
     logout: () => Promise<void>;
     isAuthenticated: () => boolean;
     destroy?: () => void }
 }
 
-interface SyncManagerInterface { sync: (options?: any) => Promise<any>;
+interface SyncManagerInterface { sync: (option;s?: any) => Promise<any>;
     getSyncStatus: () => any;
     startAutoSync: () => void;
     stopAutoSync: () => void;
@@ -124,7 +124,7 @@ export class DataManager {
     private chunkProcessor: any;
     private cache: any;
     private storageManager: DataStorageManager;
-    private listeners: Map<string, Function[]>;
+    private, listeners: Map<string, Function[]>;
     private status: DataManagerStatus';
 
     constructor(gameEngine: GameEngineInterface | null) {
@@ -173,7 +173,7 @@ export class DataManager {
         this.status = {
             lastBackup: null;
             lastValidation: null;
-            operationInProgress: false;
+           , operationInProgress: false;
     ,}
             errors: [] }
         };
@@ -216,24 +216,21 @@ export class DataManager {
             }
             ;
             // 各システムの状態を確認
-            if(this.playerData) {'
-                ';
+            if(this.playerData) {', ';
 
             }
 
                 console.log('DataManager: PlayerDataを統合しました'), }'
 
             }''
-            if(this.settingsManager) {'
-                ';
+            if(this.settingsManager) {', ';
 
             }
 
                 console.log('DataManager: SettingsManagerを統合しました'), }'
 
             }''
-            if(this.statisticsManager) {'
-                ';
+            if(this.statisticsManager) {', ';
 
             }
 
@@ -346,7 +343,7 @@ export class DataManager {
      */''
     private getCloudConfig(''';
             provider: 'generic';
-            apiEndpoint: null,
+           , apiEndpoint: null,
             autoSync: true,
             conflictResolution: 'timestamp);
         })'
@@ -425,7 +422,7 @@ export class DataManager {
                 tap: this.playerData.tap;
                 combo: this.playerData.combo;
                 highScores: this.playerData.highScores;
-                unlockedStages: this.playerData.unlockedStages;
+               , unlockedStages: this.playerData.unlockedStages;
         }
                 ownedItems: this.playerData.ownedItems }
             };
@@ -507,7 +504,7 @@ export class DataManager {
 
         return await this.asyncQueue.executeBatch(batchOperations, { ')'
             priority: options.priority || 'normal')';
-            parallel: options.parallel !== false,' };
+           , parallel: options.parallel !== false,' };
 
             metadata: { operation: 'batchSave', count: operations.length ,});
         });
@@ -524,7 +521,7 @@ export class DataManager {
 
         return await this.asyncQueue.executeBatch(batchOperations, { ')'
             priority: options.priority || 'low')';
-            parallel: options.parallel !== false,' };
+           , parallel: options.parallel !== false,' };
 
             metadata: { operation: 'batchLoad', count: dataTypes.length ,});
         });
@@ -628,7 +625,7 @@ export class DataManager {
                         dataType);
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100;
                         processedItems: processInfo.processedItems;
-                        totalItems: processInfo.totalItems ,});
+                       , totalItems: processInfo.totalItems ,});
                     return { chunkIndex, itemCount: chunk.length ,},
                 { chunkSize,
                     collectResults: true;
@@ -646,11 +643,11 @@ export class DataManager {
                         dataType);
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100;
                         processedItems: processInfo.processedItems;
-                        totalItems: processInfo.totalItems ,});
+                       , totalItems: processInfo.totalItems ,});
                     return { chunkIndex, keyCount: Object.keys(chunkObj).length ,},
                 { chunkSize,
                     collectResults: true;
-                    mergeResults: false;
+                   , mergeResults: false;
                     ...options
             );
         ,}
@@ -701,7 +698,7 @@ export class DataManager {
                         dataType);
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100;
                         processedItems: processInfo.processedItems;
-                        totalItems: processInfo.totalItems ,});
+                       , totalItems: processInfo.totalItems ,});
                     return batchResults;
                 },
                 { chunkSize: Math.min(chunkSize, 10), // 読み込みは小さなバッチで
@@ -743,12 +740,12 @@ export class DataManager {
             }
                 const chunkKey = `${dataType}_chunk_${i}`;
                 deleteOperations.push({ dataType: chunkKey)
-                    data: null,);
+                   , data: null,);
                     operationOptions: options ,}
             
             // メタデータ削除も追加
             deleteOperations.push({ dataType: metadataKey)
-                data: null,);
+               , data: null,);
                 operationOptions: options);
             ;
             // バッチ削除実行
@@ -857,7 +854,7 @@ export class DataManager {
             asyncQueue: this.getAsyncQueueStatus();
             chunkProcessor: this.getChunkProcessorStatus();
             cache: this.getCacheStatus();
-            components: { playerData: !!this.playerData;
+           , components: { playerData: !!this.playerData;
                 settingsManager: !!this.settingsManager;
                 statisticsManager: !!this.statisticsManager;
                 storage: !!this.storage;
@@ -867,7 +864,7 @@ export class DataManager {
                 import: !!this.import;
                 security: !!this.security;
                 validation: !!this.validation;
-                ui: !!this.ui }
+               , ui: !!this.ui }
         }
     
     /**
@@ -917,8 +914,7 @@ export class DataManager {
      */
     async syncToCloud(options = { ) {'
         try {'
-            if(!this.syncManager) {'
-                ';
+            if(!this.syncManager) {', ';
 
             }
 
@@ -949,7 +945,7 @@ export class DataManager {
         if (this.offlineManager) {''
             return this.offlineManager.getOfflineStatus(''';
             connectionQuality: 'unknown';
-            offlineOperations: 0;
+           , offlineOperations: 0;
     }
             cloudAvailable: !!this.cloudStorage }))
     }
@@ -965,7 +961,7 @@ export class DataManager {
         return { isInProgress: false,
             lastSyncTime: null;
             pendingConflicts: 0;
-            cloudAuthenticated: this.cloudStorage ? this.cloudStorage.isAuthenticated() : false, };
+           , cloudAuthenticated: this.cloudStorage ? this.cloudStorage.isAuthenticated() : false, };
             isOnline: navigator.onLine }
         }
     
@@ -973,8 +969,7 @@ export class DataManager {
      * クラウドストレージへの認証
      */'
     async authenticateCloud(credentials) { try {'
-            if(!this.cloudStorage) {'
-                ';
+            if(!this.cloudStorage) {', ';
 
             }
 

@@ -5,8 +5,8 @@
  * キャッシュシステムのメモリ使用量、リーク検出、自動クリーンアップ機能を測定します。
  */
 // @ts-ignore 将来のテスト拡張で使用予定
-import { jest } from '@jest/globals';
-import { getCacheSystem } from '../../src/core/CacheSystem.js';
+import { jest  } from '@jest/globals';
+import { getCacheSystem  } from '../../src/core/CacheSystem.js';
 interface CacheConfig {
     maxSize: number,
     ttl: number,
@@ -45,8 +45,8 @@ if (typeof performance === 'undefined') {
 function generateSampleData(size: number'): string {
     return 'x'.repeat(size);
 }
-function generateTestObjects(count: number, size: number = 1024): Array<{ id: string; data: string }> {
-    const objects: Array<{ id: string; data: string }> = [];
+function generateTestObjects(count: number, size: number = 1024): Array<{ id: string;, data: string }> {
+    const objects: Array<{ id: string;, data: string }> = [];
     for (let i = 0; i < count; i++) {
         objects.push({
             id: `test-${i}`;
@@ -66,7 +66,7 @@ function calculateMemoryDelta(before: number, after: number): number {
     return after - before;
 }
 // 実行時間測定ヘルパー
-function measureExecutionTime<T>(fn: () => T): { result: T; time: number } {
+function measureExecutionTime<T>(fn: () => T): { result: T;, time: number } {
     const start = performance.now();
     const result = fn();
     const end = performance.now();
@@ -201,7 +201,7 @@ describe('Memory Usage Tests', () => {
             expect(largeDataResult.result).toHaveLength(100);
         }');
         test('異なるキャッシュサイズでのメモリ効率', () => {
-            const results: { [key: string]: { memory: number; time: number } } = {};
+            const results: { [key: string]: { memory: number;, time: number } } = {};
             
             Object.entries(testConfigs).forEach(([configName, config]) => {
                 const testCache = getCacheSystem(config) as CacheSystem;

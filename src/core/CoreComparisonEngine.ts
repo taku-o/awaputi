@@ -3,17 +3,17 @@
  * データ比較・分析機能を提供
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 export interface ComparisonConfig { precision: number,
     includeMetadata: boolean;
     deepComparison: boolean;
-    ignoreOrder: boolean ,}
+   , ignoreOrder: boolean ,}
 
 export interface ComparisonResult { equal: boolean;
     differences: DifferenceItem[];
     statistics: ComparisonStatistics;
-    metadata: ComparisonMetadata
+   , metadata: ComparisonMetadata
     }
 ';
 
@@ -21,31 +21,31 @@ export interface DifferenceItem { path: string,''
     type: 'added' | 'removed' | 'modified' | 'type_changed';
     oldValue?: any;
     newValue?: any;
-    description: string ,}
+   , description: string ,}
 
 export interface ComparisonStatistics { totalItems: number;
     equalItems: number;
     differentItems: number;
     addedItems: number;
     removedItems: number;
-    modifiedItems: number }
+   , modifiedItems: number }
 
 export interface ComparisonMetadata { timestamp: number;
-    processingTime: number,
+   , processingTime: number,
     memoryUsage?: number;''
     complexity: 'low' | 'medium' | 'high' ,}
 
 export class CoreComparisonEngine {
     private config: ComparisonConfig;
     private comparisonHistory: ComparisonResult[] = [];
-    private maxHistorySize: number = 100';
+    private, maxHistorySize: number = 100';
 
     constructor(config: Partial<ComparisonConfig> = {)) {
         this.config = {
             precision: 0.0001;
             includeMetadata: true;
             deepComparison: true;
-            ignoreOrder: false;
+           , ignoreOrder: false;
             ...config;
 
         console.log('CoreComparisonEngine, initialized'');
@@ -77,7 +77,7 @@ export class CoreComparisonEngine {
         } catch (error) {
             getErrorHandler(').handleError(error, 'COMPARISON_ERROR', {)
                 source: typeof source);
-                target: typeof target,)';
+               , target: typeof target,)';
                 path);' }'
 
             }');
@@ -93,10 +93,10 @@ export class CoreComparisonEngine {
                     differentItems: 1;
                     addedItems: 0;
                     removedItems: 0;
-                    modifiedItems: 1 };
+                   , modifiedItems: 1 };
                 metadata: { timestamp: Date.now(),''
                     processingTime: performance.now(''';
-                    complexity: 'high' ,}))
+                   , complexity: 'high' ,}))
         }
     }
 );
@@ -107,7 +107,7 @@ export class CoreComparisonEngine {
                 differences.push({'
                     path,
                     type: 'modified);
-                    oldValue: source ,}
+                   , oldValue: source ,}
                     newValue: target,) }
                     description: `Value changed from ${source} to ${target}`);
             }
@@ -121,7 +121,7 @@ export class CoreComparisonEngine {
         if(sourceType !== targetType) { differences.push({'
                 path,
                 type: 'type_changed);
-                oldValue: source ,}
+               , oldValue: source ,}
 
                 newValue: target,') }'
 
@@ -137,7 +137,7 @@ export class CoreComparisonEngine {
                     differences.push({'
                         path,
                         type: 'modified);
-                        oldValue: source ,}
+                       , oldValue: source ,}
                         newValue: target,) }
                         description: `Number changed from ${source} to ${target}`);
                 }''
@@ -145,7 +145,7 @@ export class CoreComparisonEngine {
                     path,
                     type: 'modified);
                     oldValue: source);
-                    newValue: target, }
+                   , newValue: target, }
                     description: `Value changed from ${source} to ${target}`);
             }
             return;
@@ -160,7 +160,7 @@ export class CoreComparisonEngine {
                 path,
                 type: 'type_changed);
                 oldValue: source)';
-                newValue: target,')';
+               , newValue: target,')';
                 description: 'Type changed between array and object');
             return ,}
 
@@ -176,7 +176,7 @@ export class CoreComparisonEngine {
                 differences.push({'
                     path,
                     type: 'modified);
-                    oldValue: source.length ,}
+                   , oldValue: source.length ,}
                     newValue: target.length,) }
                     description: `Array length changed from ${source.length} to ${target.length}`);
             }
@@ -193,7 +193,7 @@ export class CoreComparisonEngine {
                 } else if(i >= target.length) { differences.push({'
                         path: currentPath,)';
                         type: 'removed');
-                        oldValue: source[i], }
+                       , oldValue: source[i], }
                         description: `Item removed from index ${i}`);
                 } else if (this.config.deepComparison) { this.compareValues(source[i], target[i], currentPath, differences);' }'
 
@@ -201,7 +201,7 @@ export class CoreComparisonEngine {
                         path: currentPath,
                         type: 'modified);
                         oldValue: source[i]);
-                        newValue: target[i], }
+                       , newValue: target[i], }
                         description: `Array item changed at index ${i}`);
                 }
 }
@@ -217,13 +217,13 @@ export class CoreComparisonEngine {
             if(!(key, in source)) { differences.push({'
                     path: currentPath,)';
                     type: 'added')';
-                    newValue: target[key],' }'
+                   , newValue: target[key],' }'
 
                     description: `Property '${key}' was added`);''
             } else if(!(key, in target)) { differences.push({'
                     path: currentPath,)';
                     type: 'removed')';
-                    oldValue: source[key],' }'
+                   , oldValue: source[key],' }'
 
                     description: `Property '${key}' was removed`);
             } else if (this.config.deepComparison) { this.compareValues(source[key], target[key], currentPath, differences);' }'
@@ -232,7 +232,7 @@ export class CoreComparisonEngine {
                     path: currentPath,
                     type: 'modified);
                     oldValue: source[key])';
-                    newValue: target[key],' }'
+                   , newValue: target[key],' }'
 
                     description: `Property '${key}' was modified`);
             }
@@ -244,7 +244,7 @@ export class CoreComparisonEngine {
             differentItems: differences.length;
             addedItems: 0;
             removedItems: 0;
-            modifiedItems: 0 };
+           , modifiedItems: 0 };
 ';
 
         differences.forEach(diff => {  );''

@@ -25,12 +25,12 @@ export interface SearchResult extends SearchDocument { relevanceScore: number,
 export interface FieldWeights { title: number,
     content: number;
     searchKeywords: number;
-    category: number ,}
+   , category: number ,}
 
 export interface SearchStats { totalSearches: number;
     cacheHits: number;
     averageSearchTime: number;
-    popularQueries: Map<string, number>, }
+   , popularQueries: Map<string, number>, }
 
 export interface CachedSearchResult { result: SearchResult[],
     timestamp: number ,}
@@ -41,7 +41,7 @@ export interface PerformanceStats { totalSearches: number;
     indexSize: number;
     documentCount: number;
     cacheSize: number;
-    popularQueries: [string, number][], }
+   , popularQueries: [string, number][], }
 
 export interface SearchHistoryData { popularQueries: [string, number][], }
 
@@ -51,7 +51,7 @@ export class SearchEngine {
     private textIndex: Map<string, string[]>;
     private documentStore: Map<string, SearchDocument>;
     private fieldWeights: FieldWeights;
-    private searchCache: Map<string, CachedSearchResult>;
+    private, searchCache: Map<string, CachedSearchResult>;
     private cacheTimeout: number;
     private maxCacheSize: number;
     private searchStats: SearchStats;
@@ -66,7 +66,7 @@ export class SearchEngine {
         this.fieldWeights = {
             title: 3.0;
             content: 1.0;
-            searchKeywords: 2.0;
+           , searchKeywords: 2.0;
     ,}
             category: 1.5 }
         };
@@ -79,7 +79,7 @@ export class SearchEngine {
         this.searchStats = { totalSearches: 0,
             cacheHits: 0;
             averageSearchTime: 0;
-            popularQueries: new Map<string, number>( };
+           , popularQueries: new Map<string, number>( };
         
         // ストップワード（検索対象外の単語）
         this.stopWords = new Set<string>(['の', 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から',
@@ -482,7 +482,7 @@ export class SearchEngine {
 
         return text'';
             .toLowerCase()';
-            .replace(/[^\w\s]/g, ' ') // 記号を除去;
+            .replace(/[^\w\s]/g, ', ') // 記号を除去;
             .split(/\s+/);
             .filter(token => token.length > 1 && !this.stopWords.has(token); }
     }
@@ -509,8 +509,8 @@ export class SearchEngine {
      * @private'
      */''
     private calculateSimilarity(doc1: SearchDocument, doc2: SearchDocument): number { ''
-        const content1 = (doc1.title || ''') + ' ' + (doc1.content || ''');''
-        const content2 = (doc2.title || ''') + ' ' + (doc2.content || '');
+        const content1 = (doc1.title || ''') + ', ' + (doc1.content || ''');''
+        const content2 = (doc2.title || ''') + ', ' + (doc2.content || '');
         
         const tokens1 = new Set(this.tokenize(content1);
         const tokens2 = new Set(this.tokenize(content2);
@@ -553,7 +553,7 @@ export class SearchEngine {
         
         this.searchCache.set(key, { )
             result: result);
-            timestamp: Date.now( });
+           , timestamp: Date.now( });
     }
     
     /**
@@ -639,7 +639,7 @@ export class SearchEngine {
             indexSize: this.textIndex.size;
             documentCount: this.documentStore.size;
             cacheSize: this.searchCache.size;
-            popularQueries: Array.from(this.searchStats.popularQueries.entries();
+           , popularQueries: Array.from(this.searchStats.popularQueries.entries();
                 .sort((a, b) => b[1] - a[1]) };
                 .slice(0, 10); }
         }
@@ -652,7 +652,7 @@ export class SearchEngine {
         this.searchCache.clear(');
         this.searchStats = {
             totalSearches: 0;
-            cacheHits: 0,
+           , cacheHits: 0,
             averageSearchTime: 0,
             popularQueries: new Map<string, number>(' }''
 }

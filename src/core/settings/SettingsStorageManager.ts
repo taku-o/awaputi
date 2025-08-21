@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * SettingsStorageManager
@@ -14,22 +14,22 @@ export interface StorageKeys { settings: string,
     configManager: string;
     backup: string;
     timestamp: string;
-    version: string ,}
+   , version: string ,}
 
 export interface BackupConfig { maxBackups: number;
     autoBackupInterval: number;
-    compressionEnabled: boolean }
+   , compressionEnabled: boolean }
 
 export interface SyncStats { saveCount: number;
     loadCount: number;
     backupCount: number;
     errorCount: number;
     lastSaveTime: number;
-    lastLoadTime: number }
+   , lastLoadTime: number }
 
 export interface SettingsMetadata { version: string;
     timestamp: number;
-    source: string }
+   , source: string }
 
 export interface SettingsWithMetadata { [key: string]: any;
     _metadata?: SettingsMetadata
@@ -38,47 +38,47 @@ export interface SettingsWithMetadata { [key: string]: any;
 export interface BackupData { settings?: any;
     configManager?: any;
     timestamp: number;
-    version: string ,}
+   , version: string ,}
 
 export interface SyncStatus { hasSettings: boolean;
     hasConfigData: boolean;
     lastSaved: Date | null;
     synchronized: boolean;
     storageSize: number;
-    backupCount: number;
+   , backupCount: number;
     error?: string }
 
 export interface ExportData { settings?: any;
     configManager?: any;
     exportDate: string;
     version: string;
-    source: string ,}
+   , source: string ,}
 
 export interface StorageHealthReport { healthy: boolean;
     issues: string[];
     recommendations: string[];
     storageSize: number;
     backupCount: number;
-    lastModified: Date | null }
+   , lastModified: Date | null }
 
 export interface BackupHistoryItem { index: number;
     timestamp: number;
     date: Date;
     hasSettings: boolean;
     hasConfigData: boolean;
-    version: string }
+   , version: string }
 
 export interface FullSyncStats extends SyncStats { storageHealth: StorageHealthReport;
     storageSize: number;
     backupCount: number;
-    autoBackupEnabled: boolean }
+   , autoBackupEnabled: boolean }
 
 export class SettingsStorageManager {
     private settingsManager: SettingsManager;
     private errorHandler: ErrorHandler;
     private storageKeys: StorageKeys;
     private backupConfig: BackupConfig;
-    private syncStats: SyncStats;
+    private, syncStats: SyncStats;
     private autoBackupInterval?: number;
 
     constructor(settingsManager: SettingsManager) {
@@ -104,7 +104,7 @@ export class SettingsStorageManager {
             backupCount: 0;
             errorCount: 0;
             lastSaveTime: 0;
-            lastLoadTime: 0 ,}))
+           , lastLoadTime: 0 ,}))
         // 自動バックアップの開始
         this.startAutoBackup();
     }
@@ -115,8 +115,7 @@ export class SettingsStorageManager {
      * @returns 保存成功可否
      */''
     saveSettings(settings: any): boolean { try {'
-            if(!settings || typeof, settings !== 'object'') {'
-                ';
+            if(!settings || typeof, settings !== 'object'') {', ';
 
             }
 
@@ -189,8 +188,7 @@ export class SettingsStorageManager {
      * @returns 保存成功可否'
      */''
     saveConfigurationManagerData(configData: any): boolean { try {'
-            if(!configData || typeof, configData !== 'object'') {'
-                ';
+            if(!configData || typeof, configData !== 'object'') {', ';
 
             }
 
@@ -201,7 +199,7 @@ export class SettingsStorageManager {
                 _metadata: {')'
                     version: '1.0),
                     timestamp: Date.now(''';
-                    source: 'SettingsStorageManager' ,}))
+                   , source: 'SettingsStorageManager' ,}))
             });
             localStorage.setItem(this.storageKeys.configManager, configJson);''
             console.log('[SettingsStorageManager] Configuration, data saved, successfully);
@@ -257,7 +255,7 @@ export class SettingsStorageManager {
             const backupData: BackupData = { settings: currentSettings,
                 configManager: currentConfig,
                 timestamp: Date.now(''';
-                version: '1.0' ,}))
+               , version: '1.0' ,}))
             // 既存のバックアップを取得)
             const existingBackups = this.getExistingBackups();
             
@@ -355,7 +353,7 @@ export class SettingsStorageManager {
                 hasConfigData: !!configData;
                 lastSaved: timestamp ? new Date(parseInt(timestamp) : null;
                 synchronized: !!(settings && configData);
-                storageSize: this.getStorageSize(), };
+               , storageSize: this.getStorageSize(), };
                 backupCount: this.getExistingBackups().length }
             } catch (error) { this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {)'
                 operation: 'checkSyncStatus',')';
@@ -366,7 +364,7 @@ export class SettingsStorageManager {
                 lastSaved: null;
                 synchronized: false;
                 storageSize: 0;
-                backupCount: 0, };
+               , backupCount: 0, };
                 error: (error, as Error).message }
             }
     }
@@ -419,7 +417,7 @@ export class SettingsStorageManager {
                 settings,
                 configManager: configData,
                 exportDate: new Date().toISOString(''';
-                version: '1.0',
+               , version: '1.0',
                 source: 'BubblePop Game' ,}))
             );
             return JSON.stringify(exportData, null, 2);
@@ -464,7 +462,7 @@ export class SettingsStorageManager {
         } catch (error) { this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {)'
                 operation: 'importSettings',')';
                 component: 'SettingsStorageManager');
-                data: settingsJson? .substring(0, 100 });
+               , data: settingsJson? .substring(0, 100 });
             return false;
 
     /**
@@ -529,7 +527,7 @@ export class SettingsStorageManager {
                 recommendations: [];
                 storageSize: this.getStorageSize();
                 backupCount: this.getExistingBackups().length;
-                lastModified: null ,};
+               , lastModified: null ,};
             // 設定の存在チェック
             const settings = this.loadSettings();''
             if(!settings) {'
@@ -562,8 +560,7 @@ export class SettingsStorageManager {
             }
 ';
             // バックアップチェック
-            if(report.backupCount === 0) {'
-                ';
+            if(report.backupCount === 0) {', ';
 
             }
 
@@ -578,11 +575,11 @@ export class SettingsStorageManager {
 
                 healthy: false,' }'
 
-                issues: [`Health check failed: ${(error, as Error'}).message}`],''
+                issues: [`Health check, failed: ${(error, as, Error'}).message}`],''
                 recommendations: ['Investigate storage errors];
                 storageSize: 0;
                 backupCount: 0;
-                lastModified: null;
+               , lastModified: null;
             },
         }
     }
@@ -609,7 +606,7 @@ export class SettingsStorageManager {
     getSyncStats(): FullSyncStats { return { ...this.syncStats,
             storageHealth: this.checkStorageHealth();
             storageSize: this.getStorageSize();
-            backupCount: this.getExistingBackups().length, };
+           , backupCount: this.getExistingBackups().length, };
             autoBackupEnabled: !!this.autoBackupInterval }
         }
 
@@ -622,7 +619,7 @@ export class SettingsStorageManager {
             index)';
             timestamp: backup.timestamp,
             date: new Date(backup.timestamp);
-            hasSettings: !!backup.settings,
+           , hasSettings: !!backup.settings,
             hasConfigData: !!backup.configManager,
             version: backup.version || 'unknown' ,}
         });

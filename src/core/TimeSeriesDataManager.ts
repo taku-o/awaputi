@@ -69,7 +69,7 @@ export class TimeSeriesDataManager {
         if(!dataMap.has(periodKey) {
             dataMap.set(periodKey, {);
                 timestamp: Date.now();
-                categories: new Map();
+               , categories: new Map();
     ,}
                 totalDataPoints: 0, }
                 metadata: {});
@@ -84,7 +84,7 @@ export class TimeSeriesDataManager {
                 min: Infinity
     );
                 max: -Infinity);
-                count: 0, }
+               , count: 0, }
                 trend: 'stable'); }
         }
         
@@ -94,7 +94,7 @@ export class TimeSeriesDataManager {
         categoryData.values.push({ )
             value: value);
             timestamp: Date.now();
-            metadata: metadata });
+           , metadata: metadata });
         // 統計の更新
         categoryData.total += value;
         categoryData.count++;
@@ -178,7 +178,7 @@ export class TimeSeriesDataManager {
             
             const entry = { period: periodKey,
                 timestamp: periodData.timestamp;
-                totalDataPoints: periodData.totalDataPoints, }
+               , totalDataPoints: periodData.totalDataPoints, }
                 categories: {};
             // カテゴリフィルター
             if(category) {
@@ -207,7 +207,7 @@ export class TimeSeriesDataManager {
             average: Math.round(categoryData.average * 100) / 100;
             min: categoryData.min === Infinity ? 0 : categoryData.min;
             max: categoryData.max === -Infinity ? 0 : categoryData.max;
-            count: categoryData.count;
+           , count: categoryData.count;
     ,}
             trend: categoryData.trend,' };
 
@@ -386,7 +386,7 @@ export class TimeSeriesDataManager {
         const now = new Date();
         this.currentPeriodKeys = {
             day: this.getDayKey(now);
-            week: this.getWeekKey(now);
+           , week: this.getWeekKey(now);
     }
             month: this.getMonthKey(now); }
         };
@@ -466,7 +466,7 @@ export class TimeSeriesDataManager {
                 daily: Array.from(this.dailyData.entries();
                 weekly: Array.from(this.weeklyData.entries();
                 monthly: Array.from(this.monthlyData.entries();
-                currentPeriodKeys: this.currentPeriodKeys;
+               , currentPeriodKeys: this.currentPeriodKeys;
     }
                 lastSaveTime: Date.now(); }
             };
@@ -571,7 +571,7 @@ export class TimeSeriesDataManager {
             currentPeriods: this.currentPeriodKeys;
             categories: this.getAllCategories();
             dateRange: this.getDateRange();
-            lastUpdate: this.lastSaveTime;
+           , lastUpdate: this.lastSaveTime;
         },
     }
     

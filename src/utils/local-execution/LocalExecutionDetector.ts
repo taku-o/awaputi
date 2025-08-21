@@ -4,7 +4,7 @@
  * ローカルファイル実行環境（file://プロトコル）を検出し、
  * 実行コンテキスト情報とブラウザ機能サポート状況を提供します。
  * 
- * Requirements: 1.3, 5.1
+ *, Requirements: 1.3, 5.1
  * 
  * @author Claude Code
  * @version 1.0.0
@@ -14,28 +14,28 @@
 interface SupportedFeatures { canvas: boolean,
     indexedDB: boolean;
     localStorage: boolean;
-    serviceWorker: boolean ,}
+   , serviceWorker: boolean ,}
 
 interface BrowserInfo { name: string;
     version: string;
-    engine: string }
+   , engine: string }
 
-interface ExecutionContext { protocol: 'file:' | 'http:' | 'https:' | string;
+interface ExecutionContext { protocol: 'file:' | 'http:' | 'http;s:' | string;
     isLocal: boolean;
     canUseModules: boolean;
     supportedFeatures: SupportedFeatures;
-    browserInfo: BrowserInfo
+   , browserInfo: BrowserInfo
     }
 
 interface DebugInfo { executionContext: ExecutionContext;
     isLocalExecution: boolean;
     shouldShowWarning: boolean;
     userAgent: string;
-    location: {
-        href: string;
+   , location: {
+        hre;f: string;
         protocol: string;
         host: string;
-        pathname: string };
+       , pathname: string };
     timestamp: string;
 }
 
@@ -58,7 +58,7 @@ class LocalExecutionDetector { /**
         return { protocol,
             isLocal);
             canUseModules: this._canUseESModules();
-            supportedFeatures: this._detectSupportedFeatures( ,};
+           , supportedFeatures: this._detectSupportedFeatures( ,};
             browserInfo: this._getBrowserInfo(); }
         }
 
@@ -121,7 +121,7 @@ class LocalExecutionDetector { /**
      */
     private static _detectSupportedFeatures(): SupportedFeatures { return { canvas: this._supportsCanvas()
             indexedDB: this._supportsIndexedDB();
-            localStorage: this._supportsLocalStorage( ,};
+           , localStorage: this._supportsLocalStorage( ,};
             serviceWorker: this._supportsServiceWorker(); }
         }
 
@@ -220,10 +220,10 @@ class LocalExecutionDetector { /**
             isLocalExecution: this.isLocalExecution(;
             shouldShowWarning: this.shouldShowWarning(;
             userAgent: navigator.userAgent;
-            location: {
+           , location: {
                 href: window.location.href);
                 protocol: window.location.protocol);
-                host: window.location.host, };
+               , host: window.location.host, };
                 pathname: window.location.pathname }
 
             },')'

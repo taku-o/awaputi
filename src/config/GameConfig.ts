@@ -5,30 +5,30 @@
  * スコア、ステージ、アイテム、泡設定のアクセサメソッドを提供します。
  */
 
-import { getConfigurationManager, ConfigurationManager } from '../core/ConfigurationManager.js';''
-import { ORIGINAL_BALANCE_CONFIG, OriginalBalanceConfig } from './GameBalance.js';''
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { getConfigurationManager, ConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { ORIGINAL_BALANCE_CONFIG, OriginalBalanceConfig  } from './GameBalance.js';''
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * スコア設定の型定義
  */
 export interface ScoreConfig { baseScores: Record<string, number>,
     combo: ComboConfig;
-    ageBonus: AgeBonusConfig
+   , ageBonus: AgeBonusConfig
     ,}
 
 /**
  * コンボ設定の型定義
  */
 export interface ComboConfig { multiplierIncrement: number;
-    maxMultiplier: number }
+   , maxMultiplier: number }
 
 /**
  * 年齢ボーナス設定の型定義
  */
 export interface AgeBonusConfig { earlyBonus: number;
     midBonus: number;
-    lateBonus: number }
+   , lateBonus: number }
 
 /**
  * ステージ設定の型定義
@@ -47,7 +47,7 @@ export interface StageDifficultyConfig { spawnRate: number,
  */
 export interface ItemConfig { baseCosts: Record<string, number>,
     costMultiplier: number;
-    effects: Record<string, number | object>,
+   , effects: Record<string, number | object>,
     maxLevels: Record<string, number>, }
 
 /**
@@ -64,7 +64,7 @@ export interface ValidationRule {;
     type: 'number' | 'string' | 'boolean' | 'object';
     min?: number;
     max?: number;
-    validator?: (value: any) => boolean }
+    validator?: (valu;e: any) => boolean }
 }
 
 export class GameConfig {
@@ -212,29 +212,29 @@ export class GameConfig {
     private _setupValidationRules(''';
         this.configManager.setValidationRule('game', 'scoring.combo.multiplierIncrement', { ')'
             type: 'number')';
-            min: 0.01,')';
+           , min: 0.01,')';
             max: 0.5)'),
 
         this.configManager.setValidationRule('game', 'scoring.combo.maxMultiplier', {)'
             type: 'number')';
-            min: 1,')';
+           , min: 1,')';
             max: 10)');
         ';
         // ステージ設定の検証ルール
         this.configManager.setValidationRule('game', 'stages.difficulty.*.spawnRate', {)'
             type: 'number')';
-            min: 0.5,')';
+           , min: 0.5,')';
             max: 5.0)'),
 
         this.configManager.setValidationRule('game', 'stages.difficulty.*.maxBubbles', {)'
             type: 'number')';
-            min: 5,')';
+           , min: 5,')';
             max: 100)');
         ';
         // アイテム設定の検証ルール
         this.configManager.setValidationRule('game', 'items.costMultiplier', {)'
             type: 'number');
-            min: 1.0,);
+           , min: 1.0,);
             max: 3.0 ,}
 
     /**
@@ -400,7 +400,7 @@ export class GameConfig {
             ';
 
                 if (key.startsWith(`${prefix).`) {''
-                    const subKey = key.substring(prefix.length + 1);
+                    const, subKey = key.substring(prefix.length + 1);
                     ';
                     // ネストされたオブジェクトを処理
                     if(subKey.includes('.)} {''

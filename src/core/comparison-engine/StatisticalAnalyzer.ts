@@ -11,7 +11,7 @@
 // 型定義
 export interface StatisticalConfig { significanceLevel: number,
     minimumSampleSize: number;
-    maxSampleSize: number;
+   , maxSampleSize: number;
     confidenceLevel?: number;
     precisionThreshold?: number; ,}
 
@@ -28,7 +28,7 @@ export interface BasicStatistics { count: number,
     range: number;
     iqr: number;
     skewness: number;
-    kurtosis: number;
+   , kurtosis: number;
     standardError?: number;
     coefficientOfVariation?: number; ,}
 
@@ -44,7 +44,7 @@ export interface SignificanceTestResult { test: StatisticalTestType,
     testStatistic: number | null;
     confidenceInterval: ConfidenceInterval | null;
     effectSize: EffectSize | null;
-    interpretation: string;
+   , interpretation: string;
     degreesOfFreedom?: number;
     criticalValue?: number;
     power?: number; ,}
@@ -54,7 +54,7 @@ export interface TTestResult extends Omit<SignificanceTestResult, 'test'> {;
     testStatistic: number;
     degreesOfFreedom: number;
     meanDifference: number;
-    standardError: number;
+   , standardError: number;
     pooledVariance?: number }
 
 export interface MannWhitneyResult extends Omit<SignificanceTestResult, 'test'> {;
@@ -64,12 +64,12 @@ export interface MannWhitneyResult extends Omit<SignificanceTestResult, 'test'> 
     u2: number;
     zScore: number;
     rankSum1: number;
-    rankSum2: number;
+   , rankSum2: number;
     continuityCorrection?: boolean }
 
 export interface EffectSize { cohensD: number;
     interpretation: EffectSizeInterpretation;
-    magnitude: number;
+   , magnitude: number;
     hedgesG?: number;
     glassD?: number;
     rankBiserial?: number; }
@@ -77,11 +77,11 @@ export interface EffectSize { cohensD: number;
 export interface ConfidenceInterval { lower: number,
     upper: number;
     level: number;
-    margin: number ,}
+   , margin: number ,}
 
 export interface NormalityTestResult { isNormal: boolean;
     pValue: number | null;
-    test: NormalityTestType;
+   , test: NormalityTestType;
     testStatistic?: number;
     criticalValue?: number;
     skewness?: number;
@@ -93,18 +93,18 @@ export interface DataValidationResult { valid: boolean,
     warnings: string[];
     validCount: number;
     totalCount: number;
-    validRatio: number;
+   , validRatio: number;
     outlierCount?: number;
     missingCount?: number; ,}
 
 export interface RankData { value: number,
     group: number;
-    rank: number;
+   , rank: number;
     tiesCount?: number ,}
 
 export interface DistributionParameters { mean: number;
     variance: number;
-    standardDeviation: number;
+   , standardDeviation: number;
     shape?: number;
     scale?: number;
     location?: number; }
@@ -137,20 +137,20 @@ export const DEFAULT_STATISTICAL_CONFIG: StatisticalConfig = { significanceLevel
     minimumSampleSize: 5;
     maxSampleSize: 10000;
     confidenceLevel: 0.95;
-    precisionThreshold: 1e-10 ,};
+   , precisionThreshold: 1e-10 ,};
 export const EFFECT_SIZE_THRESHOLDS = { negligible: 0.0,
     small: 0.2;
     medium: 0.5;
     large: 0.8;
-    very_large: 1.2 ,} as const;
+   , very_large: 1.2 ,} as const;
 export const NORMALITY_THRESHOLDS = { skewness: 2.0,
     kurtosis: 7.0;
     shapiroWilk: 0.05;
-    normalityScore: 0.5 ,} as const;
+   , normalityScore: 0.5 ,} as const;
 export const MATHEMATICAL_CONSTANTS = { SQRT_2: Math.sqrt(2),
     SQRT_PI: Math.sqrt(Math.PI);
     EULER: Math.E;
-    GOLDEN_RATIO: (1 + Math.sqrt(5) / 2 ,} as const;
+   , GOLDEN_RATIO: (1 + Math.sqrt(5) / 2 ,} as const;
 ;
 // ユーティリティ関数
 export function isValidNumber(value: any): value is number {;
@@ -193,7 +193,7 @@ export function createEmptyStatistics(): BasicStatistics { return { count: 0,
         iqr: 0;
         skewness: 0;
         kurtosis: 0;
-        standardError: 0, };
+       , standardError: 0, };
         coefficientOfVariation: 0 }
     }
 
@@ -234,13 +234,13 @@ export class StatisticalAnalyzer {
             variance: isNaN(variance) ? 0 : variance;
             standardDeviation: isNaN(stdDev) ? 0 : stdDev;
             minimum: min;
-            maximum: max;
+           , maximum: max;
             median,
             q1,
             q3,
             range: max - min;
             iqr: q3 - q1;
-            skewness: this.calculateSkewness(validData, mean, stdDev),
+           , skewness: this.calculateSkewness(validData, mean, stdDev),
             kurtosis: this.calculateKurtosis(validData, mean, stdDev),
             standardError: calculateStandardError(stdDev, n), };
             coefficientOfVariation: calculateCoefficientOfVariation(mean, stdDev); }
@@ -294,7 +294,7 @@ export class StatisticalAnalyzer {
     performSignificanceTest(;
         data1: any[] );
         data2: any[]);
-        options: SignificanceTestOptions = { ): SignificanceTestResult {
+       , options: SignificanceTestOptions = { ): SignificanceTestResult {
         const validData1 = validateStatisticalInput(data1);
         const validData2 = validateStatisticalInput(data2);
         
@@ -306,7 +306,7 @@ export class StatisticalAnalyzer {
                 test: 'insufficient_data';
                 pValue: null;
                 significant: false;
-                testStatistic: null;
+               , testStatistic: null;
         ,}
                 confidenceInterval: null, };
                 effectSize: null, }
@@ -387,12 +387,12 @@ export class StatisticalAnalyzer {
         const confidenceInterval: ConfidenceInterval = { lower: meanDiff - marginOfError,
             upper: meanDiff + marginOfError;
             level: this.config.confidenceLevel!;
-            margin: marginOfError ,};
+           , margin: marginOfError ,};
 ';
 
         return { ''
             test: 't-test';
-            testStatistic: tStatistic;
+           , testStatistic: tStatistic;
             degreesOfFreedom,
             pValue: pValue * 2, // 両側検定;
             meanDifference: meanDiff;
@@ -467,11 +467,11 @@ export class StatisticalAnalyzer {
             testStatistic: U;
             u1: U1;
             u2: U2;
-            zScore: z;
+           , zScore: z;
             pValue,
             rankSum1: R1;
             rankSum2: R2;
-            significant: false, // 後で設定される;
+           , significant: false, // 後で設定される;
             confidenceInterval: null, // Mann-Whitney Uでは通常計算しない;
             effectSize: null, // 後で設定される' };
 
@@ -624,8 +624,7 @@ export class StatisticalAnalyzer {
      * 有意性検定結果を解釈
      */
     interpretSignificanceTest(testResult: SignificanceTestResult): string { ''
-        if(testResult.pValue === null) {'
-            ';
+        if(testResult.pValue === null) {', ';
 
         }
 
@@ -687,8 +686,7 @@ export class StatisticalAnalyzer {
         const validRatio = validNumbers.length / data.length;
         const missingCount = data.length - validNumbers.length;
 
-        if(validRatio < 0.5) {'
-            ';
+        if(validRatio < 0.5) {', ';
 
         }
 
@@ -717,7 +715,7 @@ export class StatisticalAnalyzer {
             errors,
             warnings,
             validCount: validNumbers.length;
-            totalCount: data.length;
+           , totalCount: data.length;
             validRatio, };
             missingCount }
         }
@@ -744,7 +742,7 @@ export class StatisticalAnalyzer {
         testResult: SignificanceTestResult;
         validation1: DataValidationResult;
         validation2: DataValidationResult;
-        recommendations: string[] ,} { const validation1 = this.validateData(data1);
+       , recommendations: string[] ,} { const validation1 = this.validateData(data1);
         const validation2 = this.validateData(data2);
         const data1Stats = this.calculateBasicStatistics(data1);
         const data2Stats = this.calculateBasicStatistics(data2);
@@ -752,24 +750,21 @@ export class StatisticalAnalyzer {
         
         const recommendations: string[] = [],
 
-        if(!validation1.valid || !validation2.valid) {'
-            ';
+        if(!validation1.valid || !validation2.valid) {', ';
 
         }
 
             recommendations.push('データの品質を改善してください); }'
         }
 
-        if(data1Stats.count < 30 || data2Stats.count < 30) {'
-            ';
+        if(data1Stats.count < 30 || data2Stats.count < 30) {', ';
 
         }
 
             recommendations.push('より大きなサンプルサイズを検討してください''); }
         }
 
-        if(testResult.effectSize && testResult.effectSize.interpretation === 'negligible'') {'
-            ';
+        if(testResult.effectSize && testResult.effectSize.interpretation === 'negligible'') {', ';
 
         }
 

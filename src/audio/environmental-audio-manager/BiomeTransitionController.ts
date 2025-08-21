@@ -1,6 +1,6 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';''
-import { BiomeDefinition, WeatherEffect, TimeVariation, SoundLayer } from './BiomeDefinitionManager';''
-import { EnvironmentalSoundGenerator } from './EnvironmentalSoundGenerator';
+import { getErrorHandler  } from '../../utils/ErrorHandler';''
+import { BiomeDefinition, WeatherEffect, TimeVariation, SoundLayer  } from './BiomeDefinitionManager';''
+import { EnvironmentalSoundGenerator  } from './EnvironmentalSoundGenerator';
 
 /**
  * Transition options interface
@@ -28,7 +28,7 @@ export interface ActiveSource { sourceNode: AudioBufferSourceNode,
     gainNode: GainNode;
     filterNode: BiquadFilterNode | null;
     originalVolume: number;
-    layer: PreparedLayer
+   , layer: PreparedLayer
     ,}
 
 /**
@@ -38,13 +38,13 @@ export interface ActiveLayerInfo { id: string;
     name: string;
     type: string;
     volume: number;
-    biomeId: string }
+   , biomeId: string }
 
 /**
  * Audio controller interface
  */
 interface AudioController { gainNodes: {
-        bgm?: GainNode;
+        bg;m?: GainNode;
         [key: string]: GainNode | undefined, }
 
 /**
@@ -76,7 +76,7 @@ export class BiomeTransitionController {
         audioController: AudioController
     );
         soundGenerator: EnvironmentalSoundGenerator);
-        biomeDefinitionManager: BiomeDefinitionManager;
+       , biomeDefinitionManager: BiomeDefinitionManager;
     ) { this.audioContext = audioContext,
         this.audioController = audioController;
         this.soundGenerator = soundGenerator;
@@ -88,7 +88,7 @@ export class BiomeTransitionController {
         // フェード管理
         this.fadeManager = {
             activeTransitions: new Map();
-            crossfadeInProgress: false ,}
+           , crossfadeInProgress: false ,}
     
     /**
      * バイオームへの遷移を実行
@@ -123,7 +123,7 @@ export class BiomeTransitionController {
      */
     private _prepareBiomeLayers(;
         biome: BiomeDefinition);
-        options: Partial<TransitionOptions> = { ): PreparedLayer[] {
+       , options: Partial<TransitionOptions> = { ): PreparedLayer[] {
         try { }
             const { weather, timeOfDay, intensity = 1.0 } = options;
             const preparedLayers: PreparedLayer[] = [],
@@ -133,7 +133,7 @@ export class BiomeTransitionController {
                 const layerData: PreparedLayer = {
                     ...layer,
                     biomeId: biome.id;
-                    volume: layer.volume * intensity;
+                   , volume: layer.volume * intensity;
             ,}
                     audioBuffer: this.soundGenerator.getOrGenerateSound(layer.type); }
                 };
@@ -161,13 +161,13 @@ export class BiomeTransitionController {
                             const layerData: PreparedLayer = {
                                 name: timeLayer.name;
                                 type: timeLayer.type;
-                                volume: timeLayer.volume;
+                               , volume: timeLayer.volume;
             }
                                 frequency: 1.0, }
                                 modulation: { rate: 0.1, depth: 0.2 ,},
                                 biomeId: biome.id;
                                 timeOfDay: timeOfDay;
-                                audioBuffer: this.soundGenerator.getOrGenerateSound(timeLayer.type);
+                               , audioBuffer: this.soundGenerator.getOrGenerateSound(timeLayer.type);
                             };
                             preparedLayers.push(layerData);
                         }
@@ -187,7 +187,7 @@ export class BiomeTransitionController {
      */
     private _prepareWeatherLayer(;
         weatherEffect: WeatherEffect);
-        biome: BiomeDefinition;
+       , biome: BiomeDefinition;
     ): PreparedLayer | null { try {
             const soundProfile = weatherEffect.soundProfile,
             const biomeModifier = weatherEffect.biomeModifiers[biome.id] || { 
@@ -202,7 +202,7 @@ export class BiomeTransitionController {
                 reverb: soundProfile.reverb;
                 biomeId: biome.id;
                 weather: weatherEffect.id;
-                modulation: { rate: 0.1, depth: 0.2 ,},
+               , modulation: { rate: 0.1, depth: 0.2 ,},
                 audioBuffer: this.soundGenerator.getOrGenerateSound(soundProfile.type);
             } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_ERROR', {)'
                 operation: '_prepareWeatherLayer',')';
@@ -367,7 +367,7 @@ export class BiomeTransitionController {
                 id: layerId;
                 name: source.layer.name);
                 type: source.layer.type)';
-                volume: source.originalVolume,' }'
+               , volume: source.originalVolume,' }'
 
                 biomeId: source.layer.biomeId)'); }'
         }

@@ -17,9 +17,9 @@ export interface FontErrorContext {;
 export interface ErrorInfo { type: string,''
     severity: 'info' | 'warn' | 'error' ,}
 export interface SuppressionRules { repeatSuppression: {
-        enabled: boolean;
+        enable;d: boolean;
         timeWindow: number;
-        maxOccurrences: number 
+       , maxOccurrences: number 
 };
     sourceBasedSuppression: { [source: string]: {''
             [errorType: string]: 'suppress' | 'warn_once' | 'error', };
@@ -27,7 +27,7 @@ export interface SuppressionRules { repeatSuppression: {
 
 export class FontErrorHandler {
     private config: FontErrorConfig;
-    private errorCounts: Map<string, number>;
+    private, errorCounts: Map<string, number>;
     private suppressedErrors: Set<string>;
     private errorHistory: Map<string, number[]>;
     private suppressionRules: SuppressionRules;
@@ -43,18 +43,13 @@ export class FontErrorHandler {
     }
 
     private _initializeSuppressionRules(''';
-                'local': { ''
-                    'FileNotFoundError': 'suppress',
+                'local': { '', 'FileNotFoundError': 'suppress',
                     'TimeoutError': 'warn_once' }
 
-                },''
-                'google': { ''
-                    'NetworkError': 'warn_once',
+                },'', 'google': { '', 'NetworkError': 'warn_once',
                     'TimeoutError': 'warn_once' }
 
-                },''
-                'system': { ''
-                    'FileNotFoundError': 'warn_once',  // システムフォント不在は一度だけ警告;
+                },'', 'system': { '', 'FileNotFoundError': 'warn_once',  // システムフォント不在は一度だけ警告;
                     'ConfigurationError': 'error' }
 }
 )';
@@ -139,23 +134,20 @@ export class FontErrorHandler {
     }
 
     private _getLogLevel(suppressionType: 'suppress' | 'warn_once' | 'error' | false, errorType: string, context: FontErrorContext = { ) as FontErrorContext'): 'debug' | 'info' | 'warn' | 'error' {''
-        if(suppressionType === 'warn_once'') {'
-            ';
+        if(suppressionType === 'warn_once'') {', ';
 
         }
 
             return 'warn';
 
-        if(errorType === 'ConfigurationError'') {'
-            ';
+        if(errorType === 'ConfigurationError'') {', ';
 
         }
 
             return 'error';
 ';
         // システムフォントエラーは一般的により低いログレベルに
-        if(context.source === 'system' && errorType === 'FileNotFoundError'') {'
-            ';
+        if(context.source === 'system' && errorType === 'FileNotFoundError'') {', ';
 
         }
 
@@ -200,8 +192,7 @@ export class FontErrorHandler {
             return 'Font loading is taking too long. Using system fonts as fallback.'; }
 ';
         // システムフォントが見つからない場合は、より一般的なメッセージ
-        if(context.source === 'system'') {'
-            ';
+        if(context.source === 'system'') {', ';
 
         }
 
@@ -216,7 +207,7 @@ export class FontErrorHandler {
             error: error.message;
             stack: error.stack;
             timestamp: new Date().toISOString();
-            suggestion: this._getSuggestion(error, context };
+           , suggestion: this._getSuggestion(error, context };
 
         (console as any)[level]('[FontErrorHandler] Detailed font loading error:', details');
     }

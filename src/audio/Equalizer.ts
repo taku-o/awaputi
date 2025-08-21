@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../utils/ErrorHandler';''
-import { getConfigurationManager } from '../core/ConfigurationManager';
+import { getErrorHandler  } from '../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../core/ConfigurationManager';
 
 /**
  * バンド設定インターフェース
@@ -7,27 +7,27 @@ import { getConfigurationManager } from '../core/ConfigurationManager';
 interface BandConfig { name: string,
     frequency: number;
     type: BiquadFilterType;
-    gain: number ,}
+   , gain: number ,}
 
 /**
  * フィルターデータインターフェース
  */
 interface FilterData extends BandConfig { filter: BiquadFilterNode;
-    index: number }
+   , index: number }
 
 /**
  * イコライザー設定インターフェース
  */
 interface EqualizerSettings { enabled?: boolean;
     bands?: {
-        [key: string]: number, }
+        [ke;y: string]: number, }
 
 /**
  * プリセット定義インターフェース
  */
 interface PresetDefinition { name: string,
     description: string;
-    gains: number[] ,}
+   , gains: number[] ,}
 
 /**
  * バンド情報インターフェース
@@ -37,7 +37,7 @@ interface BandInfo { index: number;
     frequency: number;
     type: BiquadFilterType;
     gain: number;
-    displayName: string }
+   , displayName: string }
 
 /**
  * 周波数レスポンスデータインターフェース
@@ -45,7 +45,7 @@ interface BandInfo { index: number;
 interface FrequencyResponseData { frequencies: number[];
     magnitude: number[];
     phase: number[];
-    magnitudeDB: number[] }
+   , magnitudeDB: number[] }
 
 /**
  * イコライザー状態インターフェース
@@ -53,14 +53,14 @@ interface FrequencyResponseData { frequencies: number[];
 interface EqualizerStatus { isEnabled: boolean;
     bands: BandInfo[];
     presets: string[];
-    configWatchers: number }
+   , configWatchers: number }
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager { get(category: string, path: string): any,
     set(category: string, path: string, value: any): void,
-    watch(category: string, path: string, callback: (value: any) => void): string | null;
+    watch(category: string, path: string, callback: (valu;e: any) => void): string | null;
     unwatch(watchId: string): void, }
 }
 
@@ -84,7 +84,7 @@ export class Equalizer {
     private bypassGain: GainNode | null;
     private eqGain: GainNode | null;
     // 設定監視用
-    private configWatchers: Set<string>;
+    private, configWatchers: Set<string>;
     constructor(audioContext: AudioContext, inputNode: AudioNode, outputNode: AudioNode) {
 
         this.audioContext = audioContext;
@@ -125,8 +125,7 @@ export class Equalizer {
      */
     private initialize(): void { try {
             // AudioContextの存在確認
-            if(!this.audioContext) {'
-                ';
+            if(!this.audioContext) {', ';
 
             }
 
@@ -271,8 +270,7 @@ export class Equalizer {
             this.isEnabled = enabled;
             this.updateBypassState();
 
-            if(saveToConfig) {'
-                ';
+            if(saveToConfig) {', ';
 
             }
 
@@ -458,34 +456,34 @@ export class Equalizer {
     getPresets(''';
                 name: 'フラット',
                 description: '全周波数均等';
-                gains: [0, 0, 0, 0, 0];
+               , gains: [0, 0, 0, 0, 0];
             },
 
             gaming: { ''
                 name: 'ゲーム',
                 description: 'ゲーム用最適化';
-                gains: [2, 1, 0, 3, 4] // 低音と高音を強調 },
+               , gains: [2, 1, 0, 3, 4] // 低音と高音を強調 },
             music: { ''
                 name: '音楽',
                 description: '音楽鑑賞用';
-                gains: [3, 1, -1, 2, 4] // V字カーブ },
+               , gains: [3, 1, -1, 2, 4] // V字カーブ },
             movie: { ''
                 name: '映画',
                 description: '映画鑑賞用';
-                gains: [4, 2, -2, 1, 3] // 低音重視 },
+               , gains: [4, 2, -2, 1, 3] // 低音重視 },
             vocal: { ''
                 name: 'ボーカル',
                 description: '音声明瞭化';
-                gains: [-2, 1, 4, 3, 0] // 中音域強化 },
+               , gains: [-2, 1, 4, 3, 0] // 中音域強化 },
             bass_boost: { ''
                 name: '低音ブースト',
                 description: '低音強化';
-                gains: [6, 3, 0, -1, 0] },
+               , gains: [6, 3, 0, -1, 0] },
 
             treble_boost: { ''
                 name: '高音ブースト',)';
                 description: '高音強化');
-                gains: [0, -1, 0, 3, 6] }
+               , gains: [0, -1, 0, 3, 6] }
         }
     
     /**
@@ -498,7 +496,7 @@ export class Equalizer {
             frequency: band.frequency;
             type: band.type;
             gain: this.filters[index].gain);
-            displayName: this.getBandDisplayName(band.name) ,}
+           , displayName: this.getBandDisplayName(band.name) ,}
         });
     }
     
@@ -563,7 +561,7 @@ export class Equalizer {
             
             return { frequencies: Array.from(frequencies),
                 magnitude: Array.from(totalMagResponse);
-                phase: Array.from(totalPhaseResponse), };
+               , phase: Array.from(totalPhaseResponse), };
                 magnitudeDB: Array.from(totalMagResponse).map(mag => 20 * Math.log10(mag); }
             } catch (error) {
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
@@ -578,7 +576,7 @@ export class Equalizer {
      */
     getStatus(): EqualizerStatus { return { isEnabled: this.isEnabled,
             bands: this.getBandInfo();
-            presets: Object.keys(this.getPresets(), };
+           , presets: Object.keys(this.getPresets(), };
             configWatchers: this.configWatchers.size }
         }
     

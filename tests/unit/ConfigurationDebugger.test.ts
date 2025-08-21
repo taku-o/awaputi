@@ -1,7 +1,7 @@
 /**
  * ConfigurationDebugger のテスト
  */
-import { jest, describe, test, expect, beforeEach, beforeAll } from '@jest/globals';
+import { jest, describe, test, expect, beforeEach, beforeAll  } from '@jest/globals';
 // Configuration debugger interfaces
 interface DebugConfig {
     enabled: boolean,
@@ -26,13 +26,13 @@ interface UsageTracking {
 interface PerformanceTracking {
     accessTimes: Map<string, number[]>;
     slowAccesses: any[],
-    cacheHitRates: Map<string, { total: number; hits: number }>;
+    cacheHitRates: Map<string, { total: number;, hits: number }>;
 }
 interface ErrorTracking {
     errorsByKey: Map<string, any[]>;
     errorPatterns: Map<string, number>;
     criticalErrors: any[],
-    recoverySuccess: Map<string, { total: number; recovered: number }>;
+    recoverySuccess: Map<string, { total: number;, recovered: number }>;
 }
 interface KeyDetails {
     fullKey: string,
@@ -46,9 +46,9 @@ interface Report {
     timestamp: string,
     statistics: Statistics,
     usage: {
-        hotKeys: string[],
+        hotKey;s: string[],
         unusedKeys: string[],
-        topAccessed: Array<{ key: string; accessCount: number }>
+        topAccessed: Array<{ ke;y: string;, accessCount: number }>
     },
     performance: any,
     errors: any,
@@ -57,7 +57,7 @@ interface Report {
 declare global {
     interface Window {
         location: {
-            search: string,
+            searc;h: string,
         };
     }
     

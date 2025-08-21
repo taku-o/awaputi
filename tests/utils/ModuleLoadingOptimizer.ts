@@ -3,7 +3,7 @@
  * Issue #106 Task 4対応: Jest Environment Stability Fixes
  */
 
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 
 /**
  * ES Module loading の Jest環境での最適化を管理
@@ -183,8 +183,8 @@ export class ModuleLoadingOptimizer {
         try {
             // 読み込み中のモジュールの完了を待つ
             if (this.loadingPromises.size > 0) {
-                console.debug(`[ModuleLoadingOptimizer] Waiting for ${this.loadingPromises.size) modules to finish loading...`);
-                await Promise.allSettled(Array.from(this.loadingPromises.values()});
+                console.debug(`[ModuleLoadingOptimizer] Waiting for ${this.loadingPromises.size) modules, to finish, loading...`);
+                await, Promise.allSettled(Array.from(this.loadingPromises.values()});
             }
 
             // 非同期操作の完了を待つ

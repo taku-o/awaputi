@@ -10,10 +10,10 @@ import type { DeveloperConsole } from './DeveloperConsole';
 interface CommandParameter { name: string,
     type: string;
     required: boolean;
-    description: string ,}
+   , description: string ,}
 
 interface CommandOptions { description: string;
-    usage: string;
+   , usage: string;
     parameters?: CommandParameter[];
     examples?: string[];
     group?: string; }
@@ -22,7 +22,7 @@ interface ChangeHistoryEntry { timestamp: string,
     path: string;
     oldValue: any;
     newValue: any;
-    source: string ,}
+   , source: string ,}
 
 interface ConfigurationSetOptions { validate?: boolean;
     saveToStorage?: boolean; }
@@ -31,11 +31,11 @@ interface ImportResult { path: string,
     value: any ,}
 
 interface ImportError { path: string;
-    message: string }
+   , message: string }
 
 interface DiffEntry { path: string;
     current: any;
-    default: any }
+   , default: any }
 
 interface ConfigurationTemplate { [key: string]: any, }
 
@@ -43,18 +43,18 @@ interface TemplateResult { path: string,
     value: any ,}
 
 interface TemplateError { path: string;
-    error: string }
+   , error: string }
 
 interface ValidationResult { isValid: boolean;
-    errors: Array<{
-        path: string;
-        message: string }>;
+   , errors: Array<{
+        pat;h: string;
+       , message: string }>;
 }
 
 export class ConfigurationCommands {
     private gameEngine: GameEngine;
     private configManager: ConfigurationManager;
-    private originalValues: Map<string, any>;
+    private, originalValues: Map<string, any>;
     private changeHistory: ChangeHistoryEntry[];
     constructor(gameEngine: GameEngine) {
 
@@ -161,8 +161,8 @@ export class ConfigurationCommands {
                 { name: 'json', type: 'string', required: true, description: 'JSON configuration data' ,}]
             ],
             examples: ['';
-                'config.import {"game":{"scoring":{"baseScores":{"normal":25}}}',]'
-                'config.import {"audio":{"volume":{"master":0.9}}']'
+                'config.import { "game":{"scoring":{"baseScores":{"normal":25 }}}',]'
+                'config.import { "audio":{"volume":{"master":0.9 }}']'
             ],
             group: 'config''';
         }'),
@@ -234,14 +234,14 @@ export class ConfigurationCommands {
             
             return `${path} = ${displayValue} (${type})`;
         } catch (error) {
-            return `Error getting configuration: ${(error, as Error}).message}`;
+            return `Error getting configuration: ${(error, as, Error}).message}`;
 
     /**
      * 設定値設定
      */
     private setConfig(args: string[]): string { try {
             const path = args[0];''
-            const valueStr = args.slice(1).join(' ');
+            const valueStr = args.slice(1).join(', ');
             
             // 元の値を保存（初回のみ）
             if(!this.originalValues.has(path) {
@@ -255,7 +255,7 @@ export class ConfigurationCommands {
             
             // 設定値の設定（バリデーション付き）
             this.configManager.set(path, convertedValue, { validate: true)
-                saveToStorage: false // セッション中のみの変更) as ConfigurationSetOptions);
+               , saveToStorage: false // セッション中のみの変更) as ConfigurationSetOptions);
             // 変更履歴に記録
             this.changeHistory.push({);
                 timestamp: new Date().toISOString(),
@@ -265,7 +265,7 @@ export class ConfigurationCommands {
                 source: 'console' ,});
             return `Set ${path} = ${convertedValue} (${typeof, convertedValue})`;
         } catch (error) {
-            return `Error setting configuration: ${(error, as Error}).message}`;
+            return `Error setting configuration: ${(error, as, Error}).message}`;
 
     /**
      * 設定値リセット
@@ -290,7 +290,7 @@ export class ConfigurationCommands {
             
             // デフォルト値に設定
             this.configManager.set(path, defaultValue, { validate: true)
-                saveToStorage: false) as ConfigurationSetOptions);
+               , saveToStorage: false) as ConfigurationSetOptions);
             // 変更履歴に記録
             this.changeHistory.push({);
                 timestamp: new Date().toISOString();
@@ -300,7 +300,7 @@ export class ConfigurationCommands {
                 source: 'reset' ,});
             return `Reset ${path} to default value: ${defaultValue}`;
         } catch (error) {
-            return `Error resetting configuration: ${(error, as Error}).message}`;
+            return `Error resetting configuration: ${(error, as, Error}).message}`;
 
     /**
      * 設定一覧表示'
@@ -328,7 +328,7 @@ export class ConfigurationCommands {
             
             return output;
         } catch (error) {
-            return `Error listing configuration: ${(error, as Error}).message}`;
+            return `Error listing configuration: ${(error, as, Error}).message}`;
 
     /**
      * 設定検証
@@ -351,7 +351,7 @@ export class ConfigurationCommands {
             } else { let output = path ' }'
 
                     ? `Configuration '${path}' has validation errors:\n`''
-                    : 'Configuration validation errors found: \n',
+                    : 'Configuration validation errors, found: \n',
                 
                 for(const, error of, validationResults.errors) {
                 
@@ -363,7 +363,7 @@ export class ConfigurationCommands {
                 
                 return output;
             } catch (error) {
-            return `Error validating configuration: ${(error, as Error}).message}`;
+            return `Error validating configuration: ${(error, as, Error}).message}`;
 
     /**
      * 設定エクスポート
@@ -385,13 +385,13 @@ export class ConfigurationCommands {
             
             return `Configuration exported:\n${json}\n\n(Copied, to clipboard, if supported)`;
         } catch (error) {
-            return `Error exporting configuration: ${(error, as Error}).message}`;
+            return `Error exporting configuration: ${(error, as, Error}).message}`;
 
     /**
      * 設定インポート
      */''
     private importConfig(args: string[]): string { try {'
-            const jsonStr = args.join(' ');
+            const jsonStr = args.join(', ');
             
             let config: any,
             try {'
@@ -399,7 +399,7 @@ export class ConfigurationCommands {
 
             } catch (parseError) { }
 
-                return `Invalid JSON format: ${(parseError, as Error'}).message}`;
+                return `Invalid JSON format: ${(parseError, as, Error'}).message}`;
             }
             
             const importResults: ImportResult[] = [],
@@ -433,7 +433,7 @@ export class ConfigurationCommands {
 
             return output || 'No configuration values were imported.';
         } catch (error) {
-            return `Error importing configuration: ${(error, as Error}).message}`;
+            return `Error importing configuration: ${(error, as, Error}).message}`;
 
     /**
      * 変更履歴表示
@@ -468,8 +468,7 @@ export class ConfigurationCommands {
      * 変更を元に戻す
      */'
     private revertChanges(): string { ''
-        if(this.originalValues.size === 0) {'
-            ';
+        if(this.originalValues.size === 0) {', ';
 
         }
 
@@ -546,7 +545,7 @@ export class ConfigurationCommands {
             
             return output;
         } catch (error) {
-            return `Error comparing configuration: ${(error, as Error}).message}`;
+            return `Error comparing configuration: ${(error, as, Error}).message}`;
 
     /**
      * 設定テンプレート適用'
@@ -554,20 +553,17 @@ export class ConfigurationCommands {
     private applyTemplate(args: string[]): string { const templateName = args[0];
         
         const templates: Record<string, ConfigurationTemplate> = {'
-            development: {''
-                'performance.targetFPS': 60,
+            development: {'', 'performance.targetFPS': 60,
                 'debug.enabled': true,
                 'audio.volume.master': 0.5,
                 'game.difficulty.modifier': 0.8 },
 
-            production: { ''
-                'performance.targetFPS': 60,
+            production: { '', 'performance.targetFPS': 60,
                 'debug.enabled': false,
                 'audio.volume.master': 1.0,
                 'game.difficulty.modifier': 1.0 },
 
-            test: { ''
-                'performance.targetFPS': 30,
+            test: { '', 'performance.targetFPS': 30,
                 'debug.enabled': true,
                 'audio.volume.master': 0.0,
                 'game.difficulty.modifier': 0.5 }
@@ -595,7 +591,7 @@ export class ConfigurationCommands {
                 }
                 
                 this.configManager.set(path, value, { validate: true)
-                    saveToStorage: false) as ConfigurationSetOptions);
+                   , saveToStorage: false) as ConfigurationSetOptions);
                 applyResults.push({ path, value );
                 
                 // 変更履歴に記録
@@ -603,7 +599,7 @@ export class ConfigurationCommands {
                     timestamp: new Date().toISOString();
                     path,
                     oldValue: this.configManager.get(path);
-                    newValue: value, }
+                   , newValue: value, }
                     source: `template:${templateName}`
                 });
             } catch (error) { }
@@ -727,13 +723,13 @@ export class ConfigurationCommands {
                     }
                     
                     this.configManager.set(fullPath, value, { validate: true)
-                        saveToStorage: false) as ConfigurationSetOptions);
+                       , saveToStorage: false) as ConfigurationSetOptions);
                     results.push({ path: fullPath, value );
                     
                     // 変更履歴に記録
                     this.changeHistory.push({);
                         timestamp: new Date().toISOString();
-                        path: fullPath,
+                       , path: fullPath,
                         oldValue: this.configManager.get(fullPath),
                         newValue: value,
                         source: 'import' ,});
@@ -766,7 +762,7 @@ export class ConfigurationCommands {
         } else if (current !== defaults) { // プリミティブ値の比較
             differences.push({)
                 path: basePath);
-                current: current,);
+               , current: current,);
                 default: defaults ,}
         
         return differences;

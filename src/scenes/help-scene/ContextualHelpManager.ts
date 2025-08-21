@@ -8,9 +8,9 @@
  * @since Issue #163 - Task 9: Contextual Help System Integration
  */
 
-import { getLoggingSystem, LoggingSystem } from '../../core/LoggingSystem';''
-import { GameEngine } from '../../core/GameEngine';''
-import { SceneManager } from '../../core/SceneManager';
+import { getLoggingSystem, LoggingSystem  } from '../../core/LoggingSystem';''
+import { GameEngine  } from '../../core/GameEngine';''
+import { SceneManager  } from '../../core/SceneManager';
 
 // ヘルプトリガー関連のインターフェース
 interface HelpTriggerCondition { ''
@@ -24,18 +24,18 @@ interface HelpContent { title: string;
     detailed: string;
     category: string;
     relatedTopics: string[];
-    actions: HelpAction[]
+   , actions: HelpAction[]
     }
 ';
 
 interface HelpTrigger { condition: HelpTriggerCondition,''
     priority: 'high' | 'medium' | 'low';
-    helpContent: HelpContent
+   , helpContent: HelpContent
     ,}
 
 // コンテキスト関連のインターフェース
 interface HelpContext { error?: {
-        type: string;
+        typ;e: string;
         message?: string;
         stack?: string; ,};
     fps?: number;
@@ -51,59 +51,59 @@ interface Tooltip { content: string,''
 
 // インタラクティブガイドインターフェース
 interface GuideStep { target: string;
-    content: string,
+   , content: string,
     position: 'top' | 'bottom' | 'left' | 'right',
     action?: (') => void; }'
 }
 
 interface InteractiveGuide { name: string,
     trigger: string;
-    steps: GuideStep[]
+   , steps: GuideStep[]
     ,}
 
 // ヘルプ履歴インターフェース
 interface HelpHistoryEntry { timestamp: number;
-    key: string,
+   , key: string,
     priority: 'high' | 'medium' | 'low';
-    context: HelpContext
+   , context: HelpContext
     ,}
 
 // ヘルプ使用情報インターフェース
 interface HelpUsageData { key: string,''
     priority: 'high' | 'medium' | 'low';
-    content: HelpContent
+   , content: HelpContent
     ,}
 
 // エラー詳細インターフェース
 interface ErrorDetails { error: any;
     timestamp: number;
     userAgent: string;
-    url: string }
+   , url: string }
 
 // 品質設定提案インターフェース
 interface QualitySuggestions { ''
     effectQuality: 'low' | 'medium' | 'high',
     bubbleCount: 'reduced' | 'normal' | 'increased',
     animation: 'minimal' | 'normal' | 'full';
-    reason: string ,}
+   , reason: string ,}
 
 // デバッグ情報インターフェース
 interface DebugInfo { triggers: string[];
     tooltips: string[];
     guides: string[];
     currentContext: HelpContext;
-    helpHistory: HelpHistoryEntry[]
+   , helpHistory: HelpHistoryEntry[]
     }
 
 export class ContextualHelpManager {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     // ヘルプトリガー管理
-    private helpTriggers: Map<string, HelpTrigger>;
+    private, helpTriggers: Map<string, HelpTrigger>;
     private activeHelp: Map<string, any>;
     private helpHistory: HelpHistoryEntry[];
     // ツールチップ管理
-    private tooltips: Map<string, Tooltip>;
+    private, tooltips: Map<string, Tooltip>;
     private activeTooltips: Set<string>;
     // インタラクティブガイド管理
     private interactiveGuides: Map<string, InteractiveGuide>;
@@ -111,7 +111,7 @@ export class ContextualHelpManager {
     private guideStep: number;
     // 状態管理
     private isMonitoring: boolean;
-    private currentContext: HelpContext;
+    private, currentContext: HelpContext;
     constructor(gameEngine: GameEngine) {
     
         this.gameEngine = gameEngine;
@@ -184,7 +184,7 @@ export class ContextualHelpManager {
 
                 quick: `フレームレートが低下しています（現在: ${this.currentContext.fps || 'N/A'} FPS）`,''
                 detailed: this.generatePerformanceHelpContent(''';
-                category: 'performance',)';
+               , category: 'performance',)';
                 relatedTopics: ['performance', 'troubleshooting])';
                 actions: ['';
                     { label: 'パフォーマンスガイド', action: 'openPerformanceGuide' ,},''
@@ -202,7 +202,7 @@ export class ContextualHelpManager {
                 title: '初回ゲームプレイのヘルプ',
                 quick: 'BubblePopへようこそ！基本的な遊び方をご説明します。',
                 detailed: this.generateFirstTimeHelpContent(''';
-                category: 'gameplay',)';
+               , category: 'gameplay',)';
                 relatedTopics: ['controls', 'scoring', 'bubbles])';
                 actions: [' ,}'
 
@@ -221,7 +221,7 @@ export class ContextualHelpManager {
                 title: 'キーボードナビゲーションヘルプ',
                 quick: 'キーボードショートカットを使ってヘルプにアクセスしました。',
                 detailed: this.generateKeyboardHelpContent(''';
-                category: 'navigation',)';
+               , category: 'navigation',)';
                 relatedTopics: ['controls', 'accessibility])';
                 actions: [' ,}'
 
@@ -263,7 +263,7 @@ export class ContextualHelpManager {
         this.interactiveGuides.set('first-time-help', { ''
             name: '初回ヘルプ利用ガイド',)';
             trigger: 'first_help_access')';
-            steps: [{''
+           , steps: [{''
                     target: '.help-category-list',
                     content: 'まずはカテゴリを選択して、知りたい情報を見つけましょう。',')';
                     position: 'right'),
@@ -284,7 +284,7 @@ export class ContextualHelpManager {
         this.interactiveGuides.set('contextual-help-intro', { ''
             name: 'コンテキストヘルプの紹介',)';
             trigger: 'contextual_help_first')';
-            steps: [{''
+           , steps: [{''
                     target: '.help-contextual-content',
                     content: 'この内容は現在の状況に応じて自動的に表示されています。',')';
                     position: 'top'),
@@ -491,7 +491,7 @@ if (object && object.property) {
             const errorDetails: ErrorDetails = {
                 error: context.error || this.currentContext.error,
                 timestamp: Date.now()';
-            console.log('Error Details:', errorDetails);
+            console.log('Error, Details:', errorDetails);
             ';
             // エラー詳細をHelpContentManagerに送信してカテゴリ表示
             this.navigateToCategory('troubleshooting);' }
@@ -549,8 +549,7 @@ if (object && object.property) {
                 const, currentScene = this.gameEngine.sceneManager.getCurrentScene() }
 
                 if (currentScene && 'helpContentManager' in, currentScene'}) { // トピックによってカテゴリを推測 }
-                    const topicCategoryMap: { [key: string]: string } = { ''
-                        'controls': 'gameplay',
+                    const topicCategoryMap: { [key: string]: string } = { '', 'controls': 'gameplay',
                         'scoring': 'gameplay',
                         'shortcuts': 'controls',
                         'troubleshooting': 'troubleshooting',
@@ -642,7 +641,7 @@ if (object && object.property) {
     public startInteractiveGuide(guideId: string): boolean { try {'
             this.loggingSystem.info('ContextualHelpManager', `Starting interactive guide: ${guideId)`),
 
-            const guide = this.interactiveGuides.get(guideId};''
+            const, guide = this.interactiveGuides.get(guideId};''
             if(!guide} {' }'
 
                 this.loggingSystem.warn('ContextualHelpManager', `Interactive guide not found: ${guideId}`});
@@ -710,7 +709,7 @@ if (object && object.property) {
     private logHelpUsage(helpData: HelpUsageData): void { this.helpHistory.push({);
             timestamp: Date.now();
             key: helpData.key;
-            priority: helpData.priority, }
+           , priority: helpData.priority, }
             context: { ...this.currentContext);
         // 履歴サイズ制限
         if (this.helpHistory.length > 100) { this.helpHistory.shift(); }
@@ -722,7 +721,7 @@ if (object && object.property) {
     public getDebugInfo(): DebugInfo { return { triggers: Array.from(this.helpTriggers.keys(),
             tooltips: Array.from(this.tooltips.keys();
             guides: Array.from(this.interactiveGuides.keys();
-            currentContext: this.currentContext, };
+           , currentContext: this.currentContext, };
             helpHistory: this.helpHistory.slice(-10) // 最新10件 }
         }
     

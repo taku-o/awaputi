@@ -1,7 +1,7 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { RealtimeDashboard } from '../../src/analytics/RealtimeDashboard';
-import { PerformanceDataCollector } from '../../src/analytics/PerformanceDataCollector';
-import { RealtimeMonitor } from '../../src/analytics/RealtimeMonitor';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { RealtimeDashboard  } from '../../src/analytics/RealtimeDashboard';
+import { PerformanceDataCollector  } from '../../src/analytics/PerformanceDataCollector';
+import { RealtimeMonitor  } from '../../src/analytics/RealtimeMonitor';
 // Chart.jsのモック
 (global as any).Chart = jest.fn() as jest.Mock.mockImplementation(() => ({
     data: { datasets: [{ data: [] }] };
@@ -151,7 +151,7 @@ describe('RealtimeDashboard', () => {
             const alert = {
                 timestamp: Date.now('),
                 severity: 'warning',
-                message: 'Low FPS detected: 25fps'
+                message: 'Low FPS, detected: 25fps'
             };
             dashboard.displayAlert(alert');
             const alertsContainer = container.querySelector('#alerts-container'');

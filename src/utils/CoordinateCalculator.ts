@@ -10,22 +10,22 @@ interface Coordinates { x: number,
     y: number ,}
 
 interface Size { width: number;
-    height: number }
+   , height: number }
 
 interface SafeArea { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface VerticalPosition { y: number;
-    height: number }
+   , height: number }
 
 interface DebugInfo { canvasSize: Size;
     baseSize: Size;
-    scale: {
-        x: number;
+   , scale: {
+        ;x: number;
         y: number;
-        uniform: number }
+       , uniform: number }
 
 export class CoordinateCalculator {
     private canvasWidth: number;
@@ -35,7 +35,7 @@ export class CoordinateCalculator {
     // スケール係数
     private scaleX: number;
     private scaleY: number;
-    private uniformScale: number;
+    private, uniformScale: number;
     constructor(canvasWidth: number, canvasHeight: number, baseWidth: number = 1920, baseHeight: number = 1080) {
 
         this.canvasWidth = canvasWidth;
@@ -153,7 +153,7 @@ export class CoordinateCalculator {
     getSafeArea(margin: number = 20): SafeArea { const scaledMargin = margin * this.uniformScale;
         return { x: scaledMargin,
             y: scaledMargin;
-            width: this.canvasWidth - (scaledMargin * 2), };
+           , width: this.canvasWidth - (scaledMargin * 2), };
             height: this.canvasHeight - (scaledMargin * 2); }
         }
     

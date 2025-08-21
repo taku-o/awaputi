@@ -24,33 +24,33 @@ interface AccessibilitySettings { visualFeedback: boolean,
     largeFonts: boolean;
     reduceMotion: boolean;
     hapticFeedback: boolean;
-    vibrationIntensity: number ,}
+   , vibrationIntensity: number ,}
 
 // Types for exported settings
 interface ExportedSettings { version: string;
     timestamp: string;
-    settings: AccessibilitySettings
+   , settings: AccessibilitySettings
     }
 
 // Types for validation result
 interface ValidationResult { valid: boolean;
     errors: string[];
-    warnings: string[] }
+   , warnings: string[] }
 
 // Config manager interface
 interface ConfigManager { get(key: string): any;
     set(key: string, value: any): void,
-    watch(namespace: string, key: string, callback: (newValue: any) => void): void ,}
+    watch(namespace: string, key: string, callback: (newValu;e: any) => void): void ,}
 }
 
 // Main controller interface
 interface MainController { configManager: ConfigManager,
     audioDescriptionManager: {
-        notificationContainer: HTMLElement ,};
+        notificationContaine;r: HTMLElement ,};
     audioFeedbackManager: { updateColorIndicatorVisibility(visible: boolean): void;
-        hapticSettings: {
+       , hapticSettings: {
             enabled: boolean;
-            vibrationIntensity: number };
+           , vibrationIntensity: number };
         updateVibrationManagerSettings(): void;
     };
     audioCueManager: { patternRecognition: {
@@ -60,7 +60,7 @@ interface MainController { configManager: ConfigManager,
 export class AudioSettingsManager {
     private mainController: MainController;
     private configManager: ConfigManager;
-    private settings: AccessibilitySettings;
+    private, settings: AccessibilitySettings;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -75,7 +75,7 @@ export class AudioSettingsManager {
             highContrast: false;
             largeFonts: false;
             reduceMotion: false;
-            hapticFeedback: false, // 触覚フィードバック設定
+           , hapticFeedback: false, // 触覚フィードバック設定
     }
             vibrationIntensity: 0.8 // 振動強度 }
         }
@@ -137,10 +137,10 @@ export class AudioSettingsManager {
         style.textContent = `;
             .audio-accessibility-notifications .notification { background-color: #000000 !important,
                 color: #ffffff !important;
-                border: 2px solid #ffffff !important ,}
+               , border: 2px solid #ffffff !important ,}
             .audio-accessibility-captions { background-color: #000000 !important;
                 color: #ffffff !important;
-                border: 2px solid #ffffff !important }
+               , border: 2px solid #ffffff !important }
         `;
         ';
         // 既存のスタイルを削除してから追加
@@ -241,7 +241,7 @@ export class AudioSettingsManager {
             largeFonts: false;
             reduceMotion: false;
             hapticFeedback: false;
-            vibrationIntensity: 0.8 };
+           , vibrationIntensity: 0.8 };
         Object.assign(this.settings, defaultSettings);
         
         // 設定を永続化
@@ -260,7 +260,7 @@ export class AudioSettingsManager {
     public exportSettings()';
             version: '1.0.0);
             timestamp: new Date().toISOString();
-            settings: { ...this.settings;
+           , settings: { ...this.settings;
     }
 
     /**
@@ -269,8 +269,7 @@ export class AudioSettingsManager {
      * @returns インポート成功かどうか
      */'
     public importSettings(settingsData: ExportedSettings): boolean { try {'
-            if(!settingsData.settings) {'
-                ';
+            if(!settingsData.settings) {', ';
 
             }
 

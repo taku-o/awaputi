@@ -8,7 +8,7 @@
  * - 安定性統計とパフォーマンス履歴管理
  */
 
-import { getErrorHandler } from '../ErrorHandler.js';
+import { getErrorHandler  } from '../ErrorHandler.js';
 
 // 型定義
 interface IntegratorConfig { stabilizerIntegration?: Partial<StabilizerIntegrationSettings>;
@@ -19,45 +19,45 @@ interface IntegratorConfig { stabilizerIntegration?: Partial<StabilizerIntegrati
 interface StabilizerIntegrationSettings { enabled: boolean,
     lastSync: number;
     syncInterval: number;
-    confidenceThreshold: number ,}
+   , confidenceThreshold: number ,}
 
 interface IntegrationStats { frameTimeVariance: number;
     stabilityScore: number;
     stabilizerInsights: StabilizerInsights | null;
     performanceHistory: PerformanceHistoryEntry[];
-    issueHistory: PerformanceIssue[]
+   , issueHistory: PerformanceIssue[]
     }
 
 interface StabilizationControl { targetFPS: number;
     targetFrameTime: number;
     forceStabilization: boolean;
-    stabilizationMode: StabilizationMode
+   , stabilizationMode: StabilizationMode
     }
 
 interface PerformanceZones { optimal: PerformanceZone;
     good: PerformanceZone;
     poor: PerformanceZone;
-    critical: PerformanceZone
+   , critical: PerformanceZone
     }
 
 interface PerformanceZone { minStability: number;
-    maxJitter: number }
+   , maxJitter: number }
 
 interface StabilizerStatus { timing: TimingInfo;
     adaptive: AdaptiveInfo;
     recommendations: StabilizationRecommendation[];
-    pacing: PacingInfo
+   , pacing: PacingInfo
     }
 
 interface TimingInfo { variance: number;
     stabilityScore: number;
     jitterLevel: number;
     smoothnessIndex: number;
-    consistencyRating: string }
+   , consistencyRating: string }
 
 interface AdaptiveInfo { performanceZone: PerformanceZoneType;
     confidenceLevel: number;
-    currentTargetFPS: number }
+   , currentTargetFPS: number }
 
 interface PacingInfo { vsyncDetected?: boolean;
     tearingRisk?: number; }
@@ -70,10 +70,10 @@ interface IntegrationResult { integrated: boolean,
     reason?: string;
     timestamp?: number;
     actions?: {
-        zone: string[];
+        zon;e: string[];
         jitter: string[];
         fps: string[];
-        stabilization: string[] ,};
+       , stabilization: string[] ,};
     currentZone?: PerformanceZoneType;
     stabilityScore?: number;
     jitterLevel?: number;
@@ -82,17 +82,17 @@ interface IntegrationResult { integrated: boolean,
 
 interface FrameStabilityAnalysis { timestamp: number,
     overall: {
-        stabilityScore: number;
+        stabilityScor;e: number;
         confidence: number;
         trend: TrendDirection;
-        trendStrength: number ,};
+       , trendStrength: number ,};
     analysis: { frameConsistency: number;
         jitterAnalysis: number;
-        performanceVariability: number };
+       , performanceVariability: number };
     problems: ProblemArea[];
     prediction: StabilityPrediction;
     recommendations: StabilityRecommendationEntry[];
-    stabilizerStatus: StabilizerInsights | null;
+   , stabilizerStatus: StabilizerInsights | null;
     error?: boolean;
 }
 
@@ -111,11 +111,11 @@ interface PerformanceHistoryEntry { timestamp: number,
     variance: number;
     jitterLevel: number;
     performanceZone: PerformanceZoneType;
-    confidenceLevel: number ,}
+   , confidenceLevel: number ,}
 
 interface PerformanceIssue { type: string;
     data: any;
-    timestamp: number }
+   , timestamp: number }
 
 interface StabilizerInsights { performanceZone: PerformanceZoneType;
     confidenceLevel: number;
@@ -124,26 +124,26 @@ interface StabilizerInsights { performanceZone: PerformanceZoneType;
     consistencyRating: string;
     vsyncDetected: boolean;
     tearingRisk: number;
-    timestamp: number }
+   , timestamp: number }
 
 interface OverallStability { score: number;
     confidence: number;
     consistency: number;
     jitter: number;
-    variability: number }
+   , variability: number }
 
 interface StabilityTrend { direction: TrendDirection;
-    strength: number }
+   , strength: number }
 
 interface ProblemArea { type: string;
     description: string;
-    severity: SeverityLevel;
+   , severity: SeverityLevel;
     count?: number;
     percentage?: number; }
 
 interface StabilityRecommendationEntry { type: RecommendationSeverity,
     action: string;
-    description: string ,}
+   , description: string ,}
 ';
 
 interface StabilityPrediction { confidence: number,''
@@ -152,12 +152,12 @@ interface StabilityPrediction { confidence: number,''
 
 interface ModeSettings { qualityReduction: QualityReductionLevel;
     frameTargetAdjustment: FrameTargetAdjustment;
-    jitterTolerance: JitterTolerance
+   , jitterTolerance: JitterTolerance
     }
 
 interface IntegrationSettings { stabilizerIntegration: StabilizerIntegrationSettings;
     stabilizationControl: StabilizationControl;
-    performanceZones: PerformanceZones
+   , performanceZones: PerformanceZones
     }
 ';
 
@@ -180,7 +180,7 @@ export class PerformanceStabilizerIntegrator {
     private stabilizerIntegration: StabilizerIntegrationSettings;
     private integrationStats: IntegrationStats;
     private stabilizationControl: StabilizationControl;
-    private performanceZones: PerformanceZones;
+    private, performanceZones: PerformanceZones;
     constructor(config: IntegratorConfig = {) {
 ';
 
@@ -232,14 +232,14 @@ export class PerformanceStabilizerIntegrator {
             
             const result = { integrated: true,
                 timestamp: Date.now(;
-                actions: {
+               , actions: {
                     zone: zoneActions;
                     jitter: jitterActions;
                     fps: fpsActions;
-                    stabilization: stabilizationActions ,};
+                   , stabilization: stabilizationActions ,};
                 currentZone: adaptive.performanceZone;
                 stabilityScore: timing.stabilityScore;
-                jitterLevel: timing.jitterLevel);
+               , jitterLevel: timing.jitterLevel);
             })
             // 統合履歴に記録)
             this.recordIntegrationHistory(result);
@@ -281,16 +281,16 @@ export class PerformanceStabilizerIntegrator {
                 overall: {
                     stabilityScore: overallStability.score;
                     confidence: overallStability.confidence;
-                    trend: stabilityTrend.direction, };
+                   , trend: stabilityTrend.direction, };
                     trendStrength: stabilityTrend.strength }
                 };
                 analysis: { frameConsistency: overallStability.consistency;
                     jitterAnalysis: overallStability.jitter;
-                    performanceVariability: overallStability.variability };
+                   , performanceVariability: overallStability.variability };
                 problems: problemAreas;
                 prediction: prediction;
                 recommendations: recommendations;
-                stabilizerStatus: this.integrationStats.stabilizerInsights;
+               , stabilizerStatus: this.integrationStats.stabilizerInsights;
             },
 
         } catch (error) {
@@ -309,8 +309,8 @@ export class PerformanceStabilizerIntegrator {
     forceFrameStabilization(targetFPS: number, mode: StabilizationMode = 'balanced): ForceStabilizationResult { try { }'
             console.log(`[StabilizerIntegrator] Forcing frame stabilization: ${targetFPS}FPS, mode: ${ mode)`),
             
-            const previousTarget = this.stabilizationControl.targetFPS;
-            const previousMode = this.stabilizationControl.stabilizationMode;
+            const, previousTarget = this.stabilizationControl.targetFPS;
+            const, previousMode = this.stabilizationControl.stabilizationMode;
             
             // 新しい設定適用
             this.stabilizationControl.targetFPS = targetFPS;
@@ -319,7 +319,7 @@ export class PerformanceStabilizerIntegrator {
             this.stabilizationControl.forceStabilization = true;
             
             // モード別設定適用
-            const modeSettings = this.applyStabilizationMode(mode};
+            const, modeSettings = this.applyStabilizationMode(mode};
             
             // 強制安定化フラグ設定
             const stabilizationActions = this.executeForceStabilization(targetFPS, mode};
@@ -331,7 +331,7 @@ export class PerformanceStabilizerIntegrator {
                 previousTarget,
                 previousMode,
                 actions: stabilizationActions;
-                settings: modeSettings, }
+               , settings: modeSettings, }
                 timestamp: Date.now(});
             };
             
@@ -363,7 +363,7 @@ export class PerformanceStabilizerIntegrator {
                 variance: timing.variance;
                 jitterLevel: timing.jitterLevel);
                 performanceZone: adaptive.performanceZone);
-                confidenceLevel: adaptive.confidenceLevel });
+               , confidenceLevel: adaptive.confidenceLevel });
             // 履歴制限（最新1000件）
             if (this.integrationStats.performanceHistory.length > 1000) { this.integrationStats.performanceHistory.shift();' }'
 
@@ -433,8 +433,7 @@ export class PerformanceStabilizerIntegrator {
             }
             ';
             // 中程度ジッター検出
-            if(timing.jitterLevel > 5 && timing.jitterLevel <= 7) {'
-                ';
+            if(timing.jitterLevel > 5 && timing.jitterLevel <= 7) {', ';
 
             }
 
@@ -487,16 +486,14 @@ export class PerformanceStabilizerIntegrator {
                     actions.push('quality_reduction_recommended''); }
 
                 }''
-                if(recommendation.type === 'target_fps_adjustment'') {'
-                    ';
+                if(recommendation.type === 'target_fps_adjustment'') {', ';
 
                 }
 
                     actions.push('fps_adjustment_recommended''); }
 
                 }''
-                if(recommendation.type === 'frame_pacing'') {'
-                    ';
+                if(recommendation.type === 'frame_pacing'') {', ';
 
                 }
 
@@ -522,7 +519,7 @@ export class PerformanceStabilizerIntegrator {
                 jitterLevel: timing.jitterLevel;
                 smoothnessIndex: timing.smoothnessIndex;
                 consistencyRating: timing.consistencyRating;
-                vsyncDetected: pacing? .vsyncDetected || false, : undefined
+               , vsyncDetected: pacing? .vsyncDetected || false, : undefined
                 tearingRisk: pacing? .tearingRisk || 0, : undefined
                 timestamp: Date.now( ,} catch (error) {
             this.errorHandler.logError('Failed to store stabilizer insights', error); }
@@ -602,8 +599,7 @@ export class PerformanceStabilizerIntegrator {
             ';
 
             let direction;''
-            if(strength < 0.001) {'
-                ';
+            if(strength < 0.001) {', ';
 
             }
 

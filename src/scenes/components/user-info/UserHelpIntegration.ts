@@ -4,16 +4,16 @@
  * UserInfoSceneから分離されたヘルプシステム統合機能を提供
  */
 
-import { AchievementHelpSystem } from '../../../ui/AchievementHelpSystem.js';
+import { AchievementHelpSystem  } from '../../../ui/AchievementHelpSystem.js';
 
 // ヘルプセクションのインターフェース
 interface HelpSection { id: string,
     name: string;
-    icon: string ,}
+   , icon: string ,}
 
 // ヘルプコンテンツのインターフェース
 interface HelpContent { title: string;
-    content: string[] | string }
+   , content: string[] | string }
 
 // ヘルプコンテンツマップのインターフェース
 interface HelpContentMap { [sectionId: string]: HelpContent;
@@ -24,15 +24,15 @@ interface HelpSystemStatus { isActive: boolean,
     currentSection: string;
     hasContent: boolean;
     availableSections: number;
-    systemType: string ,}
+   , systemType: string ,}
 
 // ゲームエンジンのインターフェース
 interface GameEngine { canvas: HTMLCanvasElement;
     achievementManager?: any }
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (data?: any) => void): void;
-    off(event: string, callback?: (data?: any) => void): void;
+interface EventBus { on(event: string, callback: (dat;a?: any) => void): void;
+    off(event: string, callback?: (dat;a?: any) => void): void;
     emit(event: string, data?: any): void }
 }
 
@@ -52,7 +52,7 @@ export class UserHelpIntegration {
     private helpContent: HelpContentMap | null = null;
     private isHelpSystemActive: boolean = false;
     // ヘルプセクション定義
-    private helpSections: HelpSection[] = [' }'
+    private, helpSections: HelpSection[] = [' }'
 
         { id: 'overview', name: '概要', icon: '📋' ,},''
         { id: 'categories', name: 'カテゴリ', icon: '📁' ,},''
@@ -86,8 +86,7 @@ export class UserHelpIntegration {
      * イベントリスナーをセットアップ
      */
     private setupEventListeners(): void { ''
-        if(this.eventBus) {'
-            ';
+        if(this.eventBus) {', ';
 
         }
 
@@ -143,8 +142,7 @@ export class UserHelpIntegration {
             }
             ;
             // イベントバスに通知
-            if(this.eventBus) {'
-                ';
+            if(this.eventBus) {', ';
 
             }
 
@@ -161,7 +159,7 @@ export class UserHelpIntegration {
     public renderHelpWithComponent(;
         context: CanvasRenderingContext2D;
         y: number );
-        height: number);
+       , height: number);
         helpTabComponent?: any;
     ): void { const canvas = this.gameEngine.canvas;
         const contentWidth = canvas.width - this.contentPadding * 2;
@@ -210,7 +208,7 @@ export class UserHelpIntegration {
         context: CanvasRenderingContext2D;
         x: number );
         y: number);
-        width: number;
+       , width: number;
     ): number { const buttonWidth = Math.min(100, width / this.helpSections.length - 10);
         const buttonHeight = 35;
         
@@ -253,10 +251,10 @@ export class UserHelpIntegration {
      */
     private renderHelpContent(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number );
         width: number);
-        height: number;
+       , height: number;
     ): void { if (!this.helpContent) return,
         
         const content = this.helpContent[this.currentHelpSection];
@@ -330,19 +328,19 @@ export class UserHelpIntegration {
      */
     private renderWrappedHelpText(;
         context: CanvasRenderingContext2D;
-        text: string, ;
+       , text: string, ;
         x: number, ;
         y: number );
         maxWidth: number)';
-        lineHeight: number'';
+       , lineHeight: number'';
     '): void { ''
-        const words = text.split(' '');''
+        const words = text.split(', '');''
         let line = '';
         let currentY = y;
 
         for(let, n = 0; n < words.length; n++) {'
 
-            const testLine = line + words[n] + ' ';
+            const testLine = line + words[n] + ', ';
             const metrics = context.measureText(testLine);
             const testWidth = metrics.width;
 
@@ -350,7 +348,7 @@ export class UserHelpIntegration {
 
             if (testWidth > maxWidth && n > 0) {''
                 context.fillText(line.trim(), x, currentY');''
-                line = words[n] + ' ';
+                line = words[n] + ', ';
         }
                 currentY += lineHeight; }
             } else { line = testLine; }
@@ -478,7 +476,7 @@ export class UserHelpIntegration {
 
             progress: { ')'
                 title: '進捗システム')';
-                content: ['';
+               , content: ['';
                     '📊 進捗の仕組み',
                     '',
                     '🏆 AP(Awaputi, Points)',
@@ -572,7 +570,7 @@ export class UserHelpIntegration {
      */''
     private generateErrorHelpContent()';
                 title: 'エラー')';
-                content: ['';
+               , content: ['';
                     'ヘルプコンテンツの読み込みに失敗しました。',]';
                     'ページをリロードして再度お試しください。'];
                 ];

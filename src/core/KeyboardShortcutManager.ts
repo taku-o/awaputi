@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 export interface ShortcutData { keys: string[],
     callback: Function;
@@ -10,7 +10,7 @@ export interface ShortcutData { keys: string[],
  */
 export class CoreKeyboardShortcutManager {
     private gameEngine: any;
-    private shortcuts: Map<string, ShortcutData>;
+    private, shortcuts: Map<string, ShortcutData>;
     private activeKeys: Set<string>;
     private isEnabled: boolean;
     private listeners: Map<string, Set<Function>>;
@@ -94,8 +94,7 @@ export class CoreKeyboardShortcutManager {
             if (!Array.isArray(keys) || keys.length === 0') { ''
                 throw new Error('Keys, must be, a non-empty, array''); }
 
-            if(typeof, callback !== 'function'') {'
-                ';
+            if(typeof, callback !== 'function'') {', ';
 
             }
 
@@ -111,7 +110,7 @@ export class CoreKeyboardShortcutManager {
                 description: options.description || '',
                 context: options.context || 'global);
                 enabled: options.enabled !== false);
-                preventDefault: options.preventDefault !== false,);
+               , preventDefault: options.preventDefault !== false,);
                 stopPropagation: options.stopPropagation !== false ,});
 
             console.log(`Added keyboard shortcut: ${name} (${keys.join(', '}))`);
@@ -120,7 +119,7 @@ export class CoreKeyboardShortcutManager {
 
         } catch (error) { getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {)'
                 operation: 'addShortcut');
-                name: name,);
+               , name: name,);
                 keys: keys ,});
             return false;
     
@@ -151,8 +150,7 @@ export class CoreKeyboardShortcutManager {
     /**
      * キーコンビネーションを正規化'
      */''
-    normalizeKeyCombo(keyCombo) {'
-        ';
+    normalizeKeyCombo(keyCombo) {', ';
 
     }
 
@@ -196,7 +194,7 @@ export class CoreKeyboardShortcutManager {
                     break; // 最初にマッチしたショートカットのみ実行
                 } catch (error) { getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {)'
                         operation: 'executeShortcut');
-                        shortcut: name,);
+                       , shortcut: name,);
                         keyCombo: currentCombo ,});
                 }
 }
@@ -257,7 +255,7 @@ export class CoreKeyboardShortcutManager {
 
                 } catch (error) { getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {)'
                         operation: 'notifyShortcutTriggered');
-                        shortcut: name,);
+                       , shortcut: name,);
                         keyCombo: keyCombo ,});
                 }
             });
@@ -344,8 +342,7 @@ export class CoreKeyboardShortcutManager {
             // 統一されたHelpSceneに遷移（コンテキスト依存モード）')'
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
-            if(!success) {'
-                ';
+            if(!success) {', ';
 
             }
 
@@ -370,8 +367,7 @@ export class CoreKeyboardShortcutManager {
             // 統一されたHelpSceneに遷移（ドキュメントモード）')'
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
-            if(!success) {'
-                ';
+            if(!success) {', ';
 
             }
 
@@ -430,7 +426,7 @@ export class CoreKeyboardShortcutManager {
             shortcuts[name] = {
                 keys: shortcut.keys;
                 description: shortcut.description;
-                context: shortcut.context;
+               , context: shortcut.context;
         }
                 enabled: shortcut.enabled }
             }

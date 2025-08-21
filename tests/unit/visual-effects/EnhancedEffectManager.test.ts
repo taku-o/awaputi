@@ -1,8 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-import { jest } from '@jest/globals';
-import { EnhancedEffectManager } from '../../../src/effects/EnhancedEffectManager.js';
+import { jest  } from '@jest/globals';
+import { EnhancedEffectManager  } from '../../../src/effects/EnhancedEffectManager.js';
 // Type definitions
 interface MockCanvasContext {
     fillRect: jest.Mock<void, [number, number, number, number]>;
@@ -25,7 +25,7 @@ interface MockCanvasContext {
     rotate: jest.Mock<void, [number]>;
     setTransform: jest.Mock<void, [number, number, number, number, number, number]>;
     canvas: {
-        width: number,
+        widt;h: number,
         height: number,
     };
 }
@@ -52,7 +52,7 @@ interface ShadowCaster {
     id: number,
     object: any,
     lightSource: any,
-    direction?: { x: number; y: number };
+    direction?: { ;x: number;, y: number };
 }
 interface ReflectionSurface {
     id: number,
@@ -70,7 +70,7 @@ interface BackgroundEffect {
 interface EnhancedTransform {
     depthOfField: number,
     motionBlur: {
-        x: number,
+        ;x: number,
         y: number,
         intensity: number
     },

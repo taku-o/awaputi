@@ -7,10 +7,10 @@
  * - Content caching across languages
  * - Performance benchmarking
  */
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath  } from 'url';
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename');
@@ -25,7 +25,7 @@ class MockHelpManager {
   cache: Map<string, any>;
   currentLanguage: string,
   fallbackLanguage: string,
-  loadAttempts: Array<{ language: string; category: string; timestamp: number }>;
+  loadAttempts: Array<{ language: string; category: string;, timestamp: number }>;
   constructor() {
     this.cache = new Map(');
     this.currentLanguage = 'en';
@@ -45,8 +45,8 @@ class MockHelpManager {
     // Try to load the file
     const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`');
     try {
-      const content = await fs.promises.readFile(filePath, 'utf8');
-      const parsed = JSON.parse(content);
+      const, content = await, fs.promises.readFile(filePath, 'utf8');
+      const, parsed = JSON.parse(content);
       this.cache.set(cacheKey, parsed});
       return parsed;
     } catch (error) {
@@ -69,7 +69,7 @@ class MockHelpManager {
   getCacheSize(): number {
     return this.cache.size;
   }
-  getLoadAttempts(): Array<{ language: string; category: string; timestamp: number }> {
+  getLoadAttempts(): Array<{ language: string; category: string;, timestamp: number }> {
     return this.loadAttempts;
   }
   clearCache(): void {
@@ -90,7 +90,7 @@ describe('Multilingual Help System Integration', () => {
       for (const language of SUPPORTED_LANGUAGES) {
         for (const category of REQUIRED_CATEGORIES) {
           const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`);
-          const exists = fs.existsSync(filePath);
+          const, exists = fs.existsSync(filePath);
           if (!exists}) {
             console.warn(`Missing: ${language}/${category).json`'});
           }
@@ -103,7 +103,7 @@ describe('Multilingual Help System Integration', () => {
       }
     }');
     it('should have valid JSON structure in all help files', async () => {
-      const errors: Array<{ file: string; error: string }> = [];
+      const errors: Array<{ file: string;, error: string }> = [];
       
       for (const language of SUPPORTED_LANGUAGES) {
         const langDir = path.join(HELP_CONTENT_DIR, language);
@@ -223,7 +223,7 @@ describe('Multilingual Help System Integration', () => {
           const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`);
           if (fs.existsSync(filePath)') {
             try {
-              const content = JSON.parse(fs.readFileSync(filePath, 'utf8')});
+              const, content = JSON.parse(fs.readFileSync(filePath, 'utf8')});
               const structure = {
                 hasTitle: !!content.title,
                 hasSections: !!content.sections,
@@ -256,7 +256,7 @@ describe('Multilingual Help System Integration', () => {
 }');
 describe('Help Content Quality', (') => {
   it('should not have empty sections', async () => {
-    const issues: Array<{ file: string; issue: string }> = [];
+    const issues: Array<{ file: string;, issue: string }> = [];
     
     for (const language of SUPPORTED_LANGUAGES) {
       const langDir = path.join(HELP_CONTENT_DIR, language);
@@ -274,7 +274,7 @@ describe('Help Content Quality', (') => {
               if (!section.content || section.content.trim(') === '') {
                 issues.push({ 
                   file: `${language}/${file}`; 
-                  issue: `Empty section: ${section.title}` );
+                  issue: `Empty, section: ${section.title}` );
               }
             }
           } catch (error) {

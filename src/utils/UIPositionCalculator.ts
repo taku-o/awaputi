@@ -10,16 +10,16 @@ interface Position { x: number,
 interface Margins { top: number;
     right: number;
     bottom: number;
-    left: number }
+   , left: number }
 
 interface Breakpoints { mobile: number;
     tablet: number;
-    desktop: number }
+   , desktop: number }
 
 interface CanvasInfo { baseWidth: number;
     baseHeight: number;
     displayWidth: number;
-    displayHeight: number }
+   , displayHeight: number }
 
 interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
     }
@@ -46,7 +46,7 @@ export class UIPositionCalculator {
     private scaledCoordinateManager: ScaledCoordinateManager;
     private defaultMargins: Margins;
     private breakpoints: Breakpoints;
-    private statusVerticalSpacing: number';
+    private, statusVerticalSpacing: number';
 
     constructor(scaledCoordinateManager: ScaledCoordinateManager) {
         this.scaledCoordinateManager = scaledCoordinateManager;
@@ -62,7 +62,7 @@ export class UIPositionCalculator {
         // ブレークポイント設定
         this.breakpoints = { mobile: 480,
             tablet: 768;
-            desktop: 1024 ,};
+           , desktop: 1024 ,};
         // ステータス要素の垂直間隔
         this.statusVerticalSpacing = 40;
     }
@@ -163,7 +163,7 @@ export class UIPositionCalculator {
                 case 'tablet':;
                     return { top: 5,   // すべてのデバイスで右上端配置
                         right: 5;
-                        bottom: 18, };
+                       , bottom: 18, };
                         left: 18 }
                     };''
                 case 'desktop':';
@@ -198,7 +198,7 @@ export class UIPositionCalculator {
                     position = { x: baseX, y: baseY ,}
                 
                 positions.push({ element: element)
-                    position: position });
+                   , position: position });
             ';
 
             return positions;''
@@ -287,8 +287,7 @@ export class UIPositionCalculator {
      * @returns デバイスタイプ ('mobile', 'tablet', 'desktop')
      */'
     getDeviceType(width: number): DeviceType { ''
-        if(width < this.breakpoints.mobile) {'
-            ';
+        if(width < this.breakpoints.mobile) {', ';
 
         }
 

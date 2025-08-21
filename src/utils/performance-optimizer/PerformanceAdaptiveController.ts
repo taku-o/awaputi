@@ -8,8 +8,8 @@
  * - リアルタイムパフォーマンス制御
  */
 
-import { getErrorHandler } from '../ErrorHandler.js';''
-import { getPerformanceConfig } from '../../config/PerformanceConfig.js';
+import { getErrorHandler  } from '../ErrorHandler.js';''
+import { getPerformanceConfig  } from '../../config/PerformanceConfig.js';
 
 // 型定義
 interface ControllerConfig { adaptiveMode?: boolean;
@@ -17,34 +17,34 @@ interface ControllerConfig { adaptiveMode?: boolean;
     }
 
 interface ThresholdSettings { memoryPressure: {
-        critical: number;
+        critica;l: number;
         high: number;
         moderate: number;
-        low: number };
+       , low: number };
     performance: { degradationRisk: number;
         moderateRisk: number;
-        improvementThreshold: number }
+       , improvementThreshold: number }
 
 interface OptimizationStats { optimizationCount: number,
     lastOptimization: OptimizationRecord | null;
     adjustmentHistory: OptimizationRecord[];
-    memoryPressureLevel: number ,}
+   , memoryPressureLevel: number ,}
 
 interface OptimizationRecord { level: PerformanceLevel;
     time: number;
     reason: string;
-    type: OptimizationType;
+   , type: OptimizationType;
     timestamp?: number }
 
 interface QualitySettings { render: QualityLevel;
     particle: QualityLevel;
     effect: QualityLevel;
-    audio: QualityLevel
+   , audio: QualityLevel
     }
 
 interface AntiJitterSettings { cooldownPeriod: number;
     lastAdjustment: number;
-    minimumStabilityPeriod: number }
+   , minimumStabilityPeriod: number }
 
 interface AdaptiveOptimizationResult { optimized: boolean;
     reason?: string;
@@ -67,13 +67,13 @@ interface PerformanceMetrics { stabilityScore?: number;
 interface PerformancePrediction { memoryRisk: number,
     degradationRisk: number;
     nextFrameStability: number;
-    overallRisk: number;
+   , overallRisk: number;
     recommendations?: string[] ,}
 
 interface ControllerSettings { performanceLevel: PerformanceLevel;
     adaptiveMode: boolean;
     qualitySettings: QualitySettings;
-    optimizationStats: OptimizationStats
+   , optimizationStats: OptimizationStats
     }
 ';
 
@@ -95,7 +95,7 @@ export class PerformanceAdaptiveController {
     private optimizationStats: OptimizationStats;
     private qualitySettings: QualitySettings;
     private thresholds: ThresholdSettings;
-    private antiJitter: AntiJitterSettings;
+    private, antiJitter: AntiJitterSettings;
     constructor(config: ControllerConfig = {) {
 
         this.config = config;
@@ -109,7 +109,7 @@ export class PerformanceAdaptiveController {
         this.optimizationStats = {
             optimizationCount: 0;
             lastOptimization: null;
-            adjustmentHistory: [];
+           , adjustmentHistory: [];
     }
             memoryPressureLevel: 0 }
         };
@@ -124,15 +124,15 @@ export class PerformanceAdaptiveController {
                 critical: 0.9;
                 high: 0.8;
                 moderate: 0.6;
-                low: 0.4 };
+               , low: 0.4 };
             performance: { degradationRisk: 0.8;
                 moderateRisk: 0.6;
-                improvementThreshold: 0.3 }
+               , improvementThreshold: 0.3 }
         };
         // アンチジッター設定
         this.antiJitter = { cooldownPeriod: 1000, // 1秒
             lastAdjustment: 0;
-            minimumStabilityPeriod: 2000 // 2秒 ,}))
+           , minimumStabilityPeriod: 2000 // 2秒 ,}))
     }
 
     /**
@@ -242,8 +242,7 @@ export class PerformanceAdaptiveController {
                 optimizationApplied = true; }
             }
 
-            if(optimizationApplied) {'
-                ';
+            if(optimizationApplied) {', ';
 
             }
 
@@ -288,8 +287,7 @@ export class PerformanceAdaptiveController {
      * パフォーマンスを低下させる（品質を下げる）'
      */''
     degradePerformance()';
-            if (currentLevel === 'high'') {'
-        ';
+            if (currentLevel === 'high'') {', ';
 
     }
 
@@ -311,8 +309,7 @@ export class PerformanceAdaptiveController {
      * パフォーマンスを向上させる（品質を上げる）'
      */''
     improvePerformance()';
-            if (currentLevel === 'low'') {'
-        ';
+            if (currentLevel === 'low'') {', ';
 
     }
 
@@ -390,8 +387,7 @@ export class PerformanceAdaptiveController {
      * 中程度の最適化を適用'
      */''
     applyModerateOptimization()';
-            if (this.performanceLevel === 'high'') {'
-        ';
+            if (this.performanceLevel === 'high'') {', ';
 
     }
 
@@ -399,8 +395,7 @@ export class PerformanceAdaptiveController {
             }
             ';
             // パーティクル品質を下げる
-            if(this.qualitySettings.particle === 'high'') {'
-                ';
+            if(this.qualitySettings.particle === 'high'') {', ';
 
             }
 
@@ -436,8 +431,7 @@ export class PerformanceAdaptiveController {
      * フレーム安定化対策を適用'
      */''
     applyFrameStabilizationMeasures()';
-            if (this.qualitySettings.render !== 'low'') {'
-        ';
+            if (this.qualitySettings.render !== 'low'') {', ';
 
     }
 
@@ -445,8 +439,7 @@ export class PerformanceAdaptiveController {
             }
             ';
             // エフェクト品質を下げる
-            if(this.qualitySettings.effect !== 'low'') {'
-                ';
+            if(this.qualitySettings.effect !== 'low'') {', ';
 
             }
 
@@ -577,7 +570,7 @@ export class PerformanceAdaptiveController {
             this.optimizationStats.optimizationCount++;
             this.optimizationStats.lastOptimization = {
                 level: this.performanceLevel;
-                time: timestamp;
+               , time: timestamp;
                 reason,
                 type };
             
@@ -610,16 +603,14 @@ export class PerformanceAdaptiveController {
      * 中程度安定化を適用'
      */''
     applyModerateStabilization()';
-        if (this.qualitySettings.particle === 'high'') {'
-        ';
+        if (this.qualitySettings.particle === 'high'') {', ';
 
     }
 
             this.qualitySettings.particle = 'medium'; }
 
         }''
-        if(this.qualitySettings.effect === 'high'') {'
-            ';
+        if(this.qualitySettings.effect === 'high'') {', ';
 
         }
 

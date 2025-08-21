@@ -9,7 +9,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     public combo: number = 0,
     public comboTimer: number = 0,
     public comboTimeout: number = 2000; // 2秒でコンボリセット
-    public scoreMultipliers: number[] = []; // アイテムによるスコア倍率
+    public, scoreMultipliers: number[] = []; // アイテムによるスコア倍率
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine ,}
@@ -86,8 +86,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     /**
      * 基本スコアを計算
      */''
-    calculateBaseScore(bubble: Bubble): number { const baseScores: Record<string, number> = {''
-            'normal': 15,    // 10 -> 15(基本スコア向上)'';
+    calculateBaseScore(bubble: Bubble): number { const baseScores: Record<string, number> = {'', 'normal': 15,    // 10 -> 15(基本スコア向上)'';
             'stone': 35,     // 25 -> 35(硬い泡の価値向上)'';
             'iron': 65,      // 50 -> 65(硬い泡の価値向上)'';
             'diamond': 120,  // 100 -> 120(硬い泡の価値向上)'';
@@ -265,7 +264,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
             comboMultiplier: this.getComboMultiplier();
             itemMultiplier: this.getItemScoreMultiplier();
             specialMultiplier: this.gameEngine.getScoreMultiplier();
-            totalMultiplier: this.getTotalMultiplier(), };
+           , totalMultiplier: this.getTotalMultiplier(), };
             comboTimer: this.comboTimer }
         }
 

@@ -1,12 +1,12 @@
 /**
  * ScoreCalculator のテスト
  */
-import { jest } from '@jest/globals';
-import { ScoreCalculator } from '../../src/core/ScoreCalculator.js';
+import { jest  } from '@jest/globals';
+import { ScoreCalculator  } from '../../src/core/ScoreCalculator.js';
 // Type definitions
 interface ScoreConfig {
     baseScores: {
-        normal: number,
+        norma;l: number,
         stone: number,
         iron: number,
         diamond: number,
@@ -47,7 +47,7 @@ interface ScoreCalculationParams {
 interface ScoreResult {
     baseScore: number,
     multipliers: {
-        combo: number,
+        comb;o: number,
         total: number
     },
     finalScore: number,
@@ -56,7 +56,7 @@ interface ScoreResult {
 interface ScoreHistoryItem {
     finalScore: number,
     multipliers: {
-        combo: number
+        comb;o: number
     },
     comboBonus: number,
 }

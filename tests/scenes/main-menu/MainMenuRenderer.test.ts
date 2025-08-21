@@ -1,6 +1,6 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { MainMenuRenderer } from '../../../src/scenes/main-menu/MainMenuRenderer';
-import { CoordinateCalculator } from '../../../src/utils/CoordinateCalculator';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { MainMenuRenderer  } from '../../../src/scenes/main-menu/MainMenuRenderer';
+import { CoordinateCalculator  } from '../../../src/utils/CoordinateCalculator';
 describe('MainMenuRenderer', () => {
     let renderer: any,
     let mockGameEngine: any,
@@ -179,7 +179,7 @@ describe('MainMenuRenderer', () => {
             renderer.updateCoordinateCalculator();
             renderer.renderControls(mockContext);
             expect(mockContext.fillText').toHaveBeenCalledWith(
-                '↑↓: 選択  Enter: 決定  ESC: 終了',
+                '↑↓: 選択  Enter: 決定 , ESC: 終了',
                 expect.any(Number,
                 expect.any(Number);
             expect(mockContext.fillText').toHaveBeenCalledWith(

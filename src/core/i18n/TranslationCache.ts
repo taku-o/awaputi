@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * 翻訳キャッシュシステム - LRUキャッシュによる高速翻訳アクセス
@@ -10,7 +10,7 @@ export interface CacheEntry { value: string,
     ttl: number | null;
     accessCount: number;
     language: string;
-    originalKey: string ,}
+   , originalKey: string ,}
 
 export interface CacheStats { size: number;
     maxSize: number;
@@ -19,31 +19,31 @@ export interface CacheStats { size: number;
     evictionCount: number;
     hitRate: number;
     totalRequests: number;
-    memoryUsage: MemoryUsage
+   , memoryUsage: MemoryUsage
     }
 
 export interface MemoryUsage { bytes: number;
     kb: number;
-    mb: number }
+   , mb: number }
 
 export interface LanguageStats { count: number;
-    totalAccess: number }
+   , totalAccess: number }
 
 export interface KeyPatternStats { count: number;
-    totalAccess: number }
+   , totalAccess: number }
 
 export interface CacheEntryInfo { key: string;
     originalKey: string;
     language: string;
     age: number;
-    accessCount: number }
+   , accessCount: number }
 
 export interface DetailedCacheInfo { stats: CacheStats;
-    languages: Record<string, LanguageStats>,
+   , languages: Record<string, LanguageStats>,
     keyPatterns: Record<string, KeyPatternStats>,
     accessOrder: string[];
     oldestEntries: CacheEntryInfo[];
-    mostAccessedEntries: CacheEntryInfo[]
+   , mostAccessedEntries: CacheEntryInfo[]
     ,}
 
 export interface CacheOptions { maxSize?: number;
@@ -53,7 +53,7 @@ export interface CacheOptions { maxSize?: number;
 export class TranslationCache {
     // キャッシュ設定
     private maxSize: number;
-    private cache: Map<string, CacheEntry>;
+    private, cache: Map<string, CacheEntry>;
     private accessOrder: string[]; // LRU管理用
     
     // 統計情報
@@ -61,7 +61,7 @@ export class TranslationCache {
     private missCount: number;
     private evictionCount: number;
     // クリーンアップ管理
-    private cleanupInterval: NodeJS.Timeout | null;
+    private, cleanupInterval: NodeJS.Timeout | null;
     constructor(maxSize: number = 1000) {
 
         this.maxSize = maxSize;
@@ -100,7 +100,7 @@ export class TranslationCache {
         } catch (error) {
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'get');
-                key: key,)';
+               , key: key,)';
                 language: language),' }'
 
             }');
@@ -125,14 +125,14 @@ export class TranslationCache {
                 ttl: ttl;
                 accessCount: 1;
                 language: language;
-                originalKey: key ,};
+               , originalKey: key ,};
             this.cache.set(cacheKey, cacheEntry);
             this.updateAccessOrder(cacheKey);
             
             return true;
         } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'set');
-                key: key,);
+               , key: key,);
                 language: language ,});
             return false;
     
@@ -211,7 +211,7 @@ export class TranslationCache {
 
         } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'delete');
-                key: key,);
+               , key: key,);
                 language: language ,});
             return false;
     
@@ -265,8 +265,7 @@ export class TranslationCache {
      * キャッシュサイズを変更
      */'
     resize(newSize: number): boolean { try {'
-            if(newSize < 1) {'
-                ';
+            if(newSize < 1) {', ';
 
             }
 
@@ -297,7 +296,7 @@ export class TranslationCache {
             missCount: this.missCount;
             evictionCount: this.evictionCount;
             hitRate: Math.round(hitRate * 100) / 100;
-            totalRequests: totalRequests, };
+           , totalRequests: totalRequests, };
             memoryUsage: this.estimateMemoryUsage(); }
         }
     
@@ -415,7 +414,7 @@ export class TranslationCache {
         return { stats: this.getStats(),
             languages: Object.fromEntries(languages);
             keyPatterns: Object.fromEntries(keyPatterns);
-            accessOrder: this.accessOrder.slice(-10), // 最新10件のアクセス;
+           , accessOrder: this.accessOrder.slice(-10), // 最新10件のアクセス;
             oldestEntries: this.getOldestEntries(5), };
             mostAccessedEntries: this.getMostAccessedEntries(5); }
         }
@@ -432,7 +431,7 @@ export class TranslationCache {
             originalKey: entry.originalKey;
             language: entry.language);
             age: Date.now() - entry.timestamp;
-            accessCount: entry.accessCount ,}
+           , accessCount: entry.accessCount ,}
         });
     }
     
@@ -448,7 +447,7 @@ export class TranslationCache {
             originalKey: entry.originalKey;
             language: entry.language;
             accessCount: entry.accessCount);
-            age: Date.now() - entry.timestamp' ,}'
+           , age: Date.now() - entry.timestamp' ,}'
 
         }');
     }

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * local-execution-e2e.spec.js
  * E2E tests for local execution using file:// protocol with Playwright - Issue #63
@@ -9,10 +9,10 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * - Developer guidance system functionality
  * - Browser compatibility across different engines
  * 
- * Requirements: 1.1, 2.1, 5.1
+ *, Requirements: 1.1, 2.1, 5.1
  */
 
-import { test, expect  } from '@playwright/test';
+import { test, expect   } from '@playwright/test';
 import path from 'path';
 
 // Test configuration for local file execution
@@ -238,7 +238,7 @@ test.describe('Local File Execution E2E Tests', () => {
             await expect(gameCanvas).toBeVisible();
 
             // Network errors are expected in file:// protocol, but game should still load
-            console.log(`Detected ${networkErrors.length) network errors (expected in local mode)`});
+            console.log(`Detected ${networkErrors.length) network, errors (expected, in local, mode)`});
         });
     }');
 
@@ -286,9 +286,8 @@ test.describe('Local File Execution E2E Tests', () => {
             // Security messages are expected in local file execution
             console.log(`Security/CORS messages: ${securityMessages.length) (expected)`'),
 
-            // But the page should still be functional
-            await expect(page.locator('body').toBeVisible();
-            await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible(});
+            // But, the page, should still, be functional, await expect(page.locator('body').toBeVisible();
+            await, expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible(});
         });
     }');
 

@@ -4,11 +4,11 @@
  * 分割されたコンポーネントを統合管理するメインクラス
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';''
-import { ShareContentGenerator } from './ShareContentGenerator.js';''
-import { socialErrorHandler } from './SocialErrorHandler.js';''
-import { SocialPlatformAdapters } from './SocialPlatformAdapters.js';''
-import { SocialAnalyticsTracker } from './SocialAnalyticsTracker.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';''
+import { ShareContentGenerator  } from './ShareContentGenerator.js';''
+import { socialErrorHandler  } from './SocialErrorHandler.js';''
+import { SocialPlatformAdapters  } from './SocialPlatformAdapters.js';''
+import { SocialAnalyticsTracker  } from './SocialAnalyticsTracker.js';
 
 export class SocialSharingManager {
     constructor(gameEngine) {
@@ -46,7 +46,7 @@ export class SocialSharingManager {
             this.setupEventListeners()';
             this.analyticsTracker.trackShareEvent('system_init', {);
                 platform: this.platformAdapters.detectPlatform();
-                webShareSupported: this.platformAdapters.isWebShareSupported( ,});
+               , webShareSupported: this.platformAdapters.isWebShareSupported( ,});
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SocialSharingManager.init); }'
@@ -65,8 +65,7 @@ export class SocialSharingManager {
     /**
      * リトライアクションの処理'
      */''
-    handleRetryAction(errorInfo) {'
-        ';
+    handleRetryAction(errorInfo) {', ';
 
     }
 
@@ -137,8 +136,7 @@ export class SocialSharingManager {
         this.gameEngine.on('highScore', (scoreData) => { this.handleHighScore(scoreData); });
 ';
         // 実績解除時の処理
-        if(this.achievementManager) {'
-            ';
+        if(this.achievementManager) {', ';
 
         }
 
@@ -164,7 +162,7 @@ export class SocialSharingManager {
 
         this.analyticsTracker.trackShareEvent('game_end', {)
             score: gameData.score);
-            level: gameData.level,);
+           , level: gameData.level,);
             duration: gameData.duration);
         if (this.settings.autoPrompt && gameData.score > 0) {
     ,}
@@ -231,7 +229,7 @@ export class SocialSharingManager {
         const startTime = Date.now(''';
             this.analyticsTracker.trackShareEvent('share_request', {)'
                 platform: shareData.platform || 'auto');
-                hasScreenshot: !!shareData.files,);
+               , hasScreenshot: !!shareData.files,);
                 startTime);
 
             // データ検証
@@ -244,8 +242,7 @@ export class SocialSharingManager {
             let result;
 ';
             // プラットフォーム別共有処理
-            if(shareData.platform === 'twitter) {'
-                ';
+            if(shareData.platform === 'twitter) {', ';
 
             }
 
@@ -260,7 +257,7 @@ export class SocialSharingManager {
 
             this.analyticsTracker.trackShareEvent('share_success', { )
                 platform: result.platform || shareData.platform);
-                endTime: Date.now();
+               , endTime: Date.now();
                 startTime });
 
             return result;
@@ -269,13 +266,13 @@ export class SocialSharingManager {
             this.analyticsTracker.trackShareEvent('share_failure', {)
                 platform: shareData.platform,);
                 error: error.message);
-                endTime: Date.now(),
+               , endTime: Date.now(),
                 startTime' }'
 
             }');
 
             this.analyticsTracker.trackError('share_failed', { platform: shareData.platform)
-                error: error.message);
+               , error: error.message);
             throw error }
     }
 
@@ -369,10 +366,10 @@ export class SocialSharingManager {
         return { settings: this.settings,
             platformCapabilities: this.platformAdapters.getAllPlatformCapabilities();
             analytics: this.analyticsTracker.getDebugInfo();
-            dependencies: {
+           , dependencies: {
                 statisticsManager: !!this.statisticsManager;
                 achievementManager: !!this.achievementManager;
-                localizationManager: !!this.localizationManager;
+               , localizationManager: !!this.localizationManager;
     ,}
                 screenshotCapture: !!this.screenshotCapture, };
                 shareContentGenerator: !!this.shareContentGenerator }

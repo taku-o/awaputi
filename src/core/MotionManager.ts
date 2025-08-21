@@ -1,7 +1,7 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { MotionConfigManager } from './motion/MotionConfigManager.js';''
-import { AnimationController } from './motion/AnimationController.js';''
-import { VestibularSafetyManager } from './motion/VestibularSafetyManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { MotionConfigManager  } from './motion/MotionConfigManager.js';''
+import { AnimationController  } from './motion/AnimationController.js';''
+import { VestibularSafetyManager  } from './motion/VestibularSafetyManager.js';
 
 /**
  * MotionManager (Main, Controller)
@@ -21,7 +21,7 @@ export class MotionManager {'
             globalReducedMotion: false;
             respectSystemPreference: true;
             vestibularSafety: true;
-            motionLevels: {''
+           , motionLevels: {''
                 none: 'すべてのアニメーションを無効',
                 essential: '重要なアニメーションのみ',
                 reduced: '軽減されたアニメーション',
@@ -41,7 +41,7 @@ export class MotionManager {'
                 background: { enabled: true, intensity: 0.6, duration: 1.0 ,},
             vestibularGuidelines: { maxRotationSpeed: 360, // 度/秒
                 maxScaleChange: 2.0;
-                maxParallaxDistance: 100, // ピクセル;
+               , maxParallaxDistance: 100, // ピクセル;
                 flashingThreshold: 3, // 回/秒;
                 autoplayPause: 5000 // 5秒で自動停止 ,}
         };
@@ -56,33 +56,33 @@ export class MotionManager {'
         this.performanceMonitor = { frameRate: 60,
             droppedFrames: 0;
             animationCount: 0;
-            lastFrameTime: 0 ,};
+           , lastFrameTime: 0 ,};
         // 統計情報
         this.stats = { animationsControlled: 0,
             animationsPaused: 0;
             animationsReduced: 0;
             vestibularWarnings: 0;
-            performanceAdjustments: 0,
+           , performanceAdjustments: 0,
             sessionStart: Date.now(''';
             motionLevel: 'normal';
-            vestibularSafety: true,
+           , vestibularSafety: true,
             autoReduceOnPerformance: true,
             customIntensities: new Map(''';
-            flashingSensitivity: 'medium',
+           , flashingSensitivity: 'medium',
             parallaxSensitivity: 'medium';
-            granularControls: {
+           , granularControls: {
                 animationIntensity: 1.0;
                 transitionSpeed: 1.0;
                 effectsLevel: 1.0;
                 particleDensity: 1.0;
                 cameraMovement: 0.5;
-                backgroundMotion: 0.8 ,};
+               , backgroundMotion: 0.8 ,};
             selectiveReduction: { disableRotation: false;
                 disableScaling: false;
                 disableParallax: false;
                 disableParticles: false;
                 disableCameraShake: false;
-                disableBackgroundAnimation: false }
+               , disableBackgroundAnimation: false }
         };
         // 危険なモーションパターンの検出
         this.hazardPatterns = {
@@ -343,7 +343,7 @@ export class MotionManager {'
             pausedAnimations: this.pausedAnimations.size;
             frameRate: this.performanceMonitor.frameRate;
             categories: this.config.motionCategories;
-            hazardPatterns: Object.fromEntries();
+           , hazardPatterns: Object.fromEntries();
     ,}
                 Object.entries(this.hazardPatterns).map(([key, value]) => [key, value.detected]) };
             ); }
@@ -356,7 +356,7 @@ export class MotionManager {'
             main: { ...this.stats;
             config: this.configManager.getConfigStats();
             animation: this.animationController.getAnimationStats();
-            safety: this.vestibularSafetyManager.getSafetyStats();
+           , safety: this.vestibularSafetyManager.getSafetyStats();
         }
     
     // ========== その他のユーティリティ ==========

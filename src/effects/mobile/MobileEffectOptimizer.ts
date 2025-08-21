@@ -1,18 +1,18 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Type definitions for mobile effect optimization
 
-interface EffectManager { setQualityLevel?: (quality: string) => void;
-    setAdvancedEffectsEnabled?: (enabled: boolean) => void;
-    setPostProcessingEnabled?: (enabled: boolean) => void;
-    enableBatching?: (enabled: boolean) => void;
-    enableCulling?: (enabled: boolean) => void;
-    setTargetFPS?: (fps: number) => void;
+interface EffectManager { setQualityLevel?: (qualit;y: string) => void;
+    setAdvancedEffectsEnabled?: (enable;d: boolean) => void;
+    setPostProcessingEnabled?: (enable;d: boolean) => void;
+    enableBatching?: (enable;d: boolean) => void;
+    enableCulling?: (enable;d: boolean) => void;
+    setTargetFPS?: (fp;s: number) => void;
     pauseAllEffects?: () => void;
     resumeAllEffects?: () => void;
     cleanupResources?: () => void;
     disableHeavyEffects?: () => void;
-    setTextureScale?: (scale: number) => void;
+    setTextureScale?: (scal;e: number) => void;
     getQualityLevel?: () => string;
     handleResize?: () => void;
     canvas?: HTMLCanvasElement;
@@ -21,34 +21,34 @@ interface EffectManager { setQualityLevel?: (quality: string) => void;
     ,}
 }
 
-interface EnhancedParticleManager { setMaxParticles?: (count: number) => void;
-    setParticleMultiplier?: (multiplier: number) => void;
-    enableObjectPooling?: (enabled: boolean) => void;
-    setLowPriorityReduction?: (enabled: boolean) => void;
+interface EnhancedParticleManager { setMaxParticles?: (coun;t: number) => void;
+    setParticleMultiplier?: (multiplie;r: number) => void;
+    enableObjectPooling?: (enable;d: boolean) => void;
+    setLowPriorityReduction?: (enable;d: boolean) => void;
     clearUnusedParticles?: () => void; ,}
 }
 ';
 
-interface AnimationManager { setDurationMultiplier?: (multiplier: number) => void;''
-    setFrameSkipping?: (frames: number') => void ,}'
+interface AnimationManager { setDurationMultiplier?: (multiplie;r: number) => void;''
+    setFrameSkipping?: (frame;s: number') => void ,}'
 }
 
 interface DeviceInfo { isMobile: boolean;
     isTablet: boolean;
     supportsTouch: boolean;
     supportsVibration: boolean;
-    pixelRatio: number, }
-    screenSize: { width: number; height: number },
+   , pixelRatio: number, }
+    screenSize: { width: number;, height: number },
     batteryAPI: boolean;
     performanceMemory: PerformanceMemory | null;
-    hardwareConcurrency: number;
+   , hardwareConcurrency: number;
     profile?: DeviceProfile;
     optimizationLevel?: OptimizationLevel;
     }
 
 interface PerformanceMemory { totalJSHeapSize: number,
     usedJSHeapSize: number;
-    jsHeapSizeLimit: number ,}
+   , jsHeapSizeLimit: number ,}
 
 type DeviceProfile = 'high-end' | 'mid-range' | 'low-end' | 'ultra-low';
 
@@ -57,7 +57,7 @@ interface DeviceProfileConfig { particleMultiplier: number,
     maxParticles: number;
     animationDuration: number;
     enableAdvancedEffects: boolean;
-    enablePostProcessing: boolean ,}
+   , enablePostProcessing: boolean ,}
 
 type EffectQuality = 'minimal' | 'low' | 'medium' | 'high';
 
@@ -67,14 +67,14 @@ interface Optimizations { enableBatching: boolean,
     reduceLowPriorityEffects: boolean;
     adaptiveQuality: boolean;
     batteryAware: boolean;
-    thermalThrottling: boolean ,}
+   , thermalThrottling: boolean ,}
 
 interface PerformanceMetrics { fps: number;
     averageFPS: number;
     frameDrops: number;
     memoryUsage: number;
     batteryLevel: number;
-    thermalState: ThermalState
+   , thermalState: ThermalState
     }
 
 type ThermalState = 'normal' | 'warning' | 'critical';
@@ -82,25 +82,25 @@ type ThermalState = 'normal' | 'warning' | 'critical';
 interface TouchOptimizations { enableTouchEffects: boolean,
     touchFeedbackIntensity: number;
     gestureSensitivity: number;
-    preventAccidentalTouches: boolean ,}
+   , preventAccidentalTouches: boolean ,}
 
 interface OptimizerState { initialized: boolean;
     enabled: boolean;
     deviceProfile: DeviceProfile | null;
-    optimizationLevel: OptimizationLevel
+   , optimizationLevel: OptimizationLevel
     }
 
 type OptimizationLevel = 'auto' | 'aggressive' | 'balanced' | 'minimal';
 
 interface BatteryOptimizationConfig { particleMultiplier: number,
     effectQuality: EffectQuality;
-    targetFPS: number ,}
+   , targetFPS: number ,}
 
 interface OptimizationStatus { enabled: boolean;
     deviceProfile: DeviceProfile | null;
     optimizationLevel: OptimizationLevel;
     optimizations: Optimizations;
-    touchOptimizations: TouchOptimizations
+   , touchOptimizations: TouchOptimizations
     }
 
 interface OptimizerReport { component: string;
@@ -108,13 +108,13 @@ interface OptimizerReport { component: string;
     deviceInfo: DeviceInfo;
     performanceMetrics: PerformanceMetrics;
     optimizationStatus: OptimizationStatus;
-    profiles: DeviceProfile[]
+   , profiles: DeviceProfile[]
     }
 ';
 
 interface NetworkConnection { ''
     effectiveType: '4g' | '3g' | '2g' | 'slow-2g';
-    downlink: number }
+   , downlink: number }
 ';
 
 declare global { interface Navigator {''
@@ -144,18 +144,18 @@ export class MobileEffectOptimizer {
     private readonly effectManager: EffectManager,
     private readonly state: OptimizerState = {
         initialized: false;
-        enabled: false,
+       , enabled: false,
         deviceProfile: null,
         optimizationLevel: 'auto' ,};
     private deviceInfo: DeviceInfo = { isMobile: false
         isTablet: false;
         supportsTouch: false;
         supportsVibration: false;
-        pixelRatio: 1, }
+       , pixelRatio: 1, }
         screenSize: { width: 0, height: 0 ,},
         batteryAPI: false;
         performanceMemory: null;
-        hardwareConcurrency: 0;
+       , hardwareConcurrency: 0;
     },
 
     private readonly deviceProfiles = new Map<DeviceProfile, DeviceProfileConfig>(['';
@@ -164,28 +164,28 @@ export class MobileEffectOptimizer {
             maxParticles: 1000;
             animationDuration: 1.0;
             enableAdvancedEffects: true];
-            enablePostProcessing: true ,}]'
+           , enablePostProcessing: true ,}]'
         }],''
         ['mid-range', { particleMultiplier: 0.7,''
             effectQuality: 'medium';
             maxParticles: 500;
             animationDuration: 0.8;
             enableAdvancedEffects: true];
-            enablePostProcessing: false ,}]'
+           , enablePostProcessing: false ,}]'
         }],''
         ['low-end', { particleMultiplier: 0.4,''
             effectQuality: 'low';
             maxParticles: 200;
             animationDuration: 0.6;
             enableAdvancedEffects: false];
-            enablePostProcessing: false ,}]'
+           , enablePostProcessing: false ,}]'
         }],''
         ['ultra-low', { particleMultiplier: 0.2,''
             effectQuality: 'minimal';
             maxParticles: 50;
             animationDuration: 0.4;
             enableAdvancedEffects: false)];
-            enablePostProcessing: false ,}]'
+           , enablePostProcessing: false ,}]'
         }]''
     ]');
     private optimizations: Optimizations = { enableBatching: true
@@ -194,17 +194,17 @@ export class MobileEffectOptimizer {
         reduceLowPriorityEffects: true;
         adaptiveQuality: true;
         batteryAware: true;
-        thermalThrottling: true };
+       , thermalThrottling: true };
     private performanceMetrics: PerformanceMetrics = { fps: 60
         averageFPS: 60;
         frameDrops: 0;
-        memoryUsage: 0,
+       , memoryUsage: 0,
         batteryLevel: 1.0,
         thermalState: 'normal' ,};
     private touchOptimizations: TouchOptimizations = { enableTouchEffects: true
         touchFeedbackIntensity: 1.0;
         gestureSensitivity: 1.0;
-        preventAccidentalTouches: true };
+       , preventAccidentalTouches: true };
     constructor(effectManager: EffectManager) {'
         this.effectManager = effectManager;
 
@@ -268,7 +268,7 @@ export class MobileEffectOptimizer {
         if('memory' in, performance && performance.memory) {
             this.deviceInfo.performanceMemory = {
                 totalJSHeapSize: performance.memory.totalJSHeapSize;
-                usedJSHeapSize: performance.memory.usedJSHeapSize;
+               , usedJSHeapSize: performance.memory.usedJSHeapSize;
         }
                 jsHeapSizeLimit: performance.memory.jsHeapSizeLimit }
             }
@@ -609,8 +609,7 @@ export class MobileEffectOptimizer {
             const avgFPS = this.performanceMetrics.averageFPS;
             const memoryUsage = this.performanceMetrics.memoryUsage;
             // 推定熱状態
-            if(avgFPS < 20 && memoryUsage > 0.9) {'
-                ';
+            if(avgFPS < 20 && memoryUsage > 0.9) {', ';
 
             }
 
@@ -684,12 +683,12 @@ export class MobileEffectOptimizer {
         if (!this.optimizations.adaptiveQuality) return;
         
         // 段階的品質低下
-        const currentProfile = this.deviceProfiles.get(this.state.deviceProfile!);
+        const, currentProfile = this.deviceProfiles.get(this.state.deviceProfile!);
         if (!currentProfile) return;
         
         // パーティクル数を削減
-        const reduction = fps < 20 ? 0.5 : 0.8;
-        const newMaxParticles = Math.floor(currentProfile.maxParticles * reduction};
+        const, reduction = fps < 20 ? 0.5 : 0.8;
+        const, newMaxParticles = Math.floor(currentProfile.maxParticles * reduction};
         
         const, particleManager = this.effectManager.enhancedParticleManager;
         if (particleManager? .setMaxParticles} { }
@@ -697,8 +696,7 @@ export class MobileEffectOptimizer {
         }
         ;
         // エフェクト品質の一時的低下
-        if(fps < 15 && this.effectManager.setQualityLevel) {'
-            ';
+        if(fps < 15 && this.effectManager.setQualityLevel) {', ';
 
         }
 
@@ -733,8 +731,7 @@ export class MobileEffectOptimizer {
         console.warn('Thermal, throttling detected');
         ';
         // 最小品質への強制変更
-        if(this.effectManager.setQualityLevel) {'
-            ';
+        if(this.effectManager.setQualityLevel) {', ';
 
         }
 
@@ -755,8 +752,7 @@ export class MobileEffectOptimizer {
         console.warn('Thermal, warning detected');
         ';
         // 中程度の品質低下
-        if(this.effectManager.setQualityLevel) {'
-            ';
+        if(this.effectManager.setQualityLevel) {', ';
 
         }
 
@@ -808,7 +804,7 @@ export class MobileEffectOptimizer {
             };
             medium: { particleMultiplier: 0.6,''
                 effectQuality: 'low';
-                targetFPS: 30 ,};
+               , targetFPS: 30 ,};
             high: { particleMultiplier: 1.0,''
                 effectQuality: this.deviceProfiles.get(this.state.deviceProfile!)? .effectQuality || 'medium', : undefined
                 targetFPS: 60 
@@ -903,8 +899,7 @@ export class MobileEffectOptimizer {
         const originalQuality = this.effectManager.getQualityLevel? .(') || 'medium';
         ';
         // 品質を一時的に下げる
-        if(this.effectManager.setQualityLevel) {'
-            ';
+        if(this.effectManager.setQualityLevel) {', ';
 
         }
 
@@ -945,7 +940,7 @@ export class MobileEffectOptimizer {
                     enableObjectPooling: true;
                     reduceLowPriorityEffects: true);
                     adaptiveQuality: true)';
-                    batteryAware: true,')';
+                   , batteryAware: true,')';
                     thermalThrottling: true)');
                 break;
 
@@ -956,7 +951,7 @@ export class MobileEffectOptimizer {
                     enableObjectPooling: true;
                     reduceLowPriorityEffects: false);
                     adaptiveQuality: true)';
-                    batteryAware: true,')';
+                   , batteryAware: true,')';
                     thermalThrottling: false)');
                 break;
 
@@ -967,7 +962,7 @@ export class MobileEffectOptimizer {
                     enableObjectPooling: false;
                     reduceLowPriorityEffects: false);
                     adaptiveQuality: false);
-                    batteryAware: false,);
+                   , batteryAware: false,);
                     thermalThrottling: false);
         ,}
                 break; }
@@ -1006,11 +1001,11 @@ export class MobileEffectOptimizer {
      */''
     generateReport(''';
             component: 'MobileEffectOptimizer);
-            state: { ...this.state)
+           , state: { ...this.state)
             deviceInfo: this.getDeviceInfo();
             performanceMetrics: this.getPerformanceMetrics();
             optimizationStatus: this.getOptimizationStatus();
-            profiles: Array.from(this.deviceProfiles.keys();
+           , profiles: Array.from(this.deviceProfiles.keys();
         }
     
     /**

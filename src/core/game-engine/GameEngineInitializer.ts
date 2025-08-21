@@ -2,11 +2,11 @@
  * Game Engine Initializer
  * ゲームエンジンの初期化・設定・統合機能を担当
  */
-// import { getErrorHandler } from '../../utils/ErrorHandler.js';''
-// import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';''
-// import { getMemoryManager } from '../../utils/MemoryManager.js';''
-// import { getPoolManager } from '../../utils/ObjectPool.js';''
-// import { getSEOMonitor } from '../../seo/SEOMonitor.js';
+// import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+// import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';''
+// import { getMemoryManager  } from '../../utils/MemoryManager.js';''
+// import { getPoolManager  } from '../../utils/ObjectPool.js';''
+// import { getSEOMonitor  } from '../../seo/SEOMonitor.js';
 
 interface GameEngine { sceneManager?: any;
     socialSharingManager?: any;
@@ -19,7 +19,7 @@ interface SEOMonitor { startMonitoring(config: any): void,
 
 export class GameEngineInitializer {
     private gameEngine: GameEngine;
-    private seoMonitor: SEOMonitor | null;
+    private, seoMonitor: SEOMonitor | null;
     constructor(gameEngine: GameEngine) {
     
         this.gameEngine = gameEngine
@@ -43,8 +43,7 @@ export class GameEngineInitializer {
             .filter(([_, supported]) => !supported);
             .map(([feature]) => feature);
 
-        if(unsupportedFeatures.length > 0) {'
-            ';
+        if(unsupportedFeatures.length > 0) {', ';
 
         }
 

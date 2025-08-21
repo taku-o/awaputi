@@ -21,26 +21,26 @@ interface ColorMapping { color: string,
 interface ColorMappings { low: ColorMapping;
     medium: ColorMapping;
     high: ColorMapping;
-    critical: ColorMapping
+   , critical: ColorMapping
     }
 
 // Types for haptic settings
 interface AudioToVibrationMapping { bubblePop: string;
     comboAchieved: string;
     achievementUnlocked: string;
-    gameStateChange: {
-        gameOver: string;
+   , gameStateChange: {
+        gameOve;r: string;
         levelUp: string;
-        warning: string };
+       , warning: string };
     backgroundMusic: string;
-    specialEffects: { electric: string;
+   , specialEffects: { electric: string;
         explosion: string;
         freeze: string;
-        magnetic: string }
+       , magnetic: string }
 
 interface HapticSettings { enabled: boolean,
     vibrationIntensity: number;
-    audioToVibrationMapping: AudioToVibrationMapping
+   , audioToVibrationMapping: AudioToVibrationMapping
     ,}
 
 // Types for rhythm data
@@ -51,7 +51,7 @@ interface RhythmData { bpm?: number;
 // Types for vibration options
 interface VibrationOptions { intensity: number,
     category: string;
-    eventData: any;
+   , eventData: any;
     duration?: number ,}
 
 // VibrationManager interface
@@ -60,12 +60,12 @@ interface VibrationManager { triggerVibration(pattern: string, options: Vibratio
     setGlobalIntensity(intensity: number): void,
     destroy?(): void;
     userPreferences?: {
-        accessibilityEnhanced: boolean ,}
+        accessibilityEnhance;d: boolean ,}
 
 // Main controller interface
 interface MainController { errorHandler: any,
     settings: {
-        colorIndication?: boolean;
+        colorIndicatio;n?: boolean;
         hapticFeedback?: boolean ,};
     audioManager?: { accessibilityManager?: {
             vibrationManager?: VibrationManager;
@@ -78,7 +78,7 @@ export class AudioFeedbackManager {
     private vibrationManager: VibrationManager | null;
     private colorIndicator: HTMLElement | null;
     private colorMappings: ColorMappings;
-    private hapticSettings: HapticSettings;
+    private, hapticSettings: HapticSettings;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -100,7 +100,7 @@ export class AudioFeedbackManager {
         // 触覚フィードバック設定
         this.hapticSettings = { enabled: false,
             vibrationIntensity: 0.8;
-            audioToVibrationMapping: {''
+           , audioToVibrationMapping: {''
                 bubblePop: 'bubblePop',
                 comboAchieved: 'combo',
                 achievementUnlocked: 'bonus',
@@ -129,14 +129,14 @@ export class AudioFeedbackManager {
             top: 50%;
             right: 10px;
             transform: translateY(-50%);
-            width: 30px,
+           , width: 30px,
             height: 200px,
             background: linear-gradient(to top, #00ff00, #ffff00, #ff8000, #ff0000),
             border: 2px solid #ffffff;
             border-radius: 15px,
             z-index: 10000,
             display: none;
-            transition: all 0.3s ease,
+           , transition: all 0.3s ease,
         `;''
         this.colorIndicator.setAttribute('role', 'progressbar'');''
         this.colorIndicator.setAttribute('aria-label', '音響レベルインジケーター'');
@@ -148,11 +148,11 @@ export class AudioFeedbackManager {
             position: absolute;
             left: -5px;
             width: 40px;
-            height: 4px;
+           , height: 4px;
             background-color: #ffffff,
             border-radius: 2px,
             transition: bottom 0.1s ease;
-            bottom: 0px;
+           , bottom: 0px;
         `;
         this.colorIndicator.appendChild(levelIndicator);
         
@@ -167,8 +167,7 @@ export class AudioFeedbackManager {
         if(!this.colorIndicator || !this.mainController.settings.colorIndication) return;
 
         const levelMarker = this.colorIndicator.querySelector('.level-marker) as HTMLElement;
-        if(levelMarker) {'
-            ';
+        if(levelMarker) {', ';
 
         }
 
@@ -277,8 +276,7 @@ export class AudioFeedbackManager {
         try { // 音響レベルに応じた振動パターンを生成
             let vibrationPattern: string,
 
-            if(audioLevel < 0.5) {'
-                ';
+            if(audioLevel < 0.5) {', ';
 
             }
 
@@ -375,8 +373,7 @@ export class AudioFeedbackManager {
         }
         ';
         // VibrationManagerの解放
-        if(this.vibrationManager && typeof, this.vibrationManager.destroy === 'function) {'
-            ';
+        if(this.vibrationManager && typeof, this.vibrationManager.destroy === 'function) {', ';
 
         }
 

@@ -3,15 +3,15 @@
  * パフォーマンス監視パネル
  */
 
-import { AdvancedPerformanceMonitor } from '../AdvancedPerformanceMonitor.js';''
-import { PerformanceChart } from '../charts/PerformanceChart.js';
+import { AdvancedPerformanceMonitor  } from '../AdvancedPerformanceMonitor.js';''
+import { PerformanceChart  } from '../charts/PerformanceChart.js';
 
 interface ChartConfig { label: string,
     color: string;
     min: number;
     max: number;
     warning: number;
-    critical: number ,}
+   , critical: number ,}
 
 interface ChartConfigs { [key: string]: ChartConfig;
     }
@@ -23,31 +23,31 @@ interface Metrics { fps: number,
     memory: number;
     drawCalls: number;
     particleCount: number;
-    effectCount: number ,}
+   , effectCount: number ,}
 ';
 
 interface Alert { ''
     level: 'warning' | 'critical';
     metric: string;
-    message: string }
+   , message: string }
 
 interface ProfilingResults { component: string;
     duration: number;
     sampleCount: number;
-    operations: {
+   , operations: {
         [operation: string]: {
-            count: number;
+            coun;t: number;
             avgTime: number;
             minTime: number;
             maxTime: number;
-            totalTime: number };
+           , totalTime: number };
 }
 
 interface Threshold { warning: number,
     critical: number ,}
 
 interface PanelState { thresholds: {
-        fps?: Threshold;
+        fp;s?: Threshold;
         memory?: Threshold
     }
 
@@ -60,7 +60,7 @@ export class PerformancePanel {
     private debugInterface: DebugInterface;
     private options: PanelOptions;
     private monitor: AdvancedPerformanceMonitor;
-    private charts: Map<string, PerformanceChart>;
+    private, charts: Map<string, PerformanceChart>;
     private chartConfig: ChartConfigs;
     private container: HTMLElement | null = null;
     private statsContainer: HTMLElement | null = null;
@@ -68,7 +68,7 @@ export class PerformancePanel {
     private alertsContainer: HTMLElement | null = null;
     private profilingContainer: HTMLElement | null = null;
     private isActive: boolean = false;
-    private updateInterval: NodeJS.Timeout | null = null;
+    private, updateInterval: NodeJS.Timeout | null = null;
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface, options: PanelOptions = {) {
 
         this.gameEngine = gameEngine;
@@ -83,7 +83,7 @@ export class PerformancePanel {
                 color: '#00ff00', ;
                 min: 0, ;
                 max: 60;
-                warning: 30;
+               , warning: 30;
     ,}
                 critical: 20 }))'
             frameTime: { ''
@@ -92,21 +92,21 @@ export class PerformancePanel {
                 min: 0, ;
                 max: 50;
                 warning: 33;
-                critical: 50 ,};
+               , critical: 50 ,};
             memory: { ''
                 label: 'Memory(%)',
                 color: '#ff9900', ;
                 min: 0, ;
                 max: 100;
                 warning: 80;
-                critical: 90 ,};
+               , critical: 90 ,};
             drawCalls: { ''
                 label: 'Draw Calls',
                 color: '#00ffff', ;
                 min: 0, ;
                 max: 300;
                 warning: 100;
-                critical: 200 ,}
+               , critical: 200 ,}
         };
         this.initialize();
     }
@@ -294,21 +294,21 @@ export class PerformancePanel {
                 border: 1px solid #333 ,}
             
             .profiling-controls { display: flex;
-                gap: 10px;
+               , gap: 10px;
                 margin-bottom: 10px, }
             
             .profiling-controls select,
             .profiling-controls button { padding: 5px 10px,
                 background: #333;
                 border: 1px solid #555;
-                color: white;
+               , color: white;
                 border-radius: 3px,
                 cursor: pointer ,}
             
             .profiling-controls button:hover:not(:disabled) { background: #444 }
             
             .profiling-controls button:disabled { opacity: 0.5;
-                cursor: not-allowed }
+               , cursor: not-allowed }
             
             .profiling-results { background: rgba(0, 0, 0, 0.3),
                 padding: 10px;
@@ -320,7 +320,7 @@ export class PerformancePanel {
             
             .profile-operation { margin-bottom: 5px,
                 padding: 5px;
-                background: rgba(255, 255, 255, 0.05),
+               , background: rgba(255, 255, 255, 0.05),
                 border-radius: 3px, }
             
             .threshold-controls { background: rgba(0, 0, 0, 0.3),
@@ -333,20 +333,20 @@ export class PerformancePanel {
                 gap: 10px ,}
             
             .threshold-item label { font-size: 11px;
-                color: #ccc }
+               , color: #ccc }
             
             .threshold-item input { width: 50px;
                 padding: 3px 5px;
                 background: #222;
                 border: 1px solid #444;
-                color: white;
+               , color: white;
                 border-radius: 3px, }
             
             #threshold-apply { width: 100%,
                 padding: 5px;
                 background: #0066cc;
                 border: none;
-                color: white;
+               , color: white;
                 border-radius: 3px,
                 cursor: pointer ,}
             
@@ -504,8 +504,7 @@ export class PerformancePanel {
         
         if (!this.alertsContainer) return;
 
-        if(alerts.length === 0) {'
-            ';
+        if(alerts.length === 0) {', ';
 
         }
 

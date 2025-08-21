@@ -1,13 +1,13 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * ErrorRecoveryTracker テストスイート'
  */''
-import { ErrorRecoveryTracker } from '../../src/debug/ErrorRecoveryTracker';
+import { ErrorRecoveryTracker  } from '../../src/debug/ErrorRecoveryTracker';
 // モックGameEngine
 const createMockGameEngine = () => ({ canvas: {
         width: 800,
         height: 600);
-        getContext: jest.fn(() => ({
+       , getContext: jest.fn(() => ({
             save: jest.fn(),
             restore: jest.fn(),
             setTransform: jest.fn(),
@@ -123,8 +123,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 category: 'rendering','';
                 severity: 'high',' }'
                 fingerprint: 'render_fingerprint' }
-            },'
-            '';
+            },', '';
             const strategies = recoveryTracker.selectRecoveryStrategies(renderingError, { )');''
             expect(strategies.some(s => s.id === 'canvas_reset').toBe(true);' }'
         }');''
@@ -242,8 +241,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 category: 'test','';
                 severity: 'high',' }'
                 fingerprint: 'complete_fingerprint' }
-            },'
-            '';
+            },', '';
             const session = recoveryTracker.startRecoverySession(testError, { )');''
             const result = recoveryTracker.completeRecoverySession(session, true, 'Test success');'
             expect(result.success).toBe(true);''
@@ -257,12 +255,10 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 category: 'test','';
                 severity: 'high',' }'
                 fingerprint: 'stats_fingerprint' }
-            },'
-            '';
+            },', '';
             const session = recoveryTracker.startRecoverySession(testError, { )');
             const initialSuccesses = recoveryTracker.recoveryStats.successfulRecoveries;
-            const initialFailures = recoveryTracker.recoveryStats.failedRecoveries;'
-            '';
+            const initialFailures = recoveryTracker.recoveryStats.failedRecoveries;', '';
             recoveryTracker.completeRecoverySession(session, true, 'Test success');
             expect(recoveryTracker.recoveryStats.successfulRecoveries).toBe(initialSuccesses + 1);'
             expect(recoveryTracker.recoveryStats.totalAttempts).toBeGreaterThan(0);' }'
@@ -368,7 +364,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
         test('戦略効果性が正しく計算される', (') => {  // テストデータを設定''
             recoveryTracker.recoveryStats.byStrategy.set('test_strategy', { : undefined)
                 attempts: 10);
-                successes: 7,) }'
+               , successes: 7,) }'
                 failures: 3),' }'
             }');''
             const effectiveness = recoveryTracker.getStrategyEffectiveness('test_strategy', 'test');'
@@ -382,7 +378,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 id: 'test_recovery',';
                 startTime: Date.now(),'';
                 endTime: Date.now(''';
-                    category: 'memory',' }'
+                   , category: 'memory',' }'
                     severity: 'high' }
                 },'
                 strategiesAttempted: [{ ''
@@ -408,8 +404,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             const analysis = recoveryTracker.analyzeStrategyPerformance(recoveries})
             );
             expect(Array.isArray(analysis}).toBe(true);
-            if(analysis.length > 0) {'
-                '';
+            if(analysis.length > 0) {', '';
                 expect(analysis[0]').toHaveProperty('strategyId');''
                 expect(analysis[0]').toHaveProperty('attempts');''
                 expect(analysis[0]').toHaveProperty('successes');'
@@ -421,8 +416,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             const analysis = recoveryTracker.analyzeCategoryPerformance(recoveries})
             );
             expect(Array.isArray(analysis}).toBe(true);
-            if(analysis.length > 0) {'
-                '';
+            if(analysis.length > 0) {', '';
                 expect(analysis[0]').toHaveProperty('category');''
                 expect(analysis[0]').toHaveProperty('attempts');'
             }'
@@ -469,8 +463,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 id: 'error_strategy','';
                 name: 'Error Strategy',' }'
                 action: jest.fn(').mockRejectedValue(new Error('Strategy error')'); }
-            };'
-            '';
+            };', '';
             recoveryTracker.recoveryStrategies.set('error_strategy', errorStrategy');'
             const testError = { ''
                 id: 'error_test','';

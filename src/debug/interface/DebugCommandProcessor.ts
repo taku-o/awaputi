@@ -1,4 +1,4 @@
-import { BaseComponent } from '../BaseComponent.js';
+import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface ShortcutOptions { description?: string;
@@ -14,10 +14,10 @@ interface ShortcutConfig extends Required<ShortcutOptions> { shortcut: string,
 
 interface ShortcutStatistics { totalShortcuts: number;
     usageCount: number;
-    conflicts: number }
+   , conflicts: number }
 
 interface ShortcutConflict { shortcut: string;
-    configs: ShortcutConfig[]
+   , configs: ShortcutConfig[]
     }
 
 interface MainController { container?: HTMLElement;
@@ -42,7 +42,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
     private currentContext: string;
     private shortcutStatistics: ShortcutStatistics;
     private shortcutsEnabled: boolean;
-    private suspendShortcuts: boolean;
+    private, suspendShortcuts: boolean;
 
     constructor(mainController: MainController) {'
 
@@ -53,7 +53,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         this.currentContext = 'global';
         this.shortcutStatistics = {
             totalShortcuts: 0;
-            usageCount: 0;
+           , usageCount: 0;
     ,}
             conflicts: 0 }
         };
@@ -80,7 +80,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
             context: options.context || 'global',
             group: options.group || 'general';
             enabled: options.enabled !== false;
-            preventDefault: options.preventDefault !== false;
+           , preventDefault: options.preventDefault !== false;
             ...options;
 
         // 競合チェック
@@ -126,7 +126,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         ';
         // 特殊キーの処理
         let key = event.key.toLowerCase()';
-        if (key === ' '') key = 'space';''
+        if (key === ', '') key = 'space';''
         if (key === 'escape'') key = 'esc';''
         if (key === 'delete'') key = 'del';''
         if (key === 'arrowleft'') key = 'left';''
@@ -193,8 +193,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
 
         // デバッグインターフェース固有のイベント
         const controller = this.mainController as MainController;''
-        if(controller.container) {'
-            ';
+        if(controller.container) {', ';
 
         }
 
@@ -387,8 +386,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */'
     clearConsoleData(): void { ''
         const consoleOutput = (this.mainController, as MainController').container? .querySelector('.console-output);''
-        if(consoleOutput) {'
-            ';
+        if(consoleOutput) {', ';
 
         }
 
@@ -400,8 +398,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */ : undefined'
     clearPerformanceData(): void { ''
         const performanceCharts = (this.mainController, as MainController').container? .querySelector('.performance-charts);''
-        if(performanceCharts) {'
-            ';
+        if(performanceCharts) {', ';
 
         }
 
@@ -413,8 +410,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */ : undefined'
     clearMemoryData(): void { ''
         const memoryUsage = (this.mainController, as MainController').container? .querySelector('.memory-usage);''
-        if(memoryUsage) {'
-            ';
+        if(memoryUsage) {', ';
 
         }
 
@@ -426,8 +422,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */ : undefined'
     clearNetworkData(): void { ''
         const networkRequests = (this.mainController, as MainController').container? .querySelector('.network-requests);''
-        if(networkRequests) {'
-            ';
+        if(networkRequests) {', ';
 
         }
 

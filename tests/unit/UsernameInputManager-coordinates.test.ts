@@ -2,7 +2,7 @@
  * Unit Tests for Username Input Manager Coordinate Transformation
  * Tests for Issue #143 - Username input positioning fix
  */
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
 // モック用の型定義
 interface CanvasInfo {
     scale: number,
@@ -18,7 +18,7 @@ interface Coordinates {
 }
 interface CoordinateDebugInfo {
     canvasInfo: {
-        scale: number | undefined,
+        scal;e: number | undefined,
         displaySize: string,
         actualSize: string,
         pixelRatio: number | undefined

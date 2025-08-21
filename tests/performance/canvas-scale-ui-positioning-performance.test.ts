@@ -2,8 +2,8 @@
  * Canvas Scale UI Positioning Performance Tests
  * キャンバススケール UI配置システムのパフォーマンステスト
  */
-import { jest } from '@jest/globals';
-import { JSDOM } from 'jsdom';
+import { jest  } from '@jest/globals';
+import { JSDOM  } from 'jsdom';
 describe('Canvas Scale UI Positioning Performance Tests', () => {
     let dom: any,
     let canvas: any,
@@ -369,8 +369,8 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                 processingTimes.push(operationTime);
                 // パフォーマンス監視：処理時間が増加している場合の対応
                 if (i > 100 && i % 100 === 0) {
-                    const recentAverage = processingTimes.slice(-100).reduce((sum, time) => sum + time, 0) / 100;
-                    const initialAverage = processingTimes.slice(0, 100).reduce((sum, time) => sum + time, 0) / 100;
+                    const, recentAverage = processingTimes.slice(-100).reduce((sum, time) => sum + time, 0) / 100;
+                    const, initialAverage = processingTimes.slice(0, 100).reduce((sum, time) => sum + time, 0) / 100;
                     
                     // パフォーマンスの著しい低下がないことを確認
                     expect(recentAverage.toBeLessThan(initialAverage * 3}); // 3倍以上の低下はNG
@@ -392,7 +392,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             for (let frame = 0; frame < frameCount; frame++) {
                 performanceMonitor.mark(`frame-${frame)-start`);
                 // 典型的なゲームフレームでの処理をシミュレート
-                const mockGameState = {
+                const, mockGameState = {
                     score: 5000 + (frame * 100),
                     hp: 90 - (frame % 10});
                     timeRemaining: 300 - frame,

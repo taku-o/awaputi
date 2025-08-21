@@ -3,7 +3,7 @@
  * シーンコンポーネントのダイアログ機能を統一管理
  */
 
-import { ScenesBaseDialog, DialogData, GameEngine, EventBus, GameState, AccessibilitySettings } from './ScenesBaseDialog.js';
+import { ScenesBaseDialog, DialogData, GameEngine, EventBus, GameState, AccessibilitySettings  } from './ScenesBaseDialog.js';
 
 // Type definitions for dialog management
 export interface DialogClass {;
@@ -16,7 +16,7 @@ export interface DialogStackItem { type: string,
 
 export interface DialogInfo { type: string;
     data: DialogData;
-    DialogClass: DialogClass
+   , DialogClass: DialogClass
     }
 
 export interface LayoutConfig { minWidth: number;
@@ -25,15 +25,15 @@ export interface LayoutConfig { minWidth: number;
     maxHeight: number;
     padding: number;
     buttonHeight: number;
-    buttonSpacing: number }
+   , buttonSpacing: number }
 
 export interface AnimationConfig { fadeInDuration: number;
     fadeOutDuration: number;
     scaleInDuration: number;
-    enabled: boolean }
+   , enabled: boolean }
 
 export interface AnimationState { isAnimating: boolean;
-    startTime: number,
+   , startTime: number,
     type: 'fade-in' | 'fade-out' | 'scale-in' | null ,}
 
 export interface DialogLayout { x: number;
@@ -46,14 +46,14 @@ export interface DialogLayout { x: number;
     contentHeight: number;
     buttonY: number;
     buttonWidth: number;
-    buttonHeight: number }
+   , buttonHeight: number }
 
 export class ScenesDialogManager {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
     private state: GameState;
     // ダイアログレジストリ
-    private dialogs: Map<string, DialogClass>;
+    private, dialogs: Map<string, DialogClass>;
     
     // ダイアログスタック（複数ダイアログ対応）
     private dialogStack: DialogStackItem[];
@@ -62,7 +62,7 @@ export class ScenesDialogManager {
     // アニメーション設定
     private animation: AnimationConfig;
     // 現在のアニメーション状態
-    private animationState: AnimationState;
+    private, animationState: AnimationState;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
 
         this.gameEngine = gameEngine;
@@ -125,8 +125,7 @@ export class ScenesDialogManager {
             }
             ';
             // アニメーション開始
-            if(this.animation.enabled) {'
-                ';
+            if(this.animation.enabled) {', ';
 
             }
 
@@ -276,7 +275,7 @@ export class ScenesDialogManager {
             contentWidth: width - (this.layout.padding * 2);
             contentHeight: height - (this.layout.padding * 2);
             buttonY: y + height - this.layout.padding - this.layout.buttonHeight;
-            buttonWidth: (width - (this.layout.padding * 3)) / 2, };
+           , buttonWidth: (width - (this.layout.padding * 3)) / 2, };
             buttonHeight: this.layout.buttonHeight }
         }
     
@@ -486,11 +485,11 @@ export class ScenesDialogManager {
      */
     private roundRect(;
         context: CanvasRenderingContext2D;
-        x: number, ;
+       , x: number, ;
         y: number, ;
         width: number );
         height: number);
-        radius: number;
+       , radius: number;
     ): void { context.beginPath(),
         context.moveTo(x + radius, y);
         context.lineTo(x + width - radius, y);
@@ -521,9 +520,8 @@ export class ScenesDialogManager {
         // エラーイベントの監視
         this.eventBus.on('component-error', (error) => {  }
 
-            const errorData = error as { component: string; error: Error }''
-            if(errorData.component === 'dialog'') {'
-                ';
+            const errorData = error as { component: string;, error: Error }''
+            if(errorData.component === 'dialog'') {', ';
 
             }
 

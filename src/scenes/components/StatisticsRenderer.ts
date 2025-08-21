@@ -4,7 +4,7 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void ,};
+        handleError(erro;r: Error, context: any): void ,};
     debugMode?: boolean;
 }
 
@@ -14,7 +14,7 @@ interface EventBus { on(event: string, callback: Function): void,
 
 interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean;
-    reducedMotion: boolean ,}
+   , reducedMotion: boolean ,}
 
 interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
@@ -25,15 +25,15 @@ interface ColorScheme { background: string;
     title: string;
     label: string;
     value: string;
-    accent: string }
+   , accent: string }
 
 interface FontScheme { title: string;
     subtitle: string;
     normal: string;
-    small: string }
+   , small: string }
 
 interface StatisticsData { basic?: {
-        totalGamesPlayed?: number;
+        totalGamesPlaye;d?: number;
         totalPlayTime?: string;
         totalScore?: number;
         highestScore?: number;
@@ -62,7 +62,7 @@ interface StatItem { label: string,
     value: string ,}
 
 interface ResponsiveLayout { columns: number;
-    fontSize: string }
+   , fontSize: string }
 
 export class StatisticsRenderer {
     private gameEngine: GameEngine;
@@ -82,7 +82,7 @@ export class StatisticsRenderer {
     private statisticsData: StatisticsData | null = null;
     // スタイル設定
     private colors: ColorScheme;
-    private fonts: FontScheme;
+    private, fonts: FontScheme;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: ComponentState) {
 
         this.gameEngine = gameEngine;
@@ -95,7 +95,7 @@ export class StatisticsRenderer {
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
             highContrast: false;
-            largeText: false;
+           , largeText: false;
     ,}
             reducedMotion: false }
         };
@@ -537,8 +537,7 @@ export class StatisticsRenderer {
      * @param type - 泡タイプ
      * @returns 表示用の泡タイプ名'
      */''
-    private getBubbleTypeName(type?: string): string { const typeNames: Record<string, string> = {''
-            'normal': '通常',
+    private getBubbleTypeName(type?: string): string { const typeNames: Record<string, string> = {'', 'normal': '通常',
             'stone': '石',
             'iron': '鉄',
             'diamond': 'ダイヤ',

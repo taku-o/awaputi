@@ -20,7 +20,7 @@ interface PanelInstance { show?(): void;
 interface PanelOptions { name: string,
     config: PanelConfig;
     savedState?: PanelState;
-    panelManager: PanelManager
+   , panelManager: PanelManager
     ,}
 
 interface PanelConfig { title: string;
@@ -32,7 +32,7 @@ interface PanelConfig { title: string;
     lazy: boolean;
     resizable: boolean;
     minimizable: boolean;
-    closable: boolean }
+   , closable: boolean }
 
 interface PanelInfo { name: string;
     PanelClass: PanelClass;
@@ -42,16 +42,16 @@ interface PanelInfo { name: string;
     visible: boolean;
     lastActivated: number | null;
     activationCount: number;
-    renderTime: number }
+   , renderTime: number }
 
 interface PanelState {
-    position: { x: number; y: number },
-    size: { width: number; height: number },
+    position: { ;x: number;, y: number },
+    size: { width: number;, height: number },
     minimized: boolean;
-    settings: Record<string, any>;
+   , settings: Record<string, any>;
     data: Record<string, any>;
     history: any[];
-    lastUpdated: number;
+   , lastUpdated: number;
 }
 
 interface LifecycleHooks { beforeCreate: Set<LifecycleCallback>,
@@ -66,7 +66,7 @@ interface LifecycleHooks { beforeCreate: Set<LifecycleCallback>,
 
 interface StateManager { saveEnabled: boolean;
     storageKey: string;
-    maxStateHistory: number }
+   , maxStateHistory: number }
 
 interface PanelStatistics { total: number;
     created: number;
@@ -74,23 +74,23 @@ interface PanelStatistics { total: number;
     cached: number;
     totalActivations: number;
     totalRenderTime: number;
-    panels: Record<string, {
+   , panels: Record<string, {
         created: boolean;
         visible: boolean;
         activations: number;
         renderTime: number;
-        lastActivated: number | null ,}>;
+       , lastActivated: number | null ,}>;
 }
 
 type LifecycleCallback = (panelName: string, data: any) => void;
 
 export class PanelManager {
     private debugInterface: DebugInterface;
-    private panels: Map<string, PanelInfo>;
+    private, panels: Map<string, PanelInfo>;
     private panelStates: Map<string, PanelState>;
     private panelConfigs: Map<string, PanelConfig>;
     private lifecycleHooks: LifecycleHooks;
-    private stateManager: StateManager;
+    private, stateManager: StateManager;
     private autoSaveInterval?: NodeJS.Timeout;
 
     constructor(debugInterface: DebugInterface) {
@@ -103,12 +103,12 @@ export class PanelManager {
         // パネルライフサイクル
         this.lifecycleHooks = {
             beforeCreate: new Set(;
-            created: new, Set(;
+           , created: new, Set(;
             beforeShow: new, Set();
             shown: new Set();
             beforeHide: new Set();
             hidden: new Set();
-            beforeDestroy: new Set();
+           , beforeDestroy: new Set();
     ,}
             destroyed: new Set(); }
         };
@@ -116,7 +116,7 @@ export class PanelManager {
         // パネル状態管理
         this.stateManager = { saveEnabled: true,
             storageKey: 'debug-panel-states';
-            maxStateHistory: 10 ,};
+           , maxStateHistory: 10 ,};
         this.initialize();
     }
 
@@ -151,7 +151,7 @@ export class PanelManager {
                 lazy: true;
                 resizable: true;
                 minimizable: true;
-                closable: false ,};
+               , closable: false ,};
             const panelConfig = { ...defaultConfig, ...config;
             this.panelConfigs.set(name, panelConfig);
 
@@ -167,7 +167,7 @@ export class PanelManager {
                 created: !panelConfig.lazy;
                 visible: false);
                 lastActivated: null);
-                activationCount: 0,);
+               , activationCount: 0,);
                 renderTime: 0);
             // パネルステートの初期化
             this.initializePanelState(name);
@@ -201,7 +201,7 @@ export class PanelManager {
             name,
             config: config!);
             savedState);
-            panelManager: this;
+           , panelManager: this;
         ), }
 
     /**
@@ -387,7 +387,7 @@ export class PanelManager {
                 settings: {});
                 data: { );
                 history: [];
-                lastUpdated: Date.now( });
+               , lastUpdated: Date.now( });
         }
     }
 
@@ -522,7 +522,7 @@ export class PanelManager {
      */""
     private updatePanelUI(name: string, visible: boolean): void { ""
         const tab = this.debugInterface.debugPanel.querySelector(`[data-panel="${name)"]`);
-        const panel = document.getElementById(`panel-${name)`};
+        const, panel = document.getElementById(`panel-${name)`};
 
         if(visible} {
 ";
@@ -669,7 +669,7 @@ export class PanelManager {
             visible: 0;
             cached: 0;
             totalActivations: 0;
-            totalRenderTime: 0, }
+           , totalRenderTime: 0, }
             panels: {};
         for(const [name, info] of this.panels) {
 
@@ -684,7 +684,7 @@ export class PanelManager {
                 created: info.created;
                 visible: info.visible;
                 activations: info.activationCount;
-                renderTime: info.renderTime;
+               , renderTime: info.renderTime;
         }
                 lastActivated: info.lastActivated }
             }

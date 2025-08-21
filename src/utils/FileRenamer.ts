@@ -3,10 +3,10 @@
  * Issue #131 対応
  */
 
-import { promises as fs } from 'fs';''
+import { promises, as fs  } from 'fs';''
 import path from 'path';''
-import { execSync, exec } from 'child_process';''
-import { promisify } from 'util';
+import { execSync, exec  } from 'child_process';''
+import { promisify  } from 'util';
 
 const execAsync = promisify(exec);
 
@@ -14,19 +14,19 @@ const execAsync = promisify(exec);
 interface RenameOperation { id: string,''
     type: 'file_rename';
     oldPath: string;
-    newPath: string,
+   , newPath: string,
     timestamp: Date,
     status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed';
     backupPath: string | null;
-    error: string | null;
+   , error: string | null;
     backupId?: string ,}
 
 interface RenameInfo { oldPath: string;
-    newPath: string;
+   , newPath: string;
     critical?: boolean }
 
 interface RenameResult { oldPath: string;
-    newPath: string,
+   , newPath: string,
     result?: RenameOperation;''
     status: 'success' | 'failed';
     error?: string;
@@ -43,20 +43,20 @@ interface OperationHistoryItem { id: string;
     newPath: string;
     status: string;
     timestamp: Date;
-    error: string | null }
+   , error: string | null }
 
 interface Stats { total: number;
     completed: number;
     failed: number;
     rolledBack: number;
-    successRate: string }
+   , successRate: string }
 
 interface ExecResult { stdout: string;
-    stderr: string }
+   , stderr: string }
 
 export class FileRenamer {
     private operations: RenameOperation[];
-    private backupMap: Map<string, string>;
+    private, backupMap: Map<string, string>;
     private gitAvailable: boolean;
     constructor() {
 
@@ -85,12 +85,12 @@ export class FileRenamer {
     async renameFile(oldPath: string, newPath: string): Promise<RenameOperation> { const operation: RenameOperation = {''
             id: this.generateOperationId(''';
             type: 'file_rename';
-            oldPath: oldPath,
+           , oldPath: oldPath,
             newPath: newPath,
             timestamp: new Date(''';
             status: 'pending';
             backupPath: null;
-            error: null ,}))
+           , error: null ,}))
         try { // 1. 事前チェック)
             await this.validateRenameOperation(oldPath, newPath);
             // 2. バックアップ作成
@@ -168,10 +168,10 @@ export class FileRenamer {
      */''
     async gitMove(oldPath: string, newPath: string): Promise<void> { try { }
 
-            const command = `git mv "${oldPath}" "${newPath}"`;
+            const command = `git mv "${oldPath}", "${newPath}"`;
             await execAsync(command);
         } catch (error) { // Gitコマンドが失敗した場合は通常のmvにフォールバック }
-            console.warn(`Git mv failed, falling back to regular move: ${(error as Error}).message}`);
+            console.warn(`Git mv failed, falling back to regular move: ${(error, as Error}).message}`);
             await this.regularMove(oldPath, newPath);
         }
     }
@@ -194,7 +194,7 @@ export class FileRenamer {
         try { await fs.copyFile(filePath, backupPath);
             this.backupMap.set(filePath, backupPath);
             return backupPath; } catch (error) {
-            throw new Error(`Failed, to create, backup: ${(error, as Error}).message}`);
+            throw new Error(`Failed, to create, backup: ${(error, as, Error}).message}`);
         }
     }
 
@@ -231,7 +231,7 @@ export class FileRenamer {
             }
                     await fs.unlink(operation.newPath); }
                 } catch (error) {
-                    console.warn(`Could, not remove, new file, during rollback: ${(error, as Error}).message}`);
+                    console.warn(`Could, not remove, new file, during rollback: ${(error, as, Error}).message}`);
                 }
 ;
                 // バックアップから復元
@@ -267,7 +267,7 @@ export class FileRenamer {
             } catch (error) { results.push({ )'
                     operation: operation.id, ')';
                     status: 'failed' );
-                    error: (error, as Error).message  ,});
+                   , error: (error, as Error).message  ,});
             }
         }
 
@@ -297,9 +297,9 @@ export class FileRenamer {
             } catch (error) { results.push({ )'
                     ...renameInfo, ')';
                     status: 'failed' );
-                    error: (error, as Error).message  ,});
+                   , error: (error, as Error).message  ,});
                 console.error(`✗ Failed, to rename: ${renameInfo.oldPath} → ${ renameInfo.newPath}`}
-                console.error(`  Error: ${(error, as Error}).message}`);
+                console.error(`  Error: ${(error, as, Error}).message}`);
                 ';
                 // エラー時の処理継続判定
                 if(renameInfo.critical) {'
@@ -334,7 +334,7 @@ export class FileRenamer {
             oldPath: op.oldPath;
             newPath: op.newPath);
             status: op.status);
-            timestamp: op.timestamp,);
+           , timestamp: op.timestamp,);
             error: op.error))) ,}
     }
 
@@ -361,7 +361,7 @@ export class FileRenamer {
                     console.log(`Cleaned, up old, backup: ${file}`});
                 }
             } catch (error) {
-            console.warn(`Cleanup, failed: ${(error, as Error}).message}`);
+            console.warn(`Cleanup, failed: ${(error, as, Error}).message}`);
         }
     }
 

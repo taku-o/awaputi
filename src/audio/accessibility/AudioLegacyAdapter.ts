@@ -16,16 +16,16 @@ interface DeviceCapabilities { vibrationSupported: boolean,
     speechSynthesisSupported: boolean;
     visualFeedbackSupported: boolean;
     highContrastSupported: boolean;
-    reducedMotionSupported: boolean ,}
+   , reducedMotionSupported: boolean ,}
 
 // Types for legacy vibration manager
-interface LegacyVibrationManager { vibrate: (pattern: VibrationPattern) => void;''
+interface LegacyVibrationManager { vibrate: (patter;n: VibrationPattern) => void;''
     isSupported: (') => boolean }'
 }
 
 // Types for audio cue
 interface AudioCue { pattern: string;
-    vibrationPattern: VibrationPattern
+   , vibrationPattern: VibrationPattern
     }
 
 // Types for accessibility settings
@@ -33,7 +33,7 @@ interface AccessibilitySettings { visualFeedback: boolean;
     captioning: boolean;
     colorIndication: boolean;
     hapticFeedback: boolean;
-    descriptionEnabled: boolean }
+   , descriptionEnabled: boolean }
 
 // Types for settings change event
 interface SettingsChangeEvent { ''
@@ -44,7 +44,7 @@ interface SettingsChangeEvent { ''
 
 // Main controller interface
 interface MainController { feedbackManager: {
-        applyTactileFeedback(cue: AudioCue): void, };
+        applyTactileFeedback(cu;e: AudioCue): void, };
     updateColorIndicator(level: AudioLevel): void,
     updateSetting(key: string, value: any): void,
     updateSettings(settings: Partial<AccessibilitySettings>): Promise<void>,
@@ -54,7 +54,7 @@ interface MainController { feedbackManager: {
 
 export class AudioLegacyAdapter {
     private mainController: MainController;
-    private vibrationManager: LegacyVibrationManager | null;
+    private, vibrationManager: LegacyVibrationManager | null;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -107,7 +107,7 @@ export class AudioLegacyAdapter {
      */''
     public async enableAccessibilityFeatures(enabled: boolean): Promise<void> { const settings: AccessibilitySettings = {
             visualFeedback: enabled;
-            captioning: enabled,
+           , captioning: enabled,
             colorIndication: enabled,
             hapticFeedback: enabled && 'vibrate' in navigator,
             descriptionEnabled: enabled && 'speechSynthesis' in window ,};
@@ -163,7 +163,7 @@ export class AudioLegacyAdapter {
      * ステータス取得
      * @returns コンポーネントステータス
      */
-    public getStatus(): { vibrationManagerAvailable: boolean; capabilities: DeviceCapabilities } { return { vibrationManagerAvailable: this.vibrationManager !== null, };
+    public getStatus(): { vibrationManagerAvailable: boolean;, capabilities: DeviceCapabilities } { return { vibrationManagerAvailable: this.vibrationManager !== null, };
             capabilities: this.getCapabilities(); }
         }
 

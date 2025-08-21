@@ -1,11 +1,11 @@
 /**
  * 実績システム統合テスト
  */
-import { describe, test, expect, beforeEach } from '@jest/globals';
-import { AchievementManager } from '../../src/core/AchievementManager';
-import { AchievementEventIntegrator } from '../../src/core/AchievementEventIntegrator';
-import { AchievementNotificationSystem } from '../../src/core/achievements/AchievementNotificationSystem';
-import { AchievementStatsUI } from '../../src/core/AchievementStatsUI';
+import { describe, test, expect, beforeEach  } from '@jest/globals';
+import { AchievementManager  } from '../../src/core/AchievementManager';
+import { AchievementEventIntegrator  } from '../../src/core/AchievementEventIntegrator';
+import { AchievementNotificationSystem  } from '../../src/core/achievements/AchievementNotificationSystem';
+import { AchievementStatsUI  } from '../../src/core/AchievementStatsUI';
 // TypeScript interfaces
 interface BubbleData {
     type: string,
@@ -18,7 +18,7 @@ interface StageProgress {
 }
 interface DetailedStatistics {
     bubbleTypes: {
-        normal: { popped: number };
+        normal: { poppe;d: number };
         stone: { popped: number };
         rainbow: { popped: number }
     },
@@ -110,13 +110,13 @@ class MockAudioManager {
     }
 }
 class MockBubbleManager {
-    popBubbleOriginal: (bubble: BubbleData) => { score: number; combo: number },
+    popBubbleOriginal: (bubble: BubbleData) => { score: number;, combo: number },
     popCount: number,
     constructor() {
         this.popBubbleOriginal = this.popBubble.bind(this);
         this.popCount = 0;
     }
-    popBubble(bubble: BubbleData): { score: number; combo: number } {
+    popBubble(bubble: BubbleData): { score: number;, combo: number } {
         this.popCount++;
         return { score: 10, combo: 1 };
     }
@@ -150,11 +150,11 @@ class MockScoreManager {
     }
 }
 class MockGameScene {
-    gameOverOriginal: (reason: string) => { reason: string; score: number };
+    gameOverOriginal: (reason: string) => { reason: string;, score: number };
     constructor() {
         this.gameOverOriginal = this.gameOver.bind(this);
     }
-    gameOver(reason: string'): { reason: string; score: number } {
+    gameOver(reason: string'): { reason: string;, score: number } {
         return { reason, score: 1000 };
     }
 }

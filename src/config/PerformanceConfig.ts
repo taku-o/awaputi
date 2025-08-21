@@ -5,21 +5,21 @@
  * PerformanceOptimizerとの連携インターフェースを提供します。
  */
 
-import { getConfigurationManager, ConfigurationManager } from '../core/ConfigurationManager.js';''
-import { getErrorHandler, ErrorHandler } from '../utils/ErrorHandler.js';
+import { getConfigurationManager, ConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getErrorHandler, ErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 最適化設定の型定義
  */
 export interface OptimizationConfig { targetFPS: number,
     adaptiveMode: boolean;
-    optimizationInterval: number,
+   , optimizationInterval: number,
     maxHistorySize: number,
     performanceLevel: 'low' | 'medium' | 'high';
     maxBubbles: number;
     maxParticles: number;
     workloadDistribution: boolean;
-    maxTimePerFrame: number ,}
+   , maxTimePerFrame: number ,}
 
 /**
  * リソース制限設定の型定義
@@ -31,7 +31,7 @@ export interface ResourceLimitConfig { memoryThreshold: number;
     autoAdjust: boolean;
     warningThreshold: number;
     criticalThreshold: number;
-    cleanupInterval: number }
+   , cleanupInterval: number }
 
 /**
  * 品質設定の型定義
@@ -43,7 +43,7 @@ export interface QualityConfig { renderQuality: number;
     enableShadows: boolean;
     enableBlur: boolean;
     enableAntiAliasing: boolean;
-    enableReflections: boolean }
+   , enableReflections: boolean }
 
 /**
  * 品質プリセット設定の型定義
@@ -55,7 +55,7 @@ export interface QualityPreset { renderQuality: number;
     enableShadows: boolean;
     enableBlur: boolean;
     enableAntiAliasing: boolean;
-    enableReflections: boolean }
+   , enableReflections: boolean }
 
 /**
  * PerformanceOptimizerインターフェースの型定義
@@ -65,8 +65,8 @@ export interface PerformanceOptimizer { targetFPS: number;
     optimizationInterval: number;
     adaptiveMode: boolean;
     performanceLevel: string;
-    settings: {
-        maxBubbles: number;
+   , settings: {
+        maxBubble;s: number;
         maxParticles: number;
         renderQuality: number;
         particleQuality: number;
@@ -74,7 +74,7 @@ export interface PerformanceOptimizer { targetFPS: number;
         audioQuality: number;
         enableShadows: boolean;
         enableBlur: boolean;
-        enableAntiAliasing: boolean };
+       , enableAntiAliasing: boolean };
     setAdaptiveMode(enabled: boolean): void,
     setPerformanceLevel(level: string): void,
 }
@@ -174,7 +174,7 @@ export class PerformanceConfig {
             audioQuality: 0.5;
             enableShadows: false);
             enableBlur: false)';
-            enableAntiAliasing: false,')';
+           , enableAntiAliasing: false,')';
             enableReflections: false)'),
 
         this.configManager.set('performance', 'quality.presets.medium', {
@@ -184,7 +184,7 @@ export class PerformanceConfig {
             audioQuality: 0.8;
             enableShadows: false);
             enableBlur: true)';
-            enableAntiAliasing: false,')';
+           , enableAntiAliasing: false,')';
             enableReflections: false)'),
 
         this.configManager.set('performance', 'quality.presets.high', {
@@ -194,7 +194,7 @@ export class PerformanceConfig {
             audioQuality: 1.0;
             enableShadows: true);
             enableBlur: true);
-            enableAntiAliasing: true,);
+           , enableAntiAliasing: true,);
             enableReflections: true ,}
 
     /**
@@ -204,7 +204,7 @@ export class PerformanceConfig {
     private _setupValidationRules(''';
         this.configManager.setValidationRule('performance', 'optimization.targetFPS', { ')'
             type: 'number')';
-            min: 30,')';
+           , min: 30,')';
             max: 144)'),
 
         this.configManager.setValidationRule('performance', 'optimization.adaptiveMode', {)'
@@ -212,12 +212,12 @@ export class PerformanceConfig {
 
         this.configManager.setValidationRule('performance', 'optimization.optimizationInterval', {)'
             type: 'number')';
-            min: 100,')';
+           , min: 100,')';
             max: 10000)'),
 
         this.configManager.setValidationRule('performance', 'optimization.maxHistorySize', {)'
             type: 'number')';
-            min: 10,')';
+           , min: 10,')';
             max: 100)'),
 
         this.configManager.setValidationRule('performance', 'optimization.performanceLevel', {)'
@@ -228,49 +228,49 @@ export class PerformanceConfig {
 
         this.configManager.setValidationRule('performance', 'optimization.maxBubbles', { ')'
             type: 'number')';
-            min: 5,')';
+           , min: 5,')';
             max: 50)'),
 
         this.configManager.setValidationRule('performance', 'optimization.maxParticles', {)'
             type: 'number')';
-            min: 50,')';
+           , min: 50,')';
             max: 2000)');
         ';
         // リソース制限設定の検証ルール
         this.configManager.setValidationRule('performance', 'limits.memoryThreshold', {)'
             type: 'number')';
-            min: 50,')';
+           , min: 50,')';
             max: 500)'),
 
         this.configManager.setValidationRule('performance', 'limits.fpsThreshold', {)'
             type: 'number')';
-            min: 15,')';
+           , min: 15,')';
             max: 60)'),
 
         this.configManager.setValidationRule('performance', 'limits.maxTextureSize', {)'
             type: 'number')';
-            min: 512,')';
+           , min: 512,')';
             max: 4096)');
         ';
         // 品質設定の検証ルール
         this.configManager.setValidationRule('performance', 'quality.renderQuality', {)'
             type: 'number')';
-            min: 0.5,')';
+           , min: 0.5,')';
             max: 1.0)'),
 
         this.configManager.setValidationRule('performance', 'quality.particleQuality', {)'
             type: 'number')';
-            min: 0.1,')';
+           , min: 0.1,')';
             max: 1.0)'),
 
         this.configManager.setValidationRule('performance', 'quality.effectQuality', {)'
             type: 'number')';
-            min: 0.1,')';
+           , min: 0.1,')';
             max: 1.0)'),
 
         this.configManager.setValidationRule('performance', 'quality.audioQuality', {)'
             type: 'number')';
-            min: 0.1,')';
+           , min: 0.1,')';
             max: 1.0)'),
 
         this.configManager.setValidationRule('performance', 'quality.enableShadows', {)'
@@ -295,11 +295,11 @@ export class PerformanceConfig {
             console.warn("[PerformanceConfig] ConfigurationManager not initialized, using fallback"");
             return { targetFPS: 60,
                 adaptiveMode: true;
-                optimizationInterval: 1000,
+               , optimizationInterval: 1000,
                 maxHistorySize: 30,
                 performanceLevel: "high";
                 maxBubbles: 20;
-                maxParticles: 500;
+               , maxParticles: 500;
         ,}
                 workloadDistribution: true, };
                 maxTimePerFrame: 8 }
@@ -322,12 +322,12 @@ export class PerformanceConfig {
             console.error("[PerformanceConfig] Error getting optimization config:", error);
             return { targetFPS: 60,
                 adaptiveMode: true;
-                optimizationInterval: 1000,
+               , optimizationInterval: 1000,
                 maxHistorySize: 30,
                 performanceLevel: "high";
                 maxBubbles: 20;
                 maxParticles: 500;
-                workloadDistribution: true, };
+               , workloadDistribution: true, };
                 maxTimePerFrame: 8 }
             }
     }
@@ -707,8 +707,7 @@ export class PerformanceConfig {
      * @param {PerformanceOptimizer} optimizer - PerformanceOptimizerインスタンス
      */'
     applyToPerformanceOptimizer(optimizer: PerformanceOptimizer): void { try {'
-            if(!optimizer) {'
-                ';
+            if(!optimizer) {', ';
 
             }
 
@@ -736,8 +735,7 @@ export class PerformanceConfig {
      * @param {PerformanceOptimizer} optimizer - PerformanceOptimizerインスタンス
      */'
     syncFromPerformanceOptimizer(optimizer: PerformanceOptimizer): void { try {'
-            if(!optimizer) {'
-                ';
+            if(!optimizer) {', ';
 
             }
 

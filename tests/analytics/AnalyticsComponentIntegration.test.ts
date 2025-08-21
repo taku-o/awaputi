@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * Analytics Component Integration Tests
  * 分析システムコンポーネント間の統合テスト
@@ -8,13 +8,13 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * - ExportManager + AnalyticsAPI
  * - エラーハンドリングの連携
  */
-import { DataCollector } from '../../src/analytics/DataCollector';
-import { ExportManager } from '../../src/analytics/ExportManager';
-import { AnalyticsAPI } from '../../src/analytics/AnalyticsAPI';
+import { DataCollector  } from '../../src/analytics/DataCollector';
+import { ExportManager  } from '../../src/analytics/ExportManager';
+import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
 // モック設定
 const createMockStorageManager = () => ({
     saveData: jest.fn().mockResolvedValue(true;);
-    getData: jest.fn().mockResolvedValue([]),
+   , getData: jest.fn().mockResolvedValue([]),
         destroy: jest.fn(),
 });
 const createMockPrivacyManager = () => ({
@@ -87,7 +87,7 @@ describe('Analytics Component Integration Tests', () => {
             for (let i = 0; i < 3; i++') {
                 batchData.push({
                     type: 'bubble_interaction';);
-                    timestamp: Date.now(') + i * 1000,
+                   , timestamp: Date.now(') + i * 1000,
                     bubbleType: i % 2 === 0 ? 'normal' : 'stone',
                     success: i % 2 === 0,
                     score: 100 + i * 50,

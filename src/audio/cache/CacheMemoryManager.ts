@@ -5,7 +5,7 @@
  * AudioCacheManager のサブコンポーネント
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * Memory usage information interface
@@ -15,14 +15,14 @@ export interface MemoryUsageInfo { bufferCache: number,
     chunkCache: number;
     total: number;
     max: number;
-    ratio: number ,}
+   , ratio: number ,}
 /**
  * Memory alert interface
  */'
 export interface MemoryAlert { timestamp: number,''
     type: 'memory_pressure' | 'memory_warning' | 'memory_critical';
     usage: MemoryUsageInfo;
-    action: string ,}
+   , action: string ,}
 /**
  * Memory usage statistics point
  */
@@ -32,7 +32,7 @@ export interface MemoryUsageStatPoint extends MemoryUsageInfo { timestamp: numbe
  */
 export interface RemovalResult { removedCount: number,
     removedSize: number;
-    removedKeys: string[] ,}
+   , removedKeys: string[] ,}
 /**
  * Memory statistics interface
  */
@@ -40,7 +40,7 @@ export interface MemoryStats { currentUsage: MemoryUsageInfo,
     alerts: MemoryAlert[];
     lastCleanup: number;
     cleanupOperations: number;
-    memoryHistory: MemoryUsageStatPoint[]
+   , memoryHistory: MemoryUsageStatPoint[]
     ,}
 /**
  * Cache settings interface
@@ -48,8 +48,8 @@ export interface MemoryStats { currentUsage: MemoryUsageInfo,
 interface CacheSettings { cleanupInterval: number,
     memoryPressureThreshold: number;
     maxAge: number;
-    autoOptimization: {
-        compressionThreshold: number ,}
+   , autoOptimization: {
+        compressionThreshol;d: number ,}
 
 /**
  * Cache interface with memory management methods
@@ -66,7 +66,7 @@ interface MainController { audioContext: AudioContext,
     cacheSettings: CacheSettings;
     audioBufferCache: Cache;
     metadataCache: Cache;
-    chunkCache: Cache
+   , chunkCache: Cache
     ,}
 export class CacheMemoryManager {
     private readonly mainController: MainController,
@@ -76,7 +76,7 @@ export class CacheMemoryManager {
         intervalId: NodeJS.Timeout | null;
         lastCleanup: number;
         alerts: MemoryAlert[];
-        systemMemoryInfo: any ,};
+       , systemMemoryInfo: any ,};
     
     // パフォーマンス統計
     public performanceStats: { cleanupOperations: number,
@@ -92,7 +92,7 @@ export class CacheMemoryManager {
         this.memoryMonitor = {
             intervalId: null;
             lastCleanup: Date.now();
-            alerts: []
+           , alerts: []
 }
             systemMemoryInfo: null ;
 }
@@ -169,7 +169,7 @@ export class CacheMemoryManager {
                 this.memoryMonitor.alerts.push({ );''
                     timestamp: Date.now()';
                     type: 'memory_pressure')';
-                    usage: memoryUsage,
+                   , usage: memoryUsage,
                     action: 'emergency_cleanup' ,});
             } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {)'
                 operation: 'checkMemoryUsage',')';
@@ -192,7 +192,7 @@ export class CacheMemoryManager {
             metadataCache: metadataCacheUsage;
             chunkCache: chunkCacheUsage;
             total: totalUsage;
-            max: maxUsage, };
+           , max: maxUsage, };
             ratio: totalUsage / maxUsage ;
 }
         },
@@ -351,7 +351,7 @@ export class CacheMemoryManager {
     getMemoryStats(): MemoryStats { return { currentUsage: this.getCurrentMemoryUsage(),
             alerts: [...this.memoryMonitor.alerts];
             lastCleanup: this.memoryMonitor.lastCleanup;
-            cleanupOperations: this.performanceStats.cleanupOperations, };
+           , cleanupOperations: this.performanceStats.cleanupOperations, };
             memoryHistory: [...this.performanceStats.memoryUsage] ;
 }
         },

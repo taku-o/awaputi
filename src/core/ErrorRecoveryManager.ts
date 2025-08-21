@@ -1,8 +1,8 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { ErrorPreventionHandler } from './error-recovery-manager/ErrorPreventionHandler.js';''
-import { UndoRedoSystem } from './error-recovery-manager/UndoRedoSystem.js';''
-import { AutoSaveSystem } from './error-recovery-manager/AutoSaveSystem.js';
+import { ErrorPreventionHandler  } from './error-recovery-manager/ErrorPreventionHandler.js';''
+import { UndoRedoSystem  } from './error-recovery-manager/UndoRedoSystem.js';''
+import { AutoSaveSystem  } from './error-recovery-manager/AutoSaveSystem.js';
 
 /**
  * ErrorRecoveryManager - メインコントローラー
@@ -12,7 +12,7 @@ import { AutoSaveSystem } from './error-recovery-manager/AutoSaveSystem.js';
  */
 export class ErrorRecoveryManager {
     private config: BasicConfig;
-    private state: any;
+    private, state: any;
     /**
      * ErrorRecoveryManagerを初期化 }
      * @param {Object} gameEngine - ゲームエンジンインスタンス'
@@ -30,33 +30,33 @@ export class ErrorRecoveryManager {
             undoRedoEnabled: true;
             warningEnabled: true;
             // エラー防止設定
-            prevention: {
+           , prevention: {
                 confirmCriticalActions: true;
                 preventAccidentalClicks: true;
-                safetyDelays: {
+               , safetyDelays: {
                     criticalAction: 1000;
-                    destructiveAction: 2000;
+                   , destructiveAction: 2000;
     }
                     gameReset: 3000 }
                 };
                 warningThresholds: { lowHP: 2;
                     lowScore: 50;
-                    timeRunningOut: 10000 // 10秒 };
+                   , timeRunningOut: 10000 // 10秒 };
                 doubleClickPrevention: 500;
             },
             
             // エラー回復設定
             recovery: { autoSave: true;
-                saveInterval: 30000, // 30秒;
+               , saveInterval: 30000, // 30秒;
                 maxUndoSteps: 10;
                 maxRedoSteps: 10;
                 maxSavePoints: 5;
-                gracePeriod: 5000, // 5秒の猶予期間;
+               , gracePeriod: 5000, // 5秒の猶予期間;
                 emergencyRestore: true ,};
             // エラーメッセージ設定
             messages: { showDetailed: true;
                 showSuggestions: true;
-                showPreventionTips: true,
+               , showPreventionTips: true,
                 language: 'ja',
                 verbosity: 'detailed' // concise, detailed, verbose },
             
@@ -64,7 +64,7 @@ export class ErrorRecoveryManager {
             ui: { ''
                 position: 'center', // center, top, bottom;
                 animation: 'slide';
-                duration: 5000,
+               , duration: 5000,
                 persistent: false,
                 backgroundColor: '#f8f9fa',
                 borderColor: '#dc3545' ,}
@@ -75,7 +75,7 @@ export class ErrorRecoveryManager {
                 missedBubble: {''
                     name: 'バブルの取り逃し',
                     severity: 'medium';
-                    recoverable: false,
+                   , recoverable: false,
                     preventable: true,
                     message: 'バブルを取り逃しました',
                     suggestion: 'もう少し早めにクリックしてみましょう',
@@ -83,7 +83,7 @@ export class ErrorRecoveryManager {
                 wrongBubble: { ''
                     name: '間違ったバブルをクリック',
                     severity: 'low';
-                    recoverable: false,
+                   , recoverable: false,
                     preventable: true,
                     message: '意図しないバブルをクリックしました',
                     suggestion: '狙いを定めてからクリックしましょう',
@@ -91,7 +91,7 @@ export class ErrorRecoveryManager {
                 poisonBubble: { ''
                     name: 'ポイズンバブルをクリック',
                     severity: 'high';
-                    recoverable: false,
+                   , recoverable: false,
                     preventable: true,
                     message: '危険なポイズンバブルをクリックしました',
                     suggestion: 'ピンクバブルでHPを回復しましょう',
@@ -99,7 +99,7 @@ export class ErrorRecoveryManager {
                 comboBreak: { ''
                     name: 'コンボが途切れた',
                     severity: 'medium';
-                    recoverable: false,
+                   , recoverable: false,
                     preventable: true,
                     message: 'コンボが途切れました',
                     suggestion: '次は連続してバブルをクリックしてみましょう',
@@ -109,7 +109,7 @@ export class ErrorRecoveryManager {
             interface: { accidentalPause: {''
                     name: '誤って一時停止',
                     severity: 'low';
-                    recoverable: true,
+                   , recoverable: true,
                     preventable: true,
                     message: 'ゲームが一時停止されました',
                     suggestion: 'スペースキーまたは再生ボタンで再開',
@@ -117,7 +117,7 @@ export class ErrorRecoveryManager {
                 accidentalReset: { ''
                     name: '誤ってリセット',
                     severity: 'high';
-                    recoverable: true,
+                   , recoverable: true,
                     preventable: true,
                     message: 'ゲームがリセットされました',
                     suggestion: '前回のセーブから復元できます',
@@ -125,7 +125,7 @@ export class ErrorRecoveryManager {
                 settingsChanged: { ''
                     name: '意図しない設定変更',
                     severity: 'medium';
-                    recoverable: true,
+                   , recoverable: true,
                     preventable: true,
                     message: '設定が変更されました',
                     suggestion: '前の設定に戻すことができます',
@@ -133,7 +133,7 @@ export class ErrorRecoveryManager {
                 menuNavigation: { ''
                     name: 'メニューでの迷子',
                     severity: 'low';
-                    recoverable: true,
+                   , recoverable: true,
                     preventable: true,
                     message: 'メニューで迷子になりました',
                     suggestion: 'ホームボタンでメインメニューに戻れます',
@@ -143,7 +143,7 @@ export class ErrorRecoveryManager {
             input: { doubleClick: {''
                     name: 'ダブルクリック',
                     severity: 'low';
-                    recoverable: false,
+                   , recoverable: false,
                     preventable: true,
                     message: '同じバブルを二度クリックしました',
                     suggestion: '一度のクリックで十分です',
@@ -151,7 +151,7 @@ export class ErrorRecoveryManager {
                 rapidClicks: { ''
                     name: '連打し過ぎ',
                     severity: 'medium';
-                    recoverable: false,
+                   , recoverable: false,
                     preventable: true,
                     message: 'クリックが速すぎます',
                     suggestion: 'もう少しゆっくりクリックしてみましょう',
@@ -159,7 +159,7 @@ export class ErrorRecoveryManager {
                 misclick: { ''
                     name: 'ミスクリック',
                     severity: 'low';
-                    recoverable: false,
+                   , recoverable: false,
                     preventable: true,
                     message: '意図しない場所をクリックしました',
                     suggestion: '正確に狙ってクリックしましょう',
@@ -169,7 +169,7 @@ export class ErrorRecoveryManager {
             system: { performanceDrop: {''
                     name: 'パフォーマンス低下',
                     severity: 'medium';
-                    recoverable: true,
+                   , recoverable: true,
                     preventable: true,
                     message: 'ゲームの動作が重くなっています',
                     suggestion: '他のアプリを閉じるかブラウザを再起動',
@@ -177,7 +177,7 @@ export class ErrorRecoveryManager {
                 connectionLoss: { ''
                     name: '接続の問題',
                     severity: 'high';
-                    recoverable: true,
+                   , recoverable: true,
                     preventable: false,
                     message: 'インターネット接続に問題があります',
                     suggestion: '接続を確認してページを再読み込み',
@@ -186,29 +186,29 @@ export class ErrorRecoveryManager {
         // 状態管理
         this.state = { errorHistory: [],
             currentError: null;
-            errorCount: {
+           , errorCount: {
                 total: 0,
                 byType: new Map(''';
-                level: 'normal' ,};
+               , level: 'normal' ,};
             recoveryMode: { active: false;
                 availableOptions: [];
-                currentStep: 0 }
+               , currentStep: 0 }
         };
         // 警告システム)
         this.warningSystem = { enabled: true)
             activeWarnings: new Map();
             warningHistory: [];
-            thresholds: {
+           , thresholds: {
                 errorFrequency: 3, // 3回以上で警告;
                 timeWindow: 60000, // 1分間;
                 criticalHP: 1;
-                timeRemaining: 10000 // 10秒 ,}
+               , timeRemaining: 10000 // 10秒 ,}
         };
         // UI要素
         this.ui = { errorDialog: null,
             confirmDialog: null;
             warningBanner: null;
-            recoveryPanel: null ,};
+           , recoveryPanel: null ,};
         // 専門化されたコンポーネント
         this.preventionHandler = null;
         this.undoRedoSystem = null;
@@ -220,7 +220,7 @@ export class ErrorRecoveryManager {
             keydown: this.handleKeydown.bind(this);
             click: this.handleClick.bind(this);
             gameAction: this.handleGameAction.bind(this);
-            stateChange: this.handleStateChange.bind(this ,};
+           , stateChange: this.handleStateChange.bind(this ,};
         
         this.initialize();
     }
@@ -253,9 +253,7 @@ export class ErrorRecoveryManager {
             
             // アクセシビリティマネージャーとの統合
             if(this.gameEngine.accessibilityManager) { this.integrateWithAccessibilityManager()';
-            console.log('ErrorRecoveryManager: 初期化完了 }'
-
-            ' }'
+            console.log('ErrorRecoveryManager: 初期化完了 }', ' }'
 
         } catch (error) {
             console.error('ErrorRecoveryManager: 初期化エラー:', error);
@@ -366,7 +364,7 @@ export class ErrorRecoveryManager {
                 top: 0;
                 left: 0;
                 width: 100%;
-                height: 100%;
+               , height: 100%;
                 z-index: 10000,
                 display: flex;
                 align-items: center,
@@ -382,7 +380,7 @@ export class ErrorRecoveryManager {
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.6),
+               , background: rgba(0, 0, 0, 0.6),
                 backdrop-filter: blur(3px), }
             
             .error-dialog-content { position: relative,
@@ -393,15 +391,15 @@ export class ErrorRecoveryManager {
                 width: 90%;
                 max-height: 80vh,
                 overflow: hidden;
-                animation: errorDialogSlideIn 0.3s ease-out ,}
+               , animation: errorDialogSlideIn 0.3s ease-out ,}
             
             .error-dialog-header { background: linear-gradient(135deg, #dc3545, #c82333),
                 color: white;
                 padding: 20px;
-                display: flex;
+               , display: flex;
                 align-items: center,
                 gap: 15px;
-                position: relative ,}
+               , position: relative ,}
             
             .error-icon { font-size: 28px;
                 flex-shrink: 0, }
@@ -413,12 +411,12 @@ export class ErrorRecoveryManager {
             
             .error-close-btn { background: none,
                 border: none;
-                color: white;
+               , color: white;
                 font-size: 24px,
                 cursor: pointer;
                 padding: 0;
                 width: 32px;
-                height: 32px;
+               , height: 32px;
                 border-radius: 50%,
                 display: flex;
                 align-items: center,
@@ -469,20 +467,20 @@ export class ErrorRecoveryManager {
                 transition: all 0.2s ,}
             
             .error-action-btn.primary { background: #dc3545;
-                color: white }
+               , color: white }
             
             .error-action-btn.primary:hover { background: #c82333;
-                transform: translateY(-1px }
+               , transform: translateY(-1px }
             
             .error-action-btn.secondary { background: #6c757d;
-                color: white }
+               , color: white }
             
             .error-action-btn.secondary:hover { background: #545b62;
-                transform: translateY(-1px }
+               , transform: translateY(-1px }
             
             @keyframes errorDialogSlideIn { from {
                     opacity: 0;
-                    transform: scale(0.9) translateY(-20px }
+                   , transform: scale(0.9) translateY(-20px }
 
                 to { opacity: 1,''
                     transform: scale(1) translateY(0 ,}
@@ -770,12 +768,12 @@ export class ErrorRecoveryManager {
 
         let errorInfo = { : undefined''
             timestamp: Date.now(''';
-            type: 'unknown',
+           , type: 'unknown',
             subtype: 'generic',
             severity: 'medium',
             message: 'エラーが発生しました',
             source: 'system';
-            recoverable: false;
+           , recoverable: false;
     ,}
             preventable: false }))
         // エラーの種類を判定)
@@ -1005,7 +1003,7 @@ export class ErrorRecoveryManager {
             errorCount: this.state.errorCount.total;
             recentErrors: this.state.errorCount.recent.length;
             errorTypes: Object.fromEntries(this.state.errorCount.byType);
-            prevention: this.preventionHandler.getStatistics();
+           , prevention: this.preventionHandler.getStatistics();
     ,}
             undoRedo: this.undoRedoSystem.getStatistics(), };
             autoSave: this.autoSaveSystem.getStatistics(); }
@@ -1013,15 +1011,15 @@ export class ErrorRecoveryManager {
 
     getSystemHealth(''';
             status: 'healthy';
-            components: { preventionHandler: !!this.preventionHandler;
+           , components: { preventionHandler: !!this.preventionHandler;
                 undoRedoSystem: !!this.undoRedoSystem;
-                autoSaveSystem: !!this.autoSaveSystem };
+               , autoSaveSystem: !!this.autoSaveSystem };
             capabilities: { errorPrevention: true;
                 undoRedo: true;
                 autoSave: true;
-                errorRecovery: true }))
+               , errorRecovery: true }))
             statistics: this.getStatistics();
-            timestamp: new Date().toISOString();
+           , timestamp: new Date().toISOString();
         }
 
     integrateWithAccessibilityManager()';

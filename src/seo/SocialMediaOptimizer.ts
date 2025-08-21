@@ -3,23 +3,23 @@
  * 
  * プラットフォーム別の最適化画像生成と共有コンテンツ管理
  */
-import { SEOConfig, getSocialImageUrl } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';
+import { SEOConfig, getSocialImageUrl  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';
 import { optimizeImageUrl, 
     truncateText, ;
     measurePerformance,
-    generateCacheKey ' }'
+    generateCacheKey '  }'
 
 } from './SEOUtils';
 
 // プラットフォーム仕様インターフェース
 interface PlatformSpec {
-    imageSize: { width: number; height: number },
+    imageSize: { widt;h: number;, height: number },
     titleLimit: number;
     descriptionLimit: number;
     imageFormats: string[];
-    cacheBustParam: string;
+   , cacheBustParam: string;
     defaultImage?: string;
 }
 
@@ -57,7 +57,7 @@ interface OptimizedContent { platform: string,
     image: string;
     url: string;
     hashtags: string[];
-    metadata: PlatformMetadata;
+   , metadata: PlatformMetadata;
     twitterCard?: TwitterCardData;
     facebookSpecific?: FacebookData;
     discordEmbed?: DiscordEmbed;
@@ -67,7 +67,7 @@ interface OptimizedContent { platform: string,
 interface PlatformMetadata { imageWidth: number,
     imageHeight: number;
     platform: string;
-    generatedAt: string;
+   , generatedAt: string;
     cardType?: string;
     site?: string;
     type?: string;
@@ -78,17 +78,17 @@ interface PlatformMetadata { imageWidth: number,
 interface TwitterCardData { ''
     card: 'summary' | 'summary_large_image' | 'app' | 'player';
     site: string;
-    creator: string }
+   , creator: string }
 
 // Facebook固有データインターフェース
 interface FacebookData { appId?: string;
     type: string;
-    locale: string ,}
+   , locale: string ,}
 
 // Discord Embedインターフェース
 interface DiscordEmbed { title: string;
     description: string;
-    color: number, }
+   , color: number, }
     thumbnail?: { url: string }
     fields?: DiscordField[];
     }
@@ -96,24 +96,24 @@ interface DiscordEmbed { title: string;
 // Discord Fieldインターフェース
 interface DiscordField { name: string,
     value: string;
-    inline: boolean ,}
+   , inline: boolean ,}
 
 // 共有コンテンツインターフェース（Twitter用）
 interface TwitterShareContent { text: string;
     url: string;
     hashtags: string[];
-    imageUrl: string }
+   , imageUrl: string }
 
 // 共有コンテンツインターフェース（Facebook用）
 interface FacebookShareContent { title: string;
     description: string;
     url: string;
-    imageUrl: string;
+   , imageUrl: string;
     quote?: string }
 
 // 共有コンテンツインターフェース（LINE用）
 interface LineShareContent { message: string;
-    url: string }
+   , url: string }
 
 // 共有コンテンツインターフェース（Discord用）
 interface DiscordShareContent { embeds: DiscordEmbed[]
@@ -124,7 +124,7 @@ interface FallbackShareContent { title: string;
     description: string;
     url: string;
     text: string;
-    imageUrl: string }
+   , imageUrl: string }
 
 // LocalizationManagerインターフェース
 interface LocalizationManager { getCurrentLanguage(): string;''
@@ -141,12 +141,12 @@ type SupportedLanguage = 'ja' | 'en' | 'zh-CN' | 'zh-TW' | 'ko';
 export class SocialMediaOptimizer {
     private localizationManager: LocalizationManager | null;
     private gameConfig: GameConfig | null;
-    private platformSpecs: Map<string, PlatformSpec>;
+    private, platformSpecs: Map<string, PlatformSpec>;
     private imageCache: Map<string, string>;
     private shareCache: Map<string, OptimizedContent>;
     private canvas: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D | null;
-    private initialized: boolean = false;
+    private, initialized: boolean = false;
     constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
     
         this.localizationManager = localizationManager;
@@ -183,7 +183,7 @@ export class SocialMediaOptimizer {
         this.platformSpecs.set('facebook', {
             imageSize: { width: 1200, height: 630 ,})
             titleLimit: 60)';
-            descriptionLimit: 155,
+           , descriptionLimit: 155,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'fb_cache')');
         ';
@@ -191,7 +191,7 @@ export class SocialMediaOptimizer {
         this.platformSpecs.set('twitter', {
             imageSize: { width: 1200, height: 600 ,})
             titleLimit: 70)';
-            descriptionLimit: 200,
+           , descriptionLimit: 200,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'twitter_cache')');
         ';
@@ -199,7 +199,7 @@ export class SocialMediaOptimizer {
         this.platformSpecs.set('linkedin', {
             imageSize: { width: 1200, height: 627 ,})
             titleLimit: 150)';
-            descriptionLimit: 300,
+           , descriptionLimit: 300,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'li_cache')');
         ';
@@ -207,7 +207,7 @@ export class SocialMediaOptimizer {
         this.platformSpecs.set('pinterest', {
             imageSize: { width: 1000, height: 1500 ,})
             titleLimit: 500)';
-            descriptionLimit: 500,
+           , descriptionLimit: 500,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'pin_cache')');
         ';
@@ -215,7 +215,7 @@ export class SocialMediaOptimizer {
         this.platformSpecs.set('discord', {
             imageSize: { width: 1280, height: 720 ,})
             titleLimit: 256)';
-            descriptionLimit: 2048,
+           , descriptionLimit: 2048,
             imageFormats: ['jpg', 'png', 'gif'],')';
             cacheBustParam: 'discord_cache');
     }
@@ -295,7 +295,7 @@ export class SocialMediaOptimizer {
                 case 'discord':;
                     return this._generateDiscordShareContent(gameState);
                 
-                default: seoLogger.warn(`Unsupported platform: ${platform,}`}, }
+                default: seoLogger.warn(`Unsupported, platform: ${platform,}`}, }
 
                     return this._getFallbackShareContent(platform});''
             } catch (error) { }
@@ -415,19 +415,19 @@ export class SocialMediaOptimizer {
         const embed: DiscordEmbed = { ''
             title: 'BubblePop - 泡割りゲーム',
             description: 'HTML5 Canvas バブルポップゲーム';
-            color: 0x4CAF50 ,};
+           , color: 0x4CAF50 ,};
         if(score && score > 0) {
         ';
 
             embed.title = `BubblePop スコア: ${score.toLocaleString('''
                     name: 'スコア';
-                    value: score.toLocaleString(;
+                   , value: score.toLocaleString(;
         ,}
                     inline: true }))'
                 { ''
                     name: 'レベル',);
                     value: (level || 1).toString(;
-                    inline: true ,})
+                   , inline: true ,})
             ])';
             ')';
             if(bubblesPopped && bubblesPopped > 0) { '
@@ -464,16 +464,14 @@ export class SocialMediaOptimizer {
         const { score } = gameState;
         const specs = this.platformSpecs.get(platform);
 
-        if(!score || score === 0) {'
-            ';
+        if(!score || score === 0) {', ';
 
         }
 
             return specs? .defaultImage || '/assets/social/og-image.png';
         ';
         // スコアに基づいた画像選択
-        if(score >= 100000) {'
-            ';
+        if(score >= 100000) {', ';
 
         }
 
@@ -491,8 +489,7 @@ export class SocialMediaOptimizer {
      * ゲーム状態を含むURLを生成'
      */ : undefined''
     private _generateGameUrl(gameState: GameState): string { ''
-        if(typeof, window === 'undefined'') {'
-            ';
+        if(typeof, window === 'undefined'') {', ';
 
         }
 
@@ -507,7 +504,7 @@ export class SocialMediaOptimizer {
                 utm_source: 'social_share',
                 utm_medium: 'share',)';
                 utm_campaign: 'gameplay_share');
-                score: score.toString( ,}
+               , score: score.toString( ,}
                 level: (level || 1).toString(); }
             };
             return `${baseUrl}? ${params.toString(})`;
@@ -612,7 +609,7 @@ export class SocialMediaOptimizer {
             return optimizeImageUrl(content.image, {
                 width: specs.imageSize.width);
                 height: specs.imageSize.height);
-                format: specs.imageFormats[0]
+               , format: specs.imageFormats[0]
         ,}
             ), }
         }
@@ -657,8 +654,7 @@ export class SocialMediaOptimizer {
                 hashtags.push(lang === 'ja' ? '#ハイスコア' : '#HighScore); }
 
             }''
-            if(content.gameState.achievement) {'
-                ';
+            if(content.gameState.achievement) {', ';
 
             }
 
@@ -670,7 +666,7 @@ export class SocialMediaOptimizer {
             instagram: 10;
             facebook: 5;
             linkedin: 3;
-            pinterest: 10 ,};
+           , pinterest: 10 ,};
         const limit = limits[platform] || 5;
         return hashtags.slice(0, limit);
     }
@@ -680,7 +676,7 @@ export class SocialMediaOptimizer {
      */
     private _generatePlatformMetadata(content: BaseContent, specs: PlatformSpec, platform: string): PlatformMetadata { const metadata: PlatformMetadata = {
             imageWidth: specs.imageSize.width;
-            imageHeight: specs.imageSize.height;
+           , imageHeight: specs.imageSize.height;
             platform,
             generatedAt: new Date().toISOString( ,};
         // プラットフォーム固有のメタデータ
@@ -740,7 +736,7 @@ export class SocialMediaOptimizer {
                 // Discord Embed用の情報
                 optimized.discordEmbed = {
                     title: optimized.title;
-                    description: optimized.description;
+                   , description: optimized.description;
                 }
                     color: 0x4CAF50, // ゲームのテーマカラー }
                     thumbnail: { url: optimized.image }
@@ -820,8 +816,7 @@ export class SocialMediaOptimizer {
         }
         ';
         // コンボの表示
-        if(gameState.combo && gameState.combo > 10) {'
-            ';
+        if(gameState.combo && gameState.combo > 10) {', ';
 
         }
 
@@ -886,7 +881,7 @@ export class SocialMediaOptimizer {
         if(content.gameState? .score) {'
             fields.push({ : undefined)'
                 name: 'スコア');
-                value: content.gameState.score.toLocaleString(;
+               , value: content.gameState.score.toLocaleString(;
         ,}
                 inline: true }))
         }
@@ -914,8 +909,7 @@ export class SocialMediaOptimizer {
             this.localizationManager.getCurrentLanguage(') : 'ja';
         ';
 
-        const localeMap: Record<string, string> = {''
-            'ja': 'ja_JP',
+        const localeMap: Record<string, string> = {'', 'ja': 'ja_JP',
             'en': 'en_US',
             'zh-CN': 'zh_CN',
             'zh-TW': 'zh_TW',

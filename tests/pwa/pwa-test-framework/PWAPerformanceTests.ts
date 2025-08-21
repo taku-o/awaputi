@@ -149,7 +149,7 @@ export class PWAPerformanceTests {
             const writePromises: any[] = [],
             for (let i = 0; i < 10; i++) {
                 writePromises.push();
-                    cache.put(`/test-${i)`, new Response(testData);
+                    cache.put(`/test-${i)`, new, Response(testData);
                 });
             }
             

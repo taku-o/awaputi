@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
-import { DataManager } from '../../src/core/DataManager';
-import { CloudStorageAdapter } from '../../src/core/CloudStorageAdapter';
-import { SyncManager } from '../../src/core/SyncManager';
-import { OfflineManager } from '../../src/core/OfflineManager';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest  } from '@jest/globals';
+import { DataManager  } from '../../src/core/DataManager';
+import { CloudStorageAdapter  } from '../../src/core/CloudStorageAdapter';
+import { SyncManager  } from '../../src/core/SyncManager';
+import { OfflineManager  } from '../../src/core/OfflineManager';
 describe('データ管理 - クラウド対応パフォーマンステスト', () => {
     let dataManager: any,
     let mockGameEngine: any,
@@ -38,7 +38,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         // fetchのモック（高速応答）
         (global as any).fetch = jest.fn() as jest.Mock.mockResolvedValue({
             ok: true;);
-            json: () => Promise.resolve({ success: true );
+           , json: () => Promise.resolve({ success: true );
         });
         // GameEngineのモック
         mockGameEngine = {
@@ -165,7 +165,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             // fetchのモック応答を設定
             global.fetch.mockResolvedValueOnce({
                 ok: true;);
-                json: (') => Promise.resolve({ data: { test: 'cloud data' } }');
+               , json: (') => Promise.resolve({ data: { test: 'cloud data' } }');
             }
             const result = await measurePerformance(
                 'クラウドデータ読み込み',
@@ -252,13 +252,13 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         beforeEach(() => {
             mockDataStorage = {
                 save: jest.fn().mockResolvedValue(true;);
-                load: jest.fn().mockResolvedValue({});
+               , load: jest.fn().mockResolvedValue({});
             
             mockSyncManager = {
                 sync: jest.fn().mockResolvedValue({});
                 cloudStorage: {
                     set: jest.fn().mockResolvedValue(true;);
-                    remove: jest.fn().mockResolvedValue(true
+                   , remove: jest.fn().mockResolvedValue(true
                 });
             
             offlineManager = new OfflineManager(mockDataStorage, mockSyncManager);
@@ -320,7 +320,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             for (let i = 0; i < 100; i++) {
                 await dataManager.save(`memTest${i}`, {
                     index: i;);
-                    data: Array(100).fill(`data-${i)`),
+                   , data: Array(100).fill(`data-${i)`),
         timestamp: Date.now(});
                 });
             }
@@ -417,7 +417,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                 for (let i = 0; i < keyCount; i++) {
                     promises.push(dataManager.save(`scale-test-${i}`, {
                         index: i;);
-                        data: `test-data-${i)`,
+                       , data: `test-data-${i)`,
         timestamp: Date.now(});
                     });
                 }

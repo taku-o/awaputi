@@ -2,8 +2,8 @@
  * Canvas Scale UI Positioning Performance Tests
  * キャンバススケール UI配置システムのパフォーマンステスト
  */
-import { jest } from '@jest/globals';''
-import { JSDOM } from 'jsdom';''
+import { jest  } from '@jest/globals';''
+import { JSDOM  } from 'jsdom';''
 describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
     let canvas: any,
     let responsiveCanvasManager: any,
@@ -111,13 +111,11 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
     }');''
     describe('Coordinate Calculation Performance', (') => {  ''
         test('should perform coordinate conversion within acceptable limits', async (') => {
-            const iterationCount = 10000;'
-            '';
+            const iterationCount = 10000;', '';
             performanceMonitor.mark('coordinate-conversion-start'); }
             for (let i = 0; i < iterationCount; i++) { }
                 scaledCoordinateManager.getScaledPosition(i % 800, i % 600};)'
-            }')'
-            ');''
+            }')', ');''
             performanceMonitor.mark('coordinate-conversion-end'');''
             const totalTime = performanceMonitor.measure('coordinate-conversion', 'coordinate-conversion-start', 'coordinate-conversion-end');
             // 10,000回の座標変換が100ms以下で完了することを確認
@@ -126,20 +124,17 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             const averageTimePerConversion = totalTime / iterationCount;'
             expect(averageTimePerConversion.toBeLessThan(0.01); // 0.01ms以下''
         }');''
-        test('should perform size scaling within acceptable limits', async (') => {  const iterationCount = 10000;'
-            '';
+        test('should perform size scaling within acceptable limits', async (') => {  const iterationCount = 10000;', '';
             performanceMonitor.mark('size-scaling-start'); }'
             for (let i = 0; i < iterationCount; i++) {' }'
                 scaledCoordinateManager.getScaledSize(100 + (i % 100}, 50 + (i % 50}');
-            }'
-            '';
+            }', '';
             performanceMonitor.mark('size-scaling-end'');''
             const totalTime = performanceMonitor.measure('size-scaling', 'size-scaling-start', 'size-scaling-end');
             // 10,000回のサイズスケーリングが50ms以下で完了することを確認'
             expect(totalTime.toBeLessThan(50);''
         }');''
-        test('should handle coordinate validation efficiently', async (') => {  const iterationCount = 5000;'
-            '';
+        test('should handle coordinate validation efficiently', async (') => {  const iterationCount = 5000;', '';
             performanceMonitor.mark('validation-start');
             for(let i = 0; i < iterationCount; i++) {
                 // 有効と無効な座標を混在させてテスト
@@ -147,8 +142,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             }
                 const y = i % 4 === 1 ? -10 : (i % 600); // 25%が無効座標 }
                  }'
-                scaledCoordinateManager.getScaledPosition(x, y})''
-            ')';
+                scaledCoordinateManager.getScaledPosition(x, y})'', ')';
             ;''
             performanceMonitor.mark('validation-end'');''
             const totalTime = performanceMonitor.measure('validation', 'validation-start', 'validation-end');
@@ -166,8 +160,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 hp: 85,
                 timeRemaining: 120, }
                 combo: 7 }
-            },'
-            '';
+            },', '';
             const context = canvas.getContext('2d'');''
             performanceMonitor.mark('ui-render-start');
             // 1フレーム分のUI要素レンダリング
@@ -194,8 +187,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 })'
                 gameUIManager.renderAnimatedScore(context, mockGameState.score);''
                 gameUIManager.renderHPDisplay(context, mockGameState.hp');
-            }'
-            '';
+            }', '';
             performanceMonitor.mark('multiple-updates-end'');''
             const totalTime = performanceMonitor.measure('multiple-updates', 'multiple-updates-start', 'multiple-updates-end');
             // 1000回のUI更新が500ms以下で完了することを確認
@@ -218,8 +210,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 const mockGameState = { score: 12345, hp: 85 ),'
                 gameUIManager.renderAnimatedScore(context, mockGameState.score);''
                 gameUIManager.renderHPDisplay(context, mockGameState.hp'); }
-            }'
-            '';
+            }', '';
             performanceMonitor.mark('resize-render-end'');''
             const totalTime = performanceMonitor.measure('resize-render', 'resize-render-start', 'resize-render-end');
             // リサイズとレンダリングの組み合わせが効率的であることを確認'
@@ -230,8 +221,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
         test('should process input events within acceptable time', async (') => {' }'
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');''
             const inputConverter = new InputCoordinateConverter(scaledCoordinateManager as any');
-            const eventCount = 1000;'
-            '';
+            const eventCount = 1000;', '';
             performanceMonitor.mark('input-processing-start');''
             for(let i = 0; i < eventCount; i++') {
                 const mockEvent = {
@@ -239,11 +229,9 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                     clientY: i % 600,';
             }'
                     type: 'click' }
-                },'
-                '';
+                },', '';
                 inputConverter.convertMouseEvent(mockEvent');
-            }'
-            '';
+            }', '';
             performanceMonitor.mark('input-processing-end'');''
             const totalTime = performanceMonitor.measure('input-processing', 'input-processing-start', 'input-processing-end');
             // 1000回の入力イベント処理が50ms以下で完了することを確認'
@@ -252,8 +240,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
         test('should perform hit testing efficiently', async (') => { ' }'
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');''
             const inputConverter = new InputCoordinateConverter(scaledCoordinateManager as any');
-            const testCount = 5000;'
-            '';
+            const testCount = 5000;', '';
             performanceMonitor.mark('hit-testing-start');
             for(let i = 0; i < testCount; i++) {
                 
@@ -263,8 +250,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 inputConverter.isPointInScaledRect(point, rect);'
                 const circle = { x: 400, y: 300, radius: 50 }''
                 inputConverter.isPointInScaledCircle(point, circle, circle.radius');
-            }'
-            '';
+            }', '';
             performanceMonitor.mark('hit-testing-end'');''
             const totalTime = performanceMonitor.measure('hit-testing', 'hit-testing-start', 'hit-testing-end');
             // ヒットテストが効率的に実行されることを確認'
@@ -293,8 +279,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             // メモリ使用量の増加が許容範囲内であることを確認'
             expect(memoryIncrease.toBeLessThan(10 * 1024 * 1024); // 10MB以下''
         }');''
-        test('should efficiently handle coordinate system cleanup', async (') => {  const cleanupIterations = 100; }'
-            ' }'
+        test('should efficiently handle coordinate system cleanup', async (') => {  const cleanupIterations = 100; }', ' }'
             performanceMonitor.mark('cleanup-test-start'})'
             );''
             for(let i = 0; i < cleanupIterations; i++') {'
@@ -305,8 +290,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 testManager.getScaledSize(50, 50');
             }
                 // クリーンアップ（通常はガベージコレクションで処理される） }
-            }'
-            '';
+            }', '';
             performanceMonitor.mark('cleanup-test-end'');''
             const totalTime = performanceMonitor.measure('cleanup-test', 'cleanup-test-start', 'cleanup-test-end');
             // クリーンアップ処理が効率的であることを確認'
@@ -316,8 +300,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
     describe('Stress Testing', (') => {  ''
         test('should maintain performance under high load conditions', async (') => {''
             const context = canvas.getContext('2d'');
-            const highLoadIterations = 200;'
-            '';
+            const highLoadIterations = 200;', '';
             performanceMonitor.mark('stress-test-start');
             for(let i = 0; i < highLoadIterations; i++) {
                 
@@ -343,8 +326,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 const inputConverter = new InputCoordinateConverter(scaledCoordinateManager as any');''
                 const mockEvent = { clientX: i % 800, clientY: i % 600, type: 'click' }''
                 inputConverter.convertMouseEvent(mockEvent');
-            }'
-            '';
+            }', '';
             performanceMonitor.mark('stress-test-end'');''
             const totalTime = performanceMonitor.measure('stress-test', 'stress-test-start', 'stress-test-end');
             // 高負荷条件下でも許容可能な時間内で処理が完了することを確認
@@ -373,8 +355,8 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 processingTimes.push(operationTime);
                 // パフォーマンス監視：処理時間が増加している場合の対応
                 if(i > 100 && i % 100 === 0) {
-                    const recentAverage = processingTimes.slice(-100).reduce((sum, time) => sum + time, 0) / 100;
-                    const initialAverage = processingTimes.slice(0, 100).reduce((sum, time) => sum + time, 0) / 100;
+                    const, recentAverage = processingTimes.slice(-100).reduce((sum, time) => sum + time, 0) / 100;
+                    const, initialAverage = processingTimes.slice(0, 100).reduce((sum, time) => sum + time, 0) / 100;
                     
                 }
                     // パフォーマンスの著しい低下がないことを確認 }

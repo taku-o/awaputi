@@ -1,8 +1,8 @@
-import { InputCoordinateConverter } from '../../utils/InputCoordinateConverter.js';''
-import { ScaledCoordinateManager } from '../../utils/ScaledCoordinateManager.js';''
-import { UIPositionCalculator } from '../../utils/UIPositionCalculator.js';''
-import { ResponsiveCanvasManager } from '../../managers/ResponsiveCanvasManager.js';''
-import { GameUIManager } from './GameUIManager.js';
+import { InputCoordinateConverter  } from '../../utils/InputCoordinateConverter.js';''
+import { ScaledCoordinateManager  } from '../../utils/ScaledCoordinateManager.js';''
+import { UIPositionCalculator  } from '../../utils/UIPositionCalculator.js';''
+import { ResponsiveCanvasManager  } from '../../managers/ResponsiveCanvasManager.js';''
+import { GameUIManager  } from './GameUIManager.js';
 
 /**
  * ゲームコントロールボタン管理クラス
@@ -17,13 +17,13 @@ interface ButtonStyle { backgroundColor: string;
     textColor: string;
     borderColor: string;
     hoverColor: string;
-    activeColor: string }
+   , activeColor: string }
 
 interface ButtonConfig { text: string;
     size: ButtonSize;
-    style: ButtonStyle;
+   , style: ButtonStyle;
     }
-    position?: { x: number; y: number }
+    position?: { x: number;, y: number }
 
 interface ButtonConfigs { giveUp: ButtonConfig,
     restart: ButtonConfig
@@ -33,18 +33,18 @@ interface ButtonConfigs { giveUp: ButtonConfig,
 interface ButtonState { enabled: boolean,''
     hoveredButton: 'giveUp' | 'restart' | null,
     activeButton: 'giveUp' | 'restart' | null, }
-    lastMousePosition: { x: number; y: number }
+    lastMousePosition: { x: number;, y: number }
 
 interface DeviceInfo { isTouchDevice: boolean,
     isMobile: boolean ,}
 
 interface ButtonVisibility { giveUp: boolean;
-    restart: boolean }
+   , restart: boolean }
 ';
 
 interface AccessibilityState { ''
     focusedButton: 'giveUp' | 'restart' | null;
-    keyboardNavigation: boolean }
+   , keyboardNavigation: boolean }
 
 interface GameState { isGameStarted?: boolean;
     isGameOver?: boolean;
@@ -58,7 +58,7 @@ interface GameEngine { canvas: HTMLCanvasElement,
 interface ButtonBounds { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 export class GameControlButtons {
     private gameEngine: GameEngine;
@@ -71,7 +71,7 @@ export class GameControlButtons {
     // Coordinate system components
     private uiPositionCalculator: UIPositionCalculator | null = null;
     private scaledCoordinateManager: ScaledCoordinateManager | null = null;
-    private inputCoordinateConverter: InputCoordinateConverter | null = null;
+    private, inputCoordinateConverter: InputCoordinateConverter | null = null;
 
     constructor(gameEngine: GameEngine, uiManager: GameUIManager) {
         this.gameEngine = gameEngine;
@@ -104,7 +104,7 @@ export class GameControlButtons {
         // ボタン状態
         this.buttonState = { enabled: true,
             hoveredButton: null;
-            activeButton: null,  // タッチ/クリック中のボタン }
+           , activeButton: null,  // タッチ/クリック中のボタン }
             lastMousePosition: { x: 0, y: 0 ,};
         
         // モバイルデバイス検出
@@ -270,7 +270,7 @@ export class GameControlButtons {
                 this.navigateButtons(direction, visibleButtons);''
                 event.preventDefault(''';
             case 'Enter':)';
-            case ' ':  // スペースキー);
+            case ', ':  // スペースキー);
                 if (this.accessibilityState.focusedButton) {'
                     this.handleButtonActivation(this.accessibilityState.focusedButton);''
                     event.preventDefault()';
@@ -554,7 +554,7 @@ export class GameControlButtons {
                 
                 return { x: scaledPosition.x,
                     y: scaledPosition.y;
-                    width: scaledSize.width, };
+                   , width: scaledSize.width, };
                     height: scaledSize.height }
                 } else {  // フォールバック: 既存のResponsiveCanvasManagerを使用
                 let scaleFactor = 1;
@@ -567,14 +567,14 @@ export class GameControlButtons {
                 
                 return { x: config.position.x,
                     y: config.position.y;
-                    width: config.size.width * scaleFactor, };
+                   , width: config.size.width * scaleFactor, };
                     height: config.size.height * scaleFactor }
                 };''
             } catch (error) {
             console.warn('GameControlButtons: Failed to get scaled button bounds', error);
             return { x: config.position.x,
                 y: config.position.y;
-                width: config.size.width, };
+               , width: config.size.width, };
                 height: config.size.height }
             }
     }

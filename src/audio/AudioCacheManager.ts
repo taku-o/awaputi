@@ -48,14 +48,14 @@
  * Refactored: Phase F.4 - Main Controller Pattern
  */'
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 ';
 // Import sub-components
-import { LRUCache } from './cache/LRUCacheImplementation.js';''
-import { CacheMemoryManager } from './cache/CacheMemoryManager.js';''
-import { CacheDataLoader } from './cache/CacheDataLoader.js';''
-import { CacheStatistics } from './cache/CacheStatistics.js';
+import { LRUCache  } from './cache/LRUCacheImplementation.js';''
+import { CacheMemoryManager  } from './cache/CacheMemoryManager.js';''
+import { CacheDataLoader  } from './cache/CacheDataLoader.js';''
+import { CacheStatistics  } from './cache/CacheStatistics.js';
 
 // エラーハンドラー型定義
 interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
@@ -70,23 +70,23 @@ interface CacheSettings { maxMemorySize: number,
     cleanupInterval: number;
     maxAge: number;
     memoryPressureThreshold: number;
-    lazyLoading: {
-        enabled: boolean;
+   , lazyLoading: {
+        enable;d: boolean;
         chunkSize: number;
-        preloadRadius: number ,};
+       , preloadRadius: number ,};
     autoOptimization: { enabled: boolean;
         compressionThreshold: number;
-        qualityAdjustment: boolean }
+       , qualityAdjustment: boolean }
 
 // キャッシュエントリー型定義
 interface CacheEntry { buffer: AudioBuffer,
     metadata: {
-        size: number;
+        siz;e: number;
         sampleRate: number;
         numberOfChannels: number;
         length: number;
         duration: number;
-        cached: number;
+       , cached: number;
         optimized?: boolean;
         [key: string]: any, }
 
@@ -97,18 +97,18 @@ interface CacheStats { audioBuffer: any,
     memory: any;
     performance: any;
     detailed: any;
-    settings: CacheSettings
+   , settings: CacheSettings
     ,}
 
 // ステータス型定義
 interface AudioCacheManagerStatus { initialized: boolean;
-    components: {
-        memoryManager: string;
+   , components: {
+        memoryManage;r: string;
         dataLoader: string;
-        statistics: string };
+       , statistics: string };
     cacheInstances: { audioBuffer: string;
         metadata: string;
-        chunk: string };
+       , chunk: string };
     settings: CacheSettings;
     }
 
@@ -125,7 +125,7 @@ export class AudioCacheManager {
     // サブコンポーネント
     private memoryManager: CacheMemoryManager;
     private dataLoader: CacheDataLoader;
-    private statistics: CacheStatistics;
+    private, statistics: CacheStatistics;
     constructor(audioContext: AudioContext) {
 
         this.audioContext = audioContext;
@@ -138,19 +138,19 @@ export class AudioCacheManager {
             maxMemorySize: 100 * 1024 * 1024, // 100MB;
             maxEntries: 1000;
             // クリーンアップ設定
-            cleanupInterval: 30000, // 30秒;
+           , cleanupInterval: 30000, // 30秒;
             maxAge: 300000, // 5分;
             memoryPressureThreshold: 0.8, // 80%;
             // 段階的読み込み設定
             lazyLoading: {
                 enabled: true;
-                chunkSize: 4096, // サンプル数
+               , chunkSize: 4096, // サンプル数
     }
                 preloadRadius: 2 // 前後のチャンク数 }
             };
             // 自動最適化設定
             autoOptimization: { enabled: true;
-                compressionThreshold: 0.7, // 70%以上で圧縮;
+               , compressionThreshold: 0.7, // 70%以上で圧縮;
                 qualityAdjustment: true ,}
         };
         // キャッシュインスタンス
@@ -200,13 +200,13 @@ export class AudioCacheManager {
             const size = this.memoryManager.calculateBufferSize(buffer);
             const cacheEntry: CacheEntry = {
                 buffer: buffer;
-                metadata: {
+               , metadata: {
                     ...metadata;
                     size: size;
                     sampleRate: buffer.sampleRate;
                     numberOfChannels: buffer.numberOfChannels;
                     length: buffer.length;
-                    duration: buffer.duration,
+                   , duration: buffer.duration,
                     cached: Date.now()';
             this.metadataCache.set(key + '_meta', cacheEntry.metadata);
                 JSON.stringify(cacheEntry.metadata).length);
@@ -272,7 +272,7 @@ export class AudioCacheManager {
             metadata: this.metadataCache.getStats();
             chunk: this.chunkCache.getStats();
             memory: this.memoryManager.getCurrentMemoryUsage()';
-            performance: this.dataLoader.getLoaderStats(),
+           , performance: this.dataLoader.getLoaderStats(),
             detailed: this.statistics.generateSummary()';
     clearCache(type: string = 'all): void {'
         try {'
@@ -389,10 +389,10 @@ export class AudioCacheManager {
             
             const cacheEntry: CacheEntry = {
                 buffer: optimizedBuffer;
-                metadata: {
+               , metadata: {
                     ...metadata;
                     size: optimizedSize;
-                    optimized: true }
+                   , optimized: true }
             };
             this.audioBufferCache.set(key, cacheEntry, optimizedSize);
             ';

@@ -12,7 +12,7 @@ interface GameEngine { performanceOptimizer?: PerformanceOptimizer;
     enhancedEffectManager?: EnhancedEffectManager;
     bubbleManager?: BubbleManager;
     audioManager?: AudioManager;
-    render?: (ctx: CanvasRenderingContext2D) => void ,}
+    render?: (ct;x: CanvasRenderingContext2D) => void ,}
 }
 
 interface PerformanceOptimizer { getCurrentFPS(): number | undefined;
@@ -37,17 +37,17 @@ interface Thresholds { fps: ThresholdValue,
     memory: ThresholdValue;
     gcFrequency: ThresholdValue;
     drawCalls: ThresholdValue;
-    updateTime: ThresholdValue
+   , updateTime: ThresholdValue
     ,}
 
 interface ThresholdValue { warning: number;
-    critical: number }
+   , critical: number }
 
 interface Alert { metric: string;
     level: 'warning' | 'critical';
     value: number;
     timestamp: number;
-    message: string }
+   , message: string }
 
 interface Metrics { timestamp: number;
     fps: number;
@@ -61,7 +61,7 @@ interface Metrics { timestamp: number;
     effectCount: number;
     entityCount: number;
     textureMemory: number;
-    audioNodes: number }
+   , audioNodes: number }
 ';
 
 interface Chart { ''
@@ -69,38 +69,38 @@ interface Chart { ''
 
 interface PerformanceIssue { type: string,''
     severity: 'warning' | 'critical';
-    description: string;
+   , description: string;
     autoFix?: string ,}
 
 interface PerformanceSuggestion { type: string;
-    description: string,
+   , description: string,
     impact: 'low' | 'medium' | 'high' ,}
 ';
 
 interface TrendData { value: number,''
     direction: 'increasing' | 'decreasing' | 'stable';
-    percentage: number ,}
+   , percentage: number ,}
 
 interface PerformanceBottleneck { type: string;
     ratio: number;
-    description: string }
+   , description: string }
 
 interface PerformancePattern { type: string;
     period?: number;
-    description: string }
+   , description: string }
 
 interface PerformanceAnalysis { issues: PerformanceIssue[];
     suggestions: PerformanceSuggestion[];
-    trends: Record<string, TrendData>;
+   , trends: Record<string, TrendData>;
     bottlenecks: PerformanceBottleneck[];
-    patterns: PerformancePattern[]
+   , patterns: PerformancePattern[]
     ,}
 
 interface Statistics { [key: string]: {
-        min: number;
+        mi;n: number;
         max: number;
         avg: number;
-        current: number }
+       , current: number }
 
 type AlertCallback = (alert: Alert) => void;
 
@@ -111,7 +111,7 @@ export class AdvancedPerformanceMonitor {
     private analyzer: PerformanceAnalyzer;
     private profiler: DetailedProfiler;
     private thresholds: Thresholds;
-    private alerts: Map<string, Alert>;
+    private, alerts: Map<string, Alert>;
     private alertCallbacks: Set<AlertCallback>;
     private historySize: number;
     private metricsHistory: Metrics[];
@@ -119,7 +119,7 @@ export class AdvancedPerformanceMonitor {
     private chartUpdateInterval: number;
     private isMonitoring: boolean;
     private isProfiling: boolean;
-    private updateTimer: number | null;
+    private, updateTimer: number | null;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -445,7 +445,7 @@ class MetricsCollector { private monitor: AdvancedPerformanceMonitor
     private lastFrameTime: number;
     private frameCount: number;
     private gcCount: number;
-    private lastGCCheck: number;
+    private, lastGCCheck: number;
     constructor(monitor: AdvancedPerformanceMonitor) {
 
         this.monitor = monitor;
@@ -477,7 +477,7 @@ class MetricsCollector { private monitor: AdvancedPerformanceMonitor
             effectCount: this.getEffectCount();
             entityCount: this.getEntityCount();
             textureMemory: this.getTextureMemory();
-            audioNodes: this.getAudioNodeCount( };
+           , audioNodes: this.getAudioNodeCount( };
         
         return, metrics;
     }
@@ -582,7 +582,7 @@ class MetricsCollector { private monitor: AdvancedPerformanceMonitor
  */
 class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
     private analysisWindow: number;
-    private trendThreshold: number;
+    private, trendThreshold: number;
     constructor(monitor: AdvancedPerformanceMonitor) {
 
         this.monitor = monitor;
@@ -607,7 +607,7 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
             suggestions: this.generateSuggestions(recentMetrics);
             trends: this.analyzeTrends(recentMetrics);
             bottlenecks: this.identifyBottlenecks(recentMetrics);
-            patterns: this.detectPatterns(recentMetrics ,};
+           , patterns: this.detectPatterns(recentMetrics ,};
         
         return analysis;
     }
@@ -716,13 +716,13 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
         if(latest.renderTime > latest.updateTime * 2) {'
             bottlenecks.push({)'
                 type: 'rendering')';
-                ratio: latest.renderTime / latest.updateTime,' }'
+               , ratio: latest.renderTime / latest.updateTime,' }'
 
                 description: 'レンダリングがボトルネックになっています');' }
 
         } else if(latest.updateTime > latest.renderTime * 2) { bottlenecks.push({)'
                 type: 'game_logic')';
-                ratio: latest.updateTime / latest.renderTime,')';
+               , ratio: latest.updateTime / latest.renderTime,')';
                 description: 'ゲームロジックがボトルネックになっています' ,}
         
         return bottlenecks;
@@ -802,7 +802,7 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
                 stats[key] = {
                     min: Math.min(...values);
                     max: Math.max(...values);
-                    avg: this.calculateAverage(metricsHistory, key),
+                   , avg: this.calculateAverage(metricsHistory, key),
         
         }
                     current: values[values.length - 1] }
@@ -820,30 +820,30 @@ interface Profile { component: string,
     endTime?: number;
     duration?: number;
     samples: ProfileSample[];
-    options: ProfileOptions
+   , options: ProfileOptions
     ,}
 
 interface ProfileSample { operation: string;
     duration: number;
     timestamp: number;
-    memory: number }
+   , memory: number }
 
 interface ProfileOperation { count: number;
     totalTime: number;
     minTime: number;
     maxTime: number;
-    avgTime: number }
+   , avgTime: number }
 
 interface ProfileResult { component: string;
     duration: number;
     sampleCount: number;
-    operations: Record<string, ProfileOperation>;
+   , operations: Record<string, ProfileOperation>;
     timeline: TimelineBucket[]
     ,}
 
 interface TimelineBucket { start: number;
     end: number;
-    samples: ProfileSample[];
+   , samples: ProfileSample[];
     avgDuration?: number }
 
 /**
@@ -853,9 +853,9 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
     private gameEngine: GameEngine;
     private isRunning: boolean;
     private currentProfile: Profile | null;
-    private profiles: Map<string, Profile>;
+    private, profiles: Map<string, Profile>;
     private sampleRate: number;
-    private maxSamples: number;
+    private, maxSamples: number;
     constructor(monitor: AdvancedPerformanceMonitor) {
 
         this.monitor = monitor;
@@ -887,9 +887,9 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
         this.currentProfile = { component,
             startTime: performance.now(;
             samples: [];
-            options: {
+           , options: {
                 sampleRate: this.sampleRate);
-                maxSamples: this.maxSamples);
+               , maxSamples: this.maxSamples);
                 ...options
         ,};
         
@@ -993,7 +993,7 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
             operation,
             duration,
             timestamp: performance.now() - this.currentProfile.startTime;
-            memory: (performance, as any).memory ? (performance, as any).memory.usedJSHeapSize : 0 ,};
+           , memory: (performance, as any).memory ? (performance, as any).memory.usedJSHeapSize : 0 ,};
         this.currentProfile.samples.push(sample);
         
         // サンプル数の制限
@@ -1013,7 +1013,7 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
                     count: 0;
                     totalTime: 0;
                     minTime: Infinity;
-                    maxTime: 0;
+                   , maxTime: 0;
         }
                     avgTime: 0 }
                 }
@@ -1030,7 +1030,7 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
         
         return { component: profile.component,
             duration: profile.duration || 0;
-            sampleCount: profile.samples.length;
+           , sampleCount: profile.samples.length;
             operations, };
             timeline: this.generateTimeline(profile); }
         }
@@ -1048,7 +1048,7 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
             const bucket: TimelineBucket = {
                 start: i;
                 end: i + bucketSize;
-                samples: profile.samples.filter(s => )
+               , samples: profile.samples.filter(s => )
         ,}
                     s.timestamp >= i && s.timestamp < i + bucketSize), }
             };

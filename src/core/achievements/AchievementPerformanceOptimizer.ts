@@ -16,24 +16,24 @@ export interface OptimizerConfig { batchSize: number,
     maxNotifications: number;
     enableCaching: boolean;
     enableBatching: boolean;
-    enableThrottling: boolean ,}
+   , enableThrottling: boolean ,}
 
 export interface CacheEntry<T = any> { value: T;
-    timestamp: number }
+   , timestamp: number }
 
 export interface BatchEvent { eventType: string;
     data: any;
     processor: EventProcessor;
-    resolve: (value: any) => void;
-    reject: (reason: any) => void;
+    resolve: (valu;e: any) => void;
+    reject: (reaso;n: any) => void;
     timestamp: number }
 }
 
 export interface ThrottledEvent { eventType: string;
     data: any;
     processor: EventProcessor;
-    resolve: (value: any) => void;
-    reject: (reason: any) => void;
+    resolve: (valu;e: any) => void;
+    reject: (reaso;n: any) => void;
     timestamp?: number }
 }
 
@@ -43,20 +43,20 @@ export interface PerformanceStats { updateCount: number;
     cacheMisses: number;
     batchProcessingCount: number;
     throttledEvents: number;
-    totalProcessingTime: number }
+   , totalProcessingTime: number }
 
 export interface ExtendedPerformanceStats extends PerformanceStats { cacheEfficiency: number;
     cacheSize: number;
-    queueSize: number }
+   , queueSize: number }
 
 export interface OptimizedBubbleData { totalBubbles: number;
-    bubbleTypeCounts: Record<string, number>,
+   , bubbleTypeCounts: Record<string, number>,
     timestamp: number ,}
 
 export interface OptimizedScoreData { totalScore: number;
     maxScore: number;
     updateCount: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface EventData { bubbleType?: string;
     score?: number;
@@ -71,13 +71,13 @@ export type OptimizationMode = 'batching' | 'throttling' | 'immediate';
 
 export class AchievementPerformanceOptimizer {
     private config: OptimizerConfig;
-    private cache: Map<string, CacheEntry>;
+    private, cache: Map<string, CacheEntry>;
     private updateQueue: ThrottledEvent[];
     private throttleTimer: number | null;
     private lastUpdateTime: number;
     private batchProcessor: number | null;
     private batchQueue: BatchEvent[];
-    private performanceStats: PerformanceStats;
+    private, performanceStats: PerformanceStats;
     private performanceResetInterval?: number;
 
     constructor() {
@@ -89,7 +89,7 @@ export class AchievementPerformanceOptimizer {
             cacheTimeout: 5000, // キャッシュタイムアウト（ms）;
             maxNotifications: 5, // 最大通知数;
             enableCaching: true;
-            enableBatching: true;
+           , enableBatching: true;
     ,}
             enableThrottling: true }
         };
@@ -110,7 +110,7 @@ export class AchievementPerformanceOptimizer {
             cacheMisses: 0;
             batchProcessingCount: 0;
             throttledEvents: 0;
-            totalProcessingTime: 0 ,}
+           , totalProcessingTime: 0 ,}
 
     /**
      * パフォーマンス最適化を初期化
@@ -443,7 +443,7 @@ export class AchievementPerformanceOptimizer {
             cacheMisses: 0;
             batchProcessingCount: 0;
             throttledEvents: 0;
-            totalProcessingTime: 0 }
+           , totalProcessingTime: 0 }
 
     /**
      * 設定を更新
@@ -499,7 +499,7 @@ export class AchievementPerformanceOptimizer {
      * キューの状態を取得
      * @returns キュー状態情報
      */
-    getQueueStatus(): { batchQueue: number; updateQueue: number; isProcessing: boolean } { return { batchQueue: this.batchQueue.length,
+    getQueueStatus(): { batchQueue: number; updateQueue: number;, isProcessing: boolean } { return { batchQueue: this.batchQueue.length,
             updateQueue: this.updateQueue.length, };
             isProcessing: this.batchProcessor !== null || this.throttleTimer !== null }
         }

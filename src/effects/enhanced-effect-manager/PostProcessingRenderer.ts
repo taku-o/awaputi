@@ -1,19 +1,19 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * 拡張変換状態インターフェース
  */
 interface EnhancedTransform { depthOfField: number,
     motionBlur: {
-        x: number;
+        ;x: number;
         y: number;
-        intensity: number ,};
+       , intensity: number ,};
     chromatic: number;
     vignette: number;
     noise: number;
     scanlines: number;
-    glitch: { intensity: number;
-        frequency: number }
+   , glitch: { intensity: number;
+       , frequency: number }
 
 /**
  * レンダリング設定インターフェース
@@ -25,13 +25,13 @@ interface RenderSettings { enablePostProcessing: boolean,''
  * グリッチ効果設定インターフェース
  */
 interface GlitchEffect { intensity: number;
-    frequency: number }
+   , frequency: number }
 
 /**
  * フォーカスポイントインターフェース
  */
 interface FocusPoint { x: number;
-    y: number }
+   , y: number }
 
 /**
  * Post Processing Renderer
@@ -39,7 +39,7 @@ interface FocusPoint { x: number;
  */
 export class PostProcessingRenderer {
     private canvas: HTMLCanvasElement;
-    private errorHandler: any;
+    private, errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas
@@ -132,8 +132,7 @@ export class PostProcessingRenderer {
     renderScanlinesEffect(context: CanvasRenderingContext2D, intensity: number): void { try {
             const canvas = this.canvas;''
             context.save(''';
-            context.globalCompositeOperation = 'multiply';)'
-            ')';
+            context.globalCompositeOperation = 'multiply';)', ')';
             for(let, y = 0; y < canvas.height; y += 4) {'
 
                 context.fillStyle = 'rgba(0, 0, 0, 0.1)';
@@ -203,8 +202,8 @@ export class PostProcessingRenderer {
             context.filter = `blur(${blurRadius)px)`;
             
             // フォーカスポイント周辺はシャープに保つ
-            const focusRadius = 100;
-            const gradient = context.createRadialGradient(;
+            const, focusRadius = 100;
+            const, gradient = context.createRadialGradient(;
                 focusPoint.x, focusPoint.y, 0);
                 focusPoint.x, focusPoint.y, focusRadius)'';
             ');''

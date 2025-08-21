@@ -4,10 +4,10 @@
  * ゲームバランス調整時の検証ルールを定義し、変更の妥当性と影響を評価するルールエンジン。
  */
 
-import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';''
-import { ValidationRuleEngine } from './balance-validation/ValidationRuleEngine.js';''
-import { ValidationRuleDefinitions } from './balance-validation/ValidationRuleDefinitions.js';''
-import { ValidationResultProcessor } from './balance-validation/ValidationResultProcessor.js';
+import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';''
+import { ValidationRuleEngine  } from './balance-validation/ValidationRuleEngine.js';''
+import { ValidationRuleDefinitions  } from './balance-validation/ValidationRuleDefinitions.js';''
+import { ValidationResultProcessor  } from './balance-validation/ValidationResultProcessor.js';
 
 // Type definitions
 interface ValidationContext { configKey?: string;
@@ -22,20 +22,20 @@ interface ValidationContext { configKey?: string;
 interface ValidationError { rule: string,
     message: string,
     severity: 'low' | 'medium' | 'high' | 'critical';
-    category: string;
+   , category: string;
     context?: any ,}
 
 interface ValidationWarning { rule: string;
-    message: string,
+   , message: string,
     severity: 'low' | 'medium' | 'high';
-    category: string;
+   , category: string;
     context?: any ,}
 
 interface ValidationSuggestion { rule: string;
     message: string;
     recommendedValue?: any;
     action?: string;
-    category: string }
+   , category: string }
 
 interface ValidationResult { valid: boolean;
     errors: ValidationError[];
@@ -44,14 +44,14 @@ interface ValidationResult { valid: boolean;
     autoFixAvailable: boolean;
     autoFixedValue: any;
     rulesApplied: string[];
-    timestamp: number;
+   , timestamp: number;
     engineSummary?: any }
 
 interface ValidationRule { name: string;
     category: string;
     enabled: boolean;
     priority: number;
-    validator: (oldValue: any, newValue: any, context: ValidationContext) => ValidationResult;
+   , validator: (oldValu;e: any, newValue: any, context: ValidationContext) => ValidationResult;
     description?: string;
     applicableContexts?: string[]; ,}
 }
@@ -63,34 +63,34 @@ interface RuleFilters { category?: string;
 
 interface BubbleHealthLimits { min: number,
     max: number;
-    default: number ,}
+   , default: number ,}
 
 interface ScoreLimits { min: number;
     max: number;
-    default: number }
+   , default: number }
 
 interface ValidationAnalytics { totalValidations: number;
     successRate: number;
     errorRate: number;
     warningRate: number;
     mostCommonErrors: string[];
-    averageExecutionTime: number }
+   , averageExecutionTime: number }
 
 interface EngineMetrics { totalExecutions: number;
     averageExecutionTime: number;
     rulesExecuted: number;
-    errorsEncountered: number }
+   , errorsEncountered: number }
 
 interface EngineStatistics { rulesCount: number;
     activeRules: number;
     disabledRules: number;
-    categoryCounts: Record<string, number> }
+   , categoryCounts: Record<string, number> }
 
 interface ExecutionHistoryEntry { timestamp: number,
     ruleCount: number;
     executionTime: number;
     result: ValidationResult;
-    context: ValidationContext
+   , context: ValidationContext
     ,}
 
 interface EngineConfig { maxExecutionTime?: number;
@@ -114,14 +114,14 @@ interface ComponentHealth { status: string,
 interface SystemHealth { engine: ComponentHealth,
     definitions: ComponentHealth;
     processor: ComponentHealth;
-    overall: {
-        initialized: boolean;
+   , overall: {
+        initialize;d: boolean;
         totalRules: number;
-        lastSyncTime: number ,}
+       , lastSyncTime: number ,}
 
 interface ComponentReferences { engine: ValidationRuleEngine,
     definitions: ValidationRuleDefinitions;
-    processor: ValidationResultProcessor
+   , processor: ValidationResultProcessor
     ,}
 
 export class BalanceAdjustmentValidationRules {
@@ -130,7 +130,7 @@ export class BalanceAdjustmentValidationRules {
     private ruleDefinitions: ValidationRuleDefinitions;
     private resultProcessor: ValidationResultProcessor;
     // Legacy compatibility properties
-    public ruleCategories: Record<string, any>;
+    public, ruleCategories: Record<string, any>;
     public rules: Map<string, ValidationRule>;
 
     constructor() {
@@ -219,7 +219,7 @@ export class BalanceAdjustmentValidationRules {
 
                     rule: 'system', ' }
 
-                    message: `Validation process failed: ${error instanceof Error ? error.message : String(error'})`; ''
+                    message: `Validation process, failed: ${error, instanceof Error ? error.message : String(error'})`; ''
                     severity: 'high',]';
                     category: 'system'];
                 }],
@@ -228,7 +228,7 @@ export class BalanceAdjustmentValidationRules {
                 autoFixAvailable: false;
                 autoFixedValue: newValue;
                 rulesApplied: [];
-                timestamp: Date.now();
+               , timestamp: Date.now();
             }
     }
     
@@ -449,14 +449,14 @@ export class BalanceAdjustmentValidationRules {
                 status: 'active',
                 metrics: this.ruleEngine.getStatistics()';
                 status: 'active')';
-                ruleCount: this.ruleDefinitions.rules.size,
+               , ruleCount: this.ruleDefinitions.rules.size,
                 statistics: this.ruleDefinitions.getStatistics()';
-                status: 'active',);
+               , status: 'active',);
                 analytics: this.resultProcessor.getAnalytics();
             },
             overall: { initialized: true;
                 totalRules: this.rules.size;
-                lastSyncTime: Date.now( }
+               , lastSyncTime: Date.now( }
         }
     
     /**

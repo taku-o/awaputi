@@ -4,7 +4,7 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void ,}
+        handleError(erro;r: Error, context: any): void ,}
 
 interface EventBus { on(event: string, callback: Function): void,
     off(event: string): void,
@@ -12,20 +12,20 @@ interface EventBus { on(event: string, callback: Function): void,
 
 interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean;
-    reducedMotion: boolean ,}
+   , reducedMotion: boolean ,}
 
 interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
 }
 
 interface FilterOption { key: string;
-    label: string }
+   , label: string }
 
 interface ButtonInfo { key: string;
     x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 export class StatisticsFilterUI {
     private gameEngine: GameEngine;
@@ -48,7 +48,7 @@ export class StatisticsFilterUI {
     private periodButtons: ButtonInfo[] = [];
     private modeButtons: ButtonInfo[] = [];
     // 期間フィルターオプション
-    private periods: FilterOption[] = [' }'
+    private, periods: FilterOption[] = [' }'
 
         { key: 'today', label: '今日' ,},''
         { key: 'last7days', label: '7日間' ,},''
@@ -75,7 +75,7 @@ export class StatisticsFilterUI {
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
             highContrast: false;
-            largeText: false;
+           , largeText: false;
     }
             reducedMotion: false }
         };
@@ -161,13 +161,12 @@ export class StatisticsFilterUI {
                 key: period.key,);
                 x: buttonX);
                 y: y + (filterHeight - buttonHeight) / 2;
-                width: buttonWidth, }
+               , width: buttonWidth, }
                 height: buttonHeight }
             });
             ;
             // ボタン背景
-            if(this.accessibilitySettings.highContrast) {'
-                ';
+            if(this.accessibilitySettings.highContrast) {', ';
 
             }
 
@@ -180,8 +179,7 @@ export class StatisticsFilterUI {
             context.fillRect(buttonX, y + (filterHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
             // ボタン枠線
-            if(this.accessibilitySettings.highContrast) {'
-                ';
+            if(this.accessibilitySettings.highContrast) {', ';
 
             }
 
@@ -195,8 +193,7 @@ export class StatisticsFilterUI {
             context.strokeRect(buttonX, y + (filterHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
             // ボタンテキスト
-            if(this.accessibilitySettings.highContrast) {'
-                ';
+            if(this.accessibilitySettings.highContrast) {', ';
 
             }
 
@@ -253,13 +250,12 @@ export class StatisticsFilterUI {
                 key: mode.key,);
                 x: buttonX);
                 y: y + (modeHeight - buttonHeight) / 2;
-                width: buttonWidth, }
+               , width: buttonWidth, }
                 height: buttonHeight }
             });
             ;
             // ボタン背景
-            if(this.accessibilitySettings.highContrast) {'
-                ';
+            if(this.accessibilitySettings.highContrast) {', ';
 
             }
 
@@ -272,8 +268,7 @@ export class StatisticsFilterUI {
             context.fillRect(buttonX, y + (modeHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
             // ボタン枠線
-            if(this.accessibilitySettings.highContrast) {'
-                ';
+            if(this.accessibilitySettings.highContrast) {', ';
 
             }
 
@@ -287,8 +282,7 @@ export class StatisticsFilterUI {
             context.strokeRect(buttonX, y + (modeHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
             // ボタンテキスト
-            if(this.accessibilitySettings.highContrast) {'
-                ';
+            if(this.accessibilitySettings.highContrast) {', ';
 
             }
 

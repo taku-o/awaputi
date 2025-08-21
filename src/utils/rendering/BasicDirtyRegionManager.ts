@@ -13,13 +13,13 @@
 interface DirtyRegionBounds { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface DirtyRegionStats { totalRegions: number;
     mergedRegions: number;
     skippedRedraws: number;
     pixelsSaved: number;
-    performanceGain: number }
+   , performanceGain: number }
 
 interface DirtyRegionConfig { enabled: boolean;
     regions: Set<DirtyRegionBounds>;
@@ -31,7 +31,7 @@ interface DirtyRegionConfig { enabled: boolean;
     expansionFactor: number;
     regionHistory: DirtyRegionBounds[][];
     historySize: number;
-    hotspots: Map<string, number>;
+   , hotspots: Map<string, number>;
     stats: DirtyRegionStats
     ,}
 
@@ -54,7 +54,7 @@ interface ObjectTracking { x: number,
     scale: number;
     alpha: number;
     visible: boolean;
-    dirty: boolean ,}
+   , dirty: boolean ,}
 
 interface DirtyRegionResult extends DirtyRegionBounds { full?: boolean; }
 
@@ -66,7 +66,7 @@ interface DirtyRegionManagerConfig { enabled?: boolean;
 
 export class BasicDirtyRegionManager {
     private config: DirtyRegionConfig;
-    private objectTracking: Map<string | number, ObjectTracking>;
+    private, objectTracking: Map<string | number, ObjectTracking>;
     private userDirtyRegions: Set<DirtyRegionBounds>;
     constructor() {
 
@@ -77,20 +77,20 @@ export class BasicDirtyRegionManager {
             mergedRegions: [];
             frameRegions: new Map();
             // Region optimization parameters
-            minRegionSize: 32, // Minimum size for a dirty region;
+           , minRegionSize: 32, // Minimum size for a dirty region;
             maxRegionCount: 8, // Maximum number of regions per frame;
             mergeThreshold: 0.3, // Merge regions if overlap > 30%;
             expansionFactor: 1.1, // Expand regions by 10% to reduce edge effects;
             // Region tracking
             regionHistory: [];
-            historySize: 30, // 30 frames of history;
+           , historySize: 30, // 30 frames of history;
             hotspots: new Map(), // Frequently dirty areas;
             // Optimization statistics
             stats: {
                 totalRegions: 0;
                 mergedRegions: 0;
                 skippedRedraws: 0;
-                pixelsSaved: 0;
+               , pixelsSaved: 0;
     ,}
                 performanceGain: 0 }
 };
@@ -179,7 +179,7 @@ export class BasicDirtyRegionManager {
 
         return { x: tracking.x,
             y: tracking.y;
-            width: tracking.width, };
+           , width: tracking.width, };
             height: tracking.height }
         }
 
@@ -190,7 +190,7 @@ export class BasicDirtyRegionManager {
             x: obj.x || 0;
             y: obj.y || 0;
             width: obj.width || 0;
-            height: obj.height || 0 };
+           , height: obj.height || 0 };
         // Account for rotation and scaling
         if(obj.rotation || (obj.scale !== undefined && obj.scale !== 1) {
             const centerX = bounds.x + bounds.width / 2;
@@ -219,7 +219,7 @@ export class BasicDirtyRegionManager {
             x: Math.floor(bounds.x - bounds.width * (this.config.expansionFactor - 1) / 2);
             y: Math.floor(bounds.y - bounds.height * (this.config.expansionFactor - 1) / 2);
             width: Math.ceil(bounds.width * this.config.expansionFactor);
-            height: Math.ceil(bounds.height * this.config.expansionFactor };
+           , height: Math.ceil(bounds.height * this.config.expansionFactor };
 
         // Only, add if, region meets, minimum size, requirements
         if (expanded.width >= this.config.minRegionSize || ;
@@ -329,7 +329,7 @@ export class BasicDirtyRegionManager {
             rotation: obj.rotation || 0;
             scale: obj.scale || 1);
             alpha: obj.alpha !== undefined ? obj.alpha : 1);
-            visible: obj.visible !== undefined ? obj.visible : true,);
+           , visible: obj.visible !== undefined ? obj.visible : true,);
             dirty: obj.dirty || false ,}
 
     /**
@@ -389,5 +389,5 @@ export class BasicDirtyRegionManager {
             mergedRegions: 0;
             skippedRedraws: 0;
             pixelsSaved: 0;
-            performanceGain: 0 }
+           , performanceGain: 0 }
 }

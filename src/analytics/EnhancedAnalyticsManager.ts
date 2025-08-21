@@ -7,16 +7,16 @@
  * - PlayerBehaviorAnalyzer: プレイヤー行動分析とパターン検出
  * - GameBalanceAnalyzer: ゲームバランス分析と警告生成
  * - AnalyticsPerformanceMonitor: 分析用パフォーマンス監視とメトリクス収集
- * - SessionManager: セッション管理と統計収集
+ * -, SessionManager: セッション管理と統計収集
  */
 
 import analytics from '../utils/Analytics.ts';''
-import { PrivacyManager } from './PrivacyManager.ts';''
-import { IndexedDBStorageManager } from './IndexedDBStorageManager.ts';''
-import { PlayerBehaviorAnalyzer } from './enhanced-analytics-manager/PlayerBehaviorAnalyzer.ts';''
-import { GameBalanceAnalyzer } from './enhanced-analytics-manager/GameBalanceAnalyzer.ts';''
-import { AnalyticsPerformanceMonitor } from './enhanced-analytics-manager/AnalyticsPerformanceMonitor.ts';''
-import { SessionManager } from './enhanced-analytics-manager/SessionManager.ts';
+import { PrivacyManager  } from './PrivacyManager.ts';''
+import { IndexedDBStorageManager  } from './IndexedDBStorageManager.ts';''
+import { PlayerBehaviorAnalyzer  } from './enhanced-analytics-manager/PlayerBehaviorAnalyzer.ts';''
+import { GameBalanceAnalyzer  } from './enhanced-analytics-manager/GameBalanceAnalyzer.ts';''
+import { AnalyticsPerformanceMonitor  } from './enhanced-analytics-manager/AnalyticsPerformanceMonitor.ts';''
+import { SessionManager  } from './enhanced-analytics-manager/SessionManager.ts';
 
 // Enhanced Analytics Manager interfaces and types
 export interface AnalyticsOptions { enableBehaviorAnalysis?: boolean;
@@ -31,14 +31,14 @@ export interface AnalyticsData { sessionData?: any[];
     balanceData?: any[];
     performanceData?: any[]; }
 export interface AnalyticsReport { summary: {
-        totalSessions: number;
+        totalSession;s: number;
         totalEvents: number;
         avgSessionDuration: number;
-        errorRate: number 
+       , errorRate: number 
 };
     trends: any[];
     recommendations: string[];
-    issues: any[];
+   , issues: any[];
 }
 export interface Analytics { trackEvent(event: string, data?: any): void;
     startSession(): void;
@@ -63,7 +63,7 @@ export class EnhancedAnalyticsManager {
             enablePerformanceMonitoring: true;
             enableSessionTracking: true;
             enablePrivacyProtection: true;
-            storageQuota: 50 * 1024 * 1024, // 50MB;
+           , storageQuota: 50 * 1024 * 1024, // 50MB;
             retentionDays: 30
 ,}
             ...options
@@ -120,7 +120,7 @@ export class EnhancedAnalyticsManager {
                 timestamp: Date.now();
                 sessionId: this.sessionManager.getCurrentSessionId();
                 performanceMetrics: this.performanceMonitor.getCurrentMetrics();
-                contextData: this.captureEventContext( ,};
+               , contextData: this.captureEventContext( ,};
 
             // Track with base analytics
             this.analytics.trackEvent(eventType, enhancedData);
@@ -137,9 +137,8 @@ export class EnhancedAnalyticsManager {
     /**
      * プレイヤー行動の分析
      */'
-    async analyzePlayerBehavior(timeRange?: { start: Date; end: Date }): Promise<any> { ''
-        if(!this.options.enableBehaviorAnalysis) {'
-            ';
+    async analyzePlayerBehavior(timeRange?: { start: Date;, end: Date }): Promise<any> { ''
+        if(!this.options.enableBehaviorAnalysis) {', ';
 
         }
 
@@ -150,9 +149,8 @@ export class EnhancedAnalyticsManager {
     /**
      * ゲームバランスの分析
      */'
-    async analyzeGameBalance(timeRange?: { start: Date; end: Date ): Promise<any> {''
-        if(!this.options.enableBalanceAnalysis) {'
-            '
+    async analyzeGameBalance(timeRange?: { start: Date;, end: Date ): Promise<any> {''
+        if(!this.options.enableBalanceAnalysis) {', '
         }
 
             throw new Error('Balance, analysis is, disabled); }
@@ -163,8 +161,7 @@ export class EnhancedAnalyticsManager {
      * パフォーマンス指標の取得
      */'
     getPerformanceMetrics(): any { ''
-        if(!this.options.enablePerformanceMonitoring) {'
-            ';
+        if(!this.options.enablePerformanceMonitoring) {', ';
 
         }
 
@@ -175,9 +172,8 @@ export class EnhancedAnalyticsManager {
     /**
      * セッション統計の取得
      */'
-    async getSessionStatistics(timeRange?: { start: Date; end: Date ): Promise<any> {''
-        if(!this.options.enableSessionTracking) {'
-            '
+    async getSessionStatistics(timeRange?: { start: Date;, end: Date ): Promise<any> {''
+        if(!this.options.enableSessionTracking) {', '
         }
 
             throw new Error('Session, tracking is, disabled); }
@@ -187,17 +183,17 @@ export class EnhancedAnalyticsManager {
     /**
      * 総合レポートの生成
      */
-    async generateAnalyticsReport(timeRange?: { start: Date; end: Date ): Promise<AnalyticsReport> {
+    async generateAnalyticsReport(timeRange?: { start: Date;, end: Date ): Promise<AnalyticsReport> {
         const report: AnalyticsReport = {
             summary: {
                 totalSessions: 0;
                 totalEvents: 0;
                 avgSessionDuration: 0;
-                errorRate: 0 
+               , errorRate: 0 
 };
             trends: [];
             recommendations: [];
-            issues: [];
+           , issues: [];
         },
 
         try { // Session statistics
@@ -231,7 +227,7 @@ export class EnhancedAnalyticsManager {
             report.issues.push({)'
                 type: 'error',')';
                 message: 'Failed to generate complete report');
-                timestamp: Date.now( ,});
+               , timestamp: Date.now( ,});
         }
 
         return report;
@@ -298,13 +294,13 @@ export class EnhancedAnalyticsManager {
     private captureEventContext(): any { return { url: window.location.href,
             userAgent: navigator.userAgent;
             timestamp: Date.now();
-            screenResolution: {
+           , screenResolution: {
                 width: window.screen.width, };
                 height: window.screen.height ;
 }
             },
             viewportSize: { width: window.innerWidth;
-                height: window.innerHeight 
+               , height: window.innerHeight 
 }
         },
     }
@@ -345,10 +341,10 @@ export class EnhancedAnalyticsManager {
      */
     getManagerStatistics(): any { return { isInitialized: this.isInitialized,
             options: this.options;
-            components: {
+           , components: {
                 behaviorAnalyzer: this.options.enableBehaviorAnalysis;
                 balanceAnalyzer: this.options.enableBalanceAnalysis;
-                performanceMonitor: this.options.enablePerformanceMonitoring, };
+               , performanceMonitor: this.options.enablePerformanceMonitoring, };
                 sessionManager: this.options.enableSessionTracking ;
 }
             },

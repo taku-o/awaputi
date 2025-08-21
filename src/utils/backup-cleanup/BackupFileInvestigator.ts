@@ -5,38 +5,38 @@ import path from 'path';
 interface TargetFile { filePath: string,
     currentFilePath: string;
     expectedWordCount: number;
-    description: string ,}
+   , description: string ,}
 
 interface GitCommit { commit: string;
-    message: string }
+   , message: string }
 
 interface GitHistoryError { error: string;
-    gitHistoryFailed: boolean }
+   , gitHistoryFailed: boolean }
 
 interface SizeAnalysis { bytes: number;
     wordCount: number;
     lineCount: number;
     characters: number;
-    lastModified: string }
+   , lastModified: string }
 
 interface SizeAnalysisError { error: string;
-    analyzeFailed: boolean }
+   , analyzeFailed: boolean }
 
 interface FileComparison { identical: boolean;
     backupLines: number;
     currentLines: number;
     sizeDifference: number;
-    comparedAt: string }
+   , comparedAt: string }
 
 interface ComparisonError { error: string;
-    comparisonFailed: boolean }
+   , comparisonFailed: boolean }
 
 interface InvestigationResult extends TargetFile { exists: boolean;
     sizeAnalysis?: SizeAnalysis | SizeAnalysisError;
     gitHistory?: GitCommit[] | GitHistoryError[];
     currentFileExists: boolean;
     comparison?: FileComparison | ComparisonError;
-    investigatedAt: string;
+   , investigatedAt: string;
     error?: string;
     investigationFailed?: boolean; }
 
@@ -44,22 +44,22 @@ interface ReportSummary { totalFiles: number,
     existingFiles: number;
     missingFiles: number;
     currentFilesExist: number;
-    investigationErrors: number ,}
+   , investigationErrors: number ,}
 
 interface SizeEstimate { bytes: number;
-    words: number }
+   , words: number }
 ';
 
 interface Recommendation { ''
     type: 'safe_deletion' | 'needs_attention';
     message: string;
-    files: string[] }
+   , files: string[] }
 
 interface InvestigationReport { summary: ReportSummary;
     files: InvestigationResult[];
     totalSizeEstimate: SizeEstimate;
     recommendations: Recommendation[];
-    generatedAt: string }
+   , generatedAt: string }
 
 /**
  * BackupFileInvestigator - バックアップファイルの詳細調査を行うクラス
@@ -69,7 +69,7 @@ export class BackupFileInvestigator {
     private targetFiles: TargetFile[]';
 
     constructor(''';
-                filePath: 'src/utils/TestConfigurationGenerator_old.js',
+               , filePath: 'src/utils/TestConfigurationGenerator_old.js',
                 currentFilePath: 'src/utils/TestConfigurationGenerator.js',
                 expectedWordCount: 3288,
                 description: 'Task 4完了時のバックアップ' ,};
@@ -111,7 +111,7 @@ export class BackupFileInvestigator {
                     exists: false,);
                     currentFileExists: false);
                     investigatedAt: new Date().toISOString();
-                    error: (error, as Error).message;
+                   , error: (error, as Error).message;
                     investigationFailed: true ,});
             }
         }
@@ -206,11 +206,11 @@ export class BackupFileInvestigator {
             if(!stdout.trim() { return []; }"
 
             return stdout.trim(").split('\n).map(line => {  ');''
-                const [commit, ...messageParts] = line.split(' ''); }
+                const [commit, ...messageParts] = line.split(', ''); }
 
                 return { commit,' };
 
-                    message: messageParts.join(' '); }
+                    message: messageParts.join(', '); }
                 });
         } catch (error) { return [{
                 error: (error, as Error).message];
@@ -232,7 +232,7 @@ export class BackupFileInvestigator {
             return { identical: backupContent === currentContent,
                 backupLines: backupLines.length;
                 currentLines: currentLines.length;
-                sizeDifference: currentContent.length - backupContent.length, };
+               , sizeDifference: currentContent.length - backupContent.length, };
                 comparedAt: new Date().toISOString(); }
             } catch (error) { return { error: (error, as Error).message, };
                 comparisonFailed: true }
@@ -259,7 +259,7 @@ export class BackupFileInvestigator {
                     .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).wordCount, 0); }
             },
             recommendations: this.generateRecommendations(investigationResults);
-            generatedAt: new Date().toISOString();
+           , generatedAt: new Date().toISOString();
         };
         
         return report;

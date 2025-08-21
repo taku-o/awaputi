@@ -16,12 +16,12 @@ export interface ErrorTrackingOptions { enableContextCapture?: boolean;
 
 export interface ErrorContext { timestamp: number,
     url: string;
-    userAgent: string;
+   , userAgent: string;
     gameState?: any;
     localStorage?: Record<string, any>;
     sessionStorage?: Record<string, any>; }
-    screenResolution?: { width: number; height: number }
-    viewportSize?: { width: number; height: number }
+    screenResolution?: { width: number;, height: number }
+    viewportSize?: { width: number;, height: number }
     performanceMetrics?: any;
     stackTrace?: string;
     screenshot?: string;
@@ -35,18 +35,18 @@ export interface ErrorReport { id: string,
     column?: number;
     stack?: string;
 
-    context: ErrorContext,
+   , context: ErrorContext,
     severity: 'low' | 'medium' | 'high' | 'critical';
     groupId?: string;
     occurrenceCount: number;
     firstSeen: number;
     lastSeen: number;
-    resolved: boolean ,}
+   , resolved: boolean ,}
 
 export interface ErrorGroup { id: string;
     signature: string;
     errors: ErrorReport[];
-    totalCount: number,
+   , totalCount: number,
     lastOccurrence: number,
     severity: 'low' | 'medium' | 'high' | 'critical' ,}
 
@@ -57,20 +57,20 @@ export class ErrorTrackingSystem {
     private errorCount: number;
     private isInitialized: boolean;
     private originalErrorHandler: OnErrorEventHandler | null;
-    private originalUnhandledRejectionHandler: ((this: WindowEventHandlers, ev: PromiseRejectionEvent) => any) | null;
+    private, originalUnhandledRejectionHandler: ((this: WindowEventHandlers, ev: PromiseRejectionEvent) => any) | null;
 
     constructor(options: ErrorTrackingOptions = {) {
 
         this.options = {
             enableContextCapture: true;
             enableStackTrace: true;
-            enableScreenshot: false, // パフォーマンス上の理由でデフォルトはfalse;
+           , enableScreenshot: false, // パフォーマンス上の理由でデフォルトはfalse;
             enableLocalStorage: true;
             maxErrors: 100;
             maxContextDepth: 3;
-            contextCaptureTimeout: 1000, // コンテキスト収集のタイムアウト;
+           , contextCaptureTimeout: 1000, // コンテキスト収集のタイムアウト;
             enableErrorGrouping: true;
-            enableAutoReporting: false;
+           , enableAutoReporting: false;
     ,}
     }
             ...options
@@ -108,8 +108,8 @@ export class ErrorTrackingSystem {
                 message: String(message);
                 source: source;
                 line: line;
-                column: column,
-                stack: error? .stack, : undefined' '
+               , column: column,
+                stack: error? .stack, : undefined', '
                 severity: 'high' ,}
             });
             // 元のハンドラーを呼び出し
@@ -121,7 +121,7 @@ export class ErrorTrackingSystem {
         window.onunhandledrejection = (event') => {  this.captureError({' }
 
                 type: 'unhandled', })
-                message: `Unhandled Promise Rejection: ${event.reason}`)'
+                message: `Unhandled Promise, Rejection: ${event.reason}`)'
                 stack: event.reason? .stack, : undefined')';
                 severity: 'high');
             });
@@ -141,13 +141,13 @@ export class ErrorTrackingSystem {
                 source: errorData.source;
                 line: errorData.line;
                 column: errorData.column;
-                stack: errorData.stack,
+               , stack: errorData.stack,
                 context: context,)';
                 severity: errorData.severity || 'medium');
-                occurrenceCount: 1,);
+               , occurrenceCount: 1,);
                 firstSeen: Date.now();
                 lastSeen: Date.now();
-                resolved: false ,};
+               , resolved: false ,};
             // エラーグルーピング;
             if(this.options.enableErrorGrouping) {
                 const groupId = this.getErrorGroupId(errorReport);
@@ -188,11 +188,11 @@ export class ErrorTrackingSystem {
     private async captureContext(): Promise<ErrorContext> { const context: ErrorContext = {
             timestamp: Date.now();
             url: window.location.href;
-            userAgent: navigator.userAgent ,};
+           , userAgent: navigator.userAgent ,};
         try { // 基本的な画面情報
             context.screenResolution = {
                 width: window.screen.width;
-                height: window.screen.height };
+               , height: window.screen.height };
             context.viewportSize = { width: window.innerWidth,
                 height: window.innerHeight ,};
             // ゲーム状態の取得（可能な場合）
@@ -356,13 +356,13 @@ export class ErrorTrackingSystem {
 
                 return { timing: {
                         loadTime: navigation ? navigation.loadEventEnd - navigation.loadEventStart : null 
-                        domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : null, };
+                       , domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : null, };
                         firstPaint: this.getFirstPaintTime(); }
                     },
                     memory: memory ? { : undefined
                         usedJSHeapSize: memory.usedJSHeapSize;
                         totalJSHeapSize: memory.totalJSHeapSize;
-                        jsHeapSizeLimit: memory.jsHeapSizeLimit ,} : null;
+                       , jsHeapSizeLimit: memory.jsHeapSizeLimit ,} : null;
                     connection: (navigator, as any).connection ? { : undefined
                         effectiveType: (navigator, as any).connection.effectiveType;
                         downlink: (navigator, as any).connection.downlink ,} : null'
@@ -421,7 +421,7 @@ export class ErrorTrackingSystem {
                 signature: this.getErrorSignature(error);
                 errors: [];
                 totalCount: 0;
-                lastOccurrence: error.lastSeen;
+               , lastOccurrence: error.lastSeen;
         }
                 severity: error.severity }
             };

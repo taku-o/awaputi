@@ -5,15 +5,15 @@
  * 4つの専門コンポーネントに機能を委譲し、統一されたインターフェースを提供。
  */
 
-import { BubbleGenerationCommands } from './test-data-generation/BubbleGenerationCommands.js';''
-import { GameStateGenerationCommands } from './test-data-generation/GameStateGenerationCommands.js';''
-import { ScenarioCommands } from './test-data-generation/ScenarioCommands.js';''
-import { CommandValidator } from './test-data-generation/CommandValidator.js';
+import { BubbleGenerationCommands  } from './test-data-generation/BubbleGenerationCommands.js';''
+import { GameStateGenerationCommands  } from './test-data-generation/GameStateGenerationCommands.js';''
+import { ScenarioCommands  } from './test-data-generation/ScenarioCommands.js';''
+import { CommandValidator  } from './test-data-generation/CommandValidator.js';
 
 // Type definitions
 interface GameEngine { [key: string]: any, }
 
-interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void }
+interface ErrorHandler { handleError: (erro;r: Error, context: string, details?: any) => void }
 }
 
 interface ComponentConfig { name: string,
@@ -43,7 +43,7 @@ interface Component { initialize(): Promise<void>;
     processStressTestCommand?(args: string[], context: any, console: any): Promise<string>,
     validateCommand?(command: string, args: string[]): ValidationResult
     
-interface FallbackComponent { initialized: boolean,
+interface FallbackComponent { initialize;d: boolean,
     processBubbleCommand(): string;
     processGameStateCommand(): string;
     processPlayerDataCommand(): string;
@@ -60,32 +60,32 @@ interface CommandRegistration { command: string,
     usage: string;
     parameters: Parameter[];
     examples: string[];
-    group: string ,}
+   , group: string ,}
 
 interface Parameter { name: string;
     type: string;
     required: boolean;
-    description: string }
+   , description: string }
 
 interface ValidationResult { valid: boolean;
-    errors: string[] }
+   , errors: string[] }
 
 interface Scenario { name: string;
-    description: string }
+   , description: string }
 
 interface Statistics { initialized: boolean;
     componentsCount: number;
     generatedDataCount: number;
-    components: Record<string, any> }
+   , components: Record<string, any> }
 
 interface DeveloperConsole { register(command: string, handler: Function, config: CommandRegistration): void ,}
 
 export class TestDataGenerationCommands {
     private gameEngine: GameEngine;
-    private components: Map<string, Component | FallbackComponent>;
+    private, components: Map<string, Component | FallbackComponent>;
     private generatedData: Map<string, any>;
     private initialized: boolean;
-    private errorHandler: ErrorHandler;
+    private, errorHandler: ErrorHandler;
     constructor(gameEngine: GameEngine) {
 
         // Main Controller Pattern設定
@@ -240,8 +240,7 @@ export class TestDataGenerationCommands {
      * @param command - コマンド名
      * @returns ハンドラー関数'
      */''
-    getCommandHandler(command: string): Function | null { const handlers: Record<string, Function> = {''
-            'test.bubbles': this.generateBubblesCommand.bind(this),
+    getCommandHandler(command: string): Function | null { const handlers: Record<string, Function> = {'', 'test.bubbles': this.generateBubblesCommand.bind(this),
             'test.gamestate': this.generateGameStateCommand.bind(this),
             'test.playerdata': this.generatePlayerDataCommand.bind(this),
             'test.statistics': this.generateStatisticsCommand.bind(this),
@@ -265,11 +264,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(bubbleGenerator? .processBubbleCommand) {'
-        ';
+        if(bubbleGenerator? .processBubbleCommand) {', ';
 
             ';
 
@@ -291,11 +289,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(gameStateGenerator? .processGameStateCommand) {'
-        ';
+        if(gameStateGenerator? .processGameStateCommand) {', ';
 
             ';
 
@@ -317,11 +314,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(gameStateGenerator? .processPlayerDataCommand) {'
-        ';
+        if(gameStateGenerator? .processPlayerDataCommand) {', ';
 
             ';
 
@@ -343,11 +339,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(gameStateGenerator? .processStatisticsCommand) {'
-        ';
+        if(gameStateGenerator? .processStatisticsCommand) {', ';
 
             ';
 
@@ -369,11 +364,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processPerformanceTestCommand) {'
-        ';
+        if(scenarioProcessor? .processPerformanceTestCommand) {', ';
 
             ';
 
@@ -395,11 +389,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processConfigTestCommand) {'
-        ';
+        if(scenarioProcessor? .processConfigTestCommand) {', ';
 
             ';
 
@@ -421,11 +414,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processErrorSimulationCommand) {'
-        ';
+        if(scenarioProcessor? .processErrorSimulationCommand) {', ';
 
             ';
 
@@ -447,11 +439,10 @@ export class TestDataGenerationCommands {
 
         }
 
-            if(!validation.valid) { : undefined' '
+            if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processStressTestCommand) {'
-        ';
+        if(scenarioProcessor? .processStressTestCommand) {', ';
 
             ';
 
@@ -553,7 +544,7 @@ export class TestDataGenerationCommands {
     getStatistics(): Statistics { const stats: Statistics = {
             initialized: this.initialized;
             componentsCount: this.components.size;
-            generatedDataCount: this.generatedData.size, }
+           , generatedDataCount: this.generatedData.size, }
             components: {};
         // 各コンポーネントの統計を収集
         for(const [name, component] of this.components) {

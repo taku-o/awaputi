@@ -15,7 +15,7 @@ export class RealtimeDashboard {
             enableFPS: true;
             enableMemory: true;
             enableErrors: true;
-            enableLatency: true;
+           , enableLatency: true;
     ,}
             ...options
         };
@@ -26,7 +26,7 @@ export class RealtimeDashboard {
             memory: [];
             errors: [];
             latency: [];
-            timestamps: [] ,};
+           , timestamps: [] ,};
         this.initialize();
     }
 
@@ -65,7 +65,7 @@ export class RealtimeDashboard {
                     ` : ''}
 
                     ${ this.options.enableMemory ? `''
-                        <div class="chart-container">" }"
+                        <div, class="chart-container">" }"
                             <h3>メモリ使用量 (%"})</h3>""
                             <canvas id="memory-chart"></canvas>"";
                             <div class="chart-stats" id="memory-stats"></div>";
@@ -73,15 +73,15 @@ export class RealtimeDashboard {
                     ` : ''}
 
                     ${ this.options.enableErrors ? `''
-                        <div class="chart-container">";
+                        <div, class="chart-container">";
                             <h3>エラー数</h3>"";
-                            <canvas id="errors-chart"></canvas>"";
-                            <div class="chart-stats" id="errors-stats"></div>";
+                            <canvas, id="errors-chart"></canvas>"";
+                            <div, class="chart-stats" id="errors-stats"></div>";
                         </div> : undefined" }"
                     ` : ''}
 
                     ${ this.options.enableLatency ? `''
-                        <div class="chart-container">" }"
+                        <div, class="chart-container">" }"
                             <h3>レイテンシ (ms"})</h3>""
                             <canvas id="latency-chart"></canvas>"";
                             <div class="chart-stats" id="latency-stats"></div>";
@@ -130,10 +130,10 @@ export class RealtimeDashboard {
 
                 background: ${this.options.theme === 'dark' ? '#2196f3' : '#4caf50'};
                 color: white;
-                border: none;
+               , border: none;
                 border-radius: 4px,
                 cursor: pointer;
-                transition: background 0.3s;
+               , transition: background 0.3s;
             }
             .control-btn:hover { opacity: 0.9 }
 
@@ -216,7 +216,7 @@ export class RealtimeDashboard {
                         color: this.options.theme === 'dark' ? '#333' : '#e0e0e0' 
                 };
                 y: { beginAtZero: true;
-                    ticks: {''
+                   , ticks: {''
                         color: this.options.theme === 'dark' ? '#aaa' : '#666' };
                     grid: { ''
                         color: this.options.theme === 'dark' ? '#333' : '#e0e0e0' 
@@ -225,7 +225,7 @@ export class RealtimeDashboard {
                     display: false };
                 tooltip: { ''
                     mode: 'index';
-                    intersect: false }
+                   , intersect: false }
             }))'
         // FPSチャート
         if(this.options.enableFPS) {'
@@ -234,14 +234,14 @@ export class RealtimeDashboard {
             if(fpsCanvas) {''
                 this.charts.set('fps', new Chart(fpsCanvas, {)'
                     type: 'line');
-                    data: {'
+                   , data: {'
                         datasets: [{]'
                             label: 'FPS',]';
                             data: [],')';
                             borderColor: '#4caf50''),
                             backgroundColor: 'rgba(76, 175, 80, 0.1)',
                             borderWidth: 2;
-                            pointRadius: 0;
+                           , pointRadius: 0;
         ,}
                             tension: 0.1 }
                         }]
@@ -253,7 +253,7 @@ export class RealtimeDashboard {
                                 ...chartOptions.scales.y;
                                 min: 0;
                                 max: 120;
-                                title: {'
+                               , title: {'
                                     display: true,
                                     text: 'FPS' ,}
 }
@@ -269,14 +269,14 @@ export class RealtimeDashboard {
             if(memoryCanvas) {''
                 this.charts.set('memory', new Chart(memoryCanvas, {)'
                     type: 'line');
-                    data: {'
+                   , data: {'
                         datasets: [{]'
                             label: 'メモリ使用量',]';
                             data: [],')';
                             borderColor: '#2196f3''),
                             backgroundColor: 'rgba(33, 150, 243, 0.1)',
                             borderWidth: 2;
-                            pointRadius: 0;
+                           , pointRadius: 0;
         ,}
                             tension: 0.1 }
                         }]
@@ -288,7 +288,7 @@ export class RealtimeDashboard {
                                 ...chartOptions.scales.y;
                                 min: 0;
                                 max: 100;
-                                title: {'
+                               , title: {'
                                     display: true,
                                     text: '使用率 (%')' ,}
 }
@@ -304,7 +304,7 @@ export class RealtimeDashboard {
             if(errorsCanvas) {''
                 this.charts.set('errors', new Chart(errorsCanvas, {''
                     type: 'bar';
-                    data: {'
+                   , data: {'
                         datasets: [{]'
                             label: 'エラー数',]';
                             data: [],
@@ -333,14 +333,14 @@ export class RealtimeDashboard {
             if(latencyCanvas) {''
                 this.charts.set('latency', new Chart(latencyCanvas, {)'
                     type: 'line');
-                    data: {'
+                   , data: {'
                         datasets: [{]'
                             label: 'レイテンシ',]';
                             data: [],')';
                             borderColor: '#ff9800''),
                             backgroundColor: 'rgba(255, 152, 0, 0.1)',
                             borderWidth: 2;
-                            pointRadius: 0;
+                           , pointRadius: 0;
         ,}
                             tension: 0.1 }
                         }]
@@ -386,8 +386,7 @@ export class RealtimeDashboard {
 ';
         // データクリアボタン
         const clearBtn = document.getElementById('clear-data);''
-        if(clearBtn) {'
-            ';
+        if(clearBtn) {', ';
 
         }
 
@@ -400,8 +399,7 @@ export class RealtimeDashboard {
 ';
         // エクスポートボタン
         const exportBtn = document.getElementById('export-data);''
-        if(exportBtn) {'
-            ';
+        if(exportBtn) {', ';
 
         }
 
@@ -489,7 +487,7 @@ export class RealtimeDashboard {
         if(fpsChart) {
             fpsChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({ : undefined, x: time)
         
-                y: this.dataHistory.fps[i]' ,}'
+               , y: this.dataHistory.fps[i]' ,}'
 
             }');''
             fpsChart.update('none'');
@@ -620,7 +618,7 @@ export class RealtimeDashboard {
         alertItem.className = `alert-item ${alert.severity}`;
 
         alertItem.innerHTML = `'';
-            <div class="alert-time">${new Date(alert.timestamp}.toLocaleTimeString(})</div>
+            <div class="alert-time">${new, Date(alert.timestamp}.toLocaleTimeString(})</div>
             <div>${alert.message}</div>
         `;
 
@@ -665,7 +663,7 @@ export class RealtimeDashboard {
             fps: [];
             memory: [];
             errors: [];
-            latency: [];
+           , latency: [];
     }
             timestamps: [] }
         };
@@ -675,8 +673,7 @@ export class RealtimeDashboard {
         ";
         // アラートもクリア""
         const alertsContainer = document.getElementById('alerts-container);''
-        if(alertsContainer) {'
-            ';
+        if(alertsContainer) {', ';
 
         }
 
@@ -691,7 +688,7 @@ export class RealtimeDashboard {
             exportTime: new Date().toISOString();
             updateInterval: this.options.updateInterval;
             historyLength: this.options.historyLength;
-            data: {
+           , data: {
                 timestamps: this.dataHistory.timestamps.map(t => t.toISOString();
                 fps: this.dataHistory.fps;
                 memory: this.dataHistory.memory;
@@ -707,8 +704,8 @@ export class RealtimeDashboard {
                 memory: { average: this.calculateAverage(this.dataHistory.memory);
                     min: Math.min(...this.dataHistory.memory);
                     max: Math.max(...this.dataHistory.memory);
-                errors: { total: this.dataHistory.errors[this.dataHistory.errors.length - 1] || 0;
-                    rate: this.calculateErrorRate( };
+               , errors: { total: this.dataHistory.errors[this.dataHistory.errors.length - 1] || 0;
+                   , rate: this.calculateErrorRate( };
                 latency: { average: this.calculateAverage(this.dataHistory.latency);
                     min: Math.min(...this.dataHistory.latency.filter(v => v > 0);
                     max: Math.max(...this.dataHistory.latency)
@@ -719,7 +716,7 @@ export class RealtimeDashboard {
         const url = URL.createObjectURL(blob);''
         const a = document.createElement('a);
         a.href = url;
-        a.download = `realtime-performance-${new Date(}.toISOString(}).json`;
+        a.download = `realtime-performance-${new, Date(}.toISOString(}).json`;
         document.body.appendChild(a);
         a.click();
 
@@ -744,8 +741,7 @@ export class RealtimeDashboard {
         window.removeEventListener('realtime-alert', this.displayAlert);
         ';
         // DOM要素のクリア
-        if(this.container) {'
-            ';
+        if(this.container) {', ';
 
         }
 

@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../utils/ErrorHandler';''
-import { getConfigurationManager } from '../core/ConfigurationManager';
+import { getErrorHandler  } from '../utils/ErrorHandler';''
+import { getConfigurationManager  } from '../core/ConfigurationManager';
 
 /**
  * 視覚化タイプインターフェース
@@ -18,7 +18,7 @@ type VisualizationTypeKey = 'frequencyBars' | 'waveform' | 'spectrogram' | 'volu
 interface ColorScheme { primary: string,
     secondary: string;
     background: string;
-    gradient: string[] ,}
+   , gradient: string[] ,}
 
 /**
  * 音響イベントインターフェース
@@ -26,13 +26,13 @@ interface ColorScheme { primary: string,
 interface AudioEvent { ''
     type: 'increase' | 'decrease';
     intensity: number;
-    timestamp: number }
+   , timestamp: number }
 
 /**
  * 統計情報インターフェース
  */
 interface VisualizerStatistics { isRunning: boolean;
-    currentVisualization: VisualizationTypeKey,
+   , currentVisualization: VisualizationTypeKey,
     colorScheme: string,
     performanceMode: 'low' | 'medium' | 'high';
     targetFPS: number;
@@ -41,7 +41,7 @@ interface VisualizerStatistics { isRunning: boolean;
     eventHistory: number;
     accessibilityMode: boolean;
     highContrast: boolean;
-    motionReduction: boolean ,}
+   , motionReduction: boolean ,}
 
 /**
  * AudioManager インターフェース
@@ -52,7 +52,7 @@ interface AudioManager { audioContext: AudioContext | null;
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): void ,}
+interface ConfigurationManager { watch(category: string, path: string, callback: (valu;e: any) => void): void ,}
 }
 
 /**
@@ -80,13 +80,13 @@ export class AudioVisualizer {
     private width: number;
     private height: number;
     // 視覚化設定
-    private visualizationTypes: Record<VisualizationTypeKey, VisualizationType>;
+    private, visualizationTypes: Record<VisualizationTypeKey, VisualizationType>;
     private currentVisualization: VisualizationTypeKey;
     // アニメーション
     private animationId: number | null;
     private isRunning: boolean;
     // 色設定
-    private colorSchemes: Record<string, ColorScheme>;
+    private, colorSchemes: Record<string, ColorScheme>;
     private currentColorScheme: string;
     // 音響イベントの視覚表現
     private audioEvents: AudioEvent[];
@@ -101,7 +101,7 @@ export class AudioVisualizer {
     private accessibilityMode: boolean;
     private highContrast: boolean;
     private motionReduction: boolean;
-    private textualDescription: boolean;
+    private, textualDescription: boolean;
     constructor(audioManager: AudioManager) {
 
         this.audioManager = audioManager;
@@ -231,7 +231,7 @@ export class AudioVisualizer {
             position: fixed;
             top: 10px;
             right: 10px;
-            width: 300px,
+           , width: 300px,
             height: 200px,
             background-color: rgba(0, 0, 0, 0.8);
             border: 2px solid #00ffff;
@@ -705,7 +705,7 @@ export class AudioVisualizer {
         this.ctx.fillText(`Visualization: ${this.currentVisualization)`, 10, canvasHeight - 45);
         
         // 色スキーム
-        this.ctx.fillText(`Color Scheme: ${this.currentColorScheme,}`, 10, canvasHeight - 30};
+        this.ctx.fillText(`Color, Scheme: ${this.currentColorScheme,}`, 10, canvasHeight - 30};
         
         // イベント数 }
         this.ctx.fillText(`Active Events: ${this.audioEvents.length}`, 10, canvasHeight - 15});
@@ -834,7 +834,7 @@ export class AudioVisualizer {
             activeEvents: this.audioEvents.length;
             eventHistory: this.eventHistory.length;
             accessibilityMode: this.accessibilityMode;
-            highContrast: this.highContrast, };
+           , highContrast: this.highContrast, };
             motionReduction: this.motionReduction }
         }
     

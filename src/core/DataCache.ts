@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 /**
  * データキャッシュクラス - LRUキャッシュアルゴリズムとキャッシュ管理
@@ -28,11 +28,11 @@ export interface CacheEntry<T = any> { value: T,
     expiresAt: number;
     accessCount: number;
     priority: CachePriority;
-    dataSize: number ,}
+   , dataSize: number ,}
 
 export interface CacheMetadata { priority: CachePriority;
     tags: string[];
-    dependencies: string[] }
+   , dependencies: string[] }
 
 export interface CacheStatistics { hits: number;
     misses: number;
@@ -40,27 +40,27 @@ export interface CacheStatistics { hits: number;
     sets: number;
     deletes: number;
     memoryPeakUsage: number;
-    lastCleanup: number }
+   , lastCleanup: number }
 
 export interface CacheStatsReport extends CacheStatistics { hitRate: string;
     size: number;
     maxSize: number;
     memoryUsage: number;
     maxMemory: number;
-    memoryUsagePercent: string }
+   , memoryUsagePercent: string }
 ';
 
 export type CacheEventType = '';
-    | 'cacheSet' '';
-    | 'cacheHit' '';
-    | 'cacheMiss' '';
-    | 'cacheExpired' '';
-    | 'cacheDelete' '';
-    | 'cacheEvicted' '';
-    | 'cacheGenerated' '';
-    | 'cacheInvalidatedByTag' '';
-    | 'cacheInvalidatedByDependency' '';
-    | 'cacheCleared' '';
+    | 'cacheSet', '';
+    | 'cacheHit', '';
+    | 'cacheMiss', '';
+    | 'cacheExpired', '';
+    | 'cacheDelete', '';
+    | 'cacheEvicted', '';
+    | 'cacheGenerated', '';
+    | 'cacheInvalidatedByTag', '';
+    | 'cacheInvalidatedByDependency', '';
+    | 'cacheCleared', '';
     | 'cacheCleanup';
 
 export interface CacheEventData { key?: string;
@@ -84,19 +84,19 @@ export class DataCache {
     private ttl: number;
     private cleanupInterval: number;
     // キャッシュストレージ
-    private cache: Map<string, CacheEntry> = new Map();
+    private, cache: Map<string, CacheEntry> = new Map();
     private accessOrder: Map<string, number> = new Map(); // アクセス順序管理用
     private lastAccess: Map<string, number> = new Map(); // 最終アクセス時刻
     private keyMetadata: Map<string, CacheMetadata> = new Map(); // キーのメタデータ
     
     // メモリ使用量管理
     private currentMemoryUsage: number = 0;
-    private sizeEstimator: Map<string, number> = new Map(); // キーごとのサイズ推定
+    private, sizeEstimator: Map<string, number> = new Map(); // キーごとのサイズ推定
     
     // 統計情報
     private stats: CacheStatistics;
     // イベントリスナー
-    private listeners: Map<CacheEventType, CacheEventCallback[]> = new Map();
+    private, listeners: Map<CacheEventType, CacheEventCallback[]> = new Map();
     
     // クリーンアップタイマー
     private cleanupTimer: NodeJS.Timeout | null = null;
@@ -115,7 +115,7 @@ export class DataCache {
             evictions: 0;
             sets: 0;
             deletes: 0;
-            memoryPeakUsage: 0;
+           , memoryPeakUsage: 0;
     ,}
             lastCleanup: Date.now(); }
         };
@@ -158,7 +158,7 @@ export class DataCache {
                 createdAt: now;
                 lastAccessed: now;
                 expiresAt: now + ttl;
-                accessCount: 0;
+               , accessCount: 0;
                 priority,
                 dataSize };
             
@@ -235,7 +235,7 @@ export class DataCache {
      */
     async getOrSet<T>(;
         key: string);
-        valueProvider: () => Promise<T> | T, ;
+       , valueProvider: () => Promise<T> | T, ;
         options: CacheSetOptions = {}
     ): Promise<T> { try {
             // キャッシュヒットチェック
@@ -421,8 +421,7 @@ export class DataCache {
         const deletedCount = this.deleteMany(expiredKeys);
         this.stats.lastCleanup = now;
 
-        if(deletedCount > 0) {'
-            ';
+        if(deletedCount > 0) {', ';
 
         }
 
@@ -490,7 +489,7 @@ export class DataCache {
             size: this.cache.size;
             maxSize: this.maxSize;
             memoryUsage: this.currentMemoryUsage;
-            maxMemory: this.maxMemory, };
+           , maxMemory: this.maxMemory, };
             memoryUsagePercent: ((this.currentMemoryUsage / this.maxMemory) * 100).toFixed(2); }
         }
     

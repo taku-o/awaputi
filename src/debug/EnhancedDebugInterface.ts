@@ -4,29 +4,29 @@
  * Main Controller Pattern適用版
  */
 
-import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';''
-import { ComponentErrorHandler } from './ComponentErrorHandler.js';''
-import { DebugPanelManager } from './interface/DebugPanelManager.js';''
-import { DebugCommandProcessor } from './interface/DebugCommandProcessor.js';''
-import { DebugVisualization } from './interface/DebugVisualization.js';''
-import { DebugDataExporter } from './interface/DebugDataExporter.js';
+import { EffectDebugInterface  } from '../effects/EffectDebugInterface.js';''
+import { ComponentErrorHandler  } from './ComponentErrorHandler.js';''
+import { DebugPanelManager  } from './interface/DebugPanelManager.js';''
+import { DebugCommandProcessor  } from './interface/DebugCommandProcessor.js';''
+import { DebugVisualization  } from './interface/DebugVisualization.js';''
+import { DebugDataExporter  } from './interface/DebugDataExporter.js';
 
 interface GameEngine { // Game engine interface }
 ';
 
 interface ErrorHandler { ''
-    handleComponentError: (error: Error, component: string, operation: string') => any ,}'
+    handleComponentError: (erro;r: Error, component: string, operation: string') => any ,}'
 }
 ';
 
 interface DebugComponent { initialized?: boolean;''
-    setErrorHandler?: (handler: ErrorHandler['handleComponentError]) => void;
+    setErrorHandler?: (handle;r: ErrorHandler['handleComponentError]) => void;
     initialize?: () => Promise<void> | void;
     cleanup?: () => void;
-    switchPanel?: (panelId: string) => void;
-    registerShortcut?: (shortcut: string, callback: () => void, options?: any) => void;
-    setTheme?: (theme: string) => void;
-    exportData?: (data: any, filename: string, format?: string) => void;
+    switchPanel?: (panelI;d: string) => void;
+    registerShortcut?: (shortcu;t: string, callback: () => void, options?: any) => void;
+    setTheme?: (them;e: string) => void;
+    exportData?: (dat;a: any, filename: string, format?: string) => void;
     getActivePanel?: () => string;
     getPanelHistory?: () => string[];
     getRegisteredPanels?: () => any[];
@@ -38,38 +38,38 @@ interface DebugComponent { initialized?: boolean;''
     isTouchDevice?: () => boolean;
     getOrientation?: () => string;
     getIntegrationTestResults?: () => any;
-    exportIntegrationTestResults?: (format?: string) => void;
+    exportIntegrationTestResults?: (forma;t?: string) => void;
     getRequirementsValidationResults?: () => any;
-    exportRequirementsValidationResults?: (format?: string) => void;
+    exportRequirementsValidationResults?: (forma;t?: string) => void;
     getFinalValidationResults?: () => any;
-    exportFinalValidationResults?: (format?: string) => void;
+    exportFinalValidationResults?: (forma;t?: string) => void;
     updatePanelUI?: () => void;
     applyResponsiveLayout?: () => void;
-    setShortcutsEnabled?: (enabled: boolean) => void ,}
+    setShortcutsEnabled?: (enable;d: boolean) => void ,}
 }
 
 interface ComponentDefinition { name: string;
-    class: new (debugInterface: EnhancedDebugInterface) => DebugComponent }
+   , class: new (debugInterfac;e: EnhancedDebugInterface) => DebugComponent }
 }
 
 interface Position { x: number;
-    y: number }
+   , y: number }
 
 interface Size { width: number;
-    height: number }
+   , height: number }
 
 interface Settings { theme: string;
     autoSave: boolean;
     keyboardNavigation: boolean;
     shortcuts: boolean;
-    performanceMonitoring: boolean }
+   , performanceMonitoring: boolean }
 
 interface SessionData { sessionId: string;
     position?: Position;
     size?: Size;
     activePanel: string;
     settings?: Settings;
-    timestamp: number;
+   , timestamp: number;
     history?: string[] }
 
 interface PanelConfig { title?: string;
@@ -81,12 +81,12 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     private initialized: boolean;
     private errorHandler: ErrorHandler;
     private sessionId: string;
-    public activePanel: string,
+    public, activePanel: string,
     private panelHistory: string[];
     private layout: string;
     private position: Position;
     private size: Size;
-    private settings: Settings;
+    private, settings: Settings;
     protected container?: HTMLElement | null;
 
     constructor(gameEngine: GameEngine) {
@@ -113,7 +113,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             autoSave: true;
             keyboardNavigation: true;
             shortcuts: true;
-            performanceMonitoring: true }))
+           , performanceMonitoring: true }))
         );
         this.initializeEnhancedFeatures();
     }
@@ -229,24 +229,21 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         const settingsBtn = this.container.querySelector('.settings-btn'') as HTMLButtonElement;''
         const closeBtn = this.container.querySelector('.close-btn) as HTMLButtonElement;
 
-        if(minimizeBtn) {'
-            ';
+        if(minimizeBtn) {', ';
 
         }
 
             minimizeBtn.addEventListener('click', () => this.minimize(); }
 
         }''
-        if(settingsBtn) {'
-            ';
+        if(settingsBtn) {', ';
 
         }
 
             settingsBtn.addEventListener('click', () => this.showSettings(); }
 
         }''
-        if(closeBtn) {'
-            ';
+        if(closeBtn) {', ';
 
         }
 
@@ -491,14 +488,14 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             right: 0;
             width: 20px;
             height: 20px;
-            background: linear-gradient(-45deg, transparent 30%, #666 30%, #666 70%, transparent 70%),
+           , background: linear-gradient(-45deg, transparent 30%, #666 30%, #666 70%, transparent 70%),
             cursor: se-resize;
         `;
 
         element.appendChild(resizer);
 
         let isResizing = false;
-        let startX: number, startY: number, startWidth: number, startHeight: number,
+        let, startX: number, startY: number, startWidth: number, startHeight: number,
 
         resizer.addEventListener('mousedown', (e: MouseEvent) => { 
             isResizing = true;
@@ -538,7 +535,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             position: this.position;
             size: this.size;
             activePanel: this.activePanel;
-            settings: this.settings,
+           , settings: this.settings,
             timestamp: Date.now()';
             localStorage.setItem('debug_session', JSON.stringify(sessionData);' }
 
@@ -585,7 +582,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             history: this.getPanelHistory();
             settings: this.settings;
             position: this.position;
-            size: this.size, };
+           , size: this.size, };
             timestamp: Date.now(); }
         }
 

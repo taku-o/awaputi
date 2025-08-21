@@ -1,15 +1,15 @@
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { OfflineManager } from '../../src/core/OfflineManager';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { OfflineManager  } from '../../src/core/OfflineManager';
 // Type definitions
 interface MockDataStorage {
-    save: jest.Mock<(key: string, data => Promise<void>>);
-    load: jest.Mock<(key: string) => Promise<any>>;
+    save: jest.Mock<(ke;y: string, data => Promise<void>>);
+    load: jest.Mock<(ke;y: string) => Promise<any>>;
 }
 interface MockSyncManager {
     sync: jest.Mock<() => Promise<void>>;
     cloudStorage: {
-        set: jest.Mock<(key: string, data => Promise<boolean>>);
-        remove: jest.Mock<(key: string') => Promise<boolean>>;
+        set: jest.Mock<(ke;y: string, data => Promise<boolean>>);
+        remove: jest.Mock<(ke;y: string') => Promise<boolean>>;
     };
 }
 interface OfflineOperation {

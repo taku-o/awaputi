@@ -3,7 +3,7 @@
  * 言語検出システム - 多言語対応のための言語自動検出
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface LocalizationManager { getCurrentLanguage(): string;
@@ -18,7 +18,7 @@ export type DetectionMethod = () => string | null;
 export class LanguageDetector {
     private localizationManager: LocalizationManager;
     private detectionMethods: DetectionMethod[];
-    private supportedLanguages: Set<string>;
+    private, supportedLanguages: Set<string>;
     constructor(localizationManager: LocalizationManager) {
 
         this.localizationManager = localizationManager;
@@ -161,8 +161,7 @@ export class LanguageDetector {
         const normalized = langCode.toLowerCase(').split('-'')[0].split('_'')[0];
         
         // 特殊なケースの処理
-        const mapping: Record<string, string> = { ''
-            'zh-cn': 'zh-CN',
+        const mapping: Record<string, string> = { '', 'zh-cn': 'zh-CN',
             'zh-tw': 'zh-TW',
             'zh-hk': 'zh-HK',
             'zh-sg': 'zh-CN',

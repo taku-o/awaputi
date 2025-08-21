@@ -10,7 +10,7 @@ interface Point { x: number,
 interface BaseRect { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface ConvertedCoordinates { x: number;
     y: number;
@@ -19,7 +19,7 @@ interface ConvertedCoordinates { x: number;
     scaledX?: number;
     scaledY?: number;
     touchIndex?: number;
-    originalEvent: Event
+   , originalEvent: Event
     }
 
 interface ScaledEvent { type: string;
@@ -36,7 +36,7 @@ interface ScaledEvent { type: string;
 }
 
 interface ValidationResult { valid: boolean;
-    clampedPoint: Point
+   , clampedPoint: Point
     }
 
 interface ScaledCoordinateManager { getCanvasInfo(): any;
@@ -90,7 +90,7 @@ export class InputCoordinateConverter {
                 canvasX: canvasX;
                 canvasY: canvasY;
                 scaledX: baseX * scaleFactor;
-                scaledY: baseY * scaleFactor, };
+               , scaledY: baseY * scaleFactor, };
                 originalEvent: event }
 
             };''
@@ -158,7 +158,7 @@ export class InputCoordinateConverter {
                 canvasY: canvasY;
                 scaledX: baseX * scaleFactor;
                 scaledY: baseY * scaleFactor;
-                touchIndex: touchIndex, };
+               , touchIndex: touchIndex, };
                 originalEvent: event }
 
             };''
@@ -231,7 +231,7 @@ export class InputCoordinateConverter {
                 scaledX: coords.scaledX;
                 scaledY: coords.scaledY;
                 originalEvent: originalEvent;
-                timestamp: Date.now();
+               , timestamp: Date.now();
     ,}
                 preventDefault: () => originalEvent.preventDefault(), };
                 stopPropagation: () => originalEvent.stopPropagation(); }
@@ -244,7 +244,7 @@ export class InputCoordinateConverter {
                 y: 0;
                 originalEvent: originalEvent;
                 timestamp: Date.now();
-                preventDefault: () => originalEvent.preventDefault(), };
+               , preventDefault: () => originalEvent.preventDefault(), };
                 stopPropagation: () => originalEvent.stopPropagation(); }
             }
     }
@@ -317,7 +317,7 @@ export class InputCoordinateConverter {
         return { eventType: event.type,
             canvasInfo: canvasInfo;
             scaleFactor: scaleFactor;
-            originalCoords: {
+           , originalCoords: {
                 clientX: event.clientX, };
                 clientY: event.clientY }
             };

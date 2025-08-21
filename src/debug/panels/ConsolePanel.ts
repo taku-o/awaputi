@@ -8,10 +8,10 @@ interface GameEngine { developerConsole?: DeveloperConsole;
     start: () => void ,}
 }
 
-interface DeveloperConsole { executeCommand: (command: string) => string }
+interface DeveloperConsole { executeCommand: (comman;d: string) => string }
 }
 
-interface ConfigManager { get: (key: string) => any }
+interface ConfigManager { get: (ke;y: string) => any }
 }
 
 interface DebugInterface { // Debug interface methods }
@@ -21,7 +21,7 @@ type OutputType = 'info' | 'command' | 'result' | 'error';
 export class ConsolePanel {
     private gameEngine: GameEngine;
     private debugInterface: DebugInterface;
-    private element: HTMLElement | null;
+    private, element: HTMLElement | null;
     private developerConsole?: DeveloperConsole;
 
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
@@ -147,7 +147,7 @@ export class ConsolePanel {
 
         } catch (error) { }
 
-            this.addOutput(`エラー: ${(error, as Error'}).message}`, 'error');
+            this.addOutput(`エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -155,8 +155,7 @@ export class ConsolePanel {
      * 基本的なコマンドを実行'
      */''
     private executeBasicCommand(command: string): string { // 簡単なコマンド解析
-        if(command.startsWith('game.) {'
-            ';
+        if(command.startsWith('game.) {', ';
 
         }
 
@@ -219,8 +218,7 @@ export class ConsolePanel {
      * テストコマンドを実行"
      */""
     private executeTestCommand(command: string): string { ""
-        if(command.includes('generateBubbles) {'
-            ';
+        if(command.includes('generateBubbles) {', ';
 
         }
 
@@ -237,8 +235,7 @@ export class ConsolePanel {
         if(!this.element) return;
 
         const output = this.element.querySelector('#console-output) as HTMLElement;''
-        if(output) {'
-            ';
+        if(output) {', ';
 
         }
 
@@ -285,8 +282,7 @@ export class ConsolePanel {
      * パネルを表示
      */ : undefined
     public show(): void { ''
-        if(this.element) {'
-            ';
+        if(this.element) {', ';
 
         }
 
@@ -297,8 +293,7 @@ export class ConsolePanel {
      * パネルを非表示
      */'
     public hide(): void { ''
-        if(this.element) {'
-            ';
+        if(this.element) {', ';
 
         }
 

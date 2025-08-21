@@ -1,13 +1,13 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { getBrowserCompatibility, type ScreenInfo } from '../utils/BrowserCompatibility.js';
+import { getBrowserCompatibility, type, ScreenInfo  } from '../utils/BrowserCompatibility.js';
 
 /**
  * 入力管理クラス - ドラッグ操作を含む統一的な入力処理（クロスブラウザ・デバイス対応強化版）
  */
 export class InputManager {
     private config: BasicConfig;
-    private state: any;
+    private, state: any;
     constructor(canvas: any) {
 
         this.canvas = canvas
@@ -29,7 +29,7 @@ export class InputManager {
         this.gestureState = { isPinching: false,
             isRotating: false;
             lastPinchDistance: 0;
-            lastRotationAngle: 0 ,};
+           , lastRotationAngle: 0 ,};
         // イベント処理の最適化
         this.eventQueue = [];
         this.isProcessingEvents = false;
@@ -344,7 +344,7 @@ export class InputManager {
         this.activeTouches.set(event.pointerId, {)
             id: event.pointerId,);
             position: position);
-            startTime: Date.now();
+           , startTime: Date.now();
     ,}
             type: event.pointerType }
         };
@@ -419,7 +419,7 @@ export class InputManager {
             const firstTouch = Array.from(this.activeTouches.values())[0];
             this.handlePointerDown({ )
                 clientX: firstTouch.position.x)';
-                clientY: firstTouch.position.y,' }'
+               , clientY: firstTouch.position.y,' }'
 
                 type: 'touchstart'); }
         } else if (this.activeTouches.size === 2) { // マルチタッチジェスチャー開始
@@ -444,7 +444,7 @@ export class InputManager {
             const firstTouch = Array.from(this.activeTouches.values())[0];
             this.handlePointerMove({)
                 clientX: firstTouch.position.x)';
-                clientY: firstTouch.position.y,' }'
+               , clientY: firstTouch.position.y,' }'
 
                 type: 'touchmove'); }
         } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove(); }
@@ -473,7 +473,7 @@ export class InputManager {
 
         if(this.activeTouches.size === 0) { this.handlePointerUp({)
                 clientX: 0)';
-                clientY: 0,' }'
+               , clientY: 0,' }'
 
                 type: 'touchend'); }
         } else if (this.activeTouches.size === 1) { this.endMultiTouchGesture(); }
@@ -623,7 +623,7 @@ export class InputManager {
         const rect = this.canvas.getBoundingClientRect();
         return { x: event.clientX - rect.left,
             y: event.clientY - rect.top;
-            pressure: event.pressure || 1;
+           , pressure: event.pressure || 1;
     ,}
             tiltX: event.tiltX || 0, };
             tiltY: event.tiltY || 0 }
@@ -658,7 +658,7 @@ export class InputManager {
     getDeviceInfo() {
         return { ...getBrowserCompatibility().deviceInfo,
             activeTouches: this.activeTouches.size;
-            maxTouches: this.maxTouches;
+           , maxTouches: this.maxTouches;
     ,}
             dragThreshold: this.dragThreshold, };
             clickThreshold: this.clickThreshold }
@@ -680,7 +680,7 @@ export class InputManager {
             currentPosition: { ...this.dragCurrentPosition;
             draggedBubble: this.draggedBubble;
             activeTouches: this.activeTouches.size;
-            gestureState: { ...this.gestureState;
+           , gestureState: { ...this.gestureState;
     }
     
     /**

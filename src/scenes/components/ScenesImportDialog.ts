@@ -46,14 +46,14 @@
  * 
  * Phase F.4 - Peripheral File Splitting Project'
  */''
-import { ScenesBaseDialog, GameEngine, EventBus, GameState } from './ScenesBaseDialog.js';
+import { ScenesBaseDialog, GameEngine, EventBus, GameState  } from './ScenesBaseDialog.js';
 
 // Type definitions for import dialog
 export interface ImportValidationResult { isValid: boolean,
     errors?: string[];
     info?: {
-        recordCount: number;
-        createdAt: string ,}
+        recordCoun;t: number;
+       , createdAt: string ,}
 
 export interface ImportPlayerData { username?: string;
     ap?: number;
@@ -73,9 +73,9 @@ export interface ImportGameSettings { graphics?: Record<string, unknown>;
     accessibility?: Record<string, unknown>; }
 
 export interface ImportAchievementData { achievements?: Array<{
-        id: string;
+        i;d: string;
         name: string;
-        description: string;
+       , description: string;
         progress?: number;
         requirement?: number;
         unlockedAt?: string; ,}>;
@@ -113,7 +113,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
     private previewData: unknown | null;
     private showPreview: boolean;
     // ファイル入力エレメント
-    private fileInput: HTMLInputElement | null;
+    private, fileInput: HTMLInputElement | null;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
 ';
 
@@ -207,7 +207,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
         context.fillText('インポートタイプ:', x, y);
          }
 
-        const types: Array<{ key: ImportType; label: string }> = [''
+        const types: Array<{ key: ImportType;, label: string }> = [''
             { key: 'playerData', label: 'プレイヤーデータ' ,},''
             { key: 'gameSettings', label: 'ゲーム設定' ,},]'
             { key: 'achievements', label: '実績データ' ,}]
@@ -387,8 +387,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
      */ : undefined''
     private validateImportData(data: ImportData): ImportValidationResult { const errors: string[] = [],
 
-        if(!data || typeof, data !== 'object'') {'
-            ';
+        if(!data || typeof, data !== 'object'') {', ';
 
         }
 
@@ -441,8 +440,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
             }''
         }');
 
-        if(data.highScores && typeof, data.highScores !== 'object'') {'
-            ';
+        if(data.highScores && typeof, data.highScores !== 'object'') {', ';
 
         }
 
@@ -486,7 +484,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
                 return Object.keys(data).length;''
             case 'achievements': return data.achievements ? data.achievements.length: 0
         
-            default: return 0;
+           , default: return 0;
     
     /**
      * プレビューデータを作成
@@ -497,7 +495,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
         switch(this.importType) {'
 
             case 'playerData': return { username: data.username;
-                    ap: data.ap;
+                   , ap: data.ap;
         ,}
 
                     tap: data.tap,' };
@@ -506,7 +504,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
                 };''
             case 'gameSettings': return { graphics: data.graphics;
-                    audio: data.audio, };
+                   , audio: data.audio, };
                     gameplay: data.gameplay }
 
                 };''
@@ -532,9 +530,9 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
             if(this.onResult) {'
                 this.onResult({''
                     action: 'import';
-                    data: {
+                   , data: {
                         type: this.importType);
-                        importedData: this.importData }
+                       , importedData: this.importData }
                         fileName: this.selectedFile? .name) }
                     }
 

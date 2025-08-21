@@ -4,7 +4,7 @@
  * データ分析、トレンド計算、詳細統計の算出を提供
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 統計計算クラス
@@ -13,7 +13,7 @@ export class StatisticsCalculator {
     constructor() {
         this.trendPeriods = {
             daily: 1;
-            weekly: 7;
+           , weekly: 7;
     }
             monthly: 30 }
         }
@@ -54,27 +54,27 @@ export class StatisticsCalculator {
     calculateBasicStats(statistics) {
         return { games: {
                 total: statistics.totalGamesPlayed || 0;
-                completed: statistics.stagesCompleted || 0;
+               , completed: statistics.stagesCompleted || 0;
     }
                 failed: statistics.stagesFailed || 0, };
                 completionRate: this.calculateCompletionRate(statistics); }
             },
             score: { total: statistics.totalScore || 0;
                 highest: statistics.highestScore || 0;
-                average: statistics.averageScore || 0, }
+               , average: statistics.averageScore || 0, }
                 distribution: statistics.scoreDistribution || {};
             bubbles: { popped: statistics.totalBubblesPopped || 0;
                 missed: statistics.totalBubblesMissed || 0;
-                accuracy: statistics.bubbleAccuracy || 0, }
+               , accuracy: statistics.bubbleAccuracy || 0, }
                 typeStats: statistics.bubbleTypeStats || {};
             time: { total: statistics.totalPlayTime || 0;
                 average: statistics.averageSessionLength || 0;
                 longest: statistics.longestSession || 0;
-                shortest: statistics.shortestSession === Infinity ? 0 : statistics.shortestSession };
+               , shortest: statistics.shortestSession === Infinity ? 0 : statistics.shortestSession };
             combos: { total: statistics.totalCombos || 0;
                 highest: statistics.highestCombo || 0;
                 average: statistics.averageCombo || 0;
-                breaks: statistics.comboBreaks || 0 }
+               , breaks: statistics.comboBreaks || 0 }
         }
 
     /**
@@ -85,7 +85,7 @@ export class StatisticsCalculator {
     calculateAdvancedStats(statistics) {
         return { efficiency: this.calculateDetailedEfficiency(statistics),
             reactionTime: this.calculateReactionTimeAnalysis(statistics);
-            performance: this.calculatePerformanceMetrics(statistics);
+           , performance: this.calculatePerformanceMetrics(statistics);
     ,}
             behavior: this.calculateBehaviorAnalysis(statistics), };
             consistency: this.calculateConsistencyMetrics(statistics); }
@@ -139,7 +139,7 @@ export class StatisticsCalculator {
             slowest: reactionStats.slowest || 0, }
             distribution: reactionStats.distribution || {};
             consistency: this.calculateReactionConsistency(reactionStats.recentTimes || []);
-            percentile: this.calculatePercentiles(reactionStats.recentTimes || []);
+           , percentile: this.calculatePercentiles(reactionStats.recentTimes || []);
         }
 
     /**
@@ -150,7 +150,7 @@ export class StatisticsCalculator {
     calculatePerformanceMetrics(statistics) {
         return { overallRating: this.calculateOverallRating(statistics),
             skillLevel: this.determineSkillLevel(statistics);
-            strengths: this.identifyStrengths(statistics);
+           , strengths: this.identifyStrengths(statistics);
     ,}
             improvements: this.identifyImprovements(statistics), };
             progression: this.calculateProgression(statistics); }
@@ -170,7 +170,7 @@ export class StatisticsCalculator {
             aggression: this.calculateAggression(statistics);
             patience: this.calculatePatience(statistics);
             adaptability: this.calculateAdaptability(statistics);
-            riskTaking: this.calculateRiskTaking(statistics), };
+           , riskTaking: this.calculateRiskTaking(statistics), };
             learning: this.calculateLearningPattern(statistics); }
         }
 
@@ -182,7 +182,7 @@ export class StatisticsCalculator {
     calculateConsistencyMetrics(statistics) {
         return { scoreConsistency: this.calculateScoreConsistency(statistics),
             timeConsistency: this.calculateTimeConsistency(statistics);
-            accuracyConsistency: this.calculateAccuracyConsistency(statistics);
+           , accuracyConsistency: this.calculateAccuracyConsistency(statistics);
     ,}
             performanceVariability: this.calculatePerformanceVariability(statistics), };
             reliabilityIndex: this.calculateReliabilityIndex(statistics); }
@@ -223,7 +223,7 @@ export class StatisticsCalculator {
     calculateRankings(statistics) {
         return { scoreRank: this.calculateScoreRank(statistics),
             efficiencyRank: this.calculateEfficiencyRank(statistics);
-            accuracyRank: this.calculateAccuracyRank(statistics);
+           , accuracyRank: this.calculateAccuracyRank(statistics);
     ,}
 
             consistencyRank: this.calculateConsistencyRank(statistics),' };
@@ -326,7 +326,7 @@ export class StatisticsCalculator {
             accuracy: Math.min(100, statistics.bubbleAccuracy || 0) * 0.25,
             efficiency: Math.min(100, (statistics.efficiencyStats? .bubblesPerMinute || 0) / 2) * 0.25, : undefined
             consistency: this.calculateScoreConsistency(statistics) * 0.2;
-            completion: this.calculateCompletionRate(statistics) * 0.15;
+           , completion: this.calculateCompletionRate(statistics) * 0.15;
     ,}
             improvement: this.calculateImprovementRate(statistics.efficiencyStats? .efficiencyTrend || []) * 0.15 }
         };
@@ -469,7 +469,7 @@ export class StatisticsCalculator {
             playTime: this.formatTime(statistics.totalPlayTime || 0);
             totalGames: statistics.totalGamesPlayed || 0;
             bestScore: statistics.highestScore || 0;
-            accuracy: Math.round((statistics.bubbleAccuracy || 0) * 10) / 10;
+           , accuracy: Math.round((statistics.bubbleAccuracy || 0) * 10) / 10;
     ,}
             favoriteStage: this.getFavoriteStage(statistics), };
             recentTrend: this.calculateEfficiencyTrend(statistics.efficiencyStats? .efficiencyTrend || []); }

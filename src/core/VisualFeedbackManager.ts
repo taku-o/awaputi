@@ -1,8 +1,8 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { FeedbackConfigManager } from './visual/feedback/FeedbackConfigManager.js';''
-import { FeedbackAnimationManager } from './visual/feedback/FeedbackAnimationManager.js';''
-import { FeedbackEffectRenderer } from './visual/feedback/FeedbackEffectRenderer.js';''
-import { FeedbackTriggerHandler } from './visual/feedback/FeedbackTriggerHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { FeedbackConfigManager  } from './visual/feedback/FeedbackConfigManager.js';''
+import { FeedbackAnimationManager  } from './visual/feedback/FeedbackAnimationManager.js';''
+import { FeedbackEffectRenderer  } from './visual/feedback/FeedbackEffectRenderer.js';''
+import { FeedbackTriggerHandler  } from './visual/feedback/FeedbackTriggerHandler.js';
 
 /**
  * 視覚フィードバック管理クラス（Main Controller）
@@ -14,7 +14,7 @@ import { FeedbackTriggerHandler } from './visual/feedback/FeedbackTriggerHandler
  * - FeedbackAnimationManager: アニメーション効果の管理
  * - FeedbackEffectRenderer: 視覚効果の描画処理
  * - FeedbackTriggerHandler: トリガーとイベント処理
- * - FeedbackConfigManager: 設定と要素管理
+ * -, FeedbackConfigManager: 設定と要素管理
  * 
  * 主な責任：
  * - サブコンポーネントの統制と調整
@@ -43,7 +43,7 @@ export class VisualFeedbackManager {'
         // 視覚フィードバック設定
         this.config = { : undefined
             enabled: false;
-            globalIntensity: 1.0;
+           , globalIntensity: 1.0;
     ,}
             feedbackTypes: { }
                 flash: { enabled: true, intensity: 1.0, duration: 300 ,},
@@ -80,10 +80,10 @@ export class VisualFeedbackManager {'
             positioning: { screenEdges: true;
                 gameArea: true;
                 uiElements: true;
-                fullScreen: false };
+               , fullScreen: false };
             performance: { maxConcurrentEffects: 10;
                 reducedMotion: false;
-                gpuAcceleration: true }
+               , gpuAcceleration: true }
         };
         // 視覚効果管理
         this.activeEffects = new Map();
@@ -103,14 +103,14 @@ export class VisualFeedbackManager {'
             effectsByType: new Map();
             effectsByEvent: new Map();
             averageIntensity: 0;
-            totalDuration: 0,
+           , totalDuration: 0,
             sessionStart: Date.now()';
-            preferredPatterns: ['flash', 'glow', 'pulse'],);
+           , preferredPatterns: ['flash', 'glow', 'pulse'],);
             colorPreferences: new Map();
             reducedMotion: false;
             audioVisualization: true;
             gameEventFeedback: true;
-            customMappings: new Map( ,};
+           , customMappings: new Map( ,};
         
         // サブコンポーネントの初期化（依存注入）
         this.configManager = new FeedbackConfigManager(this);
@@ -394,7 +394,7 @@ export class VisualFeedbackManager {'
         
         return { : undefined
             timestamp: new Date().toISOString(;
-            configuration: {
+           , configuration: {
                 enabled: this.config.enabled;
     ,}
                 globalIntensity: this.config.globalIntensity, };
@@ -404,9 +404,9 @@ export class VisualFeedbackManager {'
                 sessionDuration,
                 effectsPerMinute: this.stats.effectsTriggered / (sessionDuration / 60000;
                 activeEffects: this.activeEffects.size;
-                queuedEffects: this.effectQueue.length ,})
+               , queuedEffects: this.effectQueue.length ,})
             userPreferences: this.userPreferences);
-            performance: { maxConcurrentEffects: this.config.performance.maxConcurrentEffects,)
+           , performance: { maxConcurrentEffects: this.config.performance.maxConcurrentEffects,)
                 averageActiveEffects: this.stats.effectsTriggered / (sessionDuration / 1000 ,}
         }
     

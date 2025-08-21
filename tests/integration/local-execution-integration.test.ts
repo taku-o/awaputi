@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * local-execution-integration.test.js
  * Integration tests for local execution mode initialization flow - Issue #63
@@ -9,7 +9,7 @@ import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globa
  * - Error recovery and fallback mechanisms
  * - Integration with main.js initialization flow
  * 
- * Requirements: 1.1, 2.1, 5.1
+ *, Requirements: 1.1, 2.1, 5.1
  */
 import LocalExecutionDetector from '../../src/utils/local-execution/LocalExecutionDetector';
 import LocalModeManager from '../../src/utils/local-execution/LocalModeManager';
@@ -158,7 +158,7 @@ describe('Local Execution Integration', () => {
                 enableDeveloperGuidance: true
             );
             const initResult = await localModeManager.initialize();
-            // Assert: Should continue initialization despite favicon failure
+            //, Assert: Should continue initialization despite favicon failure
             expect(initResult.toBe(true);
             expect(mockDocument.body.appendChild).toHaveBeenCalled(); // Developer guidance should still work
         }');
@@ -263,7 +263,7 @@ describe('Local Execution Integration', () => {
                 enableDeveloperGuidance: true
             );
             // Should not throw error even when all components fail
-            let initResult: any,
+            let, initResult: any,
             expect(async () => {
                 initResult = await localModeManager.initialize();
             }).not.toThrow(');

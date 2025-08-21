@@ -1,5 +1,5 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { ErrorNotificationSystem } from '../../src/analytics/ErrorNotificationSystem';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { ErrorNotificationSystem  } from '../../src/analytics/ErrorNotificationSystem';
 // fetch APIのモック
 (global as any).fetch = jest.fn(') as jest.Mock;
 // performance.memory のモック
@@ -80,7 +80,7 @@ describe('ErrorNotificationSystem', () => {
         test('JavaScriptエラーが正しく処理される', (') => {
             const errorData = {
                 type: 'javascript',
-                message: 'Uncaught ReferenceError: x is not defined',
+                message: 'Uncaught, ReferenceError: x is not defined',
                 filename: 'test.js',
                 lineno: 10,
                 colno: 5,

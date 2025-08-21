@@ -7,7 +7,7 @@
 interface RuleEngineConfig { enabled: boolean,
     level: 'A' | 'AA' | 'AAA';
     includeWarnings: boolean;
-    autoFixEnabled: boolean ,}
+   , autoFixEnabled: boolean ,}
 ';
 
 interface GuidelineInfo { name: string,''
@@ -16,7 +16,7 @@ interface GuidelineInfo { name: string,''
 
 interface ExecutionState { running: boolean;
     currentTest: string | null;
-    results: Map<string, TestResult> }
+   , results: Map<string, TestResult> }
 
 interface TestResult { passed: boolean,
     issues: TestIssue[];
@@ -28,7 +28,7 @@ interface TestIssue { element?: Element;
     issue: string,
     severity: 'error' | 'warning';
     guideline: string;
-    suggestion: string;
+   , suggestion: string;
     details?: any ,}
 
 interface TestWarning { element?: Element;
@@ -36,17 +36,17 @@ interface TestWarning { element?: Element;
     issue: string,
     severity: 'warning';
     guideline: string;
-    suggestion: string ,}
+   , suggestion: string ,}
 
 interface RGB { r: number;
     g: number;
-    b: number }
+   , b: number }
 
 type TestMethod = (options?: any) => TestResult | Promise<TestResult>;
 
 export class WCAGRuleEngine {
     private config: RuleEngineConfig;
-    private guidelines: Record<string, GuidelineInfo>;
+    private, guidelines: Record<string, GuidelineInfo>;
     private testRegistry: Map<string, TestMethod>;
     private executionState: ExecutionState';
 
@@ -55,47 +55,11 @@ export class WCAGRuleEngine {
             enabled: true,
             level: 'AA';
             includeWarnings: true;
-            autoFixEnabled: false;
+           , autoFixEnabled: false;
             ...config;
 
         // WCAG 2.1 guidelines registry
-        this.guidelines = { ' ,}'
-
-            '1.1.1': { name: 'Non-text Content', level: 'A', category: 'perceivable' ,},''
-            '1.1.2': { name: 'Audio-only and Video-only', level: 'A', category: 'perceivable' ,},''
-            '1.2.1': { name: 'Audio Control', level: 'A', category: 'perceivable' ,},''
-            '1.3.1': { name: 'Info and Relationships', level: 'A', category: 'perceivable' ,},''
-            '1.3.2': { name: 'Meaningful Sequence', level: 'A', category: 'perceivable' ,},''
-            '1.3.3': { name: 'Sensory Characteristics', level: 'A', category: 'perceivable' ,},''
-            '1.4.1': { name: 'Use of Color', level: 'A', category: 'perceivable' ,},''
-            '1.4.2': { name: 'Audio Control', level: 'A', category: 'perceivable' ,},''
-            '1.4.3': { name: 'Contrast(Minimum)', level: 'AA', category: 'perceivable' ,},''
-            '1.4.4': { name: 'Resize Text', level: 'AA', category: 'perceivable' ,},''
-            '1.4.5': { name: 'Images of Text', level: 'AA', category: 'perceivable' ,},''
-            '2.1.1': { name: 'Keyboard', level: 'A', category: 'operable' ,},''
-            '2.1.2': { name: 'No Keyboard Trap', level: 'A', category: 'operable' ,},''
-            '2.2.1': { name: 'Timing Adjustable', level: 'A', category: 'operable' ,},''
-            '2.2.2': { name: 'Pause, Stop, Hide', level: 'A', category: 'operable' ,},''
-            '2.4.1': { name: 'Bypass Blocks', level: 'A', category: 'operable' ,},''
-            '2.4.2': { name: 'Page Titled', level: 'A', category: 'operable' ,},''
-            '2.4.3': { name: 'Focus Order', level: 'A', category: 'operable' ,},''
-            '2.4.4': { name: 'Link Purpose(In, Context)', level: 'A', category: 'operable' ,},''
-            '2.4.5': { name: 'Multiple Ways', level: 'AA', category: 'operable' ,},''
-            '2.4.6': { name: 'Headings and Labels', level: 'AA', category: 'operable' ,},''
-            '2.4.7': { name: 'Focus Visible', level: 'AA', category: 'operable' ,},''
-            '3.1.1': { name: 'Language of Page', level: 'A', category: 'understandable' ,},''
-            '3.1.2': { name: 'Language of Parts', level: 'AA', category: 'understandable' ,},''
-            '3.2.1': { name: 'On Focus', level: 'A', category: 'understandable' ,},''
-            '3.2.2': { name: 'On Input', level: 'A', category: 'understandable' ,},''
-            '3.2.3': { name: 'Consistent Navigation', level: 'AA', category: 'understandable' ,},''
-            '3.2.4': { name: 'Consistent Identification', level: 'AA', category: 'understandable' ,},''
-            '3.3.1': { name: 'Error Identification', level: 'A', category: 'understandable' ,},''
-            '3.3.2': { name: 'Labels or Instructions', level: 'A', category: 'understandable' ,},''
-            '3.3.3': { name: 'Error Suggestion', level: 'AA', category: 'understandable' ,},''
-            '3.3.4': { name: 'Error Prevention', level: 'AA', category: 'understandable' ,},''
-            '4.1.1': { name: 'Parsing', level: 'A', category: 'robust' ,},''
-            '4.1.2': { name: 'Name, Role, Value', level: 'A', category: 'robust' ,},''
-            '4.1.3': { name: 'Status Messages', level: 'AA', category: 'robust' ,};
+        this.guidelines = { ' ,}', '1.1.1': { name: 'Non-text Content', level: 'A', category: 'perceivable' ,},'', '1.1.2': { name: 'Audio-only and Video-only', level: 'A', category: 'perceivable' ,},'', '1.2.1': { name: 'Audio Control', level: 'A', category: 'perceivable' ,},'', '1.3.1': { name: 'Info and Relationships', level: 'A', category: 'perceivable' ,},'', '1.3.2': { name: 'Meaningful Sequence', level: 'A', category: 'perceivable' ,},'', '1.3.3': { name: 'Sensory Characteristics', level: 'A', category: 'perceivable' ,},'', '1.4.1': { name: 'Use of Color', level: 'A', category: 'perceivable' ,},'', '1.4.2': { name: 'Audio Control', level: 'A', category: 'perceivable' ,},'', '1.4.3': { name: 'Contrast(Minimum)', level: 'AA', category: 'perceivable' ,},'', '1.4.4': { name: 'Resize Text', level: 'AA', category: 'perceivable' ,},'', '1.4.5': { name: 'Images of Text', level: 'AA', category: 'perceivable' ,},'', '2.1.1': { name: 'Keyboard', level: 'A', category: 'operable' ,},'', '2.1.2': { name: 'No Keyboard Trap', level: 'A', category: 'operable' ,},'', '2.2.1': { name: 'Timing Adjustable', level: 'A', category: 'operable' ,},'', '2.2.2': { name: 'Pause, Stop, Hide', level: 'A', category: 'operable' ,},'', '2.4.1': { name: 'Bypass Blocks', level: 'A', category: 'operable' ,},'', '2.4.2': { name: 'Page Titled', level: 'A', category: 'operable' ,},'', '2.4.3': { name: 'Focus Order', level: 'A', category: 'operable' ,},'', '2.4.4': { name: 'Link Purpose(In, Context)', level: 'A', category: 'operable' ,},'', '2.4.5': { name: 'Multiple Ways', level: 'AA', category: 'operable' ,},'', '2.4.6': { name: 'Headings and Labels', level: 'AA', category: 'operable' ,},'', '2.4.7': { name: 'Focus Visible', level: 'AA', category: 'operable' ,},'', '3.1.1': { name: 'Language of Page', level: 'A', category: 'understandable' ,},'', '3.1.2': { name: 'Language of Parts', level: 'AA', category: 'understandable' ,},'', '3.2.1': { name: 'On Focus', level: 'A', category: 'understandable' ,},'', '3.2.2': { name: 'On Input', level: 'A', category: 'understandable' ,},'', '3.2.3': { name: 'Consistent Navigation', level: 'AA', category: 'understandable' ,},'', '3.2.4': { name: 'Consistent Identification', level: 'AA', category: 'understandable' ,},'', '3.3.1': { name: 'Error Identification', level: 'A', category: 'understandable' ,},'', '3.3.2': { name: 'Labels or Instructions', level: 'A', category: 'understandable' ,},'', '3.3.3': { name: 'Error Suggestion', level: 'AA', category: 'understandable' ,},'', '3.3.4': { name: 'Error Prevention', level: 'AA', category: 'understandable' ,},'', '4.1.1': { name: 'Parsing', level: 'A', category: 'robust' ,},'', '4.1.2': { name: 'Name, Role, Value', level: 'A', category: 'robust' ,},'', '4.1.3': { name: 'Status Messages', level: 'AA', category: 'robust' ,};
 
         // Test method registry
         this.testRegistry = new Map();
@@ -104,7 +68,7 @@ export class WCAGRuleEngine {
         // Rule execution state
         this.executionState = { running: false,
             currentTest: null;
-            results: new Map( ,}
+           , results: new Map( ,}
 
     /**
      * Set up test method registry
@@ -188,7 +152,7 @@ export class WCAGRuleEngine {
 
                 issues: [{' }'
 
-                    issue: `Test error: ${(error, as Error'}).message}`;''
+                    issue: `Test, error: ${(error, as, Error'}).message}`;''
                     severity: 'error',
                     guideline: '',]';
                     suggestion: ''];
@@ -292,11 +256,11 @@ export class WCAGRuleEngine {
                     issues.push({) }
                         element);' }'
 
-                        issue: `Insufficient color contrast: ${contrast.toFixed(2}):1 (required: ${requiredContrast}:1'})`;''
+                        issue: `Insufficient color, contrast: ${contrast.toFixed(2}):1 (required: ${requiredContrast}:1'})`;''
                         severity: 'error',
                         guideline: '1.4.3';
                         suggestion: `Increase contrast between text and background colors`;
-                        details: { currentContrast: contrast;
+                       , details: { currentContrast: contrast;
                             requiredContrast,
                             textColor: color;
                             backgroundColor,
@@ -304,7 +268,7 @@ export class WCAGRuleEngine {
                     } else if (contrast < requiredContrast * 1.2) { warnings.push({)'
                         element);' }'
 
-                        issue: `Color contrast is close to minimum threshold: ${contrast.toFixed(2'}):1`;''
+                        issue: `Color contrast is close to minimum, threshold: ${contrast.toFixed(2'}):1`;''
                         severity: 'warning',
                         guideline: '1.4.3',
                         suggestion: 'Consider increasing contrast for better accessibility';
@@ -396,7 +360,7 @@ export class WCAGRuleEngine {
 
                             element,' }'
 
-                            issue: `Missing required ARIA property: ${prop} for role="${role}"`;""
+                            issue: `Missing required ARIA, property: ${prop} for role="${role}"`;""
                             severity: 'error',)';
                             guideline: '4.1.2',);
                             suggestion: `Add ${prop} attribute for proper accessibility`);
@@ -503,7 +467,7 @@ export class WCAGRuleEngine {
         if(rgbMatch) {
             return { : undefined
                 r: parseInt(rgbMatch[1] 
-                g: parseInt(rgbMatch[2], };)
+               , g: parseInt(rgbMatch[2], };)
                 b: parseInt(rgbMatch[3]); }
             }
         
@@ -536,8 +500,7 @@ export class WCAGRuleEngine {
     /**
      * Get required ARIA properties for a role
      */''
-    private getRequiredAriaProperties(role: string): string[] { const requiredProps: Record<string, string[]> = {''
-            'checkbox': ['aria-checked],
+    private getRequiredAriaProperties(role: string): string[] { const requiredProps: Record<string, string[]> = {'', 'checkbox': ['aria-checked],
             'radio': ['aria-checked],
             'combobox': ['aria-expanded],
             'slider': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax],

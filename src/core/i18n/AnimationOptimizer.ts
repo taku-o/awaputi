@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * アニメーション最適化システム
@@ -33,16 +33,16 @@ export interface LanguageSwitchOptions { animationType?: string;
 export interface AnimationSpec { element: HTMLElement,
     keyframes: AnimationKeyframe[];
     options: AnimationOptions;
-    delay: number ,}
+   , delay: number ,}
 
 export interface BatchAnimationOptions { animationType: string;
     duration: number;
     staggerDelay: number;
-    priority: ElementPriority
+   , priority: ElementPriority
     }
 
 export interface BatchAnimationResult { success: boolean;
-    elements: number;
+   , elements: number;
     duration?: number;
     priority?: ElementPriority;
     error?: string; }
@@ -59,7 +59,7 @@ export interface LanguageSwitchResult { success: boolean,
 
 export interface ActiveAnimationData { animation: Animation,
     startTime: number;
-    element: HTMLElement
+   , element: HTMLElement
     ,}
 
 export interface OptimizationStrategies { batchTransitions: boolean;
@@ -67,14 +67,14 @@ export interface OptimizationStrategies { batchTransitions: boolean;
     avoidLayout: boolean;
     useWillChange: boolean;
     preferOpacity: boolean;
-    useCompositorLayers: boolean }
+   , useCompositorLayers: boolean }
 
 export interface PerformanceMetrics { animationCount: number;
     droppedFrames: number;
     averageFrameTime: number;
     frameTimeHistory: number[];
     animationTimes: number[];
-    gpuMemoryUsage: number }
+   , gpuMemoryUsage: number }
 
 export interface AnimationStats { totalAnimations: number;
     completedAnimations: number;
@@ -82,7 +82,7 @@ export interface AnimationStats { totalAnimations: number;
     optimizedAnimations: number;
     batchedAnimations: number;
     averageDuration: number;
-    totalDuration: number;
+   , totalDuration: number;
     activeAnimations?: number;
     queuedAnimations?: number;
     averageFPS?: number;
@@ -93,17 +93,17 @@ export interface AnimationStats { totalAnimations: number;
 
 export interface FrameTimeDistribution { min: number,
     max: number;
-    average: number ,}
+   , average: number ,}
 
 export interface DetailedPerformanceStats extends AnimationStats { frameTimeDistribution: FrameTimeDistribution;
     animationTimeDistribution: FrameTimeDistribution;
     presetUsage: string[];
-    strategyEffectiveness: StrategyEffectiveness
+   , strategyEffectiveness: StrategyEffectiveness
     }
 
 export interface StrategyEffectiveness { [strategy: string]: {
-        enabled: boolean;
-        estimatedImprovement: number }
+        enable;d: boolean;
+       , estimatedImprovement: number }
 
 export interface AnimationConfiguration { enabled?: boolean;
     optimizationLevel?: OptimizationLevel;
@@ -123,7 +123,7 @@ export class AnimationOptimizer {
     private defaultDuration: number;
     private reducedMotionEnabled: boolean;
     // アニメーション管理
-    private activeAnimations: Map<string, ActiveAnimationData>;
+    private, activeAnimations: Map<string, ActiveAnimationData>;
     private animationQueue: any[];
     private scheduledAnimations: Set<Animation>;
     private runningAnimations: Set<Animation>;
@@ -141,7 +141,7 @@ export class AnimationOptimizer {
     // パフォーマンス監視
     private performanceMetrics: PerformanceMetrics;
     // 統計情報
-    private stats: AnimationStats;
+    private, stats: AnimationStats;
     // Intersection Observer
     private intersectionObserver?: IntersectionObserver;
 
@@ -171,7 +171,7 @@ export class AnimationOptimizer {
             avoidLayout: true;
             useWillChange: true;
             preferOpacity: true;
-            useCompositorLayers: true ,}
+           , useCompositorLayers: true ,}
         };
         // アニメーションプリセット
         this.presets = { fadeIn: {
@@ -218,7 +218,7 @@ export class AnimationOptimizer {
             averageFrameTime: 0;
             frameTimeHistory: [];
             animationTimes: [];
-            gpuMemoryUsage: 0 ,};
+           , gpuMemoryUsage: 0 ,};
         // 統計情報
         this.stats = { totalAnimations: 0,
             completedAnimations: 0;
@@ -226,7 +226,7 @@ export class AnimationOptimizer {
             optimizedAnimations: 0;
             batchedAnimations: 0;
             averageDuration: 0;
-            totalDuration: 0 ,};
+           , totalDuration: 0 ,};
         ;
         // 初期化
         this.initialize()';
@@ -260,8 +260,7 @@ export class AnimationOptimizer {
                 priority = 'normal' } = options;
 
             ')';
-            if(!this.enabled || this.reducedMotionEnabled) {'
-                ';
+            if(!this.enabled || this.reducedMotionEnabled) {', ';
 
             }
 
@@ -359,8 +358,7 @@ export class AnimationOptimizer {
         if(element.classList.contains('low-priority)) return 'low';
         
         // 要素タイプでの判定
-        const tagPriority: Record<string, ElementPriority> = {''
-            'H1': 'critical', 'H2': 'high', 'H3': 'high',
+        const tagPriority: Record<string, ElementPriority> = {'', 'H1': 'critical', 'H2': 'high', 'H3': 'high',
             'BUTTON': 'high', 'INPUT': 'high',
             'P': 'normal', 'SPAN': 'normal', 'DIV': 'normal',
             'SMALL': 'low', 'FOOTER': 'low' };
@@ -416,7 +414,7 @@ export class AnimationOptimizer {
             
             return { success: true,
                 elements: elements.length;
-                duration: batchTime, };
+               , duration: batchTime, };
                 priority }
             } catch (error) {
             console.warn('Batch animation failed:', error);
@@ -523,8 +521,7 @@ export class AnimationOptimizer {
         const { element, keyframes, options, delay } = spec;
         ';
         // will-change プロパティを設定
-        if(this.strategies.useWillChange) {'
-            ';
+        if(this.strategies.useWillChange) {', ';
 
         }
 
@@ -532,8 +529,7 @@ export class AnimationOptimizer {
         }
         ';
         // コンポジターレイヤーの強制生成
-        if(this.strategies.useCompositorLayers) {'
-            ';
+        if(this.strategies.useCompositorLayers) {', ';
 
         }
 
@@ -588,8 +584,7 @@ export class AnimationOptimizer {
     private getOptimizedEasing(requestedEasing: string): string { ''
         if(this.optimizationLevel === 'performance'') {
             // パフォーマンス優先の場合はシンプルなイージング
-            const simpleEasings: Record<string, string> = {''
-                'ease-in-out': 'ease',
+            const simpleEasings: Record<string, string> = {'', 'ease-in-out': 'ease',
 
         }
 
@@ -620,7 +615,7 @@ export class AnimationOptimizer {
         this.activeAnimations.set(id, {)
             animation);
             startTime: performance.now();
-            element: animation.effect? .target as HTMLElement ,});
+           , element: animation.effect? .target as HTMLElement ,});
         this.runningAnimations.add(animation);
         
         return id;
@@ -825,7 +820,7 @@ export class AnimationOptimizer {
             droppedFrames: this.performanceMetrics.droppedFrames;
             optimizationLevel: this.optimizationLevel;
             reducedMotionEnabled: this.reducedMotionEnabled;
-            strategiesUsed: Object.entries(this.strategies);
+           , strategiesUsed: Object.entries(this.strategies);
                 .filter(([, enabled]) => enabled) };
                 .map(([strategy]) => strategy); }
         }
@@ -838,17 +833,17 @@ export class AnimationOptimizer {
         return { ...stats,
             frameTimeDistribution: {
                 min: Math.min(...this.performanceMetrics.frameTimeHistory) || 0;
-                max: Math.max(...this.performanceMetrics.frameTimeHistory) || 0, };
+               , max: Math.max(...this.performanceMetrics.frameTimeHistory) || 0, };
                 average: this.performanceMetrics.averageFrameTime }
             };
             animationTimeDistribution: { min: Math.min(...this.performanceMetrics.animationTimes) || 0;
                 max: Math.max(...this.performanceMetrics.animationTimes) || 0;
-                average: this.performanceMetrics.animationTimes.length > 0;
+               , average: this.performanceMetrics.animationTimes.length > 0;
                     ? this.performanceMetrics.animationTimes.reduce((a, b) => a + b, 0) / this.performanceMetrics.animationTimes.length;
                     : 0 
             },
             presetUsage: Object.keys(this.presets);
-            strategyEffectiveness: this.calculateStrategyEffectiveness();
+           , strategyEffectiveness: this.calculateStrategyEffectiveness();
         }
     
     /**
@@ -878,7 +873,7 @@ export class AnimationOptimizer {
             avoidLayout: 60;
             useWillChange: 20;
             preferOpacity: 30;
-            useCompositorLayers: 35 ,};
+           , useCompositorLayers: 35 ,};
         return improvements[strategy] || 10;
     }
     

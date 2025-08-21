@@ -1,12 +1,12 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/globals';
 /**
  * AnalyticsSystemPerformance.test.js
  * ゲーム分析システム全体の統合パフォーマンステスト
  */
-import { EnhancedAnalyticsManager } from '../../src/analytics/EnhancedAnalyticsManager';
-import { AnalyticsDashboard } from '../../src/analytics/AnalyticsDashboard';
-import { TrendAnalyzer } from '../../src/analytics/TrendAnalyzer';
-import { ComparisonEngine } from '../../src/analytics/ComparisonEngine';
+import { EnhancedAnalyticsManager  } from '../../src/analytics/EnhancedAnalyticsManager';
+import { AnalyticsDashboard  } from '../../src/analytics/AnalyticsDashboard';
+import { TrendAnalyzer  } from '../../src/analytics/TrendAnalyzer';
+import { ComparisonEngine  } from '../../src/analytics/ComparisonEngine';
 // フェイクIndexedDB実装
 import 'fake-indexeddb/auto';
 // 統合パフォーマンステスト
@@ -102,7 +102,7 @@ describe('Analytics System Integration Performance Tests', () => {
                 analyticsManager.recordPlayerInteractionPattern({
                     bubbleType: 'normal',
                     action: 'popped';);
-                    reactionTime: Math.random() * 1000,
+                   , reactionTime: Math.random() * 1000,
                     comboCount: i % 10,
                     currentScore: i * 100,
                     stageProgress: i / 50,
@@ -341,7 +341,7 @@ async function generateTestData(analyticsManager, count) {
         sessionId: sessionId,
         stageId: 'test_stage',
         difficulty: 'normal';);
-        startTime: Date.now(),
+       , startTime: Date.now(),
         previousBestScore: Math.floor(Math.random() * 10000),
     });
     for (let i = 0; i < count; i++) {
@@ -370,7 +370,7 @@ async function generateTestData(analyticsManager, count) {
         exitReason: 'completed',
         finalScore: count * 100,
         completed: true;);
-        timeRemaining: Math.max(0, 300000 - count * 1000),
+       , timeRemaining: Math.max(0, 300000 - count * 1000),
         hpRemaining: Math.max(0, 100 - Math.floor(count / 10),
         bubblesRemaining: 0,
         maxCombo: Math.floor(count / 10),
@@ -383,7 +383,7 @@ async function generateTestData(analyticsManager, count) {
 async function simulateGameSession(analyticsManager, sessionId, interactionCount) {
     analyticsManager.startSession({
         sessionId: sessionId;);
-        stageId: `stage_${Math.floor(Math.random() * 5'})}`;
+       , stageId: `stage_${Math.floor(Math.random() * 5'})}`;
         difficulty: ['easy', 'normal', 'hard'][Math.floor(Math.random() * 3)],
         startTime: Date.now(),
         previousBestScore: Math.floor(Math.random() * 10000),

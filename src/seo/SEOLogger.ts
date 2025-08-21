@@ -11,17 +11,17 @@ type LogLevel = 'info' | 'warn' | 'error' | 'error-detail' | 'performance' | 'va
 interface LogEntry { level: LogLevel,
     message: string;
     data: any;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 // 検証データインターフェース
 interface ValidationData { component: string;
     isValid: boolean;
     issues: string[];
-    timestamp: string }
+   , timestamp: string }
 
 // エラーサマリーインターフェース
 interface ErrorSummary { totalErrors: number;
-    errorTypes: Record<string, number>;
+   , errorTypes: Record<string, number>;
     recentErrors: LogEntry[]
     ,}
 
@@ -29,25 +29,25 @@ interface ErrorSummary { totalErrors: number;
 interface ComponentHealth { total: number;
     passed: number;
     failed: number;
-    issues: string[] }
+   , issues: string[] }
 
 // ヘルスレポートインターフェース
 interface HealthReport { timestamp: string;
-    summary: {
-        totalValidations: number;
+   , summary: {
+        totalValidation;s: number;
         passedValidations: number;
         failedValidations: number;
         errors: number;
-        warnings: number };
+       , warnings: number };
     componentHealth: Record<string, ComponentHealth>;
     recentIssues: LogEntry[];
-    healthScore: number;
+   , healthScore: number;
 }
 
 export class SEOLogger {
     private logs: LogEntry[];
     private maxLogs: number;
-    private debugMode: boolean;
+    private, debugMode: boolean;
     constructor() {
     
         this.logs = [];
@@ -193,7 +193,7 @@ export class SEOLogger {
             if(!componentHealth[component]) {
                 componentHealth[component] = {
                     total: 0;
-                    passed: 0;
+                   , passed: 0;
             }
                     failed: 0, }
                     issues: [] }
@@ -210,7 +210,7 @@ export class SEOLogger {
                 totalValidations: validations.length;
                 passedValidations: validations.length - failedValidations.length;
                 failedValidations: failedValidations.length;
-                errors: errors.length, };
+               , errors: errors.length, };
                 warnings: warnings.length }
             };
             componentHealth,

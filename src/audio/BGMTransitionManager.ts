@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // トランジションオプション型定義
 interface TransitionOptions { type?: string;
@@ -14,17 +14,17 @@ interface TransitionInfo { fromTrack: string,
     toTrack: string;
     type: string;
     duration: number;
-    curve: string ,}
+   , curve: string ,}
 
 // キューエントリ型定義
 interface QueueEntry { fromTrack: string;
     toTrack: string;
-    options: TransitionOptions
+   , options: TransitionOptions
     }
 
 // BGMシステム型定義
 interface BGMSystem { isPlaying: boolean;
-    tracks: Map<string, TrackInfo>;
+   , tracks: Map<string, TrackInfo>;
     playBGM(trackName: string, options?: any): Promise<void>;
     stopBGM(options?: any): Promise<void>;
     setVolume(volume: number, fadeTime?: number): void;
@@ -32,8 +32,8 @@ interface BGMSystem { isPlaying: boolean;
 
 // トラック情報型定義
 interface TrackInfo { metadata: {
-        tempo: number;
-        key: string };
+        temp;o: number;
+       , key: string };
     style: string;
 }
 
@@ -54,10 +54,10 @@ interface TransitionSettings { defaultFadeInDuration?: number;
 interface TransitionState { isTransitioning: boolean,
     currentTransition: TransitionInfo | null;
     queueLength: number;
-    settings: {
-        defaultFadeInDuration: number;
+   , settings: {
+        defaultFadeInDuratio;n: number;
         defaultFadeOutDuration: number;
-        defaultCrossfadeDuration: number ,}
+       , defaultCrossfadeDuration: number ,}
 
 /**
  * BGMトランジション管理クラス - 高度なBGM遷移制御とフェード機能
@@ -72,7 +72,7 @@ export class BGMTransitionManager {
     // フェード設定
     private defaultFadeInDuration: number = 2.0;
     private defaultFadeOutDuration: number = 2.0;
-    private defaultCrossfadeDuration: number = 3.0;
+    private, defaultCrossfadeDuration: number = 3.0;
     // トランジションタイプ
     private readonly transitionTypes = {''
         FADE_OUT_IN: 'fade_out_in',
@@ -166,7 +166,7 @@ export class BGMTransitionManager {
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {''
                 operation: 'transitionTo);
                 fromTrack: fromTrack);
-                toTrack: toTrack,);
+               , toTrack: toTrack,);
                 options: options ,});
         }
     }
@@ -187,7 +187,7 @@ export class BGMTransitionManager {
         
         // 新しいBGMをフェードインで開始
         await this.bgmSystem.playBGM(toTrack, { volume: volume)
-            fadeInDuration: fadeInDuration }
+           , fadeInDuration: fadeInDuration }
     
     /**
      * クロスフェード遷移
@@ -205,7 +205,7 @@ export class BGMTransitionManager {
         
         // 新しいBGMを無音で開始
         await this.bgmSystem.playBGM(toTrack, { volume: 0)
-            fadeInDuration: 0);
+           , fadeInDuration: 0);
         // クロスフェードを実行;
         await this._performCrossfade(currentVolume, volume, duration, curve); }
     
@@ -223,7 +223,7 @@ export class BGMTransitionManager {
         
         // 新しいBGMを即座に開始
         await this.bgmSystem.playBGM(toTrack, { volume: volume)
-            fadeInDuration: 0 }
+           , fadeInDuration: 0 }
     
     /**
      * スマートクロスフェード遷移（音楽的な調和を考慮）
@@ -319,8 +319,7 @@ export class BGMTransitionManager {
         if(key1 === key2) return 1.0;
         
         // 簡単な調和度計算（完全5度、4度関係を重視）
-        const keyMap: Record<string, number> = {''
-            'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,
+        const keyMap: Record<string, number> = {'', 'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,
             'F#': 6, 'Db': 1, 'Ab': 8, 'Eb': 3, 'Bb': 10, 'F': 5,
             'Am': 9, 'Em': 4, 'Bm': 11, 'F#m': 6, 'C#m': 1, 'G#m': 8,
             'D#m': 3, 'A#m': 10, 'Fm': 5, 'Cm': 0, 'Gm': 7, 'Dm': 2 };
@@ -377,7 +376,7 @@ export class BGMTransitionManager {
             case this.curveTypes.LOGARITHMIC: return Math.sqrt(progress);
             case this.curveTypes.SMOOTH:;
                 return progress * progress * (3 - 2 * progress); // smoothstep
-            default: return progress ,}
+           , default: return progress ,}
     }
     
     /**
@@ -415,7 +414,7 @@ export class BGMTransitionManager {
             await this.bgmSystem.stopBGM({ fadeOutDuration: 0 } catch (error) {
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {)'
                 operation: 'fadeOut');
-                duration: duration,);
+               , duration: duration,);
                 curve: curve), });
         }
     }
@@ -452,7 +451,7 @@ export class BGMTransitionManager {
                 operation: 'fadeIn';
                 trackName: trackName);
                 duration: duration);
-                curve: curve,);
+               , curve: curve,);
                 targetVolume: targetVolume ,});
         }
     }
@@ -515,9 +514,9 @@ export class BGMTransitionManager {
     getTransitionState(): TransitionState { return { isTransitioning: this.isTransitioning,
             currentTransition: this.currentTransition;
             queueLength: this.transitionQueue.length;
-            settings: {
+           , settings: {
                 defaultFadeInDuration: this.defaultFadeInDuration;
-                defaultFadeOutDuration: this.defaultFadeOutDuration, };
+               , defaultFadeOutDuration: this.defaultFadeOutDuration, };
                 defaultCrossfadeDuration: this.defaultCrossfadeDuration }
 }
     

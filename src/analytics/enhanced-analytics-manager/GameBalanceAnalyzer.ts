@@ -4,7 +4,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date 
+    timeRange?: { star;t: Date, end: Date 
 ,}
     filters?: Record<string, any>;
     metrics?: string[];
@@ -201,7 +201,7 @@ export class GameBalanceAnalyzer {
         if (!this.balanceMetrics.scoreDistribution[key]) { this.balanceMetrics.scoreDistribution[key] = []; }
         this.balanceMetrics.scoreDistribution[key].push({ score: scoreData.totalScore)
             time: scoreData.timeInStage);
-            playerSkill: scoreData.playerSkillLevel,);
+           , playerSkill: scoreData.playerSkillLevel,);
             comboCount: scoreData.comboCount ,}
     /**
      * バブル出現データの収集
@@ -236,7 +236,7 @@ export class GameBalanceAnalyzer {
         
             this.balanceMetrics.completionRates[key] = {
                 attempts: 0;
-                completions: 0
+               , completions: 0
 }
                 totalPlayTime: 0 ;
 }
@@ -266,7 +266,7 @@ export class GameBalanceAnalyzer {
             this.balanceMetrics.playerPerformance[key] = {
                 accuracySum: 0;
                 reactionTimeSum: 0;
-                maxComboSum: 0
+               , maxComboSum: 0
 }
                 count: 0 ;
 }
@@ -308,7 +308,7 @@ export class GameBalanceAnalyzer {
         const avgPerformance = performanceStats && performanceStats.count > 0 ? { : undefined
             accuracy: performanceStats.accuracySum / performanceStats.count;
             reactionTime: performanceStats.reactionTimeSum / performanceStats.count;
-            maxCombo: performanceStats.maxComboSum / performanceStats.count 
+           , maxCombo: performanceStats.maxComboSum / performanceStats.count 
 ,} : null;
         return { completionRate,
             averagePlayTime: this.balanceMetrics.averagePlayTimes[key] || 0, };
@@ -316,7 +316,7 @@ export class GameBalanceAnalyzer {
 }
             bubbleFrequency: this.balanceMetrics.bubbleFrequency[key] || {};
             averagePerformance: avgPerformance;
-            attempts: completionStats.attempts;
+           , attempts: completionStats.attempts;
         },
     }
     
@@ -332,7 +332,7 @@ export class GameBalanceAnalyzer {
             stages: {};
             globalMetrics: { totalAttempts: 0;
                 totalCompletions: 0;
-                averageCompletionRate: 0 
+               , averageCompletionRate: 0 
 }
         },
         

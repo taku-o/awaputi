@@ -6,13 +6,13 @@ interface TestResult { type: string,
     totalTests: number;
     passedTests: number;
     failedTests: number;
-    duration: number;
+   , duration: number;
     details?: TestDetail[]
     ,}
 
 interface TestDetail { name: string;
     status: 'passed' | 'failed';
-    duration: number;
+   , duration: number;
     error?: string }
 
 interface BenchmarkResult { type: string;
@@ -20,24 +20,24 @@ interface BenchmarkResult { type: string;
     fps: number;
     memoryUsage: number;
     renderTime: number;
-    score: number }
+   , score: number }
 
 interface TestSummary { total: number;
     passed: number;
     failed: number;
     successRate: number;
-    duration: number }
+   , duration: number }
 
 interface CategoryStats { [category: string]: {
-        total: number;
+        tota;l: number;
         passed: number;
-        failed: number }
+       , failed: number }
 ';
 
 interface IntegrationTestResult { name: string,''
     status: 'passed' | 'failed';
     message: string;
-    duration: number ,}
+   , duration: number ,}
 
 interface IntegrationTestResults { summary?: TestSummary;
     categoryStats?: CategoryStats;
@@ -49,7 +49,7 @@ interface ValidationResult { id: string,
     name: string,
     status: 'passed' | 'failed';
     message: string;
-    duration: number ,}
+   , duration: number ,}
 
 interface ValidationResults { summary?: TestSummary;
     categoryStats?: CategoryStats;
@@ -61,14 +61,14 @@ interface FinalValidationResult { category: string,
     name: string,
     status: 'passed' | 'failed';
     message: string;
-    duration: number ,}
+   , duration: number ,}
 
 interface FinalValidationResults { summary?: TestSummary;
     targets?: {
-        debugOverhead: number;
+        debugOverhea;d: number;
         memoryIncrease: number;
         initializationTime: number;
-        panelSwitchTime: number ,};
+       , panelSwitchTime: number ,};
     categoryStats?: CategoryStats;
     results?: FinalValidationResult[];
     }
@@ -94,7 +94,7 @@ export class TestPanel {
     private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
     private testSupportTools?: TestSupportTools;
-    private testResults: any[] = [];
+    private, testResults: any[] = [];
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
 
         this.gameEngine = gameEngine;
@@ -325,7 +325,7 @@ export class TestPanel {
     /**
      * テストを実行'
      */ : undefined''
-    async runTests(type: string): Promise<void> { ' '
+    async runTests(type: string): Promise<void> { ', '
         this.addTestResult(`${type}テストを開始中...`, 'info);
         
         try { if (this.testSupportTools) {
@@ -335,7 +335,7 @@ export class TestPanel {
                 this.displayTestResults(results); }
             } catch (error) { }
 
-            this.addTestResult(`テスト実行エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`テスト実行エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -351,7 +351,7 @@ export class TestPanel {
             passedTests: 13;
             failedTests: 2;
             duration: 1234;
-            details: [' ,}'
+           , details: [' ,}'
 
                 { name: 'GameEngine初期化テスト', status: 'passed', duration: 45 ,},''
                 { name: 'バブル生成テスト', status: 'passed', duration: 23 ,},''
@@ -393,8 +393,7 @@ export class TestPanel {
      * モックバブルを生成
      */'
     private generateMockBubbles(count: number): void { try {'
-            if(this.testSupportTools && this.testSupportTools.generateTestData) {'
-                ';
+            if(this.testSupportTools && this.testSupportTools.generateTestData) {', ';
 
             }
 
@@ -410,7 +409,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addTestResult(`バブル生成エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`バブル生成エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -435,7 +434,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addTestResult(`プレイヤーデータ生成エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`プレイヤーデータ生成エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -464,7 +463,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addTestResult(`ゲーム状態設定エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`ゲーム状態設定エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -480,7 +479,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addBenchmarkResult(`ベンチマークエラー: ${(error, as Error'}).message}`, 'error');
+            this.addBenchmarkResult(`ベンチマークエラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -499,7 +498,7 @@ export class TestPanel {
         const mockResults: BenchmarkResult = {
             type: type;
             duration: duration;
-            fps: Math.random() * 20 + 40, // 40-60 FPS;
+           , fps: Math.random() * 20 + 40, // 40-60 FPS;
             memoryUsage: Math.random() * 50 + 50, // 50-100 MB;
             renderTime: Math.random() * 10 + 5, // 5-15 ms;
             score: Math.floor(Math.random() * 40 + 60) // 60-100点 ,}
@@ -551,7 +550,7 @@ export class TestPanel {
             div.className = `test-result test-${type}`;
 
             div.innerHTML = `'';
-                <span class="result-time">${new Date(}.toLocaleTimeString("})</span>""
+                <span class="result-time">${new, Date(}.toLocaleTimeString("})</span>""
                 <span class="result-message">${message}</span>"
             `;""
             results.appendChild(div);
@@ -568,8 +567,7 @@ export class TestPanel {
      * パネルを表示
      */'
     show(): void { ''
-        if(this.element) {'
-            ';
+        if(this.element) {', ';
 
         }
 
@@ -580,8 +578,7 @@ export class TestPanel {
      * パネルを非表示
      */'
     hide(): void { ''
-        if(this.element) {'
-            ';
+        if(this.element) {', ';
 
         }
 
@@ -618,15 +615,14 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`統合テスト実行エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`統合テスト実行エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
     /**
      * カテゴリ別統合テストを実行'
      */''
-    private async runCategoryIntegrationTests(category: string): Promise<void> { const categoryNames: Record<string, string> = {''
-            'gameSystemIntegration': 'ゲームシステム統合',
+    private async runCategoryIntegrationTests(category: string): Promise<void> { const categoryNames: Record<string, string> = {'', 'gameSystemIntegration': 'ゲームシステム統合',
             'existingSystemCompatibility': '既存システム互換性',
             'crossBrowserCompatibility': 'クロスブラウザ互換性',
             'performanceIntegration': 'パフォーマンス統合',
@@ -652,7 +648,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`${categoryName}テスト実行エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`${categoryName}テスト実行エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -701,7 +697,7 @@ export class TestPanel {
                     <h6>${category}</h6>''
                     <div class="category-stats">"";
                         <span class="success">${stats.passed}/${stats.total} 成功</span>""
-                        ${stats.failed > 0 ? `<span class="error">${stats.failed} 失敗</span>` : ''
+                        ${stats.failed > 0 ? `<span, class="error">${stats.failed} 失敗</span>` : ''
                     </div>;
                 `;
                 integrationResults.appendChild(categoryDiv);
@@ -755,7 +751,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`エクスポートエラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -775,7 +771,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`要件検証エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`要件検証エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -824,7 +820,7 @@ export class TestPanel {
                     <h6>${category}</h6>''
                     <div class="category-stats">"";
                         <span class="success">${stats.passed}/${stats.total} 充足</span>""
-                        ${stats.failed > 0 ? `<span class="error">${stats.failed} 未充足</span>` : ''
+                        ${stats.failed > 0 ? `<span, class="error">${stats.failed} 未充足</span>` : ''
                     </div>;
                 `;
                 validationResults.appendChild(categoryDiv);
@@ -879,7 +875,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`エクスポートエラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -899,7 +895,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`最終検証エラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`最終検証エラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 
@@ -967,7 +963,7 @@ export class TestPanel {
                     <h6>${category}</h6>''
                     <div class="category-stats">"";
                         <span class="success">${stats.passed}/${stats.total} 合格</span>""
-                        ${stats.failed > 0 ? `<span class="error">${stats.failed} 不合格</span>` : ''
+                        ${stats.failed > 0 ? `<span, class="error">${stats.failed} 不合格</span>` : ''
                     </div>;
                 `;
                 finalValidationResults.appendChild(categoryDiv);
@@ -1022,7 +1018,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`エクスポートエラー: ${(error, as Error'}).message}`, 'error');
+            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}).message}`, 'error');
         }
     }
 

@@ -1,20 +1,20 @@
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { VolumeControlComponent } from '../../../src/components/VolumeControlComponent';
+import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/globals';
+import { VolumeControlComponent  } from '../../../src/components/VolumeControlComponent';
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        get: jest.Mock<(key: string) => any>;
-        set: jest.Mock<(key: string, value => void>);
+        get: jest.Mock<(ke;y: string) => any>;
+        set: jest.Mock<(ke;y: string, value => void>);
     };
     audioManager: {
         playUISound: jest.Mock<(sound: string, options?: {volume?: number}) => void>;
     };
 }
 interface MockErrorHandler {
-    handleError: jest.Mock<(error: Error, context?: string) => void>;
+    handleError: jest.Mock<(erro;r: Error, context?: string) => void>;
 }
 interface MockLocalizationManager {
-    getText: jest.Mock<(key: string) => string>;
+    getText: jest.Mock<(ke;y: string) => string>;
 }
 interface ComponentStats {
     isInitialized: boolean,
@@ -236,7 +236,7 @@ describe('VolumeControlComponent', () => {
         }');
         test('should handle keyboard events', (') => {
             const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' }');
-            const spaceEvent = new KeyboardEvent('keydown', { key: ' ' }');
+            const spaceEvent = new KeyboardEvent('keydown', { key: ', ' }');
             const preventDefaultSpy = jest.spyOn(enterEvent, 'preventDefault'');
             const preventDefaultSpySp = jest.spyOn(spaceEvent, 'preventDefault');
             component.volumeUpButton!.click = jest.fn();

@@ -4,34 +4,34 @@
  */
 
 // Core Help System Components
-export { HelpManager, getHelpManager, reinitializeHelpManager } from './HelpManager.js';''
-export { TutorialManager, getTutorialManager, reinitializeTutorialManager } from './TutorialManager.js';''
-export { ContextManager, getContextManager, reinitializeContextManager } from './ContextManager.js';''
-export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler } from './HelpErrorHandler.js';''
-export { TutorialActions, getTutorialActions, reinitializeTutorialActions } from './TutorialActions.js';''
-export { TutorialValidationEngine, getTutorialValidationEngine, reinitializeTutorialValidationEngine } from './TutorialValidationEngine.js';
+export { HelpManager, getHelpManager, reinitializeHelpManager  } from './HelpManager.js';''
+export { TutorialManager, getTutorialManager, reinitializeTutorialManager  } from './TutorialManager.js';''
+export { ContextManager, getContextManager, reinitializeContextManager  } from './ContextManager.js';''
+export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler  } from './HelpErrorHandler.js';''
+export { TutorialActions, getTutorialActions, reinitializeTutorialActions  } from './TutorialActions.js';''
+export { TutorialValidationEngine, getTutorialValidationEngine, reinitializeTutorialValidationEngine  } from './TutorialValidationEngine.js';
 ';
 // UI Components
-export { TutorialOverlay, getTutorialOverlay, reinitializeTutorialOverlay } from './TutorialOverlay.js';
+export { TutorialOverlay, getTutorialOverlay, reinitializeTutorialOverlay  } from './TutorialOverlay.js';
 ';
 // Content Management System Components
-export { ContentLoader, getContentLoader, reinitializeContentLoader } from './components/ContentLoader.js';''
-export { HelpContentModel, TutorialModel, FAQModel, UserProgressModel, DataModelFactory } from './DataModels.js';''
-export { ContentValidation, getContentValidation, reinitializeContentValidation } from './ContentValidation.js';''
-export { SearchEngine, getSearchEngine, reinitializeSearchEngine } from './components/SearchEngine.js';''
-export { MultilingualContentManager, getMultilingualContentManager, reinitializeMultilingualContentManager } from './MultilingualContentManager.js';
+export { ContentLoader, getContentLoader, reinitializeContentLoader  } from './components/ContentLoader.js';''
+export { HelpContentModel, TutorialModel, FAQModel, UserProgressModel, DataModelFactory  } from './DataModels.js';''
+export { ContentValidation, getContentValidation, reinitializeContentValidation  } from './ContentValidation.js';''
+export { SearchEngine, getSearchEngine, reinitializeSearchEngine  } from './components/SearchEngine.js';''
+export { MultilingualContentManager, getMultilingualContentManager, reinitializeMultilingualContentManager  } from './MultilingualContentManager.js';
 ';
 // Tutorial Components
-export { TutorialInteractionHandler } from './components/TutorialInteractionHandler.js';''
-export { TutorialProgressTracker } from './components/TutorialProgressTracker.js';''
-export { TutorialAnimationController } from './components/TutorialAnimationController.js';''
-export { HelpPerformanceMonitor } from './components/HelpPerformanceMonitor.js';''
-export { TutorialStepManager } from './components/TutorialStepManager.js';
+export { TutorialInteractionHandler  } from './components/TutorialInteractionHandler.js';''
+export { TutorialProgressTracker  } from './components/TutorialProgressTracker.js';''
+export { TutorialAnimationController  } from './components/TutorialAnimationController.js';''
+export { HelpPerformanceMonitor  } from './components/HelpPerformanceMonitor.js';''
+export { TutorialStepManager  } from './components/TutorialStepManager.js';
 ';
 // Effectiveness Analysis Components
-export { HelpMetricsCollector } from './effectiveness/HelpMetricsCollector.js';''
-export { HelpDataAnalyzer } from './effectiveness/HelpDataAnalyzer.js';''
-export { HelpReportGenerator } from './effectiveness/HelpReportGenerator.js';
+export { HelpMetricsCollector  } from './effectiveness/HelpMetricsCollector.js';''
+export { HelpDataAnalyzer  } from './effectiveness/HelpDataAnalyzer.js';''
+export { HelpReportGenerator  } from './effectiveness/HelpReportGenerator.js';
 
 // 型定義
 export interface GameEngine { eventBus?: any;
@@ -47,7 +47,7 @@ export interface HelpSystemComponents { helpManager: any,
     searchEngine: any;
     multilingualContentManager: any;
     initialized: boolean;
-    version: string ,}
+   , version: string ,}
 
 export interface HelpSystemInitResult { initialized: boolean;
     error?: string;

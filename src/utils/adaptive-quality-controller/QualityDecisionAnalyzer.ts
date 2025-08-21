@@ -16,34 +16,34 @@ interface PerformanceAverages { fps: number[];
     frameTime: number[];
     memoryUsage: number[];
     dropFrameCount: number;
-    performanceScore: number }
+   , performanceScore: number }
 
 interface AnalysisConfig { sampleSize: number;
-    performanceThresholds: {
-        excellent: number;
+   , performanceThresholds: {
+        excellen;t: number;
         good: number;
         fair: number;
         poor: number;
-        critical: number };
+       , critical: number };
     trendAnalysis: { windowSize: number;
         significantChange: number;
-        trendStability: number }
+       , trendStability: number }
 
 interface TrendHistoryEntry { trend: string,
     stability: number;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface TrendAnalysis { trend: string;
     strength: number;
     stability: number;
-    direction: number;
+   , direction: number;
     correlation?: number;
     variance?: number; }
 
 interface QualityDecision { needsAdjustment: boolean,
     recommendedLevel: string;
     reason: string;
-    confidence: number;
+   , confidence: number;
     currentLevel?: string;
     currentIndex?: number;
     performanceScore?: number;
@@ -56,11 +56,11 @@ interface EvaluationResult { needsAdjustment: boolean,
     confidence: number;
     performanceScore: number;
     trend: TrendAnalysis;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface LinearTrend { slope: number;
     correlation: number;
-    variance: number }
+   , variance: number }
 
 interface PerformanceStats { averageFPS: number;
     averageFrameTime: number;
@@ -69,14 +69,14 @@ interface PerformanceStats { averageFPS: number;
     performanceScore: number;
     trendHistory: TrendHistoryEntry[];
     stabilityCounter: number;
-    lastDecision: QualityDecision | null }
+   , lastDecision: QualityDecision | null }
 
 export class QualityDecisionAnalyzer {
     private performanceAverages: PerformanceAverages;
     private analysisConfig: AnalysisConfig;
     private trendHistory: TrendHistoryEntry[];
     private stabilityCounter: number;
-    private lastDecision: QualityDecision | null;
+    private, lastDecision: QualityDecision | null;
     constructor() {
 
         // パフォーマンス統計
@@ -84,7 +84,7 @@ export class QualityDecisionAnalyzer {
             fps: [];
             frameTime: [];
             memoryUsage: [];
-            dropFrameCount: 0;
+           , dropFrameCount: 0;
     }
             performanceScore: 0 }
         };
@@ -97,7 +97,7 @@ export class QualityDecisionAnalyzer {
                 poor: 0.4,      // 40%以上;
                 critical: 0.2   // 20%以上 ,};
             trendAnalysis: { windowSize: 10;
-                significantChange: 0.1, // 10%の変化で有意とみなす;
+               , significantChange: 0.1, // 10%の変化で有意とみなす;
                 trendStability: 5 // 5回連続で同じトレンドなら安定 ,}
         };
         // トレンド追跡
@@ -136,13 +136,13 @@ export class QualityDecisionAnalyzer {
                 reason: decision.reason;
                 confidence: decision.confidence;
                 performanceScore: performanceScore;
-                trend: trendAnalysis, };
+               , trend: trendAnalysis, };
                 timestamp: Date.now(); }
             } catch (error) { console.error('[QualityDecisionAnalyzer] Error in evaluation:', error);
 
             return { needsAdjustment: false,''
                 reason: 'evaluation_error';
-                confidence: 0,
+               , confidence: 0,
                 performanceScore: 0.5,
                 recommendedLevel: 'medium',
                 trend: 'stable', };
@@ -239,7 +239,7 @@ export class QualityDecisionAnalyzer {
         if(this.performanceAverages.fps.length < windowSize) {'
             return { ''
                 trend: 'insufficient_data';
-                strength: 0;
+               , strength: 0;
         }
                 stability: 0, };
                 direction: 0 }
@@ -267,7 +267,7 @@ export class QualityDecisionAnalyzer {
             strength: Math.abs(trend.slope);
             stability: stability;
             direction: Math.sign(trend.slope);
-            correlation: trend.correlation, };
+           , correlation: trend.correlation, };
             variance: trend.variance }
         }
     
@@ -385,7 +385,7 @@ export class QualityDecisionAnalyzer {
     updateTrendHistory(trendCategory: string, stability: number): void { this.trendHistory.push({)
             trend: trendCategory,);
             stability: stability);
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
         
         // 履歴サイズの制限
         if (this.trendHistory.length > 50) { this.trendHistory.shift(); }
@@ -443,7 +443,7 @@ export class QualityDecisionAnalyzer {
             averageMemoryUsage: this.calculateAverage(this.performanceAverages.memoryUsage);
             dropFrameCount: this.performanceAverages.dropFrameCount;
             performanceScore: this.performanceAverages.performanceScore;
-            trendHistory: this.trendHistory.slice(-10), // 最近10件;
+           , trendHistory: this.trendHistory.slice(-10), // 最近10件;
             stabilityCounter: this.stabilityCounter, };
             lastDecision: this.lastDecision }
         }

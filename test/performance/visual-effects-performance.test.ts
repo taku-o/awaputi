@@ -1,9 +1,9 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest  } from '@jest/globals';
 /**
  * Visual Effects Performance Tests
  * 視覚効果システムのパフォーマンステスト'
  */''
-import { test, expect } from '@playwright/test';''
+import { test, expect  } from '@playwright/test';''
 test.describe('Visual Effects Performance Tests', () => { ' }'
     test.beforeEach(async ({ page }') => {  ''
         await page.goto('http: //localhost:8000''),' };'
@@ -50,8 +50,7 @@ test.describe('Visual Effects Performance Tests', () => { ' }'
             await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(500);'
             // 大量のパーティクルエフェクトを発動''
-            for(let i = 0; i < 20; i++') {'
-                ';
+            for(let i = 0; i < 20; i++') {', ';
             }'
                 await page.selectOption('#preview-effect-type', 'bubble-diamond'');' }'
                 await page.click('#trigger-preview'); }
@@ -78,10 +77,8 @@ test.describe('Visual Effects Performance Tests', () => { ' }'
             await page.waitForTimeout(500};)'
             );''
             const qualityResults: Record<string, any> = { ');''
-            const qualityLevels = ['low', 'medium', 'high', 'ultra'];'
-            '';
-            for(const quality of qualityLevels') {'
-                '';
+            const qualityLevels = ['low', 'medium', 'high', 'ultra'];', '';
+            for(const quality of qualityLevels') {', '';
                 await page.selectOption('#quality-select', quality);''
                 await page.waitForTimeout(1000');'
                 // エフェクトを発動''
@@ -113,8 +110,7 @@ test.describe('Visual Effects Performance Tests', () => { ' }'
             const initialMemoryText = await page.textContent('#memory-value'}');''
             const initialMemory = parseFloat(initialMemoryText.replace(' MB', '');
             // 長時間のエフェクト生成をシミュレート
-            for(let cycle = 0; cycle < 10; cycle++) {'
-                '';
+            for(let cycle = 0; cycle < 10; cycle++) {', '';
                 for (let i = 0; i < 5; i++') {''
                     await page.selectOption('#preview-effect-type', 'bubble-normal'');'
             }'
@@ -141,13 +137,11 @@ test.describe('Visual Effects Performance Tests', () => { ' }'
             await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(500);'
             // 大量エフェクトを生成''
-            for(let i = 0; i < 50; i++') {'
-                ';
+            for(let i = 0; i < 50; i++') {', ';
             }'
                 await page.selectOption('#preview-effect-type', 'combo-spectacular'');' }'
                 await page.click('#trigger-preview'); }'
-                await page.waitForTimeout(20})''
-            ');'
+                await page.waitForTimeout(20})'', ');'
             ;''
             const peakParticleText = await page.textContent('#particle-value');''
             const peakParticles = parseInt(peakParticleText');'
@@ -228,12 +222,10 @@ test.describe('Visual Effects Performance Tests', () => { ' }'
                 performanceResults[`${size.width}x${size.height}`] = fps)
             );
             // すべての画面サイズで最低限のパフォーマンスを確保
-            for(const [resolution, fps] of Object.entries(performanceResults) {'
-                ';
+            for(const [resolution, fps] of Object.entries(performanceResults) {', ';
             }'
                 expect(fps.toBeGreaterThan(20'); }
-            }'
-            '';
+            }', '';
             console.log('Performance by resolution:', performanceResults);''
         }');'
     }''
@@ -249,21 +241,19 @@ test.describe('Visual Effects Performance Tests', () => { ' }'
             await page.selectOption('#quality-select', 'ultra'');''
             const initialQuality = await page.inputValue('#quality-select');'
             // 負荷をかけてパフォーマンス低下を誘発''
-            for(let i = 0; i < 100; i++') {'
-                ';
+            for(let i = 0; i < 100; i++') {', ';
             }'
                 await page.selectOption('#preview-effect-type', 'combo-spectacular'');' }'
                 await page.click('#trigger-preview'); }
                 await page.waitForTimeout(10});'
             ;''
-            await page.waitForTimeout(5000'); // 自動最適化の時間を待つ'
-            '';
+            await page.waitForTimeout(5000'); // 自動最適化の時間を待つ', '';
             const finalQuality = await page.inputValue('#quality-select');'
             // 自動最適化が動作した可能性を確認''
             console.log(`Quality: ${initialQuality} -> ${ finalQuality)`');'
             // 最終的にパフォーマンスが回復していることを確認''
-            const finalFpsText = await page.textContent('#fps-value');
-            const finalFps = parseFloat(finalFpsText); }'
+            const, finalFpsText = await, page.textContent('#fps-value');
+            const, finalFps = parseFloat(finalFpsText); }'
             expect(finalFps.toBeGreaterThan(15}); // 最適化後の最低限のパフォーマンス''
         }');''
         test('should benchmark all effect types efficiently', async ({ page )') => { ''
@@ -334,8 +324,7 @@ test.describe('Visual Effects Performance Tests', () => { ' }'
             await page.fill('#particle-multiplier', '2.0');
             await page.waitForTimeout(500);'
             // 大量のエフェクト生成''
-            for(let i = 0; i < 200; i++') {'
-                '';
+            for(let i = 0; i < 200; i++') {', '';
                 await page.selectOption('#preview-effect-type', 'combo-spectacular'');'
             }'
                 await page.click('#trigger-preview'); }

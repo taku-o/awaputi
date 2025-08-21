@@ -1,21 +1,21 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';''
-import { getEnhancedLocalizationManager } from '../LocalizationManager.js';''
-import { getAdvancedFormatterEngine } from '../advanced/AdvancedFormatterEngine.js';''
-import { getCulturalAdaptationSystem } from '../cultural/CulturalAdaptationSystem.js';''
-import { getRTLLanguageDetector } from '../rtl/RTLLanguageDetector.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
+import { getEnhancedLocalizationManager  } from '../LocalizationManager.js';''
+import { getAdvancedFormatterEngine  } from '../advanced/AdvancedFormatterEngine.js';''
+import { getCulturalAdaptationSystem  } from '../cultural/CulturalAdaptationSystem.js';''
+import { getRTLLanguageDetector  } from '../rtl/RTLLanguageDetector.js';
 
 // インターフェース定義
 interface TestResult { name: string,''
     status: 'passed' | 'failed' | 'skipped';
     error?: string;
-    duration: number ,}
+   , duration: number ,}
 
 interface TestStats { totalTests: number;
     passedTests: number;
     failedTests: number;
     skippedTests: number;
     startTime: Date | null;
-    endTime: Date | null }
+   , endTime: Date | null }
 
 interface TestOptions { suites?: string[];
     failFast?: boolean;
@@ -25,23 +25,23 @@ interface TestOptions { suites?: string[];
 interface TestSummary { totalTests: number,
     passedTests: number;
     failedTests: number;
-    successRate: string ,}
+   , successRate: string ,}
 
 interface SuiteResult { passed: number;
     failed: number;
     totalTests: number;
     averageDuration: number;
-    tests: TestResult[]
+   , tests: TestResult[]
     }
 
 interface TestReport { summary: {
-        totalTests: number;
+        totalTest;s: number;
         passedTests: number;
         failedTests: number;
         successRate: string;
         duration: string;
         startTime: string;
-        endTime: string };
+       , endTime: string };
     suiteResults: { [suiteName: string]: SuiteResult };
     recommendations: string[];
 }
@@ -63,9 +63,9 @@ export class SystemIntegrationTester { private localizationManager: any;
     private formatterEngine: any;
     private culturalSystem: any;
     private rtlDetector: any;
-    private testResults: Map<string, TestResult[]>;
+    private, testResults: Map<string, TestResult[]>;
     private testStats: TestStats;
-    private testSuites: Map<string, TestFunction>;
+    private, testSuites: Map<string, TestFunction>;
     private mockFactory: MockFactory;
     constructor() {
 
@@ -91,7 +91,7 @@ export class SystemIntegrationTester { private localizationManager: any;
         // モックファクトリ
         this.mockFactory = {
             gameEngine: this.createGameEngineMock.bind(this);
-            settingsManager: this.createSettingsManagerMock.bind(this, }
+           , settingsManager: this.createSettingsManagerMock.bind(this, }
 
             domElement: this.createDOMElementMock.bind(this); }
         };
@@ -126,7 +126,7 @@ export class SystemIntegrationTester { private localizationManager: any;
                 console.log(`\n📋 Running, test suite: ${ suiteName)`),
                 
                 try {
-                    const suiteResults = await this.runTestSuite(suiteName');
+                    const, suiteResults = await, this.runTestSuite(suiteName');
                     this.testResults.set(suiteName, suiteResults};
 
                     const passed = suiteResults.filter(r => r.status === 'passed''}.length;' }
@@ -150,7 +150,7 @@ export class SystemIntegrationTester { private localizationManager: any;
                     this.testResults.set(suiteName, [{)'
                         name: `${suiteName}-suite-error`;')'
                         status: 'failed');
-                        error: (error, as Error).message];
+                       , error: (error, as Error).message];
                         duration: 0];
                     }]),
                     this.testStats.failedTests++;
@@ -200,7 +200,7 @@ export class SystemIntegrationTester { private localizationManager: any;
         } catch (error) { results.push({ })'
                 name: `${suiteName}-execution`;')'
                 status: 'failed');
-                error: (error, as Error).message;
+               , error: (error, as Error).message;
                 duration: Date.now() - startTime;
             }),
         }
@@ -316,8 +316,7 @@ export class SystemIntegrationTester { private localizationManager: any;
         }');
         ';
         // 動的翻訳生成テスト
-        results.push(await this.runSingleTest('dynamic-generation', async () => {  const numberExpression = this.formatterEngine.generateDynamicTranslation(')'
-                'number-expression', 1500000, 'en')';
+        results.push(await this.runSingleTest('dynamic-generation', async () => {  const numberExpression = this.formatterEngine.generateDynamicTranslation(')', 'number-expression', 1500000, 'en')';
 
             ');''
             this.assert(numberExpression.includes('million'') || numberExpression.includes('千''), ' }
@@ -452,8 +451,7 @@ export class SystemIntegrationTester { private localizationManager: any;
         // 高速切り替えテスト
         results.push(await this.runSingleTest('rapid-language-switching', async () => {  const switches: Promise<boolean>[] = [],
 
-            for(let, i = 0; i < 10; i++) {'
-                ';
+            for(let, i = 0; i < 10; i++) {', ';
 
             }
 
@@ -476,9 +474,7 @@ export class SystemIntegrationTester { private localizationManager: any;
             await this.localizationManager.setLanguage('ja'');''
             const japaneseTranslation = this.localizationManager.t('common.ok);
 
-            this.assert(englishTranslation !== japaneseTranslation)' }'
-
-                'Translations should differ between languages'); }
+            this.assert(englishTranslation !== japaneseTranslation)' }', 'Translations should differ between languages'); }
         });
         
         return results;
@@ -678,18 +674,17 @@ export class SystemIntegrationTester { private localizationManager: any;
         try {'
             await testFunction()';
                 status: 'passed');
-                duration: Date.now() - startTime };''
+               , duration: Date.now() - startTime };''
         } catch (error) { return { name: name,''
                 status: 'failed';
-                error: (error, as Error).message, };
+               , error: (error, as Error).message, };
                 duration: Date.now() - startTime }
             }
     }
     ';
 
     private assert(condition: boolean, message?: string): void { ''
-        if(!condition) {'
-            ';
+        if(!condition) {', ';
 
         }
 
@@ -710,11 +705,11 @@ export class SystemIntegrationTester { private localizationManager: any;
             summary: {
                 totalTests: this.testStats.totalTests;
                 passedTests: this.testStats.passedTests;
-                failedTests: this.testStats.failedTests, }
+               , failedTests: this.testStats.failedTests, }
                 successRate: `${successRate}%`;
                 duration: `${duration}ms`;
                 startTime: this.testStats.startTime!.toISOString();
-                endTime: this.testStats.endTime!.toISOString();
+               , endTime: this.testStats.endTime!.toISOString();
             },
             suiteResults: {};
             recommendations: [];
@@ -730,23 +725,21 @@ export class SystemIntegrationTester { private localizationManager: any;
                 passed: passed;
                 failed: failed;
                 totalTests: results.length;
-                averageDuration: Math.round(avgDuration;
+               , averageDuration: Math.round(avgDuration;
         ,}
                 tests: results }))
         }
         ';
 
         // 推奨事項を生成')'
-        if(this.testStats.failedTests > 0) {'
-            ';
+        if(this.testStats.failedTests > 0) {', ';
 
         }
 
             report.recommendations.push('失敗したテストの詳細を確認し、問題を修正してください。); }'
         }
 
-        if(this.testStats.passedTests / this.testStats.totalTests < 0.95) {'
-            ';
+        if(this.testStats.passedTests / this.testStats.totalTests < 0.95) {', ';
 
         }
 
@@ -758,7 +751,7 @@ export class SystemIntegrationTester { private localizationManager: any;
     
     private getTestSummary(): TestSummary { return { totalTests: this.testStats.totalTests,
             passedTests: this.testStats.passedTests;
-            failedTests: this.testStats.failedTests,
+           , failedTests: this.testStats.failedTests,
             successRate: this.testStats.totalTests > 0 ?   : undefined' ,};
 
                 (this.testStats.passedTests / this.testStats.totalTests * 100).toFixed(2) + '%' : '0%' }
@@ -811,9 +804,9 @@ export class SystemIntegrationTester { private localizationManager: any;
     /**
      * 統計情報を取得
      */)
-    getStats(): { availableTestSuites: string[]; testStats: TestStats; lastRunResults: { [suiteName: string]: TestResult[] } | null } { return { availableTestSuites: Array.from(this.testSuites.keys(),
+    getStats(): { availableTestSuites: string[]; testStats: TestStats;, lastRunResults: { [suiteName: string]: TestResult[] } | null } { return { availableTestSuites: Array.from(this.testSuites.keys(),
             testStats: this.testStats;
-            lastRunResults: this.testResults.size > 0 ?   : undefined ,};
+           , lastRunResults: this.testResults.size > 0 ?   : undefined ,};
                 Object.fromEntries(this.testResults) : null }
         },
     }

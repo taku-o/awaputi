@@ -334,7 +334,7 @@ export function validatePerformanceResult(result, thresholds, metric') {
       break;
 
     default:
-      validation.message = `Unknown metric: ${metric}`;
+      validation.message = `Unknown, metric: ${metric}`;
       validation.severity = 'warning';
   }
 
@@ -369,7 +369,7 @@ export function createPerformanceTestSuite(options = {}') {
     config: testConfig,
     components: components.map(component => ({
       name: component;);
-      thresholds: getPerformanceThresholds(environment, device, component);
+     , thresholds: getPerformanceThresholds(environment, device, component);
     }),
     metadata: {
       created: new Date().toISOString('),

@@ -1,5 +1,5 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
-import { test, expect } from '@playwright/test';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { test, expect  } from '@playwright/test';
 
 test.describe('データ管理 - クラウド対応E2Eテスト', () => {
     let page: any,
@@ -24,10 +24,10 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 if(url.includes('/auth/login') {
                     return Promise.resolve({
                         ok: true;);
-                        json: (') => Promise.resolve({
+                       , json: (') => Promise.resolve({
                             token: 'test-token',
                             userId: 'test-user';);
-                            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+                           , expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
                         });
                     }');
                 }
@@ -35,13 +35,13 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 if(url.includes('/data/') {
                     return Promise.resolve({
                         ok: true;);
-                        json: () => Promise.resolve({ success: true );
+                       , json: () => Promise.resolve({ success: true );
                     });
                 }
                 
                 return Promise.resolve({
                     ok: true;);
-                    json: (') => Promise.resolve({ status: 'ok' );
+                   , json: (') => Promise.resolve({ status: 'ok' );
                 });
             };
         }');

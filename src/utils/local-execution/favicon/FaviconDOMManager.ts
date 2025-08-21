@@ -9,10 +9,10 @@
 // Type definitions
 interface FaviconData { size: number | 'ico',
     dataURL: string;
-    type: string ,}
+   , type: string ,}
 
 interface BrowserCompatibility { browser: {
-        name: string;
+        nam;e: string;
         version?: string }
 
 interface ValidationResult { hasIcoFavicon: boolean,
@@ -20,7 +20,7 @@ interface ValidationResult { hasIcoFavicon: boolean,
     hasAppleTouchIcon: boolean;
     totalLinks: number;
     sizes: string[];
-    issues: string[] ,}
+   , issues: string[] ,}
 
 interface FaviconMetadata { manifestURL?: string;
     themeColor?: string;
@@ -95,8 +95,7 @@ export default class FaviconDOMManager { /**
             head.appendChild(icoLink); }
         ';
         // ブラウザ固有の対応
-        if(browserCompatibility.browser.name === 'Safari) {'
-            ';
+        if(browserCompatibility.browser.name === 'Safari) {', ';
 
         }
 
@@ -122,15 +121,14 @@ export default class FaviconDOMManager { /**
             hasAppleTouchIcon: false;
             totalLinks: existingLinks.length;
             sizes: [];
-            issues: [] ,};
+           , issues: [] ,};
         existingLinks.forEach(link => {  const, linkElement = link, as HTMLLinkElement;
             const, rel = linkElement.rel;
             const, href = linkElement.href;
             const, type = linkElement.type;)'
             const sizes = linkElement.sizes)';
             ');''
-            if(rel === 'icon' || rel === 'shortcut, icon'') {'
-                ';
+            if(rel === 'icon' || rel === 'shortcut, icon'') {', ';
 
             }
 
@@ -139,8 +137,7 @@ export default class FaviconDOMManager { /**
                     validation.hasIcoFavicon = true;' }'
 
                 } else if(type === 'image/png' || href.includes('png) { validation.hasPngFavicons = true;
-                    if(sizes) {'
-                        ';
+                    if(sizes) {', ';
 
                     }
 
@@ -149,8 +146,7 @@ export default class FaviconDOMManager { /**
             } else if (rel === 'apple-touch-icon'') { validation.hasAppleTouchIcon = true; }
             ';
             // 問題のチェック
-            if(!href || href === ''') {'
-                ';
+            if(!href || href === ''') {', ';
 
             }
 

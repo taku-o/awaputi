@@ -10,22 +10,22 @@ interface StoredError { id: string,
     message: string;
     stack?: string;
     context?: any;
-    sessionId: string ,}
+   , sessionId: string ,}
 
 interface StorageConfig { maxItems: number;
     storageKey: string;
     useIndexedDB: boolean;
-    compressionEnabled: boolean }
+   , compressionEnabled: boolean }
 
 interface StorageStatistics { totalStored: number;
-    totalSize: number;
+   , totalSize: number;
     oldestTimestamp?: number;
     newestTimestamp?: number; }
     errorsByCategory: { [category: string]: number }
 
 export class ErrorStorage {
     private config: StorageConfig;
-    private cache: StoredError[] = [];
+    private, cache: StoredError[] = [];
     private initialized = false,
 
     constructor(config: Partial<StorageConfig> = {) {
@@ -34,7 +34,7 @@ export class ErrorStorage {
             maxItems: 1000;
             storageKey: 'bubblePop_errors';
             useIndexedDB: true;
-            compressionEnabled: false;
+           , compressionEnabled: false;
     ,}
             ...config
         }
@@ -168,7 +168,7 @@ export class ErrorStorage {
         return JSON.stringify({ )
             errors);
             exportedAt: new Date().toISOString();
-            statistics: await this.getStatistics(), }, null, 2);
+           , statistics: await this.getStatistics(), }, null, 2);
     }
 
     private async initializeIndexedDB(): Promise<void> { // IndexedDB initialization would go here

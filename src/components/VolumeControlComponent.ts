@@ -1,24 +1,24 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getLocalizationManager } from '../core/LocalizationManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getLocalizationManager  } from '../core/LocalizationManager.js';
 
 interface GameEngine { settingsManager?: SettingsManager;
     audioManager?: AudioManager;
     }
 
-interface SettingsManager { get: (key: string) => any,
-    set: (key: string, value: any) => void ,}
+interface SettingsManager { get: (ke;y: string) => any,
+    set: (ke;y: string, value: any) => void ,}
 }
 
 interface AudioManager {
-    playUISound: (soundName: string, options?: { volume?: number }) => void;
+    playUISound: (soundNam;e: string, options?: { volum;e?: number }) => void;
 }
 
-interface ErrorHandler { handleError: (error: Error, code: string, context?: any) => void }
+interface ErrorHandler { handleError: (erro;r: Error, code: string, context?: any) => void }
 }
 ';
 
 interface LocalizationManager { ''
-    getText: (key: string') => string }'
+    getText: (ke;y: string') => string }'
 }
 
 interface VolumeStats { isInitialized: boolean;
@@ -28,7 +28,7 @@ interface VolumeStats { isInitialized: boolean;
     isAtMaxVolume: boolean;
     isEnabled: boolean;
     hasContainer: boolean;
-    hasButtons: boolean }
+   , hasButtons: boolean }
 
 type SoundType = 'volume-up' | 'volume-down' | 'volume-adjust' | 'volume-max' | 'volume-min';
 
@@ -41,7 +41,7 @@ export class VolumeControlComponent {
     private errorHandler: ErrorHandler;
     private localizationManager: LocalizationManager;
     // 音量設定
-    private readonly VOLUME_STEP: number,
+    private readonly, VOLUME_STEP: number,
     private readonly MIN_VOLUME: number,
     private readonly MAX_VOLUME: number,
     
@@ -54,7 +54,7 @@ export class VolumeControlComponent {
     private progressFill: HTMLElement | null;
     // 状態管理
     private isInitialized: boolean;
-    private currentVolume: number;
+    private, currentVolume: number;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -88,8 +88,7 @@ export class VolumeControlComponent {
      * 現在の音量を設定マネージャーから初期化
      */
     private initializeCurrentVolume(): void { try {'
-            if(this.gameEngine.settingsManager) {'
-                ';
+            if(this.gameEngine.settingsManager) {', ';
 
             }
 
@@ -201,14 +200,14 @@ export class VolumeControlComponent {
             background-color: rgba(0, 255, 255, 0.2);
             border: 2px solid #00ffff;
             color: #00ffff;
-            padding: 10px 15px;
+           , padding: 10px 15px;
             border-radius: 8px,
             cursor: pointer;
             font-size: 18px,
             transition: all 0.3s ease;
             min-width: 50px,
             height: 45px;
-            display: flex;
+           , display: flex;
             align-items: center,
             justify-content: center,
         `;
@@ -219,8 +218,7 @@ export class VolumeControlComponent {
         ';
         // ホバー効果
         button.addEventListener('mouseenter', () => {  ''
-            if(!button.disabled) {'
-                ';
+            if(!button.disabled) {', ';
 
             }
 
@@ -232,8 +230,7 @@ export class VolumeControlComponent {
         }');
 
         button.addEventListener('mouseleave', () => {  ''
-            if(!button.disabled) {'
-                ';
+            if(!button.disabled) {', ';
 
             }
 
@@ -253,11 +250,11 @@ export class VolumeControlComponent {
         this.progressBar.className = 'volume-progress-bar';
         this.progressBar.style.cssText = `;
             flex: 1;
-            height: 8px;
+           , height: 8px;
             background-color: #333333,
             border-radius: 4px,
             position: relative;
-            cursor: pointer;
+           , cursor: pointer;
             min-width: 100px,
         `;
 
@@ -268,7 +265,7 @@ export class VolumeControlComponent {
             background: linear-gradient(to right, #00ffff, #0099cc);
             border-radius: 4px,
             transition: width 0.3s ease;
-            position: relative;
+           , position: relative;
         `;
         ';
         // プログレスバーのクリックで音量設定
@@ -305,7 +302,7 @@ export class VolumeControlComponent {
      * @param event - キーボードイベント'
      */''
     private handleButtonKeydown(event: KeyboardEvent): void { ''
-        if(event.key === 'Enter' || event.key === ' ') {
+        if(event.key === 'Enter' || event.key === ', ') {
             event.preventDefault();
         }
             (event.target, as HTMLElement).click(); }
@@ -377,8 +374,7 @@ export class VolumeControlComponent {
             // 状態を更新
             this.currentVolume = roundedVolume;
             // 設定マネージャーに保存
-            if(this.gameEngine.settingsManager) {'
-                ';
+            if(this.gameEngine.settingsManager) {', ';
 
             }
 
@@ -511,8 +507,7 @@ export class VolumeControlComponent {
      * @param visible - 表示状態
      */'
     setVisible(visible: boolean): void { ''
-        if(this.container) {'
-            ';
+        if(this.container) {', ';
 
         }
 
@@ -523,31 +518,27 @@ export class VolumeControlComponent {
      * アクセシビリティ属性を更新
      */'
     updateAccessibility(): void { try {'
-            if(this.volumeUpButton) {'
-                ';
+            if(this.volumeUpButton) {', ';
 
             }
 
                 this.volumeUpButton.setAttribute('aria-disabled', String(this.currentVolume >= this.MAX_VOLUME); }
             }
 
-            if(this.volumeDownButton) {'
-                ';
+            if(this.volumeDownButton) {', ';
 
             }
 
                 this.volumeDownButton.setAttribute('aria-disabled', String(this.currentVolume <= this.MIN_VOLUME); }
             }
 
-            if(this.progressBar) {'
-                ';
+            if(this.progressBar) {', ';
 
             }
 
                 this.progressBar.setAttribute('aria-label'')' }
 
-                    `${this.localizationManager.getText('settings.audio.masterVolume'}): ${Math.round(this.currentVolume * 100})%`''
-                ');''
+                    `${this.localizationManager.getText('settings.audio.masterVolume'}): ${Math.round(this.currentVolume * 100})%`'', ');''
                 this.progressBar.setAttribute('role', 'slider'');''
                 this.progressBar.setAttribute('aria-valuemin', '0'');''
                 this.progressBar.setAttribute('aria-valuemax', '100'');''

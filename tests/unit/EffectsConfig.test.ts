@@ -1,12 +1,12 @@
 /**
  * EffectsConfig クラスのユニットテスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Types
 interface MockConfigManager {
-    get: jest.Mock<(category: string, key: string, defaultValue => any>);
-    set: jest.Mock<(category: string, key: string, value => boolean>);
-    setValidationRule: jest.Mock<(category: string, key: string, rule => void>);
+    get: jest.Mock<(categor;y: string, key: string, defaultValue => any>);
+    set: jest.Mock<(categor;y: string, key: string, value => boolean>);
+    setValidationRule: jest.Mock<(categor;y: string, key: string, rule => void>);
     getCategory: jest.Mock<() => Record<string, any>>;
 }
 interface MockGetCall {
@@ -20,7 +20,7 @@ interface ParticleConfig {
     quality: number,
     enabled: boolean,
     bubble: {
-        count: number,
+        coun;t: number,
         size: number,
         speed: number,
         life: number
@@ -44,7 +44,7 @@ interface ScreenEffectConfig {
     zoomSensitivity: number,
     enabled: boolean,
     shake: {
-        intensity: number,
+        intensit;y: number,
         duration: number,
         damping: number
     },
@@ -67,7 +67,7 @@ interface AnimationConfig {
     easing: string,
     enabled: boolean,
     pop: {
-        duration: number,
+        duratio;n: number,
         scale: number,
         easing: string
     },

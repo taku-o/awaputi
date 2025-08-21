@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 音声合成管理クラス
@@ -20,9 +20,9 @@ export class SpeechSynthesisManager {'
             enabled: this.isSupported;
             fallbackToScreenReader: true;
             autoLanguageDetection: true;
-            queueManagement: {
+           , queueManagement: {
                 maxQueueSize: 10;
-                interruptOnUrgent: true;
+               , interruptOnUrgent: true;
     ,}
                 respectPause: true }
             };
@@ -36,10 +36,10 @@ export class SpeechSynthesisManager {'
                 pauseLength: 300  // ポーズの長さ（ms） ,};
             interruption: { allowUserInterrupt: true;
                 allowSystemInterrupt: true;
-                gracefulStop: true };
+               , gracefulStop: true };
             pronunciation: { customDictionary: new Map();
                 numberFormatting: true;
-                abbreviationExpansion: true }
+               , abbreviationExpansion: true }
         };
         // 音声関連
         this.availableVoices = [];
@@ -62,7 +62,7 @@ export class SpeechSynthesisManager {'
             averageDuration: 0;
             languageUsage: new Map();
             voiceUsage: new Map();
-            sessionStart: Date.now( ,};
+           , sessionStart: Date.now( ,};
         
         // ユーザー設定
         this.userPreferences = { enabled: true,
@@ -72,7 +72,7 @@ export class SpeechSynthesisManager {'
             preferredVoice: null;
             autoPlay: true;
             respectGamePause: true;
-            skipRepeatedMessages: true ,};
+           , skipRepeatedMessages: true ,};
         ;
         // カスタム発音辞書（日本語）
         this.initializeCustomDictionary()';
@@ -186,10 +186,10 @@ export class SpeechSynthesisManager {'
             
             voicesByLanguage.get(lang).push({ voice: voice)
                 name: voice.name);
-                language: voice.lang,);
+               , language: voice.lang,);
                 isLocal: voice.localService);
                 gender: this.detectGender(voice.name);
-                quality: this.estimateQuality(voice ,}
+               , quality: this.estimateQuality(voice ,}
 
             });''
         }');
@@ -343,8 +343,7 @@ export class SpeechSynthesisManager {'
         ';
         // キーボードによる中断
         document.addEventListener('keydown', (event) => {  ''
-            if(this.config.interruption.allowUserInterrupt) {'
-                ';
+            if(this.config.interruption.allowUserInterrupt) {', ';
 
             }
 
@@ -352,7 +351,7 @@ export class SpeechSynthesisManager {'
 
                     this.stop() }
 
-                } else if (event.key === ' ' && event.ctrlKey) { event.preventDefault();
+                } else if (event.key === ', ' && event.ctrlKey) { event.preventDefault();
                     this.toggle(); }
 });
     }
@@ -479,7 +478,7 @@ export class SpeechSynthesisManager {'
         }
             utterance.lang = voice.lang; }
 
-        } else {  : undefined' '
+        } else {  : undefined', '
             utterance.lang = language === 'ja' ? 'ja-JP' : 'en-US'; }
         }
         
@@ -736,7 +735,7 @@ export class SpeechSynthesisManager {'
             isPlaying: this.isPlaying;
             isPaused: this.isPaused;
             queueSize: this.speechQueue.length;
-            currentVoice: this.currentUtterance? .voice?.name || null, : undefined
+           , currentVoice: this.currentUtterance? .voice?.name || null, : undefined
             settings: {
                 rate: this.config.speech.rate;
     ,}
@@ -818,14 +817,14 @@ export class SpeechSynthesisManager {'
             configuration: { enabled: this.config.enabled;
                 autoLanguageDetection: this.config.autoLanguageDetection;
                 queueManagement: this.config.queueManagement;
-                speech: this.config.speech };
+               , speech: this.config.speech };
             statistics: { ...this.stats;
                 sessionDuration: sessionDuration;
                 successRate: this.stats.totalUtterances > 0 ?   : undefined
                     this.stats.completedUtterances / this.stats.totalUtterances : 0;
                 utterancesPerMinute: this.stats.totalUtterances / (sessionDuration / 60000 };
             currentStatus: this.getStatus();
-            userPreferences: this.userPreferences;
+           , userPreferences: this.userPreferences;
         },
     }
     

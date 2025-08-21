@@ -4,8 +4,8 @@
  * ヘルプ機能におけるエラーの分類、処理、復旧を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
 export interface GameEngine { // ゲームエンジンの基本型定義 }
@@ -13,17 +13,17 @@ export interface GameEngine { // ゲームエンジンの基本型定義 }
 export interface ErrorStatistics { count: number,
     lastOccurred: number | null;
     resolved: number;
-    unresolved: number;
+   , unresolved: number;
     resolutionRate?: number ,}
 
 export interface OverallErrorStatistics { categories: Record<string, ErrorStatistics>,
     totalErrors: number;
     totalResolved: number;
-    overallResolutionRate: number ,}
+   , overallResolutionRate: number ,}
 
 export interface ErrorResult { success: boolean;
     strategy: string;
-    suggestions: string[];
+   , suggestions: string[];
     data?: any }
 
 export interface FallbackOptions { useCache?: boolean;
@@ -47,7 +47,7 @@ export interface UserErrorData { message: string,
     suggestions: string[];
     timestamp: number;
     canRetry: boolean;
-    helpAvailable: boolean ,}
+   , helpAvailable: boolean ,}
 
 export interface ErrorContext { currentStep?: TutorialStep;
     query?: string;
@@ -59,12 +59,12 @@ export interface ErrorContext { currentStep?: TutorialStep;
 export interface DefaultHelpContent { version: string,
     category: string;
     language: string;
-    sections: Array<{
-        id: string;
+   , sections: Array<{
+        i;d: string;
         title: string;
-        content: string,
+       , content: string,
         difficulty: 'beginner' | 'intermediate' | 'advanced';
-        tags: string[] ,}>;
+       , tags: string[] ,}>;
 }
 
 export type FallbackStrategy = (error: Error, options: any) => ErrorResult;
@@ -75,11 +75,11 @@ export type FallbackStrategy = (error: Error, options: any) => ErrorResult;
 export class HelpErrorHandler {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
-    private errorCategories: Record<string, string>;
+    private, errorCategories: Record<string, string>;
     private errorStats: Map<string, ErrorStatistics>;
     private recoveryAttempts: Map<string, number>;
     private maxRecoveryAttempts: number;
-    private fallbackStrategies: Map<string, FallbackStrategy>;
+    private, fallbackStrategies: Map<string, FallbackStrategy>;
 
     constructor(gameEngine: GameEngine) {
 ';
@@ -118,7 +118,7 @@ export class HelpErrorHandler {
             Object.values(this.errorCategories).forEach(category => { this.errorStats.set(category, {
                     count: 0);
                     lastOccurred: null);
-                    resolved: 0, }
+                   , resolved: 0, }
                     unresolved: 0);' }'
 
             }');
@@ -314,7 +314,7 @@ export class HelpErrorHandler {
                 stats.lastOccurred = Date.now()';
             this.loggingSystem.error('HelpErrorHandler', `${category} error`, {
                 error: error.message;
-                stack: error.stack;
+               , stack: error.stack;
             }
                 context, }
                 timestamp: Date.now(});
@@ -335,7 +335,7 @@ export class HelpErrorHandler {
             const analyticsData = {''
                 event: 'help_system_error';
                 error_type: error.constructor.name;
-                error_message: error.message,
+               , error_message: error.message,
                 context,
                 timestamp: Date.now()';
             this.loggingSystem.debug('HelpErrorHandler', 'Error reported to analytics', analyticsData);
@@ -525,8 +525,7 @@ export class HelpErrorHandler {
      * @param error - エラーオブジェクト
      * @returns ユーザーメッセージ
      */''
-    private translateErrorToUserMessage(error: Error): string { const errorMappings: Record<string, string> = {''
-            'NetworkError': 'ネットワーク接続を確認してください',
+    private translateErrorToUserMessage(error: Error): string { const errorMappings: Record<string, string> = {'', 'NetworkError': 'ネットワーク接続を確認してください',
             'TypeError': '予期しない問題が発生しました',
             'SyntaxError': 'データの読み込みに失敗しました',
             'ReferenceError': '必要な機能が見つかりません',
@@ -577,7 +576,7 @@ export class HelpErrorHandler {
     private getDefaultErrorResult(''';
             strategy: 'none',
             suggestions: ['しばらく時間をおいてから再度お試しください];
-            data: null);
+           , data: null);
         })
 
     /**

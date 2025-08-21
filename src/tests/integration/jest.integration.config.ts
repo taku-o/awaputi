@@ -8,19 +8,17 @@ import type { Config } from 'jest';
 const config: Config = { // テスト環境
     testEnvironment: 'jsdom';
     // テストファイルのパターン
-    testMatch: [']';
+   , testMatch: [']';
         '**/src/tests/integration/**/*.test.ts'];
     ],
     
     // モジュール解決
-    moduleNameMapping: {''
-        '^@/(.*')$': '<rootDir>/src/$1',
+    moduleNameMapping: {'', '^@/(.*')$': '<rootDir>/src/$1',
         '^@tests/(.*')$': '<rootDir>/src/tests/$1' },
     // ES6モジュールサポート
     extensionsToTreatAsEsm: ['.ts];
     // トランスフォーム設定
-    transform: { ''
-        '^.+\\.ts$': ['ts-jest', {
+   , transform: { '', '^.+\\.ts$': ['ts-jest', {
             useESM: true,
             tsconfig: {''
                 target: 'esnext',
@@ -36,7 +34,7 @@ const config: Config = { // テスト環境
     
     // カバレッジ設定
     collectCoverage: true;
-    collectCoverageFrom: ['';
+   , collectCoverageFrom: ['';
         'src/core/SocialSharingManager.ts',
         'src/core/ShareContentGenerator.ts',
         'src/core/ShareButton.ts',
@@ -61,7 +59,7 @@ const config: Config = { // テスト環境
             branches: 80;
             functions: 85;
             lines: 85;
-            statements: 85 }
+           , statements: 85 }
 };
     // テストタイムアウト
     testTimeout: 30000;
@@ -72,8 +70,7 @@ const config: Config = { // テスト環境
     clearMocks: true;
     restoreMocks: true;
     // グローバル設定
-    globals: { ''
-        'process.env.NODE_ENV': 'test',
+   , globals: { '', 'process.env.NODE_ENV': 'test',
         'process.env.JEST_ENVIRONMENT': 'integration' },
     
     // 詳細な出力
@@ -84,7 +81,7 @@ const config: Config = { // テスト環境
     detectOpenHandles: true;
     detectLeaks: true;
     // テスト結果のレポート
-    reporters: ['';
+   , reporters: ['';
         'default',
         ['jest-html-reporters', { ''
             publicPath: './coverage/integration/html-report',
@@ -94,7 +91,7 @@ const config: Config = { // テスト環境
             logoImgPath: './assets/logo.png';
             hideIcon: false;
             expand: true;
-            customInfos: [';
+           , customInfos: [';
                 {''
                     title: 'プロジェクト',
                     value: 'BubblePop ソーシャル機能' ,};

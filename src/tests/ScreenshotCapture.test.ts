@@ -1,11 +1,11 @@
 /**
  * スクリーンショット機能テスト (Task, 5)
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // モック用の型定義
 interface MockContext { drawImage: jest.Mock,
     imageSmoothingEnabled: boolean;
-    imageSmoothingQuality: string ,}
+   , imageSmoothingQuality: string ,}
 interface MockCanvas { width: number;
     height: number;
     getContext: jest.Mock<MockContext>;
@@ -18,7 +18,7 @@ interface ScreenshotResult { data: ArrayBuffer;
     url: string;
     format: string;
     width: number;
-    height: number;
+   , height: number;
     size?: number;
     optimized?: boolean;
     originalSize?: number; }
@@ -29,18 +29,18 @@ interface CaptureOptions { format?: string;
 interface CaptureHistoryItem { timestamp: number,
     filename: string;
     format: string;
-    size: number;
+   , size: number;
     url?: string ,}
 interface CaptureStats { captures: number;
     successes: number;
     errors: number;
-    successRate: number;
+   , successRate: number;
     averageTimeMs?: number }
 interface ImageData { data: ArrayBuffer;
     blob: Blob;
     url: string;
     size: number;
-    optimized: boolean;
+   , optimized: boolean;
     originalSize?: number }
 // MockImage クラスの定義
 class MockImage { onload: (() => void) | null = null;''
@@ -66,7 +66,7 @@ class MockImage { onload: (() => void) | null = null;''
 interface ScreenshotCapture { gameEngine: MockGameEngine,
     config: any;
     stats: any;
-    captureHistory: CaptureHistoryItem[];
+   , captureHistory: CaptureHistoryItem[];
     capturing?: boolean ,}
     lastCapture?: { url: string } | null;
     cleanup: () => void;
@@ -98,7 +98,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
         }
         );
         mockCanvas = { width: 800)
-            height: 600,);
+           , height: 600,);
             getContext: jest.fn<MockContext>().mockReturnValue(mockContext),
             toBlob: jest.fn(),
             toDataURL: jest.fn<string>(').mockReturnValue('data:image/png;base64,mock),
@@ -154,7 +154,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
             mockCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string, quality?: number') => {''
                 const mockBlob = new Blob(['mock-image-data], { ' }
 
-                    type: type || 'image/png' ' })'
+                    type: type || 'image/png', ' })'
                 }');''
                 Object.defineProperty(mockBlob, 'size', { value: 1024 });
 
@@ -259,7 +259,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
                 blob: new Blob(['large-image], { type: 'image/png' }),''
                 url: 'blob:mock-large-url';
                 size: 1024 * 600;
-                optimized: false;
+               , optimized: false;
             },
 
             Object.defineProperty(mockImageData.blob, 'size', { value: 1024 * 600 ) }

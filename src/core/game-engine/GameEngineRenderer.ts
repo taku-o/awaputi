@@ -2,7 +2,7 @@
  * Game Engine Renderer
  * 描画・レンダリング・エフェクト処理を担当
  */
-// import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+// import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';
 
 interface GameEngine { context: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement;
@@ -18,14 +18,14 @@ interface GameEngine { context: CanvasRenderingContext2D,
     debugMode?: boolean;
     debugInterface?: any; ,}
 export class GameEngineRenderer { private gameEngine: GameEngine }
-    private screenShake: { active: boolean, duration: number; intensity: number; elapsed: number 
+    private screenShake: { active: boolean, duration: number; intensity: number;, elapsed: number 
     ,};
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.screenShake = {
             active: false;
             duration: 0;
-            intensity: 0
+           , intensity: 0
 }
             elapsed: 0 ;
 }

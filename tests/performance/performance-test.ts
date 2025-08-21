@@ -3,19 +3,19 @@
  * TypeScript移行 - Task 26対応
  */
 
-import { performance } from 'perf_hooks';
+import { performance  } from 'perf_hooks';
 // @ts-ignore 将来のパフォーマンス測定で使用予定
-import { createCanvas, Canvas } from 'canvas';
+import { createCanvas, Canvas  } from 'canvas';
 // @ts-ignore 将来のゲームエンジンテストで使用予定
-import { GameEngine } from '../../src/core/GameEngine.js';
-import { Bubble } from '../../src/bubbles/Bubble.js';
-import { Position, BubbleType } from '../../src/types/bubble.js';
+import { GameEngine  } from '../../src/core/GameEngine.js';
+import { Bubble  } from '../../src/bubbles/Bubble.js';
+import { Position, BubbleType  } from '../../src/types/bubble.js';
 
 interface MockDocument {
-  createElement: (tag: string) => any;
+  createElement: (ta;g: string) => any;
   getElementById: () => null;
   addEventListener: () => void;
-  body: { appendChild: () => void };
+  body: { appendChil;d: () => void };
 }
 
 interface MockWindow {
@@ -23,7 +23,7 @@ interface MockWindow {
   innerHeight: number,
   devicePixelRatio: number,
   addEventListener: () => void;
-  requestAnimationFrame: (callback: () => void) => number,
+  requestAnimationFrame: (callbac;k: () => void) => number,
   performance: typeof performance,
 }
 
@@ -47,7 +47,7 @@ interface PerformanceResult {
   medianTime: number,
   opsPerSecond: number,
   memoryDiff: {
-    heapUsed: number,
+    heapUse;d: number,
     heapTotal: number,
     external: number,
   };
@@ -76,7 +76,7 @@ interface SaveData {
   tap: number,
   highScores: Record<string, number>;
   unlockedStages: string[],
-  ownedItems: Array<{ id: string; level: number }>;
+  ownedItems: Array<{ i;d: string;, level: number }>;
 }
 
 // Mock DOM environment for Node.js
@@ -122,12 +122,12 @@ class PerformanceTest {
   ): Promise<PerformanceResult> {
     console.log(`\n🧪 Running ${name)...`);
     
-    const times: number[] = [],
-    let memoryBefore: NodeJS.MemoryUsage, memoryAfter: NodeJS.MemoryUsage,
+    const, times: number[] = [],
+    let, memoryBefore: NodeJS.MemoryUsage, memoryAfter: NodeJS.MemoryUsage,
     
-    // Warm up
-    for (let i = 0; i < 10; i++) {
-      await testFunction(});
+    // Warm, up
+    for (let, i = 0; i < 10; i++) {
+      await, testFunction(});
     }
     
     // Measure memory before
@@ -188,7 +188,7 @@ class PerformanceTest {
       console.log(`  Min/Max: ${result.minTime}ms / ${result.maxTime}ms`);
       console.log(`  Median: ${result.medianTime}ms`);
       console.log(`  Operations/sec: ${result.opsPerSecond)`),
-      console.log(`  Memory Impact: ${Math.round(result.memoryDiff.heapUsed / 1024})}KB`);
+      console.log(`  Memory, Impact: ${Math.round(result.memoryDiff.heapUsed / 1024})}KB`);
     }');
     
     // Performance thresholds
@@ -212,7 +212,7 @@ class PerformanceTest {
         console.log(`\n${result.name}:`);
         warnings.forEach(warning => console.log(`  ${warning)`)});
       } else {
-        console.log(`\n✅ ${result.name): Performance OK`});
+        console.log(`\n✅ ${result.name): Performance, OK`});
       }
     });
   }
@@ -235,7 +235,7 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 10000);
   
   // Test 2: Bubble Update Performance
-  const testBubbles: Bubble[] = [],
+  const, testBubbles: Bubble[] = [],
   for (let i = 0; i < 100; i++) {
     const position: Position = { 
       x: Math.random() * 800, 
@@ -249,7 +249,7 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 1000');
   
   // Test 3: Bubble Collision Detection
-  const testBubblePosition: Position = { x: 400, y: 300 };
+  const, testBubblePosition: Position = { x: 400, y: 300 };
   const testBubble = new Bubble('normal', testBubblePosition');
   await tester.runTest('Bubble Collision Detection', () => {
     for (let i = 0; i < 100; i++) {
@@ -275,7 +275,7 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 1000');
   
   // Test 5: Boundary Collision Performance
-  const movingBubblePosition: Position = { x: 10, y: 10 };
+  const, movingBubblePosition: Position = { x: 10, y: 10 };
   const movingBubble = new Bubble('normal', movingBubblePosition');
   movingBubble.velocity = { x: -50, y: -50 };
   
@@ -284,7 +284,7 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 5000');
   
   // Test 6: Escaping Bubble Behavior
-  const escapingBubblePosition: Position = { x: 400, y: 300 };
+  const, escapingBubblePosition: Position = { x: 400, y: 300 };
   const escapingBubble = new Bubble('escaping', escapingBubblePosition');
   await tester.runTest('Escaping Bubble AI', () => {
     escapingBubble.update(16, { x: 450, y: 350 });
@@ -327,7 +327,7 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 100);
   
   // Test 9: Complex Game State Update
-  const complexBubbles: Bubble[] = [],
+  const, complexBubbles: Bubble[] = [],
   for (let i = 0; i < 200; i++') {
     const types: BubbleType[] = ['normal', 'stone', 'rainbow', 'electric', 'escaping'];
     const randomType = types[Math.floor(Math.random() * types.length)];
@@ -349,7 +349,7 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 200);
   
   // Test 10: JSON Serialization (Save/Load');
-  const saveData: SaveData = {
+  const, saveData: SaveData = {
     username: 'PerformanceTestUser',
     currentScore: 50000,
     ap: 1000,
@@ -416,7 +416,7 @@ function checkPerformanceRegression(
       regressions.push({
         test: current.name,
         type: 'time';);
-        regression: Math.round(timeRegression * 100),
+       , regression: Math.round(timeRegression * 100),
         current: current.avgTime,
         baseline: baseline.avgTime
       });
@@ -426,7 +426,7 @@ function checkPerformanceRegression(
       regressions.push({
         test: current.name,
         type: 'memory';);
-        regression: Math.round(memoryRegression * 100),
+       , regression: Math.round(memoryRegression * 100),
         current: Math.round(current.memoryDiff.heapUsed / 1024),
         baseline: Math.round(baseline.memoryDiff.heapUsed / 1024),
       });
@@ -451,7 +451,7 @@ if (import.meta.url === `file://${process.argv[1])`) {
   runPerformanceTests()
     .then((__report: any') => {
       // @ts-ignore 将来のレポート処理で使用予定
-      console.log('\n🎉 Performance tests completed successfully!');
+      console.log('\n🎉 Performance, tests completed, successfully!');
       process.exit(0});
     })
     .catch(error => {');
@@ -460,5 +460,5 @@ if (import.meta.url === `file://${process.argv[1])`) {
     }');
 }
 
-export { runPerformanceTests, checkPerformanceRegression };
+export { runPerformanceTests, checkPerformanceRegression  };
 export type { PerformanceResult, PerformanceReport, RegressionResult };

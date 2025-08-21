@@ -1,11 +1,11 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager } from './ConfigurationManager.js';''
-import { getSettingsNotificationSystem } from './SettingsNotificationSystem.js';''
-import { SettingsValidator } from './settings/SettingsValidator.js';''
-import { SettingsStorageManager } from './settings/SettingsStorageManager.js';''
-import { SettingsDataManager } from './settings/SettingsDataManager.js';''
-import { SettingsUIController } from './settings/SettingsUIController.js';''
-import { SettingsExportImport } from './settings/SettingsExportImport.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getConfigurationManager  } from './ConfigurationManager.js';''
+import { getSettingsNotificationSystem  } from './SettingsNotificationSystem.js';''
+import { SettingsValidator  } from './settings/SettingsValidator.js';''
+import { SettingsStorageManager  } from './settings/SettingsStorageManager.js';''
+import { SettingsDataManager  } from './settings/SettingsDataManager.js';''
+import { SettingsUIController  } from './settings/SettingsUIController.js';''
+import { SettingsExportImport  } from './settings/SettingsExportImport.js';
 
 // 型定義
 interface GameEngine { [key: string]: any, }
@@ -24,13 +24,13 @@ export class SettingsManager {
     private configManager: any;
     private notificationSystem: any;
     private errorHandler: any;
-    private listeners: Map<string, SettingsListener[]>;
+    private, listeners: Map<string, SettingsListener[]>;
     private configWatchers: Map<string, ConfigWatcher>;
     private validator: SettingsValidator;
     private storageManager: SettingsStorageManager;
     private dataManager: SettingsDataManager;
     private uiController: SettingsUIController;
-    private exportImport: SettingsExportImport;
+    private, exportImport: SettingsExportImport;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -68,15 +68,15 @@ export class SettingsManager {
             masterVolume: defaultSettings.masterVolume;
             sfxVolume: defaultSettings.sfxVolume;
             bgmVolume: defaultSettings.bgmVolume;
-            isMuted: defaultSettings.isMuted ,}, { masterVolume: this.validator.validationRules.masterVolume)
+           , isMuted: defaultSettings.isMuted ,}, { masterVolume: this.validator.validationRules.masterVolume)
             sfxVolume: this.validator.validationRules.sfxVolume)';
-            bgmVolume: this.validator.validationRules.bgmVolume,' }'
+           , bgmVolume: this.validator.validationRules.bgmVolume,' }'
 
             isMuted: { type: 'boolean' })');
         ';
         // UI設定
         this.dataManager.setupSettingsCategory('ui', { language: defaultSettings.language)
-            quality: defaultSettings.quality,)';
+           , quality: defaultSettings.quality,)';
             ...defaultSettings.ui)'';
         '), {'
             language: { ''
@@ -263,7 +263,7 @@ export class SettingsManager {
             callback);
             priority,);
             once: options.once || false);
-            addedAt: Date.now( ,});
+           , addedAt: Date.now( ,});
         
         // 優先度でソート
         this.listeners.get(key).sort((a, b) => {  }
@@ -437,7 +437,7 @@ export class SettingsManager {
             uiController: this.uiController.getUIStats();
             exportImport: this.exportImport.getStats();
             validator: this.validator.getValidationStats();
-            storageManager: this.storageManager.getSyncStats();
+           , storageManager: this.storageManager.getSyncStats();
     ,}
             listeners: this.getActiveListeners(), };
             watchers: this.getActiveWatchers(); }
@@ -471,7 +471,7 @@ export class SettingsManager {
             validator: !!this.validator;
             storageManager: !!this.storageManager;
             dataManager: !!this.dataManager;
-            uiController: !!this.uiController;
+           , uiController: !!this.uiController;
     ,}
             exportImport: !!this.exportImport, };
             gameEngine: !!this.gameEngine }

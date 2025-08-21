@@ -11,12 +11,12 @@ export class StatisticsPerformanceOptimizer {
             batchProcessing: {
                 enabled: true;
                 batchSize: 100;
-                processingInterval: 16, // 60fps対応
+               , processingInterval: 16, // 60fps対応
     }
                 maxBatchWaitTime: 100 }
             };
             memoryManagement: { enabled: true;
-                maxMemoryUsage: 50 * 1024 * 1024, // 50MB;
+               , maxMemoryUsage: 50 * 1024 * 1024, // 50MB;
                 cleanupThreshold: 0.8, // 80%でクリーンアップ;
                 compressionThreshold: 1000, // 1000レコード以上で圧縮;
                 archiveThreshold: 10000 // 10000レコード以上でアーカイブ ,};
@@ -24,11 +24,11 @@ export class StatisticsPerformanceOptimizer {
                 useOffscreenCanvas: true;
                 enableDifferentialUpdate: true;
                 viewportCulling: true;
-                renderBudget: 16, // 16ms以内でレンダリング完了;
+               , renderBudget: 16, // 16ms以内でレンダリング完了;
                 frameThrottling: true ,};
             caching: { enabled: true;
                 maxCacheSize: 100;
-                cacheTTL: 300000, // 5分;
+               , cacheTTL: 300000, // 5分;
                 compressionLevel: 3 ,}
         };
         // パフォーマンス監視
@@ -36,24 +36,24 @@ export class StatisticsPerformanceOptimizer {
                 averageTime: 0;
                 maxTime: 0;
                 sampleCount: 0;
-                lastMeasurement: 0 };
+               , lastMeasurement: 0 };
             memoryUsage: { current: 0;
                 peak: 0;
                 allocated: 0;
-                freed: 0 };
+               , freed: 0 };
             rendering: { averageFrameTime: 0;
                 maxFrameTime: 0;
                 frameCount: 0;
-                droppedFrames: 0 };
+               , droppedFrames: 0 };
             cache: { hitRate: 0;
                 missCount: 0;
                 hitCount: 0;
-                evictionCount: 0 }
+               , evictionCount: 0 }
         };
         // バッチ処理キュー
         this.processingQueue = { dataOperations: [],
             renderOperations: [];
-            cleanupOperations: [] ,};
+           , cleanupOperations: [] ,};
         // キャッシュシステム
         this.cache = new Map();
         this.cacheMetadata = new Map();
@@ -61,16 +61,16 @@ export class StatisticsPerformanceOptimizer {
         // メモリ監視
         this.memoryMonitor = { interval: null,
             measurements: [];
-            alerts: [] ,};
+           , alerts: [] ,};
         // レンダリング最適化
         this.renderingOptimizer = { offscreenCanvas: null,
             dirtyRegions: new Set();
             lastRenderTime: 0;
-            frameRequestId: null ,};
+           , frameRequestId: null ,};
         // データ圧縮マネージャー
         this.compressionManager = { compressionQueue: [],
             isCompressing: false;
-            compressionHistory: [] ,};
+           , compressionHistory: [] ,};
         this.initialize();
     }
     
@@ -172,8 +172,7 @@ export class StatisticsPerformanceOptimizer {
             }');
             ';
             // 高優先度の場合は即座に処理
-            if(priority === 'high'') {'
-                ';
+            if(priority === 'high'') {', ';
 
             }
 
@@ -449,7 +448,7 @@ export class StatisticsPerformanceOptimizer {
         this.memoryMonitor.measurements.push({ );
             timestamp: Date.now();
             usage: memoryUsage;
-            statsUsage: this.performanceMetrics.memoryUsage.allocated });
+           , statsUsage: this.performanceMetrics.memoryUsage.allocated });
         // 履歴を制限（最新100件）
         if (this.memoryMonitor.measurements.length > 100) { this.memoryMonitor.measurements = this.memoryMonitor.measurements.slice(-100); }
     }
@@ -584,8 +583,7 @@ export class StatisticsPerformanceOptimizer {
         }');
         ';
         // 緊急時は即座に実行
-        if(reason === 'high_usage'') {'
-            ';
+        if(reason === 'high_usage'') {', ';
 
         }
 
@@ -614,7 +612,7 @@ export class StatisticsPerformanceOptimizer {
         this.addToBatch('cleanupOperations', { ')'
             type: 'archive',')';
             target: 'old_data');
-            timestamp: Date.now( ,});
+           , timestamp: Date.now( ,});
     }
     
     /**
@@ -631,7 +629,7 @@ export class StatisticsPerformanceOptimizer {
                 timestamp: Date.now();
                 originalSize: this.estimateObjectSize(data);
                 compressedSize: this.estimateObjectSize(compressedData);
-                compressionRatio: this.estimateObjectSize(compressedData) / this.estimateObjectSize(data });
+               , compressionRatio: this.estimateObjectSize(compressedData) / this.estimateObjectSize(data });
             ';
 
             return compressedData;''
@@ -648,7 +646,7 @@ export class StatisticsPerformanceOptimizer {
         const compressed = {
             summary: this.generateSessionSummary(data);
             sampleData: this.sampleSessions(data);
-            metadata: {
+           , metadata: {
                 originalCount: data.sessions? .length || 0, : undefined
                 compressedAt: Date.now();
     ,}
@@ -728,7 +726,7 @@ export class StatisticsPerformanceOptimizer {
         this.cacheMetadata.set(cacheKey, { );
             timestamp: Date.now();
             accessCount: 1;
-            size: this.estimateObjectSize(data });
+           , size: this.estimateObjectSize(data });
         
         return data;
     }
@@ -852,7 +850,7 @@ export class StatisticsPerformanceOptimizer {
     getPerformanceStatistics() {
         return { ...this.performanceMetrics,
             configuration: this.config;
-            memoryMonitor: {
+           , memoryMonitor: {
     ,}
                 measurementCount: this.memoryMonitor.measurements.length, };
                 alertCount: this.memoryMonitor.alerts.length }
@@ -860,10 +858,10 @@ export class StatisticsPerformanceOptimizer {
             cacheStatistics: { size: this.cache.size;
                 totalSize: this.estimateCacheSize();
                 evictionCount: this.performanceMetrics.cache.evictionCount;
-                hitRate: this.performanceMetrics.cache.hitRate };
+               , hitRate: this.performanceMetrics.cache.hitRate };
             compressionStatistics: { historyCount: this.compressionManager.compressionHistory.length;
                 averageCompressionRatio: this.calculateAverageCompressionRatio();
-                isCompressing: this.compressionManager.isCompressing }
+               , isCompressing: this.compressionManager.isCompressing }
         }
     
     /**

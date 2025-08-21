@@ -5,33 +5,33 @@
  * リアルタイム監視と最適化提案を提供
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface PerformanceMeasurement { duration: number,
     timestamp: number;
-    success: boolean ,}
+   , success: boolean ,}
 
 export interface TranslationMeasurement { id: string;
     startTime: number;
     key: string;
-    language: string }
+   , language: string }
 
 export interface LanguageSwitchResult { result: any;
-    duration: number }
+   , duration: number }
 
 export interface RenderingResult { result: any;
-    duration: number }
+   , duration: number }
 
 export interface MemoryInfo { used: number;
     total: number;
     limit: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface NetworkInfo { effectiveType: string;
     downlink: number;
     rtt: number;
-    timestamp: number }
+   , timestamp: number }
 
 export interface PerformanceMetrics { translationTimes: Map<string, PerformanceMeasurement[]>,
     languageSwitchTimes: Map<string, PerformanceMeasurement[]>,
@@ -45,17 +45,17 @@ export interface PerformanceThresholds { translationTime: number,
     renderingTime: number;
     memoryGrowth: number;
     cacheHitRate: number;
-    networkTimeout: number ,}
+   , networkTimeout: number ,}
 
 export interface PerformanceAlert { type: string;
     details: any;
     timestamp: number;
-    severity: AlertSeverity
+   , severity: AlertSeverity
     }
 
 export interface AlertCategories { performance: PerformanceAlert[];
     memory: PerformanceAlert[];
-    network: PerformanceAlert[]
+   , network: PerformanceAlert[]
     }
 
 export interface PerformanceStatistics { startTime: number;
@@ -63,7 +63,7 @@ export interface PerformanceStatistics { startTime: number;
     totalLanguageSwitches: number;
     totalRenders: number;
     performanceIssues: number;
-    optimizations: number;
+   , optimizations: number;
     uptime?: number;
     avgTranslationsPerMinute?: number;
     avgSwitchesPerMinute?: number; }
@@ -71,31 +71,31 @@ export interface PerformanceStatistics { startTime: number;
 export interface AutoOptimizationConfig { enabled: boolean,
     adaptiveThresholds: boolean;
     memoryCleanup: boolean;
-    cacheOptimization: boolean ,}
+   , cacheOptimization: boolean ,}
 
 export interface TranslationPerformanceAnalysis { totalTranslations: number;
     averageTime: number;
     slowTranslations: number;
     fastestLanguage: LanguagePerformance | null;
-    slowestLanguage: LanguagePerformance | null }
+   , slowestLanguage: LanguagePerformance | null }
 
 export interface LanguagePerformance { language: string;
-    averageTime: number }
+   , averageTime: number }
 
 export interface LanguageSwitchPerformanceAnalysis { totalSwitches: number;
     averageTime: number;
     slowSwitches: number;
-    commonSwitchPatterns: SwitchPattern[]
+   , commonSwitchPatterns: SwitchPattern[]
     }
 
 export interface SwitchPattern { pattern: string;
     count: number;
-    percentage: number }
+   , percentage: number }
 
 export interface RenderingPerformanceAnalysis { totalRenders: number;
     averageTime: number;
     averageFPS: number;
-    droppedFrames: number }
+   , droppedFrames: number }
 ';
 
 export interface MemoryTrendAnalysis {;
@@ -109,13 +109,13 @@ export interface PerformanceAnalysis { translationPerformance: TranslationPerfor
     languageSwitchPerformance: LanguageSwitchPerformanceAnalysis;
     renderingPerformance: RenderingPerformanceAnalysis;
     memoryTrends: MemoryTrendAnalysis;
-    recommendations: PerformanceRecommendation[]
+   , recommendations: PerformanceRecommendation[]
     ,}
 
 export interface PerformanceRecommendation { type: RecommendationType;
     severity: AlertSeverity;
     message: string;
-    action: OptimizationAction
+   , action: OptimizationAction
     }
 
 export interface PerformanceReport { timestamp: number;
@@ -124,11 +124,11 @@ export interface PerformanceReport { timestamp: number;
     analysis: PerformanceAnalysis;
     alerts: AlertCategories;
     thresholds: PerformanceThresholds;
-    autoOptimization: AutoOptimizationConfig
+   , autoOptimization: AutoOptimizationConfig
     }
 
 export interface LanguageStats { totalTime: number;
-    count: number }
+   , count: number }
 
 export interface PerformanceIssueDetails { key?: string;
     language?: string;
@@ -147,7 +147,7 @@ export interface PerformanceIssueDetails { key?: string;
 
 export interface NetworkConnection { effectiveType: string,
     downlink: number;
-    rtt: number ,}
+   , rtt: number ,}
 
 // Navigator型拡張
 declare global { interface Navigator {
@@ -160,9 +160,9 @@ declare global { interface Navigator {
     }
     
     interface Performance { memory?: {
-            usedJSHeapSize: number;
+            usedJSHeapSiz;e: number;
             totalJSHeapSize: number;
-            jsHeapSizeLimit: number ,}
+           , jsHeapSizeLimit: number ,}
 }
 
 export type AlertSeverity = 'low' | 'medium' | 'high';''
@@ -179,7 +179,7 @@ export class I18nPerformanceMonitor {
     // 統計データ
     private statistics: PerformanceStatistics;
     // 自動最適化設定
-    private autoOptimization: AutoOptimizationConfig;
+    private, autoOptimization: AutoOptimizationConfig;
     // 監視インターバル
     private monitoringInterval?: number;
     private memoryMonitoringInterval?: number;
@@ -208,19 +208,19 @@ export class I18nPerformanceMonitor {
         // アラート設定
         this.alerts = { performance: [],
             memory: [];
-            network: [] ,};
+           , network: [] ,};
         // 統計データ
         this.statistics = { startTime: Date.now(),
             totalTranslations: 0;
             totalLanguageSwitches: 0;
             totalRenders: 0;
             performanceIssues: 0;
-            optimizations: 0 ,};
+           , optimizations: 0 ,};
         // 自動最適化設定
         this.autoOptimization = { enabled: true,
             adaptiveThresholds: true;
             memoryCleanup: true;
-            cacheOptimization: true ,};
+           , cacheOptimization: true ,};
         // 監視開始
         this.startMonitoring();
     }
@@ -280,7 +280,7 @@ export class I18nPerformanceMonitor {
 
             this.recordPerformanceIssue('translation', {
                 key: measurement.key);
-                language: measurement.language);
+               , language: measurement.language);
                 duration,);
         }
                 threshold: this.thresholds.translationTime); }
@@ -314,7 +314,7 @@ export class I18nPerformanceMonitor {
                 this.metrics.languageSwitchTimes.get(switchKey)!.push({ )
                     duration);
                     timestamp: Date.now();
-                    success: true });
+                   , success: true });
                 // 統計更新
                 this.statistics.totalLanguageSwitches++;
                 // 閾値チェック
@@ -322,7 +322,7 @@ export class I18nPerformanceMonitor {
 
                     this.recordPerformanceIssue('languageSwitch', {
                         from: fromLanguage);
-                        to: toLanguage);
+                       , to: toLanguage);
                         duration,);
                 }
                         threshold: this.thresholds.languageSwitchTime); }
@@ -335,7 +335,7 @@ export class I18nPerformanceMonitor {
                 const endTime = performance.now(''';
                 this.recordPerformanceIssue('languageSwitchError', {)
                     from: fromLanguage);
-                    to: toLanguage,);
+                   , to: toLanguage,);
                     duration);
                     error: (error, as Error).message ,});
                 reject(error);
@@ -360,7 +360,7 @@ export class I18nPerformanceMonitor {
                 this.metrics.renderingTimes.get(renderKey)!.push({ )
                     duration);
                     timestamp: Date.now();
-                    success: true });
+                   , success: true });
                 // 統計更新
                 this.statistics.totalRenders++;
                 // 60FPS チェック
@@ -396,7 +396,7 @@ export class I18nPerformanceMonitor {
             const memoryInfo: MemoryInfo = {
                 used: performance.memory.usedJSHeapSize;
                 total: performance.memory.totalJSHeapSize;
-                limit: performance.memory.jsHeapSizeLimit;
+               , limit: performance.memory.jsHeapSizeLimit;
         }
                 timestamp: now }
             };
@@ -432,7 +432,7 @@ export class I18nPerformanceMonitor {
                 this.recordPerformanceIssue('memoryGrowth', {
                     current: currentMemory);
                     previous: previousMemory);
-                    growth: memoryGrowth, }
+                   , growth: memoryGrowth, }
                     threshold: this.thresholds.memoryGrowth); }
 }
     }
@@ -446,7 +446,7 @@ export class I18nPerformanceMonitor {
                 effectiveType: connection.effectiveType;
                 downlink: connection.downlink;
                 rtt: connection.rtt;
-                timestamp: Date.now( };
+               , timestamp: Date.now( };
 
             this.metrics.networkPerformance.set(Date.now(), networkInfo');
             ';
@@ -455,7 +455,7 @@ export class I18nPerformanceMonitor {
 
                 this.recordPerformanceIssue('slowNetwork', {)
                     effectiveType: connection.effectiveType);
-                    downlink: connection.downlink, }
+                   , downlink: connection.downlink, }
                     rtt: connection.rtt); }
 }
     }
@@ -468,7 +468,7 @@ export class I18nPerformanceMonitor {
             languageSwitchPerformance: this.analyzeLanguageSwitchPerformance();
             renderingPerformance: this.analyzeRenderingPerformance();
             memoryTrends: this.analyzeMemoryTrends();
-            recommendations: [] };
+           , recommendations: [] };
         // 推奨事項の生成
         this.generateRecommendations(analysis);
         
@@ -483,7 +483,7 @@ export class I18nPerformanceMonitor {
             averageTime: 0;
             slowTranslations: 0;
             fastestLanguage: null;
-            slowestLanguage: null };
+           , slowestLanguage: null };
         let totalTime = 0;
         let totalCount = 0;
         const languageAverages = new Map<string, LanguageStats>();
@@ -547,7 +547,7 @@ export class I18nPerformanceMonitor {
             totalSwitches: 0;
             averageTime: 0;
             slowSwitches: 0;
-            commonSwitchPatterns: [] };
+           , commonSwitchPatterns: [] };
         let totalTime = 0;
         let totalCount = 0;
         const switchCounts = new Map<string, number>();
@@ -629,7 +629,7 @@ export class I18nPerformanceMonitor {
         return { trend,
             changeRate: Math.abs(changeRate);
             currentUsage: final;
-            maxUsage: Math.max(...recent.map(d = > d.used ,};
+           , maxUsage: Math.max(...recent.map(d = > d.used ,};
             minUsage: Math.min(...recent.map(d => d.used); }
         }
     
@@ -786,7 +786,7 @@ export class I18nPerformanceMonitor {
             type,
             details,
             timestamp: Date.now();
-            severity: this.calculateSeverity(type, details };
+           , severity: this.calculateSeverity(type, details };
         
         this.alerts.performance.push(issue);
         this.statistics.performanceIssues++;
@@ -845,10 +845,10 @@ export class I18nPerformanceMonitor {
         
         return { timestamp: Date.now(),
             uptime: Date.now() - this.statistics.startTime;
-            statistics: this.statistics;
+           , statistics: this.statistics;
             analysis,
             alerts: this.alerts;
-            thresholds: this.thresholds, };
+           , thresholds: this.thresholds, };
             autoOptimization: this.autoOptimization }
         }
     
@@ -896,7 +896,7 @@ export class I18nPerformanceMonitor {
             languageSwitchTimes: new Map(this.metrics.languageSwitchTimes);
             renderingTimes: new Map(this.metrics.renderingTimes);
             memoryUsage: new Map(this.metrics.memoryUsage);
-            cachePerformance: new Map(this.metrics.cachePerformance), };
+           , cachePerformance: new Map(this.metrics.cachePerformance), };
             networkPerformance: new Map(this.metrics.networkPerformance); }
         }
     

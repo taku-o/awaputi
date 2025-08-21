@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
-import { CoordinateCalculator } from '../../utils/CoordinateCalculator.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { CoordinateCalculator  } from '../../utils/CoordinateCalculator.js';''
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
@@ -149,7 +149,7 @@ export class MainMenuRenderer {
 
             this.errorHandler.handleError(error, 'RENDER_ERROR', { ')'
                 context: 'MainMenuRenderer.renderMainMenu);
-                canvasWidth: this.gameEngine.canvas? .width, : undefined);
+               , canvasWidth: this.gameEngine.canvas? .width, : undefined);
                 canvasHeight: this.gameEngine.canvas? .height ,});
         }
     }
@@ -226,7 +226,7 @@ export class MainMenuRenderer {
             const controlsY = canvas.height - bottomMargin;''
             const lineSpacing = calc.toCanvasSize(0, 25).height;
 
-            const controlText1 = '↑↓: 選択  Enter: 決定  ESC: 終了',
+            const controlText1 = '↑↓: 選択  Enter: 決定 , ESC: 終了',
             const controlText2 = 'クリックでも操作できます';
             const controlX1 = calc.getTextCenterX(context, controlText1);
             const controlX2 = calc.getTextCenterX(context, controlText2);

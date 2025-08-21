@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * Analytics System Integration Tests
  * 分析システム全体のコンポーネント間統合テスト
@@ -10,11 +10,11 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * - エラーハンドリングとリカバリ処理
  * - パフォーマンス監視との統合
  */
-import { IndexedDBStorageManager } from '../../src/analytics/IndexedDBStorageManager';
-import { PrivacyManager } from '../../src/analytics/PrivacyManager';
-import { DataCollector } from '../../src/analytics/DataCollector';
-import { ExportManager } from '../../src/analytics/ExportManager';
-import { AnalyticsAPI } from '../../src/analytics/AnalyticsAPI';
+import { IndexedDBStorageManager  } from '../../src/analytics/IndexedDBStorageManager';
+import { PrivacyManager  } from '../../src/analytics/PrivacyManager';
+import { DataCollector  } from '../../src/analytics/DataCollector';
+import { ExportManager  } from '../../src/analytics/ExportManager';
+import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
 // モック設定
 (global as any).indexedDB = {
     open: jest.fn(() => ({
@@ -103,7 +103,7 @@ describe('Analytics System Integration Tests', () => {
             for (let i = 0; i < 5; i++') {
                 batchData.push({
                     type: 'bubble_interaction';);
-                    timestamp: Date.now(') + i * 1000,
+                   , timestamp: Date.now(') + i * 1000,
                     bubbleType: i % 2 === 0 ? 'normal' : 'stone',
                     success: i % 3 !== 0,
                     score: 100 + i * 50

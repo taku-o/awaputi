@@ -3,18 +3,18 @@
  * 
  * hreflangタグ生成とLocalizationManagerとの統合機能を提供
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';
+import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';
 import { normalizeUrl, 
     measurePerformance,
-    generateCacheKey ' }'
+    generateCacheKey '  }'
 
 } from './SEOUtils';
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
-    addLanguageChangeListener(callback: (lang: string) => void): void;
+    addLanguageChangeListener(callback: (lan;g: string) => void): void;
     t(key: string, defaultValue?: string): string;
     getSupportedLanguages(): string[]; }
 }
@@ -35,9 +35,9 @@ export class SEOI18nManager {
     private localizationManager: LocalizationManager | null;
     private seoMetaManager: SEOMetaManager | null;
     private baseUrl: string;
-    private hreflangCache: Map<string, HreflangTag[]>;
+    private, hreflangCache: Map<string, HreflangTag[]>;
     private currentLanguage: LanguageCode;
-    private initialized: boolean;
+    private, initialized: boolean;
     constructor(localizationManager: LocalizationManager | null = null, seoMetaManager: SEOMetaManager | null = null) {
     
         this.localizationManager = localizationManager;

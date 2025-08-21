@@ -14,7 +14,7 @@ export interface ExportOptions { format?: "json" | "csv" | "xlsx";
     includeMetadata?: boolean;
     compress?: boolean;
     anonymize?: boolean; }
-    dateRange?: { start: Date; end: Date }
+    dateRange?: { start: Date;, end: Date }
     filters?: Record<string, any>;
 }
 
@@ -42,7 +42,7 @@ export class ExportManager {"
             defaultFormat: 'json';
             includeMetadata: true;
             anonymizeData: true;
-            maxExportSize: 50 * 1024 * 1024, // 50MB
+           , maxExportSize: 50 * 1024 * 1024, // 50MB
     }
             compressionThreshold: 1024 * 1024 // 1MB }
         };
@@ -62,7 +62,7 @@ export class ExportManager {"
             successfulExports: 0;
             failedExports: 0;
             averageExportSize: 0;
-            lastExportTime: null ,};
+           , lastExportTime: null ,};
         this.initialize();
     }
     
@@ -89,10 +89,10 @@ export class ExportManager {"
     async exportData(options: any = { ) {''
         const startTime = performance.now(''';
                 dataTypes: 'all';
-                format: this.config.defaultFormat, }
+               , format: this.config.defaultFormat, }
                 filters: {};
                 includeMetadata: this.config.includeMetadata);
-                anonymize: this.config.anonymizeData);
+               , anonymize: this.config.anonymizeData);
                 ...options;
             
             // データタイプの検証)
@@ -116,7 +116,7 @@ export class ExportManager {"
                 timestamp: new Date().toISOString();
                 format: exportOptions.format;
                 metadata: exportOptions.includeMetadata ? metadata : null;
-                data: convertedData };
+               , data: convertedData };
             // サイズチェック
             const dataSize = this.calculateDataSize(exportData);
             if(dataSize > this.config.maxExportSize) {
@@ -140,7 +140,7 @@ export class ExportManager {"
             return { success: true,
                 data: exportData;
                 format: exportOptions.format;
-                size: dataSize;
+               , size: dataSize;
                 duration,
                 filename: this.generateFilename(exportOptions.dataTypes, exportOptions.format), };
                 metadata }
@@ -349,7 +349,7 @@ export class ExportManager {"
             dataTypes: Object.keys(data);
             format: options.format;
             filters: options.filters;
-            anonymized: options.anonymize;
+           , anonymized: options.anonymize;
             dataSize,
             recordCounts,
             totalRecords: Object.values(recordCounts).reduce((sum, count) => sum + count, 0),
@@ -357,7 +357,7 @@ export class ExportManager {"
             gameVersion: window.GAME_VERSION || '1.0.0';
             userAgent: navigator.userAgent;
             platform: navigator.platform;
-            language: navigator.language);
+           , language: navigator.language);
         })
     
     /**

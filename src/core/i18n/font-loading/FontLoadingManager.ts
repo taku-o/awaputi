@@ -1,27 +1,27 @@
-import { FontSourceManager } from './FontSourceManager.js';''
-import { FontFallbackHandler } from './FontFallbackHandler.js';''
-import { FontErrorHandler, FontErrorConfig } from './FontErrorHandler.js';
+import { FontSourceManager  } from './FontSourceManager.js';''
+import { FontFallbackHandler  } from './FontFallbackHandler.js';''
+import { FontErrorHandler, FontErrorConfig  } from './FontErrorHandler.js';
 
 // 型定義
 export interface FontLoadingConfig extends FontErrorConfig { enabledSources: string[],
     timeouts: {
         google: number;
         local: number;
-        system: number ,};
+       , system: number ,};
     fallbackBehavior: { useSystemFonts: boolean;
         suppressErrors: boolean;
-        maxRetries: number };
+       , maxRetries: number };
     logging: { level: string;
         suppressRepeated: boolean;
-        maxErrorsPerSource: number };
+       , maxErrorsPerSource: number };
     development: { disableExternalFonts: boolean;
-        verboseLogging: boolean }
+       , verboseLogging: boolean }
 
 export interface FontLoadResult { success: boolean,
     fontFamily: string;
     source: string;
     fallbackUsed: boolean;
-    loadTime: number;
+   , loadTime: number;
     error?: Error | null;
     cached?: boolean;
     originalFont?: string; ,}
@@ -34,7 +34,7 @@ export interface FontLoadOptions {;
 
 export interface ApplyElementResults { total: number,
     successful: number;
-    failed: number ,}
+   , failed: number ,}
 
 export class FontLoadingManager {
     private static _instance: FontLoadingManager | null = null;
@@ -42,7 +42,7 @@ export class FontLoadingManager {
     private sourceManager: FontSourceManager;
     private fallbackHandler: FontFallbackHandler;
     private errorHandler: FontErrorHandler;
-    private loadAttempts: Map<string, Promise<FontLoadResult>>;
+    private, loadAttempts: Map<string, Promise<FontLoadResult>>;
     private failedSources: Set<string>;
     private successfulLoads: Set<string>;
     private initialized: boolean;
@@ -106,18 +106,18 @@ export class FontLoadingManager {
             enabledSources: ['system', 'google', 'local'],
             timeouts: {
                 google: 3000;
-                local: 1000, };
+               , local: 1000, };
                 system: 500 }
             };
             fallbackBehavior: { useSystemFonts: true;
                 suppressErrors: true;
-                maxRetries: 1 };
+               , maxRetries: 1 };
             logging: { ''
                 level: 'warn';
                 suppressRepeated: true;
-                maxErrorsPerSource: 3 };
+               , maxErrorsPerSource: 3 };
             development: { disableExternalFonts: false;
-                verboseLogging: false };
+               , verboseLogging: false };
             ...config;
     }
 
@@ -134,8 +134,7 @@ export class FontLoadingManager {
                 console.log('[FontLoadingManager] Available sources:', availableSources); }
             }
 
-            if(availableSources.length === 0) {'
-                ';
+            if(availableSources.length === 0) {', ';
 
             }
 
@@ -169,7 +168,7 @@ export class FontLoadingManager {
                 fontFamily: fontFamily,
                 source: 'cached';
                 fallbackUsed: false;
-                loadTime: 0, };
+               , loadTime: 0, };
                 cached: true }
             }
 
@@ -200,11 +199,11 @@ export class FontLoadingManager {
                     fontFamily: fontFamily;
                     source: sourceName;
                     fallbackUsed: false;
-                    loadTime: Date.now() - startTime, };
+                   , loadTime: Date.now() - startTime, };
                     error: null }
                 } catch (error) { const context = {
                     source: sourceName as any;
-                    fontFamily: fontFamily };
+                   , fontFamily: fontFamily };
 
                 this.errorHandler.handleFontError(error as Error, context);
                 this.failedSources.add(`${sourceName}:${ fontFamily}`}
@@ -242,7 +241,7 @@ export class FontLoadingManager {
                 source: 'fallback';
                 fallbackUsed: true;
                 loadTime: Date.now() - startTime;
-                error: null, };
+               , error: null, };
                 originalFont: fontFamily }
             } catch (error) { this.errorHandler.handleFontError(error as Error, {)'
                 source: 'fallback' as any,)';
@@ -255,7 +254,7 @@ export class FontLoadingManager {
                 fontFamily: fontFamily,
                 source: 'fallback';
                 fallbackUsed: false;
-                loadTime: Date.now() - startTime, };
+               , loadTime: Date.now() - startTime, };
                 error: error as Error }
             }
     }
@@ -316,15 +315,15 @@ export class FontLoadingManager {
     getStats(): any { return { manager: {
                 initialized: this.initialized;
                 successfulLoads: this.successfulLoads.size;
-                failedSources: this.failedSources.size, };
+               , failedSources: this.failedSources.size, };
                 activeAttempts: this.loadAttempts.size }
             };
             sources: this.sourceManager.getStats();
             fallbacks: this.fallbackHandler.getStats();
             errors: this.errorHandler.getErrorStats();
-            config: { enabledSources: this.config.enabledSources;
+           , config: { enabledSources: this.config.enabledSources;
                 timeouts: this.config.timeouts;
-                fallbackBehavior: this.config.fallbackBehavior }
+               , fallbackBehavior: this.config.fallbackBehavior }
         }
 
     updateConfig(newConfig: Partial<FontLoadingConfig>): void { this.config = this._mergeWithDefaults({ ...this.config, ...newConfig );
@@ -357,7 +356,7 @@ export class FontLoadingManager {
                     fontFamily: fontFamily,
                     source: 'error);
                     fallbackUsed: false);
-                    loadTime: 0,);
+                   , loadTime: 0,);
                     error: error as Error ,});
             }
         }
@@ -368,8 +367,7 @@ export class FontLoadingManager {
     dispose(): void { this.clearCaches();
         this.initialized = false;
 
-        if(this.config.development? .verboseLogging) {'
-            ';
+        if(this.config.development? .verboseLogging) {', ';
 
         }
 

@@ -5,11 +5,11 @@
  * 泡生成、物理計算、ドラッグ操作、特殊効果を統合管理
  */
 
-import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer';''
-import { BubbleSpawner } from './bubble-manager/BubbleSpawner';''
-import { BubblePhysicsEngine } from './bubble-manager/BubblePhysicsEngine';''
-import { BubbleDragSystem } from './bubble-manager/BubbleDragSystem';''
-import { BubbleEffectProcessor } from './bubble-manager/BubbleEffectProcessor';
+import { getPerformanceOptimizer  } from '../utils/PerformanceOptimizer';''
+import { BubbleSpawner  } from './bubble-manager/BubbleSpawner';''
+import { BubblePhysicsEngine  } from './bubble-manager/BubblePhysicsEngine';''
+import { BubbleDragSystem  } from './bubble-manager/BubbleDragSystem';''
+import { BubbleEffectProcessor  } from './bubble-manager/BubbleEffectProcessor';
 import type { BubbleManager as IBubbleManager, 
     Bubble, ;
     Position,
@@ -26,7 +26,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     public effectProcessor: BubbleEffectProcessor,
     public lastCullTime: number = 0,
     public cullInterval: number = 500; // 0.5秒ごとにカリング
-    public offscreenBubbles: Set<Bubble> = new Set(),
+    public, offscreenBubbles: Set<Bubble> = new Set(),
     public offscreenTimer: Map<Bubble, number> = new Map();
     
     private lastDebugTime?: number;
@@ -233,7 +233,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
                 
             }
                 const bubble = this.bubbles[0]; }
-                console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${(bubble as any}).x}, ${(bubble, as any}).y}), visible=${this.physicsEngine.isBubbleVisible(bubble})`);
+                console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${(bubble, as any}).x}, ${(bubble, as, any}).y}), visible=${this.physicsEngine.isBubbleVisible(bubble})`);
             }
             this.lastDebugTime = performance.now();
         }
@@ -287,7 +287,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      * 泡を割る
      */
     popBubble(bubble: Bubble, x: number, y: number): boolean { ''
-        console.log(`${bubble.type) bubble popped`');
+        console.log(`${bubble.type) bubble, popped`');
         ';
         // 幻の泡のすり抜け判定
         if(bubble.type === 'phantom} {'
@@ -433,7 +433,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
                 type: bubble.type;
                 x: bubble.position.x;
                 y: bubble.position.y;
-                health: bubble.health });
+               , health: bubble.health });
         }
 
     // =======================

@@ -19,52 +19,52 @@ export interface AdaptationSettings { enabled: boolean,
     sensitivity: number;
     responsiveness: ResponsivenessLevel;
     learningRate: number;
-    stabilityThreshold: number ,}
+   , stabilityThreshold: number ,}
 export interface UserBehaviorMetrics { errorRate: number,
     taskCompletionTime: number;
     interactionFrequency: number;
     hesitationTime: number;
     backtrackingRate: number;
-    helpRequestRate: number ,}
+   , helpRequestRate: number ,}
 export interface ContextualFactors { timeOfDay: TimeOfDay,
     sessionDuration: number;
     deviceType: DeviceType;
     networkSpeed: NetworkSpeed;
     batteryLevel: number;
-    multitaskingLevel: MultitaskingLevel
+   , multitaskingLevel: MultitaskingLevel
     ,}
 export interface LearningModel { weights: BehaviorWeights,
     biases: ContextualBiases;
-    thresholds: AdaptationThresholds
+   , thresholds: AdaptationThresholds
     ,}
 export interface BehaviorWeights { errorRate: number,
     taskCompletionTime: number;
     interactionFrequency: number;
     hesitationTime: number;
     backtrackingRate: number;
-    helpRequestRate: number ,}
+   , helpRequestRate: number ,}
 export interface ContextualBiases { timeOfDay: Record<TimeOfDay, number>,
     deviceType: Record<DeviceType, number>,
     sessionDuration: Record<SessionDurationCategory, number>, }
 export interface AdaptationThresholds { adaptationTrigger: number,
     significantChange: number;
-    stabilityRequired: number ,}
+   , stabilityRequired: number ,}
 export interface BehaviorTracker { startTime: number,
     lastInteraction: number;
     errorCount: number;
     interactionCount: number;
     hesitationEvents: HesitationEvent[];
     backtrackEvents: BacktrackEvent[];
-    helpRequests: HelpRequest[];
+   , helpRequests: HelpRequest[];
     recentClicks?: ClickEvent[];
     recentInteractionTimes?: number[]; ,}
 export interface HesitationEvent { duration: number,
     timestamp: number;
-    context: ContextSnapshot
+   , context: ContextSnapshot
     ,}
 export interface BacktrackEvent { timestamp: number,
     type: string;
-    context: ContextSnapshot
+   , context: ContextSnapshot
     ,}
 export interface HelpRequest { timestamp: number,
     context: any ,}
@@ -78,7 +78,7 @@ export interface ContextSnapshot { timeOfDay: TimeOfDay,
     multitaskingLevel: MultitaskingLevel;
     activeElement: string;
     scrollPosition: number;
-    viewportSize: ViewportSize
+   , viewportSize: ViewportSize
     ,}
 export interface ViewportSize { width: number,
     height: number ,}
@@ -86,7 +86,7 @@ export interface AdaptationRecommendation { level: SimplificationLevel,
     score: number;
     reason: string;
     confidence: number;
-    options: AdaptationOptions
+   , options: AdaptationOptions
     ,}
 export interface AdaptationOptions { reduceAnimations?: boolean;
     reduceEffects?: boolean;
@@ -101,27 +101,27 @@ export interface AdaptationRecord { timestamp: number,
     context: ContextualFactors;
     metrics: UserBehaviorMetrics;
     executed: boolean;
-    successful: boolean;
+   , successful: boolean;
     error?: string ,}
 export interface NormalizedMetrics { errorRate: number,
     taskCompletionTime: number;
     interactionFrequency: number;
     hesitationTime: number;
     backtrackingRate: number;
-    helpRequestRate: number ,}
+   , helpRequestRate: number ,}
 export interface AdaptationStats { userBehaviorMetrics: UserBehaviorMetrics,
     contextualFactors: ContextualFactors;
     adaptationHistory: AdaptationRecord[];
-    learningModel: {
-        weights: BehaviorWeights;
-        thresholds: AdaptationThresholds 
+   , learningModel: {
+        weight;s: BehaviorWeights;
+       , thresholds: AdaptationThresholds 
 ,};
     sessionStats: SessionStats;
 }
 export interface SessionStats { sessionDuration: number,
     totalInteractions: number;
     totalErrors: number;
-    totalAdaptations: number ,}
+   , totalAdaptations: number ,}
 export interface InteractionEvent { type: string,
     timestamp: number;
     target?: HTMLElement;
@@ -129,15 +129,15 @@ export interface InteractionEvent { type: string,
 export interface ScoreCalculation { normalizedScore: number,
     contextualBias: number;
     historicalBias: number;
-    finalScore: number ,}
+   , finalScore: number ,}
 export interface AdaptationTrigger { threshold: number,
     conditions: TriggerCondition[];
-    actions: AdaptationAction[]
+   , actions: AdaptationAction[]
     ,}
 export interface TriggerCondition { metric: keyof UserBehaviorMetrics,
     operator: ComparisonOperator;
     value: number;
-    weight: number ,}
+   , weight: number ,}
 export interface AdaptationAction { type: ActionType,
     parameters: Record<string, any>,
     priority: number ,}
@@ -157,7 +157,7 @@ export const DEFAULT_ADAPTATION_SETTINGS: AdaptationSettings = { enabled: true,
     sensitivity: 0.7,
     responsiveness: 'medium';
     learningRate: 0.1;
-    stabilityThreshold: 0.3 
+   , stabilityThreshold: 0.3 
 ,} as const;
 export const DEFAULT_LEARNING_MODEL: LearningModel = { weights: {
         errorRate: 0.3;
@@ -165,7 +165,7 @@ export const DEFAULT_LEARNING_MODEL: LearningModel = { weights: {
         interactionFrequency: 0.15;
         hesitationTime: 0.15;
         backtrackingRate: 0.1;
-        helpRequestRate: 0.1 
+       , helpRequestRate: 0.1 
 };
     biases: { timeOfDay: { 
             morning: 0.1, ;
@@ -174,17 +174,17 @@ export const DEFAULT_LEARNING_MODEL: LearningModel = { weights: {
             night: -0.2  
 ,};
         deviceType: { desktop: 0;
-            tablet: 0.1, ;
+           , tablet: 0.1, ;
             mobile: 0.2  
 ,};
         sessionDuration: { short: 0;
-            medium: 0.1, ;
+           , medium: 0.1, ;
             long: 0.2  
 ,}
     },
     thresholds: { adaptationTrigger: 0.6;
         significantChange: 0.3;
-        stabilityRequired: 0.8 
+       , stabilityRequired: 0.8 
 }
 } as const,
 
@@ -201,13 +201,13 @@ export const BEHAVIOR_DETECTION_CONFIG = { HESITATION_THRESHOLD: 3000, // 3秒
     BACKTRACK_REPEAT_THRESHOLD: 2, // 同一要素への連続クリック回数;
     BACKTRACK_TIME_WINDOW: 5000, // 5秒;
     CLICK_HISTORY_SIZE: 10;
-    INTERACTION_HISTORY_SIZE: 50 
+   , INTERACTION_HISTORY_SIZE: 50 
 ,} as const;
 export const ADAPTATION_CONFIG = { MIN_SESSION_TIME: 60000, // 1分
     MIN_INTERACTIONS: 10;
     MAX_HISTORY_SIZE: 100;
     HISTORY_TRIM_SIZE: 50;
-    UPDATE_INTERVALS: {
+   , UPDATE_INTERVALS: {
         timeOfDay: 60000, // 1分;
         sessionDuration: 10000, // 10秒;
         contextMonitoring: 5000 // 5秒 
@@ -295,12 +295,12 @@ export class AdaptiveSimplificationEngine {
             interactionFrequency: 0;
             hesitationTime: 0;
             backtrackingRate: 0;
-            helpRequestRate: 0 
+           , helpRequestRate: 0 
 ,};
         this.contextualFactors = { timeOfDay: detectTimeOfDay(),
             sessionDuration: 0,
             deviceType: detectDeviceType(''';
-            networkSpeed: 'fast',
+           , networkSpeed: 'fast',
             batteryLevel: 1.0,
             multitaskingLevel: 'low' ,}))
         this.adaptationHistory = [];
@@ -314,7 +314,7 @@ export class AdaptiveSimplificationEngine {
             backtrackEvents: [];
             helpRequests: [];
             recentClicks: [];
-            recentInteractionTimes: [] 
+           , recentInteractionTimes: [] 
 ,};
         ';
         // イベントハンドラーのバインド
@@ -459,9 +459,9 @@ export class AdaptiveSimplificationEngine {
         this.userBehaviorMetrics = {
             errorRate: this.behaviorTracker.errorCount / Math.max(sessionMinutes, 1),
             taskCompletionTime: this.calculateAverageTaskTime();
-            interactionFrequency: this.behaviorTracker.interactionCount / Math.max(sessionMinutes, 1),
+           , interactionFrequency: this.behaviorTracker.interactionCount / Math.max(sessionMinutes, 1),
             hesitationTime: this.calculateAverageHesitationTime();
-            backtrackingRate: this.behaviorTracker.backtrackEvents.length / Math.max(sessionMinutes, 1),
+           , backtrackingRate: this.behaviorTracker.backtrackEvents.length / Math.max(sessionMinutes, 1),
             helpRequestRate: this.behaviorTracker.helpRequests.length / Math.max(sessionMinutes, 1 }
 
     /**
@@ -541,8 +541,7 @@ export class AdaptiveSimplificationEngine {
     private generateAdaptationRecommendation(complexityScore: number): AdaptationRecommendation { ''
         let recommendedLevel: SimplificationLevel = 'none',
 
-        if(complexityScore > 0.8) {'
-            ';
+        if(complexityScore > 0.8) {', ';
 
         }
 
@@ -559,7 +558,7 @@ export class AdaptiveSimplificationEngine {
         return { level: recommendedLevel,
             score: complexityScore;
             reason: this.getAdaptationReason(complexityScore);
-            confidence: this.calculateConfidence(complexityScore), };
+           , confidence: this.calculateConfidence(complexityScore), };
             options: this.getRecommendedOptions(); }
         }
 
@@ -569,32 +568,28 @@ export class AdaptiveSimplificationEngine {
     private getAdaptationReason(score: number): string { const metrics = this.userBehaviorMetrics;
         const reasons: string[] = [],
 
-        if(metrics.errorRate > 2) {'
-            ';
+        if(metrics.errorRate > 2) {', ';
 
         }
 
             reasons.push('エラー発生率が高い); }'
         }
 
-        if(metrics.hesitationTime > 5000) {'
-            ';
+        if(metrics.hesitationTime > 5000) {', ';
 
         }
 
             reasons.push('操作に迷いが見られる); }'
         }
 
-        if(metrics.backtrackingRate > 1) {'
-            ';
+        if(metrics.backtrackingRate > 1) {', ';
 
         }
 
             reasons.push('やり直し操作が多い); }'
         }
 
-        if(metrics.helpRequestRate > 0.5) {'
-            ';
+        if(metrics.helpRequestRate > 0.5) {', ';
 
         }
 
@@ -663,8 +658,8 @@ export class AdaptiveSimplificationEngine {
     private getCurrentContext(''';
             activeElement: document.activeElement? .tagName || 'unknown', : undefined
             scrollPosition: window.scrollY;
-            viewportSize: { width: window.innerWidth;
-                height: window.innerHeight 
+           , viewportSize: { width: window.innerWidth;
+               , height: window.innerHeight 
 }))
     }
 
@@ -739,14 +734,14 @@ export class AdaptiveSimplificationEngine {
             userBehaviorMetrics: { ...this.userBehaviorMetrics;
             contextualFactors: { ...this.contextualFactors;
             adaptationHistory: this.adaptationHistory.slice(-10);
-            learningModel: {
+           , learningModel: {
                 weights: { ...this.learningModel.weights;
                 thresholds: { ...this.learningModel.thresholds ;
 },
             sessionStats: { sessionDuration: this.contextualFactors.sessionDuration;
                 totalInteractions: this.behaviorTracker.interactionCount;
                 totalErrors: this.behaviorTracker.errorCount;
-                totalAdaptations: this.adaptationHistory.length 
+               , totalAdaptations: this.adaptationHistory.length 
 }
         },
     }
@@ -771,14 +766,14 @@ export class AdaptiveSimplificationEngine {
             backtrackEvents: [];
             helpRequests: [];
             recentClicks: [];
-            recentInteractionTimes: [] 
+           , recentInteractionTimes: [] 
 };
         this.userBehaviorMetrics = { errorRate: 0,
             taskCompletionTime: 0;
             interactionFrequency: 0;
             hesitationTime: 0;
             backtrackingRate: 0;
-            helpRequestRate: 0 
+           , helpRequestRate: 0 
 ,};
         this.adaptationHistory = [];
     }

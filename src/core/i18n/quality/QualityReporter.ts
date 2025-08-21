@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface ReportTemplate { name: string,
@@ -20,10 +20,10 @@ export interface ValidationResults { language: string,
     warnings: ValidationIssue[];
     passed: ValidationIssue[];
     qualityScore: number;
-    qualityGrade: string ,}
+   , qualityGrade: string ,}
 
 export interface ValidationIssue { rule: string;
-    name: string; }
+   , name: string; }
     message: string,
     suggestion?: string;''
     severity: 'error' | 'warning';
@@ -38,12 +38,12 @@ export interface ReportSummary { language: string;
     errorCount: number;
     warningCount: number;
     passedCount: number;
-    completionRate: number; }
+   , completionRate: number; }
     successRate: number }
 
 export interface RuleStatistics { total: number;
     errors: number;
-    warnings: number; }
+   , warnings: number; }
     passed: number }
 
 export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
@@ -53,7 +53,7 @@ export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
 export interface CategorizedIssues { critical: ValidationIssue[],
     major: ValidationIssue[];
     minor: ValidationIssue[];
-    info: ValidationIssue[]
+   , info: ValidationIssue[]
     ,}
 ';
 
@@ -62,7 +62,7 @@ export interface Recommendation {;
     type: string;
     title: string;
     description: string;
-    actions: string[] }
+   , actions: string[] }
 ';
 
 export interface TrendChange { value: number,''
@@ -80,7 +80,7 @@ export interface TrendData { message?: string;
 export interface QualityTrend { timestamp: string;
     qualityScore: number;
     errorCount: number;
-    warningCount: number; }
+   , warningCount: number; }
     successRate: number }
 
 export interface ReportData { id: string;
@@ -92,24 +92,24 @@ export interface ReportData { id: string;
     statistics: ReportStatistics;
     issues: CategorizedIssues;
     recommendations: Recommendation[];
-    trends: TrendData }
+   , trends: TrendData }
     }
 
 export interface ReportHistoryEntry { id: string;
     timestamp: string;
     language: string;
     qualityScore: number;
-    errorCount: number; }
+   , errorCount: number; }
     warningCount: number }
 
 export interface GeneratedReport { id: string;
     data: ReportData;
-    report: string; }
+   , report: string; }
     format: string }
 
 export interface ReporterStats { totalReports: number;
     languagesTracked: number;
-    availableTemplates: string[]; }
+   , availableTemplates: string[]; }
     averageQualityScore: number }
 
 /**
@@ -118,7 +118,7 @@ export interface ReporterStats { totalReports: number;
 export class QualityReporter {
     private reportTemplates: Map<string, ReportTemplate>;
     private reportHistory: ReportHistoryEntry[];
-    private qualityTrends: Map<string, QualityTrend[]>;
+    private, qualityTrends: Map<string, QualityTrend[]>;
 
     constructor() {
 
@@ -177,7 +177,7 @@ export class QualityReporter {
                 timestamp: new Date().toISOString();
                 template: templateType;
                 language: validationResults.language;
-                sourceLanguage: validationResults.sourceLanguage;
+               , sourceLanguage: validationResults.sourceLanguage;
                 ...this.analyzeValidationResults(validationResults);
             
             // 品質トレンドを更新
@@ -191,11 +191,11 @@ export class QualityReporter {
                 timestamp: reportData.timestamp;)
                 language: reportData.language);
                 qualityScore: reportData.summary.qualityScore);
-                errorCount: reportData.summary.errorCount,);
+               , errorCount: reportData.summary.errorCount,);
                 warningCount: reportData.summary.warningCount);
             return { id: reportId,
                 data: reportData;
-                report: report, };
+               , report: report, };
                 format: template.format }
             };
             ';
@@ -212,7 +212,7 @@ export class QualityReporter {
     private analyzeValidationResults(results: ValidationResults): Omit<ReportData, 'id' | 'timestamp' | 'template' | 'language' | 'sourceLanguage'> { const analysis = { summary: this.generateSummary(results);
             statistics: this.generateStatistics(results);
             issues: this.categorizeIssues(results);
-            recommendations: this.generateRecommendations(results); }
+           , recommendations: this.generateRecommendations(results); }
             trends: this.analyzeTrends(results };
         
         return, analysis;
@@ -296,7 +296,7 @@ export class QualityReporter {
      */
     private categorizeIssues(results: ValidationResults): CategorizedIssues { const categories: CategorizedIssues = { critical: [];
             major: [];
-            minor: []; }
+           , minor: []; }
             info: [] };
         ";"
         // エラーを重要度別に分類""
@@ -479,7 +479,7 @@ export class QualityReporter {
         trends.push({ timestamp: reportData.timestamp,)
             qualityScore: reportData.summary.qualityScore);
             errorCount: reportData.summary.errorCount);
-            warningCount: reportData.summary.warningCount,);
+           , warningCount: reportData.summary.warningCount,);
             successRate: reportData.summary.successRate);
         // 最新50件のトレンドのみ保持
         if(trends.length > 50) {
@@ -517,15 +517,14 @@ export class QualityReporter {
                 <h1>翻訳品質レポート</h1>")";
                 <div class="report-meta">)";"
                     <span>言語: ${reportData.language}</span>" }"
-                    <span>生成日時: ${new Date(reportData.timestamp"}.toLocaleString('ja-JP'})</span>"
+                    <span>生成日時: ${new, Date(reportData.timestamp"}.toLocaleString('ja-JP'})</span>"
                     <span>レポートID: ${reportData.id}</span>
                 </div>';
             </div>'';
         `');
         ';
         // サマリーセクション
-        if(template.sections.includes('summary) {'
-            ';
+        if(template.sections.includes('summary) {', ';
 
         }
 
@@ -533,8 +532,7 @@ export class QualityReporter {
         }
         ';
         // 統計セクション
-        if(template.sections.includes('statistics) {'
-            ';
+        if(template.sections.includes('statistics) {', ';
 
         }
 
@@ -542,8 +540,7 @@ export class QualityReporter {
         }
         ';
         // 問題セクション
-        if(template.sections.includes('issues) {'
-            ';
+        if(template.sections.includes('issues) {', ';
 
         }
 
@@ -551,8 +548,7 @@ export class QualityReporter {
         }
         ';
         // 推奨事項セクション
-        if(template.sections.includes('recommendations) {'
-            ';
+        if(template.sections.includes('recommendations) {', ';
 
         }
 
@@ -560,8 +556,7 @@ export class QualityReporter {
         }
         ';
         // トレンドセクション
-        if(template.sections.includes('trends) {'
-            ';
+        if(template.sections.includes('trends) {', ';
 
         }
 
@@ -696,7 +691,7 @@ export class QualityReporter {
                 <h2>⚠️ 検出された問題</h2>;
                 ";"
                 ${issues.critical.length > 0 ? `""
-                    <div class="issue-category critical">" }"
+                    <div, class="issue-category, critical">" }"
                         <h3>🔴 重大な問題 (${issues.critical.length}件")</h3>"""
                         ${issues.critical.map(issue => this.renderIssueItem(issue, 'critical}}.join('''})'
                     </div> : undefined'';
@@ -704,7 +699,7 @@ export class QualityReporter {
                 ';
 
                 ${ issues.major.length > 0 ? `''
-                    <div class="issue-category major">" }"
+                    <div, class="issue-category, major">" }"
                         <h3>🟠 主要な問題 (${issues.major.length}件")</h3>"""
                         ${issues.major.map(issue => this.renderIssueItem(issue, 'major}}.join('''})'
                     </div> : undefined'';
@@ -712,7 +707,7 @@ export class QualityReporter {
                 ';
 
                 ${ issues.minor.length > 0 ? `''
-                    <div class="issue-category minor">" }"
+                    <div, class="issue-category, minor">" }"
                         <h3>🟡 軽微な問題 (${issues.minor.length}件")</h3>"""
                         ${issues.minor.map(issue => this.renderIssueItem(issue, 'minor}}.join('''})'
                     </div> : undefined'';
@@ -720,7 +715,7 @@ export class QualityReporter {
                 ';
 
                 ${ issues.info.length > 0 ? `''
-                    <div class="issue-category info">" }"
+                    <div, class="issue-category, info">" }"
                         <h3>ℹ️ 情報 (${issues.info.length}件")</h3>"""
                         ${issues.info.map(issue => this.renderIssueItem(issue, 'info}}.join('''})'
                     </div> : undefined'';
@@ -740,7 +735,7 @@ export class QualityReporter {
                     <span class="issue-key">${issue.key || ''}</span>'
                 </div>'';
                 <div class="issue-message">${issue.message}</div>""
-                ${issue.suggestion ? `<div class="issue-suggestion">💡 ${issue.suggestion}</div>` : ''
+                ${issue.suggestion ? `<div, class="issue-suggestion">💡 ${issue.suggestion}</div>` : ''
             </div>;
         `;
     }
@@ -865,60 +860,60 @@ export class QualityReporter {
      * レポート用CSSを取得'
      */''
     private getReportCSS(''';)
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background: #f5f5f5, })
-            .report-container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1 }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 20px;, background: #f5f5f5, })
+            .report-container { max-width: 1200px; margin: 0 auto; background: white;, padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1 }
             .report-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #eee, }
-            .report-header h1 { color: #333; margin: 0, }
-            .report-meta { margin-top: 10px; color: #666, }
+            .report-header h1 { color: #333;, margin: 0, }
+            .report-meta { margin-top: 10px;, color: #666, }
             .report-meta span { margin: 0 15px, }
             section { margin: 30px 0, }
             h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px, }
             h3 { color: #34495e, })
-            .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr); gap: 20px; margin: 20px 0, }
-            .summary-card { text-align: center; padding: 20px; border-radius: 8px; background: #f8f9fa, }
+            .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr); gap: 20px;, margin: 20px 0, }
+            .summary-card { text-align: center; padding: 20px; border-radius: 8px;, background: #f8f9fa, }
             .summary-card.error { background: #fee; border-left: 4px solid #e74c3c, }
             .summary-card.warning { background: #fff8e1; border-left: 4px solid #f39c12, }
             .summary-card.success { background: #e8f5e8; border-left: 4px solid #27ae60, }
             .summary-value { font-size: 2em; font-weight: bold; margin-bottom: 5px, }
             .summary-label { color: #666; font-size: 0.9em, }
-            .summary-grade { margin-top: 5px; padding: 5px 10px; border-radius: 15px; font-size: 0.8em; background: #3498db; color: white, }
-            .completion-bar { position: relative; height: 20px; background: #eee; border-radius: 10px; margin: 20px 0, }
-            .completion-progress { height: 100%; background: #3498db; border-radius: 10px; transition: width 0.3s, }
-            .completion-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8em; font-weight: bold, }
-            .statistics-table { width: 100%; border-collapse: collapse; margin: 20px 0, }
+            .summary-grade { margin-top: 5px; padding: 5px 10px; border-radius: 15px; font-size: 0.8em; background: #3498db;, color: white, }
+            .completion-bar { position: relative; height: 20px; background: #eee; border-radius: 10px;, margin: 20px 0, }
+            .completion-progress { height: 100%; background: #3498db; border-radius: 10px;, transition: width 0.3s, }
+            .completion-text { position: absolute; top: 50%; left: 50%;, transform: translate(-50%, -50%); font-size: 0.8em; font-weight: bold, }
+            .statistics-table { width: 100%; border-collapse: collapse;, margin: 20px 0, }
             .statistics-table th, .statistics-table td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd, }
             .statistics-table th { background: #f8f9fa; font-weight: bold, }
             .error-cell, .error-text { color: #e74c3c, }
             .warning-cell, .warning-text { color: #f39c12, }
             .success-cell, .success-text { color: #27ae60, }
             .category-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr); gap: 15px, }
-            .category-card { padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa, }
-            .category-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; font-size: 0.9em; margin-top: 10px, }
+            .category-card { padding: 15px; border: 1px solid #ddd; border-radius: 8px;, background: #f8f9fa, }
+            .category-stats-grid { display: grid; grid-template-columns: 1fr 1fr;, gap: 5px; font-size: 0.9em; margin-top: 10px, }
             .issue-category { margin: 20px 0, }
-            .issue-item { margin: 10px 0; padding: 15px; border-radius: 8px; border-left: 4px solid #ddd, }
+            .issue-item { margin: 10px 0;, padding: 15px; border-radius: 8px; border-left: 4px solid #ddd, }
             .issue-item.critical { background: #fee; border-left-color: #e74c3c, }
             .issue-item.major { background: #fff8e1; border-left-color: #f39c12, }
             .issue-item.minor { background: #f0f8ff; border-left-color: #3498db, }
             .issue-item.info { background: #f8f9fa; border-left-color: #95a5a6, }
             .issue-header { display: flex; justify-content: space-between; margin-bottom: 5px, }
-            .issue-key { font-family: monospace; color: #666; font-size: 0.9em, }
+            .issue-key { font-family: monospace;, color: #666; font-size: 0.9em, }
             .issue-message { margin: 10px 0, }
-            .issue-suggestion { background: #e8f5e8; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em, }
-            .recommendation-item { margin: 15px 0; padding: 20px; border-radius: 8px; background: #f8f9fa; border-left: 4px solid #3498db, }
+            .issue-suggestion { background: #e8f5e8;, padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em, }
+            .recommendation-item { margin: 15px 0; padding: 20px; border-radius: 8px;, background: #f8f9fa; border-left: 4px solid #3498db, }
             .recommendation-item.critical { border-left-color: #e74c3c, }
             .recommendation-item.high { border-left-color: #f39c12, }
             .recommendation-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px, }
-            .priority-badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; color: white, }
+            .priority-badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em;, color: white, }
             .priority-badge.critical { background: #e74c3c, }
             .priority-badge.high { background: #f39c12, }
             .priority-badge.medium { background: #3498db, }
-            .trends-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr); gap: 20px; margin: 20px 0, }
-            .trend-item { text-align: center; padding: 20px; border-radius: 8px; background: #f8f9fa, }
-            .trend-value { font-size: 1.5em; font-weight: bold; margin: 10px 0, }
+            .trends-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr); gap: 20px;, margin: 20px 0, }
+            .trend-item { text-align: center; padding: 20px; border-radius: 8px;, background: #f8f9fa, }
+            .trend-value { font-size: 1.5em; font-weight: bold;, margin: 10px 0, }
             .trend-value.improvement { color: #27ae60, }
             .trend-value.decline { color: #e74c3c, }
             .trend-value.stable { color: #95a5a6, }
-            .overall-trend { text-align: center; margin: 20px 0; padding: 15px; background: #e8f5e8; border-radius: 8px, }
+            .overall-trend { text-align: center; margin: 20px 0; padding: 15px;, background: #e8f5e8; border-radius: 8px, }
         `;
     }
     
@@ -1008,7 +1003,7 @@ export class QualityReporter {
     getStats(): ReporterStats { return { totalReports: this.reportHistory.length,
             languagesTracked: this.qualityTrends.size;
             availableTemplates: Array.from(this.reportTemplates.keys();
-            averageQualityScore: this.reportHistory.length > 0 ? ,};
+           , averageQualityScore: this.reportHistory.length > 0 ? ,};
                 Math.round(this.reportHistory.reduce((sum, r) => sum + r.qualityScore, 0) / this.reportHistory.length) : 0 
         }
 }

@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 /**
  * チャンク処理オプション
@@ -18,7 +18,7 @@ interface ProcessInfo { id: string,
     processedChunks: number;
     startTime: number;
     results: any[];
-    options: ProcessOptions
+   , options: ProcessOptions
     ,}
 
 /**
@@ -29,7 +29,7 @@ export interface ProcessOptions { chunkSize?: number;
 
     mergeResults?: boolean;''
     mergeStrategy?: 'object' | 'array';
-    customMerger?: (results: any[]) => any;
+    customMerger?: (result;s: any[]) => any;
     batchSize?: number; ,}
 }
 
@@ -40,7 +40,7 @@ interface ProcessorStats { totalProcessed: number,
     totalChunks: number;
     averageChunkTime: number;
     memoryPeakUsage: number;
-    totalProcessingTime: number ,}
+   , totalProcessingTime: number ,}
 
 /**
  * イベントデータ型
@@ -87,11 +87,11 @@ export class ChunkProcessor {
     private maxMemoryUsage: number;
     private progressInterval: number;
     private yieldInterval: number;
-    private activeProcesses: Map<string, ProcessInfo>;
+    private, activeProcesses: Map<string, ProcessInfo>;
     private memoryUsage: number;
     private processCounter: number;
     private stats: ProcessorStats;
-    private listeners: Map<string, Array<(data: ProcessEventData) => void>>;
+    private, listeners: Map<string, Array<(data: ProcessEventData) => void>>;
     
     constructor(options: ChunkProcessorOptions = {) {
     
@@ -111,7 +111,7 @@ export class ChunkProcessor {
             totalProcessed: 0;
             totalChunks: 0;
             averageChunkTime: 0;
-            memoryPeakUsage: 0;
+           , memoryPeakUsage: 0;
     ,}
     }
             totalProcessingTime: 0 }
@@ -144,7 +144,7 @@ export class ChunkProcessor {
                 totalItems: data.length;
                 processedItems: 0;
                 totalChunks: Math.ceil(data.length / chunkSize);
-                processedChunks: 0;
+               , processedChunks: 0;
                 startTime,
                 results: [];
                 options ,};
@@ -152,7 +152,7 @@ export class ChunkProcessor {
             this.activeProcesses.set(processId, processInfo);
 
             this.emit('processStarted', { id: processId)
-                totalItems: data.length,);
+               , totalItems: data.length,);
                 totalChunks: processInfo.totalChunks);
             // チャンクに分割して処理
             for(let, i = 0; i < data.length; i += chunkSize) {
@@ -188,9 +188,9 @@ export class ChunkProcessor {
 
                 this.emit('chunkProcessed', { id: processId)
                     chunkIndex);
-                    processedItems: processInfo.processedItems,);
+                   , processedItems: processInfo.processedItems,);
                     totalItems: processInfo.totalItems);
-                    progress: (processInfo.processedItems / processInfo.totalItems) * 100 ,});
+                   , progress: (processInfo.processedItems / processInfo.totalItems) * 100 ,});
                 // 定期的にイベントループに制御を戻す
                 if (chunkIndex % this.yieldInterval === 0) { await this.yieldControl(); }
             }
@@ -201,7 +201,7 @@ export class ChunkProcessor {
 
             this.emit('processCompleted', { id: processId)
                 totalItems: processInfo.totalItems);
-                duration: totalDuration,);
+               , duration: totalDuration,);
                 results: options.collectResults !== false ? processInfo.results : undefined);
             const results = options.collectResults !== false ? processInfo.results: [],
             this.activeProcesses.delete(processId);
@@ -211,7 +211,7 @@ export class ChunkProcessor {
 
             this.emit('processError', {)
                 id: processId);
-                error: (error, as Error).message;
+               , error: (error, as Error).message;
                 processedItems: this.activeProcesses.get(processId)? .processedItems || 0 ,});
             getErrorHandler(').handleError(error, 'CHUNK_PROCESSING_ERROR', { processId, : undefined)
                 dataLength: data.length);
@@ -226,11 +226,9 @@ export class ChunkProcessor {
      */
     async processObject<T extends Record<string, any>, R>(;
         data: T;
-        processor: ChunkProcessorFunction<[string, any], R>)';
-        options: ProcessOptions = {}''
-    '): Promise<R[] | Record<string, any>> { ''
-        if(typeof, data !== 'object' || data === null) {'
-            ';
+       , processor: ChunkProcessorFunction<[string, any], R>)';
+        options: ProcessOptions = {}'', '): Promise<R[] | Record<string, any>> { ''
+        if(typeof, data !== 'object' || data === null) {', ';
 
         }
 
@@ -322,15 +320,15 @@ export class ChunkProcessor {
                     await this.yieldControl(''';
             this.emit('streamCompleted', {)
                 id: processId);
-                totalProcessed: processedCount,);
+               , totalProcessed: processedCount,);
                 results: options.collectResults !== false ? results : undefined);
-            return options.collectResults !== false ? results: [],
+            return options.collectResults !== false ?, results: [],
             ' }'
 
         } catch (error) {
             this.emit('streamError', {)
                 id: processId);
-                error: (error, as Error).message ,});
+               , error: (error, as Error).message ,});
             ;
             throw error;
         }
@@ -344,7 +342,7 @@ export class ChunkProcessor {
         processor: ChunkProcessorFunction<T, R>, ;
         chunkIndex: number, ;
         processInfo: ProcessInfo);
-        options: ProcessOptions;
+       , options: ProcessOptions;
     ): Promise<R>,
         try { // メモリ使用量の推定更新
             this.updateMemoryUsage(chunk);
@@ -353,7 +351,7 @@ export class ChunkProcessor {
             const result = await processor(chunk, chunkIndex, {
                 processId: processInfo.id);
                 totalItems: processInfo.totalItems);
-                processedItems: processInfo.processedItems;
+               , processedItems: processInfo.processedItems;
             ),
             ;
             return result;
@@ -459,12 +457,12 @@ export class ChunkProcessor {
         totalItems: number;
         processedItems: number;
         progress: number;
-        duration: number ,}> { return Array.from(this.activeProcesses.values().map(process => ({)
+       , duration: number ,}> { return Array.from(this.activeProcesses.values().map(process => ({)
             id: process.id);
-            totalItems: process.totalItems,);
+           , totalItems: process.totalItems,);
             processedItems: process.processedItems);
             progress: (process.processedItems / process.totalItems) * 100;
-            duration: Date.now() - process.startTime ,}
+           , duration: Date.now() - process.startTime ,}
         });
     }
     

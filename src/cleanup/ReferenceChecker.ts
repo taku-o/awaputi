@@ -1,6 +1,6 @@
 import fs from 'fs';''
 import path from 'path';''
-import { glob } from 'glob';
+import { glob  } from 'glob';
 
 interface Reference { file: string,
     line: number,
@@ -11,7 +11,7 @@ export interface ReferenceResult { filePath: string;
     references: Reference[];
     hasReferences: boolean;
     importCount: number;
-    stringCount: number }
+   , stringCount: number }
 
 export class ReferenceChecker {
     private searchExtensions: string[]';
@@ -73,7 +73,7 @@ export class ReferenceChecker {
                             references.push({);
                                 file: path.relative(rootPath, file),
                                 line: i + 1;
-                                context: line.trim();
+                               , context: line.trim();
         ,}
                                 type: this.detectReferenceType(line); }
                             });

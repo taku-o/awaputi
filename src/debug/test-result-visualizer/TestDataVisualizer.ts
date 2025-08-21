@@ -8,23 +8,23 @@ interface TestResult { id: string,
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
     error?: Error;
-    timestamp: number;
+   , timestamp: number;
     tags?: string[];
     category?: string; ,}
 
 interface CoverageData { lines: {
-        total: number;
+        tota;l: number;
         covered: number;
-        percentage: number };
+       , percentage: number };
     branches: { total: number;
         covered: number;
-        percentage: number };
+       , percentage: number };
     functions: { total: number;
         covered: number;
-        percentage: number };
+       , percentage: number };
     statements: { total: number;
         covered: number;
-        percentage: number }
+       , percentage: number }
 
 export class TestDataVisualizer {
     private visualizer: any;
@@ -114,8 +114,7 @@ export class TestDataVisualizer {
     }
  : undefined";
     private renderTestTable(results: TestResult[]): string { ""
-        if(!results.length) {"
-            ";
+        if(!results.length) {", ";
         }"
             return '<div class="no-results">No test results available</div>';
 ';
@@ -247,8 +246,7 @@ export class TestDataVisualizer {
         const statusFilter = document.getElementById('status-filter'') as HTMLSelectElement;''
         const searchFilter = document.getElementById('search-filter) as HTMLInputElement;
 
-        if(statusFilter) {'
-            ';
+        if(statusFilter) {', ';
 
         }
 
@@ -257,8 +255,7 @@ export class TestDataVisualizer {
             });
         }
 
-        if(searchFilter) {'
-            ';
+        if(searchFilter) {', ';
 
         }
 
@@ -283,7 +280,7 @@ export class TestDataVisualizer {
             const matchesStatus = !statusFilter || status === statusFilter;''
             const matchesSearch = !searchFilter || name.includes(searchFilter);
 
- : undefined' '
+ : undefined', '
             element.style.display = matchesStatus && matchesSearch ? '' : 'none'; }
         });
     }
@@ -291,10 +288,10 @@ export class TestDataVisualizer {
     private calculatePerformanceMetrics(results: TestResult[]): { totalDuration: number,
         averageDuration: number;
         slowestTest: TestResult | null;
-        fastestTest: TestResult | null ,} { if (!results.length) {
+       , fastestTest: TestResult | null ,} { if (!results.length) {
             return { totalDuration: 0;
                 averageDuration: 0;
-                slowestTest: null, };
+               , slowestTest: null, };
                 fastestTest: null }
             }
 

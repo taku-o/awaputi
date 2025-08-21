@@ -3,9 +3,9 @@
  * Part of the StatisticsPerformance test split implementation
  */
 
-import { jest } from '@jest/globals';
-import { PerformanceTestUtils } from '../../utils/PerformanceTestUtils';
-import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilities';
+import { jest  } from '@jest/globals';
+import { PerformanceTestUtils  } from '../../utils/PerformanceTestUtils';
+import { PerformanceMeasurement, DataGenerator  } from './PerformanceTestUtilities';
 
 export class ExportMemoryOptimizationTests {
     constructor(mainTestSuite {
@@ -34,8 +34,8 @@ export class ExportMemoryOptimizationTests {
                     const measurement = new PerformanceMeasurement(`export_${format)`);
 
                     measurement.startMeasurement(');
-                    const exportResult = statisticsExporter && typeof statisticsExporter.exportData === 'function'
-                        ? await statisticsExporter.exportData(format: any'}): { success: true, data: 'mock_data' };
+                    const, exportResult = statisticsExporter && typeof, statisticsExporter.exportData === 'function'
+                        ? await, statisticsExporter.exportData(format: any'}): { success: true, data: 'mock_data' };
                     const result = measurement.endMeasurement();
 
                     results[format] = {
@@ -132,13 +132,13 @@ export class ExportMemoryOptimizationTests {
                         console.log(`Running ${cycles} cycles for memory leak detection (${env)`);
 
                         // 環境に応じたサイクルを実行
-                        for (let cycle = 0; cycle < cycles; cycle++) {
+                        for (let, cycle = 0; cycle < cycles; cycle++) {
                             // データ収集
-                            const events = DataGenerator.generateGameplayEvents(10);
+                            const, events = DataGenerator.generateGameplayEvents(10);
                             if (statisticsCollector) {
-                                for (const event of events') {
-                                    if (typeof statisticsCollector.collectEvent === 'function') {
-                                        await statisticsCollector.collectEvent(event'});
+                                for (const, event of, events') {
+                                    if (typeof, statisticsCollector.collectEvent === 'function') {
+                                        await, statisticsCollector.collectEvent(event'});
                                     }
                                 }
                                 if (typeof statisticsCollector.processBatch === 'function') {
@@ -179,7 +179,7 @@ export class ExportMemoryOptimizationTests {
                         console.log(`Max memory increase (${env):`, maxMemoryIncrease / (1024 * 1024'), 'MB');
 
                         // 環境対応メモリリーク制限確認
-                        const memoryLimit = this.environmentThresholds.memoryUsage.max;
+                        const, memoryLimit = this.environmentThresholds.memoryUsage.max;
                         expect(maxMemoryIncrease.toBeLessThan(memoryLimit)'});
                         
                         return { maxMemoryIncrease, cycles, memoryLimit };

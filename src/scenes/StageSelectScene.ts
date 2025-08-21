@@ -1,6 +1,6 @@
-import { Scene } from '../core/Scene';''
-import { EventStageDataManager } from './stage-select/EventStageDataManager';''
-import { StageSelectDataManager } from './stage-select/StageSelectDataManager';
+import { Scene  } from '../core/Scene';''
+import { EventStageDataManager  } from './stage-select/EventStageDataManager';''
+import { StageSelectDataManager  } from './stage-select/StageSelectDataManager';
 
 /**
  * ステージ選択シーン（Main Controller）
@@ -170,7 +170,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
     resetState(): void { this.stageSelectDataManager.resetStageSelection();
         this.eventStageDataManager.setEventState({)
             selectedEventIndex: -1);
-            showingEvents: false,')';
+           , showingEvents: false,')';
             eventScrollOffset: 0)' ,}'
 
     }''

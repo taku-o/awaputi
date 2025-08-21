@@ -9,20 +9,20 @@ interface PerformanceSettings { updateInterval: number,
     gridColor: string;
     textColor: string;
     backgroundColor: string;
-    colors: {
-        fps: string;
+   , colors: {
+        fp;s: string;
         memory: string;
         frameTime: string;
         drawCalls: string;
         entityCount: string;
         warning: string;
-        critical: string ,}
+       , critical: string ,}
 
 interface ChartState { lastUpdate: number,
     viewportOffset: number;
     zoomLevel: number;
     selectedMetric: string | null;
-    hoverPoint: HoverPoint | null ,}
+   , hoverPoint: HoverPoint | null ,}
 
 interface HoverPoint { x: number;
     y: number;
@@ -30,13 +30,13 @@ interface HoverPoint { x: number;
     value: number;
     unit: string;
     timestamp: number;
-    status: string }
+   , status: string }
 
 interface PerformanceMetrics { frame: {
-        currentFPS: number;
-        frameTime: number };
+        currentFP;S: number;
+       , frameTime: number };
     memory: { usedMemory: number;
-        pressureLevel: number };
+       , pressureLevel: number };
     render: { drawCalls: number };
     game: { entityCount: number }
 
@@ -45,7 +45,7 @@ interface PerformanceMonitor { getCurrentMetrics(): PerformanceMetrics;
     getStatistics(): {
         uptime: number;
         totalSamples: number;
-        samplesPerSecond: number;
+       , samplesPerSecond: number;
         totalErrors?: number ,};
     getAnalysisResults(): { anomalies: Array<{
             severity: 'critical' | 'warning' }>;
@@ -54,7 +54,7 @@ interface PerformanceMonitor { getCurrentMetrics(): PerformanceMetrics;
 interface ChartPosition { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 interface ChartConfig { name: string;
     color: string;
@@ -62,34 +62,34 @@ interface ChartConfig { name: string;
     minValue: number;
     maxValue: number;
     unit: string;
-    position: ChartPosition;
+   , position: ChartPosition;
     showGrid?: boolean;
     showThresholds?: boolean; }
 
 interface DataPoint { timestamp: number,
     value: number;
     threshold?: {
-        warning?: number;
+        warnin;g?: number;
         critical?: number; ,}
 
 interface HeatmapData { fps: number,
     memory: number;
     frameTime: number;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 interface HeatmapConfig { name: string;
-    position: ChartPosition;
+   , position: ChartPosition;
     cellSize?: number;
     maxAge?: number; }
 
 export class PerformanceVisualizer {
     private monitor: PerformanceMonitor;
     private canvas: HTMLCanvasElement | null = null;
-    private ctx: CanvasRenderingContext2D | null = null;
+    private, ctx: CanvasRenderingContext2D | null = null;
     private charts = new Map<string, PerformanceChart | PerformanceHeatmap>();
     private animationId: number | null = null;
     private settings: PerformanceSettings;
-    private chartState: ChartState';
+    private, chartState: ChartState';
 
     constructor(monitor: PerformanceMonitor) {
         this.monitor = monitor;
@@ -118,7 +118,7 @@ export class PerformanceVisualizer {
             viewportOffset: 0;
             zoomLevel: 1;
             selectedMetric: null;
-            hoverPoint: null ,};
+           , hoverPoint: null ,};
         this.initialize();
     }
 
@@ -191,7 +191,7 @@ export class PerformanceVisualizer {
             name: 'FPS';
             color: this.settings.colors.fps);
             minValue: 0)';
-            maxValue: 120,
+           , maxValue: 120,
             unit: 'fps', }
 
             position: { x: 10, y: 10, width: 380, height: this.settings.chartHeight ,});''
@@ -201,7 +201,7 @@ export class PerformanceVisualizer {
             name: 'Memory Usage';
             color: this.settings.colors.memory);
             minValue: 0)';
-            maxValue: 200, // MB;
+           , maxValue: 200, // MB;
             unit: 'MB',' }
 
             position: { x: 410, y: 10, width: 380, height: this.settings.chartHeight ,}))');
@@ -210,7 +210,7 @@ export class PerformanceVisualizer {
             name: 'Frame Time';
             color: this.settings.colors.frameTime);
             minValue: 0)';
-            maxValue: 50, // ms;
+           , maxValue: 50, // ms;
             unit: 'ms',' }
 
             position: { x: 10, y: 180, width: 380, height: this.settings.chartHeight ,}))');
@@ -219,7 +219,7 @@ export class PerformanceVisualizer {
             name: 'Draw Calls';
             color: this.settings.colors.drawCalls);
             minValue: 0)';
-            maxValue: 500,
+           , maxValue: 500,
             unit: 'calls',' }
 
             position: { x: 410, y: 180, width: 380, height: this.settings.chartHeight ,}))');
@@ -228,7 +228,7 @@ export class PerformanceVisualizer {
             name: 'Entity Count';
             color: this.settings.colors.entityCount);
             minValue: 0)';
-            maxValue: 1000,
+           , maxValue: 1000,
             unit: 'entities',' }
 
             position: { x: 10, y: 350, width: 380, height: this.settings.chartHeight ,}))');
@@ -329,7 +329,7 @@ export class PerformanceVisualizer {
         if(heatmap) { heatmap.updateHeatmap({
                 fps: metrics.frame.currentFPS || 0);
                 memory: metrics.memory.pressureLevel || 0);
-                frameTime: metrics.frame.frameTime || 0, }
+               , frameTime: metrics.frame.frameTime || 0, }
                 timestamp: now); }
         }
         
@@ -444,7 +444,7 @@ export class PerformanceVisualizer {
         const lines = [}
             `Metric: ${hover.metric}`,
             `Value: ${hover.value.toFixed(2}) ${hover.unit}`,
-            `Time: ${new Date(hover.timestamp}.toLocaleTimeString(})`]
+            `Time: ${new, Date(hover.timestamp}.toLocaleTimeString(})`]
             `Status: ${hover.status}`]
         ];
         
@@ -492,7 +492,7 @@ export class PerformanceVisualizer {
                     foundHover = {
                         x: x;
                         y: y;
-                        metric: name,
+                       , metric: name,
                         value: dataPoint.value,
                         unit: (chart, as PerformanceChart').config.unit || '';
             ,}
@@ -611,13 +611,13 @@ class PerformanceChart { public config: ChartConfig,
             unit: '', }
             position: { x: 0, y: 0, width: 300, height: 150 ,},
             showGrid: true;
-            showThresholds: true;
+           , showThresholds: true;
             ...config;
     }
 
     public addDataPoint(dataPoint: DataPoint): void { this.data.push({)
             timestamp: dataPoint.timestamp);
-            value: dataPoint.value,);
+           , value: dataPoint.value,);
             threshold: dataPoint.threshold);
         // データポイント数制限
         if(this.data.length > this.maxDataPoints) {
@@ -716,16 +716,14 @@ class PerformanceChart { public config: ChartConfig,
             ctx.fillText(label, pos.x + 5, y - 3); }
         };
 
-        if(lastDataPoint.threshold.warning) {'
-            ';
+        if(lastDataPoint.threshold.warning) {', ';
 
         }
 
             drawThresholdLine(lastDataPoint.threshold.warning, globalSettings.colors.warning, 'Warning); }'
         }
 
-        if(lastDataPoint.threshold.critical) {'
-            ';
+        if(lastDataPoint.threshold.critical) {', ';
 
         }
 
@@ -811,7 +809,7 @@ class PerformanceChart { public config: ChartConfig,
  */
 class PerformanceHeatmap { public config: HeatmapConfig,
     }
-    private heatmapData: Array<{ timestamp: number; score: number; details: any }> = [];
+    private heatmapData: Array<{ timestamp: number; score: number;, details: any }> = [];
     private colorScale = [;
         { value: 0, color: [0, 255, 0] },     // Green
         { value: 0.5, color: [255, 255, 0] }, // Yellow
@@ -825,7 +823,7 @@ class PerformanceHeatmap { public config: HeatmapConfig,
             name: 'Heatmap', }
             position: { x: 0, y: 0, width: 300, height: 150 ,},
             cellSize: 5;
-            maxAge: 60000, // 1分;
+           , maxAge: 60000, // 1分;
             ...config;
     }
 
@@ -834,7 +832,7 @@ class PerformanceHeatmap { public config: HeatmapConfig,
         
         this.heatmapData.push({)
             timestamp: data.timestamp);
-            score: normalizedScore,);
+           , score: normalizedScore,);
             details: data);
         // 古いデータのクリーンアップ
         const cutoffTime = data.timestamp - (this.config.maxAge || 60000);

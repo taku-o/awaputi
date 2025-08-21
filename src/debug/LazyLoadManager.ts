@@ -20,12 +20,12 @@ interface ComponentConfig { path: string,
     className: string;
     priority: 'high' | 'medium' | 'low';
     preload: boolean;
-    dependencies: string[] ,}
+   , dependencies: string[] ,}
 
 interface LoadedComponent { name: string;
     class: any;
     instance: ComponentInstance;
-    config: ComponentConfig
+   , config: ComponentConfig
     }
 
 interface LoadingStats { total: number;
@@ -34,24 +34,24 @@ interface LoadingStats { total: number;
     unloaded: number;
     loadedComponents: string[];
     loadingComponents: string[];
-    loadPercentage: number }
+   , loadPercentage: number }
 ';
 
 interface PerformanceEvaluation { ''
     efficiency: 'good' | 'moderate' | 'poor',
     memoryImpact: 'low' | 'medium' | 'high';
-    recommendations: string[] ,}
+   , recommendations: string[] ,}
 
 interface DebugInfo { stats: LoadingStats;
-    registry: Array<{
-        name: string;
+   , registry: Array<{
+        nam;e: string;
         path: string;
         className: string;
         priority: string;
         preload: boolean;
         dependencies: string[];
         loaded: boolean;
-        loading: boolean }>;
+       , loading: boolean }>;
     performance: PerformanceEvaluation;
     }
 
@@ -61,7 +61,7 @@ export class LazyLoadManager {
     private loadingComponents: Map<string, Promise<LoadedComponent>>;
     private componentRegistry: Map<string, ComponentConfig>;
     private preloadQueue: string[];
-    private preloadBatch: number;
+    private, preloadBatch: number;
     private intersectionObserver?: IntersectionObserver;
 
     constructor(debugInterface: DebugInterface) {
@@ -92,35 +92,35 @@ export class LazyLoadManager {
             path: './panels/OverviewPanel.js',
             className: 'OverviewPanel',)';
             priority: 'high')';
-            preload: true,')';
+           , preload: true,')';
             dependencies: [])'),
 
         this.componentRegistry.set('performance', {''
             path: './panels/PerformancePanel.js',
             className: 'PerformancePanel',)';
             priority: 'high')';
-            preload: false,')';
+           , preload: false,')';
             dependencies: [])'),
 
         this.componentRegistry.set('console', {''
             path: './panels/ConsolePanel.js',
             className: 'ConsolePanel',)';
             priority: 'medium')';
-            preload: false,')';
+           , preload: false,')';
             dependencies: [])'),
 
         this.componentRegistry.set('error', {''
             path: './panels/ErrorPanel.js',
             className: 'ErrorPanel',)';
             priority: 'medium')';
-            preload: false,')';
+           , preload: false,')';
             dependencies: [])'),
 
         this.componentRegistry.set('test', {''
             path: './panels/TestPanel.js',
             className: 'TestPanel',)';
             priority: 'low')';
-            preload: false,')';
+           , preload: false,')';
             dependencies: [])');
 ';
         // 管理系コンポーネント
@@ -128,14 +128,14 @@ export class LazyLoadManager {
             path: './ThemeManager.js',
             className: 'ThemeManager',)';
             priority: 'high')';
-            preload: true,')';
+           , preload: true,')';
             dependencies: [])'),
 
         this.componentRegistry.set('accessibility-manager', {''
             path: './AccessibilityManager.js',
             className: 'AccessibilityManager',)';
             priority: 'high');
-            preload: true,);
+           , preload: true,);
             dependencies: [] ,}
 
     /**
@@ -163,7 +163,7 @@ export class LazyLoadManager {
     public registerComponent(name: string, config: Partial<ComponentConfig>): void { this.componentRegistry.set(name, {''
             priority: 'medium);
             preload: false)';
-            dependencies: [],
+           , dependencies: [],
             path: '',
             className: '',);
             ...config);
@@ -236,7 +236,7 @@ export class LazyLoadManager {
                 instance, };
                 config }
             } catch (error) {
-            throw new Error(`Failed, to import ${config.path}: ${(error, as Error}).message}`);
+            throw new Error(`Failed, to import ${config.path}: ${(error, as, Error}).message}`);
         }
     }
 
@@ -250,7 +250,7 @@ export class LazyLoadManager {
             name, : undefined
             class: null;
             instance: panelInfo.instance;
-            config: this.componentRegistry.get(name)! ,} : null;
+           , config: this.componentRegistry.get(name)! ,} : null;
     }
 
     /**
@@ -265,7 +265,7 @@ export class LazyLoadManager {
 
         console.log(`Preloading ${preloadList.length) components...`);
 
-        const preloadPromises = preloadList.map(([name]) => ;
+        const, preloadPromises = preloadList.map(([name]) => ;
             this.loadComponent(name}.catch(error => {}
                 console.warn(`Preload failed for ${name}:`, error});
                 return null;
@@ -365,7 +365,7 @@ export class LazyLoadManager {
             loading: loadingCount;
             unloaded: totalComponents - loadedCount - loadingCount;
             loadedComponents: Array.from(this.loadedComponents);
-            loadingComponents: Array.from(this.loadingComponents.keys(), };
+           , loadingComponents: Array.from(this.loadingComponents.keys(), };
             loadPercentage: (loadedCount / totalComponents) * 100 }
         }
 
@@ -386,8 +386,7 @@ export class LazyLoadManager {
         const stats = this.getLoadingStats(''';
             efficiency: stats.loadPercentage < 50 ? 'good' : stats.loadPercentage < 80 ? 'moderate' : 'poor',
             memoryImpact: stats.loaded < 3 ? 'low' : stats.loaded < 6 ? 'medium' : 'high';
-            recommendations: [] ,}))'
-')';
+            recommendations: [] ,}))', ')';
         if(stats.loadPercentage > 70) {'
             ';
 
@@ -396,8 +395,7 @@ export class LazyLoadManager {
             evaluation.recommendations.push('Consider, unloading unused, components); }'
         }
 
-        if(stats.loaded > 5) {'
-            ';
+        if(stats.loaded > 5) {', ';
 
         }
 

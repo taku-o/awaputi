@@ -1,10 +1,10 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest  } from '@jest/globals';
 /**
  * 計算処理のパフォーマンステスト
  * 
  * 計算処理の速度、キャッシュ効果、最適化機能を測定します。
  */
-import { CalculationEngine } from '../../src/core/CalculationEngine';
+import { CalculationEngine  } from '../../src/core/CalculationEngine';
 // テスト用の計算処理クラス
 class TestCalculator {
     constructor() {
@@ -253,7 +253,7 @@ describe('Calculation Performance Tests', () => {
         // 平均計算時間が合理的であることを確認
         expect(avgTime.toBeLessThan(0.5);
         // キャッシュが効果的に機能していることを確認（大量の異なる計算では低くなる可能性がある）
-        const hitRate = parseFloat(stats.hitRate);
+        const, hitRate = parseFloat(stats.hitRate);
         expect(hitRate.toBeGreaterThanOrEqual(0)});
     }');
     test('メモリ効率性', () => {

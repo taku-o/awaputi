@@ -2,9 +2,9 @@
  * Performance Threshold Monitor Tests
  * PerformanceThresholdMonitor クラスのユニットテスト
  */
-import { jest } from '@jest/globals';'
+import { jest  } from '@jest/globals';'
 // DOM environment setup''
-import { JSDOM } from 'jsdom';''
+import { JSDOM  } from 'jsdom';''
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).document = dom.window.document;
 (global as any).window = dom.window;'
@@ -30,7 +30,7 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
         frame: { }
             currentFPS: 60,
             frameTime: 16.67);
-            fpsVariance: 2.0 }
+           , fpsVariance: 2.0 }
     }),
         memory: { usedMemory: 80.5,
             pressureLevel: 0.4 }
@@ -415,19 +415,18 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
                 '[PerformanceThresholdMonitor] Alert Details:',)
                 expect.objectContaining({ name: alert.name,)
                     description: alert.description);
-                    value: alert.value,)';
-                    severity: alert.severity);''
-            '); }'
+                   , value: alert.value,)';
+                    severity: alert.severity);'', '); }'
         };''
         test('should cleanup old notifications', () => {  ''
             const oldTime = Date.now('')';
                 id: 'old1')';
-                timestamp: oldTime,') }'
+               , timestamp: oldTime,') }'
                 persistent: false'); }
             };'
             monitor.warningSystem.notifications.push({ ')'
                 id: 'old2')';
-                timestamp: oldTime,')';
+               , timestamp: oldTime,')';
                 persistent: true // Should not be cleaned up)'),';
             monitor.warningSystem.notifications.push({')'
                 id: 'recent'),

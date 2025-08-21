@@ -11,7 +11,7 @@ export class RealtimeMonitor {
             enableNotifications: true;
             enableConsoleWarnings: true;
             fpsThreshold: 30;
-            memoryThreshold: 80, // パーセント;
+           , memoryThreshold: 80, // パーセント;
             loadTimeThreshold: 5000, // ミリ秒;
             errorRateThreshold: 5, // 分あたりのエラー数;
             monitoringInterval: 1000, // 監視間隔（1秒）;
@@ -31,7 +31,7 @@ export class RealtimeMonitor {
         this.monitoringStats = { startTime: null,
             warningsGenerated: 0;
             errorsDetected: 0;
-            performanceIssues: 0 ,};
+           , performanceIssues: 0 ,};
         this.initialize();
     }
 
@@ -114,10 +114,10 @@ export class RealtimeMonitor {
     ,}
 
                 severity: 'warning', }
-                message: `Low FPS detected: ${currentStats.currentFPS}`;
+                message: `Low FPS, detected: ${currentStats.currentFPS}`;
                 details: { currentFPS: currentStats.currentFPS)
                     threshold: this.options.fpsThreshold);
-                    frameTime: currentStats.averageFrameTime });
+                   , frameTime: currentStats.averageFrameTime });
         }
 
         // メモリ使用量チェック
@@ -128,10 +128,10 @@ export class RealtimeMonitor {
                 type: 'performance',' }
 
                 severity: 'warning'), }
-                message: `High memory usage detected: ${currentStats.currentMemoryUsage.usagePercent.toFixed(1})%`;
+                message: `High memory usage, detected: ${currentStats.currentMemoryUsage.usagePercent.toFixed(1})%`;
                 details: { usagePercent: currentStats.currentMemoryUsage.usagePercent;
                     used: currentStats.currentMemoryUsage.used;
-                    threshold: this.options.memoryThreshold }
+                   , threshold: this.options.memoryThreshold }
             });
         }
 
@@ -144,10 +144,10 @@ export class RealtimeMonitor {
         ,}
 
                 severity: 'error', }
-                message: `High error rate detected: ${errorRate} errors/min`;
+                message: `High error rate, detected: ${errorRate} errors/min`;
                 details: { errorRate: errorRate)
                     threshold: this.options.errorRateThreshold);
-                    recentErrors: currentStats.errorCount });
+                   , recentErrors: currentStats.errorCount });
         }
 ';
         // 応答性チェック（フレームタイムが長い場合）
@@ -157,9 +157,9 @@ export class RealtimeMonitor {
                 type: 'performance',' }
 
                 severity: 'warning'), }
-                message: `Poor responsiveness detected: ${currentStats.averageFrameTime.toFixed(1})ms frame time`;
+                message: `Poor responsiveness, detected: ${currentStats.averageFrameTime.toFixed(1})ms frame time`;
                 details: { frameTime: currentStats.averageFrameTime;
-                    expectedFrameTime: 16.67, // 60FPS;
+                   , expectedFrameTime: 16.67, // 60FPS;
                     currentFPS: currentStats.currentFPS ,}
             });
         }
@@ -191,7 +191,7 @@ export class RealtimeMonitor {
         const alert = {
             id: this.generateAlertId();
             alertType: alertId;
-            timestamp: Date.now();
+           , timestamp: Date.now();
     }
             ...alertData
         };
@@ -232,7 +232,7 @@ export class RealtimeMonitor {
                 body: alert.message,
                 icon: '/favicon.ico',)';
                 badge: '/favicon.ico);
-                tag: alert.alertType // 同じタイプの通知を置き換え;
+               , tag: alert.alertType // 同じタイプの通知を置き換え;
             ),
 
             // 自動で閉じる
@@ -249,8 +249,7 @@ export class RealtimeMonitor {
     /**
      * ページ内通知の表示
      */''
-    showInPageNotification(alert) {'
-        ';
+    showInPageNotification(alert) {', ';
 
     }
 
@@ -260,7 +259,7 @@ export class RealtimeMonitor {
         notification.innerHTML = `'';
             <div class="notification-header">"";
                 <span class="notification-type">${alert.type.toUpperCase("})</span>""
-                <span class="notification-time">${new Date(alert.timestamp}.toLocaleTimeString("})</span>""
+                <span class="notification-time">${new, Date(alert.timestamp}.toLocaleTimeString("})</span>""
                 <button class="notification-close">&times;</button>"
             </div>"";
             <div class="notification-message">${alert.message}</div>
@@ -398,7 +397,7 @@ export class RealtimeMonitor {
         const recentAlertsElement = this.debugPanel.querySelector('#recent-alerts);''
         recentAlertsElement.innerHTML = recentAlerts.map(alert => `)'';
             <div class="alert-item ${ alert.severity"}">" }"
-                <span class="alert-time">${new Date(alert.timestamp}.toLocaleTimeString("})</span>""
+                <span class="alert-time">${new, Date(alert.timestamp}.toLocaleTimeString("})</span>""
                 <span class="alert-message">${alert.message}</span>"
             </div>"";
         `").join(''');
@@ -437,8 +436,7 @@ export class RealtimeMonitor {
      * 警告の重要度レベル取得
      */''
     getSeverityLevel(warningType) {'
-        const severityMap = {''
-            'low_fps': 'warning',
+        const severityMap = {'', 'low_fps': 'warning',
             'high_memory_usage': 'warning',
             'slow_load_time': 'warning',
             'slow_resource_load': 'warning',
@@ -455,14 +453,7 @@ export class RealtimeMonitor {
     /**
      * 警告メッセージのフォーマット'
      */''
-    formatWarningMessage(warningData) { const messageMap = {' }'
-
-            'low_fps': `Low FPS: ${warningData.details.currentFPS}fps`,''
-            'high_memory_usage': `High memory usage: ${warningData.details.usagePercent? .toFixed(1'})%`, : undefined''
-            'slow_load_time': `Slow load time: ${warningData.details.loadTime}ms`,''
-            'slow_resource_load': `Slow resource load: ${warningData.details.loadTime}ms`,''
-            'error_occurred': `Error: ${warningData.details.message}`,''
-            'poor_responsiveness': `Poor responsiveness detected`;
+    formatWarningMessage(warningData) { const messageMap = {' }', 'low_fps': `Low FPS: ${warningData.details.currentFPS}fps`,'', 'high_memory_usage': `High memory usage: ${warningData.details.usagePercent? .toFixed(1'})%`, : undefined'', 'slow_load_time': `Slow load time: ${warningData.details.loadTime}ms`,'', 'slow_resource_load': `Slow resource load: ${warningData.details.loadTime}ms`,'', 'error_occurred': `Error: ${warningData.details.message}`,'', 'poor_responsiveness': `Poor responsiveness detected`;
         };
         return messageMap[warningData.type] || `Performance issue: ${warningData.type}`;
     }
@@ -471,8 +462,7 @@ export class RealtimeMonitor {
      * 通知の色取得'
      */''
     getNotificationColor(severity) {'
-        const colorMap = {''
-            'error': '#f44336',
+        const colorMap = {'', 'error': '#f44336',
             'warning': '#ff9800',
     }
 
@@ -509,8 +499,7 @@ export class RealtimeMonitor {
     /**
      * アラートのログ出力'
      */''
-    logAlert(alert) {'
-        ';
+    logAlert(alert) {', ';
 
     }
 
@@ -569,7 +558,7 @@ export class RealtimeMonitor {
         return { ...this.monitoringStats,
             uptime: uptime;
             isMonitoring: this.isMonitoring;
-            alertCount: this.alerts.length;
+           , alertCount: this.alerts.length;
     ,}
             averageAlertsPerMinute: uptime > 0 ?   : undefined };
                 (this.monitoringStats.warningsGenerated / (uptime / 60000)) : 0 }

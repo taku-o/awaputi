@@ -3,7 +3,7 @@
  * エフェクトシステム専用のエラーハンドリングとフォールバック機能
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Type definitions for effect error handling systems
 interface GameEngine { canvas?: HTMLCanvasElement;
@@ -74,7 +74,7 @@ interface EffectDebugInterface { ''
 interface ErrorInfo { error: Error,
     source: string;
     timestamp: number;
-    context: ErrorContextInfo
+   , context: ErrorContextInfo
     ,}
 
 interface ErrorContextInfo { fallbackMode: boolean;
@@ -82,12 +82,12 @@ interface ErrorContextInfo { fallbackMode: boolean;
     particleCount: number;
     effectCount: number;
     memoryUsage: number;
-    qualityLevel: string }
+   , qualityLevel: string }
 
 interface ErrorStats { totalErrors: number;
     fallbackMode: boolean;
     recentErrors: ErrorInfo[];
-    healthStatus: HealthStatus
+   , healthStatus: HealthStatus
     }
 
 type HealthStatus = 'healthy' | 'caution' | 'warning' | 'fallback';
@@ -98,7 +98,7 @@ export class EffectErrorHandler {
     private fallbackMode: boolean;
     private errorCount: number;
     private maxErrors: number;
-    private errorHistory: ErrorInfo[];
+    private, errorHistory: ErrorInfo[];
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -183,7 +183,7 @@ export class EffectErrorHandler {
             error: error;
             source: source;
             timestamp: Date.now();
-            context: this.getErrorContext( };
+           , context: this.getErrorContext( };
         
         this.errorHistory.push(errorInfo);
         
@@ -310,8 +310,7 @@ export class EffectErrorHandler {
         // 全エフェクトをクリア
         this.clearAllEffects();
         // 最低品質に設定
-        if(this.gameEngine.effectQualityController') {'
-            ';
+        if(this.gameEngine.effectQualityController') {', ';
 
         }
 
@@ -476,8 +475,7 @@ export class EffectErrorHandler {
     private handleCriticalPerformance(): void { // 緊急パフォーマンス対策
         this.clearAllEffects();
 
-        if(this.gameEngine.effectQualityController') {'
-            ';
+        if(this.gameEngine.effectQualityController') {', ';
 
         }
 
@@ -491,13 +489,13 @@ export class EffectErrorHandler {
         this.errorHandler.logError(errorInfo.error, {)'
             component: 'EffectSystem',);
             source: errorInfo.source);
-            context: JSON.stringify(errorInfo.context ,});
+           , context: JSON.stringify(errorInfo.context ,});
     }
 
     // API メソッド
     public getErrorStats(): ErrorStats { return { totalErrors: this.errorCount,
             fallbackMode: this.fallbackMode;
-            recentErrors: this.errorHistory.slice(-10 ,};
+           , recentErrors: this.errorHistory.slice(-10 ,};
             healthStatus: this.getHealthStatus(); }
         }
 ';

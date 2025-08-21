@@ -7,23 +7,23 @@
 
 // 型定義
 interface EffectsConfig { particles: {
-        maxCount: number;
+        maxCoun;t: number;
         poolSize: number;
         quality: number;
         baseIntensity: number;
-        lifetimeMultiplier: number };
+       , lifetimeMultiplier: number };
     screen: { shakeIntensity: number;
         flashDuration: number;
         zoomSensitivity: number;
-        transitionDuration: number };
+       , transitionDuration: number };
     animations: { duration: number;
         easing: string;
         scaleFactor: number;
-        fadeSpeed: number };
+       , fadeSpeed: number };
     bubbleEffects: { popIntensity: number;
         chainRadius: number;
         explosionScale: number;
-        trailLength: number }
+       , trailLength: number }
 
 interface Position { x: number,
     y: number ,}
@@ -31,11 +31,11 @@ interface Position { x: number,
 interface Color { r: number;
     g: number;
     b: number;
-    a: number }
+   , a: number }
 
 interface ShakeSettings { amplitude: number;
     frequency: number;
-    duration: number;
+   , duration: number;
     easing?: string }
 
 interface EffectModifier { type: 'multiply' | 'add' | 'power' | 'clamp';
@@ -57,7 +57,7 @@ interface PerformanceOptimization { particleQuality: number,
     animationQuality: number;
     effectsEnabled: boolean;
     maxParticles: number;
-    skipFrames: number ,}
+   , skipFrames: number ,}
 
 interface EffectContext { isCombo?: boolean;
     comboCount?: number;
@@ -73,7 +73,7 @@ interface EffectModifiers { countMultiplier?: number;
     durationBonus?: number; }
 export class EffectsCalculator {
     private effectsConfig: EffectsConfigProvider | null;
-    private defaultEffectsConfig: EffectsConfig';
+    private, defaultEffectsConfig: EffectsConfig';
 
     constructor(effectsConfig: EffectsConfigProvider | null = null) {
         this.effectsConfig = effectsConfig;
@@ -84,22 +84,22 @@ export class EffectsCalculator {
                 maxCount: 500;
                 poolSize: 100;
                 quality: 1.0;
-                baseIntensity: 1.0;
+               , baseIntensity: 1.0;
     }
                 lifetimeMultiplier: 1.0 }
             };
             screen: { shakeIntensity: 1.0;
                 flashDuration: 200;
                 zoomSensitivity: 1.0;
-                transitionDuration: 300 };
+               , transitionDuration: 300 };
             animations: { duration: 300,''
                 easing: 'easeOut';
                 scaleFactor: 1.0;
-                fadeSpeed: 1.0 ,};
+               , fadeSpeed: 1.0 ,};
             bubbleEffects: { popIntensity: 1.0;
                 chainRadius: 120;
                 explosionScale: 1.0;
-                trailLength: 1.0 }
+               , trailLength: 1.0 }
         };
         console.log('EffectsCalculator, initialized');
     }
@@ -128,7 +128,7 @@ export class EffectsCalculator {
             special_bubble: 20;
             boss_damage: 30;
             power_up: 18;
-            background_ambient: 5 };
+           , background_ambient: 5 };
         const baseCount = baseParticleCounts[effectType] || 10;
         
         // 強度による調整
@@ -166,7 +166,7 @@ export class EffectsCalculator {
             power_up: 1500;
             ui_transition: 250;
             fade_in: 400;
-            fade_out: 300 ,};
+           , fade_out: 300 ,};
         const baseDuration = baseDurations[effectType] || config.animations.duration;
         
         // 複雑度による調整（複雑なほど長時間）
@@ -380,7 +380,7 @@ export class EffectsCalculator {
             bubble_pop: 40;
             score_popup: 30;
             screen_shake: 20;
-            background_ambient: 10 ,};
+           , background_ambient: 10 ,};
         let priority = basePriorities[effectType] || 50;
         
         // コンテキストによる調整
@@ -411,7 +411,7 @@ export class EffectsCalculator {
             animationQuality: 1.0;
             effectsEnabled: true;
             maxParticles: 500;
-            skipFrames: 0 ,};
+           , skipFrames: 0 ,};
         // FPSが低い場合の最適化
         if(fps < 30) {
             optimization.particleQuality = 0.5;
@@ -446,7 +446,7 @@ export class EffectsCalculator {
     /**
      * デバッグ情報を取得
      */
-    getDebugInfo(): { hasEffectsConfig: boolean; effectsConfig: EffectsConfig; version: string } { return { hasEffectsConfig: !!this.effectsConfig,''
+    getDebugInfo(): { hasEffectsConfig: boolean; effectsConfig: EffectsConfig;, version: string } { return { hasEffectsConfig: !!this.effectsConfig,''
             effectsConfig: this.getEffectsConfig('' ,};
 
             version: '1.0.0' }

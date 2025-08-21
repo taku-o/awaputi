@@ -3,7 +3,7 @@
  * 設定変更時の自動通知とコンポーネント監視機能を提供
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * 設定変更通知システムクラス
@@ -23,7 +23,7 @@ export class SettingsNotificationSystem {
         this.stats = {
             totalNotifications: 0;
             successfulNotifications: 0;
-            failedNotifications: 0;
+           , failedNotifications: 0;
     }
             componentUpdates: 0 }
         };
@@ -60,7 +60,7 @@ export class SettingsNotificationSystem {
                     context: options.context || 'unknown' ,};
                 addedAt: Date.now();
                 callCount: 0;
-                lastCalled: null;
+               , lastCalled: null;
             },
             
             this.listeners.get(settingKey).set(listenerId, listenerInfo);
@@ -125,7 +125,7 @@ export class SettingsNotificationSystem {
                 watchedSettings: [...watchedSettings];
                 addedAt: Date.now();
                 updateCount: 0;
-                lastUpdated: null;
+               , lastUpdated: null;
     ,}
                 isActive: true }
             };
@@ -198,7 +198,7 @@ export class SettingsNotificationSystem {
                 oldValue,
                 metadata,
                 timestamp: Date.now();
-                processed: false;
+               , processed: false;
     ,}
                 listeners: [] }
             };
@@ -249,16 +249,16 @@ export class SettingsNotificationSystem {
                 } else { this._executeCallback(listenerInfo, newValue, oldValue, settingKey); }
                 
                 notification.listeners.push({ id: listenerInfo.id)
-                    context: listenerInfo.options.context,);
+                   , context: listenerInfo.options.context,);
                     success: true ,} catch (error) { notification.listeners.push({
                     id: listenerInfo.id);
                     context: listenerInfo.options.context);
-                    success: false,);
+                   , success: false,);
                     error: error.message ,});
 
                 getErrorHandler(').handleError(error, 'NOTIFICATION_ERROR', { ')'
                     operation: '_notifyListeners');
-                    listenerId: listenerInfo.id,);
+                   , listenerId: listenerInfo.id,);
                     settingKey); }
 }
     
@@ -307,8 +307,7 @@ export class SettingsNotificationSystem {
             const { component, componentName } = watcherInfo;
             ';
             // コンポーネントの更新メソッドを呼び出し
-            if(typeof, component.onSettingChange === 'function) {'
-                ';
+            if(typeof, component.onSettingChange === 'function) {', ';
 
             }
 
@@ -340,8 +339,7 @@ export class SettingsNotificationSystem {
      */''
     _callComponentMethod(component, settingKey, newValue) {
         // 設定キーに基づいてメソッド名を推測
-        const methodMappings = {''
-            'masterVolume': 'setMasterVolume',
+        const methodMappings = {'', 'masterVolume': 'setMasterVolume',
             'sfxVolume': 'setSfxVolume',
             'bgmVolume': 'setBgmVolume',
             'language': 'setLanguage',
@@ -354,8 +352,7 @@ export class SettingsNotificationSystem {
         
         const methodName = methodMappings[settingKey];
 
-        if(methodName && typeof, component[methodName] === 'function) {'
-            ';
+        if(methodName && typeof, component[methodName] === 'function) {', ';
 
         }
 
@@ -456,7 +453,7 @@ export class SettingsNotificationSystem {
                 context: listener.options.context;
                 priority: listener.options.priority);
                 callCount: listener.callCount);
-                lastCalled: listener.lastCalled,)
+               , lastCalled: listener.lastCalled,)
         }
                 addedAt: listener.addedAt))); }
         }
@@ -475,7 +472,7 @@ export class SettingsNotificationSystem {
             watchedSettings: watcher.watchedSettings;
             updateCount: watcher.updateCount);
             lastUpdated: watcher.lastUpdated);
-            addedAt: watcher.addedAt,)
+           , addedAt: watcher.addedAt,)
     }
             isActive: watcher.isActive))); }
     }

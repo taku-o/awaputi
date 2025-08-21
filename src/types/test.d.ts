@@ -55,7 +55,7 @@ export interface TestFixture<T> { setup(): Promise<T> | T;
 export interface TestData { validData: any,
     invalidData: any;
     edgeCases: any[];
-    mockResponses: any[] ,}
+   , mockResponses: any[] ,}
 
 // 非同期テストユーティリティ
 export interface AsyncTestUtils { waitFor(condition: () => boolean, timeout?: number): Promise<void>;
@@ -85,7 +85,7 @@ export interface SnapshotTestOptions { name?: string;
 // エラーテスト用の型
 export interface ErrorTestCase { name: string,
     input: any;
-    expectedError: string | RegExp | Error;
+   , expectedError: string | RegExp | Error;
     expectedErrorType?: any ,}
 
 // モックストレージ実装
@@ -111,9 +111,9 @@ export interface EventTestUtils { simulateClick(element: Element, options?: Mous
 
 // デバッグユーティリティ
 export interface DebugUtils { logTestState(state: any): void, }
-    captureConsoleOutput(): { logs: string[]; errors: string[]; warnings: string[] }
+    captureConsoleOutput(): { logs: string[]; errors: string[];, warnings: string[] }
     suppressConsoleOutput(): () => void;
-    measureExecutionTime<T>(fn: () => T): { result: T; time: number }
+    measureExecutionTime<T>(fn: () => T): { result: T;, time: number }
 
 // テストデータビルダー
 export interface TestDataBuilder<T> { with(key: keyof T, value: any): this,

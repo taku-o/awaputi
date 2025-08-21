@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * GameBalanceCollector のテスト
  */
-import { GameBalanceCollector } from '../../src/analytics/GameBalanceCollector';
+import { GameBalanceCollector  } from '../../src/analytics/GameBalanceCollector';
 // モッククラス
 class MockDataCollector {
     constructor(') {
@@ -12,7 +12,7 @@ class MockDataCollector {
     collectGameBalanceData(data {
         this.collectedData.push({
             type: 'gameBalance';);
-            timestamp: Date.now(),
+           , timestamp: Date.now(),
             data: data
         });
     }

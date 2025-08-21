@@ -5,16 +5,16 @@
  * 実績の解除条件チェックと進捗データの管理を担当します。
  */
 
-import { Achievement, AchievementProgressResult } from '../../types/game.js';
+import { Achievement, AchievementProgressResult  } from '../../types/game.js';
 
 interface ProgressData { [key: string]: any, }
 
 interface ProgressHistoryEntry { timestamp: number,
     eventType: string;
-    data: any ,}
+   , data: any ,}
 
 interface EventListener { event: string;
-    callback: (data: any) => void }
+   , callback: (dat;a: any) => void }
 }
 
 export class ProgressTracker {
@@ -41,7 +41,7 @@ export class ProgressTracker {
             highScore: 0;
             scoresAchieved: [];
             // バブル関連
-            bubblesPopped: 0, }
+           , bubblesPopped: 0, }
             bubblesPoppedByType: {};
             comboCount: 0;
             maxCombo: 0;
@@ -54,11 +54,11 @@ export class ProgressTracker {
             perfectClears: 0;
             // アイテム関連
             itemsUsed: 0;
-            itemsUsedByType: {};
+           , itemsUsedByType: {};
             // その他の統計
             achievementsUnlocked: 0;
             lastPlayedDate: null;
-            streakDays: 0;
+           , streakDays: 0;
         },
     }
 
@@ -348,8 +348,7 @@ export class ProgressTracker {
                 if (condition.threshold) {
         }
                     return Math.min(1, (this.progressData.highScore || 0) / condition.threshold);
-                if(condition.total) {'
-                    ';
+                if(condition.total) {', ';
 
                 }
 
@@ -368,8 +367,7 @@ export class ProgressTracker {
                 break;''
             case 'games':;
                 if (condition.played) { return Math.min(1, (this.progressData.gamesPlayed || 0) / condition.played); }
-                if(condition.won) {'
-                    ';
+                if(condition.won) {', ';
 
                 }
 

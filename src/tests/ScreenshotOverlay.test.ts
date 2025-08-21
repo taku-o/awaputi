@@ -1,11 +1,11 @@
 /**
  * スクリーンショットオーバーレイ機能テスト (Task, 6)
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // モック用の型定義
 interface MockContext { drawImage: jest.Mock,
     fillText: jest.Mock;
-    strokeText: jest.Mock, }
+   , strokeText: jest.Mock, }
     measureText: jest.Mock<{ width: number }>;
     fillRect: jest.Mock;
     strokeRect: jest.Mock;
@@ -35,7 +35,7 @@ interface MockContext { drawImage: jest.Mock,
     shadowOffsetY: number;
     imageSmoothingEnabled: boolean;
     imageSmoothingQuality: string;
-    textRenderingOptimization: string;
+   , textRenderingOptimization: string;
 }
 interface MockCanvas { width: number,
     height: number;
@@ -53,26 +53,26 @@ interface AchievementData { name: string,
     rarity?: string; }
 interface CustomElement { type: string,
     text?: string }
-    position: { x: number; y: number }
+    position: { x: number;, y: number }
     style?: { fontSize?: number;
         textColor?: string; }
 interface OverlayData { elements: CustomElement[]
     }
 interface OverlayOptions { score?: {
-        fontSize?: number;
+        fontSiz;e?: number;
         textColor?: string;
         backgroundColor?: string; }
 interface OverlayStats { overlaysCreated: number,
     errors: number;
     successRate: number;
-    averageTimeMs: number ,}
+   , averageTimeMs: number ,}
 interface ResponsiveConfig { score: {
-        fontSize: number };
+        fontSiz;e: number };
     logo: { fontSize: number };
     layout: { scorePosition: string;
         logoPosition?: string }
 interface PresetConfig { logo?: {
-        enabled: boolean;
+        enable;d: boolean;
         textColor?: string ,};
     watermark?: { enabled: boolean };
     score?: { borderWidth?: number;
@@ -81,14 +81,14 @@ interface PresetConfig { logo?: {
 interface ScreenshotOverlay { gameEngine: MockGameEngine,
     config: any;
     stats: any;
-    cache: {
-        fonts: Map<string, any>;
+   , cache: {
+        font;s: Map<string, any>;
         images: Map<string, any> };
     
     createScoreOverlay: (canvas: MockCanvas, scoreData: ScoreData | null, options?: OverlayOptions) => Promise<any>;
     createAchievementOverlay: (canvas: MockCanvas, achievementData: AchievementData | null) => Promise<any>;
     createCustomOverlay: (canvas: MockCanvas, overlayData: OverlayData) => Promise<any>;
-    calculatePosition: (position: string | { x: number; y: number }, width: number, height: number, canvasWidth: number, canvasHeight: number, padding: number) => { x: number; y: number },
+    calculatePosition: (position: string | { x: number;, y: number }, width: number, height: number, canvasWidth: number, canvasHeight: number, padding: number) => { x: number;, y: number },
     wrapText: (context: MockContext, text: string, maxWidth: number) => string[];
     formatNumber: (num: number) => string;
     getResponsiveConfig: (width: number, height: number) => ResponsiveConfig;
@@ -105,7 +105,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         // Canvas Context APIのモック
         mockContext = {
             drawImage: jest.fn();
-            fillText: jest.fn(), }
+           , fillText: jest.fn(), }
             strokeText: jest.fn(), }
             measureText: jest.fn<{ width: number }>().mockReturnValue({ width: 100 });
             fillRect: jest.fn();
@@ -122,9 +122,9 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             setTransform: jest.fn();
             translate: jest.fn();
             rotate: jest.fn();
-            scale: jest.fn(),
+           , scale: jest.fn(),
             clip: jest.fn(''';
-            font: '16px Arial',
+           , font: '16px Arial',
             fillStyle: '#000000',
             strokeStyle: '#000000',
             lineWidth: 1,
@@ -133,7 +133,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             shadowColor: 'transparent';
             shadowBlur: 0;
             shadowOffsetX: 0;
-            shadowOffsetY: 0,
+           , shadowOffsetY: 0,
             imageSmoothingEnabled: true,
             imageSmoothingQuality: 'high',
             textRenderingOptimization: 'optimizeQuality';
@@ -141,7 +141,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         
         // Canvas APIのモック)
         mockCanvas = { width: 800)
-            height: 600,);
+           , height: 600,);
             getContext: jest.fn<MockContext>().mockReturnValue(mockContext);
         remove: jest.fn( ,};
         // document.createElement のモック
@@ -186,7 +186,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         test('基本的なスコアオーバーレイが作成される', async () => {
             const scoreData: ScoreData = {
                 score: 1500;
-                combo: 10,
+               , combo: 10,
                 accuracy: 0.85,' }'
 
                 stage: 'normal' }

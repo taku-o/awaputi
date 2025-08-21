@@ -4,13 +4,13 @@
  * 各専用コンポーネントを統合管理
  */
 
-import { ScenesBaseDialog } from '../../scenes/components/ScenesBaseDialog.js';''
-import { LoggingSystem } from '../LoggingSystem.js';''
-import { getErrorHandler } from '../../utils/ErrorHandler.js';''
-import { TutorialStepManager } from './components/TutorialStepManager.js';''
-import { TutorialAnimationController } from './components/TutorialAnimationController.js';''
-import { TutorialInteractionHandler } from './components/TutorialInteractionHandler.js';''
-import { TutorialProgressTracker } from './components/TutorialProgressTracker.js';
+import { ScenesBaseDialog  } from '../../scenes/components/ScenesBaseDialog.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { TutorialStepManager  } from './components/TutorialStepManager.js';''
+import { TutorialAnimationController  } from './components/TutorialAnimationController.js';''
+import { TutorialInteractionHandler  } from './components/TutorialInteractionHandler.js';''
+import { TutorialProgressTracker  } from './components/TutorialProgressTracker.js';
 
 // 型定義
 export interface GameEngine { eventBus?: any;
@@ -48,7 +48,7 @@ export interface TutorialLayout { overlayZIndex: number,
     navigationHeight: number;
     progressBarHeight: number;
     highlightPadding: number;
-    spotlightRadius: number ,}
+   , spotlightRadius: number ,}
 
 export interface TutorialStyles { overlayBackground: string;
     panelBackground: string;
@@ -62,12 +62,12 @@ export interface TutorialStyles { overlayBackground: string;
     glowColor: string;
     rippleColor: string;
     sparkleColor: string;
-    pulseColor: string }
+   , pulseColor: string }
 
 export interface TutorialState { isActive: boolean;
     isPaused: boolean;
     currentTutorial: TutorialData | null;
-    highlightedElement: HTMLElement | null }
+   , highlightedElement: HTMLElement | null }
 
 /**
  * チュートリアルオーバーレイクラス
@@ -91,7 +91,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     // スタイル設定
     private styles: TutorialStyles;
     // チュートリアル状態
-    private tutorialState: TutorialState;
+    private, tutorialState: TutorialState;
     constructor(gameEngine: GameEngine, eventBus?: any, state?: any) {
 
         super(gameEngine, eventBus, state);
@@ -120,7 +120,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
         this.tutorialState = { isActive: false,
             isPaused: false;
             currentTutorial: null;
-            highlightedElement: null ,};
+           , highlightedElement: null ,};
         this.initialize();
     }
 
@@ -385,7 +385,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             backgroundColor: this.styles.highlightBackground,
             borderRadius: options.borderRadius || '4px',)';
             pointerEvents: 'none')';
-            zIndex: this.layout.overlayZIndex + 2,')';
+           , zIndex: this.layout.overlayZIndex + 2,')';
             transition: 'all 0.3s ease');
         document.body.appendChild(this.highlightElement);
     }
@@ -417,7 +417,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
 
                 rgba(0, 0, 0, 0.7}) ${spotlightRadius + 50}px')`,''
             pointerEvents: 'none';
-            zIndex: this.layout.overlayZIndex + 1;
+           , zIndex: this.layout.overlayZIndex + 1;
         }),
         
         this.overlay.appendChild(this.spotlight);
@@ -462,7 +462,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             width: '100vw',
             height: '100vh);
             backgroundColor: this.styles.overlayBackground)';
-            zIndex: this.layout.overlayZIndex,
+           , zIndex: this.layout.overlayZIndex,
             display: 'flex',
             alignItems: 'center',')';
             justifyContent: 'center');
@@ -490,7 +490,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             backgroundColor: this.styles.panelBackground;
             border: this.styles.panelBorder);
             borderRadius: this.styles.panelBorderRadius)';
-            boxShadow: this.styles.panelBoxShadow,
+           , boxShadow: this.styles.panelBoxShadow,
             padding: '24px',')';
             overflow: 'auto');
         this.overlay.appendChild(this.instructionPanel);
@@ -508,9 +508,9 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
 
         this.instructionPanel.innerHTML = `' }'
 
-            <h3 style="margin: 0 0 16px 0; color: #333; font-size: 20px;">${step.title || 'チュートリアル'}</h3>''
-            <p style="margin: 0 0 16px 0; color: #666; line-height: 1.5;">${step.description || ''}</p>''
-            ${step.content ? `<div style="margin: 16px 0;">${step.content}</div>` : ''}
+            <h3 style="margin: 0 0 16px 0;, color: #333; font-size: 20px;">${step.title || 'チュートリアル'}</h3>''
+            <p style="margin: 0 0 16px 0;, color: #666; line-height: 1.5;">${step.description || ''}</p>''
+            ${step.content ? `<div, style="margin: 16px, 0;">${step.content}</div>` : ''}
         `;
     }
     
@@ -537,7 +537,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
 
         Object.assign(progressFill.style, { ')'
             height: '100%')';
-            backgroundColor: this.styles.progressBarColor,
+           , backgroundColor: this.styles.progressBarColor,
             width: '0%',')';
             transition: 'width 0.3s ease');
         this.progressBar.appendChild(progressFill);
@@ -578,7 +578,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             border: this.styles.panelBorder;
             borderRadius: this.styles.panelBorderRadius;
             boxShadow: this.styles.panelBoxShadow;
-            zIndex: this.layout.overlayZIndex + 2 ,});
+           , zIndex: this.layout.overlayZIndex + 2 ,});
         document.body.appendChild(this.navigationPanel);
     }
     
@@ -594,11 +594,11 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
         this.navigationPanel.innerHTML = `';
     }
 
-            <button class="tutorial-nav-btn tutorial-prev-btn" " }"
+            <button class="tutorial-nav-btn tutorial-prev-btn", " }"
                     ${!progress.canGoPrevious ? 'disabled' : ''}>前へ</button>''
             <span class="tutorial-step-counter">${progress.currentStep} / ${progress.totalSteps}</span>""
             <button class="tutorial-nav-btn tutorial-next-btn">次へ</button>"";
-            ${progress.canSkip ? '<button class="tutorial-nav-btn tutorial-skip-btn">スキップ</button>' : ''}''
+            ${progress.canSkip ? '<button, class="tutorial-nav-btn, tutorial-skip-btn">スキップ</button>' : ''}''
             <button class="tutorial-nav-btn tutorial-close-btn">閉じる</button>;
         `;
         
@@ -760,20 +760,20 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
                 border-radius: 6px,
                 background: #007bff;
                 color: white;
-                cursor: pointer;
+               , cursor: pointer;
                 font-size: 14px,
                 transition: background 0.2s ease ,}
             
             .tutorial-nav-btn:hover:not(:disabled) { background: #0056b3 }
             
             .tutorial-nav-btn:disabled { background: #ccc;
-                cursor: not-allowed }
+               , cursor: not-allowed }
             
             .tutorial-step-counter { display: flex;
                 align-items: center,
                 font-size: 14px,
                 color: #666;
-                margin: 0 8px ,}
+               , margin: 0 8px ,}
             
             .tutorial-highlight { animation: tutorialPulse 2s infinite }
             

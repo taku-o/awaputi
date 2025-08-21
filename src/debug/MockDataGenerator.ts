@@ -4,30 +4,30 @@
  * Main Controller Pattern適用版
  */
 
-import { ComponentErrorHandler } from './ComponentErrorHandler.js';''
-import { MockBubbleDataGenerator } from './mock/MockBubbleDataGenerator.js';''
-import { MockUserDataGenerator } from './mock/MockUserDataGenerator.js';''
-import { MockGameStateGenerator } from './mock/MockGameStateGenerator.js';''
-import { MockDataValidator } from './mock/MockDataValidator.js';
+import { ComponentErrorHandler  } from './ComponentErrorHandler.js';''
+import { MockBubbleDataGenerator  } from './mock/MockBubbleDataGenerator.js';''
+import { MockUserDataGenerator  } from './mock/MockUserDataGenerator.js';''
+import { MockGameStateGenerator  } from './mock/MockGameStateGenerator.js';''
+import { MockDataValidator  } from './mock/MockDataValidator.js';
 
 interface GameEngine { // Game engine interface }
 
-interface ErrorHandler { handleComponentError: (error: Error, component: string, operation: string) => any ,}
+interface ErrorHandler { handleComponentError: (erro;r: Error, component: string, operation: string) => any ,}
 }
 
 interface MockComponent { initialized?: boolean;
     generate?: () => any;
-    generateBubble?: (options?: any) => MockBubble;
-    generateBubbles?: (count: number, options?: any) => MockBubble[];
-    generatePlayerData?: (options?: any) => MockPlayerData;
-    generateGameState?: (options?: any) => MockGameState;''
-    validateData?: (data: any, type: string') => ValidationResult;''
-    setErrorHandler?: (handler: ErrorHandler['handleComponentError]) => void;
+    generateBubble?: (option;s?: any) => MockBubble;
+    generateBubbles?: (coun;t: number, options?: any) => MockBubble[];
+    generatePlayerData?: (option;s?: any) => MockPlayerData;
+    generateGameState?: (option;s?: any) => MockGameState;''
+    validateData?: (dat;a: any, type: string') => ValidationResult;''
+    setErrorHandler?: (handle;r: ErrorHandler['handleComponentError]) => void;
     initialize?: () => Promise<void> | void;
     cleanup?: () => void;
-    generateBubbleProperties?: (template: any) => any;
-    getBubbleColor?: (type?: string | null) => string;
-    addBubbleVariations?: (bubble: MockBubble) => MockBubble;
+    generateBubbleProperties?: (templat;e: any) => any;
+    getBubbleColor?: (typ;e?: string | null) => string;
+    addBubbleVariations?: (bubbl;e: MockBubble) => MockBubble;
     generateActiveEffects?: () => any[];
     generatePlayerName?: () => string;
     generateDetailedStatistics?: () => any;
@@ -36,9 +36,9 @@ interface MockComponent { initialized?: boolean;
     generatePlayerSettings?: () => any;
     generatePlayerInventory?: () => any;
     generateAchievements?: () => any[];
-    generatePerformanceMetrics?: (options?: any) => any;
-    generateMassGameStates?: (count: number, options?: any) => MockGameState[];
-    generateStressTestData?: (options?: any) => any;
+    generatePerformanceMetrics?: (option;s?: any) => any;
+    generateMassGameStates?: (coun;t: number, options?: any) => MockGameState[];
+    generateStressTestData?: (option;s?: any) => any;
     generateErrorScenario?: () => any;
     generatePerformanceScenario?: () => any;
     generateEdgeCaseScenario?: () => any;
@@ -47,22 +47,22 @@ interface MockComponent { initialized?: boolean;
     generateEdgeCaseData?: () => any;
     generateScoreDistribution?: () => any;
     generateBubbleDistribution?: () => any;
-    generateLargeBubbleSet?: (count: number) => MockBubble[];
+    generateLargeBubbleSet?: (coun;t: number) => MockBubble[];
     generateValidationRules?: () => any; ,}
 }
 ';
 
 interface ComponentDefinition { name: string,''
-    class: new(generator: MockDataGenerator) => MockComponent ,}
+    class: new(generato;r: MockDataGenerator) => MockComponent ,}
 }
 
 interface MockBubble { id: string;
     type: string;
-    size: number, }
-    position: { x: number; y: number },
+   , size: number, }
+    position: { x: number;, y: number },
     color: string;
     health: number;
-    score: number;
+   , score: number;
 }
 
 interface MockPlayerData { id: string,
@@ -71,41 +71,41 @@ interface MockPlayerData { id: string,
     totalScore: number;
     highScore: number;
     gamesPlayed: number;
-    accuracy: number ,}
+   , accuracy: number ,}
 
 interface MockGameState { id: string;
     state: string;
     timestamp: number;
     level: number;
     score: number;
-    lives: number }
+   , lives: number }
 
 interface ValidationResult { valid: boolean;
     errors: string[];
-    warnings: string[] }
+   , warnings: string[] }
 
 interface AudioSettings { masterVolume: number;
     musicVolume: number;
     effectsVolume: number;
-    enabled: boolean }
+   , enabled: boolean }
 ';
 
 interface GraphicsSettings { ''
     quality: 'low' | 'medium' | 'high' | 'ultra',
     particles: 'off' | 'low' | 'medium' | 'high';
     effects: boolean;
-    fullscreen: boolean ,}
+   , fullscreen: boolean ,}
 ';
 
 interface GameplaySettings { ''
     difficulty: 'easy' | 'normal' | 'hard' | 'expert';
     autoSave: boolean;
     showHints: boolean;
-    pauseOnFocusLoss: boolean }
+   , pauseOnFocusLoss: boolean }
 
 interface Configuration { audio: AudioSettings;
     graphics: GraphicsSettings;
-    gameplay: GameplaySettings
+   , gameplay: GameplaySettings
     }
 
 interface Statistics { totalGames: number;
@@ -116,19 +116,19 @@ interface Statistics { totalGames: number;
     playTime: number;
     bubbleTypes: any;
     scoreDistribution: any;
-    bubbleDistribution: any }
+   , bubbleDistribution: any }
 
 interface Position { x: number;
-    y: number }
+   , y: number }
 
 type DataType = 'bubble' | 'bubbles' | 'player' | 'gameState' | 'statistics' | 'achievements' | 'performance';''
 type Scenario = 'center' | 'corner' | 'edge' | 'random';
 
 export class MockDataGenerator {
     private gameEngine: GameEngine;
-    private components: Map<string, MockComponent>;
+    private, components: Map<string, MockComponent>;
     private initialized: boolean;
-    private errorHandler: ErrorHandler;
+    private, errorHandler: ErrorHandler;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -342,7 +342,7 @@ export class MockDataGenerator {
             accuracy: this.randomFloat(0.4, 0.9),
             playTime: this.randomInt(3600, 360000),
             bubbleTypes: this.generateBubbleTypeStats();
-            scoreDistribution: this.generateScoreDistribution(), };
+           , scoreDistribution: this.generateScoreDistribution(), };
             bubbleDistribution: this.generateBubbleDistribution(); }
         }
 
@@ -363,7 +363,7 @@ export class MockDataGenerator {
             gameplay: { ''
                 difficulty: this.randomChoice(['easy', 'normal', 'hard', 'expert]),
                 autoSave: true;
-                showHints: this.randomChoice([true, false]),
+               , showHints: this.randomChoice([true, false]),
                 pauseOnFocusLoss: this.randomChoice([true, false] }
         }
 
@@ -419,11 +419,11 @@ export class MockDataGenerator {
 
     private createFallbackBubble(''';
             type: 'normal';
-            size: 30,
+           , size: 30,
             position: { x: 0, y: 0 ,},''
             color: '#4ECDC4';
             health: 1;
-            score: 10;
+           , score: 10;
         },
     }
 
@@ -433,7 +433,7 @@ export class MockDataGenerator {
             totalScore: 0;
             highScore: 0;
             gamesPlayed: 0;
-            accuracy: 0.5;
+           , accuracy: 0.5;
         },
     }
 
@@ -442,17 +442,12 @@ export class MockDataGenerator {
             timestamp: Date.now(;
             level: 1;
             score: 0;
-            lives: 3);
+           , lives: 3);
         })
 
     // === 位置・シナリオ関連（レガシーサポート） ===
 ')';
-    public getScenarioPosition(scenario: Scenario): Position { const positions: Record<Scenario, Position> = {' }'
-
-            'center': { x: 400, y: 300 ,},''
-            'corner': { x: 50, y: 50 ,},''
-            'edge': { x: 400, y: 50 ,},''
-            'random': { x: this.randomFloat(0, 800), y: this.randomFloat(0, 600 }
+    public getScenarioPosition(scenario: Scenario): Position { const positions: Record<Scenario, Position> = {' }', 'center': { x: 400, y: 300 ,},'', 'corner': { x: 50, y: 50 ,},'', 'edge': { x: 400, y: 50 ,},'', 'random': { x: this.randomFloat(0, 800), y: this.randomFloat(0, 600 }
 
         };''
         return positions[scenario] || positions['random'];

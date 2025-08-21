@@ -43,14 +43,14 @@ export interface FloatingText { id: number,
     shadow: boolean;
     outline: boolean;
     outlineColor: string;
-    easing: string ,}
+   , easing: string ,}
 
 export interface AnimationConfig { color: string;
     fontSize: number;
     velocityX?: number;
     velocityY: number;
     gravity?: number;
-    duration: number;
+   , duration: number;
     scaleAnimation?: boolean;
     bounceAnimation?: boolean;
     pulseAnimation?: boolean;
@@ -65,7 +65,7 @@ export interface AnimationConfigMap { [key: string]: AnimationConfig,
  */
 export class FloatingTextManager {
     private texts: FloatingText[];
-    private textId: number;
+    private, textId: number;
     constructor() {
 
         this.texts = [];
@@ -86,7 +86,7 @@ export class FloatingTextManager {
             text: text;
             life: options.duration || 2000;
             maxLife: options.duration || 2000;
-            color: options.color || '#FFFFFF',
+           , color: options.color || '#FFFFFF',
             fontSize: options.fontSize || 20,
             fontWeight: options.fontWeight || 'bold',
             fontFamily: options.fontFamily || 'Arial';
@@ -101,7 +101,7 @@ export class FloatingTextManager {
             scale: 1;
             rotation: options.rotation || 0;
             rotationSpeed: options.rotationSpeed || 0;
-            shadow: options.shadow || false,
+           , shadow: options.shadow || false,
             outline: options.outline || false,
             outlineColor: options.outlineColor || '#000000',
             easing: options.easing || 'linear' ,};
@@ -122,7 +122,7 @@ export class FloatingTextManager {
             fontWeight: 'bold';
             velocityY: -80);
             duration: 1500);
-            scaleAnimation: true,);
+           , scaleAnimation: true,);
             shadow: true ,}
     
     /**
@@ -133,11 +133,11 @@ export class FloatingTextManager {
             color: '#FF4444',
             fontSize: 28,
             fontWeight: 'bold';
-            velocityY: -60, }
+           , velocityY: -60, }
             velocityX: (Math.random() - 0.5}) * 40;
             duration: 2000;
             bounceAnimation: true;
-            shadow: true;
+           , shadow: true;
         }),
     }
     
@@ -151,7 +151,7 @@ export class FloatingTextManager {
             fontWeight: 'bold';
             velocityY: -70);
             duration: 1800);
-            pulseAnimation: true,);
+           , pulseAnimation: true,);
             shadow: true ,}
     
     /**
@@ -170,7 +170,7 @@ export class FloatingTextManager {
             duration: 2500;
             scaleAnimation: true;
             pulseAnimation: true;
-            outline: true,
+           , outline: true,
             shadow: true'';
         }'),
     }
@@ -185,18 +185,18 @@ export class FloatingTextManager {
                 velocityY: -120;
                 duration: 3000;
                 scaleAnimation: true;
-                pulseAnimation: true };
+               , pulseAnimation: true };
             timeStop: { ''
                 color: '#00AAFF';
                 fontSize: 32;
                 velocityY: -90;
                 duration: 2500;
-                bounceAnimation: true };
+               , bounceAnimation: true };
             shock: { ''
                 color: '#FFFF00';
                 fontSize: 28;
                 velocityX: (Math.random() - 0.5) * 100;
-                velocityY: -60,
+               , velocityY: -60,
                 duration: 2000,
                 rotationSpeed: (Math.random() - 0.5) * 10 ,};
             chain: { ''
@@ -204,19 +204,19 @@ export class FloatingTextManager {
                 fontSize: 30;
                 velocityY: -80;
                 duration: 2200;
-                scaleAnimation: true };
+               , scaleAnimation: true };
             normal: { ''
                 color: '#FFFFFF';
                 fontSize: 24;
                 velocityY: -50;
-                duration: 2000 }
+               , duration: 2000 }
         };
         const config = configs[type] || configs.normal;
         ';
 
         return this.addText(x, y, effect, { ...config,)'
             fontWeight: 'bold');
-            outline: true,);
+           , outline: true,);
             shadow: true ,}
     
     /**
@@ -228,13 +228,13 @@ export class FloatingTextManager {
                 fontSize: 28;
                 velocityY: -70;
                 duration: 2000;
-                pulseAnimation: true ,};
+               , pulseAnimation: true ,};
             explosive: { ''
                 color: '#FF4500';
                 fontSize: 32;
                 velocityX: (Math.random() - 0.5) * 200;
                 velocityY: -150;
-                gravity: 80,
+               , gravity: 80,
                 duration: 2500,
                 rotationSpeed: (Math.random() - 0.5) * 15 ,};
             gentle: { ''
@@ -242,7 +242,7 @@ export class FloatingTextManager {
                 fontSize: 22;
                 velocityY: -40;
                 duration: 3000;
-                scaleAnimation: true }
+               , scaleAnimation: true }
         };
         const config = animations[animationType] || animations.gentle;
         ';

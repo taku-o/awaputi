@@ -1,13 +1,13 @@
-import { getEffectsConfig } from '../config/EffectsConfig.js';''
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getEffectsConfig  } from '../config/EffectsConfig.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Effect Manager types
 export interface ColorRGBA { r: number,
     g: number;
     b: number;
-    a: number ,}
+   , a: number ,}
 export interface CurrentTransform {
-    shake: { x: number; y: number },
+    shake: { ;x: number;, y: number },
     zoom: number;
     rotation: number;
     flash: ColorRGBA;
@@ -15,7 +15,7 @@ export interface CurrentTransform {
     blur: number;
     contrast: number;
     brightness: number;
-    saturation: number;
+   , saturation: number;
 }
 export interface Transforms { shakeX: number[],
     shakeY: number[];
@@ -26,18 +26,18 @@ export interface Transforms { shakeX: number[],
     blur: number[];
     contrast: number[];
     brightness: number[];
-    saturation: number[] ,}
+   , saturation: number[] ,}
 export interface EffectParameters { shakeIntensity: number,
     flashDuration: number;
     zoomSensitivity: number;
     enabled: boolean;
-    shake: { duration: number;
-        damping: number  }
+   , shake: { duratio;n: number;
+       , damping: number  }
 ,};
     flash: { intensity: number  }
 };
     zoom: { duration: number;
-        easing: string  }
+       , easing: string  }
 };
     tint: { intensity: number; }
         duration: number }
@@ -45,7 +45,7 @@ export interface EffectParameters { shakeIntensity: number,
 export interface BaseEffect { id: number,
     type: EffectType;
     duration: number;
-    elapsed: number ,}
+   , elapsed: number ,}
 ';
 
 export interface ShakeEffect extends BaseEffect {;
@@ -53,14 +53,14 @@ export interface ShakeEffect extends BaseEffect {;
     intensity: number;
     shakeType: ShakeType;
     frequency: number;
-    damping: number }
+   , damping: number }
 ';
 
 export interface FlashEffect extends BaseEffect {;
     type: 'flash';
     color: ColorRGBA;
     intensity: number;
-    fadeType: FadeType
+   , fadeType: FadeType
     }
 ';
 
@@ -68,28 +68,28 @@ export interface TintEffect extends BaseEffect {;
     type: 'tint';
     color: ColorRGBA;
     intensity: number;
-    easing: string }
+   , easing: string }
 ';
 
 export interface ZoomEffect extends BaseEffect {;
     type: 'zoom';
     targetZoom: number;
     startZoom: number;
-    easing: string }
+   , easing: string }
 ';
 
 export interface RotationEffect extends BaseEffect {;
     type: 'rotation';
     targetRotation: number;
     startRotation: number;
-    easing: string }
+   , easing: string }
 ';
 
 export interface BlurEffect extends BaseEffect {;
     type: 'blur';
     targetBlur: number;
     startBlur: number;
-    easing: string }
+   , easing: string }
 ';
 
 export interface FilterEffect extends BaseEffect {;
@@ -97,7 +97,7 @@ export interface FilterEffect extends BaseEffect {;
     filterType: FilterType;
     targetValue: number;
     startValue: number;
-    easing: string }
+   , easing: string }
 export type Effect = ShakeEffect | FlashEffect | TintEffect | ZoomEffect | RotationEffect | BlurEffect | FilterEffect;
 
 export type EffectType = 'shake' | 'flash' | 'tint' | 'zoom' | 'rotation' | 'blur' | 'filter';''
@@ -114,9 +114,9 @@ export class EffectManager {
     private effects: Effect[];
     private effectId: number;
     private effectsConfig: any;
-    private configWatchers: Map<string, any>;
+    private, configWatchers: Map<string, any>;
     private currentTransform: CurrentTransform;
-    private transforms: Transforms;
+    private, transforms: Transforms;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
@@ -134,12 +134,12 @@ export class EffectManager {
             shake: { x: 0, y: 0 ,},
             zoom: 1;
             rotation: 0;
-            flash: { r: 0, g: 0, b: 0, a: 0 ,},
+           , flash: { r: 0, g: 0, b: 0, a: 0 ,},
             tint: { r: 0, g: 0, b: 0, a: 0 ,},
             blur: 0;
             contrast: 1;
             brightness: 1;
-            saturation: 1;
+           , saturation: 1;
         },
         
         // 効果の積算用
@@ -152,7 +152,7 @@ export class EffectManager {
             blur: [];
             contrast: [];
             brightness: [];
-            saturation: [] 
+           , saturation: [] 
 ,};
         // 設定変更の監視を開始
         this._setupConfigWatchers();
@@ -213,7 +213,7 @@ export class EffectManager {
                 enabled: screenConfig.enabled;
                 shake: screenConfig.shake;
                 flash: screenConfig.flash;
-                zoom: screenConfig.zoom, };
+               , zoom: screenConfig.zoom, };
                 tint: screenConfig.tint ;
 }
             },
@@ -249,7 +249,7 @@ export class EffectManager {
                 duration: configDuration;
                 elapsed: 0;
                 shakeType: type;
-                frequency: 20, // 揺れの頻度;
+               , frequency: 20, // 揺れの頻度;
                 damping: params.shake.damping   // 設定から減衰率を取得 
 ,};
             this.effects.push(effect);
@@ -285,7 +285,7 @@ export class EffectManager {
                 intensity: adjustedIntensity;
                 duration: configDuration;
                 elapsed: 0;
-                fadeType: fadeType 
+               , fadeType: fadeType 
 ,};
             this.effects.push(effect);
             return effect.id;
@@ -320,7 +320,7 @@ export class EffectManager {
                 intensity: adjustedIntensity;
                 duration: configDuration;
                 elapsed: 0;
-                easing: easing 
+               , easing: easing 
 ,};
             this.effects.push(effect);
             return effect.id;
@@ -354,7 +354,7 @@ export class EffectManager {
                 startZoom: this.currentTransform.zoom;
                 duration: configDuration;
                 elapsed: 0;
-                easing: easing 
+               , easing: easing 
 ,};
             this.effects.push(effect);
             return effect.id;
@@ -501,7 +501,7 @@ export class EffectManager {
         const flashColor: ColorRGBA = { r: effect.color.r,
             g: effect.color.g;
             b: effect.color.b;
-            a: alpha 
+           , a: alpha 
 ,};
         this.transforms.flash.push(flashColor);
     }
@@ -515,7 +515,7 @@ export class EffectManager {
         const tintColor: ColorRGBA = { r: effect.color.r;
             g: effect.color.g;
             b: effect.color.b;
-            a: alpha  }
+           , a: alpha  }
 ,};
         this.transforms.tint.push(tintColor);
     }
@@ -628,7 +628,7 @@ export class EffectManager {
                 targetRotation: this.currentTransform.rotation + angle;
                 duration: duration;
                 elapsed: 0;
-                easing: easing 
+               , easing: easing 
 ,};
             this.effects.push(effect);
             return effect.id;
@@ -657,7 +657,7 @@ export class EffectManager {
                 targetBlur: intensity;
                 duration: duration;
                 elapsed: 0;
-                easing: easing 
+               , easing: easing 
 ,};
             this.effects.push(effect);
             return effect.id;
@@ -706,7 +706,7 @@ export class EffectManager {
                 targetValue: targetValue;
                 duration: duration;
                 elapsed: 0;
-                easing: easing 
+               , easing: easing 
 ,};
             this.effects.push(effect);
             return effect.id;
@@ -776,11 +776,11 @@ export class EffectManager {
 
             if(filterParts.length > 0) {'
 
-                const existingFilter = context.filter !== 'none' ? context.filter + ' ' : '';
+                const existingFilter = context.filter !== 'none' ? context.filter + ', ' : '';
 
             }
 
-                context.filter = existingFilter + filterParts.join(' '); }
+                context.filter = existingFilter + filterParts.join(', '); }
         }
     /**
      * フラッシュとティントを適用
@@ -1011,12 +1011,12 @@ export class EffectManager {
                 shake: { x: 0, y: 0 ,},
                 zoom: 1;
                 rotation: 0;
-                flash: { r: 0, g: 0, b: 0, a: 0 ,},
+               , flash: { r: 0, g: 0, b: 0, a: 0 ,},
                 tint: { r: 0, g: 0, b: 0, a: 0 ,},
                 blur: 0;
                 contrast: 1;
                 brightness: 1;
-                saturation: 1;
+               , saturation: 1;
             },
             
             // 積算用配列をクリア
@@ -1083,8 +1083,7 @@ export class EffectManager {
 
                     break;''
                 case 'flashDuration':;
-                    if(this.effectsConfig.setFlashDuration) {'
-                        ';
+                    if(this.effectsConfig.setFlashDuration) {', ';
 
                     }
 
@@ -1093,8 +1092,7 @@ export class EffectManager {
 
                     break;''
                 case 'zoomSensitivity':;
-                    if(this.effectsConfig.setZoomSensitivity) {'
-                        ';
+                    if(this.effectsConfig.setZoomSensitivity) {', ';
 
                     }
 

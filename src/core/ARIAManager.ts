@@ -1,14 +1,14 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 interface ScreenReaderManager { accessibilityManager: {
-        gameEngine: unknown }
+        gameEngin;e: unknown }
 
 interface ARIAConfig { autoManagement: boolean,
     dynamicUpdates: boolean;
     relationshipTracking: boolean;
     validationEnabled: boolean;
     localization: boolean;
-    debugMode: boolean ,}
+   , debugMode: boolean ,}
 
 /**
  * ARIA属性管理クラス
@@ -17,12 +17,12 @@ interface ARIAConfig { autoManagement: boolean,
 export class ARIAManager {
     private screenReaderManager: ScreenReaderManager;
     private gameEngine: unknown;
-    private managedElements: Map<string, unknown>;
+    private, managedElements: Map<string, unknown>;
     private ariaDescriptions: Map<string, unknown>;
     private ariaLiveRegions: Map<string, unknown>;
     private ariaRelationships: Map<string, unknown>;
     private config: ARIAConfig;
-    private ariaPatterns: Map<string, unknown>;
+    private, ariaPatterns: Map<string, unknown>;
 
     constructor(screenReaderManager: ScreenReaderManager) {
 
@@ -76,7 +76,7 @@ export class ARIAManager {
             initialized: false;
             elementsManaged: 0;
             validationErrors: [];
-            lastValidation: null,
+           , lastValidation: null,
             activeDescriptions: new Set()';
         console.log('ARIAManager, initialized'),
         this.initialize('); }'
@@ -152,7 +152,7 @@ export class ARIAManager {
         this.managedElements.set(element, { type: elementInfo.type)
             pattern: ariaPattern);
             lastUpdate: Date.now();
-            isValid: true });
+           , isValid: true });
         this.state.elementsManaged++;
     }
     
@@ -166,8 +166,7 @@ export class ARIAManager {
         ';
         // デフォルトロールの設定
         if(!role) {'
-            const defaultRoles = {''
-                'main': 'main',
+            const defaultRoles = {'', 'main': 'main',
                 'nav': 'navigation',
                 'aside': 'complementary',
                 'header': 'banner',
@@ -181,8 +180,7 @@ export class ARIAManager {
             ';
 
             role = defaultRoles[tagName];''
-            if(role) {'
-                ';
+            if(role) {', ';
 
             }
 
@@ -197,7 +195,7 @@ export class ARIAManager {
             type: 'landmark',);
             role: role);
             lastUpdate: Date.now();
-            isValid: true ,});
+           , isValid: true ,});
     }
     
     /**
@@ -228,8 +226,7 @@ export class ARIAManager {
         }
         
         // デフォルトラベルの設定
-        const defaultLabels = { ''
-            'navigation': 'ナビゲーション',
+        const defaultLabels = { '', 'navigation': 'ナビゲーション',
             'main': 'メインコンテンツ',
             'complementary': '補足情報',
             'banner': 'ヘッダー',
@@ -306,7 +303,7 @@ export class ARIAManager {
         
         return { type: elementType)
             needsARIA: needsARIA)';
-            hasRole: !!role,')';
+           , hasRole: !!role,')';
             hasLabel: !!(element.getAttribute('aria-label'') || element.getAttribute('aria-labelledby), };
             isInteractive: this.isInteractiveElement(element); }
         }
@@ -385,8 +382,7 @@ export class ARIAManager {
                 return null;
 
             case 'aria-valuenow':'';
-                if(elementInfo.type === 'progressbar'') {'
-                    ';
+                if(elementInfo.type === 'progressbar'') {', ';
 
                 }
 
@@ -429,8 +425,7 @@ export class ARIAManager {
         // タイプ別のデフォルトラベル生成
         label = this.generateDefaultLabel(element, elementInfo);"
 
-        if(label) {"
-            ";
+        if(label) {", ";
         }"
             element.setAttribute('aria-label', label); }
 }
@@ -453,8 +448,7 @@ export class ARIAManager {
             return 'タイマー表示'; }
         
         // 基本要素
-        const defaultLabels = { ''
-            'button': 'ボタン',
+        const defaultLabels = { '', 'button': 'ボタン',
             'textbox': '入力フィールド',
             'link': 'リンク',
             'tab': 'タブ',
@@ -466,7 +460,7 @@ export class ARIAManager {
         // クラス名から推測
         if(!label && element.className) {'
 
-            const classList = element.className.split(' ');''
+            const classList = element.className.split(', ');''
             for(const, className of, classList) {''
                 if(className.includes('close)) {''
                     label = '閉じる';
@@ -570,8 +564,7 @@ export class ARIAManager {
         const tagName = element.tagName.toLowerCase()';
         const role = element.getAttribute('role'');
 
-        if(tagName === 'button' || role === 'button'') {'
-            ';
+        if(tagName === 'button' || role === 'button'') {', ';
 
         }
 
@@ -735,7 +728,7 @@ export class ARIAManager {
         this.domObserver.observe(document.body, { childList: true,
             subtree: true);
             attributes: true)';
-            attributeOldValue: true,')';
+           , attributeOldValue: true,')';
             attributeFilter: ['role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'class', 'id])');
 
         console.log('DOM, observer set, up for, ARIA management'); }'
@@ -852,7 +845,7 @@ export class ARIAManager {
             return true;
         } catch (error) { getErrorHandler(').handleError(error, 'ARIA_ERROR', {)'
                 operation: 'updateElementARIA');
-                element: element.tagName,);
+               , element: element.tagName,);
                 updates: updates ,});
             return false;
     
@@ -1059,7 +1052,7 @@ export class ARIAManager {
                 this.domObserver.observe(document.body, {
                     childList: true);
                     subtree: true);
-                    attributes: true, }
+                   , attributes: true, }
                     attributeOldValue: true'); }
 
             } else { }'

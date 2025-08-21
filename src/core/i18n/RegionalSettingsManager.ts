@@ -3,32 +3,32 @@
  * 地域設定管理クラス - 言語・地域に応じたフォーマット設定を管理
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface FormatSettings { dateTime: {
-        dateFormat: string;
+        dateForma;t: string;
         timeFormat: string;
-        timestampFormat: string 
+       , timestampFormat: string 
 };
     numbers: { decimalSeparator: string;
         thousandsSeparator: string;
-        currencyFormat: string 
+       , currencyFormat: string 
 };
     currency: { symbol: string,''
         position: 'before' | 'after';
-        code: string ,}
+       , code: string ,}
 
 export interface RegionSettings { timezone: string,
     locale: string;
     country: string;
     region: string;
-    rtl: boolean ,}
+   , rtl: boolean ,}
 export interface LanguageSettings { code: string,
     name: string,
     nativeName: string,
     direction: 'ltr' | 'rtl';
-    pluralRules: string ,}
+   , pluralRules: string ,}
 /**
  * 地域設定管理クラス
  */
@@ -36,7 +36,7 @@ export class RegionalSettingsManager {
     private formatSettings: FormatSettings | null;
     private regionSettings: RegionSettings | null;
     private languageSettings: LanguageSettings | null;
-    private initialized: boolean;
+    private, initialized: boolean;
     constructor() {
 
         this.formatSettings = null;
@@ -218,7 +218,7 @@ export class RegionalSettingsManager {
         return { : undefined
             language: language;
             region: regionCode;
-            locale: this.getLocale(language, regionCode),
+           , locale: this.getLocale(language, regionCode),
             numberFormat: this.getNumberFormatSettings(language, regionCode),
             dateFormat: this.getDateFormatSettings(language, regionCode),
             currencyFormat: this.getCurrencyFormatSettings(language, regionCode),
@@ -238,8 +238,7 @@ export class RegionalSettingsManager {
             return region;
         ';
 
-        const languageToRegionMap = { ''
-            'ja': 'JP',
+        const languageToRegionMap = { '', 'ja': 'JP',
             'en': 'US',
             'zh-CN': 'CN',
             'zh-TW': 'TW',
@@ -307,25 +306,22 @@ export class RegionalSettingsManager {
 ,}
             },
 
-            date: { ''
-                'en': {''
+            date: { '', 'en': {''
                     short: 'MM/DD/YYYY',
                     medium: 'MMM DD, YYYY',
                     long: 'MMMM DD, YYYY',
                     full: 'dddd, MMMM DD, YYYY' }
             },
 
-            currency: { ''
-                'en': {''
+            currency: { '', 'en': {''
                     symbol: '$',
                     code: 'USD',
                     position: 'before';
-                    space: false 
+                   , space: false 
 ,}
             },
 
-            time: { ''
-                'en': {''
+            time: { '', 'en': {''
                     short: 'h:mm A',
                     medium: 'h:mm:ss A',
                     long: 'h:mm:ss A z',
@@ -342,7 +338,7 @@ export class RegionalSettingsManager {
                 currency: 'USD',
                 timezone: 'America/New_York';
                 firstDayOfWeek: 0;
-                numberFormat: {'
+               , numberFormat: {'
                     groupSize: 3,
                     groupSeparator: ',',
                     decimalSeparator: '.' 
@@ -392,7 +388,7 @@ export class RegionalSettingsManager {
             symbol: '$',
             code: 'USD',
             position: 'before';
-            space: false;
+           , space: false;
         },
     }
     
@@ -413,7 +409,7 @@ export class RegionalSettingsManager {
     getDefaultRegionInfo(''';
             currency: 'USD',
             timezone: 'UTC';
-            firstDayOfWeek: 0,
+           , firstDayOfWeek: 0,
             numberFormat: { groupSize: 3,''
                 groupSeparator: ',',
                 decimalSeparator: '.' 

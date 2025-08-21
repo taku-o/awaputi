@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * Phase G.5 Task 5.3: 後方互換性テスト
  * 
@@ -35,9 +35,9 @@ const mockFocusManager = {
 };
 
 // Import classes for testing
-import { AudioAccessibilitySupport } from '../src/audio/accessibility/AudioAccessibilitySupport';
-import { VisualFocusManager } from '../src/core/VisualFocusManager';
-import { VisualFeedbackManager } from '../src/core/VisualFeedbackManager';
+import { AudioAccessibilitySupport  } from '../src/audio/accessibility/AudioAccessibilitySupport';
+import { VisualFocusManager  } from '../src/core/VisualFocusManager';
+import { VisualFeedbackManager  } from '../src/core/VisualFeedbackManager';
 
 /**
  * AudioAccessibilitySupport API互換性テスト
@@ -122,19 +122,17 @@ async function testAudioAccessibilitySupportAPI(') {
         
         // 4. Initialization test
         const initResult = await support.initialize(');
-        console.log(`✓ Initialize method returns boolean: ${typeof initResult === 'boolean' ? 'PASS' : 'FAIL')`),
+        console.log(`✓ Initialize method returns boolean: ${typeof, initResult === 'boolean' ? 'PASS' : 'FAIL')`),
         
-        // 5. Settings API test
-        const settings = support.getSettings(');
-        console.log(`✓ getSettings returns object: ${typeof settings === 'object' ? 'PASS' : 'FAIL')`),
+        // 5. Settings, API test, const settings = support.getSettings(');
+        console.log(`✓ getSettings, returns object: ${typeof, settings === 'object' ? 'PASS' : 'FAIL')`),
         
-        // 6. Visual notification test (method signature compatibility');
-        support.showVisualNotification('Test message', 'info', { duration: 3000 )'),
-        console.log('✓ showVisualNotification method signature: COMPATIBLE'),
+        // 6. Visual, notification test (method, signature compatibility');
+        support.showVisualNotification('Test, message', 'info', { duration: 3000 )'),
+        console.log('✓ showVisualNotification, method signature: COMPATIBLE'),
         
-        // 7. Status retrieval test
-        const status = support.getStatus(');
-        console.log(`✓ getStatus returns object: ${typeof status === 'object' ? 'PASS' : 'FAIL')`});
+        // 7. Status, retrieval test, const status = support.getStatus(');
+        console.log(`✓ getStatus, returns object: ${typeof, status === 'object' ? 'PASS' : 'FAIL')`});
         
     } catch (error') {
         console.error('AudioAccessibilitySupport API test error:', error.message);
@@ -218,9 +216,8 @@ function testVisualFocusManagerAPI(') {
         const contrastResult = focusManager.setHighContrastMode(true');
         console.log(`✓ setHighContrastMode method: ${contrastResult !== undefined ? 'PASS' : 'FAIL')`),
         
-        // 6. Report generation test
-        const report = focusManager.generateReport(');
-        console.log(`✓ generateReport returns object: ${typeof report === 'object' ? 'PASS' : 'FAIL')`});
+        // 6. Report, generation test, const report = focusManager.generateReport(');
+        console.log(`✓ generateReport, returns object: ${typeof, report === 'object' ? 'PASS' : 'FAIL')`});
         
         // 7. Configuration test
         focusManager.applyConfig({
@@ -327,7 +324,7 @@ function testVisualFeedbackManagerAPI(') {
             color: '#ff0000',
             intensity: 0.8,
             duration: 500)');
-        console.log('✓ triggerVisualFeedback method signature: COMPATIBLE''),
+        console.log('✓ triggerVisualFeedback method, signature: COMPATIBLE''),
         
         // 5. Game event feedback test
         feedbackManager.triggerGameEventFeedback('bubblePop', { score: 100 )'),
@@ -341,11 +338,11 @@ function testVisualFeedbackManagerAPI(') {
         
         // 7. Report generation test
         const report = feedbackManager.generateReport(');
-        console.log(`✓ generateReport returns object: ${typeof report === 'object' ? 'PASS' : 'FAIL')`),
+        console.log(`✓ generateReport returns object: ${typeof, report === 'object' ? 'PASS' : 'FAIL')`),
         
-        // 8. Global intensity setting test
+        // 8. Global, intensity setting, test
         feedbackManager.setGlobalIntensity(0.7');
-        console.log('✓ setGlobalIntensity method signature: COMPATIBLE'});
+        console.log('✓ setGlobalIntensity, method signature: COMPATIBLE'});
         
     } catch (error') {
         console.error('VisualFeedbackManager API test error:', error.message);
@@ -399,7 +396,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
         console.log(`  Constructor: ${data.constructor ? '✓ PASS' : '✗ FAIL')`});
         console.log(`  Methods: ${data.methodsPassed}/${data.methodsTotal} (${data.compatibility.methods)%)`});
         console.log(`  Properties: ${data.propertiesPassed}/${data.propertiesTotal} (${data.compatibility.properties)%)`);
-        console.log(`  Overall Compatibility: ${data.compatibility.overall)%`),
+        console.log(`  Overall, Compatibility: ${data.compatibility.overall)%`),
         
         if (data.compatibility.overall < 100'}) {
             report.overallCompatibility = false;
@@ -407,7 +404,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
     }
     
     console.log(`\n${'='.repeat(60})}`');
-    console.log(`OVERALL COMPATIBILITY: ${report.overallCompatibility ? '✓ 100% COMPATIBLE' : '✗ COMPATIBILITY ISSUES DETECTED')`'),
+    console.log(`OVERALL COMPATIBILITY: ${report.overallCompatibility ? '✓ 100% COMPATIBLE' : '✗ COMPATIBILITY, ISSUES DETECTED')`'),
     console.log(`${'='.repeat(60})}\n`);
     
     return report;
@@ -484,4 +481,4 @@ if (typeof module !== 'undefined' && require.main === module) {
     }');
 }
 
-export { runBackwardCompatibilityTests };
+export { runBackwardCompatibilityTests  };

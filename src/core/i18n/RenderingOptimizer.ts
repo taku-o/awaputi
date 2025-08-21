@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * レンダリング最適化システム
@@ -18,18 +18,18 @@ export interface ElementMeasurement { rect: DOMRect;
     fontSize: string;
     fontFamily: string;
     width: number;
-    height: number }
+   , height: number }
 
 export interface ElementUpdate { textContent: string;
     originalSize: ElementMeasurement;
-    needsReflow: boolean }
+   , needsReflow: boolean }
 
 export interface BatchProcessor { enabled: boolean;
     debounceTime: number;
     maxWaitTime: number;
     currentBatch: HTMLElement[];
     batchTimer: number | null;
-    maxWaitTimer: number | null }
+   , maxWaitTimer: number | null }
 
 export interface FontOptimizer { preloadedFonts: Set<string>;
     fontLoadPromises: Map<string, Promise<boolean>>,
@@ -45,10 +45,10 @@ export interface AnimationOptimizer { enabled: boolean;
 
 export interface AnimationQueueItem { element: HTMLElement;
     initialState: AnimationState;
-    startTime: number }
+   , startTime: number }
 
 export interface AnimationState { opacity: string;
-    transform: string }
+   , transform: string }
 
 export interface PerformanceMetrics { renderTimes: number[];
     batchSizes: number[];
@@ -56,7 +56,7 @@ export interface PerformanceMetrics { renderTimes: number[];
     animationFrameTimes: number[];
     cacheHitRate: number;
     totalRenders: number;
-    optimizedRenders: number }
+   , optimizedRenders: number }
 
 export interface RenderingStats { totalUpdates: number;
     batchedUpdates: number;
@@ -65,10 +65,10 @@ export interface RenderingStats { totalUpdates: number;
     fontLoads: number;
     animationsOptimized: number;
     renderTime: number;
-    lastOptimizationTime: number }
+   , lastOptimizationTime: number }
 
 export interface OptimizationResult { success: boolean;
-    renderTime: number;
+   , renderTime: number;
     elementsProcessed?: number;
     batchMode?: boolean;
     stats?: OptimizationStatsResult;
@@ -90,32 +90,32 @@ export interface OptimizationStatsResult { totalUpdates: number,
     optimizedRenders: number;
     cacheSize: number;
     measurementCacheSize: number;
-    textContentCacheSize: number ,}
+   , textContentCacheSize: number ,}
 
 export interface CacheEntry { element: HTMLElement;
     update: ElementUpdate;
-    timestamp: number }
+   , timestamp: number }
 
 export interface ElementUpdatePair { element: HTMLElement;
-    update: ElementUpdate
+   , update: ElementUpdate
     }
 
 export interface RenderTimeDistribution { min: number;
     max: number;
     median: number;
-    p95: number }
+   , p95: number }
 
 export interface FontLoadStats { totalLoads: number;
     preloadedFonts: number;
-    averageLoadTime: number }
+   , averageLoadTime: number }
 
 export interface AnimationStats { optimizedAnimations: number;
     reducedMotionEnabled: boolean;
-    averageFrameTime: number }
+   , averageFrameTime: number }
 
 export interface DetailedPerformanceStats extends OptimizationStatsResult { renderTimeDistribution: RenderTimeDistribution;
     fontLoadStats: FontLoadStats;
-    animationStats: AnimationStats
+   , animationStats: AnimationStats
     }
 
 export interface ConfigurationUpdate { optimizationLevel?: OptimizationLevel;
@@ -145,12 +145,12 @@ export class RenderingOptimizer {
     private maxBatchSize: number;
     // レンダリング状態管理
     private isRenderingOptimized: boolean;
-    private pendingUpdates: Map<string, any>;
+    private, pendingUpdates: Map<string, any>;
     private updateQueue: any[];
     private renderFrameId: number | null;
     private lastRenderTime: number;
     // UI要素キャッシュ
-    private elementCache: Map<string, CacheEntry>;
+    private, elementCache: Map<string, CacheEntry>;
     private textContentCache: Map<string, ElementUpdate>;
     private styleCache: Map<string, any>;
     private measurementCache: Map<string, ElementMeasurement>;
@@ -164,7 +164,7 @@ export class RenderingOptimizer {
     // パフォーマンス監視
     private performanceMetrics: PerformanceMetrics;
     // 統計情報
-    private stats: RenderingStats;
+    private, stats: RenderingStats;
 
     constructor(''';
         this.optimizationLevel = 'balanced'; // 'performance', 'balanced', 'quality'
@@ -187,11 +187,11 @@ export class RenderingOptimizer {
         // バッチ処理設定
         this.batchProcessor = {
             enabled: true;
-            debounceTime: 8, // 8ms;
+           , debounceTime: 8, // 8ms;
             maxWaitTime: 32, // 32ms;
             currentBatch: [];
             batchTimer: null;
-            maxWaitTimer: null ,};
+           , maxWaitTimer: null ,};
         // フォント最適化
         this.fontOptimizer = { preloadedFonts: new Set<string>(),
             fontLoadPromises: new Map<string, Promise<boolean>>(),
@@ -210,7 +210,7 @@ export class RenderingOptimizer {
             animationFrameTimes: [];
             cacheHitRate: 0;
             totalRenders: 0;
-            optimizedRenders: 0 ,};
+           , optimizedRenders: 0 ,};
         // 統計情報
         this.stats = { totalUpdates: 0,
             batchedUpdates: 0;
@@ -219,7 +219,7 @@ export class RenderingOptimizer {
             fontLoads: 0;
             animationsOptimized: 0;
             renderTime: 0;
-            lastOptimizationTime: 0 ,};
+           , lastOptimizationTime: 0 ,};
         ;
         // 初期化
         this.initializeOptimizer()';
@@ -369,8 +369,7 @@ export class RenderingOptimizer {
             return 0; }
         
         // 要素タイプによる優先度
-        const tagPriority: Record<string, number> = { ''
-            'H1': 10, 'H2': 9, 'H3': 8,
+        const tagPriority: Record<string, number> = { '', 'H1': 10, 'H2': 9, 'H3': 8,
             'BUTTON': 7, 'INPUT': 7,
             'P': 5, 'SPAN': 4, 'DIV': 3 };
         
@@ -410,7 +409,7 @@ export class RenderingOptimizer {
                     rect,
                     fontSize: computedStyle.fontSize;
                     fontFamily: computedStyle.fontFamily;
-                    width: rect.width, }
+                   , width: rect.width, }
                     height: rect.height }
                 };
                 measurements.set(element, measurement);
@@ -464,7 +463,7 @@ export class RenderingOptimizer {
             
             const update: ElementUpdate = { textContent: translatedText,
                 originalSize: measurement;
-                needsReflow: this.needsReflow(textContent, translatedText, measurement };
+               , needsReflow: this.needsReflow(textContent, translatedText, measurement };
             
             this.textContentCache.set(cacheKey, update);
             return update;
@@ -565,8 +564,7 @@ export class RenderingOptimizer {
     /**
      * 必要なフォントを取得'
      */''
-    private getRequiredFonts(language: string): string[] { const fontMap: Record<string, string[]> = {''
-            'ja': ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic],
+    private getRequiredFonts(language: string): string[] { const fontMap: Record<string, string[]> = {'', 'ja': ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic],
             'zh-CN': ['Noto Sans SC', 'PingFang SC', 'Microsoft YaHei],
             'zh-TW': ['Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei],
             'ko': ['Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo],
@@ -719,8 +717,7 @@ export class RenderingOptimizer {
      * フォント読み込み監視設定
      */'
     private setupFontLoadMonitoring(): void { ''
-        if(document.fonts && document.fonts.addEventListener) {'
-            ';
+        if(document.fonts && document.fonts.addEventListener) {', ';
 
         }
 
@@ -834,7 +831,7 @@ export class RenderingOptimizer {
             totalRenders: this.performanceMetrics.totalRenders;
             optimizedRenders: this.performanceMetrics.optimizedRenders;
             cacheSize: this.elementCache.size;
-            measurementCacheSize: this.measurementCache.size, };
+           , measurementCacheSize: this.measurementCache.size, };
             textContentCacheSize: this.textContentCache.size }
         }
     
@@ -847,15 +844,15 @@ export class RenderingOptimizer {
             renderTimeDistribution: {
                 min: Math.min(...this.performanceMetrics.renderTimes) || 0;
                 max: Math.max(...this.performanceMetrics.renderTimes) || 0;
-                median: this.calculateMedian(this.performanceMetrics.renderTimes), };
+               , median: this.calculateMedian(this.performanceMetrics.renderTimes), };
                 p95: this.calculatePercentile(this.performanceMetrics.renderTimes, 0.95); }
             },
             fontLoadStats: { totalLoads: this.stats.fontLoads;
                 preloadedFonts: this.fontOptimizer.preloadedFonts.size;
-                averageLoadTime: this.calculateAverage(this.performanceMetrics.fontLoadTimes };
+               , averageLoadTime: this.calculateAverage(this.performanceMetrics.fontLoadTimes };
             animationStats: { optimizedAnimations: this.stats.animationsOptimized;
                 reducedMotionEnabled: this.animationOptimizer.reducedMotion;
-                averageFrameTime: this.calculateAverage(this.performanceMetrics.animationFrameTimes }
+               , averageFrameTime: this.calculateAverage(this.performanceMetrics.animationFrameTimes }
         }
     
     /**
@@ -931,8 +928,7 @@ export class RenderingOptimizer {
         ;
         // キャッシュをクリア
         this.clearCache(''';
-        document.documentElement.style.contain = '';)'
-        ')';
+        document.documentElement.style.contain = '';)', ')';
         console.log('RenderingOptimizer, cleaned up'');
 
     }''

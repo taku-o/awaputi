@@ -9,11 +9,11 @@ export interface MotionManager { visualAccessibilityManager: VisualAccessibility
     gameEngine: GameEngine;
     config: MotionConfig;
     userPreferences: UserPreferences;
-    hazardPatterns: Record<string, HazardPattern>,
+   , hazardPatterns: Record<string, HazardPattern>,
     stats: MotionStats;
-    activeAnimations: Map<string, AnimationData>,
+   , activeAnimations: Map<string, AnimationData>,
     animationController: AnimationController;
-    configManager: ConfigManager
+   , configManager: ConfigManager
     ,}
 
 export interface VisualAccessibilityManager { [key: string]: any, }
@@ -29,7 +29,7 @@ export interface MotionConfig { vestibularSafety: boolean,
 export interface VestibularGuidelines { maxRotationSpeed: number;
     maxScaleChange: number;
     maxParallaxDistance: number;
-    flashingThreshold: number }
+   , flashingThreshold: number }
 
 export interface UserPreferences { [key: string]: any, }
 
@@ -50,7 +50,7 @@ export interface AnimationData { id: string,
     startTime: number;
     duration: number | null;
     isActive: boolean;
-    isPaused: boolean ,}
+   , isPaused: boolean ,}
 
 export interface AnimationOptions { duration?: number;
     intensity?: number;
@@ -59,28 +59,28 @@ export interface AnimationOptions { duration?: number;
     vestibularSafe?: boolean;
     [key: string]: any, }
 
-export interface AnimationController { pauseAnimation: (animationId: string) => boolean,
-    adjustAnimationIntensity: (animationId: string, multiplier: number) => boolean,
+export interface AnimationController { pauseAnimation: (animationI;d: string) => boolean,
+    adjustAnimationIntensity: (animationI;d: string, multiplier: number) => boolean,
     pauseAllAnimations: () => number ,}
 }
 
-export interface ConfigManager { setMotionLevel: (level: MotionLevel) => boolean }
+export interface ConfigManager { setMotionLevel: (leve;l: MotionLevel) => boolean }
 }
 
 export interface SafetyMonitor { enabled: boolean;
     checkInterval: number;
     lastCheck: number;
     violationCount: number;
-    interventionCount: number }
+   , interventionCount: number }
 
 export interface SafetyThresholds extends VestibularGuidelines { maxVelocity: number;
     maxAcceleration: number;
     maxJerk: number;
     dangerZoneSize: number;
-    emergencyStopTrigger: number }
+   , emergencyStopTrigger: number }
 
 export interface SafetyViolation { type: ViolationType[];
-    severity: ViolationSeverity;
+   , severity: ViolationSeverity;
     element?: HTMLElement;
     animationId?: string;
     frequency?: number;
@@ -93,38 +93,38 @@ export interface ElementSize { width: number,
     height: number ,}
 
 export interface SafetyEventListener { event: string;
-    handler: EventListener
+   , handler: EventListener
     }
 
 export interface SafetyStats { monitoring: boolean;
     violations: number;
     interventions: number;
-    hazardPatterns: Record<string, boolean>,
+   , hazardPatterns: Record<string, boolean>,
     thresholds: SafetyThresholds;
-    totalWarnings: number ,}
+   , totalWarnings: number ,}
 
 export interface SafetyAlert { message: string;
     severity: ViolationSeverity;
-    timestamp: number;
+   , timestamp: number;
     autoRemove?: boolean;
     duration?: number; }
 
 export interface WarningOverlay { element: HTMLElement,
     severity: ViolationSeverity;
     content: string;
-    timestamp: number ,}
+   , timestamp: number ,}
 
 export interface EmergencyStopInfo { triggered: boolean;
     timestamp: number;
     reason: string;
-    violationCount: number }
+   , violationCount: number }
 
 export interface SafetyInterventionLog { timestamp: number;
     type: InterventionType;
     target: string;
     severity: ViolationSeverity;
     action: string;
-    success: boolean }
+   , success: boolean }
 
 // 列挙型
 export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhanced';
@@ -141,7 +141,7 @@ export type HazardSeverity = 'low' | 'medium' | 'high' | 'critical';
 ';
 
 export type InterventionType = '';
-    | 'immediate_stop' | 'reduce_intensity' | 'add_warning' '';
+    | 'immediate_stop' | 'reduce_intensity' | 'add_warning', '';
     | 'pause_animation' | 'emergency_stop' | 'threshold_adjustment';
 ';
 
@@ -157,7 +157,7 @@ export const DEFAULT_ALERT_DURATION = 10000; // ms
 
 export const SAFETY_THRESHOLDS: SafetyThresholds = { maxRotationSpeed: 45, // degrees per second
     maxScaleChange: 1.5;
-    maxParallaxDistance: 100, // pixels;
+   , maxParallaxDistance: 100, // pixels;
     flashingThreshold: 3, // flashes per second;
     maxVelocity: 500, // pixels per second;
     maxAcceleration: 1000, // pixels per second²;
@@ -221,10 +221,10 @@ export function createSafetyWarningCSS(severity: ViolationSeverity): string { co
             content: '⚠️ 激しいアニメーション';
             position: absolute;
             top: -25px;
-            left: 0, }
+           , left: 0, }
             background: ${colors[severity]};
             color: white;
-            padding: 2px 6px;
+           , padding: 2px 6px;
             border-radius: 3px,
             font-size: 11px,
             z-index: 1000,
@@ -244,7 +244,7 @@ export class VestibularSafetyManager {
     // 設定参照
     private config: MotionConfig;
     private userPreferences: UserPreferences;
-    private hazardPatterns: Record<string, HazardPattern>;
+    private, hazardPatterns: Record<string, HazardPattern>;
     
     // 統計情報
     private stats: MotionStats;
@@ -280,7 +280,7 @@ export class VestibularSafetyManager {
             enabled: true;
             checkInterval: DEFAULT_SAFETY_CHECK_INTERVAL;
             lastCheck: 0;
-            violationCount: 0;
+           , violationCount: 0;
     ,}
             interventionCount: 0 }
         };
@@ -422,8 +422,7 @@ export class VestibularSafetyManager {
             const violation: Partial<SafetyViolation> = { type: [], severity: 'low' ,}
             // Transform 検証
             const transform = computedStyle.transform;''
-            if(transform && transform !== 'none) {'
-                ';
+            if(transform && transform !== 'none) {', ';
 
             }
 
@@ -453,7 +452,7 @@ export class VestibularSafetyManager {
     private checkTransformSafety(;
         transform: string );
         computedStyle: CSSStyleDeclaration);
-        violation: Partial<SafetyViolation>;
+       , violation: Partial<SafetyViolation>;
     ): void { // 回転速度の検証
         const rotation = parseTransformRotation(transform),
         if(rotation !== null) {
@@ -792,9 +791,9 @@ export class VestibularSafetyManager {
                 position: absolute;
                 top: -30px;
                 left: 0;
-                background: ${colors[severity]};
+               , background: ${colors[severity]};
                 color: white;
-                padding: 5px 10px;
+               , padding: 5px 10px;
                 border-radius: 4px,
                 font-size: 12px,
                 z-index: 9999,
@@ -833,7 +832,7 @@ export class VestibularSafetyManager {
                 right: 20px;
                 background: #ff4757;
                 color: white;
-                padding: 15px;
+               , padding: 15px;
                 border-radius: 8px,
                 max-width: 300px,
                 z-index: 10000,
@@ -884,10 +883,10 @@ export class VestibularSafetyManager {
      */'
     private logIntervention(type: InterventionType, violation: Partial<SafetyViolation>): void { const log: SafetyInterventionLog = {''
             timestamp: Date.now(''';
-            target: violation.element? .tagName || violation.animationId || 'unknown', : undefined)';
+           , target: violation.element? .tagName || violation.animationId || 'unknown', : undefined)';
             severity: violation.severity || 'low',);
             action: this.getInterventionDescription(type);
-            success: true ,};
+           , success: true ,};
         this.interventionLog.push(log);
         
         // ログサイズの制限
@@ -913,7 +912,7 @@ export class VestibularSafetyManager {
     getSafetyStats(): SafetyStats { return { monitoring: this.safetyMonitor.enabled,
             violations: this.safetyMonitor.violationCount;
             interventions: this.safetyMonitor.interventionCount;
-            hazardPatterns: Object.entries(this.hazardPatterns).reduce((acc, [key, value]) => {  }
+           , hazardPatterns: Object.entries(this.hazardPatterns).reduce((acc, [key, value]) => {  }
                 acc[key] = value.detected; }
                 return acc;, {} as Record<string, boolean>),
             thresholds: { ...this.safetyThresholds;

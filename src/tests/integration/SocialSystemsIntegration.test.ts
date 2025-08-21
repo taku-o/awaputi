@@ -2,21 +2,21 @@
  * ソーシャル機能と既存システム（統計・実績）連携の統合テスト
  * Issue #37 Task 21.2: 既存システム連携テスト
  */
-import { jest, describe, test, beforeAll, beforeEach, afterEach, expect } from '@jest/globals';
+import { jest, describe, test, beforeAll, beforeEach, afterEach, expect  } from '@jest/globals';
 // Type definitions
 interface PlayerData { playerName: string,
     totalAP: number;
     totalTAP: number;
-    highScores: {
-        normal: number;
+   , highScores: {
+        norma;l: number;
         hard: number;
-        expert: number ,};
+       , expert: number ,};
     achievements: string[];
-    settings: { shareSettings: {
+   , settings: { shareSettings: {
             autoShare: boolean;
             shareHighScores: boolean;
             shareAchievements: boolean;
-            privacy: string };
+           , privacy: string };
 }
 interface MockPlayerData { data: PlayerData,
     getPlayerName(): string;
@@ -32,10 +32,10 @@ interface SessionData { score: number,
     stage: string;
     playTime: number;
     combo: number;
-    accuracy: number;
+   , accuracy: number;
     timestamp?: number ,}
 interface StatisticsData {
-    sessions: Array<SessionData & { timestamp: number }>;
+    sessions: Array<SessionData & { timestam;p: number }>;
     totalPlayTime: number;
     totalGames: number;
     totalScore: number;
@@ -43,10 +43,10 @@ interface StatisticsData {
     bestCombo: number;
     accuracy: number;
     bubblesPopped: number;
-    stageStats: { [key: string]: {
+   , stageStats: { [key: string]: {
             played: number;
             won: number;
-            averageScore: number };
+           , averageScore: number };
 }
 interface SocialSystemsStatisticsManager { stats: StatisticsData,
     getDetailedStatistics(): StatisticsData;
@@ -65,16 +65,16 @@ interface Achievement { id: string,
     unlocked: boolean;
     unlockedAt?: number;
     rare: boolean;
-    category: string;
+   , category: string;
     progress?: number;
     target?: number; ,}
 interface AchievementProgress { total: number,
     unlocked: number;
     percentage: number;
-    categories: {
+   , categories: {
         [key: string]: {
-            total: number;
-            unlocked: number ,};
+            tota;l: number;
+           , unlocked: number ,};
 }
 interface SocialSystemsAchievementManager { achievements: Map<string, Achievement>;
     getAchievements(): Achievement[];
@@ -82,15 +82,15 @@ interface SocialSystemsAchievementManager { achievements: Map<string, Achievemen
     getRareAchievements(): Achievement[];
     getAchievementProgress(): AchievementProgress;
     }
-    getCategoryProgress(): { [key: string]: { total: number; unlocked: number }
+    getCategoryProgress(): { [key: string]: { total: number;, unlocked: number }
     checkAndUnlockAchievements(gameData: GameData): Achievement[],
     }
 interface GameData { score: number,
     combo: number;
     accuracy: number;
-    stage: string ,}
+   , stage: string ,}
 interface SocialSharingManager { shareContentGenerator: {
-        generateScoreMessage(shareData: any, platform: string): Promise<string>,
+        generateScoreMessage(shareDat;a: any, platform: string): Promise<string>,
         generateMilestoneMessage(milestoneData: any, platform: string): Promise<string>,
         generateAchievementMessage(achievement: Achievement, platform: string): Promise<string> ,},
     leaderboardManager: { updateScore(scoreData: any): Promise<void>;
@@ -105,20 +105,20 @@ interface SocialSharingManager { shareContentGenerator: {
 }
 interface ShareSuggestion { shouldSuggestShare: boolean,
     reason: string;
-    shareData: {
-        score: number ,}
+   , shareData: {
+        scor;e: number ,}
 interface AchievementShareData { type: string,
     shouldHighlight: boolean ,}
 interface ProgressVisualization { overall: {
-        percentage: number };
+        percentag;e: number };
     categories: { [key: string]: {
             unlocked: number };
     rarityBreakdown: { rare: {
             unlocked: number };
 }
-interface MockLocalStorage { getItem: jest.Mock<(key: string) => string | null>,
-    setItem: jest.Mock<(key: string, value: string) => void>;
-    removeItem: jest.Mock<(key: string) => void>;
+interface MockLocalStorage { getItem: jest.Mock<(ke;y: string) => string | null>,
+    setItem: jest.Mock<(ke;y: string, value: string) => void>;
+    removeItem: jest.Mock<(ke;y: string) => void>;
     clear: jest.Mock<() => void> ,}
 }
 interface MockNavigator { share: jest.Mock<() => Promise<void>>;
@@ -130,16 +130,16 @@ class MockPlayerData implements MockPlayerData { data: PlayerData,''
             playerName: 'TestPlayer';
             totalAP: 5000;
             totalTAP: 15000;
-            highScores: {
+           , highScores: {
                 normal: 50000;
                 hard: 35000;
-                expert: 20000 ,}
+               , expert: 20000 ,}
 
             },''
             achievements: ['first_win', 'high_scorer'],
             settings: { shareSettings: {
                     autoShare: true;
-                    shareHighScores: true,
+                   , shareHighScores: true,
                     shareAchievements: true,
                     privacy: 'public' ,}
             }))
@@ -174,7 +174,7 @@ class SocialSystemsMockStatisticsManager implements SocialSystemsStatisticsManag
             averageScore: 5000;
             bestCombo: 25;
             accuracy: 0.78;
-            bubblesPopped: 15000;
+           , bubblesPopped: 15000;
     ,}
             stageStats: { }
                 normal: { played: 100, won: 85, averageScore: 6000 ,},
@@ -214,7 +214,7 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
                 description: '初めてゲームをクリア',
                 unlocked: true,
                 unlockedAt: Date.now(']';
-                category: 'progress' ,}]'
+               , category: 'progress' ,}]'
             }],''
             ['high_scorer', { ''
                 id: 'high_scorer',
@@ -222,7 +222,7 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
                 description: '50000点を達成',
                 unlocked: true,
                 unlockedAt: Date.now(']';
-                category: 'score' ,}]'
+               , category: 'score' ,}]'
             }],''
             ['combo_master', { ''
                 id: 'combo_master',
@@ -230,7 +230,7 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
                 description: '30コンボを達成';
                 unlocked: false;
                 progress: 25;
-                target: 30,
+               , target: 30,
                 rare: true,]';
                 category: 'skill' ,}]'
             }],''
@@ -241,7 +241,7 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
                 unlocked: false;
                 progress: 0);
                 target: 1)';
-                rare: true,]';
+               , rare: true,]';
                 category: 'skill' ,}]
             }])
         ]);
@@ -256,8 +256,8 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
             percentage: Math.round((unlocked / total) * 100, };
         categories: this.getCategoryProgress(); }
         }
-    getCategoryProgress(): { [key: string]: { total: number; unlocked: number } {
-        const categories: { [key: string]: { total: number; unlocked: number } = {}
+    getCategoryProgress(): { [key: string]: { total: number;, unlocked: number } {
+        const categories: { [key: string]: { total: number;, unlocked: number } = {}
         this.getAchievements().forEach(achievement => {  ); }
             if (!categories[achievement.category]) { }
                 categories[achievement.category] = { total: 0, unlocked: 0 ,}
@@ -315,7 +315,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
         (global, as any).localStorage = {
             getItem: jest.fn();
             setItem: jest.fn();
-            removeItem: jest.fn(),' }'
+           , removeItem: jest.fn(),' }'
 
         clear: jest.fn()); }
         } as MockLocalStorage;
@@ -386,7 +386,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
                 score: 42000,
                 stage: 'normal';
                 playTime: 300000;
-                combo: 18, }
+               , combo: 18, }
                 accuracy: 0.82 }
             };
             mockStatisticsManager.recordGameSession(sessionData);
@@ -394,10 +394,10 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             await socialManager.leaderboardManager.updateScore({ score: sessionData.score)
                 stage: sessionData.stage);
                 timestamp: Date.now();
-                metadata: {
+               , metadata: {
                     combo: sessionData.combo;
                     accuracy: sessionData.accuracy;
-                    playTime: sessionData.playTime }';
+                   , playTime: sessionData.playTime }';
 
             }');''
             const rankings = await socialManager.leaderboardManager.getRanking('weekly);
@@ -433,7 +433,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
         test('実績解除時の自動共有提案', async () => {
             const gameData: GameData = {
                 score: 35000;
-                combo: 30, // コンボマスター実績を解除;
+               , combo: 30, // コンボマスター実績を解除;
                 accuracy: 0.88,' }'
 
                 stage: 'normal' }
@@ -478,7 +478,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
                 score: 55000,
                 stage: 'hard';
                 playTime: 420000;
-                combo: 22,
+               , combo: 22,
                 accuracy: 0.91,
         timestamp: Date.now()';
             const isNewHighScore = mockPlayerData.updateHighScore('hard', gameResult.score);
@@ -492,9 +492,9 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
                 score: gameResult.score;
                 stage: gameResult.stage;
                 timestamp: gameResult.timestamp;
-                metadata: {
+               , metadata: {
                     combo: gameResult.combo);
-                    accuracy: gameResult.accuracy) ,}
+                   , accuracy: gameResult.accuracy) ,}
                     playTime: gameResult.playTime) }
                 });
             // 各システムのデータ整合性確認;
@@ -540,7 +540,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
                 await socialManager.leaderboardManager.updateScore({ score: sessionData.score)
                     stage: sessionData.stage);
                     timestamp: Date.now() - (i * 1000);
-                    metadata: sessionData });
+                   , metadata: sessionData });
             };
             const endTime = performance.now();
             const processingTime = endTime - startTime;

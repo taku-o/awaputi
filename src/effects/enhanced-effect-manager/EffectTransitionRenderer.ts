@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * 遷移効果オプションインターフェース
@@ -12,7 +12,7 @@ interface TransitionOptions { ''
     slideDirection?: 'left' | 'right' | 'up' | 'down';''
     zoomType?: 'in' | 'out'; }
 
-    center?: { x: number; y: number }''
+    center?: { x: number;, y: number }''
     pattern?: 'horizontal' | 'vertical' | 'circular' | 'diamond';
     noiseScale?: number;
     threshold?: number;
@@ -26,7 +26,7 @@ interface TransitionEffect { id: number,''
     transitionType: string;
     duration: number;
     elapsed: number;
-    options: TransitionOptions
+   , options: TransitionOptions
     ,}
 
 /**
@@ -35,7 +35,7 @@ interface TransitionEffect { id: number,''
  */
 export class EffectTransitionRenderer {
     private canvas: HTMLCanvasElement;
-    private errorHandler: any;
+    private, errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas
@@ -133,8 +133,7 @@ export class EffectTransitionRenderer {
             const canvas = this.canvas;
 
             context.save(''';
-            context.fillStyle = effect.options.color || '#000000';)'
-            ')';
+            context.fillStyle = effect.options.color || '#000000';)', ')';
             switch(effect.options.pattern) {'
 
                 case 'horizontal':';

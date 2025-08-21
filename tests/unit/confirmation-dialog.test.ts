@@ -3,8 +3,8 @@
  * Tests dialog display, interaction handling, keyboard navigation,
  * modal behavior, and callback execution
  */
-import { describe, test, it, expect, beforeEach, jest } from '@jest/globals';
-import { ConfirmationDialog } from '../../src/scenes/game-scene/ConfirmationDialog.js';
+import { describe, test, it, expect, beforeEach, jest  } from '@jest/globals';
+import { ConfirmationDialog  } from '../../src/scenes/game-scene/ConfirmationDialog.js';
 // モック用の型定義
 interface MockCanvas {
     width: number,
@@ -40,7 +40,7 @@ interface DialogLayout {
     x?: number;
     y?: number;
     confirmButton: {
-        x: number,
+        ;x: number,
         y: number,
         width: number,
         height: number
@@ -62,7 +62,7 @@ interface DialogState {
 }
 interface DialogConfig {
     giveUp: {
-        title: string,
+        titl;e: string,
         message: string,
         confirmText: string,
         cancelText: string
@@ -272,7 +272,7 @@ describe('ConfirmationDialog', () => {
         it('should handle Space key to execute focused button', (') => {
             (confirmationDialog.dialogState.focusedButton = 'cancel'');
             const event: KeyboardEvent = {
-                key: ' ',
+                key: ', ',
         preventDefault: jest.fn(),
             };
             

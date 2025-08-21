@@ -5,7 +5,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date; end: Date ,};
+    timeRange?: { star;t: Date;, end: Date ,};
     filters?: Record<string, any>;
     metrics?: string[];
 }
@@ -15,22 +15,22 @@ export interface AnalysisResult {
     data?: any;
     insights?: string[];
     recommendations?: string[];
-    timestamp: number
+   , timestamp: number
 }
 export class APIEndpointManager {
     private storageManager: any;
     private privacyManager: any;
-    private endpoints: Map<string, any>;
+    private, endpoints: Map<string, any>;
     private rateLimiting: {
         enabled: boolean;
         maxRequestsPerMinute: number;
         maxRequestsPerHour: number;
-        requestHistory: Map<string, any[]>
+       , requestHistory: Map<string, any[]>
     };
     private accessControl: {
         enabled: boolean;
         allowedOrigins: string[];
-        requireAuthentication: boolean
+       , requireAuthentication: boolean
     };
     private apiStats: {
         totalRequests: number;
@@ -38,7 +38,7 @@ export class APIEndpointManager {
         failedRequests: number;
         rateLimitedRequests: number;
         averageResponseTime: number;
-        lastRequestTime: number | null
+       , lastRequestTime: number | null
     };
 
     constructor(storageManager: any, privacyManager: any = null) {
@@ -53,14 +53,14 @@ export class APIEndpointManager {
             enabled: true;
             maxRequestsPerMinute: 60;
             maxRequestsPerHour: 1000;
-            requestHistory: new Map() // clientId -> requests[]
+           , requestHistory: new Map() // clientId -> requests[]
         };
         
         // アクセス制御設定
         this.accessControl = {
             enabled: false, // 将来の機能拡張用
             allowedOrigins: ['*'];
-            requireAuthentication: false
+           , requireAuthentication: false
         ,};
         
         // API統計
@@ -70,7 +70,7 @@ export class APIEndpointManager {
             failedRequests: 0;
             rateLimitedRequests: 0;
             averageResponseTime: 0;
-            lastRequestTime: null
+           , lastRequestTime: null
         }
     
     /**
@@ -132,13 +132,13 @@ export class APIEndpointManager {
                 options: {
                     requireAuth: false;
                     rateLimit: true;
-                    anonymizeData: true
+                   , anonymizeData: true
 ,}
                     ...options;
                 stats: { callCount: 0;
                     successCount: 0;
                     errorCount: 0;
-                    averageResponseTime: 0 
+                   , averageResponseTime: 0 
 }
             },
             
@@ -160,7 +160,7 @@ export class APIEndpointManager {
         const requestId = this.generateRequestId();
                 clientId: 'default';
                 skipRateLimit: false;
-                skipAnonymization: false;
+               , skipAnonymization: false;
                 ...options;
             ';
 
@@ -202,9 +202,9 @@ export class APIEndpointManager {
             return this.createSuccessResponse(data, { requestId)
                 endpoint,);
                 query: processedQuery);
-                responseTime: Math.max(responseTime, 0.1), // 最小0.1ms;
+               , responseTime: Math.max(responseTime, 0.1), // 最小0.1ms;
                 dataCount: Array.isArray(data) ? data.length : 1;
-                anonymized: isAnonymized 
+               , anonymized: isAnonymized 
 ,});
         } catch (error) { const responseTime = Math.max(performance.now() - startTime, 0.1);
             
@@ -324,9 +324,9 @@ export class APIEndpointManager {
         return {
             version: '1.0.0',')';
             endpoints: Array.from(this.endpoints.keys());
-            rateLimiting: { enabled: this.rateLimiting.enabled;
+           , rateLimiting: { enabled: this.rateLimiting.enabled;
                 maxRequestsPerMinute: this.rateLimiting.maxRequestsPerMinute;
-                maxRequestsPerHour: this.rateLimiting.maxRequestsPerHour 
+               , maxRequestsPerHour: this.rateLimiting.maxRequestsPerHour 
 ,};
             stats: { ...this.apiStats;
             features: [

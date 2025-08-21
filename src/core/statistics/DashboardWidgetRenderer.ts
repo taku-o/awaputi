@@ -59,7 +59,7 @@ export interface WidgetTheme { backgroundColor: string,
     borderColor: string;
     textColor: string;
     accentColor: string;
-    secondaryColor: string ,}
+   , secondaryColor: string ,}
 
 export interface WidgetRenderResult { type: WidgetType;
     data?: any;
@@ -70,18 +70,18 @@ export interface WidgetRenderResult { type: WidgetType;
 
 export interface MetricData { key: string,
     label: string;
-    format: MetricFormat;
+   , format: MetricFormat;
     value?: number ,}
 
 export interface StatisticItem { label: string;
-    value: string | number }
+   , value: string | number }
 
 export interface ChartData { x?: number;
     value: number;
-    label: string ,}
+   , label: string ,}
 
 export interface ChartOptions { width: number;
-    height: number;
+   , height: number;
     showAxes?: boolean;
     showGrid?: boolean;
     padding?: number;
@@ -93,25 +93,25 @@ export interface ChartOptions { width: number;
 export interface ChartArea { x: number,
     y: number;
     width: number;
-    height: number ,}
+   , height: number ,}
 
 export interface PlayStyleData { label: string;
-    value: number }
+   , value: number }
 
 export interface PerformanceData { label: string;
-    value: number }
+   , value: number }
 
 export interface TrendDataPoint { x: number;
     value: number;
-    label: string }
+   , label: string }
 
 // 列挙型
 export type WidgetType = ;
-    | 'keyMetrics' '';
-    | 'recentAchievements' '';
-    | 'growthTrends' '';
-    | 'playStyle' '';
-    | 'performanceChart' '';
+    | 'keyMetrics', '';
+    | 'recentAchievements', '';
+    | 'growthTrends', '';
+    | 'playStyle', '';
+    | 'performanceChart', '';
     | 'statisticsBreakdown';
 
 export type MetricFormat = 'number' | 'percentage' | 'decimal' | 'time';''
@@ -127,7 +127,7 @@ export class DashboardWidgetRenderer {
             recentAchievements: RecentAchievementsWidget;
             growthTrends: GrowthTrendsWidget;
             playStyle: PlayStyleWidget;
-            performanceChart: PerformanceChartWidget;
+           , performanceChart: PerformanceChartWidget;
     ,}
             statisticsBreakdown: StatisticsBreakdownWidget }
         }
@@ -165,7 +165,7 @@ export class DashboardWidgetRenderer {
  * 主要指標ウィジェット
  */
 class KeyMetricsWidget implements Widget { private statisticsManager: StatisticsManager
-    private metrics: MetricData[]';
+    private, metrics: MetricData[]';
 
     constructor(statisticsManager: StatisticsManager) {
         this.statisticsManager = statisticsManager
@@ -229,7 +229,7 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
 
         return { ''
             type: 'keyMetrics';
-            metrics: this.metrics.map(m = > ({)
+           , metrics: this.metrics.map(m = > ({)
                 ...m);
                 value: this.getMetricValue(stats, m.key); }
             });
@@ -248,8 +248,7 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
     ';
 
     private formatValue(value: number, format: MetricFormat): string { ''
-        switch(format) {'
-            ';
+        switch(format) {', ';
 
         ,}
 
@@ -335,7 +334,7 @@ class RecentAchievementsWidget implements Widget { private statisticsManager: St
  * 成長トレンドウィジェット
  */
 class GrowthTrendsWidget implements Widget { private statisticsManager: StatisticsManager
-    private chartRenderer: ChartRenderer;
+    private, chartRenderer: ChartRenderer;
     constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
 
         this.statisticsManager = statisticsManager
@@ -367,7 +366,7 @@ class GrowthTrendsWidget implements Widget { private statisticsManager: Statisti
             x: 15;
             y: 35;
             width: canvas.width - 30;
-            height: canvas.height - 50 ,};
+           , height: canvas.height - 50 ,};
         ;
         // トレンドデータの生成（模擬データ）
         const trendData = this.generateTrendData()';
@@ -384,7 +383,7 @@ class GrowthTrendsWidget implements Widget { private statisticsManager: Statisti
                 height: chartArea.height;
                 showAxes: false);
                 showGrid: false)';
-                padding: 5,
+               , padding: 5,
                 lineColor: '#3B82F6',' }
 
                 pointColor: '#3B82F6'); }
@@ -415,7 +414,7 @@ class GrowthTrendsWidget implements Widget { private statisticsManager: Statisti
  * プレイスタイルウィジェット
  */
 class PlayStyleWidget implements Widget { private statisticsManager: StatisticsManager
-    private chartRenderer: ChartRenderer;
+    private, chartRenderer: ChartRenderer;
     constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
 
         this.statisticsManager = statisticsManager
@@ -486,7 +485,7 @@ class PlayStyleWidget implements Widget { private statisticsManager: StatisticsM
  * パフォーマンスチャートウィジェット
  */
 class PerformanceChartWidget implements Widget { private statisticsManager: StatisticsManager
-    private chartRenderer: ChartRenderer;
+    private, chartRenderer: ChartRenderer;
     constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
 
         this.statisticsManager = statisticsManager
@@ -518,7 +517,7 @@ class PerformanceChartWidget implements Widget { private statisticsManager: Stat
             x: 15;
             y: 35;
             width: canvas.width - 30;
-            height: canvas.height - 50 ,};
+           , height: canvas.height - 50 ,};
         // パフォーマンスデータ
         const performanceData: PerformanceData[] = ['';
             { label: 'スコア', value: 1250 ,},''
@@ -540,7 +539,7 @@ class PerformanceChartWidget implements Widget { private statisticsManager: Stat
                 width: chartArea.width;
                 height: chartArea.height);
                 showAxes: true);
-                showGrid: true, }
+               , showGrid: true, }
                 padding: 5); }
         }
         ';
@@ -560,7 +559,7 @@ class PerformanceChartWidget implements Widget { private statisticsManager: Stat
  * 統計詳細ウィジェット
  */
 class StatisticsBreakdownWidget implements Widget { private statisticsManager: StatisticsManager
-    private chartRenderer: ChartRenderer;
+    private, chartRenderer: ChartRenderer;
     constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
 
         this.statisticsManager = statisticsManager

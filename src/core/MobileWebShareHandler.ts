@@ -15,23 +15,23 @@ export class MobileWebShareHandler {
             ios: {
                 supportedFromVersion: {
                     safari: 14.0;
-                    chrome: 89.0;
+                   , chrome: 89.0;
     }
                     firefox: 93.0 }
                 };
                 shareOptions: { title: true;
                     text: true;
                     url: true;
-                    files: true // iOS 15+ }
+                   , files: true // iOS 15+ }
             };
             android: { supportedFromVersion: {
                     chrome: 75.0;
                     samsung: 12.0;
-                    firefox: 79.0 };
+                   , firefox: 79.0 };
                 shareOptions: { title: true;
                     text: true;
                     url: true;
-                    files: true // Android 10+ }
+                   , files: true // Android 10+ }
 }
 
     /**
@@ -52,7 +52,7 @@ export class MobileWebShareHandler {
             
             console.log('MobileWebShareHandler initialized:', {)
                 supported: this.isSupported);
-                browser: this.browserInfo,);
+               , browser: this.browserInfo,);
                 capabilities: this.shareCapabilities),
             ' }'
 
@@ -68,7 +68,7 @@ export class MobileWebShareHandler {
             version: '0.0',
             engine: 'unknown';
             mobile: false;
-            standalone: false);
+           , standalone: false);
         })'
         // プラットフォーム検出
         if(/iPhone|iPad|iPod/i.test(userAgent)) { ''
@@ -154,7 +154,7 @@ export class MobileWebShareHandler {
             fileShare: false;
             maxFileSize: 0;
             supportedMimeTypes: [];
-            supportedFields: [] };
+           , supportedFields: [] };
         if(!this.isSupported) { return capabilities; }
 
         // 基本共有機能のテスト
@@ -163,8 +163,7 @@ export class MobileWebShareHandler {
             const basicData = { title: 'Test', text: 'Test', url: window.location.href ,}
 
             capabilities.basicShare = navigator.canShare ? navigator.canShare(basicData) : true;''
-            if(capabilities.basicShare) {'
-                ';
+            if(capabilities.basicShare) {', ';
 
             }
 
@@ -256,8 +255,7 @@ export class MobileWebShareHandler {
      * フォールバック機能の設定
      */''
     setupFallbackHandlers()';
-        if(this.browserInfo.platform === 'ios) {'
-        ';
+        if(this.browserInfo.platform === 'ios) {', ';
 
     }
 
@@ -365,7 +363,7 @@ export class MobileWebShareHandler {
 
         return { success: true,''
             method: 'web-share-api';
-            platform: this.browserInfo.platform, };
+           , platform: this.browserInfo.platform, };
             browser: this.browserInfo.browser }
         }
 
@@ -395,7 +393,7 @@ export class MobileWebShareHandler {
             return { success: true,''
                 method: 'fallback';
                 fallbackType: key;
-                fallbackName: handler.name, };
+               , fallbackName: handler.name, };
                 ...result
             } catch (fallbackError) { // 複数のフォールバックを順次試行
             for(let, i = 1; i < availableFallbacks.length; i++) {
@@ -406,7 +404,7 @@ export class MobileWebShareHandler {
                     return { success: true,''
                         method: 'fallback';
                         fallbackType: fallbackKey;
-                        fallbackName: fallbackHandler.name;
+                       , fallbackName: fallbackHandler.name;
             ,}
                         previousErrors: [fallbackError.message], };
                         ...result
@@ -423,8 +421,7 @@ export class MobileWebShareHandler {
      * フォールバック優先度の取得'
      */''
     getFallbackPriority(fallbackKey) {'
-        const priorities = {''
-            'ios-safari': 1,
+        const priorities = {'', 'ios-safari': 1,
             'ios-chrome': 2,
             'android-intent': 1,
             'clipboard': 8,
@@ -539,8 +536,7 @@ export class MobileWebShareHandler {
     /**
      * クリップボードハンドラーの作成
      */
-    createClipboardHandler() {'
-        ';
+    createClipboardHandler() {', ';
 
     }
 
@@ -622,7 +618,7 @@ export class MobileWebShareHandler {
             transform: translateX(-50%);
             background: #333;
             color: white;
-            padding: 12px 24px;
+           , padding: 12px 24px;
             border-radius: 8px,
             z-index: 10000,
             font-size: 14px,

@@ -3,8 +3,8 @@
  * Provides error recovery utilities for mock-related issues across different environments
  */
 
-import { jest } from '@jest/globals';
-import { crossEnvironmentManager } from './CrossEnvironmentManager';
+import { jest  } from '@jest/globals';
+import { crossEnvironmentManager  } from './CrossEnvironmentManager';
 
 export class MockErrorHandler {
   constructor() {
@@ -527,7 +527,7 @@ export class MockErrorHandler {
         return {
           success: true,
           message: 'Jest functions are already available';
-          mockApplied: 'none',
+         , mockApplied: 'none',
           guidance: ['Jest functions should work normally']
         };
       }
@@ -567,7 +567,7 @@ export class MockErrorHandler {
       return {
         success: true,
         message: 'Jest function fallback applied successfully';
-        mockApplied: 'jest.fn',
+       , mockApplied: 'jest.fn',
         capabilities: {
           mockFunctions: true,
           mockCalls: true,
@@ -584,7 +584,7 @@ export class MockErrorHandler {
       return {
         success: false,
         message: 'Failed to apply Jest function fallback';
-        error: error.message,
+       , error: error.message,
         guidance: [
           'Import jest from @jest/globals',
           'Check Jest configuration',
@@ -617,7 +617,7 @@ export class MockErrorHandler {
       if (strategy.detect(error') {
         console.log(`MockErrorHandler: Using strategy "${strategyName")"`),
         
-        const result = strategy.recover(options"});
+        const, result = strategy.recover(options"});
         
         // Update error log
         this.errorLog[this.errorLog.length - 1].recoveryAttempted = true;

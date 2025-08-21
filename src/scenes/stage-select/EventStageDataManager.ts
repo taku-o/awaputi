@@ -12,10 +12,10 @@ export interface EventStage { id: string,
     name: string;
     description: string;
     icon?: string;''
-    type: 'seasonal' | 'special' | 'challenge' | 'default',
+   , type: 'seasonal' | 'special' | 'challenge' | 'default',
     season?: 'spring' | 'summer' | 'autumn' | 'winter';
     schedule?: {
-        activatedAt?: number;
+        activatedA;t?: number;
         deactivatedAt?: number; };
     activatedAt?: number;
     requirements?: EventRequirements;
@@ -40,20 +40,20 @@ export interface EventNotification {;
     title: string;
     message: string;
     timestamp: number;
-    read: boolean }
+   , read: boolean }
 
 export interface EventParticipationRecord { eventId: string;
     playerId: string;
-    timestamp: number }
+   , timestamp: number }
 
 export interface NotificationData { type: string;
     title: string;
     message: string;
     icon: string;
-    duration: number }
+   , duration: number }
 
 export interface EventAccessResult { canAccess: boolean;
-    reason: string }
+   , reason: string }
 
 // Extended interfaces for game engine components
 interface ExtendedGameEngine { canvas: HTMLCanvasElement;
@@ -81,12 +81,12 @@ export class EventStageDataManager {
     private selectedEventIndex: number = -1;
     private showingEvents: boolean = false;
     private eventScrollOffset: number = 0;
-    private readonly maxVisibleEvents: number = 4,
+    private readonly, maxVisibleEvents: number = 4,
     
     // 通知関連の状態
     private eventNotifications: EventNotification[] = [];
     private unreadNotificationCount: number = 0;
-    private notificationCheckInterval: number | null = null;
+    private, notificationCheckInterval: number | null = null;
     constructor(stageSelectScene: StageSelectScene) {
 
         this.stageSelectScene = stageSelectScene
@@ -128,7 +128,7 @@ export class EventStageDataManager {
                 activatedAt: event.activatedAt || event.startTime;
                 requirements: event.requirements;
                 limits: event.limits);
-                rewards: event.rewards ,}
+               , rewards: event.rewards ,}
             });
         } else { this.availableEvents = []; }
     }
@@ -163,18 +163,18 @@ export class EventStageDataManager {
         // 通知リストを更新
         this.eventNotifications = [...newEvents.map(event => ({ : undefined)'
                 type: 'new_event' as const)';
-                eventId: event.id,')';
+               , eventId: event.id,')';
                 title: '新しいイベント開始！');
-                message: `${event.name,}が開始されました`, }
+               , message: `${event.name,}が開始されました`, }
                 timestamp: event.schedule? .activatedAt || event.activatedAt || Date.now(}), : undefined'
                 read: false'';
             }'),
 
             ...endingSoonEvents.map(event => ({ ')'
                 type: 'ending_soon' as const)';
-                eventId: event.id,')';
+               , eventId: event.id,')';
                 title: 'イベント終了間近！');
-                message: `${event.name,}まもなく終了`, }
+               , message: `${event.name,}まもなく終了`, }
                 timestamp: Date.now(});
                 read: false];
             })]
@@ -229,8 +229,7 @@ export class EventStageDataManager {
         context.fillStyle = '#FFFFFF';''
         context.font = 'bold, 12px Arial';''
         context.textAlign = 'center';''
-        context.textBaseline = 'middle';)'
-        ')';
+        context.textBaseline = 'middle';)', ')';
         const displayCount = this.unreadNotificationCount > 99 ? '99+' : this.unreadNotificationCount.toString();
         context.fillText(displayCount, badgeX, badgeY);
         
@@ -276,7 +275,7 @@ export class EventStageDataManager {
                     this.gameEngine.achievementNotificationSystem.queueNotification({''
                         type: 'info',)';
                         title: 'イベント通知')';
-                        message: latestNotification.message;
+                       , message: latestNotification.message;
         ,}
 
                         icon: '📢',) }
@@ -334,7 +333,7 @@ export class EventStageDataManager {
                 this.gameEngine.achievementNotificationSystem.queueNotification({''
                     type: 'warning',)';
                     title: 'イベント参加不可')';
-                    message: accessResult.reason,
+                   , message: accessResult.reason,
                     icon: '⚠️', }
                     duration: 4000); }
             }
@@ -426,8 +425,7 @@ export class EventStageDataManager {
      * イベントステージ開始処理
      */
     private startEventStageFromSelection(event: EventStage): void { try {'
-            if(!this.gameEngine.eventStageManager) {'
-                ';
+            if(!this.gameEngine.eventStageManager) {', ';
 
             }
 
@@ -457,7 +455,7 @@ export class EventStageDataManager {
 
                     this.gameEngine.sceneManager.switchScene('game', {)'
                         stageType: 'event');
-                        eventId: event.id, }
+                       , eventId: event.id, }
                         eventConfig: event); }
                 }
                 
@@ -558,11 +556,11 @@ export class EventStageDataManager {
     private renderEventStageItem(;
         context: CanvasRenderingContext2D;
         event: EventStage;
-        x: number, ;
+       , x: number, ;
         y: number, ;
         width: number );
         height: number);
-        isSelected: boolean;
+       , isSelected: boolean;
     ): void { context.save(),
         ;
         // アイテム背景
@@ -648,11 +646,11 @@ export class EventStageDataManager {
      */
     private renderEventTimer( : undefined
         context: CanvasRenderingContext2D;
-        timeRemaining: number, ;
+       , timeRemaining: number, ;
         x: number, ;
         y: number );
         width: number);
-        height: number;
+       , height: number;
     ): void { context.save(),
         
         // 残り時間の計算
@@ -726,7 +724,7 @@ export class EventStageDataManager {
             showingEvents: this.showingEvents;
             eventScrollOffset: this.eventScrollOffset;
             maxVisibleEvents: this.maxVisibleEvents;
-            eventNotifications: this.eventNotifications, };
+           , eventNotifications: this.eventNotifications, };
             unreadNotificationCount: this.unreadNotificationCount }
         }
 
@@ -735,7 +733,7 @@ export class EventStageDataManager {
      */
     public setEventState(state: Partial<{ selectedEventIndex: number)
         showingEvents: boolean);
-        eventScrollOffset: number)>): void {
+       , eventScrollOffset: number)>): void {
         if(state.selectedEventIndex !== undefined) {
             
         }

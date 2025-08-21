@@ -1,10 +1,10 @@
-import { Scene } from '../core/Scene.js';''
-import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';''
-import { getLoggingSystem } from '../core/LoggingSystem.js';''
-import { AccessibilitySettingsManager, type ExtendedStatistics } from './settings-scene/AccessibilitySettingsManager.js';''
-import { VolumeControlComponent } from '../components/VolumeControlComponent.js';''
-// import { AccessibilityProfileComponent } from '../components/AccessibilityProfileComponent.js';''
-// import { SettingsImportExportComponent } from '../components/SettingsImportExportComponent.js';
+import { Scene  } from '../core/Scene.js';''
+import { NavigationContextManager  } from '../core/navigation/NavigationContextManager.js';''
+import { getLoggingSystem  } from '../core/LoggingSystem.js';''
+import { AccessibilitySettingsManager, type, ExtendedStatistics  } from './settings-scene/AccessibilitySettingsManager.js';''
+import { VolumeControlComponent  } from '../components/VolumeControlComponent.js';''
+// import { AccessibilityProfileComponent  } from '../components/AccessibilityProfileComponent.js';''
+// import { SettingsImportExportComponent  } from '../components/SettingsImportExportComponent.js';
 
 // Settings Scene specific types
 export interface SettingOption { value: string,
@@ -25,7 +25,7 @@ export interface SettingItem { key: string; }
 export interface SettingsLayout { categoryWidth: number,
     settingsPadding: number;
     itemHeight: number;
-    titleHeight: number ,}
+   , titleHeight: number ,}
 
 export interface ConfirmDialogData { message: string;
     onConfirm?: () => void; }
@@ -41,7 +41,7 @@ export interface SettingsSceneState { currentCategory: string;
     isEditingValue: boolean;
     tempValue: string | null;
     showingConfirmDialog: boolean;
-    confirmDialogData: ConfirmDialogData | null;
+   , confirmDialogData: ConfirmDialogData | null;
     showingProfileDialog?: boolean;
     profileDialogData?: ProfileDialogData | null;
     hasContextualHelp?: boolean;
@@ -119,7 +119,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // レイアウト設定
         this.layout = { categoryWidth: 200;
             settingsPadding: 20;
-            itemHeight: 60; }
+           , itemHeight: 60; }
     ,}
             titleHeight: 40 }
         }
@@ -250,8 +250,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             validator: 'importExport');
         // 項目の有効性を検証
         const validItems = accessibilityItems.filter(item => { );''
-            if(!item || !item.key || !item.label) {'
-                ';
+            if(!item || !item.key || !item.label) {', ';
 
             ,}
 
@@ -396,9 +395,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     exit() {
         // 変更を保存
         this.saveSettings()';
-        console.log('[SettingsScene] 設定画面を終了します'');'
-
-        ';
+        console.log('[SettingsScene] 設定画面を終了します'');', ';
 
     }
 
@@ -814,15 +811,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.fillText(`現在: ${profileName)`, x + 10, y + 5');
         
         // プロファイル切り替えボタン
-        const buttonWidth = 60;
-        const buttonHeight = 24;
-        const buttonY = controlY + 3;
-        const buttonX = x + controlWidth - buttonWidth - 5;
+        const, buttonWidth = 60;
+        const, buttonHeight = 24;
+        const, buttonY = controlY + 3;
+        const, buttonX = x + controlWidth - buttonWidth - 5;
 
         context.fillStyle = isSelected ? '#3498db' : '#95a5a6';''
         context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);''
         context.fillStyle = '#ffffff';''
-        context.font = '12px Arial, sans-serif';''
+        context.font = '12px, Arial, sans-serif';''
         context.textAlign = 'center';''
         context.fillText('変更', buttonX + buttonWidth / 2, buttonY + 16};
         ';
@@ -1004,7 +1001,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.textAlign = 'center';
 
         context.fillText(')';
-            '↑↓: 項目選択  ←→: カテゴリ切り替え  Enter: 設定変更  Esc: 戻る');
+            '↑↓: 項目選択  ←→: カテゴリ切り替え  Enter: 設定変更 , Esc: 戻る');
             width / 2,);
     }
             helpY); }
@@ -1014,8 +1011,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      * 入力処理'
      */''
     handleInput(event: Event): boolean | void { ''
-        if(event.type === 'keydown) {'
-            ';
+        if(event.type === 'keydown) {', ';
 
         }
 
@@ -1419,7 +1415,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         (this.accessibilitySettingsManager, as any).applyProfile((nextProfile, as any).id);
 
         console.log(`[SettingsScene] Switched, to profile: ${nextProfile.name)`'),'''
-        this.loggingSystem.info('SettingsScene', `Profile switched to: ${nextProfile.name,}`},
+        this.loggingSystem.info('SettingsScene', `Profile, switched to: ${nextProfile.name,}`},
         
     }
         // 設定項目を更新 })
@@ -1464,8 +1460,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             this.cancelTextEditing(); }
         } else if (this.showingConfirmDialog) { this.closeConfirmDialog(); } else {  // NavigationContextManagerを使用して適切な戻り先を決定
             try {'
-                if(!this.gameEngine.sceneManager) {'
-                    ';
+                if(!this.gameEngine.sceneManager) {', ';
 
                 }
 
@@ -1482,7 +1477,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 if(!success) {
                 ';
 
-                    console.error(`Failed, to navigate, to ${targetScene) from settings screen`');'
+                    console.error(`Failed, to navigate, to ${targetScene) from, settings screen`');'
 
                     // フォールバック: menuシーンに戻る試行
                     if (targetScene !== 'menu''} {''
@@ -1587,8 +1582,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     /**
      * アクセシビリティ機能の統合状態取得
      */
-    getAccessibilityIntegrationStatus() {'
-        ';
+    getAccessibilityIntegrationStatus() {', ';
 
     }
 
@@ -1598,7 +1592,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
         return { integrated: true,
             stats: this.accessibilitySettingsManager.getStats();
-            profileCount: this.accessibilitySettingsManager.getAvailableProfiles().length, };
+           , profileCount: this.accessibilitySettingsManager.getAvailableProfiles().length, };
             extendedSettings: this.accessibilitySettingsManager.getExtendedAccessibilitySettings().length }
         }
     

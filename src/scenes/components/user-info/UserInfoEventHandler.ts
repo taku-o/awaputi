@@ -4,8 +4,8 @@
  * UserInfoSceneから分離されたイベント処理機能を提供
  */
 
-import { GameEngine } from '../../../types/gameEngine';''
-import { EventBus } from '../../../types/eventBus';
+import { GameEngine  } from '../../../types/gameEngine';''
+import { EventBus  } from '../../../types/eventBus';
 
 // イベント関連の型定義
 interface DialogData { type: string,
@@ -19,18 +19,18 @@ interface TabData { tabId: string;
     previousTabId?: string }
 
 interface EventCoordinates { x: number;
-    y: number }
+   , y: number }
 
 interface BackButton { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface HitArea { x: number;
     y: number;
     width: number;
     height: number;
-    id: string }
+   , id: string }
 
 interface HitAreas { tabs: HitArea[];
     buttons?: HitArea[]
@@ -38,7 +38,7 @@ interface HitAreas { tabs: HitArea[];
 
 interface Layout { contentPadding: number;
     headerHeight: number;
-    tabHeight: number;
+   , tabHeight: number;
     [key: string]: any, }
 
 // シーン状態のインターフェース
@@ -50,7 +50,7 @@ interface TabManager { switchTab(tabId: string): void,
     handleTabContentClick(x: number, y: number, contentX: number, contentY: number, contentWidth: number, contentHeight: number): boolean ,}
 
 interface ProfileManager { handleClick?(x: number, y: number): boolean 
-interface HelpSystem { handleClick(x: number, y: number, canvas: HTMLCanvasElement): boolean ,}
+interface HelpSystem { handleClick(;x: number, y: number, canvas: HTMLCanvasElement): boolean ,}
 
 interface DialogManager { handleClick(x: number, y: number): boolean,
     handleKeyboard(event: KeyboardEvent): boolean, }
@@ -66,7 +66,7 @@ export class UserInfoEventHandler {
     // イベント処理状態
     private lastClickTime: number = 0;
     private lastKeyTime: number = 0;
-    private readonly debounceDelay: number = 200,
+    private readonly, debounceDelay: number = 200,
     
     constructor(gameEngine: GameEngine, eventBus: EventBus | null, sceneState: SceneState) {
     
@@ -184,7 +184,7 @@ export class UserInfoEventHandler {
      * クリック入力の処理
      */
     private handleClickInput(;
-        event: MouseEvent | TouchEvent, ;
+       , event: MouseEvent | TouchEvent, ;
         tabManager?: TabManager;
         helpSystem?: HelpSystem
     );
@@ -226,8 +226,7 @@ export class UserInfoEventHandler {
         }
         this.lastKeyTime = now;
         // ダイアログが開いている場合
-        if(dialogManager && this.sceneState.get('activeDialog) { return dialogManager.handleKeyboard(event); }'
-        ';
+        if(dialogManager && this.sceneState.get('activeDialog) { return dialogManager.handleKeyboard(event); }', ';
         // 一般的なキーボードショートカット
         switch(event.key) {'
 
@@ -285,7 +284,7 @@ export class UserInfoEventHandler {
         tabManager: TabManager
     );
         renderer: Renderer);
-        canvas: HTMLCanvasElement;
+       , canvas: HTMLCanvasElement;
     ): boolean { const hitAreas = renderer.calculateHitAreas(canvas, tabManager);
         
         for(const, tabArea of, hitAreas.tabs) {
@@ -309,7 +308,7 @@ export class UserInfoEventHandler {
         tabManager: TabManager
     );
         renderer: Renderer);
-        canvas: HTMLCanvasElement;
+       , canvas: HTMLCanvasElement;
     ): boolean { const layout = renderer.calculateLayout(canvas),
         const contentX = layout.contentPadding;
         const contentY = layout.headerHeight + layout.tabHeight;
@@ -388,8 +387,7 @@ export class UserInfoEventHandler {
         ';
         // 自動でエラーメッセージをクリア
         if(this.sceneState.get('errorTimeout)) {''
-            clearTimeout(this.sceneState.get('errorTimeout); }'
-        ';
+            clearTimeout(this.sceneState.get('errorTimeout); }', ';
 
         const timeout = setTimeout(() => { this.clearErrorMessage();' }'
 
@@ -419,8 +417,7 @@ export class UserInfoEventHandler {
      */''
     public dispose()';
         const timeout = this.sceneState.get('errorTimeout);
-        if(timeout) {'
-            ';
+        if(timeout) {', ';
 
         }
 

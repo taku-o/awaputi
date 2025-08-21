@@ -1,11 +1,11 @@
-import { getErrorHandler } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler';
 
 /**
  * RGBカラーインターフェース
  */
 interface RGBColor { r: number,
     g: number;
-    b: number ,}
+   , b: number ,}
 
 /**
  * 光源インターフェース
@@ -16,14 +16,14 @@ interface LightSource { x: number;
     intensity: number;
     currentIntensity?: number;
     color: RGBColor;
-    enabled: boolean;
+   , enabled: boolean;
     castShadows?: boolean }
 
 /**
  * 影を投影するオブジェクトインターフェース
  */
 interface ShadowObject { x: number;
-    y: number;
+   , y: number;
     size?: number;
     type?: string; }
 
@@ -34,13 +34,13 @@ interface ShadowCaster { object: ShadowObject,
     enabled: boolean,
     opacity: number,
     shadowType: 'hard' | 'soft';
-    blur: number ,}
+   , blur: number ,}
 
 /**
  * バブルオブジェクトインターフェース
  */
 interface BubbleObject { x: number;
-    y: number;
+   , y: number;
     size?: number;
     type?: string; }
 
@@ -51,7 +51,7 @@ interface BubbleObject { x: number;
 export class LightingSystemRenderer {
     // @ts-ignore - Canvas may be used in future lighting calculations
     private canvas: HTMLCanvasElement;
-    private errorHandler: any;
+    private, errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas

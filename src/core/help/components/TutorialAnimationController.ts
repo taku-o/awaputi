@@ -4,8 +4,8 @@
  * TutorialOverlayから分離されたアニメーション機能
  */
 
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';''
-import { LoggingSystem } from '../../LoggingSystem.js';
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
 export interface AnimationConfig { fadeInDuration: number,
@@ -19,32 +19,32 @@ export interface AnimationConfig { fadeInDuration: number,
     glowIntensity: number;
     bounceHeight: number;
     bounceDuration: number;
-    easingFunction: string ,}
+   , easingFunction: string ,}
 
 export interface HighlightAnimation { isActive: boolean;
     startTime: number;
     type: HighlightAnimationType;
     intensity: number;
     currentFrame: number;
-    element: HTMLElement | null }
+   , element: HTMLElement | null }
 
 export interface PanelAnimation { isActive: boolean;
     startTime: number;
     type: PanelAnimationType;
     direction: AnimationDirection;
     progress: number;
-    element: HTMLElement | null }
+   , element: HTMLElement | null }
 
 export interface SpotlightAnimation { isActive: boolean;
     startTime: number;
     currentRadius: number;
     targetRadius: number;
     expansion: boolean;
-    element: HTMLElement | null }
+   , element: HTMLElement | null }
 
 export interface AnimationState { highlight: HighlightAnimation;
     panel: PanelAnimation;
-    spotlight: SpotlightAnimation
+   , spotlight: SpotlightAnimation
     }
 
 export type HighlightAnimationType = 'pulse' | 'breathing' | 'ripple' | 'sparkle' | 'bounce';''
@@ -61,7 +61,7 @@ export interface EasingFunctions { linear: EasingFunction,
     easeOutCubic: EasingFunction;
     easeInOutCubic: EasingFunction;
     easeInBounce: EasingFunction;
-    easeOutBounce: EasingFunction
+   , easeOutBounce: EasingFunction
     ,}
 
 export type AnimationFunction = () => void;
@@ -76,7 +76,7 @@ export class TutorialAnimationController {
     private animationQueue: AnimationFunction[];
     private isProcessingQueue: boolean;
     private easingFunctions: EasingFunctions;
-    private animationFrameId: number | null;
+    private, animationFrameId: number | null;
     constructor() {
 ';
 
@@ -89,23 +89,23 @@ export class TutorialAnimationController {
         // アニメーション状態管理
         this.animations = { highlight: {
                 isActive: false;
-                startTime: 0,
+               , startTime: 0,
                 type: 'pulse';
                 intensity: 1.0;
                 currentFrame: 0;
-                element: null ,};
+               , element: null ,};
             panel: { isActive: false;
-                startTime: 0,
+               , startTime: 0,
                 type: 'slideIn',
                 direction: 'bottom';
                 progress: 0;
-                element: null ,};
+               , element: null ,};
             spotlight: { isActive: false;
                 startTime: 0;
                 currentRadius: 0;
                 targetRadius: 0;
                 expansion: false;
-                element: null }
+               , element: null }
         };
         // アニメーションキュー
         this.animationQueue = [];
@@ -162,8 +162,7 @@ export class TutorialAnimationController {
      * @param intensity - アニメーション強度'
      */''
     startHighlightAnimation(element: HTMLElement, type: HighlightAnimationType = 'pulse', intensity: number = 1.0): void { try {'
-            if(!element) {'
-                ';
+            if(!element) {', ';
 
             }
 
@@ -187,8 +186,7 @@ export class TutorialAnimationController {
      * @param direction - 方向'
      */''
     startPanelAnimation(element: HTMLElement, type: PanelAnimationType = 'slideIn', direction: AnimationDirection = 'bottom): void { try {'
-            if(!element) {'
-                ';
+            if(!element) {', ';
 
             }
 
@@ -212,8 +210,7 @@ export class TutorialAnimationController {
      * @param expansion - 拡張するかどうか
      */'
     startSpotlightAnimation(element: HTMLElement, targetRadius: number, expansion: boolean = true): void { try {'
-            if(!element) {'
-                ';
+            if(!element) {', ';
 
             }
 
@@ -526,8 +523,7 @@ export class TutorialAnimationController {
     private applySlideInEffect(element: HTMLElement, progress: number, direction: AnimationDirection): void { ''
         let transform = '';
 
-        switch(direction) {'
-            ';
+        switch(direction) {', ';
 
         }
 

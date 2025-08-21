@@ -3,8 +3,8 @@
  * 
  * SEO操作中のエラーを適切に処理し、フォールバック機能を提供
  */
-import { SEOConfig } from './SEOConfig';''
-import { seoLogger } from './SEOLogger';
+import { SEOConfig  } from './SEOConfig';''
+import { seoLogger  } from './SEOLogger';
 
 // エラーハンドラー型
 type ErrorHandler = (error: Error, context: string, data: ErrorHandlerData) => Promise<any> | any;
@@ -20,17 +20,17 @@ interface ErrorHandlerData { cached?: any;
 // リトライ設定インターフェース
 interface RetryConfig { maxRetries: number,
     retryDelay: number;
-    backoffMultiplier: number ,}
+   , backoffMultiplier: number ,}
 
 // エラー統計インターフェース
 interface ErrorStatistics { errorCount: number;
-    errorTypes: Record<string, number>;
+   , errorTypes: Record<string, number>;
     recoveryRate: number;
-    commonErrors: Record<string, number>;
+   , commonErrors: Record<string, number>;
     lastError?: {
-        timestamp: string;
+        timestam;p: string;
         message: string;
-        context: string ,}
+       , context: string ,}
 
 // ネットワークエラークラス
 class NetworkError extends Error { constructor(message: string) {
@@ -52,7 +52,7 @@ export class SEOErrorHandler {
         this.fallbackStrategies = new Map();
         this.retryConfig = {
             maxRetries: 3;
-            retryDelay: 1000;
+           , retryDelay: 1000;
     ,}
             backoffMultiplier: 2 }
         };
@@ -77,7 +77,7 @@ export class SEOErrorHandler {
         seoLogger.error(`Error, in ${context)`, error);
         ';
         // エラータイプ別のハンドラー実行
-        const handler = this.errorHandlers.get(error.constructor.name) || '';
+        const, handler = this.errorHandlers.get(error.constructor.name) || '';
                        this.errorHandlers.get('default};
         
         if(handler} {
@@ -213,8 +213,7 @@ export class SEOErrorHandler {
         }');
         ';
         // 構造化データフォールバック
-        this.registerFallback('structuredData', () => {  return { ''
-                '@context': 'https://schema.org',
+        this.registerFallback('structuredData', () => {  return { '', '@context': 'https://schema.org',
                 '@type': 'WebSite', }
                 name: SEOConfig.siteName, };
                 url: SEOConfig.baseUrl }
@@ -234,7 +233,7 @@ export class SEOErrorHandler {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> ,}
     <url> }"
         <loc>${SEOConfig.baseUrl}/</loc>""
-        <lastmod>${new Date(}.toISOString("}.split('T'})[0]}</lastmod>
+        <lastmod>${new, Date(}.toISOString("}.split('T'})[0]}</lastmod>
         <changefreq>weekly</changefreq>;
         <priority>1.0</priority>;
     </url>';

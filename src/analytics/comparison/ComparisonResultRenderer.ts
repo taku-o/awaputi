@@ -85,8 +85,7 @@ export class ComparisonResultRenderer {
         const total = above_average + average + below_average;
 
         let overallPerformance = 'average';''
-        if(above_average > below_average) {'
-            ';
+        if(above_average > below_average) {', ';
 
         }
 
@@ -101,7 +100,7 @@ export class ComparisonResultRenderer {
         return { overallPerformance,
             performanceRatio,
             strongMetrics: this.identifyStrongMetrics(comparison);
-            weakMetrics: this.identifyWeakMetrics(comparison), };
+           , weakMetrics: this.identifyWeakMetrics(comparison), };
             analysis: this.generateBenchmarkAnalysis(comparison); }
         }
     
@@ -127,7 +126,7 @@ export class ComparisonResultRenderer {
         let totalDeclines = 0;
         const stagesByCategory = { tutorial: [],
             normal: [];
-            special: [] ,};
+           , special: [] ,};
         availableComparisons.forEach(stage => {  totalImprovements += stage.comparison.improvements || 0;)
             totalDeclines += stage.comparison.declines || 0;
             );
@@ -138,8 +137,7 @@ export class ComparisonResultRenderer {
         }');
 
         let overallTrend = 'stable';''
-        if(totalImprovements > totalDeclines) {'
-            ';
+        if(totalImprovements > totalDeclines) {', ';
 
         }
 
@@ -166,7 +164,7 @@ export class ComparisonResultRenderer {
     generateDetailedAnalysis(comparisons) {
         const analysis = {
             strengths: [];
-            weaknesses: [];
+           , weaknesses: [];
     }
             opportunities: [] }
         };
@@ -179,7 +177,7 @@ export class ComparisonResultRenderer {
                     analysis.strengths.push({
                         metric: metricName);
                         period: period);
-                        improvement: metric.changePercent, }
+                       , improvement: metric.changePercent, }
 
                         value: metric.current),' }'
 
@@ -187,7 +185,7 @@ export class ComparisonResultRenderer {
                 } else if (metric.trend === 'declined' && Math.abs(metric.changePercent) > 10) { analysis.weaknesses.push({
                         metric: metricName);
                         period: period);
-                        decline: metric.changePercent,);
+                       , decline: metric.changePercent,);
                         value: metric.current ,}
             });
         });
@@ -205,7 +203,7 @@ export class ComparisonResultRenderer {
     generateBenchmarkAnalysis(comparison) {
         const analysis = {
             strengths: [];
-            improvements: [];
+           , improvements: [];
     }
             insights: [] }
         };
@@ -213,7 +211,7 @@ export class ComparisonResultRenderer {
             if(metric.performance === 'above_average) {'
                 analysis.strengths.push({
                     metric: metricName);
-                    percentileRank: metric.percentileRank }
+                   , percentileRank: metric.percentileRank }
                     value: metric.current,) }
 
                     difference: metric.differencePercent),' }'
@@ -223,7 +221,7 @@ export class ComparisonResultRenderer {
                     metric: metricName;
                     percentileRank: metric.percentileRank);
                     value: metric.current);
-                    difference: metric.differencePercent,);
+                   , difference: metric.differencePercent,);
                     targetValue: metric.benchmark.median ,}
         });
 
@@ -260,7 +258,7 @@ export class ComparisonResultRenderer {
             byCategory: {};
             excellentStages: [];
             improvingStages: [];
-            strugglingStages: [];
+           , strugglingStages: [];
         },
 
         Object.entries(stageComparisons).forEach(([stageId, stageData]) => {  if (!stageData.comparison || !stageData.comparison.available) return;
@@ -272,7 +270,7 @@ export class ComparisonResultRenderer {
 
                 details.byCategory[category] = {
                     stages: [];
-                    averagePerformance: 0;
+                   , averagePerformance: 0;
             ,}
                     totalImprovements: 0, }
                     totalDeclines: 0 }
@@ -286,8 +284,7 @@ export class ComparisonResultRenderer {
             categoryData.totalDeclines += stageData.comparison.declines || 0;
 ';
             // パフォーマンス別分類
-            if(performance.grade === 'A' || performance.grade === 'B) {'
-                ';
+            if(performance.grade === 'A' || performance.grade === 'B) {', ';
 
             ,}
 
@@ -334,7 +331,7 @@ export class ComparisonResultRenderer {
             recommendations.push({''
                 type: 'focus_weak_stages',)';
                 priority: 'high')';
-                stages: weakStages,' }'
+               , stages: weakStages,' }'
 
                 message: '以下のステージに重点的に取り組むことをお勧めします'); }
         }
@@ -343,7 +340,7 @@ export class ComparisonResultRenderer {
             recommendations.push({''
                 type: 'maintain_momentum',)';
                 priority: 'medium')';
-                stages: improvingStages,' }'
+               , stages: improvingStages,' }'
 
                 message: '改善が見られるステージでの練習を継続しましょう'); }
         }
@@ -389,17 +386,7 @@ export class ComparisonResultRenderer {
      * @param {string} stageId - ステージID
      * @returns {Object} ステージ情報'
      */''
-    getStageInfo(stageId) { const stageMap = {' }'
-
-            'tutorial': { name: 'チュートリアル', difficulty: 1 ,},''
-            'stage1': { name: 'ステージ1', difficulty: 2 ,},''
-            'stage2': { name: 'ステージ2', difficulty: 3 ,},''
-            'stage3': { name: 'ステージ3', difficulty: 4 ,},''
-            'stage4': { name: 'ステージ4', difficulty: 5 ,},''
-            'stage5': { name: 'ステージ5', difficulty: 6 ,},''
-            'endless': { name: 'エンドレスモード', difficulty: 7 ,},''
-            'timeattack': { name: 'タイムアタック', difficulty: 8 ,},''
-            'awawa': { name: 'あわわモード', difficulty: 9 ,};
+    getStageInfo(stageId) { const stageMap = {' }', 'tutorial': { name: 'チュートリアル', difficulty: 1 ,},'', 'stage1': { name: 'ステージ1', difficulty: 2 ,},'', 'stage2': { name: 'ステージ2', difficulty: 3 ,},'', 'stage3': { name: 'ステージ3', difficulty: 4 ,},'', 'stage4': { name: 'ステージ4', difficulty: 5 ,},'', 'stage5': { name: 'ステージ5', difficulty: 6 ,},'', 'endless': { name: 'エンドレスモード', difficulty: 7 ,},'', 'timeattack': { name: 'タイムアタック', difficulty: 8 ,},'', 'awawa': { name: 'あわわモード', difficulty: 9 ,};
         
         return stageMap[stageId] || { name: stageId, difficulty: 5 ,}
     
@@ -432,8 +419,7 @@ export class ComparisonResultRenderer {
         const averageScore = maxScore > 0 ? (score / maxScore') * 100 : 0;''
         let grade = 'F';
 
-        if(averageScore >= 90) {'
-            ';
+        if(averageScore >= 90) {', ';
 
         }
 
@@ -468,24 +454,21 @@ export class ComparisonResultRenderer {
             strengths.push('高い完了率); }'
 
         }''
-        if(stageData.averageAccuracy >= 0.85) {'
-            ';
+        if(stageData.averageAccuracy >= 0.85) {', ';
 
         }
 
             strengths.push('優れた精度); }'
 
         }''
-        if(stageData.consistencyScore >= 0.7) {'
-            ';
+        if(stageData.consistencyScore >= 0.7) {', ';
 
         }
 
             strengths.push('安定したパフォーマンス); }'
 
         }''
-        if(stageData.averageAttemptsToComplete <= 3) {'
-            ';
+        if(stageData.averageAttemptsToComplete <= 3) {', ';
 
         }
 
@@ -509,24 +492,21 @@ export class ComparisonResultRenderer {
             weaknesses.push('低い完了率); }'
 
         }''
-        if(stageData.averageAccuracy < 0.7) {'
-            ';
+        if(stageData.averageAccuracy < 0.7) {', ';
 
         }
 
             weaknesses.push('精度の改善が必要); }'
 
         }''
-        if(stageData.consistencyScore < 0.4) {'
-            ';
+        if(stageData.consistencyScore < 0.4) {', ';
 
         }
 
             weaknesses.push('パフォーマンスが不安定); }'
 
         }''
-        if(stageData.averageAttemptsToComplete > 10) {'
-            ';
+        if(stageData.averageAttemptsToComplete > 10) {', ';
 
         }
 
@@ -549,7 +529,7 @@ export class ComparisonResultRenderer {
             .filter(([_, metric]) => metric.performance === 'above_average');
             .map(([name, metric]) => ({ name,
                 percentileRank: metric.percentileRank);
-                value: metric.current ,})
+               , value: metric.current ,})
             .sort((a, b) => b.percentileRank - a.percentileRank);
     }
     
@@ -567,7 +547,7 @@ export class ComparisonResultRenderer {
             .map(([name, metric]) => ({ name,
                 percentileRank: metric.percentileRank;
                 value: metric.current);
-                targetValue: metric.benchmark.median ,})
+               , targetValue: metric.benchmark.median ,})
             .sort((a, b) => a.percentileRank - b.percentileRank);
     }
     

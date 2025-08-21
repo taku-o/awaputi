@@ -7,17 +7,17 @@ interface PerformanceMetrics { frameTime: number,
     renderEfficiency: number;
     cullingEfficiency: number;
     cacheEfficiency: number;
-    overallEfficiency: number;
+   , overallEfficiency: number;
     performanceGain?: number ,}
 
 interface PerformanceBaseline { renderTime: number;
     drawCalls: number;
-    pixelsRendered: number }
+   , pixelsRendered: number }
 
 interface PerformanceFrameData { timestamp: number;
     renderTime: number;
     totalObjects: number;
-    efficiency: number }
+   , efficiency: number }
 
 interface PerformanceConfig { enabled: boolean;
     metrics: PerformanceMetrics;
@@ -26,14 +26,14 @@ interface PerformanceConfig { enabled: boolean;
     adaptiveMode: boolean;
     performanceTarget: number;
     optimizationTrigger: number;
-    baseline: PerformanceBaseline
+   , baseline: PerformanceBaseline
     }
 
 interface PerformanceStats extends PerformanceMetrics { uptime: number;
     totalFrames: number;
     avgFPS: number;
     baseline: PerformanceBaseline;
-    optimizationLevel: string }
+   , optimizationLevel: string }
 
 type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';''
 type PerformanceTrend = 'improving' | 'stable' | 'degrading';''
@@ -60,7 +60,7 @@ interface PerformanceConfigUpdate { enabled?: boolean;
 export class RenderingPerformanceMonitor {
     private config: PerformanceConfig;
     private performanceInterval: NodeJS.Timeout | null;
-    private monitoringStartTime: number;
+    private, monitoringStartTime: number;
     private optimizationLevel?: OptimizationLevel;
 
     constructor() {
@@ -68,7 +68,7 @@ export class RenderingPerformanceMonitor {
         // Performance monitoring
         this.config = {
             enabled: true;
-            metrics: {
+           , metrics: {
                 frameTime: 0;
                 renderTime: 0;
                 cullTime: 0;
@@ -77,21 +77,21 @@ export class RenderingPerformanceMonitor {
                 // Efficiency metrics
                 renderEfficiency: 1.0;
                 cullingEfficiency: 1.0;
-                cacheEfficiency: 1.0;
+               , cacheEfficiency: 1.0;
     }
                 overallEfficiency: 1.0 }
             };
             // Performance history
             history: [];
-            historySize: 60, // 1 second at 60fps;
+           , historySize: 60, // 1 second at 60fps;
             // Adaptive optimization
             adaptiveMode: true;
-            performanceTarget: 16.67, // 60fps target;
+           , performanceTarget: 16.67, // 60fps target;
             optimizationTrigger: 20.0, // Trigger optimization at 50fps;
             // Benchmarking
             baseline: { renderTime: 16.67;
                 drawCalls: 500;
-                pixelsRendered: 0 }
+               , pixelsRendered: 0 }
         };
         // Performance intervals
         this.performanceInterval = null;
@@ -369,7 +369,7 @@ export class RenderingPerformanceMonitor {
             renderEfficiency: 1.0;
             cullingEfficiency: 1.0;
             cacheEfficiency: 1.0;
-            overallEfficiency: 1.0 };
+           , overallEfficiency: 1.0 };
         this.monitoringStartTime = performance.now();
     }
 

@@ -5,7 +5,7 @@
  * エラーハンドリングとデフォルト値処理を実装します。
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 class ValidationSystem { constructor() {
         // 検証ルール
@@ -89,7 +89,7 @@ class ValidationSystem { constructor() {
             
             // 型チェック
             if (rule.type && typeof, value !== rule.type) { const defaultValue = this._getDefaultValue(category, key); }
-                const message = `型が不正: ${category}.${key} - 期待値: ${rule.type}, 実際: ${typeof value}`;''
+                const message = `型が不正: ${category}.${key} - 期待値: ${rule.type}, 実際: ${typeof, value}`;''
                 this._recordError(category, key, value, message);
                 
                 return { isValid: false,

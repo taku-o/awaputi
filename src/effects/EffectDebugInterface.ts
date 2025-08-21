@@ -8,7 +8,7 @@ interface PerformanceMetrics { fps: number,
     particleCount: number;
     effectCount: number;
     memoryUsage: number;
-    renderTime: number ,}
+   , renderTime: number ,}
 
 interface QualityLevel { readonly LOW: 'low',''
     readonly MEDIUM: 'medium',
@@ -64,7 +64,7 @@ interface BenchmarkResult { fps: number,
 
 interface BenchmarkResults { particleStress: BenchmarkResult;
     effectStress: BenchmarkResult;
-    animationStress: BenchmarkResult
+   , animationStress: BenchmarkResult
     }
 
 interface DebugUIElements { fpsValue: HTMLElement | null;
@@ -85,19 +85,19 @@ interface DebugUIElements { fpsValue: HTMLElement | null;
     toggleSeasonal: HTMLInputElement | null;
     clearEffects: HTMLButtonElement | null;
     benchmarkEffects: HTMLButtonElement | null;
-    closeDebug: HTMLButtonElement | null }
+   , closeDebug: HTMLButtonElement | null }
 
 export class EffectDebugInterface {
     private gameEngine: GameEngine;
     private isVisible: boolean = false;
     private debugPanel: HTMLElement | null = null;
     private updateInterval: number | null = null;
-    private metrics: PerformanceMetrics = {
+    private, metrics: PerformanceMetrics = {
         fps: 0;
         particleCount: 0;
         effectCount: 0;
         memoryUsage: 0;
-        renderTime: 0 };
+       , renderTime: 0 };
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -116,11 +116,11 @@ export class EffectDebugInterface {
         this.debugPanel.style.cssText = `;
             position: fixed;
             top: 10px;
-            right: 10px,
+           , right: 10px,
             width: 300px,
             background: rgba(0, 0, 0, 0.8),
             color: white;
-            padding: 15px;
+           , padding: 15px;
             border-radius: 8px,
             font-family: monospace,
             font-size: 12px,
@@ -322,8 +322,7 @@ export class EffectDebugInterface {
 ';
 
     public show(): void { this.isVisible = true;''
-        if(this.debugPanel) {'
-            ';
+        if(this.debugPanel) {', ';
 
         }
 
@@ -335,8 +334,7 @@ export class EffectDebugInterface {
 ';
 
     public hide(): void { this.isVisible = false;''
-        if(this.debugPanel) {'
-            ';
+        if(this.debugPanel) {', ';
 
         }
 
@@ -528,8 +526,7 @@ export class EffectDebugInterface {
 
                 break; : undefined''
             case 'screenEffects':;
-                if(this.gameEngine? .enhancedEffectManager) {'
-                    ';
+                if(this.gameEngine? .enhancedEffectManager) {', ';
 
                 }
 
@@ -538,8 +535,7 @@ export class EffectDebugInterface {
 
                 break; : undefined''
             case 'animations':;
-                if(this.gameEngine? .animationManager) {'
-                    ';
+                if(this.gameEngine? .animationManager) {', ';
 
                 }
 
@@ -577,7 +573,7 @@ export class EffectDebugInterface {
             
             // 結果をUIに表示
             alert(`Benchmark, Results:);
-Particle Stress: ${benchmarkResults.particleStress.fps.toFixed(1}) FPS
+Particle, Stress: ${benchmarkResults.particleStress.fps.toFixed(1}) FPS
 Effect Stress: ${benchmarkResults.effectStress.fps.toFixed(1}) FPS
 Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1}) FPS`);
         });
@@ -588,8 +584,7 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1}) FPS`);
         const startTime = performance.now();
         let frameCount = 0;
         // 大量のパーティクル生成
-        for(let, i = 0; i < 100; i++) {'
-            ';
+        for(let, i = 0; i < 100; i++) {', ';
 
         }
 
@@ -623,8 +618,7 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1}) FPS`);
     private benchmarkAnimations(): BenchmarkResult { // アニメーションストレステスト
         const startTime = performance.now();
         // 複数のアニメーションを同時実行
-        for(let, i = 0; i < 20; i++) {'
-            ';
+        for(let, i = 0; i < 20; i++) {', ';
 
         }
 

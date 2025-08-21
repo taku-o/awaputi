@@ -7,12 +7,12 @@
 export interface StoreDefinition { name: string,
     keyPath: string;
     autoIncrement?: boolean;
-    indexes: IndexDefinition[]
+   , indexes: IndexDefinition[]
     ,}
 
 export interface IndexDefinition { name: string;
     keyPath: string;
-    unique: boolean }
+   , unique: boolean }
 
 export interface QueryOptions { limit?: number;
     offset?: number;
@@ -24,17 +24,17 @@ export interface QueryOptions { limit?: number;
 
 export interface QueryFilter { field: string,''
     operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in';
-    value: any ,}
+   , value: any ,}
 
 export interface StorageStats { totalRecords: number;
     storageSize: number;
-    stores: Record<string, number>, }
+   , stores: Record<string, number>, }
 
 export class IndexedDBStorageManager {
     private dbName: string;
     private version: number;
     private db: IDBDatabase | null;
-    private stores: Record<string, StoreDefinition>;
+    private, stores: Record<string, StoreDefinition>;
 
     constructor(''';
         this.dbName = 'BubblePopAnalytics';
@@ -57,7 +57,7 @@ export class IndexedDBStorageManager {
             bubbleInteractions: { ''
                 name: 'bubbleInteractions',
                 keyPath: 'id';
-                autoIncrement: true,
+               , autoIncrement: true,
                 indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
@@ -70,7 +70,7 @@ export class IndexedDBStorageManager {
             performance: { ''
                 name: 'performance',
                 keyPath: 'id';
-                autoIncrement: true,
+               , autoIncrement: true,
                 indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
@@ -82,7 +82,7 @@ export class IndexedDBStorageManager {
             gameBalance: { ''
                 name: 'gameBalance',
                 keyPath: 'id';
-                autoIncrement: true,
+               , autoIncrement: true,
                 indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
@@ -95,7 +95,7 @@ export class IndexedDBStorageManager {
                 name: 'userBehavior',
                 keyPath: 'id);
                 autoIncrement: true)';
-                indexes: [' ,}'
+               , indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
                     { name: 'timestamp', keyPath: 'timestamp', unique: false ,},]'
@@ -124,8 +124,7 @@ export class IndexedDBStorageManager {
     private openDatabase(): Promise<IDBDatabase>;
 
         return new Promise((resolve, reject) => {  ''
-            if(!window.indexedDB) {'
-                ';
+            if(!window.indexedDB) {', ';
 
             }
 
@@ -159,7 +158,7 @@ export class IndexedDBStorageManager {
             
             // ストアの作成
             const objectStore = db.createObjectStore(store.name, { keyPath: store.keyPath)
-                autoIncrement: store.autoIncrement || false });
+               , autoIncrement: store.autoIncrement || false });
             
             // インデックスの作成
             store.indexes.forEach(index => { objectStore.createIndex(index.name, index.keyPath, { }
@@ -175,8 +174,7 @@ export class IndexedDBStorageManager {
         ';
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {'
-                ';
+            if(!this.db) {', ';
 
             }
 
@@ -209,8 +207,7 @@ export class IndexedDBStorageManager {
         ';
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {'
-                ';
+            if(!this.db) {', ';
 
             }
 
@@ -277,8 +274,7 @@ export class IndexedDBStorageManager {
         ';
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {'
-                ';
+            if(!this.db) {', ';
 
             }
 
@@ -306,8 +302,7 @@ export class IndexedDBStorageManager {
         ';
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {'
-                ';
+            if(!this.db) {', ';
 
             }
 
@@ -335,8 +330,7 @@ export class IndexedDBStorageManager {
         ';
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {'
-                ';
+            if(!this.db) {', ';
 
             }
 
@@ -364,8 +358,7 @@ export class IndexedDBStorageManager {
         ';
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {'
-                ';
+            if(!this.db) {', ';
 
             }
 
@@ -444,7 +437,7 @@ export class IndexedDBStorageManager {
                     filters: [{''
                         field: 'timestamp',)';
                         operator: 'lessThan')];
-                        value: cutoffTime ,}]
+                       , value: cutoffTime ,}]
                     }]);
                 ;
                 for(const, item of, oldData) {'
@@ -467,7 +460,7 @@ export class IndexedDBStorageManager {
      */
     async exportData(storeName?: string): Promise<any> { const exportData: any = {
             exportDate: new Date().toISOString();
-            version: this.version, }
+           , version: this.version, }
             stores: {};
         try { const storeNames = storeName ? [storeName] : Object.keys(this.stores);
             

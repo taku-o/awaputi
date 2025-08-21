@@ -27,7 +27,7 @@ export interface PieChartData { value: number,
 
 export interface ProcessedPieData extends PieChartData { percentage: number,
     index: number;
-    normalizedValue: number;
+   , normalizedValue: number;
     sliceInfo?: SliceGeometry
     ,}
 
@@ -64,12 +64,12 @@ export interface PieThemeColors { primary: string,
     text: string;
     border: string;
     shadow: string;
-    highlight: string ,}
+   , highlight: string ,}
 
 export interface PieFontTheme { family: string;
     size: number;
     weight: string;
-    color: string;
+   , color: string;
     labelColor?: string;
     legendColor?: string; }
 
@@ -77,7 +77,7 @@ export interface SliceStyleTheme { borderWidth: number,
     borderColor: string;
     shadowBlur: number;
     shadowColor: string;
-    hoverScale: number ,}
+   , hoverScale: number ,}
 
 export interface SliceOptions { borderWidth?: number;
     borderColor?: string;
@@ -92,11 +92,11 @@ export interface SliceShadowOptions { enabled: boolean,
     color: string;
     blur: number;
     offsetX: number;
-    offsetY: number ,}
+   , offsetY: number ,}
 
 export interface SliceGradientOptions { enabled: boolean;
     type: GradientType;
-    stops: GradientStop[];
+   , stops: GradientStop[];
     angle?: number;
     center?: Point2D;
     }
@@ -105,7 +105,7 @@ export interface GradientStop { position: number,
     color: string ,}
 
 export interface SlicePatternOptions { enabled: boolean;
-    type: PatternType;
+   , type: PatternType;
     image?: HTMLImageElement;
     repeat?: PatternRepeat;
     }
@@ -130,12 +130,12 @@ export interface ConnectorOptions { show: boolean,
     color: string;
     width: number;
     length: number;
-    style: LineStyle
+   , style: LineStyle
     ,}
 
 export interface CollisionAvoidance { enabled: boolean;
     method: AvoidanceMethod;
-    spacing: number }
+   , spacing: number }
 
 export interface PieLegendOptions { show?: boolean;
     position?: PieLegendPosition;
@@ -152,7 +152,7 @@ export interface PieLegendOptions { show?: boolean;
 export interface LegendBorderOptions { show: boolean,
     color: string;
     width: number;
-    radius: number ,}
+   , radius: number ,}
 
 export interface DonutOptions { enabled?: boolean;
     innerRadius?: number;
@@ -170,7 +170,7 @@ export interface CenterLabelOptions { show: boolean,
 
 export interface CenterIconOptions { show: boolean,
     icon: string;
-    size: number;
+   , size: number;
     color?: string;
     image?: HTMLImageElement;
     ,}
@@ -184,7 +184,7 @@ export interface ExplosionOptions { enabled?: boolean;
 export interface ExplosionAnimationOptions { enabled: boolean,
     duration: number;
     easing: EasingFunction;
-    stagger: number ,}
+   , stagger: number ,}
 
 export interface PieAnimationOptions { enabled?: boolean;
     duration?: number;
@@ -209,17 +209,17 @@ export interface PieHoverOptions { enabled?: boolean;
 export interface PieClickOptions { enabled?: boolean;
     toggle?: boolean;
     explodeOnClick?: boolean;
-    callback?: (slice: SliceData, event: MouseEvent) => void ,}
+    callback?: (slic;e: SliceData, event: MouseEvent) => void ,}
 }
 
 export interface SelectionOptions { enabled: boolean,
     multiple: boolean;
     highlightColor: string;
-    selectedSlices: Set<number>
+   , selectedSlices: Set<number>
     ,}
 
 export interface PieTooltipOptions { enabled?: boolean;
-    format?: (slice: SliceData) => string;
+    format?: (slic;e: SliceData) => string;
     style?: PieTooltipStyle;
     position?: TooltipPosition;
     ,}
@@ -237,7 +237,7 @@ export interface PieChartArea { centerX: number,
     centerY: number;
     radius: number;
     innerRadius?: number;
-    size: number ,}
+   , size: number ,}
 
 export interface SliceGeometry { startAngle: number;
     endAngle: number;
@@ -246,7 +246,7 @@ export interface SliceGeometry { startAngle: number;
     radius: number;
     innerRadius?: number;
     centerX: number;
-    centerY: number;
+   , centerY: number;
     explodeX?: number;
     explodeY?: number; }
 
@@ -262,17 +262,17 @@ export interface SliceData { startAngle: number,
     exploded: boolean;
     selected: boolean;
     geometry: SliceGeometry;
-    data: ProcessedPieData
+   , data: ProcessedPieData
     ,}
 
 export interface Point2D { x: number;
-    y: number }
+   , y: number }
 
 export interface PieRenderResult { type: ChartType;
     dataPoints: number;
     total: number;
     slices: SliceData[];
-    chartArea: PieChartArea;
+   , chartArea: PieChartArea;
     performance?: PieRenderPerformance;
     error?: string; }
 
@@ -280,27 +280,27 @@ export interface PieRenderPerformance { renderTime: number,
     dataProcessingTime: number;
     sliceDrawTime: number;
     labelDrawTime: number;
-    legendDrawTime: number;
+   , legendDrawTime: number;
     memoryUsage?: number ,}
 
 export interface PieValidationResult { isValid: boolean;
     errors: PieValidationError[];
-    warnings: PieValidationWarning[]
+   , warnings: PieValidationWarning[]
     }
 
 export interface PieValidationError { field: string;
     message: string;
-    code: string }
+   , code: string }
 
 export interface PieValidationWarning { field: string;
     message: string;
-    suggestion: string }
+   , suggestion: string }
 
 export interface LabelBounds { x: number;
     y: number;
     width: number;
     height: number;
-    text: string }
+   , text: string }
 
 // 列挙型
 export type ChartType = 'pie' | 'donut' | 'semi-circle' | 'rose';''
@@ -325,7 +325,7 @@ export const DEFAULT_PIE_OPTIONS: Partial<PieChartOptions> = { padding: 20,
     showLegend: false;
     showPercentages: true;
     showValues: false;
-    fontSize: 12,
+   , fontSize: 12,
     fontFamily: 'Arial, sans-serif' } as const;
 ';
 
@@ -357,13 +357,13 @@ export const PIE_CONFIG = { MIN_SLICE_ANGLE: 0.01, // 最小スライス角度�
     MAX_SLICES: 20;
     MIN_RADIUS: 20;
     LABEL_OFFSET: 20;
-    CONNECTOR_LENGTH: 15 ,} as const;
+   , CONNECTOR_LENGTH: 15 ,} as const;
 export const DONUT_CONFIG = { DEFAULT_INNER_RADIUS_PERCENT: 0.5,
     MIN_INNER_RADIUS_PERCENT: 0.1;
-    MAX_INNER_RADIUS_PERCENT: 0.9 ,} as const;
+   , MAX_INNER_RADIUS_PERCENT: 0.9 ,} as const;
 export const EXPLOSION_CONFIG = { DEFAULT_DISTANCE: 10,
     MAX_DISTANCE: 50;
-    ANIMATION_DURATION: 300 ,} as const;
+   , ANIMATION_DURATION: 300 ,} as const;
 // ユーティリティ関数
 export function validatePieData(data: any[]): PieValidationResult { const errors: PieValidationError[] = [],
     const warnings: PieValidationWarning[] = [],
@@ -474,8 +474,7 @@ export function isPointInSlice(point: Point2D, slice: SliceData): boolean {
 ';
 
 export function formatPieValue(value: number, format: LabelFormat, percentage?: number): string {;
-    switch(format) {'
-        ';
+    switch(format) {', ';
 
     }
 
@@ -511,7 +510,7 @@ export class PieChartRenderer {
             renderTime: 0;
             dataProcessingTime: 0;
             sliceDrawTime: 0;
-            labelDrawTime: 0;
+           , labelDrawTime: 0;
     }
             legendDrawTime: 0 }
         }
@@ -568,7 +567,7 @@ export class PieChartRenderer {
 
             return { : undefined''
                 type: 'pie';
-                dataPoints: processedData.length;
+               , dataPoints: processedData.length;
                 total,
                 slices, };
                 chartArea, }
@@ -579,7 +578,7 @@ export class PieChartRenderer {
             return { ''
                 type: 'pie', ;
                 dataPoints: 0;
-                total: 0, };
+               , total: 0, };
                 slices: [], }
                 chartArea: { centerX: 0, centerY: 0, radius: 0, size: 0 ,},
                 error: (error, as Error).message ;
@@ -661,11 +660,11 @@ export class PieChartRenderer {
             const geometry: SliceGeometry = {
                 startAngle: currentAngle;
                 endAngle: currentAngle + sliceAngle;
-                angle: sliceAngle;
+               , angle: sliceAngle;
                 midAngle,
                 radius: chartArea.radius;
                 innerRadius: chartArea.innerRadius;
-                centerX: chartArea.centerX + slicePosition.x, }
+               , centerX: chartArea.centerX + slicePosition.x, }
                 centerY: chartArea.centerY + slicePosition.y }
             };
             // スライスの描画
@@ -707,13 +706,13 @@ export class PieChartRenderer {
              : undefined
             const sliceData: SliceData = { startAngle: currentAngle,
                 endAngle: currentAngle + sliceAngle;
-                angle: sliceAngle;
+               , angle: sliceAngle;
                 midAngle,
                 color,
                 value: item.value;
                 percentage: item.percentage;
                 label: item.label;
-                category: item.category;
+               , category: item.category;
                 exploded,
                 selected: false;
                 geometry,
@@ -786,7 +785,7 @@ export class PieChartRenderer {
                     x: x - textWidth/2;
                     y: y - textHeight/2);
                     width: textWidth);
-                    height: textHeight, }
+                   , height: textHeight, }
                     text: labelText); }
 });
     }

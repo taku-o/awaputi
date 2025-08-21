@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * ErrorNotificationSystem テストスイート'
  */''
-import { ErrorNotificationSystem } from '../../src/debug/ErrorNotificationSystem';'
+import { ErrorNotificationSystem  } from '../../src/debug/ErrorNotificationSystem';'
 // モックErrorReporter''
 const createMockErrorReporter = (') => ({ ''
     sessionId: 'test_session_123' }
@@ -15,9 +15,9 @@ const setupDOMEnvironment = () => {  (global as any).document = {
         createElement: jest.fn((tag) => {'
             const element = {''
                 tagName: tag.toUpperCase(''';
-                id: '',')';
+               , id: '',')';
                 className: '',')';
-                style: { cssText: '' '),''
+                style: { cssText: '', '),''
                 innerHTML: '',
                 appendChild: jest.fn(),
                 remove: jest.fn(), }
@@ -264,8 +264,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
                 severity: 'critical','';
                 category: 'test',' }'
                 fingerprint: 'critical_fingerprint' }
-            },'
-            '';
+            },', '';
             notificationSystem.processErrorNotification(criticalError, 'critical');
             // 即座に送信される'
             expect(console.group).toHaveBeenCalled();''
@@ -350,7 +349,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
                 notifications: [{''
                         id: 'agg1','';
                         timestamp: Date.now(''';
-                            category: 'test','';
+                           , category: 'test','';
                             severity: 'medium',' }'
                             message: 'Message 1' }]'
                         },']'
@@ -359,7 +358,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
                     { ''
                         id: 'agg2','';
                         timestamp: Date.now(''';
-                            category: 'test','';
+                           , category: 'test','';
                             severity: 'medium','';
                             message: 'Message 2' }'
                         },''
@@ -449,8 +448,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
     describe('クリーンアップ', (') => {  ''
         test('destroyメソッドでリソースがクリーンアップされる', () => {'
             notificationSystem.destroy();''
-            expect(localStorage.setItem').toHaveBeenCalledWith(' })'
-                'error_notification_settings',) }
+            expect(localStorage.setItem').toHaveBeenCalledWith(' })', 'error_notification_settings',) }
                 expect.any(String});
         });'
     }''

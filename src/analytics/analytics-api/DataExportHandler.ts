@@ -44,7 +44,7 @@ export class DataExportHandler {
                     filename: `export_${Date.now('}).${options.format || 'json'}`;
                     size: 0;
                     duration: 0;
-                    metadata: { fallback: true },''
+                   , metadata: { fallback: true },''
             getSupportedFormats: (') => ['json'],
             getSupportedDataTypes: (') => ['sessionData', 'bubbleInteractions', 'performanceData'],
             getExportStats: () => ({ totalExports: 0, fallback: true ,}),
@@ -88,14 +88,14 @@ export class DataExportHandler {
                     data: result.data;
                     format: result.format;
                     filename: result.filename;
-                    size: result.size;
+                   , size: result.size;
             ,}
                     duration: result.duration, };
                     metadata: { }
                         exportId: result.metadata? .exportId || `api_export_${Date.now(})`, : undefined''
                         timestamp: new Date().toISOString()';
                         apiEndpoint: '/export')';
-                        requestOptions: exportOptions,')';
+                       , requestOptions: exportOptions,')';
                         responseTime: Math.max(performance.now() - startTime, 0.1);
                     }
                 } else { }'
@@ -108,7 +108,7 @@ export class DataExportHandler {
 
                 error: {''
                     code: 'EXPORT_ERROR';
-                    message: error.message,
+                   , message: error.message,
                     status: 500,
                     timestamp: new Date().toISOString('' ,};
 
@@ -181,7 +181,7 @@ export class DataExportHandler {
             
             return { success: true,
                 data: batchData;
-                metadata: {
+               , metadata: {
                     dataTypes;
                     filters,
                     totalRecords: Object.values(batchData).reduce((sum, arr) => sum + arr.length, 0), };
@@ -203,8 +203,7 @@ export class DataExportHandler {
      * @returns {Promise<Object>} 匿名化されたデータ
      */'
     async anonymizeExportData(data) { ''
-        if(!this.privacyManager) {'
-            ';
+        if(!this.privacyManager) {', ';
 
         }
 
@@ -321,7 +320,7 @@ export class DataExportHandler {
             // 簡単なXML変換実装
             let xmlContent = '<? xml version="1.0" encoding="UTF-8"?>\n<root>\n';
 
-            const convertValue = (value, indent = '  ') => {  ''
+            const convertValue = (value, indent = ', ') => {  ''
                 if(Array.isArray(value)) {''
                     let result = '';' }
 
@@ -338,7 +337,7 @@ export class DataExportHandler {
                     for(const [key, val] of Object.entries(value)) { }
 
                         result += `${indent}<${key}>\n`;''
-                        result += convertValue(val, indent + '  ');
+                        result += convertValue(val, indent + ', ');
                         result += `${indent}</${key}>\n`;
                     }
 
@@ -380,7 +379,7 @@ export class DataExportHandler {
             filters: options.filters;
             anonymized: options.anonymize);
             includeMetadata: options.includeMetadata)';
-            size: result.data ? result.data.length : 0,')';
+           , size: result.data ? result.data.length : 0,')';
             recordCount: this.countRecords(result.data),
             version: '1.0.0';
         },

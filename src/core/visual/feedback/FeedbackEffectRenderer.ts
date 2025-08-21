@@ -17,20 +17,20 @@
 // 型定義
 export interface VisualFeedbackManager { config: FeedbackRenderConfig,
     userPreferences: UserRenderPreferences;
-    feedbackElements: Map<string, HTMLElement>,
+   , feedbackElements: Map<string, HTMLElement>,
     dataArray: Uint8Array;
     analyser: AnalyserNode;
     canvasContext: CanvasRenderingContext2D;
     visualCanvas: HTMLCanvasElement;
     animationFrameId: number | null;
-    triggerVisualFeedback: (options: FeedbackTriggerOptions) => void ,}
+   , triggerVisualFeedback: (option;s: FeedbackTriggerOptions) => void ,}
 }
 
 export interface FeedbackRenderConfig { enabled: boolean;
     globalIntensity: number;
     audioMapping: AudioMappingConfig;
     effects: EffectRenderConfig;
-    performance: RenderPerformanceConfig
+   , performance: RenderPerformanceConfig
     }
 
 export interface AudioMappingConfig { frequency: Record<string, FrequencyMappingConfig>,
@@ -38,70 +38,70 @@ export interface AudioMappingConfig { frequency: Record<string, FrequencyMapping
 
 export interface FrequencyMappingConfig { range: [number, number],
     color: string;
-    intensity: number ,}
+   , intensity: number ,}
 
 export interface VolumeMappingConfig { range: [number, number],
     color: string;
-    feedback: VolumeFeedbackConfig
+   , feedback: VolumeFeedbackConfig
     ,}
 
 export interface VolumeFeedbackConfig { enabled: boolean;
     threshold: number;
-    effects: VolumeEffectType[]
+   , effects: VolumeEffectType[]
     }
 
 export interface EffectRenderConfig { color: ColorEffectConfig;
     border: BorderEffectConfig;
-    scale: ScaleEffectConfig
+   , scale: ScaleEffectConfig
     }
 
 export interface ColorEffectConfig { enabled: boolean;
     duration: number;
     easing: string;
-    opacity: OpacityConfig
+   , opacity: OpacityConfig
     }
 
 export interface BorderEffectConfig { enabled: boolean;
     minWidth: number;
     maxWidth: number;
     duration: number;
-    easing: string }
+   , easing: string }
 
 export interface ScaleEffectConfig { enabled: boolean;
     minScale: number;
     maxScale: number;
     duration: number;
-    easing: string }
+   , easing: string }
 
 export interface OpacityConfig { start: number;
     peak: number;
-    end: number }
+   , end: number }
 
 export interface RenderPerformanceConfig { maxFrameRate: number;
     skipFrames: number;
     batchSize: number;
-    memoryThreshold: number }
+   , memoryThreshold: number }
 
 export interface UserRenderPreferences { audioVisualization: boolean;
     enabledEffects: EffectType[];
     colorScheme: ColorSchemePreference;
     animationSpeed: AnimationSpeedPreference;
-    reducedMotion: boolean }
+   , reducedMotion: boolean }
 
 export interface ColorSchemePreference { primary: string;
     secondary: string;
     accent: string;
-    background: string }
+   , background: string }
 
 export interface AnimationSpeedPreference { multiplier: number;
     enableTransitions: boolean;
-    smoothing: boolean }
+   , smoothing: boolean }
 
 export interface EffectOptions { id: string;
     target: HTMLElement;
     color: string;
     intensity: number;
-    duration: number;
+   , duration: number;
     delay?: number;
     easing?: string; }
 
@@ -130,56 +130,56 @@ export interface FeedbackTriggerOptions { type: EffectType;
     color: string;
     intensity: number;
     duration: number;
-    target: HTMLElement;
+   , target: HTMLElement;
     position?: EffectPosition
     }
 
 export interface EffectPosition { x: number;
     y: number;
-    relative: boolean }
+   , relative: boolean }
 
 export interface AudioVisualizationData { frequencyData: Uint8Array;
     timeData: Uint8Array;
     averageVolume: number;
     peakFrequency: number;
-    dominantFrequencyRange: FrequencyRange
+   , dominantFrequencyRange: FrequencyRange
     }
 
 export interface FrequencyRange { min: number;
     max: number;
-    dominantFreq: number }
+   , dominantFreq: number }
 
 export interface VisualizationBarData { height: number;
     color: string;
     frequency: number;
-    intensity: number }
+   , intensity: number }
 
 export interface EdgeFeedbackData { edge: EdgeType;
     element: HTMLElement;
     color: string;
     intensity: number;
-    lastTriggered: number }
+   , lastTriggered: number }
 
 export interface EffectValidationResult { isValid: boolean;
     errors: ValidationError[];
-    warnings: ValidationWarning[]
+   , warnings: ValidationWarning[]
     }
 
 export interface ValidationError { field: string;
     message: string;
-    code: string }
+   , code: string }
 
 export interface ValidationWarning { field: string;
     message: string;
-    suggestion: string }
+   , suggestion: string }
 
 export interface RenderReport { timestamp: string;
     component: string;
     audioVisualization: AudioVisualizationReport;
-    effectTypes: Record<EffectType, EffectTypeStatus>,
+   , effectTypes: Record<EffectType, EffectTypeStatus>,
     configuration: ConfigurationReport;
     performance: PerformanceReport;
-    errors: ErrorReport[]
+   , errors: ErrorReport[]
     ,}
 
 export interface AudioVisualizationReport { enabled: boolean;
@@ -187,24 +187,24 @@ export interface AudioVisualizationReport { enabled: boolean;
     hasCanvas: boolean;
     canvasSize: CanvasSize | null;
     frameRate: number;
-    lastUpdate: number }
+   , lastUpdate: number }
 
 export interface CanvasSize { width: number;
-    height: number }
+   , height: number }
 
 export interface ConfigurationReport { enabled: boolean;
     globalIntensity: number;
     effectsEnabled: number;
-    audioMappings: number }
+   , audioMappings: number }
 
 export interface PerformanceReport { activeEffects: number;
     memoryUsage: number;
     averageFrameTime: number;
-    droppedFrames: number }
+   , droppedFrames: number }
 
 export interface ErrorReport { timestamp: number;
     operation: string;
-    error: string;
+   , error: string;
     stack?: string }
 
 // 列挙型
@@ -219,17 +219,17 @@ export type VolumeLevel = 'quiet' | 'medium' | 'loud' | 'very-loud';
 // 定数
 export const DEFAULT_EFFECT_CONFIG: EffectRenderConfig = { color: {
         enabled: true;
-        duration: 500,
+       , duration: 500,
         easing: 'ease-in-out', }
         opacity: { start: 0, peak: 1, end: 0 ,},
     border: { enabled: true;
         minWidth: 1;
-        maxWidth: 5,
+       , maxWidth: 5,
         duration: 800,
         easing: 'ease-out' ,};
     scale: { enabled: true;
         minScale: 1.0;
-        maxScale: 1.3,
+       , maxScale: 1.3,
         duration: 600,
         easing: 'ease-in-out' ,}
 } as const;
@@ -259,8 +259,7 @@ export const VOLUME_LEVEL_MAPPING: Record<VolumeLevel, VolumeMappingConfig> = { 
 
         feedback: { enabled: true, threshold: 0.6, effects: ['edge', 'flash] }
 
-    },''
-    'very-loud': { range: [0.8, 1.0],''
+    },'', 'very-loud': { range: [0.8, 1.0],''
         color: '#ff0000',' }
 
         feedback: { enabled: true, threshold: 0.8, effects: ['edge', 'flash', 'scale] }
@@ -277,7 +276,7 @@ export const ANIMATION_EASING = {;
 export const VISUALIZATION_CONFIG = { MIN_BAR_HEIGHT: 2,
     MAX_BAR_HEIGHT_RATIO: 0.8;
     BAR_SPACING: 1;
-    SMOOTHING_FACTOR: 0.8 ,} as const;
+   , SMOOTHING_FACTOR: 0.8 ,} as const;
 ';
 // ユーティリティ関数
 export function validateEffectOptions(options: Partial<EffectOptions>): EffectValidationResult { const errors: ValidationError[] = [],
@@ -375,7 +374,7 @@ export class FeedbackEffectRenderer {
     // Performance tracking
     private lastFrameTime: number = 0;
     private frameCount: number = 0;
-    private errorLog: ErrorReport[] = [];
+    private, errorLog: ErrorReport[] = [];
 
     constructor(mainController: VisualFeedbackManager) {
         this.mainController = mainController;
@@ -416,7 +415,7 @@ export class FeedbackEffectRenderer {
             ];
             
             const animation = options.target.animate(keyframes, { duration: options.duration || config.duration)
-                easing: options.easing || config.easing),
+               , easing: options.easing || config.easing),
 
             const cleanup = (') => {  }'
                 options.target.style.background = originalBackground; }
@@ -462,7 +461,7 @@ export class FeedbackEffectRenderer {
             ];
             
             const animation = options.target.animate(keyframes, { duration: options.duration || config.duration)
-                easing: options.easing || config.easing),
+               , easing: options.easing || config.easing),
 
             const cleanup = (') => { '
                 options.target.style.border = originalBorder;' }'
@@ -517,7 +516,7 @@ export class FeedbackEffectRenderer {
             ];
             
             const animation = options.target.animate(keyframes, { duration: options.duration || config.duration)
-                easing: options.easing || config.easing),
+               , easing: options.easing || config.easing),
 
             const cleanup = (') => { '
                 options.target.style.transform = originalTransform;''
@@ -636,7 +635,7 @@ export class FeedbackEffectRenderer {
             if(edgeElement) {'
                 this.mainController.triggerVisualFeedback({''
                     type: 'flash';
-                    color: color,};
+                   , color: color,};
                     intensity: intensity * 0.5}
             }
                     duration: 200,) }
@@ -680,51 +679,51 @@ export class FeedbackEffectRenderer {
             return { ''
                 timestamp: new Date().toISOString(''';
                 component: 'FeedbackEffectRenderer';
-                audioVisualization: {
+               , audioVisualization: {
                     enabled: this.userPreferences.audioVisualization;
                     hasAnalyser: !!this.analyser);
                     hasCanvas: !!this.visualCanvas);
-                    canvasSize: this.visualCanvas ? { : undefined
+                   , canvasSize: this.visualCanvas ? { : undefined
                         width: this.visualCanvas.width, };
                         height: this.visualCanvas.height }
                     } : null,)
                     frameRate: this.calculateFrameRate();
-                    lastUpdate: this.lastFrameTime;
+                   , lastUpdate: this.lastFrameTime;
                 },
                 effectTypes,
                 configuration: { enabled: this.config.enabled;
-                    globalIntensity: this.config.globalIntensity,
+                   , globalIntensity: this.config.globalIntensity,
                     effectsEnabled: Object.values(effectTypes).filter(status => status === 'Available).length;
                     audioMappings: Object.keys(this.config.audioMapping.frequency).length ,}
                 };
                 performance: { activeEffects: 0, // 実装では実際のアクティブエフェクト数を使用
                     memoryUsage: (performance, as any).memory? .usedJSHeapSize || 0, : undefined
                     averageFrameTime: this.calculateAverageFrameTime();
-                    droppedFrames: 0 ,};
+                   , droppedFrames: 0 ,};
                 errors: [...this.errorLog];,
         } catch (error) { return { ''
                 timestamp: new Date().toISOString(''';
                 component: 'FeedbackEffectRenderer';
-                audioVisualization: {
+               , audioVisualization: {
                     enabled: false;
                     hasAnalyser: false;
                     hasCanvas: false;
                     canvasSize: null;
-                    frameRate: 0, };
+                   , frameRate: 0, };
                     lastUpdate: 0 }
                 };
                 effectTypes: {} as any;
                 configuration: { enabled: false;
                     globalIntensity: 0;
                     effectsEnabled: 0;
-                    audioMappings: 0 };
+                   , audioMappings: 0 };
                 performance: { activeEffects: 0;
                     memoryUsage: 0;
                     averageFrameTime: 0;
-                    droppedFrames: 0 }))'
+                   , droppedFrames: 0 }))'
                 errors: [{ ''
                     timestamp: Date.now()';
-                    operation: 'generateReport',);
+                   , operation: 'generateReport',);
                     error: (error, as Error).message];
                     stack: (error, as Error).stack ,}]
                 }]
@@ -748,7 +747,7 @@ export class FeedbackEffectRenderer {
             timestamp: Date.now();
             operation,
             error: error.message;
-            stack: error.stack ,};
+           , stack: error.stack ,};
         this.errorLog.push(errorReport);
         
         // ログサイズ制限

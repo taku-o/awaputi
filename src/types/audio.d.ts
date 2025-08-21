@@ -3,18 +3,18 @@
  * Defines audio managers, playback controllers, and related interfaces
  */
 
-import { Component, Manager } from './components';''
-import { ConfigurationManager } from '../core/ConfigurationManager';
+import { Component, Manager  } from './components';''
+import { ConfigurationManager  } from '../core/ConfigurationManager';
 
 // ========== Core Audio Types ==========
 
 export interface AudioConfig { volumes: {
-    master: number;
+    maste;r: number;
     sfx: number;
     bgm: number;
-    muted: boolean };
+   , muted: boolean };
   effects: { compression: boolean;
-    reverb: boolean };
+   , reverb: boolean };
   quality: AudioQualityMode;
   sampleRate?: number;
   bufferSize?: number;
@@ -27,16 +27,16 @@ export type AudioQualityMode = 'low' | 'medium' | 'high' | 'ultra';
 
 export interface AudioQualitySettings { sampleRate: number,
   bufferSize: number;
-  effects: boolean ,}
+ , effects: boolean ,}
 
 export interface CompressorConfig { threshold: number;
   knee: number;
   ratio: number;
   attack: number;
-  release: number }
+ , release: number }
 
 export interface ReverbConfig { duration: number;
-  decay: number }
+ , decay: number }
 
 // ========== Audio Context Management ==========
 
@@ -49,7 +49,7 @@ export interface AudioContextManager { audioContext: AudioContext | null;
   reverbBuffer: AudioBuffer | null;
   isInitialized: boolean;
   isEnabled: boolean);
-  audioConfig: AudioConfig | null);
+ , audioConfig: AudioConfig | null);
   setAudioConfig(audioConfig: AudioConfig): void,
   initializeAudioContext(): Promise<boolean>;
   createAudioNodes(): void;
@@ -80,19 +80,19 @@ export interface AudioContextStatus { isInitialized: boolean,
   contextState: AudioContextState;
   sampleRate: number;
   currentTime: number;
-  volumes: {
-    master: number;
+ , volumes: {
+    maste;r: number;
     sfx: number;
-    bgm: number ,};
+   , bgm: number ,};
   effects: { compression: boolean;
-    reverb: boolean }
+   , reverb: boolean }
 
 // ========== Audio Playback ==========
 
 export interface AudioPlaybackController { audioContext: AudioContext | null,
   sfxGainNode: GainNode | null;
   masterGainNode: GainNode | null;
-  soundBuffers: Map<string, AudioBuffer> | null,
+ , soundBuffers: Map<string, AudioBuffer> | null,
   activeSources: Set<AudioBufferSourceNode>;
   maxConcurrentSounds: number;
   playbackStats: PlaybackStats;
@@ -104,7 +104,7 @@ export interface AudioPlaybackController { audioContext: AudioContext | null,
     sfxGainNode: GainNode
     );
     masterGainNode: GainNode);
-    soundBuffers: Map<string, AudioBuffer>;
+   , soundBuffers: Map<string, AudioBuffer>;
   ): void;
   playSound(soundName: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
   playBubbleSound(bubbleType: string, comboLevel?: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
@@ -130,23 +130,23 @@ export interface PlaySoundOptions { volume?: number;
 export interface PlaybackStats { totalPlayed: number,
   activeCount: number;
   peakConcurrency: number;
-  errors: number ,}
+ , errors: number ,}
 
 export interface EffectConfig { maxPitchShift: number;
   maxVolumeScale: number;
   maxPan: number;
   fadeInDuration: number;
-  fadeOutDuration: number }
+ , fadeOutDuration: number }
 
 export interface SoundCategory { volume: number;
-  priority: number }
+ , priority: number }
 
 // ========== BGM System ==========
 
 export interface BGMSystem extends Manager { audioManager: AudioManager;
   audioContext: AudioContext;
   configManager: ConfigurationManager;
-  tracks: Map<string, BGMTrack>,
+ , tracks: Map<string, BGMTrack>,
   currentTrack: BGMTrack | null;
   isPlaying: boolean;
   isPaused: boolean;
@@ -155,7 +155,7 @@ export interface BGMSystem extends Manager { audioManager: AudioManager;
   bgmTypes: Record<string, BGMType>,
   bgmGenerator: BGMGenerator | null;
   bgmPlayer: BGMPlayer | null;
-  transitionManager: BGMTransitionManager | null;
+ , transitionManager: BGMTransitionManager | null;
   initialize(): void;
   playBGM(trackName: string, options?: BGMPlayOptions): Promise<boolean>;
   stopBGM(): void;
@@ -170,14 +170,14 @@ export interface BGMTrack { name: string,
   buffer: AudioBuffer;
   duration: number;
   loop: boolean;
-  volume: number;
+ , volume: number;
   metadata?: BGMMetadata
     ,}
 
 export interface BGMType { style: string;
   tempo: number;
   key: string;
-  duration: number }
+ , duration: number }
 
 export interface BGMPlayOptions { loop?: boolean;
   volume?: number;
@@ -204,7 +204,7 @@ export interface BGMGenerationOptions { duration?: number;
 export interface BGMTrackConfig { style: string,
   tempo: number;
   key: string;
-  duration: number;
+ , duration: number;
   instruments?: string[];
   effects?: string[]; ,}
 
@@ -216,7 +216,7 @@ export interface BGMPlayer { audioContext: AudioContext,
   isPaused: boolean;
   currentTime: number;
   duration: number;
-  volume: number;
+ , volume: number;
   play(buffer: AudioBuffer, options?: BGMPlayOptions): Promise<void>;
   stop(): void;
   pause(): void;
@@ -231,7 +231,7 @@ export interface BGMPlayer { audioContext: AudioContext,
 export interface BGMTransitionManager { audioContext: AudioContext,
   bgmSystem: BGMSystem;
   isTransitioning: boolean;
-  currentTransition: BGMTransition | null;
+ , currentTransition: BGMTransition | null;
   crossfade(fromTrack: BGMTrack, toTrack: BGMTrack, duration: number): Promise<void>,
   fadeOut(track: BGMTrack, duration: number): Promise<void>,
   fadeIn(track: BGMTrack, duration: number): Promise<void>,
@@ -242,7 +242,7 @@ export interface BGMTransitionManager { audioContext: AudioContext,
   toTrack: BGMTrack | null;
   duration: number;
   startTime: number;
-  progress: number ,}
+ , progress: number ,}
 
 // ========== Sound Effect System ==========
 
@@ -254,7 +254,7 @@ export interface SoundEffectSystem extends Manager { audioManager: AudioManager;
   effectManager: AudioEffectManager | null;
   poolManager: SoundPoolManager | null;
   soundRenderer: SoundEffectRenderer | null;
-  soundCategories: Record<string, SoundEffectCategory>,
+ , soundCategories: Record<string, SoundEffectCategory>,
   soundVariations: Map<string, SoundVariation[]>,
   activeSources: Set<AudioBufferSourceNode>;
   configWatchers: Set<any>;
@@ -305,16 +305,16 @@ export interface AudioNodes { masterGainNode: GainNode,
   sfxGainNode: GainNode;
   bgmGainNode: GainNode;
   compressor: DynamicsCompressorNode;
-  reverbConvolver: ConvolverNode
+ , reverbConvolver: ConvolverNode
     ,}
 
 export interface AudioSettings { volumes: {
-    master: number;
+    maste;r: number;
     sfx: number;
     bgm: number;
-    muted: boolean };
+   , muted: boolean };
   effects: { compression: boolean;
-    reverb: boolean;
+   , reverb: boolean;
     [key: string]: boolean },
   quality: AudioQualitySettings;
     }
@@ -338,7 +338,7 @@ export interface AudioManager { configManager: ConfigurationManager,
   masterGainNode: GainNode | null;
   sfxGainNode: GainNode | null;
   bgmGainNode: GainNode | null;
-  soundBuffers: Map<string, AudioBuffer>,
+ , soundBuffers: Map<string, AudioBuffer>,
   activeSources: Set<AudioBufferSourceNode>;
   qualityMode: AudioQualityMode;
   qualitySettings: Record<AudioQualityMode, AudioQualitySettings>,
@@ -346,7 +346,7 @@ export interface AudioManager { configManager: ConfigurationManager,
   soundEffectSystem: SoundEffectSystem | null;
   audioController: AudioController | null;
   audioVisualizer: AudioVisualizer | null;
-  accessibilitySupport: AudioAccessibilitySupport | null;
+ , accessibilitySupport: AudioAccessibilitySupport | null;
   initialize(): Promise<boolean>;
   playSound(soundName: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
   playBubbleSound(bubbleType: string, comboLevel?: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
@@ -399,16 +399,16 @@ export interface AudioManager { configManager: ConfigurationManager,
 
 export interface AudioManagerState { isInitialized: boolean,
   isEnabled: boolean;
-  volumes: {
-    master: number;
+ , volumes: {
+    maste;r: number;
     sfx: number;
     bgm: number;
-    muted: boolean ,};
+   , muted: boolean ,};
   context: AudioContextStatus;
   playback: PlaybackStats;
   configuration: AudioSettings;
   subsystems: SubsystemStatus;
-  soundGeneration: GenerationStatus;
+ , soundGeneration: GenerationStatus;
     }
 
 export interface AudioStatus { isEnabled: boolean,
@@ -423,15 +423,15 @@ export interface AudioStatus { isEnabled: boolean,
   muted: boolean;
   contextState: AudioContextState;
   supportedFormats: string[];
-  qualityMode: AudioQualityMode
+ , qualityMode: AudioQualityMode
     ,}
 
 // ========== Additional Interfaces ==========
 
 export interface ProceduralSoundGenerator { audioContext: AudioContext | null;
-  soundBuffers: Map<string, AudioBuffer>,
+ , soundBuffers: Map<string, AudioBuffer>,
   isInitialized: boolean;
-  lastGenerationTime: number;
+ , lastGenerationTime: number;
   setAudioContext(audioContext: AudioContext): void,
   generateAllSounds(): Promise<boolean>;
   getAvailableSounds(): string[];
@@ -441,7 +441,7 @@ export interface ProceduralSoundGenerator { audioContext: AudioContext | null;
 export interface GenerationStatus { isGenerated: boolean,
   soundCount: number;
   generationTime: number;
-  lastGenerated: Date | null ,}
+ , lastGenerated: Date | null ,}
 
 export interface AudioSubsystemCoordinator { audioManager: AudioManager | null;
   bgmSystem: BGMSystem | null;
@@ -449,7 +449,7 @@ export interface AudioSubsystemCoordinator { audioManager: AudioManager | null;
   audioController: AudioController | null;
   audioVisualizer: AudioVisualizer | null;
   accessibilitySupport: AudioAccessibilitySupport | null;
-  isInitialized: boolean;
+ , isInitialized: boolean;
   setAudioManager(audioManager: AudioManager): void,
   initializeSubsystems(): Promise<void>;
   onSceneChange(sceneName: string, options?: any): Promise<boolean>;
@@ -463,7 +463,7 @@ export interface SubsystemStatus { bgmSystem: boolean,
   soundEffectSystem: boolean;
   audioController: boolean;
   audioVisualizer: boolean;
-  accessibilitySupport: boolean ,}
+ , accessibilitySupport: boolean ,}
 
 export interface AudioController { // Audio controller interface (placeholder);
   setVolume(category: string, volume: number, fadeTime?: number): any;

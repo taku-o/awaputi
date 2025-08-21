@@ -5,11 +5,11 @@
  * Issue #23で実装された音響システムのパフォーマンスを測定します。
  * 同時効果音再生、BGM生成時間、メモリ使用量などを検証します。
  */
-// import { jest } from '@jest/globals';
-import { AudioManager } from '../../src/audio/AudioManager.js';
-import { AudioDataOptimizer } from '../../src/audio/AudioDataOptimizer.js';
-import { AudioCacheManager } from '../../src/audio/AudioCacheManager.js';
-import { AudioPerformanceMonitor } from '../../src/audio/AudioPerformanceMonitor.js';
+// import { jest  } from '@jest/globals';
+import { AudioManager  } from '../../src/audio/AudioManager.js';
+import { AudioDataOptimizer  } from '../../src/audio/AudioDataOptimizer.js';
+import { AudioCacheManager  } from '../../src/audio/AudioCacheManager.js';
+import { AudioPerformanceMonitor  } from '../../src/audio/AudioPerformanceMonitor.js';
 interface MockFunction<__T = any> extends Function {
     calls: any[][],
     executionTimes: number[],
@@ -210,7 +210,7 @@ describe('音響システムパフォーマンステスト', () => {
                     length: 44100,
                     sampleRate: 44100,
                     numberOfChannels: 2;);
-                    getChannelData: mockFn(() => new Float32Array(44100);
+                   , getChannelData: mockFn(() => new Float32Array(44100);
                 })'),
                 destination: {},
                 sampleRate: 44100,
@@ -317,7 +317,7 @@ describe('音響システムパフォーマンステスト', () => {
                     for (let i = 0; i < 3; i++) {
                         promises.push(audioManager.playSound(soundType, {
                             volume: 0.2;);
-                            pitch: 1 + (Math.random() - 0.5) * 0.2 // ピッチバリエーション
+                           , pitch: 1 + (Math.random() - 0.5) * 0.2 // ピッチバリエーション
                         } as SoundPlayOptions);
                     }
                 });
@@ -613,7 +613,7 @@ describe('音響システムパフォーマンステスト', () => {
                 },
                 {
                     name: 'BGM start';);
-                    operation: (') => audioManager.playBGM('test-track'');
+                   , operation: (') => audioManager.playBGM('test-track'');
                 },
                 {
                     name: 'Effect toggle',

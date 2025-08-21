@@ -4,30 +4,30 @@
  * Google Search Console統合準備、設定ガイド、認証準備機能を提供
  */
 
-import { seoLogger } from './SEOLogger';''
-import { seoErrorHandler } from './SEOErrorHandler';
+import { seoLogger  } from './SEOLogger';''
+import { seoErrorHandler  } from './SEOErrorHandler';
 
 // 認証方法インターフェース
 interface VerificationMethod { name: string,
     description: string,
     difficulty: 'easy' | 'medium' | 'hard';
-    setup: (param?: string) => VerificationSetupInstructions ,}
+   , setup: (para;m?: string) => VerificationSetupInstructions ,}
 }
 
 // 認証設定手順インターフェース
 interface VerificationSetupInstructions { method: string;
-    steps: Array<{
-        step: number;
-        action: string;
+   , steps: Array<{
+        ste;p: number;
+       , action: string;
         description?: string;
         code?: string;
         location?: string;
         record?: {
-            type: string;
+            typ;e: string;
             name: string;
-            value: string }>;
+           , value: string }>;
     verificationUrl: string;
-    estimated_time: string;
+   , estimated_time: string;
     note?: string;
     advantage?: string;
     requirements?: string;
@@ -39,16 +39,16 @@ interface IntegrationStatus { verified: boolean,
     verificationMethod: string | null;
     sitemapSubmitted: boolean;
     dataCollection: boolean;
-    lastCheck: number | null ,}
+   , lastCheck: number | null ,}
 
 // 準備状況チェック結果インターフェース
 interface ReadinessCheckResult { timestamp: number;
     ready: boolean;
     issues: string[];
     recommendations: string[];
-    checklist: {
+   , checklist: {
         sitemap?: {
-            exists: boolean;
+            exist;s: boolean;
             status?: number;
             lastModified?: string | null;
             size?: string | null;
@@ -60,18 +60,18 @@ interface ReadinessCheckResult { timestamp: number;
             error?: string; };
         metaTags?: { found: string[];
             missing: string[];
-            total: number };
+           , total: number };
         structuredData?: { hasValidData: boolean;
             validCount: number;
             errorCount: number;
-            types: string[], }
-            errors: Array<{ index: number; error: string }>;
+           , types: string[], }
+            errors: Array<{ index: number;, error: string }>;
         };
         https?: boolean;
         indexablePages?: Array<{ url: string;
             title: string;
             priority: number;
-            changefreq: string }>;
+           , changefreq: string }>;
     };
     error?: string;
 }
@@ -80,38 +80,38 @@ interface ReadinessCheckResult { timestamp: number;
 interface RecommendedVerificationMethod { method: string,
     reason: string;
     priority: number;
-    setup: VerificationMethod
+   , setup: VerificationMethod
     ,}
 
 // サイトマップ送信準備インターフェース
 interface SitemapSubmissionPreparation { title: string;
-    steps: Array<{
-        step: number;
+   , steps: Array<{
+        ste;p: number;
         action: string;
-        description: string;
+       , description: string;
         checkUrl?: string;
         submitUrl?: string; }>;
     automaticSubmission: { available: boolean;
         description: string;
-        implementation: string }
+       , implementation: string }
 
 // API統合準備インターフェース
 interface ApiIntegrationPreparation { title: string,
     overview: string;
-    steps: Array<{
-        step: number;
-        action: string;
+   , steps: Array<{
+        ste;p: number;
+       , action: string;
         description?: string;
         url?: string; ,}>;
     scopes: string[];
-    documentation: string;
+   , documentation: string;
 }
 
 // 監視設定インターフェース
 interface MonitoringSetup { title: string,
     recommendations: Array<{
-        category: string;
-        items: string[] ,}>;
+        categor;y: string;
+       , items: string[] ,}>;
 }
 
 // Window拡張インターフェース
@@ -123,7 +123,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
     private integrationStatus: IntegrationStatus;
 
     constructor(''';
-                name: 'HTML ファイル アップロード',
+               , name: 'HTML ファイル アップロード',
                 description: 'HTML 確認ファイルをサイトにアップロード',
                 difficulty: 'easy',)';
                 setup: this.setupHtmlFileVerification.bind(this ,};
@@ -141,14 +141,14 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
                 name: 'Google Analytics',
                 description: 'Google Analytics アカウントを使用',
                 difficulty: 'easy';
-                setup: this.setupAnalyticsVerification.bind(this ,}
+               , setup: this.setupAnalyticsVerification.bind(this ,}
         };
         
         this.integrationStatus = { verified: false,
             verificationMethod: null;
             sitemapSubmitted: false;
             dataCollection: false;
-            lastCheck: null ,}
+           , lastCheck: null ,}
 
     /**
      * Search Console統合の準備状況チェック
@@ -158,7 +158,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
                 timestamp: Date.now();
                 ready: true;
                 issues: [];
-                recommendations: [], }
+               , recommendations: [], }
                 checklist: {};
             // サイトマップ確認
             readiness.checklist.sitemap = await this.checkSitemapStatus();''
@@ -230,7 +230,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
             seoErrorHandler.handle(error as Error, 'checkIntegrationReadiness);
             return { timestamp: Date.now(),
                 ready: false;
-                issues: [], };
+               , issues: [], };
                 recommendations: [], }
                 checklist: {};
                 error: (error, as Error).message;
@@ -247,20 +247,20 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
             recommendations.push({''
                 method: 'googleAnalytics',)';
                 reason: 'Google Analyticsが既に実装されているため最も簡単')';
-                priority: 1,')';
+               , priority: 1,')';
                 setup: this.verificationMethods.googleAnalytics)' ,}'
 
         // HTMLタグ方式
         recommendations.push({ ''
             method: 'htmlTag',)';
             reason: 'HTMLに直接追加できるため実装が簡単')';
-            priority: 2,')';
+           , priority: 2,')';
             setup: this.verificationMethods.htmlTag)');
         // HTMLファイル方式
         recommendations.push({''
             method: 'htmlFile',)';
             reason: 'ファイルアップロードが可能な場合に適している');
-            priority: 3,);
+           , priority: 3,);
             setup: this.verificationMethods.htmlFile);
 ';
         // DNS方式
@@ -268,7 +268,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
             recommendations.push({''
                 method: 'dnsRecord',)';
                 reason: 'DNSアクセスがある場合、最も信頼性が高い');
-                priority: 4,);
+               , priority: 4,);
                 setup: this.verificationMethods.dnsRecord ,}
 
         return recommendations.sort((a, b) => a.priority - b.priority);
@@ -279,7 +279,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
      */''
     setupHtmlTagVerification(verificationCode?: string): VerificationSetupInstructions { const instructions: VerificationSetupInstructions = {''
             method: 'HTML Tag Verification';
-            steps: [{'
+           , steps: [{'
                     step: 1,
                     action: 'Google Search Consoleで認証コードを取得',
                     description: 'Search Console > プロパティを追加 > URL プレフィックス > HTML タグを選択' ,};
@@ -312,7 +312,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
      */''
     setupHtmlFileVerification(fileName?: string): VerificationSetupInstructions { return { ''
             method: 'HTML File Verification';
-            steps: [{'
+           , steps: [{'
                     step: 1,
                     action: 'Google Search Consoleで確認ファイルをダウンロード',' };
 
@@ -343,7 +343,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
      */''
     setupDnsVerification(txtRecord?: string): VerificationSetupInstructions { return { ''
             method: 'DNS Record Verification';
-            steps: [{'
+           , steps: [{'
                     step: 1,
                     action: 'Google Search ConsoleでTXTレコードを取得',' };
 
@@ -419,7 +419,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
             ],
             automaticSubmission: { available: true,''
                 description: 'robots.txtにサイトマップのURLを記載することで自動発見が可能',
-                implementation: 'Sitemap: https://your-domain.com/sitemap.xml ,}'
+                implementation: 'Sitemap:, https://your-domain.com/sitemap.xml ,}'
         }
 
     /**
@@ -475,7 +475,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 
                 { ')'
                     category: '分析頻度')';
-                    items: ['';
+                   , items: ['';
                         '毎日: 重要なエラーとアラートの確認',
                         '週次: 検索パフォーマンスレポートの分析',
                         '月次: 総合的なSEO健全性の評価',]';
@@ -512,7 +512,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
         const required = ['title', 'description'];''
         const optional = ['keywords', 'author', 'robots'];
         const found: string[] = []);
-        const missing: string[] = [])';
+        const, missing: string[] = [])';
         // Title tag
         const titleTag = document.querySelector('title);''
         if(titleTag && titleTag.textContent? .trim()) { ''
@@ -534,8 +534,8 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
         return { found, missing, total: found.length 
     private checkStructuredDataStatus()';
         const scripts = document.querySelectorAll('script[type="application/ld+json"]);
-        const validData: Array<{ type: string; context: string ,}> = [];
-        const errors: Array<{ index: number; error: string }> = [];
+        const, validData: Array<{ type: string;, context: string ,}> = [];
+        const errors: Array<{ index: number;, error: string }> = [];
 
         scripts.forEach((script, index) => { try { }
 
@@ -548,14 +548,14 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
                     });
                 } catch (error) { errors.push({)
                     index: index);
-                    error: (error, as Error).message });
+                   , error: (error, as Error).message });
             }
         });
 
         return { hasValidData: validData.length > 0,
             validCount: validData.length;
             errorCount: errors.length;
-            types: validData.map(d = > d.type ,};
+           , types: validData.map(d = > d.type ,};
             errors: errors }
         }
 
@@ -564,7 +564,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 
     private getIndexablePages(''';
                 url: '/';
-                title: document.title,
+               , title: document.title,
                 priority: 1.0,
                 changefreq: 'daily';
             },

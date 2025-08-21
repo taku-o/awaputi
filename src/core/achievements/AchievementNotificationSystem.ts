@@ -22,7 +22,7 @@ export interface Notification { id: string,
     icon?: string;
     visible: boolean;
     startTime?: number;
-    options: NotificationOptions
+   , options: NotificationOptions
     ,}
 
 export interface Achievement { id?: string;
@@ -32,7 +32,7 @@ export interface Achievement { id?: string;
     icon?: string;
     category?: string;
     rarity?: RarityLevel;
-    reward: AchievementReward
+   , reward: AchievementReward
     ,}
 
 export interface AchievementReward { ap: number;
@@ -41,7 +41,7 @@ export interface AchievementReward { ap: number;
 
 export interface RewardItem { type: string,
     id: string;
-    quantity: number ,}
+   , quantity: number ,}
 
 export interface NotificationOptions { duration?: number;
     sound?: boolean;
@@ -51,7 +51,7 @@ export interface NotificationOptions { duration?: number;
 export interface NotificationTypeConfig { icon: string,
     color: string;
     priority: number;
-    sound: string ,}
+   , sound: string ,}
 
 export interface NotificationConfig { maxActiveNotifications: number;
     notificationDuration: number;
@@ -62,7 +62,7 @@ export interface NotificationConfig { maxActiveNotifications: number;
     fadeIn: boolean;
     slideIn: boolean;
     sound: boolean;
-    vibration: boolean }
+   , vibration: boolean }
 
 export interface NotificationData { title?: string;
     message?: string;
@@ -75,7 +75,7 @@ export interface NotificationData { title?: string;
 export interface NotificationHistoryEntry { id: string,
     achievement: Achievement;
     timestamp: number;
-    type: NotificationType
+   , type: NotificationType
     ,}
 
 export interface NotificationSettings { displayDuration?: number;
@@ -126,7 +126,7 @@ export class AchievementNotificationSystem {
     private history: NotificationHistoryEntry[];
     private historyLimit: number;
     private container: HTMLElement | null;
-    private queueProcessor: number | null;
+    private, queueProcessor: number | null;
     private isProcessingQueue?: boolean;
 
     constructor(gameEngineOrAudioManager: GameEngine | AudioManager | null = null) {
@@ -151,17 +151,17 @@ export class AchievementNotificationSystem {
         // 通知設定
         this.config = { : undefined
             maxActiveNotifications: 3;
-            notificationDuration: 4000, // 4秒（テスト互換性用）;
+           , notificationDuration: 4000, // 4秒（テスト互換性用）;
             animationDuration: 500, // アニメーション時間（テスト互換性用）;
             queueProcessingInterval: 500, // キュー処理間隔;
             maxQueueSize: 10;
             ;
             // 表示設定
-            position: 'top-right', // 'top-right', 'top-left', 'bottom-right', 'bottom-left';
+           , position: 'top-right', // 'top-right', 'top-left', 'bottom-right', 'bottom-left';
             fadeIn: true;
             slideIn: true;
             sound: true;
-            vibration: true // モバイル端末での振動 ,};
+           , vibration: true // モバイル端末での振動 ,};
         // 通知タイプ別設定
         this.notificationTypes = { achievement: {''
                 icon: '🏆',
@@ -322,14 +322,14 @@ export class AchievementNotificationSystem {
             type: this.determineNotificationType(achievement);
             achievement,
             timestamp: now;
-            displayTime: now, // テスト用;
+           , displayTime: now, // テスト用;
             expiryTime: now + (options.duration || this.config.notificationDuration);
             priority: options.priority || this.getNotificationPriority(achievement);
-            title: `Achievement Unlocked: ${achievement.title || achievement.name}`;
+            title: `Achievement, Unlocked: ${achievement.title || achievement.name}`;
             visible: false, // 初期は非表示;
             options: { duration: options.duration || this.config.notificationDuration;
                 sound: options.sound !== false;
-                vibration: options.vibration !== false;
+               , vibration: options.vibration !== false;
                 ...options
         };
 
@@ -345,8 +345,7 @@ export class AchievementNotificationSystem {
         const reward = achievement? .reward || {};
         const ap = reward.ap || 0;
         // 報酬が高い実績はレア扱い
-        if(ap >= 300) {'
-            ';
+        if(ap >= 300) {', ';
 
         }
 
@@ -357,8 +356,7 @@ export class AchievementNotificationSystem {
             return 'milestone'; }
 ';
         // コレクション系
-        if(achievement.category === 'collection'') {'
-            ';
+        if(achievement.category === 'collection'') {', ';
 
         }
 
@@ -386,22 +384,22 @@ export class AchievementNotificationSystem {
                 id: `notification_${now}_${Math.random(}.toString(36}.substr(2, 9})`,''
                 type: (notificationData.type, as NotificationType') || 'info';
                 timestamp: now;
-                displayTime: now,
+               , displayTime: now,
                 expiryTime: now + (notificationData.duration || this.config.notificationDuration),
                 priority: this.getTypePriority(notificationData.type),
                 title: notificationData.title || 'Notification',
                 message: notificationData.message || '',
                 icon: notificationData.icon || this.getTypeIcon(notificationData.type);
-                visible: false,
+               , visible: false,
                 achievement: { ''
                     name: notificationData.title || 'Notification',
                     description: notificationData.message || '';
-                    icon: notificationData.icon || this.getTypeIcon(notificationData.type), }
+                   , icon: notificationData.icon || this.getTypeIcon(notificationData.type), }
                     reward: { ap: 0 } // デフォルト報酬
                 };
                 options: { duration: notificationData.duration || this.config.notificationDuration;
                     sound: notificationData.sound !== false;
-                    vibration: notificationData.vibration !== false }
+                   , vibration: notificationData.vibration !== false }
             };
             this.addNotificationToQueue(notification);
             console.log(`[AchievementNotificationSystem] Queued, notification: ${notification.title}`});
@@ -414,8 +412,7 @@ export class AchievementNotificationSystem {
      * @param type 通知タイプ
      * @returns 優先度'
      */''
-    private getTypePriority(type?: string): number { const priorities: Record<string, number> = {''
-            'error': 5,
+    private getTypePriority(type?: string): number { const priorities: Record<string, number> = {'', 'error': 5,
             'warning': 4,
             'success': 3,
             'info': 2,
@@ -431,8 +428,7 @@ export class AchievementNotificationSystem {
      * @param type 通知タイプ
      * @returns アイコン'
      */''
-    private getTypeIcon(type?: string): string { const icons: Record<string, string> = {''
-            'error': '❌',
+    private getTypeIcon(type?: string): string { const icons: Record<string, string> = {'', 'error': '❌',
             'warning': '⚠️',
             'success': '✅',
             'info': 'ℹ️',
@@ -551,8 +547,7 @@ export class AchievementNotificationSystem {
         ";
         // クローズボタンイベント""
         const closeBtn = element.querySelector('.achievement-notification-close) as HTMLElement;''
-        if(closeBtn) {'
-            ';
+        if(closeBtn) {', ';
 
         }
 
@@ -636,7 +631,7 @@ export class AchievementNotificationSystem {
         if(reward) { '
             Object.assign(reward.style, {)'
                 fontSize: '11px')';
-                color: typeConfig.color,
+               , color: typeConfig.color,
                 fontWeight: 'bold',' }
 
                 marginTop: '2px')'); }
@@ -672,7 +667,7 @@ export class AchievementNotificationSystem {
     private hideNotification(notificationId: string): void { ''
         if(!this.container) return;
 
-        const element = this.container.querySelector(`[data-notification-id="${notificationId)"]`) as HTMLElement;""
+        const element = this.container.querySelector(`[data-notification-id="${notificationId)"]`) as, HTMLElement;""
         if (!element") return;
 ";
         // アウトアニメーション""
@@ -720,7 +715,7 @@ export class AchievementNotificationSystem {
     private addToHistory(notification: Notification): void { this.history.unshift({
             id: notification.id);
             achievement: notification.achievement);
-            timestamp: notification.timestamp,);
+           , timestamp: notification.timestamp,);
             type: notification.type);
         // 履歴サイズ制限
         if(this.history.length > this.historyLimit) {
@@ -866,8 +861,7 @@ export class AchievementNotificationSystem {
      * @param rarity レアリティ
      * @returns 色'
      */''
-    private getRarityColor(rarity: RarityLevel): string { const colors: Record<RarityLevel, string> = {''
-            'common': '#808080',
+    private getRarityColor(rarity: RarityLevel): string { const colors: Record<RarityLevel, string> = {'', 'common': '#808080',
             'rare': '#0066cc',
             'epic': '#9933cc',
             'legendary': '#ff6600' };

@@ -10,18 +10,18 @@ export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 // イベントテーマの型定義
 export interface EventTheme { name: string,
     duration: {
-        start: string, // MM-DD形式;
+        star;t: string, // MM-DD形式;
         end: string,   // MM-DD形式 },
     colors: { primary: string[];
         secondary: string[];
-        accent: string[] };
+       , accent: string[] };
     particles: { types: string[];
         density: number;
         movement: string;
-        spawnRate: number };
+       , spawnRate: number };
     effects: { bubbleDestruction: string;
         comboEffect: string;
-        backgroundPattern: string }
+       , backgroundPattern: string }
 
 export interface EventThemes { [eventName: string]: EventTheme,
     }
@@ -31,14 +31,14 @@ export interface SeasonalSummary { currentSeason: Season,
     activeEvents: string[];
     daysUntilNextSeason: number;
     lastCheck: Date;
-    nextCheck: Date
+   , nextCheck: Date
     ,}
 
 export interface DetectorStatus { currentSeason: Season;
     currentEvent: string | null;
     lastCheck: number;
     checkInterval: number;
-    isCheckRequired: boolean }
+   , isCheckRequired: boolean }
 
 export interface DetectorSettings { seasonCheckInterval?: number; }
 
@@ -46,7 +46,7 @@ export class SeasonDetector {
     private lastSeasonCheck: number;
     private seasonCheckInterval: number;
     private currentSeason: Season;
-    private currentEvent: string | null;
+    private, currentEvent: string | null;
 
     constructor(''';
         this.currentSeason = 'spring';
@@ -198,7 +198,7 @@ export class SeasonDetector {
             currentEvent: this.currentEvent;
             activeEvents: activeEvents;
             daysUntilNextSeason: daysUntilNext;
-            lastCheck: new Date(this.lastSeasonCheck), };
+           , lastCheck: new Date(this.lastSeasonCheck), };
             nextCheck: new Date(this.lastSeasonCheck + this.seasonCheckInterval); }
         }
     
@@ -233,6 +233,6 @@ export class SeasonDetector {
     getDetectorStatus(): DetectorStatus { return { currentSeason: this.currentSeason,
             currentEvent: this.currentEvent;
             lastCheck: this.lastSeasonCheck;
-            checkInterval: this.seasonCheckInterval,' };
+           , checkInterval: this.seasonCheckInterval,' };
 
             isCheckRequired: this.shouldCheckSeason(') }')

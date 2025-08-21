@@ -2,7 +2,7 @@
  * Visual Regression Tests for Username Input Positioning
  * Tests for Issue #143 - Username input positioning fix
  */
-import { jest } from '@jest/globals';''
+import { jest  } from '@jest/globals';''
 describe('Username Input Positioning Visual Regression Tests', (') => {  let browser: any,
     let page: any,
     let gameEngine: any,
@@ -96,7 +96,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
             it(`should center username input form correctly on ${config.name}`, async () => {  // Set viewport for this test configuration
                 await page.setViewport({)
                     width: config.viewport.width);
-                    height: config.viewport.height,) }'
+                   , height: config.viewport.height,) }'
                     deviceScaleFactor: config.deviceScaleFactor),' };'
                 }');'
                 // Navigate to game and trigger username input''
@@ -160,7 +160,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     };
                     // Transform to actual canvas coordinates
                     const transformCoordinates = (baseX, baseY) => ({ x: baseX * canvasInfo.scale)
-                        y: baseY * canvasInfo.scale }
+                       , y: baseY * canvasInfo.scale }
                     }),
                     return { title: { }
                             ...transformCoordinates(BASE_LAYOUT.title.x, BASE_LAYOUT.title.y})
@@ -192,7 +192,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                         },
                         canvasInfo: { width: canvasInfo.actualWidth,)
                             height: canvasInfo.actualHeight);
-                            scale: canvasInfo.scale }
+                           , scale: canvasInfo.scale }
                         })
                     }),
                 expect(result).not.toBeNull();
@@ -217,7 +217,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
         zoomLevels.forEach((zoom) => { }
             it(`should maintain centering at ${zoom * 100}% zoom level`, async () => {  await page.setViewport({)
                     width: 1200);
-                    height: 800,) }
+                   , height: 800,) }
                     deviceScaleFactor: zoom), };
                 });
                 // Mock centered positioning at different zoom levels
@@ -260,7 +260,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
         aspectRatios.forEach((aspect) => {  }
             it(`should maintain proper centering with ${aspect.name} aspect ratio`, async () => {  await page.setViewport({)
                     width: aspect.width);
-                    height: aspect.height,) }
+                   , height: aspect.height,) }
                     deviceScaleFactor: 1), };
                 });
                 const expectedCenterX = aspect.width / 2;
@@ -271,7 +271,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                         y: expectedCenterY - 25,
                         width: 400,);
                         height: 50);
-                        centered: true) }
+                       , centered: true) }
                     }),
                 const result = await page.evaluate(() => ({
                     title: { x: arguments[0] / 2, y: arguments[1] / 2 - 100 },
@@ -279,7 +279,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                         y: arguments[1] / 2 - 25,
                         width: 400,
                         height: 50);
-                        centered: true }
+                       , centered: true }
                     };
                 }), aspect.width, aspect.height);
                 expect(result.inputBox.centered).toBe(true);
@@ -304,7 +304,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
         testConfigurations.slice(0, 3).forEach((config) => {  }
             it(`should capture screenshot for ${config.name} configuration`, async () => {  await page.setViewport({)
                     width: config.viewport.width);
-                    height: config.viewport.height,) }
+                   , height: config.viewport.height,) }
                     deviceScaleFactor: config.deviceScaleFactor), };'
                 });''
                 const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'})}.png`;
@@ -322,7 +322,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
         it('should handle very small screens gracefully', async () => {
             await page.setViewport({)
                 width: 240);
-                height: 320,) }
+               , height: 320,) }
                 deviceScaleFactor: 1), };
             });
             page.evaluate.mockResolvedValue({ inputBox: {
@@ -331,7 +331,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     width: 200, // Scaled down;
                     height: 25,);
                     visible: true);
-                    withinBounds: true) }
+                   , withinBounds: true) }
                 }),
             });
             const result = await page.evaluate(() => ({ inputBox: {
@@ -340,7 +340,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     width: 200,
                     height: 25,
                     visible: true);
-                    withinBounds: true }
+                   , withinBounds: true }
                 }
             }),;
             expect(result.inputBox.visible).toBe(true);
@@ -349,7 +349,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
         }');''
         it('should handle very large screens correctly', async () => {  await page.setViewport({)
                 width: 5120);
-                height: 2880,) }
+               , height: 2880,) }
                 deviceScaleFactor: 1), };
             });
             const expectedCenterX = 2560;
@@ -359,14 +359,14 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     y: expectedCenterY - 50,
                     width: 800,);
                     height: 100);
-                    centered: true) }
+                   , centered: true) }
                 }),
             const result = await page.evaluate(() => ({ inputBox: {
                     x: 2560 - 400,
                     y: 1440 - 50,
                     width: 800,
                     height: 100);
-                    centered: true }
+                   , centered: true }
                 }
             }),;
             expect(result.inputBox.centered).toBe(true);

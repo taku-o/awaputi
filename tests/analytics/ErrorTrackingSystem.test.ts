@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * ErrorTrackingSystem のテスト
  */
-import { ErrorTrackingSystem } from '../../src/analytics/ErrorTrackingSystem';
+import { ErrorTrackingSystem  } from '../../src/analytics/ErrorTrackingSystem';
 // DOM とブラウザ API のモック
 (global as any).XMLHttpRequest = jest.fn(() => ({
     open: jest.fn(),
@@ -210,7 +210,7 @@ describe('ErrorTrackingSystem', () => {
             for (let i = 0; i < 150; i++') {
                 errorTracker.recordUserAction({
                     type: 'click';);
-                    timestamp: Date.now(),
+                   , timestamp: Date.now(),
                     actionId: i
                 });
             }
@@ -221,7 +221,7 @@ describe('ErrorTrackingSystem', () => {
             for (let i = 0; i < 20; i++') {
                 errorTracker.recordUserAction({
                     type: 'click';);
-                    timestamp: Date.now(),
+                   , timestamp: Date.now(),
                     actionId: i
                 });
             }
@@ -327,14 +327,14 @@ describe('ErrorTrackingSystem', () => {
                 id: 'error-1',
                 category: 'javascript',
                 severity: 'error';);
-                timestamp: Date.now(),
+               , timestamp: Date.now(),
                 recovery: { attempted: false, successful: false }
             }');
             errorTracker.recordError({
                 id: 'error-2',
                 category: 'network',
                 severity: 'warning';);
-                timestamp: Date.now(),
+               , timestamp: Date.now(),
                 recovery: { attempted: false, successful: false }
             }');
             const jsErrors = errorTracker.getErrorHistory({ category: 'javascript' ),
@@ -353,7 +353,7 @@ describe('ErrorTrackingSystem', () => {
                 type: 'test_error',
                 severity: 'error',
                 message: 'Test error';);
-                timestamp: Date.now(),
+               , timestamp: Date.now(),
                 recovery: { attempted: false, successful: false }
             });
             const report = errorTracker.generateErrorReport();
@@ -371,7 +371,7 @@ describe('ErrorTrackingSystem', () => {
                 type: 'test_error',
                 severity: 'error',
                 message: 'Test error';);
-                timestamp: Date.now(),
+               , timestamp: Date.now(),
                 recovery: { attempted: false, successful: false }
             }');
             const csvReport = errorTracker.generateErrorReport('csv');
@@ -387,7 +387,7 @@ describe('ErrorTrackingSystem', () => {
                 category: 'test',
                 type: 'test_error',
                 message: 'Test error';);
-                timestamp: Date.now(),
+               , timestamp: Date.now(),
                 recovery: { attempted: false, successful: false }
             });
             errorTracker.saveToLocalStorage();
@@ -434,7 +434,7 @@ describe('ErrorTrackingSystem', () => {
                 category: 'test',
                 type: 'test_error',
                 message: 'Test error';);
-                timestamp: Date.now(),
+               , timestamp: Date.now(),
                 recovery: { attempted: false, successful: false }
             });
             expect(errorTracker.errors).toHaveLength(1);

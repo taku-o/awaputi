@@ -1,6 +1,6 @@
-import { LoggingSystem } from '../LoggingSystem.js';''
-import { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { ScenesBaseDialog } from '../../scenes/components/ScenesBaseDialog.js';
+import { LoggingSystem  } from '../LoggingSystem.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { ScenesBaseDialog  } from '../../scenes/components/ScenesBaseDialog.js';
 
 // 型定義
 export interface FeedbackConfig { enableRatingPrompts: boolean,
@@ -9,10 +9,10 @@ export interface FeedbackConfig { enableRatingPrompts: boolean,
     showAfterViewTime: number;
     maxFeedbacksPerSession: number;
     enableOfflineStorage: boolean;
-    submitRetryAttempts: number ,}
+   , submitRetryAttempts: number ,}
 
 export interface FeedbackState { feedbacksShownThisSession: number;
-    contentViewTimes: Map<string, number>,
+   , contentViewTimes: Map<string, number>,
     viewStartTimes: Map<string, number>,
     suppressedContent: Set<string>;
     lastFeedbackTime: number;
@@ -27,11 +27,11 @@ export interface FeedbackData { contentId: string,
     sessionId: string;
     userAgent: string;
     screenSize: string;
-    language: string ,}
+   , language: string ,}
 
 export interface FeedbackStatistics { ratings: number[];
     comments: string[];
-    totalFeedbacks: number }
+   , totalFeedbacks: number }
 
 export interface FeedbackSubmissionData { rating?: number;
     helpful?: boolean;
@@ -43,36 +43,36 @@ export interface FeedbackSubmissionResult { success: boolean,
 
 export interface FeedbackAnalytics { totalFeedbacks: number;
     averageRating: number;
-    ratingDistribution: Record<number, number>,
+   , ratingDistribution: Record<number, number>,
     helpfulPercentage: number;
-    commonCategories: Map<string, number>,
+   , commonCategories: Map<string, number>,
     topRatedContent: [string, number][],
     lowRatedContent: [string, number][], }
 
 export interface SavedFeedbackData { feedbacks: [string, FeedbackData][],
     pendingFeedbacks: PendingFeedback[];
     state: SavedFeedbackState;
-    lastSaved: number ,}
+   , lastSaved: number ,}
 
 export interface SavedFeedbackState { feedbacksShownThisSession: number;
     suppressedContent: string[];
-    contentViewTimes: [string, number][],
+   , contentViewTimes: [string, number][],
     viewStartTimes: [string, number][],
     lastFeedbackTime: number;
-    feedbackData: [string, FeedbackStatistics][], }
+   , feedbackData: [string, FeedbackStatistics][], }
 
 export interface PendingFeedback { contentId: string,
     feedbackData: FeedbackSubmissionData
     ,}
 
 export interface DialogButton { text: string;
-    action: () => void;
+   , action: () => void;
     isPrimary?: boolean }
 }
 
 export interface DialogConfig { title: string;
     content: string;
-    buttons: DialogButton[]
+   , buttons: DialogButton[]
     }
 
 // GameEngine インターフェース
@@ -100,12 +100,12 @@ export class HelpFeedbackSystem {
     private feedbackDialog: HelpFeedbackDialog | null;
     private currentContentId: string | null;
     // フィードバックデータ
-    private feedbacks: Map<string, FeedbackData>;
+    private, feedbacks: Map<string, FeedbackData>;
     private pendingFeedbacks: PendingFeedback[];
     // 設定
     private config: FeedbackConfig;
     // フィードバック状態
-    private state: FeedbackState;
+    private, state: FeedbackState;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -124,9 +124,9 @@ export class HelpFeedbackSystem {
             enableRatingPrompts: true;
             enableTextFeedback: true;
             enableQuickFeedback: true;
-            showAfterViewTime: 30000, // 30秒後に表示;
+           , showAfterViewTime: 30000, // 30秒後に表示;
             maxFeedbacksPerSession: 3;
-            enableOfflineStorage: true;
+           , enableOfflineStorage: true;
     ,}
             submitRetryAttempts: 3 }
         };
@@ -286,7 +286,7 @@ export class HelpFeedbackSystem {
                 categories: feedbackData.categories || [];
                 timestamp: Date.now();
                 sessionId: this.generateSessionId();
-                userAgent: navigator.userAgent, }
+               , userAgent: navigator.userAgent, }
 
                 screenSize: `${window.innerWidth}x${window.innerHeight}`,''
                 language: this.gameEngine.localizationManager? .getCurrentLanguage?.(') || 'ja';
@@ -392,7 +392,7 @@ export class HelpFeedbackSystem {
             if(!this.state.feedbackData.has(topicId) {
                 this.state.feedbackData.set(topicId, {)
                     ratings: []);
-                    comments: [], }
+                   , comments: [], }
                     totalFeedbacks: 0); }
             }
             
@@ -417,12 +417,12 @@ export class HelpFeedbackSystem {
     getFeedbackStatistics(): FeedbackAnalytics { try {
             const stats: FeedbackAnalytics = {
                 totalFeedbacks: this.feedbacks.size;
-                averageRating: 0, }
+               , averageRating: 0, }
                 ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 ,},
                 helpfulPercentage: 0;
-                commonCategories: new Map<string, number>(),
+               , commonCategories: new Map<string, number>(),
                 topRatedContent: [];
-                lowRatedContent: [];
+               , lowRatedContent: [];
             },
             
             let totalRating = 0;
@@ -476,7 +476,7 @@ export class HelpFeedbackSystem {
                 helpfulPercentage: 0;
                 commonCategories: new Map();
                 topRatedContent: [];
-                lowRatedContent: [];
+               , lowRatedContent: [];
             },
         }
     }
@@ -488,13 +488,13 @@ export class HelpFeedbackSystem {
             const dataToSave: SavedFeedbackData = {
                 feedbacks: Array.from(this.feedbacks.entries();
                 pendingFeedbacks: this.pendingFeedbacks;
-                state: {
+               , state: {
                     feedbacksShownThisSession: this.state.feedbacksShownThisSession;
                     suppressedContent: Array.from(this.state.suppressedContent);
                     contentViewTimes: Array.from(this.state.contentViewTimes.entries();
                     viewStartTimes: Array.from(this.state.viewStartTimes.entries();
                     lastFeedbackTime: this.state.lastFeedbackTime;
-                    feedbackData: Array.from(this.state.feedbackData.entries( }
+                   , feedbackData: Array.from(this.state.feedbackData.entries( }
 
                 },''
                 lastSaved: Date.now()';
@@ -525,7 +525,7 @@ export class HelpFeedbackSystem {
                     suppressedContent: new Set(data.state.suppressedContent || []);
                     contentViewTimes: new Map(data.state.contentViewTimes || []);
                     viewStartTimes: new Map(data.state.viewStartTimes || []);
-                    lastFeedbackTime: data.state.lastFeedbackTime || 0;
+                   , lastFeedbackTime: data.state.lastFeedbackTime || 0;
             }
 
                     feedbackData: new Map(data.state.feedbackData || []); }
@@ -579,7 +579,7 @@ export class HelpFeedbackSystem {
     getSessionStats(): Record<string, any> { return { feedbacksShownThisSession: this.state.feedbacksShownThisSession,
             suppressedContentCount: this.state.suppressedContent.size;
             activeViewsCount: this.state.viewStartTimes.size;
-            totalViewTime: Array.from(this.state.contentViewTimes.values().reduce((sum, time) => sum + time, 0), };
+           , totalViewTime: Array.from(this.state.contentViewTimes.values().reduce((sum, time) => sum + time, 0), };
             lastFeedbackTime: this.state.lastFeedbackTime }
         }
     
@@ -637,7 +637,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
     private rating: number;
     private helpful: boolean | null;
     private comment: string;
-    private categories: string[];
+    private, categories: string[];
     constructor(gameEngine: GameEngine, feedbackSystem: HelpFeedbackSystem) {
 ';
 
@@ -664,7 +664,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
         this.showDialog({);''
             title: t('help.feedback.title', 'このヘルプは役に立ちましたか？''),
             content: this.buildFeedbackContent()';
-            buttons: [{')'
+           , buttons: [{')'
                     text: t('help.feedback.submit', '送信),
                     action: (') => this.submitFeedback(;
                     isPrimary: true ,}))'
@@ -709,7 +709,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
 
                 <div class="comment-section">"";
                     <label>${t('help.feedback.comment', 'コメント（任意）:''})</label>''
-                    <textarea class="feedback-comment" rows="3" "";
+                    <textarea class="feedback-comment" rows="3", "";
                         placeholder="${t('help.feedback.commentPlaceholder', '改善点や要望があればお聞かせください''})"></textarea>
                 </div>";
 
@@ -827,7 +827,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
                 rating: this.rating;
                 helpful: this.helpful || undefined;
                 comment: this.comment.trim(;
-                categories: this.categories }))
+               , categories: this.categories }))
             );
             const result = await this.feedbackSystem.submitFeedback(this.contentId, feedbackData);
             
@@ -857,7 +857,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
  */
 class QuickFeedbackWidget { private gameEngine: GameEngine
     private feedbackSystem: HelpFeedbackSystem;
-    private element: HTMLElement | null;
+    private, element: HTMLElement | null;
     constructor(gameEngine: GameEngine, feedbackSystem: HelpFeedbackSystem) {
 
         this.gameEngine = gameEngine;
@@ -884,7 +884,7 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
             left: ${x}px;
             top: ${y}px;
             background: white;
-            border: 1px solid #ccc;
+           , border: 1px solid #ccc;
             border-radius: 8px,
             padding: 12px,
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -921,8 +921,7 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
             };
 
         const closeBtn = this.element.querySelector('.close-btn);''
-        if(closeBtn) {'
-            ';
+        if(closeBtn) {', ';
 
         }
 
@@ -942,7 +941,7 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
     private async submitQuickFeedback(contentId: string, helpful: boolean): Promise<void> { try {
             await this.feedbackSystem.submitFeedback(contentId, {)
                 helpful: helpful)';
-                rating: helpful ? 4 : 2, // 簡易評価;
+               , rating: helpful ? 4 : 2, // 簡易評価;
                 comment: '',);
                 categories: []);
             ;

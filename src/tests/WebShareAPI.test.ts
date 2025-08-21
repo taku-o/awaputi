@@ -1,7 +1,7 @@
 /**
  * Web Share API統合機能テスト
  */
-import { jest } from '@jest/globals';
+import { jest  } from '@jest/globals';
 // Mock interfaces
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
 interface MockAchievementManager { getAchievements: jest.Mock }
@@ -13,10 +13,10 @@ interface MockGameEngine { statisticsManager: MockStatisticsManager;
     on: jest.Mock;
     off: jest.Mock;
     emit: jest.Mock;
-    isDebugMode: jest.Mock<boolean> }
+   , isDebugMode: jest.Mock<boolean> }
 interface MockLocalStorage { getItem: jest.Mock;
     setItem: jest.Mock;
-    removeItem: jest.Mock }
+   , removeItem: jest.Mock }
 interface MockClipboard { writeText: jest.Mock<Promise<void>> }
 interface MockNavigator { onLine: boolean;
     userAgent: string;
@@ -33,7 +33,7 @@ interface ShareData { title?: string;
 interface ShareValidation { valid: boolean,
     errors: string[] ,}
 interface ShareResult { success: boolean;
-    method: string;
+   , method: string;
     error?: string;
     message?: string; }
 interface PerformanceStats { shareRequests: number,
@@ -71,7 +71,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
                 translate: jest.fn<string>().mockImplementation((key: string) => key) }
             };
             on: jest.fn();
-            off: jest.fn(),
+           , off: jest.fn(),
             emit: jest.fn(),
             isDebugMode: jest.fn<boolean>().mockReturnValue(false);
         };
@@ -81,7 +81,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             value: {);
                 getItem: jest.fn();
                 setItem: jest.fn();
-        removeItem: jest.fn( }
+       , removeItem: jest.fn( }
 
             } as, MockLocalStorage''
         });
@@ -217,7 +217,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             expect(sanitized.url).toBe('https: //example.com/page? param=value),
         }');''
         test('無効なプロトコルURLの除去', () => {  : undefined'
-            const shareData: ShareData = {' '
+            const shareData: ShareData = {', '
                 url: 'javascript:alert("xss"")' ,}
             };
             ';
@@ -253,7 +253,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
                 'webShareSuccess',
                 expect.objectContaining({)
                     hasTitle: true);
-                    hasText: true,);
+                   , hasText: true,);
                     hasUrl: true),
             );' }'
 
@@ -445,7 +445,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
                 'webShareSuccess',
                 expect.objectContaining({ ')'
                     dataType: 'score');
-                    hasTitle: true,);
+                   , hasTitle: true,);
         responseTime: expect.any(Number ,}
 
     };''

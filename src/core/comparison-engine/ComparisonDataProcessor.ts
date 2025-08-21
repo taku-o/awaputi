@@ -13,30 +13,30 @@ export interface DataProcessorConfig { outlierThreshold: number,
     minimumSampleSize: number;
     maximumSampleSize: number;
     defaultSamplingRate: number;
-    maxProcessingTime: number ,}
+   , maxProcessingTime: number ,}
 
 export interface QualityMetrics { completeness: number;
     consistency: number;
     accuracy: number;
-    validity: number }
+   , validity: number }
 
 export interface ProcessedComparisonData { timestamp: string;
     original?: ComparisonInputData;
     processed: NormalizedComparisonData;
-    metadata: ProcessingMetadata;
+   , metadata: ProcessingMetadata;
     error?: string }
 
 export interface ComparisonInputData { dataset1: number[];
-    dataset2: number[];
+   , dataset2: number[];
     metadata?: Record<string, any> }
 
 export interface NormalizedComparisonData { dataset1: number[],
     dataset2: number[];
-    metadata: NormalizationMetadata
+   , metadata: NormalizationMetadata
     ,}
 
 export interface NormalizationMetadata { normalizationType: NormalizationType;
-    timestamp: string;
+   , timestamp: string;
     outlierRemoval?: OutlierRemovalMetadata;
     sampling?: SamplingMetadata;
     [key: string]: any, }
@@ -44,29 +44,29 @@ export interface NormalizationMetadata { normalizationType: NormalizationType;
 export interface ProcessingMetadata { processingTime: number,
     qualityScore: number;
     warnings: string[];
-    errors: string[] ,}
+   , errors: string[] ,}
 
 export interface ValidationResult { valid: boolean;
     errors: string[];
-    warnings: string[];
+   , warnings: string[];
     quality?: number }
 
 export interface DatasetValidationResult { errors: string[];
-    warnings: string[] }
+   , warnings: string[] }
 
 export interface OutlierRemovalMetadata { threshold: number;
     timestamp: string;
     dataset1: OutlierStats;
-    dataset2: OutlierStats
+   , dataset2: OutlierStats
     }
 
 export interface OutlierStats { original: number;
     cleaned: number;
-    removed: number }
+   , removed: number }
 
 export interface SamplingMetadata { method: SamplingMethod;
     rate: number;
-    timestamp: string }
+   , timestamp: string }
 
 export interface ProcessingOptions { removeOutliers?: boolean;
     normalizationType?: NormalizationType;
@@ -83,7 +83,7 @@ export interface StatisticalSummary { mean: number,
     median: number;
     stddev: number;
     range: number;
-    count: number ,}
+   , count: number ,}
 
 export interface DataQualityReport { overallQuality: number;
     dataset1Quality: number;
@@ -91,11 +91,11 @@ export interface DataQualityReport { overallQuality: number;
     completenessScore: number;
     varianceScore: number;
     sizeScore: number;
-    balanceScore: number }
+   , balanceScore: number }
 
 export interface NormalizationResult { data: number[];
     method: NormalizationType;
-    parameters: NormalizationParameters
+   , parameters: NormalizationParameters
     }
 
 export interface NormalizationParameters { mean?: number;
@@ -109,11 +109,11 @@ export interface SamplingResult { originalSize: number,
     sampledSize: number;
     method: SamplingMethod;
     rate: number;
-    data: number[] ,}
+   , data: number[] ,}
 
 export interface QuantileResult { value: number;
     quantile: number;
-    position: number }
+   , position: number }
 
 // 列挙型
 export type NormalizationType = 'none' | 'z-score' | 'min-max' | 'robust';''
@@ -126,11 +126,11 @@ export const DEFAULT_CONFIG: DataProcessorConfig = { outlierThreshold: 2.5, // Z
     minimumSampleSize: 5;
     maximumSampleSize: 10000;
     defaultSamplingRate: 0.1;
-    maxProcessingTime: 5000 // 5秒 ,};
+   , maxProcessingTime: 5000 // 5秒 ,};
 export const DEFAULT_QUALITY_METRICS: QualityMetrics = { completeness: 0,
     consistency: 0;
     accuracy: 0;
-    validity: 0 ,};
+   , validity: 0 ,};
 export const NORMALIZATION_TYPES: NormalizationType[] = ['none', 'z-score', 'min-max', 'robust'];''
 export const SAMPLING_METHODS: SamplingMethod[] = ['random', 'systematic', 'stratified'];''
 export const METRIC_TYPES: MetricType[] = ['mean', 'median', 'stddev', 'range', 'count'];
@@ -138,11 +138,11 @@ export const METRIC_TYPES: MetricType[] = ['mean', 'median', 'stddev', 'range', 
 export const QUALITY_THRESHOLDS = { excellent: 0.9,
     good: 0.7;
     acceptable: 0.5;
-    poor: 0.3 ,} as const;
+   , poor: 0.3 ,} as const;
 export const VALIDATION_THRESHOLDS = { minValidRatio: 0.5,
     warningValidRatio: 0.8;
     maxOutlierRatio: 0.1;
-    minBalanceRatio: 0.5 ,} as const;
+   , minBalanceRatio: 0.5 ,} as const;
 ';
 // ユーティリティ関数
 export function isValidNumber(value: any): value is number {;
@@ -167,7 +167,7 @@ export function calculateBasicStats(data: number[]): StatisticalSummary { if (da
     return { mean,
         median: calculateMedianFromSorted(sorted);
         stddev: Math.sqrt(variance);
-        range: sorted[sorted.length - 1] - sorted[0], };
+       , range: sorted[sorted.length - 1] - sorted[0], };
         count: data.length }
     }
 
@@ -211,20 +211,20 @@ export function interpretQualityScore(score: number): string {;
 
 export function createProcessingError(message: string, processingTime: number = 0): ProcessedComparisonData { return {;
         timestamp: new Date().toISOString()';
-                normalizationType: 'none', };
+               , normalizationType: 'none', };
                 timestamp: new Date().toISOString(); }
 },
         metadata: { processingTime;
             qualityScore: 0;
             warnings: [];
-            errors: [message] };
+           , errors: [message] };
         error: message;
     },
 }
 
 export class ComparisonDataProcessor {
     private config: DataProcessorConfig;
-    private qualityMetrics: QualityMetrics;
+    private, qualityMetrics: QualityMetrics;
     constructor(config: Partial<DataProcessorConfig> = {) {
         this.config = { ...DEFAULT_CONFIG, ...config;
         this.qualityMetrics = { ...DEFAULT_QUALITY_METRICS;
@@ -239,13 +239,13 @@ export class ComparisonDataProcessor {
         try {
             const processedData: ProcessedComparisonData = {''
                 timestamp: new Date().toISOString()';
-                        normalizationType: 'none',);
+                       , normalizationType: 'none',);
                         timestamp: new Date().toISOString( ,}
                 };
                 metadata: { processingTime: 0;
                     qualityScore: 0;
                     warnings: [];
-                    errors: [] }
+                   , errors: [] }
             };
             // データ検証
             const validation = this.validateComparisonData(rawData);
@@ -283,8 +283,7 @@ export class ComparisonDataProcessor {
     validateComparisonData(data: any): ValidationResult { const errors: string[] = [],
         const warnings: string[] = [],
         // 基本構造チェック
-        if(!data || typeof, data !== 'object'') {'
-            ';
+        if(!data || typeof, data !== 'object'') {', ';
 
         }
 
@@ -399,7 +398,7 @@ export class ComparisonDataProcessor {
             dataset2: this.normalizeDataset(data.dataset2, options),
             metadata: {''
                 normalizationType: options.normalizationType || 'none';
-                timestamp: new Date().toISOString( ,}
+               , timestamp: new Date().toISOString( ,}
         };
         
         // 追加のメタデータがあれば保持
@@ -494,13 +493,13 @@ export class ComparisonDataProcessor {
                 outlierRemoval: {
                     threshold;
                     timestamp: new Date().toISOString();
-                    dataset1: {
+                   , dataset1: {
                         original: data.dataset1.length;
                         cleaned: 0;
-                        removed: 0 ,};
+                       , removed: 0 ,};
                     dataset2: { original: data.dataset2.length;
                         cleaned: 0;
-                        removed: 0 }
+                       , removed: 0 }
 }
         };
         // 除去統計を更新
@@ -703,8 +702,7 @@ export class ComparisonDataProcessor {
         
         // 品質警告
         const qualityScore = this.calculateDataQuality(data);''
-        if(qualityScore < QUALITY_THRESHOLDS.acceptable) {'
-            ';
+        if(qualityScore < QUALITY_THRESHOLDS.acceptable) {', ';
 
         }
 
@@ -831,7 +829,7 @@ export class ComparisonDataProcessor {
     generateNormalizationResult(;
         data: number[] );
         method: NormalizationType);
-        parameters: Partial<NormalizationParameters> = { ): NormalizationResult {
+       , parameters: Partial<NormalizationParameters> = { ): NormalizationResult {
         let normalizedData: number[], }
 
         let fullParameters: NormalizationParameters = {}''

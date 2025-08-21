@@ -8,7 +8,7 @@ interface ScaledPosition { x: number,
     y: number ,}
 
 interface ScaledSize { width: number;
-    height: number }
+   , height: number }
 
 interface CanvasInfo { scaleFactor?: number;
     scale?: number;
@@ -18,7 +18,7 @@ interface CanvasInfo { scaleFactor?: number;
     actualHeight: number;
     pixelRatio: number;
     baseWidth: number;
-    baseHeight: number ,}
+   , baseHeight: number ,}
 
 interface ResponsiveCanvasManager { getScaledCoordinates?(baseX: number, baseY: number): ScaledPosition,
     getScaledSize?(baseWidth: number, baseHeight: number): ScaledSize,
@@ -26,9 +26,9 @@ interface ResponsiveCanvasManager { getScaledCoordinates?(baseX: number, baseY: 
     
 interface DebugInfo { canvasInfo: CanvasInfo,
     scaleFactor: number, }
-    baseSize: { width: number; height: number },
+    baseSize: { width: number;, height: number },
     scaleChangeCallbacksCount: number;
-    timestamp: number;
+   , timestamp: number;
 }
 
 type ScaleChangeCallback = () => void;
@@ -38,10 +38,10 @@ export class ScaledCoordinateManager {
     private scaleChangeCallbacks: ScaleChangeCallback[];
     private baseWidth: number;
     private baseHeight: number;
-    private coordinateCache: Map<string, ScaledPosition>;
+    private, coordinateCache: Map<string, ScaledPosition>;
     private sizeCache: Map<string, ScaledSize>;
     private cacheMaxSize: number;
-    private lastScaleFactor: number | null;
+    private, lastScaleFactor: number | null;
     constructor(responsiveCanvasManager: ResponsiveCanvasManager | null) {
 
         this.responsiveCanvasManager = responsiveCanvasManager;
@@ -148,7 +148,7 @@ export class ScaledCoordinateManager {
                 actualWidth: this.baseWidth;
                 actualHeight: this.baseHeight;
                 pixelRatio: window.devicePixelRatio || 1;
-                baseWidth: this.baseWidth, };
+               , baseWidth: this.baseWidth, };
                 baseHeight: this.baseHeight }
             };''
         } catch (error) {
@@ -159,7 +159,7 @@ export class ScaledCoordinateManager {
                 actualWidth: this.baseWidth;
                 actualHeight: this.baseHeight;
                 pixelRatio: 1;
-                baseWidth: this.baseWidth, };
+               , baseWidth: this.baseWidth, };
                 baseHeight: this.baseHeight }
             }
     }
@@ -172,8 +172,7 @@ export class ScaledCoordinateManager {
      */
     getBasePosition(scaledX: number, scaledY: number): ScaledPosition { try {
             const scaleFactor = this.getScaleFactor();''
-            if(scaleFactor === 0) {'
-                ';
+            if(scaleFactor === 0) {', ';
 
             }
 
@@ -218,7 +217,7 @@ export class ScaledCoordinateManager {
             scaleFactor, }
             baseSize: { width: this.baseWidth, height: this.baseHeight ,},
             scaleChangeCallbacksCount: this.scaleChangeCallbacks.length;
-            timestamp: Date.now();
+           , timestamp: Date.now();
         }
     
     /**

@@ -4,7 +4,7 @@
  * LeaderboardUIから分離されたアニメーション・インタラクション機能
  */
 
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
 import type { ErrorHandler } from '../../../utils/ErrorHandler.js';
 
 /**
@@ -23,7 +23,7 @@ interface AnimationConfig { fadeSpeed: number,
     transitionDuration: number;
     easingFunction: string;
     maxScrollVelocity: number;
-    scrollDamping: number ,}
+   , scrollDamping: number ,}
 
 /**
  * Entry animation interface
@@ -34,7 +34,7 @@ interface EntryAnimation { startTime: number;
     endValue: number;
     currentValue: number;
     easing: string;
-    onComplete: (() => void) | null }
+   , onComplete: (() => void) | null }
 }
 
 /**
@@ -48,7 +48,7 @@ interface HoverAnimation { startTime: number;
     startOpacity: number;
     targetOpacity: number;
     currentOpacity: number;
-    persistent: boolean }
+   , persistent: boolean }
 
 /**
  * Select animation interface
@@ -57,7 +57,7 @@ interface SelectAnimation { startTime: number;
     duration: number;
     maxIntensity: number;
     currentIntensity: number;
-    type: string }
+   , type: string }
 
 /**
  * Animation state interface
@@ -68,7 +68,7 @@ interface AnimationState { scrollOffset: number;
     isScrolling: boolean;
     fadeOpacity: number;
     targetFadeOpacity: number;
-    entryAnimations: Map<string, EntryAnimation>;
+   , entryAnimations: Map<string, EntryAnimation>;
     hoverAnimations: Map<string, HoverAnimation>;
     selectAnimations: Map<string, SelectAnimation> }
 
@@ -80,17 +80,17 @@ interface InteractionState { hoveredEntry: any | null,
     selectedEntry: any | null;
     lastHoverTime: number;
     lastClickTime: number;
-    hoverDelay: number ,}
+   , hoverDelay: number ,}
 
 /**
  * Scroll configuration interface
  */
 interface ScrollConfig { wheelSensitivity: number;
-    touchSensitivity: number, }
-    scrollBounds: { min: number; max: number },
+   , touchSensitivity: number, }
+    scrollBounds: { min: number;, max: number },
     snapToEntry: boolean;
     smoothScrolling: boolean;
-    momentumScrolling: boolean;
+   , momentumScrolling: boolean;
 }
 
 /**
@@ -99,7 +99,7 @@ interface ScrollConfig { wheelSensitivity: number;
 interface PerformanceMetrics { frameCount: number,
     averageFPS: number;
     lastFrameTime: number;
-    animationLoad: number ,}
+   , animationLoad: number ,}
 
 /**
  * Scroll options interface
@@ -135,7 +135,7 @@ interface PerformanceInfo extends PerformanceMetrics { activeAnimations: {
         entries: number;
         hovers: number;
         selects: number;
-        total: number };
+       , total: number };
     scrolling: boolean;
 }
 
@@ -152,16 +152,16 @@ export class LeaderboardAnimationController {
     private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
     // アニメーション設定
-    private animationConfig: AnimationConfig = {
+    private, animationConfig: AnimationConfig = {
         fadeSpeed: 0.1;
         scrollSpeed: 0.2;
         hoverScale: 1.05;
         selectScale: 1.1;
         entryHeight: 50;
-        transitionDuration: 300,
+       , transitionDuration: 300,
         easingFunction: 'easeInOutCubic';
         maxScrollVelocity: 10;
-        scrollDamping: 0.85 ,};
+       , scrollDamping: 0.85 ,};
     // アニメーション状態
     private animationState: AnimationState = { scrollOffset: 0
         targetScrollOffset: 0;
@@ -171,7 +171,7 @@ export class LeaderboardAnimationController {
         targetFadeOpacity: 1.0;
         entryAnimations: new Map();
         hoverAnimations: new Map();
-        selectAnimations: new Map( };
+       , selectAnimations: new Map( };
     
     // ホバー・選択状態
     private interactionState: InteractionState = { hoveredEntry: null
@@ -179,24 +179,24 @@ export class LeaderboardAnimationController {
         selectedEntry: null;
         lastHoverTime: 0;
         lastClickTime: 0;
-        hoverDelay: 100 // ms };
+       , hoverDelay: 100 // ms };
     // スクロール制御
     private scrollConfig: ScrollConfig = { wheelSensitivity: 1.0
-        touchSensitivity: 1.5 }
+       , touchSensitivity: 1.5 }
         scrollBounds: { min: 0, max: 0 ,},
         snapToEntry: false;
         smoothScrolling: true;
-        momentumScrolling: true;
+       , momentumScrolling: true;
     },
     
     // アニメーションタイマー
     private animationFrame: number | null = null;
     private isAnimating: boolean = false;
     // パフォーマンス監視
-    private performanceMetrics: PerformanceMetrics = { frameCount: 0
+    private, performanceMetrics: PerformanceMetrics = { frameCount: 0
         averageFPS: 60;
         lastFrameTime: 0;
-        animationLoad: 0 };
+       , animationLoad: 0 };
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -473,7 +473,7 @@ export class LeaderboardAnimationController {
                 currentScale: 1.0;
                 startOpacity: 1.0);
                 targetOpacity: options.targetOpacity || 1.0);
-                currentOpacity: 1.0,);
+               , currentOpacity: 1.0,);
                 persistent: true);
             this.startAnimationLoop();
             ' ,}'
@@ -504,7 +504,7 @@ export class LeaderboardAnimationController {
                     currentScale: existingAnimation.currentScale;
                     startOpacity: existingAnimation.currentOpacity);
                     targetOpacity: 1.0);
-                    currentOpacity: existingAnimation.currentOpacity, }
+                   , currentOpacity: existingAnimation.currentOpacity, }
                     persistent: false); }
             }
             
@@ -546,7 +546,7 @@ export class LeaderboardAnimationController {
                 startValue: animationConfig.startValue || 0;
                 endValue: animationConfig.endValue || 1);
                 currentValue: animationConfig.startValue || 0);
-                easing: animationConfig.easing || this.animationConfig.easingFunction,);
+               , easing: animationConfig.easing || this.animationConfig.easingFunction,);
                 onComplete: animationConfig.onComplete || null);
             this.startAnimationLoop();
 
@@ -707,7 +707,7 @@ export class LeaderboardAnimationController {
                 entries: this.animationState.entryAnimations.size;
                 hovers: this.animationState.hoverAnimations.size;
                 selects: this.animationState.selectAnimations.size;
-                total: this.animationState.entryAnimations.size +;
+               , total: this.animationState.entryAnimations.size +;
                        this.animationState.hoverAnimations.size + ,};
                        this.animationState.selectAnimations.size }
             },

@@ -1,19 +1,19 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * KeyboardShortcutRouter Functional Tests
  * 
  * 実際の機能動作を検証する代替テストスイート
  * 失敗している単体テストの代替として機能検証を重視
  */
-import { KeyboardShortcutRouter } from '../../../src/core/navigation/KeyboardShortcutRouter';
-import { NavigationContextManager } from '../../../src/core/navigation/NavigationContextManager';
+import { KeyboardShortcutRouter  } from '../../../src/core/navigation/KeyboardShortcutRouter';
+import { NavigationContextManager  } from '../../../src/core/navigation/NavigationContextManager';
 // Functional mock game engine
 const createFunctionalGameEngine = () => ({
     sceneManager: {
         switchScene: jest.fn().mockReturnValue(true;);
-        getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )));
+       , getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )));
         hasScene: jest.fn().mockReturnValue(true;');
-        currentScene: { constructor: { name: 'MenuScene' ) }
+       , currentScene: { constructor: { name: 'MenuScene' ) }
     },
     localizationManager: {
         t: jest.fn((key, fallback) => fallback || key),

@@ -7,7 +7,7 @@ interface BasicConfig { [key: string]: any, }
  * 高DPIディスプレイ対応を強化
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 class DeviceSpecificHandler { constructor(gameEngine: any) {'
         this.gameEngine = gameEngine;''
@@ -25,7 +25,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
                 willChange: 'transform' ,};
             touchDelayFix: { fastClickEnabled: true;
                 touchCalloutDisabled: true;
-                touchDelayReduced: true };
+               , touchDelayReduced: true };
             metaTags: { webAppCapable: true,''
                 statusBarStyle: 'black-translucent',
                 viewportFit: 'cover' ,}
@@ -34,26 +34,26 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         this.androidConfig = { blinkOptimizations: {
                 compositorThreaded: true;
                 acceleratedCanvas: true;
-                gpuRasterization: true };
+               , gpuRasterization: true };
             performanceOptimizations: { reducedMotion: false;
                 lowMemoryMode: false;
-                powerSaveMode: false };
+               , powerSaveMode: false };
             touchOptimizations: { ''
                 touchAction: 'manipulation';
                 passiveListeners: true;
-                preventZoom: true }
+               , preventZoom: true }
         };
         // 高DPI対応設定
         this.highDPIConfig = { scaling: {
                 autoScale: true;
-                maxScale: 3.0,
+               , maxScale: 3.0,
                 scalingMethod: 'nearest-neighbor' ,};
             rendering: { sharpText: true;
-                crispEdges: true,
+               , crispEdges: true,
                 antialiasing: 'subpixel' ,};
             performance: { optimizeForHighDPI: true;
                 useNativeResolution: true;
-                fallbackResolution: 1.0 }))
+               , fallbackResolution: 1.0 }))
         );
         this.initialize();
     }
@@ -125,8 +125,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
      * ブラウザバージョン検出
      */''
     detectBrowserVersion()';
-        if(this.platform.browser === 'safari) {'
-        ';
+        if(this.platform.browser === 'safari) {', ';
 
     }
 
@@ -242,8 +241,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         }
         ';
         // CSS touch-action設定
-        if(this.iosConfig.touchDelayFix.touchDelayReduced) {'
-            ';
+        if(this.iosConfig.touchDelayFix.touchDelayReduced) {', ';
 
         }
 
@@ -285,7 +283,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
                         bubbles: true;
                         cancelable: true);
                         clientX: touchEndPos.x);
-                        clientY: touchEndPos.y;
+                       , clientY: touchEndPos.y;
                     ),
                 }
                     e.target.dispatchEvent(clickEvent); }
@@ -983,7 +981,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
                 webgl: !!window.WebGLRenderingContext;
                 webgl2: !!window.WebGL2RenderingContext;
                 offscreenCanvas: !!window.OffscreenCanvas;
-                serviceWorker: !!navigator.serviceWorker;
+               , serviceWorker: !!navigator.serviceWorker;
     ,}
                 intersection: !!window.IntersectionObserver, };
                 resize: !!window.ResizeObserver }
@@ -991,10 +989,10 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
             memory: performance.memory ? { : undefined
                 used: performance.memory.usedJSHeapSize;
                 total: performance.memory.totalJSHeapSize;
-                limit: performance.memory.jsHeapSizeLimit ,} : null;
+               , limit: performance.memory.jsHeapSizeLimit ,} : null;
             timing: performance.timing ? { : undefined
                 loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart;
-                domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart ,} : null)
+               , domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart ,} : null)
         })
     
     /**
@@ -1019,4 +1017,4 @@ export function getDeviceSpecificHandler(gameEngine = null) { if (!deviceSpecifi
     return deviceSpecificHandlerInstance;
 }
 
-export { DeviceSpecificHandler };
+export { DeviceSpecificHandler  };

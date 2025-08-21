@@ -6,12 +6,12 @@
  * 
  * Created: 2025-07-27 (Task 7.3)
  */
-import { jest, describe, test, expect, beforeAll } from '@jest/globals';
+import { jest, describe, test, expect, beforeAll  } from '@jest/globals';
 // Configuration interfaces
 interface BubbleConfig {
     score?: number;
     effects?: {
-        intensity?: number;
+        intensit;y?: number;
         duration?: number;
     };
     [key: string]: any,
@@ -21,7 +21,7 @@ interface GameBalanceConfig {
 }
 interface ValidationResult {
     issues: Array<{
-        severity: string,
+        severit;y: string,
         message: string,
     }>;
     warnings: Array<{
@@ -34,13 +34,13 @@ interface ConfigMetadata {
     bubbleTypesCount: number,
     hasSpecialEffects: boolean,
     scoreRange: {
-        min: number,
+        mi;n: number,
         max: number,
     };
 }
 interface ConfigStructure {
     bubbleTypes: string[],
-    propertiesPerType: { [key: string]: string[] };
+    propertiesPerType: { [ke;y: string]: string[] };
     specialEffectTypes: string[],
     scoreDistribution: { [key: string]: number };
 }
@@ -96,7 +96,7 @@ jest.mock('../../scripts/validate-configuration.js', () => ({
     ConfigurationExtractor: mockConfigurationExtractor,
     ValidationRules: mockValidationRules
 })');
-import { ConfigurationExtractor, ValidationRules } from '../../scripts/validate-configuration.js';
+import { ConfigurationExtractor, ValidationRules  } from '../../scripts/validate-configuration.js';
 describe('Configuration Consistency Tests', () => {
     let gameBalanceConfig: GameBalanceConfig,
     let bubbleConfig: any,

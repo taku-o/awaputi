@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
  * Shadow object interface
@@ -16,7 +16,7 @@ interface LightSourceBase { x: number,
     y: number;
     intensity: number;
     color: string;
-    radius: number ,}
+   , radius: number ,}
 
 /**
  * Light source type'
@@ -30,7 +30,7 @@ interface LightSource extends LightSourceBase { id: number,
     type: LightSourceType;
     animated: boolean;
     animation: any | null;
-    created: number ,}
+   , created: number ,}
 
 /**
  * Shadow effect interface
@@ -43,13 +43,13 @@ interface ShadowEffect { id: number,''
     blur: number;
     direction: number;
     distance: number;
-    created: number ,}
+   , created: number ,}
 
 /**
  * Reflection object interface
  */
 interface ReflectionObject { x: number;
-    y: number;
+   , y: number;
     width?: number;
     height?: number;
     image?: HTMLImageElement;
@@ -64,7 +64,7 @@ interface WaterRipple { x: number,
     maxRadius: number;
     speed: number;
     intensity: number;
-    lifetime: number ,}
+   , lifetime: number ,}
 
 /**
  * Reflection effect interface
@@ -76,7 +76,7 @@ interface ReflectionEffect { id: number,''
     intensity: number;
     distortion: number;
     ripples: WaterRipple[];
-    created: number ,}
+   , created: number ,}
 
 /**
  * Background effect type'
@@ -101,13 +101,13 @@ interface BackgroundEffect { id: number,
     options: BackgroundEffectOptions;
     particles: any[];
     active: boolean;
-    created: number ,}
+   , created: number ,}
 
 /**
  * Transition effect interface
  */
 interface TransitionEffect { id: number;
-    type: string;
+   , type: string;
     [key: string]: any, }
 
 /**
@@ -116,7 +116,7 @@ interface TransitionEffect { id: number;
 interface PerformanceMetrics { effectCount: number,
     renderTime: number;
     memoryUsage: number;
-    lastFrameTime: number ,}
+   , lastFrameTime: number ,}
 
 /**
  * Error handler interface
@@ -136,7 +136,7 @@ export class EnhancedEffectController {
     private shadowCasters: ShadowEffect[];
     private reflectionSurfaces: ReflectionEffect[];
     private effectId: number;
-    private performanceMetrics: PerformanceMetrics;
+    private, performanceMetrics: PerformanceMetrics;
     constructor(canvas: HTMLCanvasElement) {
 ';
 
@@ -157,7 +157,7 @@ export class EnhancedEffectController {
                 lightSource: lightSource;
                 opacity: 0.6;
                 blur: 2;
-                direction: this._calculateShadowDirection(shadowObject, lightSource),
+               , direction: this._calculateShadowDirection(shadowObject, lightSource),
                 distance: this._calculateShadowDistance(shadowObject, lightSource),
                 created: Date.now( ,};
             
@@ -181,7 +181,7 @@ export class EnhancedEffectController {
                 intensity: intensity;
                 distortion: distortion;
                 ripples: [];
-                created: Date.now( ,};
+               , created: Date.now( ,};
             
             this.reflectionSurfaces.push(reflectionEffect);
             console.log(`[EnhancedEffectController] 反射効果を追加: ID ${reflectionEffect.id}`});
@@ -231,7 +231,7 @@ export class EnhancedEffectController {
                 type, // 'point', 'directional', 'spot';
                 animated: false;
                 animation: null;
-                created: Date.now( ,};
+               , created: Date.now( ,};
             
             this.lightSources.push(lightSource);
             console.log(`[EnhancedEffectController] 光源を追加: ${type} at (${x}, ${y}`});
@@ -254,11 +254,11 @@ export class EnhancedEffectController {
                     speed: options.speed || 1.0,
                     color: options.color || '#ffffff';
                     size: options.size || 1.0;
-                    opacity: options.opacity || 0.5;
+                   , opacity: options.opacity || 0.5;
                     ...options,
                 particles: [];
                 active: true;
-                created: Date.now();
+               , created: Date.now();
             ,};
             
             this.backgroundEffects.push(backgroundEffect);

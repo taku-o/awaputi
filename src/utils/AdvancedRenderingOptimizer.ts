@@ -1,10 +1,10 @@
-import { getErrorHandler } from './ErrorHandler.js';''
-import { getConfigurationManager } from '../core/ConfigurationManager.js';''
-import { BasicDirtyRegionManager } from './rendering/BasicDirtyRegionManager.js';''
-import { BasicViewportCuller } from './rendering/BasicViewportCuller.js';''
-import { BasicLayerManager } from './rendering/BasicLayerManager.js';''
-import { RenderingPerformanceMonitor } from './rendering/RenderingPerformanceMonitor.js';''
-import { QuadTree } from './rendering/QuadTree.js';
+import { getErrorHandler  } from './ErrorHandler.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { BasicDirtyRegionManager  } from './rendering/BasicDirtyRegionManager.js';''
+import { BasicViewportCuller  } from './rendering/BasicViewportCuller.js';''
+import { BasicLayerManager  } from './rendering/BasicLayerManager.js';''
+import { RenderingPerformanceMonitor  } from './rendering/RenderingPerformanceMonitor.js';''
+import { QuadTree  } from './rendering/QuadTree.js';
 
 // Type definitions
 interface RenderingConfig { enabled: boolean,
@@ -13,18 +13,18 @@ interface RenderingConfig { enabled: boolean,
     layerCachingEnabled: boolean;
     targetFPS: number;
     maxRenderTime: number;
-    performanceThreshold: number,
+   , performanceThreshold: number,
     optimizationLevel: 'conservative' | 'balanced' | 'aggressive';
     adaptiveOptimization: boolean;
     debugMode: boolean;
     showDirtyRegions: boolean;
     showCulledObjects: boolean;
-    showLayerComposition: boolean ,}
+   , showLayerComposition: boolean ,}
 
 interface RenderObject { x: number;
     y: number;
     width: number;
-    height: number;
+   , height: number;
     layer?: number;
     zIndex?: number;
     material?: string;
@@ -35,7 +35,7 @@ interface Camera { x: number,
     y: number;
     zoom: number;
     offsetX: number;
-    offsetY: number ,}
+   , offsetY: number ,}
 
 interface RenderResult { success: boolean;
     renderTime?: number;
@@ -48,52 +48,52 @@ interface RenderResult { success: boolean;
 interface DirtyRegion { x: number,
     y: number;
     width: number;
-    height: number;
+   , height: number;
     full?: boolean ,}
 
 interface LayerRenderResult { layersRendered: number;
     objectsRendered: number;
-    dirtyRegionsProcessed: number }
+   , dirtyRegionsProcessed: number }
 
 interface ObjectBounds { x: number;
     y: number;
     width: number;
-    height: number }
+   , height: number }
 
 interface Layer { name: string;
     enabled: boolean;
-    visible: boolean;
+   , visible: boolean;
     cacheable?: boolean;
     dirty?: boolean; }
 
 interface RenderingPipeline { enabled: boolean,
     stages: string[];
     currentStage: string;
-    batching: {
-        enabled: boolean;
+   , batching: {
+        enable;d: boolean;
         batchSize: number;
         currentBatch: any[];
-        batchBuffer: Map<string, any>;
+       , batchBuffer: Map<string, any>;
         textureAtlasing: boolean ,};
     drawCallOptimization: { enabled: boolean;
         maxDrawCalls: number;
         currentDrawCalls: number;
         instancedRendering: boolean;
-        stateBatching: boolean };
+       , stateBatching: boolean };
     stageTimings: Map<string, number>;
     totalRenderTime: number;
-    frameCount: number;
+   , frameCount: number;
 }
 
 interface SpatialOptimizer { enabled: boolean,
     quadTree: QuadTree | null;
-    spatialHash: Map<string, any>;
+   , spatialHash: Map<string, any>;
 
     partitioning: {''
-        method: 'grid' | 'quadtree' | 'octree';
+        metho;d: 'grid' | 'quadtree' | 'octree';
         maxDepth: number;
         maxObjectsPerNode: number;
-        minNodeSize: number ,};
+       , minNodeSize: number ,};
     occlusionCulling: { enabled: boolean;
         occluders: Set<any>;
         occlusionQueries: Map<string, any> }
@@ -108,8 +108,8 @@ interface OptimizerStats { dirtyRegions: any,
     culling: any;
     layers: any;
     performance: any;
-    pipeline: {
-        stageTimings: Record<string, number>;
+   , pipeline: {
+        stageTiming;s: Record<string, number>;
         currentStage: string ,}
 
 /**
@@ -132,14 +132,14 @@ export class AdvancedRenderingOptimizer {
     // Configuration
     private renderingConfig: RenderingConfig;
     // Component managers
-    private readonly dirtyRegionManager: BasicDirtyRegionManager,
+    private readonly, dirtyRegionManager: BasicDirtyRegionManager,
     private readonly viewportCuller: BasicViewportCuller,
     private readonly layerManager: BasicLayerManager,
     private readonly performanceMonitor: RenderingPerformanceMonitor,
     // Rendering pipeline optimization
     private renderingPipeline: RenderingPipeline;
     // Spatial optimization
-    private spatialOptimizer: SpatialOptimizer;
+    private, spatialOptimizer: SpatialOptimizer;
     constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     ';
 
@@ -150,7 +150,7 @@ export class AdvancedRenderingOptimizer {
             // Debug options
             debugMode: false;
             showDirtyRegions: false;
-            showCulledObjects: false;
+           , showCulledObjects: false;
     ,}
             showLayerComposition: false }))
         // Initialize component managers
@@ -162,21 +162,21 @@ export class AdvancedRenderingOptimizer {
             ],
             currentStage: 'idle';
             // Batching system
-            batching: { enabled: true;
+           , batching: { enabled: true;
                 batchSize: 100);
                 currentBatch: []);
-                batchBuffer: new Map<string, any>(),
+               , batchBuffer: new Map<string, any>(),
                 textureAtlasing: true ,};
             // Draw call optimization
             drawCallOptimization: { enabled: true;
                 maxDrawCalls: 1000;
                 currentDrawCalls: 0;
                 instancedRendering: true;
-                stateBatching: true };
+               , stateBatching: true };
             // Timing tracking
             stageTimings: new Map<string, number>(),
             totalRenderTime: 0;
-            frameCount: 0;
+           , frameCount: 0;
         },
         
         // Spatial optimization
@@ -189,7 +189,7 @@ export class AdvancedRenderingOptimizer {
                 method: 'quadtree', // 'grid', 'quadtree', 'octree';
                 maxDepth: 8;
                 maxObjectsPerNode: 10;
-                minNodeSize: 32 ,};
+               , minNodeSize: 32 ,};
             // Occlusion culling
             occlusionCulling: { enabled: false, // Advanced feature
                 occluders: new Set<any>();
@@ -237,7 +237,7 @@ export class AdvancedRenderingOptimizer {
             x: viewport.x - margin;
             y: viewport.y - margin);
             width: viewport.width + margin * 2);
-            height: viewport.height + margin * 2;
+           , height: viewport.height + margin * 2;
         ), this.spatialOptimizer.partitioning.maxObjectsPerNode, this.spatialOptimizer.partitioning.maxDepth); }
     
     /**
@@ -280,7 +280,7 @@ export class AdvancedRenderingOptimizer {
                 renderTime: totalTime;
                 objectsRendered: visibleObjects.length;
                 objectsCulled: renderObjects.length - visibleObjects.length;
-                dirtyRegions: dirtyRegions.length, };
+               , dirtyRegions: dirtyRegions.length, };
                 performanceGain: this.performanceMonitor.calculatePerformanceGain(); }
             } catch (error) {
             this.errorHandler.handleError(error, 'ADVANCED_RENDERING_ERROR', {)'
@@ -350,8 +350,7 @@ export class AdvancedRenderingOptimizer {
     /**
      * Get material priority for batching
      */''
-    private getMaterialPriority(material?: string): number { const priorities: Record<string, number> = {''
-            'default': 0,
+    private getMaterialPriority(material?: string): number { const priorities: Record<string, number> = {'', 'default': 0,
             'opaque': 1,
             'transparent': 2,
             'additive': 3,
@@ -537,7 +536,7 @@ export class AdvancedRenderingOptimizer {
             culling: this.viewportCuller.getStats();
             layers: this.layerManager.getStats();
             performance: this.performanceMonitor.getStats();
-            pipeline: {
+           , pipeline: {
                 stageTimings: Object.fromEntries(this.renderingPipeline.stageTimings), };
                 currentStage: this.renderingPipeline.currentStage }
 }

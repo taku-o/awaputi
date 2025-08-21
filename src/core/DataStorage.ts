@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * ストレージアダプタークラス - 複数ストレージの統一インターフェース
@@ -22,13 +22,13 @@ interface StorageAdapter { set(key: string, value: any): Promise<void>,
 interface StorageConfig { retryAttempts: number,
     retryDelay: number;
     compressionThreshold: number;
-    maxStorageSize: number ,}
+   , maxStorageSize: number ,}
 export class DataStorage {
     private adapters: Map<string, StorageAdapter>;
     private primaryAdapter: string;
     private fallbackAdapter: string;
     private currentAdapter: StorageAdapter | null;
-    private config: StorageConfig;
+    private, config: StorageConfig;
     constructor() {
 ';
 
@@ -41,7 +41,7 @@ export class DataStorage {
         this.config = {
             retryAttempts: 3;
             retryDelay: 100;
-            compressionThreshold: 1024, // 1KB以上で圧縮を検討
+           , compressionThreshold: 1024, // 1KB以上で圧縮を検討
     }
             maxStorageSize: 10 * 1024 * 1024 // 10MB制限 }))
         this.initialize();
@@ -176,8 +176,7 @@ export class DataStorage {
      * すべてのキーの取得
      */'
     async keys() { try {'
-            if(!this.currentAdapter) {'
-                ';
+            if(!this.currentAdapter) {', ';
 
             }
 
@@ -232,7 +231,7 @@ export class DataStorage {
             // タイムスタンプの追加
             processedData._metadata = { ''
                 timestamp: Date.now(''';
-                version: '1.0.0' }))
+               , version: '1.0.0' }))
             // 圧縮の検討)
             const dataSize = JSON.stringify(processedData).length;
             if(dataSize > this.config.compressionThreshold && options.compress !== false) {
@@ -281,8 +280,7 @@ export class DataStorage {
     async verifyData(key, originalData) { try {
             const retrievedData = await this.currentAdapter.get(key);
 
-            if(!retrievedData) {'
-                ';
+            if(!retrievedData) {', ';
 
             }
 
@@ -293,8 +291,7 @@ export class DataStorage {
             const originalStr = JSON.stringify(originalData);
             const retrievedStr = JSON.stringify(retrievedData);
 
-            if(originalStr !== retrievedStr) {'
-                ';
+            if(originalStr !== retrievedStr) {', ';
 
             }
 
@@ -393,8 +390,7 @@ class LocalStorageAdapter { ''
             return true;' }'
 
         } catch (error) {
-            if(error.name === 'QuotaExceededError'') {'
-                ';
+            if(error.name === 'QuotaExceededError'') {', ';
 
             }
 

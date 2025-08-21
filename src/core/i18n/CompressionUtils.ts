@@ -27,27 +27,27 @@ export interface CompressionResult { data: any,
 export interface FastCompressionResult { data: string,
     compressed: boolean;
     level: CompressionLevel;
-    patterns: Map<string, string>, }
+   , patterns: Map<string, string>, }
 
 export interface BalancedCompressionResult { data: string,
     compressed: boolean;
     level: CompressionLevel;
-    patterns: Map<string, string>,
+   , patterns: Map<string, string>,
     duplicateReplacements: Map<string, string>,
     keyMappings: Map<string, string>, }
 
 export interface MaximumCompressionResult { data: string,
     compressed: boolean;
     level: CompressionLevel;
-    patterns: Map<string, string>,
+   , patterns: Map<string, string>,
     duplicateReplacements: Map<string, string>,
     keyMappings: Map<string, string>,
     advancedPatterns: Map<string, string>,
     byteOptimization: string[];
-    structureFlattened: boolean ,}
+   , structureFlattened: boolean ,}
 
 export interface ByteOptimizationResult { data: string;
-    optimizations: string[] }
+   , optimizations: string[] }
 
 export interface CompressionStats { totalCompressions: number;
     totalDecompressions: number;
@@ -55,7 +55,7 @@ export interface CompressionStats { totalCompressions: number;
     bytesAfterCompression: number;
     compressionRatio: number;
     averageCompressionTime: number;
-    averageDecompressionTime: number }
+   , averageDecompressionTime: number }
 
 export interface DetailedCompressionStats extends CompressionStats { totalBytesSaved: number }
 
@@ -65,24 +65,24 @@ export interface CompressionSettings { compressionLevel?: CompressionLevel;
 
 export interface PatternFrequency { pattern: string,
     frequency: number;
-    estimatedSavings: number ,}
+   , estimatedSavings: number ,}
 
 export interface DuplicateAnalysis { duplicates: Map<string, number>,
     totalOccurrences: number;
-    potentialSavings: number ,}
+   , potentialSavings: number ,}
 
 export interface KeyMappingResult { mappings: Map<string, string>,
     totalKeysReduced: number;
-    estimatedSavings: number ,}
+   , estimatedSavings: number ,}
 
 export interface AdvancedPatternResult { patterns: Map<string, string>,
     matchCount: number;
-    estimatedSavings: number ,}
+   , estimatedSavings: number ,}
 
 export interface StructureAnalysis { depth: number;
     totalKeys: number;
     duplicateKeys: number;
-    flatteningSavings: number }
+   , flatteningSavings: number }
 
 export type CompressionLevel = 'fast' | 'balanced' | 'maximum';
 
@@ -91,7 +91,7 @@ export class CompressionUtils {
     private minCompressionSize: number;
     private compressionThreshold: number;
     // 辞書ベース圧縮用の共通パターン
-    private commonPatterns: Map<string, string>;
+    private, commonPatterns: Map<string, string>;
     
     // 逆変換用マップ
     private reversePatterns: Map<string, string>;
@@ -146,7 +146,7 @@ export class CompressionUtils {
             bytesAfterCompression: 0;
             compressionRatio: 0;
             averageCompressionTime: 0;
-            averageDecompressionTime: 0 ,}
+           , averageDecompressionTime: 0 ,}
     
     /**
      * 翻訳データを圧縮
@@ -218,20 +218,18 @@ export class CompressionUtils {
         
         // 基本的な空白とパターン圧縮
         let compressed = jsonString'';
-            .replace(/\s+/g, ' '')  // 複数空白を単一空白に;
+            .replace(/\s+/g, ', '')  // 複数空白を単一空白に;
             .replace(/: "/g, ':"'')  // ": " を ":\"に"";
             .replace(/", "/g, '","''); // ", " を ","に
         ";
         // 共通パターンの置換""
-        for(const [pattern, replacement] of this.commonPatterns) {"
-            ";
+        for(const [pattern, replacement] of this.commonPatterns) {", ";
         }"
             compressed = compressed.replace(new RegExp(pattern, 'g), replacement); }'
         }
         ';
         // カスタムパターンの適用
-        for(const [pattern, replacement] of customPatterns) {'
-            ';
+        for(const [pattern, replacement] of customPatterns) {', ';
 
         }
 
@@ -281,7 +279,7 @@ export class CompressionUtils {
             compressed: true,
             level: 'balanced';
             patterns: fastResult.patterns;
-            duplicateReplacements: replacementMap, };
+           , duplicateReplacements: replacementMap, };
             keyMappings: keyMappings }
         }
     
@@ -302,8 +300,7 @@ export class CompressionUtils {
         
         // 高度なパターン検出
         const advancedPatterns = this._detectAdvancedPatterns(compressed);''
-        for(const [pattern, replacement] of advancedPatterns) {'
-            ';
+        for(const [pattern, replacement] of advancedPatterns) {', ';
 
         }
 
@@ -321,7 +318,7 @@ export class CompressionUtils {
             duplicateReplacements: balancedResult.duplicateReplacements;
             keyMappings: balancedResult.keyMappings;
             advancedPatterns: advancedPatterns;
-            byteOptimization: encodedResult.optimizations, };
+           , byteOptimization: encodedResult.optimizations, };
             structureFlattened: !preserveStructure }
         }
     
@@ -405,7 +402,7 @@ export class CompressionUtils {
         ';
         // Repeated punctuation
         patterns.set('\\.{2)', '..'');''
-        patterns.set('\\s{2)', ' ');
+        patterns.set('\\s{2)', ', ');
 
         // Common word endings(Japanese);''
         patterns.set('です。', 'だ。'');''
@@ -529,7 +526,7 @@ export class CompressionUtils {
             return result;
 
         } catch (error) { console.error('Decompression failed:', error }
-            throw new Error(`Decompression failed: ${(error as Error}).message}`);
+            throw new Error(`Decompression failed: ${(error, as Error}).message}`);
         }
     }
     
@@ -620,7 +617,7 @@ export class CompressionUtils {
     getStats(): DetailedCompressionStats { return { ...this.stats,
             compressionRatio: Math.round(this.stats.compressionRatio * 100) / 100;
             averageCompressionTime: Math.round(this.stats.averageCompressionTime * 100) / 100;
-            averageDecompressionTime: Math.round(this.stats.averageDecompressionTime * 100) / 100, };
+           , averageDecompressionTime: Math.round(this.stats.averageDecompressionTime * 100) / 100, };
             totalBytesSaved: this.stats.bytesBeforeCompression - this.stats.bytesAfterCompression }
         }
     
@@ -630,7 +627,7 @@ export class CompressionUtils {
     getDetailedAnalysis(data: any): { duplicateAnalysis: DuplicateAnalysis,
         keyMappingResult: KeyMappingResult;
         patternFrequencies: PatternFrequency[];
-        structureAnalysis: StructureAnalysis
+       , structureAnalysis: StructureAnalysis
     ,} { const jsonString = JSON.stringify(data);
         
         // 重複分析
@@ -645,7 +642,7 @@ export class CompressionUtils {
         const keyMappings = this._createKeyMappings(data);
         const keyMappingResult: KeyMappingResult = { mappings: keyMappings,
             totalKeysReduced: keyMappings.size;
-            estimatedSavings: this._estimateKeyMappingSavings(keyMappings ,};
+           , estimatedSavings: this._estimateKeyMappingSavings(keyMappings ,};
         
         // パターン頻度分析
         const patternFrequencies: PatternFrequency[] = this._analyzePatternFrequencies(jsonString),
@@ -711,7 +708,7 @@ export class CompressionUtils {
             depth: 0;
             totalKeys: 0;
             duplicateKeys: 0;
-            flatteningSavings: 0 };
+           , flatteningSavings: 0 };
         const keyFrequency = new Map<string, number>();
         ';
 
