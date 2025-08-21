@@ -3,32 +3,36 @@
  * ユーザーデータのモック生成クラス
  */
 
-interface UserData { id: string,
-    username: string,
-    level: number,
-    totalScore: number,
-    gamesPlayed: number,
-    gamesWon: number,
-    averageScore: number,
-    lastPlayed: number,
-    achievements: string[],
+interface UserData {
+    id: string;
+    username: string;
+    level: number;
+    totalScore: number;
+    gamesPlayed: number;
+    gamesWon: number;
+    averageScore: number;
+    lastPlayed: number;
+    achievements: string[];
     settings: {
-        soundEnable,d: boolean;
-    },
-        difficulty: string,
-    theme: string,
-    statistics: { totalPlayTime: number,
+        soundEnabled: boolean;
+        difficulty: string;
+        theme: string;
+    };
+    statistics: {
+        totalPlayTime: number;
         bubblesPopped: number;
-    },
-        perfectShots: number,
-    powerUpsUsed: number,
-    powerUpsUsed: number;
-        };
-interface UserGenerationOptions { level?: number,
+        perfectShots: number;
+        powerUpsUsed: number;
+    };
+}
+interface UserGenerationOptions {
+    level?: number;
     minScore?: number;
     maxScore?: number;
     gamesPlayed?: number;
-    export class MockUserDataGenerator {
+}
+
+export class MockUserDataGenerator {
     private usernameTemplates = ['Player', 'Gamer', 'BubbleMaster', 'PopKing', 'ArcadeHero',]','
         'SkillShot', 'Champion', 'Pro', 'Expert', 'Legend'],
     ],
