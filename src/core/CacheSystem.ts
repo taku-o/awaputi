@@ -5,99 +5,140 @@
  * メモリ効率的なキャッシュ管理を実装します。
  */
 
-import { ErrorHandler  } from '../utils/ErrorHandler.js';
+import { ErrorHandler } from '../utils/ErrorHandler.js';
 
 // 型定義
-interface CacheOptions { maxSize?: number,
+interface CacheOptions {
+    maxSize?: number;
     ttl?: number;
     cleanupInterval?: number;
-    priorityFunction?: (entry: CacheEntry) => number  }
+    priorityFunction?: (entry: CacheEntry) => number;
 }
 
-interface CacheEntry { value: any,
-    expiresAt: number,
-    priority: number,
-    createdAt: number,
+interface CacheEntry {
+    value: any;
+    expiresAt: number;
+    priority: number;
+    createdAt: number;
     accessCount: number;
-    interface CacheStats { hits: number,
-    misses: number,
-    evictions: number,
-    expirations: number,
-    size: number,
+}
+
+interface CacheStats {
+    hits: number;
+    misses: number;
+    evictions: number;
+    expirations: number;
+    size: number;
     totalRequests: number;
     hitRate?: string;
     memoryUsage?: string;
-    interface CacheConfig { maxSize: number,
-    ttl: number,
-    cleanupInterval: number,
-    priorityFunction: (entry: CacheEntry) => number  }
 }
 
-interface SetOptions { ttl?: number,
+interface CacheConfig {
+    maxSize: number;
+    ttl: number;
+    cleanupInterval: number;
+    priorityFunction: (entry: CacheEntry) => number;
+}
+
+interface SetOptions {
+    ttl?: number;
     priority?: number;
-    interface MemoryLeak { type: string;
+}
+
+interface MemoryLeak {
+    type: string;
     count?: number;
     usage?: string;
     currentSize?: number;
     maxSize?: number;
     description: string;
-    interface LeakDetectionResult { potentialLeaks: MemoryLeak[],
-    recommendations: string[],
-    memoryUsage: string,
-    cacheSize: number,
-    accessHistorySize: number;
-    interface MemoryStats { cacheSize: number,
-    memoryUsage: string,
-    accessHistorySize: number;
-    interface MemoryFixResult { before: MemoryStats,
-    after: MemoryStats,
-    expiredEntriesRemoved: number,
-    memoryFreed: string,
-    success: boolean;
-    interface EntryWithSize { key: string,
-    size: number;
-    interface EntryWithPriority { key: string,
-    priority: number;
-    interface MemoryOverview { totalMemoryUsage: string,
-    cacheSize: number,
-    accessHistorySize: number,
-    averageEntrySize: string;
-    interface MemoryBreakdown { cacheEntries: string,
-    accessHistory: string,
-    metadata: string;
-    interface LargestEntry { key: string,
-    size: string;
-    interface MemoryReport { overview: MemoryOverview,
-    breakdown: MemoryBreakdown,
-    topLargestEntries: LargestEntry[],
+}
+
+interface LeakDetectionResult {
+    potentialLeaks: MemoryLeak[];
     recommendations: string[];
-    class CacheSystem { private cache: Map<string, CacheEntry>,
+    memoryUsage: string;
+    cacheSize: number;
+    accessHistorySize: number;
+}
+
+interface MemoryStats {
+    cacheSize: number;
+    memoryUsage: string;
+    accessHistorySize: number;
+}
+
+interface MemoryFixResult {
+    before: MemoryStats;
+    after: MemoryStats;
+    expiredEntriesRemoved: number;
+    memoryFreed: string;
+    success: boolean;
+}
+
+interface EntryWithSize {
+    key: string;
+    size: number;
+}
+
+interface EntryWithPriority {
+    key: string;
+    priority: number;
+}
+
+interface MemoryOverview {
+    totalMemoryUsage: string;
+    cacheSize: number;
+    accessHistorySize: number;
+    averageEntrySize: string;
+}
+
+interface MemoryBreakdown {
+    cacheEntries: string;
+    accessHistory: string;
+    metadata: string;
+}
+
+interface LargestEntry {
+    key: string;
+    size: string;
+}
+
+interface MemoryReport {
+    overview: MemoryOverview;
+    breakdown: MemoryBreakdown;
+    topLargestEntries: LargestEntry[];
+    recommendations: string[];
+}
+export class CacheSystem {
+    private cache: Map<string, CacheEntry>;
     private config: CacheConfig;
     private stats: CacheStats;
-    private, accessHistory: Map<string, number>,
+    private accessHistory: Map<string, number>;
     private lastCleanup: number;
     private cleanupTimer: NodeJS.Timeout | null = null;
-    private, memoryMonitorTimer: NodeJS.Timeout | null = null;
-    constructor(options: CacheOptions = {) {
-    
+    private memoryMonitorTimer: NodeJS.Timeout | null = null;
+    constructor(options: CacheOptions = {}) {
         // キャッシュストレージ
         this.cache = new Map();
         
         // キャッシュ設定
         this.config = {
             maxSize: options.maxSize || 1000,
-    ttl: options.ttl || 60000, // デフォルト有効期限: 60秒;
-    cleanupInterval: options.cleanupInterval || 300000, // デフォルトクリーンアップ間隔: 5分
-    }
-            priorityFunction: options.priorityFunction || this._defaultPriorityFunction 
-    };
+            ttl: options.ttl || 60000, // デフォルト有効期限: 60秒
+            cleanupInterval: options.cleanupInterval || 300000, // デフォルトクリーンアップ間隔: 5分
+            priorityFunction: options.priorityFunction || this._defaultPriorityFunction
+        };
         // キャッシュ統計
-        this.stats = { hits: 0,
+        this.stats = {
+            hits: 0,
             misses: 0,
             evictions: 0,
             expirations: 0,
             size: 0,
-    totalRequests: 0  };
+            totalRequests: 0
+        };
         // アクセス履歴（LRU用）
         this.accessHistory = new Map();
         
@@ -114,13 +155,11 @@ interface SetOptions { ttl?: number,
     /**
      * キャッシュに値を設定
      */
-    set(key: string, value: any, options: SetOptions = { ): boolean {
+    set(key: string, value: any, options: SetOptions = {}): boolean {
         try {
             // キャッシュサイズ制限チェック
-            if (this.cache.size >= this.config.maxSize && !this.cache.has(key) {
-    
-}
-                this._evictItems(1); }
+            if (this.cache.size >= this.config.maxSize && !this.cache.has(key)) {
+                this._evictItems(1);
             }
             
             const ttl = options.ttl || this.config.ttl;
@@ -128,12 +167,15 @@ interface SetOptions { ttl?: number,
             const priority = options.priority || 0;
             
             // キャッシュエントリを作成
-            const entry: CacheEntry = { value;
+            const entry: CacheEntry = {
+                value,
                 expiresAt,
                 priority,
-                createdAt: Date.now(
-    accessCount: 0  })
-            // キャッシュに保存)
+                createdAt: Date.now(),
+                accessCount: 0
+            };
+            
+            // キャッシュに保存
             this.cache.set(key, entry);
             
             // 統計更新
