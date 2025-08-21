@@ -8,42 +8,65 @@
 import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
-interface ValidationRule { type: string;
+interface ValidationRule {
+    type: string;
     min?: number;
     max?: number;
-    description: string,
+    description: string;
     category: string;
-    interface ValidationError { property: string,
-    value: any,
-    error: string,
+}
+
+interface ValidationError {
+    property: string;
+    value: any;
+    error: string;
     rule: string;
     details?: string;
-    interface ValidationWarning { property: string,
+}
+
+interface ValidationWarning {
+    property: string;
     message: string;
-    interface ValidationResult { validationId: string;
+}
+
+interface ValidationResult {
+    validationId: string;
     bubbleType?: string;
-    isValid: boolean,
-    errors: ValidationError[],
-    warnings: ValidationWarning[],
-    executionTime: number,
-    timestamp: number;
-    interface PropertyValidationResult { isValid: boolean,
-    error: string | null }
-
-interface LogicalValidationResult { errors: ValidationError[],
+    isValid: boolean;
+    errors: ValidationError[];
     warnings: ValidationWarning[];
-    interface ErrorStatistics { totalValidations: number,
-    failedValidations: number,
-    errorsByType: Map<string, number>;
-    errorsByBubbleType: Map<string, number> }
+    executionTime: number;
+    timestamp: number;
+}
 
-interface ValidationStatistics { totalValidations: number,
-    failedValidations: number,
-    successRate: string,
+interface PropertyValidationResult {
+    isValid: boolean;
+    error: string | null;
+}
+
+interface LogicalValidationResult {
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+}
+
+interface ErrorStatistics {
+    totalValidations: number;
+    failedValidations: number;
+    errorsByType: Map<string, number>;
+    errorsByBubbleType: Map<string, number>;
+}
+
+interface ValidationStatistics {
+    totalValidations: number;
+    failedValidations: number;
+    successRate: string;
     errorsByType: Record<string, number>;
     errorsByBubbleType: Record<string, number>;
     recentValidations: ValidationResult[];
-    interface BubbleConfig { health?: number,
+}
+
+interface BubbleConfig {
+    health?: number;
     size?: number;
     maxAge?: number;
     score?: number;
@@ -52,22 +75,35 @@ interface ValidationStatistics { totalValidations: number,
     shakeIntensity?: number;
     disableDuration?: number;
     bonusTimeMs?: number;
-    interface ComboConfig { maxMultiplier?: number;
-    interface ScoreConfig { baseScores?: Record<string, number>,
-    combo?: ComboConfig;
-    ageBonus?: Record<string, number> }
+}
 
-interface StageConfig { spawnRate?: number,
+interface ComboConfig {
+    maxMultiplier?: number;
+}
+
+interface ScoreConfig {
+    baseScores?: Record<string, number>;
+    combo?: ComboConfig;
+    ageBonus?: Record<string, number>;
+}
+
+interface StageConfig {
+    spawnRate?: number;
     maxBubbles?: number;
     unlockRequirement?: number;
-    interface ItemConfig { baseCost?: number,
+}
+
+interface ItemConfig {
+    baseCost?: number;
     costMultiplier?: number;
     maxLevel?: number;
-    export class BalanceConfigurationValidator {
+}
+
+export class BalanceConfigurationValidator {
     private errorHandler: ErrorHandler;
-    private, validationRules: Map<string, ValidationRule>,
+    private validationRules: Map<string, ValidationRule>;
     private validationHistory: ValidationResult[];
-    private, errorStats: ErrorStatistics;
+    private errorStats: ErrorStatistics;
     constructor() {
     
         this.errorHandler = getErrorHandler();
@@ -81,13 +117,14 @@ interface StageConfig { spawnRate?: number,
         // エラー統計
         this.errorStats = {
             totalValidations: 0,
-    failedValidations: 0,
-    errorsByType: new Map() };
-            errorsByBubbleType: new Map(); 
-    };
+            failedValidations: 0,
+            errorsByType: new Map(),
+            errorsByBubbleType: new Map()
+        };
+        
         // 検証ルールを初期化
-        this._initializeValidationRules()';'
-        console.log('[BalanceConfigurationValidator] 初期化完了);'
+        this._initializeValidationRules();
+        console.log('[BalanceConfigurationValidator] 初期化完了');
     }
     
     /**
