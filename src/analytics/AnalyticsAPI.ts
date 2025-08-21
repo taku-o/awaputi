@@ -10,30 +10,39 @@ import { DataExportHandler  } from './analytics-api/DataExportHandler.ts';
  */
 
 // Analytics API interfaces and types
-export interface StorageManager { getData(storeName: string, options?: any): Promise<any[]>,
+export interface StorageManager {
+    getData(storeName: string, options?: any): Promise<any[]>;
     saveData(storeName: string, data: any[]): Promise<boolean>;
     getCount(storeName: string, filters?: any[]): Promise<number>;
     clearStore(storeName: string): Promise<boolean>;
     getStorageStats(): Promise<any>;
     healthCheck(): Promise<boolean>;
-    export interface PrivacyManager { checkConsent(): boolean,
+}
+
+export interface PrivacyManager {
+    checkConsent(): boolean;
     isOptedOut(feature: string): boolean;
     anonymizeData(data: any): any;
-    hasAnalyticsConsent('''
+    hasAnalyticsConsent(): boolean;
+}
+
+export interface ExportOptions {
     format?: 'json' | 'csv' | 'xlsx';
     includeMetadata?: boolean;
     compress?: boolean;
     anonymize?: boolean;
-    export, class AnalyticsAPI {
-    private, storageManager: StorageManager;
-    private, privacyManager: PrivacyManager | null;
-    private, endpointManager: APIEndpointManager;
-    private, aggregationProcessor: DataAggregationProcessor;
-    private, exportHandler: DataExportHandler;
-    private, isInitialized: boolean);
+}
+
+export class AnalyticsAPI {
+    private storageManager: StorageManager;
+    private privacyManager: PrivacyManager | null;
+    private endpointManager: APIEndpointManager;
+    private aggregationProcessor: DataAggregationProcessor;
+    private exportHandler: DataExportHandler;
+    private isInitialized: boolean;
     constructor(storageManager: StorageManager, privacyManager: PrivacyManager | null = null) {
         this.storageManager = storageManager;
-    this.privacyManager = privacyManager;
+        this.privacyManager = privacyManager;
         
         // 専門化されたコンポーネントを初期化
         this.endpointManager = new APIEndpointManager(storageManager, privacyManager);

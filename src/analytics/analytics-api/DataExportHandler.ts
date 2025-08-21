@@ -9,45 +9,47 @@ export class DataExportHandler {
         this.privacyManager = privacyManager;
         
         // ExportManager統合は動的インポートで対応
-        this.exportManager = null
-};
-        this.initializeExportManager(); }
+        this.exportManager = null;
+        this.initializeExportManager();
     }
     
     /**
      * ExportManagerの初期化
      */
-    async initializeExportManager() { try { }
-            const { ExportManager } = await import('../ExportManager.ts';
-            this.exportManager = new ExportManager(this.storageManager; this.privacyManager);
-            console.log('Export, Manager initialized');
+    async initializeExportManager() {
+        try {
+            const { ExportManager } = await import('../ExportManager.ts');
+            this.exportManager = new ExportManager(this.storageManager, this.privacyManager);
+            console.log('Export Manager initialized');
         } catch (error) {
             console.warn('ExportManager not available:', error.message);
             // Fallback implementation
             this.exportManager = this.createFallbackExportManager();
+        }
     }
     
     /**
      * フォールバック用のExportManager
      */
     createFallbackExportManager() {
-        return { }
-
-            exportData: async(options) => {  }
-                return { };
-
-                    success: true,' }'
-
-                    data: JSON.stringify({ message: 'Basic export', options }',''
-                    format: options.format || 'json,
-                    filename: `export_${Date.now('}'.${options.format || 'json'},
+        return {
+            exportData: async(options) => {
+                return {
+                    success: true,
+                    data: JSON.stringify({ message: 'Basic export', options }),
+                    format: options.format || 'json',
+                    filename: `export_${Date.now()}.${options.format || 'json'}`,
                     size: 0,
                     duration: 0,
-    metadata: { fallback: true,''
-            getSupportedFormats: () => ['json'] ,
+                    metadata: { fallback: true }
+                };
+            },
+            getSupportedFormats: () => ['json'],
             getSupportedDataTypes: () => ['sessionData', 'bubbleInteractions', 'performanceData'],
-            getExportStats: () => ({ totalExports: 0, fallback: true,),
+            getExportStats: () => ({ totalExports: 0, fallback: true }),
             destroy: () => {}
+        };
+    }
     
     /**
      * データエクスポート機能

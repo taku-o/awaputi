@@ -144,10 +144,11 @@ export class DataAggregationProcessor {
      * @returns {Promise<Object>} 時系列集計結果
      */
     async getTimeSeriesAggregation(timeSeriesRules, options: any = {}) {
-        const startTime = performance.now();
-        const requestId = this.generateRequestId();
-        
-        const {
+        try {
+            const startTime = performance.now();
+            const requestId = this.generateRequestId();
+            
+            const {
                 dataType = 'sessionData',
                 timeField = 'timestamp',
                 interval = 'hour', // hour, day, week, month
@@ -261,29 +262,24 @@ export class DataAggregationProcessor {
      * @returns {Object} グループ化されたデータ
      */
     groupData(data, groupBy) {
-        ','
-
-    }
-
-        if (groupBy.length === 0) { }'
-
-            return { 'all': data;
+        if (groupBy.length === 0) {
+            return { 'all': data };
+        }
         
         const groups = {};
         
         for (const item of data) {
-        ','
-
-            const groupKey = groupBy.map(key => { '),'
-                if (key === 'date' && item.timestamp' { }'
-
-                    // 日付でのグループ化（YYYY-MM-DD形式）' }'
-
+            const groupKey = groupBy.map(key => {
+                if (key === 'date' && item.timestamp) {
+                    // 日付でのグループ化（YYYY-MM-DD形式）
                     return new Date(item.timestamp).toISOString().split('T')[0];
+                }
                 return item[key] || 'unknown';
-            }').join('|);
+            }).join('|');
             
-            if (!groups[groupKey]) { groups[groupKey] = [] }
+            if (!groups[groupKey]) {
+                groups[groupKey] = [];
+            }
             groups[groupKey].push(item);
         }
         
@@ -298,37 +294,30 @@ export class DataAggregationProcessor {
      */
     aggregateGroup(groupData, aggregateBy) {
         const result = {
-    }
-            count: groupData.length; 
-    };
-        for(const [field, operations] of Object.entries(aggregateBy) {
+            count: groupData.length
+        };
         
+        for(const [field, operations] of Object.entries(aggregateBy)) {
             const values = groupData.map(item => item[field]).filter(val => val != null);
-            if(values.length === 0) continue,
-
-            ','
-
-        }
-
-            if(operations.includes('sum' { }'
-
-                result[`${field}_sum`] = values.reduce((sum, val) => sum + Number(val), 0');'
+            if(values.length === 0) continue;
+            
+            if(operations.includes('sum')) {
+                result[`${field}_sum`] = values.reduce((sum, val) => sum + Number(val), 0);
             }
 
-            if(operations.includes('avg' { }'
-
-                result[`${field}_avg`] = values.reduce((sum, val) => sum + Number(val), 0') / values.length;'
+            if(operations.includes('avg')) {
+                result[`${field}_avg`] = values.reduce((sum, val) => sum + Number(val), 0) / values.length;
             }
 
-            if(operations.includes('min' { }'
-
+            if(operations.includes('min')) {
                 result[`${field}_min`] = Math.min(...values.map(Number));
+            }
 
-            if(operations.includes('max' { }'
-
+            if(operations.includes('max')) {
                 result[`${field}_max`] = Math.max(...values.map(Number));
+            }
 
-            if (operations.includes('count' }
+            if (operations.includes('count')) {
                 result[`${field}_count`] = values.length;
             }
         }
