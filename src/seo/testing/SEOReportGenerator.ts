@@ -10,7 +10,7 @@ import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController {
     baseUrl: string;
-    interface TestResult { name: string,
+    interface TestResult { name: string;
     passed: boolean;
     message?: string;
     interface CategoryResult { category: string;
@@ -18,7 +18,7 @@ interface MainController {
     passed?: number;
     failed?: number;
     warnings?: number;
-    interface TestResults { overallScore?: number,
+    interface TestResults { overallScore?: number;
     executionTime?: number;
     summary?: {
         totalTest,s?: number;
@@ -28,68 +28,68 @@ interface MainController {
     categories?: Record<string, CategoryResult>;
 }
 
-interface LighthouseScore { performance: number,
-    accessibility: number,
-    bestPractices: number,
-    seo: number,
-    timestamp: string,
+interface LighthouseScore { performance: number;
+    accessibility: number;
+    bestPractices: number;
+    seo: number;
+    timestamp: string;
     details: { performanc,e: Record<string, number>  },
         accessibility: Record<string, string>;
         seo: Record<string, string> }
 
-interface ReportOptions { includeRecommendations?: boolean,
+interface ReportOptions { includeRecommendations?: boolean;
     includeTimeline?: boolean;
     includeComparison?: boolean;
     previousResults?: TestResults | null }
 
-interface ExecutiveSummary { grade: string,
-    priority: string,
-    recommendation: string,
+interface ExecutiveSummary { grade: string;
+    priority: string;
+    recommendation: string;
     keyMetrics: {
         overallScor,e: number;
     },
-        totalTests: number,
-        passedTests: number,
-        failedTests: number,
-        warnings: number,
-    passRate: number,
+        totalTests: number;
+        passedTests: number;
+        failedTests: number;
+        warnings: number;
+    passRate: number;
     passRate: number;
         };
-interface EnhancedCategory extends CategoryResult { score: number,
-    impact: string,
-    priority: string,
+interface EnhancedCategory extends CategoryResult { score: number;
+    impact: string;
+    priority: string;
     priority: string;
         };
-interface Recommendation { category: string,
-    test: string,
-    issue: string,
-    recommendation: string,
-    priority: string,
+interface Recommendation { category: string;
+    test: string;
+    issue: string;
+    recommendation: string;
+    priority: string;
     priority: string;
         };
-interface Timeline { testStartTime: string,
-    testEndTime: string,
-    executionTime: number,
-    phases: Array<{ name: string, duration: number;>;
+interface Timeline { testStartTime: string;
+    testEndTime: string;
+    executionTime: number;
+    phases: Array<{ name: string; duration: number;>;
 }
 
 interface VisualizationData { scoreDistribution: Record<string, number>,
     categoryBreakdown: Array<{
-        nam,e: string,
-        passed: number,
-    failed: number,
-    warnings: number,
+        nam,e: string;
+        passed: number;
+    failed: number;
+    warnings: number;
     total: number;>;
     timeSeriesData: any[],
     heatmapData: any[];
 }
 
 interface DetailedReport { metadata: {
-        generatedA,t: string,
-        baseUrl: string,
-    reportVersion: string,
-    totalTests: number,
-    executionTime: number,
+        generatedA,t: string;
+        baseUrl: string;
+    reportVersion: string;
+    totalTests: number;
+    executionTime: number;
     summary: ExecutiveSummary,
     categories: Record<string, EnhancedCategory>;
     recommendations: Recommendation[] | null,
@@ -98,18 +98,18 @@ interface DetailedReport { metadata: {
     visualizations: VisualizationData;
     } };
 
-interface ComparisonResult { scoreChange: number,
+interface ComparisonResult { scoreChange: number;
     testChanges: {
         newPasse,d: number;
     },
-        newFailed: number,
-    newWarnings: number,
-    categoryChanges: Record<string, { category: string,
-        currentScore: number,
-        previousScore: number,
-    change: number,>;
-    improvements: Array<{ category: string, improvement: number;>;
-    regressions: Array<{ category: string, regression: number;>;
+        newFailed: number;
+    newWarnings: number;
+    categoryChanges: Record<string, { category: string;
+        currentScore: number;
+        previousScore: number;
+    change: number;>;
+    improvements: Array<{ category: string; improvement: number;>;
+    regressions: Array<{ category: string; regression: number;>;
 }
 
 export class SEOReportGenerator {
@@ -499,7 +499,7 @@ export class SEOReportGenerator {
         const failedTests = results.summary?.failedTests || 0,
         const warnings = results.summary?.warnings || 0,
  : undefined
-        let grade: string, priority: string, recommendation: string,
+        let grade: string; priority: string; recommendation: string;
 
         if (overallScore >= 90) {
 
@@ -623,7 +623,7 @@ export class SEOReportGenerator {
      * 推奨事項の優先度取得
      * @private'
      */''
-    private _getRecommendationPriority(testName: string, category: string): string { const highPriorityTests = [', 'Required meta tag: title','
+    private _getRecommendationPriority(testName: string; category: string): string { const highPriorityTests = [', 'Required meta tag: title','
             'Required meta tag: description',]','
             'Structured data presence'],
         ],
@@ -673,15 +673,15 @@ export class SEOReportGenerator {
      * カテゴリ別内訳計算
      * @private
      */
-    private _calculateCategoryBreakdown(results: TestResults): Array<{ name: string,
-        passed: number,
-        failed: number,
-        warnings: number,
+    private _calculateCategoryBreakdown(results: TestResults): Array<{ name: string;
+        passed: number;
+        failed: number;
+        warnings: number;
     total: number;> { const breakdown: Array<{
-            name: string,
-            passed: number,
-            failed: number,
-            warnings: number,
+            name: string;
+            passed: number;
+            failed: number;
+            warnings: number;
     total: number;> = [];
         
         Object.entries(results.categories || { ).forEach(([key, category]) => { 

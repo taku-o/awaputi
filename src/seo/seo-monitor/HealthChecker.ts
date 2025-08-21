@@ -5,7 +5,7 @@
  */
 
 // 健全性チェック結果インターフェース
-interface HealthCheck { timestamp: number,
+interface HealthCheck { timestamp: number;
     status: 'healthy' | 'warning' | 'critical' | 'error,
     checks: Record<string, boolean>;
     issues: string[],
@@ -13,12 +13,12 @@ interface HealthCheck { timestamp: number,
     error?: string;
 
 // アラートインターフェース
-interface Alert { id: string,
-    type: string,
+interface Alert { id: string;
+    type: string;
     severity: 'info' | 'warning' | 'critical,
-    message: string,
+    message: string;
     metadata: Record<string, any>;
-    timestamp: number,
+    timestamp: number;
     resolved: boolean;
 
 // 設定インターフェース
@@ -35,22 +35,22 @@ interface MonitoringData { healthChecks: HealthCheck[],
     socialEngagement: SocialEngagementData[];
 
 // Lighthouseスコアインターフェース
-interface LighthouseScore { timestamp: number,
+interface LighthouseScore { timestamp: number;
     score: number;
     category?: string;
     details?: Record<string, any> }
 
 // Core Web Vitalsインターフェース
-interface CoreWebVitals { timestamp: number,
-    fcp: number, // First Contentful Paint
-    lcp: number, // Largest Contentful Paint
-    fid: number, // First Input Delay
-            cls: number, // Cumulative Layout Shift  }
+interface CoreWebVitals { timestamp: number;
+    fcp: number; // First Contentful Paint
+    lcp: number; // Largest Contentful Paint
+    fid: number; // First Input Delay
+            cls: number; // Cumulative Layout Shift  }
 
 // ソーシャルエンゲージメントデータインターフェース
-interface SocialEngagementData { timestamp: number,
-    totalShares: number,
-    platform: string,
+interface SocialEngagementData { timestamp: number;
+    totalShares: number;
+    platform: string;
     engagement: number;
 
 // ダッシュボードデータインターフェース
@@ -63,10 +63,10 @@ interface DashboardData { overview: OverviewData,
     timestamp?: number;
 
 // 概要データインターフェース
-interface OverviewData { currentSEOScore: number,
-    healthStatus: string,
-    totalAlerts: number,
-    criticalAlerts: number,
+interface OverviewData { currentSEOScore: number;
+    healthStatus: string;
+    totalAlerts: number;
+    criticalAlerts: number;
     lastUpdate: number;
 
 // パフォーマンスデータインターフェース
@@ -75,13 +75,13 @@ interface PerformanceData { lighthouseScores: LighthouseScore[],
     trends: Record<string, any> }
 
 // ソーシャルデータインターフェース
-interface SocialData { totalShares: number,
+interface SocialData { totalShares: number;
     platformBreakdown: Record<string, any>;
     engagementTrend: any[];
 
 // 健康データインターフェース
 interface HealthData { recentChecks: HealthCheck[],
-    systemStatus: string,
+    systemStatus: string;
     recommendations: string[];
 
 // アラートデータインターフェース
@@ -90,23 +90,23 @@ interface AlertsData { recent: Alert[],
     bySeverity: Record<string, number> }
 
 // SEOエラーログインターフェース
-interface SEOError { timestamp: number,
-    message: string,
-    type: string,
+interface SEOError { timestamp: number;
+    message: string;
+    type: string;
     severity: string;
 
 // アラートコールバック関数型
 type AlertCallback = (alert: Alert) => void;
 
 // ログ用インターフェース
-interface SEOLogger { info(message: string, data?: any): void,
-    warn(message: string, data?: any): void;
-    error(message: string, error: Error): void;
+interface SEOLogger { info(message: string; data?: any): void,
+    warn(message: string; data?: any): void;
+    error(message: string; error: Error): void;
 
 // グローバルウィンドウ拡張
 declare global { interface Window {
-        seoMetaManager?: any,
-        structuredDataEngine?: any,
+        seoMetaManager?: any;
+        structuredDataEngine?: any;
         socialMediaOptimizer?: any;
     export class HealthChecker {
     private config: HealthCheckerConfig;
@@ -253,7 +253,7 @@ declare global { interface Window {
                     bySeverity: {},''
                 error: (error, as Error).message,
                 timestamp: Date.now()';'
-    createAlert(type: string, severity: 'info' | 'warning' | 'critical', message: string, metadata: Record<string, any> = { ): Alert {
+    createAlert(type: string; severity: 'info' | 'warning' | 'critical', message: string; metadata: Record<string, any> = { ): Alert {
         const alert: Alert = {  }
             id: `alert_${Date.now())_${Math.random().toString(36).substr(2, 9},
             type,
@@ -387,7 +387,7 @@ declare global { interface Window {
     /**
      * 特定期間のアラート取得
      */
-    getAlertsInRange(start: number, end: number): Alert[] { return this.monitoringData.alerts.filter()
+    getAlertsInRange(start: number; end: number): Alert[] { return this.monitoringData.alerts.filter()
             alert => alert.timestamp >= start && alert.timestamp <= end),
     
     /**

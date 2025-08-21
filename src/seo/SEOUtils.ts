@@ -7,13 +7,13 @@ import { SEOConfig, LanguageCode  } from './SEOConfig';
 import { seoLogger  } from './SEOLogger';
 
 // 画像最適化オプションインターフェース
-interface ImageOptimizationOptions { width?: number,
+interface ImageOptimizationOptions { width?: number;
     height?: number;
     format?: 'webp' | 'png' | 'jpg' | 'jpeg';
     quality?: number;
 
 // スキーマプロパティインターフェース
-interface SchemaProperty { type?: string,
+interface SchemaProperty { type?: string;
     default?: any;
     required?: boolean;
 
@@ -22,7 +22,7 @@ interface Schema { required?: string[],
     properties?: Record<string, SchemaProperty> }
 
 // スキーマ検証結果インターフェース
-interface ValidationResult<T = any> { isValid: boolean,
+interface ValidationResult<T = any> { isValid: boolean;
     errors: string[],
     data: T;
 
@@ -55,7 +55,7 @@ export function normalizeUrl(url: string): string { try {'
 /**
  * メタタグの安全な作成
  */'
-export function createMetaTag(property: string, content: string): HTMLMetaElement | null {,
+export function createMetaTag(property: string; content: string): HTMLMetaElement | null {,
     if (!property || !content) {
             }
 
@@ -140,7 +140,7 @@ export function generateJsonLd(data: any): string { try {
 /**
  * 画像URLの最適化'
  */''
-export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOptions = {}: string { }'
+export function optimizeImageUrl(imagePath: string; options: ImageOptimizationOptions = {}: string { }'
 
     const { width, height, format = 'webp', quality = 85 } = options;
     ';'
@@ -159,7 +159,7 @@ export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOp
     if(quality !== 85) params.append('q', String(quality);
 
     const queryString = params.toString()';'
-export function truncateText(text: string, maxLength: number, suffix: string = '...): string { if (!text || text.length <= maxLength) {'
+export function truncateText(text: string; maxLength: number; suffix: string = '...): string { if (!text || text.length <= maxLength) {'
         return text };
     ';'
     // 単語境界で切り詰め
@@ -207,7 +207,7 @@ export function generateRobotsTxt(): string {
 /**
  * キャッシュキーの生成
  */
-export function generateCacheKey(prefix: string, params: Record<string, any> = {}: string { const sortedParams = Object.keys(params)'
+export function generateCacheKey(prefix: string; params: Record<string, any> = {}: string { const sortedParams = Object.keys(params)'
         .sort()' }'
 
         .map(key => `${key}:${params[key]}`)
@@ -221,7 +221,7 @@ export function generateCacheKey(prefix: string, params: Record<string, any> = {
  */
 export function debounce<T extends (...args: any[]) => any>(,
     func: T),
-    wait: number,
+    wait: number;
 ): (...args: Parameters<T>) => void { let timeout: ReturnType<typeof setTimeout> | null = null,
     
     return function executedFunction(...args: Parameters<T>): void {
@@ -239,7 +239,7 @@ export function debounce<T extends (...args: any[]) => any>(,
  */
 export function measurePerformance(operation: string) { return function(
         target: any),
-        propertyKey: string,
+        propertyKey: string;
     descriptor: PropertyDescriptor): PropertyDescriptor {
         const originalMethod = descriptor.value,
         
@@ -272,7 +272,7 @@ export function measurePerformance(operation: string) { return function(
 /**
  * スキーマ検証
  */
-export function validateSchema<T = any>(data: any, schema: Schema): ValidationResult<T> { const errors: string[] = [] };
+export function validateSchema<T = any>(data: any; schema: Schema): ValidationResult<T> { const errors: string[] = [] };
     const validated: any = {}
     // 必須フィールドのチェック
     if (schema.required) { schema.required.forEach(field => { );

@@ -8,17 +8,17 @@ interface MetaTagThresholds { metaTags: {
         titleLength: {
             mi,n: number;
     },
-    max: number,
-        descriptionLength: { min: number,
+    max: number;
+        descriptionLength: { min: number;
     max: number;
 }
 
-interface MetaTagAlert { type: string,
+interface MetaTagAlert { type: string;
     severity: 'info' | 'warning' | 'critical,
     metric: string;
     current?: number;
     threshold?: string;
-    message: string,
+    message: string;
     timestamp: string;
     interface MetaTags { title: string | null,
     description: string | null,

@@ -5,7 +5,7 @@
  */
 
 interface SEOConfig { [key: string]: any;
-    interface CoreWebVitals { timestamp: number,
+    interface CoreWebVitals { timestamp: number;
     lcp: number | null,
     fid: number | null,
     cls: number | null,
@@ -15,8 +15,8 @@ interface SEOConfig { [key: string]: any;
     FID?: number;
     CLS?: number }
 
-interface LighthouseScore { timestamp: number,
-    score: number,
+interface LighthouseScore { timestamp: number;
+    score: number;
     details: SEOScoreDetails;
     interface MonitoringData { coreWebVitals: CoreWebVitals[],
     lighthouseScores: LighthouseScore[],
@@ -30,17 +30,17 @@ interface LighthouseScore { timestamp: number,
     type?: string;
     data?: any;
     error?: string;
-    interface ImageAnalysis { total: number,
-    withAlt: number,
+    interface ImageAnalysis { total: number;
+    withAlt: number;
     withoutAlt: number;
-    interface PerformanceMetrics { domContentLoaded?: number,
+    interface PerformanceMetrics { domContentLoaded?: number;
     loadComplete?: number;
     ttfb?: number;
-    interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart: number,
-    domContentLoadedEventEnd: number,
-    loadEventStart: number,
-    loadEventEnd: number,
-    requestStart: number,
+    interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart: number;
+    domContentLoadedEventEnd: number;
+    loadEventStart: number;
+    loadEventEnd: number;
+    requestStart: number;
     responseStart: number;
     export class SEOMonitoringEngine {
     private config: SEOConfig;
@@ -136,7 +136,7 @@ interface LighthouseScore { timestamp: number,
     /**
      * Lighthouseスコアのチェック
      */
-    async checkLighthouseScore(): Promise<{ performance: number, accessibility: number, bestPractices: number, seo: number, timestamp: string; | null> { try {
+    async checkLighthouseScore(): Promise<{ performance: number; accessibility: number; bestPractices: number; seo: number; timestamp: string; | null> { try {
             const score = {
                 performance: this.generateRealisticScore(85, 100);
                 accessibility: this.generateRealisticScore(88, 100);
@@ -153,7 +153,7 @@ interface LighthouseScore { timestamp: number,
     /**
      * Core Web Vitalsのチェック
      */
-    async checkCoreWebVitals(): Promise<{ LCP: number, FID: number, CLS: number, timestamp: string; | null> { try {
+    async checkCoreWebVitals(): Promise<{ LCP: number; FID: number; CLS: number; timestamp: string; | null> { try {
             const vitals = {
                 LCP: this.generateRealisticMetric(1000, 3000);
                 FID: this.generateRealisticMetric(10, 150);
@@ -400,14 +400,14 @@ interface LighthouseScore { timestamp: number,
     /**
      * 現実的なスコアの生成
      */
-    private generateRealisticScore(min: number, max: number): number { const base = min + Math.random() * (max - min),
+    private generateRealisticScore(min: number; max: number): number { const base = min + Math.random() * (max - min),
         const variation = (Math.random() - 0.5) * 10,
         return Math.max(min, Math.min(max, Math.round(base + variation));
     
     /**
      * 現実的なメトリクスの生成
      */
-    private generateRealisticMetric(min: number, max: number): number { return min + Math.random() * (max - min);
+    private generateRealisticMetric(min: number; max: number): number { return min + Math.random() * (max - min);
     
     /**
      * リソースの解放

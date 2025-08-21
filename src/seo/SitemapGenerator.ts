@@ -9,8 +9,8 @@ import { seoErrorHandler  } from './SEOErrorHandler';
 import { normalizeUrl, measurePerformance  } from './SEOUtils';
 
 // URL情報インターフェース
-interface UrlData { loc: string,
-    priority: number,
+interface UrlData { loc: string;
+    priority: number;
     changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never,
     lastmod: string;
     hreflang?: string;
@@ -19,35 +19,35 @@ interface UrlData { loc: string,
 type DynamicUrlGenerator = (options?: any) => Promise<UrlData[]>;
 
 // サイトマップ生成オプションインターフェース
-interface SitemapGenerationOptions { forceRegenerate?: boolean,
+interface SitemapGenerationOptions { forceRegenerate?: boolean;
     includeAssets?: boolean;
     includeDynamic?: boolean;
     [key: string]: any;
 
 // サイトマップサマリーインターフェース
-interface SitemapSummary { totalUrls: number,
+interface SitemapSummary { totalUrls: number;
     lastGenerated: Date | null,
     urlsByPriority: Record<string, number>;
     urlsByChangeFreq: Record<string, number>;
-    supportedLanguages: number,
+    supportedLanguages: number;
     dynamicGenerators: number;
 
 // サイトマップ検証結果インターフェース
-interface SitemapValidationResult { isValid: boolean,
+interface SitemapValidationResult { isValid: boolean;
     issues: string[],
     warnings: string[],
-    urlCount: number,
+    urlCount: number;
     duplicateCount: number;
 
 // LocalizationManager インターフェース
-interface LocalizationManager { getCurrentLanguage(): string,
-    t(key: string, defaultValue?: string): string;
+interface LocalizationManager { getCurrentLanguage(): string;
+    t(key: string; defaultValue?: string): string;
 
 // File System Access API拡張インターフェース
 interface ExtendedWindow extends Window { showSaveFilePicker?: (options?: {
         suggestedName?: string;
     types?: Array<{
-            description: string,
+            description: string;
     accept: Record<string, string[]> }>;
     } => Promise<FileSystemFileHandle>;
 }
@@ -244,7 +244,7 @@ interface FileSystemWritableFileStream { write(data: BufferSource | Blob | strin
     /**
      * 動的URL生成関数の登録
      */
-    registerDynamicGenerator(name: string, generator: DynamicUrlGenerator): void { this.dynamicUrlGenerators.set(name, generator);
+    registerDynamicGenerator(name: string; generator: DynamicUrlGenerator): void { this.dynamicUrlGenerators.set(name, generator);
     
     /**
      * 静的URLの追加
@@ -362,7 +362,7 @@ interface FileSystemWritableFileStream { write(data: BufferSource | Blob | strin
     /**
      * hreflangリンクの追加'
      */''
-    private _addHreflangLinks(xml: string, urlData: UrlData): string { ''
+    private _addHreflangLinks(xml: string; urlData: UrlData): string { ''
         const path = urlData.loc.replace(this.baseUrl, '').replace(/^\/[a-z-]+/, '),'
         ','
 

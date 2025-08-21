@@ -8,32 +8,32 @@
 import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string,
+interface MainController { baseUrl: string;
     validationRules: Map<string, ValidationRules> }
 
 interface ValidationRules { required: string[],
     allowedContexts: string[],
     videoGameProperties: string[];
-    interface TestResult { name: string,
-    passed: boolean,
+    interface TestResult { name: string;
+    passed: boolean;
     message: string;
-    interface ValidationResults { category: string,
+    interface ValidationResults { category: string;
     tests: TestResult[],
-    passed: number,
-    failed: number,
+    passed: number;
+    failed: number;
     warnings: number;
 ';'
 
-interface StructuredDataObject { ', '@context': string,', '@type': string,
-    name: string,
+interface StructuredDataObject { ', '@context': string;', '@type': string;
+    name: string;
     description: string;
     genre?: string;
     gamePlatform?: string[];
     operatingSystem?: string[];
     applicationCategory?: string;
-    url: string,
+    url: string;
     image: string;
-    author?: {', '@type': string,'
+    author?: {', '@type': string;'
         name: string;
     datePublished?: string;
     inLanguage?: string[];

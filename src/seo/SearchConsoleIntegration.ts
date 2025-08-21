@@ -8,16 +8,16 @@ import { seoLogger  } from './SEOLogger';
 import { seoErrorHandler  } from './SEOErrorHandler';
 
 // 認証方法インターフェース
-interface VerificationMethod { name: string,
-    description: string,
+interface VerificationMethod { name: string;
+    description: string;
     difficulty: 'easy' | 'medium' | 'hard,
     setup: (param?: string) => VerificationSetupInstructions  }
 }
 
 // 認証設定手順インターフェース
-interface VerificationSetupInstructions { method: string,
+interface VerificationSetupInstructions { method: string;
     steps: Array<{
-        ste,p: number,
+        ste,p: number;
     action: string;
     description?: string;
     code?: string;
@@ -25,9 +25,9 @@ interface VerificationSetupInstructions { method: string,
     record?: {
             typ,e: string;
     },
-            name: string,
-    value: string,>;
-    verificationUrl: string,
+            name: string;
+    value: string;>;
+    verificationUrl: string;
     estimated_time: string;
     note?: string;
     advantage?: string;
@@ -36,72 +36,72 @@ interface VerificationSetupInstructions { method: string,
 }
 
 // 統合ステータスインターフェース
-interface IntegrationStatus { verified: boolean,
+interface IntegrationStatus { verified: boolean;
     verificationMethod: string | null,
-    sitemapSubmitted: boolean,
-    dataCollection: boolean,
+    sitemapSubmitted: boolean;
+    dataCollection: boolean;
     lastCheck: number | null  }
 
 // 準備状況チェック結果インターフェース
-interface ReadinessCheckResult { timestamp: number,
-    ready: boolean,
+interface ReadinessCheckResult { timestamp: number;
+    ready: boolean;
     issues: string[],
     recommendations: string[],
     checklist: { sitemap?: {
-            exist,s: boolean,
-            status?: number,
+            exist,s: boolean;
+            status?: number;
             lastModified?: string | null,
             size?: string | null,
             error?: string;,
-        robotsTxt?: { exists: boolean,
-            status?: number,
+        robotsTxt?: { exists: boolean;
+            status?: number;
             content?: string | null,
-            hasSitemapReference?: boolean,
+            hasSitemapReference?: boolean;
             error?: string;,
         metaTags?: { found: string[],
             missing: string[]  ,
     total: number;
-    structuredData?: { hasValidData: boolean,
+    structuredData?: { hasValidData: boolean;
             validCount: number;
     };
-            errorCount: number,
+            errorCount: number;
     types: string[],
-            errors: Array<{ index: number, error: string;>;
+            errors: Array<{ index: number; error: string;>;
         };
         https?: boolean;
-        indexablePages?: Array<{ url: string,
-            title: string,
-            priority: number,
+        indexablePages?: Array<{ url: string;
+            title: string;
+            priority: number;
     changefreq: string;>;
     };
     error?: string;
 }
 
 // 推奨認証方法インターフェース
-interface RecommendedVerificationMethod { method: string,
-    reason: string,
-    priority: number,
+interface RecommendedVerificationMethod { method: string;
+    reason: string;
+    priority: number;
     setup: VerificationMethod;
 
 // サイトマップ送信準備インターフェース
-interface SitemapSubmissionPreparation { title: string,
+interface SitemapSubmissionPreparation { title: string;
     steps: Array<{
-        ste,p: number,
-        action: string,
+        ste,p: number;
+        action: string;
     description: string;
     checkUrl?: string;
     submitUrl?: string;>;
-    automaticSubmission: { available: boolean,
+    automaticSubmission: { available: boolean;
         description: string;
     },
-    implementation: string,
+    implementation: string;
     implementation: string;
         };
 // API統合準備インターフェース
-interface ApiIntegrationPreparation { title: string,
-    overview: string,
+interface ApiIntegrationPreparation { title: string;
+    overview: string;
     steps: Array<{
-        ste,p: number,
+        ste,p: number;
     action: string;
     description?: string;
     url?: string }>;
@@ -110,14 +110,14 @@ interface ApiIntegrationPreparation { title: string,
 }
 
 // 監視設定インターフェース
-interface MonitoringSetup { title: string,
+interface MonitoringSetup { title: string;
     recommendations: Array<{
-        categor,y: string,
+        categor,y: string;
     items: string[];>;
 }
 
 // Window拡張インターフェース
-interface ExtendedWindow extends Window { gtag?: any,
+interface ExtendedWindow extends Window { gtag?: any;
     ga?: any;
     dataLayer?: any[];
 
@@ -529,8 +529,8 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
         return { found, missing, total: found.length; 
     private checkStructuredDataStatus()','
         const scripts = document.querySelectorAll('script[type="application/ld+json"]),'
-        const, validData: Array<{ type: string, context: string;> = [];
-        const errors: Array<{ index: number, error: string;> = [];
+        const, validData: Array<{ type: string; context: string;> = [];
+        const errors: Array<{ index: number; error: string;> = [];
 
         scripts.forEach((script, index) => { try { }
 

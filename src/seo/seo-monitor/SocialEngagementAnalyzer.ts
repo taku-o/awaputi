@@ -5,16 +5,16 @@
  */
 
 interface SEOConfig { [key: string]: any;
-    interface SocialEngagementData { timestamp: number,
+    interface SocialEngagementData { timestamp: number;
     platforms: Record<string, number>;
-    totalShares: number,
+    totalShares: number;
     engagementRate: number;
     ogTags?: Record<string, string>;
     twitterCard?: Record<string, string> }
 
 interface MonitoringData { socialEngagement: SocialEngagementData[];
-    interface SocialEngagementTrend { timestamp: number,
-    totalShares: number,
+    interface SocialEngagementTrend { timestamp: number;
+    totalShares: number;
     engagementRate: number;
     export class SocialEngagementAnalyzer {
     private config: SEOConfig;

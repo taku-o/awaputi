@@ -10,29 +10,29 @@ import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController {
     baseUrl: string;
-    interface TestResult { name: string,
-    passed: boolean,
+    interface TestResult { name: string;
+    passed: boolean;
     message: string;
-    interface ValidationResults { category: string,
+    interface ValidationResults { category: string;
     tests: TestResult[],
-    passed: number,
-    failed: number,
+    passed: number;
+    failed: number;
     warnings: number;
-    interface CoreWebVitalsResults extends ValidationResults { vitals: { LCP: number,
-        FID: number,
-        CLS: number,
-    timestamp: string,
+    interface CoreWebVitalsResults extends ValidationResults { vitals: { LCP: number;
+        FID: number;
+        CLS: number;
+    timestamp: string;
 
-interface ImageInfo { src: string,
-    alt: string,
+interface ImageInfo { src: string;
+    alt: string;
 
-interface HeadingStructure { isValid: boolean,
+interface HeadingStructure { isValid: boolean;
     levels: number[],
     issues: string[],
 
 export class PerformanceValidator {
     private mainController: MainController,
-    private, baseUrl: string,
+    private, baseUrl: string;
     constructor(mainController: MainController) {
 
         this.mainController = mainController

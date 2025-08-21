@@ -25,37 +25,37 @@ interface MonitoringData { lighthouseScores: LighthouseScore[],
     lastCheck?: string }
 
 // Lighthouseスコアインターフェース
-interface LighthouseScore { performance: number,
-    accessibility: number,
-    bestPractices: number,
-    seo: number,
+interface LighthouseScore { performance: number;
+    accessibility: number;
+    bestPractices: number;
+    seo: number;
     timestamp: string;
 
 // Core Web Vitalsデータインターフェース
-interface CoreWebVitalsData { LCP: number, // Largest Contentful Paint
-    FID: number, // First Input Delay
-    CLS: number, // Cumulative Layout Shift
+interface CoreWebVitalsData { LCP: number; // Largest Contentful Paint
+    FID: number; // First Input Delay
+    CLS: number; // Cumulative Layout Shift
             timestamp: string;
 
 // ソーシャルエンゲージメントデータインターフェース
-interface SocialEngagementData { platform: string,
+interface SocialEngagementData { platform: string;
     metrics: Record<string, number>;
     timestamp: string;
 
 // Search Consoleメトリクスインターフェース
-interface SearchConsoleMetrics { impressions: number,
-    clicks: number,
-    position: number,
-    ctr: number,
+interface SearchConsoleMetrics { impressions: number;
+    clicks: number;
+    position: number;
+    ctr: number;
     timestamp: string;
 
 // アラートインターフェース
-interface Alert { type: string,''
+interface Alert { type: string;''
     severity: 'critical' | 'warning' | 'info';
     metric?: string;
     current?: number;
     threshold?: number;
-    message: string,
+    message: string;
     timestamp: string;
     metadata?: Record<string, any> }
 
@@ -67,11 +67,11 @@ interface HealthCheckResult { ''
     timestamp: string;
 
 // 監視設定インターフェース
-interface MonitoringConfig { monitoringEnabled: boolean,
-    interval: number,
-    lighthouseThreshold: number,
-    performanceThreshold: number,
-    alertsEnabled: boolean,
+interface MonitoringConfig { monitoringEnabled: boolean;
+    interval: number;
+    lighthouseThreshold: number;
+    performanceThreshold: number;
+    alertsEnabled: boolean;
     healthCheckInterval: number;
     includeLighthouse?: boolean;
     includeCoreWebVitals?: boolean;
@@ -81,21 +81,21 @@ interface MonitoringConfig { monitoringEnabled: boolean,
     enableAlerts?: boolean;
 
 // 閾値設定インターフェース
-interface Thresholds { lighthouse: { performanc,e: number,
-        accessibility: number,
-        bestPractices: number,
-    seo: number,
-    coreWebVitals: { LCP: number,
+interface Thresholds { lighthouse: { performanc,e: number;
+        accessibility: number;
+        bestPractices: number;
+    seo: number;
+    coreWebVitals: { LCP: number;
         FID: number;
     },
-    CLS: number,
-    metaTags: { titleLength: { min: number, max: number,
-        descriptionLength: { min: number, max: number,
-        descriptionLength: { min: number, max: number;
+    CLS: number;
+    metaTags: { titleLength: { min: number; max: number;
+        descriptionLength: { min: number; max: number;
+        descriptionLength: { min: number; max: number;
          },
 // 監視統計インターフェース
-interface MonitoringStats { totalChecks: number,
-    totalAlerts: number,
+interface MonitoringStats { totalChecks: number;
+    totalAlerts: number;
     alertsByType: Record<string, number>;
     alertsBySeverity: Record<string, number>;
     averageScores: Record<string, number>;
@@ -104,7 +104,7 @@ interface MonitoringStats { totalChecks: number,
 
 // レポートインターフェース
 interface MonitoringReport { summary: MonitoringStats,
-    data: MonitoringData & { isMonitoring: boolean, thresholds: Thresholds;,
+    data: MonitoringData & { isMonitoring: boolean; thresholds: Thresholds;,
     generatedAt: string;
 }
 
@@ -466,7 +466,7 @@ export class SEOMonitor {
      */
     generateDashboardData(): any { ''
         return this.healthChecker.generateDashboardData()','
-    createAlert(type: string, severity: 'critical' | 'warning' | 'info', message: string, metadata: Record<string, any> = {': Alert {'
+    createAlert(type: string; severity: 'critical' | 'warning' | 'info', message: string; metadata: Record<string, any> = {': Alert {'
         return this.healthChecker.createAlert(type, severity, message, metadata }
     
     /**
@@ -508,7 +508,7 @@ export class SEOMonitor {
     /**
      * 監視データの取得
      */
-    getMonitoringData(): MonitoringData & { isMonitoring: boolean, thresholds: Thresholds, { return { ...this.monitoringData,
+    getMonitoringData(): MonitoringData & { isMonitoring: boolean; thresholds: Thresholds, { return { ...this.monitoringData,
             isMonitoring: this.isMonitoring ,
             thresholds: this.thresholds 
     }

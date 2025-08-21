@@ -7,31 +7,31 @@ import { SEOConfig  } from './SEOConfig';
 import { seoLogger  } from './SEOLogger';
 
 // エラーハンドラー型
-type ErrorHandler = (error: Error, context: string, data: ErrorHandlerData) => Promise<any> | any,
+type ErrorHandler = (error: Error, context: string; data: ErrorHandlerData) => Promise<any> | any,
 
 // フォールバック戦略型
 type FallbackStrategy = (data: any) => any,
 
 // エラーハンドラーデータ型
-interface ErrorHandlerData { cached?: any,
+interface ErrorHandlerData { cached?: any;
     retriesExhausted?: boolean;
     [key: string]: any;
 
 // リトライ設定インターフェース
-interface RetryConfig { maxRetries: number,
-    retryDelay: number,
+interface RetryConfig { maxRetries: number;
+    retryDelay: number;
     backoffMultiplier: number;
 
 // エラー統計インターフェース
-interface ErrorStatistics { errorCount: number,
+interface ErrorStatistics { errorCount: number;
     errorTypes: Record<string, number>;
-    recoveryRate: number,
+    recoveryRate: number;
     commonErrors: Record<string, number>;
     lastError?: {
         timestam,p: string;
     },
-        message: string,
-    context: string,
+        message: string;
+    context: string;
     context: string;
         };
 // ネットワークエラークラス
@@ -62,17 +62,17 @@ export class SEOErrorHandler {
     /**
      * エラーハンドラーの登録
      */
-    registerHandler(errorType: string, handler: ErrorHandler): void { this.errorHandlers.set(errorType, handler);
+    registerHandler(errorType: string; handler: ErrorHandler): void { this.errorHandlers.set(errorType, handler);
     
     /**
      * フォールバック戦略の登録
      */
-    registerFallback(component: string, strategy: FallbackStrategy): void { this.fallbackStrategies.set(component, strategy);
+    registerFallback(component: string; strategy: FallbackStrategy): void { this.fallbackStrategies.set(component, strategy);
     
     /**
      * エラーの処理
      */
-    async handle(error: Error, context: string, data: ErrorHandlerData = { ): Promise<any> {
+    async handle(error: Error, context: string; data: ErrorHandlerData = { ): Promise<any> {
         seoLogger.error(`Error, in ${context)`, error),
         ','
         // エラータイプ別のハンドラー実行
@@ -98,7 +98,7 @@ export class SEOErrorHandler {
      */
     async executeWithRetry<T>(;
         operation: () => Promise<T>, ;
-        context: string, ;
+        context: string; ;
         options: Partial<RetryConfig> = {}
     ): Promise<T | null> {
         const config = { ...this.retryConfig, ...options,
@@ -133,7 +133,7 @@ export class SEOErrorHandler {
     /**
      * フォールバックの実行
      */
-    private _executeFallback(context: string, data: any): any { ''
+    private _executeFallback(context: string; data: any): any { ''
         const fallback = this.fallbackStrategies.get(context) || ','
                         this.fallbackStrategies.get('default),'
         
@@ -152,7 +152,7 @@ export class SEOErrorHandler {
      * デフォルトエラーハンドラーの登録'
      */''
     private _registerDefaultHandlers()';'
-        this.registerHandler('NetworkError', async (error: Error, context: string, data: ErrorHandlerData) => {  ''
+        this.registerHandler('NetworkError', async (error: Error, context: string; data: ErrorHandlerData) => {  ''
             seoLogger.warn('Network error detected, using cached data if available' }'
 
             return data.cached || null; }'
@@ -160,7 +160,7 @@ export class SEOErrorHandler {
         }');'
         ';'
         // 型エラー
-        this.registerHandler('TypeError', (error: Error, context: string, data: ErrorHandlerData) => { ''
+        this.registerHandler('TypeError', (error: Error, context: string; data: ErrorHandlerData) => { ''
             seoLogger.error('Type error in SEO operation', {
                 context,
                 message: error.message }
@@ -170,7 +170,7 @@ export class SEOErrorHandler {
             return this._executeFallback(context, data);}');'
         ';'
         // 参照エラー
-        this.registerHandler('ReferenceError', (error: Error, context: string, data: ErrorHandlerData) => { ''
+        this.registerHandler('ReferenceError', (error: Error, context: string; data: ErrorHandlerData) => { ''
             seoLogger.error('Reference error in SEO operation', {
                 context }
                 message: error.message); 
@@ -179,7 +179,7 @@ export class SEOErrorHandler {
             return this._executeFallback(context, data);}');'
         ';'
         // デフォルトハンドラー
-        this.registerHandler('default', (error: Error, context: string, data: ErrorHandlerData) => { ''
+        this.registerHandler('default', (error: Error, context: string; data: ErrorHandlerData) => { ''
             seoLogger.error('Unhandled error in SEO operation', {
                 context,
                 errorType: error.constructor.name }

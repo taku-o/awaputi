@@ -6,17 +6,17 @@
 import { FaviconManager  } from '../FaviconManager.js';
 import { seoLogger  } from '../SEOLogger.js';
 
-interface FaviconResult { filename: string,
-    size: string,
-    type: string,
-    category: string,
+interface FaviconResult { filename: string;
+    size: string;
+    type: string;
+    category: string;
     dataUrl: string;
-    interface FaviconError { filename: string,
+    interface FaviconError { filename: string;
     error: string;
     interface GenerationResults { generated: FaviconResult[],
     errors: FaviconError[];
-    interface ValidationResult { isValid: boolean,
-    generatedCount: number,
+    interface ValidationResult { isValid: boolean;
+    generatedCount: number;
     issues: string[],
     warnings: string[];
 

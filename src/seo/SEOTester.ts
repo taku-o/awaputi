@@ -57,7 +57,7 @@ import { PerformanceValidator  } from './testing/PerformanceValidator';
 import { SEOReportGenerator  } from './testing/SEOReportGenerator';
 
 // テストオプションインターフェース
-interface ComprehensiveTestOptions { includeMetaTags?: boolean,
+interface ComprehensiveTestOptions { includeMetaTags?: boolean;
     includeStructuredData?: boolean;
     includeSocialMedia?: boolean;
     includePerformance?: boolean;
@@ -68,21 +68,21 @@ interface ComprehensiveTestOptions { includeMetaTags?: boolean,
 // 検証ルールインターフェース
 interface ValidationRule { [key: string]: any;
     interface MetaTagValidationRule extends ValidationRule { required: string[],
-    titleLength: { min: number, max: number,
-    descriptionLength: { min: number, max: number,
-    keywordsCount: { max: number,
+    titleLength: { min: number; max: number;
+    descriptionLength: { min: number; max: number;
+    keywordsCount: { max: number;
     keywordsCount: { max: number;
          },
 interface OpenGraphValidationRule extends ValidationRule { required: string[],
-    imageMinSize: { width: number, height: number,
-    titleLength: { max: number,
-    descriptionLength: { max: number,
+    imageMinSize: { width: number; height: number;
+    titleLength: { max: number;
+    descriptionLength: { max: number;
     descriptionLength: { max: number;
          },
 interface TwitterCardValidationRule extends ValidationRule { required: string[],
     cardTypes: string[],
-    titleLength: { max: number,
-    descriptionLength: { max: number,
+    titleLength: { max: number;
+    descriptionLength: { max: number;
     descriptionLength: { max: number;
          },
 interface StructuredDataValidationRule extends ValidationRule { required: string[],
@@ -91,64 +91,64 @@ interface StructuredDataValidationRule extends ValidationRule { required: string
     videoGameProperties: string[];
         };
 interface HreflangValidationRule extends ValidationRule { requiredLanguages: string[],
-    requiresXDefault: boolean,
+    requiresXDefault: boolean;
     validLanguageCodes: RegExp,
     validLanguageCodes: RegExp;
         };
 // パフォーマンスメトリクスインターフェース
-interface PerformanceMetrics { testExecutionTime: number,
-    validationErrors: number,
-    validationWarnings: number,
-    totalTests: number,
-    passedTests: number,
+interface PerformanceMetrics { testExecutionTime: number;
+    validationErrors: number;
+    validationWarnings: number;
+    totalTests: number;
+    passedTests: number;
     passedTests: number;
         };
 // テスト結果インターフェース
 interface TestResult { category: string;
     tests?: TestCase[];
-    passed: number,
-    failed: number,
+    passed: number;
+    failed: number;
     warnings: number;
     score?: number;
     details?: any;
 ';'
 
-interface TestCase { name: string,''
+interface TestCase { name: string;''
     status: 'passed' | 'failed' | 'warning,
     message: string;
     details?: any;
 
 // 集約結果インターフェース
 interface AggregatedTestResults { summary: {
-        totalTest,s: number,
-        passedTests: number,
-    failedTests: number,
-    warnings: number,
+        totalTest,s: number;
+        passedTests: number;
+    failedTests: number;
+    warnings: number;
     categories: Record<string, TestResult>;
-    overallScore: number,
+    overallScore: number;
     timestamp: string;
     executionTime?: number;
 } };
 
 // システム状態インターフェース
-interface SystemStatus { initialized: boolean,
-    baseUrl: string,
+interface SystemStatus { initialized: boolean;
+    baseUrl: string;
     components: {''
         metaValidato,r: 'active' | 'inactive' ,
         structuredDataValidator: 'active' | 'inactive,
     performanceValidator: 'active' | 'inactive,
     reportGenerator: 'active' | 'inactive'
             };
-    validationRulesCount: number,
+    validationRulesCount: number;
     performanceMetrics: PerformanceMetrics,
     testResultsCount: number;
 }
 
 // システム統計インターフェース
-interface SystemStatistics { totalTestsRun: number,
-    totalPassedTests: number,
-    averageExecutionTime: number,
-    validationRulesConfigured: number,
+interface SystemStatistics { totalTestsRun: number;
+    totalPassedTests: number;
+    averageExecutionTime: number;
+    validationRulesConfigured: number;
     lastTestTimestamp: number | null,
     componentsActive: number;
 ;
@@ -482,7 +482,7 @@ type ReportFormat = 'json' | 'html' | 'csv';
     /**
      * 検証ルールの設定（サブコンポーネント用）
      */
-    setValidationRule(ruleType: string, rule: ValidationRule): void { this.validationRules.set(ruleType, rule);
+    setValidationRule(ruleType: string; rule: ValidationRule): void { this.validationRules.set(ruleType, rule);
     
     /**
      * パフォーマンスメトリクスの更新（サブコンポーネント用）
@@ -493,7 +493,7 @@ type ReportFormat = 'json' | 'html' | 'csv';
     /**
      * テスト結果の保存（サブコンポーネント用）
      */
-    saveTestResult(key: string, result: TestResult): void { ''
+    saveTestResult(key: string; result: TestResult): void { ''
         this.testResults.set(key, result);
 
     }'}'

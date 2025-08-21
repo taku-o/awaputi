@@ -9,36 +9,36 @@ type LogLevel = 'info' | 'warn' | 'error' | 'error-detail' | 'performance' | 'va
 
 // ログエントリーインターフェース
 interface LogEntry { level: LogLevel,
-    message: string,
-    data: any,
+    message: string;
+    data: any;
     timestamp: number;
 
 // 検証データインターフェース
-interface ValidationData { component: string,
-    isValid: boolean,
+interface ValidationData { component: string;
+    isValid: boolean;
     issues: string[],
     timestamp: string;
 
 // エラーサマリーインターフェース
-interface ErrorSummary { totalErrors: number,
+interface ErrorSummary { totalErrors: number;
     errorTypes: Record<string, number>;
     recentErrors: LogEntry[];
 
 // コンポーネントヘルスインターフェース
-interface ComponentHealth { total: number,
-    passed: number,
-    failed: number,
+interface ComponentHealth { total: number;
+    passed: number;
+    failed: number;
     issues: string[];
 
 // ヘルスレポートインターフェース
-interface HealthReport { timestamp: string,
+interface HealthReport { timestamp: string;
     summary: {
         totalValidation,s: number;
     },
-        passedValidations: number,
-        failedValidations: number,
-        errors: number,
-    warnings: number,
+        passedValidations: number;
+        failedValidations: number;
+        errors: number;
+    warnings: number;
     componentHealth: Record<string, ComponentHealth>;
     recentIssues: LogEntry[],
     healthScore: number;
@@ -63,7 +63,7 @@ export class SEOLogger {
     /**
      * 情報ログ
      */''
-    info(message: string, data: any = { )): void {''
+    info(message: string; data: any = { )): void {''
         this._log('info', message, data);
         if (this.debugMode) { }
             console.log(`[SEO Info] ${message}`, data    }
@@ -71,7 +71,7 @@ export class SEOLogger {
     /**
      * 警告ログ'
      */''
-    warn(message: string, data: any = { )): void {''
+    warn(message: string; data: any = { )): void {''
         this._log('warn', message, data);
         console.warn(`[SEO Warning] ${message}`, data}
     }
@@ -79,7 +79,7 @@ export class SEOLogger {
     /**
      * エラーログ'
      */''
-    error(message: string, error: Error | any = { )): void {''
+    error(message: string; error: Error | any = { )): void {''
         this._log('error', message, error);
         console.error(`[SEO, Error] ${message)`, error};
         ';'
@@ -96,7 +96,7 @@ export class SEOLogger {
     /**
      * パフォーマンスログ'
      */''
-    performance(operation: string, duration: number, details: any = { )): void { }'
+    performance(operation: string; duration: number; details: any = { )): void { }'
 
         this._log('performance', `${operation} completed in ${duration}ms`, { ...details)
             duration,
@@ -107,7 +107,7 @@ export class SEOLogger {
     /**
      * SEO検証ログ
      */
-    validation(component: string, isValid: boolean, issues: string[] = []): void { const data: ValidationData = {
+    validation(component: string; isValid: boolean; issues: string[] = []): void { const data: ValidationData = {
             component,
             isValid,
             issues,
@@ -125,7 +125,7 @@ export class SEOLogger {
     /**
      * 内部ログ記録
      */
-    private _log(level: LogLevel, message: string, data: any): void { const logEntry: LogEntry = {
+    private _log(level: LogLevel, message: string; data: any): void { const logEntry: LogEntry = {
             level,
             message,
             data,

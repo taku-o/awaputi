@@ -13,18 +13,18 @@ import { measurePerformance,
 } from './SEOUtils';
 
 // 画像最適化オプションインターフェース
-interface ImageOptimizationOptions { quality?: number,
+interface ImageOptimizationOptions { quality?: number;
     format?: 'webp' | 'png' | 'jpg';
     width?: number;
     height?: number;
     enableLazyLoad?: boolean;
 
 // パフォーマンスメトリクスインターフェース
-interface PerformanceMetrics { loadTime: number,
-    firstContentfulPaint: number,
-    largestContentfulPaint: number,
-    firstInputDelay: number,
-    cumulativeLayoutShift: number,
+interface PerformanceMetrics { loadTime: number;
+    firstContentfulPaint: number;
+    largestContentfulPaint: number;
+    firstInputDelay: number;
+    cumulativeLayoutShift: number;
     timestamp: number;
 
 // 最適化結果インターフェース
@@ -36,7 +36,7 @@ interface OptimizationResult { success: boolean;
     error?: string;
 
 // 読み込みタスクインターフェース
-interface LoadingTask { id: string,''
+interface LoadingTask { id: string;''
     status: 'pending' | 'loading' | 'completed' | 'failed,
     startTime: number;
     endTime?: number;
@@ -131,7 +131,7 @@ export class SEOPerformanceOptimizer {
     /**
      * 画像の最適化'
      */''
-    async optimizeImage(imageUrl: string, options: ImageOptimizationOptions = { )): Promise<OptimizationResult> {''
+    async optimizeImage(imageUrl: string; options: ImageOptimizationOptions = { )): Promise<OptimizationResult> {''
         const cacheKey = generateCacheKey('imageOptimization', { imageUrl, options );
         if (this.compressionCache.has(cacheKey) {
     
@@ -252,10 +252,10 @@ export class SEOPerformanceOptimizer {
     /**
      * パフォーマンス統計の取得
      */
-    getPerformanceStats(): { averageLoadTime: number,
+    getPerformanceStats(): { averageLoadTime: number;
         averageFCP: number;
     },
-        metricsCount: number,
+        metricsCount: number;
     cacheHitRate: number; { if (this.metrics.length === 0) {
             return { averageLoadTime: 0,
                 averageFCP: 0,

@@ -13,9 +13,9 @@ import { normalizeUrl,
 } from './SEOUtils';
 
 // LocalizationManager インターフェース
-interface LocalizationManager { getCurrentLanguage(): string,
+interface LocalizationManager { getCurrentLanguage(): string;
     addLanguageChangeListener(callback: (lang: string) => void): void;
-    t(key: string, defaultValue?: string): string;
+    t(key: string; defaultValue?: string): string;
     getSupportedLanguages(): string[];
 
 // SEOMetaManager インターフェース
@@ -23,8 +23,8 @@ interface SEOMetaManager { updateMetaTags(context: any): Promise<void>,''
     updateLanguage(language: string): void;
 
 // hreflangタグインターフェース
-interface HreflangTag { hreflang: string,
-    href: string,
+interface HreflangTag { hreflang: string;
+    href: string;
     rel: 'alternate'
             }
 

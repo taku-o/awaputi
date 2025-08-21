@@ -8,7 +8,7 @@
 import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string,
+interface MainController { baseUrl: string;
     validationRules: Map<string, ValidationRules> }
 
 interface ValidationRules { required: string[];
@@ -16,33 +16,33 @@ interface ValidationRules { required: string[];
         mi,n: number;
     },
     max: number;
-    descriptionLength?: { min: number,
+    descriptionLength?: { min: number;
     max: number;
     cardTypes?: string[];
 }
 
-interface TestResult { name: string,
-    passed: boolean,
+interface TestResult { name: string;
+    passed: boolean;
     message: string;
-    interface ValidationResults { category: string,
+    interface ValidationResults { category: string;
     tests: TestResult[],
-    passed: number,
-    failed: number,
+    passed: number;
+    failed: number;
     warnings: number;
-    interface MetaTags { title: string,
-    description: string,
-    charset: string,
+    interface MetaTags { title: string;
+    description: string;
+    charset: string;
     keywords: string;
 ';'
 
-interface OpenGraphTags { ', 'og: title': string,'
+interface OpenGraphTags { ', 'og: title': string;'
     'og: description': string;
     'og: image': string;
     'og: url': string;
     'og: type': string;
 ';'
 
-interface TwitterCardTags { ', 'twitter: card': string,'
+interface TwitterCardTags { ', 'twitter: card': string;'
     'twitter: title': string;
     'twitter: description': string;
     'twitter: image': string;

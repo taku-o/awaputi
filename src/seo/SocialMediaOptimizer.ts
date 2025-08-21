@@ -15,17 +15,17 @@ import { optimizeImageUrl,
 
 // プラットフォーム仕様インターフェース
 interface PlatformSpec {
-    imageSize: { widt,h: number, height: number,
+    imageSize: { widt,h: number; height: number;
     titleLimit: number;
     },
-    descriptionLimit: number,
+    descriptionLimit: number;
     imageFormats: string[],
     cacheBustParam: string;
     defaultImage?: string;
 }
 
 // 基本コンテンツインターフェース
-interface BaseContent { title?: string,
+interface BaseContent { title?: string;
     description?: string;
     image?: string;
     url?: string;
@@ -36,7 +36,7 @@ interface BaseContent { title?: string,
     facebookAppId?: string;
 
 // ゲーム状態インターフェース
-interface GameState { score?: number,
+interface GameState { score?: number;
     level?: number;
     bubblesPopped?: number;
     achievements?: Achievement[];
@@ -51,11 +51,11 @@ interface Achievement { name: string;
     unlockedAt?: Date;
 
 // 最適化されたコンテンツインターフェース
-interface OptimizedContent { platform: string,
-    title: string,
-    description: string,
-    image: string,
-    url: string,
+interface OptimizedContent { platform: string;
+    title: string;
+    description: string;
+    image: string;
+    url: string;
     hashtags: string[],
     metadata: PlatformMetadata;
     twitterCard?: TwitterCardData;
@@ -64,9 +64,9 @@ interface OptimizedContent { platform: string,
     tweetText?: string }
 
 // プラットフォームメタデータインターフェース
-interface PlatformMetadata { imageWidth: number,
-    imageHeight: number,
-    platform: string,
+interface PlatformMetadata { imageWidth: number;
+    imageHeight: number;
+    platform: string;
     generatedAt: string;
     cardType?: string;
     site?: string;
@@ -77,57 +77,57 @@ interface PlatformMetadata { imageWidth: number,
 // Twitter固有データインターフェース
 interface TwitterCardData { ''
     card: 'summary' | 'summary_large_image' | 'app' | 'player,
-    site: string,
+    site: string;
     creator: string;
 
 // Facebook固有データインターフェース
-interface FacebookData { appId?: string,
-    type: string,
+interface FacebookData { appId?: string;
+    type: string;
     locale: string;
 
 // Discord Embedインターフェース
-interface DiscordEmbed { title: string,
-    description: string,
+interface DiscordEmbed { title: string;
+    description: string;
     color: number;
     thumbnail?: { url: string;
     fields?: DiscordField[];
     }
 
 // Discord Fieldインターフェース
-interface DiscordField { name: string,
-    value: string,
+interface DiscordField { name: string;
+    value: string;
     inline: boolean;
 
 // 共有コンテンツインターフェース（Twitter用）
-interface TwitterShareContent { text: string,
-    url: string,
+interface TwitterShareContent { text: string;
+    url: string;
     hashtags: string[],
     imageUrl: string;
 
 // 共有コンテンツインターフェース（Facebook用）
-interface FacebookShareContent { title: string,
-    description: string,
-    url: string,
+interface FacebookShareContent { title: string;
+    description: string;
+    url: string;
     imageUrl: string;
     quote?: string;
 
 // 共有コンテンツインターフェース（LINE用）
-interface LineShareContent { message: string,
+interface LineShareContent { message: string;
     url: string;
 
 // 共有コンテンツインターフェース（Discord用）
 interface DiscordShareContent { embeds: DiscordEmbed[];
 
 // フォールバック共有コンテンツインターフェース
-interface FallbackShareContent { title: string,
-    description: string,
-    url: string,
-    text: string,
+interface FallbackShareContent { title: string;
+    description: string;
+    url: string;
+    text: string;
     imageUrl: string;
 
 // LocalizationManagerインターフェース
-interface LocalizationManager { getCurrentLanguage(): string,
-    t(key: string, defaultValue?: string): string;
+interface LocalizationManager { getCurrentLanguage(): string;
+    t(key: string; defaultValue?: string): string;
 
 // GameConfigインターフェース
 interface GameConfig { [key: string]: any;
@@ -230,7 +230,7 @@ type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord
     /**
      * プラットフォーム別の最適化コンテンツ生成
      */
-    async generateOptimizedContent(platform: string, content: BaseContent = { ): Promise<OptimizedContent> {
+    async generateOptimizedContent(platform: string; content: BaseContent = { ): Promise<OptimizedContent> {
         try {
             const specs = this.platformSpecs.get(platform);
             if (!specs) { }
@@ -660,7 +660,7 @@ type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord
     /**
      * プラットフォーム固有の最適化の適用)
      */''
-    private async _applyPlatformSpecificOptimizations(optimized: OptimizedContent, platform: string, content: BaseContent): Promise<void>,
+    private async _applyPlatformSpecificOptimizations(optimized: OptimizedContent, platform: string; content: BaseContent): Promise<void>,
         switch(platform) {
 
             case 'twitter':,
@@ -801,7 +801,7 @@ type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord
     /**
      * Pinterest用の詳細説明'
      */''
-    private _expandDescriptionForPinterest(description: string, content: BaseContent): string { let expanded = description,
+    private _expandDescriptionForPinterest(description: string; content: BaseContent): string { let expanded = description,
         
         // ゲーム機能の詳細を追加
         const features = [','
@@ -866,7 +866,7 @@ type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord
     /**
      * キャッシュバスティングURLの生成
      */
-    generateCacheBustingUrl(originalUrl: string, platform: string): string { const specs = this.platformSpecs.get(platform);
+    generateCacheBustingUrl(originalUrl: string; platform: string): string { const specs = this.platformSpecs.get(platform);
         if (!specs) return originalUrl,
         
         const url = new URL(originalUrl);
@@ -897,7 +897,7 @@ type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord
     /**
      * 共有URLの生成'
      */''
-    generateShareUrl(platform: string, content: Partial<OptimizedContent>): string { const baseUrls: Record<string, string> = {''
+    generateShareUrl(platform: string; content: Partial<OptimizedContent>): string { const baseUrls: Record<string, string> = {''
             facebook: 'https://www.facebook.com/sharer/sharer.php,
             twitter: 'https://twitter.com/intent/tweet,
             linkedin: 'https://www.linkedin.com/sharing/share-offsite/,

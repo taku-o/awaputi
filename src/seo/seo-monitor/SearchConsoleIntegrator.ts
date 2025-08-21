@@ -18,19 +18,19 @@ interface SEOConfig { // 必要に応じて設定オブジェクトの型を定�
     type?: string;
     data?: any;
     error?: string;
-    interface IndexablePage { url: string,
-    title: string,
+    interface IndexablePage { url: string;
+    title: string;
     priority: number;
-    interface SearchConsoleAPIReadiness { hasVerificationTag: boolean,
-    hasGoogleAnalytics: boolean,
-    hasSitemap: boolean,
+    interface SearchConsoleAPIReadiness { hasVerificationTag: boolean;
+    hasGoogleAnalytics: boolean;
+    hasSitemap: boolean;
     hasRobotsTxt: boolean;
-    interface SearchConsoleIntegrationData { timestamp: number,
+    interface SearchConsoleIntegrationData { timestamp: number;
     sitemap: SitemapValidationResult,
     robots: RobotsTxtValidationResult,
     structuredData: StructuredDataResult[],
     pages: IndexablePage[],
-    readyForIntegration: boolean,
+    readyForIntegration: boolean;
     verificationMethods: string[],
     apiReady: SearchConsoleAPIReadiness;
     interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[];
