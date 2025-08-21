@@ -23,7 +23,7 @@ export interface ValidationResults { language: string,
     qualityGrade: string ,}
 
 export interface ValidationIssue { rule: string;
-    name: string;
+    name: string; }
     message: string,
     suggestion?: string;''
     severity: 'error' | 'warning';
@@ -38,12 +38,12 @@ export interface ReportSummary { language: string;
     errorCount: number;
     warningCount: number;
     passedCount: number;
-    completionRate: number;
+    completionRate: number; }
     successRate: number }
 
 export interface RuleStatistics { total: number;
     errors: number;
-    warnings: number;
+    warnings: number; }
     passed: number }
 
 export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
@@ -69,7 +69,7 @@ export interface TrendChange { value: number,''
     direction: 'improvement' | 'decline' | 'stable';
     percentage?: number ,}
 
-export interface TrendAnalysis { scoreChange: TrendChange;
+export interface TrendAnalysis { scoreChange: TrendChange; }
     errorChange: TrendChange,
     warningChange: TrendChange,
     overallTrend: 'improving' | 'declining' | 'stable' | 'insufficient_data' ,}
@@ -80,7 +80,7 @@ export interface TrendData { message?: string;
 export interface QualityTrend { timestamp: string;
     qualityScore: number;
     errorCount: number;
-    warningCount: number;
+    warningCount: number; }
     successRate: number }
 
 export interface ReportData { id: string;
@@ -92,24 +92,24 @@ export interface ReportData { id: string;
     statistics: ReportStatistics;
     issues: CategorizedIssues;
     recommendations: Recommendation[];
-    trends: TrendData
+    trends: TrendData }
     }
 
 export interface ReportHistoryEntry { id: string;
     timestamp: string;
     language: string;
     qualityScore: number;
-    errorCount: number;
+    errorCount: number; }
     warningCount: number }
 
 export interface GeneratedReport { id: string;
     data: ReportData;
-    report: string;
+    report: string; }
     format: string }
 
 export interface ReporterStats { totalReports: number;
     languagesTracked: number;
-    availableTemplates: string[];
+    availableTemplates: string[]; }
     averageQualityScore: number }
 
 /**
@@ -130,32 +130,32 @@ export class QualityReporter {
         this.initializeReportTemplates();
     }
 
-        console.log('QualityReporter, initialized'); }'
+        console.log('QualityReporter, initialized'); }''
     }
     
     /**
      * レポートテンプレートを初期化'
      */''
     private initializeReportTemplates(''';
-        this.reportTemplates.set('detailed', { ''
+        this.reportTemplates.set('detailed', { '')
             name: '詳細品質レポート',)';
             sections: ['summary', 'statistics', 'issues', 'recommendations', 'trends'],')';
             format: 'html')');
         ';
         // サマリーレポートテンプレート
-        this.reportTemplates.set('summary', {''
+        this.reportTemplates.set('summary', {'')
             name: 'サマリーレポート',)';
             sections: ['summary', 'statistics', 'key_issues'],')';
             format: 'html')');
         ';
         // CSV エクスポート用テンプレート
-        this.reportTemplates.set('csv', {''
+        this.reportTemplates.set('csv', {'')
             name: 'CSV品質データ',)';
             sections: ['issues_csv'],')';
             format: 'csv')');
         ';
         // JSON レポートテンプレート
-        this.reportTemplates.set('json', {''
+        this.reportTemplates.set('json', {'')
             name: 'JSON品質データ',)';
             sections: ['raw_data'],')';
             format: 'json' ,}
@@ -188,7 +188,7 @@ export class QualityReporter {
             
             // レポート履歴に保存
             this.reportHistory.push({ id: reportId,
-                timestamp: reportData.timestamp;
+                timestamp: reportData.timestamp;)
                 language: reportData.language);
                 qualityScore: reportData.summary.qualityScore);
                 errorCount: reportData.summary.errorCount,);
@@ -209,11 +209,10 @@ export class QualityReporter {
     /**
      * 検証結果を分析'
      */''
-    private analyzeValidationResults(results: ValidationResults): Omit<ReportData, 'id' | 'timestamp' | 'template' | 'language' | 'sourceLanguage'> { const analysis = {
-            summary: this.generateSummary(results);
+    private analyzeValidationResults(results: ValidationResults): Omit<ReportData, 'id' | 'timestamp' | 'template' | 'language' | 'sourceLanguage'> { const analysis = { summary: this.generateSummary(results);
             statistics: this.generateStatistics(results);
             issues: this.categorizeIssues(results);
-            recommendations: this.generateRecommendations(results);
+            recommendations: this.generateRecommendations(results); }
             trends: this.analyzeTrends(results };
         
         return, analysis;
@@ -221,7 +220,7 @@ export class QualityReporter {
     
     /**
      * サマリーを生成
-     */
+     */)
     private, generateSummary(results: ValidationResults): ReportSummary { return { language: results.language,
             sourceLanguage: results.sourceLanguage;
             totalItems: results.totalItems;
@@ -250,8 +249,7 @@ export class QualityReporter {
         [...results.errors, ...results.warnings, ...results.passed].forEach(item => { )
             const rule = item.rule);
             if(!statistics.byRule.has(rule) {
-                statistics.byRule.set(rule, {
-                    total: 0);
+                statistics.byRule.set(rule, { total: 0); }
                     errors: 0 ,}
                     warnings: 0,) }
                     passed: 0); }
@@ -275,8 +273,7 @@ export class QualityReporter {
 
                 const category = item.key.split('.'')[0]; // 例: "menu.play" -> "menu"
                 if(!statistics.byCategory.has(category) {
-                    statistics.byCategory.set(category, {
-                        total: 0);
+                    statistics.byCategory.set(category, { total: 0); }
                         errors: 0 ,}
                         warnings: 0,) }
                         passed: 0); }
@@ -297,14 +294,13 @@ export class QualityReporter {
     /**
      * 問題を分類
      */
-    private categorizeIssues(results: ValidationResults): CategorizedIssues { const categories: CategorizedIssues = {
-            critical: [];
+    private categorizeIssues(results: ValidationResults): CategorizedIssues { const categories: CategorizedIssues = { critical: [];
             major: [];
-            minor: [];
+            minor: []; }
             info: [] };
-        ";
+        ";"
         // エラーを重要度別に分類""
-        results.errors.forEach(error => {  ");""
+        results.errors.forEach(error => {  ");"""
             if(error.rule === 'parameterConsistency' || error.rule === 'formatValidation) {' }
 
                 categories.critical.push(error);' }'
@@ -336,20 +332,20 @@ export class QualityReporter {
                 priority: 'critical',
                 type: 'quality_improvement';
         ,}
-
+)
                 title: '品質スコア改善が必要', })
                 description: `現在の品質スコア（${summary.qualityScore}）は低すぎます。`)'
-                actions: ['';
-                    'すべてのエラーを修正する',
+                actions: [ '';
+                    'すべてのエラーを修正する', ]
                     '警告の大部分を解決する',]';
                     '翻訳の見直しを行う')]';
                 ]);''
         } else if(summary.qualityScore < 80) { recommendations.push({''
                 priority: 'high',
-                type: 'quality_enhancement',
+                type: 'quality_enhancement',)
                 title: '品質向上の推奨', })
                 description: `品質スコア（${summary.qualityScore}）をさらに向上させることをお勧めします。`)'
-                actions: ['';
+                actions: [ ''; ]
                     'エラーを完全に修正する',]';
                     '主要な警告を解決する')];
                 ]);
@@ -361,11 +357,11 @@ export class QualityReporter {
                 priority: 'high',
                 type: 'error_resolution';
         ,}
-
+)
                 title: 'エラーの解決', })
                 description: `${summary.errorCount}個のエラーが検出されました。`)'
-                actions: ['';
-                    'パラメータの整合性を確認する',
+                actions: [ '';
+                    'パラメータの整合性を確認する', ]
                     'フォーマットの正確性を検証する',]';
                     '翻訳の完成度を確認する')];
                 ]);
@@ -377,11 +373,11 @@ export class QualityReporter {
                 priority: 'medium',
                 type: 'warning_review';
         ,}
-
+)
                 title: '警告の確認', })
                 description: `${summary.warningCount}個の警告があります。`)'
-                actions: ['';
-                    '文化的配慮を確認する',
+                actions: [ '';
+                    '文化的配慮を確認する', ]
                     '翻訳の長さを調整する',]';
                     '一貫性を改善する')];
                 ]);
@@ -393,11 +389,11 @@ export class QualityReporter {
                 priority: 'medium',
                 type: 'success_rate_improvement';
         ,}
-
+)
                 title: '合格率の向上', })
                 description: `現在の合格率（${summary.successRate}%）を改善しましょう。`)'
-                actions: ['';
-                    '品質検証プロセスを見直す',
+                actions: [ '';
+                    '品質検証プロセスを見直す', ]
                     '翻訳ガイドラインを確認する',]';
                     'レビュープロセスを強化する')];
                 ]);
@@ -413,7 +409,7 @@ export class QualityReporter {
         const trends = this.qualityTrends.get(language) || [];
 
         if(trends.length < 2) {'
-            return { '
+            return { ''
         }
 
                 message: 'トレンド分析には最低2回の検証が必要です', };
@@ -428,7 +424,7 @@ export class QualityReporter {
         const warningChange = latest.warningCount - previous.warningCount;
         
         return { data: {
-                scoreChange: {'
+                scoreChange: {' }
                     value: scoreChange,
                     direction: scoreChange > 0 ? 'improvement' : scoreChange < 0 ? 'decline' : 'stable',
                     percentage: previous.qualityScore > 0 ?   : undefined' ,};
@@ -480,7 +476,7 @@ export class QualityReporter {
         }
         
         const trends = this.qualityTrends.get(language)!;
-        trends.push({ timestamp: reportData.timestamp,
+        trends.push({ timestamp: reportData.timestamp,)
             qualityScore: reportData.summary.qualityScore);
             errorCount: reportData.summary.errorCount);
             warningCount: reportData.summary.warningCount,);
@@ -516,12 +512,12 @@ export class QualityReporter {
     private renderHtmlReport(reportData: ReportData, template: ReportTemplate): string { const sections: string[] = [],
         
         // ヘッダー
-        sections.push(`'';
-            <div, class="report-header">)";
+        sections.push(`'';)
+            <div, class="report-header">)";"
                 <h1>翻訳品質レポート</h1>")";
-                <div class="report-meta">)";
+                <div class="report-meta">)";"
                     <span>言語: ${reportData.language}</span>" }"
-                    <span>生成日時: ${new Date(reportData.timestamp"}.toLocaleString('ja-JP'})</span>
+                    <span>生成日時: ${new Date(reportData.timestamp"}.toLocaleString('ja-JP'})</span>"
                     <span>レポートID: ${reportData.id}</span>
                 </div>';
             </div>'';
@@ -572,15 +568,15 @@ export class QualityReporter {
             sections.push(this.renderTrendsSection(reportData.trends)); }
         }
         
-        return `';
+        return `';'
             <!DOCTYPE html>'';
-            <html lang="ja">";
+            <html lang="ja">";"
             <head>"";
                 <meta charset="UTF-8">"";
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">";
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">";"
                 <title>翻訳品質レポート - ${reportData.language}</title>""
                 <style>${this.getReportCSS("})</style>"
-            </head>";
+            </head>";"
             <body>"";
                 <div class="report-container">"";
                     ${sections.join('\n'})
@@ -598,36 +594,36 @@ export class QualityReporter {
         ';
 
         return `'';
-            <section class="summary-section">";
+            <section class="summary-section">";"
                 <h2>📊 品質サマリー</h2>"";
                 <div class="summary-grid">"";
                     <div class="summary-card">" }"
                         <div class="summary-value" style="color: ${qualityColor}">
-                            ${summary.qualityScore}"
+                            ${summary.qualityScore}""
                         </div>"";
                         <div class="summary-label">品質スコア</div>"";
                         <div class="summary-grade">${this.getQualityGradeText(summary.qualityGrade"})</div>"
                     </div>"";
                     <div class="summary-card">"";
                         <div class="summary-value">${summary.totalItems}</div>""
-                        <div class="summary-label">総項目数</div>";
+                        <div class="summary-label">総項目数</div>";"
                     </div>"";
                     <div class="summary-card">"";
                         <div class="summary-value">${summary.checkedItems}</div>""
-                        <div class="summary-label">検証済み項目</div>";
+                        <div class="summary-label">検証済み項目</div>";"
                     </div>"";
                     <div class="summary-card error">"";
                         <div class="summary-value">${summary.errorCount}</div>""
-                        <div class="summary-label">エラー</div>";
+                        <div class="summary-label">エラー</div>";"
                     </div>"";
                     <div class="summary-card warning">"";
                         <div class="summary-value">${summary.warningCount}</div>""
-                        <div class="summary-label">警告</div>";
+                        <div class="summary-label">警告</div>";"
                     </div>"";
                     <div class="summary-card success">"";
                         <div class="summary-value">${summary.passedCount}</div>""
                         <div class="summary-label">合格</div>;
-                    </div>";
+                    </div>";"
                 </div>"";
                 <div class="completion-bar">"";
                     <div class="completion-progress" style="width: ${summary.completionRate}%"></div>""
@@ -638,13 +634,13 @@ export class QualityReporter {
     }
     
     /**
-     * 統計セクションをレンダリング"
+     * 統計セクションをレンダリング""
      */""
     private renderStatisticsSection(statistics: ReportStatistics): string { return `""
             <section class="statistics-section">;
-                <h2>📈 詳細統計</h2>";
+                <h2>📈 詳細統計</h2>";"
 
-                <div class="statistics-group">";
+                <div class="statistics-group">";"
                     <h3>ルール別統計</h3>"";
                     <table class="statistics-table">;
                         <thead>;
@@ -658,32 +654,32 @@ export class QualityReporter {
                             </tr>;
                         </thead>;
                         <tbody>;
-                            ${Object.entries(statistics.byRule}.map(([rule, stats]} => `"
-                                <tr>" }"
+                            ${Object.entries(statistics.byRule}.map(([rule, stats]} => `""
+                                <tr>" }")
                                     <td>${this.getRuleDisplayName(rule"})</td>"
                                     <td>${stats.total}</td>""
                                     <td class="error-cell">${stats.errors}</td>""
                                     <td class="warning-cell">${stats.warnings}</td>""
                                     <td class="success-cell">${stats.passed}</td>
-                                    <td>${Math.round((stats.passed / stats.total} * 100})%</td>"
+                                    <td>${Math.round((stats.passed / stats.total} * 100})%</td>""
                                 </tr>"";
-                            `").join(''')}
+                            `").join(''')}"
                         </tbody>;
                     </table>;
                 </div>';
 
-                <div class="statistics-group">";
+                <div class="statistics-group">";"
                     <h3>カテゴリ別統計</h3>"";
                     <div class="category-stats">"";
-                        ${Object.entries(statistics.byCategory}.map(([category, stats]"}) => `""
-                            <div class="category-card">";
+                        ${Object.entries(statistics.byCategory}.map(([category, stats]"}) => `"""
+                            <div class="category-card">";"
                                 <h4>${category}</h4>""
-                                <div class="category-stats-grid">";
+                                <div class="category-stats-grid">";"
                                     <span>合計: ${stats.total}</span>""
                                     <span class="error-text">エラー: ${stats.errors}</span>""
                                     <span class="warning-text">警告: ${stats.warnings}</span>""
                                     <span class="success-text">合格: ${stats.passed}</span>
-                                </div>";
+                                </div>";"
                             </div>"";
                         `").join()}"
                     </div>;
@@ -698,10 +694,10 @@ export class QualityReporter {
     private renderIssuesSection(issues: CategorizedIssues): string { return `''
             <section class="issues-section">;
                 <h2>⚠️ 検出された問題</h2>;
-                ";
+                ";"
                 ${issues.critical.length > 0 ? `""
                     <div class="issue-category critical">" }"
-                        <h3>🔴 重大な問題 (${issues.critical.length}件")</h3>""
+                        <h3>🔴 重大な問題 (${issues.critical.length}件")</h3>"""
                         ${issues.critical.map(issue => this.renderIssueItem(issue, 'critical}}.join('''})'
                     </div> : undefined'';
                 ` : ''}
@@ -709,7 +705,7 @@ export class QualityReporter {
 
                 ${ issues.major.length > 0 ? `''
                     <div class="issue-category major">" }"
-                        <h3>🟠 主要な問題 (${issues.major.length}件")</h3>""
+                        <h3>🟠 主要な問題 (${issues.major.length}件")</h3>"""
                         ${issues.major.map(issue => this.renderIssueItem(issue, 'major}}.join('''})'
                     </div> : undefined'';
                 ` : ''}
@@ -717,7 +713,7 @@ export class QualityReporter {
 
                 ${ issues.minor.length > 0 ? `''
                     <div class="issue-category minor">" }"
-                        <h3>🟡 軽微な問題 (${issues.minor.length}件")</h3>""
+                        <h3>🟡 軽微な問題 (${issues.minor.length}件")</h3>"""
                         ${issues.minor.map(issue => this.renderIssueItem(issue, 'minor}}.join('''})'
                     </div> : undefined'';
                 ` : ''}
@@ -725,7 +721,7 @@ export class QualityReporter {
 
                 ${ issues.info.length > 0 ? `''
                     <div class="issue-category info">" }"
-                        <h3>ℹ️ 情報 (${issues.info.length}件")</h3>""
+                        <h3>ℹ️ 情報 (${issues.info.length}件")</h3>"""
                         ${issues.info.map(issue => this.renderIssueItem(issue, 'info}}.join('''})'
                     </div> : undefined'';
                 ` : ''}
@@ -740,7 +736,7 @@ export class QualityReporter {
 
             <div class="issue-item ${severity}">""
                 <div class="issue-header">"";
-                    <strong>${issue.name || this.getRuleDisplayName(issue.rule"})</strong>""
+                    <strong>${issue.name || this.getRuleDisplayName(issue.rule"})</strong>"""
                     <span class="issue-key">${issue.key || ''}</span>'
                 </div>'';
                 <div class="issue-message">${issue.message}</div>""
@@ -755,7 +751,7 @@ export class QualityReporter {
     private renderRecommendationsSection(recommendations: Recommendation[]): string { ''
         if(recommendations.length === 0) {'
             return `'';
-                <section class="recommendations-section">";
+                <section class="recommendations-section">";"
                     <h2>✅ 推奨事項</h2>"";
                     <div class="no-recommendations">;
                         現在、特別な推奨事項はありません。品質が良好です。;
@@ -764,21 +760,21 @@ export class QualityReporter {
         }
             `; }
         }
-        ";
+        ";"
         return `"";
             <section class="recommendations-section">;
-                <h2>💡 推奨事項</h2>";
-                ${ recommendations.map(rec => `" }"
-                    <div, class="recommendation-item ${rec.priority}">)"
+                <h2>💡 推奨事項</h2>";"
+                ${ recommendations.map(rec => `" }")
+                    <div, class="recommendation-item ${rec.priority}">)""
                         <div class="recommendation-header">")";
-                            <strong>${rec.title}</strong>")""
-                            <span class="priority-badge ${rec.priority"}">${this.getPriorityText(rec.priority"})</span>"
+                            <strong>${rec.title}</strong>")"""
+                            <span class="priority-badge ${rec.priority"}">${this.getPriorityText(rec.priority"})</span>""
                         </div>"";
                         <div class="recommendation-description">${rec.description}</div>""
                         <div class="recommendation-actions">;
-                            <strong>推奨アクション:</strong>";
+                            <strong>推奨アクション:</strong>";"
                             <ul>"";
-                                ${rec.actions.map(action => `<li>${action}</li>`"}.join(''})
+                                ${rec.actions.map(action => `<li>${action}</li>`"}.join(''})"
                             </ul>;
                         </div>';
                     </div>'';
@@ -794,15 +790,15 @@ export class QualityReporter {
         if(!trends.data) {'
             return `'';
                 <section class="trends-section">;
-        }"
+        }""
                     <h2>📈 品質トレンド</h2>" }"
                     <div class="no-trends">${trends.message}</div>
                 </section>;
             `;
         }
-        ";
+        ";"
         return `"";
-            <section class="trends-section">";
+            <section class="trends-section">";"
                 <h2>📈 品質トレンド</h2>"";
                 <div class="trends-grid">"";
                     <div class="trend-item">"";
@@ -827,8 +823,8 @@ export class QualityReporter {
                             ${trends.data.warningChange.value > 0 ? '+' : ''}${trends.data.warningChange.value}
 
                         </div>'';
-                        <div class="trend-direction">${this.getTrendDirectionText(trends.data.warningChange.direction"})</div>
-                    </div>";
+                        <div class="trend-direction">${this.getTrendDirectionText(trends.data.warningChange.direction"})</div>"
+                    </div>";"
                 </div>"";
                 <div class="overall-trend">;
                     <strong>全体的な傾向:</strong> ${this.getOverallTrendText(trends.data.overallTrend})
@@ -838,7 +834,7 @@ export class QualityReporter {
     }
     
     /**
-     * CSVレポートをレンダリング"
+     * CSVレポートをレンダリング""
      */""
     private renderCsvReport(reportData: ReportData): string { const rows: string[] = [],
         // ヘッダー""
@@ -847,17 +843,17 @@ export class QualityReporter {
         // エラーと警告を追加
         [...reportData.issues.critical, ...reportData.issues.major, ...reportData.issues.minor, ...reportData.issues.info];
             .forEach(issue => {  }
-                rows.push([' }'
+                rows.push([ ' }'
 
-                    `"${issue.key || ''}"`,""
-                    `"${issue.rule || ''}"`,)"
-                    `"${issue.severity || ''}"`,")"
-                    `"${issue.message || ''}"`")"]"
+                    `"${issue.key || ''}"`,"")
+                    `"${issue.rule || ''}"`,)""
+                    `"${issue.severity || ''}"`,")" ]
+                    `"${issue.message || ''}"`")"]""
                     `"${ issue.suggestion || '''}"`" }]"
                 ].join(',)});''
             }');
 
-        return rows.join('\n);
+        return rows.join('\n);'
     }
     
     /**
@@ -868,7 +864,7 @@ export class QualityReporter {
     /**
      * レポート用CSSを取得'
      */''
-    private getReportCSS(''';
+    private getReportCSS(''';)
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background: #f5f5f5, })
             .report-container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1 }
             .report-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #eee, }
@@ -877,7 +873,7 @@ export class QualityReporter {
             .report-meta span { margin: 0 15px, }
             section { margin: 30px 0, }
             h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px, }
-            h3 { color: #34495e, }
+            h3 { color: #34495e, })
             .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr); gap: 20px; margin: 20px 0, }
             .summary-card { text-align: center; padding: 20px; border-radius: 8px; background: #f8f9fa, }
             .summary-card.error { background: #fee; border-left: 4px solid #e74c3c, }

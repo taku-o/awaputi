@@ -18,7 +18,7 @@ interface HelpEventCallbacks { onGoBack: (() => void) | null,
 
 // フィードバックリクエストデータ
 interface FeedbackRequestData { topic: any;
-    content: any;
+    content: any; }
     category: string, }
     position?: { x: number; y: number }
     quickMode?: boolean;
@@ -77,7 +77,7 @@ export class HelpEventManager {
     private isComposing: boolean = false;
     constructor(;
         gameEngine: GameEngine;
-        contentManager: HelpContentManager
+        contentManager: HelpContentManager)
     );
         accessibilityManager: HelpAccessibilityManager);
         animationManager: HelpAnimationManager'';
@@ -99,7 +99,7 @@ export class HelpEventManager {
             '/': (event: KeyboardEvent) => {  event.preventDefault(); this.focusSearchBar() ,}
 
             'F': (event: KeyboardEvent) => { if (event.ctrlKey) { event.preventDefault(); this.showFeedbackDialog( }
-
+)
             'E': (event: KeyboardEvent) => { if (event.ctrlKey && event.shiftKey) { event.preventDefault(); this.showEffectivenessReport(); }
         };
         
@@ -113,7 +113,7 @@ export class HelpEventManager {
      * イベントリスナーの設定
      */''
     public setupEventListeners()';
-        console.log('HelpEventManager: setupEventListeners(') called'),
+        console.log('HelpEventManager: setupEventListeners(') called'),'
         this.boundKeyHandler = (event: KeyboardEvent) => this.handleKeyPress(event);
         this.boundClickHandler = (event: MouseEvent) => this.handleClick(event);
         this.boundContextMenuHandler = (event: MouseEvent) => this.handleContextMenu(event);
@@ -124,7 +124,7 @@ export class HelpEventManager {
         this.boundMouseUpHandler = (event: MouseEvent) => this.handleMouseUp(event);
         ';
         // IME対応の隠し入力フィールドを作成
-        console.log('HelpEventManager: calling, createHiddenInput()),
+        console.log('HelpEventManager: calling, createHiddenInput()),'
         this.createHiddenInput(')';
         document.addEventListener('keydown', this.boundKeyHandler);''
         document.addEventListener('click', this.boundClickHandler);''
@@ -133,21 +133,21 @@ export class HelpEventManager {
         document.addEventListener('mousemove', this.boundMouseMoveHandler);''
         document.addEventListener('mouseup', this.boundMouseUpHandler);''
         window.addEventListener('resize', this.boundResizeHandler);''
-        console.log('HelpEventManager: event, listeners setup, completed'), }'
+        console.log('HelpEventManager: event, listeners setup, completed'), }''
     
     /**
      * IME対応の隠し入力フィールドを作成'
      */''
     private createHiddenInput()';
-        console.log('HelpEventManager: createHiddenInput(') called, hiddenInput exists:', !!this.hiddenInput);
+        console.log('HelpEventManager: createHiddenInput(') called, hiddenInput exists:', !!this.hiddenInput);'
 
         if(this.hiddenInput) { '
 
-            console.log('HelpEventManager: hidden input already exists, skipping creation'' }
+            console.log('HelpEventManager: hidden input already exists, skipping creation'' }'
             return; // 既に作成済み }
         }
-
-        console.log('HelpEventManager: creating new hidden input element''),
+)
+        console.log('HelpEventManager: creating new hidden input element''),'
         this.hiddenInput = document.createElement('input'');''
         this.hiddenInput.type = 'text';''
         this.hiddenInput.style.position = 'absolute';
@@ -157,7 +157,7 @@ export class HelpEventManager {
         this.hiddenInput.style.width = '720px';''
         this.hiddenInput.style.height = '40px';''
         this.hiddenInput.style.fontSize = '16px';''
-        this.hiddenInput.style.padding = '5px, 10px';''
+        this.hiddenInput.style.padding = '5px, 10px';'')
         this.hiddenInput.style.border = '2px, solid #ccc';)'
         this.hiddenInput.style.borderRadius = '4px';')'
         this.hiddenInput.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';''
@@ -188,12 +188,12 @@ export class HelpEventManager {
         document.head.appendChild(style);''
         this.hiddenInput.className = 'help-search-input';
 
-        console.log('HelpEventManager: setting, up input, event listeners),
+        console.log('HelpEventManager: setting, up input, event listeners),'
         // 入力イベントハンドラーを設定
         this.boundInputHandler = (event: Event) => this.handleIMEInput(event');''
         this.hiddenInput.addEventListener('input', this.boundInputHandler);''
         this.hiddenInput.addEventListener('compositionstart', () => {  ''
-            console.log('HelpEventManager: composition, started''), }
+            console.log('HelpEventManager: composition, started''), }'
             this.isComposing = true; }
 
         };''
@@ -208,7 +208,7 @@ export class HelpEventManager {
         ';
         // フォーカス・ブラーイベント
         this.hiddenInput.addEventListener('focus', () => {  ''
-            console.log('HelpEventManager: input, focused),
+            console.log('HelpEventManager: input, focused),'
             this.searchFocused = true;
 
             // フォーカス時のスタイル
@@ -222,7 +222,7 @@ export class HelpEventManager {
                 this.hiddenInput.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.3)'; }
 };''
         this.hiddenInput.addEventListener('blur', () => {  ''
-            console.log('HelpEventManager: input, blurred),
+            console.log('HelpEventManager: input, blurred),'
             this.searchFocused = false;
 
             // ブラー時のスタイル
@@ -239,9 +239,9 @@ export class HelpEventManager {
         // 常時表示（非検索時も表示してレイアウトを保持）
         this.hiddenInput.style.display = 'block';
 
-        console.log('HelpEventManager: appending, hidden input, to document.body),
+        console.log('HelpEventManager: appending, hidden input, to document.body),'
         document.body.appendChild(this.hiddenInput');''
-        console.log('HelpEventManager: hidden, input element, created and, added to, DOM),
+        console.log('HelpEventManager: hidden, input element, created and, added to, DOM),'
     }
     
     /**
@@ -264,7 +264,7 @@ export class HelpEventManager {
     
     /**
      * IME入力の処理
-     */
+     */)
     private handleIMEInput(event: Event): void { if (!this.searchFocused) {
             return; }
         
@@ -287,9 +287,9 @@ export class HelpEventManager {
 
     /**
      * イベントリスナーの削除'
-     */''
+     */'')
     public removeEventListeners()';
-        console.log('HelpEventManager: removeEventListeners(') called'),
+        console.log('HelpEventManager: removeEventListeners(') called'),'
 
         if(this.boundKeyHandler) {'
 
@@ -343,7 +343,7 @@ export class HelpEventManager {
         // 隠し入力フィールドのクリーンアップ
         if(this.hiddenInput) {'
 
-            console.log('HelpEventManager: cleaning, up hidden, input),
+            console.log('HelpEventManager: cleaning, up hidden, input),'
 
             if(this.boundInputHandler') {''
                 this.hiddenInput.removeEventListener('input', this.boundInputHandler);
@@ -419,7 +419,7 @@ export class HelpEventManager {
 
     /**
      * 検索のデバウンス処理
-     */
+     */)
     private debounceSearch(query: string): void { if (this.searchTimeout) {
             clearTimeout(this.searchTimeout); }
         
@@ -443,7 +443,7 @@ export class HelpEventManager {
     private announceNavigationChange(key: string): void { const state = this.contentManager.getState();
         this.accessibilityManager.announceNavigationChange(;
             key, ;
-            state.categories, ;
+            state.categories, ;)
             state.selectedCategory );
             state.selectedTopicIndex);
             state.isSearching, );
@@ -537,7 +537,7 @@ export class HelpEventManager {
 
             const result = await this.contentManager.selectSearchResult(state.selectedTopicIndex);''
             if(result) {''
-                console.log('HelpEventManager: search, result selected, successfully),
+                console.log('HelpEventManager: search, result selected, successfully),'
                 if(this.animationManager') {'
         }
 
@@ -589,14 +589,14 @@ export class HelpEventManager {
      * 検索バーフォーカス
      */''
     private focusSearchBar()';
-        console.log('HelpEventManager: focusSearchBar(') called'),
+        console.log('HelpEventManager: focusSearchBar(') called'),'
         this.searchFocused = true;
         this.accessibilityManager.setFocusIndex(0); // 検索バーのインデックス
         ;
         // 隠し入力フィールドにフォーカスを当ててIMEを有効化
         if(this.hiddenInput) {'
 
-            console.log('HelpEventManager: focusing, hidden input),
+            console.log('HelpEventManager: focusing, hidden input),'
             // 位置を更新
             this.updateInputPosition(')';
             this.hiddenInput.value = this.currentSearchQuery || '';)
@@ -609,7 +609,7 @@ export class HelpEventManager {
 
         } else { }'
 
-            console.error('HelpEventManager: hiddenInput, not available, for focus'), }'
+            console.error('HelpEventManager: hiddenInput, not available, for focus'), }''
         }
         
         if (this.callbacks.onSearchFocus) { this.callbacks.onSearchFocus('); }'
@@ -657,7 +657,7 @@ export class HelpEventManager {
 
     /**
      * マウス入力処理
-     */
+     */)
     private handleClick(event: MouseEvent): void { const canvas = this.gameEngine.canvas;
         if (!canvas) return;
 
@@ -931,8 +931,7 @@ export class HelpEventManager {
 
         const currentTopic = this.contentManager.getCurrentTopic();
         if(currentTopic && this.callbacks.onFeedbackRequest) {
-            this.callbacks.onFeedbackRequest({
-                topic: currentTopic);
+            this.callbacks.onFeedbackRequest({ topic: currentTopic); }
                 content: state.currentContent }
                 category: state.selectedCategory, }
                 position: { x, y },)
@@ -968,7 +967,7 @@ export class HelpEventManager {
         return this.isPointInRect(x, y, layout.backButton); }
 
     private isPointInRect(x: number, y: number, rect: { x: number; y: number; width: number; height: number ): boolean {
-        return x >= rect.x && x <= rect.x + rect.width &&;
+        return x >= rect.x && x <= rect.x + rect.width &&; }
                y >= rect.y && y <= rect.y + rect.height; }
 
     private getLayout(): HelpLayout { // レンダラーからレイアウトを取得
@@ -1016,7 +1015,7 @@ export class HelpEventManager {
 
         ' }'
 
-        console.log('HelpEventManager, destroyed'); }'
+        console.log('HelpEventManager, destroyed'); }''
 }
 
 /**
@@ -1025,10 +1024,10 @@ export class HelpEventManager {
  */'
 export class HelpInputValidator { private maxSearchLength: number = 100' }'
 
-    private allowedSearchChars: RegExp = /^[a-zA-Z0-9\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\u20000-\u2A6DF\u2A700-\u2B73F\u2B740-\u2B81F\u2B820-\u2CEAF\uF900-\uFAFF\u2F800-\u2FA1F\-_.,!? (')[\]{}'"「」『』【】〔〕〈〉《》：；、。・]*$/;
+    private allowedSearchChars: RegExp = /^[a-zA-Z0-9\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\u20000-\u2A6DF\u2A700-\u2B73F\u2B740-\u2B81F\u2B820-\u2CEAF\uF900-\uFAFF\u2F800-\u2FA1F\-_.,!? (')[\]{}'"「」『』【】〔〕〈〉《》：；、。・]*$/;"
 
     /**
-     * 検索クエリの検証"
+     * 検索クエリの検証""
      */ : undefined""
     public validateSearchQuery(query: string): { valid: boolean; error?: string; sanitized?: string } { ""
         if (typeof, query !== 'string'') {' }
@@ -1043,8 +1042,8 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
 
         if(!this.allowedSearchChars.test(query) { ' }'
 
-            const sanitized = query.replace(/[^\w\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\-_.,!? ()[\]{}'"「」『』【】〔〕〈〉《》：；、。・]/g, ''');
-            return { : undefined'
+            const sanitized = query.replace(/[^\w\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\-_.,!? ()[\]{}'"「」『』【】〔〕〈〉《》：；、。・]/g, ''');"
+            return { : undefined''
                 valid: false,
                 error: 'Search query contains invalid characters', };
                 sanitized }
@@ -1054,7 +1053,7 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
 
     /**
      * インデックス値の検証
-     */
+     */)
     public validateIndex(index: string | number, maxValue: number): { valid: boolean; error?: string; sanitized?: number } { const numIndex = parseInt(String(index), 10);
 
         if(isNaN(numIndex)) {' }'

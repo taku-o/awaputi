@@ -17,17 +17,16 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         this.validator = new MobileAccessibilityValidator(this);
         
         // アクセシビリティ設定
-        this.accessibilityConfig = {
-            screenReader: {
+        this.accessibilityConfig = { screenReader: {
                 enabled: false;
                 announcements: true;
                 liveRegions: true;
                 roleDescriptions: true;
-                keyboardNavigation: true;
+                keyboardNavigation: true; }
     }
                 focusManagement: true }
             };
-            visualSupport: { highContrast: false;
+            visualSupport: { highContrast: false; }
                 colorBlindnessSupport: false,
                 colorBlindnessType: 'none', // 'protanopia', 'deuteranopia', 'tritanopia''';
                 fontSize: 'normal', // 'small', 'normal', 'large', 'xlarge''';
@@ -36,16 +35,16 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             motorSupport: { touchAreaEnlarged: false;
                 hoverAlternatives: true;
                 gestureAlternatives: true;
-                voiceControl: false;
+                voiceControl: false; }
                 switchControl: false };
             cognitiveSupport: { reducedMotion: false;
                 simplifiedUI: false;
                 contentPausing: true;
-                timeExtensions: false;
+                timeExtensions: false; }
                 readingMode: false };
             auditorySupport: { visualIndicators: true;
                 hapticFeedback: true;
-                captions: false;
+                captions: false; }
                 signLanguage: false }
         };
         // スクリーンリーダー状態
@@ -65,11 +64,11 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             currentIndex: -1;
             focusHistory: [];
             trapStack: [] ,};
-        // 音声・触覚フィードバック
+        // 音声・触覚フィードバック)
         this.feedbackSystems = { speechSynthesis: null)
-            haptics: null);
+            haptics: null); }
             audioBeeps: new Map( };
-        
+        )
         this.initialize();
     }
     
@@ -88,7 +87,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             this.applyInitialSettings();
     }
 
-            console.log('[MobileAccessibilityManager] モバイルアクセシビリティシステム初期化完了');' }
+            console.log('[MobileAccessibilityManager] モバイルアクセシビリティシステム初期化完了');' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'MobileAccessibilityManager.initialize); }'
@@ -102,7 +101,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      * モバイルアクセシビリティ検証（MobileAccessibilityValidatorに委譲）
      */
     async validateAccessibility() { ''
-        return await this.validator.validateMobileAccessibility()';
+        return await this.validator.validateMobileAccessibility()';'
     async checkWCAGCompliance(level = 'AA) {;
         return await this.validator.checkWCAGCompliance(level); }
     
@@ -146,7 +145,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             hasKeyboard: this.detectKeyboardSupport(''';
             hasTouch: 'ontouchstart' in window;
     ,}
-
+)
             hasPointer: 'PointerEvent' in window }))'
         ')';
         console.log('[MobileAccessibilityManager] アクセシビリティ機能検出完了', this.capabilities);
@@ -198,7 +197,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
     }
 
-        console.log('[MobileAccessibilityManager] スクリーンリーダーサポート設定完了'); }'
+        console.log('[MobileAccessibilityManager] スクリーンリーダーサポート設定完了'); }''
     }
     
     /**
@@ -264,7 +263,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * フォーカス可能要素更新（簡略化）
      */''
-    updateFocusableElements(''';
+    updateFocusableElements(''';)
             'button', 'input', 'select', 'textarea', 'a[href]',)';
             '[tabindex]:not([tabindex="-1"])', '[role="button"]', '[role="link"]',
             '[role="menuitem"]', '.focusable';
@@ -310,7 +309,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         if (e.shiftKey) {
             // Shift+Tab: 後方移動
             if (document.activeElement === firstElement) {
-                e.preventDefault( ,}
+                e.preventDefault( ,})
                 lastElement.focus(); }
 } else {  // Tab: 前方移動
             if(document.activeElement === lastElement) {
@@ -432,7 +431,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
         ' }'
 
-        return states.length > 0 ? `, ${states.join(', ''})` : '';
+        return states.length > 0 ? `, ${states.join(', ''})` : '';'
     }
     
     /**
@@ -451,7 +450,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             'application': 'アプリケーション',
     }
 
-            'canvas': 'キャンバス' }
+            'canvas': 'キャンバス' };
         };
         
         return roleTranslations[role] || role;
@@ -482,16 +481,16 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             case 'h':'';
             case 'H':';
                 e.preventDefault();''
-                this.announceGameHelp(''';
+                this.announceGameHelp(''';)
             case 's':)';
             case 'S':)';
                 e.preventDefault();''
-                this.announceGameStatus(''';
+                this.announceGameStatus(''';)
             case 'r':)';
             case 'R':);
                 if (e.ctrlKey) {'
                     e.preventDefault();''
-                    this.announceGameRules(''';
+                    this.announceGameRules(''';)
             case 'Enter':)';
             case ' ':);
                 e.preventDefault();
@@ -565,7 +564,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
 
                 if(mutation.type === 'childList) {' }
-
+;
                     this.handleDOMChanges(mutation);' }'
 
                 } else if(mutation.type === 'attributes) { this.handleAttributeChanges(mutation); }'
@@ -574,7 +573,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         }');
         
         observer.observe(document.body, { childList: true)
-            subtree: true)';
+            subtree: true)'; }
             attributes: true,')';
             attributeFilter: ['aria-label', 'aria-describedby', 'aria-live] }
     
@@ -629,7 +628,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         this.setupColorPalettes();
     }
 
-        console.log('[MobileAccessibilityManager] 色覚支援システム初期化完了'); }'
+        console.log('[MobileAccessibilityManager] 色覚支援システム初期化完了'); }''
     }
     
     /**
@@ -663,7 +662,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     setupDynamicContrast() {
         const observer = new MutationObserver(() => { ''
-            if(this.accessibilityConfig.visualSupport.highContrast) {''
+            if(this.accessibilityConfig.visualSupport.highContrast) {'';
                 document.querySelectorAll('*).forEach(el => {);
                     const style = getComputedStyle(el);
                     const bgColor = style.backgroundColor;
@@ -683,7 +682,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         }');
         
         observer.observe(document.body, { childList: true)
-            subtree: true)';
+            subtree: true)'; }
             attributes: true,')';
             attributeFilter: ['style', 'class] }
     
@@ -702,7 +701,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
 
             element.style.filter = `contrast(${ adjustment }`;' }'
-
+)
             element.classList.add('contrast-enhanced'});
         }
     }
@@ -710,7 +709,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * 色パレット設定（簡略化）'
      */''
-    setupColorPalettes(''';
+    setupColorPalettes(''';)
         this.colorSupport.colorPalettes.set('accessible', { ')'
             primary: '#0066CC', secondary: '#FF6600', success: '#008844', ')';
             warning: '#FF9900', error: '#CC0000', text: '#000000', background: '#FFFFFF')');
@@ -761,7 +760,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         if (this.focusManager.focusableElements.length > 0) {
             e.preventDefault();
             
-            let nextIndex = e.shiftKey ?   : undefined
+            let nextIndex = e.shiftKey ?   : undefined;
                 this.focusManager.currentIndex - 1 : ;
                 this.focusManager.currentIndex + 1;
             
@@ -804,7 +803,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
 
                 const newVoices = this.feedbackSystems.speechSynthesis.getVoices() }
-
+;
                 this.selectedVoice = newVoices.find(voice => voice.lang.startsWith('ja) || newVoices[0]; }'
             });
         }
@@ -958,7 +957,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * ゲーム固有のアナウンス関数群（簡略化）
      */''
-    announceGameHelp(''';
+    announceGameHelp(''';)
         const, helpMessage = 'BubblePop ゲーム。スペース/エンターでポップ、Sで状態確認、矢印キーで移動';)'
         this.announceToScreenReader(helpMessage, 'polite);
     }
@@ -979,7 +978,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     announceScoreUpdate(points, totalScore) { ' }'
 
         this.announceToScreenReader(`${points}点獲得。合計: ${ totalScore}点`, 'polite''};' }
-
+)
         this.playAudioBeep('success'});
     }
     
@@ -987,7 +986,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
         const message = change > 0 ? `HP回復: ${Math.abs(change})` : `HPダメージ: ${Math.abs(change})`;''
         this.announceToScreenReader(`${message}。現在: ${ newHP}`, 'polite''};' }
-
+)
         this.playAudioBeep(change > 0 ? 'success' : 'error'});
     }
     
@@ -1043,7 +1042,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     applyFontSettings(''';
             small: '0.8em',
             normal: '1em',
-            large: '1.2em',
+            large: '1.2em',)
             xlarge: '1.5em);
         })
         const size = sizeMap[this.accessibilityConfig.visualSupport.fontSize];

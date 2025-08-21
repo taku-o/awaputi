@@ -18,7 +18,7 @@ interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) =
     mockClear: (') => void; }
 }'
 // Mock ErrorHandler''
-jest.mock('../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({
+jest.mock('../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({ }
         handleError: jest.fn(); }
     })))
 )));
@@ -32,7 +32,7 @@ interface ConfigurationManager { get: MockFunction<any>,
     validateAll: MockFunction<boolean>;
     }
     });
-interface PerformanceOptimizer { getCurrentFPS: MockFunction<number>;
+interface PerformanceOptimizer { getCurrentFPS: MockFunction<number>; }
     }
 }
 // Game engine interface
@@ -119,7 +119,7 @@ interface CommandRegistry { commands: Map<string, CommandConfig>;
     addMiddleware(middleware: Function): void,'';
     destroy('' }'
     canvas: { mock: 'canvas' }''
-    sceneManager: { mock: 'sceneManager' }''
+    sceneManager: { mock: 'sceneManager' }'')
     inputManager: { mock: 'inputManager' })
     performanceOptimizer: { getCurrentFPS: jest.fn(() => 60) as unknown as MockFunction<number> }
     }),
@@ -133,7 +133,7 @@ interface CommandRegistry { commands: Map<string, CommandConfig>;
     })''
 '),';
 // Import after mocking''
-const { DeveloperConsole, CommandRegistry } = await import('../../src/debug/DeveloperConsole.js') as unknown as { DeveloperConsole: new (gameEngine: MockGameEngine) => DeveloperConsole;''
+const { DeveloperConsole, CommandRegistry } = await import('../../src/debug/DeveloperConsole.js') as unknown as { DeveloperConsole: new (gameEngine: MockGameEngine) => DeveloperConsole;'' }
     CommandRegistry: new (console: ConsoleLike') => CommandRegistry; }'
 };''
 describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
@@ -243,7 +243,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             expect(devConsole.output.lines[2].text').toBe('Line 4'););' }'
         }');''
         test('should escape HTML in output', (') => {  ''
-            devConsole.print('<script>alert("xss"")</script>'');'
+            devConsole.print('<script>alert("xss"")</script>'');'"
             const html: string = devConsole.outputElement.innerHTML,'';
             expect(html.toContain('&lt;script&gt;');' }'
             expect(html').not.toContain('<script>');' }'
@@ -256,7 +256,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             expect(devConsole.outputElement.innerHTML').toBe(''););' }'
         }');''
         test('should format timestamps', (') => {  ' }'
-            const date = new Date('2023-01-01T12: 34:56Z') }
+            const date = new Date('2023-01-01T12: 34:56Z') };
             const formatted: string = devConsole.formatTimestamp(date});'
             expect(formatted.toMatch(/^\d{2}:\d{2}:\d{2}$/);''
         }');'
@@ -345,7 +345,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             devConsole.executeCommand(''';
             devConsole.inputElement.value = 'command2';''
             devConsole.executeCommand(''';
-            devConsole.inputElement.value = 'command3';''
+            devConsole.inputElement.value = 'command3';'')
             devConsole.executeCommand('')';
             devConsole.inputElement.value = 'command4';)
             devConsole.executeCommand();'
@@ -355,7 +355,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
         }');''
         test('should remove duplicate history entries', (') => {  ''
             devConsole.inputElement.value = 'same command';''
-            devConsole.executeCommand('' }'
+            devConsole.executeCommand('' }')
             devConsole.inputElement.value = 'same command'; })'
             devConsole.executeCommand(}')'
             ');''
@@ -364,7 +364,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
         test('should show command history', (') => {  ''
             devConsole.inputElement.value = 'command1';''
             devConsole.executeCommand(''';
-            devConsole.inputElement.value = 'command2';''
+            devConsole.inputElement.value = 'command2';'')
             devConsole.executeCommand('')';
             devConsole.inputElement.value = 'history';)
             devConsole.executeCommand();'
@@ -382,7 +382,7 @@ describe('DeveloperConsole', () => {  let devConsole: DeveloperConsole,
             expect(devConsole.state.visible).toBe(true);''
         }');''
         test('should handle Ctrl+Shift+C to toggle console', (') => {  ''
-            const event = new KeyboardEvent('keydown', { ''
+            const event = new KeyboardEvent('keydown', { '');
                 key: 'C', );
                 ctrlKey: true) }'
                 shiftKey: true' }'
@@ -567,9 +567,9 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
             }''
             registry.register('add', { );
                 execute: (args: string[]) => {  }
-                    const a = parseInt(args[0]) }
+                    const a = parseInt(args[0]) };
                     const b = parseInt(args[1]};
-                    return a + b;'
+                    return a + b;'')
                 }')'
             }');'
         }''
@@ -628,7 +628,7 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
         }');''
         test('should parse command with single quotes', (') => {  ''
             const parsed: ParsedInput = registry.parseInput("echo 'hello world' test"),"";
-            expect(parsed.command").toBe('echo');' }'
+            expect(parsed.command").toBe('echo');' }'"
             expect(parsed.args').toEqual(['hello world', 'test']);' }'
         }');''
         test('should handle empty input', (') => {  ''
@@ -681,13 +681,13 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
                 category: 'testing'), }'
                 execute: () => {}''
             }');''
-            registry.register('test2', { ''
+            registry.register('test2', { '')
                 description: 'Test command 2',')';
                 category: 'testing',);
                 hidden: true), }'
                 execute: () => {}''
             }');''
-            registry.register('help', { ''
+            registry.register('help', { '')
                 description: 'Help command',')';
                 usage: 'help [command]',')';
                 aliases: ['h', '? ']); : undefined }'
@@ -720,8 +720,8 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
     }''
     describe('Middleware', (') => {  ''
         test('should add and execute middleware', () => {''
-            const middleware = jest.fn((command: string, __args: string[]') => {''
-                return command !== 'blocked';'
+            const middleware = jest.fn((command: string, __args: string[]') => {'';
+                return command !== 'blocked';''
             );' }'
             registry.addMiddleware(middleware');' }'
             registry.register('test', { execute: (') => 'success' )}');''
@@ -799,7 +799,7 @@ describe('CommandRegistry', () => {  let registry: CommandRegistry,
             );'
             const output = devConsole.getOutput();' }'
             expect(output.some((line: any') => line.message.includes("Applied template 'development'")).toBe(true);" }"
-        }");""
+        }");"""
         test('should handle config command errors gracefully', async () => {  ''
             mockGameEngine.configurationManager.set.mockImplementation((') => {' }'
                 throw new Error('Validation failed'); }'

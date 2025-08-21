@@ -11,12 +11,12 @@ interface MockGameEngine extends Partial<GameEngine> { on: jest.Mock,
     emit: jest.Mock ,}
 interface MockSocialSharingManager extends Partial<SocialSharingManager> { gameEngine: MockGameEngine;
     share: jest.Mock;
-    shareViaTwitterUrl: jest.Mock;
+    shareViaTwitterUrl: jest.Mock; }
     shareViaFacebookUrl: jest.Mock }
 interface ShareData { type: string;
     score?: number;
     text?: string;
-    url?: string;
+    url?: string; }
     name?: string; }
 interface Screenshot { url: string,
     width: number;
@@ -30,8 +30,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
         document.body.innerHTML = '';
         
         // GameEngineのモック
-        mockGameEngine = {
-            on: jest.fn();
+        mockGameEngine = { on: jest.fn(); }
             off: jest.fn(), }
         emit: jest.fn(); }
         };
@@ -41,7 +40,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             share: jest.fn(').mockResolvedValue({ success: true, method: 'web-share ),''
             shareViaTwitterUrl: jest.fn(').mockResolvedValue({ success: true, method: 'twitter ),''
             shareViaFacebookUrl: jest.fn( ,}
-
+)
         method: 'facebook' }));
         ';
         // matchMediaのモック
@@ -64,7 +63,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
         Object.defineProperty(navigator, 'clipboard', { )
             value: {);
                 writeText: jest.fn().mockResolvedValue(undefined };
-            writable: true;
+            writable: true;)
         }),
         // requestAnimationFrameのモック
         global.requestAnimationFrame = jest.fn((callback: FrameRequestCallback) => {  setTimeout(() => callback(0), 0); }
@@ -118,7 +117,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
                 width: 600,
                 theme: 'elegant',
                 platforms: ['twitter', 'facebook'],
-                allowMessageEdit: true, }
+                allowMessageEdit: true, })
                 showScreenshotPreview: true }))'
             ')';
             const { ShareDialog } = await import('../core/ShareDialog.js);
@@ -152,7 +151,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const platformsContainer = body.querySelector('.share-dialog-platforms);''
             expect(body.id).toBe('share-dialog-content);''
             expect(platformsContainer).toBeDefined( }
-
+)
             expect(platformsContainer?.getAttribute('role)).toBe('group);' }
 
         }');''
@@ -171,7 +170,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             shareDialog.destroy() }
 
             const { ShareDialog } = await import('../core/ShareDialog.js);
-            shareDialog = new ShareDialog(mockSocialSharingManager as any, { : undefined
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, { : undefined)
                 allowMessageEdit: true ,})'
             });''
             expect(shareDialog.elements.messageEditor).toBeDefined()';
@@ -181,7 +180,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             shareDialog.destroy() }
 
             const { ShareDialog } = await import('../core/ShareDialog.js);
-            shareDialog = new ShareDialog(mockSocialSharingManager as any, { : undefined
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, { : undefined)
                 showScreenshotPreview: true ,}));
             expect(shareDialog.elements.screenshotPreview).toBeDefined();''
             expect(shareDialog.elements.screenshotPreview? .style.display).toBe('none);''
@@ -316,10 +315,10 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             const { ShareDialog } = await import('../core/ShareDialog.js'');
 
-            shareDialog = new ShareDialog(mockSocialSharingManager as any, { ''
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, { '')
                 platforms: ['copy]' })'
             }');
-            await shareDialog.show({ ''
+            await shareDialog.show({ '')
                 type: 'score', ')';
                 text: 'コピーテスト',');
 
@@ -400,7 +399,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             
             const webShareButton = shareDialog.elements.platforms[0];
             await webShareButton.click();
-            expect(mockSocialSharingManager.share).toHaveBeenCalledWith(;
+            expect(mockSocialSharingManager.share).toHaveBeenCalledWith(;)
                 expect.objectContaining({ : undefined)
                     text: editedMessage)),
             );' }'
@@ -487,7 +486,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
         }');''
         test('Tabキーでフォーカストラップが動作する', async () => {  shareDialog.config.accessibility.focus.trap = true;''
-            shareDialog.updateFocusableElements(''';
+            shareDialog.updateFocusableElements(''';)
             Object.defineProperty(document, 'activeElement', {)'
                 value: lastElement,')';
                 writable: true)');''
@@ -498,14 +497,14 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
         }');''
         test('Shift+Tabキーで逆方向フォーカストラップが動作する', async () => { shareDialog.config.accessibility.focus.trap = true;''
-            shareDialog.updateFocusableElements(''';
+            shareDialog.updateFocusableElements(''';)
             Object.defineProperty(document, 'activeElement', {)
                 value: firstElement, }
 
                 writable: true),' }'
 
             }');''
-            const shiftTabEvent = new KeyboardEvent('keydown', { ')'
+            const shiftTabEvent = new KeyboardEvent('keydown', { ')';
                 key: 'Tab');
                 shiftKey: true ;
             ),
@@ -541,7 +540,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
         test('フォーカス管理が動作する', async () => {  ' }
 
             const mockFocus = jest.fn() }
-
+;
             await shareDialog.show({ type: 'score', score: 1000 ,});
             // 初期フォーカスが設定されることを確認
             setTimeout(() => { expect(mockFocus).toHaveBeenCalled(); }, 150);''
@@ -551,7 +550,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             shareDialog.destroy() }
 
             const { ShareDialog } = await import('../core/ShareDialog.js);
-            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {)
                 accessibility: { highContrast: true }));
             const dialog = shareDialog.elements.dialog;''
             expect(dialog.style.backgroundColor).toBe('#000000);''
@@ -573,7 +572,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             const { ShareDialog } = await import('../core/ShareDialog.js'');
 
-            shareDialog = new ShareDialog(mockSocialSharingManager as any, { ''
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, { '')
                 theme: 'minimal' }));
             const dialog = shareDialog.elements.dialog;''
             expect(dialog.style.backgroundColor).toBe('#FAFAFA);''
@@ -584,7 +583,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             const { ShareDialog } = await import('../core/ShareDialog.js'');
 
-            shareDialog = new ShareDialog(mockSocialSharingManager as any, { ''
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, { '')
                 theme: 'elegant' }));
             const dialog = shareDialog.elements.dialog;''
             expect(dialog.style.backgroundColor).toBe('#2D2D3A);''
@@ -595,7 +594,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             const { ShareDialog } = await import('../core/ShareDialog.js'');
 
-            shareDialog = new ShareDialog(mockSocialSharingManager as any, { ''
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, { '')
                 theme: 'gaming' }));
             const dialog = shareDialog.elements.dialog;''
             expect(dialog.style.backgroundColor).toBe('#0A0A0F);''
@@ -698,7 +697,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
                 title: '新しいタイトル',
                 width: 600,' }'
 
-                theme: 'gaming' }
+                theme: 'gaming' };
             };
             ';
 

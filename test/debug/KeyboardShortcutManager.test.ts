@@ -83,7 +83,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         }');''
         test('should register shortcut with options', () => {  ''
             const callback = jest.fn(''';
-                description: 'Test shortcut','';
+                description: 'Test shortcut','';)
                 group: 'test',')';
                 context: 'console') }
                 priority: 10 }'
@@ -96,7 +96,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(shortcutData.options.priority).toBe(10);''
         }');''
         test('should normalize shortcut keys', () => {  ' }'
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('Ctrl+Shift+X', callback}');''
             expect(shortcutManager.shortcuts.has('ctrl+shift+x'}).toBe(true');'
         }''
@@ -142,7 +142,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         test('should execute registered shortcut', () => {''
             const callback = jest.fn('')';
             shortcutManager.register('ctrl+x', callback');''
-            const event = new KeyboardEvent('keydown', {''
+            const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(), }
@@ -154,10 +154,10 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(event.preventDefault).toHaveBeenCalled();''
         }');''
         test('should not execute when disabled', () => {  ''
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback'); }'
-            shortcutManager.setEnabled(false};''
-            const event = new KeyboardEvent('keydown', { ')'
+            shortcutManager.setEnabled(false};'')
+            const event = new KeyboardEvent('keydown', { ')';
                 key: 'x',);
                 ctrlKey: true); }
             });
@@ -166,10 +166,10 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(callback).not.toHaveBeenCalled();''
         }');''
         test('should not execute when suspended', () => {  ''
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback'); }'
-            shortcutManager.setSuspended(true};''
-            const event = new KeyboardEvent('keydown', { ')'
+            shortcutManager.setSuspended(true};'')
+            const event = new KeyboardEvent('keydown', { ')';
                 key: 'x',);
                 ctrlKey: true); }
             });
@@ -178,11 +178,11 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(callback).not.toHaveBeenCalled();''
         }');''
         test('should handle execution errors gracefully', () => {  ''
-            const callback = jest.fn((') => {''
+            const callback = jest.fn((') => {'';
                 throw new Error('Test error');''
             )');''
             shortcutManager.register('ctrl+x', callback');''
-            const event = new KeyboardEvent('keydown', {''
+            const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(),
@@ -192,13 +192,13 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(result).toBe(false);''
             expect(consoleErrorSpy).toHaveBeenCalledWith('')';
                 "Error executing shortcut 'ctrl+x':");
-                expect.any(Error); }"
+                expect.any(Error); }""
             );" }"
-        }");""
+        }");"""
         test('should update statistics on execution', () => {  ''
             const callback = jest.fn('')';
             shortcutManager.register('ctrl+x', callback');''
-            const event = new KeyboardEvent('keydown', {''
+            const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(), }
@@ -240,7 +240,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
                 ctrlKey: false,
                 altKey: false,
                 shiftKey: false, }
-                metaKey: false }'
+                metaKey: false }';
             };''
             expect(shortcutManager.buildShortcutString(event)').toBe('x');''
         }');''
@@ -279,7 +279,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const callback = jest.fn('')';
             shortcutManager.register('ctrl+x>ctrl+s', callback');'
             // First key''
-            const event1 = new KeyboardEvent('keydown', {''
+            const event1 = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(), }
@@ -289,7 +289,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(result1).toBe(true);''
             expect(shortcutManager.isWaitingForSequence).toBe(true');'
             // Second key''
-            const event2 = new KeyboardEvent('keydown', { ''
+            const event2 = new KeyboardEvent('keydown', { '');
                 key: 's',);
                 ctrlKey: true);
                 preventDefault: jest.fn(),
@@ -304,7 +304,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const callback = jest.fn('')';
             shortcutManager.register('ctrl+x>ctrl+s', callback');'
             // First key''
-            const event1 = new KeyboardEvent('keydown', {''
+            const event1 = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(), }
@@ -321,7 +321,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const callback = jest.fn('')';
             shortcutManager.register('ctrl+x>ctrl+s', callback');'
             // First key''
-            const event1 = new KeyboardEvent('keydown', {''
+            const event1 = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(), }
@@ -330,7 +330,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             shortcutManager.execute(event1);''
             expect(shortcutManager.isWaitingForSequence).toBe(true');'
             // Invalid continuation''
-            const event2 = new KeyboardEvent('keydown', { ''
+            const event2 = new KeyboardEvent('keydown', { '');
                 key: 'z',);
                 ctrlKey: true);
                 preventDefault: jest.fn(),
@@ -347,10 +347,10 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(shortcutManager.activeContext').toBe('console'););' }'
         }');''
         test('should execute shortcuts from active context', () => {  ' }'
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback, { context: 'console' }');''
             shortcutManager.switchContext('console'');''
-            const event = new KeyboardEvent('keydown', { ''
+            const event = new KeyboardEvent('keydown', { '');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(),
@@ -361,10 +361,10 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(callback.toHaveBeenCalled();''
         }');''
         test('should not execute shortcuts from inactive context', () => {  ' }'
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback, { context: 'console' }');''
             shortcutManager.switchContext('performance'');''
-            const event = new KeyboardEvent('keydown', { ''
+            const event = new KeyboardEvent('keydown', { '');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(),
@@ -375,10 +375,10 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(callback).not.toHaveBeenCalled();''
         }');''
         test('should fallback to global context', () => {  ' }'
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback, { context: 'global' }');''
             shortcutManager.switchContext('console'');''
-            const event = new KeyboardEvent('keydown', { ''
+            const event = new KeyboardEvent('keydown', { '');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(),
@@ -391,7 +391,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
     }''
     describe('Group Management', (') => {  ''
         test('should add shortcuts to groups', () => {' }'
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback, { group: 'test' }');''
             const groupShortcuts = shortcutManager.getShortcutsByGroup('test');'
             expect(groupShortcuts.toHaveLength(1);''
@@ -402,7 +402,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(groupShortcuts).toEqual([]);' }'
         }');''
         test('should remove from group when unregistered', () => {  ' }'
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback, { group: 'test' }');''
             shortcutManager.unregister('ctrl+x'');''
             const groupShortcuts = shortcutManager.getShortcutsByGroup('test');'
@@ -440,7 +440,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(allShortcuts.has('ctrl+x').toBe(true'); }'
         }''
         test('should get shortcuts by context', () => {  ' }'
-            const callback = jest.fn('') }'
+            const callback = jest.fn('') }';
             shortcutManager.register('ctrl+x', callback, { context: 'console' }');''
             const contextShortcuts = shortcutManager.getShortcutsByContext('console');'
             expect(contextShortcuts.toHaveLength(1);''
@@ -485,7 +485,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const callback = jest.fn('')';
             shortcutManager.register('ctrl+x>ctrl+s', callback');'
             // Start sequence''
-            const event = new KeyboardEvent('keydown', {''
+            const event = new KeyboardEvent('keydown', {'');
                 key: 'x',);
                 ctrlKey: true);
                 preventDefault: jest.fn(), }

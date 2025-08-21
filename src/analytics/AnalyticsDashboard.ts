@@ -29,18 +29,18 @@ export interface DashboardSection { container: HTMLElement,
 export interface PlaytimeData { date: string,
     minutes: number ,}
 
-export interface ScoreDistribution { range: string;
+export interface ScoreDistribution { range: string; }
     count: number }
 
 export interface BubbleStats { type: string;
     successRate: number;
-    frequency: number;
+    frequency: number; }
     avgScore: number }
 
-export interface PerformanceFPS { timestamp: number;
+export interface PerformanceFPS { timestamp: number; }
     fps: number }
 
-export interface PerformanceMemory { timestamp: number;
+export interface PerformanceMemory { timestamp: number; }
     usagePercent: number }
 
 export interface PerformanceData { fps?: PerformanceFPS[];
@@ -95,10 +95,9 @@ export class AnalyticsDashboard {
             layout: 'grid', // grid, flex, masonry;
             showDataCollectingMessage: true;
             minDataPoints: 5, // データ不足判定の閾値;
-            chartDefaults: {
-                width: 350;
+            chartDefaults: { width: 350;
                 height: 250;
-                enableAnimation: true;
+                enableAnimation: true; }
                 enableTooltips: true ,};
             ...options;
 
@@ -124,22 +123,21 @@ export class AnalyticsDashboard {
         }
 
         // Chart.jsとD3.jsレンダラーの初期化
-        this.chartRenderer = new AnalyticsChartRenderer({ theme: this.options.theme,
+        this.chartRenderer = new AnalyticsChartRenderer({ theme: this.options.theme,)
             defaultWidth: this.options.chartDefaults.width!);
             defaultHeight: this.options.chartDefaults.height!);
             animationDuration: this.options.chartDefaults.enableAnimation! ? 750 : 0;
         ),
 
-        this.dataVisualizer = new DataVisualizer({
-            enableInteractivity: true;
+        this.dataVisualizer = new DataVisualizer({ enableInteractivity: true;)
             enableAnimation: this.options.chartDefaults.enableAnimation!);
             defaultWidth: this.options.chartDefaults.width!);
-            defaultHeight: this.options.chartDefaults.height!;
+            defaultHeight: this.options.chartDefaults.height!; }
         ),
 
         this.setupContainer();''
         this.createLayout()';
-        console.log('Analytics, Dashboard initialized'); }'
+        console.log('Analytics, Dashboard initialized'); }''
 
     /**
      * コンテナの設定
@@ -174,10 +172,10 @@ export class AnalyticsDashboard {
                     <option value="7d">過去7日</option>"";
                     <option value="30d">過去30日</option>;
                 </select>;
-            </div>";
+            </div>";"
         `;""
         this.container.appendChild(header);
-";
+";"
         // メインコンテンツエリア""
         const mainContent = this.createElement('div', 'dashboard-main);''
         this.container.appendChild(mainContent);
@@ -203,7 +201,7 @@ export class AnalyticsDashboard {
             <div class="section-controls">"";
                 <button class="btn-small toggle-section" data-section="${sectionId}">最小化</button>
             </div>;
-        `;"
+        `;""
 
         const sectionContent = this.createElement('div', 'section-content);
         sectionContent.id = `content-${sectionId}`;
@@ -212,7 +210,7 @@ export class AnalyticsDashboard {
         sectionContainer.appendChild(sectionContent);
         parent.appendChild(sectionContainer);
 
-        this.sections.set(sectionId, { container: sectionContainer)
+        this.sections.set(sectionId, { container: sectionContainer) }
             content: sectionContent,);
             title: title);
             charts: new Map( ,});
@@ -268,7 +266,7 @@ export class AnalyticsDashboard {
         if(data.playtime && data.playtime.length > 0) {'
 
             const chart = this.chartRenderer!.createLineChart('playtime-chart-canvas', {''
-                label: 'プレイ時間（分）',
+                label: 'プレイ時間（分）',);
                 xAxisLabel: '日付',)';
                 yAxisLabel: 'プレイ時間（分）',')';
                 showLegend: false)');
@@ -276,7 +274,7 @@ export class AnalyticsDashboard {
             // データ更新
             this.chartRenderer!.updateChartData('playtime-chart-canvas', {);
                 labels: data.playtime.map(d = > d.date ,}
-
+)
                 data: data.playtime.map(d => d.minutes);' }'
 
             }');
@@ -294,14 +292,14 @@ export class AnalyticsDashboard {
         if(data.scoreDistribution && data.scoreDistribution.length > 0) {'
 
             const chart = this.chartRenderer!.createBarChart('score-distribution-chart-canvas', {''
-                label: 'ゲーム数',
+                label: 'ゲーム数',);
                 xAxisLabel: 'スコア範囲',)';
                 yAxisLabel: 'ゲーム数',')';
                 showLegend: false)'),
 
             this.chartRenderer!.updateChartData('score-distribution-chart-canvas', {);
                 labels: data.scoreDistribution.map(d = > d.range ,}
-
+)
                 data: data.scoreDistribution.map(d => d.count);' }'
 
             }');
@@ -318,7 +316,7 @@ export class AnalyticsDashboard {
 
         if(data.successRate !== undefined) {'
 
-            const chart = this.chartRenderer!.createDoughnutChart('success-rate-chart-canvas', {)'
+            const chart = this.chartRenderer!.createDoughnutChart('success-rate-chart-canvas', {)';
                 label: '成功率')';
                 showLegend: true,')';
                 legendPosition: 'right')'),
@@ -378,11 +376,11 @@ export class AnalyticsDashboard {
 
         if(data.bubbleStats && data.bubbleStats.length > 0) {'
 
-            const chart = this.chartRenderer!.createPieChart('bubble-success-rate-chart-canvas', {)'
+            const chart = this.chartRenderer!.createPieChart('bubble-success-rate-chart-canvas', {)';
                 label: '成功率')';
                 showLegend: true,')';
                 legendPosition: 'right');
-            const successRateData = data.bubbleStats.map(bubble => ({)'
+            const successRateData = data.bubbleStats.map(bubble => ({)';
                 label: bubble.type,')';
                 value: bubble.successRate))'),
 
@@ -406,14 +404,14 @@ export class AnalyticsDashboard {
         if(data.bubbleStats && data.bubbleStats.length > 0) {'
 
             const chart = this.chartRenderer!.createBarChart('bubble-frequency-chart-canvas', {''
-                label: '出現回数',
+                label: '出現回数',);
                 xAxisLabel: 'バブルタイプ',)';
                 yAxisLabel: '出現回数',')';
                 showLegend: false)'),
 
             this.chartRenderer!.updateChartData('bubble-frequency-chart-canvas', {);
                 labels: data.bubbleStats.map(bubble = > bubble.type ,}
-
+)
                 data: data.bubbleStats.map(bubble => bubble.frequency);' }'
 
             }');
@@ -431,14 +429,14 @@ export class AnalyticsDashboard {
         if(data.bubbleStats && data.bubbleStats.length > 0) {'
 
             const chart = this.chartRenderer!.createBarChart('bubble-score-contribution-chart-canvas', {''
-                label: '平均獲得スコア',
+                label: '平均獲得スコア',);
                 xAxisLabel: 'バブルタイプ',)';
                 yAxisLabel: '平均獲得スコア',')';
                 showLegend: false)'),
 
             this.chartRenderer!.updateChartData('bubble-score-contribution-chart-canvas', {);
                 labels: data.bubbleStats.map(bubble = > bubble.type ,}
-
+)
                 data: data.bubbleStats.map(bubble => bubble.avgScore);' }'
 
             }');
@@ -488,14 +486,14 @@ export class AnalyticsDashboard {
         if(data.performance && data.performance.fps && data.performance.fps.length > 0) {'
 
             const chart = this.chartRenderer!.createLineChart('fps-chart-canvas', {''
-                label: 'FPS',
+                label: 'FPS',);
                 xAxisLabel: '時刻',)';
                 yAxisLabel: 'フレーム/秒',')';
                 showLegend: false)'),
 
             this.chartRenderer!.updateChartData('fps-chart-canvas', {);
                 labels: data.performance.fps.map(d = > new, Date(d.timestamp).toLocaleTimeString( ,}
-
+)
                 data: data.performance.fps.map(d => d.fps);' }'
 
             }');
@@ -513,14 +511,14 @@ export class AnalyticsDashboard {
         if(data.performance && data.performance.memory && data.performance.memory.length > 0) {'
 
             const chart = this.chartRenderer!.createLineChart('memory-usage-chart-canvas', {''
-                label: 'メモリ使用量（%）',
+                label: 'メモリ使用量（%）',);
                 xAxisLabel: '時刻',)';
                 yAxisLabel: 'メモリ使用量（%）',')';
                 showLegend: false)'),
 
             this.chartRenderer!.updateChartData('memory-usage-chart-canvas', {);
                 labels: data.performance.memory.map(d = > new, Date(d.timestamp).toLocaleTimeString( ,}
-
+)
                 data: data.performance.memory.map(d => d.usagePercent);' }'
 
             }');
@@ -568,8 +566,8 @@ export class AnalyticsDashboard {
             return false;
 
         // 全般的なデータ不足チェック
-        const totalDataPoints = [data.playtime? .length || 0,
-            data.scoreDistribution?.length || 0,
+        const totalDataPoints = [ data.playtime? .length || 0,
+            data.scoreDistribution?.length || 0, ];
             data.bubbleStats?.length || 0];
             data.performance?.fps?.length || 0];
         ].reduce((sum, count) => sum + count, 0);
@@ -588,7 +586,7 @@ export class AnalyticsDashboard {
             <div class="data-collecting-message">"";
                 <div class="collecting-icon">📊</div>;
                 <h3>データ収集中...</h3>;
-                <p>ゲームプレイデータを収集しています。</p> }"
+                <p>ゲームプレイデータを収集しています。</p> }""
                 <p>分析結果を表示するには、${this.options.minDataPoints}回以上のゲームプレイが必要です。</p>""
                 <div class="progress-indicator">"";
                     <div class="progress-bar"></div>;
@@ -598,7 +596,7 @@ export class AnalyticsDashboard {
     }
 
     /**
-     * データなしメッセージの表示"
+     * データなしメッセージの表示""
      */""
     private showNoDataMessage(container: HTMLElement): void { ""
         const messageDiv = this.createElement('div', 'no-data-message'');
@@ -627,9 +625,9 @@ export class AnalyticsDashboard {
         if (!dataCallback) return;
 
         try {
-            const newData = dataCallback();"
+            const newData = dataCallback();""
 
-            switch(sectionId) {"
+            switch(sectionId) {""
 
                 case 'basic-stats':'';
                     this.updateBasicStatistics(newData);
@@ -681,7 +679,7 @@ export class AnalyticsDashboard {
         if(!data.bubbleStats) return;
 
         if(this.activeCharts.has('bubble-success-rate-chart) {'
-            const successRateData = data.bubbleStats.map(bubble => ({)'
+            const successRateData = data.bubbleStats.map(bubble => ({)';
                 label: bubble.type,')';
                 value: bubble.successRate))'),
 
@@ -782,7 +780,7 @@ export class AnalyticsDashboard {
      * ダッシュボードの手動更新'
      */''
     refresh()';
-        console.log('Refreshing, dashboard...);
+        console.log('Refreshing, dashboard...);'
         
         for(const, sectionId of, this.dataCallbacks.keys() { this.updateSection(sectionId); }
     }
@@ -794,7 +792,7 @@ export class AnalyticsDashboard {
             timestamp: new Date().toISOString( }
             sections: {} as Record<string, any>
         };
-
+)
         for(const [sectionId, callback] of this.dataCallbacks) {
 
             try {
@@ -818,14 +816,14 @@ export class AnalyticsDashboard {
         document.body.removeChild(a);''
         URL.revokeObjectURL(url);
 
-        console.log('Dashboard, data exported);
+        console.log('Dashboard, data exported);'
     }
 
     /**
      * 時間範囲の変更
      */
     changeTimeRange(timeRange: string): void { console.log(`Time range changed to: ${timeRange}`},
-        this.currentTimeRange = timeRange }
+        this.currentTimeRange = timeRange })
         this.refresh(}');
     }
 
@@ -879,7 +877,7 @@ export class AnalyticsDashboard {
                 padding: 20px ,}
 
             .dashboard-header { background: white;
-                padding: 20px;
+                padding: 20px; }
                 border-radius: 8px,
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 margin-bottom: 20px,
@@ -891,7 +889,7 @@ export class AnalyticsDashboard {
                 color: #333 ,}
 
             .dashboard-controls { display: flex;
-                gap: 10px;
+                gap: 10px; }
                 align-items: center, }
 
             .btn, .btn-small { background: #007bff,
@@ -917,23 +915,23 @@ export class AnalyticsDashboard {
                 margin-bottom: 20px,
                 overflow: hidden ,}
 
-            .section-header { padding: 15px 20px;
+            .section-header { padding: 15px 20px; }
                 border-bottom: 1px solid #eee,
                 display: flex;
                 justify-content: space-between,
                 align-items: center,
                 background: #fafafa ,}
 
-            .section-header h3 { margin: 0;
+            .section-header h3 { margin: 0; }
                 color: #333 }
 
             .section-content { padding: 20px }
 
-            .charts-grid { display: grid;
+            .charts-grid { display: grid; }
                 grid-template-columns: repeat(auto-fit, minmax(350px, 1fr);
                 gap: 20px ,}
 
-            .chart-container { border: 1px solid #eee;
+            .chart-container { border: 1px solid #eee; }
                 border-radius: 6px,
                 padding: 15px;
                 background: #fafafa ,}
@@ -970,7 +968,7 @@ export class AnalyticsDashboard {
 
             .progress-bar { background: #007bff;
                 height: 100%;
-                width: 30%;
+                width: 30%; }
                 animation: progress-animation 2s ease-in-out infinite }
 
             @keyframes progress-animation {
@@ -1043,7 +1041,7 @@ export class AnalyticsDashboard {
 
         this.activeCharts.clear();''
         this.dataCallbacks.clear()';
-        console.log('Analytics, Dashboard destroyed'');
+        console.log('Analytics, Dashboard destroyed'');'
 
     }''
 }

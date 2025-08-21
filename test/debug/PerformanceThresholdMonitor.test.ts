@@ -19,8 +19,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
     ;'
     static instances = [];''
     static reset('')';
-jest.mock('../src/utils/ErrorHandler.js', () => ({
-    getErrorHandler: jest.fn(() => ({
+jest.mock('../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({ }
     }
     }
         handleError: jest.fn(); }
@@ -28,7 +27,7 @@ jest.mock('../src/utils/ErrorHandler.js', () => ({
 )));
 // Mock monitor
 const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
-        frame: {
+        frame: { }
             currentFPS: 60,
             frameTime: 16.67);
             fpsVariance: 2.0 }
@@ -130,7 +129,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.getMetricValue(metrics, 'memory.usedMemory').toBe(120.3');''
             expect(monitor.getMetricValue(metrics, 'nonexistent.path').toBeNull('')';
         test('should handle invalid metric paths', (') => {  }'
-            const metrics = { frame: { currentFPS: 60 } }''
+            const metrics = { frame: { currentFPS: 60 } }'';
             expect(monitor.getMetricValue(metrics, 'invalid.path').toBeNull('')';
             expect(monitor.getMetricValue(metrics, 'frame.invalid').toBeNull('')';
             expect(monitor.getMetricValue(metrics, '').toBe(metrics');
@@ -175,7 +174,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(alert.value).toBe(160');'
         };''
         test('should detect multiple threshold violations', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
-                frame: { currentFPS: 35, frameTime: 25, fpsVariance: 2.0 }, // FPS warning, frameTime warning
+                frame: { currentFPS: 35, frameTime: 25, fpsVariance: 2.0 }, // FPS warning, frameTime warning)
                 memory: { usedMemory: 180, pressureLevel: 0.8 }, // Memory warning, pressure critical)
                 render: { drawCalls: 400 }, // Draw calls warning)
                 game: { entityCount: 600 } // Entity warning),
@@ -185,7 +184,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.statistics.criticalAlertsTriggered).toBeGreaterThanOrEqual(1);''
             expect(monitor.warningSystem.alertHistory.length).toBeGreaterThan(1');'
         };''
-        test('should not trigger for values within normal range', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+        test('should not trigger for values within normal range', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 60, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.3 })
                 render: { drawCalls: 100 },)
@@ -235,7 +234,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
     }''
     describe('Notification System', (') => {  ''
         test('should create notification for alert', () => { }
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 40, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -251,7 +250,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
         test('should create browser notification when permission granted', (') => {  ''
             global.Notification.permission = 'granted';
              }
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 25, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -264,7 +263,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
         test('should not create browser notification when permission denied', (') => {  ''
             global.Notification.permission = 'denied';
              }
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 25, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -277,7 +276,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             
             // Create 3 alerts
             for (let i = 0; i < 3; i++) { }
-                mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+                mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                     frame: { currentFPS: 40 - i, frameTime: 16.67, fpsVariance: 2.0 },)
                     memory: { usedMemory: 50, pressureLevel: 0.2 })
                     render: { drawCalls: 100 },)
@@ -291,7 +290,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
     }''
     describe('Suggestion Engine', (') => {  ''
         test('should generate suggestions for alerts', () => { }
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 25, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -304,10 +303,10 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(suggestions.length).toBeGreaterThan(0);''
             expect(suggestions[0].priority').toBe('high''); // Critical alert should generate high priority suggestions'
         };''
-        test('should categorize suggestions correctly', (') => { const categories = [' }'
+        test('should categorize suggestions correctly', (') => { const categories = [ ' }'
                 { suggestion: 'Reduce particle effects quality', expected: 'effects' },''
                 { suggestion: 'Optimize rendering pipeline', expected: 'rendering' },''
-                { suggestion: 'Clear unused object references', expected: 'memory' },''
+                { suggestion: 'Clear unused object references', expected: 'memory' },'' ]
                 { suggestion: 'Implement entity culling', expected: 'entities' },']'
                 { suggestion: 'Improve overall performance', expected: 'performance' }]
             ];
@@ -316,7 +315,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
                 expect(category).toBe(expected);'); }
             };'
         }''
-        test('should handle suggestion cooldown', () => { mockMonitor.getCurrentMetrics.mockReturnValue({ }
+        test('should handle suggestion cooldown', () => { mockMonitor.getCurrentMetrics.mockReturnValue({ })
                 frame: { currentFPS: 25, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -335,7 +334,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             
             // Generate many alerts to exceed suggestion limit
             for (let i = 0; i < 10; i++) { }
-                mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+                mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                     frame: { currentFPS: 20 + i, frameTime: 30 + i, fpsVariance: 15 },)
                     memory: { usedMemory: 160 + i * 10, pressureLevel: 0.8 })
                     render: { drawCalls: 400 + i * 10 },)
@@ -352,7 +351,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
         test('should attempt FPS recovery for critical FPS alert', (') => {' }'
             const attemptAutoRecoverySpy = jest.spyOn(monitor, 'attemptAutoRecovery'};
             
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({)
                 frame: { currentFPS: 20, frameTime: 16.67, fpsVariance: 2.0 }, // Critical FPS)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -390,7 +389,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(consoleErrorSpy.toHaveBeenCalled('')';
     describe('Alert Management', (') => {  ''
         test('should acknowledge alerts', () => { }
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 40, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -402,7 +401,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             monitor.acknowledgeAlert(alert.id);''
             expect(alert.acknowledged).toBe(true');'
         };''
-        test('should show alert details', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+        test('should show alert details', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 40, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -413,7 +412,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             monitor.showAlertDetails(alert);'
             expect(showAlertDetailsSpy.toHaveBeenCalledWith(alert);''
             expect(consoleLogSpy').toHaveBeenCalledWith('';
-                '[PerformanceThresholdMonitor] Alert Details:',
+                '[PerformanceThresholdMonitor] Alert Details:',)
                 expect.objectContaining({ name: alert.name,)
                     description: alert.description);
                     value: alert.value,)';
@@ -442,7 +441,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.warningSystem.notifications.find(n => n.id === 'recent').toBeDefined('')';
     describe('Public API', (') => {  ''
         test('should get current alerts', () => { }
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 40, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -453,7 +452,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(currentAlerts.length).toBe(1);''
             expect(currentAlerts[0].severity').toBe('warning'');'
         };''
-        test('should get all alerts', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+        test('should get all alerts', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 40, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -463,7 +462,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             const allAlerts = monitor.getAllAlerts();''
             expect(allAlerts.length).toBe(1');'
         };''
-        test('should get current suggestions sorted by priority', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+        test('should get current suggestions sorted by priority', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 25, frameTime: 25, fpsVariance: 2.0 }, // Critical and warning)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -516,7 +515,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.monitoring.intervalId).toBeDefined('')';
         test('should reset all data', () => {
             // Add some data first }
-            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
+            mockMonitor.getCurrentMetrics.mockReturnValueOnce({ })
                 frame: { currentFPS: 40, frameTime: 16.67, fpsVariance: 2.0 },)
                 memory: { usedMemory: 50, pressureLevel: 0.2 })
                 render: { drawCalls: 100 },)
@@ -552,7 +551,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             }).not.toThrow();''
             expect(monitor.statistics.totalChecks).toBe(1');'
         };''
-        test('should handle invalid metric values', (') => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }'
+        test('should handle invalid metric values', (') => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }')
                 frame: { currentFPS: null },')'
                 memory: { usedMemory: 'invalid' })
                 render: { drawCalls: undefined },)

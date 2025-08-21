@@ -198,14 +198,14 @@ export interface SummaryReportData { overview: {
         totalPageViews: number;
         uniqueUsers: number;
         averageSessionDuration: number;
-        tutorialCompletionRate: number 
+        tutorialCompletionRate: number  }
 };
     topContent: { categories: TopItem[];
         topics: TopItem[];
-        searchQueries: TopItem[] 
+        searchQueries: TopItem[]  }
 };
     userSatisfaction: { averageRating: number;
-        totalFeedbacks: number;
+        totalFeedbacks: number; }
         satisfactionScore: number }
 
 export interface EffectivenessReportDetailed { contentPerformance: ContentPerformance,
@@ -274,7 +274,7 @@ export class HelpAnalytics {
                 totalSessions: 0;
                 totalPageViews: 0;
                 uniqueUsers: new Set<string>();
-                averageSessionDuration: 0;
+                averageSessionDuration: 0; }
                 topHelpCategories: new Map<string, number>(),
                 topHelpTopics: new Map<string, number>(),
                 searchQueries: new Map<string, number>(),
@@ -284,7 +284,7 @@ export class HelpAnalytics {
             tutorialUsage: { totalStarts: 0;
                 totalCompletions: 0;
                 completionRate: 0;
-                averageCompletionTime: 0;
+                averageCompletionTime: 0; }
                 dropOffPoints: new Map<string, number>(),
                 skipRates: new Map<string, number>(),
                 retryRates: new Map<string, number>( },
@@ -336,7 +336,7 @@ export class HelpAnalytics {
             this.setupPeriodicSave();
             this.setupPeriodicMaintenance();
             // ページ離脱時の処理
-            this.setupUnloadHandlers(''';
+            this.setupUnloadHandlers(''';)
             this.loggingSystem.info('HelpAnalytics', 'Help analytics initialized', { ')'
                 validation: validationResult.isValid ? 'passed' : 'failed',)';
                 fallbackReady: !!this.fallbackInterface);' ,}'
@@ -404,8 +404,7 @@ export class HelpAnalytics {
             const sessionId = this.generateSessionId();
             const timestamp = Date.now();
             
-            this.currentSession = {
-                id: sessionId;
+            this.currentSession = { id: sessionId;
                 startTime: timestamp;
                 entryPoint: entryPoint;
                 context: context;
@@ -413,13 +412,13 @@ export class HelpAnalytics {
                 pageViews: [];
                 searchQueries: [];
                 currentPage: null;
-                lastActivityTime: timestamp 
+                lastActivityTime: timestamp  }
 ,};
             this.sessions.set(sessionId, this.currentSession);
             this.analytics.helpUsage.totalSessions++;
             ';
             // エントリーポイントの追跡
-            this.trackEvent('help_session_start', { sessionId: sessionId)'
+            this.trackEvent('help_session_start', { sessionId: sessionId)' }
                 entryPoint: entryPoint,')';
                 context: context)'),
             ' }'
@@ -450,10 +449,9 @@ export class HelpAnalytics {
             this.updateSessionStatistics(this.currentSession);
             ';
             // 終了イベントの追跡
-            this.trackEvent('help_session_end', {
-                sessionId: this.currentSession.id;
+            this.trackEvent('help_session_end', { sessionId: this.currentSession.id;)
                 duration: duration);
-                exitPoint: exitPoint)';
+                exitPoint: exitPoint)'; }
                 pageViews: this.currentSession.pageViews.length,')';
                 searchCount: this.currentSession.searchQueries.length)'),
             ' }'
@@ -473,11 +471,10 @@ export class HelpAnalytics {
     trackPageView(page: string, pageData: any = { ): void {
         try {
             const timestamp = Date.now();
-            const pageView: PageView = {
-                page: page;
+            const pageView: PageView = { page: page;
                 timestamp: timestamp;
                 data: pageData;
-                timeSpent: 0 
+                timeSpent: 0  }
 ,};
             if(this.currentSession) {
             
@@ -517,10 +514,9 @@ export class HelpAnalytics {
      */
     trackSearchQuery(query: string, results: SearchResult[] = [], resultCount: number = 0): void { try {
             const timestamp = Date.now();
-            const searchData: SearchQuery = {
-                query: query;
+            const searchData: SearchQuery = { query: query;
                 timestamp: timestamp;
-                resultCount: resultCount;
+                resultCount: resultCount; }
                 results: results.map(r => ({ id: r.id, title: r.title, category: r.category )) ,}
             };
             
@@ -534,13 +530,13 @@ export class HelpAnalytics {
             const currentCount = this.analytics.helpUsage.searchQueries.get(query) || 0;''
             this.analytics.helpUsage.searchQueries.set(query, currentCount + 1);
 
-            this.trackEvent('search_query', { query: query)'
+            this.trackEvent('search_query', { query: query)' }
                 resultCount: resultCount,')';
                 hasResults: resultCount > 0)'),
             ' }'
 
             this.loggingSystem.debug('HelpAnalytics', `Search query tracked: "${query}" (${resultCount} results}`});""
-        } catch (error") {
+        } catch (error") {"
             this.loggingSystem.error('HelpAnalytics', 'Failed to track search query', error); }
     }
     
@@ -596,7 +592,7 @@ export class HelpAnalytics {
             const currentCount = this.analytics.tutorialUsage.dropOffPoints.get(dropOffKey) || 0;''
             this.analytics.tutorialUsage.dropOffPoints.set(dropOffKey, currentCount + 1);
 
-            this.trackEvent('tutorial_drop_off', { tutorialId: tutorialId)'
+            this.trackEvent('tutorial_drop_off', { tutorialId: tutorialId)' }
                 stepIndex: stepIndex,')';
                 reason: reason)'),
             ' }'
@@ -615,14 +611,13 @@ export class HelpAnalytics {
      */''
     trackUserFeedback(contentId: string, rating: number, feedback: string = '', context: any = { ): void {
         try {
-            const feedbackData = {
-                contentId: contentId;
+            const feedbackData = { contentId: contentId;
                 rating: rating;
                 feedback: feedback;
-                context: context;
+                context: context; }
                 timestamp: Date.now( ,};
             
-            // 評価統計の更新
+            // 評価統計の更新)
             if(!this.analytics.effectiveness.helpfulnessRatings.has(contentId) { this.analytics.effectiveness.helpfulnessRatings.set(contentId, {)
                     totalRatings: 0 ,}
                     averageRating: 0,) }
@@ -669,7 +664,7 @@ export class HelpAnalytics {
             const selectionData = { categoryId: sanitizedCategoryId,
 
                 context: sanitizedContext,
-                timestamp: Date.now(''';
+                timestamp: Date.now(''';)
                 sessionId: this.currentSession? .id || 'unknown' ,}))'
             // カテゴリ統計の更新')'
             this.updateCategoryStatistics(sanitizedCategoryId);
@@ -705,13 +700,13 @@ export class HelpAnalytics {
             const sanitizedContext = contextValidation.sanitizedData;
 ';
             // コンテンツの基本サニタイゼーション
-            const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined
+            const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined;
                 this.sanitizeObject(content) : {};
 
             const exitData = { topicId: sanitizedTopicId,
                 content: sanitizedContent,
                 exitContext: sanitizedContext,
-                timestamp: Date.now(''';
+                timestamp: Date.now(''';)
                 sessionId: this.currentSession? .id || 'unknown' ,}))
             // トピック統計の更新)
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
@@ -753,13 +748,13 @@ export class HelpAnalytics {
             const sanitizedContext = contextValidation.sanitizedData;
 ';
             // コンテンツの基本サニタイゼーション
-            const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined
+            const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined;
                 this.sanitizeObject(content) : {};
 
             const viewData = { topicId: sanitizedTopicId,
                 content: sanitizedContent,
                 viewContext: sanitizedContext,
-                timestamp: Date.now(''';
+                timestamp: Date.now(''';)
                 sessionId: this.currentSession? .id || 'unknown' ,}))
             // トピック統計の更新)
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
@@ -808,18 +803,18 @@ export class HelpAnalytics {
             const sanitizedFeedback = feedbackValidation.sanitizedData;
 ';
             // コンテンツの基本サニタイゼーション
-            const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined
+            const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined;
                 this.sanitizeObject(content) : {};
 
             const feedbackData = { topicId: sanitizedTopicId,
                 content: sanitizedContent,
                 feedback: sanitizedFeedback,
-                timestamp: Date.now(''';
+                timestamp: Date.now(''';)
                 sessionId: this.currentSession? .id || 'unknown' ,}))'
             // フィードバック統計の更新')'
             if(sanitizedFeedback.rating) { '
 
-                this.trackUserFeedback(sanitizedTopicId, sanitizedFeedback.rating, sanitizedFeedback.comment || '', { : undefined 
+                this.trackUserFeedback(sanitizedTopicId, sanitizedFeedback.rating, sanitizedFeedback.comment || '', { : undefined )
                     content: sanitizedContent)); ,}
             ';
             // イベント記録
@@ -849,7 +844,7 @@ export class HelpAnalytics {
             const sanitizedQuery = queryValidation.sanitizedData;
             ';
             // 結果数の検証
-            const sanitizedResultCount = typeof resultCount === 'number' && isFinite(resultCount) && resultCount >= 0 ?   : undefined
+            const sanitizedResultCount = typeof resultCount === 'number' && isFinite(resultCount) && resultCount >= 0 ?   : undefined;
                 Math.floor(resultCount) : 0;
 ';
             // 既存のtrackSearchQueryメソッドを内部的に呼び出し
@@ -866,13 +861,12 @@ export class HelpAnalytics {
      * @returns 検証とサニタイゼーション結果
      */
     private validateAndSanitizeData(data: any, type: DataType): ValidationResult { try {
-            const result: ValidationResult = {
-                isValid: true;
+            const result: ValidationResult = { isValid: true;
                 sanitizedData: null;
-                errors: [] 
-},"
+                errors: []  }
+},""
 
-            switch(type) {"
+            switch(type) {""
 
                 case 'categoryId':';
                     result.sanitizedData = this.sanitizeString(data, { maxLength: 100, allowSpecialChars: false ),''
@@ -1009,7 +1003,7 @@ export class HelpAnalytics {
                 const sanitizedKey = this.sanitizeString(key, { maxLength: 50, allowSpecialChars: false ),''
                 if(!sanitizedKey || !allowedKeys.includes(sanitizedKey)) {
 
-            }
+            };
                     continue; }
 ';
                 // 値の処理
@@ -1059,13 +1053,13 @@ export class HelpAnalytics {
 
                 if (!data[section] || typeof, data[section] !== 'object'') {' }
 
-                    this.loggingSystem.error('HelpAnalytics', `Missing or invalid section: ${section}`'});
+                    this.loggingSystem.error('HelpAnalytics', `Missing or invalid section: ${section}`'});'
                     return false;
             // Map オブジェクトの検証
-            const mapFields = ['';
+            const mapFields = [ '';
                 'helpUsage.topHelpCategories',
                 'helpUsage.topHelpTopics',
-                'helpUsage.searchQueries',
+                'helpUsage.searchQueries', ]
                 'content.topicViews',]';
                 'content.categoryViews'];
             ];
@@ -1115,7 +1109,7 @@ export class HelpAnalytics {
             const result = dataOperation();
             // 操作後の検証
             if(!this.validateAnalyticsStructure(this.analytics)) { ''
-                this.loggingSystem.error('HelpAnalytics', `Data corruption detected after ${operation}`}
+                this.loggingSystem.error('HelpAnalytics', `Data corruption detected after ${operation}`})
                 this.ensureMapInitialization(});
             }
 ';
@@ -1133,9 +1127,8 @@ export class HelpAnalytics {
     private initializeContentCaching(): void { try {
             this.contentCache = new Map<string, CacheEntry>();
             this.searchCache = new Map<string, CacheEntry>();
-            this.cacheConfig = {
-                maxContentCacheSize: 50;
-                maxSearchCacheSize: 100;
+            this.cacheConfig = { maxContentCacheSize: 50;
+                maxSearchCacheSize: 100; }
                 cacheExpiryTime: 15 * 60 * 1000, // 15分;
                 enableCompression: true 
 ,};
@@ -1222,8 +1215,8 @@ export class HelpAnalytics {
             if (this.searchCache!.size >= this.cacheConfig!.maxSearchCacheSize) { this.evictLeastUsedSearchResults(); }
 
             this.searchCache!.set(cacheKey, cacheEntry);''
-            this.loggingSystem.debug('HelpAnalytics', `Search results cached: "${query"}"`});""
-        } catch (error") {
+            this.loggingSystem.debug('HelpAnalytics', `Search results cached: "${query"}"`});"""
+        } catch (error") {"
             this.loggingSystem.error('HelpAnalytics', 'Failed to cache search results', error); }
     }
 
@@ -1253,7 +1246,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Search results retrieved from cache: "${query"}"`});"
             return results;""
-        } catch (error") {
+        } catch (error") {"
             this.loggingSystem.error('HelpAnalytics', 'Failed to get cached search results', error);
             return null;
 
@@ -1304,10 +1297,9 @@ export class HelpAnalytics {
      */
     private recordOperationMetrics(operationName: string, duration: number, error: Error | null = null): void { try {
             if(!this.performanceMetrics!.operations.has(operationName) {
-                this.performanceMetrics!.operations.set(operationName, {
-                    totalCalls: 0;
+                this.performanceMetrics!.operations.set(operationName, { totalCalls: 0;)
                     totalDuration: 0);
-                    averageDuration: 0);
+                    averageDuration: 0); }
                     errorCount: 0, }
                     lastCall: 0); }
             const metrics = this.performanceMetrics!.operations.get(operationName)!;
@@ -1420,7 +1412,7 @@ export class HelpAnalytics {
 
     private generateSearchCacheKey(query: string): string { ' ,}'
 
-        return `search_${query.toLowerCase('}.replace(/\s+/g, '_'})`;
+        return `search_${query.toLowerCase('}.replace(/\s+/g, '_'})`;'
     }
 
     private cleanupExpiredCache(): void { const now = Date.now();
@@ -1509,15 +1501,14 @@ export class HelpAnalytics {
      * フォールバック用テキストベースヘルプインターフェース
      */
     private initializeFallbackInterface(): void { try {
-            this.fallbackInterface = {
-                isActive: false;
+            this.fallbackInterface = { isActive: false; }
                 container: null,
                 content: new Map<string, FallbackContent>(' };
 ';
             // 基本的なヘルプコンテンツ
             this.fallbackInterface.content.set('basic-help', { ')'
                 title: 'ゲームヘルプ（簡易版）')';
-                content: ['';
+                content: [ '';
                     '基本操作:',
                     '- 泡をクリックまたはタップして割る',
                     '- スペースキーでポーズ',
@@ -1528,7 +1519,7 @@ export class HelpAnalytics {
                     '- 泡を割るとスコア獲得',
                     '- 連続で割るとコンボボーナス',
                     '- ピンクの泡でHP回復',
-                    '- 毒の泡でHPダメージ',
+                    '- 毒の泡でHPダメージ', ]
                     '',]';
                     '問題が発生した場合は、ページを再読み込みしてください。'')]';
                 ])');
@@ -1611,7 +1602,7 @@ export class HelpAnalytics {
             // キーボードイベント
             const handleKeyDown = (event: KeyboardEvent') => {  ''
                 if(event.key === 'Escape) {'
-
+;
                     this.hideFallbackInterface()';
             document.addEventListener('keydown', handleKeyDown);
             this.fallbackInterface!.keydownHandler = handleKeyDown;
@@ -1656,8 +1647,7 @@ export class HelpAnalytics {
      * ヘルプシステムの初期化検証
      */
     private validateHelpSystemInitialization(): SystemValidationResult { try {
-            const validationResult: SystemValidationResult = {
-                isValid: true;
+            const validationResult: SystemValidationResult = { isValid: true;
                 errors: [];
                 warnings: [];
                 components: {
@@ -1665,7 +1655,7 @@ export class HelpAnalytics {
                     feedback: false;
                     search: false;
                     content: false;
-                    accessibility: false 
+                    accessibility: false  }
 }
             },
             // アナリティクスコンポーネントの検証
@@ -1711,7 +1701,7 @@ export class HelpAnalytics {
                 validationResult.warnings.push('Fallback, interface prepared, due to, validation failures''); }
             }
 
-            this.loggingSystem.info('HelpAnalytics', 'Help system validation completed', { isValid: validationResult.isValid)
+            this.loggingSystem.info('HelpAnalytics', 'Help system validation completed', { isValid: validationResult.isValid) }
                 errors: validationResult.errors.length,);
                 warnings: validationResult.warnings.length);
 ';
@@ -1723,10 +1713,9 @@ export class HelpAnalytics {
             return { isValid: false,
                 errors: [(error, as Error).message];
                 warnings: [];
-                components: {
-                    analytics: false;
+                components: { analytics: false;
                     feedback: false;
-                    search: false;
+                    search: false; }
                     content: false, };
                     accessibility: false ;
 }
@@ -1736,25 +1725,24 @@ export class HelpAnalytics {
      * ヘルプ使用統計レポートの生成
      */
     generateUsageReport(): UsageReport | null { try {
-            const report: UsageReport = {
-                generatedAt: Date.now();
-                period: {
+            const report: UsageReport = { generatedAt: Date.now();
+                period: { }
                     start: Date.now() - (7 * 24 * 60 * 60 * 1000), // 7日前;
                     end: Date.now( ,};
                 usage: { totalSessions: this.analytics.helpUsage.totalSessions;
-                    totalPageViews: this.analytics.helpUsage.totalPageViews;
+                    totalPageViews: this.analytics.helpUsage.totalPageViews;)
                     averageSessionDuration: this.calculateAverageSessionDuration();
                     searchQueries: this.analytics.helpUsage.searchQueries.size;
-                    topCategories: this.getTopCategories(5);
-                    topSearches: this.getTopSearchQueries(10 };
+                    topCategories: this.getTopCategories(5); }
+                    topSearches: this.getTopSearchQueries(10 };)
                 effectiveness: { averageRating: this.calculateAverageRating();
                     totalFeedbacks: this.getTotalFeedbackCount();
-                    satisfactionScore: this.calculateSatisfactionScore();
+                    satisfactionScore: this.calculateSatisfactionScore(); }
                     problemAreas: this.identifyProblemAreas( };
                 performance: { cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0;
                     errorRate: this.performanceMetrics ? this.performanceMetrics.errorRate : 0;
-                    operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0 
-};
+                    operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0  }
+};)
                 recommendations: this.generateImprovementSuggestions();
             };
             // レポートの保存
@@ -1835,11 +1823,10 @@ export class HelpAnalytics {
      */
     private trackEvent(eventType: string, eventData: any = { ): void {
         try {
-            const event: AnalyticsEvent = {
-                type: eventType;
+            const event: AnalyticsEvent = { type: eventType;
                 data: eventData;
                 timestamp: Date.now();
-                sessionId: this.currentSession ? this.currentSession.id : null 
+                sessionId: this.currentSession ? this.currentSession.id : null  }
 ,};
             // イベントキューに追加
             const eventId = this.generateEventId();
@@ -1870,7 +1857,7 @@ export class HelpAnalytics {
             const report: AnalyticsReport = {''
                 generatedAt: Date.now(''';
                 period: options.period || 'all'
-,}
+,})
                 data: {}))'
             ')';
             switch(reportType) {'
@@ -1906,7 +1893,7 @@ export class HelpAnalytics {
 
             return { ''
                 generatedAt: Date.now('' ,};
-
+)
                 period: options.period || 'all', })
                 data: {},)
                 error: (error, as Error).message ;
@@ -1924,22 +1911,22 @@ export class HelpAnalytics {
         return { overview: {
                 totalHelpSessions: this.analytics.helpUsage.totalSessions;
                 totalPageViews: this.analytics.helpUsage.totalPageViews;
-                uniqueUsers: this.analytics.helpUsage.uniqueUsers.size;
+                uniqueUsers: this.analytics.helpUsage.uniqueUsers.size; }
                 averageSessionDuration: this.calculateAverageSessionDuration(), };
                 tutorialCompletionRate: Math.round(completionRate * 100) / 100 ;
 }
             },
             topContent: { categories: this.getTopCategories(5);
-                topics: this.getTopTopics(10);
-                searchQueries: this.getTopSearchQueries(10 };
+                topics: this.getTopTopics(10); }
+                searchQueries: this.getTopSearchQueries(10 };)
             userSatisfaction: { averageRating: this.calculateAverageRating();
-                totalFeedbacks: this.getTotalFeedbackCount();
+                totalFeedbacks: this.getTotalFeedbackCount(); }
                 satisfactionScore: this.calculateSatisfactionScore( }
         }
 
     /**
      * 詳細レポートの生成
-     */
+     */)
     private, generateDetailedReport(options: any = { ): any {
         // 詳細レポートの実装
         return {  };
@@ -1982,9 +1969,8 @@ export class HelpAnalytics {
     private saveAnalyticsData(): void { try {
             if (!this.config.enableOfflineStorage) return;
             
-            const dataToSave: StoredAnalyticsData = {
-                analytics: this.analytics;
-                sessions: Array.from(this.sessions.entries();
+            const dataToSave: StoredAnalyticsData = { analytics: this.analytics;
+                sessions: Array.from(this.sessions.entries(); }
                 events: Array.from(this.events.entries().slice(-100), // 最新100件のみ;
                 lastSaved: Date.now()';
             localStorage.setItem('help_analytics_data', JSON.stringify(dataToSave));''
@@ -2042,11 +2028,11 @@ export class HelpAnalytics {
      * ユーティリティメソッド群'
      */''
     private generateSessionId()';
-        return 'session_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
+        return 'session_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);'
     }
 
     private generateEventId()';
-        return 'event_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
+        return 'event_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);'
     }
     
     private updateSessionStatistics(session: HelpSession): void { // セッション統計の更新ロジック
@@ -2143,7 +2129,7 @@ export class HelpAnalytics {
         if(!timeStats.has(page) {
             
         }
-            timeStats.set(page, { total: 0, count: 0, average: 0 ,}
+            timeStats.set(page, { total: 0, count: 0, average: 0 ,})
         const stats = timeStats.get(page)!;
         stats.total += timeSpent;
         stats.count++;
@@ -2208,7 +2194,7 @@ export class HelpAnalytics {
         for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries() {
 
             if(ratingData.averageRating < 3 && ratingData.totalRatings >= 5) {'
-                problems.push({''
+                problems.push({'')
                     type: 'low_rating);
                     contentId: contentId)';
                     rating: ratingData.averageRating,' }'
@@ -2218,7 +2204,7 @@ export class HelpAnalytics {
         
         // 検索結果が見つからないクエリ
         for(const [query, count] of this.analytics.effectiveness.contentGaps.entries() { if(count >= 3) {'
-                problems.push({''
+                problems.push({'')
                     type: 'content_gap);
                     query: query)';
                     searchCount: count,' }'
@@ -2235,13 +2221,13 @@ export class HelpAnalytics {
 
         problems.forEach(problem => { ');''
             if(problem.type === 'low_rating'') {'
-                suggestions.push({'
+                suggestions.push({')
             })'
                     type: 'content_improvement',') }
 
                     contentId: problem.contentId),' }'
 
-                    suggestion: `コンテンツ "${problem.contentId}" の品質改善が必要です（評価: ${problem.rating? .toFixed(1"})）`, : undefined""
+                    suggestion: `コンテンツ "${problem.contentId}" の品質改善が必要です（評価: ${problem.rating? .toFixed(1"})）`, : undefined"""
                     priority: 'high''';
                 }'),
             }

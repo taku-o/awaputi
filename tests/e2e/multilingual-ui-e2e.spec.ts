@@ -34,9 +34,9 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         title: lm.t('menu.title''),
         start: lm.t('menu.start''),
         settings: lm.t('menu.settings''),
-        userInfo: lm.t('menu.userInfo'}
+        userInfo: lm.t('menu.userInfo'};
       };
-      
+      )
       return menuTexts;);
     
     expect(menuTest.title').toBe('BubblePop');
@@ -61,9 +61,9 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         title: lm.t('menu.title''),
         start: lm.t('menu.start''),
         settings: lm.t('menu.settings''),
-        userInfo: lm.t('menu.userInfo'}
+        userInfo: lm.t('menu.userInfo'};
       };
-      
+      )
       return menuTexts;);
     
     expect(menuTest.title').toBe('BubblePop');
@@ -83,7 +83,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         time: lm.t('game.time''),
         combo: lm.t('game.combo''),
         pause: lm.t('game.pause''),
-        gameOver: lm.t('game.gameOver'}
+        gameOver: lm.t('game.gameOver'})
       };);
     
     expect(japaneseGameUI.score').toBe('スコア');
@@ -109,7 +109,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         time: lm.t('game.time''),
         combo: lm.t('game.combo''),
         pause: lm.t('game.pause''),
-        gameOver: lm.t('game.gameOver'}
+        gameOver: lm.t('game.gameOver'})
       };);
     
     expect(englishGameUI.score').toBe('Score');
@@ -133,7 +133,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         quality: lm.t('settings.quality''),
         accessibility: lm.t('settings.accessibility''),
         back: lm.t('settings.back''),
-        apply: lm.t('settings.apply'}
+        apply: lm.t('settings.apply'})
       };);
     
     expect(japaneseSettingsUI.title').toBe('設定');
@@ -163,7 +163,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         quality: lm.t('settings.quality''),
         accessibility: lm.t('settings.accessibility''),
         back: lm.t('settings.back''),
-        apply: lm.t('settings.apply'}
+        apply: lm.t('settings.apply'})
       };);
     
     expect(englishSettingsUI.title').toBe('Settings');
@@ -189,7 +189,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         unlockedStages: lm.t('userInfo.unlockedStages''),
         ownedItems: lm.t('userInfo.ownedItems''),
         highScores: lm.t('userInfo.highScores''),
-        noRecords: lm.t('userInfo.noRecords'}
+        noRecords: lm.t('userInfo.noRecords'})
       };);
     
     expect(japaneseUserInfoUI.title').toBe('ユーザー情報');
@@ -219,7 +219,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         unlockedStages: lm.t('userInfo.unlockedStages''),
         ownedItems: lm.t('userInfo.ownedItems''),
         highScores: lm.t('userInfo.highScores''),
-        noRecords: lm.t('userInfo.noRecords'}
+        noRecords: lm.t('userInfo.noRecords'})
       };);
     
     expect(englishUserInfoUI.title').toBe('User Information');
@@ -243,7 +243,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         gameTips: lm.t('help.gameTips''),
         bubbleTypes: lm.t('help.bubbleTypes''),
         controls: lm.ta('help.controls''),
-        tips: lm.ta('help.tips'}
+        tips: lm.ta('help.tips'})
       };);
     
     expect(japaneseHelp.title').toBe('操作説明');
@@ -270,7 +270,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         gameTips: lm.t('help.gameTips''),
         bubbleTypes: lm.t('help.bubbleTypes''),
         controls: lm.ta('help.controls''),
-        tips: lm.ta('help.tips'}
+        tips: lm.ta('help.tips'})
       };);
     
     expect(englishHelp.title').toBe('Controls');
@@ -292,7 +292,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         reload: lm.t('error.reload''),
         canvasNotSupported: lm.t('error.canvasNotSupported''),
         audioNotSupported: lm.t('error.audioNotSupported''),
-        storageNotSupported: lm.t('error.storageNotSupported'}
+        storageNotSupported: lm.t('error.storageNotSupported'})
       };);
     
     expect(japaneseErrors.generic').toBe('エラーが発生しました');
@@ -316,7 +316,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         reload: lm.t('error.reload''),
         canvasNotSupported: lm.t('error.canvasNotSupported''),
         audioNotSupported: lm.t('error.audioNotSupported''),
-        storageNotSupported: lm.t('error.storageNotSupported'}
+        storageNotSupported: lm.t('error.storageNotSupported'})
       };);
     
     expect(englishErrors.generic').toBe('An error occurred');
@@ -335,7 +335,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         yes: lm.t('confirm.yes''),
         no: lm.t('confirm.no''),
         ok: lm.t('confirm.ok''),
-        cancel: lm.t('confirm.cancel'}
+        cancel: lm.t('confirm.cancel'})
       };);
     });
     
@@ -358,7 +358,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         yes: lm.t('confirm.yes''),
         no: lm.t('confirm.no''),
         ok: lm.t('confirm.ok''),
-        cancel: lm.t('confirm.cancel'}
+        cancel: lm.t('confirm.cancel'})
       };);
     });
     
@@ -378,7 +378,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         timeStop: lm.t('effect.timeStop''),
         electric: lm.t('effect.electric''),
         operationDisabled: lm.t('effect.operationDisabled''),
-        scoreDouble: lm.t('effect.scoreDouble'}
+        scoreDouble: lm.t('effect.scoreDouble'})
       };);
     
     expect(japaneseEffects.bonusTime').toBe('ボーナスタイム');
@@ -402,7 +402,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         timeStop: lm.t('effect.timeStop''),
         electric: lm.t('effect.electric''),
         operationDisabled: lm.t('effect.operationDisabled''),
-        scoreDouble: lm.t('effect.scoreDouble'}
+        scoreDouble: lm.t('effect.scoreDouble'})
       };);
     
     expect(englishEffects.bonusTime').toBe('Bonus Time');
@@ -423,7 +423,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         irreversible: lm.t('dataClear.irreversible''),
         items: lm.ta('dataClear.items''),
         execute: lm.t('dataClear.execute''),
-        cancel: lm.t('dataClear.cancel'}
+        cancel: lm.t('dataClear.cancel'})
       };);
     
     expect(japaneseDataClear.title').toBe('データクリア確認');
@@ -450,7 +450,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         irreversible: lm.t('dataClear.irreversible''),
         items: lm.ta('dataClear.items''),
         execute: lm.t('dataClear.execute''),
-        cancel: lm.t('dataClear.cancel'}
+        cancel: lm.t('dataClear.cancel'})
       };);
     
     expect(englishDataClear.title').toBe('Confirm Data Clear');
@@ -473,7 +473,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         prompt: lm.t('username.prompt''),
         inputHelp: lm.t('username.inputHelp''),
         ok: lm.t('username.ok''),
-        cancel: lm.t('username.cancel'}
+        cancel: lm.t('username.cancel'})
       };);
     
     expect(japaneseUsername.register').toBe('ユーザー名登録');
@@ -499,7 +499,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         prompt: lm.t('username.prompt''),
         inputHelp: lm.t('username.inputHelp''),
         ok: lm.t('username.ok''),
-        cancel: lm.t('username.cancel'}
+        cancel: lm.t('username.cancel'})
       };);
     
     expect(englishUsername.register').toBe('Register Username');
@@ -522,7 +522,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         fullscreen: lm.t('shortcuts.fullscreen''),
         mute: lm.t('shortcuts.mute''),
         settings: lm.t('shortcuts.settings''),
-        help: lm.t('shortcuts.help'}
+        help: lm.t('shortcuts.help'})
       };);
     
     expect(japaneseShortcuts.title').toBe('キーボードショートカット');
@@ -550,7 +550,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
         fullscreen: lm.t('shortcuts.fullscreen''),
         mute: lm.t('shortcuts.mute''),
         settings: lm.t('shortcuts.settings''),
-        help: lm.t('shortcuts.help'}
+        help: lm.t('shortcuts.help'})
       };);
     
     expect(englishShortcuts.title').toBe('Keyboard Shortcuts');
@@ -580,7 +580,7 @@ test.describe('Regional Localization Features E2E Tests', () => {
         japanese: lm.formatNumber(testNumber, 'ja''),
         english: lm.formatNumber(testNumber, 'en''),
         englishGB: lm.formatNumber(testNumber, 'en-GB''),
-        german: lm.formatNumber(testNumber, 'de'}
+        german: lm.formatNumber(testNumber, 'de'})
       };);
     
     expect(numberFormatTest.japanese').toBe('12,345.67');
@@ -600,7 +600,7 @@ test.describe('Regional Localization Features E2E Tests', () => {
         japanese: lm.formatDate(testDate, 'ja''),
         english: lm.formatDate(testDate, 'en''),
         englishGB: lm.formatDate(testDate, 'en-GB''),
-        german: lm.formatDate(testDate, 'de'}
+        german: lm.formatDate(testDate, 'de'});
       };);
     
     // Date formatting results may vary based on timezone and browser
@@ -624,7 +624,7 @@ test.describe('Regional Localization Features E2E Tests', () => {
         usdJapanese: lm.formatCurrency(amount, 'ja', 'USD''),
         usdEnglish: lm.formatCurrency(amount, 'en', 'USD''),
         jpyJapanese: lm.formatCurrency(amount, 'ja', 'JPY''),
-        eurGerman: lm.formatCurrency(amount, 'de', 'EUR'}
+        eurGerman: lm.formatCurrency(amount, 'de', 'EUR'})
       };);
     
     // Currency formatting should include currency symbols or codes
@@ -642,7 +642,7 @@ test.describe('Regional Localization Features E2E Tests', () => {
         japanese: lm.getRegionalSettings('ja''),
         english: lm.getRegionalSettings('en''),
         englishGB: lm.getRegionalSettings('en-gb''),
-        german: lm.getRegionalSettings('de'}
+        german: lm.getRegionalSettings('de'})
       };);
     
     // Test Japanese settings
@@ -664,3 +664,4 @@ test.describe('Regional Localization Features E2E Tests', () => {
     expect(regionalSettingsTest.german.locale').toBe('de-DE');
   });
 }');
+}}}}}}}}}}}}))))

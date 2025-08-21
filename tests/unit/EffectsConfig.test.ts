@@ -103,7 +103,7 @@ const mockGet = jest.fn((category: string, key: string, defaultValue => {);
     // 戻り値は各テストで設定
     return defaultValue;
 });
-const mockSet = jest.fn((category: string, key: string, value: boolean => {
+const mockSet = jest.fn((category: string, key: string, value: boolean => {);
     return true;);
 });
 const mockSetValidationRule = jest.fn();
@@ -412,7 +412,7 @@ describe('EffectsConfig', () => {
                     count: 30,
                     size: 5,
                     speed: 150,
-                    life: 1500
+                    life: 1500)
                 })');
         }
         test('getMaxParticleCount が正しい値を返すこと', () => {
@@ -492,7 +492,7 @@ describe('EffectsConfig', () => {
                 },
                 tint: {
                     intensity: 0.3,
-                    duration: 500
+                    duration: 500)
                 })');
         }
         test('getShakeIntensity が正しい値を返すこと', () => {
@@ -571,8 +571,8 @@ describe('EffectsConfig', () => {
                 },
                 bounce: {
                     duration: 600,
-                    height: 30,
-                    easing: 'easeOutBounce'
+                    height: 30,)
+                    easing: 'easeOutBounce)
                 })');
         }
         test('getAnimationDuration が正しい値を返すこと', () => {
@@ -674,3 +674,4 @@ describe('EffectsConfig', () => {
         });
     }
 }');
+}}}}}}}}}}))))))))))

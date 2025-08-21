@@ -71,7 +71,7 @@ document.createElement = jest.fn((tagName') => {  ''
 document.body.appendChild = jest.fn() as jest.Mock;
 // Mock monitor
 const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
-        frame: {
+        frame: { }
             currentFPS: 60,
             averageFPS: 58,
             frameTime: 16.67,
@@ -99,8 +99,8 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
             deviceMemory: 8 }
         }
     }),
-    getHistoryData: jest.fn(() => ({ fps: [{ timestamp: Date.now() - 1000, value: 60 ),
-            { timestamp: Date.now(),
+    getHistoryData: jest.fn(() => ({ fps: [ { timestamp: Date.now() - 1000, value: 60 ),
+            { timestamp: Date.now(), ]
         value: 58  }]
     })]
         ],
@@ -108,8 +108,8 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
             { timestamp: Date.now(), used: 50.5 }]
         ]';
     }),''
-    getAnalysisResults: jest.fn((') => ({ anomalies: [''
-            { type: 'fps_drop', severity: 'warning',''
+    getAnalysisResults: jest.fn((') => ({ anomalies: [ '' }
+            { type: 'fps_drop', severity: 'warning','' ]
         message: 'FPS dropped below threshold'  }]
     })]
         ],
@@ -183,7 +183,7 @@ describe('PerformanceVisualizer', () => {
         test('should update chart data', (') => {''
             const fpsChart = visualizer.charts.get('fps'');' }'
             const addDataPointSpy = jest.spyOn(fpsChart, 'addDataPoint'); }
-            visualizer.updateCharts(};
+            visualizer.updateCharts(};)
             expect(addDataPointSpy.toHaveBeenCalledWith({ timestamp: expect.any(Number,)
                 value: 60);
                 threshold: { warning: 45,) }
@@ -194,7 +194,7 @@ describe('PerformanceVisualizer', () => {
         test('should handle chart data with thresholds', (') => {  ''
             const memoryChart = visualizer.charts.get('memory'');' }'
             const addDataPointSpy = jest.spyOn(memoryChart, 'addDataPoint'); }
-            visualizer.updateCharts(};
+            visualizer.updateCharts(};)
             expect(addDataPointSpy.toHaveBeenCalledWith({ timestamp: expect.any(Number,)
                 value: 50.5);
                 threshold: { warning: 150,) }
@@ -216,7 +216,7 @@ describe('PerformanceVisualizer', () => {
         test('should update heatmap', (') => {  ''
             const heatmap = visualizer.charts.get('heatmap'');' }'
             const updateHeatmapSpy = jest.spyOn(heatmap, 'updateHeatmap'); }
-            visualizer.updateCharts(};
+            visualizer.updateCharts(};)
             expect(updateHeatmapSpy.toHaveBeenCalledWith({ fps: 60,)
                 memory: 0.3);
                 frameTime: 16.67,);
@@ -288,7 +288,7 @@ describe('PerformanceVisualizer', () => {
     describe('Mouse Interaction', (') => {  ' }'
         test('should handle mouse move events', (') => {' }'
             const handleMouseMoveSpy = jest.spyOn(visualizer, 'handleMouseMove'};
-            
+            )
             // Simulate mouse move event)'
             const mouseMoveCallback = mockCanvas.addEventListener.mock.calls.find(')';
                 call => call[0] === 'mousemove')[1];
@@ -297,7 +297,7 @@ describe('PerformanceVisualizer', () => {
                 clientY: 50 }
             },
             
-            mockCanvas.getBoundingClientRect = jest.fn(() => ({ left: 10)
+            mockCanvas.getBoundingClientRect = jest.fn(() => ({ left: 10) }
                 top: 10 }
     }),
             mouseMoveCallback(mockEvent);'
@@ -314,7 +314,7 @@ describe('PerformanceVisualizer', () => {
                 clientY: 75 }
             },
             
-            mockCanvas.getBoundingClientRect = jest.fn(() => ({ left: 10)
+            mockCanvas.getBoundingClientRect = jest.fn(() => ({ left: 10) }
                 top: 10 }
     }),
             mouseClickCallback(mockEvent);'
@@ -337,8 +337,7 @@ describe('PerformanceVisualizer', () => {
         test('should update hover point on mouse move', (') => {  ''
             const chart = visualizer.charts.get('fps');
             chart.isPointInChart = jest.fn(() => true);
-            chart.getDataPointAt = jest.fn(() => ({
-                value: 55.5);
+            chart.getDataPointAt = jest.fn(() => ({ value: 55.5); }
                 timestamp: Date.now(),
                 threshold: { warning: 45, }
         critical: 30  }
@@ -385,12 +384,12 @@ describe('PerformanceVisualizer', () => {
         test('should update chart settings', (') => { ' }'
             const chart = visualizer.charts.get('fps'}');''
             const updateSettingsSpy = jest.spyOn(chart, 'updateSettings').mockImplementation(() => {}');''
-            const newSettings = { colors: { fps: '#ff0000' } }
+            const newSettings = { colors: { fps: '#ff0000' } };
             visualizer.updateSettings(newSettings);'
             expect(updateSettingsSpy.toHaveBeenCalledWith(visualizer.settings);''
         }');''
         test('should get status from value correctly', () => {  }'
-            const threshold = { warning: 50, critical: 80 }''
+            const threshold = { warning: 50, critical: 80 }'';
             expect(visualizer.getStatusFromValue(30, threshold)').toBe('normal');''
             expect(visualizer.getStatusFromValue(60, threshold)').toBe('warning');''
             expect(visualizer.getStatusFromValue(90, threshold)').toBe('critical');''
@@ -418,7 +417,7 @@ describe('PerformanceVisualizer', () => {
     describe('Screenshot Functionality', (') => {  ''
         test('should capture screenshot', (') => {
             // Mock link element'
-            const mockLink = {''
+            const mockLink = {'';
                 download: '','';
                 href: '', }
         click: jest.fn(); }
@@ -535,15 +534,15 @@ describe('PerformanceVisualizer', () => {
         }');''
         test('should calculate performance score correctly', (') => { ' }'
             const heatmap = visualizer.charts.get('heatmap'};
-            
+            )
             // Good performance)
-            let score = heatmap.calculatePerformanceScore({ fps: 60)
+            let score = heatmap.calculatePerformanceScore({ fps: 60) };
                 memory: 0.2,);
                 frameTime: 16.67); }
             });
             expect(score.toBeLessThan(0.5);
             // Poor performance
-            score = heatmap.calculatePerformanceScore({ fps: 15)
+            score = heatmap.calculatePerformanceScore({ fps: 15) }
                 memory: 0.9,);
                 frameTime: 50),';
             expect(score.toBeGreaterThan(0.5);' }'
@@ -558,9 +557,9 @@ describe('PerformanceVisualizer', () => {
             expect(midColor[1]).toBeGreaterThan(0); // Should have some yellow' }'
         }');''
         test('should update heatmap data', (') => { ' }'
-            const heatmap = visualizer.charts.get('heatmap'};
+            const heatmap = visualizer.charts.get('heatmap'};)
             const initialLength = heatmap.heatmapData.length;)
-            heatmap.updateHeatmap({ fps: 45)
+            heatmap.updateHeatmap({ fps: 45) }
                 memory: 0.6,);
                 frameTime: 25),
         timestamp: Date.now(); }

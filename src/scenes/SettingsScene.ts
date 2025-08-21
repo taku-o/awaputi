@@ -10,7 +10,7 @@ import { VolumeControlComponent } from '../components/VolumeControlComponent.js'
 export interface SettingOption { value: string,
     label: string ,}
 
-export interface SettingItem { key: string;
+export interface SettingItem { key: string; }
     label: string,
     type: 'toggle' | 'select' | 'slider' | 'text' | 'custom';
     description?: string | undefined;
@@ -28,7 +28,7 @@ export interface SettingsLayout { categoryWidth: number,
     titleHeight: number ,}
 
 export interface ConfirmDialogData { message: string;
-    onConfirm?: () => void;
+    onConfirm?: () => void; }
     onCancel?: () => void; }
 }
 
@@ -47,7 +47,7 @@ export interface SettingsSceneState { currentCategory: string;
     hasContextualHelp?: boolean;
     contextualHelpTitle?: string;
     contextualHelpContent?: string;
-    contextualHelpActions?: string[];
+    contextualHelpActions?: string[]; }
     currentContext?: any; }
 
 export interface ContextData { accessMethod?: string;
@@ -117,10 +117,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         this.confirmDialogData = null;
         
         // レイアウト設定
-        this.layout = {
-            categoryWidth: 200;
+        this.layout = { categoryWidth: 200;
             settingsPadding: 20;
-            itemHeight: 60;
+            itemHeight: 60; }
     ,}
             titleHeight: 40 }
         }
@@ -129,15 +128,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      * 設定項目の初期化
      */''
     initializeSettingItems(''';
-                { key: 'ui.language', label: '言語', type: 'select', options: [' ,}
-
+                { key: 'ui.language', label: '言語', type: 'select', options: [ ' ,}
+ ]
                     { value: 'ja', label: '日本語' ,},]'
                     { value: 'en', label: 'English' ,}]'
                 ]},''
-                { key: 'ui.quality', label: '画質', type: 'select', options: [' ,}
+                { key: 'ui.quality', label: '画質', type: 'select', options: [ ' ,}
 
                     { value: 'low', label: '低' ,},''
-                    { value: 'medium', label: '中' ,},''
+                    { value: 'medium', label: '中' ,},'' ]
                     { value: 'high', label: '高' ,},]'
                     { value: 'auto', label: '自動' ,}]'
                 ]},''
@@ -146,31 +145,31 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 { key: 'audio.sfxVolume', label: '効果音音量', type: 'slider', min: 0, max: 1, step: 0.1 ,},''
                 { key: 'audio.bgmVolume', label: 'BGM音量', type: 'slider', min: 0, max: 1, step: 0.1 ,}
             ],
-            social: ['';
+            social: [ '';
                 { key: 'social.enableSharing', label: 'ソーシャル共有を有効化', type: 'toggle', description: 'スコアや実績の共有機能を有効にします' ,},''
                 { key: 'social.autoPromptHighScore', label: 'ハイスコア時の自動プロンプト', type: 'toggle', description: 'ハイスコアを達成した時に自動的に共有画面を表示します' ,},''
                 { key: 'social.autoPromptAchievements', label: '実績解除時の自動プロンプト', type: 'toggle', description: '実績を解除した時に自動的に共有画面を表示します' ,},''
                 { key: 'social.defaultPlatform', label: 'デフォルト共有先', type: 'select', options: [' ,}
 
                     { value: 'auto', label: '自動選択' ,},''
-                    { value: 'twitter', label: 'Twitter/X' ,},''
+                    { value: 'twitter', label: 'Twitter/X' ,},'' ]
                     { value: 'facebook', label: 'Facebook' ,},]'
                     { value: 'native', label: 'システム標準' ,}]'
                 ]},''
                 { key: 'social.includeScreenshot', label: 'スクリーンショットを含む', type: 'toggle', description: '共有時にゲーム画面のスクリーンショットを含めます' ,},''
-                { key: 'social.screenshotQuality', label: 'スクリーンショット画質', type: 'select', options: [' ,}
+                { key: 'social.screenshotQuality', label: 'スクリーンショット画質', type: 'select', options: [ ' ,}
 
-                    { value: 'low', label: '低（軽量）' ,},''
+                    { value: 'low', label: '低（軽量）' ,},'' ]
                     { value: 'medium', label: '中（標準）' ,},]'
                     { value: 'high', label: '高（高品質）' ,}]'
                 ]},''
                 { key: 'social.showWatermark', label: 'ウォーターマークを表示', type: 'toggle', description: 'スクリーンショットにゲーム名を表示します' ,},''
                 { key: 'social.customMessage', label: 'カスタムメッセージ', type: 'text', description: '共有時のデフォルトメッセージをカスタマイズできます' ,}
             ],
-            privacy: ['';
+            privacy: [ '';
                 { key: 'social.privacyLevel', label: '共有レベル', type: 'select', options: [' ,}
 
-                    { value: 'public', label: '公開（すべてのユーザー）' ,},''
+                    { value: 'public', label: '公開（すべてのユーザー）' ,},'' ]
                     { value: 'friends', label: 'フレンドのみ' ,},]'
                     { value: 'private', label: 'プライベート（共有しない）' ,}']'
                 ], description: 'どの範囲まで情報を共有するかを設定します' },''
@@ -178,15 +177,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 { key: 'privacy.analytics', label: '使用状況分析を許可', type: 'toggle', description: 'プレイ統計の分析を許可します' ,},''
                 { key: 'privacy.crashReports', label: 'クラッシュレポートの送信', type: 'toggle', description: 'エラー発生時の情報を開発者に送信します' ,}
             ],
-            notifications: ['';
+            notifications: [ '';
                 { key: 'notifications.challenges.enabled', label: 'チャレンジ通知', type: 'toggle', description: 'チャレンジ関連の通知を受け取ります' ,},''
                 { key: 'notifications.challenges.newChallenge', label: '新しいチャレンジ', type: 'toggle', description: '新しいチャレンジが追加された時に通知します' ,},''
                 { key: 'notifications.challenges.challengeComplete', label: 'チャレンジ完了', type: 'toggle', description: 'チャレンジを完了した時に通知します' ,},''
                 { key: 'notifications.challenges.dailyReminder', label: 'デイリーリマインダー', type: 'toggle', description: '毎日決まった時間にチャレンジを促します' ,},''
                 { key: 'notifications.achievements.enabled', label: '実績通知', type: 'toggle', description: '実績関連の通知を受け取ります' ,},''
                 { key: 'notifications.achievements.unlocked', label: '実績解除通知', type: 'toggle', description: '実績を解除した時に通知します' ,},''
-                { key: 'notifications.achievements.progress', label: '進捗通知', type: 'toggle', description: '実績の進捗状況を定期的に通知します' ,},''
-                { key: 'notifications.leaderboard.enabled', label: 'ランキング通知', type: 'toggle', description: 'ランキング関連の通知を受け取ります' ,},]'
+                { key: 'notifications.achievements.progress', label: '進捗通知', type: 'toggle', description: '実績の進捗状況を定期的に通知します' ,},'' ]
+                { key: 'notifications.leaderboard.enabled', label: 'ランキング通知', type: 'toggle', description: 'ランキング関連の通知を受け取ります' ,},]')
                 { key: 'notifications.leaderboard.newRecord', label: '新記録通知', type: 'toggle', description: '自己ベストを更新した時に通知します' ,}])
             ]);
             accessibility: this.getAccessibilitySettingsItems();
@@ -216,10 +215,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         }
         
         // 不足している基本アクセシビリティ設定の確認・追加
-        const requiredBasicSettings: SettingItem[] = ['';
-            { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします', validator: 'toggle' ,},''
+        const requiredBasicSettings: SettingItem[] = [ '';
+            { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします', validator: 'toggle' ,},'' ]
             { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします', validator: 'toggle' ,},]'
-            { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します', validator: 'toggle' ,}]
+            { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します', validator: 'toggle' ,}])
         ];)
         );
         for(const, requiredSetting of, requiredBasicSettings) {
@@ -236,7 +235,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         accessibilityItems.push({ ''
             key: 'accessibility.profiles',
             label: 'アクセシビリティプロファイル',
-            type: 'custom',
+            type: 'custom',)
             component: 'AccessibilityProfileComponent',)';
             description: 'プリセットされたアクセシビリティ設定プロファイルを適用します',')';
             validator: 'profile')');
@@ -245,7 +244,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         accessibilityItems.push({''
             key: 'accessibility.importExport',
             label: '設定のインポート・エクスポート',
-            type: 'custom',
+            type: 'custom',)
             component: 'SettingsImportExportComponent',)';
             description: 'アクセシビリティ設定をファイルとして保存・読み込みします',')';
             validator: 'importExport');
@@ -277,7 +276,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // コンテキストデータの処理
         this.processEntryContext(contextData);
 
-        console.log('[SettingsScene] 設定画面に入りました', {)'
+        console.log('[SettingsScene] 設定画面に入りました', {)''
             contextData,')';
             accessMethod: contextData.accessMethod)'),
 
@@ -319,7 +318,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     /**
      * アクセシビリティフォーカスモードの設定'
      */''
-    setAccessibilityFocusMode(''';
+    setAccessibilityFocusMode(''';)
         this.currentCategory = 'accessibility';)'
         this.selectedCategoryIndex = this.categories.indexOf('accessibility'');
 
@@ -332,7 +331,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */''
     setHelpIntegratedMode(''';
         this.currentCategory = 'general';
-
+)
         this.selectedCategoryIndex = 0;)'
         this.loggingSystem.info('SettingsScene', 'Help integrated mode activated);
     }
@@ -397,7 +396,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     exit() {
         // 変更を保存
         this.saveSettings()';
-        console.log('[SettingsScene] 設定画面を終了します'');
+        console.log('[SettingsScene] 設定画面を終了します'');'
 
         ';
 
@@ -656,7 +655,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // 現在の値のラベル
         const selectedOption = item.options?.find((opt: SettingOption) => opt.value === value');
         const displayText = selectedOption ? selectedOption.label: value,
-
+;
         context.fillStyle = '#2c3e50';''
         context.font = '14px Arial, sans-serif';''
         context.textAlign = 'left';''
@@ -805,10 +804,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.strokeRect(x, controlY, controlWidth, controlHeight);
         
         // プロファイル情報
-        const currentProfile = this.accessibilitySettingsManager ?   : undefined
+        const currentProfile = this.accessibilitySettingsManager ?   : undefined;
             this.accessibilitySettingsManager.getCurrentProfile() : null;''
         const profileName = currentProfile ? (currentProfile, as any').name: '標準',
-        // プロファイル名表示
+        // プロファイル名表示;
         context.fillStyle = '#2c3e50';''
         context.font = '14px Arial, sans-serif';''
         context.textAlign = 'left';''
@@ -836,7 +835,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         }
 
             context.textAlign = 'center';' }
-
+)
             context.fillText('Enter: プロファイル選択', x + controlWidth / 2, controlY + controlHeight + 12});
         }
     }
@@ -1060,15 +1059,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             case 'Enter':'';
                 this.activateCurrentSetting(''';
             case 'Escape':'';
-                this.goBack(''';
+                this.goBack(''';)
             case 'p':)';
             case 'P':')';
                 if(event.ctrlKey && this.currentCategory === 'accessibility) {''
-                    this.showAccessibilityProfiles(''';
+                    this.showAccessibilityProfiles(''';)
             case 'e':)';
             case 'E':')';
                 if(event.ctrlKey && this.currentCategory === 'accessibility) {''
-                    this.exportAccessibilitySettings(''';
+                    this.exportAccessibilitySettings(''';)
             case 'i':)';
             case 'I':')';
                 if(event.ctrlKey && this.currentCategory === 'accessibility) {'
@@ -1236,7 +1235,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
             case 'Enter':'';
                 this.finishTextEditing(''';
-            case 'Escape':'';
+            case 'Escape':'';)
                 this.cancelTextEditing()';
             case 'Backspace':')';
                 this.tempValue = (this.tempValue || '').slice(0, -1);
@@ -1312,7 +1311,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             this.gameEngine.settingsManager.save();
     }
 
-            console.log('[SettingsScene] 設定を保存しました');' }
+            console.log('[SettingsScene] 設定を保存しました');' }'
 
         } catch (error) { : undefined''
             console.error('[SettingsScene] 設定保存エラー:', error); }
@@ -1332,7 +1331,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     }
 
                 console.log(`[SettingsScene] Audio mute toggled: ${newMutedState}`'},' }
-
+)
                 this.loggingSystem.info('SettingsScene', `Audio mute toggled: ${newMutedState}`});''
             } catch (error) {
             console.error('[SettingsScene] Error toggling audio mute:', error);''
@@ -1348,12 +1347,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             case 'VolumeControlComponent':'';
                 this.handleVolumeControl(''';
             case 'AccessibilityProfileComponent':'';
-                this.handleAccessibilityProfileComponent(''';
+                this.handleAccessibilityProfileComponent(''';)
             case 'SettingsImportExportComponent':)';
                 this.handleSettingsImportExportComponent();
         }
 
-                console.warn('[SettingsScene] Unknown custom component:', item.component);' }
+                console.warn('[SettingsScene] Unknown custom component:', item.component);' }'
 
                 this.loggingSystem.warn('SettingsScene', `Unknown custom component: ${item.component}`});
                 break;
@@ -1369,7 +1368,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             // このメソッドは現在選択されているときに音量アップを実行
             if (this.volumeControlComponent) {''
                 this.volumeControlComponent.handleVolumeUp()';
-                console.log('[SettingsScene] Volume, control activated'');
+                console.log('[SettingsScene] Volume, control activated'');'
 
     }
 
@@ -1419,11 +1418,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // 次のプロファイルに切り替え
         (this.accessibilitySettingsManager, as any).applyProfile((nextProfile, as any).id);
 
-        console.log(`[SettingsScene] Switched, to profile: ${nextProfile.name)`'),''
+        console.log(`[SettingsScene] Switched, to profile: ${nextProfile.name)`'),'''
         this.loggingSystem.info('SettingsScene', `Profile switched to: ${nextProfile.name,}`},
         
     }
-        // 設定項目を更新 }
+        // 設定項目を更新 })
         this.settingItems.accessibility = this.getAccessibilitySettingsItems(});
     }
     
@@ -1470,7 +1469,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
                 }
 
-                    console.error('SceneManager, not available'); }'
+                    console.error('SceneManager, not available'); }''
                     return; }
                 }
                 
@@ -1483,15 +1482,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 if(!success) {
                 ';
 
-                    console.error(`Failed, to navigate, to ${targetScene) from settings screen`');
+                    console.error(`Failed, to navigate, to ${targetScene) from settings screen`');'
 
                     // フォールバック: menuシーンに戻る試行
                     if (targetScene !== 'menu''} {''
                         const, fallbackSuccess = this.gameEngine.sceneManager.switchScene('menu}
-
+)
                         if(!fallbackSuccess) {' }'
 
-                            console.error('Failed, to navigate, to fallback, menu scene''});
+                            console.error('Failed, to navigate, to fallback, menu scene''});'
                         }
 }
 
@@ -1622,7 +1621,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             ;
             // 設定の保存
             this.saveSettings()';
-            console.log('[SettingsScene] SettingsScene, destroyed'');''
+            console.log('[SettingsScene] SettingsScene, destroyed'');'''
             this.loggingSystem.info('SettingsScene', 'Settings scene destroyed);
 
         } catch (error) {

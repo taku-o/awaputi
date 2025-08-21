@@ -12,8 +12,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global as any).performance = { ''
     now: jest.fn(() => Date.now()'),';
 // Mock ErrorHandler''
-jest.mock('../src/utils/ErrorHandler.js', () => ({
-    getErrorHandler: jest.fn(() => ({
+jest.mock('../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({ }
         handleError: jest.fn(); }
     })))
 )));
@@ -63,7 +62,7 @@ const mockGameEngine = { isRunning: false,
     })
 );
 // Mock console
-const mockConsole = { registerCommand: jest.fn(),'
+const mockConsole = { registerCommand: jest.fn(),';
         print: jest.fn()'';
 '),';
 // Import after mocking' }'
@@ -237,7 +236,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             expect(result').toBe('Spawned 5 normal bubble(s'););' }'
         }');''
         test('should spawn bubble with position', (') => { ' }'
-            const result = spawnBubbleCommand.execute(['rainbow', '1', '100', '200']})'
+            const result = spawnBubbleCommand.execute(['rainbow', '1', '100', '200']})';
             );''
             expect(mockGameEngine.bubbleManager.spawnBubble').toHaveBeenCalledWith('rainbow', { x: 100, y: 200 });''
             expect(result').toBe('Spawned 1 rainbow bubble(s');''
@@ -458,7 +457,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             expect(result').toContain('Bubbles: 25'),' }'
         }');''
         test('should dump state as JSON', (') => { ' }'
-            const result = dumpStateCommand.execute(['--json']})
+            const result = dumpStateCommand.execute(['--json']});
             );
             expect(() => JSON.parse(result}).not.toThrow();
             const parsed = JSON.parse(result);
@@ -515,7 +514,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             expect(log.params').toEqual({ param: 'value' )'); }'
         }''
         test('should add to undo stack', (') => { ' }'
-            const state = { test: 'state' }''
+            const state = { test: 'state' }'';
             gameStateCommands.addToUndoStack('test-command', state);
             expect(gameStateCommands.executionState.undoStack).toHaveLength(1);'
             const undoItem = gameStateCommands.executionState.undoStack[0];''
@@ -539,7 +538,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
                 preventDataLoss: false, }
                 maxUndoSize: 5 }
             },
-            
+            ;
             gameStateCommands.updateSafetySettings(newSettings);
             expect(gameStateCommands.safetyChecks.confirmDestructive).toBe(false);
             expect(gameStateCommands.safetyChecks.preventDataLoss).toBe(false);'
@@ -569,7 +568,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
         test('should format game state', () => {  const state = {''
                 timestamp: Date.now('' }'
                 currentScene: 'game', }
-                score: { current: 5000, combo: 10 },
+                score: { current: 5000, combo: 10 },)
                 bubbles: { count: 30 })
             })'
             ')';
@@ -632,4 +631,4 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             expect(consoleLogSpy.toHaveBeenCalledWith('[GameStateCommands] Destroyed'); }
         });'
     }''
-}');
+}');)))))))))))))))))

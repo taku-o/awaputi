@@ -21,7 +21,7 @@ interface ThresholdConfig { metric: string,
 interface WarningSystem { notifications: Notification[];
     maxNotifications: number;
     alertQueue: Alert[];
-    alertHistory: Alert[];
+    alertHistory: Alert[]; }
     suppressionRules: Map<string, number>;
     escalationLevels: Map<string, EscalationLevel> }
 
@@ -43,7 +43,7 @@ interface NotificationAction { label: string,''
 interface Alert { id: string;
     name: string;
     metric: string;
-    description: string;
+    description: string; }
     value: number,
     threshold: number,
     severity: 'warning' | 'critical';
@@ -54,7 +54,7 @@ interface Alert { id: string;
     escalated: boolean ,}
 
 interface EscalationLevel { level: number;
-    timestamp: number;
+    timestamp: number; }
     nextEscalation: number }
 
 interface SuggestionEngine { suggestions: Map<string, Suggestion>;
@@ -62,7 +62,7 @@ interface SuggestionEngine { suggestions: Map<string, Suggestion>;
     maxSuggestions: number;
     cooldownPeriod: number ,}
 
-interface Suggestion { id: string;
+interface Suggestion { id: string; }
     alert: string,
     type: string,
     priority: 'high' | 'medium' | 'low';
@@ -77,14 +77,14 @@ interface MonitoringState { enabled: boolean;
     intervalId: number | null;
     checkInterval: number;
     lastCheck: number;
-    suppressionTimeout: number;
+    suppressionTimeout: number; }
     criticalAlertTimeout: number }
 
 interface Statistics { totalChecks: number;
     warningsTriggered: number;
     criticalAlertsTriggered: number;
     suggestionsGenerated: number;
-    falsePositives: number;
+    falsePositives: number; }
     thresholdViolations: Map<string, ViolationStats> }
 
 interface ViolationStats { warning: number,
@@ -131,12 +131,11 @@ export class PerformanceThresholdMonitor {
         this.setupDefaultThresholds();
         
         // 警告システム
-        this.warningSystem = {
-            notifications: [];
+        this.warningSystem = { notifications: [];
             maxNotifications: 50;
             alertQueue: [];
             alertHistory: [];
-            suppressionRules: new Map();
+            suppressionRules: new Map(); }
     ,}
     }
             escalationLevels: new Map(); }
@@ -157,18 +156,18 @@ export class PerformanceThresholdMonitor {
         // 統計
         this.statistics = { totalChecks: 0,
             warningsTriggered: 0;
-            criticalAlertsTriggered: 0;
+            criticalAlertsTriggered: 0;)
             suggestionsGenerated: 0);
             falsePositives: 0);
             thresholdViolations: new Map( ,};
-        
+        )
         this.initialize();
     }
 
     private initialize(): void { this.setupErrorHandler();
         this.startMonitoring();''
         this.setupEventListeners()';
-        console.log('[PerformanceThresholdMonitor] Threshold, monitoring initialized'); }'
+        console.log('[PerformanceThresholdMonitor] Threshold, monitoring initialized'); }''
 
     /**
      * エラーハンドラ設定
@@ -191,12 +190,12 @@ export class PerformanceThresholdMonitor {
             metric: 'frame.currentFPS';
             warning: 45;
             critical: 30,
-            evaluateBelow: true,
+            evaluateBelow: true,)
             unit: 'fps',)';
             description: 'Frame rate performance')';
-            suggestions: ['';
+            suggestions: [ '';
                 'Reduce particle effects quality',
-                'Decrease bubble count limit',
+                'Decrease bubble count limit', ]
                 'Optimize rendering pipeline',]';
                 'Enable performance mode'')]';
             ])');
@@ -206,12 +205,12 @@ export class PerformanceThresholdMonitor {
             metric: 'frame.frameTime';
             warning: 20;
             critical: 33.33,
-            evaluateBelow: false,
+            evaluateBelow: false,)
             unit: 'ms',)';
             description: 'Frame processing time')';
-            suggestions: ['';
+            suggestions: [ '';
                 'Optimize game loop performance',
-                'Reduce complex calculations per frame',
+                'Reduce complex calculations per frame', ]
                 'Use object pooling for frequent allocations',]';
                 'Profile and optimize hot code paths'')]';
             ])');
@@ -221,12 +220,12 @@ export class PerformanceThresholdMonitor {
             metric: 'memory.usedMemory';
             warning: 150;
             critical: 200,
-            evaluateBelow: false,
+            evaluateBelow: false,)
             unit: 'MB',)';
             description: 'Memory usage')';
-            suggestions: ['';
+            suggestions: [ '';
                 'Clear unused object references',
-                'Optimize texture memory usage',
+                'Optimize texture memory usage', ]
                 'Implement aggressive garbage collection',]';
                 'Reduce cached data size'')]';
             ])');
@@ -236,12 +235,12 @@ export class PerformanceThresholdMonitor {
             metric: 'memory.pressureLevel';
             warning: 0.7;
             critical: 0.85,
-            evaluateBelow: false,
+            evaluateBelow: false,)
             unit: 'ratio',)';
             description: 'Memory pressure level')';
-            suggestions: ['';
+            suggestions: [ '';
                 'Force garbage collection',
-                'Release non-essential caches',
+                'Release non-essential caches', ]
                 'Reduce memory allocation rate',]';
                 'Monitor for memory leaks'')]';
             ])');
@@ -251,12 +250,12 @@ export class PerformanceThresholdMonitor {
             metric: 'render.drawCalls';
             warning: 300;
             critical: 500,
-            evaluateBelow: false,
+            evaluateBelow: false,)
             unit: 'calls',)';
             description: 'Draw call count')';
-            suggestions: ['';
+            suggestions: [ '';
                 'Implement draw call batching',
-                'Reduce number of separate objects',
+                'Reduce number of separate objects', ]
                 'Use instanced rendering',]';
                 'Optimize texture atlas usage'')]';
             ])');
@@ -266,12 +265,12 @@ export class PerformanceThresholdMonitor {
             metric: 'game.entityCount';
             warning: 500;
             critical: 800,
-            evaluateBelow: false,
+            evaluateBelow: false,)
             unit: 'entities',)';
             description: 'Total entity count')';
-            suggestions: ['';
+            suggestions: [ '';
                 'Implement entity culling',
-                'Reduce maximum entity limits',
+                'Reduce maximum entity limits', ]
                 'Optimize entity lifecycle management',]';
                 'Use spatial partitioning for entities'')]';
             ])');
@@ -281,12 +280,12 @@ export class PerformanceThresholdMonitor {
             metric: 'frame.fpsVariance';
             warning: 10;
             critical: 20,
-            evaluateBelow: false,
+            evaluateBelow: false,)
             unit: 'fps',)';
             description: 'Frame rate variance')';
-            suggestions: ['';
+            suggestions: [ '';
                 'Smooth frame time variations',
-                'Implement frame pacing',
+                'Implement frame pacing', ]
                 'Reduce CPU spikes',]';
                 'Optimize resource loading')];
             ]);
@@ -332,7 +331,7 @@ export class PerformanceThresholdMonitor {
             clearInterval(this.monitoring.intervalId);
             this.monitoring.intervalId = null; }
 
-        console.log('[PerformanceThresholdMonitor] Monitoring, stopped);
+        console.log('[PerformanceThresholdMonitor] Monitoring, stopped);'
     }
 
     /**
@@ -471,7 +470,7 @@ export class PerformanceThresholdMonitor {
         // 抑制ルール設定
         this.setSuppression(name, severity, timestamp);
 
-        console.log(`[PerformanceThresholdMonitor] ${severity.toUpperCase(}) alert: ${name} = ${value}${threshold.unit}`');
+        console.log(`[PerformanceThresholdMonitor] ${severity.toUpperCase(}) alert: ${name} = ${value}${threshold.unit}`');'
     }
 
     /**
@@ -503,7 +502,7 @@ export class PerformanceThresholdMonitor {
         const key = `${name}_${severity}`;''
         const suppressionDuration = severity === 'critical' ?   : undefined
             this.monitoring.criticalAlertTimeout: this.monitoring.suppressionTimeout,
-        
+        ;
         this.warningSystem.suppressionRules.set(key, timestamp + suppressionDuration);
     }
 
@@ -537,12 +536,12 @@ export class PerformanceThresholdMonitor {
             severity: alert.severity,
             timestamp: alert.timestamp,
             persistent: alert.severity === 'critical',
-            actions: [{ ''
+            actions: [ { ''
                     label: 'View Details',
                     action: () => this.showAlertDetails(alert) ,}
                 };
                 { ''
-                    label: 'Acknowledge';
+                    label: 'Acknowledge'; ]
                     action: () => this.acknowledgeAlert(alert.id) }]
                 }]
             ];
@@ -562,10 +561,9 @@ export class PerformanceThresholdMonitor {
      */''
     private showBrowserNotification(notification: Notification): void { ''
         if('Notification' in, window && Notification.permission === 'granted) {
-            new Notification(notification.title, {
-                body: notification.message);
+            new Notification(notification.title, { body: notification.message); }
                 icon: this.getNotificationIcon(notification.severity ,}
-
+)
                 tag: notification.id) }
 
             }');
@@ -664,15 +662,15 @@ export class PerformanceThresholdMonitor {
     private attemptAutoRecovery(alert: Alert): void { ''
         const recoveryActions: Record<string, (') => void> = {''
             'fps': (') => { ''
-                console.log('[PerformanceThresholdMonitor] Attempting, FPS recovery: reducing, quality''), }
+                console.log('[PerformanceThresholdMonitor] Attempting, FPS recovery: reducing, quality''), }'
                 // Quality reduction logic would go here }
             },''
             'memory': (') => {  ''
-                console.log('[PerformanceThresholdMonitor] Attempting, memory recovery: force, GC),
+                console.log('[PerformanceThresholdMonitor] Attempting, memory recovery: force, GC),'
                 if ((window, as any).gc') {''
                     (window, as any).gc()';
             'memoryPressure': (') => {''
-                console.log('[PerformanceThresholdMonitor] Attempting, memory pressure, recovery: clearing, caches'), }'
+                console.log('[PerformanceThresholdMonitor] Attempting, memory pressure, recovery: clearing, caches'), }''
                 // Cache clearing logic would go here }
 };
 
@@ -707,10 +705,9 @@ export class PerformanceThresholdMonitor {
      * 警告詳細表示
      */''
     public showAlertDetails(alert: Alert): void { ''
-        console.log('[PerformanceThresholdMonitor] Alert Details:', {
-            name: alert.name;
+        console.log('[PerformanceThresholdMonitor] Alert Details:', { name: alert.name;)
             description: alert.description);
-            value: alert.value);
+            value: alert.value); }
             threshold: alert.threshold,);
             severity: alert.severity);
             timestamp: new Date(alert.timestamp).toLocaleString();
@@ -722,7 +719,7 @@ export class PerformanceThresholdMonitor {
      */
     private cleanupOldNotifications(currentTime: number): void { const maxAge = 5 * 60 * 1000; // 5分
 
-        this.warningSystem.notifications = this.warningSystem.notifications.filter(;
+        this.warningSystem.notifications = this.warningSystem.notifications.filter(;)
             notification => !notification.persistent && );
                            currentTime - notification.timestamp < maxAge);
 
@@ -759,7 +756,7 @@ export class PerformanceThresholdMonitor {
     public getCurrentSuggestions(): Suggestion[] { return Array.from(this.suggestionEngine.suggestions.values()
             .filter(s => !s.applied);
             .sort((a, b) => { }
-                const priorityOrder = { high: 3, medium: 2, low: 1 ,}
+                const priorityOrder = { high: 3, medium: 2, low: 1 ,};
                 return priorityOrder[b.priority] - priorityOrder[a.priority];
             });
     }
@@ -773,12 +770,11 @@ export class PerformanceThresholdMonitor {
 
     public getStatistics(): any { return { ...this.statistics,
             thresholdViolations: Object.fromEntries(this.statistics.thresholdViolations;
-            monitoring: {
-                enabled: this.monitoring.enabled;
+            monitoring: { enabled: this.monitoring.enabled; }
                 lastCheck: this.monitoring.lastCheck, };
                 checkInterval: this.monitoring.checkInterval }
             };
-            notifications: this.warningSystem.notifications.length;
+            notifications: this.warningSystem.notifications.length;)
             activeSuggestions: this.suggestionEngine.suggestions.size);
         })
 
@@ -794,7 +790,7 @@ export class PerformanceThresholdMonitor {
 
         if(settings.maxNotifications) { this.warningSystem.maxNotifications = settings.maxNotifications; }
 
-        console.log('[PerformanceThresholdMonitor] Settings, updated);
+        console.log('[PerformanceThresholdMonitor] Settings, updated);'
     }
 
     /**
@@ -809,14 +805,13 @@ export class PerformanceThresholdMonitor {
         this.suggestionEngine.suggestions.clear();
         this.suggestionEngine.suggestionHistory = [];
         
-        this.statistics = {
-            totalChecks: 0;
+        this.statistics = { totalChecks: 0;
             warningsTriggered: 0;
-            criticalAlertsTriggered: 0;
+            criticalAlertsTriggered: 0; }
             suggestionsGenerated: 0,
             falsePositives: 0,
             thresholdViolations: new Map(')';
-        console.log('[PerformanceThresholdMonitor] Reset, completed'), }'
+        console.log('[PerformanceThresholdMonitor] Reset, completed'), }''
 
     /**
      * クリーンアップ
@@ -833,7 +828,7 @@ export class PerformanceThresholdMonitor {
         }
 
         this.reset()';
-        console.log('[PerformanceThresholdMonitor] Destroyed'');
+        console.log('[PerformanceThresholdMonitor] Destroyed'');'
     }
 }
 
