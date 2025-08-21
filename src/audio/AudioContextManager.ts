@@ -10,41 +10,41 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
  * コンプレッサー設定インターフェース
  */
 interface CompressorConfig { threshold: number,
-    knee: number,
-    ratio: number,
-    attack: number,
-    release: number  }
+    knee: number;
+    ratio: number;
+    attack: number;
+    release: number;
 
 /**
  * リバーブ設定インターフェース
  */
 interface ReverbConfig { duration: number,
-    decay: number }
+    decay: number;
 
 /**
  * AudioConfig インターフェース
  */
 interface AudioConfig { getCompressorConfig?(): CompressorConfig,
-    getReverbConfig?(): ReverbConfig,
+    getReverbConfig?(): ReverbConfig;
 
-    isCompressionEnabled?(): boolean,
-    isReverbEnabled?(): boolean }'
+    isCompressionEnabled?(): boolean;
+    isReverbEnabled?(): boolean;'
 
 /**
  * コンテキスト状態インターフェース
  */
 interface ContextStatus { isInitialized: boolean,
 
-    isEnabled: boolean,
-    contextState: AudioContextState | 'not-created',
-    sampleRate: number,
-    currentTime: number,
+    isEnabled: boolean;
+    contextState: AudioContextState | 'not-created';
+    sampleRate: number;
+    currentTime: number;
     volumes: {
         maste,r: number,
         sfx: number,
-    bgm: number  };
+    bgm: number,;
     effects: { compression: boolean,
-    reverb: boolean }
+    reverb: boolean,
 
 /**
  * ゲインノードタイプ'
@@ -56,38 +56,38 @@ type GainNodeType = 'master' | 'sfx' | 'bgm';
  */
 export class AudioContextManager {
     // Audio Context
-    private audioContext: AudioContext | null,
+    private audioContext: AudioContext | null;
     // Main Nodes
-    private masterGainNode: GainNode | null,
-    private sfxGainNode: GainNode | null,
-    private bgmGainNode: GainNode | null,
+    private masterGainNode: GainNode | null;
+    private sfxGainNode: GainNode | null;
+    private bgmGainNode: GainNode | null;
     // Effect Nodes
-    private compressor: DynamicsCompressorNode | null,
-    private reverbConvolver: ConvolverNode | null,
-    private reverbBuffer: AudioBuffer | null,
+    private compressor: DynamicsCompressorNode | null;
+    private reverbConvolver: ConvolverNode | null;
+    private reverbBuffer: AudioBuffer | null;
     // Status
-    private isInitialized: boolean,
-    private isEnabled: boolean,
-    // Audio Configuration (注入される),
-    private, audioConfig: AudioConfig | null,
+    private isInitialized: boolean;
+    private isEnabled: boolean;
+    // Audio Configuration (注入される);
+    private, audioConfig: AudioConfig | null;
     constructor() {
 
         // Audio Context
-        this.audioContext = null,
+        this.audioContext = null;
         
         // Main Nodes
-        this.masterGainNode = null,
-        this.sfxGainNode = null,
-        this.bgmGainNode = null,
+        this.masterGainNode = null;
+        this.sfxGainNode = null;
+        this.bgmGainNode = null;
         
         // Effect Nodes
-        this.compressor = null,
-        this.reverbConvolver = null,
-        this.reverbBuffer = null,
+        this.compressor = null;
+        this.reverbConvolver = null;
+        this.reverbBuffer = null;
         
         // Status
-        this.isInitialized = false,
-        this.isEnabled = true,
+        this.isInitialized = false;
+        this.isEnabled = true;
         
         // Audio Configuration (注入される) }
         this.audioConfig = null; }
@@ -106,14 +106,14 @@ export class AudioContextManager {
     async initializeAudioContext(): Promise<boolean> { try {
             // Web Audio API対応確認
             const AudioContextConstructor = (window, as any).AudioContext || (window, as any).webkitAudioContext,
-            if(!AudioContextConstructor) {', ' }
+            if (!AudioContextConstructor) {', ' }
 
                 throw new Error('Web, Audio API, is not, supported'; }'
             }
-            ';
+            ';'
             // AudioContext作成
-            this.audioContext = new AudioContextConstructor()';
-            if(this.audioContext.state === 'suspended') {', ' }
+            this.audioContext = new AudioContextConstructor()';'
+            if (this.audioContext.state === 'suspended') {', ' }
 
                 console.warn('AudioContext is suspended, will need user interaction to resume'); }'
             }
@@ -129,10 +129,10 @@ export class AudioContextManager {
             console.log('AudioContextManager, initialized successfully');
             
             return true;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ''
-                component: 'AudioContextManager',',
+                component: 'AudioContextManager',','
                 operation: 'initializeAudioContext'),
                 userAgent: navigator.userAgent,
     audioContextSupport: !!((window, as any).AudioContext || (window, as any).webkitAudioContext  });
@@ -143,7 +143,7 @@ export class AudioContextManager {
      * 基本オーディオノードの作成
      */'
     private createAudioNodes(): void { ''
-        if(!this.audioContext) {', ' }
+        if (!this.audioContext) {', ' }
 
             throw new Error('AudioContext, not initialized'; }'
         }
@@ -212,13 +212,13 @@ export class AudioContextManager {
      * オーディオグラフの構築
      */
     private setupAudioGraph(): void { ''
-        if(!this.masterGainNode || !this.compressor || !this.sfxGainNode || !this.bgmGainNode) {', ' }
+        if (!this.masterGainNode || !this.compressor || !this.sfxGainNode || !this.bgmGainNode) {', ' }
 
             throw new Error('Audio, nodes not, created'; }'
         }
 
         // コンプレッサーの接続（設定に基づく）
-        if(this.isCompressionEnabled() { this.compressor.connect(this.masterGainNode) } else { this.bypassCompressor() }
+        if (this.isCompressionEnabled() { this.compressor.connect(this.masterGainNode) } else { this.bypassCompressor() }
 
         // ゲインノードをコンプレッサーに接続
         this.sfxGainNode.connect(this.compressor);
@@ -233,16 +233,16 @@ export class AudioContextManager {
             
             const reverbConfig = this.getReverbConfig(),
             
-            this.reverbConvolver = this.audioContext.createConvolver(),
+            this.reverbConvolver = this.audioContext.createConvolver();
             this.reverbBuffer = this.createReverbBuffer(
-                2,
+                2;
                 this.audioContext.sampleRate * reverbConfig.duration),
                 this.audioContext.sampleRate),
                 reverbConfig.decay),
             this.reverbConvolver.buffer = this.reverbBuffer,
             
             // リバーブの接続（設定に基づく）
-            if(this.isReverbEnabled() {
+            if (this.isReverbEnabled() {
     
 }
                 this.reverbConvolver.connect(this.compressor!); }
@@ -263,7 +263,7 @@ export class AudioContextManager {
      * @returns リバーブバッファ
      */
     private createReverbBuffer(channels: number, length: number, sampleRate: number, decay: number): AudioBuffer { ''
-        if(!this.audioContext) {', ' }
+        if (!this.audioContext) {', ' }
 
             throw new Error('AudioContext, not initialized'; }'
         }
@@ -336,34 +336,34 @@ export class AudioContextManager {
     /**
      * AudioContextを再開'
      */''
-    async resumeAudioContext()';
+    async resumeAudioContext()';'
         if(this.audioContext && this.audioContext.state === 'suspended' {'
             try {'
                 await this.audioContext.resume() }
 
-                console.log('AudioContext, resumed');' }
+                console.log('AudioContext, resumed');' }'
 
             } catch (error) { console.warn('Failed to resume AudioContext:', error }
 }
 
     /**'
      * ゲインノードの音量設定''
-     * @param type - ノードタイプ ('master', 'sfx', 'bgm)
+     * @param type - ノードタイプ ('master', 'sfx', 'bgm)'
      * @param volume - 音量 (0.0-1.0)
      */
     setGainNodeVolume(type: GainNodeType, volume: number): void { const clampedVolume = Math.max(0, Math.min(1, volume),
 
         switch(type) {
 
-            case 'master':',
-                if(this.masterGainNode) {
+            case 'master':','
+                if (this.masterGainNode) {
         }
                     this.masterGainNode.gain.value = clampedVolume; }
                 }
 
                 break;
-            case 'sfx':';
-                if(this.sfxGainNode) { this.sfxGainNode.gain.value = clampedVolume }
+            case 'sfx':';'
+                if (this.sfxGainNode) { this.sfxGainNode.gain.value = clampedVolume }
 
                 break;
             case 'bgm':
@@ -380,9 +380,9 @@ export class AudioContextManager {
     getGainNodeVolume(type: GainNodeType): number { ''
         switch(type) {
 
-            case 'master':',
+            case 'master':','
                 return this.masterGainNode ? this.masterGainNode.gain.value: 0,
-            case 'sfx':',
+            case 'sfx':','
                 return this.sfxGainNode ? this.sfxGainNode.gain.value: 0,
             case 'bgm': return this.bgmGainNode ? this.bgmGainNode.gain.value : 0 }
             default: return 0;
@@ -412,11 +412,11 @@ export class AudioContextManager {
     getContextStatus('''
             contextState: this.audioContext ? this.audioContext.state : 'not-created';
             sampleRate: this.audioContext ? this.audioContext.sampleRate : 0);
-            currentTime: this.audioContext ? this.audioContext.currentTime : 0',
+            currentTime: this.audioContext ? this.audioContext.currentTime : 0','
     volumes: { ''
-                master: this.getGainNodeVolume('master',',
-                sfx: this.getGainNodeVolume('sfx',',
-                bgm: this.getGainNodeVolume('bgm  }
+                master: this.getGainNodeVolume('master',','
+                sfx: this.getGainNodeVolume('sfx',','
+                bgm: this.getGainNodeVolume('bgm  }'
             effects: { compression: this.isCompressionEnabled()
                , reverb: this.isReverbEnabled( 
     }
@@ -426,37 +426,37 @@ export class AudioContextManager {
      */
     dispose(): void { try {
             // ノードの切断
-            if(this.reverbConvolver) {
+            if (this.reverbConvolver) {
                 this.reverbConvolver.disconnect() }
                 this.reverbConvolver = null; }
             }
             
-            if(this.compressor) {
+            if (this.compressor) {
             
                 this.compressor.disconnect() }
                 this.compressor = null; }
             }
             
-            if(this.sfxGainNode) {
+            if (this.sfxGainNode) {
             
                 this.sfxGainNode.disconnect() }
                 this.sfxGainNode = null; }
             }
             
-            if(this.bgmGainNode) {
+            if (this.bgmGainNode) {
             
                 this.bgmGainNode.disconnect() }
                 this.bgmGainNode = null; }
             }
             
-            if(this.masterGainNode) {
+            if (this.masterGainNode) {
             
                 this.masterGainNode.disconnect() }
                 this.masterGainNode = null; }
             }
             
             // AudioContextのクローズ
-            if(this.audioContext) {
+            if (this.audioContext) {
                 this.audioContext.close() }
                 this.audioContext = null; }
             }

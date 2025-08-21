@@ -4,22 +4,22 @@
  */
 export class GameBalanceCollector {
     constructor(dataCollector) {
-        this.dataCollector = dataCollector,
+        this.dataCollector = dataCollector;
         
         // バブル出現データ
         this.bubbleSpawnData = {}
             totalSpawned: 0 }
             typeDistribution: {};
-            spawnTimings: [],
+            spawnTimings: [];
     difficultyProgression: [];
         },
         
         // スコア分布データ
         this.scoreDistribution = {
             bubbleScores: {};
-            comboScores: [];
+            comboScores: [],
             bonusScores: [],
-    totalScoreProgression: [];
+    totalScoreProgression: [],
         },
         
         // アイテム効果データ
@@ -35,7 +35,7 @@ export class GameBalanceCollector {
             failurePoints: {};
             playerProgression: {};
         // 警告閾値
-        this.warningThresholds = { scoreDistributionVariance: 0.3, // スコア分散の異常閾値
+        this.warningThresholds = { scoreDistributionVariance: 0.3; // スコア分散の異常閾値
             completionRateDropoff: 0.5, // 完了率の急降下閾値,
             itemUsageImbalance: 0.8, // アイテム使用の偏り閾値,
             difficultySpike: 2.0 // 難易度急上昇の閾値  }
@@ -141,26 +141,26 @@ export class GameBalanceCollector {
     collectGameBalanceData(balanceData) {
         // データタイプに応じて適切な収集メソッドに分岐
         switch(balanceData.type) {''
-            case 'bubbleSpawn':',
+            case 'bubbleSpawn':','
                 this.collectBubbleSpawn(balanceData),
 
                 break,
-            case 'scoreAnalysis':',
+            case 'scoreAnalysis':','
                 this.collectScoreData(balanceData),
 
                 break,
-            case 'itemEffect':',
+            case 'itemEffect':','
                 this.collectItemEffectData(balanceData),
 
                 break,
-            case 'stageDifficulty':',
+            case 'stageDifficulty':','
                 this.collectStageDifficultyData(balanceData),
 
                 break,
-            case 'playerBehavior':',
-            case 'playerBehaviorAnalysis':',
-            case 'exitPattern':',
-            case 'longSessionMarker':',
+            case 'playerBehavior':','
+            case 'playerBehaviorAnalysis':','
+            case 'exitPattern':','
+            case 'longSessionMarker':','
             case 'balanceWarning':,
                 // プレイヤー行動分析や警告データは直接データコレクターに送信
                 this.dataCollector.collectGameBalanceData(balanceData),
@@ -269,7 +269,7 @@ export class GameBalanceCollector {
      */''
     updateScoreDistributionStats(scoreData) {
         // バブル別スコア統計
-        if(scoreData.scoreType === 'bubble' {'
+        if (scoreData.scoreType === 'bubble''
             if (!this.scoreDistribution.bubbleScores[scoreData.source]) {
     }
                 this.scoreDistribution.bubbleScores[scoreData.source] = []; }
@@ -277,17 +277,17 @@ export class GameBalanceCollector {
             }''
             this.scoreDistribution.bubbleScores[scoreData.source].push(scoreData.amount);
         }
-        ';
+        ';'
         // コンボスコア統計
-        if(scoreData.scoreType === 'combo) { this.scoreDistribution.comboScores.push({)'
-                amount: scoreData.amount',
+        if (scoreData.scoreType === 'combo) { this.scoreDistribution.comboScores.push({)'
+                amount: scoreData.amount','
     comboCount: scoreData.timing.comboCount,' }'
 
                 multiplier: scoreData.multiplier'); }'
         }
-        ';
+        ';'
         // ボーナススコア統計
-        if(scoreData.scoreType === 'bonus) { this.scoreDistribution.bonusScores.push({)'
+        if (scoreData.scoreType === 'bonus) { this.scoreDistribution.bonusScores.push({)'
                 amount: scoreData.amount,
     source: scoreData.source }
                 timing: scoreData.timing.timeInStage); 
@@ -307,15 +307,15 @@ export class GameBalanceCollector {
     updateItemEffectivenessStats(effectData) {
         const itemType = effectData.itemType,
         // 使用頻度
-        if(!this.itemEffectiveness.usageFrequency[itemType]) {
+        if (!this.itemEffectiveness.usageFrequency[itemType]) {
     }
             this.itemEffectiveness.usageFrequency[itemType] = 0; }
 
         }''
         if (effectData.action === 'activate') { this.itemEffectiveness.usageFrequency[itemType]++ }
-        ';
+        ';'
         // 効果時間
-        if(effectData.duration && effectData.action === 'expire' {'
+        if (effectData.duration && effectData.action === 'expire''
             if (!this.itemEffectiveness.effectDuration[itemType]) {
         }
                 this.itemEffectiveness.effectDuration[itemType] = []; }
@@ -324,7 +324,7 @@ export class GameBalanceCollector {
         }
         
         // スコア影響
-        if(effectData.outcome.scoreIncrease > 0) {
+        if (effectData.outcome.scoreIncrease > 0) {
             if (!this.itemEffectiveness.scoreImpact[itemType]) {
         }
                 this.itemEffectiveness.scoreImpact[itemType] = []; }
@@ -361,7 +361,7 @@ export class GameBalanceCollector {
         this.difficultyAnalysis.averagePlayTimes[stageId].push(difficultyData.playTime);
         
         // 失敗ポイント
-        if(!difficultyData.completed) {
+        if (!difficultyData.completed) {
             if (!this.difficultyAnalysis.failurePoints[stageId]) {
         }
                 this.difficultyAnalysis.failurePoints[stageId] = []; }
@@ -379,9 +379,9 @@ export class GameBalanceCollector {
         const expectedScore = this.getExpectedScore(scoreData.source, scoreData.scoreType),
         const variance = Math.abs(scoreData.amount - expectedScore) / expectedScore,
 
-        if(variance > this.warningThresholds.scoreDistributionVariance) {
+        if (variance > this.warningThresholds.scoreDistributionVariance) {
             this.generateBalanceWarning({)'
-                type: 'score_anomaly',' }
+                type: 'score_anomaly',' }'
 
                 severity: variance > 0.8 ? 'high' : 'medium'), 
                 message: `Unusual score, detected: ${scoreData.amount} (expected: ${expectedScore}})`;
@@ -396,11 +396,11 @@ export class GameBalanceCollector {
      */
     checkDifficultyBalance(difficultyData) { const stageId = difficultyData.stageId,
         const completionRate = this.getStageCompletionRate(stageId),
-        ',
+        ','
         // 完了率の急降下検出
-        if(completionRate < this.warningThresholds.completionRateDropoff) {
+        if (completionRate < this.warningThresholds.completionRateDropoff) {
             this.generateBalanceWarning({)'
-                type: 'difficulty_spike',' }
+                type: 'difficulty_spike',' }'
 
                 severity: 'high') }
                 message: `Low completion rate for stage ${stageId}: ${(completionRate * 100}.toFixed(1})%`;
@@ -412,9 +412,9 @@ export class GameBalanceCollector {
         const avgPlayTime = this.getAveragePlayTime(stageId);
         const expectedPlayTime = this.getExpectedPlayTime(stageId);
 
-        if(avgPlayTime > expectedPlayTime * this.warningThresholds.difficultySpike) {
+        if (avgPlayTime > expectedPlayTime * this.warningThresholds.difficultySpike) {
             this.generateBalanceWarning({)'
-                type: 'playtime_anomaly',' }
+                type: 'playtime_anomaly',' }'
 
                 severity: 'medium') }
                 message: `Unusually long play time for stage ${stageId}: ${avgPlayTime}ms (expected: ${expectedPlayTime}ms})`;
@@ -631,8 +631,8 @@ export class GameBalanceCollector {
         const efficiency = combos.reduce((sum, combo) => sum + combo.amount / combo.comboCount, 0) / combos.length;
         
         return { averageScore: averageScore.toFixed(2,
-            maxCombo: maxCombo };
-            efficiency: efficiency.toFixed(2); 
+            maxCombo: maxCombo,;
+            efficiency: efficiency.toFixed(2), 
     }
     
     /**
@@ -676,8 +676,8 @@ export class GameBalanceCollector {
                 // 効果と使用頻度を組み合わせた評価
                 ratings[itemType] = {
                     averageImpact: averageImpact.toFixed(2,
-    usage: usage }
-                    rating: (averageImpact * Math.log(usage + 1).toFixed(2); 
+    usage: usage,
+                    rating: (averageImpact * Math.log(usage + 1).toFixed(2), 
     }
         }
         
@@ -691,7 +691,7 @@ export class GameBalanceCollector {
     calculateCostBenefitAnalysis('''
             mostEfficient: 'timeExtender',
             leastEfficient: 'scoreBooster',
-            averageROI: '2.3x);
+            averageROI: '2.3x);'
             });
     /**
      * アイテムバランススコアの計算
@@ -737,7 +737,7 @@ export class GameBalanceCollector {
                 const average = times.reduce((sum, time) => sum + time, 0) / times.length,
                 const min = Math.min(...times),
                 const max = Math.max(...times),
-                ',
+                ','
 
                 analysis[stageId] = {''
                     average: (average / 1000).toFixed(1) + 's',
@@ -773,7 +773,7 @@ export class GameBalanceCollector {
                 
                 const mostCommonReason = Object.entries(commonReasons);
                     .sort(([,a], [,b]) => b - a)[0];
-                ';
+                ';'
 
                 analysis[stageId] = { ''
                     averageFailurePoint: avgProgress.toFixed(1) + '%',
@@ -836,20 +836,20 @@ export class GameBalanceCollector {
     generateBalanceRecommendations() { const recommendations = [],
         const overallScore = parseFloat(this.calculateOverallBalanceScore(),
 
-        if(overallScore < 70) {
+        if (overallScore < 70) {
             recommendations.push({''
-                priority: 'high',',
-                category: 'overall',' }
+                priority: 'high',','
+                category: 'overall',' }'
 
                 message: 'ゲーム全体のバランスに大きな改善の余地があります。'); 
     }
-        ';
+        ';'
 
         const bubbleScore = parseFloat(this.calculateBubbleBalanceScore();
-        if(bubbleScore < 75) {
+        if (bubbleScore < 75) {
             recommendations.push({''
-                priority: 'medium',',
-                category: 'bubble',' }
+                priority: 'medium',','
+                category: 'bubble',' }'
 
                 message: 'バブルタイプの出現バランスを調整することを推奨します。'); 
     }
@@ -859,14 +859,14 @@ export class GameBalanceCollector {
             .filter(([, rate]) => parseFloat(rate) < 40);
             .map(([stage]) => stage);
 
-        if(lowCompletionStages.length > 0) {
+        if (lowCompletionStages.length > 0) {
             recommendations.push({)'
-                priority: 'high',' }
+                priority: 'high',' }'
 
-                category: 'difficulty'),' }
+                category: 'difficulty'),' }'
 
                 message: `以下のステージの難易度調整が必要です: ${lowCompletionStages.join(', '})`
-            }';
+            }';'
         }
         
         return recommendations;

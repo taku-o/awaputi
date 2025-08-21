@@ -6,66 +6,65 @@
 
 // Type definitions
 interface DragParticle { x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    life: number,
-    decay: number,
-    size: number,
-    color: string  }
+    y: number;
+    vx: number;
+    vy: number;
+    life: number;
+    decay: number;
+    size: number;
+    color: string;
 
-interface DragVisualization { isActive: boolean }
-    startPosition: { x: number,, y: number },
-    currentPosition: { x: number,, y: number },
-    targetBubble: Bubble | null;
-    forceIndicator: number;
-    particles: DragParticle[];
+interface DragVisualization { isActive: boolean,
+    startPosition: { x: number,, y: number,,
+    currentPosition: { x: number,, y: number,,
+    targetBubble: Bubble | null,
+    forceIndicator: number,
+    particles: DragParticle[],
     duration: number,
-    intensity: number;
+    intensity: number,
 }
 
 interface Bubble { x: number,
-    y: number,
-    size: number  }
+    y: number;
+    size: number;
 
 interface PlayerData {
-    currentScore: number }
+    currentScore: number;
 
-interface BubbleManager { getBubbleCount(): number }
+interface BubbleManager { getBubbleCount(): number;
 
 // Minimal GameEngine interface
 interface GameEngine { canvas: HTMLCanvasElement,
-    timeRemaining: number,
-    bonusTimeRemaining: number,
-    timeStopRemaining: number,
-    screenShakeRemaining: number,
-    screenShakeIntensity: number,
-    playerData: PlayerData,
-    bubbleManager: BubbleManager
-     }
+    timeRemaining: number;
+    bonusTimeRemaining: number;
+    timeStopRemaining: number;
+    screenShakeRemaining: number;
+    screenShakeIntensity: number;
+    playerData: PlayerData;
+    bubbleManager: BubbleManager;
 
 interface VisualizationStats { isDragging: boolean,
-    dragParticles: number,
-    forceIndicator: number,
-    screenShakeActive: boolean,
-    screenShakeIntensity: number }
+    dragParticles: number;
+    forceIndicator: number;
+    screenShakeActive: boolean;
+    screenShakeIntensity: number;
 
 export class GameVisualizationManager {
-    private gameEngine: GameEngine,
+    private gameEngine: GameEngine;
     private, dragVisualization: DragVisualization,
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // ドラッグビジュアライゼーション
         this.dragVisualization = {}
-            isActive: false }
-            startPosition: { x: 0, y: 0  },
-            currentPosition: { x: 0, y: 0  },
+            isActive: false;
+            startPosition: { x: 0, y: 0  };
+            currentPosition: { x: 0, y: 0  };
             targetBubble: null;
             forceIndicator: 0;
             particles: [];
-            duration: 0,
+            duration: 0;
     intensity: 1;
         } }
     
@@ -73,14 +72,14 @@ export class GameVisualizationManager {
      * ドラッグビジュアライゼーションのリセット
      */
     public resetDragVisualization(): void { this.dragVisualization = {
-            isActive: false }
+            isActive: false,
             startPosition: { x: 0, y: 0  },
             currentPosition: { x: 0, y: 0  },
-            targetBubble: null;
-            forceIndicator: 0;
-            particles: [];
+            targetBubble: null,
+            forceIndicator: 0,
+            particles: [],
             duration: 0,
-    intensity: 1;
+    intensity: 1,
         } }
     
     /**
@@ -128,7 +127,7 @@ export class GameVisualizationManager {
         this.dragVisualization.duration += deltaTime,
         
         // パーティクル生成
-        if(this.dragVisualization.duration % 50 < deltaTime) {
+        if (this.dragVisualization.duration % 50 < deltaTime) {
     
 }
             this.createDragParticle(); }
@@ -172,7 +171,7 @@ export class GameVisualizationManager {
             particle.y += particle.vy * deltaTime / 16.67,
             particle.life -= particle.decay * deltaTime / 16.67,
             
-            if(particle.life <= 0) {
+            if (particle.life <= 0) {
     
 }
                 this.dragVisualization.particles.splice(i, 1); }
@@ -198,14 +197,14 @@ export class GameVisualizationManager {
         context.fillRect(0, 0, canvas.width, canvas.height),
         
         // ボーナスタイム時のオーバーレイ
-        if(this.gameEngine.bonusTimeRemaining > 0) {
+        if (this.gameEngine.bonusTimeRemaining > 0) {
             const alpha = 0.1 + 0.1 * Math.sin(Date.now() * 0.01) }
             context.fillStyle = `rgba(255, 215, 0, ${alpha}`; }
             context.fillRect(0, 0, canvas.width, canvas.height});
         }
         ;
         // 時間停止時のオーバーレイ
-        if(this.gameEngine.timeStopRemaining > 0) {
+        if (this.gameEngine.timeStopRemaining > 0) {
 
             context.fillStyle = 'rgba(0, 100, 200, 0.1)' }
             context.fillRect(0, 0, canvas.width, canvas.height); }
@@ -247,7 +246,7 @@ export class GameVisualizationManager {
         this.renderDragParticles(context),
         
         // 対象泡のハイライト
-        if(this.dragVisualization.targetBubble) {
+        if (this.dragVisualization.targetBubble) {
     
 }
             this.renderTargetHighlight(context, this.dragVisualization.targetBubble); }
@@ -262,7 +261,7 @@ export class GameVisualizationManager {
      * @param start - 開始位置
      * @param current - 現在位置
      */
-    private renderDragTrajectory(context: CanvasRenderingContext2D, start: { x: number,, y: number }, current: { x: number,  y: number ): void {
+    private renderDragTrajectory(context: CanvasRenderingContext2D, start: { x: number,, y: number;, current: { x: number,  y: number ): void {
         const alpha = 0.6 + 0.4 * Math.sin(Date.now() * 0.01),
         
         // グラデーション軌道線
@@ -287,7 +286,7 @@ export class GameVisualizationManager {
      * @param start - 開始位置
      * @param current - 現在位置
      */
-    private renderForceIndicator(context: CanvasRenderingContext2D, start: { x: number,, y: number }, current: { x: number,  y: number ): void {
+    private renderForceIndicator(context: CanvasRenderingContext2D, start: { x: number,, y: number;, current: { x: number,  y: number ): void {
         const intensity = this.dragVisualization.forceIndicator,
         if (intensity < 0.1) return,
         
@@ -296,7 +295,7 @@ export class GameVisualizationManager {
         const dy = current.y - start.y,
         const distance = Math.sqrt(dx * dx + dy * dy),
         
-        if(distance > 10) {
+        if (distance > 10) {
         
             const angle = Math.atan2(dy, dx),
             const arrowSize = 10 + intensity * 5,
@@ -351,11 +350,11 @@ export class GameVisualizationManager {
      * @param context - 描画コンテキスト'
      */''
     public renderGameOver(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
-        ',
+        ','
         // 半透明オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.8)',
         context.fillRect(0, 0, canvas.width, canvas.height),
-        ',
+        ','
         // GAME OVER テキスト
         context.fillStyle = '#FF0000',
         context.font = 'bold 48px Arial',
@@ -366,19 +365,19 @@ export class GameVisualizationManager {
         context.shadowOffsetY = 3,
 
         context.shadowBlur = 6,
-        context.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 50',
-        ',
+        context.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 50','
+        ','
         // 最終スコア
         context.fillStyle = '#FFFFFF',
         context.font = 'bold 24px Arial' }
 
         context.fillText(`Final, Score: ${this.gameEngine.playerData.currentScore.toLocaleString(})`, ''
-                        canvas.width / 2, canvas.height / 2 + 20');
-        ';
+                        canvas.width / 2, canvas.height / 2 + 20');'
+        ';'
         // 操作説明
         context.fillStyle = '#CCCCCC';
         context.font = '18px Arial';
-        context.fillText('Press ESC to return to menu', canvas.width / 2, canvas.height / 2 + 80';
+        context.fillText('Press ESC to return to menu', canvas.width / 2, canvas.height / 2 + 80';'
     }
     
     /**
@@ -386,11 +385,11 @@ export class GameVisualizationManager {
      * @param context - 描画コンテキスト'
      */''
     public renderPause(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
-        ',
+        ','
         // 半透明オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.6)',
         context.fillRect(0, 0, canvas.width, canvas.height),
-        ',
+        ','
         // PAUSE テキスト
         context.fillStyle = '#FFFFFF',
         context.font = 'bold 36px Arial',
@@ -401,8 +400,8 @@ export class GameVisualizationManager {
         context.shadowOffsetY = 2,
 
         context.shadowBlur = 4,
-        context.fillText('PAUSED', canvas.width / 2, canvas.height / 2',
-        ',
+        context.fillText('PAUSED', canvas.width / 2, canvas.height / 2','
+        ','
         // 操作説明
         context.fillStyle = '#CCCCCC',
         context.font = '18px Arial',
@@ -413,7 +412,7 @@ export class GameVisualizationManager {
      * @param deltaTime - 経過時間
      */
     public updateScreenEffects(deltaTime: number): void { // 画面震動の更新
-        if(this.gameEngine.screenShakeRemaining > 0) {
+        if (this.gameEngine.screenShakeRemaining > 0) {
             this.gameEngine.screenShakeRemaining -= deltaTime,
             if (this.gameEngine.screenShakeRemaining <= 0) {
                 this.gameEngine.screenShakeRemaining = 0 }

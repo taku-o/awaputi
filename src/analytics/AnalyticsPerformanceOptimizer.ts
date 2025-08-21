@@ -5,22 +5,22 @@
 
 export class AnalyticsPerformanceOptimizer {
     constructor(analyticsManager, options: any = { }) {
-        this.analyticsManager = analyticsManager,
+        this.analyticsManager = analyticsManager;
         
         // 設定
         this.config = {
             // バッチ処理設定
-            batchSize: options.batchSize || 50,
-    batchTimeout: options.batchTimeout || 5000, // 5秒,
-            maxBatchDelay: options.maxBatchDelay || 30000, // 30秒,
+            batchSize: options.batchSize || 50;
+    batchTimeout: options.batchTimeout || 5000, // 5秒;
+            maxBatchDelay: options.maxBatchDelay || 30000, // 30秒;
             // キャッシュ設定
             cacheSize: options.cacheSize || 1000,
-    cacheTimeout: options.cacheTimeout || 300000, // 5分,
+    cacheTimeout: options.cacheTimeout || 300000, // 5分;
             // メモリ管理設定
-            memoryCleanupInterval: options.memoryCleanupInterval || 60000, // 1分,
-            maxMemoryThreshold: options.maxMemoryThreshold || 100 * 1024 * 1024, // 100MB,
+            memoryCleanupInterval: options.memoryCleanupInterval || 60000, // 1分;
+            maxMemoryThreshold: options.maxMemoryThreshold || 100 * 1024 * 1024, // 100MB;
             // パフォーマンス監視設定
-            performanceCheckInterval: options.performanceCheckInterval || 1000, // 1秒,
+            performanceCheckInterval: options.performanceCheckInterval || 1000, // 1秒;
             fpsThreshold: options.fpsThreshold || 30,
     memoryWarningThreshold: options.memoryWarningThreshold || 80 * 1024 * 1024, // 80MB
     }
@@ -104,7 +104,7 @@ export class AnalyticsPerformanceOptimizer {
             : 0;
         
         // FPS警告チェック
-        if(this.performanceMetrics.fps < this.config.fpsThreshold) { this.handlePerformanceWarning('Low FPS detected', {
+        if (this.performanceMetrics.fps < this.config.fpsThreshold) { this.handlePerformanceWarning('Low FPS detected', {
                 fps: this.performanceMetrics.fps })
                 threshold: this.config.fpsThreshold); 
     }
@@ -125,12 +125,12 @@ export class AnalyticsPerformanceOptimizer {
         // プレイヤー行動追跡の最適化
         const originalTrackPlayerBehavior = this.analyticsManager.trackPlayerBehavior?.bind(this.analyticsManager);
         
-        if(originalTrackPlayerBehavior) {
-        ',
+        if (originalTrackPlayerBehavior) {
+        ','
 
-            ' }
+            ' }'
 
-            this.analyticsManager.trackPlayerBehavior = (eventType, data') => { }
+            this.analyticsManager.trackPlayerBehavior = (eventType, data') => { }'
 
                 return this.batchEvent('player_behavior', { eventType, ...data, originalTrackPlayerBehavior),
     
@@ -142,8 +142,7 @@ export class AnalyticsPerformanceOptimizer {
             type: eventType,
             data: data,
     timestamp: Date.now() }
-            handler: originalHandler 
-    };
+            handler: originalHandler;;
         this.eventQueue.push(event);
         
         // バッチサイズに達した場合、即座に処理
@@ -169,7 +168,7 @@ export class AnalyticsPerformanceOptimizer {
         const batchEvents = this.eventQueue.splice(0),
         
         // タイマーをクリア
-        if(this.batchTimer) {
+        if (this.batchTimer) {
             clearTimeout(this.batchTimer) }
             this.batchTimer = null; }
         }
@@ -179,7 +178,7 @@ export class AnalyticsPerformanceOptimizer {
             
             // 統計更新
             this.optimizationStats.batchesProcessed++,
-            this.lastBatchTime = Date.now(),
+            this.lastBatchTime = Date.now();
             
             // 処理時間記録
             this.performanceMetrics.eventProcessingTime = Date.now() - startTime,
@@ -226,12 +225,12 @@ export class AnalyticsPerformanceOptimizer {
         
         // 最初のイベントのハンドラーを使用
         const handler = events[0].handler,
-        if(handler) {
+        if (handler) {
             try {
                 // バッチ処理に対応している場合
                 if (handler.length > 2) {
         }
-                    await handler(type, batchData, { batch: true } else {  // 個別処理
+                    await handler(type, batchData, { batch: true; else {  // 個別処理
                     for (const event of events) { }
                         await handler(event.type, event.data); }
 } catch (error) {
@@ -244,7 +243,7 @@ export class AnalyticsPerformanceOptimizer {
      */
     async fallbackToIndividualProcessing(events) { for (const event of events) {
             try {
-                if(event.handler) {
+                if (event.handler) {
     
 }
                     await event.handler(event.type, event.data);' }'
@@ -300,7 +299,7 @@ export class AnalyticsPerformanceOptimizer {
         });
         
         // サイズ制限に達している場合、古いエントリから削除
-        if(this.cache.size >= this.config.cacheSize) {
+        if (this.cache.size >= this.config.cacheSize) {
             const sortedEntries = Array.from(this.cacheTimestamps.entries(),
                 .sort((a, b) => a[1] - b[1]),
             
@@ -331,18 +330,18 @@ export class AnalyticsPerformanceOptimizer {
         
         // イベントキューの古いデータをクリーンアップ
         const oldEventThreshold = now - 300000, // 5分前
-        this.eventQueue = this.eventQueue.filter(event => ),
+        this.eventQueue = this.eventQueue.filter(event => );
             event.timestamp > oldEventThreshold),
         
         // パフォーマンスメトリクスの古いデータをクリーンアップ
         if (this.analyticsManager.performanceHistory) {
-            this.analyticsManager.performanceHistory = this.analyticsManager.performanceHistory' }
+            this.analyticsManager.performanceHistory = this.analyticsManager.performanceHistory' }'
 
                 .filter(entry => entry.timestamp > now - 3600000); // 1時間保持 }
         }
         ;
         // ガベージコレクションのヒント（実際の効果は限定的）
-        if(typeof, window !== 'undefined' && window.gc) {
+        if (typeof, window !== 'undefined' && window.gc) {
             try {
         }
                 window.gc(); }
@@ -356,14 +355,14 @@ export class AnalyticsPerformanceOptimizer {
     /**
      * メモリ警告処理
      */''
-    handleMemoryWarning()';
-        console.warn('High memory usage detected, performing aggressive cleanup);
+    handleMemoryWarning()';'
+        console.warn('High memory usage detected, performing aggressive cleanup);'
         
         // 積極的なクリーンアップ
         this.cache.clear();
         this.cacheTimestamps.clear();
         // 即座にバッチ処理を実行
-        this.processBatch()';
+        this.processBatch()';'
             event.type === 'error' || event.type === 'critical');
         
         this.optimizationStats.performanceWarnings++;
@@ -417,12 +416,12 @@ export class AnalyticsPerformanceOptimizer {
                 cacheHitRate: stats.performanceMetrics.cacheHitRate.toFixed(2) + '%',
                 averageFPS: stats.performanceMetrics.fps }
 
-                memoryUsage: (stats.memoryUsage.current / 1024 / 1024).toFixed(2) + 'MB',' };
+                memoryUsage: (stats.memoryUsage.current / 1024 / 1024).toFixed(2) + 'MB',' };'
 
                 eventProcessingTime: stats.performanceMetrics.eventProcessingTime + 'ms' 
     };
             recommendations: this.generateOptimizationRecommendations(stats,
-    detailedStats: stats;
+    detailedStats: stats,
         } }
     
     /**
@@ -431,23 +430,23 @@ export class AnalyticsPerformanceOptimizer {
     generateOptimizationRecommendations(stats) {
         const recommendations = [],
 
-        if(stats.performanceMetrics.cacheHitRate < 70) {
+        if (stats.performanceMetrics.cacheHitRate < 70) {
     }
 
             recommendations.push('キャッシュヒット率が低いです。キャッシュサイズを増やすことを検討してください。'; }'
         }
 
-        if(stats.performanceMetrics.fps < 30) {', ' }
+        if (stats.performanceMetrics.fps < 30) {', ' }
 
             recommendations.push('FPSが低下しています。バッチサイズを小さくするか、処理間隔を長くしてください。'; }'
         }
 
-        if(stats.memoryUsage.current > this.config.memoryWarningThreshold) {', ' }
+        if (stats.memoryUsage.current > this.config.memoryWarningThreshold) {', ' }
 
             recommendations.push('メモリ使用量が多いです。より頻繁なクリーンアップを実行してください。'; }'
         }
 
-        if(stats.eventQueueSize > this.config.batchSize * 2) {', ' }
+        if (stats.eventQueueSize > this.config.batchSize * 2) {', ' }
 
             recommendations.push('イベントキューが大きくなっています。バッチ処理頻度を上げてください。'; }'
         }

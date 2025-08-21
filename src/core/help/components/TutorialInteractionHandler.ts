@@ -9,66 +9,64 @@ import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
 export interface Position { x: number,
-    y: number  }
+    y: number;
 
 export interface InteractionState { isListening: boolean,
-    isDragging: boolean,
-    isScrolling: boolean,
-    lastTouchPosition: Position,
-    touchStartTime: number,
+    isDragging: boolean;
+    isScrolling: boolean;
+    lastTouchPosition: Position;
+    touchStartTime: number;
     gestureRecognition: {
         enable,d: boolean,
         threshold: number,
-    timeWindow: number }
+    timeWindow: number,
 
 export interface KeyboardNavigation { enabled: boolean,
-    currentFocusIndex: number,
-    focusableElements: HTMLElement[],
+    currentFocusIndex: number;
+    focusableElements: HTMLElement[];
     shortcuts: {
         nex,t: string[],
         previous: string[],
         skip: string[],
         complete: string[],
-    help: string[]  }
+    help: string[],
 
 export interface AccessibilityConfig { enabled: boolean,
-    highContrast: boolean,
-    largeText: boolean,
-    screenReaderMode: boolean,
-    reducedMotion: boolean,
-    keyboardNavigation: boolean,
-    focusIndicators: boolean,
-    announcements: boolean,
-    textSizeMultiplier: number  }
+    highContrast: boolean;
+    largeText: boolean;
+    screenReaderMode: boolean;
+    reducedMotion: boolean;
+    keyboardNavigation: boolean;
+    focusIndicators: boolean;
+    announcements: boolean;
+    textSizeMultiplier: number;
 
 export interface GestureConfig { callback: (() => void) | null,
-    enabled: boolean,
-    duration?: number 
-    }
+    enabled: boolean;
+    duration?: number;
 
 export interface Gestures { swipeLeft: GestureConfig,
-    swipeRight: GestureConfig,
-    swipeUp: GestureConfig,
-    swipeDown: GestureConfig,
-    tap: GestureConfig,
-    doubleTap: GestureConfig,
-    longPress: GestureConfig
-    }
+    swipeRight: GestureConfig;
+    swipeUp: GestureConfig;
+    swipeDown: GestureConfig;
+    tap: GestureConfig;
+    doubleTap: GestureConfig;
+    longPress: GestureConfig;
 
 export interface PointerState { isDown: boolean,
-    startPosition: Position,
-    currentPosition: Position,
-    startTime: number,
-    lastTapTime: number,
-    tapCount: number }
+    startPosition: Position;
+    currentPosition: Position;
+    startTime: number;
+    lastTapTime: number;
+    tapCount: number;
 
 export interface InteractionCallbacks { onNext: (() => void) | null,
-    onPrevious: (() => void) | null,
-    onSkip: (() => void) | null,
-    onComplete: (() => void) | null,
-    onClose: (() => void) | null,
-    onHelp: (() => void) | null,
-    onResize: (() => void) | null,
+    onPrevious: (() => void) | null;
+    onSkip: (() => void) | null;
+    onComplete: (() => void) | null;
+    onClose: (() => void) | null;
+    onHelp: (() => void) | null;
+    onResize: (() => void) | null;
     onInteraction: ((data: any) => void) | null 
     }
 
@@ -76,19 +74,19 @@ export type BoundHandlers = { [K in keyof DocumentEventMap]?: (event: DocumentEv
 };
 
 export class TutorialInteractionHandler {
-    private errorHandler: any,
-    private loggingSystem: LoggingSystem,
-    private boundHandlers: BoundHandlers,
-    private interactionState: InteractionState,
-    private keyboardNavigation: KeyboardNavigation,
-    private accessibility: AccessibilityConfig,
-    private gestures: Gestures,
-    private pointerState: PointerState,
+    private errorHandler: any;
+    private loggingSystem: LoggingSystem;
+    private boundHandlers: BoundHandlers;
+    private interactionState: InteractionState;
+    private keyboardNavigation: KeyboardNavigation;
+    private accessibility: AccessibilityConfig;
+    private gestures: Gestures;
+    private pointerState: PointerState;
     private, callbacks: InteractionCallbacks,
     constructor() {
 
-        this.errorHandler = getErrorHandler(),
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem(),
+        this.errorHandler = getErrorHandler();
+        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // イベントハンドラー
         this.boundHandlers = {
@@ -106,8 +104,8 @@ export class TutorialInteractionHandler {
         // インタラクション状態
         this.interactionState = { isListening: false,
             isDragging: false,
-    isScrolling: false }
-            lastTouchPosition: { x: 0, y: 0  },
+    isScrolling: false,
+            lastTouchPosition: { x: 0, y: 0  };
             touchStartTime: 0,
     gestureRecognition: { enabled: false,
                 threshold: 50,
@@ -118,11 +116,11 @@ export class TutorialInteractionHandler {
             currentFocusIndex: 0,
             focusableElements: [],
     shortcuts: {''
-                next: ['ArrowRight', 'Space', 'Tab'],
-                previous: ['ArrowLeft', 'Shift+Tab],
-                skip: ['Escape', 's'],
+                next: ['ArrowRight', 'Space', 'Tab'];
+                previous: ['ArrowLeft', 'Shift+Tab];'
+                skip: ['Escape', 's'];
                 complete: ['Enter'],
-                help: ['F1', 'h] }
+                help: ['F1', 'h] }'
         };
         
         // アクセシビリティ設定
@@ -137,21 +135,21 @@ export class TutorialInteractionHandler {
     textSizeMultiplier: 1.0  };
         // タッチジェスチャー
         this.gestures = {
-            swipeLeft: { callback: null, enabled: true  },
-            swipeRight: { callback: null, enabled: true  },
-            swipeUp: { callback: null, enabled: true  },
-            swipeDown: { callback: null, enabled: true  },
-            tap: { callback: null, enabled: true  },
-            doubleTap: { callback: null, enabled: true  },
+            swipeLeft: { callback: null, enabled: true,;
+            swipeRight: { callback: null, enabled: true,;
+            swipeUp: { callback: null, enabled: true,;
+            swipeDown: { callback: null, enabled: true,;
+            tap: { callback: null, enabled: true,;
+            doubleTap: { callback: null, enabled: true,;
             longPress: { callback: null, enabled: true, duration: 500  };
         
         // マウス・タッチ状態
-        this.pointerState = { isDown: false }
-            startPosition: { x: 0, y: 0  },
-            currentPosition: { x: 0, y: 0  },
-            startTime: 0;
+        this.pointerState = { isDown: false,
+            startPosition: { x: 0, y: 0  };
+            currentPosition: { x: 0, y: 0  };
+            startTime: 0,
             lastTapTime: 0,
-    tapCount: 0;
+    tapCount: 0,
         },
         
         // コールバック
@@ -162,7 +160,7 @@ export class TutorialInteractionHandler {
             onClose: null,
             onHelp: null,
             onResize: null,
-    onInteraction: null  };
+    onInteraction: null,;
         this.initialize();
     }
     
@@ -170,8 +168,8 @@ export class TutorialInteractionHandler {
      * インタラクションハンドラーを初期化
      */
     initialize(): void { try {'
-            this.setupAccessibility()',
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler initialized',' }
+            this.setupAccessibility()','
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler initialized',' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.initialize' }'
@@ -183,18 +181,18 @@ export class TutorialInteractionHandler {
     startListening(): void { try {'
             if(this.interactionState.isListening) return,
 
-            document.addEventListener('keydown', this.boundHandlers.keydown!',
-            window.addEventListener('resize', this.boundHandlers.resize!',
-            document.addEventListener('click', this.boundHandlers.click!',
+            document.addEventListener('keydown', this.boundHandlers.keydown!','
+            window.addEventListener('resize', this.boundHandlers.resize!','
+            document.addEventListener('click', this.boundHandlers.click!','
             document.addEventListener('touchstart', this.boundHandlers.touchstart!, { passive: false )',''
             document.addEventListener('touchmove', this.boundHandlers.touchmove!, { passive: false )',''
-            document.addEventListener('touchend', this.boundHandlers.touchend!',
+            document.addEventListener('touchend', this.boundHandlers.touchend!','
             document.addEventListener('wheel', this.boundHandlers.wheel!, { passive: false )',''
-            document.addEventListener('contextmenu', this.boundHandlers.contextmenu!',
-            ',
+            document.addEventListener('contextmenu', this.boundHandlers.contextmenu!','
+            ','
 
             this.interactionState.isListening = true,
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners started',' }
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners started',' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.startListening' }'
@@ -206,18 +204,18 @@ export class TutorialInteractionHandler {
     stopListening(): void { try {'
             if(!this.interactionState.isListening) return,
 
-            document.removeEventListener('keydown', this.boundHandlers.keydown',
-            window.removeEventListener('resize', this.boundHandlers.resize',
-            document.removeEventListener('click', this.boundHandlers.click',
-            document.removeEventListener('touchstart', this.boundHandlers.touchstart',
-            document.removeEventListener('touchmove', this.boundHandlers.touchmove',
-            document.removeEventListener('touchend', this.boundHandlers.touchend',
-            document.removeEventListener('wheel', this.boundHandlers.wheel',
-            document.removeEventListener('contextmenu', this.boundHandlers.contextmenu',
-            ',
+            document.removeEventListener('keydown', this.boundHandlers.keydown','
+            window.removeEventListener('resize', this.boundHandlers.resize','
+            document.removeEventListener('click', this.boundHandlers.click','
+            document.removeEventListener('touchstart', this.boundHandlers.touchstart','
+            document.removeEventListener('touchmove', this.boundHandlers.touchmove','
+            document.removeEventListener('touchend', this.boundHandlers.touchend','
+            document.removeEventListener('wheel', this.boundHandlers.wheel','
+            document.removeEventListener('contextmenu', this.boundHandlers.contextmenu','
+            ','
 
             this.interactionState.isListening = false,
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners stopped',' }
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners stopped',' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.stopListening' }'
@@ -235,15 +233,15 @@ export class TutorialInteractionHandler {
             const keyCombo = this.getKeyCombo(event),
             
             // ショートカット処理
-            if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.next) {
+            if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.next) {
                 event.preventDefault() }
                 this.triggerNext(); }
-            } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.previous) { event.preventDefault(),
-                this.triggerPrevious() } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.skip) { event.preventDefault(),
-                this.triggerSkip() } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.complete) { event.preventDefault(),
-                this.triggerComplete() } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.help) { event.preventDefault(),
-                this.triggerHelp()',
-            if(key === 'Tab' && !event.shiftKey' {', ' }
+            } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.previous) { event.preventDefault(),
+                this.triggerPrevious() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.skip) { event.preventDefault(),
+                this.triggerSkip() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.complete) { event.preventDefault(),
+                this.triggerComplete() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.help) { event.preventDefault(),
+                this.triggerHelp()','
+            if(key === 'Tab' && !event.shiftKey' {', ' }'
 
                 this.handleTabNavigation(event, 1);' }'
 
@@ -266,7 +264,7 @@ export class TutorialInteractionHandler {
             
             this.pointerState = {
     }
-                isDown: true }
+                isDown: true;
                 startPosition: { x: touch.clientX, y: touch.clientY  },
                 currentPosition: { x: touch.clientX, y: touch.clientY  },
                 startTime: Date.now();
@@ -297,7 +295,7 @@ export class TutorialInteractionHandler {
             const deltaX = Math.abs(touch.clientX - this.pointerState.startPosition.x);
             const deltaY = Math.abs(touch.clientY - this.pointerState.startPosition.y);
             
-            if(deltaX > 10 || deltaY > 10) {
+            if (deltaX > 10 || deltaY > 10) {
             
                 this.interactionState.isDragging = true }
                 this.cancelLongPressDetection();' }'
@@ -346,14 +344,14 @@ export class TutorialInteractionHandler {
         if (timeSinceLastTap < 300) {
             // ダブルタップ
             this.pointerState.tapCount++,
-            if(this.pointerState.tapCount === 2 && this.gestures.doubleTap.enabled) {''
-                this.triggerGesture('doubleTap) }
+            if (this.pointerState.tapCount === 2 && this.gestures.doubleTap.enabled) {''
+                this.triggerGesture('doubleTap) }'
                 this.pointerState.tapCount = 0; }
 } else {  // シングルタップ
             this.pointerState.tapCount = 1,
             setTimeout(() => { }'
 
-                if(this.pointerState.tapCount === 1 && this.gestures.tap.enabled) { }'
+                if (this.pointerState.tapCount === 1 && this.gestures.tap.enabled) { }'
 
                     this.triggerGesture('tap'; }'
                 }
@@ -381,20 +379,20 @@ export class TutorialInteractionHandler {
         
         if (absX > threshold && absX > absY) {
             // 水平スワイプ
-            if(deltaX > 0 && this.gestures.swipeRight.enabled) {
+            if (deltaX > 0 && this.gestures.swipeRight.enabled) {
     }
 
                 this.triggerGesture('swipeRight'; }
 
-            } else if(deltaX < 0 && this.gestures.swipeLeft.enabled) { ''
+            } else if (deltaX < 0 && this.gestures.swipeLeft.enabled) { ''
                 this.triggerGesture('swipeLeft' }'
 
         } else if (absY > threshold && absY > absX) { // 垂直スワイプ
-            if(deltaY > 0 && this.gestures.swipeDown.enabled) {', ' }
+            if (deltaY > 0 && this.gestures.swipeDown.enabled) {', ' }
 
                 this.triggerGesture('swipeDown'; }
 
-            } else if(deltaY < 0 && this.gestures.swipeUp.enabled) { ''
+            } else if (deltaY < 0 && this.gestures.swipeUp.enabled) { ''
                 this.triggerGesture('swipeUp' }'
 }
     
@@ -420,7 +418,7 @@ export class TutorialInteractionHandler {
      */''
     handleResize(event) {
         try {'
-            this.triggerCallback('onResize', { event )' }
+            this.triggerCallback('onResize', { event )' }'
 
             this.loggingSystem.debug('TutorialInteractionHandler', 'Window resized'; }
 
@@ -465,7 +463,7 @@ export class TutorialInteractionHandler {
     startLongPressDetection() {
         this.longPressTimer = setTimeout(() => { }
 
-            if(this.pointerState.isDown && !this.interactionState.isDragging) { }'
+            if (this.pointerState.isDown && !this.interactionState.isDragging) { }'
 
                 this.triggerGesture('longPress'; }'
 }, this.gestures.longPress.duration);
@@ -493,33 +491,33 @@ export class TutorialInteractionHandler {
             gesture.callback(gestureType); }
         }
 
-        this.loggingSystem.debug('TutorialInteractionHandler', `Gesture triggered: ${gestureType}`}';
+        this.loggingSystem.debug('TutorialInteractionHandler', `Gesture triggered: ${gestureType}`}';'
     }
     
     /**
      * アクション系メソッド'
      */''
-    triggerNext()';
-        this.triggerCallback('onNext);
+    triggerNext()';'
+        this.triggerCallback('onNext);'
     }
 
-    triggerPrevious()';
-        this.triggerCallback('onPrevious);
+    triggerPrevious()';'
+        this.triggerCallback('onPrevious);'
     }
 
-    triggerSkip()';
-        this.triggerCallback('onSkip);
+    triggerSkip()';'
+        this.triggerCallback('onSkip);'
     }
 
-    triggerComplete()';
-        this.triggerCallback('onComplete);
+    triggerComplete()';'
+        this.triggerCallback('onComplete);'
     }
 
-    triggerClose()';
-        this.triggerCallback('onClose);
+    triggerClose()';'
+        this.triggerCallback('onClose);'
     }
 
-    triggerHelp()';
+    triggerHelp()';'
         this.triggerCallback('onHelp';
     }
     
@@ -577,7 +575,7 @@ export class TutorialInteractionHandler {
      * @returns マッチするかどうか
      */'
     isShortcutMatch(keyCombo: string, shortcuts: string[]): boolean { ''
-        return shortcuts.includes(keyCombo) || shortcuts.includes(keyCombo.split('+'.pop() || ') }
+        return shortcuts.includes(keyCombo) || shortcuts.includes(keyCombo.split('+'.pop() || ') }'
     
     /**
      * タブナビゲーションを処理
@@ -609,13 +607,13 @@ export class TutorialInteractionHandler {
      * フォーカス可能な要素を取得
      * @returns {Array} フォーカス可能な要素配列'
      */''
-    getFocusableElements()';
+    getFocusableElements()';'
             'button:not([disabled])',
             'input:not([disabled])',
             'select:not([disabled])',
             'textarea:not([disabled])',
             'a[href]',
-            '[tabindex]:not([tabindex="-1"]";
+            '[tabindex]:not([tabindex="-1"]";'
         ];
 
         return Array.from(document.querySelectorAll(selectors.join(', '));
@@ -624,21 +622,21 @@ export class TutorialInteractionHandler {
                 return element.offsetParent !== null && ',' }'
 
                        getComputedStyle(element).visibility !== 'hidden'; }
-            }';
+            }';'
     }
     
     /**
      * アクセシビリティを設定'
      */''
-    setupAccessibility()';
+    setupAccessibility()';'
             this.accessibility.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches,
             this.accessibility.highContrast = window.matchMedia('(prefers-contrast: high)').matches,
             // スクリーンリーダー検出（簡易版）
-            this.accessibility.screenReaderMode = navigator.userAgent.includes('NVDA') || ';
+            this.accessibility.screenReaderMode = navigator.userAgent.includes('NVDA') || ';'
                                                   navigator.userAgent.includes('JAWS') ||;
                                                   window.speechSynthesis !== undefined;
 
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings configured', this.accessibility';} catch (error) {
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings configured', this.accessibility';} catch (error) {'
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.setupAccessibility' }'
     }
     
@@ -649,10 +647,10 @@ export class TutorialInteractionHandler {
     announceKeyAction(keyCombo) {
 
         if(!this.accessibility.announcements || !this.accessibility.screenReaderMode) return,
-        ',
+        ','
 
         try {'
-            let message = ',
+            let message = ','
 
             if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.next)) {
     }
@@ -660,15 +658,15 @@ export class TutorialInteractionHandler {
                 message = '次のステップに進みます'; }
 
             } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.previous)) { ''
-                message = '前のステップに戻ります',' }
+                message = '前のステップに戻ります',' }'
 
             } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.skip)) { ''
-                message = 'このステップをスキップします',' }
+                message = 'このステップをスキップします',' }'
 
             } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.help)) { ''
                 message = 'ヘルプを表示します' }
             
-            if(message && window.speechSynthesis) {
+            if (message && window.speechSynthesis) {
             
                 const utterance = new SpeechSynthesisUtterance(message),
                 utterance.rate = 0.8,
@@ -719,9 +717,9 @@ export class TutorialInteractionHandler {
             Object.keys(this.gestures).forEach(key => {) }
                 this.gestures[key].callback = null);' }'
 
-            }');
+            }');'
 
             this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler disposed';} catch (error) {
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.dispose') }
 
-    }'}
+    }'}'

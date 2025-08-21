@@ -4,45 +4,45 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * RGBカラーインターフェース
  */
 interface RGBColor { r: number,
-    g: number,
-    b: number  }
+    g: number;
+    b: number;
 
 /**
  * 光源インターフェース
  */
 interface LightSource { x: number,
-    y: number,
-    radius: number,
-    intensity: number,
-    currentIntensity?: number,
-    color: RGBColor,
-    enabled: boolean,
-    castShadows?: boolean }
+    y: number;
+    radius: number;
+    intensity: number;
+    currentIntensity?: number;
+    color: RGBColor;
+    enabled: boolean;
+    castShadows?: boolean;
 
 /**
  * 影を投影するオブジェクトインターフェース
  */
 interface ShadowObject { x: number,
-    y: number,
-    size?: number,
-    type?: string }
+    y: number;
+    size?: number;
+    type?: string;
 
 /**
  * 影キャスターインターフェース
  */
 interface ShadowCaster { object: ShadowObject,
-    enabled: boolean,
-    opacity: number,
-    shadowType: 'hard' | 'soft',
-    blur: number  }
+    enabled: boolean;
+    opacity: number;
+    shadowType: 'hard' | 'soft';
+    blur: number;
 
 /**
  * バブルオブジェクトインターフェース
  */
 interface BubbleObject { x: number,
-    y: number,
-    size?: number,
-    type?: string }
+    y: number;
+    size?: number;
+    type?: string;
 
 /**
  * Lighting System Renderer
@@ -50,7 +50,7 @@ interface BubbleObject { x: number,
  */
 export class LightingSystemRenderer {
     // @ts-ignore - Canvas may be used in future lighting calculations
-    private canvas: HTMLCanvasElement,
+    private canvas: HTMLCanvasElement;
     private, errorHandler: any,
     constructor(canvas: HTMLCanvasElement) {
 
@@ -118,11 +118,11 @@ export class LightingSystemRenderer {
                     const shadowLength = 100 * (1 - distance / light.radius),
                     const shadowX = caster.object.x + (dx / distance) * shadowLength,
                     const shadowY = caster.object.y + (dy / distance) * shadowLength,
-                    ',
+                    ','
 
                     context.save(),
                     context.globalAlpha = caster.opacity * (1 - distance / light.radius),
-                    ',
+                    ','
 
                     // 影のソフトネス' }'
 
@@ -167,7 +167,7 @@ export class LightingSystemRenderer {
                 });
             });'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderAdvancedShadows'
-            }';
+            }';'
         }
     }
     
@@ -222,11 +222,11 @@ export class LightingSystemRenderer {
             // グラデーション影
             const, gradient = context.createRadialGradient(),
                 shadowX, shadowY, 0),
-                shadowX, shadowY, radius * 1.2)',
-            '),
+                shadowX, shadowY, radius * 1.2)','
+            '),'
             gradient.addColorStop(0, 'rgba(0, 0, 0, 0.8)'),
             gradient.addColorStop(0.6, 'rgba(0, 0, 0, 0.3)'),
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)),
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)),'
             
             context.fillStyle = gradient,
             
@@ -238,14 +238,14 @@ export class LightingSystemRenderer {
             context.arc(0, 0, radius * 1.2, 0, Math.PI * 2),
             context.fill(),
             context.restore(),
-            ',
+            ','
 
             context.restore(),' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'LightingSystemRenderer.renderBubbleShadow',' }
+                context: 'LightingSystemRenderer.renderBubbleShadow',' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

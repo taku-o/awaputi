@@ -15,124 +15,119 @@ import { generateJsonLd,
 
 // 基本スキーマインターフェース
 interface BaseSchema { ', '@context': string,', '@type': string,
-    [key: string]: any }
+    [key: string]: any;
 
 // VideoGameスキーマインターフェース
-interface VideoGameSchema extends BaseSchema { ', '@type': 'VideoGame',
-    name: string,
-    description: string,
-    url: string,
-    image: string,
-    applicationCategory: string,
-    operatingSystem: string[],
-    genre: string[],
-    inLanguage: string[],
-    isAccessibleForFree: boolean,
-    dateModified?: string,
-    additionalProperty?: PropertyValue[],
-    interactionStatistic?: InteractionCounter,
+interface VideoGameSchema extends BaseSchema { ', '@type': 'VideoGame','
+    name: string;
+    description: string;
+    url: string;
+    image: string;
+    applicationCategory: string;
+    operatingSystem: string[];
+    genre: string[];
+    inLanguage: string[];
+    isAccessibleForFree: boolean;
+    dateModified?: string;
+    additionalProperty?: PropertyValue[];
+    interactionStatistic?: InteractionCounter;
      }
 
 // PropertyValueインターフェース
-interface PropertyValue { ', '@type': 'PropertyValue',
-    name: string,
+interface PropertyValue { ', '@type': 'PropertyValue','
+    name: string;
     value: string | number  }
 
 // InteractionCounterインターフェース
-interface InteractionCounter { ', '@type': 'InteractionCounter',
-    interactionType: string,
-    userInteractionCount: number  }
+interface InteractionCounter { ', '@type': 'InteractionCounter','
+    interactionType: string;
+    userInteractionCount: number;
 
 // Organizationスキーマインターフェース
-interface OrganizationSchema extends BaseSchema { ', '@type': 'Organization',
-    name: string,
-    url: string,
-    logo: string,
-    sameAs: string[]  }
+interface OrganizationSchema extends BaseSchema { ', '@type': 'Organization','
+    name: string;
+    url: string;
+    logo: string;
+    sameAs: string[];
 
 // WebApplicationスキーマインターフェース
-interface WebApplicationSchema extends BaseSchema { ', '@type': 'WebApplication',
-    name: string,
-    description: string,
-    url: string,
-    applicationCategory: string,
-    operatingSystem: string[],
-    browserRequirements: string  }
+interface WebApplicationSchema extends BaseSchema { ', '@type': 'WebApplication','
+    name: string;
+    description: string;
+    url: string;
+    applicationCategory: string;
+    operatingSystem: string[];
+    browserRequirements: string;
 
 // BreadcrumbListスキーマインターフェース
-interface BreadcrumbListSchema extends BaseSchema { ', '@type': 'BreadcrumbList',
-    itemListElement: ListItem[]
-     }
+interface BreadcrumbListSchema extends BaseSchema { ', '@type': 'BreadcrumbList','
+    itemListElement: ListItem[];
 
 // ListItemインターフェース
-interface ListItem { ', '@type': 'ListItem',
-    position: number,
-    name: string,
-    item: string  }
+interface ListItem { ', '@type': 'ListItem','
+    position: number;
+    name: string;
+    item: string;
 
 // Eventスキーマインターフェース
-interface EventSchema extends BaseSchema { ', '@type': 'Event',
-    name: string,
-    description: string,
-    startDate: string,
-    endDate: string,
-    location: string,
-    organizer: OrganizationSchema
-     }
+interface EventSchema extends BaseSchema { ', '@type': 'Event','
+    name: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    location: string;
+    organizer: OrganizationSchema;
 
 // ゲームプレイデータインターフェース
 interface GameplayData { score?: number,
-    bubblesPopped?: number,
-    level?: number,
-    playTime?: number,
-    achievements?: string[],
-    combo?: number }
+    bubblesPopped?: number;
+    level?: number;
+    playTime?: number;
+    achievements?: string[];
+    combo?: number;
 
 // コンテキストインターフェース
 interface StructuredDataContext {
-    breadcrumbs?: Array<{ nam,e: string,, url: string  }>;
+    breadcrumbs?: Array<{ nam,e: string,, url: string;>;
     event?: { name: string,
         description: string,
         startDate: string,
         endDate: string,
-    location: string };
+    location: string,;
     pageType?: string;
     gameState?: any;
 }
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string,
-    addLanguageChangeListener(callback: (lang: string) => void): void,
-    t(key: string, defaultValue?: string): string,
-    get(key: string, params?: Record<string, any>): string 
-    }
+    addLanguageChangeListener(callback: (lang: string) => void): void;
+    t(key: string, defaultValue?: string): string;
+    get(key: string, params?: Record<string, any>): string;
 
 // GameConfig インターフェース
-interface GameConfig { [key: string]: any }
+interface GameConfig { [key: string]: any;
 
 // スキーマ生成関数型
 type SchemaGenerator = (context?: any) => Promise<BaseSchema | null>;
 
 export class StructuredDataEngine {
-    private localizationManager: LocalizationManager | null,
-    private gameConfig: GameConfig | null,
-    private baseUrl: string,
-    private currentLang: LanguageCode,
+    private localizationManager: LocalizationManager | null;
+    private gameConfig: GameConfig | null;
+    private baseUrl: string;
+    private currentLang: LanguageCode;
     private, schemas: Map<string, SchemaGenerator>,
-    private schemaCache: Map<string, BaseSchema>,
-    private initialized: boolean,
+    private schemaCache: Map<string, BaseSchema>;
+    private initialized: boolean;
     constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
     
-        this.localizationManager = localizationManager,
-        this.gameConfig = gameConfig,
-        this.baseUrl = getBaseUrl(),
-        this.currentLang = SEOConfig.defaultLanguage,
-        this.schemas = new Map(),
-        this.schemaCache = new Map(),
-        this.initialized = false,
-        
-    
-     }
+        this.localizationManager = localizationManager;
+        this.gameConfig = gameConfig;
+        this.baseUrl = getBaseUrl();
+        this.currentLang = SEOConfig.defaultLanguage;
+        this.schemas = new Map();
+        this.schemaCache = new Map();
+        this.initialized = false
+}
         this._initialize(); }
     }
     
@@ -141,9 +136,9 @@ export class StructuredDataEngine {
      */
     private _initialize(): void { try {
             // 言語設定の初期化
-            if(this.localizationManager) {
+            if (this.localizationManager) {
                 this.currentLang = normalizeLanguageCode(
-                    this.localizationManager.getCurrentLanguage(),
+                    this.localizationManager.getCurrentLanguage();
                 
                 // 言語変更リスナー
                 this.localizationManager.addLanguageChangeListener((newLang: string) => { 
@@ -154,7 +149,7 @@ export class StructuredDataEngine {
             }
             ;
             // スキーマ生成関数の登録
-            this._registerSchemaGenerators()';
+            this._registerSchemaGenerators()';'
             seoLogger.info('StructuredDataEngine, initialized successfully';} catch (error) {
             seoErrorHandler.handle(error as Error, 'structuredDataInit' }'
     }
@@ -163,9 +158,9 @@ export class StructuredDataEngine {
      * 包括的な構造化データの生成
      */'
     async generateStructuredData(context: StructuredDataContext = {}): Promise<BaseSchema[]> { ''
-        if(!this.initialized) {
+        if (!this.initialized) {
 
-            seoLogger.warn('StructuredDataEngine, not initialized) }
+            seoLogger.warn('StructuredDataEngine, not initialized) }'
             return [];
         
         try { const schemas: BaseSchema[] = [],
@@ -183,29 +178,29 @@ export class StructuredDataEngine {
             if (webApp) schemas.push(webApp),
             
             // BreadcrumbListスキーマ（ページ固有）
-            if(context.breadcrumbs) {
+            if (context.breadcrumbs) {
                 const breadcrumbs = await this.generateBreadcrumbSchema(context.breadcrumbs) }
                 if (breadcrumbs) schemas.push(breadcrumbs); }
             }
             
             // Eventスキーマ（イベント開催時）
-            if(context.event) {
+            if (context.event) {
                 const event = await this.generateEventSchema(context.event) }
                 if (event) schemas.push(event); }
             }
-            ';
+            ';'
 
             return schemas;} catch (error) { }
 
-            return seoErrorHandler.handle(error as Error, 'structuredDataGeneration', { context }';
+            return seoErrorHandler.handle(error as Error, 'structuredDataGeneration', { context }';'
 
     /**
      * ゲームプレイデータに基づいて構造化データを更新
      */'
     async updateGameplayData(gameplayData: GameplayData): Promise<void> { try {'
-            if(!this.initialized) {
+            if (!this.initialized) {
 
-                seoLogger.warn('StructuredDataEngine, not initialized) }
+                seoLogger.warn('StructuredDataEngine, not initialized) }'
                 return; }
             }
 
@@ -216,7 +211,7 @@ export class StructuredDataEngine {
             // ゲームプレイデータを組み込んだ拡張スキーマを生成
             const enhancedSchema: VideoGameSchema = { ...currentSchema,
                 // ゲームプレイ統計を追加
-                additionalProperty: [{', "@type": "PropertyValue",
+                additionalProperty: [{', "@type": "PropertyValue",'
                         "name": "currentHighScore",
                         "value": gameplayData.score || 0 },"
                     { "", "@type": "PropertyValue",
@@ -233,20 +228,20 @@ export class StructuredDataEngine {
                 // プレイヤー活動の証拠として最終更新時刻を更新
                 dateModified: new Date().toISOString();
             };
-";
+";"
             // インタラクション統計が存在する場合は追加""
-            if(gameplayData.score && gameplayData.score > 0) {"
+            if (gameplayData.score && gameplayData.score > 0) {"
                 enhancedSchema.interactionStatistic = {"", "@type": "InteractionCounter",
                     "interactionType": "http://schema.org/PlayAction","
-            }", "userInteractionCount": gameplayData.bubblesPopped || 0 
+            }", "userInteractionCount": gameplayData.bubblesPopped || 0 "
     }
-";
+";"
             // 動的にスキーマを更新""
-            await this._updateSchemaInDOM('VideoGame', enhancedSchema';
+            await this._updateSchemaInDOM('VideoGame', enhancedSchema';'
 
-            seoLogger.info('Gameplay data updated in structured data', gameplayData';} catch (error) { }
+            seoLogger.info('Gameplay data updated in structured data', gameplayData';} catch (error) { }'
 
-            seoErrorHandler.handle(error as Error, 'updateGameplayData', { gameplayData }';
+            seoErrorHandler.handle(error as Error, 'updateGameplayData', { gameplayData }';'
         }
     }
 
@@ -255,7 +250,7 @@ export class StructuredDataEngine {
      */''
     private async _updateSchemaInDOM(schemaType: string, newSchema: BaseSchema): Promise<void> { try {
             // 既存のスクリプトタグを検索
-            const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaType""]`};
+            const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaType""]`};"
             
             if(existingScript} {
             
@@ -267,18 +262,18 @@ export class StructuredDataEngine {
             } else {  // 新しいスクリプトタグを作成""
                 const scriptTag = document.createElement('script'),
                 scriptTag.type = 'application/ld+json',
-                scriptTag.setAttribute('data-schema', schemaType',
+                scriptTag.setAttribute('data-schema', schemaType','
                 scriptTag.textContent = JSON.stringify(newSchema, null, 2),
-                ',
+                ','
                 // 構造化データ注入ポイントに追加
-                const injectionPoint = document.getElementById('structured-data-injection-point),
+                const injectionPoint = document.getElementById('structured-data-injection-point),'
                 if (injectionPoint) { }
                     injectionPoint.appendChild(scriptTag); }
                     seoLogger.debug(`Added ${schemaType} schema, to DOM`});
                 } else {  // フォールバック: headに追加 }
                     document.head.appendChild(scriptTag); }
                     seoLogger.debug(`Added ${schemaType} schema, to head`});
-                }'} catch (error) { }
+                }'} catch (error) { }'
 
             seoErrorHandler.handle(error as Error, '_updateSchemaInDOM', { schemaType });
         }
@@ -290,20 +285,20 @@ export class StructuredDataEngine {
     async generateVideoGameSchema(context: StructuredDataContext = {}): Promise<VideoGameSchema | null> { try { }
             const cacheKey = `videoGame_${this.currentLang}`;
             
-            if(this.schemaCache.has(cacheKey) {
-            ',
+            if (this.schemaCache.has(cacheKey) {
+            ','
 
-                ' }
+                ' }'
 
                 return this.schemaCache.get(cacheKey) as VideoGameSchema;
-            ';
+            ';'
 
-            const schema: VideoGameSchema = { ', '@context': 'https://schema.org',
+            const schema: VideoGameSchema = { ', '@context': 'https://schema.org','
                 '@type': 'VideoGame',
-                name: this._getLocalizedText('game.name', SEOConfig.structuredData.game.name',
-                description: this._getLocalizedText('game.description', 'HTML5 Canvas を使用したバブルポップゲーム),
+                name: this._getLocalizedText('game.name', SEOConfig.structuredData.game.name','
+                description: this._getLocalizedText('game.description', 'HTML5 Canvas を使用したバブルポップゲーム),'
                 url: getLocalizedUrl(this.currentLang,
-                image: getSocialImageUrl('openGraph),
+                image: getSocialImageUrl('openGraph),'
                 applicationCategory: SEOConfig.structuredData.game.applicationCategory,
                 operatingSystem: SEOConfig.structuredData.game.operatingSystem,
                 genre: SEOConfig.structuredData.game.genre,
@@ -312,60 +307,60 @@ export class StructuredDataEngine {
             this.schemaCache.set(cacheKey, schema);
 
             return schema;} catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateVideoGameSchema', context',
+            seoErrorHandler.handle(error as Error, 'generateVideoGameSchema', context','
             return null,
     
     /**
      * Organizationスキーマの生成'
      */''
     async generateOrganizationSchema(context: StructuredDataContext = { }): Promise<OrganizationSchema | null> { try {
-            const schema: OrganizationSchema = {', '@context': 'https://schema.org',
+            const schema: OrganizationSchema = {', '@context': 'https://schema.org','
                 '@type': 'Organization',
                 name: SEOConfig.structuredData.organization.name,
                 url: SEOConfig.structuredData.organization.url,
                 logo: SEOConfig.structuredData.organization.logo,
     sameAs: SEOConfig.structuredData.organization.sameAs  };
-            ';
+            ';'
 
             return schema;} catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateOrganizationSchema', context',
+            seoErrorHandler.handle(error as Error, 'generateOrganizationSchema', context','
             return null,
     
     /**
      * WebApplicationスキーマの生成'
      */''
     async generateWebApplicationSchema(context: StructuredDataContext = { }): Promise<WebApplicationSchema | null> { try {
-            const schema: WebApplicationSchema = {', '@context': 'https://schema.org',
+            const schema: WebApplicationSchema = {', '@context': 'https://schema.org','
                 '@type': 'WebApplication',
-                name: this._getLocalizedText('app.name', SEOConfig.siteName',
+                name: this._getLocalizedText('app.name', SEOConfig.siteName','
                 description: this._getLocalizedText('app.description', 'BubblePop Web Application'),
                 url: this.baseUrl,
                 applicationCategory: SEOConfig.structuredData.webApplication.applicationCategory,
                 operatingSystem: ['Any'],
     browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements  };
-            ';
+            ';'
 
             return schema;} catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateWebApplicationSchema', context',
+            seoErrorHandler.handle(error as Error, 'generateWebApplicationSchema', context','
             return null,
     
     /**
      * BreadcrumbListスキーマの生成
      */'
-    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string,  url: string  }>): Promise<BreadcrumbListSchema | null> { try {'
-            const itemListElement: ListItem[] = breadcrumbs.map((crumb, index) => ({', '@type': 'ListItem',
+    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string,  url: string;>): Promise<BreadcrumbListSchema | null> { try {'
+            const itemListElement: ListItem[] = breadcrumbs.map((crumb, index) => ({', '@type': 'ListItem','
                 position: index + 1,
-                name: crumb.name',
+                name: crumb.name','
     item: crumb.url'
             }'
 
-            }');
-            ';
+            }');'
+            ';'
 
-            const schema: BreadcrumbListSchema = { ', '@context': 'https://schema.org',
+            const schema: BreadcrumbListSchema = { ', '@context': 'https://schema.org','
                 '@type': 'BreadcrumbList',
                 itemListElement };
-            ';
+            ';'
 
             return schema;} catch (error) {
             seoErrorHandler.handle(error as Error, 'generateBreadcrumbSchema', breadcrumbs),
@@ -378,30 +373,30 @@ export class StructuredDataEngine {
         description: string,
         startDate: string),
         endDate: string,
-    location: string  }): Promise<EventSchema | null>;
+    location: string,): Promise<EventSchema | null>;
 
         try { const organizer = await this.generateOrganizationSchema(),
             if(!organizer) return null,
-            ',
+            ','
 
-            const schema: EventSchema = {', '@context': 'https://schema.org',
+            const schema: EventSchema = {', '@context': 'https://schema.org','
                 '@type': 'Event',
                 name: eventData.name,
                 description: eventData.description,
                 startDate: eventData.startDate,
                 endDate: eventData.endDate,
                 location: eventData.location,
-    organizer: organizer  };
-            ';
+    organizer: organizer,;
+            ';'
 
             return schema;} catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateEventSchema', eventData',
+            seoErrorHandler.handle(error as Error, 'generateEventSchema', eventData','
             return null,
     
     /**
      * スキーマ生成関数の登録'
      */''
-    private _registerSchemaGenerators()',
+    private _registerSchemaGenerators()','
         this.schemas.set('videoGame', this.generateVideoGameSchema.bind(this)),
         this.schemas.set('organization', this.generateOrganizationSchema.bind(this)),
         this.schemas.set('webApplication', this.generateWebApplicationSchema.bind(this) }
@@ -418,14 +413,14 @@ export class StructuredDataEngine {
      * キャッシュのクリア
      */'
     clearCache(): void { ''
-        this.schemaCache.clear()',
+        this.schemaCache.clear()','
         seoLogger.info('StructuredDataEngine, cache cleared' }'
     
     /**
      * リソースのクリーンアップ
      */'
     cleanup(): void { this.schemas.clear(),
-        this.schemaCache.clear()',
+        this.schemaCache.clear()','
         seoLogger.info('StructuredDataEngine, cleaned up') }
 
-    }'}
+    }'}'

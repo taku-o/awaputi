@@ -3,26 +3,25 @@ import { CoordinateCalculator  } from '../../utils/CoordinateCalculator.js';
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
-interface MenuItemWithLabel extends MenuItem { label: string }
+interface MenuItemWithLabel extends MenuItem { label: string;
 
 interface PlayerData {
-    username: string }
+    username: string;
 
 /**
  * Main Menu Renderer
  * メインメニューの描画処理を担当
  */
 export class MainMenuRenderer {
-    public gameEngine: any,
-    public errorHandler: any,
-    public coordinateCalculator: CoordinateCalculator | null,
+    public gameEngine: any;
+    public errorHandler: any;
+    public coordinateCalculator: CoordinateCalculator | null;
 
     constructor(gameEngine: any) {
 
-        this.gameEngine = gameEngine,
-        this.errorHandler = getErrorHandler(),
-
-     }
+        this.gameEngine = gameEngine;
+        this.errorHandler = getErrorHandler()
+}
         this.coordinateCalculator = null; }
     }
     
@@ -34,7 +33,7 @@ export class MainMenuRenderer {
         const displayWidth = canvas.clientWidth || canvas.width,
         const displayHeight = canvas.clientHeight || canvas.height,
         
-        if(!this.coordinateCalculator) {
+        if (!this.coordinateCalculator) {
     
 }
             this.coordinateCalculator = new CoordinateCalculator(displayWidth, displayHeight, 800, 600); }
@@ -80,7 +79,7 @@ export class MainMenuRenderer {
                 } catch (e) { // フォント設定エラーを無視して次のフォントを試す }
             }
 
-            if(!fontSet) {
+            if (!fontSet) {
     
 }
                 context.font = `bold ${titleFontSize}px sans-serif`;
@@ -95,7 +94,7 @@ export class MainMenuRenderer {
             const titleX = calc.getTextCenterX(context, titleText);
             
             // テキスト境界の検証
-            if(!calc.validateTextBounds(context, titleText, titleX, titleY) {
+            if (!calc.validateTextBounds(context, titleText, titleX, titleY) {
                 // テキストが切れる場合はフォントサイズを調整
             }
                 const smallerFontSize = titleFontSize * 0.8; }
@@ -115,8 +114,8 @@ export class MainMenuRenderer {
             
             // プレイヤー情報表示
             const playerData = this.gameEngine.playerData as PlayerData;
-            if(playerData.username) { context.save()',
-                context.fillStyle = '#AAAAAA',' }
+            if (playerData.username) { context.save()','
+                context.fillStyle = '#AAAAAA',' }'
 
                 const playerFontSize = calc.scaleFontSize(16); }
 
@@ -144,7 +143,7 @@ export class MainMenuRenderer {
             } catch (restoreError) { // 復元エラーは無視 }
 
             this.errorHandler.handleError(error, 'RENDER_ERROR', { ')'
-                context: 'MainMenuRenderer.renderMainMenu,
+                context: 'MainMenuRenderer.renderMainMenu,'
     canvasWidth: this.gameEngine.canvas?.width, : undefined),
                 canvasHeight: this.gameEngine.canvas?.height  });
         }
@@ -171,18 +170,18 @@ export class MainMenuRenderer {
                 const canvasY = calc.toCanvasCoordinates(0, baseY).y,
                 const isSelected = index === selectedMenuIndex,
 
-                context.save()',
+                context.save()','
                 context.fillStyle = isSelected ? '#0066CC' : '#333333',')'
                 context.fillRect(itemX, canvasY, itemSize.width, itemSize.height),
-                ',
+                ','
                 // 枠線
                 context.strokeStyle = isSelected ? '#FFFFFF' : '#666666',
 
                 context.lineWidth = calc.uniformScale * 2,
                 context.strokeRect(itemX, canvasY, itemSize.width, itemSize.height),
-                ',
+                ','
                 // テキスト
-                context.fillStyle = '#FFFFFF',' }
+                context.fillStyle = '#FFFFFF',' }'
 
                 const menuFontSize = calc.scaleFontSize(20); }
 
@@ -209,7 +208,7 @@ export class MainMenuRenderer {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
             const calc = this.coordinateCalculator!,
 
-            context.save()',
+            context.save()','
             context.fillStyle = '#AAAAAA',')'
             const controlFontSize = calc.scaleFontSize(16) }
 
@@ -228,13 +227,13 @@ export class MainMenuRenderer {
             const controlX2 = calc.getTextCenterX(context, controlText2);
             context.fillText(controlText1, controlX1, controlsY);
             context.fillText(controlText2, controlX2, controlsY + lineSpacing);
-            ';
+            ';'
 
-            context.restore();'} catch (error) {
+            context.restore();'} catch (error) {'
             this.errorHandler.handleError(error, 'RENDER_ERROR', {''
-                context: 'MainMenuRenderer.renderControls',' }
+                context: 'MainMenuRenderer.renderControls',' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

@@ -5,26 +5,26 @@
 
 // Privacy Manager interfaces and types
 export interface ConsentStatus { hasConsented: boolean,
-    consentDate: string,
-    version: string,
+    consentDate: string;
+    version: string;
     features: Record<string, boolean> }
 
-export interface AnonymizationRule { (value: any): any }
+export interface AnonymizationRule { (value: any): any;
 
 export type PrivacyFeature = 'sessionTracking' | 'behaviorAnalysis' | 'performanceTracking' | 'analytics' | 'cookies';
 
 export class PrivacyManager {
-    private consentStatus: ConsentStatus | null,
+    private consentStatus: ConsentStatus | null;
     private, anonymizationRules: Map<string, AnonymizationRule>,
-    private optOutFeatures: Set<PrivacyFeature>,
-    private consentVersion: string,
+    private optOutFeatures: Set<PrivacyFeature>;
+    private consentVersion: string;
     constructor() {
 
-        this.consentStatus = null,
+        this.consentStatus = null;
 
-        this.anonymizationRules = new Map(),
-        this.optOutFeatures = new Set('',
-        this.consentVersion = '1.0',
+        this.anonymizationRules = new Map();
+        this.optOutFeatures = new Set('';
+        this.consentVersion = '1.0';
         
         // デフォルトの匿名化ルール)
         this.setupDefaultAnonymizationRules(),
@@ -38,16 +38,16 @@ export class PrivacyManager {
     /**
      * デフォルトの匿名化ルール設定
      */''
-    private setupDefaultAnonymizationRules()';
+    private setupDefaultAnonymizationRules()';'
         this.anonymizationRules.set('ipAddress', (value: string): string | null => {  ''
             if(!value) return null,
-            const parts = value.split('.),
+            const parts = value.split('.),'
             if (parts.length === 4) { }
                 // 最後のオクテットを0に置換 }
                 return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
             }
-            return value;}');
-        ';
+            return value;}');'
+        ';'
         // ユーザーエージェントの匿名化
         this.anonymizationRules.set('userAgent', (value: string): string | null => {  ''
             if(!value) return null,
@@ -56,25 +56,25 @@ export class PrivacyManager {
 
             return value.replace(/\d+\.\d+[\.\d]*/g, 'X.X'; }
 
-        }');
-        ';
+        }');'
+        ';'
         // セッションIDの匿名化
         this.anonymizationRules.set('sessionId', (value: string): string | null => {  if (!value) return null,
             // セッションIDをハッシュ化 }
             return this.hashValue(value); }'
 
-        }');
-        ';
+        }');'
+        ';'
         // タイムスタンプの曖昧化（分単位に丸める）
         this.anonymizationRules.set('timestamp', (value: number): number => {  if (!value) return 0 }
 
             return Math.floor(value / 60000) * 60000; // 分単位に丸める' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 座標の曖昧化
-        this.anonymizationRules.set('coordinates', (value: { x: number,  y: number }): { x: number,, y: number } | null => {  ''
-            if(!value || typeof, value.x !== 'number' || typeof, value.y !== 'number) return null,
+        this.anonymizationRules.set('coordinates', (value: { x: number,  y: number;): { x: number,, y: number; | null => {  ''
+            if(!value || typeof, value.x !== 'number' || typeof, value.y !== 'number) return null,'
             // 10ピクセル単位に丸める }
             return { x: Math.round(value.x / 10) * 10 };
                 y: Math.round(value.y / 10) * 10 
@@ -100,7 +100,7 @@ export class PrivacyManager {
             hasConsented: consent,
             consentDate: new Date().toISOString(),
             version: this.consentVersion,
-    features: features  };
+    features: features,;
         // オプトアウト機能の更新
         this.optOutFeatures.clear();
         Object.entries(features).forEach(([feature, enabled]) => {  if (!enabled) { }
@@ -114,7 +114,7 @@ export class PrivacyManager {
      * データの匿名化
      */''
     anonymizeData(data: any): any { ''
-        if(!data || typeof, data !== 'object) return data,
+        if(!data || typeof, data !== 'object) return data,'
         
         const anonymized = JSON.parse(JSON.stringify(data), // ディープコピー
 
@@ -123,9 +123,9 @@ export class PrivacyManager {
     /**
      * 匿名化ルールの適用'
      */''
-    private applyAnonymizationRules(obj: any, path: string = '): any { if (obj === null || obj === undefined) return obj,
+    private applyAnonymizationRules(obj: any, path: string = '): any { if (obj === null || obj === undefined) return obj,'
         
-        if(Array.isArray(obj) {
+        if (Array.isArray(obj) {
     
 }
             return obj.map((item, index) =>  }
@@ -148,7 +148,7 @@ export class PrivacyManager {
 
                     value = rule(value'}';
                 }
-                ';
+                ';'
                 // 再帰的に匿名化ルールを適用
                 if (typeof, value === 'object' && value !== null) { value = this.applyAnonymizationRules(value, currentPath) }
                 
@@ -177,7 +177,7 @@ export class PrivacyManager {
     optOutFeature(feature: PrivacyFeature): void { this.optOutFeatures.add(feature),
         
         // 同意状態の更新
-        if(this.consentStatus) {
+        if (this.consentStatus) {
             this.consentStatus.features[feature] = false }
             this.saveConsentStatus(); }
 }
@@ -188,7 +188,7 @@ export class PrivacyManager {
     optInFeature(feature: PrivacyFeature): void { this.optOutFeatures.delete(feature),
         
         // 同意状態の更新
-        if(this.consentStatus) {
+        if (this.consentStatus) {
             this.consentStatus.features[feature] = true }
             this.saveConsentStatus(); }
 }
@@ -204,12 +204,12 @@ export class PrivacyManager {
 
                     const key = localStorage.key(i) }
 
-                    if (key && (key.startsWith('analytics_') || key.startsWith('game_data_)) { }
+                    if (key && (key.startsWith('analytics_') || key.startsWith('game_data_)) { }'
                         keysToDelete.push(key); }
 }
                 
                 keysToDelete.forEach(key => localStorage.removeItem(key);
-                ';
+                ';'
                 // IndexedDBからデータを削除（実装は環境に依存）
                 this.clearIndexedDBData().then(() => {  ''
                     console.log('User, data deletion, completed') }'
@@ -240,7 +240,7 @@ export class PrivacyManager {
                         try {
                 }
 
-                            exportData.localStorage[key] = JSON.parse(localStorage.getItem(key) || '); }
+                            exportData.localStorage[key] = JSON.parse(localStorage.getItem(key) || '); }'
                         } catch { exportData.localStorage[key] = localStorage.getItem(key) }
 }
                 
@@ -268,17 +268,17 @@ export class PrivacyManager {
     /**
      * 同意状態の保存'
      */''
-    private saveConsentStatus()';
-            localStorage.setItem('privacy_consent', JSON.stringify(this.consentStatus);'} catch (error) { console.error('Failed to save consent status:', error }
+    private saveConsentStatus()';'
+            localStorage.setItem('privacy_consent', JSON.stringify(this.consentStatus);'} catch (error) { console.error('Failed to save consent status:', error }'
     }
     
     /**
      * 同意状態の読み込み'
      */''
-    private loadConsentStatus()';
-            const saved = localStorage.getItem('privacy_consent);
-            if(saved) {
-                this.consentStatus = JSON.parse(saved),
+    private loadConsentStatus()';'
+            const saved = localStorage.getItem('privacy_consent);'
+            if (saved) {
+                this.consentStatus = JSON.parse(saved);
                 
                 // オプトアウト機能の復元
                 if (this.consentStatus?.features) {
@@ -306,8 +306,8 @@ export class PrivacyManager {
     /**
      * IndexedDBデータのクリア
      */''
-    private async clearIndexedDBData()';
-            if('indexedDB' in, window) {
+    private async clearIndexedDBData()';'
+            if ('indexedDB' in, window) {
                 // ゲーム関連のデータベースを削除
                 const deleteDB = (dbName: string) => { 
                     return new Promise<void>((resolve, reject) => {
@@ -316,7 +316,7 @@ export class PrivacyManager {
                         deleteRequest.onsuccess = () => resolve(); }
                         deleteRequest.onerror = () => reject(deleteRequest.error);' }'
 
-                    }');
+                    }');'
                 };
 
                 await deleteDB('gameAnalytics');
@@ -354,7 +354,7 @@ export class PrivacyManager {
      * リソースの解放
      */'
     destroy(): void { this.anonymizationRules.clear(),
-        this.optOutFeatures.clear()',
+        this.optOutFeatures.clear()','
         console.log('PrivacyManager, destroyed') }
 
-    }'}
+    }'}'

@@ -8,11 +8,11 @@ import { SettingsUIController  } from './settings/SettingsUIController.js';
 import { SettingsExportImport  } from './settings/SettingsExportImport.js';
 
 // 型定義
-interface GameEngine { [key: string]: any }
+interface GameEngine { [key: string]: any;
 
-interface SettingsListener { (category: string, key: string, value: any, oldValue?: any): void }
+interface SettingsListener { (category: string, key: string, value: any, oldValue?: any): void;
 
-interface ConfigWatcher { (): void }
+interface ConfigWatcher { (): void;
 
 /**
  * 設定管理クラス（Main Controller）
@@ -20,38 +20,38 @@ interface ConfigWatcher { (): void }
  * Main Controller Patternによる軽量オーケストレーター
  */
 export class SettingsManager {
-    private gameEngine: GameEngine,
-    private configManager: any,
-    private notificationSystem: any,
-    private errorHandler: any,
+    private gameEngine: GameEngine;
+    private configManager: any;
+    private notificationSystem: any;
+    private errorHandler: any;
     private, listeners: Map<string, SettingsListener[]>,
-    private configWatchers: Map<string, ConfigWatcher>,
-    private validator: SettingsValidator,
-    private storageManager: SettingsStorageManager,
-    private dataManager: SettingsDataManager,
-    private uiController: SettingsUIController,
+    private configWatchers: Map<string, ConfigWatcher>;
+    private validator: SettingsValidator;
+    private storageManager: SettingsStorageManager;
+    private dataManager: SettingsDataManager;
+    private uiController: SettingsUIController;
     private, exportImport: SettingsExportImport,
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.configManager = getConfigurationManager(),
-        this.notificationSystem = getSettingsNotificationSystem(),
-        this.errorHandler = getErrorHandler(),
-        this.listeners = new Map(),
-        this.configWatchers = new Map(),
+        this.gameEngine = gameEngine;
+        this.configManager = getConfigurationManager();
+        this.notificationSystem = getSettingsNotificationSystem();
+        this.errorHandler = getErrorHandler();
+        this.listeners = new Map();
+        this.configWatchers = new Map();
         
         // サブコンポーネントの初期化（依存注入）
-        this.validator = new SettingsValidator(this),
-        this.storageManager = new SettingsStorageManager(this),
-        this.dataManager = new SettingsDataManager(this),
-        this.uiController = new SettingsUIController(this),
-        this.exportImport = new SettingsExportImport(this),
+        this.validator = new SettingsValidator(this);
+        this.storageManager = new SettingsStorageManager(this);
+        this.dataManager = new SettingsDataManager(this);
+        this.uiController = new SettingsUIController(this);
+        this.exportImport = new SettingsExportImport(this);
         
         // ConfigurationManagerのセットアップ
         this._setupConfigurationManager(),
         // 設定を読み込み
-        this.load(),
-     }
+        this.load()
+}
 
     }
 
@@ -69,14 +69,14 @@ export class SettingsManager {
             sfxVolume: defaultSettings.sfxVolume,
             bgmVolume: defaultSettings.bgmVolume,
     isMuted: defaultSettings.isMuted  }, { masterVolume: this.validator.validationRules.masterVolume)
-            sfxVolume: this.validator.validationRules.sfxVolume',
+            sfxVolume: this.validator.validationRules.sfxVolume','
     bgmVolume: this.validator.validationRules.bgmVolume,' }'
 
-            isMuted: { type: 'boolean' }');
-        ';
+            isMuted: { type: 'boolean' }');'
+        ';'
         // UI設定
         this.dataManager.setupSettingsCategory('ui', { language: defaultSettings.language)
-           , quality: defaultSettings.quality,',
+           , quality: defaultSettings.quality,','
             ...defaultSettings.ui'',
         '), {'
             language: { ''
@@ -93,7 +93,7 @@ export class SettingsManager {
             showDebugInfo: { type: 'boolean' },''
             animationSpeed: { type: 'number', min: 0.1, max: 3.0  },''
             uiScale: { type: 'number', min: 0.5, max: 2.0  }'}');
-        ';
+        ';'
         // その他の設定カテゴリもセットアップ
         this.dataManager.setupSettingsCategory('accessibility', defaultSettings.accessibility, { }
 
@@ -101,15 +101,15 @@ export class SettingsManager {
             reducedMotion: { type: 'boolean' },''
             largeText: { type: 'boolean' },''
             screenReader: { type: 'boolean' },')'
-            colorBlindSupport: { type: 'boolean' }');
+            colorBlindSupport: { type: 'boolean' }');'
         this.dataManager.setupSettingsCategory('controls', defaultSettings.controls, { }
 
             keyboardEnabled: { type: 'boolean' },''
             mouseEnabled: { type: 'boolean' },')'
-            touchEnabled: { type: 'boolean' }');
-        this.dataManager.setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, { )',
-        this.dataManager.setupSettingsCategory('social', defaultSettings.social, {)',
-        this.dataManager.setupSettingsCategory('notifications', defaultSettings.notifications, {)',
+            touchEnabled: { type: 'boolean' }');'
+        this.dataManager.setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, { )','
+        this.dataManager.setupSettingsCategory('social', defaultSettings.social, {)','
+        this.dataManager.setupSettingsCategory('notifications', defaultSettings.notifications, {)','
         this.dataManager.setupSettingsCategory('privacy', defaultSettings.privacy, {) }
     
     // ========== 公開API（後方互換性維持） ==========
@@ -136,7 +136,7 @@ export class SettingsManager {
             if (parsed.isLegacy) {
     }
                 return this.dataManager.getLegacyValue(key);
-            ';
+            ';'
 
             return this.configManager.get(parsed.category, parsed.settingName);} catch (error) { }
 
@@ -153,7 +153,7 @@ export class SettingsManager {
         try {
             // 検証
     }
-            if(!this.validator.validateSetting(key, value) { }
+            if (!this.validator.validateSetting(key, value) { }
                 console.warn(`[SettingsManager] Invalid, value for ${key}: ${value}`});
                 return false;
             }
@@ -161,7 +161,7 @@ export class SettingsManager {
             const oldValue = this.get(key);
             const parsed = this.dataManager.parseSettingKey(key);
             // ConfigurationManagerに設定
-            if(parsed.isLegacy) {
+            if (parsed.isLegacy) {
                 // レガシーキーの場合は特別処理が必要かもしれない
             }
 
@@ -170,7 +170,7 @@ export class SettingsManager {
             
             // 変更通知
             this.notifyChange(key, value, oldValue);
-            ';
+            ';'
 
             return true;} catch (error) { }
 
@@ -222,7 +222,7 @@ export class SettingsManager {
 
                 this.set(key, defaultValue);' }'
 
-                console.log(`[SettingsManager] Setting '${key}' reset, to default`}';} catch (error) { }
+                console.log(`[SettingsManager] Setting '${key}' reset, to default`}';} catch (error) { }'
 
             this.errorHandler.handleError(error, 'SETTINGS_RESET_ERROR', { key });
         }
@@ -276,7 +276,7 @@ export class SettingsManager {
      * @param {Function} callback コールバック関数
      */
     removeListener(key, callback) {
-        if(this.listeners.has(key) {
+        if (this.listeners.has(key) {
             const listeners = this.listeners.get(key),
             const index = listeners.findIndex(listener => listener.callback === callback),
             if (index !== -1) {
@@ -317,7 +317,7 @@ export class SettingsManager {
             this.notificationSystem.notifyChange(key, newValue, oldValue),
             
             // リスナーに通知
-            if(this.listeners.has(key) {
+            if (this.listeners.has(key) {
                 const listeners = [...this.listeners.get(key)],
                 for (const listener of listeners) {
                     try {
@@ -336,7 +336,7 @@ export class SettingsManager {
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'SETTINGS_NOTIFY_ERROR', { key, newValue, oldValue }';
+            this.errorHandler.handleError(error, 'SETTINGS_NOTIFY_ERROR', { key, newValue, oldValue }';'
         }
     }
     
@@ -345,11 +345,11 @@ export class SettingsManager {
     /**
      * 全ての設定を適用
      */''
-    applyAllSettings()';
+    applyAllSettings()';'
             console.log('[SettingsManager] Applying, all settings');
-            ';
+            ';'
             // UI設定の適用
-            this.uiController.applyAllUISettings()';
+            this.uiController.applyAllUISettings()';'
             console.log('[SettingsManager] All, settings applied, successfully');
         } catch (error) {
             this.errorHandler.handleError(error, 'SETTINGS_APPLY_ALL_ERROR' }'
@@ -367,7 +367,7 @@ export class SettingsManager {
             return this.storageManager.saveSettings(configData); }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_SAVE_ERROR),
+            this.errorHandler.handleError(error, 'SETTINGS_SAVE_ERROR),'
             return false,
     
     /**
@@ -389,14 +389,14 @@ export class SettingsManager {
                 }
                 ;
                 // 設定を適用
-                this.applyAllSettings()';
+                this.applyAllSettings()';'
                 console.log('[SettingsManager] Settings, loaded and, applied successfully');
                 return true;
             }
-            ';
+            ';'
 
             return false;} catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_LOAD_ERROR),
+            this.errorHandler.handleError(error, 'SETTINGS_LOAD_ERROR),'
             return false,
     
     // ========== エクスポート・インポート ==========
@@ -433,7 +433,7 @@ export class SettingsManager {
             validator: this.validator.getValidationStats(
     storageManager: this.storageManager.getSyncStats() }
             listeners: this.getActiveListeners() };
-            watchers: this.getActiveWatchers(); 
+            watchers: this.getActiveWatchers(), 
     }
     
     /**
@@ -550,7 +550,7 @@ export class SettingsManager {
         this.listeners.clear();
         
         // ConfigurationManagerの監視をクリア
-        if(this.configWatchers) {
+        if (this.configWatchers) {
             for (const watchId of this.configWatchers.values() {
         }
                 this.configManager.unwatch(watchId); }
@@ -559,7 +559,7 @@ export class SettingsManager {
         }
         
         // 通知システムをクリーンアップ
-        if(this.notificationSystem) {
+        if (this.notificationSystem) {
 
             this.notificationSystem.cleanup() }
 

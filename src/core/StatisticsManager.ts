@@ -19,107 +19,106 @@
 
 // Type definitions
 interface BubbleData { type: string,
-    score: number }
-    position?: { x: number,, y: number }
+    score: number;
+    position?: { x: number,, y: number,
     size?: number;
 }
 
 interface ComboData { count: number,
-    multiplier: number,
-    type?: string  }
+    multiplier: number;
+    type?: string;
 
 interface DamageData { amount: number,
-    source?: string }
+    source?: string;
 
 interface HealData { amount: number,
-    source?: string }
+    source?: string;
 
 interface EffectData { type: string,
-    duration?: number,
-    intensity?: number }
+    duration?: number;
+    intensity?: number;
 
 interface DragData {
-    startPosition: { ,x: number,, y: number },
-    endPosition: { x: number,, y: number },
-    duration: number;
+    startPosition: { ,x: number,, y: number,;
+    endPosition: { x: number,, y: number,;
+    duration: number,
 }
 
 interface AchievementData { id: string,
-    name: string,
-    progress?: number  }
+    name: string;
+    progress?: number;
 
 interface ApData { amount: number,
-    source?: string }
+    source?: string;
 
 interface ItemData { id: string,
-    name: string,
-    cost: number }
+    name: string;
+    cost: number;
 
 interface GameEndData { finalScore: number,
-    playTime: number,
-    completed: boolean,
-    stageId: string,
-    bubblesPopped: number }
+    playTime: number;
+    completed: boolean;
+    stageId: string;
+    bubblesPopped: number;
 
 interface Statistics { totalGamesPlayed: number,
-    totalScore: number,
-    totalPlayTime: number,
-    highestScore: number,
-    stagesCompleted: number,
-    stagesFailed: number,
-    totalBubblesPopped: number,
-    totalBubblesMissed: number,
-    bubbleTypeStats: Record<string, number>,
-    averageScore: number,
-    bubbleAccuracy: number  }
+    totalScore: number;
+    totalPlayTime: number;
+    highestScore: number;
+    stagesCompleted: number;
+    stagesFailed: number;
+    totalBubblesPopped: number;
+    totalBubblesMissed: number;
+    bubbleTypeStats: Record<string, number>;
+    averageScore: number;
+    bubbleAccuracy: number;
 
 interface SessionStats { bubblesThisSession: number,
-    missedThisSession: number,
-    scoreThisSession: number,
-    startTime: number }
+    missedThisSession: number;
+    scoreThisSession: number;
+    startTime: number;
 
 interface ValidationResult { isValid: boolean,
-    repaired: Statistics
-    }
+    repaired: Statistics;
 
 interface GenerateTestStatisticsOptions { gamesCount?: number,
-    scoreRange?: [number, number],
-    playTimeRange?: [number, number],
-    bubbleTypesEnabled?: boolean }
+    scoreRange?: [number, number];
+    playTimeRange?: [number, number];
+    bubbleTypesEnabled?: boolean;
 
 interface StatisticsDataManager { initializeStatistics(): Statistics,
-    initializeSessionStats(): SessionStats,
-    validateStatistics(stats: Statistics): ValidationResult }
+    initializeSessionStats(): SessionStats;
+    validateStatistics(stats: Statistics): ValidationResult;
 
 interface StatisticsCalculator { getDetailedStatistics(stats: Statistics, sessionStats: SessionStats): any,
-    calculateRankings(stats: Statistics): any,
-    getFavoriteStage(stats: Statistics): string }
+    calculateRankings(stats: Statistics): any;
+    getFavoriteStage(stats: Statistics): string;
 
 interface StatisticsTimeSeriesManager { recordTimeSeriesData(score: number, playTime: number, completed: boolean, metadata: any): void,
-    getAggregatedTimeSeriesData(period: string, days: number): any,
-    getTimeSeriesStatisticsSummary(): any,
-    getRecentPerformance(days: number): any,
-    getPeakPlayingTimes(): any,
-    getPlayTimeDistribution(): any,
-    compareTimePeriods(period1: string, period2: string): any,
-    clearData(): void }
+    getAggregatedTimeSeriesData(period: string, days: number): any;
+    getTimeSeriesStatisticsSummary(): any;
+    getRecentPerformance(days: number): any;
+    getPeakPlayingTimes(): any;
+    getPlayTimeDistribution(): any;
+    compareTimePeriods(period1: string, period2: string): any;
+    clearData(): void;
 
-interface StatisticsExporter { exportData(stats: Statistics, format: string, options: any): string  }
+interface StatisticsExporter { exportData(stats: Statistics, format: string, options: any): string;
 
 interface StatisticsEventHandler { onGameStart(stageId: string): void,
-    onGameEnd(data: GameEndData): void,
-    onBubblePopped(bubbleData: BubbleData): void,
-    onComboUpdate(comboData: ComboData): void,
-    onDamageTaken(damageData: DamageData): void,
-    onHpHealed(healData: HealData): void,
-    onRevived(): void,
-    onSpecialEffect(effectData: EffectData): void,
-    onDragOperation(dragData: DragData): void,
-    onAchievementUnlocked(achievementData: AchievementData): void,
-    onApEarned(apData: ApData): void,
-    onItemPurchased(itemData: ItemData): void }
+    onGameEnd(data: GameEndData): void;
+    onBubblePopped(bubbleData: BubbleData): void;
+    onComboUpdate(comboData: ComboData): void;
+    onDamageTaken(damageData: DamageData): void;
+    onHpHealed(healData: HealData): void;
+    onRevived(): void;
+    onSpecialEffect(effectData: EffectData): void;
+    onDragOperation(dragData: DragData): void;
+    onAchievementUnlocked(achievementData: AchievementData): void;
+    onApEarned(apData: ApData): void;
+    onItemPurchased(itemData: ItemData): void;
 
-interface StatisticsCollector { collectEvent(eventType: string, data: any): void  }
+interface StatisticsCollector { collectEvent(eventType: string, data: any): void;
 
 interface StatisticsAnalyzer { // Methods would be defined based on the actual StatisticsAnalyzer implementation }
 
@@ -128,35 +127,35 @@ interface GameEngine { // GameEngine interface would be defined elsewhere }
 export class StatisticsManager {
     // @ts-ignore - unused but kept for future implementation
     private __gameEngine: GameEngine, // prefixed with __ as unused
-    private dataManager: StatisticsDataManager,
-    private calculator: StatisticsCalculator,
-    private timeSeriesManager: StatisticsTimeSeriesManager,
-    private exporter: StatisticsExporter,
-    private eventHandler: StatisticsEventHandler,
-    private collector: StatisticsCollector | null,
-    private analyzer: StatisticsAnalyzer | null,
-    private statistics: Statistics,
+    private dataManager: StatisticsDataManager;
+    private calculator: StatisticsCalculator;
+    private timeSeriesManager: StatisticsTimeSeriesManager;
+    private exporter: StatisticsExporter;
+    private eventHandler: StatisticsEventHandler;
+    private collector: StatisticsCollector | null;
+    private analyzer: StatisticsAnalyzer | null;
+    private statistics: Statistics;
     private, sessionStats: SessionStats,
     constructor(gameEngine: GameEngine) {
     
-        this.__gameEngine = gameEngine,
+        this.__gameEngine = gameEngine;
         
         // 分割されたコンポーネントを初期化（スタブ実装）
-        this.dataManager = this.createStubDataManager(),
-        this.calculator = this.createStubCalculator(),
-        this.timeSeriesManager = this.createStubTimeSeriesManager(),
-        this.exporter = this.createStubExporter(),
+        this.dataManager = this.createStubDataManager();
+        this.calculator = this.createStubCalculator();
+        this.timeSeriesManager = this.createStubTimeSeriesManager();
+        this.exporter = this.createStubExporter();
         
         // 統計データとセッション統計を初期化
-        this.statistics = this.dataManager.initializeStatistics(),
-        this.sessionStats = this.dataManager.initializeSessionStats(),
+        this.statistics = this.dataManager.initializeStatistics();
+        this.sessionStats = this.dataManager.initializeSessionStats();
         
         // イベントハンドラーを初期化（統計データへの参照を渡す）
-        this.eventHandler = this.createStubEventHandler(),
+        this.eventHandler = this.createStubEventHandler();
         
         // 外部システムとの統合（遅延読み込み）
-        this.collector = null,
-        this.analyzer = null,
+        this.collector = null;
+        this.analyzer = null;
         this.initializeExternalSystems(),
         
         // データの読み込み
@@ -184,7 +183,7 @@ export class StatisticsManager {
                 missedThisSession: 0,
                 scoreThisSession: 0,
     startTime: Date.now( });
-            validateStatistics: (stats: Statistics) => ({ isValid: true, repaired: stats  });
+            validateStatistics: (stats: Statistics) => ({ isValid: true, repaired: stats,);
         }
     
     private createStubCalculator(): StatisticsCalculator { return { }
@@ -202,11 +201,11 @@ export class StatisticsManager {
             getPlayTimeDistribution: () => ({});
             compareTimePeriods: () => ({});
             clearData: () => {}
-    ';
+    ';'
 
     private createStubExporter(): StatisticsExporter { return { }'
 
-            exportData: () => '{
+            exportData: () => '{'
     }
     
     private createStubEventHandler(): StatisticsEventHandler { return { }
@@ -226,17 +225,17 @@ export class StatisticsManager {
     /**
      * 外部システムを初期化'
      */''
-    private async initializeExternalSystems()';
-                const { StatisticsCollector } = await import('./StatisticsCollector.js);
+    private async initializeExternalSystems()';'
+                const { StatisticsCollector } = await import('./StatisticsCollector.js);'
 
-                this.collector = new StatisticsCollector(this);'} catch (error) { console.warn('StatisticsCollector not available, using fallback mode:', error }
+                this.collector = new StatisticsCollector(this);'} catch (error) { console.warn('StatisticsCollector not available, using fallback mode:', error }'
             
             // StatisticsAnalyzerの統合
             try { }
 
-                const { StatisticsAnalyzer } = await import('./StatisticsAnalyzer.js);
+                const { StatisticsAnalyzer } = await import('./StatisticsAnalyzer.js);'
 
-                this.analyzer = new StatisticsAnalyzer(this);'} catch (error) {
+                this.analyzer = new StatisticsAnalyzer(this);'} catch (error) {'
                 console.warn('StatisticsAnalyzer not available, using fallback mode:', error',' }
 
             } catch (error) { console.error('Error initializing external systems:', error }
@@ -251,7 +250,7 @@ export class StatisticsManager {
     onGameStart(stageId: string): void { try {
             this.eventHandler.onGameStart(stageId),
             // StatisticsCollectorでのイベント収集
-            if(this.collector) {', ' }
+            if (this.collector) {', ' }
 
                 this.collector.collectEvent('game_started', { stageId ',' }
 
@@ -273,15 +272,14 @@ export class StatisticsManager {
                 { stageId: data.stageId, bubbles: data.bubblesPopped )
             ),
             // StatisticsCollectorでのイベント収集
-            if(this.collector) {', ',
+            if (this.collector) {', '
+}
 
-             }
-
-                this.collector.collectEvent('game_ended', data'; }
+                this.collector.collectEvent('game_ended', data'; }'
             }
-            ';
+            ';'
 
-            this.save();'} catch (error) { console.error('Error in onGameEnd:', error }
+            this.save();'} catch (error) { console.error('Error in onGameEnd:', error }'
     }
 
     /**
@@ -455,7 +453,7 @@ export class StatisticsManager {
      * @param period2 - 比較期間2
      * @returns 比較結果'
      */''
-    compareTimePeriods(period1: string = '7d', period2: string = '14d): any { try {
+    compareTimePeriods(period1: string = '7d', period2: string = '14d): any { try {'
             return this.timeSeriesManager.compareTimePeriods(period1, period2),' }'
 
         } catch (error) { console.error('Error in compareTimePeriods:', error }
@@ -479,7 +477,7 @@ export class StatisticsManager {
             return this.calculator.getFavoriteStage(this.statistics),' }'
 
         } catch (error) {
-            console.error('Error in getFavoriteStage:', error',
+            console.error('Error in getFavoriteStage:', error','
             return 'None',
 
     /**
@@ -493,10 +491,10 @@ export class StatisticsManager {
                     maxCount = count }
                     favoriteType = type; }
 }
-';
+';'
 
             return favoriteType;} catch (error) {
-            console.error('Error in getFavoriteBubbleType:', error',
+            console.error('Error in getFavoriteBubbleType:', error','
             return 'normal',
 
     // ========== データ永続化・インポート・エクスポート ==========
@@ -504,8 +502,8 @@ export class StatisticsManager {
     /**
      * 統計データを保存
      */''
-    save()',
-            if (typeof, window !== 'undefined' && window.localStorage' { const dataToSave = {
+    save()','
+            if (typeof, window !== 'undefined' && window.localStorage' { const dataToSave = {'
                     statistics: this.statistics,
                     sessionStats: this.sessionStats,
                     timestamp: Date.now(  }
@@ -518,10 +516,10 @@ export class StatisticsManager {
     /**
      * 統計データを読み込み'
      */''
-    load()';
+    load()';'
             if(typeof, window !== 'undefined' && window.localStorage' {'
 
-                const savedData = localStorage.getItem('awaputi_statistics),
+                const savedData = localStorage.getItem('awaputi_statistics),'
                 if (savedData) {
                     try {
                         const loadedData = JSON.parse(savedData),
@@ -531,12 +529,12 @@ export class StatisticsManager {
                             this.integrateLoadedData(loadedData);' }'
 
                         } catch (parseError) {
-                        console.warn('[StatisticsManager] Failed to parse saved data:', parseError',
+                        console.warn('[StatisticsManager] Failed to parse saved data:', parseError','
 
                         // 破損したデータを削除
                         localStorage.removeItem('awaputi_statistics' }'
 
-                }'} catch (error) { console.error('Error loading statistics:', error }
+                }'} catch (error) { console.error('Error loading statistics:', error }'
     }
 
     /**
@@ -544,11 +542,11 @@ export class StatisticsManager {
      * @param loadedData - 読み込まれたデータ
      */
     private integrateLoadedData(loadedData: any): void { try {
-            if(loadedData.statistics) {
+            if (loadedData.statistics) {
                 // データの整合性チェック
                 const validation = this.dataManager.validateStatistics(loadedData.statistics),
 
-                if(validation.isValid) {
+                if (validation.isValid) {
             }
                     this.statistics = loadedData.statistics; }
 
@@ -556,7 +554,7 @@ export class StatisticsManager {
                     console.warn('Loaded statistics data validation failed, using repaired data') }'
                     this.statistics = validation.repaired; }
 }
-';
+';'
 
             if (loadedData.sessionStats) { this.sessionStats = loadedData.sessionStats,' }'
 
@@ -574,8 +572,8 @@ export class StatisticsManager {
             return this.exporter.exportData(this.statistics, format, options),' }'
 
         } catch (error) {
-            console.error('Error exporting data:', error',
-            return ',
+            console.error('Error exporting data:', error','
+            return ','
 
     /**
      * テストデータを生成
@@ -609,7 +607,7 @@ export class StatisticsManager {
                 } else { testStats.stagesFailed++ }
                 
                 // 泡統計生成
-                if(bubbleTypesEnabled) {
+                if (bubbleTypesEnabled) {
                     const bubbleTypes = Object.keys(testStats.bubbleTypeStats),
                     const bubblesPopped = Math.floor(Math.random() * 50) + 10,
                     
@@ -627,7 +625,7 @@ export class StatisticsManager {
             testStats.averageScore = testStats.totalScore / testStats.totalGamesPlayed;
             testStats.bubbleAccuracy = testStats.totalBubblesPopped / ;
                 (testStats.totalBubblesPopped + testStats.totalBubblesMissed) * 100;
-            ';
+            ';'
 
             return testStats;} catch (error) {
             console.error('Error generating test statistics:', error),
@@ -637,8 +635,8 @@ export class StatisticsManager {
      * 統計をリセット
      */
     reset(): void { try {
-            this.statistics = this.dataManager.initializeStatistics(),
-            this.sessionStats = this.dataManager.initializeSessionStats(),
+            this.statistics = this.dataManager.initializeStatistics();
+            this.sessionStats = this.dataManager.initializeSessionStats();
             this.timeSeriesManager.clearData(),
 
             this.save(),' }'
@@ -653,7 +651,7 @@ export class StatisticsManager {
     calculateClicksPerMinute(): number { try {
             const totalClicks = this.statistics.totalBubblesPopped + this.statistics.totalBubblesMissed,
             const totalMinutes = (this.statistics.totalPlayTime || 0) / 60000,
-            ',
+            ','
 
             return totalMinutes > 0 ? totalClicks / totalMinutes: 0,', '
         } catch (error) {

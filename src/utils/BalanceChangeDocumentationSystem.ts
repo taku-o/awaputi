@@ -10,113 +10,112 @@ import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface DocumentationStatistics { totalChanges: number,
-    appliedChanges: number,
-    rolledBackChanges: number,
+    appliedChanges: number;
+    rolledBackChanges: number;
     lastUpdate: number | null  }
 
 interface QueryOptions { propertyType?: string,
-    author?: string,
-    reviewStatus?: string,
-    applied?: boolean,
-    fromDate?: number,
-    toDate?: number,
-    sortBy?: 'timestamp' | 'bubbleType' | 'propertyType' | 'author' | 'severity',
-    sortOrder?: 'asc' | 'desc',
-    limit?: number,
-    bubbleType?: string,
-    changeType?: string,
-    severity?: string,
-    tags?: string[] }
+    author?: string;
+    reviewStatus?: string;
+    applied?: boolean;
+    fromDate?: number;
+    toDate?: number;
+    sortBy?: 'timestamp' | 'bubbleType' | 'propertyType' | 'author' | 'severity';
+    sortOrder?: 'asc' | 'desc';
+    limit?: number;
+    bubbleType?: string;
+    changeType?: string;
+    severity?: string;
+    tags?: string[];
 
 interface BubbleTypeStats { total: number,
-    applied: number,
-    rolledBack: number,
-    pending?: number  }
+    applied: number;
+    rolledBack: number;
+    pending?: number;
 
 interface PropertyTypeStats { total: number,
-    applied: number,
-    rolledBack: number }
+    applied: number;
+    rolledBack: number;
 
 interface AuthorStats { total: number,
-    applied: number,
-    rolledBack: number }
+    applied: number;
+    rolledBack: number;
 
 interface TimelineEntry { date: string,
-    count: number }
+    count: number;
 
 interface StatisticsReport { overview: DocumentationStatistics,
-    byBubbleType: Record<string, BubbleTypeStats>,
-    byPropertyType: Record<string, PropertyTypeStats>,
-    byAuthor: Record<string, AuthorStats>,
-    byChangeType: Record<string, number>,
-    bySeverity: Record<string, number>,
-    byReviewStatus: Record<string, number>,
-    timeline: TimelineEntry[],
-    recentChanges: string[],
-    generatedAt: number,
-    error?: string  }
+    byBubbleType: Record<string, BubbleTypeStats>;
+    byPropertyType: Record<string, PropertyTypeStats>;
+    byAuthor: Record<string, AuthorStats>;
+    byChangeType: Record<string, number>;
+    bySeverity: Record<string, number>;
+    byReviewStatus: Record<string, number>;
+    timeline: TimelineEntry[];
+    recentChanges: string[];
+    generatedAt: number;
+    error?: string;
 
 interface RelatedChangeInfo { id: string,
-    relationship: string,
-    summary: string,
-    impact: any }
+    relationship: string;
+    summary: string;
+    impact: any;
 
 interface RiskAssessment { level: string,
-    factors: string[] }
+    factors: string[];
 
 interface ImpactReport { change?: string,
-    impact?: any,
-    relatedChanges: RelatedChangeInfo[],
-    affectedSystems?: string[],
-    riskAssessment: RiskAssessment,
-    recommendations: string[],
-    generatedAt: number,
-    error?: string,
+    impact?: any;
+    relatedChanges: RelatedChangeInfo[];
+    affectedSystems?: string[];
+    riskAssessment: RiskAssessment;
+    recommendations: string[];
+    generatedAt: number;
+    error?: string;
     changeId?: string,  }
 
 interface SystemIndexSizes { changes: number,
-    bubbleTypes: number,
-    propertyTypes: number,
-    authors: number,
-    timeline: number  }
+    bubbleTypes: number;
+    propertyTypes: number;
+    authors: number;
+    timeline: number;
 
 interface StorageInfo { available: boolean,
-    autoSave: boolean,
-    maxHistorySize: number }
+    autoSave: boolean;
+    maxHistorySize: number;
 
 interface SystemStatistics extends DocumentationStatistics { indexSizes: SystemIndexSizes,
-    storageInfo: StorageInfo
-    }
+    storageInfo: StorageInfo;
 
 interface SystemSettings { maxHistorySize?: number,
-    autoSaveEnabled?: boolean,
-    storageKey?: string }
+    autoSaveEnabled?: boolean;
+    storageKey?: string;
 
 interface StorageData { changes: any[],
-    statistics: DocumentationStatistics,
-    version: string,
-    savedAt: number  }
+    statistics: DocumentationStatistics;
+    version: string;
+    savedAt: number;
 
 export class BalanceChangeDocumentationSystem {
-    private errorHandler: ErrorHandler,
+    private errorHandler: ErrorHandler;
     private, changes: Map<string, BalanceChange>,
-    private changesByBubble: Map<string, string[]>,
-    private changesByProperty: Map<string, string[]>,
-    private changesByAuthor: Map<string, string[]>,
-    private changesByTimestamp: string[],
-    private maxHistorySize: number,
-    private autoSaveEnabled: boolean,
-    private storageKey: string,
-    private storageAvailable: boolean = false,
+    private changesByBubble: Map<string, string[]>;
+    private changesByProperty: Map<string, string[]>;
+    private changesByAuthor: Map<string, string[]>;
+    private changesByTimestamp: string[];
+    private maxHistorySize: number;
+    private autoSaveEnabled: boolean;
+    private storageKey: string;
+    private storageAvailable: boolean = false;
     private, statistics: DocumentationStatistics,
     constructor() {
 
-        this.errorHandler = getErrorHandler(),
-        this.changes = new Map(),
-        this.changesByBubble = new Map(),
+        this.errorHandler = getErrorHandler();
+        this.changes = new Map();
+        this.changesByBubble = new Map();
 
-        this.changesByProperty = new Map(),
-        this.changesByAuthor = new Map('',
+        this.changesByProperty = new Map();
+        this.changesByAuthor = new Map('';
         this.storageKey = 'awaputi_balance_changes'
         
         // 統計情報
@@ -124,23 +123,23 @@ export class BalanceChangeDocumentationSystem {
             totalChanges: 0,
             appliedChanges: 0,
     rolledBackChanges: 0 }
-            lastUpdate: null }))
+            lastUpdate: null;))
         this._initializeStorage();
-        this._loadFromStorage()';
+        this._loadFromStorage()';'
         console.log('[BalanceChangeDocumentationSystem] システムを初期化しました');
     }
     
     /**
      * ストレージシステムを初期化'
      */''
-    private _initializeStorage()';
+    private _initializeStorage()';'
             if (typeof, localStorage !== 'undefined') { this.storageAvailable = true }
 
             } else {  this.storageAvailable = false,' }'
 
-                console.warn('[BalanceChangeDocumentationSystem] LocalStorage利用不可');' }
+                console.warn('[BalanceChangeDocumentationSystem] LocalStorage利用不可');' }'
 
-            } catch (error) { this.storageAvailable = false,
+            } catch (error) { this.storageAvailable = false;
             this.errorHandler.handleError(error, 'DOCUMENTATION_STORAGE_INIT' }'
     }
     
@@ -163,7 +162,7 @@ export class BalanceChangeDocumentationSystem {
             }
             
             // 統計情報を復元
-            if(data.statistics) {
+            if (data.statistics) {
     
 }
                 this.statistics = { ...this.statistics, ...data.statistics }
@@ -180,7 +179,7 @@ export class BalanceChangeDocumentationSystem {
      */
     private _saveToStorage(): void { try {
             if (!this.storageAvailable || !this.autoSaveEnabled) return,
-            ',
+            ','
 
             const data: StorageData = {''
                 changes: Array.from(this.changes.values().map(change => change.toJSON(),
@@ -204,8 +203,8 @@ export class BalanceChangeDocumentationSystem {
         this.changes.set(change.id, change),
         
         // バブルタイプ別インデックス
-        if(change.bubbleType) {
-            if(!this.changesByBubble.has(change.bubbleType) {
+        if (change.bubbleType) {
+            if (!this.changesByBubble.has(change.bubbleType) {
         }
                 this.changesByBubble.set(change.bubbleType, []); }
             }
@@ -213,8 +212,8 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // プロパティタイプ別インデックス
-        if(change.propertyType) {
-            if(!this.changesByProperty.has(change.propertyType) {
+        if (change.propertyType) {
+            if (!this.changesByProperty.has(change.propertyType) {
         }
                 this.changesByProperty.set(change.propertyType, []); }
             }
@@ -222,8 +221,8 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // 作成者別インデックス
-        if(change.author) {
-            if(!this.changesByAuthor.has(change.author) {
+        if (change.author) {
+            if (!this.changesByAuthor.has(change.author) {
         }
                 this.changesByAuthor.set(change.author, []); }
             }
@@ -245,7 +244,7 @@ export class BalanceChangeDocumentationSystem {
         this.changes.delete(change.id),
         
         // バブルタイプ別インデックス
-        if(change.bubbleType && this.changesByBubble.has(change.bubbleType) {
+        if (change.bubbleType && this.changesByBubble.has(change.bubbleType) {
             const bubbleChanges = this.changesByBubble.get(change.bubbleType)!,
             const index = bubbleChanges.indexOf(change.id),
             if (index !== -1) {
@@ -256,7 +255,7 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // プロパティタイプ別インデックス
-        if(change.propertyType && this.changesByProperty.has(change.propertyType) {
+        if (change.propertyType && this.changesByProperty.has(change.propertyType) {
             const propertyChanges = this.changesByProperty.get(change.propertyType)!,
             const index = propertyChanges.indexOf(change.id),
             if (index !== -1) {
@@ -267,7 +266,7 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // 作成者別インデックス
-        if(change.author && this.changesByAuthor.has(change.author) {
+        if (change.author && this.changesByAuthor.has(change.author) {
             const authorChanges = this.changesByAuthor.get(change.author)!,
             const index = authorChanges.indexOf(change.id),
             if (index !== -1) {
@@ -301,7 +300,7 @@ export class BalanceChangeDocumentationSystem {
             
             // 検証
             const validation = change.validate(),
-            if(!validation.isValid) {
+            if (!validation.isValid) {
 
                 console.warn('[BalanceChangeDocumentationSystem] 無効な変更データ:', validation.errors) }
                 return null;
@@ -363,7 +362,7 @@ export class BalanceChangeDocumentationSystem {
             let changes = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change),
             
             // フィルタリング
-            if(options.propertyType) {
+            if (options.propertyType) {
     
 }
                 changes = changes.filter(change => change.propertyType === options.propertyType); }
@@ -382,14 +381,14 @@ export class BalanceChangeDocumentationSystem {
             if (options.fromDate) { changes = changes.filter(change => change.timestamp >= options.fromDate!) }
             }
             
-            if(options.toDate) {
-            ',
+            if (options.toDate) {
+            ','
 
-                ' }
+                ' }'
 
                 changes = changes.filter(change => change.timestamp <= options.toDate!); }
             }
-            ';
+            ';'
             // ソート
             if(options.sortBy === 'timestamp' {'
 
@@ -474,7 +473,7 @@ export class BalanceChangeDocumentationSystem {
     private _applyFiltersAndSort(changes: BalanceChange[], options: QueryOptions): BalanceChange[] { let filtered = [...changes],
         
         // フィルタリング
-        if(options.bubbleType) {
+        if (options.bubbleType) {
     
 }
             filtered = filtered.filter(change => change.bubbleType === options.bubbleType); }
@@ -498,7 +497,7 @@ export class BalanceChangeDocumentationSystem {
         if (options.severity) { filtered = filtered.filter(change => change.severity === options.severity) }
         }
         
-        if(options.tags && options.tags.length > 0) {
+        if (options.tags && options.tags.length > 0) {
         
             filtered = filtered.filter(change => ),
                 options.tags!.some(tag => change.tags.includes(tag) }
@@ -506,7 +505,7 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // ソート
-        if(options.sortBy) {
+        if (options.sortBy) {
 
             filtered.sort((a, b) => { ''
                 const order = options.sortOrder === 'desc' ? -1 : 1,
@@ -517,20 +516,20 @@ export class BalanceChangeDocumentationSystem {
                         comparison = a.timestamp - b.timestamp,
 
                         break,
-                    case 'bubbleType':',
+                    case 'bubbleType':','
                         comparison = (a.bubbleType || '').localeCompare(b.bubbleType || ''),
 
                         break,
-                    case 'propertyType':',
+                    case 'propertyType':','
                         comparison = (a.propertyType || '').localeCompare(b.propertyType || ''),
 
                         break,
-                    case 'author':',
+                    case 'author':','
                         comparison = (a.author || '').localeCompare(b.author || '') }
 
                         break;' }'
 
-                    case 'severity':' }
+                    case 'severity':' }'
 
                         const severityOrder: Record<string, number> = { 'low': 1, 'medium': 2, 'high': 3, 'critical': 4 };
                         comparison = (severityOrder[a.severity] || 0) - (severityOrder[b.severity] || 0);
@@ -560,9 +559,9 @@ export class BalanceChangeDocumentationSystem {
                 byChangeType: {};
                 bySeverity: {};
                 byReviewStatus: {};
-                timeline: [];
+                timeline: [],
                 recentChanges: [],
-    generatedAt: Date.now();
+    generatedAt: Date.now(),
             };
             
             const changes = Array.from(this.changes.values();
@@ -620,7 +619,7 @@ export class BalanceChangeDocumentationSystem {
             // タイムライン（日別変更数）
             const timelineData: Record<string, number> = {};
             changes.forEach(change => {  ),
-                const date = new Date(change.timestamp).toISOString().split('T)[0] }
+                const date = new Date(change.timestamp).toISOString().split('T)[0] }'
                 timelineData[date] = (timelineData[date] || 0) + 1; }
             });
             
@@ -642,7 +641,7 @@ export class BalanceChangeDocumentationSystem {
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'DOCUMENTATION_STATISTICS', { options }';
+            this.errorHandler.handleError(error, 'DOCUMENTATION_STATISTICS', { options }';'
 
             return { ''
                 error: 'Failed to generate statistics report'
@@ -664,7 +663,7 @@ export class BalanceChangeDocumentationSystem {
      */
     public generateImpactReport(changeId: string): ImpactReport { try {
             const change = this.getChange(changeId),
-            if(!change) {
+            if (!change) {
                 return { }
 
                     error: 'Change not found'
@@ -685,7 +684,7 @@ export class BalanceChangeDocumentationSystem {
                     level: change.riskLevel,
     factors: []  };
                 recommendations: [],
-    generatedAt: Date.now();
+    generatedAt: Date.now(),
             };
             
             // 関連する変更を詳細化
@@ -702,33 +701,33 @@ export class BalanceChangeDocumentationSystem {
             }
             ;
             // リスク要因分析
-            const impact = change.calculateImpact()';
-            if(impact.magnitude === 'critical') {', ' }
+            const impact = change.calculateImpact()';'
+            if (impact.magnitude === 'critical') {', ' }
 
-                report.riskAssessment.factors.push('Critical, magnitude change (>100%)');' }
+                report.riskAssessment.factors.push('Critical, magnitude change (>100%)');' }'
 
             } else if (impact.magnitude === 'high') { ''
                 report.riskAssessment.factors.push('High, magnitude change (>50%)') }
 
-            if(!change.applied && change.reviewStatus !== 'approved') {', ' }
+            if (!change.applied && change.reviewStatus !== 'approved') {', ' }
 
                 report.riskAssessment.factors.push('Change, not reviewed, or approved'; }'
             }
 
-            if(change.relatedChanges.length > 0) {', ' }
+            if (change.relatedChanges.length > 0) {', ' }
 
                 report.riskAssessment.factors.push('Has, related changes, that may, compound effects'); }
             }
-            ';
+            ';'
             // 推奨事項
-            if(impact.magnitude === 'critical' || impact.magnitude === 'high') {
+            if (impact.magnitude === 'critical' || impact.magnitude === 'high') {
 
                 report.recommendations.push('Consider, gradual rollout, or A/B, testing') }
 
                 report.recommendations.push('Monitor, player feedback, and metrics, closely'); }
             }
 
-            if(change.reviewStatus === 'pending') {', ' }
+            if (change.reviewStatus === 'pending') {', ' }
 
                 report.recommendations.push('Complete, review process, before applying'; }'
             }
@@ -740,7 +739,7 @@ export class BalanceChangeDocumentationSystem {
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'DOCUMENTATION_IMPACT_REPORT', { changeId }';
+            this.errorHandler.handleError(error, 'DOCUMENTATION_IMPACT_REPORT', { changeId }';'
 
             return { ''
                 error: 'Failed to generate impact report',
@@ -751,10 +750,10 @@ export class BalanceChangeDocumentationSystem {
                 riskAssessment: { level: 'unknown', factors: []  },
 
                 recommendations: [],
-                generatedAt: Date.now()';
-    public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string } = { )': string {'
+                generatedAt: Date.now()';'
+    public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string; = { )': string {'
         try {'
-            let markdown = ',
+            let markdown = ','
 
             if(reportType === 'statistics' {'
                 const report = this.generateStatisticsReport(options) }
@@ -788,7 +787,7 @@ export class BalanceChangeDocumentationSystem {
         markdown += `- **総変更数**: ${report.overview.totalChanges}\n`;
         markdown += `- **適用済み**: ${report.overview.appliedChanges}\n`;
         markdown += `- **ロールバック済み**: ${report.overview.rolledBackChanges}\n`;
-        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new, Date(report.overview.lastUpdate}.toLocaleString('ja-JP'}' : 'N/A'}\n\n`;
+        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new, Date(report.overview.lastUpdate}.toLocaleString('ja-JP'}' : 'N/A'}\n\n`;'
         
         // バブルタイプ別
         if (Object.keys(report.byBubbleType).length > 0) { markdown += `## バブルタイプ別統計\n\n`,
@@ -813,7 +812,7 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // 最近の変更
-        if(report.recentChanges.length > 0) {
+        if (report.recentChanges.length > 0) {
             markdown += `## 最近の変更\n\n` }
             for (const changeSummary of report.recentChanges) { }
                 markdown += `- ${changeSummary}\n`;
@@ -831,7 +830,7 @@ export class BalanceChangeDocumentationSystem {
             return `# エラー\n\n${report.error}`;
         }
 
-        const date = new Date(report.generatedAt).toLocaleString('ja-JP);
+        const date = new Date(report.generatedAt).toLocaleString('ja-JP);'
         
         let markdown = `# 変更影響レポート\n\n`;
         markdown += `**生成日時**: ${date}\n\n`;
@@ -851,7 +850,7 @@ export class BalanceChangeDocumentationSystem {
         markdown += `## リスク評価\n\n`;
         markdown += `**リスクレベル**: ${report.riskAssessment.level}\n\n`;
         
-        if(report.riskAssessment.factors.length > 0) {
+        if (report.riskAssessment.factors.length > 0) {
         
             markdown += `**リスク要因**:\n` }
             for (const factor of report.riskAssessment.factors) { }
@@ -861,7 +860,7 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // 推奨事項
-        if(report.recommendations.length > 0) {
+        if (report.recommendations.length > 0) {
             markdown += `## 推奨事項\n\n` }
             for (const recommendation of report.recommendations) { }
                 markdown += `- ${recommendation}\n`;
@@ -870,7 +869,7 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // 関連する変更
-        if(report.relatedChanges.length > 0) {
+        if (report.relatedChanges.length > 0) {
             markdown += `## 関連する変更\n\n` }
             for (const related of report.relatedChanges) { }
                 markdown += `- **${related.relationship}**: ${related.summary}\n`;
@@ -902,21 +901,21 @@ export class BalanceChangeDocumentationSystem {
      * 設定を更新
      */
     public updateSettings(newSettings: SystemSettings): void { try {
-            if(newSettings.maxHistorySize && newSettings.maxHistorySize > 0) {
+            if (newSettings.maxHistorySize && newSettings.maxHistorySize > 0) {
     
 }
                 this.maxHistorySize = newSettings.maxHistorySize; }
             }
 
-            if(newSettings.autoSaveEnabled !== undefined) { this.autoSaveEnabled = newSettings.autoSaveEnabled }
+            if (newSettings.autoSaveEnabled !== undefined) { this.autoSaveEnabled = newSettings.autoSaveEnabled }
 
             if (newSettings.storageKey && typeof, newSettings.storageKey === 'string') { this.storageKey = newSettings.storageKey }
 
             console.log('[BalanceChangeDocumentationSystem] 設定を更新しました';
 
-        } catch (error') { }
+        } catch (error') { }'
 
-            this.errorHandler.handleError(error, 'DOCUMENTATION_SETTINGS', { newSettings }';
+            this.errorHandler.handleError(error, 'DOCUMENTATION_SETTINGS', { newSettings }';'
         }
     }
     
@@ -924,13 +923,13 @@ export class BalanceChangeDocumentationSystem {
      * 手動保存
      */'
     public save(): boolean { try {'
-            this._saveToStorage()',
+            this._saveToStorage()','
             console.log('[BalanceChangeDocumentationSystem] 手動保存完了'),
 
             return true,' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'DOCUMENTATION_MANUAL_SAVE),
+            this.errorHandler.handleError(error, 'DOCUMENTATION_MANUAL_SAVE),'
             return false,
     
     /**
@@ -949,10 +948,10 @@ export class BalanceChangeDocumentationSystem {
                 rolledBackChanges: 0,
     lastUpdate: Date.now(  };
             
-            if(this.storageAvailable) {
-            ',
+            if (this.storageAvailable) {
+            ','
 
-                ' }
+                ' }'
 
                 localStorage.removeItem(this.storageKey); }
             }
@@ -960,8 +959,8 @@ export class BalanceChangeDocumentationSystem {
             console.log('[BalanceChangeDocumentationSystem] データをクリアしました';
             return true;
 
-        } catch (error') {
-            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEAR),
+        } catch (error') {'
+            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEAR),'
             return false,
 
 // シングルトンインスタンス

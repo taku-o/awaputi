@@ -7,136 +7,134 @@
 interface MainController { ruleDefinitions?: {
         getRule: (ruleName: string) => Rule | null  }
     };
-    [key: string]: any }
+    [key: string]: any;
 
 interface Rule { autoFix: boolean,
-    autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext) => any,
-    [key: string]: any }
+    autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext) => any;
+    [key: string]: any;
 }
 
-interface ValidationContext { [key: string]: any }
+interface ValidationContext { [key: string]: any;
 
 interface ProcessorConfig { enableDetailedReports?: boolean,
-    includePerformanceMetrics?: boolean,
-    maxSuggestions?: number,
+    includePerformanceMetrics?: boolean;
+    maxSuggestions?: number;
     autoFixThreshold?: 'low' | 'medium' | 'high' | 'critical' }
 
 interface RuleExecutionResult { skipped?: boolean,
-    ruleName: string,
-    category?: string,
-    valid: boolean,
-    message?: string,
-    severity?: 'low' | 'warning' | 'medium' | 'high' | 'critical',
-    executionTime?: number,
-    error?: boolean,
-    suggestion?: string,
+    ruleName: string;
+    category?: string;
+    valid: boolean;
+    message?: string;
+    severity?: 'low' | 'warning' | 'medium' | 'high' | 'critical';
+    executionTime?: number;
+    error?: boolean;
+    suggestion?: string;
 
-    autoFix?: boolean,
-    autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext') => any,
-    originalError?: Error,
+    autoFix?: boolean;
+    autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext') => any;'
+    originalError?: Error;
      }
 }
 
 interface ProcessedIssue { rule: string,
-    message: string,
-    severity: string,
-    category: string,
-    executionTime?: number,
-    originalError?: Error,
+    message: string;
+    severity: string;
+    category: string;
+    executionTime?: number;
+    originalError?: Error;
      }
 
 interface ProcessedSuggestion { rule: string,
-    suggestion: string,
-    severity: string  }
+    suggestion: string;
+    severity: string;
 
 interface AppliedRule { name: string,
-    category?: string,
-    result: 'passed' | 'failed',
-    executionTime?: number,
-    error: boolean }
+    category?: string;
+    result: 'passed' | 'failed';
+    executionTime?: number;
+    error: boolean;
 
 interface AppliedFix { rule: string,
-    originalValue: any,
-    fixedValue: any,
-    issue: string }
+    originalValue: any;
+    fixedValue: any;
+    issue: string;
 
 interface ProcessedResultMetadata { originalValue: any,
-    requestedValue: any,
-    context?: ValidationContext,
-    processingTime: number,
-    timestamp: number,
-    appliedFixes?: AppliedFix[],
-    error?: string }
+    requestedValue: any;
+    context?: ValidationContext;
+    processingTime: number;
+    timestamp: number;
+    appliedFixes?: AppliedFix[];
+    error?: string;
 
 interface ProcessedResult { valid: boolean,
-    errors: ProcessedIssue[],
-    warnings: ProcessedIssue[],
-    suggestions: ProcessedSuggestion[],
-    autoFixAvailable: boolean,
-    autoFixedValue: any,
-    rulesApplied: AppliedRule[],
-    metadata: ProcessedResultMetadata,
-    summary?: ValidationSummary
-     }
+    errors: ProcessedIssue[];
+    warnings: ProcessedIssue[];
+    suggestions: ProcessedSuggestion[];
+    autoFixAvailable: boolean;
+    autoFixedValue: any;
+    rulesApplied: AppliedRule[];
+    metadata: ProcessedResultMetadata;
+    summary?: ValidationSummary;
 
 interface PerformanceSummary { totalExecutionTime: number,
-    averageExecutionTime: number,
-    slowestRule: RulePerformanceInfo | null,
+    averageExecutionTime: number;
+    slowestRule: RulePerformanceInfo | null;
     fastestRule: RulePerformanceInfo | null }
 
 interface RulePerformanceInfo { name: string,
-    executionTime: number }
+    executionTime: number;
 
 interface SeverityBreakdown { critical: number,
-    high: number,
-    medium: number,
-    low: number,
-    warning: number }
+    high: number;
+    medium: number;
+    low: number;
+    warning: number;
 
-interface CategoryBreakdown { [category: string]: number }
+interface CategoryBreakdown { [category: string]: number;
 
 interface ValidationSummary { totalRules: number,
-    executed: number,
-    skipped: number,
-    passed: number,
-    failed: number,
-    errors: number,
-    warnings: number,
-    suggestions: number,
-    autoFixesAvailable: boolean,
-    overallResult: 'valid' | 'invalid',
-    performance?: PerformanceSummary,
-    severityBreakdown: SeverityBreakdown,
-    categoryBreakdown: CategoryBreakdown
-     }
+    executed: number;
+    skipped: number;
+    passed: number;
+    failed: number;
+    errors: number;
+    warnings: number;
+    suggestions: number;
+    autoFixesAvailable: boolean;
+    overallResult: 'valid' | 'invalid';
+    performance?: PerformanceSummary;
+    severityBreakdown: SeverityBreakdown;
+    categoryBreakdown: CategoryBreakdown;
 
 interface HistoryEntry { timestamp: number,
-    valid: boolean,
-    errorCount: number,
-    warningCount: number,
-    processingTime: number,
-    rulesExecuted: number,
-    autoFixApplied: number }
+    valid: boolean;
+    errorCount: number;
+    warningCount: number;
+    processingTime: number;
+    rulesExecuted: number;
+    autoFixApplied: number;
 
 interface RecentTrends { successRate: number,
-    averageErrors: number,
-    averageWarnings: number,
-    autoFixUsage: number }
+    averageErrors: number;
+    averageWarnings: number;
+    autoFixUsage: number;
 
 interface Analytics { totalValidations?: number,
-    successRate?: number,
-    averageProcessingTime?: number,
-    recentTrends?: RecentTrends,
-    message?: string }
+    successRate?: number;
+    averageProcessingTime?: number;
+    recentTrends?: RecentTrends;
+    message?: string;
 
 export class ValidationResultProcessor {
-    private mainController: MainController,
-    private config: ProcessorConfig,
-    private resultHistory: HistoryEntry[],
-    private, maxHistorySize: number',
+    private mainController: MainController;
+    private config: ProcessorConfig;
+    private resultHistory: HistoryEntry[];
+    private, maxHistorySize: number','
 
     constructor(mainController: MainController) {
-        this.mainController = mainController,
+        this.mainController = mainController;
         
         // Result processing configuration
         this.config = {
@@ -150,7 +148,7 @@ export class ValidationResultProcessor {
         this.resultHistory = [];
         this.maxHistorySize = 50;
 
-        console.log('[ValidationResultProcessor] Result, processor component, initialized);
+        console.log('[ValidationResultProcessor] Result, processor component, initialized);'
     }
     
     /**
@@ -189,7 +187,7 @@ export class ValidationResultProcessor {
             processedResult.valid = processedResult.errors.length === 0;
             
             // Process auto-fix if available and applicable
-            if(this.shouldApplyAutoFix(processedResult) { processedResult.autoFixedValue = this.processAutoFix(processedResult, oldValue, newValue context) }
+            if (this.shouldApplyAutoFix(processedResult) { processedResult.autoFixedValue = this.processAutoFix(processedResult, oldValue, newValue context) }
             
             // Generate summary
             processedResult.summary = this.generateSummary(processedResult ruleResults);
@@ -199,21 +197,21 @@ export class ValidationResultProcessor {
             processedResult.metadata.processingTime = endTime - startTime;
             
             // Store in history
-            this.addToHistory(processedResult');
+            this.addToHistory(processedResult');'
             
             return processedResult;
 
-        } catch (error') {
-            console.error('[ValidationResultProcessor] Error processing results:', error',
+        } catch (error') {'
+            console.error('[ValidationResultProcessor] Error processing results:', error','
             
             return { valid: false,
 
                 errors: [{ };
 
-                    rule: 'system',' }
+                    rule: 'system',' }'
 
                     message: `Result processing, failed: ${(error, as, Error'}'.message}`,''
-                    severity: 'high',]';
+                    severity: 'high',]';'
                     category: 'system'];
                 }],
                 warnings: [];
@@ -235,12 +233,12 @@ export class ValidationResultProcessor {
     private processRuleResult(ruleResult: RuleExecutionResult, processedResult: ProcessedResult, context: ValidationContext): void { // Record rule application
         processedResult.rulesApplied.push({
             name: ruleResult.ruleName,
-    category: ruleResult.category)',
+    category: ruleResult.category)','
             result: ruleResult.valid ? 'passed' : 'failed',
     executionTime: ruleResult.executionTime),
             error: ruleResult.error || false,
 
-        if(!ruleResult.valid) {
+        if (!ruleResult.valid) {
             const issue: ProcessedIssue = {'
                 rule: ruleResult.ruleName,
                 message: ruleResult.message || 'Validation failed',
@@ -249,47 +247,47 @@ export class ValidationResultProcessor {
                 executionTime: ruleResult.executionTime 
     };
             // Classify as error or warning
-            if(this.isWarningLevel(issue.severity) { processedResult.warnings.push(issue) } else { processedResult.errors.push(issue) }
+            if (this.isWarningLevel(issue.severity) { processedResult.warnings.push(issue) } else { processedResult.errors.push(issue) }
             
             // Add suggestion if available
-            if(ruleResult.suggestion) { processedResult.suggestions.push({)
+            if (ruleResult.suggestion) { processedResult.suggestions.push({)
                     rule: ruleResult.ruleName,
     suggestion: ruleResult.suggestion }
                     severity: issue.severity); 
     }
             
             // Check auto-fix availability
-            if(this.isAutoFixEligible(ruleResult, issue) { processedResult.autoFixAvailable = true }
+            if (this.isAutoFixEligible(ruleResult, issue) { processedResult.autoFixAvailable = true }
         }
         ;
         // Handle execution errors
-        if(ruleResult.error) { processedResult.warnings.push({'
+        if (ruleResult.error) { processedResult.warnings.push({'
                 rule: ruleResult.ruleName,
                 message: ruleResult.message || 'Rule execution error',
-                severity: 'warning',',
+                severity: 'warning',','
                 category: 'system'
             }
-                originalError: ruleResult.originalError'; 
+                originalError: ruleResult.originalError'; '
     }
     
     /**
      * Check if severity level should be treated as warning'
      */''
     private isWarningLevel(severity: string): boolean { ''
-        return ['warning', 'low].includes(severity) }
+        return ['warning', 'low].includes(severity) }'
     
     /**
      * Check if rule result is eligible for auto-fix
      */'
     private isAutoFixEligible(ruleResult: RuleExecutionResult, issue: ProcessedIssue): boolean { // Must have auto-fix function
-        if(!ruleResult.autoFix || !ruleResult.autoFixFn) {
+        if (!ruleResult.autoFix || !ruleResult.autoFixFn) {
     
 }
             return false;
-        ';
+        ';'
         // Check severity threshold
         const severityLevels = ['low', 'medium', 'high', 'critical'];
-        const thresholdIndex = severityLevels.indexOf(this.config.autoFixThreshold || 'medium);
+        const thresholdIndex = severityLevels.indexOf(this.config.autoFixThreshold || 'medium);'
         const issueSeverityIndex = severityLevels.indexOf(issue.severity);
         
         return issueSeverityIndex <= thresholdIndex;
@@ -311,7 +309,7 @@ export class ValidationResultProcessor {
             // Get rules that contributed to warnings and have auto-fix
             const autoFixableIssues = processedResult.warnings.filter(warning => { ) }
                 const ruleApplied = processedResult.rulesApplied.find(r => r.name === warning.rule); }
-                return ruleApplied && this.isAutoFixEligible({ autoFix: true } as RuleExecutionResult, warning);
+                return ruleApplied && this.isAutoFixEligible({ autoFix: true, as RuleExecutionResult, warning);
             });
             // Apply auto-fixes in order of severity (less, severe first);
             const sortedIssues = autoFixableIssues.sort((a, b) => { }'
@@ -330,8 +328,8 @@ export class ValidationResultProcessor {
                         if (fixedValue !== previousValue) {
                             appliedFixes.push({ : undefined, rule: issue.rule),
                                 originalValue: previousValue,
-    fixedValue: fixedValue }
-                                issue: issue.message); 
+    fixedValue: fixedValue,
+                                issue: issue.message), 
     } catch (fixError) {
                         console.warn(`[ValidationResultProcessor] Auto-fix failed for rule ${issue.rule}:`, fixError);
                     }
@@ -372,7 +370,7 @@ export class ValidationResultProcessor {
             .filter(r => r.executionTime !== undefined);
             .map(r => r.executionTime!);
         
-        if(executionTimes.length > 0) {
+        if (executionTimes.length > 0) {
         
             summary.performance = {
                 totalExecutionTime: executionTimes.reduce((sum, time) => sum + time, 0),
@@ -388,7 +386,7 @@ export class ValidationResultProcessor {
             high: this.countBySeverity([...processedResult.errors, ...processedResult.warnings], 'high'),
             medium: this.countBySeverity([...processedResult.errors, ...processedResult.warnings], 'medium'),
             low: this.countBySeverity(processedResult.warnings, 'low'),
-            warning: this.countBySeverity(processedResult.warnings, 'warning };
+            warning: this.countBySeverity(processedResult.warnings, 'warning };'
         
         // Category breakdown
         summary.categoryBreakdown = this.getCategoryBreakdown([...processedResult.errors, ...processedResult.warnings]);
@@ -459,14 +457,14 @@ export class ValidationResultProcessor {
             return {}
         
         const sanitized = { ...context,
-        ',
+        ','
         // Remove functions
-        Object.keys(sanitized).forEach(key => {  '),
+        Object.keys(sanitized).forEach(key => {  '),'
             if(typeof, sanitized[key] === 'function' { }'
                 delete sanitized[key]; }
 
             }'}');
-        ';
+        ';'
         // Limit data size
         if(sanitized.relatedValues && typeof, sanitized.relatedValues === 'object' {'
             const keys = Object.keys(sanitized.relatedValues),
@@ -493,7 +491,7 @@ export class ValidationResultProcessor {
     rulesExecuted: result.rulesApplied.length),
             autoFixApplied: result.metadata.appliedFixes?.length || 0),
         // Maintain history size
-        if(this.resultHistory.length > this.maxHistorySize) {
+        if (this.resultHistory.length > this.maxHistorySize) {
     
 }
             this.resultHistory.shift(); }
@@ -503,10 +501,10 @@ export class ValidationResultProcessor {
      * Generate detailed report
      */ : undefined
     generateDetailedReport(result: ProcessedResult): string { ''
-        if(!this.config.enableDetailedReports) {', ' }
+        if (!this.config.enableDetailedReports) {', ' }
 
             return 'Detailed reporting is disabled';
-        ';
+        ';'
 
         const lines: string[] = [],
         lines.push('=== Validation, Report ===');
@@ -514,22 +512,22 @@ export class ValidationResultProcessor {
 
         lines.push(`Timestamp: ${new, Date(result.metadata.timestamp}.toISOString(})`);
         lines.push();
-        ';
+        ';'
         // Summary
-        if(result.summary) {', ' }
+        if (result.summary) {', ' }
 
             lines.push('Summary: ') }
 
             lines.push(`  Rules: ${result.summary.executed}/${result.summary.totalRules} executed`});
 
             lines.push(`  Passed: ${result.summary.passed}, Failed: ${result.summary.failed}`});
-            lines.push(`  Errors: ${result.summary.errors}, Warnings: ${ result.summary.warnings}`},' }
+            lines.push(`  Errors: ${result.summary.errors}, Warnings: ${ result.summary.warnings}`},' }'
 
             lines.push('}';
         }
-        ';
+        ';'
         // Errors
-        if(result.errors.length > 0) {
+        if (result.errors.length > 0) {
 
             lines.push('Errors: ' }
 
@@ -538,9 +536,9 @@ export class ValidationResultProcessor {
                 lines.push(`  ${index + 1}. [${error.severity.toUpperCase(})] ${error.rule}: ${error.message}`);'}');
             lines.push();
         }
-        ';
+        ';'
         // Warnings
-        if(result.warnings.length > 0) {
+        if (result.warnings.length > 0) {
 
             lines.push('Warnings: ' }
 
@@ -549,9 +547,9 @@ export class ValidationResultProcessor {
                 lines.push(`  ${index + 1}. [${warning.severity.toUpperCase(})] ${warning.rule}: ${warning.message}`);'}');
             lines.push();
         }
-        ';
+        ';'
         // Suggestions
-        if(result.suggestions.length > 0) {
+        if (result.suggestions.length > 0) {
 
             lines.push('Suggestions: ' }
 
@@ -560,9 +558,9 @@ export class ValidationResultProcessor {
                 lines.push(`  ${index + 1}. ${suggestion.rule}: ${suggestion.suggestion}`);'}');
             lines.push();
         }
-        ';
+        ';'
         // Auto-fixes
-        if(result.metadata.appliedFixes && result.metadata.appliedFixes.length > 0) {
+        if (result.metadata.appliedFixes && result.metadata.appliedFixes.length > 0) {
 
             lines.push('Applied, Auto-fixes: ' }
             result.metadata.appliedFixes.forEach((fix, index) => { }
@@ -572,10 +570,10 @@ export class ValidationResultProcessor {
                 lines.push(`     Issue: ${fix.issue}`);'}');
             lines.push();
         }
-        ';
+        ';'
         // Performance
-        if(result.summary?.performance) {
-            : undefined' }
+        if (result.summary?.performance) {
+            : undefined' }'
 
             lines.push('Performance: ') }
             lines.push(`  Total, execution time: ${result.summary.performance.totalExecutionTime.toFixed(2})ms`);
@@ -595,7 +593,7 @@ export class ValidationResultProcessor {
      * Get result history analytics
      */'
     getAnalytics(): Analytics { ''
-        if(this.resultHistory.length === 0) { }'
+        if (this.resultHistory.length === 0) { }'
 
             return { message: 'No validation history available' }
         
@@ -619,10 +617,10 @@ export class ValidationResultProcessor {
     configure(config: Partial<ProcessorConfig & { maxHistorySize?: number )>): void {
         Object.assign(this.config, config),
         
-        if(config.maxHistorySize !== undefined) {
-        ',
+        if (config.maxHistorySize !== undefined) {
+        ','
 
-            ' }
+            ' }'
 
             this.maxHistorySize = Math.max(10, Math.min(200, config.maxHistorySize)); }
         }
@@ -633,7 +631,7 @@ export class ValidationResultProcessor {
     /**
      * Clear result history'
      */''
-    clearHistory()';
+    clearHistory()';'
         console.log('[ValidationResultProcessor] History, cleared');
     }
     
@@ -641,7 +639,7 @@ export class ValidationResultProcessor {
      * Cleanup processor resources
      */'
     destroy(): void { ''
-        this.clearHistory()',
+        this.clearHistory()','
         console.log('[ValidationResultProcessor] Processor, destroyed') }
 
-    }'}
+    }'}'

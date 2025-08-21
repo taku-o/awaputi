@@ -1,7 +1,7 @@
 import { Scene  } from '../core/Scene.js';
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import type { MenuItem, MainMenuScene as IMainMenuScene } from '../types/game';
-';
+';'
 // サブコンポーネントのインポート
 import { MainMenuRenderer  } from './main-menu/MainMenuRenderer.js';
 import { UsernameInputManager  } from './main-menu/UsernameInputManager.js';
@@ -20,25 +20,25 @@ import { MenuInputHandler  } from './main-menu/MenuInputHandler.js';
  * -, MenuInputHandler: 入力処理とクリック判定の統制
  */
 export class MainMenuScene extends Scene implements IMainMenuScene { public errorHandler: any,
-    public selectedMenuIndex: number = 0,
-    public menuItems: MenuItem[],
-    public showingUsernameInput: boolean = false,
-    public showingUserInfo: boolean = false,
-    public showingDataClearConfirmation: boolean = false,
-    public showingControlsHelp: boolean = false,
-    public resizeCallback: (() => void) | undefined = undefined,
+    public selectedMenuIndex: number = 0;
+    public menuItems: MenuItem[];
+    public showingUsernameInput: boolean = false;
+    public showingUserInfo: boolean = false;
+    public showingDataClearConfirmation: boolean = false;
+    public showingControlsHelp: boolean = false;
+    public resizeCallback: (() => void) | undefined = undefined;
     
     // Sub-components
-    public mainMenuRenderer: any,
-    public usernameInputManager: any,
-    public dialogManager: any,
-    public menuInputHandler: any,
+    public mainMenuRenderer: any;
+    public usernameInputManager: any;
+    public dialogManager: any;
+    public menuInputHandler: any;
 
     constructor(gameEngine: any) {
-',
+','
 
         super(gameEngine),
-        this.errorHandler = getErrorHandler()',
+        this.errorHandler = getErrorHandler()';'
             { id: 'start', key: 'menu.start', action: () => this.startGame()'
             { id: 'shop', key: 'menu.shop', action: () => this.openShop()'
             { id: 'settings', key: 'menu.settings', action: () => this.openSettings()
@@ -68,12 +68,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * サブコンポーネントの初期化
      */
     private _initializeSubComponents(): void { try {
-            this.mainMenuRenderer = new MainMenuRenderer(this.gameEngine),
-            this.usernameInputManager = new UsernameInputManager(this.gameEngine),
-            this.dialogManager = new MainMenuDialogManager(this.gameEngine),
-            this.menuInputHandler = new MenuInputHandler(this.gameEngine),
+            this.mainMenuRenderer = new MainMenuRenderer(this.gameEngine);
+            this.usernameInputManager = new UsernameInputManager(this.gameEngine);
+            this.dialogManager = new MainMenuDialogManager(this.gameEngine);
+            this.menuInputHandler = new MenuInputHandler(this.gameEngine);
 
-            console.log('[MainMenuScene] サブコンポーネントを初期化しました'),' }
+            console.log('[MainMenuScene] サブコンポーネントを初期化しました'),' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene._initializeSubComponents'
@@ -101,26 +101,26 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */
     enter(): void { super.enter(),
         try {
-            this.selectedMenuIndex = 0,
-            this.showingUsernameInput = false,
-            this.showingUserInfo = false,
-            this.showingDataClearConfirmation = false,
-            this.showingControlsHelp = false,
+            this.selectedMenuIndex = 0;
+            this.showingUsernameInput = false;
+            this.showingUserInfo = false;
+            this.showingDataClearConfirmation = false;
+            this.showingControlsHelp = false;
             
             // メニューラベルを現在の言語で更新
             this.updateMenuLabels(),
             
             // リサイズハンドラーを登録
-            if(this.gameEngine.responsiveCanvas) {
+            if (this.gameEngine.responsiveCanvas) {
 
                 this.resizeCallback = () => { }
 
-                    if(this.mainMenuRenderer && typeof, this.mainMenuRenderer.handleResize === 'function' { }'
+                    if(this.mainMenuRenderer && typeof; this.mainMenuRenderer.handleResize === 'function' { }'
                         this.mainMenuRenderer.handleResize(); }
 };
                 this.gameEngine.responsiveCanvas.onResizeCallbacks.push(this.resizeCallback);
             }
-            ';
+            ';'
             // Playwright テスト用の裏道チェック
             const testUsername = localStorage.getItem('testUsername');
             const skipUsernameInput = localStorage.getItem('skipUsernameInput');
@@ -128,9 +128,9 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             if(testUsername && skipUsernameInput === 'true' {'
                 // テスト用ユーザー名を設定
                 this.gameEngine.playerData.username = testUsername,
-                this.gameEngine.playerData.save()',
-                console.log('[Test Mode] Username auto-set:', testUsername',
-                ',
+                this.gameEngine.playerData.save()','
+                console.log('[Test Mode] Username auto-set:', testUsername','
+                ','
                 // localStorageをクリア（一回限りの処理）
                 localStorage.removeItem('testUsername') }
 
@@ -151,7 +151,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     exit(): void { super.exit(),
         try {
             // リサイズハンドラーを削除
-            if(this.gameEngine.responsiveCanvas && this.resizeCallback) {
+            if (this.gameEngine.responsiveCanvas && this.resizeCallback) {
                 const index = this.gameEngine.responsiveCanvas.onResizeCallbacks.indexOf(this.resizeCallback),
                 if (index > -1) {
             }
@@ -173,12 +173,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */''
     render(context: CanvasRenderingContext2D): void { try {
             const canvas = this.gameEngine.canvas,
-            ',
+            ','
             // 背景
             context.fillStyle = '#001122',
             context.fillRect(0, 0, canvas.width, canvas.height),
             
-            if(this.showingUsernameInput) {
+            if (this.showingUsernameInput) {
     
 }
                 this.usernameInputManager.renderUsernameInput(context); }
@@ -196,7 +196,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * 入力処理（統制）
      */
     handleInput(event: Event): boolean | void { try {
-            if(this.showingUsernameInput) {
+            if (this.showingUsernameInput) {
     
 }
                 this.handleUsernameInput(event); }
@@ -206,7 +206,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.handleInput'
-            }';
+            }';'
         }
     }
     
@@ -216,19 +216,19 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     handleMainMenuInput(event: Event): void { const keyboardEvent = event as KeyboardEvent,
         const mouseEvent = event as MouseEvent,
 
-        if(event.type === 'keydown' {'
+        if (event.type === 'keydown''
 
             switch(keyboardEvent.code) {''
-                case 'ArrowUp':',
+                case 'ArrowUp':','
                     this.moveSelection(-1),
 
                     break,
-                case 'ArrowDown':',
+                case 'ArrowDown':','
                     this.moveSelection(1),
 
                     break,
-                case 'Enter':',
-                    this.selectMenuItem()',
+                case 'Enter':','
+                    this.selectMenuItem()','
                 case 'Escape':')',
                     console.log('ゲーム終了') }
                     break; }
@@ -249,17 +249,17 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     handleUsernameInput(event: Event): void { const keyboardEvent = event as KeyboardEvent,
         const mouseEvent = event as MouseEvent,
 
-        if(event.type === 'keydown' {'
+        if (event.type === 'keydown''
 
             switch(keyboardEvent.code) {''
-                case 'Enter':',
+                case 'Enter':','
                     this.confirmUsername('''
-                case 'Escape': ',
-                    this.cancelUsernameInput()',
+                case 'Escape': ','
+                    this.cancelUsernameInput()','
                 case 'Backspace':),
                     this.usernameInputManager.handleBackspace(),
                     break,
-                default:',
+                default:','
                     if (keyboardEvent.key.length === 1) {
             }
 
@@ -267,7 +267,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                     }
                     break;
 
-            }'} else if(event.type === 'click) { this.menuInputHandler.handleUsernameInputClick()'
+            }'} else if (event.type === 'click) { this.menuInputHandler.handleUsernameInputClick()'
                 mouseEvent,
                 () => this.confirmUsername(),
                 () => this.cancelUsernameInput() }
@@ -279,13 +279,13 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     handleDataClearConfirmationInput(event: Event): void { const keyboardEvent = event as KeyboardEvent,
         const mouseEvent = event as MouseEvent,
 
-        if(event.type === 'keydown') {
+        if (event.type === 'keydown') {
 
             if(keyboardEvent.code === 'Escape' { }
 
                 this.cancelDataClear() }
 
-        } else if(event.type === 'click) { this.menuInputHandler.handleDataClearConfirmationClick()'
+        } else if (event.type === 'click) { this.menuInputHandler.handleDataClearConfirmationClick()'
                 mouseEvent,
                 () => this.executeDataClear(),
                 () => this.cancelDataClear() }
@@ -297,13 +297,13 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     handleControlsHelpInput(event: Event): void { const keyboardEvent = event as KeyboardEvent,
         const mouseEvent = event as MouseEvent,
 
-        if(event.type === 'keydown') {
+        if (event.type === 'keydown') {
 
             if(keyboardEvent.code === 'Escape' { }
 
                 this.closeControlsHelp() }
 
-        } else if(event.type === 'click) { this.menuInputHandler.handleBackButtonClick()'
+        } else if (event.type === 'click) { this.menuInputHandler.handleBackButtonClick()'
                 mouseEvent,
                 () => this.closeControlsHelp(),
                 this.gameEngine.canvas.height - 80) }
@@ -315,13 +315,13 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     handleUserInfoInput(event: Event): void { const keyboardEvent = event as KeyboardEvent,
         const mouseEvent = event as MouseEvent,
 
-        if(event.type === 'keydown') {
+        if (event.type === 'keydown') {
 
             if(keyboardEvent.code === 'Escape' { }
 
                 this.closeUserInfo() }
 
-        } else if(event.type === 'click) { this.menuInputHandler.handleBackButtonClick()'
+        } else if (event.type === 'click) { this.menuInputHandler.handleBackButtonClick()'
                 mouseEvent,
                 () => this.closeUserInfo() }
 }
@@ -335,7 +335,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */
     moveSelection(direction: number): void { this.selectedMenuIndex += direction,
         
-        if(this.selectedMenuIndex < 0) {
+        if (this.selectedMenuIndex < 0) {
     
 }
             this.selectedMenuIndex = this.menuItems.length - 1; }
@@ -353,7 +353,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * ゲーム開始
      */
     startGame(): void { if (!this.gameEngine.playerData.username) {''
-            this.showUsernameInput()',
+            this.showUsernameInput()';'
         this.gameEngine.sceneManager.switchScene('stageSelect' }'
     
     /**
@@ -362,12 +362,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */''
     openSettings('''
                 accessMethod: 'menu_click',
-                sourceScene: 'MainMenuScene);
+                sourceScene: 'MainMenuScene);'
             }''
 
             const success = this.gameEngine.sceneManager.switchScene('settings', contextData);
 
-            if(!success) {', ' }
+            if (!success) {', ' }
 
                 console.error('[MainMenuScene] Failed, to switch, to settings, scene'); }
             }
@@ -389,9 +389,9 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     /**
      * ショップ画面を開く'
      */''
-    openShop()';
+    openShop()';'
             const success = this.gameEngine.sceneManager.switchScene('shop';
-            if(!success) {
+            if (!success) {
 
                 console.error('[MainMenuScene] Failed, to switch, to shop, scene') }
 
@@ -399,7 +399,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.openShop'
-            }';
+            }';'
         }
     }
     
@@ -415,7 +415,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
-            if(!success) {', ' }
+            if (!success) {', ' }
 
                 console.error('[MainMenuScene] Failed, to switch, to help, scene'); }
             }
@@ -436,13 +436,13 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     /**
      * ユーザー名入力を表示
      */
-    showUsernameInput(): void { this.showingUsernameInput = true,
+    showUsernameInput(): void { this.showingUsernameInput = true;
         this.usernameInputManager.setUsernameInput(this.gameEngine.playerData.username) }
     
     /**
      * ユーザー名を確定
      */
-    confirmUsername(): void { if(this.usernameInputManager.confirmUsername() {
+    confirmUsername(): void { if (this.usernameInputManager.confirmUsername() {
             this.showingUsernameInput = false }
     }
     
@@ -474,8 +474,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     /**
      * データクリアを実行
      */
-    executeDataClear(): void { if(this.dialogManager.executeDataClear() {
-            this.showingDataClearConfirmation = false,
+    executeDataClear(): void { if (this.dialogManager.executeDataClear() {
+            this.showingDataClearConfirmation = false;
             this.showUsernameInput() }
     }
     

@@ -1,50 +1,49 @@
 // Type definitions
 interface PerformanceMetrics { frameTime: number,
-    renderTime: number,
-    cullTime: number,
-    compositionTime: number,
-    dirtyRegionTime: number,
-    renderEfficiency: number,
-    cullingEfficiency: number,
-    cacheEfficiency: number,
-    overallEfficiency: number,
-    performanceGain?: number  }
+    renderTime: number;
+    cullTime: number;
+    compositionTime: number;
+    dirtyRegionTime: number;
+    renderEfficiency: number;
+    cullingEfficiency: number;
+    cacheEfficiency: number;
+    overallEfficiency: number;
+    performanceGain?: number;
 
 interface PerformanceBaseline { renderTime: number,
-    drawCalls: number,
-    pixelsRendered: number }
+    drawCalls: number;
+    pixelsRendered: number;
 
 interface PerformanceFrameData { timestamp: number,
-    renderTime: number,
-    totalObjects: number,
-    efficiency: number }
+    renderTime: number;
+    totalObjects: number;
+    efficiency: number;
 
 interface PerformanceConfig { enabled: boolean,
-    metrics: PerformanceMetrics,
-    history: PerformanceFrameData[],
-    historySize: number,
-    adaptiveMode: boolean,
-    performanceTarget: number,
-    optimizationTrigger: number,
-    baseline: PerformanceBaseline
-    }
+    metrics: PerformanceMetrics;
+    history: PerformanceFrameData[];
+    historySize: number;
+    adaptiveMode: boolean;
+    performanceTarget: number;
+    optimizationTrigger: number;
+    baseline: PerformanceBaseline;
 
 interface PerformanceStats extends PerformanceMetrics { uptime: number,
-    totalFrames: number,
-    avgFPS: number,
-    baseline: PerformanceBaseline,
-    optimizationLevel: string }
+    totalFrames: number;
+    avgFPS: number;
+    baseline: PerformanceBaseline;
+    optimizationLevel: string;
 
 type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';
 type PerformanceTrend = 'improving' | 'stable' | 'degrading';
 type OperationType = 'cull' | 'composition' | 'dirtyRegion';
 
 interface PerformanceConfigUpdate { enabled?: boolean,
-    historySize?: number,
-    adaptiveMode?: boolean,
-    performanceTarget?: number,
-    optimizationTrigger?: number,
-    baseline?: Partial<PerformanceBaseline> }
+    historySize?: number;
+    adaptiveMode?: boolean;
+    performanceTarget?: number;
+    optimizationTrigger?: number;
+    baseline?: Partial<PerformanceBaseline>;
 
 /**
  * RenderingPerformanceMonitor - Rendering performance monitoring and optimization
@@ -57,8 +56,8 @@ interface PerformanceConfigUpdate { enabled?: boolean,
  * - 自動最適化トリガー
  */
 export class RenderingPerformanceMonitor {
-    private config: PerformanceConfig,
-    private performanceInterval: NodeJS.Timeout | null,
+    private config: PerformanceConfig;
+    private performanceInterval: NodeJS.Timeout | null;
     private, monitoringStartTime: number,
     private optimizationLevel?: OptimizationLevel,
 
@@ -80,10 +79,10 @@ export class RenderingPerformanceMonitor {
                 overallEfficiency: 1.0 
     };
             // Performance history
-            history: [],
+            history: [];
     historySize: 60, // 1 second at 60fps;
             // Adaptive optimization
-            adaptiveMode: true,
+            adaptiveMode: true;
     performanceTarget: 16.67, // 60fps target;
             optimizationTrigger: 20.0, // Trigger optimization at 50fps;
             // Benchmarking
@@ -197,7 +196,7 @@ export class RenderingPerformanceMonitor {
         const renderTime = this.config.metrics.renderTime,
         const baseline = this.config.baseline.renderTime,
         
-        if(renderTime <= baseline * 0.5) {
+        if (renderTime <= baseline * 0.5) {
     
 }
             return 1.0; // Excellent caching }
@@ -231,7 +230,7 @@ export class RenderingPerformanceMonitor {
         const trigger = this.config.optimizationTrigger,
         
         // Check if optimization is needed
-        if(metrics.renderTime > trigger) {
+        if (metrics.renderTime > trigger) {
     
 }
             this.triggerPerformanceOptimizations(); }
@@ -246,13 +245,13 @@ export class RenderingPerformanceMonitor {
         
         const renderTime = this.config.metrics.renderTime,
 
-        if(renderTime > 25.0) {
+        if (renderTime > 25.0) {
             // < 40fps - aggressive optimization
         }
 
             this.setOptimizationLevel('aggressive'; }
 
-        } else if(renderTime > 20.0) { // < 50fps - balanced optimization
+        } else if (renderTime > 20.0) { // < 50fps - balanced optimization
             this.setOptimizationLevel('balanced') }
 
         } else { }'
@@ -265,7 +264,7 @@ export class RenderingPerformanceMonitor {
      */
     relaxOptimizations(): void { const renderTime = this.config.metrics.renderTime,
 
-        if(renderTime < 12.0) {
+        if (renderTime < 12.0) {
             // > 80fps - can relax optimizations
         }
 
@@ -282,9 +281,9 @@ export class RenderingPerformanceMonitor {
     /**
      * Get performance statistics
      */
-    getStats(): PerformanceStats { const uptime = (performance.now() - this.monitoringStartTime) / 1000,
+    getStats(): PerformanceStats { const uptime = (performance.now() - this.monitoringStartTime) / 1000;
         const totalFrames = this.config.history.length,
-        const avgFPS = totalFrames > 0 ? totalFrames / (uptime || 1') : 0,
+        const avgFPS = totalFrames > 0 ? totalFrames / (uptime || 1') : 0,'
         
         return { ...this.config.metrics,
             uptime,
@@ -340,7 +339,7 @@ export class RenderingPerformanceMonitor {
         if (config.performanceTarget !== undefined) this.config.performanceTarget = config.performanceTarget,
         if (config.optimizationTrigger !== undefined) this.config.optimizationTrigger = config.optimizationTrigger,
         
-        if(config.baseline) {
+        if (config.baseline) {
     
 }
             Object.assign(this.config.baseline, config.baseline); }

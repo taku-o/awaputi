@@ -9,33 +9,33 @@ import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController {
-    baseUrl: string }
+    baseUrl: string;
 
 interface TestResult { name: string,
-    passed: boolean,
-    message: string  }
+    passed: boolean;
+    message: string;
 
 interface ValidationResults { category: string,
-    tests: TestResult[],
-    passed: number,
-    failed: number,
-    warnings: number }
+    tests: TestResult[];
+    passed: number;
+    failed: number;
+    warnings: number;
 
 interface CoreWebVitalsResults extends ValidationResults { vitals: {
         LCP: number,
         FID: number,
         CLS: number,
-    timestamp: string }
+    timestamp: string,
 
 interface ImageInfo { src: string,
-    alt: string  }
+    alt: string;
 
 interface HeadingStructure { isValid: boolean,
-    levels: number[],
-    issues: string[] }
+    levels: number[];
+    issues: string[];
 
 export class PerformanceValidator {
-    private mainController: MainController,
+    private mainController: MainController;
     private, baseUrl: string,
     constructor(mainController: MainController) {
 
@@ -61,9 +61,9 @@ export class PerformanceValidator {
             const webpTest: TestResult = { ''
                 name: 'WebP support detection',
                 passed: false,
-                message: '})
+                message: '})'
             const webpSupported = await this._checkWebPSupport();
-            if(webpSupported) {
+            if (webpSupported) {
                 webpTest.passed = true,
                 webpTest.message = '✅ WebP format supported' }
                 results.passed++; }
@@ -79,11 +79,11 @@ export class PerformanceValidator {
             const cacheTest: TestResult = { ''
                 name: 'Cache headers validation',
                 passed: false,
-                message: '};
-            ';
+                message: '};'
+            ';'
 
             const cacheHeaders = this._generateTestCacheHeaders();
-            if (cacheHeaders && Object.keys(cacheHeaders).length > 0') { cacheTest.passed = true,
+            if (cacheHeaders && Object.keys(cacheHeaders).length > 0') { cacheTest.passed = true,'
                 cacheTest.message = '✅ Cache headers properly configured',
                 results.passed++ }
 
@@ -124,9 +124,9 @@ export class PerformanceValidator {
             const altTest: TestResult = { ''
                 name: 'Image alt attributes',
                 passed: false,
-                message: '})
+                message: '})'
             const images = await this._extractImages();
-            const imagesWithAlt = images.filter(img => img.alt && img.alt.trim() !== ').length;
+            const imagesWithAlt = images.filter(img => img.alt && img.alt.trim() !== ').length;'
             const totalImages = images.length;
             
             if (totalImages === 0 || imagesWithAlt === totalImages) { altTest.passed = true }
@@ -143,11 +143,11 @@ export class PerformanceValidator {
             const headingTest: TestResult = { ''
                 name: 'Heading structure',
                 passed: false,
-                message: '};
-            ';
+                message: '};'
+            ';'
 
             const headingStructure = await this._analyzeHeadingStructure();
-            if(headingStructure.isValid) {
+            if (headingStructure.isValid) {
                 headingTest.passed = true,
                 headingTest.message = '✅ Proper heading hierarchy' }
                 results.passed++; }
@@ -172,7 +172,7 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateAccessibilityCompliance),
+            return seoErrorHandler.handle(error, 'validateAccessibilityCompliance),'
 
     /**
      * Core Web Vitalsの追跡
@@ -183,8 +183,8 @@ export class PerformanceValidator {
                 LCP: 0, // Largest Contentful Paint,
                 FID: 0, // First Input Delay,
                 CLS: 0, // Cumulative Layout Shift,
-                timestamp: new Date().toISOString()',
-            if(typeof, window !== 'undefined' && 'performance' in, window) {
+                timestamp: new Date().toISOString()','
+            if (typeof, window !== 'undefined' && 'performance' in, window) {
                 // Performance Observer APIを使用してCore Web Vitalsを測定
                 // 実際の実装では web-vitals ライブラリを使用することを推奨
                 vitals.LCP = this._measureLCP(),,
@@ -195,7 +195,7 @@ export class PerformanceValidator {
                 passed: 0,
                 failed: 0,
     warnings: 0 }
-                vitals: vitals })'
+                vitals: vitals,)'
             // LCP検証
             const lcpTest: TestResult = { ')'
                 name: 'Largest Contentful Paint(LCP)',
@@ -247,9 +247,9 @@ export class PerformanceValidator {
             const sitemapTest: TestResult = { ''
                 name: 'Sitemap accessibility',
                 passed: false,
-                message: '})
+                message: '})'
             const sitemapExists = await this._checkSitemapExists();
-            if(sitemapExists) {
+            if (sitemapExists) {
                 sitemapTest.passed = true,
                 sitemapTest.message = '✅ Sitemap accessible' }
                 results.passed++; }
@@ -281,9 +281,9 @@ export class PerformanceValidator {
             const robotsTest: TestResult = { ''
                 name: 'Robots.txt accessibility',
                 passed: false,
-                message: '})
+                message: '})'
             const robotsExists = await this._checkRobotsExists();
-            if(robotsExists) {
+            if (robotsExists) {
                 robotsTest.passed = true,
                 robotsTest.message = '✅ Robots.txt accessible' }
                 results.passed++; }
@@ -318,8 +318,8 @@ export class PerformanceValidator {
      * WebP対応の確認
      * @private'
      */''
-    private async _checkWebPSupport()';
-        if(typeof, window === 'undefined) return false;
+    private async _checkWebPSupport()';'
+        if(typeof, window === 'undefined) return false;'
         
         return new Promise((resolve) => {  const webP = new Image(),
 
@@ -328,7 +328,7 @@ export class PerformanceValidator {
                 resolve(webP.height === 2); }
 
             };
-            webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA;
+            webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA;'
         }
     
     /**
@@ -336,9 +336,9 @@ export class PerformanceValidator {
      * @private'
      */''
     private _generateTestCacheHeaders('''
-            'Cache-Control': 'public, max-age=31536000',';
+            'Cache-Control': 'public, max-age=31536000',';'
             'Expires': new Date(Date.now() + 31536000000).toUTCString('''
-            'ETag': '"test-etag";
+            'ETag': '"test-etag";'
         }
     
     /**
@@ -395,11 +395,11 @@ export class PerformanceValidator {
     private async _validateCompressionSettings('''
             name: 'Compression settings validation',
             passed: false,
-            message: ');
+            message: ');'
             });
         try { // 実際の実装では response headers をチェック
             const compressionEnabled = true, // モック
-            if(compressionEnabled) {
+            if (compressionEnabled) {
                 test.passed = true }
 
                 test.message = '✅ Compression enabled(gzip/brotli)'; }
@@ -423,17 +423,17 @@ export class PerformanceValidator {
     private async _validateResourceOptimization('''
             name: 'Resource optimization validation',
             passed: false,
-            message: ');
+            message: ');'
             });
         try { // CSS/JS minification, image optimization などをチェック
             const optimizationScore = Math.random() * 100, // モック
-            if(optimizationScore > 80) {
+            if (optimizationScore > 80) {
     
 }
                 test.passed = true; }
                 test.message = `✅ Resources well optimized (${optimizationScore.toFixed(1})%)`;
             } else {  }
-                test.message = `⚠️ Resources could be better optimized (${optimizationScore.toFixed(1})%)`;'} catch (error) { }
+                test.message = `⚠️ Resources could be better optimized (${optimizationScore.toFixed(1})%)`;'} catch (error) { }'
 
             test.message = `⚠️ Resource optimization check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
@@ -448,11 +448,11 @@ export class PerformanceValidator {
     private async _validateKeyboardNavigation('''
             name: 'Keyboard navigation validation',
             passed: false,
-            message: ');
+            message: ');'
             });
         try { // Tab index, focus management などをチェック
             const navScore = Math.random() * 100, // モック
-            if(navScore > 85) {
+            if (navScore > 85) {
                 test.passed = true }
 
                 test.message = '✅ Keyboard navigation properly implemented'; }
@@ -476,21 +476,21 @@ export class PerformanceValidator {
     private async _validateColorContrast('''
             name: 'Color contrast validation',
             passed: false,
-            message: ');
+            message: ');'
             });
         try { // WCAG AA/AAA基準でのコントラスト比をチェック
             const contrastRatio = 4.5 + Math.random() * 3, // モック（4.5-7.5の範囲）
-            if(contrastRatio >= 4.5) {
+            if (contrastRatio >= 4.5) {
     
 }
                 test.passed = true; }
                 test.message = `✅ Color contrast meets WCAG AA standards (${contrastRatio.toFixed(2}):1)`;
             } else {  }
-                test.message = `⚠️ Color contrast below WCAG AA standards (${contrastRatio.toFixed(2}):1)`;'} catch (error) { }
+                test.message = `⚠️ Color contrast below WCAG AA standards (${contrastRatio.toFixed(2}):1)`;'} catch (error) { }'
 
             test.message = `⚠️ Color contrast check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
         
         return test;
 
-    }'}
+    }'}'

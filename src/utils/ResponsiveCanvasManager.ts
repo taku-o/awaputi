@@ -3,36 +3,36 @@ import { ScaledCoordinateManager  } from './ScaledCoordinateManager.js';
 
 // Type definitions
 interface CanvasSize { displayWidth: number,
-    displayHeight: number,
-    actualWidth: number,
-    actualHeight: number,
-    scale: number,
-    pixelRatio?: number  }
+    displayHeight: number;
+    actualWidth: number;
+    actualHeight: number;
+    scale: number;
+    pixelRatio?: number;
 
 interface OptimalCanvasSize { displayWidth: number,
-    displayHeight: number,
-    actualWidth: number,
-    actualHeight: number,
-    pixelRatio: number }
+    displayHeight: number;
+    actualWidth: number;
+    actualHeight: number;
+    pixelRatio: number;
 
 interface Coordinates { x: number,
-    y: number }
+    y: number;
 
 interface Size { width: number,
-    height: number }
+    height: number;
 
 interface CanvasInfo extends CanvasSize { baseWidth: number,
-    baseHeight: number,
-    aspectRatio: number,
-    deviceInfo: any }
+    baseHeight: number;
+    aspectRatio: number;
+    deviceInfo: any;
 
 interface GameEngine { onCanvasResize?: (size: CanvasSize) => void  }
 }
 
 interface BrowserCompatibility { calculateOptimalCanvasSize(): OptimalCanvasSize,
-    deviceInfo: any,
+    deviceInfo: any;
     browserInfo: {
-        nam,e: string  };
+        nam,e: string,;
     getOrientation(): string;
 }
 
@@ -47,18 +47,18 @@ export class ResponsiveCanvasManager {
     private readonly baseHeight: number,
     private readonly aspectRatio: number,
     
-    private currentSize: CanvasSize,
-    private resizeTimeout: number | null,
-    private isInitialized: boolean,
+    private currentSize: CanvasSize;
+    private resizeTimeout: number | null;
+    private isInitialized: boolean;
     // ScaledCoordinateManager を初期化
     private readonly, scaledCoordinateManager: ScaledCoordinateManager,
 
     constructor(canvas: HTMLCanvasElement, gameEngine: GameEngine | null = null) {
-        this.canvas = canvas,
-        this.gameEngine = gameEngine,
+        this.canvas = canvas;
+        this.gameEngine = gameEngine;
 
         const context = canvas.getContext('2d',
-        if(!context) {
+        if (!context) {
             }
 
             throw new Error('Could, not get, 2D context, from canvas'; }'
@@ -93,17 +93,17 @@ export class ResponsiveCanvasManager {
     /**
      * イベントリスナーを設定
      */''
-    private setupEventListeners()';
+    private setupEventListeners()';'
         window.addEventListener('resize', () => { this.handleResize() });
-        ';
+        ';'
         // 画面の向き変更
-        if(screen.orientation) {', ' }
+        if (screen.orientation) {', ' }
 
             screen.orientation.addEventListener('change', () => {  }
 
                 this.handleOrientationChange();' }'
 
-            }');
+            }');'
 
         } else { }'
 
@@ -111,14 +111,14 @@ export class ResponsiveCanvasManager {
 
                 this.handleOrientationChange();' }'
 
-            }');
+            }');'
         }
-        ';
+        ';'
         // ビューポート変更（モバイルブラウザ）
-        window.addEventListener('scroll', () => { this.handleViewportChange(),' }
+        window.addEventListener('scroll', () => { this.handleViewportChange(),' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // フルスクリーン変更
         document.addEventListener('fullscreenchange', () => { this.handleFullscreenChange() });
     }
@@ -137,7 +137,7 @@ export class ResponsiveCanvasManager {
         
         // コンテキストのスケールを調整)
         const pixelRatio = optimalSize.pixelRatio)
-        if(pixelRatio > 1) {
+        if (pixelRatio > 1) {
     
 }
             this.context.scale(pixelRatio, pixelRatio); }
@@ -153,7 +153,7 @@ export class ResponsiveCanvasManager {
             actualWidth: optimalSize.actualWidth,
             actualHeight: optimalSize.actualHeight,
             scale: scale,
-    pixelRatio: pixelRatio  };
+    pixelRatio: pixelRatio,;
         // Canvas の位置を中央に調整
         this.centerCanvas();
         
@@ -169,12 +169,12 @@ export class ResponsiveCanvasManager {
      */ : undefined
     private centerCanvas(): void { const container = this.canvas.parentElement,
         if(!container) return,
-        ',
+        ','
         // Canvas を中央に配置するスタイルを適用
         this.canvas.style.position = 'relative',
         this.canvas.style.display = 'block',
         this.canvas.style.margin = '0 auto',
-        ',
+        ','
         // コンテナのスタイルも調整
         container.style.display = 'flex',
         container.style.justifyContent = 'center',
@@ -185,7 +185,7 @@ export class ResponsiveCanvasManager {
      * リサイズ処理
      */
     private handleResize(): void { // デバウンス処理
-        if(this.resizeTimeout) {
+        if (this.resizeTimeout) {
     
 }
             clearTimeout(this.resizeTimeout); }
@@ -210,7 +210,7 @@ export class ResponsiveCanvasManager {
      * ビューポート変更処理（モバイル）
      */
     private handleViewportChange(): void { const browserCompat = getBrowserCompatibility() as BrowserCompatibility,
-        if(browserCompat.deviceInfo.isMobile) {
+        if (browserCompat.deviceInfo.isMobile) {
             // モバイルブラウザのアドレスバー表示/非表示に対応
         }
             this.handleResize(); }
@@ -277,20 +277,20 @@ export class ResponsiveCanvasManager {
     private showOrientationMessage(): void { const browserCompat = getBrowserCompatibility() as BrowserCompatibility,
         if (!browserCompat.deviceInfo.isMobile) return,
 
-        const orientation = browserCompat.getOrientation()',
+        const orientation = browserCompat.getOrientation()','
         const isLandscape = orientation.includes('landscape',
-        ',
+        ','
         // 縦向きの場合は横向きを推奨
-        if(!isLandscape && this.currentSize.displayWidth < 500) {', ' }
+        if (!isLandscape && this.currentSize.displayWidth < 500) {', ' }
 
-            this.showTemporaryMessage('横向きでのプレイを推奨します', 3000'; }
+            this.showTemporaryMessage('横向きでのプレイを推奨します', 3000'; }'
 }
     
     /**
      * 一時的なメッセージを表示'
      */''
     private showTemporaryMessage(message: string, duration: number = 2000): void { ''
-        const messageDiv = document.createElement('div),
+        const messageDiv = document.createElement('div),'
         messageDiv.style.cssText = `,
             position: fixed,
             top: 20px,
@@ -320,7 +320,7 @@ export class ResponsiveCanvasManager {
      */
     toggleFullscreen(): void { if (!document.fullscreenElement) {
             const canvasWithFullscreen = this.canvas as any,
-            if(canvasWithFullscreen.requestFullscreen) {
+            if (canvasWithFullscreen.requestFullscreen) {
     
 }
                 canvasWithFullscreen.requestFullscreen(); }
@@ -336,7 +336,7 @@ export class ResponsiveCanvasManager {
      */
     getHighDPIContext(): CanvasRenderingContext2D { const pixelRatio = this.currentSize.pixelRatio,
         
-        if(pixelRatio && pixelRatio > 1) {
+        if (pixelRatio && pixelRatio > 1) {
         
             // 既にスケールが適用されている場合は、元のコンテキストを返す
         
@@ -350,15 +350,15 @@ export class ResponsiveCanvasManager {
      * デバイス固有の最適化を適用
      */
     applyDeviceOptimizations(): void { ''
-        const browserCompat = getBrowserCompatibility()',
+        const browserCompat = getBrowserCompatibility()','
         if(browserCompat.browserInfo.name === 'safari' && deviceInfo.isMobile' {'
             // タッチ操作の最適化
             this.canvas.style.touchAction = 'none',
-            (this.canvas.style, as any').webkitTouchCallout = 'none' }
+            (this.canvas.style, as any').webkitTouchCallout = 'none' }'
 
-            (this.canvas.style, as any').webkitUserSelect = 'none'; }
+            (this.canvas.style, as any').webkitUserSelect = 'none'; }'
         }
-        ';
+        ';'
         // Android Chrome 固有の最適化
         if(browserCompat.browserInfo.name === 'chrome' && deviceInfo.isMobile' {'
             // ハードウェアアクセラレーションの有効化
@@ -368,18 +368,18 @@ export class ResponsiveCanvasManager {
         }
         
         // 低解像度デバイスでの最適化
-        if(deviceInfo.screenInfo.pixelRatio < 1.5) {
+        if (deviceInfo.screenInfo.pixelRatio < 1.5) {
             // アンチエイリアシングを無効化してパフォーマンス向上
         }
             this.context.imageSmoothingEnabled = false; }
         }
         
         // 高解像度デバイスでの最適化
-        if(deviceInfo.screenInfo.pixelRatio > 2) {
+        if (deviceInfo.screenInfo.pixelRatio > 2) {
             // 描画品質を調整
         }
 
-            (this.context, as any').imageSmoothingQuality = 'high'; }
+            (this.context, as any').imageSmoothingQuality = 'high'; }'
 }
     
     /**
@@ -394,6 +394,6 @@ export class ResponsiveCanvasManager {
         console.log('[ResponsiveCanvasManager] Note: Event, listeners need, manual cleanup',
         
         // ScaledCoordinateManagerのクリーンアップ
-        if(this.scaledCoordinateManager') { }
+        if (this.scaledCoordinateManager') { }'
 
             this.scaledCoordinateManager.cleanup() }'

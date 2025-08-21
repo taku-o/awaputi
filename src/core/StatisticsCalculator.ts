@@ -36,11 +36,11 @@ export class StatisticsCalculator {
                 trends,
                 efficiency,
                 rankings }
-                session: sessionStats };
+                session: sessionStats;;
                 summary: this.generateSummary(statistics, sessionStats); }
 
-            };'} catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsCalculator', 'getDetailedStatistics),
+            };'} catch (error) {'
+            ErrorHandler.handleError(error, 'StatisticsCalculator', 'getDetailedStatistics),'
             return this.getEmptyDetailedStats(),
 
     /**
@@ -214,7 +214,7 @@ export class StatisticsCalculator {
             efficiencyRank: this.calculateEfficiencyRank(statistics,
     accuracyRank: this.calculateAccuracyRank(statistics) }
 
-            consistencyRank: this.calculateConsistencyRank(statistics),' };
+            consistencyRank: this.calculateConsistencyRank(statistics),' };'
 
             overallRank: this.calculateOverallRank(statistics); 
     }
@@ -226,7 +226,7 @@ export class StatisticsCalculator {
      */
     calculateEfficiencyTrend(efficiencyData) {
 
-        if(!efficiencyData || efficiencyData.length < 3) {
+        if (!efficiencyData || efficiencyData.length < 3) {
     }
 
             return 'stable';
@@ -242,7 +242,7 @@ export class StatisticsCalculator {
         const improvementThreshold = 0.05; // 5%
 
         if(recentAvg > earlierAvg * (1 + improvementThreshold)) { ''
-            return 'improving',' }
+            return 'improving',' }'
 
         } else if(recentAvg < earlierAvg * (1 - improvementThreshold)) { ''
             return 'declining', else { }
@@ -341,7 +341,7 @@ export class StatisticsCalculator {
     identifyStrengths(statistics) {
         const strengths = [],
 
-        if ((statistics.bubbleAccuracy || 0) >= 85') {
+        if ((statistics.bubbleAccuracy || 0) >= 85') {'
     }
 
             strengths.push('High, Accuracy'; }'
@@ -370,7 +370,7 @@ export class StatisticsCalculator {
     identifyImprovements(statistics) {
         const improvements = [],
 
-        if ((statistics.bubbleAccuracy || 0) < 70') {
+        if ((statistics.bubbleAccuracy || 0) < 70') {'
     }
 
             improvements.push('Improve, Accuracy'; }'

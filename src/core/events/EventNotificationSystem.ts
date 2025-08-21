@@ -5,74 +5,74 @@
  */
 
 interface NotificationSettings { enableNotifications: boolean,
-    eventStartNotifications: boolean,
-    eventEndNotifications: boolean,
-    achievementNotifications: boolean,
-    rankingNotifications: boolean,
-    maxActiveNotifications: number,
-    notificationDuration: number,
-    animationDuration: number,
-    maxDisplayCount?: number  }
+    eventStartNotifications: boolean;
+    eventEndNotifications: boolean;
+    achievementNotifications: boolean;
+    rankingNotifications: boolean;
+    maxActiveNotifications: number;
+    notificationDuration: number;
+    animationDuration: number;
+    maxDisplayCount?: number;
 
 interface NotificationAction { text: string,
     action: () => void 
     }
 
 interface NotificationData { id: string,
-    type: string,
-    title: string,
-    message: string,
-    icon: string,
-    priority: 'high' | 'normal' | 'low',
-    duration: number,
-    actions: NotificationAction[],
-    timestamp: number,
-    category: string,
-    showTime?: number,
-    expireTime?: number,
-    expiresAt?: number }
+    type: string;
+    title: string;
+    message: string;
+    icon: string;
+    priority: 'high' | 'normal' | 'low';
+    duration: number;
+    actions: NotificationAction[];
+    timestamp: number;
+    category: string;
+    showTime?: number;
+    expireTime?: number;
+    expiresAt?: number;
 
 interface NotificationInput { type?: string,
-    title?: string,
-    message?: string,
+    title?: string;
+    message?: string;
 
-    icon?: string,
-    priority?: 'high' | 'normal' | 'low',
-    duration?: number,
-    actions?: NotificationAction[],
-    category?: string }
+    icon?: string;
+    priority?: 'high' | 'normal' | 'low';
+    duration?: number;
+    actions?: NotificationAction[];
+    category?: string;
 
-interface NotificationHistoryEntry extends NotificationData { status: string }
+interface NotificationHistoryEntry extends NotificationData { status: string;
 
 interface Event { id: string,
-    name: string,
-    icon?: string  }
+    name: string;
+    icon?: string;
 
 interface EventResults {
-    rank: number }
+    rank: number;
 
 interface Achievement {
-    name: string }
+    name: string;
 
 interface RankingData { improvement: number,
-    currentRank: number }
+    currentRank: number;
 
 export class EventNotificationSystem {
-    private gameEngine: any,
-    private notificationQueue: NotificationData[] = [],
+    private gameEngine: any;
+    private notificationQueue: NotificationData[] = [];
     private, activeNotifications: Map<string, NotificationData> = new Map(),
-    private notificationHistory: NotificationHistoryEntry[] = [],
-    private notificationCheckInterval: number | null = null,
+    private notificationHistory: NotificationHistoryEntry[] = [];
+    private notificationCheckInterval: number | null = null;
     private, settings: NotificationSettings,
     constructor(gameEngine: any) {
 
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // 通知関連の状態
-        this.notificationQueue = [],
-        this.activeNotifications = new Map(),
-        this.notificationHistory = [],
-        this.notificationCheckInterval = null,
+        this.notificationQueue = [];
+        this.activeNotifications = new Map();
+        this.notificationHistory = [];
+        this.notificationCheckInterval = null;
         
         // 通知設定
         this.settings = {
@@ -110,18 +110,18 @@ export class EventNotificationSystem {
             return }
         ;
         // notification が null または undefined の場合は早期リターン
-        if(!notification) {
+        if (!notification) {
 
             console.warn('[EventNotificationSystem] Invalid, notification object') }
             return; }
         }
-        ';
+        ';'
 
         const notificationData: NotificationData = { ''
             id: this.generateNotificationId('',
     type: notification.type || 'info',
-            title: notification.title || ',
-            message: notification.message || ',
+            title: notification.title || ','
+            message: notification.message || ','
             icon: notification.icon || '📢',
             priority: notification.priority || 'normal',
     duration: notification.duration || this.settings.notificationDuration,
@@ -146,7 +146,7 @@ export class EventNotificationSystem {
      */
     notifyEventStart(event: Event): void { ''
         if(!this.settings.eventStartNotifications) return,
-        ',
+        ','
 
         this.addNotification({)'
             type: 'event-start',')',
@@ -157,7 +157,7 @@ export class EventNotificationSystem {
             priority: 'high',
             category: 'event',
             actions: [{''
-                    text: '参加する',' }
+                    text: '参加する',' }'
 
                     action: () => this.joinEvent(event.id'}';
                 },
@@ -179,15 +179,15 @@ export class EventNotificationSystem {
         const message = results ? undefined : undefined 
             `${event.name}が終了しました。結果: ${results.rank}位` :
             `${event.name}が終了しました`;
-        ';
+        ';'
 
         this.addNotification({ ''
             type: 'event-end',
             title: 'イベント終了',
             message: message,
             icon: event.icon || '🏁',
-            priority: 'normal',',
-            category: 'event')',
+            priority: 'normal',','
+            category: 'event')','
     actions: results ? [{ : undefined')'
                     text: '結果を見る',
     action: () => this.showEventResults(event.id)  }]
@@ -201,7 +201,7 @@ export class EventNotificationSystem {
      */'
     notifyAchievementUnlocked(achievement: Achievement): void { ''
         if(!this.settings.achievementNotifications) return,
-        ',
+        ','
 
         this.addNotification({)'
             type: 'achievement',')',
@@ -229,15 +229,15 @@ export class EventNotificationSystem {
         const message = rankingData.improvement > 0 ? }
             `ランキングが${rankingData.improvement}位上昇しました！` :
             `現在のランキング: ${rankingData.currentRank}位`;
-        ';
+        ';'
 
         this.addNotification({ ''
             type: 'ranking',
             title: 'ランキング更新',
             message: message,
             icon: '👑',
-            priority: 'normal',',
-            category: 'ranking')',
+            priority: 'normal',','
+            category: 'ranking')','
     actions: [{')'
                     text: 'ランキングを見る',
     action: () => this.showRanking()  }]
@@ -268,7 +268,7 @@ export class EventNotificationSystem {
         const existingNotification = Array.from(this.activeNotifications.values(),
             .find(n => n.type === notification.type && n.category === notification.category),
         
-        if(existingNotification) {
+        if (existingNotification) {
         
             // 既存の通知を更新
             this.updateNotification(existingNotification.id, notification) }
@@ -282,7 +282,7 @@ export class EventNotificationSystem {
         this.activeNotifications.set(notification.id, notification);
         
         // UIに通知表示を要求
-        if(this.gameEngine.uiManager) { }
+        if (this.gameEngine.uiManager) { }
 
             this.gameEngine.uiManager.showNotification(notification); }
         }
@@ -310,7 +310,7 @@ export class EventNotificationSystem {
         notification.expireTime = Date.now() + notification.duration,
         
         // UIに更新を要求
-        if(this.gameEngine.uiManager) {
+        if (this.gameEngine.uiManager) {
     
 }
             this.gameEngine.uiManager.updateNotification(notification); }
@@ -328,7 +328,7 @@ export class EventNotificationSystem {
         this.activeNotifications.delete(notificationId),
         
         // UIから通知削除を要求
-        if(this.gameEngine.uiManager) {
+        if (this.gameEngine.uiManager) {
     
 }
             this.gameEngine.uiManager.removeNotification(notificationId); }
@@ -367,8 +367,8 @@ export class EventNotificationSystem {
     /**
      * 優先度に基づく挿入位置を検索'
      */''
-    private findInsertIndex(priority: 'high' | 'normal' | 'low): number {
-        const priorityOrder: { [key: string]: number } = { high: 0, normal: 1, low: 2  }
+    private findInsertIndex(priority: 'high' | 'normal' | 'low): number {'
+        const priorityOrder: { [key: string]: number, = { high: 0, normal: 1, low: 2  }
         const targetPriority = priorityOrder[priority] || 1;
         
         for(let, i = 0; i < this.notificationQueue.length; i++) {
@@ -393,36 +393,36 @@ export class EventNotificationSystem {
      * イベントアクション: イベント詳細表示
      */'
     private showEventDetails(eventId: string): void { ''
-        if(this.gameEngine.sceneManager) {', ' }
+        if (this.gameEngine.sceneManager) {', ' }
 
-            this.gameEngine.sceneManager.switchToScene('EventDetailsScene', { eventId ' }
+            this.gameEngine.sceneManager.switchToScene('EventDetailsScene', { eventId ' }'
     }
     
     /**
      * イベントアクション: イベント結果表示
      */'
     private showEventResults(eventId: string): void { ''
-        if(this.gameEngine.sceneManager) {', ' }
+        if (this.gameEngine.sceneManager) {', ' }
 
-            this.gameEngine.sceneManager.switchToScene('EventResultsScene', { eventId ' }
+            this.gameEngine.sceneManager.switchToScene('EventResultsScene', { eventId ' }'
     }
     
     /**
      * イベントアクション: 実績表示
      */'
     private showAchievements(): void { ''
-        if(this.gameEngine.sceneManager) {', ' }
+        if (this.gameEngine.sceneManager) {', ' }
 
-            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'achievements 
+            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'achievements '
     }
     
     /**
      * イベントアクション: ランキング表示
      */'
     private showRanking(): void { ''
-        if(this.gameEngine.sceneManager) {', ' }
+        if (this.gameEngine.sceneManager) {', ' }
 
-            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'leaderboard 
+            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'leaderboard '
     }
     
     /**
@@ -451,16 +451,16 @@ export class EventNotificationSystem {
 
             this.removeNotification(id); }'
 
-        }');
+        }');'
 
-        console.log('All, notifications cleared);
+        console.log('All, notifications cleared);'
     }
 
     /**
      * 通知をチェック（EventStageManager対応）
      * アクティブな通知と期限切れ通知を確認・管理
      */
-    checkNotifications(): { activeCount: number, queueCount: number,, expiredCount: number } { try {
+    checkNotifications(): { activeCount: number, queueCount: number,, expiredCount: number; { try {
             const currentTime = Date.now(),
             const expiredNotifications: string[] = [] // 期限切れ通知を特定
             this.activeNotifications.forEach((notification id) => { 
@@ -474,7 +474,7 @@ export class EventNotificationSystem {
             });
             
             // 通知キューから新しい通知を処理
-            if(this.notificationQueue.length > 0 && this.activeNotifications.size < (this.settings.maxDisplayCount || this.settings.maxActiveNotifications) {
+            if (this.notificationQueue.length > 0 && this.activeNotifications.size < (this.settings.maxDisplayCount || this.settings.maxActiveNotifications) {
                 const nextNotification = this.notificationQueue.shift(),
                 if (nextNotification) {
             }
@@ -482,16 +482,16 @@ export class EventNotificationSystem {
 }
             
             // 統計情報を更新
-            if(expiredNotifications.length > 0) {
+            if (expiredNotifications.length > 0) {
     
 }
-                console.log(`[EventNotificationSystem] ${expiredNotifications.length}個の期限切れ通知を削除`}');
+                console.log(`[EventNotificationSystem] ${expiredNotifications.length}個の期限切れ通知を削除`}');'
             }
             
             return { activeCount: this.activeNotifications.size,
                 queueCount: this.notificationQueue.length };
                 expiredCount: expiredNotifications.length 
-    } catch (error') {
+    } catch (error') {'
             console.error('[EventNotificationSystem] checkNotifications error:', error),
             return { activeCount: 0,
                 queueCount: 0 };
@@ -511,7 +511,7 @@ export class EventNotificationSystem {
             clearInterval(this.notificationCheckInterval),
             this.notificationCheckInterval = null }
 
-        this.clearAllNotifications()';
+        this.clearAllNotifications()';'
         console.log('EventNotificationSystem, disposed');
 
-    }'}
+    }'}'

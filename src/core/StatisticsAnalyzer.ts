@@ -5,18 +5,18 @@
  */
 export class StatisticsAnalyzer {
     constructor(statisticsManager) {
-        this.statisticsManager = statisticsManager,
+        this.statisticsManager = statisticsManager;
         
         // 分析コンポーネントの初期化
-        this.trendAnalyzer = null,
-        this.comparisonEngine = null,
-        this.insightGenerator = null,
+        this.trendAnalyzer = null;
+        this.comparisonEngine = null;
+        this.insightGenerator = null;
         
         // 分析設定
         this.analysisConfigs = {
             // デフォルト分析設定
             defaultTimeWindows: {
-                short: 7,    // 7日,
+                short: 7;    // 7日;
                 medium: 30,  // 30日
     }
                 long: 90     // 90日 
@@ -27,7 +27,7 @@ export class StatisticsAnalyzer {
     significanceLevel: 0.05 };
             // キャッシュ設定
             cache: { enabled: true,
-    ttl: 300000, // 5分,
+    ttl: 300000, // 5分;
                 maxSize: 100  }
         };
         // 分析結果キャッシュ
@@ -55,8 +55,8 @@ export class StatisticsAnalyzer {
                 { InsightGenerator }']'
             ] = await Promise.all([);
                 import('./CoreTrendAnalyzer.js'),
-                import('./CoreComparisonEngine.js'),]';
-                import('./InsightGenerator.js)];
+                import('./CoreComparisonEngine.js'),]';'
+                import('./InsightGenerator.js)];'
             ]);
             
             this.trendAnalyzer = new CoreTrendAnalyzer();
@@ -71,15 +71,15 @@ export class StatisticsAnalyzer {
      */''
     async performComprehensiveAnalysis(options = {}) {
         const analysisOptions = { ...this.analysisConfigs, ...options,
-        ',
+        ','
         // キャッシュチェック
         const cacheKey = this.generateCacheKey('comprehensive', analysisOptions),
-        if(this.analysisConfigs.cache.enabled && this.analysisCache.has(cacheKey) {
+        if (this.analysisConfigs.cache.enabled && this.analysisCache.has(cacheKey) {
             const cached = this.analysisCache.get(cacheKey),
             if (Date.now() - cached.timestamp < this.analysisConfigs.cache.ttl) {
         }
                 return cached.result;
-        ';
+        ';'
 
         const analysisResult = { analysisId: this.generateAnalysisId(),''
             timestamp: Date.now('''
@@ -105,7 +105,7 @@ export class StatisticsAnalyzer {
             analysisResult.basicStatistics = this.statisticsManager.getDetailedStatistics(),
             
             // 2. トレンド分析
-            if(this.trendAnalyzer && analysisResult.basicStatistics.timeSeries.available) {
+            if (this.trendAnalyzer && analysisResult.basicStatistics.timeSeries.available) {
     
 }
                 analysisResult.trendAnalysis = await this.performTrendAnalysis(analysisOptions); }
@@ -128,7 +128,7 @@ export class StatisticsAnalyzer {
             if (this.analysisConfigs.cache.enabled) { this.cacheAnalysisResult(cacheKey, analysisResult),' }'
 
             } catch (error) {
-            console.error('Comprehensive analysis failed:', error',
+            console.error('Comprehensive analysis failed:', error','
             analysisResult.error = {
                 message: error.message,
     stack: error.stack  }
@@ -140,10 +140,10 @@ export class StatisticsAnalyzer {
      * トレンド分析の実行
      */'
     async performTrendAnalysis(options = { ) {''
-        if(!this.trendAnalyzer) { }'
+        if (!this.trendAnalyzer) { }'
 
             return { error: 'TrendAnalyzer not available' }
-        ';
+        ';'
 
         const trendResults = {};
         const categories = ['score', 'efficiency', 'accuracy', 'playTime'];
@@ -171,34 +171,34 @@ export class StatisticsAnalyzer {
      * 比較分析の実行
      */
     async performComparisonAnalysis(options = { ) {''
-        if(!this.comparisonEngine) { }'
+        if (!this.comparisonEngine) { }'
 
             return { error: 'CoreComparisonEngine not available' }
         
         const comparisonResults = {};
-        ';
+        ';'
         try { // 期間比較（今週 vs 先週）
             const thisWeekData = this.getWeeklyData('current'),
-            const lastWeekData = this.getWeeklyData('previous),
+            const lastWeekData = this.getWeeklyData('previous),'
 
-            if(thisWeekData && lastWeekData) {
+            if (thisWeekData && lastWeekData) {
                 comparisonResults.weeklyComparison = this.comparisonEngine.compareTimePeriods(
-                    thisWeekData)',
+                    thisWeekData)','
                     lastWeekData,
-                    'score',',
-                    options' }
+                    'score',','
+                    options' }'
 
                 '); }'
             }
 
-            ';
+            ';'
             // 月間比較（今月 vs 先月）
             const thisMonthData = this.getMonthlyData('current');
-            const lastMonthData = this.getMonthlyData('previous);
+            const lastMonthData = this.getMonthlyData('previous);'
 
-            if(thisMonthData && lastMonthData) {
+            if (thisMonthData && lastMonthData) {
                 comparisonResults.monthlyComparison = this.comparisonEngine.compareTimePeriods(
-                    thisMonthData)',
+                    thisMonthData)','
                     lastMonthData,
                     'score') }
                     options }
@@ -208,7 +208,7 @@ export class StatisticsAnalyzer {
             const currentPerformance = this.getCurrentPerformanceData();
             const baselinePerformance = this.getBaselinePerformanceData();
             
-            if(currentPerformance && baselinePerformance) {
+            if (currentPerformance && baselinePerformance) {
             
                 comparisonResults.baselineComparison = this.comparisonEngine.compareAgainstBaseline(
                     currentPerformance,
@@ -228,7 +228,7 @@ export class StatisticsAnalyzer {
      * 洞察生成の実行
      */'
     async generateInsights(statisticsData, options = { ) {''
-        if(!this.insightGenerator) { }'
+        if (!this.insightGenerator) { }'
 
             return { error: 'InsightGenerator not available' }
         
@@ -237,7 +237,7 @@ export class StatisticsAnalyzer {
             // 追加的な洞察の生成
             insights.contextualInsights = this.generateContextualInsights(statisticsData),
             insights.predictiveInsights = this.generatePredictiveInsights(statisticsData),
-            ',
+            ','
 
             return insights,' }'
 
@@ -278,22 +278,22 @@ export class StatisticsAnalyzer {
         }
         
         // 効率スコア（25%）
-        if(stats.bubbles && stats.bubbles.efficiencyStats) {
+        if (stats.bubbles && stats.bubbles.efficiencyStats) {
             const efficiency = Math.min(stats.bubbles.efficiencyStats.bubblesPerMinute / 60, 1),
             score += efficiency * 25 }
             components++; }
         }
         
         // 完了率スコア（25%）
-        if(stats.basic && stats.basic.completionRate) {
+        if (stats.basic && stats.basic.completionRate) {
             score += (stats.basic.completionRate / 100) * 25 }
             components++; }
         }
         ;
         // 成長トレンドスコア（20%）
-        if(analysisResult.trendAnalysis && analysisResult.trendAnalysis.categories.score) {
+        if (analysisResult.trendAnalysis && analysisResult.trendAnalysis.categories.score) {
             const trend = analysisResult.trendAnalysis.categories.score,
-            const trendScore = trend.trends && trend.trends.overall.trendType.includes('improving) ? 1 : 0.5,
+            const trendScore = trend.trends && trend.trends.overall.trendType.includes('improving) ? 1 : 0.5,'
             score += trendScore * 20 }
             components++; }
         }
@@ -312,25 +312,25 @@ export class StatisticsAnalyzer {
             Object.entries(analysisResult.trendAnalysis.categories).forEach(([category, analysis]) => { ''
                 if(analysis.trends && analysis.trends.overall.trendType.includes('strongly)' {'
                     findings.push({ }''
-                        type: 'trend',') }
+                        type: 'trend',') }'
 
                         category: category'),' }
 
                         finding: `${category}に強い${analysis.trends.overall.trendType.includes('improving'}' ? '改善' : '悪化'}トレンド`,''
                         significance: 'high';
                     }) }
-            }';
+            }';'
         }
-        ';
+        ';'
         // 洞察からの発見
-        if(analysisResult.insights && analysisResult.insights.insights) {
-            const highPriorityInsights = analysisResult.insights.insights',
-                .filter(insight => insight.priority === 'high' || insight.priority === 'critical'',
+        if (analysisResult.insights && analysisResult.insights.insights) {
+            const highPriorityInsights = analysisResult.insights.insights','
+                .filter(insight => insight.priority === 'high' || insight.priority === 'critical'','
                 .slice(0, 3),
             
             highPriorityInsights.forEach(insight => { '
                 findings.push({''
-                    type: 'insight,
+                    type: 'insight,'
     category: insight.type)
          }
                     finding: insight.description) }
@@ -348,38 +348,38 @@ export class StatisticsAnalyzer {
         
         if (analysisResult.basicStatistics) {
             const stats = analysisResult.basicStatistics,
-            ',
+            ','
             // 精度が低い場合
-            if (stats.bubbles && parseFloat(stats.bubbles.accuracy) < 70') {
+            if (stats.bubbles && parseFloat(stats.bubbles.accuracy) < 70') {'
                 areas.push({''
-                    area: 'accuracy',',
-                    priority: 'high')',
+                    area: 'accuracy',','
+                    priority: 'high')','
     currentValue: stats.bubbles.accuracy,
-                    targetValue: '80%+',' }
+                    targetValue: '80%+',' }'
 
                     impact: 'high'); 
     }
-            ';
+            ';'
             // 完了率が低い場合
-            if(stats.basic && stats.basic.completionRate < 50) {
+            if (stats.basic && stats.basic.completionRate < 50) {
                 areas.push({)'
-                    area: 'completion_rate',' }
+                    area: 'completion_rate',' }'
 
-                    priority: 'high'),' }
+                    priority: 'high'),' }'
 
                     currentValue: `${stats.basic.completionRate.toFixed(1'}'%`,''
                     targetValue: '70%+',
                     impact: 'high';
                 }'
             }
-            ';
+            ';'
             // コンボ性能が低い場合
-            if(stats.combos && stats.combos.highestCombo < 10) {
+            if (stats.combos && stats.combos.highestCombo < 10) {
                 areas.push({''
-                    area: 'combo_performance',',
-                    priority: 'medium')',
+                    area: 'combo_performance',','
+                    priority: 'medium')','
     currentValue: stats.combos.highestCombo,
-                    targetValue: '15+',' }
+                    targetValue: '15+',' }'
 
                     impact: 'medium'); 
     }
@@ -398,24 +398,24 @@ export class StatisticsAnalyzer {
             longTerm: []    // 1ヶ月以内 
     };
         const priorityAreas = this.identifyPriorityAreas(analysisResult);
-        ';
+        ';'
 
         priorityAreas.forEach(area => {  ),
             switch(area.area) {
 
-                case 'accuracy':',
+                case 'accuracy':','
                     plan.immediate.push('慎重なクリックを心がける'),
                     plan.shortTerm.push('精度重視の練習セッションを実施'),
                     plan.longTerm.push('反応時間の改善トレーニング'),
                     break,
 
-                case 'completion_rate':',
+                case 'completion_rate':','
                     plan.immediate.push('防御的な戦略を採用'),
                     plan.shortTerm.push('HP管理の改善'),
                     plan.longTerm.push('ステージ特性の理解向上'),
                     break,
 
-                case 'combo_performance':',
+                case 'combo_performance':','
                     plan.immediate.push('コンボ継続を意識'),
                     plan.shortTerm.push('コンボ練習モード活用') }
 
@@ -481,28 +481,27 @@ export class StatisticsAnalyzer {
         let qualityScore = 1.0,
         const issues = [],
 
-        if(!analysisResult.basicStatistics) {
+        if (!analysisResult.basicStatistics) {
             qualityScore -= 0.5 }
 
             issues.push('Basic, statistics unavailable'; }'
         }
 
-        if(analysisResult.basicStatistics && analysisResult.basicStatistics.basic.totalGamesPlayed < 10) {
+        if (analysisResult.basicStatistics && analysisResult.basicStatistics.basic.totalGamesPlayed < 10) {
             qualityScore -= 0.2 }
 
             issues.push('Limited, game data'; }'
         }
         
         return { score: Math.max(0, qualityScore) };
-            issues: issues 
-    }
+            issues: issues;
     
     calculateAnalysisConfidence(analysisResult) {
     
         const dataQuality = this.assessDataQuality(analysisResult),
         const componentsAvailable = Object.values(this.getComponentsStatus().filter(Boolean).length / 3 }
         return Math.min(dataQuality.score * 0.6 + componentsAvailable * 0.4, 1.0);
-    ';
+    ';'
     // 簡略化されたヘルパーメソッド
     summarizeTrendAnalysis(results) { return { summary: 'trend_analysis_complete' }
 
@@ -518,4 +517,4 @@ export class StatisticsAnalyzer {
 
     calculatePlayerLevel(stats) { return Math.floor(stats.basic.totalGamesPlayed / 10) + 1 }''
     getRecentTrendSummary(result) { return 'stable' }''
-    getNextMilestone(stats) { return `${((Math.floor(stats.basic.totalGamesPlayed / 10} + 1} * 10'}'ゲーム達成`; }'}
+    getNextMilestone(stats) { return `${((Math.floor(stats.basic.totalGamesPlayed / 10} + 1} * 10'}'ゲーム達成`; }'}'

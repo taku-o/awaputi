@@ -5,99 +5,98 @@
 
 // 型定義
 export interface SettingsManager {
-    configManager: ConfigManager }
+    configManager: ConfigManager;
 
 export interface ConfigManager { setDefaultValue(key: string, value: any): void,
-    set(category: string, key: string, value: any): void,
-    setValidationRule(key: string, rule: ValidationRule): void,
-    get(key: string): any,
-    getDefault(key: string): any }
+    set(category: string, key: string, value: any): void;
+    setValidationRule(key: string, rule: ValidationRule): void;
+    get(key: string): any;
+    getDefault(key: string): any;
 
 export interface ValidationRule { type: string,
-    min?: number,
-    max?: number,
-    values?: any[],
-    required?: boolean }
+    min?: number;
+    max?: number;
+    values?: any[];
+    required?: boolean;
 
-export interface ValidationRules { [key: string]: ValidationRule }
+export interface ValidationRules { [key: string]: ValidationRule;
 
 export interface AccessibilitySettings { highContrast: boolean,
-    reducedMotion: boolean,
-    largeText: boolean,
-    screenReader: boolean,
-    colorBlindSupport: boolean,
-    fontSize: FontSize,
-    contrastLevel: ContrastLevel,
-    keyboardNavigation: boolean,
-    voiceGuidance: boolean,
-    subtitles: boolean,
-    profiles: AccessibilityProfile,
-    importExport: boolean  }
+    reducedMotion: boolean;
+    largeText: boolean;
+    screenReader: boolean;
+    colorBlindSupport: boolean;
+    fontSize: FontSize;
+    contrastLevel: ContrastLevel;
+    keyboardNavigation: boolean;
+    voiceGuidance: boolean;
+    subtitles: boolean;
+    profiles: AccessibilityProfile;
+    importExport: boolean;
 
 export interface ControlsSettings { keyboardEnabled: boolean,
-    mouseEnabled: boolean,
-    touchEnabled: boolean }
+    mouseEnabled: boolean;
+    touchEnabled: boolean;
 
 export interface KeyboardShortcuts { pause: string[],
-    menu: string[],
-    settings: string[],
-    help: string[] }
+    menu: string[];
+    settings: string[];
+    help: string[];
 
 export interface UISettings { showFPS: boolean,
-    showDebugInfo: boolean,
-    animationSpeed: number,
-    uiScale: number }
+    showDebugInfo: boolean;
+    animationSpeed: number;
+    uiScale: number;
 
 export interface SocialSettings { enableSharing: boolean,
-    autoPromptHighScore: boolean,
-    autoPromptAchievements: boolean,
-    defaultPlatform: SocialPlatform,
-    includeScreenshot: boolean,
-    screenshotQuality: ScreenshotQuality,
-    privacyLevel: PrivacyLevel,
-    customMessage: string,
-    showWatermark: boolean }
+    autoPromptHighScore: boolean;
+    autoPromptAchievements: boolean;
+    defaultPlatform: SocialPlatform;
+    includeScreenshot: boolean;
+    screenshotQuality: ScreenshotQuality;
+    privacyLevel: PrivacyLevel;
+    customMessage: string;
+    showWatermark: boolean;
 
-export interface NotificationSettings { 'challenges.enabled': boolean,', 'challenges.newChallenge': boolean,', 'challenges.challengeComplete': boolean,', 'challenges.dailyReminder': boolean,', 'challenges.weeklyReminder': boolean,', 'achievements.enabled': boolean,', 'achievements.unlocked': boolean,', 'achievements.progress': boolean,', 'achievements.rare': boolean,', 'leaderboard.enabled': boolean,', 'leaderboard.newRecord': boolean,', 'leaderboard.rankChange': boolean,', 'system.enabled': boolean,', 'system.updates': boolean,', 'system.maintenance': boolean }
+export interface NotificationSettings { 'challenges.enabled': boolean,', 'challenges.newChallenge': boolean,', 'challenges.challengeComplete': boolean,', 'challenges.dailyReminder': boolean,', 'challenges.weeklyReminder': boolean,', 'achievements.enabled': boolean,', 'achievements.unlocked': boolean,', 'achievements.progress': boolean,', 'achievements.rare': boolean,', 'leaderboard.enabled': boolean,', 'leaderboard.newRecord': boolean,', 'leaderboard.rankChange': boolean,', 'system.enabled': boolean,', 'system.updates': boolean,', 'system.maintenance': boolean;
 
 export interface PrivacySettings { dataCollection: boolean,
-    analytics: boolean,
-    crashReports: boolean  }
+    analytics: boolean;
+    crashReports: boolean;
 
 export interface DefaultSettings { masterVolume: number,
-    sfxVolume: number,
-    bgmVolume: number,
-    isMuted: boolean,
-    language: string,
-    quality: QualitySetting,
-    accessibility: AccessibilitySettings,
-    controls: ControlsSettings,
-    keyboardShortcuts: KeyboardShortcuts,
-    ui: UISettings,
-    social: SocialSettings,
-    notifications: NotificationSettings,
-    privacy: PrivacySettings
-    }
+    sfxVolume: number;
+    bgmVolume: number;
+    isMuted: boolean;
+    language: string;
+    quality: QualitySetting;
+    accessibility: AccessibilitySettings;
+    controls: ControlsSettings;
+    keyboardShortcuts: KeyboardShortcuts;
+    ui: UISettings;
+    social: SocialSettings;
+    notifications: NotificationSettings;
+    privacy: PrivacySettings;
 
 export interface ParsedSettingKey { category: string,
-    settingName: string,
-    fullKey: string,
-    isLegacy: boolean }
+    settingName: string;
+    fullKey: string;
+    isLegacy: boolean;
 
 export interface ValidationResult { isValid: boolean,
-    errors: string[] }
+    errors: string[];
 
 export interface SettingsCount { total: number,
-    categories: number }
+    categories: number;
 
 export interface DataManagerStats { totalSettings: number,
-    categoriesCount: number,
-    systemLanguage: string,
-    defaultsGenerated: boolean,
-    structureValid: boolean }
+    categoriesCount: number;
+    systemLanguage: string;
+    defaultsGenerated: boolean;
+    structureValid: boolean;
 
-export interface LegacyKeyMap { [key: string]: string }
-';
+export interface LegacyKeyMap { [key: string]: string;
+';'
 // 列挙型
 export type FontSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type ContrastLevel = 'normal' | 'high' | 'maximum';
@@ -108,13 +107,13 @@ export type ScreenshotQuality = 'low' | 'medium' | 'high';
 export type PrivacyLevel = 'public' | 'friends' | 'private';
 
 export class SettingsDataManager {
-    private settingsManager: SettingsManager,
-    private configManager: ConfigManager,
-    private, validationRules: ValidationRules',
+    private settingsManager: SettingsManager;
+    private configManager: ConfigManager;
+    private, validationRules: ValidationRules','
 
     constructor(settingsManager: SettingsManager) {
-        this.settingsManager = settingsManager,
-        this.configManager = settingsManager.configManager,
+        this.settingsManager = settingsManager;
+        this.configManager = settingsManager.configManager;
         
         // 検証ルール（SettingsValidatorと同期）
     }
@@ -154,12 +153,11 @@ export class SettingsDataManager {
                 subtitles: false,
                 profiles: 'default'
             };
-                importExport: false 
-    };
+                importExport: false,;
             // 操作設定
             controls: { keyboardEnabled: true,
                 mouseEnabled: true,
-    touchEnabled: true })'
+    touchEnabled: true,)'
             // キーボードショートカット（Issue #170で削除されたもの以外）
             keyboardShortcuts: { ''
                 pause: ['Space'],
@@ -167,7 +165,7 @@ export class SettingsDataManager {
                 // 注記: fullscreen (KeyF)、mute(KeyM) は削除済み（Issue #170）'
                 // これらの機能は設定画面UIから利用できます
                 settings: ['KeyS'],
-                help: ['KeyH', 'F1] },
+                help: ['KeyH', 'F1] },'
             
             // UI設定
             ui: { showFPS: false,
@@ -180,12 +178,12 @@ export class SettingsDataManager {
     autoPromptAchievements: true,
                 defaultPlatform: 'auto', // 'auto', 'twitter', 'facebook', 'native',
                 includeScreenshot: true,
-                screenshotQuality: 'high', // 'low', 'medium', 'high'',
-                privacyLevel: 'public', // 'public', 'friends', 'private'',
-                customMessage: ',
-    showWatermark: true  };
+                screenshotQuality: 'high', // 'low', 'medium', 'high'','
+                privacyLevel: 'public', // 'public', 'friends', 'private'','
+                customMessage: ','
+    showWatermark: true,;
             // 通知設定（平坦化構造）
-            notifications: { ', 'challenges.enabled': true,
+            notifications: { ', 'challenges.enabled': true,'
                 'challenges.newChallenge': true,
                 'challenges.challengeComplete': true,
                 'challenges.dailyReminder': true,
@@ -199,25 +197,24 @@ export class SettingsDataManager {
                 'leaderboard.rankChange': false,
                 'system.enabled': true,
                 'system.updates': true,
-                'system.maintenance': true },
+                'system.maintenance': true;,
 
             // プライバシー設定
             privacy: { dataCollection: true,
                 analytics: true,
-    crashReports: true 
-    }
+    crashReports: true,
     
     /**
      * システム言語を検出
      * @returns 検出された言語コード
      */
     detectSystemLanguage(): string { ''
-        const browserLang = navigator.language || (navigator, as any').userLanguage || 'en',
-        ',
+        const browserLang = navigator.language || (navigator, as any').userLanguage || 'en','
+        ','
         // 日本語の場合
         if(browserLang.startsWith('ja)' {''
             return 'ja' }
-        ';
+        ';'
         // デフォルトは英語
         return 'en';
     }
@@ -240,14 +237,14 @@ export class SettingsDataManager {
                 this.configManager.set(category, key, value);
                 
                 // 検証ルールを設定
-                if(validationRules[key]) { }
+                if (validationRules[key]) { }
 
                     this.configManager.setValidationRule(fullKey, validationRules[key]); }
 }
 
-            console.log(`[SettingsDataManager] Category '${category}' setup, completed with ${Object.keys(defaultValues}).length} settings`);'} catch (error) { }
+            console.log(`[SettingsDataManager] Category '${category}' setup, completed with ${Object.keys(defaultValues}).length} settings`);'} catch (error) { }'
 
-            console.error(`[SettingsDataManager] Failed to setup category '${category}':`, error';
+            console.error(`[SettingsDataManager] Failed to setup category '${category}':`, error';'
             throw error;
         }
     }
@@ -259,30 +256,27 @@ export class SettingsDataManager {
 
      */''
     parseSettingKey(key: string): ParsedSettingKey { ''
-        const parts = key.split('.),
+        const parts = key.split('.),'
 
-        if(parts.length === 1) {
+        if (parts.length === 1) {
 
             // レガシーキー形式（例: 'masterVolume'）'
             return { ''
                 category: 'legacy',
-    settingName: key }
-                fullKey: key };
-                isLegacy: true 
-    };'} else if(parts.length === 2) { ''
+    settingName: key,
+                fullKey: key,;
+                isLegacy: true;;'} else if (parts.length === 2) { ''
             // 新しい形式（例: 'audio.masterVolume'）
             return { category: parts[0],
                 settingName: parts[1],
-    fullKey: key };
-                isLegacy: false 
-    } else {
+    fullKey: key,;
+                isLegacy: false; else {
             // ネストされた形式（例: 'accessibility.highContrast'）'
             return { category: parts[0],''
                 settingName: parts.slice(1).join('.'
             }'
-                fullKey: key };
-                isLegacy: false 
-    }
+                fullKey: key;;
+                isLegacy: false;
     }
     
     /**
@@ -317,7 +311,7 @@ export class SettingsDataManager {
      */
     getDefaultValue(key: string): any { const parsed = this.parseSettingKey(key),
         
-        if(parsed.isLegacy) {
+        if (parsed.isLegacy) {
         
             // レガシーキーの場合はレガシー値を取得
             const legacyValue = this.getLegacyValue(key),
@@ -337,16 +331,16 @@ export class SettingsDataManager {
      * @returns マージされた設定
      */''
     mergeSettings(defaultSettings: Record<string, any>, loadedSettings: Record<string, any>): Record<string, any> { ''
-        if(!loadedSettings || typeof, loadedSettings !== 'object' { }'
-            return { ...defaultSettings }
+        if (!loadedSettings || typeof, loadedSettings !== 'object' }'
+            return ...defaultSettings }
         
-        const merged = { ...defaultSettings,
+        const merged = ...defaultSettings,
         
         // 深いマージを実行
         for(const [key, value] of Object.entries(loadedSettings) {
 
-            if(key, in defaultSettings) {''
-                if (typeof, value === 'object' && value !== null && ',
+            if (key, in defaultSettings) {''
+                if (typeof, value === 'object' && value !== null && ','
                     typeof, defaultSettings[key] === 'object' && defaultSettings[key] !== null &&,
                     !Array.isArray(value) && !Array.isArray(defaultSettings[key]) {
                     // オブジェクトの場合は再帰的にマージ
@@ -368,13 +362,13 @@ export class SettingsDataManager {
     validateSettingsStructure(settings: any): ValidationResult { const errors: string[] = [],''
         const requiredCategories = ['accessibility', 'controls', 'ui', 'social', 'notifications'],
 
-        if(!settings || typeof, settings !== 'object') {', ' }
+        if (!settings || typeof, settings !== 'object') {', ' }
 
             errors.push('Settings, must be, a valid, object'; }'
             return { isValid: false, errors }
         
         // 必須カテゴリの存在確認
-        for (const category of requiredCategories) { if(!(category, in settings) { }'
+        for (const category of requiredCategories) { if (!(category, in settings) { }'
 
                 errors.push(`Missing, required category: ${category}`}';} else if(typeof, settings[category] !== 'object' || settings[category] === null' { }
 
@@ -396,9 +390,8 @@ export class SettingsDataManager {
         return { totalSettings: settingsCount.total,
             categoriesCount: settingsCount.categories,
             systemLanguage: this.detectSystemLanguage(
-    defaultsGenerated: true };
-            structureValid: true 
-    }
+    defaultsGenerated: true,;
+            structureValid: true,
     
     /**
      * 設定数を再帰的にカウント
@@ -410,7 +403,7 @@ export class SettingsDataManager {
     private _countSettings(obj: Record<string, any>, categories: Set<string> = new Set(): SettingsCount { let total = 0,
 
         for(const [key, value] of Object.entries(obj)) {''
-            if(typeof, value === 'object' && value !== null && !Array.isArray(value) {
+            if (typeof, value === 'object' && value !== null && !Array.isArray(value) {
                 categories.add(key),
                 const subCount = this._countSettings(value, categories) }
                 total += subCount.total; }
@@ -419,4 +412,4 @@ export class SettingsDataManager {
         
         return { total };
             categories: categories.size 
-    }'}
+    }'}'

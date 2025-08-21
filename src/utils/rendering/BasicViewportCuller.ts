@@ -1,50 +1,49 @@
 // Type definitions
 interface Viewport { x: number,
-    y: number,
-    width: number,
-    height: number  }
+    y: number;
+    width: number;
+    height: number;
 
 interface Frustum { left: number,
-    right: number,
-    top: number,
-    bottom: number,
-    near: number,
-    far: number }
+    right: number;
+    top: number;
+    bottom: number;
+    near: number;
+    far: number;
 
 interface ViewportCullingStats { totalObjects: number,
-    culledObjects: number,
-    cullingEfficiency: number,
-    processingTime: number }
+    culledObjects: number;
+    cullingEfficiency: number;
+    processingTime: number;
 
 interface CullingConfig { enabled: boolean,
-    viewport: Viewport,
-    cullingMargin: number,
-    spatialGrid: Map<string, Set<RenderableObject>>,
-    gridSize: number,
-    renderableObjects: Set<RenderableObject>,
-    culledObjects: Set<RenderableObject>,
-    visibilityCache: Map<string | number, boolean>,
-    frustum: Frustum,
-    stats: ViewportCullingStats
-     }
+    viewport: Viewport;
+    cullingMargin: number;
+    spatialGrid: Map<string, Set<RenderableObject>>;
+    gridSize: number;
+    renderableObjects: Set<RenderableObject>;
+    culledObjects: Set<RenderableObject>;
+    visibilityCache: Map<string | number, boolean>;
+    frustum: Frustum;
+    stats: ViewportCullingStats;
 
 interface ObjectBounds { x: number,
-    y: number,
-    width: number,
-    height: number }
+    y: number;
+    width: number;
+    height: number;
 
 interface RenderableObject { id?: string | number,
-    x?: number,
-    y?: number,
-    width?: number,
-    height?: number,
-    rotation?: number,
-    scale?: number }
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    rotation?: number;
+    scale?: number;
 
 interface ViewportCullerConfigOptions { enabled?: boolean,
-    cullingMargin?: number,
-    gridSize?: number,
-    viewport?: Partial<Viewport> }
+    cullingMargin?: number;
+    gridSize?: number;
+    viewport?: Partial<Viewport>;
 
 /**
  * ViewportCuller - Viewport culling optimization system
@@ -57,16 +56,16 @@ interface ViewportCullerConfigOptions { enabled?: boolean,
  * - 詳細なカリング統計収集
  */
 export class BasicViewportCuller {
-    private canvas: HTMLCanvasElement,
+    private canvas: HTMLCanvasElement;
     private, config: CullingConfig,
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas,
+        this.canvas = canvas;
         
         // Viewport culling system
         this.config = {}
-            enabled: true }
-            viewport: { x: 0, y: 0, width: 0, height: 0  },
+            enabled: true;
+            viewport: { x: 0, y: 0, width: 0, height: 0  };
             cullingMargin: 50, // Extra margin around viewport;
             // Culling optimization
             spatialGrid: new Map<string, Set<RenderableObject>>(), // Spatial partitioning grid;
@@ -74,11 +73,11 @@ export class BasicViewportCuller {
             // Object tracking
             renderableObjects: new Set<RenderableObject>();
             culledObjects: new Set<RenderableObject>();
-            visibilityCache: new Map<string | number, boolean>(),
+            visibilityCache: new Map<string | number, boolean>();
             
             // Frustum culling
             frustum: { left: 0, right: 0, top: 0, bottom: 0,
-                near: 0, far: 1000  },
+                near: 0, far: 1000  };
             
             // Statistics
             stats: { totalObjects: 0,
@@ -135,7 +134,7 @@ export class BasicViewportCuller {
      */
     performViewportCulling(objects: RenderableObject[]): RenderableObject[] { const startTime = performance.now(),
         
-        if(!this.config.enabled) {
+        if (!this.config.enabled) {
     
 }
             return objects;
@@ -207,7 +206,7 @@ export class BasicViewportCuller {
             width: obj.width || 0,
     height: obj.height || 0 };
         // Account for rotation and scaling
-        if(obj.rotation || obj.scale !== 1) {
+        if (obj.rotation || obj.scale !== 1) {
             const centerX = bounds.x + bounds.width / 2,
             const centerY = bounds.y + bounds.height / 2,
             const scale = obj.scale || 1,
@@ -242,7 +241,7 @@ export class BasicViewportCuller {
             for (let, y = startY; y <= endY; y += gridSize) { }
                 const key = `${x},${y}`;
                 const cell = this.config.spatialGrid.get(key);
-                if(cell) {
+                if (cell) {
                     for (const obj of cell) {
                 }
                         result.add(obj); }
@@ -269,12 +268,12 @@ export class BasicViewportCuller {
      */
     configure(config: ViewportCullerConfigOptions): void { if (config.enabled !== undefined) this.config.enabled = config.enabled,
         if (config.cullingMargin !== undefined) this.config.cullingMargin = config.cullingMargin,
-        if(config.gridSize !== undefined) {
+        if (config.gridSize !== undefined) {
             this.config.gridSize = config.gridSize }
             this.rebuildSpatialGrid(); }
         }
         
-        if(config.viewport) {
+        if (config.viewport) {
         
             Object.assign(this.config.viewport, config.viewport) }
             this.updateViewport(); }

@@ -5,21 +5,21 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date };
+    timeRange?: { start: Date, end: Date,;
     filters?: Record<string, any>;
     metrics?: string[];
 }
 
 export interface AnalysisResult {
-    success: boolean,
-    data?: any,
-    insights?: string[],
-    recommendations?: string[],
-    timestamp: number }
+    success: boolean;
+    data?: any;
+    insights?: string[];
+    recommendations?: string[];
+    timestamp: number;
 export class APIEndpointManager {
-    private storageManager: any,
-    private privacyManager: any,
-    private endpoints: Map<string, any>,
+    private storageManager: any;
+    private privacyManager: any;
+    private endpoints: Map<string, any>;
     private rateLimiting: {
         enabled: boolean,
         maxRequestsPerMinute: number,
@@ -28,7 +28,7 @@ export class APIEndpointManager {
     private accessControl: {
         enabled: boolean,
         allowedOrigins: string[],
-        requireAuthentication: boolean };
+        requireAuthentication: boolean,;
     private apiStats: {
         totalRequests: number,
         successfulRequests: number,
@@ -38,11 +38,11 @@ export class APIEndpointManager {
         lastRequestTime: number | null };
 
     constructor(storageManager: any, privacyManager: any = null) {
-        this.storageManager = storageManager,
-        this.privacyManager = privacyManager,
+        this.storageManager = storageManager;
+        this.privacyManager = privacyManager;
         
         // エンドポイント管理
-        this.endpoints = new Map(),
+        this.endpoints = new Map();
         
         // レート制限設定
         this.rateLimiting = {
@@ -54,10 +54,9 @@ export class APIEndpointManager {
         
         // アクセス制御設定
         this.accessControl = {
-            enabled: false, // 将来の機能拡張用
+            enabled: false; // 将来の機能拡張用
             allowedOrigins: ['*'],
-            requireAuthentication: false
-        };
+            requireAuthentication: false,;
         
         // API統計
         this.apiStats = {
@@ -66,8 +65,7 @@ export class APIEndpointManager {
             failedRequests: 0,
             rateLimitedRequests: 0,
             averageResponseTime: 0,
-            lastRequestTime: null
-        };
+            lastRequestTime: null,;
     }
     
     /**
@@ -201,8 +199,7 @@ export class APIEndpointManager {
                 query: processedQuery,
                 responseTime: Math.max(responseTime, 0.1), // 最小0.1ms
                 dataCount: Array.isArray(data) ? data.length : 1,
-                anonymized: isAnonymized
-            });
+                anonymized: isAnonymized,);
         } catch (error) {
             const responseTime = Math.max(performance.now() - startTime, 0.1),
             
@@ -328,7 +325,7 @@ export class APIEndpointManager {
                 maxRequestsPerMinute: this.rateLimiting.maxRequestsPerMinute,
                 maxRequestsPerHour: this.rateLimiting.maxRequestsPerHour
             },
-            stats: { ...this.apiStats },
+            stats: { ...this.apiStats };
             features: [
                 'data_retrieval',
                 'aggregation',

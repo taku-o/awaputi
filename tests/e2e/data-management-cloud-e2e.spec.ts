@@ -10,7 +10,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         // テスト用の設定を注入
         await page.addInitScript(() => {
             // localStorageのクリア
-            localStorage.clear('),
+            localStorage.clear('),'
             
             // テスト用のクラウド設定
             localStorage.setItem('bubblePop_cloudConfig', JSON.stringify({
@@ -19,18 +19,18 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 apiEndpoint: 'https://api.test.com' });
             
             // モックされたfetchを設定
-            window.fetch = function(url, options') {
-                if(url.includes('/auth/login') {
+            window.fetch = function(url, options') {'
+                if (url.includes('/auth/login') {
                     return Promise.resolve({
                         ok: true),
-                       , json: (') => Promise.resolve({
+                       , json: (') => Promise.resolve({'
                             token: 'test-token',
                             userId: 'test-user'),
                            , expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000 });
-                    }');
+                    }');'
                 }
                 
-                if(url.includes('/data/') {
+                if (url.includes('/data/') {
                     return Promise.resolve({
                         ok: true),
                        , json: () => Promise.resolve({ success: true ) });
@@ -38,16 +38,16 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 
                 return Promise.resolve({
                     ok: true),
-                   , json: (') => Promise.resolve({ status: 'ok' ) });
+                   , json: (') => Promise.resolve({ status: 'ok' ) });'
             };
-        }');
+        }');'
         
         await page.goto('/');
         await page.waitForLoadState('networkidle');
     });
     
     test.afterEach(async () => {
-        await page.close() }');
+        await page.close() }');'
     
     test('データ管理システムが正常に初期化される', async () => {
         // ゲームエンジンの初期化を待つ
@@ -72,10 +72,10 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         });
         
         expect(components.storage).toBe(true);
-    }');
+    }');'
     
     test('プレイヤーデータの保存と読み込みが正常に動作する', async () => {
-        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),
+        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),'
         
         // テストデータの保存
         const testData = {
@@ -85,40 +85,39 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             achievements: ['first_game', 'score_1000']
         };
         
-        await page.evaluate((data') => {
+        await page.evaluate((data') => {'
             return window.gameEngine.dataManager.save('playerData', data) }, testData);
         
         // データの読み込み
-        const retrievedData = await page.evaluate((') => {
+        const retrievedData = await page.evaluate((') => {'
             return window.gameEngine.dataManager.load('playerData') });
         
         expect(retrievedData.playerName).toBe(testData.playerName);
         expect(retrievedData.score).toBe(testData.score);
         expect(retrievedData.level).toBe(testData.level);
-    }');
+    }');'
     
     test('ゲーム設定の保存と読み込みが正常に動作する', async () => {
-        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),
+        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),'
         
         // 設定データの保存
         const settingsData = {
             volume: 0.8,
             difficulty: 'normal',
             language: 'ja',
-            enableAnimations: true
-        };
+            enableAnimations: true,;
         
-        await page.evaluate((data') => {
+        await page.evaluate((data') => {'
             return window.gameEngine.dataManager.save('settings', data) }, settingsData);
         
         // 設定の読み込み
-        const retrievedSettings = await page.evaluate((') => {
+        const retrievedSettings = await page.evaluate((') => {'
             return window.gameEngine.dataManager.load('settings') });
         
         expect(retrievedSettings.volume).toBe(settingsData.volume);
         expect(retrievedSettings.difficulty).toBe(settingsData.difficulty);
         expect(retrievedSettings.language).toBe(settingsData.language);
-    }');
+    }');'
     
     test('統計データの保存と読み込みが正常に動作する', async () => {
         await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized),
@@ -136,20 +135,20 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             }
         };
         
-        await page.evaluate((data') => {
+        await page.evaluate((data') => {'
             return window.gameEngine.dataManager.save('statistics', data) }, statisticsData);
         
         // 統計の読み込み
-        const retrievedStats = await page.evaluate((') => {
+        const retrievedStats = await page.evaluate((') => {'
             return window.gameEngine.dataManager.load('statistics') });
         
         expect(retrievedStats.totalGamesPlayed).toBe(statisticsData.totalGamesPlayed);
         expect(retrievedStats.totalScore).toBe(statisticsData.totalScore);
         expect(retrievedStats.bubblesPopped.normal).toBe(statisticsData.bubblesPopped.normal);
-    }');
+    }');'
     
     test('データエクスポート機能が正常に動作する', async () => {
-        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),
+        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),'
         
         // テストデータの準備
         const testData = {
@@ -158,30 +157,30 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             level: 3
         };
         
-        await page.evaluate((data') => {
+        await page.evaluate((data') => {'
             return window.gameEngine.dataManager.save('playerData', data) }, testData);
         
         // データエクスポート
         const exportResult = await page.evaluate(() => {
-            if (window.gameEngine.dataManager.export') {
+            if (window.gameEngine.dataManager.export') {'
                 return window.gameEngine.dataManager.export.exportData(['playerData'], 'json') }
             return null;
         });
         
         if (exportResult) {
             expect(exportResult).toBeDefined(),
-            expect(typeof exportResult').toBe('object') }
-    }');
+            expect(typeof exportResult').toBe('object') }'
+    }');'
     
     test('データインポート機能が正常に動作する', async () => {
-        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),
+        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),'
         
         // インポート用のテストデータ
         const importData = {
             header: {
                 format: 'BubblePopSave',
                 version: '1.0',
-                exportedAt: new Date(').toISOString(}
+                exportedAt: new Date(').toISOString(}'
             },
             userData: {
                 playerData: {
@@ -193,26 +192,26 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         
         // データインポート
         const importResult = await page.evaluate((data) => {
-            if (window.gameEngine.dataManager.import') {
+            if (window.gameEngine.dataManager.import') {'
                 return window.gameEngine.dataManager.import.importData(data, 'overwrite') }
             return null;
         }, importData);
         
         if (importResult) {
             // インポート後のデータ確認
-            const retrievedData = await page.evaluate((') => {
+            const retrievedData = await page.evaluate((') => {'
                 return window.gameEngine.dataManager.load('playerData') });
             
-            expect(retrievedData.playerName').toBe('ImportTestPlayer');
+            expect(retrievedData.playerName').toBe('ImportTestPlayer');'
             expect(retrievedData.score).toBe(20000);
         }
-    }');
+    }');'
     
     test('バックアップ機能が正常に動作する', async () => {
         await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized),
         
         // テストデータの保存
-        await page.evaluate((') => {
+        await page.evaluate((') => {'
             return window.gameEngine.dataManager.save('playerData', {
                 playerName: 'BackupTestPlayer',
                 score: 18000 });
@@ -240,10 +239,10 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 expect(Array.isArray(backupList).toBe(true),
                 expect(backupList.length).toBeGreaterThan(0) }
         }
-    }');
+    }');'
     
     test('データ復旧機能が正常に動作する', async () => {
-        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),
+        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),'
         
         // テストデータの保存とバックアップ
         const originalData = {
@@ -251,7 +250,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             score: 22000
         };
         
-        await page.evaluate((data') => {
+        await page.evaluate((data') => {'
             return window.gameEngine.dataManager.save('playerData', data) }, originalData);
         
         // バックアップ作成
@@ -261,24 +260,24 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         });
         
         // データ破損をシミュレート
-        await page.evaluate((') => {
+        await page.evaluate((') => {'
             return window.gameEngine.dataManager.save('playerData', null) });
         
         // データ復旧
         const recoveryResult = await page.evaluate(() => {
-            if (window.gameEngine.dataManager.recovery') {
+            if (window.gameEngine.dataManager.recovery') {'
                 return window.gameEngine.dataManager.recovery.recoverData('playerData', 'auto') }
             return null;
         });
         
         if (recoveryResult) {
-            const recoveredData = await page.evaluate((') => {
+            const recoveredData = await page.evaluate((') => {'
                 return window.gameEngine.dataManager.load('playerData') });
             
             expect(recoveredData.playerName).toBe(originalData.playerName);
             expect(recoveredData.score).toBe(originalData.score);
         }
-    }');
+    }');'
     
     test('オフライン状態での操作記録が正常に動作する', async () => {
         await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized),
@@ -288,7 +287,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         
         // オフライン操作のシミュレート
         const offlineResult = await page.evaluate(() => {
-            if (window.gameEngine.dataManager.offlineManager') {
+            if (window.gameEngine.dataManager.offlineManager') {'
                 return window.gameEngine.dataManager.offlineManager.recordOfflineOperation({
                     type: 'save',
                     key: 'offlineData',
@@ -311,10 +310,10 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         
         // オンライン状態に復帰
         await page.setOffline(false);
-    }');
+    }');'
     
     test('データ検証機能が正常に動作する', async () => {
-        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),
+        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),'
         
         // 有効なデータの検証
         const validData = {
@@ -324,23 +323,23 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         };
         
         const validationResult = await page.evaluate((data) => {
-            if (window.gameEngine.dataManager.validation') {
+            if (window.gameEngine.dataManager.validation') {'
                 return window.gameEngine.dataManager.validation.validateData(data, 'playerData') }
             return null;
         }, validData);
         
         if (validationResult) {
-            expect(validationResult.isValid).toBe(true') }
+            expect(validationResult.isValid).toBe(true') }'
         
         // 無効なデータの検証
         const invalidData = {
-            playerName: ', // 空の名前
+            playerName: ', // 空の名前'
             score: -1000,   // 負のスコア
             level: 'invalid' // 無効なレベル
         };
         
         const invalidValidationResult = await page.evaluate((data) => {
-            if (window.gameEngine.dataManager.validation') {
+            if (window.gameEngine.dataManager.validation') {'
                 return window.gameEngine.dataManager.validation.validateData(data, 'playerData') }
             return null;
         }, invalidData);
@@ -348,27 +347,26 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         if (invalidValidationResult) {
             expect(invalidValidationResult.isValid).toBe(false),
             expect(invalidValidationResult.errors.length).toBeGreaterThan(0) }
-    }');
+    }');'
     
     test('エラーハンドリングが適切に動作する', async () => {
         await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized),
         
         // 存在しないデータタイプでの操作
-        const errorResult = await page.evaluate(async (') => {
+        const errorResult = await page.evaluate(async (') => {'
             try {
                 await window.gameEngine.dataManager.save('nonexistentType', { data: 'test' });
-                return { success: true };
-            } catch (error) {
+                return { success: true } catch (error) {
                 return { success: false, error: error.message };
             }
         });
         
         // エラーハンドリングの確認（実装によって結果は異なる）
         expect(errorResult).toBeDefined();
-    }');
+    }');'
     
     test('パフォーマンス要件が満たされる', async () => {
-        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),
+        await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized'),'
         
         const testData = {
             playerName: 'PerformanceTestPlayer',
@@ -377,7 +375,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         
         // データ保存のパフォーマンステスト
         const savePerformance = await page.evaluate((data) => {
-            const startTime = performance.now('),
+            const startTime = performance.now('),'
             return window.gameEngine.dataManager.save('performanceTest', data})
                 .then(() => {
                     const endTime = performance.now(),
@@ -388,7 +386,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         
         // データ読み込みのパフォーマンステスト
         const loadPerformance = await page.evaluate(() => {
-            const startTime = performance.now('),
+            const startTime = performance.now('),'
             return window.gameEngine.dataManager.load('performanceTest'})
                 .then(() => {
                     const endTime = performance.now(),
@@ -396,7 +394,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         });
         
         expect(loadPerformance).toBeLessThan(50); // 50ms以内
-    }');
+    }');'
     
     test('メモリリークが発生しない', async () => {
         await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized),
@@ -434,4 +432,4 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             }
         });
     });
-}');
+}');'

@@ -6,7 +6,7 @@ import { jest  } from '@jest/globals';
 // TextEncoder/TextDecoder polyfill for Node.js environment
 import { TextEncoder, TextDecoder  } from 'util';
 (global: any).TextEncoder = TextEncoder;
-(global as any').TextDecoder = TextDecoder;
+(global as any').TextDecoder = TextDecoder;'
 // DOM environment setup
 import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
@@ -17,9 +17,9 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 // Mock game engine components
 const mockGameEngine = {
     sceneManager: {
-        getCurrentScene: jest.fn((') => ({
+        getCurrentScene: jest.fn((') => ({'
             constructor: { name: 'MainMenuScene' ) })),
-        switchScene: jest.fn(() => true);
+        switchScene: jest.fn(() => true),
     ),
     audioManager: {
         toggleMute: jest.fn(() => false)),
@@ -28,16 +28,16 @@ const mockGameEngine = {
         set: jest.fn(
     responsiveCanvasManager: {
         toggleFullscreen: jest.fn(),
-    isDebugMode: jest.fn(() => false);
+    isDebugMode: jest.fn(() => false),
         performanceStats: {
             });
 );
 // Import after mocking
-const { CoreKeyboardShortcutManager ') = await import('../../src/core/KeyboardShortcutManager.js'),
-describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => {
+const { CoreKeyboardShortcutManager ') = await import('../../src/core/KeyboardShortcutManager.js'),'
+describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => {'
     let shortcutManager: any,
     let consoleErrorSpy: any,
-    beforeEach((') => {
+    beforeEach((') => {'
         // Console spies
         consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         // Clear localStorage
@@ -50,8 +50,8 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             shortcutManager.cleanup() }
         // Restore console
         consoleErrorSpy.mockRestore();
-    }');
-    describe('Initialization Without Errors', (') => {
+    }');'
+    describe('Initialization Without Errors', (') => {'
         test('should initialize KeyboardShortcutManager without errors after shortcut removal', () => {
             // This should not throw any errors
             expect(() => {
@@ -60,37 +60,37 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager);
             expect(shortcutManager.shortcuts).toBeInstanceOf(Map);
             expect(shortcutManager.isEnabled).toBe(true);
-        }');
+        }');'
         test('should not generate console errors during initialization', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             // Verify no console errors were generated during initialization
-            expect(consoleErrorSpy).not.toHaveBeenCalled() }');
-        test('should properly setup event listeners', (') => {
-            // Mock addEventListener to verify it's called
+            expect(consoleErrorSpy).not.toHaveBeenCalled() }');'
+        test('should properly setup event listeners', (') => {'
+            // Mock addEventListener to verify it's called'
             const addEventListenerSpy = jest.spyOn(document, 'addEventListener'),
             const windowAddEventListenerSpy = jest.spyOn(window, 'addEventListener'),
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             // Verify keydown and keyup listeners were added
-            expect(addEventListenerSpy').toHaveBeenCalledWith('keydown', expect.any(Function),
-            expect(addEventListenerSpy').toHaveBeenCalledWith('keyup', expect.any(Function),
+            expect(addEventListenerSpy').toHaveBeenCalledWith('keydown', expect.any(Function),'
+            expect(addEventListenerSpy').toHaveBeenCalledWith('keyup', expect.any(Function),'
             // Verify window blur and focus listeners were added
-            expect(windowAddEventListenerSpy').toHaveBeenCalledWith('blur', expect.any(Function),
-            expect(windowAddEventListenerSpy').toHaveBeenCalledWith('focus', expect.any(Function),
+            expect(windowAddEventListenerSpy').toHaveBeenCalledWith('blur', expect.any(Function),'
+            expect(windowAddEventListenerSpy').toHaveBeenCalledWith('focus', expect.any(Function),'
             // Cleanup spies
             addEventListenerSpy.mockRestore(),
-            windowAddEventListenerSpy.mockRestore() }');
+            windowAddEventListenerSpy.mockRestore() }');'
     }
-    describe('Shortcut Registration Process', (') => {
+    describe('Shortcut Registration Process', (') => {'
         test('should register shortcuts correctly for remaining functionality', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             const shortcuts = shortcutManager.getShortcuts(),
             // Verify key shortcuts are properly registered
             expect(shortcuts.pause).toBeDefined(),
-            expect(shortcuts.pause.keys').toContain('Space'),
+            expect(shortcuts.pause.keys').toContain('Space'),'
             expect(shortcuts.menu).toBeDefined(),
-            expect(shortcuts.menu.keys').toContain('Escape'),
+            expect(shortcuts.menu.keys').toContain('Escape'),'
             expect(shortcuts.fullscreen).toBeDefined(),
-            expect(shortcuts.fullscreen.keys').toContain('KeyF'),
+            expect(shortcuts.fullscreen.keys').toContain('KeyF'),'
             expect(shortcuts.mute).toBeDefined(),
             expect(shortcuts.mute.keys').toContain('KeyM') }');
         test('should not register removed shortcuts', () => {
@@ -99,7 +99,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             // Verify removed shortcuts are not registered
             expect(shortcuts.settings).toBeUndefined(),
             expect(shortcuts.help).toBeUndefined(),
-            expect(shortcuts.userInfo).toBeUndefined() }');
+            expect(shortcuts.userInfo).toBeUndefined() }');'
         test('should have correct total shortcut count', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             const stats = shortcutManager.getStats(),
@@ -108,16 +108,16 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             expect(stats.totalShortcuts).toBeGreaterThan(10), // Should still have essential shortcuts
             expect(stats.totalShortcuts).toBeLessThan(25), // But not too many
             expect(stats.enabledShortcuts).toBe(stats.totalShortcuts), // All should be enabled by default
-        }');
+        }');'
     }
-    describe('Event Handling Integration', (') => {
+    describe('Event Handling Integration', (') => {'
         test('should handle keydown events correctly', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),'
             // Mock scene with pause functionality
             const mockGameScene = {
                 constructor: { name: 'GameScene' };
         togglePause: jest.fn( };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene');
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene');'
             // Create and dispatch a real keydown event
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
@@ -128,9 +128,9 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             // Simulate the event being processed
             shortcutManager.handleKeyDown(event),
             // Verify the shortcut was executed
-            expect(mockGameScene.togglePause).toHaveBeenCalled() }');
+            expect(mockGameScene.togglePause).toHaveBeenCalled() }');'
         test('should handle keyup events correctly', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),'
             // Create and dispatch a keyup event
             const event = new KeyboardEvent('keyup', {
                 code: 'Space',
@@ -138,7 +138,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             });
             // This should not throw an error
             expect(() => {
-                shortcutManager.handleKeyUp(event) }).not.toThrow(');
+                shortcutManager.handleKeyUp(event) }).not.toThrow(');'
         }
         test('should handle window blur and focus events', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
@@ -149,54 +149,53 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             expect(() => {
                 shortcutManager.handleWindowFocus() }).not.toThrow();
         }
-    }');
-    describe('Context Validation Integration', (') => {
+    }');'
+    describe('Context Validation Integration', (') => {'
         test('should validate context correctly for game scene', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),'
             // Mock game scene
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
                 constructor: { name: 'GameScene' });
-            }');
+            }');'
             // Test context validation
-            expect(shortcutManager.isContextValid('global').toBe(true');
-            expect(shortcutManager.isContextValid('game').toBe(true');
+            expect(shortcutManager.isContextValid('global').toBe(true');'
+            expect(shortcutManager.isContextValid('game').toBe(true');'
             expect(shortcutManager.isContextValid('menu').toBe(false);
-        }');
+        }');'
         test('should validate context correctly for menu scene', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),'
             // Mock menu scene
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
                 constructor: { name: 'MainMenuScene' });
-            }');
+            }');'
             // Test context validation
-            expect(shortcutManager.isContextValid('global').toBe(true');
-            expect(shortcutManager.isContextValid('game').toBe(false');
+            expect(shortcutManager.isContextValid('global').toBe(true');'
+            expect(shortcutManager.isContextValid('game').toBe(false');'
             expect(shortcutManager.isContextValid('menu').toBe(true);
-        }');
+        }');'
     }
-    describe('Error Handling Integration', (') => {
+    describe('Error Handling Integration', (') => {'
         test('should handle missing game engine gracefully', () => {
             // Test with null game engine
             expect(() => {
-                shortcutManager = new CoreKeyboardShortcutManager(null) }).not.toThrow(');
+                shortcutManager = new CoreKeyboardShortcutManager(null) }).not.toThrow(');'
         }
         test('should handle missing scene manager gracefully', () => {
             const incompleteGameEngine = {
-                sceneManager: null
-            };
+                sceneManager: null,;
             
             expect(() => {
-                shortcutManager = new CoreKeyboardShortcutManager(incompleteGameEngine) }).not.toThrow(');
+                shortcutManager = new CoreKeyboardShortcutManager(incompleteGameEngine) }).not.toThrow(');'
         }
         test('should handle errors in shortcut callbacks gracefully', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),'
             // Mock a scene that throws an error
             const errorScene = {
                 constructor: { name: 'GameScene' };
-                togglePause: jest.fn((') => {
+                togglePause: jest.fn((') => {'
                     throw new Error('Test error'))
             ),
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(errorScene'),
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(errorScene'),'
             // Create a space key event
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
@@ -207,9 +206,9 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
                 shortcutManager.handleKeyDown(event) }).not.toThrow();
             // Verify error was logged
             expect(consoleErrorSpy).toHaveBeenCalled();
-        }');
+        }');'
     }
-    describe('Help Text Generation Integration', (') => {
+    describe('Help Text Generation Integration', (') => {'
         test('should generate help text without errors', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             expect(() => {
@@ -219,18 +218,18 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
         }
         test('should generate consistent help text structure', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
-            const helpText = shortcutManager.generateHelpText('),
+            const helpText = shortcutManager.generateHelpText('),'
             // Verify expected sections exist
-            expect(helpText['ゲーム操作']).toBeDefined('),
-            expect(helpText['UI操作']).toBeDefined('),
-            expect(helpText['アクセシビリティ']).toBeDefined('),
+            expect(helpText['ゲーム操作']).toBeDefined('),'
+            expect(helpText['UI操作']).toBeDefined('),'
+            expect(helpText['アクセシビリティ']).toBeDefined('),'
             expect(helpText['その他']).toBeDefined(),
             // Each section should be an array
             Object.values(helpText.forEach(section => {),
                 expect(Array.isArray(section).toBe(true) });
         }
-    }');
-    describe('Statistics Integration', (') => {
+    }');'
+    describe('Statistics Integration', (') => {'
         test('should provide accurate statistics', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             const stats = shortcutManager.getStats(),
@@ -241,27 +240,27 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             expect(stats.isEnabled).toBeDefined(),
             expect(stats.contexts).toBeDefined(),
             // Verify statistics values are reasonable
-            expect(typeof stats.totalShortcuts').toBe('number'),
-            expect(typeof stats.enabledShortcuts').toBe('number'),
-            expect(typeof stats.activeKeys').toBe('number'),
-            expect(typeof stats.isEnabled').toBe('boolean'),
+            expect(typeof stats.totalShortcuts').toBe('number'),'
+            expect(typeof stats.enabledShortcuts').toBe('number'),'
+            expect(typeof stats.activeKeys').toBe('number'),'
+            expect(typeof stats.isEnabled').toBe('boolean'),'
             expect(Array.isArray(stats.contexts).toBe(true),
             // Enabled shortcuts should not exceed total shortcuts
-            expect(stats.enabledShortcuts).toBeLessThanOrEqual(stats.totalShortcuts) }');
+            expect(stats.enabledShortcuts).toBeLessThanOrEqual(stats.totalShortcuts) }');'
     }
-    describe('Cleanup Integration', (') => {
-        test('should cleanup event listeners properly', (') => {
-            // Mock removeEventListener to verify it's called
+    describe('Cleanup Integration', (') => {'
+        test('should cleanup event listeners properly', (') => {'
+            // Mock removeEventListener to verify it's called'
             const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener'),
             const windowRemoveEventListenerSpy = jest.spyOn(window, 'removeEventListener'),
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
-            shortcutManager.cleanup('),
-            // Note: The current implementation has a bug where event listeners aren't properly removed
+            shortcutManager.cleanup('),'
+            // Note: The current implementation has a bug where event listeners aren't properly removed'
             // This test documents the expected behavior
             
             // Cleanup spies
             removeEventListenerSpy.mockRestore(),
-            windowRemoveEventListenerSpy.mockRestore() }');
+            windowRemoveEventListenerSpy.mockRestore() }');'
         test('should clear internal state on cleanup', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             // Verify initial state
@@ -271,9 +270,9 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             shortcutManager.cleanup(),
             // Verify cleared state
             expect(shortcutManager.activeKeys.size).toBe(0),
-            expect(shortcutManager.listeners.size).toBe(0) }');
+            expect(shortcutManager.listeners.size).toBe(0) }');'
     }
-    describe('Enable/Disable Integration', (') => {
+    describe('Enable/Disable Integration', (') => {'
         test('should properly enable and disable shortcuts', () => {
             shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine),
             // Initially enabled
@@ -283,16 +282,16 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             expect(shortcutManager.isEnabled).toBe(false),
             // Enable again
             shortcutManager.setEnabled(true),
-            expect(shortcutManager.isEnabled).toBe(true) }');
+            expect(shortcutManager.isEnabled).toBe(true) }');'
         test('should not execute shortcuts when disabled', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine'),'
             // Mock scene with pause functionality
             const mockGameScene = {
                 constructor: { name: 'GameScene' };
         togglePause: jest.fn( };
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene);
             // Disable shortcuts
-            shortcutManager.setEnabled(false');
+            shortcutManager.setEnabled(false');'
             // Try to execute a shortcut
             const event = new KeyboardEvent('keydown', {
                 code: 'Space',
@@ -302,4 +301,4 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             // Verify shortcut was not executed
             expect(mockGameScene.togglePause).not.toHaveBeenCalled() });
     }
-}');
+}');'

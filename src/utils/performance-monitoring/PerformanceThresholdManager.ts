@@ -5,73 +5,73 @@
 
 // Type definitions
 interface ThresholdValues { min?: number,
-    target: number,
-    max?: number,
-    critical: number,
-    warning: number  }
+    target: number;
+    max?: number;
+    critical: number;
+    warning: number;
 
 interface ThresholdConfig { adaptiveThresholds: boolean,
-    staticThresholds: Map<string, ThresholdValues>,
-    dynamicThresholds: Map<string, ThresholdValues>,
-    violationSensitivity: number,
-    adaptationRate: number  }
+    staticThresholds: Map<string, ThresholdValues>;
+    dynamicThresholds: Map<string, ThresholdValues>;
+    violationSensitivity: number;
+    adaptationRate: number;
 
 interface BaselinePoint { timestamp: number,
-    value: number }
+    value: number;
 
 interface BaselineStats { count: number,
-    mean: number,
-    median: number,
-    std: number,
-    min: number,
-    max: number,
-    p25: number,
-    p75: number,
-    p95: number,
-    p90?: number,
-    updated: number }
+    mean: number;
+    median: number;
+    std: number;
+    min: number;
+    max: number;
+    p25: number;
+    p75: number;
+    p95: number;
+    p90?: number;
+    updated: number;
 
 interface ThresholdViolation { timestamp: number,
-    metricId: string,
-    value: number,
-    thresholds: ThresholdValues,
-    type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high',
-    severity: 'critical' | 'warning' | 'high' | 'medium' | 'low',
-    deviation: number  }
+    metricId: string;
+    value: number;
+    thresholds: ThresholdValues;
+    type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high';
+    severity: 'critical' | 'warning' | 'high' | 'medium' | 'low';
+    deviation: number;
 
 interface ViolationStats { total: number,
-    recent: number,
-    by_severity: Record<string, number>,
-    by_metric: Record<string, number>,
-    rate_per_minute: number  }
+    recent: number;
+    by_severity: Record<string, number>;
+    by_metric: Record<string, number>;
+    rate_per_minute: number;
 
 interface ExportedData { timestamp: number,
-    config: ThresholdConfig,
-    baselineStats: Record<string, BaselineStats>,
-    violations: ThresholdViolation[],
+    config: ThresholdConfig;
+    baselineStats: Record<string, BaselineStats>;
+    violations: ThresholdViolation[];
     violationCounters: Record<string, number> }
 
 interface ImportData { config?: Partial<ThresholdConfig>,
-    baselineStats?: Record<string, BaselineStats>,
-    violations?: ThresholdViolation[],
+    baselineStats?: Record<string, BaselineStats>;
+    violations?: ThresholdViolation[];
     violationCounters?: Record<string, number> }
 
 interface MainController {
-    errorHandler: any }
+    errorHandler: any;
 
 export class PerformanceThresholdManager {
-    private mainController: MainController,
-    private errorHandler: any,
-    private thresholdConfig: ThresholdConfig,
-    private violations: ThresholdViolation[],
+    private mainController: MainController;
+    private errorHandler: any;
+    private thresholdConfig: ThresholdConfig;
+    private violations: ThresholdViolation[];
     private, violationCounters: Map<string, number>,
-    private baselineHistory: Map<string, BaselinePoint[]>,
-    private baselineStats: Map<string, BaselineStats>,
+    private baselineHistory: Map<string, BaselinePoint[]>;
+    private baselineStats: Map<string, BaselineStats>;
 
     constructor(mainController: MainController) {
 
-        this.mainController = mainController,
-        this.errorHandler = mainController.errorHandler,
+        this.mainController = mainController;
+        this.errorHandler = mainController.errorHandler;
         
         // Threshold configuration
         this.thresholdConfig = {
@@ -89,7 +89,7 @@ export class PerformanceThresholdManager {
         this.baselineHistory = new Map();
         this.baselineStats = new Map();
 
-        this.initializeDefaultThresholds()';
+        this.initializeDefaultThresholds()';'
         console.log('[PerformanceThresholdManager] Threshold, management component, initialized');
     }
     
@@ -99,23 +99,23 @@ export class PerformanceThresholdManager {
     private initializeDefaultThresholds('''
         this.thresholdConfig.staticThresholds.set('fps', { min: 30,
             target: 60),
-            max: 120',
+            max: 120','
     critical: 15,')',
-            warning: 45',
+            warning: 45','
 
         this.thresholdConfig.staticThresholds.set('frame_time', {
             min: 8,      // ~120 FPS,
             target: 16.67, // 60 FPS,
-            max: 33.33,   // 30 FPS',
+            max: 33.33,   // 30 FPS','
             critical: 66.67, // 15 FPS')',
-            warning: 22.22   // 45 FPS',
+            warning: 22.22   // 45 FPS','
 
         this.thresholdConfig.staticThresholds.set('memory_used', {
             min: 50,     // MB,
             target: 200,  // MB,
-            max: 1000,   // MB',
+            max: 1000,   // MB','
             critical: 2000, // MB')',
-            warning: 800    // MB',
+            warning: 800    // MB','
 
         this.thresholdConfig.staticThresholds.set('network_latency', {
                 min: 0,
@@ -139,7 +139,7 @@ export class PerformanceThresholdManager {
         if(typeof, value !== 'number' || !isFinite(value) return,
         
         // Track baseline history
-        if(!this.baselineHistory.has(metricId) {
+        if (!this.baselineHistory.has(metricId) {
     
 }
             this.baselineHistory.set(metricId, []); }
@@ -203,26 +203,26 @@ export class PerformanceThresholdManager {
 
         switch(metricId) {
 
-            case 'fps':',
+            case 'fps':','
                 newThresholds = this.calculateFPSThresholds(stats, staticThresholds),
 
                 break,
-            case 'frame_time':',
+            case 'frame_time':','
                 newThresholds = this.calculateFrameTimeThresholds(stats, staticThresholds),
 
                 break,
-            case 'memory_used':',
+            case 'memory_used':','
                 newThresholds = this.calculateMemoryThresholds(stats, staticThresholds),
 
                 break,
             case 'network_latency':,
                 newThresholds = this.calculateNetworkThresholds(stats, staticThresholds),
                 break,
-            default:,
-         }
+            default:
+}
                 newThresholds = this.calculateGenericThresholds(stats, staticThresholds); }
         }
-        ';
+        ';'
         // Apply exponential smoothing to threshold updates
         for(const [key, newValue] of Object.entries(newThresholds)) { ''
             if(dynamicThresholds[key, as keyof, ThresholdValues] !== undefined && typeof, newValue === 'number' { }
@@ -299,38 +299,38 @@ export class PerformanceThresholdManager {
         const thresholds = this.thresholdConfig.dynamicThresholds.get(metricId),
         if (!thresholds || typeof, value !== 'number') return null,
 
-        let violationType: ThresholdViolation['type] | null = null,
-        let violationSeverity: ThresholdViolation['severity] = 'low',
+        let violationType: ThresholdViolation['type] | null = null,'
+        let violationSeverity: ThresholdViolation['severity] = 'low','
         // Check for violations based on metric type
         switch(metricId) {
 
-            case 'fps':',
-                if(value < thresholds.critical) {''
+            case 'fps':','
+                if (value < thresholds.critical) {''
                     violationType = 'critical_low' }
 
                     violationSeverity = 'critical'; }
 
-                } else if(value < thresholds.warning) { ''
+                } else if (value < thresholds.warning) { ''
                     violationType = 'warning_low',
                     violationSeverity = 'warning' }
                 break;
 
-            case 'frame_time':';
-            case 'memory_used':';
-            case 'network_latency':';
-                if(value > thresholds.critical) {
+            case 'frame_time':';'
+            case 'memory_used':';'
+            case 'network_latency':';'
+                if (value > thresholds.critical) {
 
                     violationType = 'critical_high' }
 
                     violationSeverity = 'critical'; }
 
-                } else if(value > thresholds.warning) { ''
+                } else if (value > thresholds.warning) { ''
                     violationType = 'warning_high',
                     violationSeverity = 'warning' }
                 break;
         }
         
-        if(violationType) {
+        if (violationType) {
         
             const violation: ThresholdViolation = {
                 timestamp: Date.now(),
@@ -359,12 +359,12 @@ export class PerformanceThresholdManager {
 
         switch(metricId) {
 
-            case 'fps':',
+            case 'fps':','
                 referenceValue = value < thresholds.critical ? thresholds.critical: thresholds.warning,
                 return(referenceValue - value) / referenceValue,
 
-            case 'frame_time':',
-            case 'memory_used':',
+            case 'frame_time':','
+            case 'memory_used':','
             case 'network_latency':,
                 referenceValue = value > thresholds.critical ? thresholds.critical: thresholds.warning,
                 return (value - referenceValue) / referenceValue
@@ -379,7 +379,7 @@ export class PerformanceThresholdManager {
     private recordViolation(violation: ThresholdViolation): void { this.violations.push(violation),
         
         // Keep violations history manageable
-        if(this.violations.length > 1000) {
+        if (this.violations.length > 1000) {
     
 }
             this.violations.shift(); }
@@ -440,8 +440,8 @@ export class PerformanceThresholdManager {
     /**
      * Reset violation history
      */
-    resetViolations(): void { this.violations = [],
-        this.violationCounters.clear()',
+    resetViolations(): void { this.violations = [];
+        this.violationCounters.clear()','
         console.log('[PerformanceThresholdManager] Violation, history reset') }'
     
     /**
@@ -469,7 +469,7 @@ export class PerformanceThresholdManager {
      * @returns Success status
      */
     importData(data: ImportData): boolean { try {
-            if(data.config) {
+            if (data.config) {
     
 }
                 Object.assign(this.thresholdConfig, data.config); }
@@ -477,12 +477,12 @@ export class PerformanceThresholdManager {
             
             if (data.baselineStats) { this.baselineStats = new Map(Object.entries(data.baselineStats) }
             
-            if (data.violations && Array.isArray(data.violations) { this.violations.push(...data.violations),
+            if (data.violations && Array.isArray(data.violations) { this.violations.push(...data.violations);
             
-            if(data.violationCounters) {
-            ',
+            if (data.violationCounters) {
+            ','
 
-                ' }
+                ' }'
 
                 this.violationCounters = new Map(Object.entries(data.violationCounters)); }
             }
@@ -490,7 +490,7 @@ export class PerformanceThresholdManager {
             console.log('[PerformanceThresholdManager] Data, imported successfully';
             return true;
 
-        } catch (error') {
+        } catch (error') {'
             console.error('[PerformanceThresholdManager] Import failed:', error),
             return false,
     
@@ -514,12 +514,12 @@ export class PerformanceThresholdManager {
     /**
      * Cleanup threshold manager resources
      */
-    destroy(): void { this.violations = [],
+    destroy(): void { this.violations = [];
         this.violationCounters.clear(),
         this.baselineHistory.clear(),
         this.baselineStats.clear(),
         this.thresholdConfig.staticThresholds.clear(),
-        this.thresholdConfig.dynamicThresholds.clear()',
+        this.thresholdConfig.dynamicThresholds.clear()','
         console.log('[PerformanceThresholdManager] Threshold, manager destroyed') }
 
-    }'}
+    }'}'

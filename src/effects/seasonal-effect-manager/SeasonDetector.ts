@@ -10,60 +10,59 @@ export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 // イベントテーマの型定義
 export interface EventTheme { name: string,
     duration: {
-        start: string, // MM-DD形式,
+        start: string, // MM-DD形式;
         end: string,   // MM-DD形式 },
     colors: { primary: string[],
         secondary: string[],
-    accent: string[] };
+    accent: string[],;
     particles: { types: string[],
         density: number,
         movement: string,
-    spawnRate: number };
+    spawnRate: number,;
     effects: { bubbleDestruction: string,
         comboEffect: string,
-    backgroundPattern: string }
+    backgroundPattern: string,
 
-export interface EventThemes { [eventName: string]: EventTheme }
+export interface EventThemes { [eventName: string]: EventTheme;
 
 export interface SeasonalSummary { currentSeason: Season,
-    currentEvent: string | null,
-    activeEvents: string[],
-    daysUntilNextSeason: number,
-    lastCheck: Date,
-    nextCheck: Date
-     }
+    currentEvent: string | null;
+    activeEvents: string[];
+    daysUntilNextSeason: number;
+    lastCheck: Date;
+    nextCheck: Date;
 
 export interface DetectorStatus { currentSeason: Season,
-    currentEvent: string | null,
-    lastCheck: number,
-    checkInterval: number,
-    isCheckRequired: boolean }
+    currentEvent: string | null;
+    lastCheck: number;
+    checkInterval: number;
+    isCheckRequired: boolean;
 
-export interface DetectorSettings { seasonCheckInterval?: number }
+export interface DetectorSettings { seasonCheckInterval?: number;
 
 export class SeasonDetector {
-    private lastSeasonCheck: number,
-    private seasonCheckInterval: number,
-    private currentSeason: Season,
+    private lastSeasonCheck: number;
+    private seasonCheckInterval: number;
+    private currentSeason: Season;
     private, currentEvent: string | null,
 
     constructor('',
-        this.currentSeason = 'spring',
+        this.currentSeason = 'spring';
         this.currentEvent = null }
     
     /**
      * 現在の季節を検出
      * @returns 季節名
      */)
-    detectCurrentSeason(): Season { const now = new Date(),
+    detectCurrentSeason(): Season { const now = new Date();
         const month = now.getMonth() + 1, // 0-based to 1-based
         const day = now.getDate(),
         // 季節の判定（北半球基準）
         if ((month === 3 && day >= 20) || (month === 4) || (month === 5) || (month === 6 && day < 21)') {''
-            this.currentSeason = 'spring',' }
+            this.currentSeason = 'spring',' }'
 
         } else if ((month === 6 && day >= 21) || (month === 7) || (month === 8) || (month === 9 && day < 23)') { ''
-            this.currentSeason = 'summer',' }
+            this.currentSeason = 'summer',' }'
 
         } else if ((month === 9 && day >= 23) || (month === 10) || (month === 11) || (month === 12 && day < 21)') { ''
             this.currentSeason = 'autumn' }
@@ -118,14 +117,14 @@ export class SeasonDetector {
 
         switch(season) {
 
-            case 'spring':',
-                return (month === 3 && day >= 20) || (month === 4) || (month === 5) || (month === 6 && day < 21'),
-            case 'summer':',
-                return (month === 6 && day >= 21) || (month === 7) || (month === 8) || (month === 9 && day < 23'),
-            case 'autumn':',
-                return (month === 9 && day >= 23) || (month === 10) || (month === 11) || (month === 12 && day < 21'),
-            case 'winter':',
-                return (month === 12 && day >= 21) || (month === 1) || (month === 2) || (month === 3 && day < 20') }
+            case 'spring':','
+                return (month === 3 && day >= 20) || (month === 4) || (month === 5) || (month === 6 && day < 21'),'
+            case 'summer':','
+                return (month === 6 && day >= 21) || (month === 7) || (month === 8) || (month === 9 && day < 23'),'
+            case 'autumn':','
+                return (month === 9 && day >= 23) || (month === 10) || (month === 11) || (month === 12 && day < 21'),'
+            case 'winter':','
+                return (month === 12 && day >= 21) || (month === 1) || (month === 2) || (month === 3 && day < 20') }'
             default: return false;
     
     /**
@@ -207,7 +206,7 @@ export class SeasonDetector {
      * @private
      */
     private _isDateInRange(date: string, start: string, end: string): boolean { // 年をまたぐ場合の処理
-        if(start > end) {
+        if (start > end) {
     
 }
             return date >= start || date <= end;
@@ -229,6 +228,6 @@ export class SeasonDetector {
     getDetectorStatus(): DetectorStatus { return { currentSeason: this.currentSeason,
             currentEvent: this.currentEvent,
             lastCheck: this.lastSeasonCheck,
-    checkInterval: this.seasonCheckInterval,' };
+    checkInterval: this.seasonCheckInterval,' };'
 
-            isCheckRequired: this.shouldCheckSeason() }')
+            isCheckRequired: this.shouldCheckSeason() }')'

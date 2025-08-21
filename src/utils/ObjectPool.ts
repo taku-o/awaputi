@@ -5,67 +5,67 @@
 
 // 型定義
 interface PoolStats { created: number,
-    reused: number,
-    returned: number,
-    poolSize: number,
-    activeCount: number,
-    efficiency: number  }
+    reused: number;
+    returned: number;
+    poolSize: number;
+    activeCount: number;
+    efficiency: number;
 interface Particle { x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    life: number,
-    maxLife: number,
-    size: number,
-    color: string,
-    type: string,
-    isActive: boolean  }
-interface BubblePoolObject { type: string }
-    position: { x: number,, y: number },
-    velocity: { x: number,, y: number },
+    y: number;
+    vx: number;
+    vy: number;
+    life: number;
+    maxLife: number;
     size: number;
-    health: number;
-    maxHealth: number;
-    age: number;
-    maxAge: number;
-    isAlive: boolean;
-    effects: any[];
-    clickCount: number;
-    isEscaping: boolean;
+    color: string;
+    type: string;
+    isActive: boolean;
+interface BubblePoolObject { type: string,
+    position: { x: number,, y: number,,
+    velocity: { x: number,, y: number,,
+    size: number,
+    health: number,
+    maxHealth: number,
+    age: number,
+    maxAge: number,
+    isAlive: boolean,
+    effects: any[],
+    clickCount: number,
+    isEscaping: boolean,
     escapeSpeed: number,
-    lastMouseDistance: number;
+    lastMouseDistance: number,
 }
 interface FloatingText { x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    text: string,
-    color: string,
-    fontSize: number,
-    fontWeight: string,
-    life: number,
-    maxLife: number,
-    scale: number,
-    opacity: number,
-    isActive: boolean  }
+    y: number;
+    vx: number;
+    vy: number;
+    text: string;
+    color: string;
+    fontSize: number;
+    fontWeight: string;
+    life: number;
+    maxLife: number;
+    scale: number;
+    opacity: number;
+    isActive: boolean;
 type CreateFunction<T> = () => T;
 type ResetFunction<T> = (obj: T) => void;
 
 export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
-    private resetFunction: ResetFunction<T> | null,
-    private pool: T[],
-    private activeObjects: Set<T>,
+    private resetFunction: ResetFunction<T> | null;
+    private pool: T[];
+    private activeObjects: Set<T>;
     private stats: {
         created: number,
         reused: number,
-    returned: number };
+    returned: number,;
 
     constructor(createFunction: CreateFunction<T>, resetFunction: ResetFunction<T> | null = null, initialSize: number = 10) {
 
-        this.createFunction = createFunction,
-        this.resetFunction = resetFunction,
-        this.pool = [],
-        this.activeObjects = new Set<T>(),
+        this.createFunction = createFunction;
+        this.resetFunction = resetFunction;
+        this.pool = [];
+        this.activeObjects = new Set<T>();
         this.stats = {
             created: 0,
     reused: 0
@@ -84,7 +84,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
      * @returns {T} プールされたオブジェクト
      */
     get(): T { let obj: T,
-        if(this.pool.length > 0) {
+        if (this.pool.length > 0) {
             obj = this.pool.pop()!
         }
             this.stats.reused++; }
@@ -98,7 +98,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
      * オブジェクトをプールに戻す
      * @param {T} obj - 返却するオブジェクト
      */
-    return(obj: T): void { if(!this.activeObjects.has(obj) {
+    return(obj: T): void { if (!this.activeObjects.has(obj) {
             return, // 既にプールに戻されているか、このプールのオブジェクトではない }
         this.activeObjects.delete(obj);
         
@@ -136,7 +136,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
     /**
      * プールをクリア
      */
-    clear(): void { this.pool = [],
+    clear(): void { this.pool = [];
         this.activeObjects.clear(),
         this.stats = {
             created: 0,
@@ -155,9 +155,8 @@ export class ParticlePool extends ObjectPool<Particle> { constructor(initialSize
     size: 1, color: '#FFFFFF'
             }
 
-                type: 'default', isActive: false 
-    }',''
-            (particle: Particle'): void => {  particle.x = 0,
+                type: 'default', isActive: false;',''
+            (particle: Particle'): void => {  particle.x = 0,'
                 particle.y = 0,
                 particle.vx = 0,
                 particle.vy = 0,
@@ -176,13 +175,13 @@ export class ParticlePool extends ObjectPool<Particle> { constructor(initialSize
  * 泡用オブジェクトプール
  */
 export class BubblePool extends ObjectPool<BubblePoolObject> { constructor(initialSize: number = 50) {
-        super()',
+        super()','
             (): BubblePoolObject => ({ }
 
                 type: 'normal';
 }
-                position: { x: 0, y: 0  },
-                velocity: { x: 0, y: 0  },
+                position: { x: 0, y: 0  };
+                velocity: { x: 0, y: 0  };
                 size: 50;
                 health: 1;
                 maxHealth: 1;
@@ -192,8 +191,8 @@ export class BubblePool extends ObjectPool<BubblePoolObject> { constructor(initi
                 effects: [];
                 clickCount: 0;
                 isEscaping: false;
-                escapeSpeed: 0',
-    lastMouseDistance: Infinity';
+                escapeSpeed: 0';'
+    lastMouseDistance: Infinity';'
             }',''
             (bubble: BubblePoolObject'): void => {  ''
                 bubble.type = 'normal',
@@ -220,22 +219,21 @@ export class BubblePool extends ObjectPool<BubblePoolObject> { constructor(initi
  * フローティングテキスト用オブジェクトプール
  */
 export class FloatingTextPool extends ObjectPool<FloatingText> { constructor(initialSize: number = 100) {
-        super()',
+        super()','
             (): FloatingText => ({'
                 x: 0, y: 0, vx: 0, vy: 0,
-                text: ', color: '#FFFFFF',
+                text: ', color: '#FFFFFF','
                 fontSize: 16, fontWeight: 'normal',
                 life: 1.0, maxLife: 1000,
                 scale: 1.0, opacity: 1.0)
      }
-                isActive: false 
-    }',''
-            (text: FloatingText'): void => {  text.x = 0,
+                isActive: false;',''
+            (text: FloatingText'): void => {  text.x = 0,'
                 text.y = 0,
                 text.vx = 0,
 
                 text.vy = 0,
-                text.text = ',
+                text.text = ','
                 text.color = '#FFFFFF',
 
                 text.fontSize = 16,
@@ -253,7 +251,7 @@ export class FloatingTextPool extends ObjectPool<FloatingText> { constructor(ini
  * グローバルオブジェクトプールマネージャー
  */
 export class PoolManager {
-    private pools: Map<string, ObjectPool>,
+    private pools: Map<string, ObjectPool>;
 
     constructor() {
 
@@ -262,7 +260,7 @@ export class PoolManager {
     /**
      * 標準プールを初期化'
      */''
-    private initializePools()';
+    private initializePools()';'
         this.pools.set('particles', new ParticlePool(500));
         this.pools.set('bubbles', new BubblePool(50));
         this.pools.set('floatingText', new FloatingTextPool(100);
@@ -286,14 +284,14 @@ export class PoolManager {
      * @returns {any | null} プールされたオブジェクト
      */
     get(poolName: string): any | null { const pool = this.pools.get(poolName),
-        return pool ? pool.get() : null }
+        return pool ? pool.get() : null;
     /**
      * オブジェクトを返却
      * @param {string} poolName - プール名
      * @param {any} obj - 返却するオブジェクト
      */
     return(poolName: string, obj: any): void { const pool = this.pools.get(poolName),
-        if(pool) {
+        if (pool) {
     
 }
             pool.return(obj); }

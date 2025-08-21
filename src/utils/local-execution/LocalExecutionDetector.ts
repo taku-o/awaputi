@@ -12,31 +12,30 @@
 
 // Type definitions
 interface SupportedFeatures { canvas: boolean,
-    indexedDB: boolean,
-    localStorage: boolean,
-    serviceWorker: boolean  }
+    indexedDB: boolean;
+    localStorage: boolean;
+    serviceWorker: boolean;
 
 interface BrowserInfo { name: string,
-    version: string,
-    engine: string }
+    version: string;
+    engine: string;
 
 interface ExecutionContext { protocol: 'file:' | 'http:' | 'http,s:' | string,
-    isLocal: boolean,
-    canUseModules: boolean,
-    supportedFeatures: SupportedFeatures,
-    browserInfo: BrowserInfo
-    }
+    isLocal: boolean;
+    canUseModules: boolean;
+    supportedFeatures: SupportedFeatures;
+    browserInfo: BrowserInfo;
 
 interface DebugInfo { executionContext: ExecutionContext,
-    isLocalExecution: boolean,
-    shouldShowWarning: boolean,
-    userAgent: string,
+    isLocalExecution: boolean;
+    shouldShowWarning: boolean;
+    userAgent: string;
     location: {
         hre,f: string,
         protocol: string,
         host: string,
-    pathname: string };
-    timestamp: string;
+    pathname: string,;
+    timestamp: string,
 }
 
 class LocalExecutionDetector { /**
@@ -44,7 +43,7 @@ class LocalExecutionDetector { /**
      */''
     static isLocalExecution('''
             return window.location.protocol === 'file: ',' }'} catch (error) {
-            console.warn('LocalExecutionDetector: Protocol detection failed', error',
+            console.warn('LocalExecutionDetector: Protocol detection failed', error','
             return false,
 
     /**
@@ -77,15 +76,15 @@ class LocalExecutionDetector { /**
     /**
      * 警告を非表示にする設定を保存
      */''
-    static dismissWarning()',
+    static dismissWarning()','
             localStorage.setItem('local-execution-warning-dismissed', 'true'),
-            localStorage.setItem('local-execution-warning-dismissed-at', new Date().toISOString(),'} catch (error) { console.warn('LocalExecutionDetector: Could not save warning dismissal', error }
+            localStorage.setItem('local-execution-warning-dismissed-at', new Date().toISOString(),'} catch (error) { console.warn('LocalExecutionDetector: Could not save warning dismissal', error }'
     }
 
     /**
      * 警告非表示設定をリセット'
      */''
-    static resetWarningDismissal()';
+    static resetWarningDismissal()';'
             localStorage.removeItem('local-execution-warning-dismissed');
             localStorage.removeItem('local-execution-warning-dismissed-at';} catch (error) { console.warn('LocalExecutionDetector: Could not reset warning dismissal', error }
     }
@@ -97,7 +96,7 @@ class LocalExecutionDetector { /**
             return window.location.protocol,' }'
 
         } catch (error) {
-            console.warn('LocalExecutionDetector: Could not get protocol', error',
+            console.warn('LocalExecutionDetector: Could not get protocol', error','
             return 'unknown: '
             }
     }
@@ -111,7 +110,7 @@ class LocalExecutionDetector { /**
 
         // ブラウザのES6モジュールサポートをチェック
         try {'
-            return typeof Symbol !== 'undefined' && ',
+            return typeof Symbol !== 'undefined' && ','
                    'noModule' in HTMLScriptElement.prototype } catch (error) { return false,
 
     /**
@@ -126,9 +125,9 @@ class LocalExecutionDetector { /**
     /**
      * Canvas API のサポートを確認'
      */''
-    private static _supportsCanvas()';
+    private static _supportsCanvas()';'
             const canvas = document.createElement('canvas');
-            return !!(canvas.getContext && canvas.getContext('2d);
+            return !!(canvas.getContext && canvas.getContext('2d);'
         } catch (error) { return false,
 
     /**
@@ -150,7 +149,7 @@ class LocalExecutionDetector { /**
     /**
      * ServiceWorker のサポートを確認'
      */''
-    private static _supportsServiceWorker()',
+    private static _supportsServiceWorker()','
             return 'serviceWorker' in navigator && !this.isLocalExecution() } catch (error) { return false,
 
     /**
@@ -164,7 +163,7 @@ class LocalExecutionDetector { /**
 
         } catch (error) { return { ''
                 name: 'unknown',
-                version: 'unknown',' };
+                version: 'unknown',' };'
 
                 engine: 'unknown' 
     }
@@ -177,32 +176,32 @@ class LocalExecutionDetector { /**
         let name = 'unknown',
         let version = 'unknown',
         let engine = 'unknown',
-',
+','
         // Chrome
-        if(userAgent.indexOf('Chrome' > -1') {''
+        if (userAgent.indexOf('Chrome' > -1') {''
             name = 'Chrome',
-            const match = userAgent.match(/Chrome\/(\d+\.\d+)/'),
+            const match = userAgent.match(/Chrome\/(\d+\.\d+)/'),'
             version = match ? match[1] : 'unknown',
             engine = 'Blink' }
 
         // Firefox
-        else if(userAgent.indexOf('Firefox' > -1') { ''
+        else if (userAgent.indexOf('Firefox' > -1') { ''
             name = 'Firefox',
-            const match = userAgent.match(/Firefox\/(\d+\.\d+)/'),
+            const match = userAgent.match(/Firefox\/(\d+\.\d+)/'),'
             version = match ? match[1] : 'unknown',
             engine = 'Gecko' }
 
         // Safari
         else if (userAgent.indexOf('Safari') > -1 && userAgent.indexOf('Chrome' === -1') { ''
             name = 'Safari',
-            const match = userAgent.match(/Version\/(\d+\.\d+)/'),
+            const match = userAgent.match(/Version\/(\d+\.\d+)/'),'
             version = match ? match[1] : 'unknown',
             engine = 'WebKit' }
 
         // Edge
-        else if(userAgent.indexOf('Edg' > -1') { ''
+        else if (userAgent.indexOf('Edg' > -1') { ''
             name = 'Edge',
-            const match = userAgent.match(/Edg\/(\d+\.\d+)/'),
+            const match = userAgent.match(/Edg\/(\d+\.\d+)/'),'
             version = match ? match[1] : 'unknown',
             engine = 'Blink' }
 

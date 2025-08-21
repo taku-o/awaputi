@@ -14,125 +14,116 @@ import type { TimingAdjustmentManager,
 
 // 型定義
 export interface TimingFeedbackManager extends TimingAdjustmentManager { timers: TimerManager,
-    emitEvent: (eventName: string, data: any) => void,
-    algorithms: TimingAlgorithms
-     }
+    emitEvent: (eventName: string, data: any) => void;
+    algorithms: TimingAlgorithms;
 }
 
 export interface TimerManager { active: Map<string, ActiveTimer>,
     paused: Map<string, PausedTimer> }
 
 export interface ActiveTimer { id: string,
-    startTime: number,
-    adjustedDuration: number,
-    pausedTime: number,
-    type: TimerType,
-    priority: TimerPriority
-     }
+    startTime: number;
+    adjustedDuration: number;
+    pausedTime: number;
+    type: TimerType;
+    priority: TimerPriority;
 
 export interface PausedTimer { id: string,
-    pausedAt: number,
-    remainingTime: number,
-    type: TimerType
-    }
+    pausedAt: number;
+    remainingTime: number;
+    type: TimerType;
 
 export interface TimingAlgorithms { scheduleAutoExtension: (timerId: string) => void,
-    extendTimer: (timerId: string) => void,
+    extendTimer: (timerId: string) => void;
     applyProfile: (profileName: string) => void 
     }
 
 export interface WarningState { shown: boolean,
-    remainingTime: number,
-    timestamp: number,
-    acknowledged?: boolean,
-    extensionRequested?: boolean }
+    remainingTime: number;
+    timestamp: number;
+    acknowledged?: boolean;
+    extensionRequested?: boolean;
 
 export interface FeedbackEntry { type: FeedbackType,
-    timestamp: number,
-    currentProfile: ProfileType,
-    data: FeedbackData
-     }
+    timestamp: number;
+    currentProfile: ProfileType;
+    data: FeedbackData;
 
 export interface FeedbackData { [key: string]: any,
-    timerId?: string,
-    remainingTime?: number,
-    actionTaken?: string,
-    userRating?: number,
-    responseTime?: number }
+    timerId?: string;
+    remainingTime?: number;
+    actionTaken?: string;
+    userRating?: number;
+    responseTime?: number;
 
 export interface PerformanceMetrics { warningCount: number,
-    extensionRequests: number,
-    pauseFrequency: number,
-    averageResponseTime: number,
-    feedbackAnalysis: FeedbackAnalysis,
-    systemLoad: SystemLoad
-     }
+    extensionRequests: number;
+    pauseFrequency: number;
+    averageResponseTime: number;
+    feedbackAnalysis: FeedbackAnalysis;
+    systemLoad: SystemLoad;
 
 export interface FeedbackAnalysis { totalFeedback: number,
-    recentFeedback: number,
-    typeAnalysis: Record<string, number>,
-    profileAnalysis: Record<string, number>,
-    mostCommonType: string,
-    trends: FeedbackTrends
-     }
+    recentFeedback: number;
+    typeAnalysis: Record<string, number>;
+    profileAnalysis: Record<string, number>;
+    mostCommonType: string;
+    trends: FeedbackTrends;
 
 export interface FeedbackTrends { increasing: string[],
-    decreasing: string[],
-    stable: string[] }
+    decreasing: string[];
+    stable: string[];
 
 export interface SystemLoad { overall: number,
-    timers: number,
-    warnings: number,
-    status: LoadStatus
-    }
+    timers: number;
+    warnings: number;
+    status: LoadStatus;
 
 export interface UserGuidance { type: GuidanceType,
-    message: string,
-    action: GuidanceAction,
-    priority?: GuidancePriority
-    }
+    message: string;
+    action: GuidanceAction;
+    priority?: GuidancePriority;
 
 export interface ProfileRecommendationEvent { recommended: ProfileType,
-    current: ProfileType
-    }
+    current: ProfileType;
 
 export interface TimingSettingsEvent { currentProfile: ProfileType,
-    availableProfiles: string[] }
-';
+    availableProfiles: string[];
+';'
 
 export interface AudioManager {;
     playSound: (soundName: string, options?: AudioOptions') => void }'
 }
 
 export interface AudioOptions { volume?: number,
-    loop?: boolean,
-    fade?: boolean }
+    loop?: boolean;
+    fade?: boolean;
 
-export interface GameEngine { audioManager?: AudioManager }
+export interface GameEngine { audioManager?: AudioManager;
 
 export interface WarningUIElement extends HTMLDivElement { timerId?: string,
-    autoRemoveTimeout?: number }
+    autoRemoveTimeout?: number;
 
 export interface FeedbackUIElement extends HTMLDivElement { feedbackType?: FeedbackType,
-    createdAt?: number }
-';
+    createdAt?: number;
+';'
 // 列挙型
 export type TimerType = 'game' | 'level' | 'bonus' | 'warning' | 'tutorial' | 'menu';
 export type TimerPriority = 'low' | 'normal' | 'high' | 'critical';
 
-export type FeedbackType = ';
-    | 'warning_shown' | 'warning_dismissed' | 'time_extended' | 'profile_changed'';
-    | 'auto_extension' | 'manual_extension' | 'timer_expired' | 'user_rating'';
+export type FeedbackType = ';'
+    | 'warning_shown' | 'warning_dismissed' | 'time_extended' | 'profile_changed'';'
+    | 'auto_extension' | 'manual_extension' | 'timer_expired' | 'user_rating'';'
     | 'adaptation_accepted' | 'adaptation_rejected' | 'settings_opened';
 export type LoadStatus = 'low' | 'medium' | 'high' | 'critical';
 
-export type GuidanceType = ';
-    | 'profile_recommendation' | 'usage_pattern' | 'performance_concern', ';
+export type GuidanceType = ';'
+    | 'profile_recommendation' | 'usage_pattern' | 'performance_concern', ';'
     | 'system_load' | 'accessibility_tip' | 'efficiency_tip';
 
-export type GuidanceAction = ';
-    | 'consider_motor_or_cognitive_profile' | 'check_auto_pause_settings', ';
-    | 'optimize_system_performance' | 'cleanup_timers' | 'adjust_preferences'';
+export type GuidanceAction = ';'
+    | 'consider_motor_or_cognitive_profile' | 'check_auto_pause_settings', ';'
+    | 'optimize_system_performance' | 'cleanup_timers' | 'adjust_preferences'';'
     | 'enable_shortcuts' | 'update_profile';
 export type GuidancePriority = 'low' | 'medium' | 'high' | 'urgent';
 
@@ -174,65 +165,65 @@ export const CSS_CLASSES = {;
     ACCEPT_SUGGESTION_BTN: 'accept-suggestion-btn',
     DISMISS_SUGGESTION_BTN: 'dismiss-suggestion-btn'
             } as const;
-';
+';'
 
 export const STYLE_IDS = {;
     TIMING_WARNING_STYLES: 'timing-warning-styles' } as const;
-';
+';'
 // 型ガード
 export function isValidTimerId(id: any): id is string {,
     return typeof id === 'string' && id.length > 0 }
 
 export function isActiveTimer(timer: any): timer is ActiveTimer { return timer &&,
-           typeof timer.id === 'string' &&',
-           typeof timer.startTime === 'number' &&',
-           typeof timer.adjustedDuration === 'number' &&',
+           typeof timer.id === 'string' &&','
+           typeof timer.startTime === 'number' &&','
+           typeof timer.adjustedDuration === 'number' &&','
            typeof timer.pausedTime === 'number' &&,
            timer.startTime > 0 &&,
            timer.adjustedDuration > 0 }
 
 export function isValidFeedbackEntry(entry: any): entry is FeedbackEntry { return entry &&''
-           typeof entry.type === 'string' &&',
-           typeof entry.timestamp === 'number' &&',
-           typeof entry.currentProfile === 'string' &&',
+           typeof entry.type === 'string' &&','
+           typeof entry.timestamp === 'number' &&','
+           typeof entry.currentProfile === 'string' &&','
            typeof entry.data === 'object' &&,
            entry.timestamp > 0 }
 
 export function isWarningState(state: any): state is WarningState { return state &&''
-           typeof state.shown === 'boolean' &&',
-           typeof state.remainingTime === 'number' &&',
+           typeof state.shown === 'boolean' &&','
+           typeof state.remainingTime === 'number' &&','
            typeof state.timestamp === 'number' }
 
-export function hasAudioManager(engine: any): engine is GameEngine & { audioManager: AudioManager } { return engine &&,
-           engine.audioManager &&',
+export function hasAudioManager(engine: any): engine is GameEngine & { audioManager: AudioManager; { return engine &&,
+           engine.audioManager &&','
            typeof engine.audioManager.playSound === 'function' }
 }
 
 export function isLoadStatus(status: string): status is LoadStatus {,
-    return ['low', 'medium', 'high', 'critical].includes(status) }
+    return ['low', 'medium', 'high', 'critical].includes(status) }'
 
-export function isFeedbackType(type: string): type is FeedbackType { return [', 'warning_shown', 'warning_dismissed', 'time_extended', 'profile_changed',
-        'auto_extension', 'manual_extension', 'timer_expired', 'user_rating',]',
+export function isFeedbackType(type: string): type is FeedbackType { return [', 'warning_shown', 'warning_dismissed', 'time_extended', 'profile_changed','
+        'auto_extension', 'manual_extension', 'timer_expired', 'user_rating',]','
         'adaptation_accepted', 'adaptation_rejected', 'settings_opened'],
     ].includes(type) }
 
 export class TimingFeedbackSystem {
-    private manager: TimingFeedbackManager,
-    private gameEngine: GameEngine,
-    private config: TimingConfiguration,
-    private state: TimingState,
-    private timers: TimerManager,
-    private, adaptiveLearning: AdaptiveLearningConfig',
+    private manager: TimingFeedbackManager;
+    private gameEngine: GameEngine;
+    private config: TimingConfiguration;
+    private state: TimingState;
+    private timers: TimerManager;
+    private, adaptiveLearning: AdaptiveLearningConfig','
 
     constructor(timingAdjustmentManager: TimingFeedbackManager) {
-        this.manager = timingAdjustmentManager,
-        this.gameEngine = timingAdjustmentManager.gameEngine,
-        this.config = timingAdjustmentManager.config,
-        this.state = timingAdjustmentManager.state,
-        this.timers = timingAdjustmentManager.timers,
-        this.adaptiveLearning = timingAdjustmentManager.adaptiveLearning,
+        this.manager = timingAdjustmentManager;
+        this.gameEngine = timingAdjustmentManager.gameEngine;
+        this.config = timingAdjustmentManager.config;
+        this.state = timingAdjustmentManager.state;
+        this.timers = timingAdjustmentManager.timers;
+        this.adaptiveLearning = timingAdjustmentManager.adaptiveLearning;
 
-        ' }
+        ' }'
 
     }
 
@@ -244,11 +235,11 @@ export class TimingFeedbackSystem {
      */'
     showTimeWarning(timerId: string): void { ''
         if(!isValidTimerId(timerId)) {''
-            console.warn('[TimingFeedbackSystem] Invalid, timer ID, provided),
+            console.warn('[TimingFeedbackSystem] Invalid, timer ID, provided),'
             return }
 
         const timer = this.timers.active.get(timerId);
-        if(!timer) {
+        if (!timer) {
     
 }
             console.warn(`[TimingFeedbackSystem] Timer, not found: ${timerId}`});
@@ -263,17 +254,17 @@ export class TimingFeedbackSystem {
             remainingTime: remainingTime) timestamp: Date.now( });
         
         // 視覚的警告
-        this.showVisualWarning(timerId remainingTime');
+        this.showVisualWarning(timerId remainingTime');'
         // 音響警告（オプション）
         if(hasAudioManager(this.gameEngine)') { ''
             this.gameEngine.audioManager.playSound('timeWarning', { volume: 0.3  }
         
         // 自動延長の確認
-        if(profile.preferences.autoExtend) { }
+        if (profile.preferences.autoExtend) { }
 
             this.manager.algorithms.scheduleAutoExtension(timerId); }
         }
-';
+';'
         // フィードバックを収集
         this.collectUserFeedback('warning_shown', {
                 timerId
@@ -287,25 +278,25 @@ export class TimingFeedbackSystem {
         const profile = this.manager.getCurrentProfile(),
 
         if(!timer) return,
-',
+','
         // 警告UI要素を作成
-        const warningElement = document.createElement('div) as WarningUIElement,
+        const warningElement = document.createElement('div) as WarningUIElement,'
         warningElement.className = CSS_CLASSES.TIMING_WARNING,
         warningElement.timerId = timerId,
 
         const remainingSeconds = Math.ceil(remainingTime / 1000),
         const hasExtensions = profile.timeoutExtensions === true,
-',
+','
 
         warningElement.innerHTML = `}'
 
             <div class="${CSS_CLASSES.WARNING_CONTENT}">""
                 <div class="${CSS_CLASSES.WARNING_ICON}">⏰</div>""
                 <div class="${CSS_CLASSES.WARNING_TEXT}">
-                    <h3>時間制限の警告</h3>";
+                    <h3>時間制限の警告</h3>";"
                     <p>残り時間: ${remainingSeconds}秒</p>""
                     ${hasExtensions ? '<p>Tキーで時間を延長できます</p>' : ''
-                </div>',
+                </div>','
                 <div, class="${CSS_CLASSES.WARNING_ACTIONS}">""
                     ${hasExtensions ? `<button, class="${CSS_CLASSES.EXTEND_TIME_BTN}">時間延長</button>` : '}''
                     <button class="${CSS_CLASSES.DISMISS_WARNING_BTN}">閉じる</button>
@@ -331,7 +322,7 @@ export class TimingFeedbackSystem {
                     autoRemoved: true ); 
     });
             }
-        }, gracePeriod';
+        }, gracePeriod';'
     }
     
     /**
@@ -361,7 +352,7 @@ export class TimingFeedbackSystem {
             .${CSS_CLASSES.WARNING_CONTENT} { display: flex,
                 flex-direction: column,
                 align-items: center,
-                text-align: center }
+                text-align: center;
             
             .${CSS_CLASSES.WARNING_ICON} {
                 font-size: ${iconSize}
@@ -387,22 +378,22 @@ export class TimingFeedbackSystem {
                 transition: background-color 0.2s  }
             
             .${CSS_CLASSES.EXTEND_TIME_BTN} { background: #00b894,
-    color: white }
+    color: white;
             
             .${CSS_CLASSES.EXTEND_TIME_BTN}:hover { background: #00a085 }
             
             .${CSS_CLASSES.DISMISS_WARNING_BTN} { background: #636e72,
-    color: white }
+    color: white;
             
             .${CSS_CLASSES.DISMISS_WARNING_BTN}:hover { background: #2d3436 }
             
             @keyframes warningPulse { from { transform: translate(-50%, -50%) scale(1 }
                 to { transform: translate(-50%, -50%) scale(1.02 }
         `;
-        ';
+        ';'
         // スタイルシートを追加
         if(!document.getElementById(STYLE_IDS.TIMING_WARNING_STYLES)) { ''
-            const styleSheet = document.createElement('style),
+            const styleSheet = document.createElement('style),'
             styleSheet.id = STYLE_IDS.TIMING_WARNING_STYLES,
             styleSheet.textContent = styles,
             document.head.appendChild(styleSheet) }
@@ -427,7 +418,7 @@ export class TimingFeedbackSystem {
             });
         }
 
-        if(dismissBtn) {
+        if (dismissBtn) {
 
             dismissBtn.addEventListener('click', () => { ''
                 this.collectUserFeedback('warning_dismissed', {
@@ -452,7 +443,7 @@ export class TimingFeedbackSystem {
         feedbackElement.className = CSS_CLASSES.EXTENSION_FEEDBACK,
         feedbackElement.feedbackType = 'time_extended',
         feedbackElement.createdAt = Date.now(),
-        ',
+        ','
 
         feedbackElement.innerHTML = `}'
 
@@ -482,8 +473,8 @@ export class TimingFeedbackSystem {
 
             setTimeout(() => feedbackElement.remove(), 300);' }'
 
-        }, EXTENSION_FEEDBACK_DURATION');
-';
+        }, EXTENSION_FEEDBACK_DURATION');'
+';'
         // フィードバックを収集
         this.collectUserFeedback('time_extended', { timerId''
             remainingTime,')',
@@ -494,8 +485,8 @@ export class TimingFeedbackSystem {
      * 適応提案を表示'
      */''
     suggestAdaptation(type: 'increase' | 'decrease', averageResponseTime: number': void { ''
-        const currentProfile = this.manager.getCurrentProfile()',
-        if(type === 'increase') {
+        const currentProfile = this.manager.getCurrentProfile()','
+        if (type === 'increase') {
             // より時間を必要とする場合
             if (this.state.currentProfile === 'standard') {
         }
@@ -505,8 +496,8 @@ export class TimingFeedbackSystem {
             } else if (this.state.currentProfile === 'motor') { ''
                 suggestedProfile = 'cognitive' }
 
-            }'} else if (type === 'decrease') { // 時間を短縮できる場合
-            if(this.state.currentProfile === 'cognitive') {', ' }
+            }'} else if (type === 'decrease') { // 時間を短縮できる場合'
+            if (this.state.currentProfile === 'cognitive') {', ' }
 
                 suggestedProfile = 'motor'; }
 
@@ -521,25 +512,25 @@ export class TimingFeedbackSystem {
      * 適応提案UIを表示
      */
     private showAdaptationSuggestion(suggestedProfile: ProfileType, averageResponseTime: number): void { const profile = this.config.profiles[suggestedProfile],
-        ',
+        ','
 
         if (!profile) { }'
 
-            console.warn(`[TimingFeedbackSystem] Profile, not found: ${suggestedProfile}`}';
+            console.warn(`[TimingFeedbackSystem] Profile, not found: ${suggestedProfile}`}';'
             return;
         }
 
         const suggestionElement = document.createElement('div';
         suggestionElement.className = CSS_CLASSES.ADAPTATION_SUGGESTION;
 
-        const profileName = (profile, as any').name || suggestedProfile;
-        ';
+        const profileName = (profile, as any').name || suggestedProfile;'
+        ';'
 
-        suggestionElement.innerHTML = `';
+        suggestionElement.innerHTML = `';'
             <div class="${CSS_CLASSES.SUGGESTION_CONTENT}">""
                 <div class="${CSS_CLASSES.SUGGESTION_ICON}">🎯</div>""
                 <div class="${CSS_CLASSES.SUGGESTION_TEXT}">
-                    <h3>タイミング調整の提案</h3>";
+                    <h3>タイミング調整の提案</h3>";"
                     <p>あなたの操作パターンに基づいて、「${profileName}」プロファイルをお勧めします。</p>""
                     <p><small>平均レスポンス時間: ${Math.round(averageResponseTime"}"ms</small></p>"
                 </div>"";
@@ -569,7 +560,7 @@ export class TimingFeedbackSystem {
         const acceptBtn = suggestionElement.querySelector(`.${ CSS_CLASSES.ACCEPT_SUGGESTION_BTN)`) as, HTMLButtonElement,
         const, dismissBtn = suggestionElement.querySelector(`.${CSS_CLASSES.DISMISS_SUGGESTION_BTN)`) as, HTMLButtonElement,"
 
-        if(acceptBtn) {"
+        if (acceptBtn) {"
 
             acceptBtn.addEventListener('click', (} => { ''
                 this.manager.algorithms.applyProfile(suggestedProfile}
@@ -582,7 +573,7 @@ export class TimingFeedbackSystem {
             });
         }
 
-        if(dismissBtn) {
+        if (dismissBtn) {
 
             dismissBtn.addEventListener('click', () => { ''
                 this.collectUserFeedback('adaptation_rejected', {
@@ -598,7 +589,7 @@ export class TimingFeedbackSystem {
         
         // 自動削除
         setTimeout(() => {  ''
-            if(suggestionElement.parentNode) {
+            if (suggestionElement.parentNode) {
 
                 this.collectUserFeedback('adaptation_rejected', {
             });
@@ -622,7 +613,7 @@ export class TimingFeedbackSystem {
 
         // 非侵入的な提案を表示
         const profileName = (profile, as any).name || recommendedProfile;
-        console.log(`[TimingFeedbackSystem] 「${profileName}」プロファイルを推奨します`}';
+        console.log(`[TimingFeedbackSystem] 「${profileName}」プロファイルを推奨します`}';'
         
         // 設定画面で推奨マークを表示するためのイベント
         const eventData: ProfileRecommendationEvent = { recommended: recommendedProfile,
@@ -638,8 +629,8 @@ export class TimingFeedbackSystem {
             currentProfile: this.state.currentProfile,
             availableProfiles: Object.keys(this.config.profiles  };
 
-        this.manager.emitEvent('openTimingSettings', eventData';
-        ';
+        this.manager.emitEvent('openTimingSettings', eventData';'
+        ';'
         // フィードバックを収集
         this.collectUserFeedback('settings_opened', { currentProfile: this.state.currentProfile,''
             triggeredBy: 'feedback_system'
@@ -648,7 +639,7 @@ export class TimingFeedbackSystem {
     /**
      * フィードバック収集
      */'
-    collectUserFeedback(feedbackType: FeedbackType, data: FeedbackData): FeedbackEntry { if(!isFeedbackType(feedbackType) {''
+    collectUserFeedback(feedbackType: FeedbackType, data: FeedbackData): FeedbackEntry { if (!isFeedbackType(feedbackType) {''
             console.warn(`[TimingFeedbackSystem] Invalid feedback type: ${feedbackType}`},
 
             return { };
@@ -662,21 +653,21 @@ export class TimingFeedbackSystem {
         const feedbackEntry: FeedbackEntry = { type: feedbackType,
             timestamp: Date.now(),
             currentProfile: this.state.currentProfile,
-    data: data  };
+    data: data,;
         // フィードバックデータを保存
         try {'
-            const existingFeedback = JSON.parse()',
+            const existingFeedback = JSON.parse()','
                 localStorage.getItem('timingAdjustmentFeedback') || '[]') as FeedbackEntry[],
             
             existingFeedback.push(feedbackEntry),
             
             // 最新100件のみ保持
-            if(existingFeedback.length > MAX_FEEDBACK_ENTRIES) { }
+            if (existingFeedback.length > MAX_FEEDBACK_ENTRIES) { }
 
                 existingFeedback.splice(0, existingFeedback.length - MAX_FEEDBACK_ENTRIES); }
             }
 
-            localStorage.setItem('timingAdjustmentFeedback', JSON.stringify(existingFeedback);'} catch (error) { console.error('[TimingFeedbackSystem] Failed to save feedback:', error }
+            localStorage.setItem('timingAdjustmentFeedback', JSON.stringify(existingFeedback);'} catch (error) { console.error('[TimingFeedbackSystem] Failed to save feedback:', error }'
         
         console.log(`[TimingFeedbackSystem] フィードバック収集 - ${feedbackType}`);
         return feedbackEntry;
@@ -688,24 +679,24 @@ export class TimingFeedbackSystem {
     analyzeFeedback(): FeedbackAnalysis { let feedbackData: FeedbackEntry[] = [],
 
         try {'
-            feedbackData = JSON.parse()',
+            feedbackData = JSON.parse()','
                 localStorage.getItem('timingAdjustmentFeedback') || '[]',
             ',' }'
 
         } catch (error) {
-            console.error('[TimingFeedbackSystem] Failed to parse feedback data:', error',
+            console.error('[TimingFeedbackSystem] Failed to parse feedback data:', error','
             return { totalFeedback: 0 };
                 recentFeedback: 0 }
                 typeAnalysis: {};
                 profileAnalysis: {},''
-                mostCommonType: ',
+                mostCommonType: ','
     trends: { increasing: [], decreasing: [], stable: []  }
 
-        if(feedbackData.length = == 0) { return { totalFeedback: 0 };
+        if (feedbackData.length = == 0) { return { totalFeedback: 0 };
                 recentFeedback: 0 }
                 typeAnalysis: {};
                 profileAnalysis: {},''
-                mostCommonType: ',
+                mostCommonType: ','
     trends: { increasing: [], decreasing: [], stable: []  }
         
         // フィードバックタイプ別の分析
@@ -725,9 +716,9 @@ export class TimingFeedbackSystem {
         });
 
         // 最も多いタイプを特定
-        const mostCommonType = Object.keys(typeAnalysis).length > 0 ';
+        const mostCommonType = Object.keys(typeAnalysis).length > 0 ';'
             ? Object.keys(typeAnalysis).reduce((a, b) => typeAnalysis[a] > typeAnalysis[b] ? a : b')';
-            : ';
+            : ';'
         
         return { totalFeedback: feedbackData.length,
             recentFeedback: recentFeedback.length,
@@ -752,17 +743,17 @@ export class TimingFeedbackSystem {
         });
         
         const weeks = Object.keys(weeklyData).map(Number).sort((a, b) => a - b);
-        if(weeks.length >= 3) {
+        if (weeks.length >= 3) {
             const recent = weeklyData[weeks[weeks.length - 1]],
             const previous = weeklyData[weeks[weeks.length - 2]],
             const beforePrevious = weeklyData[weeks[weeks.length - 3]],
 
-            if(recent > previous && previous > beforePrevious) {
+            if (recent > previous && previous > beforePrevious) {
         }
 
                 trends.increasing.push('overall_feedback'; }
 
-            } else if(recent < previous && previous < beforePrevious) { ''
+            } else if (recent < previous && previous < beforePrevious) { ''
                 trends.decreasing.push('overall_feedback') }
 
             } else { }'
@@ -799,8 +790,8 @@ export class TimingFeedbackSystem {
         
         return { overall: overallLoad,
             timers: timerLoad,
-    warnings: warningLoad };
-            status: this.getLoadStatus(overallLoad); 
+    warnings: warningLoad,;
+            status: this.getLoadStatus(overallLoad), 
     }
     
     /**
@@ -818,41 +809,41 @@ export class TimingFeedbackSystem {
     generateUserGuidance(): UserGuidance[] { const metrics = this.getPerformanceMetrics(),
         const guidance: UserGuidance[] = [],
         // 高い延長要求率への対応
-        if(metrics.extensionRequests > HIGH_EXTENSION_THRESHOLD) {
+        if (metrics.extensionRequests > HIGH_EXTENSION_THRESHOLD) {
             guidance.push({''
                 type: 'profile_recommendation',
-                message: 'より長いタイミング設定のプロファイルをお勧めします',',
-                action: 'consider_motor_or_cognitive_profile',' }
+                message: 'より長いタイミング設定のプロファイルをお勧めします',','
+                action: 'consider_motor_or_cognitive_profile',' }'
 
                 priority: 'medium'); 
     }
-        ';
+        ';'
         // 高い一時停止頻度への対応
-        if(metrics.pauseFrequency > HIGH_PAUSE_THRESHOLD) {
+        if (metrics.pauseFrequency > HIGH_PAUSE_THRESHOLD) {
             guidance.push({''
                 type: 'usage_pattern',
-                message: '頻繁な一時停止が検出されました。自動一時停止設定を確認してください',',
-                action: 'check_auto_pause_settings',' }
+                message: '頻繁な一時停止が検出されました。自動一時停止設定を確認してください',','
+                action: 'check_auto_pause_settings',' }'
 
                 priority: 'medium'); 
     }
-        ';
+        ';'
         // レスポンス時間の問題
-        if(metrics.averageResponseTime > HIGH_RESPONSE_TIME_THRESHOLD) {
+        if (metrics.averageResponseTime > HIGH_RESPONSE_TIME_THRESHOLD) {
             guidance.push({''
                 type: 'performance_concern',
-                message: 'レスポンス時間が長くなっています。システム負荷を確認してください',',
-                action: 'optimize_system_performance',' }
+                message: 'レスポンス時間が長くなっています。システム負荷を確認してください',','
+                action: 'optimize_system_performance',' }'
 
                 priority: 'high'); 
     }
-        ';
+        ';'
         // システム負荷の警告
-        if(metrics.systemLoad.overall > HIGH_SYSTEM_LOAD_THRESHOLD) {
+        if (metrics.systemLoad.overall > HIGH_SYSTEM_LOAD_THRESHOLD) {
             guidance.push({''
                 type: 'system_load',
-                message: 'システム負荷が高くなっています。不要なタイマーを削除することをお勧めします',',
-                action: 'cleanup_timers',' }
+                message: 'システム負荷が高くなっています。不要なタイマーを削除することをお勧めします',','
+                action: 'cleanup_timers',' }'
 
                 priority: 'high'); 
     }
@@ -869,7 +860,7 @@ export class TimingFeedbackSystem {
      * 警告を手動で削除
      */
     dismissWarning(timerId: string): void { const warningState = this.state.warningStates.get(timerId),
-        if(warningState) {
+        if (warningState) {
 
             this.state.warningStates.delete(timerId),
             this.collectUserFeedback('warning_dismissed', {
@@ -889,25 +880,25 @@ export class TimingFeedbackSystem {
             element.remove();
         });
 
-        this.state.warningStates.clear()';
+        this.state.warningStates.clear()';'
         this.collectUserFeedback('warning_dismissed', { allWarnings: true'
            , count: warningElements.length }
 
     /**
      * フィードバックデータをエクスポート'
      */''
-    exportFeedbackData()';
+    exportFeedbackData()';'
             const feedbackData = localStorage.getItem('timingAdjustmentFeedback') || '[]';
             const parsedData = JSON.parse(feedbackData);
 
             return JSON.stringify(parsedData, null, 2);} catch (error) {
-            console.error('[TimingFeedbackSystem] Failed to export feedback data:', error',
+            console.error('[TimingFeedbackSystem] Failed to export feedback data:', error','
             return '[]',
 
     /**
      * フィードバックデータをリセット'
      */''
-    resetFeedbackData()',
+    resetFeedbackData()','
             localStorage.removeItem('timingAdjustmentFeedback'),
             console.log('[TimingFeedbackSystem] Feedback, data reset') } catch (error) { console.error('[TimingFeedbackSystem] Failed to reset feedback data:', error }
     }
@@ -932,7 +923,7 @@ export class TimingFeedbackSystem {
         if (styleSheet) { styleSheet.remove() }
 ;
         // 警告状態をクリア
-        this.state.warningStates.clear()';
+        this.state.warningStates.clear()';'
         console.log('[TimingFeedbackSystem] Component, destroyed');
 
-    }'}
+    }'}'

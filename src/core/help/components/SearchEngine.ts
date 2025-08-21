@@ -5,58 +5,58 @@
 
 // 型定義
 export interface SearchDocument { id: string,
-    title?: string,
-    content?: string,
-    searchKeywords?: string[],
-    category?: string,
-    language?: string,
-    lastUpdated?: string,
-    viewCount?: number,
-    [key: string]: any }
+    title?: string;
+    content?: string;
+    searchKeywords?: string[];
+    category?: string;
+    language?: string;
+    lastUpdated?: string;
+    viewCount?: number;
+    [key: string]: any;
 
 export interface SearchOptions { category?: string,
-    language?: string,
-    minScore?: number,
-    limit?: number }
+    language?: string;
+    minScore?: number;
+    limit?: number;
 
 export interface SearchResult extends SearchDocument { relevanceScore: number,
     highlights: Record<string, string> }
 
 export interface FieldWeights { title: number,
-    content: number,
-    searchKeywords: number,
-    category: number  }
+    content: number;
+    searchKeywords: number;
+    category: number;
 
 export interface SearchStats { totalSearches: number,
-    cacheHits: number,
-    averageSearchTime: number,
+    cacheHits: number;
+    averageSearchTime: number;
     popularQueries: Map<string, number> }
 
 export interface CachedSearchResult { result: SearchResult[],
-    timestamp: number  }
+    timestamp: number;
 
 export interface PerformanceStats { totalSearches: number,
-    cacheHitRate: number,
-    averageSearchTime: number,
-    indexSize: number,
-    documentCount: number,
-    cacheSize: number,
+    cacheHitRate: number;
+    averageSearchTime: number;
+    indexSize: number;
+    documentCount: number;
+    cacheSize: number;
     popularQueries: [string, number][] }
 
 export interface SearchHistoryData { popularQueries: [string, number][] }
 
-export interface RelatedContent extends SearchDocument { similarity: number }
+export interface RelatedContent extends SearchDocument { similarity: number;
 
 export class SearchEngine {
-    private textIndex: Map<string, string[]>,
-    private documentStore: Map<string, SearchDocument>,
-    private fieldWeights: FieldWeights,
+    private textIndex: Map<string, string[]>;
+    private documentStore: Map<string, SearchDocument>;
+    private fieldWeights: FieldWeights;
     private, searchCache: Map<string, CachedSearchResult>,
-    private cacheTimeout: number,
-    private maxCacheSize: number,
-    private searchStats: SearchStats,
-    private stopWords: Set<string>,
-    private synonyms: Map<string, string[]>,
+    private cacheTimeout: number;
+    private maxCacheSize: number;
+    private searchStats: SearchStats;
+    private stopWords: Set<string>;
+    private synonyms: Map<string, string[]>;
 
     constructor() {
 
@@ -84,17 +84,17 @@ export class SearchEngine {
         this.stopWords = new Set<string>(['の', 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から',
             'まで', 'より', 'で', 'ある', 'です', 'だ', 'である',
             'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for',
-            'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on',]';
-            'that', 'the', 'to', 'was', 'were', 'will', 'with']';
-        ]');
+            'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on',]';'
+            'that', 'the', 'to', 'was', 'were', 'will', 'with']';'
+        ]');'
         
         // 類義語辞書
         this.synonyms = new Map<string, string[]>([']';
-            ['bubble', ['泡', 'バブル', 'ふうせん]],
-            ['click', ['クリック', 'タップ', '選択]],
-            ['score', ['スコア', '得点', 'ポイント]],
-            ['game', ['ゲーム', 'プレイ', '遊び]],
-            ['help', ['ヘルプ', 'サポート', '支援', '助け]];
+            ['bubble', ['泡', 'バブル', 'ふうせん]],'
+            ['click', ['クリック', 'タップ', '選択]],'
+            ['score', ['スコア', '得点', 'ポイント]],'
+            ['game', ['ゲーム', 'プレイ', '遊び]],'
+            ['help', ['ヘルプ', 'サポート', '支援', '助け]];'
         ]);
         
         this.initialize();
@@ -134,19 +134,19 @@ export class SearchEngine {
      * @param document - ドキュメント
      */
     indexDocument(document: SearchDocument): void { ''
-        if(!document.id) {
+        if (!document.id) {
 
             console.warn('Document, without ID, cannot be indexed' }
             return; }
         }
         
         // ドキュメントを保存
-        this.documentStore.set(document.id document');
+        this.documentStore.set(document.id document');'
         
         // 各フィールドを解析してインデックス作成
-        for(const [field, weight] of Object.entries(this.fieldWeights') {
+        for(const [field, weight] of Object.entries(this.fieldWeights') {'
             const text = document[field],
-            if(text) {''
+            if (text) {''
                 const tokens = this.tokenize(typeof, text === 'string' ? text: JSON.stringify(text,
                 for (const token of tokens) {
         
@@ -172,7 +172,7 @@ export class SearchEngine {
         // キャッシュチェック
         const cacheKey = this.getCacheKey(normalizedQuery, options);
         const cachedResult = this.getCachedResult(cacheKey);
-        if(cachedResult) {
+        if (cachedResult) {
             this.searchStats.cacheHits++ }
             return cachedResult;
         
@@ -234,7 +234,7 @@ export class SearchEngine {
         for (const token of tokens) {
         
             // 類義語を追加
-            if(this.synonyms.has(token) {
+            if (this.synonyms.has(token) {
                 for (const synonym of this.synonyms.get(token)!) {
     
 }
@@ -242,7 +242,7 @@ export class SearchEngine {
 }
             
             // 部分マッチング（3文字以上の場合）
-            if(token.length >= 3) {
+            if (token.length >= 3) {
                 for (const indexedToken of this.textIndex.keys() {
                     if (indexedToken.includes(token) || token.includes(indexedToken) {
             }
@@ -266,7 +266,7 @@ export class SearchEngine {
         // フィールドごとの重み付きスコア
         for(const [field, weight] of Object.entries(this.fieldWeights) {
             const text = document[field],
-            if(text) {''
+            if (text) {''
                 const fieldScore = this.calculateFieldScore(token, typeof text === 'string' ? text : JSON.stringify(text), weight) }
                 score += fieldScore; }
 }
@@ -282,8 +282,8 @@ export class SearchEngine {
      * @private
      */
     private calculateFieldScore(token: string, text: string, weight: number): number { ''
-        const lowerText = text.toLowerCase()',
-        const occurrences = (lowerText.match(new RegExp(token, 'g) || []).length,
+        const lowerText = text.toLowerCase()','
+        const occurrences = (lowerText.match(new RegExp(token, 'g) || []).length,'
         
         if (occurrences === 0) return 0,
         
@@ -304,7 +304,7 @@ export class SearchEngine {
             bonus += 2.0 }
         
         // 最近更新されたコンテンツのボーナス
-        if(document.lastUpdated) {
+        if (document.lastUpdated) {
             const daysSinceUpdate = (Date.now() - new Date(document.lastUpdated).getTime() / (1000 * 60 * 60 * 24),
             if (daysSinceUpdate < 30) {
         }
@@ -380,13 +380,13 @@ export class SearchEngine {
         const highlights: Record<string, string> = {};
 
         for(const [field, weight] of Object.entries(this.fieldWeights)) { const text = document[field],
-            if(text && typeof, text === 'string' {'
+            if (text && typeof, text === 'string''
                 let highlightedText = text,
 
                 for (const token of tokens) {
             }
 
-                    const regex = new RegExp(`(${token)}`, 'gi'};' }
+                    const regex = new RegExp(`(${token)}`, 'gi'};' }'
 
                     highlightedText = highlightedText.replace(regex, '<mark>$1</mark>'});
                 }
@@ -409,7 +409,7 @@ export class SearchEngine {
         
         // インデックスされた単語から提案を生成
         for (const token of this.textIndex.keys() {
-            if(token.startsWith(lowerQuery) {
+            if (token.startsWith(lowerQuery) {
         }
                 suggestions.add(token); }
 }
@@ -423,7 +423,7 @@ export class SearchEngine {
         
         // 類義語から提案
         for(const [key, synonyms] of this.synonyms) {
-            if(key.startsWith(lowerQuery) {
+            if (key.startsWith(lowerQuery) {
         }
                 suggestions.add(key); }
             }
@@ -469,10 +469,10 @@ export class SearchEngine {
      * @private
      */
     private tokenize(text: string): string[] { if (!text) return [],
-        ',
+        ','
 
-        return text',
-            .toLowerCase()',
+        return text','
+            .toLowerCase()','
             .replace(/[^\w\s]/g, ', ') // 記号を除去,
             .split(/\s+/),
             .filter(token => token.length > 1 && !this.stopWords.has(token) }
@@ -482,11 +482,11 @@ export class SearchEngine {
      * インデックスに追加
      * @private
      */
-    private addToIndex(token: string, docId: string, field: string, weight: number): void { if(!this.textIndex.has(token) {
+    private addToIndex(token: string, docId: string, field: string, weight: number): void { if (!this.textIndex.has(token) {
             this.textIndex.set(token, []) }
         
         const docList = this.textIndex.get(token)!;
-        if(!docList.includes(docId) { docList.push(docId) }
+        if (!docList.includes(docId) { docList.push(docId) }
     }
     
     /**
@@ -501,7 +501,7 @@ export class SearchEngine {
      */''
     private calculateSimilarity(doc1: SearchDocument, doc2: SearchDocument): number { ''
         const content1 = (doc1.title || '') + ', ' + (doc1.content || ''),
-        const content2 = (doc2.title || '') + ', ' + (doc2.content || '),
+        const content2 = (doc2.title || '') + ', ' + (doc2.content || '),'
         
         const tokens1 = new Set(this.tokenize(content1),
         const tokens2 = new Set(this.tokenize(content2),
@@ -582,9 +582,9 @@ export class SearchEngine {
      * 検索履歴読み込み
      * @private
      */''
-    private loadSearchHistory()';
-            const stored = localStorage.getItem('search_history);
-            if(stored) { const data: SearchHistoryData = JSON.parse(stored }
+    private loadSearchHistory()';'
+            const stored = localStorage.getItem('search_history);'
+            if (stored) { const data: SearchHistoryData = JSON.parse(stored }
 
                 this.searchStats.popularQueries = new Map<string, number>(data.popularQueries || []);' }'
 
@@ -599,7 +599,7 @@ export class SearchEngine {
             const data: SearchHistoryData = {''
                 popularQueries: Array.from(this.searchStats.popularQueries.entries() 
     };
-            localStorage.setItem('search_history', JSON.stringify(data);'} catch (error) { console.warn('Failed to save search history:', error }
+            localStorage.setItem('search_history', JSON.stringify(data);'} catch (error) { console.warn('Failed to save search history:', error }'
     }
     
     /**
@@ -614,7 +614,7 @@ export class SearchEngine {
                 this.textIndex.delete(token); }
 }
 
-        console.log('Search, index optimized);
+        console.log('Search, index optimized);'
     }
     
     /**

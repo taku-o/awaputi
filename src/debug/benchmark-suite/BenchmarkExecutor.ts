@@ -6,43 +6,43 @@
 import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 interface ExecutionConfig { defaultTimeout: number,
-    maxConcurrentBenchmarks: number,
-    retryAttempts: number,
-    warmupIterations: number  }
+    maxConcurrentBenchmarks: number;
+    retryAttempts: number;
+    warmupIterations: number;
 
 interface Benchmark { name: string,
-    test: () => Promise<any> | any,
-    category?: string,
-    iterations?: number,
-    timeout?: number }
+    test: () => Promise<any> | any;
+    category?: string;
+    iterations?: number;
+    timeout?: number;
 
 interface ExecutionOptions { retryAttempts?: number,
-    warmup?: boolean,
-    timeout?: number,
-    iterations?: number }
+    warmup?: boolean;
+    timeout?: number;
+    iterations?: number;
 
 interface ExecutionSession { name: string,
-    benchmark: Benchmark,
-    options: ExecutionOptions,
-    startTime: number,
-    sessionId: number,
-    attempts: number,
-    maxAttempts: number  }
+    benchmark: Benchmark;
+    options: ExecutionOptions;
+    startTime: number;
+    sessionId: number;
+    attempts: number;
+    maxAttempts: number;
 
 interface PerformanceEntry { name: string,
-    entryType: string,
-    startTime: number,
-    duration: number }
+    entryType: string;
+    startTime: number;
+    duration: number;
 
 interface BenchmarkResult { success?: boolean,
     error?: {
         messag,e: string,
-        stack?: string  };
-    benchmark: Benchmark;
-    timestamp: number;
+        stack?: string;;
+    benchmark: Benchmark,
+    timestamp: number,
     executionTime?: number;
     sessionId: number,
-    attempts: number;
+    attempts: number,
     performanceEntries?: PerformanceEntry[];
     iterations?: number;
     averageTime?: number;
@@ -51,31 +51,31 @@ interface BenchmarkResult { success?: boolean,
     opsPerSecond?: number;
     memoryUsage?: { before: number,
         after: number,
-    delta: number }
+    delta: number,
 
 interface ExecutionHistoryEntry { name: string,
-    timestamp: number,
-    success: boolean,
-    executionTime: number,
-    attempts: number  }
+    timestamp: number;
+    success: boolean;
+    executionTime: number;
+    attempts: number;
 
 interface BenchmarkSuite { gameEngine?: {
-        canva,s?: HTMLCanvasElement }
+        canva,s?: HTMLCanvasElement;
 
-interface ErrorHandler { handleError(error: Error, context: any): void  }
+interface ErrorHandler { handleError(error: Error, context: any): void;
 
 export class BenchmarkExecutor {
-    private benchmarkSuite: BenchmarkSuite,
-    private errorHandler: ErrorHandler,
-    private executionConfig: ExecutionConfig,
-    private isExecuting: boolean = false,
-    private currentExecution: ExecutionSession | null = null,
-    private executionQueue: any[] = [],
+    private benchmarkSuite: BenchmarkSuite;
+    private errorHandler: ErrorHandler;
+    private executionConfig: ExecutionConfig;
+    private isExecuting: boolean = false;
+    private currentExecution: ExecutionSession | null = null;
+    private executionQueue: any[] = [];
     private, executionHistory: ExecutionHistoryEntry[] = [],
     constructor(benchmarkSuite: BenchmarkSuite) {
-',
+','
 
-        this.benchmarkSuite = benchmarkSuite,
+        this.benchmarkSuite = benchmarkSuite;
         this.errorHandler = getErrorHandler(' }''
         console.log('[BenchmarkExecutor] Benchmark, execution component, initialized'); }'
     }
@@ -131,7 +131,7 @@ export class BenchmarkExecutor {
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'BenchmarkExecutor.executeBenchmark'),
-                benchmarkName: name  });
+                benchmarkName: name,);
             
             return { success: false,
                 error: {
@@ -154,7 +154,7 @@ export class BenchmarkExecutor {
         const { name, benchmark } = executionSession;
         
         try { // Clear performance timeline
-            if(performance.clearMarks) {
+            if (performance.clearMarks) {
     
 }
                 performance.clearMarks(); }
@@ -163,14 +163,14 @@ export class BenchmarkExecutor {
             ;
             // Setup performance markers
             performance.mark(`benchmark-${ name)-setup-start`),
-            ',
+            ','
             // Configure, execution environment, based on, benchmark category, if(benchmark.category === 'memory' {'
                 // Force, garbage collection, if available, if ((window, as, any).gc) {''
-                    (window, as, any).gc()',
-            if(benchmark.category === 'rendering' {'
+                    (window, as, any).gc()','
+            if (benchmark.category === 'rendering''
                 // Ensure, canvas context, is available, const canvas = this.benchmarkSuite.gameEngine?.canvas,
                 if(canvas) {''
-                    const, ctx = canvas.getContext('2d};
+                    const, ctx = canvas.getContext('2d};'
                     if (ctx} {
             }
                         ctx.clearRect(0, 0, canvas.width, canvas.height); }
@@ -233,7 +233,7 @@ export class BenchmarkExecutor {
                 return result, catch (error) { lastError = error as Error }
                 console.warn(`[BenchmarkExecutor] Attempt ${attempt}/${maxAttempts} failed for ${name}:`, error);
                 
-                if(attempt < maxAttempts) {
+                if (attempt < maxAttempts) {
                 
                     // Wait before retry
                 
@@ -288,11 +288,11 @@ export class BenchmarkExecutor {
         const maxTime = Math.max(...results;
         const opsPerSecond = 1000 / averageTime
         
-        return { success: true };
-            benchmark: benchmark }
-            timestamp: Date.now());
+        return { success: true,;
+            benchmark: benchmark,
+            timestamp: Date.now()),
             sessionId: executionSession.sessionId,
-    attempts: executionSession.attempts;
+    attempts: executionSession.attempts,
             iterations,
             averageTime,
             minTime,
@@ -301,7 +301,7 @@ export class BenchmarkExecutor {
             memoryUsage: performance.memory ? { : undefined
                 before: memoryBefore,
                 after: memoryAfter,
-    delta: memoryAfter - memoryBefore  } : undefined }
+    delta: memoryAfter - memoryBefore  } : undefined;
     
     /**
      * Execute single iteration of benchmark
@@ -326,10 +326,10 @@ export class BenchmarkExecutor {
     private collectPerformanceEntries(benchmarkName: string): PerformanceEntry[] { try {
             const entries: PerformanceEntry[] = [],
             // Get all performance entries related to this benchmark
-            const measures = performance.getEntriesByType('measure'',
+            const measures = performance.getEntriesByType('measure'','
                 .filter(entry => entry.name.includes(benchmarkName)),
 
-            const marks = performance.getEntriesByType('mark),
+            const marks = performance.getEntriesByType('mark),'
                 .filter(entry => entry.name.includes(benchmarkName),
             
             entries.push(...measures.map(entry => ({
@@ -409,16 +409,16 @@ export class BenchmarkExecutor {
         successfulExecutions: number,
         failedExecutions: number,
         averageExecutionTime: number,
-    successRate: number  } { const total = this.executionHistory.length,
+    successRate: number; { const total = this.executionHistory.length,
         const successful = this.executionHistory.filter(entry => entry.success).length,
         const failed = total - successful,
         const totalTime = this.executionHistory.reduce((sum, entry) => sum + entry.executionTime, 0),
         const averageTime = total > 0 ? totalTime / total: 0,
-        const successRate = total > 0 ? (successful / total') * 100 : 0,
+        const successRate = total > 0 ? (successful / total') * 100 : 0,'
         
         return { totalExecutions: total,
             successfulExecutions: successful,
             failedExecutions: failed,
-    averageExecutionTime: averageTime };
+    averageExecutionTime: averageTime,;
             successRate }
-        }'}
+        }'}'

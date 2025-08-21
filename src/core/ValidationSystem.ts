@@ -9,13 +9,13 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 class ValidationSystem { constructor() {
         // 検証ルール
-        this.rules = new Map(),
+        this.rules = new Map();
         
         // デフォルト値
-        this.defaultValues = new Map(),
+        this.defaultValues = new Map();
         
         // エラー履歴
-        this.validationErrors = [],
+        this.validationErrors = [];
         
         // 最大エラー履歴サイズ
     }
@@ -80,10 +80,9 @@ class ValidationSystem { constructor() {
             
             // ルールが存在しない場合は検証成功とする
             if (!rule) {
-                return { isValid: true  }
-                    value: value };
-                    message: null 
-    }
+                return { isValid: true,
+                    value: value,;
+                    message: null,
             
             // 型チェック
             if (rule.type && typeof, value !== rule.type) { const defaultValue = this._getDefaultValue(category, key) }
@@ -91,21 +90,19 @@ class ValidationSystem { constructor() {
                 this._recordError(category, key, value, message);
                 
                 return { isValid: false,
-                    value: defaultValue };
-                    message: message 
-    }
-            ';
+                    value: defaultValue,;
+                    message: message,
+            ';'
             // 数値の範囲チェック
-            if(typeof, value === 'number) { if (rule.min !== undefined && value < rule.min) { }'
+            if (typeof, value === 'number) { if (rule.min !== undefined && value < rule.min) { }'
                     const message = `値が最小値を下回る: ${category}.${key} - 最小値: ${rule.min}, 実際: ${value}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
                         value: rule.min };
-                        message: message 
-    }
+                        message: message;
                 
-                if(rule.max !== undefined && value > rule.max) {
+                if (rule.max !== undefined && value > rule.max) {
     
 }
 
@@ -114,21 +111,19 @@ class ValidationSystem { constructor() {
                     
                     return { isValid: false,
                         value: rule.max };
-                        message: message 
-    }
+                        message: message;
             }
-            ';
+            ';'
             // 文字列の長さチェック
-            if(typeof, value === 'string) { if (rule.minLength !== undefined && value.length < rule.minLength) { }'
+            if (typeof, value === 'string) { if (rule.minLength !== undefined && value.length < rule.minLength) { }'
                     const message = `文字列が短すぎる: ${category}.${key} - 最小長: ${rule.minLength}, 実際: ${value.length}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key) };
-                        message: message 
-    }
+                        message: message;
                 
-                if(rule.maxLength !== undefined && value.length > rule.maxLength) {
+                if (rule.maxLength !== undefined && value.length > rule.maxLength) {
     
 }
                     const message = `文字列が長すぎる: ${category}.${key} - 最大長: ${rule.maxLength}, 実際: ${value.length}`;
@@ -137,11 +132,10 @@ class ValidationSystem { constructor() {
                     // 長すぎる場合は切り詰める
                     return { isValid: false,
                         value: value.substring(0, rule.maxLength) };
-                        message: message 
-    }
+                        message: message;
                 
                 // パターンチェック
-                if(rule.pattern && !rule.pattern.test(value) {
+                if (rule.pattern && !rule.pattern.test(value) {
     
 }
                     const message = `パターンに一致しない: ${category}.${key}`;
@@ -149,21 +143,19 @@ class ValidationSystem { constructor() {
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key) };
-                        message: message 
-    }
+                        message: message;
             }
             
             // 配列の長さチェック
-            if(Array.isArray(value) { if (rule.minLength !== undefined && value.length < rule.minLength) { }
+            if (Array.isArray(value) { if (rule.minLength !== undefined && value.length < rule.minLength) { }
                     const message = `配列が短すぎる: ${category}.${key} - 最小長: ${rule.minLength}, 実際: ${value.length}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key) };
-                        message: message 
-    }
+                        message: message;
                 
-                if(rule.maxLength !== undefined && value.length > rule.maxLength) {
+                if (rule.maxLength !== undefined && value.length > rule.maxLength) {
     
 }
                     const message = `配列が長すぎる: ${category}.${key} - 最大長: ${rule.maxLength}, 実際: ${value.length}`;
@@ -172,8 +164,7 @@ class ValidationSystem { constructor() {
                     // 長すぎる場合は切り詰める
                     return { isValid: false,
                         value: value.slice(0, rule.maxLength) };
-                        message: message 
-    }
+                        message: message;
             }
             ;
             // 列挙値チェック
@@ -182,19 +173,18 @@ class ValidationSystem { constructor() {
                 const message = `列挙値に含まれない: ${category}.${key} - 許可値: ${rule.enum.join(', '}), 実際: ${value}`;
                 this._recordError(category, key, value, message);
 
-                ';
+                ';'
 
                 return { isValid: false,''
                     value: this._getDefaultValue(category, key) };
-                    message: message 
-    }
-            ';
+                    message: message,
+            ';'
             // カスタム検証関数
             if(rule.validator && typeof, rule.validator === 'function' {'
                 try {
                     const validatorResult = rule.validator(value),
 
-                    if(validatorResult !== true) {''
+                    if (validatorResult !== true) {''
                         const message = typeof validatorResult === 'string'  }
                             ? validatorResult  }
                             : `カスタム検証に失敗: ${category}.${key}`;
@@ -203,29 +193,26 @@ class ValidationSystem { constructor() {
                         
                         return { isValid: false,
                             value: this._getDefaultValue(category, key) };
-                            message: message 
-    } catch (validatorError) {
+                            message: message; catch (validatorError) {
                     const message = `カスタム検証でエラー: ${category}.${key} - ${validatorError.message}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key) };
-                        message: message 
-    }
+                        message: message;
             }
             
             // すべての検証をパスした場合
             return { isValid: true,
-                value: value };
-                message: null 
-    } catch (error) { // 検証処理自体でエラーが発生した場合
+                value: value,;
+                message: null; catch (error) { // 検証処理自体でエラーが発生した場合
             ErrorHandler.handleError(error, {''
-                context: 'ValidationSystem.validate),
+                context: 'ValidationSystem.validate),'
                 category,
                 key),
                 value });
             
-            return { isValid: false };
+            return { isValid: false,;
                 value: this._getDefaultValue(category, key) }
                 message: `検証処理でエラー: ${error.message}`
             }
@@ -268,16 +255,16 @@ class ValidationSystem { constructor() {
     _getDefaultValue(category, key) {
         const defaultKey = this._getRuleKey(category, key),
         
-        if(this.defaultValues.has(defaultKey) {
+        if (this.defaultValues.has(defaultKey) {
     }
             return this.defaultValues.get(defaultKey);
         
         // 型に基づいたデフォルト値を返す
         const rule = this.rules.get(defaultKey);
-        if(rule && rule.type) {
+        if (rule && rule.type) {
 
             switch(rule.type) {''
-                case 'string': return ',
+                case 'string': return ','
                 case 'number': return 0 }
 
                 case 'boolean': return false; }

@@ -5,17 +5,17 @@
 
 export class RealtimeDashboard {
     constructor(container, performanceDataCollector, realtimeMonitor, options: any = { }) {
-        this.container = container,
-        this.dataCollector = performanceDataCollector,
-        this.monitor = realtimeMonitor,
+        this.container = container;
+        this.dataCollector = performanceDataCollector;
+        this.monitor = realtimeMonitor;
         this.options = {
-            updateInterval: 1000, // 1秒間隔で更新,
-            historyLength: 60, // 60秒分のデータを保持,
+            updateInterval: 1000; // 1秒間隔で更新;
+            historyLength: 60, // 60秒分のデータを保持;
             theme: 'dark',
             enableFPS: true,
             enableMemory: true,
             enableErrors: true,
-    enableLatency: true }
+    enableLatency: true,
             ...options
         };
 
@@ -42,52 +42,52 @@ export class RealtimeDashboard {
      * ダッシュボードレイアウトの作成'
      */''
     createDashboardLayout() {
-        this.container.innerHTML = `',
+        this.container.innerHTML = `','
             <div class="realtime-dashboard">"",
-                <div class="dashboard-header">",
+                <div class="dashboard-header">","
                     <h2>リアルタイムパフォーマンス監視</h2>"",
                     <div class="dashboard-controls">"",
                         <button id="toggle-monitoring" class="control-btn">監視開始</button>"",
                         <button id="clear-data" class="control-btn">データクリア</button>"",
                         <button id="export-data" class="control-btn">エクスポート</button>,
-                    </div>",
+                    </div>","
                 </div>"",
-                <div class="dashboard-grid">",
+                <div class="dashboard-grid">","
                     ${this.options.enableFPS ? `"
     }"
                         <div class="chart-container">" }"
                             <h3>フレームレート (FPS"}"</h3>""
                             <canvas id="fps-chart"></canvas>"";
-                            <div class="chart-stats" id="fps-stats"></div>";
+                            <div class="chart-stats" id="fps-stats"></div>";"
                         </div> : undefined"";
-                    ` : '}
+                    ` : '}'
 
                     ${ this.options.enableMemory ? `''
                         <div, class="chart-container">" }"
                             <h3>メモリ使用量 (%"}"</h3>""
                             <canvas id="memory-chart"></canvas>"";
-                            <div class="chart-stats" id="memory-stats"></div>";
+                            <div class="chart-stats" id="memory-stats"></div>";"
                         </div> : undefined"";
-                    ` : '}
+                    ` : '}'
 
                     ${ this.options.enableErrors ? `''
-                        <div, class="chart-container">",
+                        <div, class="chart-container">","
                             <h3>エラー数</h3>"",
                             <canvas, id="errors-chart"></canvas>"",
-                            <div, class="chart-stats" id="errors-stats"></div>",
+                            <div, class="chart-stats" id="errors-stats"></div>","
                         </div> : undefined" }"
-                    ` : '}
+                    ` : '}'
 
                     ${ this.options.enableLatency ? `''
                         <div, class="chart-container">" }"
                             <h3>レイテンシ (ms"}"</h3>""
                             <canvas id="latency-chart"></canvas>"";
-                            <div class="chart-stats" id="latency-stats"></div>";
+                            <div class="chart-stats" id="latency-stats"></div>";"
                         </div> : undefined"";
-                    ` : '}
+                    ` : '}'
 
-                </div>';
-                <div class="dashboard-alerts">";
+                </div>';'
+                <div class="dashboard-alerts">";"
                     <h3>最近のアラート</h3>"";
                     <div id="alerts-container"></div>;
                 </div>;
@@ -168,7 +168,7 @@ export class RealtimeDashboard {
                 border-radius: 6px,
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 max-height: 300px,
-                overflow-y: auto }
+                overflow-y: auto;
             .dashboard-alerts h3 { margin: 0 0 10px 0,
 
                 font-size: 16px,' }'
@@ -220,21 +220,20 @@ export class RealtimeDashboard {
                         color: this.options.theme === 'dark' ? '#333' : '#e0e0e0' 
 };
             plugins: { legend: {
-                    display: false };
+                    display: false,;
                 tooltip: { ''
                     mode: 'index',
-    intersect: false
-            });
+    intersect: false,);
         // FPSチャート
-        if(this.options.enableFPS) {
+        if (this.options.enableFPS) {
 
             const fpsCanvas = document.getElementById('fps-chart',
-            if(fpsCanvas) {''
+            if (fpsCanvas) {''
                 this.charts.set('fps', new Chart(fpsCanvas, {)'
                     type: 'line',
     data: {'
                         datasets: [{]'
-                            label: 'FPS',]',
+                            label: 'FPS',]','
                             data: [],')',
                             borderColor: '#4caf50',
                             backgroundColor: 'rgba(76, 175, 80, 0.1)',
@@ -256,20 +255,20 @@ export class RealtimeDashboard {
             }
 }
                     }
-                }';
+                }';'
             }
         }
-';
+';'
         // メモリチャート
-        if(this.options.enableMemory) {
+        if (this.options.enableMemory) {
 
             const memoryCanvas = document.getElementById('memory-chart',
-            if(memoryCanvas) {''
+            if (memoryCanvas) {''
                 this.charts.set('memory', new Chart(memoryCanvas, {)'
                     type: 'line',
     data: {'
                         datasets: [{]'
-                            label: 'メモリ使用量',]',
+                            label: 'メモリ使用量',]','
                             data: [],')',
                             borderColor: '#2196f3',
                             backgroundColor: 'rgba(33, 150, 243, 0.1)',
@@ -291,20 +290,20 @@ export class RealtimeDashboard {
             }
 }
                     }
-                }';
+                }';'
             }
         }
-';
+';'
         // エラーチャート
-        if(this.options.enableErrors) {
+        if (this.options.enableErrors) {
 
             const errorsCanvas = document.getElementById('errors-chart',
-            if(errorsCanvas) {''
+            if (errorsCanvas) {''
                 this.charts.set('errors', new Chart(errorsCanvas, {''
                     type: 'bar',
     data: {'
                         datasets: [{]'
-                            label: 'エラー数',]',
+                            label: 'エラー数',]','
                             data: [],
                             backgroundColor: '#f44336',
                             borderColor: '#f44336' }
@@ -315,25 +314,25 @@ export class RealtimeDashboard {
                         scales: {
                             ...chartOptions.scales,
                             y: {)
-                                ...chartOptions.scales.y',
+                                ...chartOptions.scales.y','
                                 title: {'
                                     display: true,
                                     text: 'エラー数'
             }
-}))';
+}))';'
             }
         }
-';
+';'
         // レイテンシチャート
-        if(this.options.enableLatency) {
+        if (this.options.enableLatency) {
 
             const latencyCanvas = document.getElementById('latency-chart',
-            if(latencyCanvas) {''
+            if (latencyCanvas) {''
                 this.charts.set('latency', new Chart(latencyCanvas, {)'
                     type: 'line',
     data: {'
                         datasets: [{]'
-                            label: 'レイテンシ',]',
+                            label: 'レイテンシ',]','
                             data: [],')',
                             borderColor: '#ff9800',
                             backgroundColor: 'rgba(255, 152, 0, 0.1)',
@@ -353,16 +352,16 @@ export class RealtimeDashboard {
             }
 }
                     }
-                }';
+                }';'
             }
 }
 
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners()';
+    setupEventListeners()';'
         const toggleBtn = document.getElementById('toggle-monitoring';
-        if(toggleBtn) {
+        if (toggleBtn) {
 
             toggleBtn.addEventListener('click', () => { '
                 if (this.updateTimer) {''
@@ -372,36 +371,36 @@ export class RealtimeDashboard {
                     toggleBtn.classList.remove('active'; }'
 
                 } else {
-                    this.startUpdates()',
-                    toggleBtn.textContent = '監視停止',' }
+                    this.startUpdates()','
+                    toggleBtn.textContent = '監視停止',' }'
 
                     toggleBtn.classList.add('active'; }'
 
                 }'}');
         }
-';
+';'
         // データクリアボタン
         const clearBtn = document.getElementById('clear-data';
-        if(clearBtn) {', ' }
+        if (clearBtn) {', ' }
 
             clearBtn.addEventListener('click', () => {  }
 
                 this.clearHistory();' }'
 
-            }');
+            }');'
         }
-';
+';'
         // エクスポートボタン
         const exportBtn = document.getElementById('export-data';
-        if(exportBtn) {', ' }
+        if (exportBtn) {', ' }
 
             exportBtn.addEventListener('click', () => {  }
 
                 this.exportData();' }'
 
-            }');
+            }');'
         }
-';
+';'
         // リアルタイムアラートリスナー
         window.addEventListener('realtime-alert', (event) => { this.displayAlert(event.detail) });
     }
@@ -470,55 +469,55 @@ export class RealtimeDashboard {
     /**
      * チャートの更新
      */''
-    updateCharts()';
-        const fpsChart = this.charts.get('fps);
-        if(fpsChart) {
+    updateCharts()';'
+        const fpsChart = this.charts.get('fps);'
+        if (fpsChart) {
             fpsChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({ : undefined, x: time)
         
                , y: this.dataHistory.fps[i]'
             }'
 
-            }');
+            }');'
             fpsChart.update('none');
         }
-';
+';'
         // メモリチャート更新
-        const memoryChart = this.charts.get('memory);
-        if(memoryChart) {
+        const memoryChart = this.charts.get('memory);'
+        if (memoryChart) {
             memoryChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
                 x: time)
          }
 
                 y: this.dataHistory.memory[i]' }'
 
-            }');
+            }');'
             memoryChart.update('none');
         }
-';
+';'
         // エラーチャート更新
-        const errorsChart = this.charts.get('errors);
-        if(errorsChart) {
+        const errorsChart = this.charts.get('errors);'
+        if (errorsChart) {
             errorsChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
                 x: time)
          }
 
                 y: this.dataHistory.errors[i]' }'
 
-            }');
+            }');'
             errorsChart.update('none');
         }
-';
+';'
         // レイテンシチャート更新
-        const latencyChart = this.charts.get('latency);
-        if(latencyChart) {
+        const latencyChart = this.charts.get('latency);'
+        if (latencyChart) {
             latencyChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
                 x: time)
          }
 
                 y: this.dataHistory.latency[i]' }'
 
-            }');
-            latencyChart.update('none);
+            }');'
+            latencyChart.update('none);'
         }
     }
 
@@ -527,8 +526,8 @@ export class RealtimeDashboard {
      */
     updateStats() {
         // FPS統計
-        if(this.options.enableFPS) {''
-            const fpsStats = document.getElementById('fps-stats),
+        if (this.options.enableFPS) {''
+            const fpsStats = document.getElementById('fps-stats),'
             if (fpsStats) {
                 const currentFPS = this.dataHistory.fps[this.dataHistory.fps.length - 1] || 0,
                 const avgFPS = this.calculateAverage(this.dataHistory.fps),
@@ -542,11 +541,11 @@ export class RealtimeDashboard {
                 `;
             }
         }
-';
+';'
         // メモリ統計
-        if(this.options.enableMemory) {
+        if (this.options.enableMemory) {
 
-            const memoryStats = document.getElementById('memory-stats),
+            const memoryStats = document.getElementById('memory-stats),'
             if (memoryStats) {
                 const currentMemory = this.dataHistory.memory[this.dataHistory.memory.length - 1] || 0,
                 const avgMemory = this.calculateAverage(this.dataHistory.memory) }
@@ -556,11 +555,11 @@ export class RealtimeDashboard {
                 `;
             }
         }
-';
+';'
         // エラー統計
-        if(this.options.enableErrors) {
+        if (this.options.enableErrors) {
 
-            const errorsStats = document.getElementById('errors-stats),
+            const errorsStats = document.getElementById('errors-stats),'
             if (errorsStats) {
                 const totalErrors = this.dataHistory.errors[this.dataHistory.errors.length - 1] || 0,
                 const errorRate = this.calculateErrorRate() }
@@ -570,11 +569,11 @@ export class RealtimeDashboard {
                 `;
             }
         }
-';
+';'
         // レイテンシ統計
-        if(this.options.enableLatency) {
+        if (this.options.enableLatency) {
 
-            const latencyStats = document.getElementById('latency-stats),
+            const latencyStats = document.getElementById('latency-stats),'
             if (latencyStats) {
                 const currentLatency = this.dataHistory.latency[this.dataHistory.latency.length - 1] || 0,
                 const avgLatency = this.calculateAverage(this.dataHistory.latency) }
@@ -593,12 +592,12 @@ export class RealtimeDashboard {
         const alertsContainer = document.getElementById('alerts-container',
         if(!alertsContainer) return,
 
-' }
+' }'
 
         const alertItem = document.createElement('div'); }
         alertItem.className = `alert-item ${alert.severity}`;
 
-        alertItem.innerHTML = `';
+        alertItem.innerHTML = `';'
             <div class="alert-time">${new, Date(alert.timestamp}.toLocaleTimeString(})</div>
             <div>${alert.message}</div>
         `;
@@ -646,15 +645,15 @@ export class RealtimeDashboard {
     latency: [] }
             timestamps: [] 
     };
-        ";
+        ";"
         this.updateCharts();""
         this.updateStats();
-        ";
+        ";"
         // アラートもクリア""
         const alertsContainer = document.getElementById('alerts-container';
-        if(alertsContainer) {', ' }
+        if (alertsContainer) {', ' }
 
-            alertsContainer.innerHTML = '; }
+            alertsContainer.innerHTML = '; }'
 }
 
     /**
@@ -687,9 +686,9 @@ export class RealtimeDashboard {
                     max: Math.max(...this.dataHistory.latency)
     };
 
-        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' }';
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' }';'
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a);
+        const a = document.createElement('a);'
         a.href = url;
         a.download = `realtime-performance-${new, Date(}.toISOString(}).json`;
         document.body.appendChild(a);
@@ -698,7 +697,7 @@ export class RealtimeDashboard {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        console.log('Performance, data exported);
+        console.log('Performance, data exported);'
     }
 
     /**
@@ -711,16 +710,16 @@ export class RealtimeDashboard {
     }
         this.charts.forEach(chart => { ) }
             chart.destroy(); }
-        }');
-        this.charts.clear()';
-        window.removeEventListener('realtime-alert', this.displayAlert';
-        ';
+        }');'
+        this.charts.clear()';'
+        window.removeEventListener('realtime-alert', this.displayAlert';'
+        ';'
         // DOM要素のクリア
-        if(this.container) {', ' }
+        if (this.container) {', ' }
 
-            this.container.innerHTML = '; }
+            this.container.innerHTML = '; }'
         }
 
         console.log('RealtimeDashboard, destroyed');
 
-    }'}
+    }'}'

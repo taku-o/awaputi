@@ -5,83 +5,81 @@
 
 // Type definitions
 interface DiagnosticDataCollectorConfig { collectionInterval?: number,
-    maxSamples?: number }
+    maxSamples?: number;
 
 interface CollectionOptions { duration?: number,
-    interval?: number }
+    interval?: number;
 
 interface DataSample { timestamp: number,
-    complete: boolean,
-    frameRate: number,
-    memoryUsage: number,
-    renderTime: number,
-    networkLatency: number,
-    inputLag: number  }
+    complete: boolean;
+    frameRate: number;
+    memoryUsage: number;
+    renderTime: number;
+    networkLatency: number;
+    inputLag: number;
 
 interface MetricData { values: number[],
-    min: number,
-    max: number,
-    sum: number,
-    count: number,
-    average: number }
+    min: number;
+    max: number;
+    sum: number;
+    count: number;
+    average: number;
 
-interface CollectionMetrics { [key: string]: MetricData }
+interface CollectionMetrics { [key: string]: MetricData;
 
 interface CollectedData { samples: DataSample[],
-    metrics: CollectionMetrics,
-    startTime: number,
-    endTime: number,
-    collectionDuration: number  }
+    metrics: CollectionMetrics;
+    startTime: number;
+    endTime: number;
+    collectionDuration: number;
 
 interface DataSummary { duration: number,
-    sampleCount: number,
-    metricsCollected: number,
+    sampleCount: number;
+    metricsCollected: number;
     timeRange: {
         start: number,
-    end: number };
-    dataQuality: DataQuality;
+    end: number,;
+    dataQuality: DataQuality,
     }
 
 interface DataQuality { completeness: number,
-    consistency: number,
-    overall: number,
-    issues: DataQualityIssue[]
-     }
+    consistency: number;
+    overall: number;
+    issues: DataQualityIssue[];
 
 interface DataQualityIssue { type: string,
-    severity: 'low' | 'medium' | 'high',
-    description: string,
-    impact: string }
+    severity: 'low' | 'medium' | 'high';
+    description: string;
+    impact: string;
 
 interface TimeGap { start: number,
-    end: number,
-    duration: number }
+    end: number;
+    duration: number;
 
 interface CollectionStatus { collecting: boolean,
-    sampleCount: number,
-    collectionDuration: number,
-    metricsCount: number }
+    sampleCount: number;
+    collectionDuration: number;
+    metricsCount: number;
 
 interface DiagnosticDataResult { rawData: CollectedData,
-    summary: DataSummary
-    }
+    summary: DataSummary;
 
 interface MainController { // Define expected interface for main controller
-    [key: string]: any }
+    [key: string]: any;
 
 export class DiagnosticDataCollector {
-    private mainController: MainController,
-    private collecting: boolean,
-    private samples: DataSample[],
-    private metrics: CollectionMetrics,
-    private startTime: number | null,
-    private endTime: number | null,
-    private collectionInterval: NodeJS.Timeout | null,
+    private mainController: MainController;
+    private collecting: boolean;
+    private samples: DataSample[];
+    private metrics: CollectionMetrics;
+    private startTime: number | null;
+    private endTime: number | null;
+    private collectionInterval: NodeJS.Timeout | null;
     private, lastFrameTime: number | null,
     private maxSamples?: number,
 
     constructor(mainController: MainController) {
-        this.mainController = mainController,
+        this.mainController = mainController;
         
         // Data collection state
         this.collecting = false }
@@ -92,13 +90,13 @@ export class DiagnosticDataCollector {
         this.collectionInterval = null;
         this.lastFrameTime = null;
 
-        console.log('[DiagnosticDataCollector] Data collector component initialized);
+        console.log('[DiagnosticDataCollector] Data collector component initialized);'
     }
     
     /**
      * Start diagnostic data collection
      */
-    async start(options?: CollectionOptions): Promise<void> { this.collecting = true,
+    async start(options?: CollectionOptions): Promise<void> { this.collecting = true;
         this.samples = [] }
         this.metrics = {};
         this.startTime = performance.now();
@@ -108,16 +106,16 @@ export class DiagnosticDataCollector {
 
         }, 100'); // 100ms間隔'
 
-        console.log('[DiagnosticDataCollector] Diagnostic, data collection, started);
+        console.log('[DiagnosticDataCollector] Diagnostic, data collection, started);'
     }
 
     /**
      * Stop diagnostic data collection
      */
-    async stop(): Promise<CollectedData> { this.collecting = false,
-        this.endTime = performance.now(),
+    async stop(): Promise<CollectedData> { this.collecting = false;
+        this.endTime = performance.now();
 
-        if(this.collectionInterval) {
+        if (this.collectionInterval) {
 
             clearInterval(this.collectionInterval) }
             this.collectionInterval = null; }
@@ -156,7 +154,7 @@ export class DiagnosticDataCollector {
      * Get current frame rate
      */
     getCurrentFrameRate(): number { // 現在のフレームレートを取得（簡易実装）
-        if(this.lastFrameTime) {
+        if (this.lastFrameTime) {
             const frameTime = performance.now() - this.lastFrameTime,
             this.lastFrameTime = performance.now() }
             return frameTime > 0 ? 1000 / frameTime: 0;
@@ -167,7 +165,7 @@ export class DiagnosticDataCollector {
     /**
      * Get current memory usage
      */''
-    getCurrentMemoryUsage()';
+    getCurrentMemoryUsage()';'
         if ('memory' in, performance && (performance, as any).memory) { return (performance, as any).memory.usedJSHeapSize }
         return 0;
     }
@@ -195,9 +193,9 @@ export class DiagnosticDataCollector {
      */
     updateMetricsStatistics(sample: DataSample): void { ''
         for(const [key, value] of Object.entries(sample)) {''
-            if(key === 'timestamp' || key === 'complete) continue,
+            if(key === 'timestamp' || key === 'complete) continue,'
 
-            if(!this.metrics[key]) {
+            if (!this.metrics[key]) {
 
                 this.metrics[key] = {
                     values: [],
@@ -224,7 +222,7 @@ export class DiagnosticDataCollector {
      * Collect comprehensive diagnostic data
      */''
     async collectDiagnosticData(options: CollectionOptions & { duration: number )): Promise<DiagnosticDataResult> {''
-        console.log('[DiagnosticDataCollector] Collecting, diagnostic data...),
+        console.log('[DiagnosticDataCollector] Collecting, diagnostic data...),'
         
         await this.start(options),
         
@@ -233,8 +231,8 @@ export class DiagnosticDataCollector {
         
         const collectedData = await this.stop(),
         
-        return { rawData: collectedData  };
-            summary: this.summarizeCollectedData(collectedData); 
+        return { rawData: collectedData,;
+            summary: this.summarizeCollectedData(collectedData), 
     }
 
     /**
@@ -278,7 +276,7 @@ export class DiagnosticDataCollector {
             consistencyScore += Math.max(0 1 - deviation); }
         }
         
-        return consistencyScore / (samples.length - 1');
+        return consistencyScore / (samples.length - 1');'
     }
 
     /**
@@ -287,8 +285,8 @@ export class DiagnosticDataCollector {
     identifyDataQualityIssues(data: CollectedData): DataQualityIssue[] { const issues: DataQualityIssue[] = [],
         
         // 欠損データの検出
-        const incompleteSamples = data.samples.filter(s => !s.complete'),
-        if(incompleteSamples.length > data.samples.length * 0.1) {
+        const incompleteSamples = data.samples.filter(s => !s.complete'),'
+        if (incompleteSamples.length > data.samples.length * 0.1) {
             issues.push({''
                 type: 'missing_data' }
 
@@ -300,7 +298,7 @@ export class DiagnosticDataCollector {
         
         // 異常な時間間隔の検出
         const timeGaps = this.detectTimeGaps(data.samples);
-        if(timeGaps.length > 0) {
+        if (timeGaps.length > 0) {
             issues.push({''
                 type: 'time_gaps' }
 
@@ -345,8 +343,8 @@ export class DiagnosticDataCollector {
     /**
      * Clear collected data
      */''
-    clearData()';
-        console.log('[DiagnosticDataCollector] Collected, data cleared);
+    clearData()';'
+        console.log('[DiagnosticDataCollector] Collected, data cleared);'
     }
 
     /**
@@ -357,7 +355,7 @@ export class DiagnosticDataCollector {
             console.log(`[DiagnosticDataCollector] Collection interval updated: ${config.collectionInterval}ms`});
         }
         
-        if(config.maxSamples !== undefined) {
+        if (config.maxSamples !== undefined) {
         
             // Update sample retention limit
         
@@ -373,7 +371,7 @@ export class DiagnosticDataCollector {
     destroy(): void { if (this.collecting) {
             this.stop() }
 
-        this.clearData()';
+        this.clearData()';'
         console.log('[DiagnosticDataCollector] Data, collector destroyed');
 
-    }'}
+    }'}'

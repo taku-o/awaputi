@@ -9,83 +9,81 @@
 interface GameConfig { getBalanceConfig?: () => BalanceConfig }
 
 interface BalanceConfig { stages: {
-        unlockRequirement,s: Record<string, number>,
+        unlockRequirement,s: Record<string, number>;
         difficulty: Record<string, DifficultySettings> };
     items: { baseCosts: Record<string, number>,
         costMultiplier: number,
-    effects: Record<string, number>,
+    effects: Record<string, number>;
         maxLevels: Record<string, number> };
     bubbles: { maxAge: Record<string, number>,
         health: Record<string, number> }
 
 interface DifficultySettings { spawnRate: number,
-    maxBubbles: number  }
+    maxBubbles: number;
 
 interface CalculatedDifficulty extends DifficultySettings { originalSpawnRate: number,
-    originalMaxBubbles: number,
-    levelAdjustment: LevelAdjustment
-    }
+    originalMaxBubbles: number;
+    levelAdjustment: LevelAdjustment;
 
 interface LevelAdjustment { spawnRateMultiplier: number,
-    maxBubblesMultiplier: number,
-    playerLevel: number }
+    maxBubblesMultiplier: number;
+    playerLevel: number;
 
 interface BubbleModifiers { timeMultiplier?: number,
-    timeBonus?: number,
-    healthMultiplier?: number,
-    healthBonus?: number }
+    timeBonus?: number;
+    healthMultiplier?: number;
+    healthBonus?: number;
 
 interface ItemRecommendation { itemId: string,
-    currentLevel: number,
-    nextLevel: number,
-    cost: number,
-    effect: number,
-    priority: number  }
+    currentLevel: number;
+    nextLevel: number;
+    cost: number;
+    effect: number;
+    priority: number;
 
 interface PlayerState { currentTAP?: number,
-    currentItems?: Record<string, number>,
-    playStyle?: 'aggressive' | 'defensive' | 'balanced',
-    unlockedStages?: string[],
-    completedAchievements?: string[] }
+    currentItems?: Record<string, number>;
+    playStyle?: 'aggressive' | 'defensive' | 'balanced';
+    unlockedStages?: string[];
+    completedAchievements?: string[];
 
 interface GameProgress { tapProgress: number,
-    stageProgress: number,
-    unlockedStages: number,
-    totalStages: number,
-    nextStage: string | null,
-    nextStageRequirement: number | null,
-    tapToNextStage: number  }
+    stageProgress: number;
+    unlockedStages: number;
+    totalStages: number;
+    nextStage: string | null;
+    nextStageRequirement: number | null;
+    tapToNextStage: number;
 
 interface BalanceAdjustment { type: string,
-    reason: string,
-    adjustment?: number,
-    stageId?: string,
-    itemId?: string,
-    currentRate?: number }
+    reason: string;
+    adjustment?: number;
+    stageId?: string;
+    itemId?: string;
+    currentRate?: number;
 
 interface BalanceSuggestions { difficulty: BalanceAdjustment[],
-    items: BalanceAdjustment[],
-    stages: BalanceAdjustment[]
-     }
+    items: BalanceAdjustment[];
+    stages: BalanceAdjustment[];
 
 interface GameData { averagePlayTime?: number,
-    averageScore?: number,
-    stageCompletionRates?: Record<string, number>,
+    averageScore?: number;
+    stageCompletionRates?: Record<string, number>;
     itemUsageRates?: Record<string, number> }
 
 interface StageInfo { stageId: string,
-    requirement: number  }
+    requirement: number;
 
 interface DebugInfo { hasGameConfig: boolean,
-    balanceConfig: BalanceConfig,
-    version: string }
+    balanceConfig: BalanceConfig;
+    version: string;
 
 export class BalanceCalculator {
-    private gameConfig: GameConfig | null,
-    private, defaultBalanceConfig: BalanceConfig',
+    private gameConfig: GameConfig | null;
+    private, defaultBalanceConfig: BalanceConfig','
 
     constructor(gameConfig: GameConfig | null = null) {
-        this.gameConfig = gameConfig,
+        this.gameConfig = gameConfig;
         
         // デフォルトのバランス設定（GameConfigが利用できない場合のフォールバック）
         this.defaultBalanceConfig = {
@@ -101,15 +99,15 @@ export class BalanceCalculator {
                     boss: 35000 
     };
                 difficulty: {
-                    tutorial: { spawnRate: 1.0, maxBubbles: 10  },
-                    normal: { spawnRate: 1.5, maxBubbles: 20  },
-                    hard: { spawnRate: 1.6, maxBubbles: 22  },
-                    veryHard: { spawnRate: 1.8, maxBubbles: 28  },
-                    special: { spawnRate: 2.0, maxBubbles: 32  },
-                    nightmare: { spawnRate: 2.3, maxBubbles: 38  },
-                    chaos: { spawnRate: 2.7, maxBubbles: 42  },
-                    ultimate: { spawnRate: 3.2, maxBubbles: 48  },
-                    allIn: { spawnRate: 3.6, maxBubbles: 55  },
+                    tutorial: { spawnRate: 1.0, maxBubbles: 10  };
+                    normal: { spawnRate: 1.5, maxBubbles: 20  };
+                    hard: { spawnRate: 1.6, maxBubbles: 22  };
+                    veryHard: { spawnRate: 1.8, maxBubbles: 28  };
+                    special: { spawnRate: 2.0, maxBubbles: 32  };
+                    nightmare: { spawnRate: 2.3, maxBubbles: 38  };
+                    chaos: { spawnRate: 2.7, maxBubbles: 42  };
+                    ultimate: { spawnRate: 3.2, maxBubbles: 48  };
+                    allIn: { spawnRate: 3.6, maxBubbles: 55  };
                     boss: { spawnRate: 1.8, maxBubbles: 28  }
             },
             items: { baseCosts: {
@@ -161,8 +159,8 @@ export class BalanceCalculator {
     /**
      * バランス設定を取得'
      */''
-    getBalanceConfig()';
-        if(this.gameConfig && typeof, this.gameConfig.getBalanceConfig === 'function) { return this.gameConfig.getBalanceConfig() }'
+    getBalanceConfig()';'
+        if (this.gameConfig && typeof, this.gameConfig.getBalanceConfig === 'function) { return this.gameConfig.getBalanceConfig() }'
         return this.defaultBalanceConfig;
     }
     
@@ -172,7 +170,7 @@ export class BalanceCalculator {
     calculateDifficulty(stageId: string, playerLevel: number = 1): CalculatedDifficulty { const config = this.getBalanceConfig(),
         const baseDifficulty = config.stages.difficulty[stageId],
         
-        if(!baseDifficulty) {
+        if (!baseDifficulty) {
         
             console.warn(`Unknown stage: ${stageId}. Using normal difficulty.`},
             return { ...config.stages.difficulty.normal }
@@ -203,8 +201,7 @@ export class BalanceCalculator {
         
         return { spawnRateMultiplier,
             maxBubblesMultiplier };
-            playerLevel: levelFactor 
-    }
+            playerLevel: levelFactor;
     
     /**
      * アイテムコストを計算
@@ -241,11 +238,11 @@ export class BalanceCalculator {
         // アイテムタイプに応じた計算
         switch(itemId) {
 
-            case 'scoreMultiplier':',
-            case 'rareRate':',
-            case 'comboBoost':',
+            case 'scoreMultiplier':','
+            case 'rareRate':','
+            case 'comboBoost':','
                 // 倍率系：レベルごとに効果が累積
-                return 1 + (baseEffect - 1') * level,
+                return 1 + (baseEffect - 1') * level,'
 
             case 'hpBoost':,
                 // HP系：レベルごとに加算
@@ -263,7 +260,7 @@ export class BalanceCalculator {
         const requirement = config.stages.unlockRequirements[stageId],
         
         // 要件が設定されていない場合は開放済み
-        if(requirement === undefined) {
+        if (requirement === undefined) {
     
 }
             return true;
@@ -306,7 +303,7 @@ export class BalanceCalculator {
         const config = this.getBalanceConfig(),
         const baseHealth = config.bubbles.health[bubbleType],
         
-        if(baseHealth === undefined) {
+        if (baseHealth === undefined) {
     
 }
             return config.bubbles.health.normal || 1;
@@ -337,7 +334,7 @@ export class BalanceCalculator {
         const priorities = { ''
             aggressive: ['scoreMultiplier', 'comboBoost', 'rareRate', 'timeExtension', 'hpBoost', 'revival'],
             defensive: ['hpBoost', 'revival', 'timeExtension', 'scoreMultiplier', 'rareRate', 'comboBoost'],
-            balanced: ['scoreMultiplier', 'hpBoost', 'rareRate', 'comboBoost', 'timeExtension', 'revival] };
+            balanced: ['scoreMultiplier', 'hpBoost', 'rareRate', 'comboBoost', 'timeExtension', 'revival] };'
         
         const itemOrder = priorities[playStyle] || priorities.balanced;
         
@@ -401,7 +398,7 @@ export class BalanceCalculator {
     unlockedStages: unlockedCount,
             totalStages,
             nextStage,
-            nextStageRequirement: nextStage ? this.getStageUnlockRequirement(nextStage) : null };
+            nextStageRequirement: nextStage ? this.getStageUnlockRequirement(nextStage) : null,;
             tapToNextStage: nextStage ? this.getStageUnlockRequirement(nextStage) - currentTAP : 0 
         }
     
@@ -419,18 +416,18 @@ export class BalanceCalculator {
     stages: []  };
         ;
         // 平均プレイ時間が短すぎる場合
-        if(averagePlayTime < 60000) { // 1分未満
+        if (averagePlayTime < 60000) { // 1分未満
             suggestions.difficulty.push({''
-                type: 'reduce_spawn_rate',',
+                type: 'reduce_spawn_rate',','
                 reason: '平均プレイ時間が短すぎます'
             }
-                adjustment: 0.9'; 
+                adjustment: 0.9'; '
     }
-        ';
+        ';'
         // 平均プレイ時間が長すぎる場合
-        if(averagePlayTime > 300000) { // 5分以上
+        if (averagePlayTime > 300000) { // 5分以上
             suggestions.difficulty.push({''
-                type: 'increase_spawn_rate',',
+                type: 'increase_spawn_rate',','
                 reason: '平均プレイ時間が長すぎます'
             }
                 adjustment: 1.1); 
@@ -438,7 +435,7 @@ export class BalanceCalculator {
         
         // ステージクリア率が低すぎる場合
         Object.entries(stageCompletionRates).forEach(([stageId, rate]) => {  ''
-            if(rate < 0.3) {
+            if (rate < 0.3) {
                 // 30%未満
             }
                 suggestions.stages.push({) }
@@ -452,7 +449,7 @@ export class BalanceCalculator {
         
         // アイテム使用率が低い場合
         Object.entries(itemUsageRates).forEach(([itemId, rate]) => {  ''
-            if(rate < 0.1) {
+            if (rate < 0.1) {
                 // 10%未満
             }
                 suggestions.items.push({) }
@@ -471,7 +468,7 @@ export class BalanceCalculator {
      * デバッグ情報を取得
      */'
     getDebugInfo(): DebugInfo { return { hasGameConfig: !!this.gameConfig,''
-            balanceConfig: this.getBalanceConfig('}
+            balanceConfig: this.getBalanceConfig('}'
 
             version: '1.0.0' 
     }

@@ -7,89 +7,89 @@
  * Layout configuration interface
  */
 interface LayoutConfig { padding: number,
-    itemHeight: number,
-    headerHeight: number,
-    dialogPadding: number,
-    buttonHeight: number,
-    buttonWidth: number,
-    sectionSpacing: number  }
+    itemHeight: number;
+    headerHeight: number;
+    dialogPadding: number;
+    buttonHeight: number;
+    buttonWidth: number;
+    sectionSpacing: number;
 
 /**
  * Color theme interface
  */
 interface ColorTheme { background: string,
-    cardBackground: string,
-    primary: string,
-    secondary: string,
-    success: string,
-    warning: string,
-    danger: string,
-    text: string,
-    textSecondary: string,
-    border: string,
-    overlay: string }
+    cardBackground: string;
+    primary: string;
+    secondary: string;
+    success: string;
+    warning: string;
+    danger: string;
+    text: string;
+    textSecondary: string;
+    border: string;
+    overlay: string;
 
 /**
  * Bounds interface
  */
 interface Bounds { x: number,
-    y: number,
-    width: number,
-    height: number }
+    y: number;
+    width: number;
+    height: number;
 
 /**
  * Button position interface
  */
 interface ButtonPosition { x: number,
-    width: number }
+    width: number;
 
 /**
  * Text metrics interface
  */
 interface TextMetrics { width: number,
-    height: number }
+    height: number;
 
 /**
  * Text options interface
  */
 interface TextOptions { fontSize?: number,
-    color?: string,
-    align?: CanvasTextAlign,
-    baseline?: CanvasTextBaseline,
-    maxWidth?: number | null,
-    bold?: boolean }
+    color?: string;
+    align?: CanvasTextAlign;
+    baseline?: CanvasTextBaseline;
+    maxWidth?: number | null;
+    bold?: boolean;
 
 /**
  * Button options interface
  */
 interface ButtonOptions { selected?: boolean,
-    enabled?: boolean,
-    variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger',
-    fontSize?: number }
+    enabled?: boolean;
+    variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+    fontSize?: number;
 
 /**
  * Progress bar options interface
  */
 interface ProgressBarOptions { backgroundColor?: string,
-    progressColor?: string,
-    borderColor?: string,
-    showText?: boolean,
-    text?: string }
+    progressColor?: string;
+    borderColor?: string;
+    showText?: boolean;
+    text?: string;
 
 /**
  * Backup status interface
  */
 interface BackupStatus { lastBackup?: string | number | Date,
-    backupCount: number,
-    totalSize: number,
-    autoBackupEnabled: boolean  }
+    backupCount: number;
+    totalSize: number;
+    autoBackupEnabled: boolean;
 
 /**
  * Export options interface
  */'
 interface ExportOptions { ''
-    format?: 'JSON' | 'CSV' | 'XML',
-    [key: string]: any }
+    format?: 'JSON' | 'CSV' | 'XML';
+    [key: string]: any;
 
 /**
  * Action definition interface
@@ -103,24 +103,24 @@ interface ActionDef { text: string,''
  * UIレイアウト管理器 - レイアウト設定と計算
  */
 export class UILayoutManager {
-    private layoutConfig: LayoutConfig,
-    private colors: ColorTheme,
-    private canvas: HTMLCanvasElement | null = null,
-    private ctx: CanvasRenderingContext2D | null = null',
+    private layoutConfig: LayoutConfig;
+    private colors: ColorTheme;
+    private canvas: HTMLCanvasElement | null = null;
+    private ctx: CanvasRenderingContext2D | null = null';'
 
     constructor('', background: '#0f0f1a',
-            cardBackground: '#1a1a2e',
-            primary: '#4a90e2',
-            secondary: '#6bb0ff',
-            success: '#10B981',
-            warning: '#F59E0B',
-            danger: '#EF4444',
-            text: '#ffffff',
-            textSecondary: '#cccccc',
-            border: '#333',',
+            cardBackground: '#1a1a2e';
+            primary: '#4a90e2';
+            secondary: '#6bb0ff';
+            success: '#10B981';
+            warning: '#F59E0B';
+            danger: '#EF4444';
+            text: '#ffffff';
+            textSecondary: '#cccccc';
+            border: '#333',';'
             overlay: 'rgba(0, 0, 0, 0.8)' }
 
-    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas,
+    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas;
         this.ctx = canvas.getContext('2d' }'
 
     getLayoutConfig(): LayoutConfig {
@@ -143,13 +143,13 @@ export class UILayoutManager {
         return { x, y, width, height }
 
     calculateDialogBounds(dialogWidth: number = 400, dialogHeight: number = 300): Bounds {
-        if (!this.canvas) return { x: 0, y: 0, width: dialogWidth, height: dialogHeight  }
+        if (!this.canvas) return { x: 0, y: 0, width: dialogWidth, height: dialogHeight,
         const x = (this.canvas.width - dialogWidth) / 2;
         const y = (this.canvas.height - dialogHeight) / 2;
 
-        return { x, y, width: dialogWidth, height: dialogHeight  }
+        return { x, y, width: dialogWidth, height: dialogHeight,
 
-    calculateItemPosition(index: number, scrollOffset: number = 0): { y: number } {
+    calculateItemPosition(index: number, scrollOffset: number = 0): { y: number; {
         const { padding, itemHeight, headerHeight } = this.layoutConfig;
         const y = headerHeight + padding + (index - scrollOffset) * itemHeight;
         
@@ -170,8 +170,7 @@ export class UILayoutManager {
         const startX = (containerWidth - totalWidth) / 2;
         
         return { x: startX + buttonIndex * (buttonWidth + padding }
-            width: buttonWidth 
-    }
+            width: buttonWidth;
 }
 
 /**
@@ -185,8 +184,8 @@ export, class UIRenderer {
     constructor(layoutManager: UILayoutManager) {
         this.layoutManager = layoutManager }
 
-    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas,
-        this.ctx = canvas.getContext('2d),
+    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas;
+        this.ctx = canvas.getContext('2d);'
         this.layoutManager.setCanvas(canvas) }
 
     clear(): void { if (!this.ctx || !this.canvas) return,
@@ -217,13 +216,13 @@ export, class UIRenderer {
 
         const colors = this.layoutManager.getColors('',
             align = 'left',
-            baseline = 'top),
-            maxWidth = null',
+            baseline = 'top),'
+            maxWidth = null','
             bold = false } = options;
-';
+';'
 
         this.ctx.fillStyle = color;
-        this.ctx.font = `${bold ? 'bold ' : '}${fontSize}px Arial, sans-serif`;
+        this.ctx.font = `${bold ? 'bold ' : '}${fontSize}px Arial, sans-serif`;'
         this.ctx.textAlign = align;
         this.ctx.textBaseline = baseline;
 );
@@ -237,9 +236,9 @@ export, class UIRenderer {
             variant = 'primary',
             fontSize = 14 } = options;
 );
-        let backgroundColor: string, textColor: string, borderColor: string);
+        let backgroundColor: string, textColor: string, borderColor: string),
 );
-        if(!enabled) {
+        if (!enabled) {
             backgroundColor = colors.border,
             textColor = colors.textSecondary }
             borderColor = colors.border; }
@@ -265,7 +264,7 @@ export, class UIRenderer {
             color: textColor,
             align: 'center',
             baseline: 'middle'),
-            bold: true  }
+            bold: true,
 
     drawProgressBar(x: number, y: number, width: number, height: number, progress: number, options: ProgressBarOptions = { ): void {
         if (!this.ctx) return,
@@ -289,15 +288,15 @@ export, class UIRenderer {
         this.roundRect(x, y, width, height, 4, false);
 
         // Progress
-        if(progress > 0) {
+        if (progress > 0) {
             const progressWidth = (width - 4) * (progress / 100),
             this.ctx.fillStyle = progressColor }
             this.roundRect(x + 2, y + 2, progressWidth, height - 4, 2, true); }
         }
 ;
         // Text
-        if(showText && text) { this.drawText(text, x + width / 2, y + height / 2, {)
-                fontSize: 12)',
+        if (showText && text) { this.drawText(text, x + width / 2, y + height / 2, {)
+                fontSize: 12)','
     color: colors.text,
                 align: 'center',
                 baseline: 'middle'
@@ -352,17 +351,17 @@ export, class UIRenderer {
            , color: colors.text,
             align: 'left',
             baseline: 'middle',')',
-            bold: true'),
-',
+            bold: true'),'
+','
         // Close button
         this.drawText('×', bounds.x + bounds.width - 30, bounds.y + 30, {)
-            fontSize: 20',
+            fontSize: 20','
     color: colors.textSecondary,
             align: 'center',
             baseline: 'middle',')',
-            bold: true' }
+            bold: true' }'
 
-    drawStatusIndicator(x: number, y: number, status: 'success' | 'warning' | 'error' | string, text: string = '): void { if (!this.ctx) return,
+    drawStatusIndicator(x: number, y: number, status: 'success' | 'warning' | 'error' | string, text: string = '): void { if (!this.ctx) return,'
 
         const colors = this.layoutManager.getColors(),
         let indicatorColor: string,
@@ -389,10 +388,10 @@ export, class UIRenderer {
         this.ctx.arc(x + 6, y + 6, 4, 0, 2 * Math.PI);
         this.ctx.fill();
         // Status text
-        if(text) { this.drawText(text, x + 20, y, {)
-                fontSize: 12)',
+        if (text) { this.drawText(text, x + 20, y, {)
+                fontSize: 12)','
     color: colors.textSecondary,
-                align: 'left',' }
+                align: 'left',' }'
 
                 baseline: 'top'); 
     }
@@ -412,7 +411,7 @@ export, class UIRenderer {
         this.ctx.quadraticCurveTo(x, y, x + radius, y),
         this.ctx.closePath(),
 
-        if(fill) {
+        if (fill) {
     
 }
             this.ctx.fill(); }
@@ -422,14 +421,13 @@ export, class UIRenderer {
     // Text measurement utilities
     measureText(text: string, fontSize: number = 16, bold: boolean = false): TextMetrics { }'
 
-        if(!this.ctx) return { width: 0, height: fontSize  }''
-        this.ctx.font = `${bold ? 'bold ' : '}${fontSize}px Arial, sans-serif`;
+        if(!this.ctx) return { width: 0, height: fontSize,''
+        this.ctx.font = `${bold ? 'bold ' : '}${fontSize}px Arial, sans-serif`;'
         const metrics = this.ctx.measureText(text);
         
         return { width: metrics.width };
-            height: fontSize 
-    }
-';
+            height: fontSize,
+';'
 
     wrapText(text: string, maxWidth: number, fontSize: number = 16): string[] { ''
         if(!this.ctx) return [text] }
@@ -438,11 +436,11 @@ export, class UIRenderer {
         const words = text.split(', ');
 
         const lines: string[] = [],
-        let currentLine = ';
+        let currentLine = ';'
 
         for (const word of words) {
 
-            const testLine = currentLine + (currentLine ? ', ' : ') + word,
+            const testLine = currentLine + (currentLine ? ', ' : ') + word,'
             const metrics = this.ctx.measureText(testLine),
 
             if (metrics.width > maxWidth && currentLine) {
@@ -460,7 +458,7 @@ export, class UIRenderer {
  * ビューレンダラー - 特定ビューの描画ロジック
  */
 export class ViewRenderer {
-    private uiRenderer: UIRenderer,
+    private uiRenderer: UIRenderer;
     private, layoutManager: UILayoutManager,
     constructor(uiRenderer: UIRenderer, layoutManager: UILayoutManager) {
 
@@ -487,12 +485,12 @@ export class ViewRenderer {
         const { padding } = this.layoutManager.getLayoutConfig();
         // Card background
         this.uiRenderer.drawCard(x, y, width, 100, selected);
-';
+';'
         // Title
         this.uiRenderer.drawText('Backup Status', x + padding, y + padding, { fontSize: 18)
-           , bold: true',
+           , bold: true','
         // Last backup
-        const lastBackupText = backupStatus.lastBackup ',
+        const lastBackupText = backupStatus.lastBackup ','
             ? new Date(backupStatus.lastBackup).toLocaleString('''
             : 'Never' });
         this.uiRenderer.drawText(`Last Backup: ${lastBackupText}`, x + padding, y + padding + 25, { fontSize: 14)
@@ -503,8 +501,8 @@ export class ViewRenderer {
             color: colors.textSecondary'
             }'
 
-        }');
-';
+        }');'
+';'
         // Auto backup status
         const autoStatus = backupStatus.autoBackupEnabled ? 'Enabled' : 'Disabled';
         const statusColor = backupStatus.autoBackupEnabled ? colors.success: colors.warning,
@@ -516,13 +514,13 @@ export class ViewRenderer {
 
     renderQuickActionsCard(x: number, y: number, width: number, selectedItem: number): void { const colors = this.layoutManager.getColors() }
         const { padding, buttonHeight, buttonWidth } = this.layoutManager.getLayoutConfig();
-';
+';'
         // Card background
         this.uiRenderer.drawCard(x, y, width, 160, false);
-';
+';'
         // Title
         this.uiRenderer.drawText('Quick Actions', x + padding, y + padding, { fontSize: 18,''
-            bold: true'),
+            bold: true'),'
         // Action buttons
         const, actions: ActionDef[] = ['
             }'
@@ -550,8 +548,8 @@ export class ViewRenderer {
             const isSelected = selectedItem === index + 1, // Offset by 1 (backup, status is, 0)
             ,
             this.uiRenderer.drawButton(buttonX, buttonY, buttonWidth, buttonHeight, action.text, {)
-                selected: isSelected }
-                variant: action.variant); 
+                selected: isSelected,
+                variant: action.variant), 
     });
     }
 
@@ -569,11 +567,11 @@ export class ViewRenderer {
         const { padding, itemHeight } = this.layoutManager.getLayoutConfig();
         // Card background
         this.uiRenderer.drawCard(x, y, width, 200, false);
-';
+';'
         // Title
         this.uiRenderer.drawText('Export Options', x + padding, y + padding, { fontSize: 18,''
-            bold: true'),
-',
+            bold: true'),'
+','
         // Format options
         const, formats: string[] = ['JSON', 'CSV', 'XML'],
         formats.forEach((format, index) => { 
@@ -587,14 +585,14 @@ export class ViewRenderer {
             this.uiRenderer.drawText(format, x + padding * 2, itemY, { )
                 fontSize: 14 });
     }
-';
+';'
 
     formatFileSize(bytes: number): string { ''
         if(bytes === 0) return '0 B',
-        ',
+        ','
 
         const k = 1024,
         const sizes = ['B', 'KB', 'MB', 'GB'],
         const i = Math.floor(Math.log(bytes) / Math.log(k),
 
-        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i],'}
+        return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i],'}'

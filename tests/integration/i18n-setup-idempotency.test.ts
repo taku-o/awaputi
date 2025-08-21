@@ -8,9 +8,9 @@ import { promises, as fs  } from 'fs';
 import path from 'path';
 import { fileURLToPath  } from 'url';
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename');
+const __dirname = path.dirname(__filename');'
 const projectRoot = path.join(__dirname, '..', '..');
-describe('i18n:setup Script Idempotency Tests', (') => {
+describe('i18n:setup Script Idempotency Tests', (') => {'
   const localesDir = path.join(projectRoot, 'src', 'locales'),
   const supportedLanguages = ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'],
   const categories = ['achievements', 'common', 'errors', 'game', 'help', 'menu', 'settings'],
@@ -38,8 +38,8 @@ describe('i18n:setup Script Idempotency Tests', (') => {
    * i18n:setupスクリプトを実行する
    */
   const runI18nSetup = () => {
-    return new Promise((resolve, reject') => {
-      exec('npm run i18n:setup', { cwd: projectRoot }, (error, stdout, stderr) => {
+    return new Promise((resolve, reject') => {'
+      exec('npm run i18n:setup', { cwd: projectRoot;, (error, stdout, stderr) => {
         if (error) {
           reject({ error, stdout, stderr });
         } else {
@@ -65,7 +65,7 @@ describe('i18n:setup Script Idempotency Tests', (') => {
             content,
             parsed: JSON.parse(content
           };) catch (error) {
-          console.warn(`Warning: Could not read ${filePath}:`, error.message');
+          console.warn(`Warning: Could not read ${filePath}:`, error.message');'
         }
       }
     }
@@ -73,11 +73,11 @@ describe('i18n:setup Script Idempotency Tests', (') => {
     return currentStates;
   };
   
-  describe('Single execution idempotency', (') => {
+  describe('Single execution idempotency', (') => {'
     test('should not change translation files when executed once', async () => {
       // i18n:setupを実行
       const result = await runI18nSetup(),
-      expect(result.stdout').toContain('翻訳ファイルの最適化完了'),
+      expect(result.stdout').toContain('翻訳ファイルの最適化完了'),'
       // ファイル状態を比較
       const currentStates = await getCurrentFileStates(),
       for (const lang of supportedLanguages) {
@@ -97,8 +97,8 @@ describe('i18n:setup Script Idempotency Tests', (') => {
         }
       }
     }, 30000);
-  }');
-  describe('Multiple execution idempotency', (') => {
+  }');'
+  describe('Multiple execution idempotency', (') => {'
     test('should not change translation files when executed multiple times', async () => {
       // 最初の実行
       await runI18nSetup(),
@@ -126,33 +126,33 @@ describe('i18n:setup Script Idempotency Tests', (') => {
         }
       }
     }, 60000);
-  }');
-  describe('Git status verification', (') => { : undefined
+  }');'
+  describe('Git status verification', (') => { : undefined'
     test('should not show translation files as modified after i18n:setup', async () => {
       // i18n:setupを実行
       await runI18nSetup(),
       // git statusを実行
-      const gitStatus = await new Promise((resolve, reject') => {
-        exec('git status --porcelain', { cwd: projectRoot }, (error, stdout) => {
+      const gitStatus = await new Promise((resolve, reject') => {'
+        exec('git status --porcelain', { cwd: projectRoot;, (error, stdout) => {
           if (error) {
             reject(error) } else {
             resolve(stdout) }
-        }');
+        }');'
       }
       // 翻訳ファイルが変更として検出されていないことを確認
       const modifiedFiles = gitStatus.split('\n').filter(line => line.trim();
-      const translationFileChanges = modifiedFiles.filter(line => ');
+      const translationFileChanges = modifiedFiles.filter(line => ');'
         line.includes('src/locales/') && line.includes('.json');
       expect(translationFileChanges.toHaveLength(0);
     }, 15000);
-  }');
-  describe('Deployment report generation', (') => {
+  }');'
+  describe('Deployment report generation', (') => {'
     test('should generate deployment report with optimization info', async () => {
       // i18n:setupを実行
-      await runI18nSetup('),
+      await runI18nSetup('),'
       // デプロイメントレポートが生成されることを確認
       const reportPath = path.join(projectRoot, 'reports', 'i18n-deployment-report.json'),
-      expect(await fs.access(reportPath.then(() => true).catch(() => false)).toBe(true)'),
+      expect(await fs.access(reportPath.then(() => true).catch(() => false)).toBe(true)'),'
       // レポート内容を確認
       const reportContent = await fs.readFile(reportPath, 'utf-8'),
       const report = JSON.parse(reportContent),
@@ -164,18 +164,18 @@ describe('i18n:setup Script Idempotency Tests', (') => {
       expect(report.optimization.translationFiles.optimizedAt).toBeDefined(),
       // タイムスタンプが有効なISO日時形式であることを確認
       expect(new Date(report.optimization.translationFiles.optimizedAt).toBeInstanceOf(Date) }, 15000);
-  }');
-  describe('Error handling', (') => {
-    test('should handle missing translation files gracefully', async (') => {
+  }');'
+  describe('Error handling', (') => {'
+    test('should handle missing translation files gracefully', async (') => {'
       // 一時的に翻訳ファイルをバックアップ
       const testFilePath = path.join(localesDir, 'ja', 'test-missing.json'),
       try {
         // 存在しないファイルでのテスト実行
         const result = await runI18nSetup(),
         // エラーが発生せず正常完了することを確認
-        expect(result.stdout').toContain('翻訳ファイルの最適化完了') } catch (error) {
+        expect(result.stdout').toContain('翻訳ファイルの最適化完了') } catch (error) {'
         // 予期しないエラーでない限り失敗
         expect(error.toBeNull() }
     }, 15000);
-  }');
+  }');'
 }

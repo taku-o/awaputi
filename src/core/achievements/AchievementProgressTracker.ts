@@ -11,118 +11,118 @@
 
 // 型定義
 export interface ProgressData { bubblesPopped?: number,
-    totalScore?: number,
-    highestSingleScore?: number,
-    maxCombo?: number,
-    bestAccuracy?: number,
-    longestSurvivalTime?: number,
-    stagesCleared?: number,
-    allStagesCleared?: boolean,
-    gamesPlayed?: number,
-    totalPlayTime?: number,
-    consecutiveDaysPlayed?: number,
-    highestNoItemScore?: number,
-    bubbleTypesCounts?: Record<string, number>,
-    perfectGames?: PerfectGameRecord[],
-    speedChallengeRecords?: SpeedChallengeRecord[],
-    lowHpSurvivalRecords?: LowHpSurvivalRecord[],
-    lowHpScoreRecords?: LowHpScoreRecord[],
-    timeSpecificScoreRecords?: TimeSpecificScoreRecord[],
-    stageClearCounts?: Record<string, number>,
-    availableStages?: string[],
-    [key: string]: any }
+    totalScore?: number;
+    highestSingleScore?: number;
+    maxCombo?: number;
+    bestAccuracy?: number;
+    longestSurvivalTime?: number;
+    stagesCleared?: number;
+    allStagesCleared?: boolean;
+    gamesPlayed?: number;
+    totalPlayTime?: number;
+    consecutiveDaysPlayed?: number;
+    highestNoItemScore?: number;
+    bubbleTypesCounts?: Record<string, number>;
+    perfectGames?: PerfectGameRecord[];
+    speedChallengeRecords?: SpeedChallengeRecord[];
+    lowHpSurvivalRecords?: LowHpSurvivalRecord[];
+    lowHpScoreRecords?: LowHpScoreRecord[];
+    timeSpecificScoreRecords?: TimeSpecificScoreRecord[];
+    stageClearCounts?: Record<string, number>;
+    availableStages?: string[];
+    [key: string]: any;
 
 export interface PerfectGameRecord { bubbles: number,
-    missedBubbles: number,
-    score: number,
-    timestamp: number  }
+    missedBubbles: number;
+    score: number;
+    timestamp: number;
 
 export interface SpeedChallengeRecord { bubbles: number,
-    time: number,
-    timestamp: number }
+    time: number;
+    timestamp: number;
 
 export interface LowHpSurvivalRecord { hp: number,
-    time: number,
-    timestamp: number }
+    time: number;
+    timestamp: number;
 
 export interface LowHpScoreRecord { hp: number,
-    score: number,
-    timestamp: number }
+    score: number;
+    timestamp: number;
 
 export interface TimeSpecificScoreRecord { score: number,
-    timestamp: number }
+    timestamp: number;
 
 export interface Achievement { id: string,
-    name: string,
-    description: string,
-    condition: AchievementCondition,
-    rewards?: AchievementReward[],
-    category?: string,
-    difficulty?: DifficultyLevel,
-    hidden?: boolean }
+    name: string;
+    description: string;
+    condition: AchievementCondition;
+    rewards?: AchievementReward[];
+    category?: string;
+    difficulty?: DifficultyLevel;
+    hidden?: boolean;
 
 export interface AchievementCondition { type: ConditionType,
-    value?: number,
-    bubbleType?: string,
-    hp?: number,
-    time?: number,
-    score?: number,
-    minBubbles?: number,
-    bubbles?: number,
-    startHour?: number,
-    endHour?: number,
-    [key: string]: any }
+    value?: number;
+    bubbleType?: string;
+    hp?: number;
+    time?: number;
+    score?: number;
+    minBubbles?: number;
+    bubbles?: number;
+    startHour?: number;
+    endHour?: number;
+    [key: string]: any;
 
 export interface AchievementReward { type: RewardType,
-    value: string | number,
-    description?: string  }
+    value: string | number;
+    description?: string;
 
 export interface ConditionEvaluationResult { current: number,
-    target: number,
-    progress: number,
-    isComplete: boolean,
-    error?: string,
-    bubbleType?: string,
-    hp?: number,
-    minBubbles?: number,
-    bubbles?: number,
-    timeRange?: string,
-    requiredCount?: number,
-    completedTypes?: string[],
-    requiredTypes?: string[],
-    completedStages?: string[] }
+    target: number;
+    progress: number;
+    isComplete: boolean;
+    error?: string;
+    bubbleType?: string;
+    hp?: number;
+    minBubbles?: number;
+    bubbles?: number;
+    timeRange?: string;
+    requiredCount?: number;
+    completedTypes?: string[];
+    requiredTypes?: string[];
+    completedStages?: string[];
 
 export interface ProgressHistoryEntry { eventType: EventType,
-    data: any,
-    timestamp: number  }
+    data: any;
+    timestamp: number;
 
 export interface EventData { bubbleType?: string,
-    score?: number,
-    accuracy?: number,
-    survivalTime?: number,
-    bubblesPopped?: number,
-    missedBubbles?: number,
-    gameTime?: number,
-    itemsUsed?: number,
-    lowestHp?: number,
-    combo?: number,
-    stageName?: string,
-    allStagesCompleted?: boolean,
-    sessionTime?: number,
-    consecutiveDays?: number,
-    [key: string]: any }
+    score?: number;
+    accuracy?: number;
+    survivalTime?: number;
+    bubblesPopped?: number;
+    missedBubbles?: number;
+    gameTime?: number;
+    itemsUsed?: number;
+    lowestHp?: number;
+    combo?: number;
+    stageName?: string;
+    allStagesCompleted?: boolean;
+    sessionTime?: number;
+    consecutiveDays?: number;
+    [key: string]: any;
 
 export interface TrackerConfig { saveInterval: number,
-    maxHistoryEntries: number,
-    debugMode: boolean  }
+    maxHistoryEntries: number;
+    debugMode: boolean;
 
 export interface SaveData { progressData: ProgressData,
-    unlockedAchievements: string[],
-    lastSaved: number }
+    unlockedAchievements: string[];
+    lastSaved: number;
 
 export interface AchievementUnlockedEvent { achievementId: string,
-    achievement: Achievement,
-    timestamp: number }
+    achievement: Achievement;
+    timestamp: number;
 
 // コールバック型
 export type ConditionEvaluator = (progress: ProgressData, condition: AchievementCondition) => ConditionEvaluationResult;
@@ -130,44 +130,44 @@ export type EventHandler = (data: any) => void;
 
 // 列挙型
 export type ConditionType = ;
-    | 'bubblesPopped'';
-    | 'singleGameScore'';
-    | 'cumulativeScore'';
-    | 'maxCombo'';
-    | 'bubbleTypePopped'';
-    | 'survivalTime'';
-    | 'lowHpSurvival'';
-    | 'lowHpScore'';
-    | 'stagesCleared'';
-    | 'allStagesCleared'';
-    | 'perfectGame'';
-    | 'speedChallenge'';
-    | 'accuracy'';
-    | 'consecutiveDays'';
-    | 'totalPlayTime'';
-    | 'gamesPlayed'';
-    | 'allBubbleTypes'';
-    | 'allStagesMultiple'';
-    | 'noItemScore'';
+    | 'bubblesPopped'';'
+    | 'singleGameScore'';'
+    | 'cumulativeScore'';'
+    | 'maxCombo'';'
+    | 'bubbleTypePopped'';'
+    | 'survivalTime'';'
+    | 'lowHpSurvival'';'
+    | 'lowHpScore'';'
+    | 'stagesCleared'';'
+    | 'allStagesCleared'';'
+    | 'perfectGame'';'
+    | 'speedChallenge'';'
+    | 'accuracy'';'
+    | 'consecutiveDays'';'
+    | 'totalPlayTime'';'
+    | 'gamesPlayed'';'
+    | 'allBubbleTypes'';'
+    | 'allStagesMultiple'';'
+    | 'noItemScore'';'
     | 'timeSpecificScore';
-';
+';'
 
-export type EventType = ';
-    | 'bubblePopped'';
-    | 'gameCompleted'';
-    | 'comboAchieved'';
-    | 'stageCleared'';
+export type EventType = ';'
+    | 'bubblePopped'';'
+    | 'gameCompleted'';'
+    | 'comboAchieved'';'
+    | 'stageCleared'';'
     | 'playSession';
 
 export type RewardType = 'points' | 'item' | 'cosmetic' | 'title' | 'unlock';
 export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';
 
 export class AchievementProgressTracker {
-    private progressData: ProgressData,
-    private unlockedAchievements: Set<string>,
-    private conditionEvaluators: Record<ConditionType, ConditionEvaluator>,
-    private config: TrackerConfig,
-    private progressHistory: ProgressHistoryEntry[],
+    private progressData: ProgressData;
+    private unlockedAchievements: Set<string>;
+    private conditionEvaluators: Record<ConditionType, ConditionEvaluator>;
+    private config: TrackerConfig;
+    private progressHistory: ProgressHistoryEntry[];
     private, eventHandlers: Record<string, EventHandler[]>,
     private autoSaveInterval?: number,
 
@@ -182,9 +182,9 @@ export class AchievementProgressTracker {
         this.conditionEvaluators = this.initializeConditionEvaluators();
         
         // 進捗計算設定
-        this.config = { saveInterval: 5000, // 5秒毎に保存
+        this.config = { saveInterval: 5000; // 5秒毎に保存
             maxHistoryEntries: 100,
-    debugMode: false  };
+    debugMode: false,;
         // 進捗履歴
         this.progressHistory = [];
         
@@ -241,7 +241,7 @@ export class AchievementProgressTracker {
             bubbleTypePopped: (progress: ProgressData, condition: AchievementCondition'): ConditionEvaluationResult => {  }'
 
                 const bubbleTypes = progress.bubbleTypesCounts || {};
-                const current = bubbleTypes[condition.bubbleType || '] || 0;
+                const current = bubbleTypes[condition.bubbleType || '] || 0;'
                 const target = condition.value || 0;
                 return { current,
                     target,
@@ -295,8 +295,7 @@ export class AchievementProgressTracker {
                 return { current: cleared ? 1 : 0,
                     target: 1, 
                     progress: cleared ? 1 : 0 };
-                    isComplete: cleared 
-    },
+                    isComplete: cleared;,
 
             // 完璧ゲーム
             perfectGame: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {  const records = progress.perfectGames || [],
@@ -360,9 +359,9 @@ export class AchievementProgressTracker {
             allBubbleTypes: (progress: ProgressData, condition: AchievementCondition'): ConditionEvaluationResult => {  }'
                 const bubbleTypes = progress.bubbleTypesCounts || {};
 
-                const requiredTypes = [';
+                const requiredTypes = [';'
                     'normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink',
-                    'poison', 'spiky', 'electric', 'boss', 'golden', 'phantom',]';
+                    'poison', 'spiky', 'electric', 'boss', 'golden', 'phantom',]';'
                     'explosive', 'magnetic', 'frozen', 'multiplier'];
                 ];
                 const completedTypes = requiredTypes.filter(type => (bubbleTypes[type] || 0) > 0);
@@ -424,27 +423,27 @@ export class AchievementProgressTracker {
     updateProgress(eventType: EventType, data: EventData): void { // イベントタイプに基づいて進捗データを更新
         switch(eventType) {
 
-            case 'bubblePopped':',
+            case 'bubblePopped':','
                 this.updateBubbleProgress(data),
 
                 break,
-            case 'gameCompleted':',
+            case 'gameCompleted':','
                 this.updateGameCompletionProgress(data),
 
                 break,
-            case 'comboAchieved':',
+            case 'comboAchieved':','
                 this.updateComboProgress(data),
 
                 break,
-            case 'stageCleared':',
+            case 'stageCleared':','
                 this.updateStageProgress(data),
 
                 break,
             case 'playSession':,
                 this.updatePlaySessionProgress(data),
                 break,
-            default:,
-         }
+            default:
+}
                 if (this.config.debugMode) { }
                     console.warn(`Unknown, event type: ${eventType}`} }
         }
@@ -460,7 +459,7 @@ export class AchievementProgressTracker {
     private updateBubbleProgress(data: EventData): void { // 総泡数
         this.progressData.bubblesPopped = (this.progressData.bubblesPopped || 0) + 1,
         // 泡タイプ別カウント
-        if(!this.progressData.bubbleTypesCounts) { }
+        if (!this.progressData.bubbleTypesCounts) { }
             this.progressData.bubbleTypesCounts = {}''
         const bubbleType = data.bubbleType || 'normal';
         this.progressData.bubbleTypesCounts[bubbleType] = ;
@@ -475,7 +474,7 @@ export class AchievementProgressTracker {
         this.progressData.gamesPlayed = (this.progressData.gamesPlayed || 0) + 1,
         
         // スコア関連
-        if(data.score !== undefined) {
+        if (data.score !== undefined) {
             this.progressData.totalScore = (this.progressData.totalScore || 0) + data.score,
             this.progressData.highestSingleScore = Math.max(
                 this.progressData.highestSingleScore || 0) }
@@ -483,14 +482,14 @@ export class AchievementProgressTracker {
         }
         
         // 精度
-        if(data.accuracy !== undefined) {
+        if (data.accuracy !== undefined) {
             this.progressData.bestAccuracy = Math.max(
                 this.progressData.bestAccuracy || 0) }
                 data.accuracy); }
         }
         
         // 生存時間
-        if(data.survivalTime !== undefined) {
+        if (data.survivalTime !== undefined) {
             this.progressData.longestSurvivalTime = Math.max(
                 this.progressData.longestSurvivalTime || 0) }
                 data.survivalTime); }
@@ -506,7 +505,7 @@ export class AchievementProgressTracker {
         }
         
         // スピードチャレンジ
-        if(data.gameTime && data.bubblesPopped) {
+        if (data.gameTime && data.bubblesPopped) {
             if (!this.progressData.speedChallengeRecords) {
         }
                 this.progressData.speedChallengeRecords = []; }
@@ -522,7 +521,7 @@ export class AchievementProgressTracker {
                 data.score) }
         
         // 時間指定スコア
-        if(data.score) {
+        if (data.score) {
             if (!this.progressData.timeSpecificScoreRecords) {
         }
                 this.progressData.timeSpecificScoreRecords = []; }
@@ -541,7 +540,7 @@ export class AchievementProgressTracker {
      * @param data ゲームデータ
      */
     private updateLowHpRecords(data: EventData): void { // 低HP生存記録
-        if(!this.progressData.lowHpSurvivalRecords) {
+        if (!this.progressData.lowHpSurvivalRecords) {
     
 }
             this.progressData.lowHpSurvivalRecords = []; }
@@ -574,7 +573,7 @@ export class AchievementProgressTracker {
     private updateStageProgress(data: EventData): void { // ステージクリア数
         this.progressData.stagesCleared = (this.progressData.stagesCleared || 0) + 1,
         // ステージ別クリア数
-        if(!this.progressData.stageClearCounts) { }
+        if (!this.progressData.stageClearCounts) { }
             this.progressData.stageClearCounts = {}''
         const stageName = data.stageName || 'unknown';
         this.progressData.stageClearCounts[stageName] = ;
@@ -589,7 +588,7 @@ export class AchievementProgressTracker {
      * @param data セッションデータ
      */
     private updatePlaySessionProgress(data: EventData): void { // 総プレイ時間
-        if(data.sessionTime !== undefined) {
+        if (data.sessionTime !== undefined) {
     
 }
             this.progressData.totalPlayTime = (this.progressData.totalPlayTime || 0) + data.sessionTime; }
@@ -612,7 +611,7 @@ export class AchievementProgressTracker {
             return { current: 0,
                 target: 1,
     progress: 0 };
-                isComplete: false }
+                isComplete: false;
                 error: `Unknown condition, type: ${condition.type}`
             }
         
@@ -621,7 +620,7 @@ export class AchievementProgressTracker {
             return { current: 0,
                 target: 1,
                 progress: 0,
-    isComplete: false };
+    isComplete: false,;
                 error: (error, as Error).message }
             }
     }
@@ -638,11 +637,11 @@ export class AchievementProgressTracker {
      * @param achievementId 実績ID
      * @param achievement 実績オブジェクト
      */
-    unlockAchievement(achievementId: string, achievement: Achievement): void { if(this.unlockedAchievements.has(achievementId) {
+    unlockAchievement(achievementId: string, achievement: Achievement): void { if (this.unlockedAchievements.has(achievementId) {
             return, // 既に解除済み }
 
         this.unlockedAchievements.add(achievementId);
-        ';
+        ';'
         // イベント発火
         this.triggerEvent('achievementUnlocked', {
                 achievementId
@@ -661,7 +660,7 @@ export class AchievementProgressTracker {
             timestamp: Date.now(  });
         
         // 履歴サイズ制限
-        if (this.progressHistory.length > this.config.maxHistoryEntries) { this.progressHistory = this.progressHistory.slice(0, this.config.maxHistoryEntries) }
+        if (this.progressHistory.length > this.config.maxHistoryEntries) { this.progressHistory = this.progressHistory.slice(0; this.config.maxHistoryEntries) }
     }
 
     /**
@@ -696,8 +695,8 @@ export class AchievementProgressTracker {
             const saveData: SaveData = {
                 progressData: this.progressData,
     unlockedAchievements: Array.from(this.unlockedAchievements,
-                lastSaved: Date.now()',
-            localStorage.setItem('achievementProgress', JSON.stringify(saveData),' }
+                lastSaved: Date.now()','
+            localStorage.setItem('achievementProgress', JSON.stringify(saveData),' }'
 
         } catch (error) { console.error('Failed to save achievement progress:', error }
     }
@@ -705,12 +704,12 @@ export class AchievementProgressTracker {
     /**
      * 進捗データを読み込み'
      */''
-    private loadProgressData()';
-            const savedData = localStorage.getItem('achievementProgress);
+    private loadProgressData()';'
+            const savedData = localStorage.getItem('achievementProgress);'
             if (savedData) { const data: SaveData = JSON.parse(savedData }
                 this.progressData = data.progressData || {};
 
-                this.unlockedAchievements = new, Set(data.unlockedAchievements || []);'} catch (error) { console.error('Failed to load achievement progress:', error }
+                this.unlockedAchievements = new, Set(data.unlockedAchievements || []);'} catch (error) { console.error('Failed to load achievement progress:', error }'
             this.progressData = {};
             this.unlockedAchievements = new Set();
         }
@@ -761,4 +760,4 @@ export class AchievementProgressTracker {
             clearInterval(this.autoSaveInterval),
             this.autoSaveInterval = undefined }
 
-    }'}
+    }'}'

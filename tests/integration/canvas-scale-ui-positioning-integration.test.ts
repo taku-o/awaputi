@@ -10,7 +10,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
     let responsiveCanvasManager: any,
     let scaledCoordinateManager: any,
     let gameUIManager: any,
-    beforeAll((') => {
+    beforeAll((') => {'
         // JSDOM環境のセットアップ
         dom = new JSDOM(`
             <!DOCTYPE html>
@@ -52,7 +52,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             transform: jest.fn(
             translate: jest.fn(
             rotate: jest.fn(
-            scale: jest.fn(",
+            scale: jest.fn(","
             globalAlpha: 1,
             globalCompositeOperation: 'source-over',
             fillStyle: '#000',
@@ -61,9 +61,8 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             font: '10px sans-serif',
             textAlign: 'start',
             textBaseline: 'alphabetic',
-            canvas: null
-    });
-        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');
+            canvas: null,);
+        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');'
         canvas = document.getElementById('gameCanvas');
         mockContext.canvas = canvas;
     );
@@ -77,22 +76,22 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
         gameUIManager = new GameUIManager(responsiveCanvasManager);
         // モックの初期化
         jest.clearAllMocks();
-    }');
-    describe('ResponsiveCanvasManager Integration', (') => {
+    }');'
+    describe('ResponsiveCanvasManager Integration', (') => {'
         test('should integrate ScaledCoordinateManager with ResponsiveCanvasManager', async () => {
             // ResponsiveCanvasManagerの初期化
             responsiveCanvasManager.initialize(),
             // ScaleChangeイベントハンドラーの確認
-            expect(responsiveCanvasManager.scaledCoordinateManager).toBeDefined('),
+            expect(responsiveCanvasManager.scaledCoordinateManager).toBeDefined('),'
             // キャンバスサイズ変更をシミュレート
-            Object.defineProperty(canvas, 'clientWidth', { value: 1200, configurable: true )',
+            Object.defineProperty(canvas, 'clientWidth', { value: 1200, configurable: true )','
             Object.defineProperty(canvas, 'clientHeight', { value: 900, configurable: true ,
             responsiveCanvasManager.updateCanvasSize(),
             // スケール変更が適切に処理されることを確認
             const scaleInfo = scaledCoordinateManager.getCanvasInfo(),
             expect(scaleInfo.scaleFactor).toBeGreaterThan(0),
             expect(scaleInfo.displayWidth).toBe(1200),
-            expect(scaleInfo.displayHeight).toBe(900) }');
+            expect(scaleInfo.displayHeight).toBe(900) }');'
         test('should handle canvas resize events correctly', async () => {
             const onScaleChangeMock = jest.fn() as jest.Mock,
             scaledCoordinateManager.onScaleChange(onScaleChangeMock),
@@ -104,8 +103,8 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 { width: 1920, height: 1080 } // デスクトップサイズ
             ];
             
-            for (const size of resizeSizes') {
-                Object.defineProperty(canvas, 'clientWidth', { value: size.width, configurable: true )',
+            for (const size of resizeSizes') {'
+                Object.defineProperty(canvas, 'clientWidth', { value: size.width, configurable: true )','
                 Object.defineProperty(canvas, 'clientHeight', { value: size.height, configurable: true ,
                 responsiveCanvasManager.updateCanvasSize(),
                 // スケール変更イベントが呼び出されることを確認
@@ -114,9 +113,9 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 const scaledPos = scaledCoordinateManager.getScaledPosition(100, 100),
                 expect(scaledPos.x).toBeGreaterThan(0),
                 expect(scaledPos.y).toBeGreaterThan(0) }
-        }');
+        }');'
     }
-    describe('UI Element Positioning across Different Screen Sizes', (') => {
+    describe('UI Element Positioning across Different Screen Sizes', (') => {'
         test('should position UI elements correctly on desktop', async () => {
             // デスクトップサイズ設定
             simulateScreenSize(1920, 1080),
@@ -128,21 +127,21 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             expect(testPositions.hp.x).toBeGreaterThan(0),
             expect(testPositions.time.x).toBeGreaterThan(0),
             // 右寄せ要素（コンボ表示）の確認
-            expect(testPositions.combo.x).toBeGreaterThan(testPositions.score.x) }');
+            expect(testPositions.combo.x).toBeGreaterThan(testPositions.score.x) }');'
         test('should position UI elements correctly on tablet', async () => {
             // タブレットサイズ設定
             simulateScreenSize(1024, 768),
             const testPositions = testUIElementPositioning(),
             // タブレットでの適切な配置を確認
             expect(testPositions.score.x).toBeGreaterThan(0),
-            expect(testPositions.score.y).toBeGreaterThan(0'),
+            expect(testPositions.score.y).toBeGreaterThan(0'),'
             // レスポンシブマージンが適用されていることを確認
             const { UIPositionCalculator } = await import('../../src/utils/UIPositionCalculator.js');
             const positionCalculator = new UIPositionCalculator(scaledCoordinateManager);
             const margins = positionCalculator.getResponsiveMargins();
             expect(margins.top).toBeDefined();
             expect(margins.left).toBeDefined();
-        }');
+        }');'
         test('should position UI elements correctly on mobile', async () => {
             // モバイルサイズ設定
             simulateScreenSize(375, 812),
@@ -152,7 +151,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             expect(testPositions.score.y).toBeGreaterThan(0),
             // モバイル特有のレイアウト調整を確認
             const canvasInfo = scaledCoordinateManager.getCanvasInfo(),
-            expect(canvasInfo.scaleFactor).toBeDefined() }');
+            expect(canvasInfo.scaleFactor).toBeDefined() }');'
         test('should handle orientation changes', async () => {
             // ポートレート（縦向き）
             simulateScreenSize(375, 812),
@@ -164,10 +163,10 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             expect(portraitPositions.score.x).toBeGreaterThan(0),
             expect(landscapePositions.score.x).toBeGreaterThan(0),
             // アスペクト比の違いに応じた配置の調整を確認
-            expect(portraitPositions.score.x).not.toBe(landscapePositions.score.x) }');
+            expect(portraitPositions.score.x).not.toBe(landscapePositions.score.x) }');'
     }
-    describe('Input Handling Accuracy with Scaling', (') => {
-        test('should convert mouse events correctly across different scales', async (') => {
+    describe('Input Handling Accuracy with Scaling', (') => {'
+        test('should convert mouse events correctly across different scales', async (') => {'
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
             const inputConverter = new InputCoordinateConverter(scaledCoordinateManager);
             // 異なるスケールでのマウスイベントテスト
@@ -178,7 +177,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             ];
             
             for (const testCase of testScales) {
-                simulateScreenSize(testCase.width, testCase.height'),
+                simulateScreenSize(testCase.width, testCase.height'),'
                 const mockEvent = {
                     clientX: 100,
                     clientY: 100,
@@ -195,12 +194,12 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 expect(convertedEvent.canvasX).toBeGreaterThanOrEqual(0);
                 expect(convertedEvent.canvasY).toBeGreaterThanOrEqual(0);
             }
-        }');
-        test('should handle touch events correctly on mobile', async (') => {
+        }');'
+        test('should handle touch events correctly on mobile', async (') => {'
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
             const inputConverter = new InputCoordinateConverter(scaledCoordinateManager);
             // モバイルサイズ設定
-            simulateScreenSize(375, 812');
+            simulateScreenSize(375, 812');'
             const mockTouchEvent = {
                 touches: [{
                     clientX: 200,
@@ -215,8 +214,8 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             expect(convertedEvent.canvasY).toBeDefined();
             expect(convertedEvent.baseX).toBeDefined();
             expect(convertedEvent.baseY).toBeDefined();
-        }');
-        test('should perform accurate hit testing', async (') => {
+        }');'
+        test('should perform accurate hit testing', async (') => {'
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
             const inputConverter = new InputCoordinateConverter(scaledCoordinateManager);
             // ヒットテストのテストケース
@@ -224,23 +223,19 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 {
                     point: { x: 150, y: 150 },
                     rect: { x: 100, y: 100, width: 100, height: 100 },
-                    expected: true
-                },
+                    expected: true,,
                 {
                     point: { x: 50, y: 50 },
                     rect: { x: 100, y: 100, width: 100, height: 100 },
-                    expected: false
-                },
+                    expected: false,,
                 {
                     point: { x: 200, y: 200 },
                     circle: { x: 200, y: 200, radius: 50 },
-                    expected: true
-                },
+                    expected: true,,
                 {
                     point: { x: 300, y: 300 },
                     circle: { x: 200, y: 200, radius: 50 },
-                    expected: false
-                }
+                    expected: false,
             ];
             
             for (const testCase of testCases) {
@@ -252,9 +247,9 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                     const result = inputConverter.isPointInScaledCircle(testCase.point, testCase.circle, testCase.circle.radius),
                     expect(result.toBe(testCase.expected) }
             }
-        }');
+        }');'
     }
-    describe('Performance Impact Assessment', (') => {
+    describe('Performance Impact Assessment', (') => {'
         test('should maintain acceptable performance with coordinate calculations', async () => {
             const startTime = performance.now(),
             // 大量の座標計算を実行
@@ -267,7 +262,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             
             // 座標計算のパフォーマンスが許容範囲内であることを確認
             expect(executionTime.toBeLessThan(100); // 100ms以下
-        }');
+        }');'
         test('should handle rapid resize events without performance degradation', async () => {
             const startTime = performance.now(),
             // 連続的なリサイズイベントをシミュレート
@@ -286,12 +281,12 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
         });
     }
     // ヘルパー関数
-    function simulateScreenSize(width, height') {
-        Object.defineProperty(canvas, 'clientWidth', { value: width, configurable: true }');
-        Object.defineProperty(canvas, 'clientHeight', { value: height, configurable: true });
+    function simulateScreenSize(width, height') {'
+        Object.defineProperty(canvas, 'clientWidth', { value: width, configurable: true,');'
+        Object.defineProperty(canvas, 'clientHeight', { value: height, configurable: true,);
         responsiveCanvasManager.updateCanvasSize();
     }
-    function testUIElementPositioning(') {
+    function testUIElementPositioning(') {'
         const mockGameState = {
             score: 12345,
             hp: 85,
@@ -317,4 +312,4 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             combo: { x: fillTextCalls[3]?.[1] || 0, y: fillTextCalls[3]? .[2] || 0 }
         };
     }
-}'); : undefined
+}'); : undefined'

@@ -1,39 +1,39 @@
 // Particle Renderer types
 export interface Particle { isActive: boolean,
-    alpha: number,
-    x: number,
-    y: number,
-    rotation: number,
-    scale: number,
-    size: number,
-    color: string,
-    type: ParticleType,
-    trail: TrailPoint[],
-    zIndex?: number  }
+    alpha: number;
+    x: number;
+    y: number;
+    rotation: number;
+    scale: number;
+    size: number;
+    color: string;
+    type: ParticleType;
+    trail: TrailPoint[];
+    zIndex?: number;
 
 export interface TrailPoint { x: number,
-    y: number,
-    alpha: number }
+    y: number;
+    alpha: number;
 
 export interface Viewport { x: number,
-    y: number,
-    width: number,
-    height: number }
+    y: number;
+    width: number;
+    height: number;
 
 export interface RenderingStats { supportedTypes: string[],
-    colorSets: number,
-    renderingFeatures: string[] }
+    colorSets: number;
+    renderingFeatures: string[];
 
-export interface ColorSets { [key: string]: string[] }
+export interface ColorSets { [key: string]: string[];
 
 export type ParticleType = ;
-    | 'circle', ';
-    | 'star', ';
-    | 'diamond', ';
-    | 'spike', ';
-    | 'lightning', ';
-    | 'cloud', ';
-    | 'ripple', ';
+    | 'circle', ';'
+    | 'star', ';'
+    | 'diamond', ';'
+    | 'spike', ';'
+    | 'lightning', ';'
+    | 'cloud', ';'
+    | 'ripple', ';'
     | 'explosion';
 
 export type DrawFunction = (context: CanvasRenderingContext2D, particle: Particle) => void;
@@ -44,15 +44,15 @@ export type DrawFunction = (context: CanvasRenderingContext2D, particle: Particl
  */
 export class ParticleRenderer {
     // @ts-ignore 将来のパーティクル管理機能で使用予定
-    private __particleManager: any,
+    private __particleManager: any;
     private quality?: number,
     private customDrawFunctions?: Map<string, DrawFunction>,
 
     constructor(particleManager: any) {
-        this.__particleManager = particleManager,
+        this.__particleManager = particleManager;
 
-        ',
-     }
+        '
+}
 
     }
 
@@ -101,31 +101,31 @@ export class ParticleRenderer {
 
         switch(particle.type) {
 
-            case 'circle':',
+            case 'circle':','
                 this.drawCircle(context, particle.size),
                 break,
 
-            case 'star':',
+            case 'star':','
                 this.drawStar(context, particle.size),
                 break,
 
-            case 'diamond':',
+            case 'diamond':','
                 this.drawDiamond(context, particle.size),
                 break,
 
-            case 'spike':',
+            case 'spike':','
                 this.drawSpike(context, particle.size),
                 break,
 
-            case 'lightning':',
+            case 'lightning':','
                 this.drawLightning(context, particle.size),
                 break,
 
-            case 'cloud':',
+            case 'cloud':','
                 this.drawCloud(context, particle.size),
                 break,
 
-            case 'ripple':',
+            case 'ripple':','
                 this.drawRipple(context, particle.size),
                 break,
 
@@ -300,20 +300,20 @@ export class ParticleRenderer {
      * @returns {string[]} 色の配列
      */''
     public getBubbleColors(bubbleType: string): string[] { const colorSets: ColorSets = {''
-            normal: ['#4A90E2', '#7ED321', '#50E3C2],
-            stone: ['#8E8E93', '#C7C7CC', '#EFEFF4],
-            iron: ['#8B4513', '#A0522D', '#CD853F],
-            diamond: ['#E6E6FA', '#F8F8FF', '#FFFFFF],
-            rainbow: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],
-            pink: ['#FF69B4', '#FFB6C1', '#FFC0CB],
-            clock: ['#FFD700', '#FFA500', '#FF8C00],
-            electric: ['#FFFF00', '#00FFFF', '#FFFFFF],
-            poison: ['#32CD32', '#00FF00', '#98FB98],
-            spiky: ['#FF4500', '#FF6347', '#FF7F50],
-            cracked: ['#A0A0A0', '#808080', '#C0C0C0],
-            escaping: ['#DDA0DD', '#DA70D6', '#BA55D3],
-            boss: ['#8B0000', '#DC143C', '#FF0000],
-            score: ['#FFD700', '#FFA500', '#FF8C00] };
+            normal: ['#4A90E2', '#7ED321', '#50E3C2],'
+            stone: ['#8E8E93', '#C7C7CC', '#EFEFF4],'
+            iron: ['#8B4513', '#A0522D', '#CD853F],'
+            diamond: ['#E6E6FA', '#F8F8FF', '#FFFFFF],'
+            rainbow: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],'
+            pink: ['#FF69B4', '#FFB6C1', '#FFC0CB],'
+            clock: ['#FFD700', '#FFA500', '#FF8C00],'
+            electric: ['#FFFF00', '#00FFFF', '#FFFFFF],'
+            poison: ['#32CD32', '#00FF00', '#98FB98],'
+            spiky: ['#FF4500', '#FF6347', '#FF7F50],'
+            cracked: ['#A0A0A0', '#808080', '#C0C0C0],'
+            escaping: ['#DDA0DD', '#DA70D6', '#BA55D3],'
+            boss: ['#8B0000', '#DC143C', '#FF0000],'
+            score: ['#FFD700', '#FFA500', '#FF8C00] };'
         
         return colorSets[bubbleType] || colorSets.normal;
     }
@@ -326,12 +326,12 @@ export class ParticleRenderer {
                 'circle', 'star', 'diamond', 'spike', 'lightning',
                 'cloud', 'ripple', 'explosion';
             ]);
-            colorSets: 14',
-    renderingFeatures: [';
+            colorSets: 14','
+    renderingFeatures: [';'
                 'Trail rendering',
                 'Multi-shape support',
                 'Alpha blending',
-                'Transform matrices',]';
+                'Transform matrices',]';'
                 'Color variations'];
             ];
         }
@@ -350,7 +350,7 @@ export class ParticleRenderer {
      * @param {DrawFunction} drawFunction 描画関数'
      */''
     public registerCustomDrawFunction(type: string, drawFunction: DrawFunction): void { ''
-        if(typeof, drawFunction !== 'function') {', ' }
+        if (typeof, drawFunction !== 'function') {', ' }
 
             throw new Error('Draw, function must, be a, function'; }'
         }
@@ -367,9 +367,9 @@ export class ParticleRenderer {
      * @param {Particle} particle パーティクルオブジェクト
      * @returns {boolean} カスタム描画が実行されたか
      */
-    public executeCustomDrawFunction(context: CanvasRenderingContext2D, particle: Particle): boolean { if(this.customDrawFunctions && this.customDrawFunctions.has(particle.type) {
+    public executeCustomDrawFunction(context: CanvasRenderingContext2D, particle: Particle): boolean { if (this.customDrawFunctions && this.customDrawFunctions.has(particle.type) {
             const drawFunction = this.customDrawFunctions.get(particle.type),
-            if(drawFunction) {
+            if (drawFunction) {
                 try {
                     drawFunction(context, particle) }
                     return true; catch (error) {
@@ -400,7 +400,7 @@ export class ParticleRenderer {
             if (!particle.isActive) return,
             
             // タイプが変わった場合のみ描画状態をリセット
-            if(particle.type !== currentType) {
+            if (particle.type !== currentType) {
     
 }
                 currentType = particle.type; }
@@ -456,16 +456,16 @@ export class ParticleRenderer {
     private prepareRenderingStateForType(context: CanvasRenderingContext2D, type: string): void { // タイプ別の最適化された描画状態設定
         switch(type) {
 
-            case 'lightning':',
+            case 'lightning':','
                 context.lineCap = 'round',
                 context.lineJoin = 'round',
 
                 break,
-            case 'cloud':',
+            case 'cloud':','
                 context.globalCompositeOperation = 'multiply',
 
                 break,
-            case 'ripple':',
+            case 'ripple':','
                 context.globalCompositeOperation = 'screen',
 
                 break,
@@ -478,7 +478,7 @@ export class ParticleRenderer {
      * クリーンアップ
      */'
     public cleanup(): void { if (this.customDrawFunctions) {''
-            this.customDrawFunctions.clear()',
+            this.customDrawFunctions.clear()','
         console.log('[ParticleRenderer] Cleanup, completed') }
 
-    }'}
+    }'}'

@@ -1,69 +1,69 @@
 // Floating Text types
 export interface FloatingTextOptions { duration?: number,
-    color?: string,
-    fontSize?: number,
-    fontWeight?: string,
-    fontFamily?: string,
-    velocityX?: number,
-    velocityY?: number,
-    gravity?: number,
-    fadeOut?: boolean,
-    scaleAnimation?: boolean,
-    bounceAnimation?: boolean,
-    pulseAnimation?: boolean,
-    rotation?: number,
-    rotationSpeed?: number,
-    shadow?: boolean,
-    outline?: boolean,
-    outlineColor?: string,
-    easing?: string }
+    color?: string;
+    fontSize?: number;
+    fontWeight?: string;
+    fontFamily?: string;
+    velocityX?: number;
+    velocityY?: number;
+    gravity?: number;
+    fadeOut?: boolean;
+    scaleAnimation?: boolean;
+    bounceAnimation?: boolean;
+    pulseAnimation?: boolean;
+    rotation?: number;
+    rotationSpeed?: number;
+    shadow?: boolean;
+    outline?: boolean;
+    outlineColor?: string;
+    easing?: string;
 
 export interface FloatingText { id: number,
-    x: number,
-    y: number,
-    originalY: number,
-    text: string,
-    life: number,
-    maxLife: number,
-    color: string,
-    fontSize: number,
-    fontWeight: string,
-    fontFamily: string,
-    velocityX: number,
-    velocityY: number,
-    gravity: number,
-    fadeOut: boolean,
-    scaleAnimation: boolean,
-    bounceAnimation: boolean,
-    pulseAnimation: boolean,
-    alpha: number,
-    scale: number,
-    rotation: number,
-    rotationSpeed: number,
-    shadow: boolean,
-    outline: boolean,
-    outlineColor: string,
-    easing: string  }
+    x: number;
+    y: number;
+    originalY: number;
+    text: string;
+    life: number;
+    maxLife: number;
+    color: string;
+    fontSize: number;
+    fontWeight: string;
+    fontFamily: string;
+    velocityX: number;
+    velocityY: number;
+    gravity: number;
+    fadeOut: boolean;
+    scaleAnimation: boolean;
+    bounceAnimation: boolean;
+    pulseAnimation: boolean;
+    alpha: number;
+    scale: number;
+    rotation: number;
+    rotationSpeed: number;
+    shadow: boolean;
+    outline: boolean;
+    outlineColor: string;
+    easing: string;
 
 export interface AnimationConfig { color: string,
-    fontSize: number,
-    velocityX?: number,
-    velocityY: number,
-    gravity?: number,
-    duration: number,
-    scaleAnimation?: boolean,
-    bounceAnimation?: boolean,
-    pulseAnimation?: boolean,
-    rotationSpeed?: number }
+    fontSize: number;
+    velocityX?: number;
+    velocityY: number;
+    gravity?: number;
+    duration: number;
+    scaleAnimation?: boolean;
+    bounceAnimation?: boolean;
+    pulseAnimation?: boolean;
+    rotationSpeed?: number;
 
-export interface AnimationConfigMap { [key: string]: AnimationConfig }
+export interface AnimationConfigMap { [key: string]: AnimationConfig;
 
 /**
  * フローティングテキスト管理クラス
  * スコア表示、ダメージ表示、効果通知などのアニメーションテキストを管理
  */
 export class FloatingTextManager {
-    private texts: FloatingText[],
+    private texts: FloatingText[];
     private, textId: number,
     constructor() {
 
@@ -120,8 +120,8 @@ export class FloatingTextManager {
             fontWeight: 'bold',
             velocityY: -80),
             duration: 1500,
-    scaleAnimation: true,',
-            shadow: true  }
+    scaleAnimation: true,','
+            shadow: true,
     
     /**
      * ダメージ表示用のフローティングテキスト
@@ -133,9 +133,9 @@ export class FloatingTextManager {
             fontWeight: 'bold',
     velocityY: -60 }
             velocityX: (Math.random() - 0.5}) * 40;
-            duration: 2000;
+            duration: 2000,
             bounceAnimation: true,
-    shadow: true;
+    shadow: true,
         }) }
     
     /**
@@ -148,28 +148,28 @@ export class FloatingTextManager {
             fontWeight: 'bold',
             velocityY: -70),
             duration: 1800,
-    pulseAnimation: true,',
-            shadow: true  }
+    pulseAnimation: true,','
+            shadow: true,
     
     /**
      * コンボ表示用のフローティングテキスト'
      */''
     public addComboText(x: number, y: number, combo: number): number { ''
-        const colors = ['#FFD700', '#FF8C00', '#FF4500', '#DC143C', '#8B0000],
+        const colors = ['#FFD700', '#FF8C00', '#FF4500', '#DC143C', '#8B0000],'
         const colorIndex = Math.min(Math.floor(combo / 5), colors.length - 1),
         
         return this.addText(x, y, `${combo} COMBO!`, {'
             color: colors[colorIndex],' }'
 
             fontSize: 32 + Math.min(combo * 2, 20'}',''
-            fontWeight: 'bold';
-            velocityY: -100;
-            duration: 2500;
-            scaleAnimation: true;
+            fontWeight: 'bold',
+            velocityY: -100,
+            duration: 2500,
+            scaleAnimation: true,
             pulseAnimation: true,
     outline: true,
-            shadow: true';
-        }') }
+            shadow: true','
+        }') }'
     
     /**
      * 特殊効果表示用のフローティングテキスト'
@@ -181,13 +181,13 @@ export class FloatingTextManager {
                 velocityY: -120,
                 duration: 3000,
                 scaleAnimation: true,
-    pulseAnimation: true };
+    pulseAnimation: true,;
             timeStop: { ''
                 color: '#00AAFF',
                 fontSize: 32,
                 velocityY: -90,
                 duration: 2500,
-    bounceAnimation: true };
+    bounceAnimation: true,;
             shock: { ''
                 color: '#FFFF00',
                 fontSize: 28,
@@ -200,7 +200,7 @@ export class FloatingTextManager {
                 fontSize: 30,
                 velocityY: -80,
                 duration: 2200,
-    scaleAnimation: true };
+    scaleAnimation: true,;
             normal: { ''
                 color: '#FFFFFF',
                 fontSize: 24,
@@ -208,12 +208,12 @@ export class FloatingTextManager {
     duration: 2000 
     };
         const config = configs[type] || configs.normal;
-        ';
+        ';'
 
         return this.addText(x, y, effect, { ...config)'
             fontWeight: 'bold',
-    outline: true,',
-            shadow: true  }
+    outline: true,','
+            shadow: true,
     
     /**
      * カスタムアニメーション付きテキスト'
@@ -224,7 +224,7 @@ export class FloatingTextManager {
                 fontSize: 28,
                 velocityY: -70,
                 duration: 2000,
-    pulseAnimation: true  };
+    pulseAnimation: true,;
             explosive: { ''
                 color: '#FF4500',
                 fontSize: 32,
@@ -238,20 +238,19 @@ export class FloatingTextManager {
                 fontSize: 22,
                 velocityY: -40,
                 duration: 3000,
-    scaleAnimation: true 
-    };
+    scaleAnimation: true,;
         const config = animations[animationType] || animations.gentle;
-        ';
+        ';'
 
         return this.addText(x, y, text, { ...config)'
             fontWeight: 'bold'),
-            shadow: true  }
+            shadow: true,
     
     /**
      * 更新処理
      */
     public update(deltaTime: number): void { this.texts = this.texts.filter(text => { )
-            text.life -= deltaTime),
+            text.life -= deltaTime);
             if (text.life <= 0) { }
                 return false; // 削除 }
             }
@@ -283,7 +282,7 @@ export class FloatingTextManager {
         const time = Date.now() * 0.001,
         
         // スケールアニメーション
-        if(text.scaleAnimation) {
+        if (text.scaleAnimation) {
             if (progress < 0.2) {
                 // 拡大フェーズ
         }
@@ -293,18 +292,18 @@ export class FloatingTextManager {
 }
         
         // バウンスアニメーション
-        if(text.bounceAnimation) {
+        if (text.bounceAnimation) {
             text.y = text.originalY + text.velocityY * (Date.now() - (text.maxLife - text.life)) * 0.001 }
             text.y += Math.sin(time * 10) * 5 * (1 - progress); }
         }
         
         // パルスアニメーション
-        if(text.pulseAnimation) {
+        if (text.pulseAnimation) {
             const pulse = Math.sin(time * 8) * 0.3 + 1 }
 
             text.scale = (text.scale || 1') * pulse; }'
         }
-        ';
+        ';'
         // 虹色アニメーション（特殊）
         if (text.color === '#FF0000' && text.pulseAnimation) { const hue = (time * 100) % 360 }
             text.color = `hsl(${hue}, 100%, 50%})`;
@@ -325,7 +324,7 @@ export class FloatingTextManager {
             if (text.scale !== 1) { }
                 context.scale(text.scale, text.scale); }
             }
-            if(text.rotation !== 0) { }
+            if (text.rotation !== 0) { }
 
                 context.rotate(text.rotation); }
             }
@@ -334,9 +333,9 @@ export class FloatingTextManager {
             context.font = `${text.fontWeight} ${text.fontSize}px ${text.fontFamily}`;
             context.textAlign = 'center';
             context.textBaseline = 'middle';
-            ';
+            ';'
             // 影を描画
-            if(text.shadow) {
+            if (text.shadow) {
 
                 context.shadowColor = 'rgba(0, 0, 0, 0.8)',
                 context.shadowOffsetX = 2,
@@ -345,7 +344,7 @@ export class FloatingTextManager {
             }
             
             // アウトラインを描画
-            if(text.outline) {
+            if (text.outline) {
                 context.strokeStyle = text.outlineColor,
                 context.lineWidth = 3 }
                 context.strokeText(text.text, 0, 0); }
@@ -379,7 +378,7 @@ export class FloatingTextManager {
      */
     public getTextsInArea(x: number, y: number, width: number, height: number): FloatingText[] { return this.texts.filter(text => )
             text.x >= x && text.x <= x + width &&),
-            text.y >= y && text.y <= y + height)',
+            text.y >= y && text.y <= y + height)','
         ') }'
 
-    }'}
+    }'}'

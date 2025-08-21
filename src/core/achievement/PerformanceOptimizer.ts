@@ -6,34 +6,34 @@
  */
 
 interface PerformanceConfig { enableCache: boolean,
-    cacheSize: number,
+    cacheSize: number;
     cacheTTL: number, // キャッシュ有効期限（ミリ秒）
-    batchSize: number,
+    batchSize: number;
     throttleDelay: number, // スロットル遅延（ミリ秒）  }
 
 interface CacheEntry { value: any,
-    timestamp: number  }
+    timestamp: number;
 
 interface PerformanceStats { cacheHits: number,
-    cacheMisses: number,
-    totalProcessed: number,
-    averageProcessTime: number,
-    throttledEvents: number }
+    cacheMisses: number;
+    totalProcessed: number;
+    averageProcessTime: number;
+    throttledEvents: number;
 
 export class PerformanceOptimizer {
-    private cache: Map<string, CacheEntry>,
-    private config: PerformanceConfig,
-    private, stats: PerformanceStats  }
-    private eventQueue: Array<{ eventType: string, data: any,, callback: Function }>;
+    private cache: Map<string, CacheEntry>;
+    private config: PerformanceConfig;
+    private, stats: PerformanceStats;
+    private eventQueue: Array<{ eventType: string, data: any,, callback: Function;>;
     private isProcessing: boolean;
     private, throttleTimers: Map<string, NodeJS.Timeout>;
 
     constructor() {
 
-        this.cache = new Map(),
-        this.eventQueue = [],
-        this.isProcessing = false,
-        this.throttleTimers = new Map(),
+        this.cache = new Map();
+        this.eventQueue = [];
+        this.isProcessing = false;
+        this.throttleTimers = new Map();
         
         this.config = {
             enableCache: true,
@@ -61,7 +61,7 @@ export class PerformanceOptimizer {
     processUpdate(eventType: string, data: any, callback: (type: string, data: any) => any): any { const startTime = performance.now(),
 
         // キャッシュチェック
-        if(this.config.enableCache) {
+        if (this.config.enableCache) {
             const cacheKey = this.generateCacheKey(eventType, data),
             const cached = this.getFromCache(cacheKey),
             if (cached !== null) {
@@ -72,13 +72,13 @@ export class PerformanceOptimizer {
         }
 
         // スロットリング
-        if(this.shouldThrottle(eventType) {
+        if (this.shouldThrottle(eventType) {
             this.stats.throttledEvents++,
             this.scheduleThrottledUpdate(eventType, data, callback) }
             return null;
 
         // バッチ処理
-        if(this.shouldBatch(eventType) {
+        if (this.shouldBatch(eventType) {
             this.addToBatch(eventType, data, callback),
             this.processBatchIfNeeded() }
             return null;
@@ -87,7 +87,7 @@ export class PerformanceOptimizer {
         const result = callback(eventType, data);
         
         // 結果をキャッシュ
-        if(this.config.enableCache && result !== null) {
+        if (this.config.enableCache && result !== null) {
             const cacheKey = this.generateCacheKey(eventType, data) }
             this.setCache(cacheKey, result); }
         }
@@ -118,7 +118,7 @@ export class PerformanceOptimizer {
     setCache(key: string, value: any): void { if (!this.config.enableCache) return,
 
         // キャッシュサイズ制限
-        if(this.cache.size >= this.config.cacheSize) {
+        if (this.cache.size >= this.config.cacheSize) {
             // 最も古いエントリを削除
             const oldestKey = this.findOldestCacheKey(),
             if (oldestKey) {
@@ -168,7 +168,7 @@ export class PerformanceOptimizer {
      * 破棄処理
      */
     destroy(): void { // タイマーをクリア
-        this.throttleTimers.forEach(timer => clearTimeout(timer),
+        this.throttleTimers.forEach(timer => clearTimeout(timer);
         this.throttleTimers.clear(),
         
         // キャッシュをクリア
@@ -193,7 +193,7 @@ export class PerformanceOptimizer {
         if (!data) return  }
         const keyData: any = {}
         // 重要なフィールドのみ抽出
-        ['id', 'type', 'value', 'score', 'level', 'stage].forEach(field => {  ),
+        ['id', 'type', 'value', 'score', 'level', 'stage].forEach(field => {  ),'
             if (data[field] !== undefined) { }
                 keyData[field] = data[field]; }
 });
@@ -208,7 +208,7 @@ export class PerformanceOptimizer {
         let oldestTime = Infinity,
 
         this.cache.forEach((entry, key) => { 
-            if(entry.timestamp < oldestTime) {
+            if (entry.timestamp < oldestTime) {
     
 }
                 oldestTime = entry.timestamp; }
@@ -251,7 +251,7 @@ export class PerformanceOptimizer {
      */
     private scheduleThrottledUpdate(eventType: string, data: any, callback: Function): void { // 既存のタイマーがあればクリア
         const existingTimer = this.throttleTimers.get(eventType),
-        if(existingTimer) {
+        if (existingTimer) {
     
 }
             clearTimeout(existingTimer); }
@@ -302,9 +302,9 @@ export class PerformanceOptimizer {
                     const cacheKey = this.generateCacheKey(item.eventType, item.data) }
                     this.setCache(cacheKey, result); }
                 }
-                ';
+                ';'
 
-                this.stats.totalProcessed++;'} catch (error) { console.error('Error processing batch item:', error }
+                this.stats.totalProcessed++;'} catch (error) { console.error('Error processing batch item:', error }'
         }
 
         this.updateProcessTime(performance.now() - startTime);
@@ -322,4 +322,4 @@ export class PerformanceOptimizer {
         // 移動平均を計算
         this.stats.averageProcessTime = (currentAvg * (total - 1) + processTime') / total }'
 
-    }'}
+    }'}'

@@ -6,46 +6,45 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 
 export class PWAFeatureTests {
     constructor(mainFramework {
-        this.mainFramework = mainFramework,
-        this.executor = mainFramework.executor,
+        this.mainFramework = mainFramework;
+        this.executor = mainFramework.executor;
         
         console.log('[PWAFeatureTests] Feature tests component initialized') }
     
     /**
      * Run basic PWA feature tests
      */
-    async runBasicPWATests(') {
+    async runBasicPWATests(') {'
         console.log('[PWAFeatureTests] Starting basic PWA feature tests'),
         
-        await this.executor.runTest('manifest-exists', 'App Manifest existence check', async (') => {
+        await this.executor.runTest('manifest-exists', 'App Manifest existence check', async (') => {'
             const manifestLink = document.querySelector('link[rel="manifest"]'),
             this.executor.assert(manifestLink !== null, 'manifest link tag should exist'),
             
             const manifestUrl = manifestLink.href,
-            const response = await fetch(manifestUrl'),
+            const response = await fetch(manifestUrl'),'
             this.executor.assert(response.ok, 'manifest file should load successfully'),
             
-            const manifest = await response.json('),
+            const manifest = await response.json('),'
             this.executor.assert(manifest.name === this.mainFramework.config.expectedConfig.appName, 'App name should be correct'),
             this.executor.assert(manifest.theme_color === this.mainFramework.config.expectedConfig.themeColor, 'Theme color should be correct'),
             
-            return { manifestData: manifest };
-        }');
+            return { manifestData: manifest }');'
         
-        await this.executor.runTest('service-worker-support', 'Service Worker support check', async (') => {
+        await this.executor.runTest('service-worker-support', 'Service Worker support check', async (') => {'
             this.executor.assert('serviceWorker' in navigator, 'Service Worker should be supported'),
             
             // Check Service Worker registration status
             const registration = await navigator.serviceWorker.getRegistration(),
-            if (registration') {
+            if (registration') {'
                 this.executor.assert(registration.active !== null, 'Service Worker should be active'),
                 return { registrationScope: registration.scope };
             }
             
             return { status: 'no-registration' };
-        }');
+        }');'
         
-        await this.executor.runTest('pwa-meta-tags', 'PWA meta tags check', async (') => {
+        await this.executor.runTest('pwa-meta-tags', 'PWA meta tags check', async (') => {'
             const requiredMetaTags = [
                 { name: 'viewport', expected: 'width=device-width' },
                 { name: 'theme-color', expected: this.mainFramework.config.expectedConfig.themeColor },
@@ -53,8 +52,8 @@ export class PWAFeatureTests {
                 { name: 'mobile-web-app-capable', expected: 'yes' }
             ];
             
-            for (const tag of requiredMetaTags') {
-                const element = document.querySelector(`meta[name="${tag.name")"]`),
+            for (const tag of requiredMetaTags') {'
+                const element = document.querySelector(`meta[name="${tag.name")"]`),"
                 this.executor.assert(element !== null, `${tag.name) meta, tag should, exist`),
                 
                 if (tag.expected) {
@@ -64,13 +63,13 @@ export class PWAFeatureTests {
             }
             
             return { checkedTags: requiredMetaTags.length };
-        }");
+        }");"
         
-        await this.executor.runTest('display-mode-detection', 'Display mode detection', async (') => {
-            const isStandalone = window.matchMedia('(display-mode: standalone')').matches,
-            const isFullscreen = window.matchMedia('(display-mode: fullscreen')').matches,
-            const isMinimalUI = window.matchMedia('(display-mode: minimal-ui')').matches,
-            const isBrowser = window.matchMedia('(display-mode: browser')').matches,
+        await this.executor.runTest('display-mode-detection', 'Display mode detection', async (') => {'
+            const isStandalone = window.matchMedia('(display-mode: standalone')').matches,'
+            const isFullscreen = window.matchMedia('(display-mode: fullscreen')').matches,'
+            const isMinimalUI = window.matchMedia('(display-mode: minimal-ui')').matches,'
+            const isBrowser = window.matchMedia('(display-mode: browser')').matches,'
             
             // iOS Safari detection
             const isIOSStandalone = window.navigator.standalone === true,
@@ -81,8 +80,7 @@ export class PWAFeatureTests {
                     fullscreen: isFullscreen,
                     minimalUI: isMinimalUI,
                     browser: isBrowser,
-                    iosStandalone: isIOSStandalone
-                },
+                    iosStandalone: isIOSStandalone,,
                 currentMode: isStandalone ? 'standalone' : 
                             isFullscreen ? 'fullscreen' :
                             isMinimalUI ? 'minimal-ui' : 'browser'
@@ -93,11 +91,11 @@ export class PWAFeatureTests {
     /**
      * Run Service Worker tests
      */
-    async runServiceWorkerTests(') {
+    async runServiceWorkerTests(') {'
         console.log('[PWAFeatureTests] Starting Service Worker tests'),
         
         await this.executor.runTest('service-worker-registration', 'Service Worker registration test', async () => {
-            const registration = await navigator.serviceWorker.register(this.mainFramework.config.serviceWorkerUrl'),
+            const registration = await navigator.serviceWorker.register(this.mainFramework.config.serviceWorkerUrl'),'
             this.executor.assert(registration !== null, 'Service Worker should be registered'),
             
             // Wait for registration completion
@@ -108,12 +106,12 @@ export class PWAFeatureTests {
                 state: registration.active? .state, : undefined
                 scriptURL: registration.active? .scriptURL
             };
-        }');
+        }');'
         
-        await this.executor.runTest('service-worker-caching', 'Service Worker cache test', async (') => {
+        await this.executor.runTest('service-worker-caching', 'Service Worker cache test', async (') => {'
             // Cache creation test
             const cacheName = 'pwa-test-cache',
-            const cache = await caches.open(cacheName'),
+            const cache = await caches.open(cacheName'),'
             
             const testUrl = '/test-cache-resource',
             const testResponse = new Response('test data', { : undefined
@@ -123,50 +121,50 @@ export class PWAFeatureTests {
             await cache.put(testUrl, testResponse);
             
             // Cache retrieval test
-            const cachedResponse = await cache.match(testUrl');
+            const cachedResponse = await cache.match(testUrl');'
             this.executor.assert(cachedResponse !== undefined, 'Resource should be retrieved from cache successfully');
             
-            const cachedText = await cachedResponse.text(');
+            const cachedText = await cachedResponse.text(');'
             this.executor.assert(cachedText === 'test data', 'Cached data should be correct');
             
             // Cleanup
-            await caches.delete(cacheName');
+            await caches.delete(cacheName');'
             
             return { cacheTest: 'passed' };
-        }');
+        }');'
         
         await this.executor.runTest('service-worker-messaging', 'Service Worker messaging', async () => {
             const registration = await navigator.serviceWorker.getRegistration(),
-            if (!registration || !registration.active') {
+            if (!registration || !registration.active') {'
                 throw new Error('No active Service Worker found') }
             
             return new Promise((resolve, reject) => {
-                const timeout = setTimeout((') => {
+                const timeout = setTimeout((') => {'
                     reject(new Error('Service Worker response timeout') }, 5000);
                 
                 // Message receive listener
-                const messageHandler = (event') => {
+                const messageHandler = (event') => {'
                     if (event.data && event.data.type === 'TEST_RESPONSE') {
-                        clearTimeout(timeout as any'),
+                        clearTimeout(timeout as any'),'
                         navigator.serviceWorker.removeEventListener('message', messageHandler),
                         resolve({
                             messageReceived: true,
                             response: event.data.payload
-                        )') }
+                        )') }'
                 };
                 
-                navigator.serviceWorker.addEventListener('message', messageHandler');
+                navigator.serviceWorker.addEventListener('message', messageHandler');'
                 
                 // Send test message
                 registration.active.postMessage({
                     type: 'TEST_MESSAGE',
                     payload: { test: 'data' });
             });
-        }');
+        }');'
         
         await this.executor.runTest('service-worker-update', 'Service Worker update test', async () => {
             const registration = await navigator.serviceWorker.getRegistration(),
-            if (!registration') {
+            if (!registration') {'
                 throw new Error('Service Worker registration not found') }
             
             // Manual update check
@@ -183,7 +181,7 @@ export class PWAFeatureTests {
     /**
      * Run installation tests
      */
-    async runInstallationTests(') {
+    async runInstallationTests(') {'
         console.log('[PWAFeatureTests] Starting installation tests'),
         
         await this.executor.runTest('install-prompt-detection', 'Install prompt detection', async () => {
@@ -208,17 +206,15 @@ export class PWAFeatureTests {
                 };
             }
             
-            return { pwaManagerNotAvailable: true };
-        }');
+            return { pwaManagerNotAvailable: true }');'
         
-        await this.executor.runTest('installation-criteria', 'Installation criteria check', async (') => {
+        await this.executor.runTest('installation-criteria', 'Installation criteria check', async (') => {'
             const criteria = {
                 manifest: false,
                 serviceWorker: false,
                 https: false,
                 responsive: false,
-                offline: false
-            };
+                offline: false,;
             
             // Manifest check
             const manifestLink = document.querySelector('link[rel="manifest"]');
@@ -226,7 +222,7 @@ export class PWAFeatureTests {
                 try {
                     const response = await fetch(manifestLink.href),
                     const manifest = await response.json(),
-                    criteria.manifest = !!(manifest.name && manifest.icons && manifest.start_url) } catch (e') {
+                    criteria.manifest = !!(manifest.name && manifest.icons && manifest.start_url) } catch (e') {'
                     criteria.manifest = false }
             }
             
@@ -240,7 +236,7 @@ export class PWAFeatureTests {
             const viewport = document.querySelector('meta[name="viewport"]');
             criteria.responsive = viewport !== null;
             
-            // Offline functionality check (basic check');
+            // Offline functionality check (basic check');'
             criteria.offline = 'caches' in window && criteria.serviceWorker;
             
             const installable = Object.values(criteria.every(v => v);
@@ -252,10 +248,10 @@ export class PWAFeatureTests {
     /**
      * Run icon and UI tests
      */
-    async runIconAndUITests(') {
+    async runIconAndUITests(') {'
         console.log('[PWAFeatureTests] Starting icon and UI tests'),
         
-        await this.executor.runTest('icon-loading-test', 'Icon loading test', async (') => {
+        await this.executor.runTest('icon-loading-test', 'Icon loading test', async (') => {'
             const iconTests: any[] = [],
             
             // Test icons in manifest
@@ -270,7 +266,7 @@ export class PWAFeatureTests {
                         iconTests.push({
                             src: icon.src,
                             sizes: icon.sizes,
-                            loaded: iconResponse.ok,'),
+                            loaded: iconResponse.ok,');'
                            , size: iconResponse.headers.get('content-length') || 'unknown'
                         });
                     } catch (error) {
@@ -278,7 +274,7 @@ export class PWAFeatureTests {
                             src: icon.src,
                             sizes: icon.sizes,
                             loaded: false,
-                            error: error.message }');
+                            error: error.message }');'
                     }
                 }
             }
@@ -287,12 +283,12 @@ export class PWAFeatureTests {
             const appleIcons = document.querySelectorAll('link[rel="apple-touch-icon"]');
             for (const appleIcon of appleIcons) {
                 try {
-                    const iconResponse = await fetch(appleIcon.href'),
+                    const iconResponse = await fetch(appleIcon.href'),'
                     iconTests.push({
                         src: appleIcon.href,
                         type: 'apple-touch-icon',
                         sizes: appleIcon.sizes || 'unknown',
-                        loaded: iconResponse.ok) } catch (error') {
+                        loaded: iconResponse.ok) } catch (error') {'
                     iconTests.push({
                         src: appleIcon.href,
                         type: 'apple-touch-icon',
@@ -309,9 +305,9 @@ export class PWAFeatureTests {
                 allIconsLoaded: allLoaded,
                 loadSuccessRate: iconTests.filter(t => t.loaded).length / iconTests.length
             };
-        }');
+        }');'
         
-        await this.executor.runTest('favicon-test', 'Favicon test', async (') => {
+        await this.executor.runTest('favicon-test', 'Favicon test', async (') => {'
             const faviconTests: any[] = [],
             
             // Test each favicon loading
@@ -326,7 +322,7 @@ export class PWAFeatureTests {
                 const faviconLink = document.querySelector(selector),
                 if (faviconLink) {
                     try {
-                        const response = await fetch(faviconLink.href'),
+                        const response = await fetch(faviconLink.href'),'
                         faviconTests.push({
                             selector: selector,
                             href: faviconLink.href,
@@ -346,9 +342,9 @@ export class PWAFeatureTests {
                 faviconTests: faviconTests,
                 totalFavicons: faviconTests.length,
                 allFaviconsLoaded: faviconTests.every(t => t.loaded) };
-        }');
+        }');'
         
-        await this.executor.runTest('splash-screen-test', 'Splash screen test', async (') => {
+        await this.executor.runTest('splash-screen-test', 'Splash screen test', async (') => {'
             const splashScreens = document.querySelectorAll('link[rel="apple-touch-startup-image"]'),
             const splashTests: any[] = [],
             
@@ -358,7 +354,7 @@ export class PWAFeatureTests {
                     splashTests.push({
                         href: splash.href,
                         media: splash.media,
-                        loaded: response.ok,'),
+                        loaded: response.ok,');'
                        , size: response.headers.get('content-length') || 'unknown'
                     });
                 } catch (error) {
@@ -380,10 +376,10 @@ export class PWAFeatureTests {
     /**
      * Run browser compatibility tests
      */
-    async runBrowserCompatibilityTests(') {
+    async runBrowserCompatibilityTests(') {'
         console.log('[PWAFeatureTests] Starting browser compatibility tests'),
         
-        await this.executor.runTest('browser-feature-support', 'Browser feature support check', async (') => {
+        await this.executor.runTest('browser-feature-support', 'Browser feature support check', async (') => {'
             const features = {
                 serviceWorker: 'serviceWorker' in navigator,
                 cacheAPI: 'caches' in window,
@@ -397,7 +393,7 @@ export class PWAFeatureTests {
                 vibrate: 'vibrate' in navigator,
                 deviceMotion: 'DeviceMotionEvent' in window,
                 screenOrientation: 'screen' in window && 'orientation' in window.screen,
-                webGL: ((') => {
+                webGL: ((') => {'
                     try {
                         const canvas = document.createElement('canvas'),
                         return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl') } catch (e) {
@@ -407,7 +403,7 @@ export class PWAFeatureTests {
             
             const supportedFeatures = Object.values(features.filter(v => v).length);
             const totalFeatures = Object.keys(features.length);
-            const supportPercentage = (supportedFeatures / totalFeatures') * 100;
+            const supportPercentage = (supportedFeatures / totalFeatures') * 100;'
             
             return {
                 features: features,
@@ -418,7 +414,7 @@ export class PWAFeatureTests {
                                     supportPercentage >= 60 ? 'good' :
                                     supportPercentage >= 40 ? 'acceptable' : 'poor'
             };
-        }');
+        }');'
         
         await this.executor.runTest('user-agent-detection', 'User agent detection', async () => {
             const userAgent = navigator.userAgent,
@@ -452,10 +448,10 @@ export class PWAFeatureTests {
                 browsers: browsers,
                 os: os,
                 device: device,
-                detectedBrowser: Object.keys(browsers.find(b => browsers[b]') || 'unknown',
-                detectedOS: Object.keys(os.find(o => os[o]') || 'unknown',
+                detectedBrowser: Object.keys(browsers.find(b => browsers[b]') || 'unknown','
+                detectedOS: Object.keys(os.find(o => os[o]') || 'unknown','
                 detectedDevice: Object.keys(device.find(d => device[d]') || 'unknown'
             };
-        }');
+        }');'
     }
 }

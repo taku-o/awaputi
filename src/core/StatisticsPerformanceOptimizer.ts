@@ -4,7 +4,7 @@
  */
 export class StatisticsPerformanceOptimizer {
     constructor(statisticsManager) {
-        this.statisticsManager = statisticsManager,
+        this.statisticsManager = statisticsManager;
         
         // パフォーマンス設定
         this.config = {
@@ -16,19 +16,19 @@ export class StatisticsPerformanceOptimizer {
                 maxBatchWaitTime: 100 
     };
             memoryManagement: { enabled: true,
-    maxMemoryUsage: 50 * 1024 * 1024, // 50MB,
-                cleanupThreshold: 0.8, // 80%でクリーンアップ,
-                compressionThreshold: 1000, // 1000レコード以上で圧縮,
+    maxMemoryUsage: 50 * 1024 * 1024, // 50MB;
+                cleanupThreshold: 0.8, // 80%でクリーンアップ;
+                compressionThreshold: 1000, // 1000レコード以上で圧縮;
                 archiveThreshold: 10000 // 10000レコード以上でアーカイブ  };
             renderingOptimization: { enabled: true,
                 useOffscreenCanvas: true,
                 enableDifferentialUpdate: true,
                 viewportCulling: true,
-    renderBudget: 16, // 16ms以内でレンダリング完了,
-                frameThrottling: true  };
+    renderBudget: 16, // 16ms以内でレンダリング完了;
+                frameThrottling: true,;
             caching: { enabled: true,
                 maxCacheSize: 100,
-    cacheTTL: 300000, // 5分,
+    cacheTTL: 300000, // 5分;
                 compressionLevel: 3  }
         };
         // パフォーマンス監視
@@ -66,7 +66,7 @@ export class StatisticsPerformanceOptimizer {
         this.renderingOptimizer = { offscreenCanvas: null,
             dirtyRegions: new Set(),
             lastRenderTime: 0,
-    frameRequestId: null  };
+    frameRequestId: null,;
         // データ圧縮マネージャー
         this.compressionManager = { compressionQueue: [],
             isCompressing: false,
@@ -94,14 +94,14 @@ export class StatisticsPerformanceOptimizer {
     }
         setInterval(() => {  }
             this.processBatch('dataOperations'; }'
-        }, this.config.batchProcessing.processingInterval';
-        ';
+        }, this.config.batchProcessing.processingInterval';'
+        ';'
         // レンダリング操作バッチ処理
         setInterval(() => { }'
 
             this.processBatch('renderOperations'; }'
-        }, this.config.batchProcessing.processingInterval';
-        ';
+        }, this.config.batchProcessing.processingInterval';'
+        ';'
         // クリーンアップ操作バッチ処理
         setInterval(() => { }'
 
@@ -167,17 +167,17 @@ export class StatisticsPerformanceOptimizer {
 
                 startTime' }'
 
-            }');
-            ';
+            }');'
+            ';'
             // 高優先度の場合は即座に処理
-            if(priority === 'high') {', ' }
+            if (priority === 'high') {', ' }
 
                 this.processBatch('dataOperations'; }'
             }
-            ';
+            ';'
 
             return true;} catch (error) {
-            console.error('Data collection optimization failed:', error',
+            console.error('Data collection optimization failed:', error','
             return false, finally { ''
             this.updatePerformanceMetrics('dataCollection', startTime) }
     }
@@ -204,16 +204,16 @@ export class StatisticsPerformanceOptimizer {
         
         const batch = queue.splice(0, this.config.batchProcessing.batchSize),
         const startTime = performance.now(),
-        ',
+        ','
 
         try {'
             switch(queueType) {
 
-                case 'dataOperations':',
+                case 'dataOperations':','
                     await this.processDataBatch(batch),
 
                     break,
-                case 'renderOperations':',
+                case 'renderOperations':','
                     await this.processRenderBatch(batch),
 
                     break,
@@ -255,15 +255,15 @@ export class StatisticsPerformanceOptimizer {
 
         switch(opType) {
 
-            case 'collect':',
+            case 'collect':','
                 await this.statisticsManager.collectStatistics(data),
 
                 break,
-            case 'aggregate':',
+            case 'aggregate':','
                 await this.statisticsManager.aggregateData(data),
 
                 break,
-            case 'compress':',
+            case 'compress':','
                 await this.compressData(data),
 
                 break,
@@ -282,7 +282,7 @@ export class StatisticsPerformanceOptimizer {
         
         try {
             // 差分更新の場合、変更された領域のみ処理
-            if(this.config.renderingOptimization.enableDifferentialUpdate) {
+            if (this.config.renderingOptimization.enableDifferentialUpdate) {
     
 }
                 batch = this.optimizeDifferentialUpdate(batch); }
@@ -300,7 +300,7 @@ export class StatisticsPerformanceOptimizer {
                     // 残りの操作を次のフレームに延期
                     this.processingQueue.renderOperations.unshift(...batch.slice(batch.indexOf(renderOp) + 1)) }
                     break; }
-                }'} catch (error) { console.error('Render batch processing failed:', error }
+                }'} catch (error) { console.error('Render batch processing failed:', error }'
         
         this.updateRenderingMetrics(renderStartTime);
     }
@@ -317,7 +317,7 @@ export class StatisticsPerformanceOptimizer {
             const region = operation.region); }
             if (region) { }
                 const key = `${region.x},${region.y},${region.width},${region.height}`;
-                if(!mergedRegions.has(key) { mergedRegions.set(key, operation) }
+                if (!mergedRegions.has(key) { mergedRegions.set(key, operation) }
 });
         
         return Array.from(mergedRegions.values();
@@ -350,16 +350,16 @@ export class StatisticsPerformanceOptimizer {
      */
     async executeRenderOperation(operation) {
         const { type, context, data, options } = operation;
-        ';
+        ';'
 
         try {'
             switch(type) {
 
-                case 'chart':',
+                case 'chart':','
                     await this.renderChart(context, data, options),
 
                     break,
-                case 'text':',
+                case 'text':','
                     await this.renderText(context, data, options),
 
                     break,
@@ -391,15 +391,15 @@ export class StatisticsPerformanceOptimizer {
 
         switch(type) {
 
-            case 'cache':',
+            case 'cache':','
                 this.cleanupCache(target),
 
                 break,
-            case 'memory':',
+            case 'memory':','
                 await this.performMemoryCleanup(target),
 
                 break,
-            case 'compress':',
+            case 'compress':','
                 await this.compressOldData(target),
 
                 break,
@@ -512,7 +512,7 @@ export class StatisticsPerformanceOptimizer {
         const maxUsage = this.config.memoryManagement.maxMemoryUsage,
         const threshold = maxUsage * this.config.memoryManagement.cleanupThreshold,
 
-        if(currentUsage > threshold) {
+        if (currentUsage > threshold) {
     }
 
             this.triggerMemoryCleanup('high_usage'; }'
@@ -542,10 +542,10 @@ export class StatisticsPerformanceOptimizer {
                 const tsManager = this.statisticsManager.timeSeriesDataManager,
                 if (tsManager.data) {
                     Object.values(tsManager.data).forEach(periodData => { ) }
-                        if(Array.isArray(periodData) { }
+                        if (Array.isArray(periodData) { }
                             count += periodData.length; }
 });
-                }'} catch (error) { console.warn('Record count estimation failed:', error }
+                }'} catch (error) { console.warn('Record count estimation failed:', error }'
         
         return count;
     }
@@ -556,16 +556,16 @@ export class StatisticsPerformanceOptimizer {
     triggerMemoryCleanup(reason) {
 
         this.addToBatch('cleanupOperations', {''
-            type: 'memory',',
+            type: 'memory',','
             target: 'all'),
             reason: reason) }
 
             timestamp: Date.now(),' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 緊急時は即座に実行
-        if(reason === 'high_usage') {', ' }
+        if (reason === 'high_usage') {', ' }
 
             this.processBatch('cleanupOperations'; }'
 }
@@ -609,7 +609,7 @@ export class StatisticsPerformanceOptimizer {
                 originalSize: this.estimateObjectSize(data),
                 compressedSize: this.estimateObjectSize(compressedData,
     compressionRatio: this.estimateObjectSize(compressedData) / this.estimateObjectSize(data });
-            ';
+            ';'
 
             return compressedData;} catch (error) {
             console.error('Data compression failed:', error),
@@ -661,7 +661,7 @@ export class StatisticsPerformanceOptimizer {
         
         while (sampled.length < sampleSize && indices.size < sessions.length) {
             const index = Math.floor(Math.random() * sessions.length),
-            if(!indices.has(index) {
+            if (!indices.has(index) {
                 indices.add(index) }
                 sampled.push(sessions[index]); }
 }
@@ -676,7 +676,7 @@ export class StatisticsPerformanceOptimizer {
         const cacheKey = this.generateCacheKey(key, options),
         
         // キャッシュヒット確認
-        if(this.cache.has(cacheKey) {
+        if (this.cache.has(cacheKey) {
             const cached = this.cache.get(cacheKey),
             const metadata = this.cacheMetadata.get(cacheKey),
             
@@ -739,7 +739,7 @@ export class StatisticsPerformanceOptimizer {
                 oldestKey = key; }
 }
         
-        if(oldestKey) {
+        if (oldestKey) {
         
             this.cache.delete(oldestKey),
             this.cacheMetadata.delete(oldestKey) }
@@ -774,7 +774,7 @@ export class StatisticsPerformanceOptimizer {
             this.cacheMetadata.delete(key); }
         });
         
-        if(expiredKeys.length > 0) {
+        if (expiredKeys.length > 0) {
     
 }
             console.debug(`Cleaned, up ${expiredKeys.length} expired, cache entries`);
@@ -866,7 +866,7 @@ export class StatisticsPerformanceOptimizer {
             this.memoryMonitor.interval = null; }
         }
         
-        if(this.renderingOptimizer.frameRequestId) {
+        if (this.renderingOptimizer.frameRequestId) {
         
             cancelAnimationFrame(this.renderingOptimizer.frameRequestId) }
             this.renderingOptimizer.frameRequestId = null; }

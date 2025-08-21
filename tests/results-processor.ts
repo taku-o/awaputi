@@ -8,7 +8,7 @@ import path from 'path';
 
 export default async function processResults(results {
   // Ensure test-results directory exists
-  await fs.mkdir('test-results', { recursive: true });
+  await fs.mkdir('test-results', { recursive: true,);
   
   // Process and enhance results
   const processedResults = {
@@ -27,14 +27,14 @@ export default async function processResults(results {
      , lines: results.coverageMap.getCoverageSummary().lines.pct
     } : null,
     testFiles: results.testResults.map(test => ({),
-      name: path.basename(test.testFilePath',
+      name: path.basename(test.testFilePath','
       path: test.testFilePath,
       duration: test.perfStats.end - test.perfStats.start,
       tests: test.numPassingTests + test.numFailingTests,
       passed: test.numPassingTests,
       failed: test.numFailingTests,
       status: test.numFailingTests > 0 ? 'failed' : 'passed'
-    })');
+    })');'
   };
   
   // Write enhanced results
@@ -51,14 +51,14 @@ Total Tests: ${processedResults.summary.total}
 Passed: ${processedResults.summary.passed}
 Failed: ${processedResults.summary.failed}
 Skipped: ${processedResults.summary.skipped}
-Duration: ${Math.round(processedResults.summary.duration / 1000'})}s
+Duration: ${Math.round(processedResults.summary.duration / 1000'})}s'
 
 ${processedResults.coverage ? ` : undefined, Coverage:
 -, Statements: ${processedResults.coverage.statements}%
 - Branches: ${processedResults.coverage.branches}%
 - Functions: ${processedResults.coverage.functions}%
 - Lines: ${processedResults.coverage.lines}%
-` : '}
+` : '}'
 
 Test Files:
 ${processedResults.testFiles.map(file =>
@@ -66,7 +66,7 @@ ${processedResults.testFiles.map(file =>
   `- ${file.name}: ${file.passed}/${file.tests} passed (${Math.round(file.duration})}ms)`).join('\n')}
 `;
   
-  await fs.writeFile('test-results/summary.txt', summary');
+  await fs.writeFile('test-results/summary.txt', summary');'
   
   // Log summary to console
   console.log('\n📊 Test Results Summary: ',
@@ -75,7 +75,7 @@ ${processedResults.testFiles.map(file =>
   console.log(`   Failed: ${processedResults.summary.failed)`,
   console.log(`   Duration: ${Math.round(processedResults.summary.duration / 1000})}s`);
   
-  if (processedResults.coverage') {
+  if (processedResults.coverage') {'
     console.log('\n📈 Coverage: ',
     console.log(`   Statements: ${processedResults.coverage.statements)%`,
     console.log(`   Branches: ${processedResults.coverage.branches)%`,

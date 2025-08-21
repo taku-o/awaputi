@@ -11,9 +11,9 @@ describe('Username Input Performance Tests', () => {
     // Enhanced UsernameInputManager with caching for performance testing
     class PerformanceOptimizedUsernameInputManager {
         constructor(gameEngine {
-            this.gameEngine = gameEngine,
-            this.errorHandler = { handleError: jest.fn(') };
-            this.usernameInput = ';
+            this.gameEngine = gameEngine;
+            this.errorHandler = { handleError: jest.fn(') };'
+            this.usernameInput = ';'
             this.isEditingUsername = false;
             
             // Performance optimization: Canvas info cache
@@ -28,19 +28,19 @@ describe('Username Input Performance Tests', () => {
         getCanvasInfo() {
             const now = performance.now(),
             // Return cached canvas info if still valid
-            if (this._canvasInfoCache && (now - this._canvasInfoCacheTime) < this._cacheValidDuration') {
+            if (this._canvasInfoCache && (now - this._canvasInfoCacheTime) < this._cacheValidDuration') {'
                 return this._canvasInfoCache }
             try {
                 const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager,
                 if (responsiveCanvasManager && typeof responsiveCanvasManager.getCanvasInfo === 'function') {
-                    const canvasInfo = responsiveCanvasManager.getCanvasInfo('),
+                    const canvasInfo = responsiveCanvasManager.getCanvasInfo('),'
                     if (canvasInfo && typeof canvasInfo.scale === 'number' && canvasInfo.scale > 0) {
                         // Cache the canvas info
-                        this._canvasInfoCache = canvasInfo,
-                        this._canvasInfoCacheTime = now,
+                        this._canvasInfoCache = canvasInfo;
+                        this._canvasInfoCacheTime = now;
                         return canvasInfo }
                 } catch (error) {
-                if (this.gameEngine.debug') {
+                if (this.gameEngine.debug') {'
                     console.warn('ResponsiveCanvasManager access failed:', error) }
             }
             
@@ -84,8 +84,8 @@ describe('Username Input Performance Tests', () => {
                 this.transformCoordinates(coord.x, coord.y, canvasInfo).filter(result => result !== null) }
         // Clear caches manually
         clearCache() {
-            this._canvasInfoCache = null,
-            this._canvasInfoCacheTime = 0,
+            this._canvasInfoCache = null;
+            this._canvasInfoCacheTime = 0;
             this._coordinateCache.clear() }
         // Get cache statistics
         getCacheStats() {
@@ -99,7 +99,7 @@ describe('Username Input Performance Tests', () => {
     }
     beforeEach(() => {
         // Use fake timers for consistent timing in tests
-        jest.useFakeTimers('),
+        jest.useFakeTimers('),'
         jest.spyOn(performance, 'now').mockImplementation(() => Date.now(),
         // Setup performance observer mock
         performanceObserver = {
@@ -119,14 +119,13 @@ describe('Username Input Performance Tests', () => {
         // Mock GameEngine
         mockGameEngine = {
             responsiveCanvasManager: mockResponsiveCanvasManager,
-            debug: false
-        };
+            debug: false,;
         usernameInputManager = new PerformanceOptimizedUsernameInputManager(mockGameEngine);
     });
     afterEach(() => {
         // Restore real timers
-        jest.useRealTimers() }');
-    describe('Canvas Info Caching', (') => {
+        jest.useRealTimers() }');'
+    describe('Canvas Info Caching', (') => {'
         it('should cache canvas info to avoid repeated calls', () => {
             // First call should hit ResponsiveCanvasManager
             const canvasInfo1 = usernameInputManager.getCanvasInfo(),
@@ -137,7 +136,7 @@ describe('Username Input Performance Tests', () => {
             expect(canvasInfo2.toEqual(canvasInfo1),
             const stats = usernameInputManager.getCacheStats(),
             expect(stats.canvasInfoCached).toBe(true),
-            expect(stats.canvasInfoCacheAge).toBeLessThan(100) }');
+            expect(stats.canvasInfoCacheAge).toBeLessThan(100) }');'
         it('should refresh cache after expiration', async () => {
             // First call
             usernameInputManager.getCanvasInfo(),
@@ -147,9 +146,9 @@ describe('Username Input Performance Tests', () => {
             // Second call should refresh cache
             usernameInputManager.getCanvasInfo();
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(2);
-        }');
+        }');'
     }
-    describe('Coordinate Transformation Caching', (') => {
+    describe('Coordinate Transformation Caching', (') => {'
         it('should cache coordinate transformations', () => {
             const canvasInfo = { scale: 1.5 };
             
@@ -162,7 +161,7 @@ describe('Username Input Performance Tests', () => {
             expect(result2.toBe(result1), // Should be same object reference (from cache)
             ,
             const stats = usernameInputManager.getCacheStats(),
-            expect(stats.coordinateCacheSize).toBe(1) }');
+            expect(stats.coordinateCacheSize).toBe(1) }');'
         it('should limit coordinate cache size', () => {
             const canvasInfo = { scale: 1.5 };
             
@@ -172,7 +171,7 @@ describe('Username Input Performance Tests', () => {
             
             const stats = usernameInputManager.getCacheStats();
             expect(stats.coordinateCacheSize).toBe(stats.coordinateCacheMaxSize);
-        }');
+        }');'
         it('should handle cache clearing correctly', () => {
             const canvasInfo = { scale: 1.5 };
             
@@ -187,9 +186,9 @@ describe('Username Input Performance Tests', () => {
             stats = usernameInputManager.getCacheStats();
             expect(stats.canvasInfoCached).toBe(false);
             expect(stats.coordinateCacheSize).toBe(0);
-        }');
+        }');'
     }
-    describe('Batch Coordinate Transformation', (') => {
+    describe('Batch Coordinate Transformation', (') => {'
         it('should efficiently transform multiple coordinates', () => {
             const canvasInfo = { scale: 2.0 };
             const coordinates = [
@@ -206,17 +205,17 @@ describe('Username Input Performance Tests', () => {
             expect(results[1]).toEqual({ x: 600, y: 800 ,
             expect(results[2]).toEqual({ x: 1000, y: 1200 ,
             // Should complete quickly
-            expect(endTime - startTime).toBeLessThan(10) }');
+            expect(endTime - startTime).toBeLessThan(10) }');'
         it('should handle empty and invalid coordinate arrays', () => {
             const canvasInfo = { scale: 1.0 };
             
             expect(usernameInputManager.transformCoordinatesBatch([], canvasInfo).toEqual([]);
             expect(usernameInputManager.transformCoordinatesBatch(null, canvasInfo).toEqual([]);
             expect(usernameInputManager.transformCoordinatesBatch(undefined, canvasInfo).toEqual([]);
-        }');
+        }');'
     }
-    describe('Performance Benchmarks', (') => {
-        it('should transform coordinates within performance budget (< 1ms for 100 operations')', () => {
+    describe('Performance Benchmarks', (') => {'
+        it('should transform coordinates within performance budget (< 1ms for 100 operations')', () => {'
             const canvasInfo = { scale: 1.25 };
             
             const startTime = performance.now();
@@ -228,7 +227,7 @@ describe('Username Input Performance Tests', () => {
             const duration = endTime - startTime;
             
             expect(duration.toBeLessThan(1); // Should complete in < 1ms
-        }');
+        }');'
         it('should handle rapid getCanvasInfo calls efficiently', () => {
             const startTime = performance.now(),
             // Rapid calls should mostly hit cache
@@ -240,7 +239,7 @@ describe('Username Input Performance Tests', () => {
             
             expect(duration.toBeLessThan(5); // Should complete in < 5ms
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1); // Only first call hits manager
-        }');
+        }');'
         it('should validate coordinates quickly', () => {
             const canvasInfo = {
                 actualWidth: 1920,
@@ -251,7 +250,7 @@ describe('Username Input Performance Tests', () => {
             // Validate 1000 coordinates
             let validCount = 0;
             for (let i = 0; i < 1000; i++) {
-                if(usernameInputManager.validateCoordinates(i, i, canvasInfo) {
+                if (usernameInputManager.validateCoordinates(i, i, canvasInfo) {
                     validCount++ }
             }
             
@@ -260,9 +259,9 @@ describe('Username Input Performance Tests', () => {
             
             expect(duration.toBeLessThan(10); // Should complete in < 10ms
             expect(validCount.toBeGreaterThan(0);
-        }');
+        }');'
     }
-    describe('Memory Usage Tests', (') => {
+    describe('Memory Usage Tests', (') => {'
         it('should maintain reasonable memory usage with coordinate cache', () => {
             const canvasInfo = { scale: 1.0 };
             
@@ -275,7 +274,7 @@ describe('Username Input Performance Tests', () => {
             // Memory usage should be bounded by max cache size
             const approximateMemoryUsage = stats.coordinateCacheSize * 32; // rough estimate: 32 bytes per entry
             expect(approximateMemoryUsage.toBeLessThan(2000); // Should use < 2KB for coordinate cache
-        }');
+        }');'
         it('should handle cache overflow gracefully', () => {
             const canvasInfo = { scale: 1.0 };
             
@@ -293,10 +292,10 @@ describe('Username Input Performance Tests', () => {
                 initialCacheSize + 19 + 1000, 
                 canvasInfo,
             expect(recentResult.toBeDefined();
-        }');
+        }');'
     }
-    describe('Real-world Performance Scenarios', (') => {
-        it('should handle typical render loop performance (60fps')', () => {
+    describe('Real-world Performance Scenarios', (') => {'
+        it('should handle typical render loop performance (60fps')', () => {'
             const canvasInfo = { scale: 1.5, actualWidth: 1200, actualHeight: 900 };
             const frameTime = 1000 / 60; // 16.67ms per frame
             
@@ -324,7 +323,7 @@ describe('Username Input Performance Tests', () => {
             expect(averageFrameTime.toBeLessThan(frameTime);
             // ResponsiveCanvasManager should only be called once (rest from cache);
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
-        }');
+        }');'
         it('should handle canvas resize scenario efficiently', () => {
             // Initial render
             usernameInputManager.getCanvasInfo(),
@@ -348,4 +347,4 @@ describe('Username Input Performance Tests', () => {
             expect(endTime - startTime).toBeLessThan(1), // Should handle resize quickly
         });
     }
-}');
+}');'

@@ -11,13 +11,13 @@ import { TimingFeedbackSystem  } from './timing-adjustment/TimingFeedbackSystem.
 export class TimingAdjustmentManager {'
 
     constructor(gameEngine) {
-        this.gameEngine = gameEngine,
-        this.isInitialized = false,
+        this.gameEngine = gameEngine;
+        this.isInitialized = false;
         
         // 設定とプロファイル
         this.config = {
             // 基本設定
-            enabled: true,
+            enabled: true;
             defaultProfile: 'standard',
             autoAdjustment: true,
     adaptiveLearning: true,
@@ -42,7 +42,7 @@ export class TimingAdjustmentManager {'
                     description: '一般的な使用',
                     adjustmentLevel: 'none',
                     timeoutExtensions: false,
-    pauseEnabled: true }
+    pauseEnabled: true,
                     customTimeouts: {};
                     preferences: { showTimeWarnings: true,
                         autoExtend: false,
@@ -61,8 +61,7 @@ export class TimingAdjustmentManager {'
                     preferences: { showTimeWarnings: true,
                         autoExtend: true,
                         gracePeriod: 10000,
-    confirmExtensions: false 
-    };
+    confirmExtensions: false,;
                 cognitive: { ''
                     name: '認知機能配慮',
                     description: '認知機能に配慮が必要な方向け',
@@ -78,8 +77,7 @@ export class TimingAdjustmentManager {'
                         autoExtend: true,
                         gracePeriod: 15000,
                         confirmExtensions: false,
-    showProgress: true 
-    };
+    showProgress: true,;
                 senior: { ''
                     name: '高齢者向け',
                     description: '高齢者の方に配慮したタイミング',
@@ -95,14 +93,13 @@ export class TimingAdjustmentManager {'
                         autoExtend: true,
                         gracePeriod: 12000,
                         confirmExtensions: true,
-    largeTimers: true 
-    };
+    largeTimers: true,;
                 custom: { ''
                     name: 'カスタム',
                     description: 'ユーザー定義設定',
                     adjustmentLevel: 'moderate',
                     timeoutExtensions: true,
-    pauseEnabled: true }
+    pauseEnabled: true,
                     customTimeouts: {};
                     preferences: { showTimeWarnings: true,
                         autoExtend: false,
@@ -110,7 +107,7 @@ export class TimingAdjustmentManager {'
     }
         };
         // 状態管理
-        this.state = {,
+        this.state = {;
             currentProfile: 'standard',
             isGlobalPaused: false,
             activeTimers: new Map(),
@@ -118,8 +115,8 @@ export class TimingAdjustmentManager {'
     userInteractionData: {
                 averageResponseTime: 1000,
                 recentResponses: [],
-    adaptationNeeded: false };
-            warningStates: new Map();
+    adaptationNeeded: false,;
+            warningStates: new Map(),
         };
         
         // タイマー管理
@@ -159,7 +156,7 @@ export class TimingAdjustmentManager {'
     /**
      * システムを初期化'
      */''
-    async initialize()';
+    async initialize()';'
             console.log('TimingAdjustmentManager: 初期化開始',
             
             // 設定の読み込み
@@ -175,40 +172,40 @@ export class TimingAdjustmentManager {'
             this.algorithms.applyProfile(this.config.defaultProfile);
             
             // アクセシビリティマネージャーとの統合（キャリブレーターに委譲）
-            if(this.gameEngine.accessibilityManager) {
+            if (this.gameEngine.accessibilityManager) {
 
-                this.calibrator.integrateWithAccessibilityManager()',
+                this.calibrator.integrateWithAccessibilityManager()','
             console.log('TimingAdjustmentManager: 初期化完了' }
 
             ' }'
 
         } catch (error) {
-            console.error('TimingAdjustmentManager: 初期化エラー:', error',
+            console.error('TimingAdjustmentManager: 初期化エラー:', error','
             throw error }
     }
     
     /**
      * 設定を読み込み'
      */''
-    async loadConfiguration()';
-            const savedConfig = localStorage.getItem('timingAdjustmentConfig);
-            if(savedConfig) {
+    async loadConfiguration()';'
+            const savedConfig = localStorage.getItem('timingAdjustmentConfig);'
+            if (savedConfig) {
                 const parsed = JSON.parse(savedConfig) }
 
                 this.mergeConfig(parsed); }
             }
-            ';
+            ';'
             // ユーザープロファイルの読み込み
             const savedProfile = localStorage.getItem('timingAdjustmentProfile';
-            if(savedProfile) { this.state.currentProfile = savedProfile }
-            ';
+            if (savedProfile) { this.state.currentProfile = savedProfile }
+            ';'
             // 適応学習データの読み込み
-            const savedLearningData = localStorage.getItem('timingAdaptiveLearning);
-            if(savedLearningData) {
+            const savedLearningData = localStorage.getItem('timingAdaptiveLearning);'
+            if (savedLearningData) {
     
 }
 
-                this.adaptiveLearning.data = { ...this.adaptiveLearning.data, ...JSON.parse(savedLearningData),'} catch (error) { console.warn('TimingAdjustmentManager: 設定読み込みエラー:', error }
+                this.adaptiveLearning.data = { ...this.adaptiveLearning.data, ...JSON.parse(savedLearningData),'} catch (error) { console.warn('TimingAdjustmentManager: 設定読み込みエラー:', error }'
     }
     
     /**
@@ -223,18 +220,18 @@ export class TimingAdjustmentManager {'
     /**
      * イベントリスナーを設定
      */''
-    setupEventListeners()';
-        document.addEventListener('keydown', this.boundHandlers.keydown';
-        ';
+    setupEventListeners()';'
+        document.addEventListener('keydown', this.boundHandlers.keydown';'
+        ';'
         // ページ可視性変更
-        document.addEventListener('visibilitychange', this.boundHandlers.visibilitychange';
-        ';
+        document.addEventListener('visibilitychange', this.boundHandlers.visibilitychange';'
+        ';'
         // フォーカス変更
-        window.addEventListener('focus', this.boundHandlers.focus';
-        window.addEventListener('blur', this.boundHandlers.blur';
-        ';
+        window.addEventListener('focus', this.boundHandlers.focus';'
+        window.addEventListener('blur', this.boundHandlers.blur';'
+        ';'
         // ゲームエンジンイベント
-        if(this.gameEngine.eventEmitter) {
+        if (this.gameEngine.eventEmitter) {
 
             this.gameEngine.eventEmitter.on('gameStateChange', this.handleGameStateChange.bind(this)),
             this.gameEngine.eventEmitter.on('userInteraction', this.trackUserInteraction.bind(this)) }
@@ -319,14 +316,14 @@ export class TimingAdjustmentManager {'
      */''
     handleKeydown(event) {
         // スペースキーまたはPキーでゲーム一時停止
-        if((event.code === 'Space' || event.code === 'KeyP) && !event.repeat) {
+        if((event.code === 'Space' || event.code === 'KeyP) && !event.repeat) {'
             if (this.getCurrentProfile().pauseEnabled) {
                 event.preventDefault(),
-                this.toggleGlobalPause()',
+                this.toggleGlobalPause()','
         if (event.code === 'KeyT' && !event.repeat) {
             if (this.getCurrentProfile().timeoutExtensions) {
                 event.preventDefault(),
-                this.requestTimeExtension()',
+                this.requestTimeExtension()','
         if (event.code === 'Escape' && event.ctrlKey) {
             event.preventDefault() }
             this.feedback.openTimingSettings(); }
@@ -338,7 +335,7 @@ export class TimingAdjustmentManager {'
     handleVisibilityChange() {
         if (document.hidden) {
             // ページが隠れた場合、自動的に一時停止
-            if(this.config.autoAdjustment) {
+            if (this.config.autoAdjustment) {
     }
 
                 this.algorithms.pauseAllTimers('visibility'); }
@@ -356,7 +353,7 @@ export class TimingAdjustmentManager {'
             // フォーカスが外れた場合、タイマーを一時停止
     }
 
-            this.algorithms.pauseAllTimers('focus');' }
+            this.algorithms.pauseAllTimers('focus');' }'
 
         } else if (event.type === 'focus') { // フォーカスが戻った場合、タイマーを再開
             this.algorithms.resumeAllTimers('focus' }'
@@ -367,12 +364,12 @@ export class TimingAdjustmentManager {'
      */
     handleGameStateChange(state) {
 
-        if(state.paused) {
+        if (state.paused) {
     }
 
             this.algorithms.pauseAllTimers('game'; }
 
-        } else if(state.resumed) { ''
+        } else if (state.resumed) { ''
             this.algorithms.resumeAllTimers('game' }'
     }
     
@@ -391,7 +388,7 @@ export class TimingAdjustmentManager {'
      */
     toggleGlobalPause() {
 
-        if(this.state.isGlobalPaused) {
+        if (this.state.isGlobalPaused) {
     }
 
             this.algorithms.resumeAllTimers('user'); }
@@ -402,7 +399,7 @@ export class TimingAdjustmentManager {'
         }
         
         this.state.isGlobalPaused = !this.state.isGlobalPaused;
-        ';
+        ';'
         // UI更新イベントを発火
         this.emitEvent('globalPauseToggled', {
             paused: this.state.isGlobalPaused }
@@ -457,7 +454,7 @@ export class TimingAdjustmentManager {'
 
         for(const, key in, source) {
 
-            if(source[key] && typeof, source[key] === 'object' && !Array.isArray(source[key]) {
+            if (source[key] && typeof, source[key] === 'object' && !Array.isArray(source[key]) {
         }
                 result[key] = this.deepMerge(target[key] || {), source[key]) } else { result[key] = source[key] }
         }
@@ -468,10 +465,10 @@ export class TimingAdjustmentManager {'
     /**
      * 設定を保存'
      */''
-    saveConfiguration()';
+    saveConfiguration()';'
             localStorage.setItem('timingAdjustmentConfig', JSON.stringify(this.config));
-            localStorage.setItem('timingAdjustmentProfile', this.state.currentProfile';
-            localStorage.setItem('timingAdaptiveLearning', JSON.stringify(this.adaptiveLearning.data);'} catch (error) { console.warn('TimingAdjustmentManager: 設定保存エラー:', error }
+            localStorage.setItem('timingAdjustmentProfile', this.state.currentProfile';'
+            localStorage.setItem('timingAdaptiveLearning', JSON.stringify(this.adaptiveLearning.data);'} catch (error) { console.warn('TimingAdjustmentManager: 設定保存エラー:', error }'
     }
     
     // ========== クリーンアップ ==========
@@ -488,18 +485,18 @@ export class TimingAdjustmentManager {'
         
         if (this.algorithms) { this.algorithms.destroy() }
         
-        if(this.feedback) {
-        ',
+        if (this.feedback) {
+        ','
 
-            this.feedback.destroy()',
-        document.removeEventListener('keydown', this.boundHandlers.keydown',
-        document.removeEventListener('visibilitychange', this.boundHandlers.visibilitychange',
-        window.removeEventListener('focus', this.boundHandlers.focus',
-        window.removeEventListener('blur', this.boundHandlers.blur',
-        ',
+            this.feedback.destroy()','
+        document.removeEventListener('keydown', this.boundHandlers.keydown','
+        document.removeEventListener('visibilitychange', this.boundHandlers.visibilitychange','
+        window.removeEventListener('focus', this.boundHandlers.focus','
+        window.removeEventListener('blur', this.boundHandlers.blur','
+        ','
         // 設定を保存
         this.saveConfiguration() }
 
         console.log('[TimingAdjustmentManager] Main, Controller cleaned, up successfully'); }
 
-    }'}
+    }'}'

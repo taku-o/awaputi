@@ -12,66 +12,66 @@ import { AudioCacheManager  } from '../../src/audio/AudioCacheManager.js';
 import { AudioPerformanceMonitor  } from '../../src/audio/AudioPerformanceMonitor.js';
 interface MockFunction<__T = any> extends Function {
     calls: any[][],
-    executionTimes: number[],
-    getAverageExecutionTime(): number }
+    executionTimes: number[];
+    getAverageExecutionTime(): number;
 interface PerformanceMeasurement {
     average: number,
-    min: number,
-    max: number,
-    median: number,
-    measurements: number[] }
+    min: number;
+    max: number;
+    median: number;
+    measurements: number[];
 interface MemoryUsage {
     used: number,
-    total: number,
-    limit: number }
+    total: number;
+    limit: number;
 interface AudioManagerStatus {
-    queuedSounds?: number,
-    qualityMode?: string,
-    bufferUnderruns?: number }
+    queuedSounds?: number;
+    qualityMode?: string;
+    bufferUnderruns?: number;
 interface AudioMetrics {
     cpuUsage: number,
-    memoryUsage: number,
-    activeSourceNodes: number,
-    averageLatency: number,
-    bufferUnderruns: number }
+    memoryUsage: number;
+    activeSourceNodes: number;
+    averageLatency: number;
+    bufferUnderruns: number;
 interface AudioReport {
     summary: string,
-    recommendations: string[] }
+    recommendations: string[];
 interface CacheStats {
     hits: number,
-    misses: number,
-    size: number,
-    memoryUsage: number }
+    misses: number;
+    size: number;
+    memoryUsage: number;
 interface OptimizationStats {
     compressionTime: number,
-    compressionRatio: number,
-    qualityScore: number }
+    compressionRatio: number;
+    qualityScore: number;
 interface BGMConfig {
     style: string,
-    duration: number,
-    complexity: string }
+    duration: number;
+    complexity: string;
 interface SoundPlayOptions {
-    volume?: number,
-    duration?: number,
-    pitch?: number,
-    quality?: string }
+    volume?: number;
+    duration?: number;
+    pitch?: number;
+    quality?: string;
 interface BGMPlayOptions {
-    loop?: boolean,
-    duration?: number,
-    quality?: string }
+    loop?: boolean;
+    duration?: number;
+    quality?: string;
 interface CrossfadeOptions {
     fadeOutDuration: number,
-    fadeInDuration: number }
+    fadeInDuration: number;
 interface HapticOptions {
-    intensity: number }
+    intensity: number;
 interface DeviceInfo {
     memory: number,
-    cores: number,
-    userAgent: string }
+    cores: number;
+    userAgent: string;
 interface BenchmarkResult {
     average: number,
-    median: number,
-    p95: number }
+    median: number;
+    p95: number;
 interface BenchmarkTest {
     name: string,
     operation: () => any }
@@ -81,7 +81,7 @@ const mockFn = <T = any>(returnValue?: T): MockFunction<T> => {
     const executionTimes: number[] = [],
     const fn = (...args: any[]) => {
         const startTime = performance.now(),
-        calls.push(args'),
+        calls.push(args'),'
         const result = typeof returnValue === 'function' ? returnValue(...args) : returnValue,
         const endTime = performance.now(),
         executionTimes.push(endTime - startTime),
@@ -114,7 +114,7 @@ const measurePerformance = async (
 };
 // メモリ使用量測定（概算）
 const measureMemoryUsage = (): MemoryUsage => {
-    if ((performance.memory') {
+    if ((performance.memory') {'
         return {
             used: (performance.memory.usedJSHeapSize,
             total: (performance.memory.totalJSHeapSize,
@@ -129,7 +129,7 @@ describe('音響システムパフォーマンステスト', () => {
     let audioDataOptimizer: AudioDataOptimizer,
     let audioCacheManager: AudioCacheManager,
     let audioPerformanceMonitor: AudioPerformanceMonitor,
-    beforeAll((') => {
+    beforeAll((') => {'
         // Performance API のモック
         Object.defineProperty(global, 'performance', {
             value: {,
@@ -169,7 +169,7 @@ describe('音響システムパフォーマンステスト', () => {
                     connect: mockFn(
                     disconnect: mockFn(
         addEventListener: mockFn( }),
-                createOscillator: mockFn((') => ({
+                createOscillator: mockFn((') => ({'
                     type: 'sine',
                     frequency: { value: 440 };
                     start: mockFn(
@@ -185,7 +185,7 @@ describe('音響システムパフォーマンステスト', () => {
                     length: 44100,
                     sampleRate: 44100,
                     numberOfChannels: 2),
-                   , getChannelData: mockFn(() => new Float32Array(44100) })'),
+                   , getChannelData: mockFn(() => new Float32Array(44100) })'),'
                 destination: {},
                 sampleRate: 44100,
                 currentTime: 0,
@@ -236,17 +236,17 @@ describe('音響システムパフォーマンステスト', () => {
                 averageLatency: 15,
                 bufferUnderruns: 0
             ),
-            reset: mockFn(',
+            reset: mockFn(','
             generateReport: mockFn({
                 summary: 'Performance within acceptable limits',
                 recommendations: []
     ) } as any;
     });
-    afterEach((') => {
+    afterEach((') => {'
         if (audioManager && typeof audioManager.dispose === 'function') {
             audioManager.dispose() }
-    }');
-    describe('同時効果音再生負荷テスト', (') => {
+    }');'
+    describe('同時効果音再生負荷テスト', (') => {'
         test('20音同時再生でパフォーマンスが許容範囲内であること', async () => {
             const maxConcurrentSounds = 20,
             const soundDuration = 1000, // 1秒
@@ -255,10 +255,10 @@ describe('音響システムパフォーマンステスト', () => {
                 const promises: Promise<any>[] = [],
                 
                 // 20音を同時に再生開始
-                for (let i = 0, i < maxConcurrentSounds, i++') {
+                for (let i = 0, i < maxConcurrentSounds, i++') {'
                     promises.push(audioManager.playSound('bubblePop', {
                         volume: 0.1,
-                        duration: soundDuration } as SoundPlayOptions);
+                        duration: soundDuration, as SoundPlayOptions);
                 }
                 
                 await Promise.all(promises);
@@ -270,8 +270,8 @@ describe('音響システムパフォーマンステスト', () => {
             // CPU使用率チェック
             const metrics: AudioMetrics = audioPerformanceMonitor.getMetrics(
             expect(metrics.cpuUsage).toBeLessThan(0.7); // 70%未満
-        }');
-        test('異なる種類の効果音同時再生でのパフォーマンス', async (') => {
+        }');'
+        test('異なる種類の効果音同時再生でのパフォーマンス', async (') => {'
             const soundTypes: string[] = [
                 'bubblePop', 'comboAchieved', 'achievementUnlocked',
                 'explosion', 'freeze', 'electric', 'magnetic'
@@ -294,12 +294,12 @@ describe('音響システムパフォーマンステスト', () => {
             // メモリ使用量チェック
             const memoryAfter = measureMemoryUsage();
             expect(memoryAfter.used).toBeLessThan(50 * 1024 * 1024); // 50MB未満
-        }');
+        }');'
         test('効果音の連続再生パフォーマンス', async () => {
             const iterations = 100,
             
             const performanceData = await measurePerformance(async () => {
-                for (let i = 0, i < iterations, i++') {
+                for (let i = 0, i < iterations, i++') {'
                     audioManager.playSound('bubblePop', { volume: 0.05 });
                     // 小さな間隔で連続再生
                     await new Promise(resolve => setTimeout(resolve, 10);
@@ -311,10 +311,10 @@ describe('音響システムパフォーマンステスト', () => {
             // オーディオキューが詰まっていないことを確認
             const status: AudioManagerStatus = audioManager.getStatus(
             expect(status.queuedSounds || 0).toBeLessThan(10);
-        }');
+        }');'
     }
-    describe('BGM生成時間パフォーマンステスト', (') => {
-        test('プロシージャルBGM生成が2秒以内に完了すること', async (') => {
+    describe('BGM生成時間パフォーマンステスト', (') => {'
+        test('プロシージャルBGM生成が2秒以内に完了すること', async (') => {'
             const bgmConfigs: BGMConfig[] = [
                 { style: 'ambient', duration: 30, complexity: 'simple' },
                 { style: 'upbeat', duration: 60, complexity: 'medium' },
@@ -327,11 +327,11 @@ describe('音響システムパフォーマンステスト', () => {
                 expect(performanceData.average).toBeLessThan(2000); // 2秒未満 : undefined
                 console.log(`BGM generation (${config.style}): ${performanceData.average.toFixed(2})}ms`);
             }
-        }');
-        test('BGMトランジション処理パフォーマンス', async (') => {
+        }');'
+        test('BGMトランジション処理パフォーマンス', async (') => {'
             // 初期BGMを開始
-            audioManager.playBGM('ambient-track', { loop: true } as BGMPlayOptions);
-            const performanceData = await measurePerformance(async (') => {
+            audioManager.playBGM('ambient-track', { loop: true, as BGMPlayOptions);
+            const performanceData = await measurePerformance(async (') => {'
                 // クロスフェードでBGM切り替え
                 return (audioManager.crossfadeBGM? .('upbeat-track', { : undefined
                     fadeOutDuration: 1000,
@@ -343,9 +343,9 @@ describe('音響システムパフォーマンステスト', () => {
             // トランジション中のCPU使用率
             const metrics: AudioMetrics = audioPerformanceMonitor.getMetrics(
             expect(metrics.cpuUsage).toBeLessThan(0.5); // 50%未満
-        }');
+        }');'
         test('BGMループ処理のメモリ効率性', async () => {
-            const initialMemory = measureMemoryUsage('),
+            const initialMemory = measureMemoryUsage('),'
             // 長時間のBGMループをシミュレート
             audioManager.playBGM('loop-track', { 
                 loop: true,
@@ -360,10 +360,10 @@ describe('音響システムパフォーマンステスト', () => {
             
             // メモリリークがないことを確認
             expect(memoryIncrease).toBeLessThan(5 * 1024 * 1024); // 5MB未満の増加
-        }');
+        }');'
     }
-    describe('メモリ使用量監視テスト', (') => {
-        test('音響データキャッシュのメモリ効率性', async (') => { : undefined
+    describe('メモリ使用量監視テスト', (') => {'
+        test('音響データキャッシュのメモリ効率性', async (') => { : undefined'
             const testSounds: string[] = [
                 'bubblePop', 'comboAchieved', 'achievementUnlocked',
                 'explosion', 'freeze', 'electric', 'magnetic',
@@ -384,7 +384,7 @@ describe('音響システムパフォーマンステスト', () => {
             // キャッシュ効率性の確認
             const cacheStats: CacheStats = audioCacheManager.getStats(
             expect(cacheStats.memoryUsage).toBeLessThan(25 * 1024 * 1024); // 25MB未満
-        }');
+        }');'
         test('音響データ圧縮の効果測定', async () => {
             const testData = new ArrayBuffer(10 * 1024 * 1024), // 10MB のテストデータ
             
@@ -397,11 +397,11 @@ describe('音響システムパフォーマンステスト', () => {
             const optimizationStats: OptimizationStats = audioDataOptimizer.getOptimizationStats(
             expect(optimizationStats.compressionRatio).toBeGreaterThan(0.5); // 50%以上圧縮
             expect(optimizationStats.qualityScore).toBeGreaterThan(0.8); // 品質80%以上維持
-        }');
+        }');'
         test('ガベージコレクション効果の測定', async () => {
             const initialMemory = measureMemoryUsage(),
             // 大量の一時的な音響オブジェクトを作成
-            for (let i = 0, i < 50, i++') {
+            for (let i = 0, i < 50, i++') {'
                 audioManager.playSound('bubblePop', { volume: 0.01 });
                 await new Promise(resolve => setTimeout(resolve, 20);
             }
@@ -417,9 +417,9 @@ describe('音響システムパフォーマンステスト', () => {
             const memoryReduced = beforeGCMemory.used - afterGCMemory.used;
             // Node.js環境ではガベージコレクションが必ずしも即座に効果を示すとは限らない
             expect(memoryReduced).toBeGreaterThanOrEqual(0); // メモリが解放されたか、少なくとも増加していない
-        }');
+        }');'
     }
-    describe('リアルタイム処理パフォーマンス', (') => {
+    describe('リアルタイム処理パフォーマンス', (') => {'
         test('音響解析処理のリアルタイム性能', async () => {
             const analysisIterations = 100,
             const analysisInterval = 16, // ~60FPS
@@ -438,15 +438,15 @@ describe('音響システムパフォーマンステスト', () => {
             // CPU使用率が許容範囲内 : undefined
             const metrics: AudioMetrics = audioPerformanceMonitor.getMetrics(
             expect(metrics.cpuUsage).toBeLessThan(0.4); // 40%未満
-        }');
-        test('音響効果リアルタイム適用パフォーマンス', async (') => {
+        }');'
+        test('音響効果リアルタイム適用パフォーマンス', async (') => {'
             audioManager.playBGM('test-track'),
             const effectChanges = [
-                { effect: 'reverb', value: true },
-                { effect: 'compression', value: true },
+                { effect: 'reverb', value: true,,
+                { effect: 'compression', value: true,,
                 { effect: 'equalizer', value: { bass: 1.2, treble: 0.8 } },
-                { effect: 'reverb', value: false },
-                { effect: 'compression', value: false }
+                { effect: 'reverb', value: false,,
+                { effect: 'compression', value: false,
             ];
             
             const performanceData = await measurePerformance(async () => {
@@ -459,8 +459,8 @@ describe('音響システムパフォーマンステスト', () => {
             // 音響に途切れがないことを確認
             const status: AudioManagerStatus = audioManager.getStatus(
             expect(status.bufferUnderruns || 0).toBe(0);
-        }');
-        test('触覚フィードバック応答性能', async (') => {
+        }');'
+        test('触覚フィードバック応答性能', async (') => {'
             const hapticEvents = [
                 { type: 'bubblePop', intensity: 0.5 },
                 { type: 'combo', intensity: 0.7 },
@@ -478,10 +478,10 @@ describe('音響システムパフォーマンステスト', () => {
             }, 10);
             // 触覚フィードバック応答が10ms以内
             expect(performanceData.average).toBeLessThan(10);
-        }');
+        }');'
     }
-    describe('デバイス別パフォーマンス', (') => {
-        test('低性能デバイスでの適応的品質調整', async (') => {
+    describe('デバイス別パフォーマンス', (') => {'
+        test('低性能デバイスでの適応的品質調整', async (') => {'
             // 低性能デバイスをシミュレート
             const lowEndDevice: DeviceInfo = {
                 memory: 2 * 1024 * 1024 * 1024, // 2GB
@@ -492,16 +492,16 @@ describe('音響システムパフォーマンステスト', () => {
             (audioManager.adaptToDevice? .(lowEndDevice));
             // 品質調整後の性能測定
             const performanceData = await measurePerformance(async () => {
-                for (let i = 0, i < 10, i++') { : undefined
+                for (let i = 0, i < 10, i++') { : undefined'
                     audioManager.playSound('bubblePop', { volume: 0.1 });
                 }
             });
             expect(performanceData.average).toBeLessThan(200);
             // 低品質モードが適用されていることを確認
             const status: AudioManagerStatus = audioManager.getStatus(
-            expect(status.qualityMode').toBe('low');
-        }');
-        test('高性能デバイスでの最大品質パフォーマンス', async (') => {
+            expect(status.qualityMode').toBe('low');'
+        }');'
+        test('高性能デバイスでの最大品質パフォーマンス', async (') => {'
             // 高性能デバイスをシミュレート
             const highEndDevice: DeviceInfo = {
                 memory: 16 * 1024 * 1024 * 1024, // 16GB
@@ -511,12 +511,12 @@ describe('音響システムパフォーマンステスト', () => {
             
             (audioManager.adaptToDevice? .(highEndDevice));
             // 最大品質での性能測定
-            const performanceData = await measurePerformance(async (') => {
+            const performanceData = await measurePerformance(async (') => {'
                 // 高品質オーディオ処理 : undefined
-                audioManager.playBGM('high-quality-track', { quality: 'high' } as BGMPlayOptions');
-                audioManager.setAudioEffect('reverb', true');
+                audioManager.playBGM('high-quality-track', { quality: 'high' } as BGMPlayOptions');'
+                audioManager.setAudioEffect('reverb', true');'
                 audioManager.setAudioEffect('compression', true);
-                for (let i = 0; i < 15; i++') {
+                for (let i = 0; i < 15; i++') {'
                     audioManager.playSound('explosion', { 
                         volume: 0.3,
                         quality: 'high') as SoundPlayOptions) }
@@ -524,10 +524,10 @@ describe('音響システムパフォーマンステスト', () => {
             expect(performanceData.average).toBeLessThan(100);
             // 高品質モードが適用されていることを確認
             const status: AudioManagerStatus = audioManager.getStatus(
-            expect(status.qualityMode').toBe('high');
-        }');
+            expect(status.qualityMode').toBe('high');'
+        }');'
     }
-    describe('長時間実行パフォーマンス', (') => {
+    describe('長時間実行パフォーマンス', (') => {'
         test('24時間連続実行でのメモリリーク検証', async () => {
             const initialMemory = measureMemoryUsage(),
             const sessionDuration = 1000, // 実際のテストでは短縮
@@ -536,10 +536,10 @@ describe('音響システムパフォーマンステスト', () => {
             for (let minute = 0, minute < sessionDuration / 60, minute++) {
                 // 1分間のゲームプレイをシミュレート
                 for (let second = 0, second < 60, second++) {
-                    if (second % 5 === 0') {
+                    if (second % 5 === 0') {'
                         audioManager.playSound('bubblePop', { volume: 0.1 });
                     }
-                    if (second % 30 === 0') {
+                    if (second % 30 === 0') {'
                         audioManager.playSound('comboAchieved', { volume: 0.2  }
                     
                     await new Promise(resolve => setTimeout(resolve, 1);
@@ -559,24 +559,24 @@ describe('音響システムパフォーマンステスト', () => {
             // パフォーマンス劣化がないことを確認
             const finalMetrics: AudioMetrics = audioPerformanceMonitor.getMetrics(
             expect(finalMetrics.averageLatency).toBeLessThan(20); // 20ms未満
-        }');
+        }');'
     }
-    describe('パフォーマンス回帰テスト', (') => {
-        test('バージョン間でのパフォーマンス比較', async (') => {
+    describe('パフォーマンス回帰テスト', (') => {'
+        test('バージョン間でのパフォーマンス比較', async (') => {'
             const benchmarkTests: BenchmarkTest[] = [
                 {
                     name: 'Single sound playback',
-                    operation: (') => audioManager.playSound('bubblePop'}
+                    operation: (') => audioManager.playSound('bubblePop'}'
                 },
                 {
                     name: 'BGM start'),
-                   , operation: (') => audioManager.playBGM('test-track') },
+                   , operation: (') => audioManager.playBGM('test-track') },'
                 {
                     name: 'Effect toggle',
                     operation: (') => audioManager.setAudioEffect('reverb', true') },
                 {
                     name: 'Volume change',
-                    operation: (') => audioManager.setVolume('master', 0.5) }
+                    operation: (') => audioManager.setVolume('master', 0.5) }'
             ];
             
             const benchmarkResults: Record<string, BenchmarkResult> = {};
@@ -586,16 +586,16 @@ describe('音響システムパフォーマンステスト', () => {
                 benchmarkResults[test.name] = {
                     average: performanceData.average,
                     median: performanceData.median,
-                    p95: performanceData.measurements.sort((a, b) => a - b)[Math.floor(0.95 * performanceData.measurements.length')]
+                    p95: performanceData.measurements.sort((a, b) => a - b)[Math.floor(0.95 * performanceData.measurements.length')]'
                 };
             }
             
             // 基準値と比較（実際の実装では前バージョンの値と比較）
-            expect(benchmarkResults['Single sound playback'].average).toBeLessThan(5');
-            expect(benchmarkResults['BGM start'].average).toBeLessThan(50');
-            expect(benchmarkResults['Effect toggle'].average).toBeLessThan(20');
-            expect(benchmarkResults['Volume change'].average).toBeLessThan(10');
+            expect(benchmarkResults['Single sound playback'].average).toBeLessThan(5');'
+            expect(benchmarkResults['BGM start'].average).toBeLessThan(50');'
+            expect(benchmarkResults['Effect toggle'].average).toBeLessThan(20');'
+            expect(benchmarkResults['Volume change'].average).toBeLessThan(10');'
             console.log('Performance benchmark results:', benchmarkResults);
         });
     }
-}');
+}');'

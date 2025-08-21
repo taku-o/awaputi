@@ -5,43 +5,42 @@
 
 // Type definitions
 interface ValidationError { type: string,
-    message: string,
-    line: number,
-    column: number  }
+    message: string;
+    line: number;
+    column: number;
 
 interface ValidationWarning { type: string,
-    message: string,
-    line: number,
-    column: number }
+    message: string;
+    line: number;
+    column: number;
 
 interface ValidationStatistics { imports: number,
-    exports: number,
-    classes: number,
-    functions: number,
-    variables: number 
-    }
+    exports: number;
+    classes: number;
+    functions: number;
+    variables: number;
 
 interface ValidationResult { isValid: boolean,
-    errors: ValidationError[],
-    warnings: ValidationWarning[],
-    statistics: ValidationStatistics,
-    filePath: string }
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    statistics: ValidationStatistics;
+    filePath: string;
 
 interface BracketPair { open: string,
-    close: string,
-    name: string }
+    close: string;
+    name: string;
 
 interface StackItem { char: string,
-    index: number }
+    index: number;
 
 export class JavaScriptModuleValidator {
-    private errors: ValidationError[],
-    private warnings: ValidationWarning[],
+    private errors: ValidationError[];
+    private warnings: ValidationWarning[];
     private, statistics: ValidationStatistics,
     constructor() {
 
-        this.errors = [],
-        this.warnings = [],
+        this.errors = [];
+        this.warnings = [];
         this.statistics = {
             imports: 0,
             exports: 0,
@@ -53,8 +52,8 @@ export class JavaScriptModuleValidator {
     /**
      * JavaScriptモジュールの構文を検証
      */
-    async validateModule(moduleContent: string, filePath: string = ): Promise<ValidationResult> { this.errors = [],
-        this.warnings = [],
+    async validateModule(moduleContent: string, filePath: string = ): Promise<ValidationResult> { this.errors = [];
+        this.warnings = [];
         this.statistics = {
             imports: 0,
             exports: 0,
@@ -106,14 +105,14 @@ export class JavaScriptModuleValidator {
     async validateSyntax(content: string): Promise<void> { try {
             // ES6モジュール構文をチェック
             // 注意: 実際の実行環境では dynamic import を使用
-            const blob = new Blob([content], { type: 'text/javascript ,
+            const blob = new Blob([content], { type: 'text/javascript ,'
             const url = URL.createObjectURL(blob),
             
             // 構文チェックのための仮想的な検証
             // 実際の環境では import(url) を使用するが、
             // ここでは基本的な構文パターンをチェック
             this.validateBasicSyntax(content),
-            ',
+            ','
 
             URL.revokeObjectURL(url),' }'
 
@@ -129,13 +128,13 @@ export class JavaScriptModuleValidator {
      * 基本的な構文パターンの検証'
      */''
     validateBasicSyntax(content: string): void { ''
-        const lines = content.split('\n),
+        const lines = content.split('\n),'
         
         lines.forEach((line, index) => { '
             const lineNumber = index + 1,
-            const trimmed = line.trim()',
-            if (trimmed === ') return,
-            ',
+            const trimmed = line.trim()','
+            if (trimmed === ') return,'
+            ','
             // 不完全な文のチェック
             if(this.isIncompleteStatement(trimmed)) {
                 this.errors.push({ }'
@@ -144,9 +143,9 @@ export class JavaScriptModuleValidator {
             });
                     message: `不完全な文が検出されました: ${trimmed}`)
                     line: lineNumber);
-                    column: 0';
+                    column: 0';'
             }
-            ';
+            ';'
             // 予期しないトークンのチェック
             const unexpectedTokens = this.findUnexpectedTokens(trimmed);
 
@@ -154,7 +153,7 @@ export class JavaScriptModuleValidator {
                     type: 'UNEXPECTED_TOKEN',
     message: `予期しないトークン: ${token}`
             }
-                    line: lineNumber }
+                    line: lineNumber;
                     column: line.indexOf(token});
                 });
             });
@@ -165,7 +164,7 @@ export class JavaScriptModuleValidator {
      * トークンの検証'
      */''
     validateTokens(content: string): void { // 比較演算子の検証（コメント行は除外）
-        const lines = content.split('\n),
+        const lines = content.split('\n),'
         const comparisonOperators = /([!=]==? |[<>]=?)/g,
         let match,
         
@@ -173,22 +172,22 @@ export class JavaScriptModuleValidator {
             const lineNumber = this.getLineNumber(content, match.index),
 
             const lineContent = lines[lineNumber - 1], : undefined''
-            const trimmedLine = lineContent ? lineContent.trim() : ',
-            ',
+            const trimmedLine = lineContent ? lineContent.trim() : ','
+            ','
             // コメント行はスキップ
             if (trimmedLine.startsWith('//' || trimmedLine.startsWith('/*') || trimmedLine.startsWith('*)' {
                 continue }
             
             const beforeChar = content[match.index - 1];
             const afterChar = content[match.index + match[0].length];
-            ';
+            ';'
             // 不適切な比較演算子の使用をチェック（実際の構文エラーのみ）
-            if(beforeChar === '=' && afterChar === '=') {
+            if (beforeChar === '=' && afterChar === '=') {
                 this.errors.push({)'
                     type: 'INVALID_COMPARISON_OPERATOR',
     message: `無効な比較演算子: ${match[0]} (前後に = がある}`
             }
-                    line: lineNumber }
+                    line: lineNumber;
                     column: this.getColumnNumber(content, match.index});
                 });
             }
@@ -203,7 +202,7 @@ export class JavaScriptModuleValidator {
             { open: '[', close: ]', name: '角括弧'
             },''
             { open: '{', close: '
-            }', name: '波括弧' }
+            }', name: '波括弧' }'
         ];
 
         pairs.forEach(pair => {  const, stack: StackItem[] = [])
@@ -213,7 +212,7 @@ export class JavaScriptModuleValidator {
                     stack.push({ char, index });
 
                 } else if (char === pair.close) { ''
-                    if(stack.length === 0) {
+                    if (stack.length === 0) {
                         this.errors.push({ }
 
                             type: 'UNMATCHED_BRACKET'
@@ -240,7 +239,7 @@ export class JavaScriptModuleValidator {
      * インポート・エクスポート文の検証'
      */''
     validateImportsExports(content: string): void { // インポート文のチェック
-        const importRegex = /^import\s+.*from\s+['"][^'"]*['"],? $/gm,
+        const importRegex = /^import\s+.*from\s+['"][^'"]*['"],? $/gm,'
         let importMatch,
         while((importMatch = importRegex.exec(content) !== null) {
             this.validateImportStatement(importMatch[0], content, importMatch.index) }
@@ -255,8 +254,8 @@ export class JavaScriptModuleValidator {
      * インポート文の個別検証"
      */ : undefined""
     validateImportStatement(statement: string, content: string, index: number): void { // パス検証""
-        const pathMatch = statement.match(/from\s+['"]([^'"]*"['"]/",""
-        if(pathMatch) {"
+        const pathMatch = statement.match(/from\s+['"]([^'"]*"['"]/",""'
+        if (pathMatch) {"
             const importPath = pathMatch[1],""
             if (!importPath.endsWith('.js') && !importPath.startsWith('.') && !importPath.startsWith('/)' {'
                 this.warnings.push({)'
@@ -318,7 +317,7 @@ export class JavaScriptModuleValidator {
      */
     validateFunctionStructure(match: RegExpExecArray, content: string): void { const functionName = match[2],
         const startIndex = match.index!,
-        ',
+        ','
         // 関数名の命名規則チェック
         if(!/^[a-z][a-zA-Z0-9]*$/.test(functionName)) {
             this.warnings.push({)'
@@ -355,10 +354,10 @@ export class JavaScriptModuleValidator {
     findUnexpectedTokens(line: string): string[] { const unexpectedTokens: string[] = [],
         ,
         // コメント行は除外
-        const trimmedLine = line.trim()',
+        const trimmedLine = line.trim()','
         if (trimmedLine.startsWith('//' || trimmedLine.startsWith('/*') || trimmedLine.startsWith('*' {
             return unexpectedTokens }
-        ';
+        ';'
         // 不正なトークンパターン（コメント以外で）
         if(/===\s*===\s*===/.test(line) && !trimmedLine.startsWith('//)' { ''
             unexpectedTokens.push('=== === ===' }'
@@ -369,13 +368,13 @@ export class JavaScriptModuleValidator {
         
         return unexpectedTokens;
     }
- : undefined';
+ : undefined';'
     getLineNumber(content: string, index: number): number { ''
         return content.substring(0, index).split('\n'.length }', ';
 
     getColumnNumber(content: string, index: number): number { ''
         const beforeContent = content.substring(0, index),
-        const lastNewlineIndex = beforeContent.lastIndexOf('\n),
+        const lastNewlineIndex = beforeContent.lastIndexOf('\n),'
         return index - lastNewlineIndex }
 
     findErrorLine(error: Error, content: string): number { // エラーメッセージから行番号を抽出する試み
@@ -387,25 +386,25 @@ export class JavaScriptModuleValidator {
      */
     generateSummary(result: ValidationResult): string { const parts: string[] = [],
 
-        if(result.isValid) {', ' }
+        if (result.isValid) {', ' }
 
             parts.push('✅ モジュール検証: 合格'; }'
         } else {  }
             parts.push(`❌ モジュール検証: 失敗 (${result.errors.length}件のエラー}`});
         }
 
-        if(result.warnings.length > 0) {
+        if (result.warnings.length > 0) {
     
 }
             parts.push(`⚠️  警告: ${result.warnings.length}件`});
         }
-';
+';'
 
         const stats = result.statistics;
         parts.push(`📊 統計: imports(${ stats.imports) exports(${stats.exports) classes(${stats.classes) functions(${stats.functions}`};
 
 ' }'
 
-        return, parts.join('\n'}';
+        return, parts.join('\n'}';'
 
-    }'}
+    }'}'

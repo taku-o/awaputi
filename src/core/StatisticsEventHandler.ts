@@ -11,10 +11,10 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
  */
 export class StatisticsEventHandler {
     constructor(statistics, sessionStats) {
-        this.statistics = statistics,
-        this.sessionStats = sessionStats,
-        this.gameStartTime = null,
-        this.lowHpStartTime = null,
+        this.statistics = statistics;
+        this.sessionStats = sessionStats;
+        this.gameStartTime = null;
+        this.lowHpStartTime = null;
         this.lastComboTime = null }
         this.comboStartTime = null; }
     }
@@ -24,7 +24,7 @@ export class StatisticsEventHandler {
      * @param {string} stageId - ステージID
      */
     onGameStart(stageId) {
-        this.gameStartTime = Date.now(),
+        this.gameStartTime = Date.now();
         this.statistics.totalGamesPlayed++,
         this.sessionStats.gamesThisSession++,
         
@@ -101,7 +101,7 @@ export class StatisticsEventHandler {
         // ステージ詳細統計更新
         this.updateStageDetailStats(stageId, playTime, finalScore, completed);
         
-        if(completed) {
+        if (completed) {
         
             stageStats.gamesCompleted++,
             this.statistics.stagesCompleted++,
@@ -158,7 +158,7 @@ export class StatisticsEventHandler {
         const { comboCount, isBreak, multiplier } = comboData;
         const now = Date.now();
         
-        if(isBreak) {
+        if (isBreak) {
         
             this.statistics.comboBreaks++,
             
@@ -198,7 +198,7 @@ export class StatisticsEventHandler {
         if (currentHp <= 5) { this.statistics.hpDetailStats.criticalHpEvents++ }
         
         // ダメージソース別統計（将来の機能）
-        if(source) {
+        if (source) {
     
 }
             this.statistics.damageBySource = this.statistics.damageBySource || {};
@@ -219,7 +219,7 @@ export class StatisticsEventHandler {
         this.statistics.totalHpHealed += amount;
         
         // 低HP時間の記録終了
-        if(currentHp > 10 && this.lowHpStartTime) {
+        if (currentHp > 10 && this.lowHpStartTime) {
             this.statistics.lowHpTime += Date.now() - this.lowHpStartTime }
             this.lowHpStartTime = null; }
         }
@@ -309,7 +309,7 @@ export class StatisticsEventHandler {
         behavior.shortestDrag = Math.min(behavior.shortestDrag, distance);
         
         // ドラッグ精度更新
-        if(accuracy !== undefined) {
+        if (accuracy !== undefined) {
             behavior.dragAccuracy =  }
                 (behavior.dragAccuracy * (behavior.dragOperations - 1) + accuracy) / behavior.dragOperations; }
 }
@@ -340,7 +340,7 @@ export class StatisticsEventHandler {
         this.statistics.progressStats.totalAP += amount;
         
         // AP獲得ソース別統計（将来の機能）
-        if(source) {
+        if (source) {
     
 }
             this.statistics.apBySource = this.statistics.apBySource || {};
@@ -361,7 +361,7 @@ export class StatisticsEventHandler {
         this.statistics.progressStats.itemsPurchased++;
         
         // 通貨別支出統計（将来の機能）
-        if(currency && cost) {
+        if (currency && cost) {
     
 }
             this.statistics.spendingByCurrency = this.statistics.spendingByurrency || {};
@@ -377,21 +377,21 @@ export class StatisticsEventHandler {
     updateScoreDistribution(score) {
         const dist = this.statistics.scoreDistribution,
 
-        if(score <= 1000) {
+        if (score <= 1000) {
     }
 
             dist['0-1000]++;' }
 
-        } else if(score <= 5000) { ''
+        } else if (score <= 5000) { ''
             dist['1001-5000]++,' }
 
-        } else if(score <= 10000) { ''
+        } else if (score <= 10000) { ''
             dist['5001-10000]++,' }
 
-        } else if(score <= 25000) { ''
+        } else if (score <= 25000) { ''
             dist['10001-25000]++,' }
 
-        } else if(score <= 50000) { ''
+        } else if (score <= 50000) { ''
             dist['25001-50000]++ }'
 
         } else { }'
@@ -472,10 +472,10 @@ export class StatisticsEventHandler {
         // 分布統計更新
         if (reactionTime < 200) { reactionStats.distribution.under_200ms++,' }'
 
-        } else if(reactionTime < 500) { ''
+        } else if (reactionTime < 500) { ''
             reactionStats.distribution['200_500ms]++,' }
 
-        } else if(reactionTime < 1000) { ''
+        } else if (reactionTime < 1000) { ''
             reactionStats.distribution['500_1000ms]++ } else { reactionStats.distribution.over_1000ms++ }'
     }
 
@@ -485,20 +485,20 @@ export class StatisticsEventHandler {
      */
     updateComboDetailStats(maxCombo) {
         const comboStats = this.statistics.comboDetailStats,
-        ',
+        ','
         // コンボ範囲別統計
-        if(maxCombo <= 5) {
+        if (maxCombo <= 5) {
     }
 
             comboStats.comboRanges['1-5]++;' }
 
-        } else if(maxCombo <= 10) { ''
+        } else if (maxCombo <= 10) { ''
             comboStats.comboRanges['6-10]++,' }
 
-        } else if(maxCombo <= 20) { ''
+        } else if (maxCombo <= 20) { ''
             comboStats.comboRanges['11-20]++,' }
 
-        } else if(maxCombo <= 50) { ''
+        } else if (maxCombo <= 50) { ''
             comboStats.comboRanges['21-50]++ }'
 
         } else { }'
@@ -533,7 +533,7 @@ export class StatisticsEventHandler {
             hpStats.perfectHealthGames++; }
         }
         
-        if(gameDamage > 0) {
+        if (gameDamage > 0) {
         
             hpStats.maxDamageInSingleGame = Math.max(hpStats.maxDamageInSingleGame, gameDamage),
             
@@ -544,7 +544,7 @@ export class StatisticsEventHandler {
         }
         
         // 回復効率計算
-        if(this.statistics.totalDamageTaken > 0) {
+        if (this.statistics.totalDamageTaken > 0) {
             hpStats.healingEfficiency =  }
                 this.statistics.totalHpHealed / this.statistics.totalDamageTaken; }
 }
@@ -607,7 +607,7 @@ export class StatisticsEventHandler {
         } else {  const yesterday = new Date(),
             yesterday.setDate(yesterday.getDate() - 1),
             
-            if(lastPlay === yesterday.toDateString() { }
+            if (lastPlay === yesterday.toDateString() { }
                 timeStats.regularPlayStreak++; }
             } else { timeStats.regularPlayStreak = 1, // ストリークリセット }
 }

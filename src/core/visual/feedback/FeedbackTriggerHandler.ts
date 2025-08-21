@@ -18,170 +18,163 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface VisualFeedbackManager { gameEngine: GameEngine,
-    config: TriggerConfig,
-    userPreferences: UserTriggerPreferences,
-    feedbackElements: Map<string, HTMLElement>,
-    feedbackContainer: HTMLElement,
-    startAudioVisualization?: () => void,
-    triggerVisualFeedback?: (options: VisualFeedbackOptions) => void,
+    config: TriggerConfig;
+    userPreferences: UserTriggerPreferences;
+    feedbackElements: Map<string, HTMLElement>;
+    feedbackContainer: HTMLElement;
+    startAudioVisualization?: () => void;
+    triggerVisualFeedback?: (options: VisualFeedbackOptions) => void;
     updateEventStats?: (eventType: string) => void  }
 }
 
 export interface GameEngine { addEventListener?: (event: string, handler: (dat,a: any) => void) => void,
-    removeEventListener?: (event: string, handler?: (dat,a: any) => void) => void,
-    eventSystem?: EventSystemInterface,
+    removeEventListener?: (event: string, handler?: (dat,a: any) => void) => void;
+    eventSystem?: EventSystemInterface;
      }
 }
 
 export interface EventSystemInterface { on: (event: string, handler: (dat,a: any) => void) => void,
-    off: (event: string, handler?: (dat,a: any) => void) => void,
+    off: (event: string, handler?: (dat,a: any) => void) => void;
     emit: (event: string, data?: any) => void 
     }
 
 export interface TriggerConfig { enabled: boolean,
-    globalIntensity: number,
-    positioning: PositioningConfig,
-    audioMapping: AudioTriggerMapping,
-    feedbackTypes: Record<string, FeedbackTypeConfig>,
-    throttling: ThrottlingConfig
-     }
+    globalIntensity: number;
+    positioning: PositioningConfig;
+    audioMapping: AudioTriggerMapping;
+    feedbackTypes: Record<string, FeedbackTypeConfig>;
+    throttling: ThrottlingConfig;
 
 export interface PositioningConfig { screenEdges: boolean,
-    gameArea: boolean,
-    customPositions: boolean }
+    gameArea: boolean;
+    customPositions: boolean;
 
 export interface AudioTriggerMapping { gameEvents: Map<string, GameEventMapping>,
-    volume: Record<string, VolumeLevelMapping>,
+    volume: Record<string, VolumeLevelMapping>;
     frequency: Record<string, FrequencyMapping> }
 
 export interface GameEventMapping { pattern: EffectPattern,
-    color: string,
-    intensity: number,
-    duration?: number,
-    target?: TargetSelection,
-    conditions?: TriggerCondition[],
+    color: string;
+    intensity: number;
+    duration?: number;
+    target?: TargetSelection;
+    conditions?: TriggerCondition[];
      }
 
 export interface VolumeLevelMapping { range: [number, number],
-    color: string,
-    effects: VolumeEffectConfig[],
-    probability: number  }
+    color: string;
+    effects: VolumeEffectConfig[];
+    probability: number;
 
 export interface VolumeEffectConfig { type: EffectPattern,
-    intensity: number,
-    duration: number,
-    delay?: number }
+    intensity: number;
+    duration: number;
+    delay?: number;
 
 export interface FrequencyMapping { range: [number, number],
-    color: string,
-    intensity: number,
-    visualType: FrequencyVisualType
-     }
+    color: string;
+    intensity: number;
+    visualType: FrequencyVisualType;
 
 export interface FeedbackTypeConfig { duration: number,
-    intensity: number,
-    easing: string,
-    priority: TriggerPriority
-    }
+    intensity: number;
+    easing: string;
+    priority: TriggerPriority;
 
 export interface ThrottlingConfig { maxConcurrent: number,
-    cooldownMs: number,
-    rateLimit: RateLimitConfig
-    }
+    cooldownMs: number;
+    rateLimit: RateLimitConfig;
 
 export interface RateLimitConfig { windowMs: number,
-    maxTriggers: number,
-    skipProbability: number }
+    maxTriggers: number;
+    skipProbability: number;
 
 export interface UserTriggerPreferences { gameEventFeedback: boolean,
-    audioVisualization: boolean,
-    enabledEventTypes: GameEventType[],
-    customMappings: Map<string, GameEventMapping>,
-    sensitivitySettings: SensitivitySettings,
-    filterSettings: FilterSettings
-     }
+    audioVisualization: boolean;
+    enabledEventTypes: GameEventType[];
+    customMappings: Map<string, GameEventMapping>;
+    sensitivitySettings: SensitivitySettings;
+    filterSettings: FilterSettings;
 
 export interface SensitivitySettings { volume: number,
-    gameEvents: number,
-    frequency: number,
-    globalModifier: number }
+    gameEvents: number;
+    frequency: number;
+    globalModifier: number;
 
 export interface FilterSettings { ignoreLowIntensity: boolean,
-    skipRepeatedEvents: boolean,
-    eventWhitelist: GameEventType[],
-    eventBlacklist: GameEventType[]
-    }
+    skipRepeatedEvents: boolean;
+    eventWhitelist: GameEventType[];
+    eventBlacklist: GameEventType[];
 
 export interface TriggerCondition { property: string,
-    operator: ComparisonOperator,
-    value: any,
-    optional: boolean }
+    operator: ComparisonOperator;
+    value: any;
+    optional: boolean;
 
 export interface VisualFeedbackOptions { type: EffectPattern,
-    color: string,
-    intensity: number,
-    duration: number,
-    target: HTMLElement,
-    eventData?: any,
-    position?: FeedbackPosition,
-    priority?: TriggerPriority }
+    color: string;
+    intensity: number;
+    duration: number;
+    target: HTMLElement;
+    eventData?: any;
+    position?: FeedbackPosition;
+    priority?: TriggerPriority;
 
 export interface FeedbackPosition { x?: number,
-    y?: number,
-    relative?: boolean,
-    anchor?: PositionAnchor }
+    y?: number;
+    relative?: boolean;
+    anchor?: PositionAnchor;
 
-export interface GameEventData { type: GameEventType }
-    position?: { x: number,, y: number }
+export interface GameEventData { type: GameEventType;
+    position?: { x: number,, y: number,
     bubble?: HTMLElement;
     score?: number;
     combo?: number;
     level?: number;
     health?: number;
     powerUpType?: string;
-    timestamp: number;
+    timestamp: number,
     metadata?: Record<string, any>;
 }
 
 export interface TriggerStatistics { gameEventTriggers: number,
-    volumeTriggers: number,
-    edgeTriggers: number,
-    manualTriggers: number,
-    total: number,
-    byEventType: Record<GameEventType, number>,
-    averageIntensity: number,
-    averageDuration: number  }
+    volumeTriggers: number;
+    edgeTriggers: number;
+    manualTriggers: number;
+    total: number;
+    byEventType: Record<GameEventType, number>;
+    averageIntensity: number;
+    averageDuration: number;
 
 export interface TriggerPerformanceMetrics { triggerLatency: number,
-    processingTime: number,
-    queueSize: number,
-    droppedTriggers: number,
-    memoryUsage: number }
-';
+    processingTime: number;
+    queueSize: number;
+    droppedTriggers: number;
+    memoryUsage: number;
+';'
 
 export interface EventListenerState { registered: Set<GameEventType>,''
-    handlers: Map<GameEventType, (data: any') => void>,
-    active: boolean  }
+    handlers: Map<GameEventType, (data: any') => void>;'
+    active: boolean;
 }
 
 export interface TargetSelectionResult { element: HTMLElement,
-    confidence: number,
-    fallbackUsed: boolean,
-    reason: string }
+    confidence: number;
+    fallbackUsed: boolean;
+    reason: string;
 
 export interface TriggerValidationResult { isValid: boolean,
-    errors: TriggerError[],
-    warnings: TriggerWarning[]
-    }
+    errors: TriggerError[];
+    warnings: TriggerWarning[];
 
 export interface TriggerError { code: string,
-    message: string,
-    field?: string }
+    message: string;
+    field?: string;
 
 export interface TriggerWarning { code: string,
-    message: string,
-    suggestion: string }
-';
+    message: string;
+    suggestion: string;
+';'
 // 列挙型
 export type GameEventType = 'bubblePop' | 'combo' | 'bonus' | 'damage' | 'powerUp' | 'gameOver' | 'levelUp' | 'warning' | 'pause' | 'resume';
 export type EffectPattern = 'flash' | 'glow' | 'pulse' | 'ripple' | 'shake' | 'border' | 'scale' | 'color';
@@ -275,7 +268,7 @@ export const VOLUME_LEVEL_MAPPINGS: Record<VolumeLevel, VolumeLevelMapping> = { 
             }]'
             { type: 'border', intensity: 0.3, duration: 200  }]
         ],
-        probability: 0.05;
+        probability: 0.05,
     },
 
     loud: { range: [0.5, 0.8],''
@@ -286,7 +279,7 @@ export const VOLUME_LEVEL_MAPPINGS: Record<VolumeLevel, VolumeLevelMapping> = { 
             { type: 'flash', intensity: 0.5, duration: 150  },]'
             { type: 'border', intensity: 0.7, duration: 300  }]
         ],
-        probability: 0.1';
+        probability: 0.1';'
     },', 'very-loud': { range: [0.8, 1.0],''
         color: '#F44336',
         effects: ['
@@ -298,7 +291,7 @@ export const VOLUME_LEVEL_MAPPINGS: Record<VolumeLevel, VolumeLevelMapping> = { 
         probability: 0.2;
     } as const,
 
-export const EDGE_TYPES = ['top', 'bottom', 'left', 'right] as const;
+export const EDGE_TYPES = ['top', 'bottom', 'left', 'right] as const;'
 
 export const TRIGGER_PRIORITIES: Record<TriggerPriority, number> = { low: 1,
     normal: 2,
@@ -315,47 +308,47 @@ export const DEFAULT_THROTTLING_CONFIG: ThrottlingConfig = { maxConcurrent: 3,
 export function validateTriggerOptions(options: Partial<VisualFeedbackOptions>): TriggerValidationResult { const errors: TriggerError[] = [],
     const warnings: TriggerWarning[] = [],
 
-    if(!options.type) {
+    if (!options.type) {
         errors.push({''
-            code: 'MISSING_TYPE',',
-            message: 'Effect type is required',' }
+            code: 'MISSING_TYPE',','
+            message: 'Effect type is required',' }'
 
             field: 'type'); 
     }
 
-    if(!options.color) {
+    if (!options.color) {
         errors.push({''
-            code: 'MISSING_COLOR',',
-            message: 'Color is required',' }
+            code: 'MISSING_COLOR',','
+            message: 'Color is required',' }'
 
-            field: 'color')'); 
+            field: 'color')'); '
     }
 
     if(typeof, options.intensity !== 'number' || options.intensity < 0' { '
         errors.push({''
-            code: 'INVALID_INTENSITY',',
-            message: 'Intensity must be a non-negative number',' }
+            code: 'INVALID_INTENSITY',','
+            message: 'Intensity must be a non-negative number',' }'
 
-            field: 'intensity')'); 
+            field: 'intensity')'); '
     }
 
     if(typeof, options.duration !== 'number' || options.duration <= 0' { '
         errors.push({''
-            code: 'INVALID_DURATION',',
-            message: 'Duration must be a positive number',' }
+            code: 'INVALID_DURATION',','
+            message: 'Duration must be a positive number',' }'
 
             field: 'duration'); 
     }
 
-    if(!options.target) {
+    if (!options.target) {
         errors.push({''
-            code: 'MISSING_TARGET',',
-            message: 'Target element is required',' }
+            code: 'MISSING_TARGET',','
+            message: 'Target element is required',' }'
 
             field: 'target'); 
     }
 
-    if(options.intensity && options.intensity > 2.0) {
+    if (options.intensity && options.intensity > 2.0) {
         warnings.push({)'
             code: 'HIGH_INTENSITY',
             message: 'Intensity is very high(>2.0)' }
@@ -364,23 +357,23 @@ export function validateTriggerOptions(options: Partial<VisualFeedbackOptions>):
     });
     }
 
-    if(options.duration && options.duration > 2000) {
+    if (options.duration && options.duration > 2000) {
         warnings.push({)'
             code: 'LONG_DURATION',
             message: 'Duration is very long(>2s)' }
 
             suggestion: 'Consider shorter durations to avoid overwhelming users' 
-    }';
+    }';'
     }
     
     return { isValid: errors.length === 0,
         errors };
         warnings }
     }
-';
+';'
 
 export function getVolumeLevel(volume: number): VolumeLevel { for(const [level, config] of Object.entries(VOLUME_LEVEL_MAPPINGS) {''
-        if(volume >= config.range[0] && volume <= config.range[1]) {
+        if (volume >= config.range[0] && volume <= config.range[1]) {
     
 }
             return level as VolumeLevel;
@@ -396,27 +389,27 @@ export function selectRandomEdge(): string { return EDGE_TYPES[Math.floor(Math.r
 export function normalizeIntensity(intensity: number, globalIntensity: number): number { return Math.min(2.0, Math.max(0, intensity * globalIntensity) }
 
 export class FeedbackTriggerHandler {
-    private mainController: VisualFeedbackManager,
-    private gameEngine: GameEngine,
-    private config: TriggerConfig,
-    private userPreferences: UserTriggerPreferences,
+    private mainController: VisualFeedbackManager;
+    private gameEngine: GameEngine;
+    private config: TriggerConfig;
+    private userPreferences: UserTriggerPreferences;
     private, feedbackElements: Map<string, HTMLElement>,
-    private feedbackContainer: HTMLElement,
+    private feedbackContainer: HTMLElement;
     // 統計とメトリクス
-    private triggerStats: TriggerStatistics,
-    private performanceMetrics: TriggerPerformanceMetrics,
-    private eventListenerState: EventListenerState,
+    private triggerStats: TriggerStatistics;
+    private performanceMetrics: TriggerPerformanceMetrics;
+    private eventListenerState: EventListenerState;
     // レート制限とスロットリング
     private, lastTriggerTimes: Map<string, number>,
-    private triggerQueue: VisualFeedbackOptions[],
+    private triggerQueue: VisualFeedbackOptions[];
     constructor(mainController: VisualFeedbackManager) {
 
-        this.mainController = mainController,
-        this.gameEngine = mainController.gameEngine,
-        this.config = mainController.config,
-        this.userPreferences = mainController.userPreferences,
-        this.feedbackElements = mainController.feedbackElements,
-        this.feedbackContainer = mainController.feedbackContainer,
+        this.mainController = mainController;
+        this.gameEngine = mainController.gameEngine;
+        this.config = mainController.config;
+        this.userPreferences = mainController.userPreferences;
+        this.feedbackElements = mainController.feedbackElements;
+        this.feedbackContainer = mainController.feedbackContainer;
         
         // 統計の初期化
         this.triggerStats = {
@@ -425,8 +418,8 @@ export class FeedbackTriggerHandler {
             edgeTriggers: 0,
     manualTriggers: 0 }
             total: 0 }
-            byEventType: {} as Record<GameEventType, number>,
-            averageIntensity: 0,
+            byEventType: {} as Record<GameEventType, number>;
+            averageIntensity: 0;
     averageDuration: 0;
         },
         
@@ -437,14 +430,14 @@ export class FeedbackTriggerHandler {
     memoryUsage: 0  };
         this.eventListenerState = { registered: new Set(
             handlers: new Map(
-    active: false  };
+    active: false,;
         this.lastTriggerTimes = new Map();
         this.triggerQueue = [];
         
         // イベントタイプごとの統計初期化
         Object.values(DEFAULT_GAME_EVENT_MAPPINGS).forEach((_, key) => { this.triggerStats.byEventType[key as GameEventType] = 0,' }'
 
-        }');
+        }');'
 
         console.log('FeedbackTriggerHandler, initialized');
     }
@@ -453,15 +446,15 @@ export class FeedbackTriggerHandler {
      * イベントリスナーの設定
      */'
     setupEventListeners(): void { try {'
-            if(!this.gameEngine || this.eventListenerState.active) {
+            if (!this.gameEngine || this.eventListenerState.active) {
 
                 console.warn('Cannot, setup event, listeners: game, engine missing, or already, active') }
                 return; }
             }
-            ';
+            ';'
 
-            const eventTypes: GameEventType[] = [';
-                'bubblePop', 'combo', 'bonus', 'damage',]';
+            const eventTypes: GameEventType[] = [';'
+                'bubblePop', 'combo', 'bonus', 'damage',]';'
                 'powerUp', 'gameOver', 'levelUp', 'warning'];
             ];
             
@@ -481,7 +474,7 @@ export class FeedbackTriggerHandler {
             if (this.userPreferences.audioVisualization && this.mainController.startAudioVisualization) { this.mainController.startAudioVisualization() }
             
             console.log(`Game, event listeners, set up, for ${this.eventListenerState.registered.size} events`});
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'TRIGGER_HANDLER_ERROR', { : undefined''
                 operation: 'setupEventListeners'),
@@ -495,19 +488,19 @@ export class FeedbackTriggerHandler {
     private triggerGameEventFeedback(eventType: GameEventType, eventData: GameEventData): void { try {
             const startTime = performance.now(),
             
-            if(!this.config.enabled || !this.userPreferences.gameEventFeedback) {
+            if (!this.config.enabled || !this.userPreferences.gameEventFeedback) {
     
 }
                 return; }
             }
             
             // イベントフィルタリング
-            if(!this.shouldTriggerEvent(eventType, eventData) { return }
+            if (!this.shouldTriggerEvent(eventType, eventData) { return }
             
             const mapping = this.config.audioMapping.gameEvents.get(eventType) || ;
                            DEFAULT_GAME_EVENT_MAPPINGS[eventType];
             
-            if(!mapping) {
+            if (!mapping) {
     
 }
                 console.warn(`No, feedback mapping, for event: ${eventType}`});
@@ -525,15 +518,15 @@ export class FeedbackTriggerHandler {
             const feedbackOptions: VisualFeedbackOptions = { type: finalMapping.pattern,
                 color: finalMapping.color,
                 intensity,,
-                duration: finalMapping.duration || this.config.feedbackTypes[finalMapping.pattern]?.duration || 500, : undefined',
+                duration: finalMapping.duration || this.config.feedbackTypes[finalMapping.pattern]?.duration || 500, : undefined','
                 target: this.selectFeedbackTarget(eventType, eventData).element,
                 eventData,
                 priority: this.config.feedbackTypes[finalMapping.pattern]?.priority || 'normal'
             };
             // バリデーション
             const validation = validateTriggerOptions(feedbackOptions);
-            if(!validation.isValid) {
-                : undefined',
+            if (!validation.isValid) {
+                : undefined','
                 console.warn('Invalid feedback options:', validation.errors }
                 return; }
             }
@@ -543,7 +536,7 @@ export class FeedbackTriggerHandler {
             
             // 統計更新
             this.updateStatistics(eventType, feedbackOptions, startTime);
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'GAME_EVENT_FEEDBACK_ERROR', {)
                 eventType }
@@ -556,7 +549,7 @@ export class FeedbackTriggerHandler {
      * イベントトリガーの可否判定
      */
     private shouldTriggerEvent(eventType: GameEventType, eventData: GameEventData): boolean { // ユーザー設定のフィルタリング
-        if(this.userPreferences.filterSettings.eventBlacklist.includes(eventType) {
+        if (this.userPreferences.filterSettings.eventBlacklist.includes(eventType) {
     
 }
             return false;
@@ -572,7 +565,7 @@ export class FeedbackTriggerHandler {
         if (now - lastTrigger < cooldown) { return false }
         
         // 低強度フィルタリング
-        if(this.userPreferences.filterSettings.ignoreLowIntensity) {
+        if (this.userPreferences.filterSettings.ignoreLowIntensity) {
             const mapping = this.config.audioMapping.gameEvents.get(eventType) || ,
                            DEFAULT_GAME_EVENT_MAPPINGS[eventType],
             if (mapping && mapping.intensity < 0.3) {
@@ -591,38 +584,38 @@ export class FeedbackTriggerHandler {
             let confidence = 1.0,
 
             let fallbackUsed = false,
-            let reason = ',
-            ',
+            let reason = ','
+            ','
             // イベントタイプに基づいてターゲットを決定
             switch(eventType) {
 
-                case 'bubblePop':',
+                case 'bubblePop':','
                     element = eventData?.bubble || this.feedbackElements.get('game-area'), : undefined''
                     reason = eventData?.bubble ? 'bubble element' : 'game area fallback',
                     confidence = eventData?.bubble ? 1.0 : 0.8,
                     break,
 
-                case 'damage':',
+                case 'damage':','
                     element = this.feedbackElements.get('edge-top') || this.feedbackContainer,
                     reason = 'top edge for damage indication',
                     break,
 
-                case 'combo':',
-                case 'bonus':',
-                case 'powerUp':',
-                case 'levelUp':',
+                case 'combo':','
+                case 'bonus':','
+                case 'powerUp':','
+                case 'levelUp':','
                     element = this.feedbackElements.get('game-area') || this.feedbackContainer,
                     reason = 'game area for positive events',
                     break,
 
-                case 'gameOver':',
+                case 'gameOver':','
                     element = this.feedbackContainer,
                     reason = 'full container for game over',
                     break,
 
-                case 'warning':',
-                    element = this.feedbackElements.get('edge-top') || ',
-                             this.feedbackElements.get('game-area') || ',
+                case 'warning':','
+                    element = this.feedbackElements.get('edge-top') || ','
+                             this.feedbackElements.get('game-area') || ','
 
                              this.feedbackContainer,
                     reason = 'top edge or game area for warnings',
@@ -634,9 +627,9 @@ export class FeedbackTriggerHandler {
                     confidence = 0.7 }
                     break; }
             }
-            ';
+            ';'
             // フォールバック処理
-            if(!element) {
+            if (!element) {
                 element = this.feedbackContainer,
                 fallbackUsed = true,
 
@@ -650,7 +643,7 @@ export class FeedbackTriggerHandler {
                 fallbackUsed };
                 reason }
             };
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'TARGET_SELECTION_ERROR', {)
@@ -658,12 +651,12 @@ export class FeedbackTriggerHandler {
 
                 availableElements: Array.from(this.feedbackElements?.keys() || []),' }'
 
-            }');
+            }');'
             
             return { : undefined
                 element: this.feedbackContainer,
     confidence: 0.1,
-                fallbackUsed: true,' };
+                fallbackUsed: true,' };'
 
                 reason: 'error fallback to container' 
     }
@@ -673,7 +666,7 @@ export class FeedbackTriggerHandler {
      * 音量ベースフィードバックのトリガー
      */
     triggerVolumeBasedFeedback(volume: number): void { try {
-            if(!this.config.enabled || !this.userPreferences.audioVisualization) {
+            if (!this.config.enabled || !this.userPreferences.audioVisualization) {
     
 }
                 return; }
@@ -699,7 +692,7 @@ export class FeedbackTriggerHandler {
             });
             
             this.triggerStats.volumeTriggers++;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'VOLUME_FEEDBACK_ERROR', {)
                 volume,
@@ -712,7 +705,7 @@ export class FeedbackTriggerHandler {
      * エッジフィードバックのトリガー
      */
     triggerEdgeFeedback(color: string, intensity: number): void { try {
-            if(!this.config.enabled || !this.config.positioning.screenEdges) {
+            if (!this.config.enabled || !this.config.positioning.screenEdges) {
     
 }
                 return; }
@@ -729,7 +722,7 @@ export class FeedbackTriggerHandler {
                     color,
                     intensity: intensity * 0.5, // エッジフィードバックは少し弱く,
                     duration: 200,
-    target: edgeElement }
+    target: edgeElement,
 
                     priority: 'low' 
     };
@@ -749,12 +742,12 @@ export class FeedbackTriggerHandler {
      */ : undefined
     triggerManualFeedback(type: EffectPattern, options: Partial<VisualFeedbackOptions> = { ): void {'
         try {'
-            if(!this.config.enabled) {
+            if (!this.config.enabled) {
 
                 console.warn('Visual, feedback is, disabled') }
                 return; }
             }
-            ';
+            ';'
 
             const feedbackOptions: VisualFeedbackOptions = { type,''
                 color: options.color || '#ffffff',
@@ -764,10 +757,10 @@ export class FeedbackTriggerHandler {
                 eventData: options.eventData || null,
                 priority: options.priority || 'normal'
             };
-            ';
+            ';'
 
             const validation = validateTriggerOptions(feedbackOptions);
-            if(!validation.isValid) {
+            if (!validation.isValid) {
 
                 console.warn('Invalid manual feedback options:', validation.errors }
                 return; }
@@ -779,7 +772,7 @@ export class FeedbackTriggerHandler {
             this.triggerStats.total++;
             
             console.log(`Manual feedback triggered: ${type}`, options});
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'MANUAL_FEEDBACK_ERROR', {)
@@ -813,21 +806,21 @@ export class FeedbackTriggerHandler {
      * イベントリスナーの削除
      */ : undefined
     removeEventListeners(): void { try {
-            if(!this.eventListenerState.active) {
+            if (!this.eventListenerState.active) {
                 
             
                 return }
             }
             
             for (const [eventType, handler] of this.eventListenerState.handlers) { this.gameEngine.removeEventListener?.(eventType, handler) }
-            ';
+            ';'
 
             this.eventListenerState.registered.clear();
-            this.eventListenerState.handlers.clear()';
+            this.eventListenerState.handlers.clear()';'
             console.log('Event, listeners removed';
 
-        } catch (error') {
-            getErrorHandler().handleError(error as Error, 'REMOVE_LISTENERS_ERROR) }
+        } catch (error') {'
+            getErrorHandler().handleError(error as Error, 'REMOVE_LISTENERS_ERROR) }'
     }
 
     /**
@@ -858,7 +851,7 @@ export class FeedbackTriggerHandler {
         
         // イベントタイプごとの統計初期化
         Object.keys(DEFAULT_GAME_EVENT_MAPPINGS).forEach(key => {  ')'
-            this.triggerStats.byEventType[key as GameEventType] = 0'),
+            this.triggerStats.byEventType[key as GameEventType] = 0'),'
 
         ' }'
 
@@ -868,14 +861,14 @@ export class FeedbackTriggerHandler {
     /**
      * 設定の更新'
      */''
-    updateConfig()';
+    updateConfig()';'
         console.log('FeedbackTriggerHandler, config updated');
     }
 
     /**
      * リソースの解放'
      */''
-    destroy()';
+    destroy()';'
         console.log('Destroying, FeedbackTriggerHandler...';
         
         // イベントリスナーの削除
@@ -883,7 +876,7 @@ export class FeedbackTriggerHandler {
         
         // キューのクリア
         this.triggerQueue = [];
-        this.lastTriggerTimes.clear()';
+        this.lastTriggerTimes.clear()';'
         console.log('FeedbackTriggerHandler, destroyed');
 
-    }'}
+    }'}'

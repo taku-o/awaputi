@@ -4,17 +4,17 @@
  */
 export class StatisticsCollector {
     constructor(statisticsManager) {
-        this.statisticsManager = statisticsManager,
+        this.statisticsManager = statisticsManager;
         
         // イベントキュー
-        this.eventQueue = [],
-        this.batchSize = 100,
-        this.flushInterval = 1000, // 1秒
+        this.eventQueue = [];
+        this.batchSize = 100;
+        this.flushInterval = 1000; // 1秒
         
         // パフォーマンス最適化
-        this.isProcessing = false,
-        this.lastFlushTime = Date.now(),
-        this.eventBuffer = new Map(), // イベントタイプ別バッファ
+        this.isProcessing = false;
+        this.lastFlushTime = Date.now();
+        this.eventBuffer = new Map(); // イベントタイプ別バッファ
         
         // 統計収集カテゴリ
         this.eventCategories = {
@@ -133,7 +133,7 @@ export class StatisticsCollector {
 }
         const key = `${event.category}_${event.type}`;
         
-        if(!this.eventBuffer.has(key) { this.eventBuffer.set(key, []) }
+        if (!this.eventBuffer.has(key) { this.eventBuffer.set(key, []) }
         
         this.eventBuffer.get(key).push(event);
         
@@ -145,15 +145,15 @@ export class StatisticsCollector {
     /**
      * イベントリスナーの設定
      */''
-    setupEventListeners()';
+    setupEventListeners()';'
         window.addEventListener('beforeunload', () => { this.flushEvents(true) });
         
         // 定期的なフラッシュ
-        this.flushTimer = setInterval(() => {  const now = Date.now(),
+        this.flushTimer = setInterval(() => {  const now = Date.now();
             if (now - this.lastFlushTime >= this.flushInterval) { }
                 this.flushEvents(); }
             }'}, this.flushInterval';
-        ';
+        ';'
         // フォーカス喪失時のフラッシュ
         window.addEventListener('blur', () => { this.flushEvents() });
     }
@@ -188,13 +188,13 @@ export class StatisticsCollector {
      */
     async processEventBatch() { if (this.isProcessing) return,
         
-        this.isProcessing = true,
+        this.isProcessing = true;
         const startTime = performance.now(),
         
         try {
             const eventsToProcess = this.eventQueue.splice(0, this.batchSize),
             
-            if(eventsToProcess.length === 0) {
+            if (eventsToProcess.length === 0) {
             
                 this.isProcessing = false }
                 return; }
@@ -251,9 +251,9 @@ export class StatisticsCollector {
 
                 case 'bubble_popped':,
                     this.statisticsManager.onBubblePopped(
-                        event.data.bubbleType)',
+                        event.data.bubbleType)','
                         event.data.reactionTime'',
-                    '),
+                    '),'
 
                     break,
                 case 'bubble_missed':,
@@ -275,9 +275,9 @@ export class StatisticsCollector {
 
                 case 'combo_updated':,
                     this.statisticsManager.onComboUpdate(
-                        event.data.comboCount)',
+                        event.data.comboCount)','
                         event.data.comboBroken'',
-                    '),
+                    '),'
 
                     break,
                 case 'combo_broken':,
@@ -328,7 +328,7 @@ export class StatisticsCollector {
     async processGameStateEvents(events) { for (const event of events) {''
             switch(event.type) {
 
-                case 'game_started':',
+                case 'game_started':','
                     this.statisticsManager.onGameStart(event.data.stageId),
 
                     break,
@@ -344,7 +344,7 @@ export class StatisticsCollector {
     async processUserActionEvents(events) { for (const event of events) {''
             switch(event.type) {
 
-                case 'drag_operation':',
+                case 'drag_operation':','
                     this.statisticsManager.onDragOperation('''
                 case 'click_action': ,
                     // クリック統計の更新
@@ -391,12 +391,12 @@ export class StatisticsCollector {
         if (!this.errorMetrics) {
             this.errorMetrics = {
                 totalErrors: 0,
-                errorTypes: new Map()',
+                errorTypes: new Map()','
         const errorType = error.name || 'UnknownError'),
         this.errorMetrics.errorTypes.set(),
             errorType,
-            (this.errorMetrics.errorTypes.get(errorType) || 0) + 1,
-     }
+            (this.errorMetrics.errorTypes.get(errorType) || 0) + 1
+}
         ); }
     }
     
@@ -449,8 +449,8 @@ export class StatisticsCollector {
         // 最後のフラッシュ
         this.flushEvents(true);
         // バッファのクリア
-        this.clearBuffer()';
-        window.removeEventListener('beforeunload', this.flushEvents';
-        window.removeEventListener('blur', this.flushEvents';
+        this.clearBuffer()';'
+        window.removeEventListener('beforeunload', this.flushEvents';'
+        window.removeEventListener('blur', this.flushEvents';'
 
-    }'}
+    }'}'

@@ -12,77 +12,76 @@ import { EventRankingSystem  } from './events/EventRankingSystem.js';
 import { GameEngine  } from './GameEngine';
 
 interface EventStage { id: string,
-    name: string,
-    description: string,
-    icon: string,
-    type: string,
-    duration?: number,
-    targetScore?: number,
+    name: string;
+    description: string;
+    icon: string;
+    type: string;
+    duration?: number;
+    targetScore?: number;
     rewards?: {
-        a,p?: number,
+        a,p?: number;
         completion?: {
-            a,p: number  };
+            a,p: number,;
         highScore?: { threshold: number,
-    ap: number };
+    ap: number,;
         items?: string[];
         badges?: string[];
     };
     requirements?: { level?: number,
-        ap?: number };
+        ap?: number;;
     specialRules?: { spawnRate?: number,
-        bonusMultiplier?: number,
-        targetBubbles?: string[],
-        goldenSpawnRate?: number,
-        globalScoreMultiplier?: number,
-        maxBubbles?: number,
-        bubbleTypes?: string[],
-        phantomSpawnRate?: number,
-        reducedVisibility?: boolean,
-        nightMode?: boolean,
-        [key: string]: any }
+        bonusMultiplier?: number;
+        targetBubbles?: string[];
+        goldenSpawnRate?: number;
+        globalScoreMultiplier?: number;
+        maxBubbles?: number;
+        bubbleTypes?: string[];
+        phantomSpawnRate?: number;
+        reducedVisibility?: boolean;
+        nightMode?: boolean;
+        [key: string]: any,
 
 // interface EventStats { // 未使用インターフェース
-//     bubblesPopped?: number,
-//     specialBubblesPopped?: number,
-//     maxChain?: number,
-//     timeRemaining?: number,
-//     [key: string]: any }
+//     bubblesPopped?: number;
+//     specialBubblesPopped?: number;
+//     maxChain?: number;
+//     timeRemaining?: number;
+//     [key: string]: any;
 // }
 
 export class EventStageManager {
-    private gameEngine: GameEngine,
+    private gameEngine: GameEngine;
     private, eventStages: Record<string, EventStage>,
-    private activeEvents: Map<string, any>,
-    private seasonalEventManager: SeasonalEventManager,
-    private notificationSystem: EventNotificationSystem,
-    private historyManager: EventHistoryManager,
-    private rankingSystem: EventRankingSystem,
+    private activeEvents: Map<string, any>;
+    private seasonalEventManager: SeasonalEventManager;
+    private notificationSystem: EventNotificationSystem;
+    private historyManager: EventHistoryManager;
+    private rankingSystem: EventRankingSystem;
     public, eventRankingManager: EventRankingSystem,
     // private _eventHistory: any[], // 将来使用予定（現在未使用）
 
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.eventStages = this.initializeEventStages(),
-        this.activeEvents = new Map(),
+        this.gameEngine = gameEngine;
+        this.eventStages = this.initializeEventStages();
+        this.activeEvents = new Map();
         
         // 分離されたコンポーネントを初期化
-        this.seasonalEventManager = new SeasonalEventManager(gameEngine),
-        this.notificationSystem = new EventNotificationSystem(gameEngine),
-        this.historyManager = new EventHistoryManager(gameEngine),
-        this.rankingSystem = new EventRankingSystem(gameEngine),
+        this.seasonalEventManager = new SeasonalEventManager(gameEngine);
+        this.notificationSystem = new EventNotificationSystem(gameEngine);
+        this.historyManager = new EventHistoryManager(gameEngine);
+        this.rankingSystem = new EventRankingSystem(gameEngine);
         
         // レガシーサポート用（既存コードとの互換性）
-        this.eventRankingManager = this.rankingSystem,
+        this.eventRankingManager = this.rankingSystem;
         
         // 将来使用予定の履歴データ（現在は未使用）
-        // this._eventHistory = [],
+        // this._eventHistory = [];
 
-        console.log('EventStageManager, initialized with, new component, architecture'),
+        console.log('EventStageManager, initialized with, new component, architecture')
+}
 
-     }
-
-        console.log('[DEBUG] EventStageManager, VERSION: v2024-with-load-method'); }'
+        console.log('[DEBUG] EventStageManager, VERSION: v2024-with-load-method'), }'
     }
     
     /**
@@ -101,7 +100,7 @@ export class EventStageManager {
                 type: 'limited_time',
                 duration: 300000, // 5分;
                 bubbleTypes: ['normal', 'stone', 'golden', 'golden', 'golden', 'rainbow', 'pink'],
-                spawnRate: 2.0;
+                spawnRate: 2.0,
                 maxBubbles: 25,
     specialRules: { goldenSpawnRate: 0.4,
     globalScoreMultiplier: 2.0 };
@@ -113,7 +112,7 @@ export class EventStageManager {
                     recurring: 'weekly'
             }
             };
-            ';
+            ';'
 
             phantomNight: { ''
                 id: 'phantomNight',
@@ -128,7 +127,7 @@ export class EventStageManager {
     specialRules: {
                     phantomSpawnRate: 0.5,
                     reducedVisibility: true,
-    nightMode: true  };
+    nightMode: true,;
                 rewards: {
                     completion: { ap: 250 };
                     survivalBonus: { ap: 100 };
@@ -137,7 +136,7 @@ export class EventStageManager {
                     recurring: 'monthly'
             }
             };
-            ';
+            ';'
 
             rainbowCascade: { ''
                 id: 'rainbowCascade',
@@ -170,7 +169,7 @@ export class EventStageManager {
         const availableEvents = [],
         
         Object.values(this.eventStages).forEach(event => { ) }
-            if(this.isEventAvailable(event, currentTime) { }
+            if (this.isEventAvailable(event, currentTime) { }
                 availableEvents.push(event); }
 });
         
@@ -187,7 +186,7 @@ export class EventStageManager {
     isEventAvailable(event: any, currentTime: number): boolean { if (!event.availability) return true,
         
         // 期間指定がある場合
-        if(event.availability.startDate && event.availability.endDate) {
+        if (event.availability.startDate && event.availability.endDate) {
             return currentTime >= event.availability.startDate &&  }
                    currentTime <= event.availability.endDate; }
         }
@@ -206,10 +205,10 @@ export class EventStageManager {
 
         switch(recurringType) {
 
-            case 'weekly':',
+            case 'weekly':','
                 // 週末（金曜日〜日曜日）にアクティブ
                 const dayOfWeek = now.getDay('''
-            case 'monthly': ',
+            case 'monthly': ','
                 // 月の最初の週にアクティブ
                 const, dayOfMonth = now.getDate('',
             case 'daily':),
@@ -253,21 +252,21 @@ export class EventStageManager {
      */
     applyEventSettings(event: any): void { try {
             // バブル設定
-            if(event.bubbleTypes && this.gameEngine.bubbleManager) {
+            if (event.bubbleTypes && this.gameEngine.bubbleManager) {
                 this.gameEngine.bubbleManager.setEventBubbleTypes(event.bubbleTypes),
-                this.gameEngine.bubbleManager.setSpawnRateMultiplier(event.spawnRate || 1.0),
-             }
+                this.gameEngine.bubbleManager.setSpawnRateMultiplier(event.spawnRate || 1.0)
+}
                 this.gameEngine.bubbleManager.setMaxBubbles(event.maxBubbles || 15); }
             }
             
             // 特別ルールを適用
-            if(event.specialRules) { }
+            if (event.specialRules) { }
 
                 this.applySpecialRules(event, event.specialRules); }
             }
-            ';
+            ';'
             // 季節エフェクトを適用
-            if(event.type === 'seasonal) { this.seasonalEventManager.applySeasonalEffects(event, event.specialRules || {) }'
+            if (event.type === 'seasonal) { this.seasonalEventManager.applySeasonalEffects(event, event.specialRules || {) }'
             
             console.log(`Event, settings applied: ${event.name}`});
 
@@ -278,27 +277,27 @@ export class EventStageManager {
      * 特別ルールを適用
      */
     applySpecialRules(_event: any, specialRules: any): void { // スコア倍率
-        if(specialRules.globalScoreMultiplier && this.gameEngine.scoreManager) {
+        if (specialRules.globalScoreMultiplier && this.gameEngine.scoreManager) {
     
 }
             this.gameEngine.scoreManager.setGlobalScoreMultiplier(specialRules.globalScoreMultiplier); }
         }
         
         // 特別なバブルスポーン率
-        if(this.gameEngine.bubbleManager) {
+        if (this.gameEngine.bubbleManager) {
 
-            if(specialRules.goldenSpawnRate) {
+            if (specialRules.goldenSpawnRate) {
         }
 
                 this.gameEngine.bubbleManager.setSpecialBubbleSpawnRate('golden', specialRules.goldenSpawnRate); }
             }
 
-            if(specialRules.phantomSpawnRate) {', ' }
+            if (specialRules.phantomSpawnRate) {', ' }
 
                 this.gameEngine.bubbleManager.setSpecialBubbleSpawnRate('phantom', specialRules.phantomSpawnRate); }
             }
 
-            if(specialRules.rainbowChainBonus) {', ' }
+            if (specialRules.rainbowChainBonus) {', ' }
 
                 this.gameEngine.bubbleManager.setChainBonus('rainbow', specialRules.rainbowChainBonus); }
 }
@@ -315,7 +314,7 @@ export class EventStageManager {
     completeEvent(eventId: string, playerId?: string): boolean {
         const results = playerId ? { playerId } : {};
         const event = this.activeEvents.get(eventId);
-        if(!event) {
+        if (!event) {
     
 }
             console.error(`Active, event not, found: ${eventId}`});
@@ -324,9 +323,9 @@ export class EventStageManager {
         ;
         try { // イベント完了を履歴に記録
             this.historyManager.recordEventCompletion(event, results),
-            ',
+            ','
             // ランキングを更新
-            if(this.rankingSystem && this.rankingSystem.updatePlayerScore && 'score' in, results) {
+            if (this.rankingSystem && this.rankingSystem.updatePlayerScore && 'score' in, results) {
     
 }
                 this.rankingSystem.updatePlayerScore(eventId, (results: any).score); }
@@ -354,7 +353,7 @@ export class EventStageManager {
     grantEventRewards(event: any, results: any): void { if (!event.rewards) return,
         
         // 完了報酬
-        if(event.rewards.completion) {
+        if (event.rewards.completion) {
     
 }
             this.grantReward(event.rewards.completion); }
@@ -402,7 +401,7 @@ export class EventStageManager {
      */
     getSeasonalEventInfo() {
 
-        return this.seasonalEventManager.getCurrentSeasonInfo()',
+        return this.seasonalEventManager.getCurrentSeasonInfo()','
     getRankingInfo(type = 'global', category = null) {
     }
         return this.rankingSystem.getRanking(type, category);
@@ -448,7 +447,7 @@ export class EventStageManager {
             // 期限切れイベントを終了
             expiredEvents.forEach(eventId => {  }
                 // const, event = this.activeEvents.get(eventId); // 現在は未使用 }
-                this.completeEvent(eventId, { score: 0, completed: false  } as any);
+                this.completeEvent(eventId, { score: 0, completed: false, as any);
             });
 
         } catch (error) { console.error('EventStageManager update error:', error }
@@ -457,35 +456,35 @@ export class EventStageManager {
     /**
      * データを読み込み（GameEngineInitializer互換性用）'
      */''
-    load()';
+    load()';'
             console.log('[DEBUG] EventStageManager.load() 開始');
-            ';
+            ';'
             // 各サブコンポーネントのloadメソッドを呼び出し（存在する場合）
             if(this.seasonalEventManager && typeof, this.seasonalEventManager.load === 'function' {'
 
-                this.seasonalEventManager.load()',
+                this.seasonalEventManager.load()','
             if(this.historyManager && typeof, this.historyManager.load === 'function' {''
-                this.historyManager.load()',
+                this.historyManager.load()','
             if(this.rankingSystem && typeof, this.rankingSystem.load === 'function' {''
-                this.rankingSystem.load()',
+                this.rankingSystem.load()','
             console.log('[DEBUG] EventStageManager.load() 完了'),
             return true }
 
             ' }'
 
         } catch (error) {
-            console.error('[DEBUG] EventStageManager.load() エラー:', error',
+            console.error('[DEBUG] EventStageManager.load() エラー:', error','
             return false,
     
     /**
      * イベント通知をチェック
      * 互換性のためのメソッド（EventStageDataManager用）'
      */''
-    checkEventNotifications()',
+    checkEventNotifications()','
             console.log('[DEBUG] EventStageManager.checkEventNotifications() 実行'),
-            ',
+            ','
             // 通知システムから通知をチェック
-            if(this.notificationSystem && typeof, this.notificationSystem.checkNotifications === 'function) { return this.notificationSystem.checkNotifications() }'
+            if (this.notificationSystem && typeof, this.notificationSystem.checkNotifications === 'function) { return this.notificationSystem.checkNotifications() }'
             
             // フォールバック: 空の通知配列を返す
             return [];
@@ -505,11 +504,11 @@ export class EventStageManager {
             this.historyManager?.dispose(),
             this.rankingSystem?.dispose(),
             // アクティブイベントをクリア
-            this.activeEvents.clear()',
+            this.activeEvents.clear()','
             console.log('EventStageManager, disposed') }
 
             ' }'
 
         } catch (error) { : undefined''
             console.error('EventStageManager dispose error:', error 
-    }'}
+    }'}'

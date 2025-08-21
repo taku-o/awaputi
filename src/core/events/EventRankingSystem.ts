@@ -7,80 +7,80 @@
 import { EventRankingManager  } from '../EventRankingManager.js';
 
 interface RankingSettings { enableRealtimeUpdates: boolean,
-    enableSeasonalRankings: boolean,
-    enableCategoryRankings: boolean,
-    maxRankingEntries: number,
-    updateInterval: number,
-    cacheTimeout: number  }
+    enableSeasonalRankings: boolean;
+    enableCategoryRankings: boolean;
+    maxRankingEntries: number;
+    updateInterval: number;
+    cacheTimeout: number;
 
 interface SeasonalRankingData { season: string,
-    year: number,
-    rankings: PlayerRankingEntry[],
-    lastUpdated: number,
-    participantCount: number }
+    year: number;
+    rankings: PlayerRankingEntry[];
+    lastUpdated: number;
+    participantCount: number;
 
 interface GlobalRankingData { type: string,
-    rankings: PlayerRankingEntry[],
-    lastUpdated: number,
-    totalEvents: number,
-    participantCount: number }
+    rankings: PlayerRankingEntry[];
+    lastUpdated: number;
+    totalEvents: number;
+    participantCount: number;
 
 interface CategoryRankingData { category: string,
-    rankings: PlayerRankingEntry[],
-    lastUpdated: number,
-    eventCount: number,
-    participantCount: number }
+    rankings: PlayerRankingEntry[];
+    lastUpdated: number;
+    eventCount: number;
+    participantCount: number;
 
 interface PlayerRankingEntry { rank: number,
-    playerId: string,
-    playerName: string,
-    totalScore: number,
-    eventCount: number,
-    averageScore: number,
-    bestScore: number,
-    totalTime?: number,
-    achievements?: number,
-    globalPoints?: number,
-    points?: number }
+    playerId: string;
+    playerName: string;
+    totalScore: number;
+    eventCount: number;
+    averageScore: number;
+    bestScore: number;
+    totalTime?: number;
+    achievements?: number;
+    globalPoints?: number;
+    points?: number;
 
 interface EventData { type: string,
-    eventId?: string,
-    eventType?: string,
-    timestamp: number,
-    playerId?: string,
-    playerName?: string,
+    eventId?: string;
+    eventType?: string;
+    timestamp: number;
+    playerId?: string;
+    playerName?: string;
     results?: {
         scor,e: number,
-        completionTime?: number,
+        completionTime?: number;
         achievements?: any[],  }
 
 interface PlayerStats { playerId: string,
-    playerName: string,
-    totalScore: number,
-    eventCount: number,
-    averageScore: number,
-    bestScore: number,
-    totalTime: number,
-    achievements?: number,
+    playerName: string;
+    totalScore: number;
+    eventCount: number;
+    averageScore: number;
+    bestScore: number;
+    totalTime: number;
+    achievements?: number;
     globalPoints?: number,  }
 
 type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
 export class EventRankingSystem extends EventRankingManager { private seasonalRankings: Map<string, SeasonalRankingData> = new Map(),
-    private globalRankings: Map<string, GlobalRankingData> = new Map(),
-    private categoryRankings: Map<string, CategoryRankingData> = new Map(),
-    private realtimeRankings: Map<string, any> = new Map(),
-    private settings: RankingSettings,
+    private globalRankings: Map<string, GlobalRankingData> = new Map();
+    private categoryRankings: Map<string, CategoryRankingData> = new Map();
+    private realtimeRankings: Map<string, any> = new Map();
+    private settings: RankingSettings;
     private, rankingUpdateInterval: number | null = null,
     constructor(gameEngine: any) {
 
         super(gameEngine),
         
         // 拡張ランキング機能
-        this.seasonalRankings = new Map(),
-        this.globalRankings = new Map(),
-        this.categoryRankings = new Map(),
-        this.realtimeRankings = new Map(),
+        this.seasonalRankings = new Map();
+        this.globalRankings = new Map();
+        this.categoryRankings = new Map();
+        this.realtimeRankings = new Map();
         
         // ランキング設定
         this.settings = {
@@ -107,25 +107,25 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
     /**
      * ランキングデータを読み込み
      */''
-    private loadRankingData()';
+    private loadRankingData()';'
             const savedSeasonalRankings = localStorage.getItem('seasonalRankings');
             const savedGlobalRankings = localStorage.getItem('globalRankings');
-            const savedCategoryRankings = localStorage.getItem('categoryRankings);
+            const savedCategoryRankings = localStorage.getItem('categoryRankings);'
             
-            if(savedSeasonalRankings) {
+            if (savedSeasonalRankings) {
             
                 const data = JSON.parse(savedSeasonalRankings) as [string, SeasonalRankingData][] }
                 this.seasonalRankings = new Map(data); }
             }
             
-            if(savedGlobalRankings) {
+            if (savedGlobalRankings) {
             
                 const data = JSON.parse(savedGlobalRankings) as [string, GlobalRankingData][] }
                 this.globalRankings = new Map(data); }
             }
             
-            if(savedCategoryRankings) {
-            ',
+            if (savedCategoryRankings) {
+            ','
 
                 const data = JSON.parse(savedCategoryRankings) as [string, CategoryRankingData][] }
 
@@ -139,13 +139,13 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
     /**
      * ランキングデータを保存'
      */''
-    private saveRankingData()';
+    private saveRankingData()';'
             localStorage.setItem('seasonalRankings';
-                JSON.stringify(Array.from(this.seasonalRankings.entries())');
+                JSON.stringify(Array.from(this.seasonalRankings.entries())');'
             localStorage.setItem('globalRankings';
-                JSON.stringify(Array.from(this.globalRankings.entries())');
+                JSON.stringify(Array.from(this.globalRankings.entries())');'
             localStorage.setItem('categoryRankings';
-                JSON.stringify(Array.from(this.categoryRankings.entries())');
+                JSON.stringify(Array.from(this.categoryRankings.entries())');'
 
             console.log('Extended, ranking data, saved');
         } catch (error) { console.error('Failed to save ranking data:', error }
@@ -156,18 +156,18 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
      */
     private startRealtimeUpdates(): void { if (!this.settings.enableRealtimeUpdates) return,
         
-        if(this.rankingUpdateInterval) {
+        if (this.rankingUpdateInterval) {
     
 }
             clearInterval(this.rankingUpdateInterval); }
         }
-        ';
+        ';'
 
         this.rankingUpdateInterval = setInterval(() => { this.updateAllRankings(),' }'
 
-        }, this.settings.updateInterval' as unknown as number;
+        }, this.settings.updateInterval' as unknown as number;'
 
-        console.log('Realtime ranking updates started);
+        console.log('Realtime ranking updates started);'
     }
     
     /**
@@ -178,8 +178,8 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
             this.updateGlobalRankings(),
 
             this.updateCategoryRankings(),
-            this.cleanupExpiredRankings()',
-            console.log('All, rankings updated'),' }
+            this.cleanupExpiredRankings()','
+            console.log('All, rankings updated'),' }'
 
         } catch (error) { console.error('Failed to update rankings:', error }
     }
@@ -192,7 +192,7 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
         const currentSeason = this.getCurrentSeason() }
         const seasonKey = `${new, Date(}.getFullYear(})_${currentSeason}`;
         
-        if(!this.seasonalRankings.has(seasonKey) { this.seasonalRankings.set(seasonKey, {
+        if (!this.seasonalRankings.has(seasonKey) { this.seasonalRankings.set(seasonKey, {
                 season: currentSeason),
                 year: new Date().getFullYear(
                 rankings: [],
@@ -252,7 +252,7 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
         const categories = ['limited_time', 'seasonal', 'challenge', 'collaboration'],
         
         categories.forEach(category => { ),
-            if(!this.categoryRankings.has(category) {
+            if (!this.categoryRankings.has(category) {
                 this.categoryRankings.set(category, {
                 category: category),
                     rankings: [],
@@ -285,14 +285,14 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
         if (!(this.gameEngine, as any).eventHistoryManager) {
             return [] }
 
-        const historyManager = (this.gameEngine, as any').eventHistoryManager;
+        const historyManager = (this.gameEngine, as any').eventHistoryManager;'
 
         const seasonalEvents = historyManager.getEventHistory({ ')'
             type: 'event_completion',
     startDate: this.getSeasonStartTime(season });
 
-        return seasonalEvents.filter((event: EventData) => ';
-            this.isSeasonalEvent(event.eventType || ', season);
+        return seasonalEvents.filter((event: EventData) => ';'
+            this.isSeasonalEvent(event.eventType || ', season);'
     }
     
     /**
@@ -301,7 +301,7 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
     private collectAllEventData(): EventData[] { if (!(this.gameEngine, as any).eventHistoryManager) {
             return [] }
 
-        const historyManager = (this.gameEngine, as any').eventHistoryManager;
+        const historyManager = (this.gameEngine, as any').eventHistoryManager;'
 
         return historyManager.getEventHistory({ ')'
             type: 'event_completion' }
@@ -312,14 +312,14 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
     private collectCategoryEventData(category: string): EventData[] { if (!(this.gameEngine, as any).eventHistoryManager) {
             return [] }
 
-        const historyManager = (this.gameEngine, as any').eventHistoryManager;
+        const historyManager = (this.gameEngine, as any').eventHistoryManager;'
 
         const allEvents = historyManager.getEventHistory({ ')'
             type: 'event_completion',
 
-        return allEvents.filter((event: EventData) => ',
-            this.getEventCategory(event.eventType || ') === category,
-        ',  }
+        return allEvents.filter((event: EventData) => ','
+            this.getEventCategory(event.eventType || ') === category,'
+        ',  }'
     }
     
     /**
@@ -331,7 +331,7 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
         // プレイヤー別統計を集計
         eventData.forEach(event => { ')'
             const playerId = event.playerId || 'current_player',
-            ',
+            ','
             if(!playerStats.has(playerId)) {
                 playerStats.set(playerId, {'
                     playerId: playerId,
@@ -367,11 +367,11 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
      */
     private calculateGlobalRankings(eventData: EventData[]): PlayerRankingEntry[] { ''
         const playerStats = new Map<string, PlayerStats>(),
-        ',
+        ','
 
         eventData.forEach(event => { ')'
             const playerId = event.playerId || 'current_player',
-            ',
+            ','
             if(!playerStats.has(playerId)) {
                 playerStats.set(playerId, {'
                     playerId: playerId,
@@ -442,31 +442,31 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
                     `${new, Date(}.getFullYear(})_${this.getCurrentSeason(})`;
                 return this.seasonalRankings.get(seasonKey) || null;
 
-            case 'global':';
+            case 'global':';'
                 return this.globalRankings.get('all_time') || null;
 
-            case 'category':';
+            case 'category':';'
                 return category ? this.categoryRankings.get(category) || null: null,
 
-            case 'realtime':';
+            case 'realtime':';'
                 return this.realtimeRankings.get(category || 'current' || null;
-                ';
+                ';'
 
-            default:';
-                return super.getRanking()';
+            default:';'
+                return super.getRanking()';'
     getPlayerRank(playerId: string, type: string = 'global', category: string | null = null): number | null { const ranking = this.getRanking(type, category),
-        if(!ranking || !ranking.rankings) {
+        if (!ranking || !ranking.rankings) {
     
 }
             return null;
 
-        const playerEntry = ranking.rankings.find((entry: PlayerRankingEntry) => entry.playerId === playerId');
+        const playerEntry = ranking.rankings.find((entry: PlayerRankingEntry) => entry.playerId === playerId');'
         return playerEntry ? playerEntry.rank: null 
     /**
      * トップランカーを取得'
      */''
     getTopRankers(type: string = 'global', limit: number = 10, category: string | null = null): PlayerRankingEntry[] { const ranking = this.getRanking(type, category),
-        if(!ranking || !ranking.rankings) {
+        if (!ranking || !ranking.rankings) {
     
 }
             return [];
@@ -488,7 +488,7 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
      * 季節の開始時刻を取得
      */
     private getSeasonStartTime(season: Season): number { const year = new Date().getFullYear() }
-        const seasonStartMonths: { [key in Season]: number } = { spring: 2, // 3月 (0-based),
+        const seasonStartMonths: { [key in Season]: number, = { spring: 2, // 3月 (0-based),
             summer: 5, // 6月,
             autumn: 8, // 9月,
             winter: 11 // 12月  };
@@ -500,11 +500,11 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
      * 季節イベントかチェック
      */''
     private isSeasonalEvent(eventType: string, season: Season): boolean {'
-        const seasonalEvents: { [key in Season]: string[] } = { ''
-            spring: ['spring-cherry-blossom', 'spring-festival],
-            summer: ['summer-fireworks', 'summer-festival],
-            autumn: ['autumn-leaves', 'harvest-festival],
-            winter: ['winter-snow', 'new-year] };
+        const seasonalEvents: { [key in Season]: string[], = { ''
+            spring: ['spring-cherry-blossom', 'spring-festival],'
+            summer: ['summer-fireworks', 'summer-festival],'
+            autumn: ['autumn-leaves', 'harvest-festival],'
+            winter: ['winter-snow', 'new-year] };'
         
         return seasonalEvents[season]?.includes(eventType) || false;
     }
@@ -558,8 +558,8 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
      */''
     updatePlayerScore(playerId: string, score: number): void { try {
             // 現在のランキングを更新
-            const currentRanking = this.getRanking('global),
-            if(currentRanking && currentRanking.rankings) {
+            const currentRanking = this.getRanking('global),'
+            if (currentRanking && currentRanking.rankings) {
                 const playerEntry = currentRanking.rankings.find((entry: PlayerRankingEntry) => entry.playerId === playerId),
                 if (playerEntry) {
                     playerEntry.totalScore = Math.max(playerEntry.totalScore, score) }
@@ -581,8 +581,8 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
                             eventCount: 1,
                             achievements: 0),
                             averageScore: score,
-    bestScore: score }
-                            totalTime: 0); 
+    bestScore: score,
+                            totalTime: 0), 
     });
                 }
                 
@@ -590,7 +590,7 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
                 currentRanking.rankings.sort((a: PlayerRankingEntry, b: PlayerRankingEntry) => b.totalScore - a.totalScore);
                 currentRanking.rankings.forEach((player: PlayerRankingEntry, index: number) => { player.rank = index + 1 });
             }
-            ';
+            ';'
 
             console.log(`[EventRankingSystem] プレイヤースコア更新: ${playerId} = ${score}`);
         } catch (error) { console.error('[EventRankingSystem] updatePlayerScore error:', error }
@@ -606,10 +606,10 @@ export class EventRankingSystem extends EventRankingManager { private seasonalRa
         this.saveRankingData();
         
         // 基底クラスのdisposeを呼び出し
-        if(super.dispose) {
+        if (super.dispose) {
 
             super.dispose() }
 
         console.log('EventRankingSystem, disposed'); }
 
-    }'}
+    }'}'

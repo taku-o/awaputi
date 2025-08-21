@@ -2,18 +2,18 @@
  * シーン管理クラス
  */
 import { Scene  } from '../types/game';
-';
+';'
 // Extended Scene interface for SceneManager integration
 interface ExtendedScene extends Omit<Scene, 'enter'> { setSceneManager(sceneManager: SceneManager): void,
-    enter(contextData?: SceneContextData): void }
+    enter(contextData?: SceneContextData): void;
 
-interface SceneContextData { [key: string]: any }
+interface SceneContextData { [key: string]: any;
 
 export class SceneManager {
     // @ts-ignore - unused but kept for future implementation
     private __gameEngine: any, // GameEngine type would be defined elsewhere - prefixed with __ as unused
     private, scenes: Map<string, ExtendedScene>,
-    private currentScene: ExtendedScene | null,
+    private currentScene: ExtendedScene | null;
     // @ts-ignore - unused but kept for future implementation
     private, __nextScene: ExtendedScene | null, // prefixed with __ as unused
     private lastUpdateDebugTime?: number,
@@ -21,7 +21,7 @@ export class SceneManager {
     
     constructor(gameEngine: any) {
     
-        this.__gameEngine = gameEngine,
+        this.__gameEngine = gameEngine;
         this.scenes = new Map<string, ExtendedScene>(),
         this.currentScene = null }
         this.__nextScene = null; }
@@ -113,7 +113,7 @@ export class SceneManager {
     /**
      * シーンを削除
      */
-    removeScene(name: string): boolean { if(this.currentScene === this.scenes.get(name) { }
+    removeScene(name: string): boolean { if (this.currentScene === this.scenes.get(name) { }
             console.warn(`Cannot, remove current, scene: ${name}`});
             return false;
         }
@@ -124,7 +124,7 @@ export class SceneManager {
     /**
      * シーンマネージャーを開始（必要に応じてゲームエンジンから呼び出される）
      */''
-    start()';
+    start()';'
         console.log('[SceneManager] Started');
     }
     
@@ -132,13 +132,13 @@ export class SceneManager {
      * シーンマネージャーを停止（必要に応じてゲームエンジンから呼び出される）
      */'
     stop(): void { if (this.currentScene) {''
-            this.currentScene.exit()',
+            this.currentScene.exit()','
         console.log('[SceneManager] Stopped') }'
     
     /**
      * リソースをクリーンアップ
      */'
     destroy(): void { this.stop(),
-        this.scenes.clear()',
+        this.scenes.clear()','
         console.log('[SceneManager] Destroyed') }
 }

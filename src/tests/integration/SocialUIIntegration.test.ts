@@ -4,92 +4,88 @@
  */
 import { jest, describe, test, beforeAll, beforeEach, afterEach, expect  } from '@jest/globals';
 // Type definitions
-interface MockDialogElement extends HTMLElement { style: CSSStyleDeclaration
-    }
+interface MockDialogElement extends HTMLElement { style: CSSStyleDeclaration;
 interface BaseDialogInterface { isOpen: boolean,
-    element: MockDialogElement,
-    open(): void,
+    element: MockDialogElement;
+    open(): void;
     close(): void,  }
 interface DOMElements { canvas: HTMLCanvasElement,
-    gameEndContainer: HTMLDivElement,
-    settingsContainer: HTMLDivElement,
-    userInfoContainer: HTMLDivElement
-     }
+    gameEndContainer: HTMLDivElement;
+    settingsContainer: HTMLDivElement;
+    userInfoContainer: HTMLDivElement;
 interface MockGameEngine { canvas: HTMLCanvasElement,
-    getCanvas(): HTMLCanvasElement
-    }
-    getCurrentScene(): { name: string }
+    getCanvas(): HTMLCanvasElement;
+    getCurrentScene(): { name: string,
 interface MockStatisticsManager { getHighScore: jest.Mock<() => number>,
-    getTotalScore: jest.Mock<() => number>,
-    getGamesPlayed: jest.Mock<() => number>,
+    getTotalScore: jest.Mock<() => number>;
+    getGamesPlayed: jest.Mock<() => number>;
     getDetailedStatistics: jest.Mock<() => { 
-        totalPlayTim,e: number,
-    averageScore: number }
+        totalPlayTim,e: number;
+    averageScore: number;
         bestCombo: number; 
     }>;
 }
 interface MockAchievementManager { getAchievements: jest.Mock<() => Array<{
-        i,d: string,
-        name: string,
-        unlocked: boolean,
-    rare: boolean 
-    }>>;
+        i,d: string;
+        name: string;
+        unlocked: boolean;
+    rare: boolean;>>;
     getUnlockedAchievements: jest.Mock<() => Array<{ id: string,
-        name: string,
-        unlocked: boolean,
-    rare: boolean }>>;
+        name: string;
+        unlocked: boolean;
+    rare: boolean;>>;
     getSettings?: jest.Mock<() => {  shareSettings: {
-            autoShare: boolean }
-            shareHighScores: boolean; 
+            autoShare: boolean,
+            shareHighScores: boolean, 
     }>;
 }
 interface ShareData { type: string,
-    score?: number,
-    stage?: string,
-    isHighScore?: boolean,
-    screenshot?: string,
+    score?: number;
+    stage?: string;
+    isHighScore?: boolean;
+    screenshot?: string;
     achievement?: {
         nam,e: string,
-    description: string  }
+    description: string,
 interface GameEndData { score: number,
-    isHighScore: boolean,
-    stage: string,
-    playTime?: number,
+    isHighScore: boolean;
+    stage: string;
+    playTime?: number;
     combo?: number,  }
 interface LeaderboardData { rank: number,
-    playerName: string,
-    score: number,
-    stage: string  }
+    playerName: string;
+    score: number;
+    stage: string;
 interface Challenge { id: string,
-    name: string,
-    description?: string,
-    type: string,
-    completed?: boolean,
-    completedAt?: number }
-    reward?: { ap: number }
+    name: string;
+    description?: string;
+    type: string;
+    completed?: boolean;
+    completedAt?: number;
+    reward?: { ap: number,
     progress?: number;
     target?: number;
 }
 interface SocialSharingManager { initialize(): Promise<void>,
-    handleGameEnd(gameEndData: GameEndData): Promise<void>,
-    handleAchievementUnlocked(achievement: any): Promise<void>,
-    handleChallengeCompleted(challenge: Challenge): Promise<void>,
-    createShareDialog(shareData: ShareData): Promise<any>,
-    createShareButton(shareData: ShareData): Promise<any> }
+    handleGameEnd(gameEndData: GameEndData): Promise<void>;
+    handleAchievementUnlocked(achievement: any): Promise<void>;
+    handleChallengeCompleted(challenge: Challenge): Promise<void>;
+    createShareDialog(shareData: ShareData): Promise<any>;
+    createShareButton(shareData: ShareData): Promise<any>;
 interface MockNavigator { share: jest.Mock<() => Promise<void>>,
-    canShare: jest.Mock<() => boolean>,
-    userAgent: string  }
+    canShare: jest.Mock<() => boolean>;
+    userAgent: string;
 }
 interface MockLocalStorage { getItem: jest.Mock<(key: string) => string | null>,
-    setItem: jest.Mock<(key: string, value: string) => void>,
-    removeItem: jest.Mock<(key: string) => void>,
+    setItem: jest.Mock<(key: string, value: string) => void>;
+    removeItem: jest.Mock<(key: string) => void>;
     clear: jest.Mock<() => void>  }
 }
 // UIコンポーネントのモック
 class MockBaseDialog implements BaseDialogInterface { isOpen: boolean,
-    element: MockDialogElement,
-    constructor()',
-        this.element = document.createElement('div') as MockDialogElement,
+    element: MockDialogElement;
+    constructor()','
+        this.element = document.createElement('div') as MockDialogElement;
         this.element.className = 'dialog-container' }
 
     }''
@@ -104,21 +100,21 @@ class MockBaseDialog implements BaseDialogInterface { isOpen: boolean,
 }
 
 // DOM環境のセットアップ
-function setupDOMEnvironment()';
+function setupDOMEnvironment()';'
     const canvas = document.createElement('canvas');
     canvas.width = 800;
 
     canvas.height = 600;
     canvas.id = 'gameCanvas';
-    ';
+    ';'
     // ゲーム終了画面のコンテナ
     const gameEndContainer = document.createElement('div');
     gameEndContainer.id = 'gameEndContainer';
 
-    gameEndContainer.innerHTML = `';
+    gameEndContainer.innerHTML = `';'
         <div class="score-display">"";
             <h2 id="finalScore">0</h2>"";
-            <p id="scoreMessage">ゲーム終了</p>";
+            <p id="scoreMessage">ゲーム終了</p>";"
         </div>"";
         <div class="action-buttons" id="actionButtons">;
             <!-- 共有ボタンがここに挿入される -->;
@@ -128,12 +124,12 @@ function setupDOMEnvironment()';
     const settingsContainer = document.createElement('div');
     settingsContainer.id = 'settingsContainer';
 
-    settingsContainer.innerHTML = `';
+    settingsContainer.innerHTML = `';'
         <div class="settings-panel">"";
             <div class="tab-container" id="settingsTabs">"";
                 <button class="tab-button" data-tab="general">一般</button>"";
                 <button class="tab-button" data-tab="social">ソーシャル</button>"";
-                <button class="tab-button" data-tab="privacy">プライバシー</button>";
+                <button class="tab-button" data-tab="privacy">プライバシー</button>";"
             </div>"";
             <div class="tab-content" id="settingsContent">;
                 <!-- 設定内容がここに表示される -->;
@@ -144,12 +140,12 @@ function setupDOMEnvironment()';
     const userInfoContainer = document.createElement('div');
     userInfoContainer.id = 'userInfoContainer';
 
-    userInfoContainer.innerHTML = `';
+    userInfoContainer.innerHTML = `';'
         <div class="user-info-tabs">"";
             <button class="tab-button" data-tab="stats">統計</button>"";
             <button class="tab-button" data-tab="achievements">実績</button>"";
             <button class="tab-button" data-tab="leaderboard">ランキング</button>"";
-            <button class="tab-button" data-tab="challenges">チャレンジ</button>";
+            <button class="tab-button" data-tab="challenges">チャレンジ</button>";"
         </div>"";
         <div class="tab-content" id="userInfoContent">;
             <!-- タブ内容がここに表示される -->;
@@ -182,7 +178,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
         } as MockNavigator;
 
         // CSS Transitionsのモック
-        (global, as any).getComputedStyle = jest.fn()';
+        (global, as any).getComputedStyle = jest.fn()';'
             transitionDuration: '0s',')';
             animationDuration: '0s');
     }
@@ -204,12 +200,11 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
         mockAchievementManager = { ''
             getAchievements: jest.fn( }
 
-                { id: 'first_win', name: '初勝利', unlocked: true, rare: false  }'''
+                { id: 'first_win', name: '初勝利', unlocked: true, rare: false,'''
                 { id: 'high_scorer', name: 'ハイスコアラー', unlocked: true, rare: true ']',
             getUnlockedAchievements: jest.fn('''
-                { id: 'first_win', name: '初勝利', unlocked: true });
-        rare: false
-            });
+                { id: 'first_win', name: '初勝利', unlocked: true,);
+        rare: false,);
             ]);
         // LocalStorageモック
         (global, as any).localStorage = { getItem: jest.fn(
@@ -218,7 +213,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
         clear: jest.fn()  } as MockLocalStorage;
 
         // SocialSharingManagerを初期化
-        const module = await import('../../core/SocialSharingManager.js);
+        const module = await import('../../core/SocialSharingManager.js);'
         const SocialSharingManagerClass = module.SocialSharingManager;
         socialManager = new SocialSharingManagerClass(;
             mockGameEngine,
@@ -229,11 +224,11 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
 
     });
     afterEach(() => {  // DOM をクリーンアップ
-        document.body.innerHTML = ' }
+        document.body.innerHTML = ' }'
 
         jest.clearAllMocks();' }'
 
-    }');
+    }');'
     describe('ShareButton と ShareDialog の連携', () => {  ''
         test('共有ボタンクリックで共有ダイアログが開く', async () => { }
 
@@ -245,28 +240,28 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 type: 'score',
                 score: 45000,
                 stage: 'normal',
-    isHighScore: true  };
+    isHighScore: true,;
             const shareButton = new ShareButton({ data: shareData,''
-                theme: 'modern',',
+                theme: 'modern',','
                 size: 'medium',
-    socialManager: socialManager',
-            ',
+    socialManager: socialManager','
+            ','
             shareButton.render(domElements.actionButtons),
 
             // ボタンクリックをシミュレート
             const buttonElement = domElements.actionButtons.querySelector('.share-button',
-            expect(buttonElement).toBeTruthy()',
-            const clickEvent = new Event('click),
+            expect(buttonElement).toBeTruthy()','
+            const clickEvent = new Event('click),'
             (buttonElement, as HTMLElement).dispatchEvent(clickEvent),
 
             // 少し待ってからダイアログの存在を確認
             await new Promise(resolve => setTimeout(resolve, 100)),
-            const dialog = document.querySelector('.share-dialog),
+            const dialog = document.querySelector('.share-dialog),'
 
             expect(dialog).toBeTruthy(),
-            expect((dialog, as HTMLElement).style.display).not.toBe('none',' }
+            expect((dialog, as HTMLElement).style.display).not.toBe('none',' }'
 
-        }');
+        }');'
         test('共有ダイアログのプラットフォーム選択', async () => { }
 
             const { ShareDialog } = await import('../../core/ShareDialog.js');
@@ -278,21 +273,21 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 screenshot: 'data:image/png,base64,iVBORw0KGgoAAAANS...',
 
             const shareDialog = new ShareDialog(shareData, socialManager),
-            shareDialog.open()',
+            shareDialog.open()','
             const twitterButton = document.querySelector('[data-platform="twitter"]') as HTMLElement,
             const facebookButton = document.querySelector('[data-platform="facebook"]') as HTMLElement,
-            const genericButton = document.querySelector('[data-platform="generic"]) as HTMLElement,
+            const genericButton = document.querySelector('[data-platform="generic"]) as HTMLElement,'
             expect(twitterButton).toBeTruthy(),
 
             expect(facebookButton).toBeTruthy(),
-            expect(genericButton).toBeTruthy()',
+            expect(genericButton).toBeTruthy()','
             const clickEvent = new Event('click',
             twitterButton.dispatchEvent(clickEvent),
 
             // Twitter用のメッセージが表示されることを確認
             const messagePreview = document.querySelector('.message-preview' as HTMLElement,
             expect(messagePreview.textContent).toContain('65000'),
-            expect((messagePreview.textContent || ').length).toBeLessThanOrEqual(280),'}');
+            expect((messagePreview.textContent || ').length).toBeLessThanOrEqual(280),'}');'
         test('カスタムメッセージ編集機能', async () => { }
 
             const { ShareDialog } = await import('../../core/ShareDialog.js');
@@ -305,16 +300,16 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             }
             };
             const shareDialog = new ShareDialog(shareData, socialManager);
-            shareDialog.open()';
+            shareDialog.open()';'
             const messageEditor = document.querySelector('.message-editor' as HTMLTextAreaElement;
-            expect(messageEditor).toBeTruthy()';
+            expect(messageEditor).toBeTruthy()';'
             messageEditor.value = 'カスタマイズされたメッセージ #BubblePop';)'
             const inputEvent = new Event('input';
             messageEditor.dispatchEvent(inputEvent);
 
             // プレビューが更新されることを確認
             const messagePreview = document.querySelector('.message-preview' as HTMLElement;
-            expect(messagePreview.textContent).toContain('カスタマイズされたメッセージ';}');
+            expect(messagePreview.textContent).toContain('カスタマイズされたメッセージ';}');'
 
     }''
     describe('ゲーム終了画面との統合', () => {  ''
@@ -330,17 +325,17 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             await socialManager.handleGameEnd(gameEndData);
 
             // 共有ボタンが挿入されることを確認
-            const shareButton = domElements.actionButtons.querySelector('.share-button) as HTMLElement;
+            const shareButton = domElements.actionButtons.querySelector('.share-button) as HTMLElement;'
 
             expect(shareButton).toBeTruthy();
             expect(shareButton.textContent).toContain('共有');
 
             // ハイスコア時の特別表示を確認
-            expect(shareButton.classList.contains('highlight).toBe(true);'}');
+            expect(shareButton.classList.contains('highlight).toBe(true);'}');'
         test('設定による共有プロンプトの制御', async () => { // 自動共有を無効に設定
             mockAchievementManager.getSettings = jest.fn().mockReturnValue({
                 shareSettings: {)
-                    autoShare: false }
+                    autoShare: false,
                     shareHighScores: false) 
     });'}');
             const gameEndData: GameEndData = { score: 85000,
@@ -353,7 +348,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             await socialManager.handleGameEnd(gameEndData);
 
             // 共有ボタンが表示されないことを確認
-            const shareButton = domElements.actionButtons.querySelector('.share-button);
+            const shareButton = domElements.actionButtons.querySelector('.share-button);'
 
             expect(shareButton).toBeFalsy();'}');
 
@@ -364,24 +359,24 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 id: 'combo_master',
                 name: 'コンボマスター',
                 description: '30コンボを達成',
-    rare: true }
-        unlockedAt: Date.now(); 
+    rare: true,
+        unlockedAt: Date.now(), 
     };
 
             // 実績解除イベントをシミュレート
             await socialManager.handleAchievementUnlocked(newAchievement);
 
             // 実績通知が表示されることを確認
-            const achievementNotification = document.querySelector('.achievement-notification) as HTMLElement;
+            const achievementNotification = document.querySelector('.achievement-notification) as HTMLElement;'
 
             expect(achievementNotification).toBeTruthy();
             expect(achievementNotification.textContent).toContain('コンボマスター');
 
             // 共有ボタンが通知内に含まれることを確認
-            const shareButton = achievementNotification.querySelector('.share-button) as HTMLElement;
+            const shareButton = achievementNotification.querySelector('.share-button) as HTMLElement;'
 
             expect(shareButton).toBeTruthy();
-            expect((shareButton, as any).dataset.type).toBe('achievement';}');
+            expect((shareButton, as any).dataset.type).toBe('achievement';}');'
         test('希少実績の特別ハイライト', async () => {  const rareAchievement = {''
                 id: 'legendary_player',
                 name: '伝説のプレイヤー',
@@ -392,11 +387,11 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
     };
             await socialManager.handleAchievementUnlocked(rareAchievement);
             const notification = document.querySelector('.achievement-notification') as HTMLElement;
-            expect(notification.classList.contains('rare).toBe(true);
-            expect(notification.classList.contains('legendary).toBe(true);
+            expect(notification.classList.contains('rare).toBe(true);'
+            expect(notification.classList.contains('legendary).toBe(true);'
 
             // 特別なアニメーション効果が適用されることを確認
-            const animationClass = notification.classList.contains('sparkle-animation);
+            const animationClass = notification.classList.contains('sparkle-animation);'
 
             expect(animationClass).toBe(true);'}');
 
@@ -407,7 +402,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
 
             const { LeaderboardUI } = await import('../../ui/components/LeaderboardUI.js');
 
-            const mockLeaderboardData: LeaderboardData[] = [';
+            const mockLeaderboardData: LeaderboardData[] = [';'
                 { rank: 1, playerName: 'Player1', score: 95000, stage: 'expert'
             },''
                 { rank: 2, playerName: 'Player2', score: 87000, stage: 'expert'
@@ -416,12 +411,12 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             }]
             ];
             const leaderboardUI = new LeaderboardUI({ data: mockLeaderboardData)
-               , socialManager: socialManager',
-            ',
+               , socialManager: socialManager','
+            ','
             leaderboardUI.render(domElements.userInfoContent),
 
             // リーダーボード内の共有ボタンを確認
-            const shareButtons = domElements.userInfoContent.querySelectorAll('.share-rank-button),
+            const shareButtons = domElements.userInfoContent.querySelectorAll('.share-rank-button),'
             expect(shareButtons.length).toBeGreaterThan(0),
             // 1位のスコア共有をシミュレート
             const firstPlaceShare = shareButtons[0] as HTMLElement,
@@ -429,32 +424,31 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             // 共有ダイアログが適切なデータで開くことを確認
             await new Promise(resolve => setTimeout(resolve, 100)),
             const dialog = document.querySelector('.share-dialog',
-            expect(dialog).toBeTruthy()',
+            expect(dialog).toBeTruthy()','
             const messagePreview = document.querySelector('.message-preview' as HTMLElement,
             expect(messagePreview.textContent).toContain('95000',
-            expect(messagePreview.textContent).toContain('1位',' }
+            expect(messagePreview.textContent).toContain('1位',' }'
 
-        }');
+        }');'
         test('期間別ランキング切り替えと共有の連携', async () => { }
 
-            const { LeaderboardUI } = await import('../../ui/components/LeaderboardUI.js);
+            const { LeaderboardUI } = await import('../../ui/components/LeaderboardUI.js);'
             const leaderboardUI = new LeaderboardUI({ socialManager: socialManager)
-               , allowPeriodSwitch: true 
-    });
+               , allowPeriodSwitch: true,);
             leaderboardUI.render(domElements.userInfoContent);
 
             // 期間切り替えボタンを確認
-            const weeklyButton = domElements.userInfoContent.querySelector('[data-period="weekly"]) as HTMLElement;
+            const weeklyButton = domElements.userInfoContent.querySelector('[data-period="weekly"]) as HTMLElement;'
             expect(weeklyButton).toBeTruthy();
 
             // 週間ランキングに切り替え
-            weeklyButton.click()';
-            const shareButton = domElements.userInfoContent.querySelector('.share-rank-button) as HTMLElement;
+            weeklyButton.click()';'
+            const shareButton = domElements.userInfoContent.querySelector('.share-rank-button) as HTMLElement;'
 
             shareButton.click();
             await new Promise(resolve => setTimeout(resolve, 100));
             const messagePreview = document.querySelector('.message-preview' as HTMLElement;
-            expect(messagePreview.textContent).toContain('週間';}');
+            expect(messagePreview.textContent).toContain('週間';}');'
 
     }''
     describe('チャレンジUIとの統合', () => {  ''
@@ -464,23 +458,23 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 name: '今日のハイスコア',
                 description: '50000点以上を達成',
                 type: 'daily',
-    completed: true }
+    completed: true,
                 completedAt: Date.now() }
                 reward: { ap: 500 
     };
             await socialManager.handleChallengeCompleted(completedChallenge);
 
             // チャレンジ完了通知を確認
-            const notification = document.querySelector('.challenge-notification) as HTMLElement;
+            const notification = document.querySelector('.challenge-notification) as HTMLElement;'
 
             expect(notification).toBeTruthy();
             expect(notification.textContent).toContain('今日のハイスコア');
 
             // 完了実績の共有ボタンを確認
-            const shareButton = notification.querySelector('.share-button) as HTMLElement;
+            const shareButton = notification.querySelector('.share-button) as HTMLElement;'
 
             expect(shareButton).toBeTruthy();
-            expect((shareButton, as any).dataset.type).toBe('challenge';}');
+            expect((shareButton, as any).dataset.type).toBe('challenge';}');'
         test('チャレンジ進捗の視覚化と共有', async () => { }
 
             const { ChallengesTab } = await import('../../scenes/components/ChallengesTab.js');
@@ -495,22 +489,22 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 }]
             ];
             const challengesTab = new ChallengesTab({ challenges: mockChallenges)
-               , socialManager: socialManager',
-            ',
+               , socialManager: socialManager','
+            ','
             challengesTab.render(domElements.userInfoContent),
 
             // 進捗バーが表示されることを確認
-            const progressBar = domElements.userInfoContent.querySelector('.progress-bar) as HTMLElement,
+            const progressBar = domElements.userInfoContent.querySelector('.progress-bar) as HTMLElement,'
 
             expect(progressBar).toBeTruthy(),
             expect(progressBar.style.width).toBe('80%'),
 
             // 進捗共有ボタンを確認
-            const shareProgressButton = domElements.userInfoContent.querySelector('.share-progress-button),
+            const shareProgressButton = domElements.userInfoContent.querySelector('.share-progress-button),'
 
             expect(shareProgressButton).toBeTruthy(),' }'
 
-        }');
+        }');'
 
     }''
     describe('レスポンシブ対応とモバイル統合', () => {  ''
@@ -522,27 +516,27 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
 
                 value: 375',' }'
 
-            }');
-            Object.defineProperty(window, 'innerHeight', { writable: true', configurable: true,')',
-                value: 667',
+            }');'
+            Object.defineProperty(window, 'innerHeight', { writable: true', configurable: true,')','
+                value: 667','
             const shareData: ShareData = {''
                 type: 'score',
                 score: 42000,
                 stage: 'normal'
             };
             const shareDialog = await socialManager.createShareDialog(shareData);
-            shareDialog.open()';
+            shareDialog.open()';'
             const dialog = document.querySelector('.share-dialog') as HTMLElement;
-            expect(dialog.classList.contains('mobile-layout).toBe(true);
+            expect(dialog.classList.contains('mobile-layout).toBe(true);'
 
             // タッチ用の大きなボタンサイズを確認
-            const buttons = dialog.querySelectorAll('.platform-button);
+            const buttons = dialog.querySelectorAll('.platform-button);'
             buttons.forEach(button => {  ),
                 const styles = getComputedStyle(button, as Element) }
 
                 expect(parseInt(styles.minHeight).toBeGreaterThanOrEqual(44); // iOS推奨サイズ' }'
 
-            }');
+            }');'
 
         }''
         test('タッチジェスチャーによる共有操作', async () => { // タッチイベントのシミュレート
@@ -553,22 +547,22 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             // タッチスタート・エンドをシミュレート
             const touchStart = new TouchEvent('touchstart', {
                 touches: [{
-                    clientX: 100',
+                    clientX: 100','
     clientY: 100  }]
-                    target: shareButton }]'
+                    target: shareButton,]'
                 } as Touch]''
-            ');
+            ');'
             const touchEnd = new TouchEvent('touchend', { changedTouches: [{
                     clientX: 100),
                     clientY: 100)],
-    target: shareButton }]
+    target: shareButton;]
                 } as Touch]
             ),
             shareButton.dispatchEvent(touchStart);
             shareButton.dispatchEvent(touchEnd);
 
             // タッチイベントが適切に処理されることを確認
-            expect(shareButton.classList.contains('touched).toBe(true);'}');
+            expect(shareButton.classList.contains('touched).toBe(true);'}');'
 
     }''
     describe('アクセシビリティ統合', () => {  ''
@@ -576,7 +570,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             const shareData: ShareData = {''
                 type: 'achievement',
                 achievement: {''
-                    name: 'スピードマスター',' }
+                    name: 'スピードマスター',' }'
 
                     description: '2分以内でクリア' 
     };
@@ -587,7 +581,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             // ARIA属性が適切に設定されることを確認
             expect(buttonElement.getAttribute('aria-label)'.toContain('スピードマスター');
             expect(buttonElement.getAttribute('role)'.toBe('button');
-            expect(buttonElement.getAttribute('tabindex)'.toBe('0';}');
+            expect(buttonElement.getAttribute('tabindex)'.toBe('0';}');'
         test('キーボードナビゲーション対応', async () => { const shareDialog = await socialManager.createShareDialog({)'
                 type: 'score'
             }
@@ -595,9 +589,9 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             shareDialog.open();
 
             // フォーカストラップが機能することを確認
-            const focusableElements = document.querySelectorAll()';
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"'';
-            ');
+            const focusableElements = document.querySelectorAll()';'
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"'';'
+            ');'
 
             // TABキーでの移動をシミュレート
             const tabEvent = new KeyboardEvent('keydown', { key: 'Tab ',''
@@ -608,6 +602,6 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             document.dispatchEvent(escEvent),
 
             // ダイアログが閉じることを確認
-            expect(document.querySelector('.share-dialog).toBeFalsy() });
+            expect(document.querySelector('.share-dialog).toBeFalsy() });'
 
     }'}');

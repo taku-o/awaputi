@@ -5,39 +5,38 @@
 
 // IndexedDB Storage Manager interfaces and types
 export interface StoreDefinition { name: string,
-    keyPath: string,
-    autoIncrement?: boolean,
-    indexes: IndexDefinition[]
-     }
+    keyPath: string;
+    autoIncrement?: boolean;
+    indexes: IndexDefinition[];
 
 export interface IndexDefinition { name: string,
-    keyPath: string,
-    unique: boolean }
+    keyPath: string;
+    unique: boolean;
 
 export interface QueryOptions { limit?: number,
-    offset?: number,
-    orderBy?: string,
-    direction?: 'asc' | 'desc',
-    filters?: QueryFilter[] }
-';
+    offset?: number;
+    orderBy?: string;
+    direction?: 'asc' | 'desc';
+    filters?: QueryFilter[];
+';'
 
 export interface QueryFilter { field: string,''
-    operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in',
-    value: any  }
+    operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in';
+    value: any;
 
 export interface StorageStats { totalRecords: number,
-    storageSize: number,
+    storageSize: number;
     stores: Record<string, number> }
 
 export class IndexedDBStorageManager {
-    private dbName: string,
-    private version: number,
-    private db: IDBDatabase | null,
+    private dbName: string;
+    private version: number;
+    private db: IDBDatabase | null;
     private, stores: Record<string, StoreDefinition>,
 
     constructor('',
-        this.dbName = 'BubblePopAnalytics',
-        this.version = 1,
+        this.dbName = 'BubblePopAnalytics';
+        this.version = 1;
         this.db = null
         
         // ストア定義
@@ -48,9 +47,9 @@ export class IndexedDBStorageManager {
                 indexes: ['
             }'
 
-                    { name: 'startTime', keyPath: 'startTime', unique: false  },''
-                    { name: 'stageId', keyPath: 'stageId', unique: false  },]'
-                    { name: 'completed', keyPath: 'completed', unique: false  }]
+                    { name: 'startTime', keyPath: 'startTime', unique: false,,''
+                    { name: 'stageId', keyPath: 'stageId', unique: false,,]'
+                    { name: 'completed', keyPath: 'completed', unique: false,]
                 ];
             },
 
@@ -61,10 +60,10 @@ export class IndexedDBStorageManager {
                 indexes: ['
             }'
 
-                    { name: 'sessionId', keyPath: 'sessionId', unique: false  },''
-                    { name: 'timestamp', keyPath: 'timestamp', unique: false  },''
-                    { name: 'bubbleType', keyPath: 'bubbleType', unique: false  },]'
-                    { name: 'action', keyPath: 'action', unique: false  }]
+                    { name: 'sessionId', keyPath: 'sessionId', unique: false,,''
+                    { name: 'timestamp', keyPath: 'timestamp', unique: false,,''
+                    { name: 'bubbleType', keyPath: 'bubbleType', unique: false,,]'
+                    { name: 'action', keyPath: 'action', unique: false,]
                 ];
             },
 
@@ -75,9 +74,9 @@ export class IndexedDBStorageManager {
                 indexes: ['
             }'
 
-                    { name: 'sessionId', keyPath: 'sessionId', unique: false  },''
-                    { name: 'timestamp', keyPath: 'timestamp', unique: false  },]'
-                    { name: 'fps', keyPath: 'fps', unique: false  }]
+                    { name: 'sessionId', keyPath: 'sessionId', unique: false,,''
+                    { name: 'timestamp', keyPath: 'timestamp', unique: false,,]'
+                    { name: 'fps', keyPath: 'fps', unique: false,]
                 ];
             },
 
@@ -88,22 +87,22 @@ export class IndexedDBStorageManager {
                 indexes: ['
             }'
 
-                    { name: 'sessionId', keyPath: 'sessionId', unique: false  },''
-                    { name: 'timestamp', keyPath: 'timestamp', unique: false  },]'
-                    { name: 'difficulty', keyPath: 'difficulty', unique: false  }]
+                    { name: 'sessionId', keyPath: 'sessionId', unique: false,,''
+                    { name: 'timestamp', keyPath: 'timestamp', unique: false,,]'
+                    { name: 'difficulty', keyPath: 'difficulty', unique: false,]
                 ];
             },
 
             userBehavior: { ''
                 name: 'userBehavior',
-                keyPath: 'id),
-                autoIncrement: true',
+                keyPath: 'id),'
+                autoIncrement: true','
     indexes: ['
             }'
 
-                    { name: 'sessionId', keyPath: 'sessionId', unique: false  },''
-                    { name: 'timestamp', keyPath: 'timestamp', unique: false  },]'
-                    { name: 'eventType', keyPath: 'eventType', unique: false  }]
+                    { name: 'sessionId', keyPath: 'sessionId', unique: false,,''
+                    { name: 'timestamp', keyPath: 'timestamp', unique: false,,]'
+                    { name: 'eventType', keyPath: 'eventType', unique: false,]
                 ];
             }
         };
@@ -117,7 +116,7 @@ export class IndexedDBStorageManager {
     private async initialize(): Promise<void> { try {'
             await this.openDatabase(),
 
-            console.log('IndexedDB, initialized successfully'),' }
+            console.log('IndexedDB, initialized successfully'),' }'
 
         } catch (error) { console.error('Failed to initialize IndexedDB:', error }
     }
@@ -128,7 +127,7 @@ export class IndexedDBStorageManager {
     private openDatabase(): Promise<IDBDatabase>;
 
         return new Promise((resolve, reject) => {  ''
-            if(!window.indexedDB) {', ' }
+            if (!window.indexedDB) {', ' }
 
                 reject(new, Error('IndexedDB, is not, supported'; }'
                 return; }
@@ -154,7 +153,7 @@ export class IndexedDBStorageManager {
      */
     private setupStores(db: IDBDatabase): void { Object.values(this.stores).forEach(store => { )
             // 既存のストアを削除),
-            if(db.objectStoreNames.contains(store.name) { }
+            if (db.objectStoreNames.contains(store.name) { }
                 db.deleteObjectStore(store.name); }
             }
             
@@ -173,16 +172,16 @@ export class IndexedDBStorageManager {
      */
     async saveData(storeName: string, data: any[]): Promise<boolean> { if (!this.db) {
             await this.openDatabase() }
-        ';
+        ';'
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {', ' }
+            if (!this.db) {', ' }
 
                 reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
-            const transaction = this.db.transaction([storeName], 'readwrite);
+            const transaction = this.db.transaction([storeName], 'readwrite);'
             const store = transaction.objectStore(storeName);
             
             transaction.oncomplete = () => { resolve(true) };
@@ -204,35 +203,35 @@ export class IndexedDBStorageManager {
      */
     async getData(storeName: string, options: QueryOptions = {}): Promise<any[]> { if (!this.db) {
             await this.openDatabase() }
-        ';
+        ';'
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {', ' }
+            if (!this.db) {', ' }
 
                 reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
-            const transaction = this.db.transaction([storeName], 'readonly);
+            const transaction = this.db.transaction([storeName], 'readonly);'
             const store = transaction.objectStore(storeName);
             const results: any[] = [],
             
             let request: IDBRequest,
             // フィルターがある場合はインデックスを使用
-            if(options.filters && options.filters.length > 0) {
+            if (options.filters && options.filters.length > 0) {
                 const filter = options.filters[0], // 最初のフィルターのみ使用
                 const index = store.index(filter.field),
 
                 switch(filter.operator) {''
-                    case 'equals':',
+                    case 'equals':','
                         request = index.openCursor(IDBKeyRange.only(filter.value)),
 
                         break,
-                    case 'greaterThan':',
+                    case 'greaterThan':','
                         request = index.openCursor(IDBKeyRange.lowerBound(filter.value, true)),
 
                         break,
-                    case 'lessThan':',
+                    case 'lessThan':','
                         request = index.openCursor(IDBKeyRange.upperBound(filter.value, true)),
 
                         break,
@@ -247,7 +246,7 @@ export class IndexedDBStorageManager {
             const limit = options.limit || Infinity;
             
             request.onsuccess = () => {  const cursor = request.result,
-                if(cursor) {
+                if (cursor) {
     
 }
                     if (count >= offset && results.length < limit) { }
@@ -268,16 +267,16 @@ export class IndexedDBStorageManager {
      */
     async updateData(storeName: string, key: any, data: any): Promise<boolean> { if (!this.db) {
             await this.openDatabase() }
-        ';
+        ';'
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {', ' }
+            if (!this.db) {', ' }
 
                 reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
-            const transaction = this.db.transaction([storeName], 'readwrite);
+            const transaction = this.db.transaction([storeName], 'readwrite);'
             const store = transaction.objectStore(storeName);
             
             const request = store.put(data);
@@ -294,16 +293,16 @@ export class IndexedDBStorageManager {
      */
     async deleteData(storeName: string, key: any): Promise<boolean> { if (!this.db) {
             await this.openDatabase() }
-        ';
+        ';'
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {', ' }
+            if (!this.db) {', ' }
 
                 reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
-            const transaction = this.db.transaction([storeName], 'readwrite);
+            const transaction = this.db.transaction([storeName], 'readwrite);'
             const store = transaction.objectStore(storeName);
             
             const request = store.delete(key);
@@ -320,16 +319,16 @@ export class IndexedDBStorageManager {
      */
     async clearStore(storeName: string): Promise<boolean> { if (!this.db) {
             await this.openDatabase() }
-        ';
+        ';'
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {', ' }
+            if (!this.db) {', ' }
 
                 reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
-            const transaction = this.db.transaction([storeName], 'readwrite);
+            const transaction = this.db.transaction([storeName], 'readwrite);'
             const store = transaction.objectStore(storeName);
             
             const request = store.clear();
@@ -346,33 +345,33 @@ export class IndexedDBStorageManager {
      */
     async getCount(storeName: string, filters?: QueryFilter[]): Promise<number> { if (!this.db) {
             await this.openDatabase() }
-        ';
+        ';'
 
         return new Promise((resolve, reject) => {  ''
-            if(!this.db) {', ' }
+            if (!this.db) {', ' }
 
                 reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
-            const transaction = this.db.transaction([storeName], 'readonly);
+            const transaction = this.db.transaction([storeName], 'readonly);'
             const store = transaction.objectStore(storeName);
             
             let request: IDBRequest,
-            if(filters && filters.length > 0) {
+            if (filters && filters.length > 0) {
                 const filter = filters[0],
                 const index = store.index(filter.field),
 
                 switch(filter.operator) {''
-                    case 'equals':',
+                    case 'equals':','
                         request = index.count(IDBKeyRange.only(filter.value)),
 
                         break,
-                    case 'greaterThan':',
+                    case 'greaterThan':','
                         request = index.count(IDBKeyRange.lowerBound(filter.value, true)),
 
                         break,
-                    case 'lessThan':',
+                    case 'lessThan':','
                         request = index.count(IDBKeyRange.upperBound(filter.value, true)),
 
                         break,
@@ -392,8 +391,8 @@ export class IndexedDBStorageManager {
     /**
      * ストレージ統計の取得'
      */''
-    async getStorageStats()';
-            if('storage' in, navigator && 'estimate' in, navigator.storage) {
+    async getStorageStats()';'
+            if ('storage' in, navigator && 'estimate' in, navigator.storage) {
                 const estimate = await navigator.storage.estimate() }
                 stats.storageSize = estimate.usage || 0; }
             }
@@ -420,9 +419,9 @@ export class IndexedDBStorageManager {
             for (const storeName of Object.keys(this.stores)) {
                 const oldData = await this.getData(storeName, {'
                     filters: [{''
-                        field: 'timestamp',',
+                        field: 'timestamp',','
                         operator: 'lessThan')],
-    value: cutoffTime  }]
+    value: cutoffTime;]
                     }]);
                 ;
                 for (const item of oldData) {
@@ -462,7 +461,7 @@ export class IndexedDBStorageManager {
      */
     async importData(importData: any): Promise<boolean> { try {
             for(const [storeName, data] of Object.entries(importData.stores) {
-                if(Array.isArray(data) {
+                if (Array.isArray(data) {
                     await this.clearStore(storeName) }
 
                     await this.saveData(storeName, data as any[]); }
@@ -478,7 +477,7 @@ export class IndexedDBStorageManager {
      * データベースの健全性チェック
      */
     async healthCheck(): Promise<boolean> { try {
-            if(!this.db) {
+            if (!this.db) {
     
 }
                 await this.openDatabase(); }
@@ -486,17 +485,17 @@ export class IndexedDBStorageManager {
             
             // 各ストアへのアクセステスト
             for (const storeName of Object.keys(this.stores) { await this.getCount(storeName) }
-            ';
+            ';'
 
             return true;} catch (error) {
-            console.error('Health check failed:', error',
+            console.error('Health check failed:', error','
             return false,
     
     /**
      * リソースの解放
      */'
     destroy(): void { if (this.db) {''
-            this.db.close()',
+            this.db.close()','
         console.log('IndexedDBStorageManager, destroyed') }
 
-    }'}
+    }'}'

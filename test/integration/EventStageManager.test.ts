@@ -18,9 +18,9 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         };
         mockPlayerData = { ap: 1000,
             tap: 5000,
-            addItem: jest.fn(),',
+            addItem: jest.fn(),','
             addSpecialReward: jest.fn(),' }'
-            getPlayerName: jest.fn(').mockReturnValue('TestPlayer')
+            getPlayerName: jest.fn(').mockReturnValue('TestPlayer')'
             clearedStages: []);
             eventParticipationHistory: {},
         mockStatisticsManager = { recordEventParticipation: jest.fn(
@@ -29,13 +29,12 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         };
         mockGameEngine = { achievementNotificationSystem: mockAchievementNotificationSystem,
             playerData: mockPlayerData,
-            statisticsManager: mockStatisticsManager }
-        eventRankingManager: new EventRankingManager({ playerData: mockPlayerData
-            });
+            statisticsManager: mockStatisticsManager,
+        eventRankingManager: new EventRankingManager({ playerData: mockPlayerData,);
     ),
         // Clear localStorage before each test
         localStorage.clear();
-        eventStageManager = new EventStageManager(mockGameEngine: any);
+        eventStageManager = new EventStageManager(mockGameEngine: any),
     });
     afterEach(() => { localStorage.clear() }'
         jest.clearAllMocks(});'}');
@@ -43,7 +42,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         test('should schedule seasonal events automatically', (') => {'
             // Mock current date to spring''
             const springDate = new Date('2024-04-15'),
-            jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime()'),
+            jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => springDate),'
             eventStageManager.scheduleSeasonalEvents(),
             const availableEvents = eventStageManager.getAvailableEvents(')',
@@ -53,7 +52,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         }''
         test('should activate appropriate seasonal events for current season', (') => {  // Test summer period''
             const summerDate = new Date('2024-07-15'),
-            jest.spyOn(Date, 'now').mockReturnValue(summerDate.getTime()'),
+            jest.spyOn(Date, 'now').mockReturnValue(summerDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => summerDate),'
             eventStageManager.checkSeasonalEventActivation(summerDate: any),
             const availableEvents = eventStageManager.getAvailableEvents(')',
@@ -63,7 +62,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         }''
         test('should deactivate events when season changes', (') => {  // Start with spring''
             const springDate = new Date('2024-04-15'),
-            jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime()'),
+            jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => springDate),'
             eventStageManager.scheduleSeasonalEvents(),
             let availableEvents = eventStageManager.getAvailableEvents(')',
@@ -71,7 +70,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(springEventsCount.toBeGreaterThan(0'),'
             // Change to autumn''
             const autumnDate = new Date('2024-10-15'),
-            jest.spyOn(Date, 'now').mockReturnValue(autumnDate.getTime()'),
+            jest.spyOn(Date, 'now').mockReturnValue(autumnDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => autumnDate),'
             eventStageManager.checkSeasonalEventActivation(autumnDate: any),
             availableEvents = eventStageManager.getAvailableEvents(')',
@@ -79,7 +78,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             const activeAutumnEvents = availableEvents.filter(event => event.season === 'autumn'),
             expect(activeSpringEvents.length).toBe(0) }'
             expect(activeAutumnEvents.length).toBeGreaterThan(0);' }'
-        }');
+        }');'
         test('should apply seasonal effects correctly', (') => {  ''
             const springEvent = eventStageManager.getEventById('spring-cherry-blossom'),
             expect(springEvent).toBeDefined(')',
@@ -105,10 +104,10 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             );'}');
         test('should send warning notification when event is ending', (') => {  // Mock event with end time soon'
             const mockEvent = {''
-                id: 'test-event',',
+                id: 'test-event',','
                 name: 'Test Event',' }'
                 endTime: Date.now('})'
-            eventStageManager.events = { 'test-event': mockEvent };')'
+            eventStageManager.events = { 'test-event': mockEvent;;')'
             eventStageManager.sendEventNotification('test-event', 'EVENT_ENDING');
             expect(mockAchievementNotificationSystem.queueNotification').toHaveBeenCalledWith(';
                 expect.objectContaining({ ''
@@ -119,15 +118,15 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             );'}');
         test('should check and send appropriate notifications', (') => {  // Add an event that should trigger notifications'
             const testEvent = {''
-                id: 'test-notification-event',',
-                name: 'Test Notification Event',',
-                startTime: Date.now() - 3600000, // started 1 hour ago',
+                id: 'test-notification-event',','
+                name: 'Test Notification Event',','
+                startTime: Date.now() - 3600000, // started 1 hour ago','
                 endTime: Date.now(')',
             eventStageManager.events['test-notification-event'] = testEvent)
             eventStageManager.checkEventNotifications(),
             // Should have sent at least one notification }'
             expect(mockAchievementNotificationSystem.queueNotification).toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should handle notification errors gracefully', () => {  ''
             mockAchievementNotificationSystem.queueNotification.mockImplementation((') => { }'
                 throw new Error('Notification system error'); }
@@ -151,9 +150,9 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(mockStatisticsManager.recordEventParticipation).toHaveBeenCalledWith();
                 eventId, playerId, stats);'
             );'}');
-        test('should get detailed event statistics', (') => {  mockStatisticsManager.getDetailedEventStatistics.mockReturnValue({
+        test('should get detailed event statistics', (') => {  mockStatisticsManager.getDetailedEventStatistics.mockReturnValue({'
                 totalEvents: 5),
-                completionRate: 0.8)',
+                completionRate: 0.8)','
                , averageScore: 12500,') }'
                 favoriteEvent: 'spring-cherry-blossom'); }
             });
@@ -166,7 +165,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             eventStageManager.eventParticipationHistory = {', 'test-player': {', 'spring-cherry-blossom': {
                         participationCount: 3,
                         bestScore: 20000 }
-        lastParticipation: Date.now(); }
+        lastParticipation: Date.now(), }
                     }
                 }
             };
@@ -194,14 +193,14 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             const eventId = 'special-admin-event',
             const duration = 3600000, // 1 hour
             const options = { }
-                notifications: true }
+                notifications: true;
                 rewards: { ap: 500 }
             },
             const result = eventStageManager.adminActivateEvent(eventId, duration, options);
             expect(result).toBe(true);'
             expect(eventStageManager.isEventAvailable(eventId).toBe(true);'}');
         test('should allow admin to manually deactivate event', (') => {  // First activate an event''
-            eventStageManager.adminActivateEvent('test-deactivation-event', 3600000'),
+            eventStageManager.adminActivateEvent('test-deactivation-event', 3600000'),'
             expect(eventStageManager.isEventAvailable('test-deactivation-event').toBe(true'),'
             // Then deactivate it''
             const result = eventStageManager.adminDeactivateEvent('test-deactivation-event'),
@@ -209,7 +208,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(eventStageManager.isEventAvailable('test-deactivation-event').toBe(false'); }'
         }''
         test('should provide event management status', (') => {  // Activate some test events''
-            eventStageManager.adminActivateEvent('test-event-1', 3600000'),
+            eventStageManager.adminActivateEvent('test-event-1', 3600000'),'
             eventStageManager.adminActivateEvent('test-event-2', 7200000),
             const managementStatus = eventStageManager.getEventManagementStatus(),
             expect(managementStatus).toBeDefined(),
@@ -230,7 +229,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(rewards).toBeDefined(),
             expect(rewards.ap).toBeGreaterThan(0) }'
             expect(mockPlayerData.ap).toBeGreaterThan(1000); // AP should increase' }'
-        }');
+        }');'
         test('should calculate event bonus correctly', (') => {  ''
             const eventId = 'golden-rush',
             const baseScore = 10000,
@@ -260,7 +259,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(eventAchievements.length).toBeGreaterThan(0);'}');'
     }''
     describe('Data Persistence', (') => {  ''
-        test('should save event data correctly', (') => {
+        test('should save event data correctly', (') => {'
             // Add some test data'
             eventStageManager.eventParticipationHistory = {', 'player1': {', 'spring-cherry-blossom': {
                         participationCount: 2 }
@@ -278,7 +277,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(parsedData.eventParticipationHistory).toBeDefined();'}');
         test('should load event data correctly', (') => {  // Setup test data in localStorage'
             const testData = {''
-                version: '1.2.0',',
+                version: '1.2.0',','
                 eventParticipationHistory: {', 'player1': {', 'summer-fireworks': {
                             participationCount: 3 }
                             bestScore: 22000 }
@@ -296,8 +295,8 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(eventStageManager.eventParticipationHistory['player1']).toBeDefined();'}');
         test('should migrate event data when version differs', (') => {  // Setup old version data'
             const oldData = {''
-                version: '1.0.0',',
-                eventHistory: { }', 'player1': ['spring-cherry-blossom'] }
+                version: '1.0.0',','
+                eventHistory: { }', 'player1': ['spring-cherry-blossom'] }'
                 }'
             };
             localStorage.setItem('eventStageData', JSON.stringify(oldData);'
@@ -318,11 +317,11 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         test('should handle invalid event IDs gracefully', (') => {''
             const result = eventStageManager.startEventStage('non-existent-event') }'
             expect(result).toBe(false););' }'
-        }');
+        }');'
         test('should handle missing dependencies gracefully', () => {  // Create manager without notification system
             const gameEngineWithoutNotifications = {
                 ...mockGameEngine }
-                achievementNotificationSystem: null }
+                achievementNotificationSystem: null;
             },
             const managerWithoutNotifications = new EventStageManager(gameEngineWithoutNotifications: any);'
             // Should not throw error''
@@ -362,7 +361,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
                     { playerId: 'player1', score: 25000, rank: 1 },']'
                     { playerId: 'player2', score: 22000, rank: 2 }]
                 ],
-                totalParticipants: 10';
+                totalParticipants: 10';'
             };
             jest.spyOn(mockGameEngine.eventRankingManager, 'getEventLeaderboard');
                 .mockReturnValue(mockLeaderboard);

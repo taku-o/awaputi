@@ -9,13 +9,13 @@ import type { AchievementNotificationSystem } from '../../core/achievements/Achi
 
 // Interfaces for Event Stage Data
 export interface EventStage { id: string,
-    name: string,
-    description: string,
-    icon?: string,', type: 'seasonal' | 'special' | 'challenge' | 'default',
-    season?: 'spring' | 'summer' | 'autumn' | 'winter',
+    name: string;
+    description: string;
+    icon?: string,', type: 'seasonal' | 'special' | 'challenge' | 'default';'
+    season?: 'spring' | 'summer' | 'autumn' | 'winter';
     schedule?: {
-        activatedA,t?: number,
-        deactivatedAt?: number };
+        activatedA,t?: number;
+        deactivatedAt?: number;;
     activatedAt?: number;
     requirements?: EventRequirements;
     limits?: EventLimits;
@@ -23,69 +23,69 @@ export interface EventStage { id: string,
     }
 
 export interface EventRequirements { minLevel?: number,
-    minAP?: number,
-    clearedStages?: string[] }
+    minAP?: number;
+    clearedStages?: string[];
 
-export interface EventLimits { maxParticipations?: number }
+export interface EventLimits { maxParticipations?: number;
 
 export interface EventRewards { ap?: number,
-    items?: string[],
-    badges?: string[] }
-';
+    items?: string[];
+    badges?: string[];
+';'
 
 export interface EventNotification {,
-    type: 'new_event' | 'ending_soon',
-    eventId: string,
-    title: string,
-    message: string,
-    timestamp: number,
-    read: boolean }
+    type: 'new_event' | 'ending_soon';
+    eventId: string;
+    title: string;
+    message: string;
+    timestamp: number;
+    read: boolean;
 
 export interface EventParticipationRecord { eventId: string,
-    playerId: string,
-    timestamp: number }
+    playerId: string;
+    timestamp: number;
 
 export interface NotificationData { type: string,
-    title: string,
-    message: string,
-    icon: string,
-    duration: number }
+    title: string;
+    message: string;
+    icon: string;
+    duration: number;
 
 export interface EventAccessResult { canAccess: boolean,
-    reason: string }
+    reason: string;
 
 // Extended interfaces for game engine components
 interface ExtendedGameEngine { canvas: HTMLCanvasElement,
     eventStageManager?: EventStageManager & {
-        getAvailableEvents(): EventStage[],
-        checkEventNotifications(): void,
-        getEventTimeRemaining(eventId: string): number,
-        isEventAvailable(eventId: string): boolean,
-        getParticipationRecords(): EventParticipationRecord[],
-        startEventStage(eventId: string): boolean,
-        recordEventParticipation(eventId: string, playerId: string): void  };
-    achievementNotificationSystem?: AchievementNotificationSystem & { queueNotification(notification: NotificationData): void };
+        getAvailableEvents(): EventStage[];
+        checkEventNotifications(): void;
+        getEventTimeRemaining(eventId: string): number;
+        isEventAvailable(eventId: string): boolean;
+        getParticipationRecords(): EventParticipationRecord[];
+        startEventStage(eventId: string): boolean;
+        recordEventParticipation(eventId: string, playerId: string): void;;
+    achievementNotificationSystem?: AchievementNotificationSystem & { queueNotification(notification: NotificationData): void;;
     playerData?: { getLevel?(): number,
-        getAP?(): number,
-        getClearedStages?(): string[],
-        getPlayerId?(): string };
-    sceneManager?: { switchScene(sceneName: string, data?: any): void }
+        getAP?(): number;
+        getClearedStages?(): string[];
+        getPlayerId?(): string;;
+    sceneManager?: { switchScene(sceneName: string, data?: any): void;
 
 export class EventStageDataManager {
     // @ts-expect-error - stageSelectScene is kept for API consistency
-    private readonly stageSelectScene: StageSelectScene,
-    private readonly gameEngine: ExtendedGameEngine,
+    private readonly stageSelectScene: StageSelectScene;
+    private readonly gameEngine: ExtendedGameEngine;
     // イベント関連の状態
-    private availableEvents: EventStage[] = [],
-    private selectedEventIndex: number = -1,
-    private showingEvents: boolean = false,
-    private eventScrollOffset: number = 0,
-    private readonly, maxVisibleEvents: number = 4,
+    private availableEvents: EventStage[] = [];
+    private selectedEventIndex: number = -1;
+    private showingEvents: boolean = false;
+    private eventScrollOffset: number = 0;
+    private readonly, maxVisibleEvents: number = 4;
     
     // 通知関連の状態
-    private eventNotifications: EventNotification[] = [],
-    private unreadNotificationCount: number = 0,
-    private, notificationCheckInterval: number | null = null,
+    private eventNotifications: EventNotification[] = [];
+    private unreadNotificationCount: number = 0;
+    private, notificationCheckInterval: number | null = null;
     constructor(stageSelectScene: StageSelectScene) {
 
         this.stageSelectScene = stageSelectScene
@@ -99,8 +99,8 @@ export class EventStageDataManager {
      */
     public initialize(): void { this.updateEventList(),
         this.updateEventNotifications(),
-        this.selectedEventIndex = -1,
-        this.eventScrollOffset = 0,
+        this.selectedEventIndex = -1;
+        this.eventScrollOffset = 0;
         
         // 定期的な通知更新を開始
         this.startNotificationUpdates() }
@@ -119,7 +119,7 @@ export class EventStageDataManager {
             this.availableEvents = rawEvents.map((event: any) => ({
                 id: event.id,
                 name: event.name || event.id,
-                description: event.description || ',
+                description: event.description || ','
                 icon: event.icon,
                 type: event.type || 'default' as const,
                 season: event.season,
@@ -136,8 +136,8 @@ export class EventStageDataManager {
      * イベント通知状態を更新
      */
     private updateEventNotifications(): void { if (!this.gameEngine.eventStageManager) {
-            this.eventNotifications = [],
-            this.unreadNotificationCount = 0,
+            this.eventNotifications = [];
+            this.unreadNotificationCount = 0;
             return }
         
         // イベントマネージャーから通知情報を取得
@@ -157,21 +157,21 @@ export class EventStageDataManager {
             // 6時間以内に終了するイベント }
             return timeRemaining > 0 && timeRemaining < 6 * 60 * 60 * 1000; }'
 
-        }');
+        }');'
         
         // 通知リストを更新
         this.eventNotifications = [...newEvents.map(event => ({ : undefined)'
-                type: 'new_event' as const',
+                type: 'new_event' as const';'
     eventId: event.id,')',
                 title: '新しいイベント開始！',
     message: `${event.name }が開始されました`
             }
                 timestamp: event.schedule?.activatedAt || event.activatedAt || Date.now()), : undefined'
-                read: false';
-            }'),
+                read: false';'
+            }'),'
 
             ...endingSoonEvents.map(event => ({ ')'
-                type: 'ending_soon' as const',
+                type: 'ending_soon' as const','
     eventId: event.id,')',
                 title: 'イベント終了間近！',
     message: `${event.name }まもなく終了`
@@ -189,7 +189,7 @@ export class EventStageDataManager {
      * 定期的な通知更新を開始
      */
     private startNotificationUpdates(): void { // 既存のインターバルをクリア
-        if(this.notificationCheckInterval) {
+        if (this.notificationCheckInterval) {
     
 }
             clearInterval(this.notificationCheckInterval); }
@@ -210,14 +210,14 @@ export class EventStageDataManager {
     /**
      * イベント通知バッジを描画
      */
-    public renderEventNotificationBadge(context: CanvasRenderingContext2D): void { if (this.unreadNotificationCount === 0) return,
+    public renderEventNotificationBadge(context: CanvasRenderingContext2D): void { if (this.unreadNotificationCount === 0) return;
         
         const canvas = this.gameEngine.canvas,
         const badgeSize = 24,
         const badgeX = canvas.width - 50,
         const badgeY = 130, // イベントセクションの右上
 
-        context.save()',
+        context.save()','
         context.fillStyle = '#FF4444')
         context.beginPath(),
 
@@ -230,13 +230,13 @@ export class EventStageDataManager {
         context.fillStyle = '#FFFFFF',
         context.font = 'bold, 12px Arial',
         context.textAlign = 'center',
-        context.textBaseline = 'middle',', ')',
+        context.textBaseline = 'middle',', ')','
         const displayCount = this.unreadNotificationCount > 99 ? '99+' : this.unreadNotificationCount.toString(),
         context.fillText(displayCount, badgeX, badgeY),
         
         // 点滅効果（1秒間隔）
         const shouldBlink = Math.floor(Date.now() / 1000) % 2 === 0,
-        if(shouldBlink) {
+        if (shouldBlink) {
 
             context.shadowColor = '#FF4444',
             context.shadowBlur = 10,
@@ -261,20 +261,20 @@ export class EventStageDataManager {
         
         // バッジクリック判定
         const distance = Math.sqrt((x - badgeX) ** 2 + (y - badgeY) ** 2),
-        if(distance <= badgeSize / 2) {
+        if (distance <= badgeSize / 2) {
             // すべての通知を既読にする
             this.eventNotifications.forEach(notification => { )
                 notification.read = true),
-            this.unreadNotificationCount = 0,
+            this.unreadNotificationCount = 0;
             
             // 通知詳細を表示（シンプルなアラート）
             if (this.eventNotifications.length > 0) {
                 const latestNotification = this.eventNotifications[this.eventNotifications.length - 1],
                 // 通知メッセージをユーザーに表示
-                if(this.gameEngine.achievementNotificationSystem) {
+                if (this.gameEngine.achievementNotificationSystem) {
                     this.gameEngine.achievementNotificationSystem.queueNotification({''
-                        type: 'info',',
-                        title: 'イベント通知')',
+                        type: 'info',','
+                        title: 'イベント通知')','
     message: latestNotification.message }
 
                         icon: '📢') }
@@ -302,9 +302,9 @@ export class EventStageDataManager {
             
             const itemY = itemStartY + (index - this.eventScrollOffset) * (itemHeight + itemSpacing),
             
-            if(y >= itemY && y <= itemY + itemHeight) {
+            if (y >= itemY && y <= itemY + itemHeight) {
             
-                this.selectedEventIndex = index,
+                this.selectedEventIndex = index;
                 this.showingEvents = true }
                 // イベントステージを開始 }
                 this.selectEventStage(event); }
@@ -315,19 +315,19 @@ export class EventStageDataManager {
      * イベントステージ選択処理
      */
     private selectEventStage(event: EventStage): void { ''
-        if(!event) {
+        if (!event) {
 
             console.warn('Invalid event provided to selectEventStage' }
             return; }
         }
         
         // イベント参加条件をチェック
-        const accessResult = this.validateEventStageAccess(event');
-        if(!accessResult.canAccess) { // アクセス拒否メッセージを表示
-            if(this.gameEngine.achievementNotificationSystem') {
+        const accessResult = this.validateEventStageAccess(event');'
+        if (!accessResult.canAccess) { // アクセス拒否メッセージを表示
+            if (this.gameEngine.achievementNotificationSystem') {'
                 this.gameEngine.achievementNotificationSystem.queueNotification({''
-                    type: 'warning',',
-                    title: 'イベント参加不可')',
+                    type: 'warning',','
+                    title: 'イベント参加不可')','
     message: accessResult.reason,
                     icon: '⚠️'
             }
@@ -345,12 +345,12 @@ export class EventStageDataManager {
      */''
     private validateEventStageAccess(event: EventStage): EventAccessResult { const result: EventAccessResult = {'
             canAccess: true,
-            reason: '};
-        if(!this.gameEngine.eventStageManager) {
+            reason: '};'
+        if (!this.gameEngine.eventStageManager) {
             result.canAccess = false,
             result.reason = 'イベントシステムが利用できません' }
             return result;
-        ';
+        ';'
         // イベントが有効かチェック
         if(!this.gameEngine.eventStageManager.isEventAvailable(event.id)) { result.canAccess = false,
             result.reason = 'このイベントは現在利用できません',
@@ -358,13 +358,13 @@ export class EventStageDataManager {
         
         // イベント時間制限のチェック
         const timeRemaining = this.gameEngine.eventStageManager.getEventTimeRemaining(event.id);
-        if(timeRemaining <= 0) {
+        if (timeRemaining <= 0) {
             result.canAccess = false,
             result.reason = 'このイベントは終了しました' }
             return result;
         
         // プレイヤーレベル制限のチェック（もしある場合）
-        if(event.requirements?.minLevel && this.gameEngine.playerData?.getLevel) {
+        if (event.requirements?.minLevel && this.gameEngine.playerData?.getLevel) {
             const playerLevel = this.gameEngine.playerData.getLevel(),
             if (playerLevel < event.requirements.minLevel) {
         }
@@ -373,7 +373,7 @@ export class EventStageDataManager {
                 return result;
         
         // 必要APのチェック（もしある場合）
-        if(event.requirements?.minAP && this.gameEngine.playerData?.getAP) {
+        if (event.requirements?.minAP && this.gameEngine.playerData?.getAP) {
             const currentAP = this.gameEngine.playerData.getAP(),
             if (currentAP < event.requirements.minAP) {
         }
@@ -382,19 +382,19 @@ export class EventStageDataManager {
                 return result;
         
         // 前提ステージクリア条件のチェック（もしある場合）
-        if(event.requirements?.clearedStages && this.gameEngine.playerData?.getClearedStages) {
+        if (event.requirements?.clearedStages && this.gameEngine.playerData?.getClearedStages) {
             const clearedStages = this.gameEngine.playerData.getClearedStages(),
             const requiredStages = event.requirements.clearedStages,
             
             for (const requiredStage of requiredStages) {
-                if(!clearedStages.includes(requiredStage) {
+                if (!clearedStages.includes(requiredStage) {
         }
                     result.canAccess = false; }
                     result.reason = `「${requiredStage}」ステージのクリアが必要です`;
                     return result;
         
         // 参加回数制限のチェック（もしある場合）
-        if(event.limits?.maxParticipations) {
+        if (event.limits?.maxParticipations) {
             const participationCount = this.getEventParticipationCount(event.id),
             if (participationCount >= event.limits.maxParticipations) {
         }
@@ -419,7 +419,7 @@ export class EventStageDataManager {
      * イベントステージ開始処理
      */
     private startEventStageFromSelection(event: EventStage): void { try {'
-            if(!this.gameEngine.eventStageManager) {', ' }
+            if (!this.gameEngine.eventStageManager) {', ' }
 
                 throw new Error('EventStageManager, not available'; }'
             }
@@ -427,10 +427,10 @@ export class EventStageDataManager {
             // イベントステージの開始を試行
             const success = this.gameEngine.eventStageManager.startEventStage(event.id);
             
-            if(success) {
+            if (success) {
             ,
                 // イベント参加の通知
-                if(this.gameEngine.achievementNotificationSystem) {
+                if (this.gameEngine.achievementNotificationSystem) {
                     this.gameEngine.achievementNotificationSystem.queueNotification({''
                         type: 'success' }
 
@@ -439,11 +439,11 @@ export class EventStageDataManager {
 
                         message: `${event.name}に参加しました`,''
                         icon: '🎯');
-                        duration: 3000';
+                        duration: 3000';'
                 }
-                ';
+                ';'
                 // ゲームシーンに遷移
-                if(this.gameEngine.sceneManager) {
+                if (this.gameEngine.sceneManager) {
 
                     this.gameEngine.sceneManager.switchScene('game', {''
                         stageType: 'event',
@@ -452,26 +452,26 @@ export class EventStageDataManager {
     }
                 
                 // 参加統計を記録
-                if(this.gameEngine.playerData?.getPlayerId) {
+                if (this.gameEngine.playerData?.getPlayerId) {
                     this.gameEngine.eventStageManager.recordEventParticipation(),
                         event.id) }
                         this.gameEngine.playerData.getPlayerId(); }
                 } else {  // イベント開始失敗の通知
-                if(this.gameEngine.achievementNotificationSystem) {
+                if (this.gameEngine.achievementNotificationSystem) {
                     this.gameEngine.achievementNotificationSystem.queueNotification({ : undefined''
                         type: 'error',
                         title: 'イベント開始失敗',
                         message: 'イベントを開始できませんでした' }''
                         icon: '❌') }
-                        duration: 4000'; 
+                        duration: 4000'; '
     }'} catch (error) { console.error('Failed to start event stage:', error',
-            ',
+            ','
             // エラー通知
-            if(this.gameEngine.achievementNotificationSystem) {
+            if (this.gameEngine.achievementNotificationSystem) {
                 this.gameEngine.achievementNotificationSystem.queueNotification({''
                     type: 'error',
                     title: 'エラー',
-                    message: 'イベントの開始中にエラーが発生しました',',
+                    message: 'イベントの開始中にエラーが発生しました',','
                     icon: '⚠️'
             }
                     duration: 4000); 
@@ -487,16 +487,16 @@ export class EventStageDataManager {
         const sectionHeight = 200,
         const sectionWidth = canvas.width - 40,
         const sectionX = 20,
-        ',
+        ','
         // イベントセクションの背景
-        context.save()',
+        context.save()','
         context.fillStyle = 'rgba(255, 215, 0, 0.1)',
         context.strokeStyle = '#FFD700',
         context.lineWidth = 2,
 
         context.fillRect(sectionX, sectionStartY, sectionWidth, sectionHeight),
         context.strokeRect(sectionX, sectionStartY, sectionWidth, sectionHeight),
-        ',
+        ','
         // イベントセクションタイトル
         context.fillStyle = '#FFD700',
         context.font = 'bold 24px Arial',
@@ -507,7 +507,7 @@ export class EventStageDataManager {
         context.restore(),
         
         // イベントがない場合のメッセージ
-        if(this.availableEvents.length === 0) {
+        if (this.availableEvents.length === 0) {
 
             context.save('',
             context.fillStyle = '#CCCCCC',
@@ -515,8 +515,8 @@ export class EventStageDataManager {
             context.textAlign = 'center',
             context.textBaseline = 'middle',')'
             context.fillText('現在開催中のイベントはありません',
-                canvas.width / 2, sectionStartY + sectionHeight / 2'),
-            context.fillText('次回イベントをお楽しみに！),
+                canvas.width / 2, sectionStartY + sectionHeight / 2'),'
+            context.fillText('次回イベントをお楽しみに！),'
                 canvas.width / 2, sectionStartY + sectionHeight / 2 + 25),
             context.restore() }
             return; }
@@ -552,7 +552,7 @@ export class EventStageDataManager {
     ): void { context.save(
         ,
         // アイテム背景
-        if(isSelected) {
+        if (isSelected) {
 
             context.fillStyle = 'rgba(255, 215, 0, 0.3)',
             context.strokeStyle = '#FFD700' }
@@ -570,16 +570,16 @@ export class EventStageDataManager {
         // イベントタイプアイコン
         const iconSize = 24;
         const iconX = x + 10;
-        const iconY = y + (height - iconSize') / 2;
-        ';
+        const iconY = y + (height - iconSize') / 2;'
+        ';'
 
         context.font = `${iconSize}px Arial`;
         context.textAlign = 'left';
         context.textBaseline = 'middle';
-        ';
+        ';'
         // タイプに応じたアイコン
         let icon = '🎪';
-        if(event.type === 'seasonal') {
+        if (event.type === 'seasonal') {
 
             if (event.season === 'spring') icon = '🌸',
             else if (event.season === 'summer') icon = '🎆',
@@ -588,7 +588,7 @@ export class EventStageDataManager {
             else if (event.season === 'winter') icon = '❄️'; }
 
         } else if (event.type === 'special') { ''
-            icon = '⭐',' }
+            icon = '⭐',' }'
 
         } else if (event.type === 'challenge') { ''
             icon = '🏆' }
@@ -606,7 +606,7 @@ export class EventStageDataManager {
         context.fillText(event.name, nameX, nameY);
         
         // 残り時間表示
-        if(this.gameEngine.eventStageManager) {
+        if (this.gameEngine.eventStageManager) {
             const timeRemaining = this.gameEngine.eventStageManager.getEventTimeRemaining(event.id),
             if (timeRemaining > 0) {
         }
@@ -641,12 +641,12 @@ export class EventStageDataManager {
         // 残り時間の計算
         const hours = Math.floor(timeRemaining / (1000 * 60 * 60),
         const minutes = Math.floor((timeRemaining % (1000 * 60 * 60) / (1000 * 60),
-        const seconds = Math.floor((timeRemaining % (1000 * 60) / 1000'),
+        const seconds = Math.floor((timeRemaining % (1000 * 60) / 1000'),'
 
-        let timeText = ',
+        let timeText = ','
         let urgencyLevel: 'normal' | 'warning' | 'critical' = 'normal',
         
-        if(hours > 24) {
+        if (hours > 24) {
     
 }
             const days = Math.floor(hours / 24); }
@@ -667,17 +667,17 @@ export class EventStageDataManager {
         let bgColor: string, textColor: string,
         switch(urgencyLevel) {
 
-            case 'critical':',
+            case 'critical':','
                 bgColor = 'rgba(255, 68, 68, 0.8)',
                 textColor = '#FFFFFF',
 
                 break,
-            case 'warning':',
+            case 'warning':','
                 bgColor = 'rgba(255, 165, 0, 0.8)',
                 textColor = '#FFFFFF',
                 break,
 
-            default:',
+            default:','
                 bgColor = 'rgba(34, 197, 94, 0.8)' }
 
                 textColor = '#FFFFFF'; }
@@ -715,7 +715,7 @@ export class EventStageDataManager {
     public setEventState(state: Partial<{ selectedEventIndex: number)
         showingEvents: boolean,
     eventScrollOffset: number)>): void {
-        if(state.selectedEventIndex !== undefined) {
+        if (state.selectedEventIndex !== undefined) {
     
 }
             this.selectedEventIndex = state.selectedEventIndex }
@@ -723,6 +723,6 @@ export class EventStageDataManager {
         if (state.showingEvents !== undefined) { this.showingEvents = state.showingEvents }
 
         }''
-        if(state.eventScrollOffset !== undefined) { this.eventScrollOffset = state.eventScrollOffset }
+        if (state.eventScrollOffset !== undefined) { this.eventScrollOffset = state.eventScrollOffset }
 
-    }'}
+    }'}'

@@ -4,48 +4,48 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void  }
+        handleError(error: Error, context: any): void,
 
 interface EventBus { on(event: string, callback: Function): void,
-    off(event: string): void,
-    emit(event: string, data?: any): void }
+    off(event: string): void;
+    emit(event: string, data?: any): void;
 
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean,
-    reducedMotion: boolean  }
+    largeText: boolean;
+    reducedMotion: boolean;
 
 interface ComponentState {
-    accessibilitySettings: AccessibilitySettings }
+    accessibilitySettings: AccessibilitySettings;
 
 interface FilterOption { key: string,
-    label: string }
+    label: string;
 
 interface ButtonInfo { key: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number }
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 
 export class StatisticsFilterUI {
-    private gameEngine: GameEngine,
-    private eventBus: EventBus,
-    private state: ComponentState,
+    private gameEngine: GameEngine;
+    private eventBus: EventBus;
+    private state: ComponentState;
     // エラーハンドリング
     private errorHandler?: GameEngine['errorHandler'],
-    ',
+    ','
     // フィルター設定
-    private currentPeriodFilter: string = 'last7days'',
-    private currentViewMode: string = 'dashboard',
+    private currentPeriodFilter: string = 'last7days'';'
+    private currentViewMode: string = 'dashboard';
     // アクセシビリティ設定
-    private accessibilitySettings: AccessibilitySettings,
+    private accessibilitySettings: AccessibilitySettings;
     // レイアウト設定
-    private filterHeight: number = 50,
-    private modeHeight: number = 40,
-    private buttonSpacing: number = 10,
-    private contentPadding: number = 20,
+    private filterHeight: number = 50;
+    private modeHeight: number = 40;
+    private buttonSpacing: number = 10;
+    private contentPadding: number = 20;
     // ボタン位置情報（クリック判定用）
-    private periodButtons: ButtonInfo[] = [],
-    private modeButtons: ButtonInfo[] = [],
+    private periodButtons: ButtonInfo[] = [];
+    private modeButtons: ButtonInfo[] = [];
     // 期間フィルターオプション
     private, periods: FilterOption[] = [' }'
 
@@ -60,7 +60,7 @@ export class StatisticsFilterUI {
     ];
     
     // 表示モードオプション
-    private modes: FilterOption[] = [';
+    private modes: FilterOption[] = [';'
         { key: 'dashboard', label: 'ダッシュボード'
             },''
         { key: 'charts', label: 'グラフ'
@@ -71,28 +71,27 @@ export class StatisticsFilterUI {
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: ComponentState) {
 
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.state = state,
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.state = state;
         
         // エラーハンドリング
-        this.errorHandler = gameEngine.errorHandler,
+        this.errorHandler = gameEngine.errorHandler;
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
             highContrast: false,
-    largeText: false }
-            reducedMotion: false 
-    };
+    largeText: false;
+            reducedMotion: false;;
         this.setupEventListeners();
     }
     
     /**
      * イベントリスナーの設定
      */''
-    private setupEventListeners()';
+    private setupEventListeners()';'
         this.eventBus.on('set-period-filter', (period: string) => { this.setPeriodFilter(period),' 
-    }');
+    }');'
 
         this.eventBus.on('set-view-mode', (mode: string) => { this.setViewMode(mode) });
     }
@@ -120,7 +119,7 @@ export class StatisticsFilterUI {
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsFilterUI.render',')',
                 details: 'フィルターUIの描画でエラーが発生しました'
-            }';
+            }';'
             return this.filterHeight + this.modeHeight + 10; // フォールバック高さ
         }
     }
@@ -138,17 +137,17 @@ export class StatisticsFilterUI {
         const buttonHeight = this.accessibilitySettings.largeText ? 35 : 30,
         
         // クリック判定用配列をリセット
-        this.periodButtons = [],
+        this.periodButtons = [];
         // フィルター背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC',
         context.fillRect(x, y, width, filterHeight),
-        ',
+        ','
         // フィルター枠線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB',
 
         context.lineWidth = 1,
         context.strokeRect(x, y, width, filterHeight),
-        ',
+        ','
         // フィルタータイトル
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151',
         context.font = this.accessibilitySettings.largeText ? '16px system-ui, -apple-system, sans-serif' : '14px system-ui, -apple-system, sans-serif',
@@ -159,19 +158,18 @@ export class StatisticsFilterUI {
         // 期間フィルターボタン
         let buttonX = x + (this.accessibilitySettings.largeText ? 140 : 120),
         this.periods.forEach((period) => { 
-            const isActive = this.currentPeriodFilter === period.key,
+            const isActive = this.currentPeriodFilter === period.key;
             
             // ボタン位置情報を保存（クリック判定用）
             this.periodButtons.push({)
                 key: period.key),
                 x: buttonX),
                 y: y + (filterHeight - buttonHeight) / 2,
-    width: buttonWidth }
-                height: buttonHeight 
-    });
+    width: buttonWidth,
+                height: buttonHeight,);
             ;
             // ボタン背景
-            if(this.accessibilitySettings.highContrast) {', ' }
+            if (this.accessibilitySettings.highContrast) {', ' }
 
                 context.fillStyle = isActive ? '#FFFFFF' : '#444444'; 
     } else { }'
@@ -179,9 +177,9 @@ export class StatisticsFilterUI {
                 context.fillStyle = isActive ? '#3B82F6' : '#FFFFFF'; 
     }
             context.fillRect(buttonX, y + (filterHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
-            ';
+            ';'
             // ボタン枠線
-            if(this.accessibilitySettings.highContrast) {', ' }
+            if (this.accessibilitySettings.highContrast) {', ' }
 
                 context.strokeStyle = '#FFFFFF'; }
 
@@ -191,9 +189,9 @@ export class StatisticsFilterUI {
     }
             context.lineWidth = 2;
             context.strokeRect(buttonX, y + (filterHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
-            ';
+            ';'
             // ボタンテキスト
-            if(this.accessibilitySettings.highContrast) {', ' }
+            if (this.accessibilitySettings.highContrast) {', ' }
 
                 context.fillStyle = isActive ? '#000000' : '#FFFFFF'; 
     } else { }'
@@ -224,11 +222,11 @@ export class StatisticsFilterUI {
         const buttonHeight = this.accessibilitySettings.largeText ? 30 : 25,
         
         // クリック判定用配列をリセット
-        this.modeButtons = [],
+        this.modeButtons = [];
         // モード切り替え背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC',
         context.fillRect(x, y, width, modeHeight),
-        ',
+        ','
         // モード切り替えタイトル
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151',
         context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif',
@@ -239,19 +237,18 @@ export class StatisticsFilterUI {
         // 表示モードボタン
         let buttonX = x + (this.accessibilitySettings.largeText ? 100 : 80),
         this.modes.forEach((mode) => { 
-            const isActive = this.currentViewMode === mode.key,
+            const isActive = this.currentViewMode === mode.key;
             
             // ボタン位置情報を保存（クリック判定用）
             this.modeButtons.push({)
                 key: mode.key),
                 x: buttonX),
                 y: y + (modeHeight - buttonHeight) / 2,
-    width: buttonWidth }
-                height: buttonHeight 
-    });
+    width: buttonWidth,
+                height: buttonHeight,);
             ;
             // ボタン背景
-            if(this.accessibilitySettings.highContrast) {', ' }
+            if (this.accessibilitySettings.highContrast) {', ' }
 
                 context.fillStyle = isActive ? '#FFFFFF' : '#444444'; 
     } else { }'
@@ -259,9 +256,9 @@ export class StatisticsFilterUI {
                 context.fillStyle = isActive ? '#10B981' : '#FFFFFF'; 
     }
             context.fillRect(buttonX, y + (modeHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
-            ';
+            ';'
             // ボタン枠線
-            if(this.accessibilitySettings.highContrast) {', ' }
+            if (this.accessibilitySettings.highContrast) {', ' }
 
                 context.strokeStyle = '#FFFFFF'; }
 
@@ -271,9 +268,9 @@ export class StatisticsFilterUI {
     }
             context.lineWidth = 2;
             context.strokeRect(buttonX, y + (modeHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
-            ';
+            ';'
             // ボタンテキスト
-            if(this.accessibilitySettings.highContrast) {', ' }
+            if (this.accessibilitySettings.highContrast) {', ' }
 
                 context.fillStyle = isActive ? '#000000' : '#FFFFFF'; 
     } else { }'
@@ -326,7 +323,7 @@ export class StatisticsFilterUI {
      */'
     setPeriodFilter(period: string): void { ''
         if(this.periods.some(p => p.key === period)) {
-            this.currentPeriodFilter = period,
+            this.currentPeriodFilter = period;
             this.eventBus.emit('statistics-filter-changed', {
                 period: period '
             }
@@ -338,7 +335,7 @@ export class StatisticsFilterUI {
      */'
     setViewMode(mode: string): void { ''
         if(this.modes.some(m => m.key === mode)) {
-            this.currentViewMode = mode,
+            this.currentViewMode = mode;
             this.eventBus.emit('statistics-view-mode-changed', mode) }
 }
     
@@ -373,9 +370,9 @@ export class StatisticsFilterUI {
     /**
      * コンポーネントのクリーンアップ
      */''
-    cleanup()';
+    cleanup()';'
         this.eventBus.off('set-period-filter');
         this.eventBus.off('set-view-mode';
-        ';
+        ';'
         // 状態のリセット
-        this.reset()';
+        this.reset()';'

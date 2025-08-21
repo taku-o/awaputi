@@ -8,209 +8,199 @@ interface ErrorHandler { ''
 }
 
 interface ReportConfig { projectRoot?: string,
-    includeStatistics?: boolean,
-    includeChangeLog?: boolean,
-    includeImpactAnalysis?: boolean,
+    includeStatistics?: boolean;
+    includeChangeLog?: boolean;
+    includeImpactAnalysis?: boolean;
 
-    includeRecommendations?: boolean,
+    includeRecommendations?: boolean;
     outputFormat?: 'json' | 'markdown' | 'both' }
 
 interface ResolvedItem { name: string,
-    resolution: string,
-    files: string[],
+    resolution: string;
+    files: string[];
     impact: 'Low' | 'Medium' | 'High'
             }
 
 interface ResolvedDuplication { taskId: string,
-    category: string,
-    items: ResolvedItem[]
-    }
+    category: string;
+    items: ResolvedItem[];
 
 interface ReportMetadata { title: string,
-    subtitle: string,
-    generatedAt: string,
-    generatedBy: string,
-    projectRoot: string,
-    branch: string,
-    version: string }
+    subtitle: string;
+    generatedAt: string;
+    generatedBy: string;
+    projectRoot: string;
+    branch: string;
+    version: string;
 
 interface ProjectSummary { objective: string,
-    scope: string,
-    approach: string,
-    completionStatus: string,
-    tasksCompleted: number,
-    totalTasks: number,
-    completionPercentage: number,
-    keyAchievements: string[] }
+    scope: string;
+    approach: string;
+    completionStatus: string;
+    tasksCompleted: number;
+    totalTasks: number;
+    completionPercentage: number;
+    keyAchievements: string[];
 
-interface DuplicationCategory { [categoryName: string]: number }
-';
+interface DuplicationCategory { [categoryName: string]: number;
+';'
 
-interface NamingStrategies { ', 'Domain-based': number,', 'Function-level': number,', 'Context-specific': number }
+interface NamingStrategies { ', 'Domain-based': number,', 'Function-level': number,', 'Context-specific': number;'
 
 interface FilesModified { renamed: number,
-    updated: number,
-    created: number  }
+    updated: number;
+    created: number;
 
 interface DuplicationsResolved { totalClasses: number,
-    totalFiles: number,
-    byCategory: DuplicationCategory
-    }
+    totalFiles: number;
+    byCategory: DuplicationCategory;
 
 interface Statistics { duplicationsResolved: DuplicationsResolved,
-    filesModified: FilesModified,
-    namingStrategies: NamingStrategies,
-    gitCommits: number,
-    testsPassing: boolean,
-    buildSuccessful: boolean }
+    filesModified: FilesModified;
+    namingStrategies: NamingStrategies;
+    gitCommits: number;
+    testsPassing: boolean;
+    buildSuccessful: boolean;
 
 interface ChangeItem { name: string,
-    action: string,
-    files: string[],
-    impact: string,
-    reasoning: string }
+    action: string;
+    files: string[];
+    impact: string;
+    reasoning: string;
 
 interface ChangePhase { taskId: string,
-    phase: string,
-    category: string,
-    description: string,
-    items: ChangeItem[]
-    }
+    phase: string;
+    category: string;
+    description: string;
+    items: ChangeItem[];
 
 interface ChangeLog { overview: string,
-    phases: ChangePhase[]
-    }
+    phases: ChangePhase[];
 
 interface SystemImpactArea { maintainability: string,
-    readability: string,
-    debuggability: string,
-    onboardingExperience: string }
+    readability: string;
+    debuggability: string;
+    onboardingExperience: string;
 
 interface DevelopmentImpactArea { namingConfusion: string,
-    importErrors: string,
-    codeNavigation: string,
-    toolSupport: string }
+    importErrors: string;
+    codeNavigation: string;
+    toolSupport: string;
 
 interface PerformanceImpactArea { runtime: string,
-    buildTime: string,
-    bundleSize: string }
+    buildTime: string;
+    bundleSize: string;
 
 interface SystemImpacts { codebase: SystemImpactArea,
-    development: DevelopmentImpactArea,
-    performance: PerformanceImpactArea
-    }
+    development: DevelopmentImpactArea;
+    performance: PerformanceImpactArea;
 
 interface RiskAssessment { breakingChanges: string,
-    backwardCompatibility: string,
-    regressionRisk: string,
-    rollbackComplexity: string }
+    backwardCompatibility: string;
+    regressionRisk: string;
+    rollbackComplexity: string;
 
 interface Beneficiaries { developers: string,
-    codeReviewers: string,
-    newTeamMembers: string }
+    codeReviewers: string;
+    newTeamMembers: string;
 
 interface ImpactAnalysis { systemImpacts: SystemImpacts,
-    riskAssessment: RiskAssessment,
-    beneficiaries: Beneficiaries
-    }
+    riskAssessment: RiskAssessment;
+    beneficiaries: Beneficiaries;
 
 interface ValidationArea { status: string,
-    filesChecked?: string,
-    errors?: number,
-    warnings?: string,
-    missingImports?: number,
-    unreferencedImports?: string,
-    circularDependencies?: number,
-    unitTests?: string,
-    integrationTests?: string,
-    e2eTests?: string,
-    linting?: string,
-    typeChecking?: string,
-    bundling?: string }
+    filesChecked?: string;
+    errors?: number;
+    warnings?: string;
+    missingImports?: number;
+    unreferencedImports?: string;
+    circularDependencies?: number;
+    unitTests?: string;
+    integrationTests?: string;
+    e2eTests?: string;
+    linting?: string;
+    typeChecking?: string;
+    bundling?: string;
 
 interface ValidationResults { syntaxValidation: ValidationArea,
-    importValidation: ValidationArea,
-    testSuite: ValidationArea,
-    buildValidation: ValidationArea
-     }
+    importValidation: ValidationArea;
+    testSuite: ValidationArea;
+    buildValidation: ValidationArea;
 
 interface Recommendation { category: string,
-    priority: string,
-    recommendation: string,
-    rationale: string,
-    implementation: string }
+    priority: string;
+    recommendation: string;
+    rationale: string;
+    implementation: string;
 
 interface AutomaticValidation { description: string,
-    implementation: string,
-    integration: string,
-    coverage: string }
+    implementation: string;
+    integration: string;
+    coverage: string;
 
 interface DevelopmentGuidelines { description: string,
-    domainBased: string,
-    functionalLevel: string,
-    contextSpecific: string 
-    }
+    domainBased: string;
+    functionalLevel: string;
+    contextSpecific: string;
 
 interface ToolingSupport { description: string,
-    cliTools: string,
-    validation: string,
-    integration: string }
+    cliTools: string;
+    validation: string;
+    integration: string;
 
 interface ProcessImprovements { description: string,
-    codeReview: string,
-    onboarding: string,
-    refactoring: string }
+    codeReview: string;
+    onboarding: string;
+    refactoring: string;
 
 interface PreventionMeasures { automaticValidation: AutomaticValidation,
-    developmentGuidelines: DevelopmentGuidelines,
-    toolingSupport: ToolingSupport,
-    processImprovements: ProcessImprovements
-    }
+    developmentGuidelines: DevelopmentGuidelines;
+    toolingSupport: ToolingSupport;
+    processImprovements: ProcessImprovements;
 
 interface FileAnalysisResult { renamedFiles: number,
-    updatedFiles: number,
-    createdFiles: number }
+    updatedFiles: number;
+    createdFiles: number;
 
 interface OutputFiles { json?: string,
-    markdown?: string }
+    markdown?: string;
 
 interface ComprehensiveReport { metadata: ReportMetadata,
-    summary: ProjectSummary,
-    statistics: Statistics,
-    changeLog: ChangeLog,
-    impactAnalysis: ImpactAnalysis,
-    validationResults: ValidationResults,
-    recommendations: Recommendation[],
-    futurePreventionMeasures: PreventionMeasures
-     }
+    summary: ProjectSummary;
+    statistics: Statistics;
+    changeLog: ChangeLog;
+    impactAnalysis: ImpactAnalysis;
+    validationResults: ValidationResults;
+    recommendations: Recommendation[];
+    futurePreventionMeasures: PreventionMeasures;
 
 /**
  * ReportGenerator - JavaScript クラス名重複解決プロジェクトの包括レポート生成
  * Issue #131の全変更内容とその影響範囲を文書化
  */
 export class ReportGenerator {
-    private errorHandler: ErrorHandler,
-    private projectRoot: string,
-    private reportConfig: Required<ReportConfig>,
-    private resolvedDuplications: ResolvedDuplication[],
+    private errorHandler: ErrorHandler;
+    private projectRoot: string;
+    private reportConfig: Required<ReportConfig>;
+    private resolvedDuplications: ResolvedDuplication[];
     constructor(config: ReportConfig = {) {
-',
+','
 
-        this.errorHandler = getErrorHandler(),
-        this.projectRoot = config.projectRoot || process.cwd('}
+        this.errorHandler = getErrorHandler();
+        this.projectRoot = config.projectRoot || process.cwd('}'
 
             outputFormat: config.outputFormat || 'both' // 'json', 'markdown', 'both' }
         };
         
         // 解決済みの重複情報
-        this.resolvedDuplications = [{,
+        this.resolvedDuplications = [{;
                 taskId: '6',
                 category: 'Configuration Files',
-    items: [',
+    items: [','
                     { ''
-                        name: 'PerformanceConfig', ]',
+                        name: 'PerformanceConfig', ]','
                         resolution: 'Backup file merged with main configuration',']',
-                        files: ['src/config/PerformanceConfig.js],
+                        files: ['src/config/PerformanceConfig.js],'
                         impact: 'Low'
             }
                 ];
@@ -222,18 +212,18 @@ export class ReportGenerator {
                 items: [{''
                         name: 'AccessibilityManager',
                         resolution: 'CoreAccessibilityManager & DebugAccessibilityManager',
-                        files: [',
-                            'src/core/AccessibilityManager.js → CoreAccessibilityManager.js',]',
-                            'src/debug/AccessibilityManager.js → DebugAccessibilityManager.js']',
+                        files: [','
+                            'src/core/AccessibilityManager.js → CoreAccessibilityManager.js',]','
+                            'src/debug/AccessibilityManager.js → DebugAccessibilityManager.js']','
                         ],
                         impact: 'Medium'
             };
                     { ''
                         name: 'KeyboardShortcutManager',
                         resolution: 'CoreKeyboardShortcutManager & DebugKeyboardShortcutManager',
-                        files: [',
-                            'src/core/KeyboardShortcutManager.js → CoreKeyboardShortcutManager.js',]',
-                            'src/debug/KeyboardShortcutManager.js → DebugKeyboardShortcutManager.js']',
+                        files: [','
+                            'src/core/KeyboardShortcutManager.js → CoreKeyboardShortcutManager.js',]','
+                            'src/debug/KeyboardShortcutManager.js → DebugKeyboardShortcutManager.js']','
                         ],
                         impact: 'Medium'
             }
@@ -246,27 +236,27 @@ export class ReportGenerator {
                 items: [{''
                         name: 'AudioAccessibilitySupport',
                         resolution: 'MainAudioAccessibilitySupport & ComponentAudioAccessibilitySupport',
-                        files: [',
-                            'src/audio/AudioAccessibilitySupport.js → MainAudioAccessibilitySupport.js',]',
-                            'src/audio/components/AudioAccessibilitySupport.js → ComponentAudioAccessibilitySupport.js']',
+                        files: [','
+                            'src/audio/AudioAccessibilitySupport.js → MainAudioAccessibilitySupport.js',]','
+                            'src/audio/components/AudioAccessibilitySupport.js → ComponentAudioAccessibilitySupport.js']','
                         ],
                         impact: 'Low'
             };
                     { ''
-                        name: 'AudioContextManager',',
-                        resolution: 'AudioContextManager & AudioEffectContextManager')',
+                        name: 'AudioContextManager',','
+                        resolution: 'AudioContextManager & AudioEffectContextManager')','
     files: [')',
-                            'src/audio/AudioContextManager.js(kept)',]',
-                            'src/audio/effects/AudioContextManager.js → AudioEffectContextManager.js']',
+                            'src/audio/AudioContextManager.js(kept)',]','
+                            'src/audio/effects/AudioContextManager.js → AudioEffectContextManager.js']','
                         ],
                         impact: 'Medium'
             };
                     { ''
                         name: 'AudioPerformanceMonitor',
                         resolution: 'AudioPerformanceMonitor & AudioComponentPerformanceMonitor',
-                        files: [',
-                            'src/audio/AudioPerformanceMonitor.js(kept)',]',
-                            'src/audio/components/AudioPerformanceMonitor.js → AudioComponentPerformanceMonitor.js']',
+                        files: [','
+                            'src/audio/AudioPerformanceMonitor.js(kept)',]','
+                            'src/audio/components/AudioPerformanceMonitor.js → AudioComponentPerformanceMonitor.js']','
                         ],
                         impact: 'Low'
             }
@@ -279,27 +269,27 @@ export class ReportGenerator {
                 items: [{''
                         name: 'ChartRenderer',
                         resolution: 'AnalyticsChartRenderer & CoreChartRenderer',
-                        files: [',
-                            'src/analytics/ChartRenderer.js → AnalyticsChartRenderer.js',]',
-                            'src/core/ChartRenderer.js → CoreChartRenderer.js']',
+                        files: [','
+                            'src/analytics/ChartRenderer.js → AnalyticsChartRenderer.js',]','
+                            'src/core/ChartRenderer.js → CoreChartRenderer.js']','
                         ],
                         impact: 'Medium'
             };
                     { ''
                         name: 'ComparisonEngine',
                         resolution: 'AnalyticsComparisonEngine & CoreComparisonEngine',
-                        files: [',
-                            'src/analytics/ComparisonEngine.js → AnalyticsComparisonEngine.js',]',
-                            'src/core/ComparisonEngine.js → CoreComparisonEngine.js']',
+                        files: [','
+                            'src/analytics/ComparisonEngine.js → AnalyticsComparisonEngine.js',]','
+                            'src/core/ComparisonEngine.js → CoreComparisonEngine.js']','
                         ],
                         impact: 'Medium'
             };
                     { ''
                         name: 'TrendAnalyzer',
                         resolution: 'AnalyticsTrendAnalyzer & CoreTrendAnalyzer',
-                        files: [',
-                            'src/analytics/TrendAnalyzer.js → AnalyticsTrendAnalyzer.js',]',
-                            'src/core/TrendAnalyzer.js → CoreTrendAnalyzer.js']',
+                        files: [','
+                            'src/analytics/TrendAnalyzer.js → AnalyticsTrendAnalyzer.js',]','
+                            'src/core/TrendAnalyzer.js → CoreTrendAnalyzer.js']','
                         ],
                         impact: 'Medium'
             }
@@ -312,27 +302,27 @@ export class ReportGenerator {
                 items: [{''
                         name: 'ErrorReporter',
                         resolution: 'DebugErrorReporter & UtilsErrorReporter',
-                        files: [',
-                            'src/debug/ErrorReporter.js → DebugErrorReporter.js',]',
-                            'src/utils/ErrorReporter.js → UtilsErrorReporter.js']',
+                        files: [','
+                            'src/debug/ErrorReporter.js → DebugErrorReporter.js',]','
+                            'src/utils/ErrorReporter.js → UtilsErrorReporter.js']','
                         ],
                         impact: 'Low'
             };
                     { ''
                         name: 'ErrorNotificationSystem',
                         resolution: 'DebugErrorNotificationSystem & AnalyticsErrorNotificationSystem',
-                        files: [',
-                            'src/debug/ErrorNotificationSystem.js → DebugErrorNotificationSystem.js',]',
-                            'src/analytics/ErrorNotificationSystem.js → AnalyticsErrorNotificationSystem.js']',
+                        files: [','
+                            'src/debug/ErrorNotificationSystem.js → DebugErrorNotificationSystem.js',]','
+                            'src/analytics/ErrorNotificationSystem.js → AnalyticsErrorNotificationSystem.js']','
                         ],
                         impact: 'Low'
             };
                     { ''
                         name: 'ErrorAnalyzer',
                         resolution: 'DebugErrorAnalyzer & UtilsErrorAnalyzer',
-                        files: [',
-                            'src/debug/ErrorAnalyzer.js → DebugErrorAnalyzer.js',]',
-                            'src/utils/ErrorAnalyzer.js → UtilsErrorAnalyzer.js']',
+                        files: [','
+                            'src/debug/ErrorAnalyzer.js → DebugErrorAnalyzer.js',]','
+                            'src/utils/ErrorAnalyzer.js → UtilsErrorAnalyzer.js']','
                         ],
                         impact: 'Low'
             }
@@ -345,8 +335,8 @@ export class ReportGenerator {
                 items: [{''
                         name: 'PerformanceMonitor',
                         resolution: 'Domain-specific PerformanceMonitors maintained',
-                        files: []',
-                            'src/analytics/enhanced-analytics-manager/PerformanceMonitor.js → AnalyticsPerformanceMonitor.js']',
+                        files: []','
+                            'src/analytics/enhanced-analytics-manager/PerformanceMonitor.js → AnalyticsPerformanceMonitor.js']','
                         ],
                         impact: 'Low'
             }
@@ -359,36 +349,36 @@ export class ReportGenerator {
                 items: [{''
                         name: 'BaseDialog',
                         resolution: 'ScenesBaseDialog & DataManagementBaseDialog',
-                        files: [',
-                            'src/scenes/components/BaseDialog.js → ScenesBaseDialog.js',]',
-                            'src/ui/data-management-ui/DataManagementDialogs.js(BaseDialog → DataManagementBaseDialog)']',
+                        files: [','
+                            'src/scenes/components/BaseDialog.js → ScenesBaseDialog.js',]','
+                            'src/ui/data-management-ui/DataManagementDialogs.js(BaseDialog → DataManagementBaseDialog)']','
                         ],
                         impact: 'High'
             };
                     { ''
                         name: 'DialogManager',
                         resolution: 'MainMenuDialogManager & ScenesDialogManager',
-                        files: [',
-                            'src/scenes/main-menu/DialogManager.js → MainMenuDialogManager.js',]',
-                            'src/scenes/components/DialogManager.js → ScenesDialogManager.js']',
+                        files: [','
+                            'src/scenes/main-menu/DialogManager.js → MainMenuDialogManager.js',]','
+                            'src/scenes/components/DialogManager.js → ScenesDialogManager.js']','
                         ],
                         impact: 'Medium'
             };
                     { ''
                         name: 'ImportDialog',
                         resolution: 'ScenesImportDialog & DataManagementImportDialog',
-                        files: [',
-                            'src/scenes/components/ImportDialog.js → ScenesImportDialog.js',]',
-                            'src/ui/data-management-ui/DataManagementDialogs.js(ImportDialog → DataManagementImportDialog)']',
+                        files: [','
+                            'src/scenes/components/ImportDialog.js → ScenesImportDialog.js',]','
+                            'src/ui/data-management-ui/DataManagementDialogs.js(ImportDialog → DataManagementImportDialog)']','
                         ],
                         impact: 'High'
             };
                     { ''
                         name: 'ExportDialog',
                         resolution: 'ScenesExportDialog & DataManagementExportDialog',
-                        files: [',
-                            'src/scenes/components/ExportDialog.js → ScenesExportDialog.js',]',
-                            'src/ui/data-management-ui/DataManagementDialogs.js(ExportDialog → DataManagementExportDialog)']',
+                        files: [','
+                            'src/scenes/components/ExportDialog.js → ScenesExportDialog.js',]','
+                            'src/ui/data-management-ui/DataManagementDialogs.js(ExportDialog → DataManagementExportDialog)']','
                         ],
                         impact: 'High'
             }
@@ -401,27 +391,27 @@ export class ReportGenerator {
                 items: [{''
                         name: 'DirtyRegionManager',
                         resolution: 'AdvancedDirtyRegionManager & BasicDirtyRegionManager',
-                        files: [',
-                            'src/utils/advanced-rendering-optimizer/DirtyRegionManager.js → AdvancedDirtyRegionManager.js',]',
-                            'src/utils/rendering/DirtyRegionManager.js → BasicDirtyRegionManager.js']',
+                        files: [','
+                            'src/utils/advanced-rendering-optimizer/DirtyRegionManager.js → AdvancedDirtyRegionManager.js',]','
+                            'src/utils/rendering/DirtyRegionManager.js → BasicDirtyRegionManager.js']','
                         ],
                         impact: 'Medium'
             };
                     { ''
                         name: 'LayerManager',
                         resolution: 'AdvancedLayerManager & BasicLayerManager',
-                        files: [',
-                            'src/utils/advanced-rendering-optimizer/LayerManager.js → AdvancedLayerManager.js',]',
-                            'src/utils/rendering/LayerManager.js → BasicLayerManager.js']',
+                        files: [','
+                            'src/utils/advanced-rendering-optimizer/LayerManager.js → AdvancedLayerManager.js',]','
+                            'src/utils/rendering/LayerManager.js → BasicLayerManager.js']','
                         ],
                         impact: 'Medium'
             };
                     { ''
                         name: 'ViewportCuller',
                         resolution: 'AdvancedViewportCuller & BasicViewportCuller',
-                        files: [',
-                            'src/utils/advanced-rendering-optimizer/ViewportCuller.js → AdvancedViewportCuller.js',]',
-                            'src/utils/rendering/ViewportCuller.js → BasicViewportCuller.js']',
+                        files: [','
+                            'src/utils/advanced-rendering-optimizer/ViewportCuller.js → AdvancedViewportCuller.js',]','
+                            'src/utils/rendering/ViewportCuller.js → BasicViewportCuller.js']','
                         ],
                         impact: 'Medium'
             }
@@ -432,8 +422,8 @@ export class ReportGenerator {
     /**
      * 包括的なプロジェクトレポートを生成'
      */''
-    async generateComprehensiveReport()';
-        console.log('[ReportGenerator] Generating comprehensive project report...);
+    async generateComprehensiveReport()';'
+        console.log('[ReportGenerator] Generating comprehensive project report...);'
         
         try { const report: ComprehensiveReport = {
                 metadata: this.generateMetadata(),
@@ -444,11 +434,11 @@ export class ReportGenerator {
                 validationResults: await this.generateValidationResults(),
                 recommendations: this.generateRecommendations(
     futurePreventionMeasures: this.generatePreventionMeasures() };
-            ';
+            ';'
 
             return report;} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ReportGenerator.generateComprehensiveReport'
-            }';
+            }';'
             throw error;
         }
     }
@@ -458,7 +448,7 @@ export class ReportGenerator {
      */''
     generateMetadata('''
             title: 'JavaScript Class Name Deduplication Project Report',
-            subtitle: 'Issue #131 - Complete Resolution Report',';
+            subtitle: 'Issue #131 - Complete Resolution Report',';'
             generatedAt: new Date().toISOString('',
     generatedBy: 'ReportGenerator v1.0.0',
             projectRoot: this.projectRoot,
@@ -473,15 +463,15 @@ export class ReportGenerator {
             objective: 'Resolve JavaScript class name duplications to improve codebase maintainability and prevent developer confusion',
             scope: 'Entire src/ directory with focus on core, debug, analytics, audio, ui, and rendering systems',
             approach: 'Domain-based and function-level naming strategies with systematic file renaming and import updates',
-            completionStatus: 'Completed);
-            tasksCompleted: 13',
+            completionStatus: 'Completed);'
+            tasksCompleted: 13','
     totalTasks: 17,')';
-            completionPercentage: Math.round((13 / 17) * 100',
-            keyAchievements: [';
+            completionPercentage: Math.round((13 / 17) * 100','
+            keyAchievements: [';'
                 'Resolved all major class name duplications across 8 system categories',
                 'Implemented systematic naming strategies(Domain-based, Function-level, Context-specific)',
                 'Preserved Git history for all renamed files',
-                'Updated all import statements and references',]';
+                'Updated all import statements and references',]';'
                 'Created validation and prevention systems for future conflicts'];
             ];
         }
@@ -503,7 +493,7 @@ export class ReportGenerator {
             filesModified: { renamed: stats.renamedFiles,
                 updated: stats.updatedFiles,
     created: stats.createdFiles };
-            namingStrategies: { ', 'Domain-based': 18, // Core*, Debug*, Utils*, Analytics*,
+            namingStrategies: { ', 'Domain-based': 18, // Core*, Debug*, Utils*, Analytics*,'
                 'Function-level': 6,  // Advanced*, Basic*,
                 'Context-specific': 7 // Scenes*, DataManagement*, MainMenu* },
             gitCommits: 8;
@@ -534,7 +524,7 @@ export class ReportGenerator {
                 phase.items.push({)
                     name: item.name,
     action: `Renamed/Reorganized: ${item.resolution}`;
-                    files: item.files;
+                    files: item.files,
             }
                     impact: item.impact }
                     reasoning: this.generateReasoningForItem(item});
@@ -591,7 +581,7 @@ export class ReportGenerator {
                 warnings: 'Minor warnings only';
             },
 
-            importValidation: {;
+            importValidation: {,
                 status: 'Passed',
                 missingImports: 0,
                 unreferencedImports: 'Some cleanup opportunities',
@@ -658,7 +648,7 @@ export class ReportGenerator {
                 description: 'Automated naming conflict detection',
                 implementation: 'ValidationEngine and NamingConflictDetector classes',
                 integration: 'Pre-commit hooks, CI/CD pipeline',
-                coverage: 'File names, class names, function names);
+                coverage: 'File names, class names, function names);'
             }''
             developmentGuidelines: { ''
                 description: 'Clear naming conventions and patterns',
@@ -694,7 +684,7 @@ export class ReportGenerator {
     /**
      * アイテムの理由を生成
      */''
-    generateReasoningForItem(item: ResolvedItem): string { const reasonings: Record<string, string> = {', 'PerformanceConfig': 'Merged backup configuration with main file to eliminate redundancy',
+    generateReasoningForItem(item: ResolvedItem): string { const reasonings: Record<string, string> = {', 'PerformanceConfig': 'Merged backup configuration with main file to eliminate redundancy','
             'AccessibilityManager': 'Separated core functionality from debug-specific features',
             'KeyboardShortcutManager': 'Distinguished between core shortcuts and debug shortcuts',
             'AudioAccessibilitySupport': 'Separated main audio accessibility from component-specific support',
@@ -728,26 +718,26 @@ export class ReportGenerator {
         try {'
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-') }
             const baseFileName = `javascript-class-deduplication-report-${timestamp}`;
-            ';
+            ';'
             // JSON形式で保存
-            if(this.reportConfig.outputFormat === 'json' || this.reportConfig.outputFormat === 'both) {
+            if (this.reportConfig.outputFormat === 'json' || this.reportConfig.outputFormat === 'both) {'
                 const jsonPath = path.join(outputDir, `${baseFileName).json`};
                 await fs.promises.writeFile(jsonPath, JSON.stringify(report, null, 2}
 
                 outputs.json = jsonPath' }'
 
-                console.log(`[ReportGenerator] JSON report saved: ${jsonPath}`}';
+                console.log(`[ReportGenerator] JSON report saved: ${jsonPath}`}';'
             }
-            ';
+            ';'
             // Markdown形式で保存
-            if(this.reportConfig.outputFormat === 'markdown' || this.reportConfig.outputFormat === 'both) {
+            if (this.reportConfig.outputFormat === 'markdown' || this.reportConfig.outputFormat === 'both) {'
                 const markdownContent = this.generateMarkdownReport(report),
                 const mdPath = path.join(outputDir, `${baseFileName).md`};
                 await fs.promises.writeFile(mdPath, markdownContent}
                 outputs.markdown = mdPath }
                 console.log(`[ReportGenerator] Markdown report saved: ${mdPath}`});
             }
-            ';
+            ';'
 
             return outputs;} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ReportGenerator.saveReport'
@@ -770,27 +760,27 @@ export class ReportGenerator {
         md.push(`**Branch: ** ${ report.metadata.branch)`),''
         md.push(`**Version: ** ${report.metadata.version)`),''
         md.push(''),
-        ',
+        ','
         // 概要
         md.push('## Project, Summary'),
         md.push(),
-        md.push(`**Objective: ** ${report.summary.objective }`},' }
+        md.push(`**Objective: ** ${report.summary.objective }`},' }'
 
-        md.push('});
+        md.push('});'
 
         md.push(`**Completion, Status:** ✅ ${report.summary.completionStatus} (${report.summary.completionPercentage}%}`});
         md.push(`**Tasks, Completed:** ${report.summary.tasksCompleted}/${ report.summary.totalTasks)`),
         md.push(''),
-        md.push('### Key, Achievements};
+        md.push('### Key, Achievements};'
         report.summary.keyAchievements.forEach(achievement => {}
 
             md.push(`- ${achievement}`});'}');
         md.push('');
-        ';
+        ';'
         // 統計
         md.push('## Statistics');
         md.push('');
-        md.push('### Duplications, Resolved);
+        md.push('### Duplications, Resolved);'
 
         md.push(`- **Total, Classes: ** ${ report.statistics.duplicationsResolved.totalClasses)`),''
         md.push(`- **Total, Files: ** ${report.statistics.duplicationsResolved.totalFiles)`),''
@@ -799,11 +789,11 @@ export class ReportGenerator {
 
         for (const [category, count] of Object.entries(report.statistics.duplicationsResolved.byCategory)}) { }'
 
-            md.push(`- **${category}:** ${count} duplications`}';
+            md.push(`- **${category}:** ${count} duplications`}';'
 
         }''
         md.push('');
-        ';
+        ';'
         // 変更ログ
         md.push('## Change, Log');
         md.push();
@@ -819,14 +809,14 @@ export class ReportGenerator {
                 md.push(`**Impact: ** ${item.impact)`),''
                 md.push(`**Reasoning: ** ${item.reasoning)`),''
                 md.push(''}''
-                md.push('**Files Modified: **} }
+                md.push('**Files Modified: **} }'
                 item.files.forEach(file => {) }
 
                     md.push(`- \`${file}\``});'}');
                 md.push('');
             }
         }
-        ';
+        ';'
         // 推奨事項
         md.push('## Recommendations');
         md.push();
@@ -837,28 +827,28 @@ export class ReportGenerator {
             md.push(`**Recommendation: ** ${rec.recommendation)`,
 
             md.push(`**Rationale: ** ${rec.rationale)`),''
-            md.push(`**Implementation: ** ${rec.implementation }`},' }
+            md.push(`**Implementation: ** ${rec.implementation }`},' }'
 
-            md.push(''}';
+            md.push(''}';'
         }
-        ';
+        ';'
         // 将来の防止措置
         md.push('## Future, Prevention Measures');
         md.push('');
-        md.push('### Automatic, Validation);
+        md.push('### Automatic, Validation);'
         md.push(`- **Description: ** ${ report.futurePreventionMeasures.automaticValidation.description)`,
 
         md.push(`- **Implementation: ** ${report.futurePreventionMeasures.automaticValidation.implementation)`),''
         md.push(`- **Integration: ** ${report.futurePreventionMeasures.automaticValidation.integration)`),''
         md.push(''),
 
-        md.push('### Development, Guidelines),
+        md.push('### Development, Guidelines),'
         md.push(`- **Domain-based: ** ${report.futurePreventionMeasures.developmentGuidelines.domainBased }`} }
 
         md.push(`- **Function-level:** ${report.futurePreventionMeasures.developmentGuidelines.functionalLevel}`});
         md.push(`- **Context-specific:** ${report.futurePreventionMeasures.developmentGuidelines.contextSpecific}`);
         md.push('');
-        ';
+        ';'
         // フッター
         md.push('---';
         md.push(`*Report, generated by ${ report.metadata.generatedBy)*`};
@@ -866,6 +856,6 @@ export class ReportGenerator {
 
         ' }'
 
-        return, md.join('\n'}';
+        return, md.join('\n'}';'
 
 export default ReportGenerator;

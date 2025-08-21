@@ -7,9 +7,9 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 export class ShareContentGenerator {
     constructor(localizationManager, socialI18nManager = null) {
-        this.localizationManager = localizationManager,
-        this.socialI18nManager = socialI18nManager,
-        ',
+        this.localizationManager = localizationManager;
+        this.socialI18nManager = socialI18nManager;
+        ','
         // メッセージテンプレート
         this.templates = this.initializeTemplates() }
 
@@ -80,7 +80,7 @@ export class ShareContentGenerator {
      */""
     generateScoreMessage(scoreData, platform = 'generic', options = { ' {'
         try {'
-            const startTime = performance.now()',
+            const startTime = performance.now()','
             if (!scoreData || typeof, scoreData.score !== 'number') {
     }
 
@@ -90,10 +90,10 @@ export class ShareContentGenerator {
             // 言語とプラットフォームの決定
             const language = this.getCurrentLanguage();
             const platformKey = this.normalizePlatform(platform);
-            ';
+            ';'
             // テンプレートの取得
             const template = this.getTemplate('score', platformKey, language);
-            if(!template) {
+            if (!template) {
     
 }
                 throw new Error(`テンプレートが見つかりません: score/${platformKey}/${language}`});
@@ -102,9 +102,9 @@ export class ShareContentGenerator {
             // データの準備
             const messageData = { ''
                 score: this.formatScore(scoreData.score,
-                stage: scoreData.stage || ',
-                combo: scoreData.combo || ',
-                accuracy: scoreData.accuracy ? Math.round(scoreData.accuracy * 100) + '%' : ',
+                stage: scoreData.stage || ','
+                combo: scoreData.combo || ','
+                accuracy: scoreData.accuracy ? Math.round(scoreData.accuracy * 100) + '%' : ','
     url: options.url || this.getGameUrl(  };
             
             // メッセージの生成
@@ -131,10 +131,10 @@ export class ShareContentGenerator {
 
         } catch (error) { this.stats.errors++,' }'
 
-            this.handleError('SCORE_MESSAGE_GENERATION_FAILED', error, { scoreData, platform, options }';
-            ';
+            this.handleError('SCORE_MESSAGE_GENERATION_FAILED', error, { scoreData, platform, options }';'
+            ';'
             // フォールバック: シンプルなメッセージ
-            return this.generateFallbackMessage('score', scoreData, platform';
+            return this.generateFallbackMessage('score', scoreData, platform';'
     
     /**
      * 実績共有メッセージの生成'
@@ -142,9 +142,9 @@ export class ShareContentGenerator {
     generateAchievementMessage(achievementData, platform = 'generic', options = { ) {
         try {
             const startTime = performance.now(),
-            ',
+            ','
             // 入力データの検証
-            if(!achievementData || !achievementData.name) {
+            if (!achievementData || !achievementData.name) {
     }
 
                 throw new Error('不正な実績データ'; }'
@@ -153,26 +153,26 @@ export class ShareContentGenerator {
             // 言語とプラットフォームの決定
             const language = this.getCurrentLanguage();
             const platformKey = this.normalizePlatform(platform);
-            ';
+            ';'
             // テンプレートの取得
             const template = this.getTemplate('achievement', platformKey, language);
 
             if (!template) { }'
 
-                throw new Error(`テンプレートが見つかりません: achievement/${platformKey}/${language}`}';
+                throw new Error(`テンプレートが見つかりません: achievement/${platformKey}/${language}`}';'
             }
             
             // データの準備
             const messageData = { name: achievementData.name,''
-                description: achievementData.description || ',
+                description: achievementData.description || ','
                 rarity: this.getAchievementRarity(achievementData,
     url: options.url || this.getGameUrl(  };
-            ';
+            ';'
             // メッセージの生成
             let message = this.interpolateTemplate(template, messageData);
-            ';
+            ';'
             // レア実績の特別処理
-            if(achievementData.rarity && achievementData.rarity === 'legendary) { message = this.addLegendaryEmojis(message, language) }'
+            if (achievementData.rarity && achievementData.rarity === 'legendary) { message = this.addLegendaryEmojis(message, language) }'
             
             // プラットフォーム固有の最適化
             message = this.optimizeForPlatform(message, platformKey, options);
@@ -196,10 +196,10 @@ export class ShareContentGenerator {
 
         } catch (error) { this.stats.errors++,' }'
 
-            this.handleError('ACHIEVEMENT_MESSAGE_GENERATION_FAILED', error, { achievementData, platform, options }';
-            ';
+            this.handleError('ACHIEVEMENT_MESSAGE_GENERATION_FAILED', error, { achievementData, platform, options }';'
+            ';'
             // フォールバック: シンプルなメッセージ
-            return this.generateFallbackMessage('achievement', achievementData, platform';
+            return this.generateFallbackMessage('achievement', achievementData, platform';'
     
     /**
      * チャレンジ共有メッセージの生成'
@@ -207,9 +207,9 @@ export class ShareContentGenerator {
     generateChallengeMessage(challengeData, platform = 'generic', options = { ) {
         try {
             const startTime = performance.now(),
-            ',
+            ','
             // 入力データの検証
-            if(!challengeData || !challengeData.name) {
+            if (!challengeData || !challengeData.name) {
     }
 
                 throw new Error('不正なチャレンジデータ'; }'
@@ -218,18 +218,18 @@ export class ShareContentGenerator {
             // 言語とプラットフォームの決定
             const language = this.getCurrentLanguage();
             const platformKey = this.normalizePlatform(platform);
-            ';
+            ';'
             // テンプレートの取得
             const template = this.getTemplate('challenge', platformKey, language);
 
             if (!template) { }'
 
-                throw new Error(`テンプレートが見つかりません: challenge/${platformKey}/${language}`}';
+                throw new Error(`テンプレートが見つかりません: challenge/${platformKey}/${language}`}';'
             }
             
             // データの準備
             const messageData = { name: challengeData.name,''
-                description: challengeData.description || ',
+                description: challengeData.description || ','
                 type: challengeData.type || 'daily',
     url: options.url || this.getGameUrl(  };
             
@@ -255,22 +255,22 @@ export class ShareContentGenerator {
 
         } catch (error) { this.stats.errors++,' }'
 
-            this.handleError('CHALLENGE_MESSAGE_GENERATION_FAILED', error, { challengeData, platform, options }';
-            ';
+            this.handleError('CHALLENGE_MESSAGE_GENERATION_FAILED', error, { challengeData, platform, options }';'
+            ';'
             // フォールバック: シンプルなメッセージ
-            return this.generateFallbackMessage('challenge', challengeData, platform';
+            return this.generateFallbackMessage('challenge', challengeData, platform';'
     
     /**
      * カスタムメッセージの生成'
      */''
-    generateCustomMessage(type, data, customTemplate, platform = 'generic', options = { )' {
+    generateCustomMessage(type, data, customTemplate, platform = 'generic', options = { )' {'
         try {
             // カスタムテンプレートの検証
-            if(!customTemplate || typeof, customTemplate !== 'string') {', ' }
+            if (!customTemplate || typeof, customTemplate !== 'string') {', ' }
 
                 throw new Error('不正なカスタムテンプレート'; }'
             }
-            ';
+            ';'
             // セキュリティチェック
             if(!this.validateTemplate(customTemplate)) { ''
                 throw new Error('安全でないテンプレート' }'
@@ -295,7 +295,7 @@ export class ShareContentGenerator {
                 platform: platformKey,
                 language,
                 metadata: {
-                    isCustom: true };
+                    isCustom: true,;
                     type }
 } catch (error) { this.stats.errors++,' }'
 
@@ -315,16 +315,16 @@ export class ShareContentGenerator {
     }
             const value = data[key]);' }'
 
-            if(value !== undefined && value !== null) { }'
+            if (value !== undefined && value !== null) { }'
 
-                const regex = new RegExp(`\\{${key}\\}`, 'g);
+                const regex = new RegExp(`\\{${key}\\}`, 'g);'
                 result = result.replace(regex, String(value);
             }
         });
-        ';
+        ';'
         // 未置換の変数を削除
         result = result.replace(/\{[^}]+\)/g, '');
-        ';
+        ';'
         // 余分な空白を削除
         result = result.replace(/\s+/g, ', ').trim();
         
@@ -338,12 +338,12 @@ export class ShareContentGenerator {
         const limits = this.platformLimits[platform] || this.platformLimits.generic,
 
         switch(platform) {''
-            case 'twitter':',
+            case 'twitter':','
                 return this.optimizeForTwitter(message, limits, options),
             case 'facebook':,
                 return this.optimizeForFacebook(message, limits, options),
-            default:,
-     }
+            default:
+}
                 return this.optimizeGeneric(message, limits, options);
     
     /**
@@ -354,22 +354,22 @@ export class ShareContentGenerator {
         const urlCount = (message.match(/https?:\/\/[^\s]+/g) || []).length,
         const adjustedLimit = limits.maxLength - (urlCount * limits.urlLength),
 
-        if(message.length > adjustedLimit) {
+        if (message.length > adjustedLimit) {
             // 段階的な短縮戦略
-            message = this.truncateMessage(message, adjustedLimit, '...),
+            message = this.truncateMessage(message, adjustedLimit, '...),'
             this.stats.truncated++ }
         }
         
         // ハッシュタグ数の制限
         const hashtags = message.match(/#\w+/g) || [];
-        if(hashtags.length > limits.hashtagLimit) {
+        if (hashtags.length > limits.hashtagLimit) {
             const excessHashtags = hashtags.slice(limits.hashtagLimit) }
 
             excessHashtags.forEach(tag => { '),' }
 
                 message = message.replace(tag, ');' }
 
-            }');
+            }');'
             message = message.replace(/\s+/g, ', ').trim();
         }
         
@@ -381,8 +381,8 @@ export class ShareContentGenerator {
      */'
     optimizeForFacebook(message, limits, options) {
 
-        if(message.length > limits.maxLength) {''
-            message = this.truncateMessage(message, limits.maxLength, '...),
+        if (message.length > limits.maxLength) {''
+            message = this.truncateMessage(message, limits.maxLength, '...),'
             this.stats.truncated++ }
         }
         
@@ -394,7 +394,7 @@ export class ShareContentGenerator {
      */
     optimizeGeneric(message, limits, options) {
 
-        if(message.length > limits.maxLength) {''
+        if (message.length > limits.maxLength) {''
             message = this.truncateMessage(message, limits.maxLength, '...'),
             this.stats.truncated++ }
         }
@@ -411,13 +411,13 @@ export class ShareContentGenerator {
             return message;
         
         const truncateLength = maxLength - suffix.length;
-        ';
+        ';'
         // 単語境界で切断を試行
         const words = message.slice(0, truncateLength).split(', ');
 
-        if(words.length > 1) {
+        if (words.length > 1) {
 
-            words.pop()',
+            words.pop()','
             const truncated = words.join(', '),
             if (truncated.length > 0) {
         }
@@ -431,11 +431,11 @@ export class ShareContentGenerator {
      * テンプレートの取得'
      */''
     getTemplate(type, platform, language) {
-        return this.templates[type]?.[platform]?.[language] || ',
+        return this.templates[type]?.[platform]?.[language] || ','
                this.templates[type]?.[platform]?.['ja] || ',
                this.templates[type]?.['generic]?.[language] ||' }
 
-               this.templates[type]?.['generic]?.['ja']; }
+               this.templates[type]?.['generic]?.['ja']; }'
     }
     
     /**
@@ -443,8 +443,8 @@ export class ShareContentGenerator {
      */
     getCurrentLanguage() {
         if (this.localizationManager && this.localizationManager.getCurrentLanguage) {''
-            return this.localizationManager.getCurrentLanguage()',
-        const browserLang = navigator.language || navigator.userLanguage || 'ja',' }
+            return this.localizationManager.getCurrentLanguage()','
+        const browserLang = navigator.language || navigator.userLanguage || 'ja',' }'
 
         return browserLang.split('-'[0]; // 言語コードのみ抽出 }'
     }
@@ -456,15 +456,15 @@ export class ShareContentGenerator {
         const normalizedPlatform = platform.toLowerCase(),
         // エイリアスの処理
         switch(normalizedPlatform) {''
-            case 'x':',
-            case 'twitter-x':',
+            case 'x':','
+            case 'twitter-x':','
                 return 'twitter',
-            case 'fb':',
+            case 'fb':','
                 return 'facebook',
-            case 'web-share':',
-            case 'webshare':',
+            case 'web-share':','
+            case 'webshare':','
                 return 'generic',
-            default:',
+            default:','
                 // 有効なプラットフォームのリスト
                 const validPlatforms = ['twitter', 'facebook', 'generic'] }
 
@@ -484,18 +484,18 @@ export class ShareContentGenerator {
     getAchievementRarity(achievementData) {
         const rarities = {', 'ja': ['コモン', 'レア', 'エピック', 'レジェンダリー],
             'en': ['Common', 'Rare', 'Epic', 'Legendary'],
-            'zh-CN': ['普通', '稀有', '史诗', '传说],
-            'zh-TW': ['普通', '稀有', '史詩', '傳說] }
+            'zh-CN': ['普通', '稀有', '史诗', '传说],'
+            'zh-TW': ['普通', '稀有', '史詩', '傳說] }'
 
-            'ko': ['일반', '레어', '에픽', '레전더리] }
+            'ko': ['일반', '레어', '에픽', '레전더리] }'
         };
 
         const language = this.getCurrentLanguage('''
-        const, rarityIndex = achievementData.rarity === 'legendary' ? 3 : ';
-                           achievementData.rarity === 'epic' ? 2 :';
+        const, rarityIndex = achievementData.rarity === 'legendary' ? 3 : ';'
+                           achievementData.rarity === 'epic' ? 2 :';'
                            achievementData.rarity === 'rare' ? 1 : 0;
 
-        return, rarities[language]?.[rarityIndex] || rarities['ja][rarityIndex];
+        return, rarities[language]?.[rarityIndex] || rarities['ja][rarityIndex];'
     }
     
     /**
@@ -503,7 +503,7 @@ export class ShareContentGenerator {
      */')'
     addLegendaryEmojis(message, language) {
 
-        const emojis = ['✨', '🎉', '👑', '🏆', '⭐] }
+        const emojis = ['✨', '🎉', '👑', '🏆', '⭐] }'
         const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)]; }
         return `${randomEmoji} ${message} ${randomEmoji}`;
     }
@@ -532,9 +532,9 @@ export class ShareContentGenerator {
      */
     generateFallbackMessage(type, data, platform) { }
 
-        const language = this.getCurrentLanguage('}
+        const language = this.getCurrentLanguage('}'
 
-                'zh-CN': `得分：${data.score || 0}分`,', 'zh-TW': `得分：${data.score || 0}分`,
+                'zh-CN': `得分：${data.score || 0}分`,', 'zh-TW': `得分：${data.score || 0}分`,'
                 ko: `점수: ${data.score || 0}점`
             };
             achievement: { }'
@@ -549,16 +549,16 @@ export class ShareContentGenerator {
                 en: `Challenge, completed: ${data.name || 'New, challenge'}`;', 'zh-CN': `挑战完成：${data.name || '新挑战'}`,', 'zh-TW': `挑戰完成：${data.name || '新挑戰'}`,''
                 ko: `챌린지 완료: ${data.name || '새 챌린지'}`
             });
-        const message = fallbackMessages[type]?.[language] || ';
+        const message = fallbackMessages[type]?.[language] || ';'
                        fallbackMessages[type]?.['ja] || ';
                        'BubblePop - 新しい記録を達成しました！';
-        ';
+        ';'
 
         return { message, : undefined')'
             platform: this.normalizePlatform(platform),
             language,
             metadata: {'
-                isFallback: true,' };
+                isFallback: true,' };'
 
                 fallbackReason: 'Template generation failed' 
     }
@@ -570,15 +570,15 @@ export class ShareContentGenerator {
         return { ...this.stats,
             successRate: this.stats.generated > 0 ? undefined : undefined
                 ((this.stats.generated - this.stats.errors) / this.stats.generated) * 100 : 0 }
-            truncationRate: this.stats.generated > 0 ? undefined : undefined };
+            truncationRate: this.stats.generated > 0 ? undefined : undefined;;
                 (this.stats.truncated / this.stats.generated) * 100 : 0 
     } }
     
     /**
      * 統計のリセット'
      */''
-    resetStats()';
-        this.log('統計情報をリセットしました);
+    resetStats()';'
+        this.log('統計情報をリセットしました);'
     }
     
     /**
@@ -591,13 +591,13 @@ export class ShareContentGenerator {
             context }
             timestamp: Date.now(); 
     };
-        ';
+        ';'
         // ErrorHandlerユーティリティの使用
-        if(ErrorHandler) {', ' }
+        if (ErrorHandler) {', ' }
 
-            ErrorHandler.handleError(error, 'ShareContentGenerator', context'; }
+            ErrorHandler.handleError(error, 'ShareContentGenerator', context'; }'
         }
-        ';
+        ';'
         // ローカルログの記録
         this.log('エラー発生', errorInfo, 'error');
     }
@@ -612,7 +612,7 @@ export class ShareContentGenerator {
                             level === 'warn' ? 'warn' : 'log';) }
         console[consoleMethod](`[ShareContentGenerator] ${message}`, data);
     }
-    ';
+    ';'
 
     /**''
      * SocialI18nManagerを使用したメッセージ生成 (Task, 24')'
@@ -629,9 +629,9 @@ export class ShareContentGenerator {
             const platformKey = this.normalizePlatform(platform);
             // SocialI18nManagerからメッセージを取得
             let message = this.socialI18nManager.getMessage(messageKey, language, data);
-            ';
+            ';'
             // プラットフォーム固有の最適化
-            if(platformKey !== 'generic) { message = this.optimizeForPlatform(message, platformKey, options) }'
+            if (platformKey !== 'generic) { message = this.optimizeForPlatform(message, platformKey, options) }'
             
             // 統計の更新
             this.stats.generated++;
@@ -659,13 +659,13 @@ export class ShareContentGenerator {
      */
     generateRegionalMessage(messageKey, data, options = { ) {
         try {'
-            if(!this.socialI18nManager) {
+            if (!this.socialI18nManager) {
     }
 
                 return this.generateI18nMessage(messageKey, data, 'generic', options);
             
             const language = options.language || this.getCurrentLanguage();
-            ';
+            ';'
             // 地域別プラットフォーム設定を取得
             const regionalPlatforms = this.socialI18nManager.getRegionalPlatforms(language);
             const preferredPlatform = options.platform || regionalPlatforms[0] || 'generic';
@@ -679,7 +679,7 @@ export class ShareContentGenerator {
                 socialHost,
             
             // 地域固有の後処理
-            if(this.socialI18nManager.isRTL(language) {
+            if (this.socialI18nManager.isRTL(language) {
                 result.message = this.applyRTLFormatting(result.message) }
                 result.metadata.rtl = true; }
             }
@@ -695,7 +695,7 @@ export class ShareContentGenerator {
 
         } catch (error) { }
 
-            this.handleError('REGIONAL_MESSAGE_GENERATION_FAILED', error, { messageKey, data, options }';
+            this.handleError('REGIONAL_MESSAGE_GENERATION_FAILED', error, { messageKey, data, options }';'
             return this.generateI18nMessage(messageKey, data, 'generic', options);
     
     /**
@@ -704,7 +704,7 @@ export class ShareContentGenerator {
     applyRTLFormatting(message) {
         // RTL言語に対応したフォーマット調整
         // 絵文字やハッシュタグの位置調整
-        return message',
+        return message','
             .replace(/^([🎮🏆🎖️✅🏅])\s+/, '$1 ') // 絵文字の間隔調整 }
 
             .replace(/\s+(#\w+)/g, ' $1'); // ハッシュタグの間隔調整 }
@@ -724,10 +724,10 @@ export class ShareContentGenerator {
 
                 leaderboard: 'generateScoreMessage' 
     };
-            ';
+            ';'
 
             const methodName = methodMap[messageKey];
-            if(methodName && typeof, this[methodName] === 'function) { return this[methodName](data, platform, options) }'
+            if (methodName && typeof, this[methodName] === 'function) { return this[methodName](data, platform, options) }'
             
             // 基本フォールバック
             return this.generateFallbackMessage(messageKey, data, platform);
@@ -755,13 +755,13 @@ export class ShareContentGenerator {
         if (this.socialI18nManager) {
             const i18nStats = this.socialI18nManager.getStats(),
             return { ...baseStats,
-                i18n: i18nStats }
-                multiLanguageSupport: true };
+                i18n: i18nStats,
+                multiLanguageSupport: true,;
                 supportedLanguages: this.socialI18nManager.getSupportedLanguages().length 
     }
         
         return { ...baseStats,
-            multiLanguageSupport: false };
+            multiLanguageSupport: false,;
             supportedLanguages: 0 
     }
     
@@ -778,21 +778,21 @@ export class ShareContentGenerator {
             const path = urlObj.pathname,
             
             // ドメインだけで最大長を超える場合
-            if(domain.length >= maxLength - 3) { }
+            if (domain.length >= maxLength - 3) { }
 
                 return domain.substring(0, maxLength - 3) + '...';
             }
-            ';
+            ';'
             // パス部分を調整
             const availableLength = maxLength - domain.length - 3; // '...'の分
-            if(path.length > availableLength) {', ' }
+            if (path.length > availableLength) {', ' }
 
                 return domain + path.substring(0, availableLength) + '...';
             }
-            ';
+            ';'
 
             return domain + path;} catch (error) {
-            this.log('URL短縮エラー:', error',
+            this.log('URL短縮エラー:', error','
             return url.substring(0, maxLength - 3) + '...' }
     
     /**
@@ -816,7 +816,7 @@ export class ShareContentGenerator {
             Object.entries(params).forEach(([key, value]) => {  if (value) { }
                     url.searchParams.set(key, value); }
 });
-            ';
+            ';'
 
             return url.toString();} catch (error) {
             this.log('UTMパラメータ追加エラー:', error),
@@ -847,15 +847,15 @@ export class ShareContentGenerator {
             for(const [platform, limits] of Object.entries(newConfig.platformLimits)) {
     }
 
-                if(limits.maxLength && (typeof, limits.maxLength !== 'number' || limits.maxLength <= 0) { }
+                if (limits.maxLength && (typeof, limits.maxLength !== 'number' || limits.maxLength <= 0) { }
                     throw new Error(`無効なmaxLength設定: ${platform}`});
                 }
             }
             Object.assign(this.platformLimits, newConfig.platformLimits);
         }
         
-        if(newConfig.templates) {
-        ',
+        if (newConfig.templates) {
+        ','
             // テンプレートの検証
             for (const template of Object.values(newConfig.templates)) {''
                 if (typeof, template !== 'object') {
@@ -867,7 +867,7 @@ export class ShareContentGenerator {
             Object.assign(this.templates, newConfig.templates);
         }
 
-        this.log('設定を更新しました);
+        this.log('設定を更新しました);'
     }
     
     /**
@@ -877,6 +877,6 @@ export class ShareContentGenerator {
         return { templates: Object.keys(this.templates,
             platforms: Object.keys(this.platformLimits) }
 
-            currentLanguage: this.getCurrentLanguage(),' };
+            currentLanguage: this.getCurrentLanguage(),' };'
 
-            stats: this.getI18nStats() }')
+            stats: this.getI18nStats() }')'

@@ -15,7 +15,7 @@ class MockStorageManager {
         });
     }
     setTestData(storeName, data) {
-        this.data.set(storeName, data') }
+        this.data.set(storeName, data') }'
 }
 describe('AnomalyDetector', () => {
     let anomalyDetector: any,
@@ -28,8 +28,8 @@ describe('AnomalyDetector', () => {
         anomalyDetector.thresholds.statistical = 2.5,
         anomalyDetector.thresholds.behavioral = 0.8,
         anomalyDetector.thresholds.performance = 3.0,
-        anomalyDetector.thresholds.temporal = 0.9 }');
-    describe('コンストラクタ', (') => {
+        anomalyDetector.thresholds.temporal = 0.9 }');'
+    describe('コンストラクタ', (') => {'
         test('正しく初期化される', () => {
             expect(anomalyDetector.storageManager).toBe(mockStorageManager),
             expect(anomalyDetector.detectionRules).toBeInstanceOf(Map),
@@ -39,24 +39,24 @@ describe('AnomalyDetector', () => {
             expect(anomalyDetector.thresholds.statistical).toBe(2.5),
             expect(anomalyDetector.thresholds.behavioral).toBe(0.8),
             expect(anomalyDetector.thresholds.performance).toBe(3.0),
-            expect(anomalyDetector.thresholds.temporal).toBe(0.9) }');
+            expect(anomalyDetector.thresholds.temporal).toBe(0.9) }');'
         test('検出ルールが正しく初期化される', () => {
             expect(anomalyDetector.detectionRules.size).toBe(8),
             expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.SCORE_OUTLIER).toBe(true),
             expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.ACCURACY_DROP).toBe(true),
-            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.PERFORMANCE_DEGRADATION).toBe(true) }');
+            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.PERFORMANCE_DEGRADATION).toBe(true) }');'
     }
-    describe('異常パターン検出', (') => {
-        test('データが不足している場合、適切なメッセージを返す', async (') => {
-            mockStorageManager.setTestData('sessions', []'),
-            mockStorageManager.setTestData('interactions', []'),
+    describe('異常パターン検出', (') => {'
+        test('データが不足している場合、適切なメッセージを返す', async (') => {'
+            mockStorageManager.setTestData('sessions', []'),'
+            mockStorageManager.setTestData('interactions', []'),'
             mockStorageManager.setTestData('performance', []),
             const result = await anomalyDetector.detectAnomalies(),
             expect(result.success).toBe(true),
             expect(result.anomalies).toEqual([]),
-            expect(result.summary').toContain('分析対象データが不足しています'),
-            expect(result.recommendations).toEqual([]) }');
-        test('正常データの場合、異常が検出されない', async (') => {
+            expect(result.summary').toContain('分析対象データが不足しています'),'
+            expect(result.recommendations).toEqual([]) }');'
+        test('正常データの場合、異常が検出されない', async (') => {'
             // 正常なセッションデータ
             const normalSessions: any[] = [],
             const baseDate = new Date('2024-01-01'),
@@ -69,21 +69,21 @@ describe('AnomalyDetector', () => {
                     finalScore: 1000 + Math.random() * 200, // 正常な範囲のスコア
                     bubblesPopped: 50 + Math.floor(Math.random() * 10,
                     bubblesMissed: 5 + Math.floor(Math.random() * 5,
-                    maxCombo: 10 + Math.floor(Math.random() * 5'},
+                    maxCombo: 10 + Math.floor(Math.random() * 5'},'
                     completed: true,
                     exitReason: 'completed'
-                }');
+                }');'
             }
-            mockStorageManager.setTestData('sessions', normalSessions');
-            mockStorageManager.setTestData('interactions', []');
+            mockStorageManager.setTestData('sessions', normalSessions');'
+            mockStorageManager.setTestData('interactions', []');'
             mockStorageManager.setTestData('performance', []);
             const result = await anomalyDetector.detectAnomalies();
             expect(result.success).toBe(true);
             expect(result.anomalies.length).toBeLessThanOrEqual(2); // 正常データでも若干の異常は許容
-        }');
+        }');'
     }
-    describe('スコア異常値検出', (') => {
-        test('スコアの異常値を正しく検出する', (') => {
+    describe('スコア異常値検出', (') => {'
+        test('スコアの異常値を正しく検出する', (') => {'
             // より小さな閾値を設定してテスト
             anomalyDetector.thresholds.statistical = 1.5,
             
@@ -99,12 +99,12 @@ describe('AnomalyDetector', () => {
             };
             const outliers = anomalyDetector.detectScoreOutliers(testData);
             expect(outliers.length).toBeGreaterThan(0);
-            expect(outliers[0].sessionId').toBe('s5');
+            expect(outliers[0].sessionId').toBe('s5');'
             expect(outliers[0].value).toBe(1000);
-            expect(outliers[0]').toHaveProperty('zScore');
-            expect(outliers[0]').toHaveProperty('expectedRange');
-        }');
-        test('データが不足している場合、空配列を返す', (') => {
+            expect(outliers[0]').toHaveProperty('zScore');'
+            expect(outliers[0]').toHaveProperty('expectedRange');'
+        }');'
+        test('データが不足している場合、空配列を返す', (') => {'
             const testData = {
                 sessions: [
                     { sessionId: 's1', startTime: 1000, finalScore: 100 },
@@ -113,8 +113,8 @@ describe('AnomalyDetector', () => {
             };
             const outliers = anomalyDetector.detectScoreOutliers(testData);
             expect(outliers).toEqual([]);
-        }');
-        test('標準偏差が0の場合、空配列を返す', (') => {
+        }');'
+        test('標準偏差が0の場合、空配列を返す', (') => {'
             const testData = {
                 sessions: [
                     { sessionId: 's1', startTime: 1000, finalScore: 100 },
@@ -126,10 +126,10 @@ describe('AnomalyDetector', () => {
             };
             const outliers = anomalyDetector.detectScoreOutliers(testData);
             expect(outliers).toEqual([]);
-        }');
+        }');'
     }
-    describe('精度急降下検出', (') => {
-        test('精度の急降下を正しく検出する', (') => {
+    describe('精度急降下検出', (') => {'
+        test('精度の急降下を正しく検出する', (') => {'
             const testData = {
                 sessions: [
                     { sessionId: 's1', startTime: 1000, bubblesPopped: 90, bubblesMissed: 10 }, // 90%
@@ -141,12 +141,12 @@ describe('AnomalyDetector', () => {
             };
             const drops = anomalyDetector.detectAccuracyDrop(testData);
             expect(drops.length).toBeGreaterThan(0);
-            expect(drops[0].sessionId').toBe('s3');
+            expect(drops[0].sessionId').toBe('s3');'
             expect(drops[0].currentAccuracy).toBeCloseTo(0.4);
-            expect(drops[0]').toHaveProperty('dropPercentage');
+            expect(drops[0]').toHaveProperty('dropPercentage');'
             expect(drops[0].dropPercentage).toBeGreaterThan(0);
-        }');
-        test('データが不足している場合、空配列を返す', (') => {
+        }');'
+        test('データが不足している場合、空配列を返す', (') => {'
             const testData = {
                 sessions: [
                     { sessionId: 's1', startTime: 1000, bubblesPopped: 90, bubblesMissed: 10 }
@@ -154,10 +154,10 @@ describe('AnomalyDetector', () => {
             };
             const drops = anomalyDetector.detectAccuracyDrop(testData);
             expect(drops).toEqual([]);
-        }');
+        }');'
     }
-    describe('プレイ時間異常検出', (') => {
-        test('プレイ時間の異常を正しく検出する', (') => {
+    describe('プレイ時間異常検出', (') => {'
+        test('プレイ時間の異常を正しく検出する', (') => {'
             // より小さな閾値を設定してテスト
             anomalyDetector.thresholds.statistical = 1.5,
             
@@ -167,17 +167,17 @@ describe('AnomalyDetector', () => {
                     { sessionId: 's2', startTime: 2000, endTime: 2000 + 320000 }, // 5.3分
                     { sessionId: 's3', startTime: 3000, endTime: 3000 + 310000 }, // 5.2分
                     { sessionId: 's4', startTime: 4000, endTime: 4000 + 290000 }, // 4.8分
-                    { sessionId: 's5', startTime: 5000, endTime: 5000 + 10000 },  // 10秒 (異常に短い')
+                    { sessionId: 's5', startTime: 5000, endTime: 5000 + 10000 },  // 10秒 (異常に短い')'
                     { sessionId: 's6', startTime: 6000, endTime: 6000 + 300000 }  // 5分
                 ]
             };
             const anomalies = anomalyDetector.detectPlayTimeAnomaly(testData);
-            expect(anomalies.length).toBeGreaterThan(0');
+            expect(anomalies.length).toBeGreaterThan(0');'
             const shortSession = anomalies.find(a => a.sessionId === 's5');
             expect(shortSession).toBeDefined();
-            expect(shortSession.anomalyType').toBe('unusually_short');
-        }');
-        test('durationプロパティを使用する場合も正常に動作する', (') => {
+            expect(shortSession.anomalyType').toBe('unusually_short');'
+        }');'
+        test('durationプロパティを使用する場合も正常に動作する', (') => {'
             // より小さな閾値を設定してテスト
             anomalyDetector.thresholds.statistical = 1.5,
             
@@ -187,16 +187,16 @@ describe('AnomalyDetector', () => {
                     { sessionId: 's2', startTime: 2000, duration: 320 },
                     { sessionId: 's3', startTime: 3000, duration: 310 },
                     { sessionId: 's4', startTime: 4000, duration: 290 },
-                    { sessionId: 's5', startTime: 5000, duration: 10 },  // 10秒 (異常に短い')
+                    { sessionId: 's5', startTime: 5000, duration: 10 },  // 10秒 (異常に短い')'
                     { sessionId: 's6', startTime: 6000, duration: 300 }
                 ]
             };
             const anomalies = anomalyDetector.detectPlayTimeAnomaly(testData);
             expect(anomalies.length).toBeGreaterThan(0);
-        }');
+        }');'
     }
-    describe('コンボ一貫性異常検出', (') => {
-        test('コンボの一貫性問題を検出する', (') => {
+    describe('コンボ一貫性異常検出', (') => {'
+        test('コンボの一貫性問題を検出する', (') => {'
             const testData = {
                 sessions: [
                     { sessionId: 's1', startTime: 1000, maxCombo: 10 },
@@ -210,12 +210,12 @@ describe('AnomalyDetector', () => {
             };
             const inconsistencies = anomalyDetector.detectComboInconsistency(testData);
             expect(inconsistencies.length).toBeGreaterThan(0);
-            expect(inconsistencies[0]').toHaveProperty('consistencyScore');
-            expect(inconsistencies[0]').toHaveProperty('variability');
-        }');
+            expect(inconsistencies[0]').toHaveProperty('consistencyScore');'
+            expect(inconsistencies[0]').toHaveProperty('variability');'
+        }');'
     }
-    describe('バブルインタラクション異常検出', (') => {
-        test('遅い反応時間の異常を検出する', (') => {
+    describe('バブルインタラクション異常検出', (') => {'
+        test('遅い反応時間の異常を検出する', (') => {'
             // より小さな閾値を設定してテスト
             anomalyDetector.thresholds.statistical = 0.5, // 大幅に下げる
             
@@ -235,17 +235,17 @@ describe('AnomalyDetector', () => {
             };
             const anomalies = anomalyDetector.detectBubbleInteractionAnomaly(testData);
             expect(anomalies.length).toBeGreaterThan(0);
-            expect(anomalies[0].anomalyType').toBe('slow_reactions');
-            expect(anomalies[0]').toHaveProperty('slowReactionRatio');
+            expect(anomalies[0].anomalyType').toBe('slow_reactions');'
+            expect(anomalies[0]').toHaveProperty('slowReactionRatio');'
             expect(anomalies[0].slowReactionRatio).toBeGreaterThan(0.2);
-        }');
+        }');'
         test('インタラクションデータがない場合、空配列を返す', () => {
             const testData = { interactions: [] };
             const anomalies = anomalyDetector.detectBubbleInteractionAnomaly(testData);
             expect(anomalies).toEqual([]);
-        }');
+        }');'
     }
-    describe('パフォーマンス劣化検出', (') => {
+    describe('パフォーマンス劣化検出', (') => {'
         test('FPS低下を検出する', () => {
             const testData = {
                 performance: [
@@ -257,17 +257,17 @@ describe('AnomalyDetector', () => {
             };
             const anomalies = anomalyDetector.detectPerformanceDegradation(testData);
             expect(anomalies.length).toBeGreaterThan(0);
-            expect(anomalies[0]').toHaveProperty('lowPerformanceRatio');
+            expect(anomalies[0]').toHaveProperty('lowPerformanceRatio');'
             expect(anomalies[0].lowPerformanceRatio).toBeGreaterThan(0.3);
-        }');
+        }');'
         test('パフォーマンスデータが不足している場合、空配列を返す', () => {
             const testData = { performance: [] };
             const anomalies = anomalyDetector.detectPerformanceDegradation(testData);
             expect(anomalies).toEqual([]);
-        }');
+        }');'
     }
-    describe('異常な終了パターン検出', (') => {
-        test('途中終了が多い場合を検出する', (') => {
+    describe('異常な終了パターン検出', (') => {'
+        test('途中終了が多い場合を検出する', (') => {'
             const testData = {
                 sessions: [
                     { sessionId: 's1', exitReason: 'quit', endTime: 1000 + 60000, startTime: 1000 },
@@ -285,11 +285,11 @@ describe('AnomalyDetector', () => {
             const anomalies = anomalyDetector.detectUnusualQuitPattern(testData);
             expect(anomalies.length).toBeGreaterThan(0);
             expect(anomalies[0].quitRatio).toBeGreaterThan(0.4);
-            expect(anomalies[0]').toHaveProperty('pattern');
-        }');
+            expect(anomalies[0]').toHaveProperty('pattern');'
+        }');'
     }
-    describe('重要度分析', (') => {
-        test('重要度別分布を正しく計算する', (') => {
+    describe('重要度分析', (') => {'
+        test('重要度別分布を正しく計算する', (') => {'
             const results = [
                 { severity: 'low' },
                 { severity: 'medium' },
@@ -302,53 +302,53 @@ describe('AnomalyDetector', () => {
             expect(breakdown.medium).toBe(2);
             expect(breakdown.high).toBe(1);
             expect(breakdown.critical).toBe(1);
-        }');
+        }');'
     }
-    describe('サマリー生成', (') => {
+    describe('サマリー生成', (') => {'
         test('異常なしの場合、適切なメッセージを生成する', () => {
             const summary = anomalyDetector.generateAnomalySummary([]),
             expect(summary').toBe('異常なパターンは検出されませんでした。') }');
-        test('異常ありの場合、詳細なサマリーを生成する', (') => {
+        test('異常ありの場合、詳細なサマリーを生成する', (') => {'
             const results = [
                 { type: 'score_outlier', severity: 'medium' },
                 { type: 'accuracy_drop', severity: 'high' },
                 { type: 'score_outlier', severity: 'medium' }
             ];
             const summary = anomalyDetector.generateAnomalySummary(results);
-            expect(summary').toContain('3件の異常パターンが検出されました');
-            expect(summary').toContain('1件は高優先度');
-            expect(summary').toContain('最も多い問題は');
-        }');
+            expect(summary').toContain('3件の異常パターンが検出されました');'
+            expect(summary').toContain('1件は高優先度');'
+            expect(summary').toContain('最も多い問題は');'
+        }');'
     }
-    describe('推奨事項生成', (') => {
-        test('タイプ別の推奨事項を生成する', (') => {
+    describe('推奨事項生成', (') => {'
+        test('タイプ別の推奨事項を生成する', (') => {'
             const results = [
                 { type: anomalyDetector.anomalyTypes.SCORE_OUTLIER, severity: 'medium' },
                 { type: anomalyDetector.anomalyTypes.ACCURACY_DROP, severity: 'high' }
             ];
             const recommendations = anomalyDetector.generateRecommendations(results);
             expect(recommendations.length).toBe(2);
-            expect(recommendations[0]').toContain('スコアの変動');
-            expect(recommendations[1]').toContain('精度が低下');
-        }');
+            expect(recommendations[0]').toContain('スコアの変動');'
+            expect(recommendations[1]').toContain('精度が低下');'
+        }');'
     }
-    describe('アラート履歴管理', (') => {
-        test('アラート履歴に正しく保存される', (') => {
+    describe('アラート履歴管理', (') => {'
+        test('アラート履歴に正しく保存される', (') => {'
             const results = [
                 { type: 'test_anomaly', severity: 'medium', description: 'テスト異常' }
             ];
             anomalyDetector.saveToAlertHistory(results);
             const history = anomalyDetector.getAlertHistory();
             expect(history.length).toBe(1);
-            expect(history[0]').toHaveProperty('id');
-            expect(history[0]').toHaveProperty('timestamp');
-            expect(history[0].type').toBe('test_anomaly');
-        }');
+            expect(history[0]').toHaveProperty('id');'
+            expect(history[0]').toHaveProperty('timestamp');'
+            expect(history[0].type').toBe('test_anomaly');'
+        }');'
         test('履歴サイズが制限される', () => {
             // maxAlertHistoryを小さく設定
             anomalyDetector.maxAlertHistory = 3,
             // 5件のアラートを追加
-            for (let i = 0, i < 5, i++') {
+            for (let i = 0, i < 5, i++') {'
                 anomalyDetector.saveToAlertHistory([
                     { type: `test_${i}`, severity: 'low', description: `Test ${i}`
             });
@@ -356,9 +356,9 @@ describe('AnomalyDetector', () => {
             }
             const history = anomalyDetector.getAlertHistory();
             expect(history.length).toBe(3); // 最新の3件のみ保持
-        }');
+        }');'
     }
-    describe('設定管理', (') => {
+    describe('設定管理', (') => {'
         test('閾値を更新できる', () => {
             const newThresholds = {
                 statistical: 3.0,
@@ -368,16 +368,16 @@ describe('AnomalyDetector', () => {
             expect(anomalyDetector.thresholds.statistical).toBe(3.0);
             expect(anomalyDetector.thresholds.behavioral).toBe(0.9);
             expect(anomalyDetector.thresholds.performance).toBe(3.0); // 変更されない
-        }');
+        }');'
         test('表示名を正しく取得する', () => {
             const displayName = anomalyDetector.getTypeDisplayName(
                 anomalyDetector.anomalyTypes.SCORE_OUTLIER),
-            expect(displayName').toBe('スコア異常'),
+            expect(displayName').toBe('スコア異常'),'
             const unknownDisplayName = anomalyDetector.getTypeDisplayName('unknown_type'),
             expect(unknownDisplayName').toBe('unknown_type') }');
     }
-    describe('キャッシュ管理', (') => {
-        test('キャッシュが正しくクリアされる', (') => {
+    describe('キャッシュ管理', (') => {'
+        test('キャッシュが正しくクリアされる', (') => {'
             // アラート履歴を追加
             anomalyDetector.saveToAlertHistory([
                 { type: 'test', severity: 'low', description: 'Test'
@@ -386,14 +386,14 @@ describe('AnomalyDetector', () => {
             expect(anomalyDetector.alertHistory.length).toBe(1);
             anomalyDetector.clearCache();
             expect(anomalyDetector.alertHistory.length).toBe(0);
-        }');
+        }');'
     }
-    describe('エラーハンドリング', (') => {
+    describe('エラーハンドリング', (') => {'
         test('ストレージエラーが適切に処理される', async () => {
-            mockStorageManager.getData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Database error'),
+            mockStorageManager.getData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Database error'),'
             const result = await anomalyDetector.detectAnomalies(),
             expect(result.success).toBe(false),
-            expect(result.error').toBe('Database error'),
+            expect(result.error').toBe('Database error'),'
             expect(result.anomalies).toEqual([]) });
     }
-}');
+}');'

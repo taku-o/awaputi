@@ -6,62 +6,61 @@
 
 // カスタムテーマの型定義
 export interface CustomTheme { id: string,
-    name: string,
-    author: string,
-    created: string,
-    version: string,
+    name: string;
+    author: string;
+    created: string;
+    version: string;
     colors: {
         primar,y: string[],
-        secondary?: string[],
+        secondary?: string[];
         accent?: string[],  };
     particles: { types: string[],
-        density?: number,
-        movement?: string,
-        spawnRate?: number };
+        density?: number;
+        movement?: string;
+        spawnRate?: number;;
     effects: { bubbleDestruction: string,
-        comboEffect?: string,
-        backgroundPattern?: string };
+        comboEffect?: string;
+        backgroundPattern?: string;;
     audio?: { ambientSounds?: string[],
-        destructionSounds?: string[] }
+        destructionSounds?: string[];
 
 export interface ThemeHistoryEntry { action: 'save' | 'delete' | 'import' | 'export',
-    themeName: string,
-    timestamp: string,
-    themeId: string  }
+    themeName: string;
+    timestamp: string;
+    themeId: string;
 
 export interface ThemeListItem { name: string,
-    displayName: string,
-    author: string,
-    created: string,
-    id: string }
+    displayName: string;
+    author: string;
+    created: string;
+    id: string;
 
 export interface ThemeStatistics { totalThemes: number,
-    authorCounts: Record<string, number>,
-    oldestTheme?: CustomTheme,
-    newestTheme?: CustomTheme }
+    authorCounts: Record<string, number>;
+    oldestTheme?: CustomTheme;
+    newestTheme?: CustomTheme;
 
 export interface ThemeBackup { themes: [string, CustomTheme][],
-    history: ThemeHistoryEntry[],
-    timestamp: string,
-    version: string  }
+    history: ThemeHistoryEntry[];
+    timestamp: string;
+    version: string;
 
 export interface StorageData { themes: [string, CustomTheme][],
-    history: ThemeHistoryEntry[]
-     }
+    history: ThemeHistoryEntry[];
 
 export class CustomThemeManager {
-    private customThemes: Map<string, CustomTheme>,
-    private userThemes: Map<string, CustomTheme>,
-    private themeHistory: ThemeHistoryEntry[],
+    private customThemes: Map<string, CustomTheme>;
+    private userThemes: Map<string, CustomTheme>;
+    private themeHistory: ThemeHistoryEntry[];
     private readonly, maxHistorySize: number,
     private readonly storageKey: string,
     
     constructor() {
-    ',
+    ','
 
         this.customThemes = new Map<string, CustomTheme>(),
         this.userThemes = new Map<string, CustomTheme>(),
-        this.themeHistory = [],
+        this.themeHistory = [];
 
         this.maxHistorySize = 50 }
 
@@ -85,11 +84,11 @@ export class CustomThemeManager {
                 author,
                 created: new Date().toISOString('',
     version: '1.0.0'
-            })', ')';
+            })', ')';'
             this.customThemes.set(name, themeData);
             this._addToHistory('save', name, themeData);
             this._persistToStorage();
-            ';
+            ';'
 
             return true;} catch (error) {
             console.error('Failed to save custom theme:', error),
@@ -107,7 +106,7 @@ export class CustomThemeManager {
      * @param name - テーマ名
      * @returns 削除成功かどうか
      */
-    deleteCustomTheme(name: string): boolean { if(this.customThemes.has(name) {
+    deleteCustomTheme(name: string): boolean { if (this.customThemes.has(name) {
             const theme = this.customThemes.get(name)!,
             this.customThemes.delete(name),
             this._addToHistory('delete', name, theme),
@@ -160,7 +159,7 @@ export class CustomThemeManager {
             const uniqueName = this._generateUniqueName(name);
 
             return this.saveCustomTheme(uniqueName, theme, theme.author || 'imported';} catch (error) {
-            console.error('Failed to import theme:', error',
+            console.error('Failed to import theme:', error','
             return false,
     
     /**
@@ -175,7 +174,7 @@ export class CustomThemeManager {
         const duplicatedTheme: Partial<CustomTheme> = {
             ...sourceTheme,
             name: newName,
-            author: sourceTheme.author + ' (copy')',
+            author: sourceTheme.author + ' (copy')','
     created: new Date().toISOString(  };
         
         return this.saveCustomTheme(newName, duplicatedTheme);
@@ -186,7 +185,7 @@ export class CustomThemeManager {
      */
     loadFromStorage(): void { try {
             const stored = localStorage.getItem(this.storageKey),
-            if(stored) {
+            if (stored) {
                 const data = JSON.parse(stored) as Partial<StorageData>,
                 if (data.themes) {
             }
@@ -194,7 +193,7 @@ export class CustomThemeManager {
                 }
                 if (data.history) { this.themeHistory = data.history }
 
-                }'} catch (error) { console.error('Failed to load themes from storage:', error }
+                }'} catch (error) { console.error('Failed to load themes from storage:', error }'
     }
     
     /**
@@ -218,12 +217,12 @@ export class CustomThemeManager {
         const stats: ThemeStatistics = { totalThemes: themes.length,
             authorCounts };
         
-        if(themes.length > 0) {
+        if (themes.length > 0) {
         
             stats.oldestTheme = themes.reduce((oldest, current) => ,
                 new Date(current.created) < new Date(oldest.created) ? current : oldest),
             stats.newestTheme = themes.reduce((newest, current) => ,
-                new Date(current.created) > new Date(newest.created) ? current : newest }
+                new Date(current.created) > new Date(newest.created) ? current : newest;
             ); }
         }
         
@@ -272,11 +271,11 @@ export class CustomThemeManager {
      */
     private _generateUniqueName(baseName: string): string { let counter = 1,
         let uniqueName = baseName,
-        ',
+        ','
 
         while(this.customThemes.has(uniqueName) { }'
 
-            uniqueName = `${baseName} (${counter}')`;
+            uniqueName = `${baseName} (${counter}')`;'
             counter++;
         }
         
@@ -309,7 +308,7 @@ export class CustomThemeManager {
             const data: StorageData = {
                 themes: Array.from(this.customThemes.entries(
     history: this.themeHistory };
-            localStorage.setItem(this.storageKey, JSON.stringify(data);'} catch (error) { console.error('Failed to persist themes to storage:', error }
+            localStorage.setItem(this.storageKey, JSON.stringify(data);'} catch (error) { console.error('Failed to persist themes to storage:', error }'
     }
     
     /**
@@ -334,7 +333,7 @@ export class CustomThemeManager {
     restoreFromBackup(backupJson: string): boolean { try {
             const backup = JSON.parse(backupJson) as Partial<ThemeBackup>,
             
-            if(backup.themes) {
+            if (backup.themes) {
     
 }
                 this.customThemes = new Map(backup.themes); }
@@ -344,5 +343,5 @@ export class CustomThemeManager {
             this._persistToStorage();
 
             return true;} catch (error) {
-            console.error('Failed to restore from backup:', error',
-            return false,'}
+            console.error('Failed to restore from backup:', error','
+            return false,'}'

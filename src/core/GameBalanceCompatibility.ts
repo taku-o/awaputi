@@ -1,5 +1,5 @@
 // TypeScript conversion - basic types
-interface BasicConfig { [key: string]: any }
+interface BasicConfig { [key: string]: any;
 /**
  * GameBalanceとの互換性レイヤー
  * 
@@ -45,15 +45,15 @@ function _showDeprecationWarning(message, caller) { if (!SHOW_DEPRECATION_WARNIN
  * @private
  */
 function _getCallerInfo() { try {'
-        const err = new Error()',
-        const stack = err.stack.split('\n),
+        const err = new Error()','
+        const stack = err.stack.split('\n),'
         
         // スタックトレースから呼び出し元を特定（3つ上のスタックフレーム）
-        if(stack.length >= 4) {
+        if (stack.length >= 4) {
             const callerLine = stack[3].trim(),
             const match = callerLine.match(/at\s+(.*)\s+\((.*):(\d+):(\d+)\)/),
 
-            if(match) {
+            if (match) {
         }
 
                 const [, fnName, file, line] = match;' }'
@@ -80,17 +80,17 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, { get(target, prop) {
         const caller = _getCallerInfo(),
         
         _showDeprecationWarning(`BALANCE_CONFIG.${prop)へのアクセスは非推奨です`, caller),
-        ',
+        ','
         // カテゴリに基づいて適切な設定を返す
         switch(prop) {
 
-            case 'scoring':',
+            case 'scoring':','
                 return, gameConfig.getScoreConfig('''
-            case 'stages': ',
+            case 'stages': ','
                 return, gameConfig.getStageConfig('',
-            case 'items':',
+            case 'items':','
                 return, gameConfig.getItemConfig('',
-            case 'bubbles':',
+            case 'bubbles':','
                 return, gameConfig.getBubbleConfig('',
             case 'changelog':),
                 // 変更履歴は新システムでは別の方法で管理}
@@ -124,7 +124,7 @@ class BalanceHelperCompatibility { /**
      * @returns {number} 計算されたスコア
      */
     static calculateScore(bubbleType, ageRatio = 0) { const gameConfig = getGameConfig(),
-        const caller = _getCallerInfo()',
+        const caller = _getCallerInfo()','
         _showDeprecationWarning('BalanceHelper.calculateScoreは非推奨です', caller),
         
         return gameConfig.calculateScore(bubbleType, ageRatio) }
@@ -135,7 +135,7 @@ class BalanceHelperCompatibility { /**
      * @returns {number} コンボ倍率
      */'
     static calculateComboMultiplier(comboCount) { const gameConfig = getGameConfig(),
-        const caller = _getCallerInfo()',
+        const caller = _getCallerInfo()','
         _showDeprecationWarning('BalanceHelper.calculateComboMultiplierは非推奨です', caller),
         
         return gameConfig.calculateComboMultiplier(comboCount) }
@@ -147,7 +147,7 @@ class BalanceHelperCompatibility { /**
      * @returns {number} 計算されたコスト
      */'
     static calculateItemCost(itemId, currentLevel) { const gameConfig = getGameConfig(),
-        const caller = _getCallerInfo()',
+        const caller = _getCallerInfo()','
         _showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller),
         
         return gameConfig.calculateItemCost(itemId, currentLevel) }
@@ -159,7 +159,7 @@ class BalanceHelperCompatibility { /**
      * @returns {boolean} 開放状態
      */'
     static isStageUnlocked(stageId, playerTAP) { const gameConfig = getGameConfig(),
-        const caller = _getCallerInfo()',
+        const caller = _getCallerInfo()','
         _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller),
 
         return gameConfig.isStageUnlocked(stageId, playerTAP),

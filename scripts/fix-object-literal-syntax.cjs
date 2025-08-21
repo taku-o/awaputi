@@ -1,137 +1,200 @@
-#!/usr/bin/env node
-
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 
-// Find all TypeScript files
-const files = [
-    ...glob.sync('src/**/*.ts'),
-    ...glob.sync('test/**/*.ts'),
-    ...glob.sync('tests/**/*.ts')
-];
-
-let totalFixes = 0;
-let filesFixed = 0;
-
-files.forEach(file => {
-    try {
-        let content = fs.readFileSync(file, 'utf8');
-        const originalContent = content;
-        let fixCount = 0;
-
-        // Fix semicolons that should be commas in object literals
-        // Pattern: property: value); where it should be property: value },
-        content = content.replace(/(\w+\s*:\s*[^,\n]+)\);(\s*\n\s*\w+\s*:)/g, (match, p1, p2) => {
-            fixCount++;
-            return p1 + '},' + p2;
-        });
-
-        // Fix trailing semicolons in object literals
-        // Pattern: property: value }; where it's inside an object
-        content = content.replace(/(\w+\s*:\s*[^,\n]+\s*\});(\s*\n\s*\w+\s*:)/g, (match, p1, p2) => {
-            fixCount++;
-            return p1.replace(/;(\s*\})/, '$1') + ',' + p2;
-        });
-
-        // Fix missing closing braces in object literals
-        // Pattern: save: jest.fn() followed by property definition without closing the object
-        content = content.replace(/(\w+\s*:\s*jest\.fn\(\))\s*\n(\s*)(\w+\s*:)/g, (match, p1, indent1, p3) => {
-            fixCount++;
-            return p1 + '\n' + indent1 + '},' + '\n' + indent1 + p3;
-        });
-
-        // Fix object literal ending with semicolon instead of comma
-        content = content.replace(/(\{[^{}]*\w+\s*:\s*[^,\n]+);(\s*\n\s*\w+\s*:)/g, (match, p1, p2) => {
-            fixCount++;
-            return p1 + ',' + p2;
-        });
-
-        // Fix mockResolvedValue followed by semicolon in object literal
-        content = content.replace(/(mockResolvedValue\([^)]+\));(\s*$)/gm, (match, p1, p2) => {
-            const lineContext = content.substring(Math.max(0, content.lastIndexOf('\n', content.indexOf(match)) - 100), content.indexOf(match) + match.length + 100);
-            if (lineContext.includes(',') && !lineContext.includes(';')) {
-                return match; // Already looks correct
-            }
-            // Check if this is inside an object literal
-            const beforeMatch = content.substring(0, content.indexOf(match));
-            const afterMatch = content.substring(content.indexOf(match) + match.length);
-            
-            // Count open/close braces to determine context
-            let braceLevel = 0;
-            for (let i = beforeMatch.length - 1; i >= 0; i--) {
-                if (beforeMatch[i] === '}') braceLevel--;
-                if (beforeMatch[i] === '{') {
-                    braceLevel++;
-                    if (braceLevel > 0) {
-                        // We're inside an object literal
-                        // Check if there's another property after this
-                        if (afterMatch.match(/^\s*\n\s*\w+\s*:/)) {
-                            fixCount++;
-                            return p1 + ',';
-                        }
-                    }
-                    break;
-                }
-            }
-            return match;
-        });
-
-        // Fix patterns like "})" that should be "})"
-        content = content.replace(/\}\)(\s*\n\s*\}\s*\n\s*\w+\s*:)/g, (match, p1) => {
-            fixCount++;
-            return '}),' + p1;
-        });
-
-        // Fix timestamp: Date.now()) patterns
-        content = content.replace(/(timestamp:\s*Date\.now\(\))\)(\s*\n\s*\};)/g, (match, p1, p2) => {
-            fixCount++;
-            return p1 + p2;
-        });
-
-        // Fix save: jest.fn() pattern at end of object
-        content = content.replace(/(save:\s*jest\.fn\(\))\s*$/gm, (match, p1) => {
-            const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
-            const nextLines = content.substring(content.indexOf(match) + match.length).split('\n').slice(0, 3);
-            
-            // Check if next line has an object property
-            if (nextLines.length > 1 && nextLines[1].match(/^\s*\w+\s*:/)) {
-                fixCount++;
-                return p1 + '\n            },';
-            }
-            return match;
-        });
-
-        // Fix patterns like "timestamp: Date.now())" at end of objects
-        content = content.replace(/(timestamp:\s*Date\.now\(\))\)\s*(\n\s*\})/g, (match, p1, p2) => {
-            fixCount++;
-            return p1 + p2;
-        });
-
-        // Fix patterns with extra closing parenthesis in object literals
-        content = content.replace(/(\w+:\s*[^,\n]+)\)\s*(\n\s*\};)/g, (match, p1, p2) => {
-            // Check if this is a function call that should keep the parenthesis
-            if (p1.includes('(') && !p1.includes('jest.fn()')) {
-                const openCount = (p1.match(/\(/g) || []).length;
-                const closeCount = (p1.match(/\)/g) || []).length;
-                if (openCount === closeCount) {
-                    // Extra closing parenthesis
-                    fixCount++;
-                    return p1 + p2;
-                }
-            }
-            return match;
-        });
-
-        if (content !== originalContent) {
-            fs.writeFileSync(file, content);
-            totalFixes += fixCount;
-            filesFixed++;
-            console.log(`Fixed ${fixCount} issues in ${file}`);
-        }
-    } catch (error) {
-        console.error(`Error processing ${file}:`, error.message);
+// オブジェクトリテラルの構文を修正
+function fixObjectLiteralSyntax(content) {
+  const lines = content.split('\n');
+  let modified = false;
+  let braceStack = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    
+    // ブレースの深さを追跡
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j];
+      if (char === '{') {
+        // オブジェクトリテラルの開始を検出
+        const beforeBrace = line.substring(0, j).trim();
+        const isObjectLiteral = beforeBrace.endsWith('=') || 
+                               beforeBrace.endsWith(':') || 
+                               beforeBrace.endsWith('(') ||
+                               beforeBrace.endsWith(',') ||
+                               beforeBrace.endsWith('return') ||
+                               beforeBrace === '';
+        braceStack.push(isObjectLiteral ? 'object' : 'other');
+      } else if (char === '}') {
+        braceStack.pop();
+      }
     }
-});
+    
+    // オブジェクトリテラル内でセミコロンをカンマに変換
+    if (braceStack.length > 0 && braceStack[braceStack.length - 1] === 'object') {
+      // プロパティ定義の後のセミコロンをカンマに変換
+      const newLine = line.replace(/([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:\s*([^;,}]+);/g, '$1: $2,');
+      if (newLine !== line) {
+        lines[i] = newLine;
+        modified = true;
+      }
+    }
+  }
+  
+  return { content: lines.join('\n'), modified };
+}
 
-console.log(`\nTotal: Fixed ${totalFixes} issues across ${filesFixed} files`);
+// コンストラクタとメソッド内のプロパティ初期化を修正
+function fixConstructorSyntax(content) {
+  let modified = false;
+  
+  // コンストラクタ内のプロパティ初期化の修正
+  // this.property = value, → this.property = value;
+  content = content.replace(/(\s*this\.[a-zA-Z_$][a-zA-Z0-9_$]*\s*=\s*[^;,]+),(?=\s*(?:this\.|\/\/|$))/gm, '$1;');
+  
+  // オブジェクトリテラル内の間違ったセミコロン
+  // { prop: value; } → { prop: value, }
+  content = content.replace(/(\{\s*[a-zA-Z_$][a-zA-Z0-9_$]*\s*:\s*[^;,}]+);(?=\s*[a-zA-Z_$][a-zA-Z0-9_$]*\s*:)/g, '$1,');
+  
+  // returnオブジェクトの修正
+  // return { prop: value; }; → return { prop: value };
+  content = content.replace(/return\s*\{([^}]+);\s*\}/g, (match, p1) => {
+    const fixed = p1.replace(/;/g, ',').replace(/,\s*$/, '');
+    return `return {${fixed} }`;
+  });
+  
+  return { content, modified: true };
+}
+
+// try-catch文とif文の修正
+function fixControlFlowSyntax(content) {
+  let modified = false;
+  
+  // } catch (error) { の修正
+  content = content.replace(/\}\s*catch\s*\(/g, '} catch (');
+  
+  // if文の条件内の不正な括弧
+  content = content.replace(/if\s*\(\s*([^)]+)\s*\)\s*\{/g, (match, condition) => {
+    // 条件内の不正な文字を修正
+    const fixedCondition = condition.replace(/\s+\{/g, '');
+    return `if (${fixedCondition}) {`;
+  });
+  
+  return { content, modified: true };
+}
+
+// 文字列リテラルの修正
+function fixStringLiterals(content) {
+  const lines = content.split('\n');
+  let modified = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    
+    // 未終了の文字列を検出して修正
+    const singleQuotes = (line.match(/'/g) || []).length;
+    const doubleQuotes = (line.match(/"/g) || []).length;
+    
+    // エスケープされていない引用符を考慮
+    const escapedSingle = (line.match(/\\'/g) || []).length;
+    const escapedDouble = (line.match(/\\"/g) || []).length;
+    
+    const actualSingle = singleQuotes - escapedSingle;
+    const actualDouble = doubleQuotes - escapedDouble;
+    
+    // 奇数個の引用符がある場合、行末に追加
+    if (actualSingle % 2 !== 0 && !line.trim().endsWith("'")) {
+      lines[i] = line + "'";
+      modified = true;
+    } else if (actualDouble % 2 !== 0 && !line.trim().endsWith('"')) {
+      lines[i] = line + '"';
+      modified = true;
+    }
+  }
+  
+  return { content: lines.join('\n'), modified };
+}
+
+// ファイルを修正する関数
+function fixFile(filePath) {
+  try {
+    let content = fs.readFileSync(filePath, 'utf8');
+    let totalModified = false;
+    
+    // オブジェクトリテラルの修正
+    const objectResult = fixObjectLiteralSyntax(content);
+    if (objectResult.modified) {
+      content = objectResult.content;
+      totalModified = true;
+      console.log(`  Fixed object literals`);
+    }
+    
+    // コンストラクタ構文の修正
+    const constructorResult = fixConstructorSyntax(content);
+    if (constructorResult.modified) {
+      content = constructorResult.content;
+      totalModified = true;
+      console.log(`  Fixed constructor syntax`);
+    }
+    
+    // 制御フロー構文の修正
+    const controlResult = fixControlFlowSyntax(content);
+    if (controlResult.modified) {
+      content = controlResult.content;
+      totalModified = true;
+      console.log(`  Fixed control flow syntax`);
+    }
+    
+    // 文字列リテラルの修正
+    const stringResult = fixStringLiterals(content);
+    if (stringResult.modified) {
+      content = stringResult.content;
+      totalModified = true;
+      console.log(`  Fixed string literals`);
+    }
+    
+    if (totalModified) {
+      fs.writeFileSync(filePath, content, 'utf8');
+      console.log(`✅ Fixed: ${filePath}`);
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error(`❌ Error processing ${filePath}:`, error.message);
+    return false;
+  }
+}
+
+// メイン処理
+async function main() {
+  console.log('🔧 Fixing TypeScript object literal and syntax errors...\n');
+
+  const targetPatterns = [
+    'src/**/*.ts',
+    'test/**/*.ts',
+    'tests/**/*.ts'
+  ];
+
+  let totalFixed = 0;
+  let totalFiles = 0;
+
+  for (const pattern of targetPatterns) {
+    const files = glob.sync(pattern, { nodir: true });
+    console.log(`\n📁 Processing ${pattern} (${files.length} files)...`);
+    
+    for (const file of files) {
+      totalFiles++;
+      if (fixFile(file)) {
+        totalFixed++;
+      }
+    }
+  }
+
+  console.log(`\n📊 Summary:`);
+  console.log(`Total files processed: ${totalFiles}`);
+  console.log(`Files fixed: ${totalFixed}`);
+  console.log(`\n✅ Done!`);
+}
+
+// 実行
+main().catch(console.error);

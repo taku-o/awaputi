@@ -4,13 +4,13 @@
  */
 export class AnalyticsTrendAnalyzer {
     constructor(storageManager) {
-        this.storageManager = storageManager,
-        this.analysisCache = new Map(),
-        this.cacheExpiration = 5 * 60 * 1000, // 5分間のキャッシュ
+        this.storageManager = storageManager;
+        this.analysisCache = new Map();
+        this.cacheExpiration = 5 * 60 * 1000; // 5分間のキャッシュ
         
         // 統計計算用の定数
-        this.ANOMALY_THRESHOLD = 2.0, // 標準偏差の倍数
-        this.MIN_DATA_POINTS = 7, // 最小データポイント数
+        this.ANOMALY_THRESHOLD = 2.0; // 標準偏差の倍数
+        this.MIN_DATA_POINTS = 7; // 最小データポイント数
     }
         this.SEASONAL_PERIOD = 7; // 週次の季節性（7日） }
     }
@@ -25,7 +25,7 @@ export class AnalyticsTrendAnalyzer {
         const cacheKey = `weekly_${dataType}_${startDate?.getTime(}) || 'latest'}`;
         
         // キャッシュチェック
-        if(this.analysisCache.has(cacheKey) {
+        if (this.analysisCache.has(cacheKey) {
             const cached = this.analysisCache.get(cacheKey),
             if (Date.now() - cached.timestamp < this.cacheExpiration) {
         }
@@ -33,22 +33,22 @@ export class AnalyticsTrendAnalyzer {
 
         try { : undefined
             const endDate = startDate ? new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000) : new Date(),
-            const analysisStartDate = startDate || new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000'),
-',
+            const analysisStartDate = startDate || new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000'),'
+','
             // データ取得
             const data = await this.storageManager.getData('sessions', {
                 startDate: analysisStartDate),
                 endDate: endDate,
 
-            if(data.length < this.MIN_DATA_POINTS) {
+            if (data.length < this.MIN_DATA_POINTS) {
                 return { success: false,''
                     message: 'データが不足しています。7日以上のデータが必要です。' }
                     dataPoints: data.length };
                     requiredPoints: this.MIN_DATA_POINTS 
     }
-';
+';'
             // 週次トレンド計算
-            const trendResult = this.calculateTrend(data, dataType, 'weekly);
+            const trendResult = this.calculateTrend(data, dataType, 'weekly);'
             
             // キャッシュに保存
             this.analysisCache.set(cacheKey, {
@@ -59,11 +59,10 @@ export class AnalyticsTrendAnalyzer {
             return trendResult;
 
         } catch (error) {
-            console.error('週次トレンド分析エラー:', error',
+            console.error('週次トレンド分析エラー:', error','
             return { success: false,
                 error: error.message };
-                dataType: dataType 
-    }
+                dataType: dataType;
     }
 
     /**
@@ -77,7 +76,7 @@ export class AnalyticsTrendAnalyzer {
         const cacheKey = `monthly_${dataType}_${startDate?.getTime('}' || 'latest'}`;
         
         // キャッシュチェック
-        if(this.analysisCache.has(cacheKey) {
+        if (this.analysisCache.has(cacheKey) {
             const cached = this.analysisCache.get(cacheKey),
             if (Date.now() - cached.timestamp < this.cacheExpiration) {
         }
@@ -85,22 +84,22 @@ export class AnalyticsTrendAnalyzer {
 
         try { : undefined
             const endDate = startDate ? new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000) : new Date(),
-            const analysisStartDate = startDate || new Date(endDate.getTime() - 30 * 24 * 60 * 60 * 1000'),
-',
+            const analysisStartDate = startDate || new Date(endDate.getTime() - 30 * 24 * 60 * 60 * 1000'),'
+','
             // データ取得
             const data = await this.storageManager.getData('sessions', {
                 startDate: analysisStartDate),
                 endDate: endDate,
 
-            if(data.length < 30) {
+            if (data.length < 30) {
                 return { success: false,''
                     message: 'データが不足しています。30日以上のデータが必要です。' }
                     dataPoints: data.length };
                     requiredPoints: 30 
     }
-';
+';'
             // 月次トレンド計算
-            const trendResult = this.calculateTrend(data, dataType, 'monthly);
+            const trendResult = this.calculateTrend(data, dataType, 'monthly);'
             
             // キャッシュに保存
             this.analysisCache.set(cacheKey, {
@@ -111,11 +110,10 @@ export class AnalyticsTrendAnalyzer {
             return trendResult;
 
         } catch (error) {
-            console.error('月次トレンド分析エラー:', error',
+            console.error('月次トレンド分析エラー:', error','
             return { success: false,
                 error: error.message };
-                dataType: dataType 
-    }
+                dataType: dataType;
     }
 
     /**
@@ -136,7 +134,7 @@ export class AnalyticsTrendAnalyzer {
             dataPoints: data.length,
     timeRange: {
                 start: new Date(Math.min(...data.map(d = > d.startTime)  }
-                end: new Date(Math.max(...data.map(d => d.endTime || d.startTime)); 
+                end: new Date(Math.max(...data.map(d => d.endTime || d.startTime)), 
     },
             metrics: { scoreImprovement: this.calculateScoreImprovement(timeSeriesData,
     playTimeChange: this.calculatePlayTimeChange(timeSeriesData,
@@ -146,7 +144,7 @@ export class AnalyticsTrendAnalyzer {
                 strength: 0, // 0-1の値,
                 confidence: 0 // 0-1の値  };
             timeSeriesData: timeSeriesData,
-            summary: ';
+            summary: ';'
         },
 
         // トレンド方向と強度の計算
@@ -176,7 +174,7 @@ export class AnalyticsTrendAnalyzer {
             return { timestamp: session.startTime,
                 score: session.finalScore || 0,
                 playTime: duration,
-    accuracy: accuracy }
+    accuracy: accuracy,
                 combo: session.maxCombo || 0 }
                 completed: session.completed || false };
                 date: new Date(session.startTime).toDateString(); 
@@ -191,7 +189,7 @@ export class AnalyticsTrendAnalyzer {
      */
     groupByTimeUnit(metrics, period) {
         const grouped = new Map(),
-        ',
+        ','
 
         metrics.forEach(metric => { ),
             const date = new Date(metric.timestamp),
@@ -206,10 +204,10 @@ export class AnalyticsTrendAnalyzer {
 
             } else { // 月の開始日を基準にグループ化' }'
 
-                key = `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'})`;
+                key = `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'})`;'
             }
             
-            if(!grouped.has(key) { grouped.set(key, []) }
+            if (!grouped.has(key) { grouped.set(key, []) }
             grouped.get(key).push(metric);
         });
 
@@ -224,9 +222,9 @@ export class AnalyticsTrendAnalyzer {
                 sessionCount: totalSessions,
                 averageScore: avgScore,
                 averagePlayTime: avgPlayTime,
-    averageAccuracy: avgAccuracy }
-                completionRate: completionRate };
-                maxCombo: Math.max(...values.map(v => v.combo); 
+    averageAccuracy: avgAccuracy,
+                completionRate: completionRate,;
+                maxCombo: Math.max(...values.map(v => v.combo), 
     }).sort((a, b) => a.period.localeCompare(b.period);
     }
 
@@ -279,7 +277,7 @@ export class AnalyticsTrendAnalyzer {
      */
     calculateTrendDirection(timeSeriesData) { }
 
-        if(timeSeriesData.length < 3) { }'
+        if (timeSeriesData.length < 3) { }'
 
             return { direction: 'stable', strength: 0, confidence: 0  }
 
@@ -290,7 +288,7 @@ export class AnalyticsTrendAnalyzer {
         const regression = this.linearRegression(indices, scores);
         const slope = regression.slope;
         const rSquared = regression.rSquared;
-';
+';'
         // トレンド方向の判定
         let direction = 'stable';
         if (Math.abs(slope) > 1') { // 閾値は調整可能'
@@ -304,8 +302,7 @@ export class AnalyticsTrendAnalyzer {
         return { direction: direction,
             strength: strength,
     confidence: rSquared, // R²値を信頼度として使用 };
-            slope: slope 
-    }
+            slope: slope;
 
     /**
      * 線形回帰計算
@@ -331,10 +328,9 @@ export class AnalyticsTrendAnalyzer {
         const ssTot = y.map(yi => Math.pow(yi - yMean, 2).reduce((a, b) => a + b, 0),
         const rSquared = ssTot > 0 ? 1 - (ssRes / ssTot) : 0,
 
-        return { slope: slope  }
-            intercept: intercept };
-            rSquared: rSquared 
-    }
+        return { slope: slope,
+            intercept: intercept,;
+            rSquared: rSquared,
 
     /**
      * トレンドサマリーを生成
@@ -347,22 +343,22 @@ export class AnalyticsTrendAnalyzer {
         const { metrics, trend, period } = trendAnalysis;
 
         let summary = `${period === 'weekly' ? '週次' : '月次'}分析結果: `;
-        ';
+        ';'
         // トレンド方向
         switch(trend.direction) {
 
-            case 'increasing':',
+            case 'increasing':','
                 summary += 'パフォーマンスが向上傾向にあります。',
 
                 break,
-            case 'decreasing':',
+            case 'decreasing':','
                 summary += 'パフォーマンスが低下傾向にあります。',
 
                 break }
 
-            default: summary += 'パフォーマンスは安定しています。'; 
+            default: summary += 'パフォーマンスは安定しています。', 
     }
-';
+';'
         // 具体的な変化
         if (Math.abs(metrics.scoreImprovement) > 5') { ''
             const direction = metrics.scoreImprovement > 0 ? '向上' : '低下' }
@@ -397,11 +393,11 @@ export class AnalyticsTrendAnalyzer {
         data.forEach((dataPoint, index) => { const value = dataPoint.averageScore || dataPoint.score || 0,
             const zScore = stdDev > 0 ? Math.abs((value - mean) / stdDev) : 0,
 
-            if(zScore > threshold) {
+            if (zScore > threshold) {
                 anomalies.push({
                     index: index,
                     value: value,
-    zScore: zScore  }
+    zScore: zScore,
 
                     timestamp: dataPoint.timestamp || dataPoint.period,') }'
 
@@ -432,10 +428,8 @@ export class AnalyticsTrendAnalyzer {
             
             return { ...dataPoint,
                 originalValue: dataPoint.averageScore || dataPoint.score || 0, 
-                seasonallyAdjusted: adjustedValue };
-                seasonalIndex: seasonalIndex 
-    });
-    }
+                seasonallyAdjusted: adjustedValue,,
+                seasonalIndex: seasonalIndex,) }
 
     /**
      * 季節指数を計算

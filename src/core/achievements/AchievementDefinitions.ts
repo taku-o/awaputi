@@ -16,126 +16,126 @@
 
 // 型定義
 export interface Achievement { id: string,
-    name: string,
-    description: string,
-    icon: string,
-    category: CategoryType,
-    type: AchievementType,
-    condition: AchievementCondition,
-    reward: AchievementReward,
-    difficulty?: DifficultyLevel,
+    name: string;
+    description: string;
+    icon: string;
+    category: CategoryType;
+    type: AchievementType;
+    condition: AchievementCondition;
+    reward: AchievementReward;
+    difficulty?: DifficultyLevel;
     hidden?: boolean,  }
 
 export interface AchievementCondition { type: ConditionType,
-    value?: number | boolean,
-    bubbleType?: BubbleType,
-    hp?: number,
-    time?: number,
-    score?: number,
-    minBubbles?: number,
-    bubbles?: number,
-    startHour?: number,
-    endHour?: number,
-    [key: string]: any }
+    value?: number | boolean;
+    bubbleType?: BubbleType;
+    hp?: number;
+    time?: number;
+    score?: number;
+    minBubbles?: number;
+    bubbles?: number;
+    startHour?: number;
+    endHour?: number;
+    [key: string]: any;
 
 export interface AchievementReward { ap: number,
-    items?: RewardItem[],
-    unlocks?: string[],
-    titles?: string[] }
+    items?: RewardItem[];
+    unlocks?: string[];
+    titles?: string[];
 
 export interface RewardItem { type: ItemType,
-    id: string,
-    quantity: number  }
+    id: string;
+    quantity: number;
 
 export interface Category { name: string,
-    description: string,
-    icon: string,
-    color: string,
-    priority?: number,
-    unlockRequirements?: string[] }
+    description: string;
+    icon: string;
+    color: string;
+    priority?: number;
+    unlockRequirements?: string[];
 
 export interface AchievementStatistics { total: number,
-    byCategory: Record<CategoryType, number>,
-    byType: Record<AchievementType, number>,
-    totalAP: number,
-    averageAP: number,
+    byCategory: Record<CategoryType, number>;
+    byType: Record<AchievementType, number>;
+    totalAP: number;
+    averageAP: number;
     difficultyDistribution?: Record<DifficultyLevel, number> }
 
 export interface AchievementFilter { category?: CategoryType,
-    type?: AchievementType,
-    conditionType?: ConditionType,
-    minAP?: number,
-    maxAP?: number,
-    difficulty?: DifficultyLevel,
-    unlocked?: boolean }
+    type?: AchievementType;
+    conditionType?: ConditionType;
+    minAP?: number;
+    maxAP?: number;
+    difficulty?: DifficultyLevel;
+    unlocked?: boolean;
 
 export interface AchievementSearchResult { achievements: Achievement[],
-    totalCount: number,
-    categories: string[]  }
+    totalCount: number;
+    categories: string[];
 
 // 列挙型
 export type CategoryType = ;
-    | 'basic'';
-    | 'score'';
-    | 'combo'';
-    | 'bubbleType'';
-    | 'survival'';
-    | 'stage'';
-    | 'technique'';
-    | 'play'';
-    | 'collection'';
+    | 'basic'';'
+    | 'score'';'
+    | 'combo'';'
+    | 'bubbleType'';'
+    | 'survival'';'
+    | 'stage'';'
+    | 'technique'';'
+    | 'play'';'
+    | 'collection'';'
     | 'challenge';
 
 export type AchievementType = 'single' | 'cumulative' | 'progressive';
-';
+';'
 
-export type ConditionType = ';
-    | 'bubblesPopped'';
-    | 'singleGameScore'';
-    | 'cumulativeScore'';
-    | 'maxCombo'';
-    | 'bubbleTypePopped'';
-    | 'survivalTime'';
-    | 'lowHpSurvival'';
-    | 'lowHpScore'';
-    | 'stagesCleared'';
-    | 'allStagesCleared'';
-    | 'perfectGame'';
-    | 'speedChallenge'';
-    | 'accuracy'';
-    | 'consecutiveDays'';
-    | 'totalPlayTime'';
-    | 'gamesPlayed'';
-    | 'allBubbleTypes'';
-    | 'allStagesMultiple'';
-    | 'noItemScore'';
+export type ConditionType = ';'
+    | 'bubblesPopped'';'
+    | 'singleGameScore'';'
+    | 'cumulativeScore'';'
+    | 'maxCombo'';'
+    | 'bubbleTypePopped'';'
+    | 'survivalTime'';'
+    | 'lowHpSurvival'';'
+    | 'lowHpScore'';'
+    | 'stagesCleared'';'
+    | 'allStagesCleared'';'
+    | 'perfectGame'';'
+    | 'speedChallenge'';'
+    | 'accuracy'';'
+    | 'consecutiveDays'';'
+    | 'totalPlayTime'';'
+    | 'gamesPlayed'';'
+    | 'allBubbleTypes'';'
+    | 'allStagesMultiple'';'
+    | 'noItemScore'';'
     | 'timeSpecificScore';
-';
+';'
 
-export type BubbleType = ';
-    | 'normal'';
-    | 'rainbow'';
-    | 'diamond'';
-    | 'boss'';
-    | 'golden'';
-    | 'phantom'';
-    | 'explosive'';
-    | 'magnetic'';
-    | 'frozen'';
-    | 'multiplier'';
-    | 'stone'';
-    | 'iron'';
-    | 'electric'';
-    | 'poison'';
-    | 'spiky'';
+export type BubbleType = ';'
+    | 'normal'';'
+    | 'rainbow'';'
+    | 'diamond'';'
+    | 'boss'';'
+    | 'golden'';'
+    | 'phantom'';'
+    | 'explosive'';'
+    | 'magnetic'';'
+    | 'frozen'';'
+    | 'multiplier'';'
+    | 'stone'';'
+    | 'iron'';'
+    | 'electric'';'
+    | 'poison'';'
+    | 'spiky'';'
     | 'pink';
 
 export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';
 export type ItemType = 'powerup' | 'skin' | 'currency' | 'unlock';
 
 export class AchievementDefinitions {
-    private achievements: Record<string, Achievement>,
-    private categories: Record<CategoryType, Category>,
+    private achievements: Record<string, Achievement>;
+    private categories: Record<CategoryType, Category>;
 
     constructor() {
 
@@ -162,7 +162,7 @@ export class AchievementDefinitions {
                 description: '100個の泡を割る',
                 icon: '🏹',
                 category: 'basic',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubblesPopped', value: 100  },
                 reward: { ap: 50 };
@@ -172,7 +172,7 @@ export class AchievementDefinitions {
                 description: '1000個の泡を割る',
                 icon: '👑',
                 category: 'basic',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubblesPopped', value: 1000  },
                 reward: { ap: 200 };
@@ -183,7 +183,7 @@ export class AchievementDefinitions {
                 description: '1回のゲームで1000点を獲得',
                 icon: '⭐',
                 category: 'score',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 1000  },
                 reward: { ap: 25 };
@@ -193,7 +193,7 @@ export class AchievementDefinitions {
                 description: '1回のゲームで10000点を獲得',
                 icon: '👑',
                 category: 'score',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 10000  },
                 reward: { ap: 100 };
@@ -203,7 +203,7 @@ export class AchievementDefinitions {
                 description: '1回のゲームで50000点を獲得',
                 icon: '💫',
                 category: 'score',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 50000  },
                 reward: { ap: 250 };
@@ -213,7 +213,7 @@ export class AchievementDefinitions {
                 description: '1回のゲームで100000点を獲得',
                 icon: '🌟',
                 category: 'score',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 100000  },
                 reward: { ap: 500 };
@@ -223,7 +223,7 @@ export class AchievementDefinitions {
                 description: '累計100000点を獲得',
                 icon: '🥉',
                 category: 'score',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'cumulativeScore', value: 100000  },
                 reward: { ap: 100 };
@@ -233,7 +233,7 @@ export class AchievementDefinitions {
                 description: '累計500000点を獲得',
                 icon: '🥈',
                 category: 'score',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'cumulativeScore', value: 500000  },
                 reward: { ap: 200 };
@@ -243,7 +243,7 @@ export class AchievementDefinitions {
                 description: '累計1000000点を獲得',
                 icon: '🥇',
                 category: 'score',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'cumulativeScore', value: 1000000  },
                 reward: { ap: 500 };
@@ -254,7 +254,7 @@ export class AchievementDefinitions {
                 description: '10コンボを達成',
                 icon: '🔥',
                 category: 'combo',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 10  },
                 reward: { ap: 30 };
@@ -264,7 +264,7 @@ export class AchievementDefinitions {
                 description: '50コンボを達成',
                 icon: '💥',
                 category: 'combo',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 50  },
                 reward: { ap: 150 };
@@ -274,7 +274,7 @@ export class AchievementDefinitions {
                 description: '100コンボを達成',
                 icon: '🔥',
                 category: 'combo',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 100  },
                 reward: { ap: 300 };
@@ -284,7 +284,7 @@ export class AchievementDefinitions {
                 description: '200コンボを達成',
                 icon: '🌪️',
                 category: 'combo',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 200  },
                 reward: { ap: 500 };
@@ -295,7 +295,7 @@ export class AchievementDefinitions {
                 description: '虹色の泡を10個割る',
                 icon: '🌈',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'rainbow', value: 10  },
                 reward: { ap: 75 };
@@ -305,7 +305,7 @@ export class AchievementDefinitions {
                 description: 'ダイヤモンドの泡を5個割る',
                 icon: '💎',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'diamond', value: 5  },
                 reward: { ap: 100 };
@@ -315,7 +315,7 @@ export class AchievementDefinitions {
                 description: 'ボス泡を3個割る',
                 icon: '⚔️',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'boss', value: 3  },
                 reward: { ap: 200 };
@@ -325,7 +325,7 @@ export class AchievementDefinitions {
                 description: '黄金の泡を5個割る',
                 icon: '✨',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'golden', value: 5  },
                 reward: { ap: 80 };
@@ -335,7 +335,7 @@ export class AchievementDefinitions {
                 description: '幻の泡を10個割る（すり抜けを含む）',
                 icon: '👻',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'phantom', value: 10  },
                 reward: { ap: 120 };
@@ -345,7 +345,7 @@ export class AchievementDefinitions {
                 description: '爆発泡を20個割る',
                 icon: '💥',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'explosive', value: 20  },
                 reward: { ap: 150 };
@@ -355,7 +355,7 @@ export class AchievementDefinitions {
                 description: '磁力泡を15個割る',
                 icon: '🧲',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'magnetic', value: 15  },
                 reward: { ap: 120 };
@@ -365,7 +365,7 @@ export class AchievementDefinitions {
                 description: '氷結泡を25個割る',
                 icon: '❄️',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'frozen', value: 25  },
                 reward: { ap: 100 };
@@ -375,7 +375,7 @@ export class AchievementDefinitions {
                 description: 'マルチプライヤー泡を10個割る',
                 icon: '✖️',
                 category: 'bubbleType',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'multiplier', value: 10  },
                 reward: { ap: 180 };
@@ -386,7 +386,7 @@ export class AchievementDefinitions {
                 description: '5分間生き残る',
                 icon: '🛡️',
                 category: 'survival',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'survivalTime', value: 300000  },
                 reward: { ap: 100 };
@@ -396,7 +396,7 @@ export class AchievementDefinitions {
                 description: 'HP10以下で1分間生き残る',
                 icon: '💪',
                 category: 'survival',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'lowHpSurvival', hp: 10, time: 60000  },
                 reward: { ap: 150 };
@@ -406,7 +406,7 @@ export class AchievementDefinitions {
                 description: 'HP5以下で3000点を獲得',
                 icon: '🦸',
                 category: 'survival',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'lowHpScore', hp: 5, score: 3000  },
                 reward: { ap: 200 };
@@ -417,7 +417,7 @@ export class AchievementDefinitions {
                 description: '5つのステージをクリア',
                 icon: '🗺️',
                 category: 'stage',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'stagesCleared', value: 5  },
                 reward: { ap: 100 };
@@ -427,9 +427,9 @@ export class AchievementDefinitions {
                 description: '全てのステージをクリア',
                 icon: '🏆',
                 category: 'stage',
-                type: 'single',' }
+                type: 'single',' }'
 
-                condition: { type: 'allStagesCleared', value: true  },
+                condition: { type: 'allStagesCleared', value: true,,
                 reward: { ap: 500 };
             stageCompletionist: { ''
                 id: 'stageCompletionist',
@@ -437,7 +437,7 @@ export class AchievementDefinitions {
                 description: '各ステージを10回ずつクリア',
                 icon: '📋',
                 category: 'stage',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'allStagesMultiple', value: 10  },
                 reward: { ap: 400 };
@@ -448,7 +448,7 @@ export class AchievementDefinitions {
                 description: '1回のゲームで泡を一度も逃さない（50個以上）',
                 icon: '🎯',
                 category: 'technique',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'perfectGame', minBubbles: 50  },
                 reward: { ap: 300 };
@@ -458,7 +458,7 @@ export class AchievementDefinitions {
                 description: '1分以内に100個の泡を割る',
                 icon: '⚡',
                 category: 'technique',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'speedChallenge', bubbles: 100, time: 60000  },
                 reward: { ap: 200 };
@@ -468,7 +468,7 @@ export class AchievementDefinitions {
                 description: '95%以上の精度でゲームを完了',
                 icon: '🎯',
                 category: 'technique',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'accuracy', value: 95  },
                 reward: { ap: 200 };
@@ -478,7 +478,7 @@ export class AchievementDefinitions {
                 description: '99%以上の精度でゲームを完了',
                 icon: '🏹',
                 category: 'technique',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'accuracy', value: 99  },
                 reward: { ap: 400 };
@@ -489,7 +489,7 @@ export class AchievementDefinitions {
                 description: '3日連続でプレイ',
                 icon: '📅',
                 category: 'play',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'consecutiveDays', value: 3  },
                 reward: { ap: 50 };
@@ -499,7 +499,7 @@ export class AchievementDefinitions {
                 description: '7日連続でプレイ',
                 icon: '🗓️',
                 category: 'play',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'consecutiveDays', value: 7  },
                 reward: { ap: 150 };
@@ -509,7 +509,7 @@ export class AchievementDefinitions {
                 description: '30日連続でプレイ',
                 icon: '🏅',
                 category: 'play',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'consecutiveDays', value: 30  },
                 reward: { ap: 500 };
@@ -519,7 +519,7 @@ export class AchievementDefinitions {
                 description: '累計1時間プレイ',
                 icon: '⏰',
                 category: 'play',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'totalPlayTime', value: 3600000  },
                 reward: { ap: 75 };
@@ -529,7 +529,7 @@ export class AchievementDefinitions {
                 description: '累計10時間プレイ',
                 icon: '⏳',
                 category: 'play',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'totalPlayTime', value: 36000000  },
                 reward: { ap: 200 };
@@ -539,7 +539,7 @@ export class AchievementDefinitions {
                 description: '50回ゲームをプレイ',
                 icon: '🎮',
                 category: 'play',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'gamesPlayed', value: 50  },
                 reward: { ap: 100 };
@@ -549,7 +549,7 @@ export class AchievementDefinitions {
                 description: '500回ゲームをプレイ',
                 icon: '🎯',
                 category: 'play',
-                type: 'cumulative',' }
+                type: 'cumulative',' }'
 
                 condition: { type: 'gamesPlayed', value: 500  },
                 reward: { ap: 300 };
@@ -560,9 +560,9 @@ export class AchievementDefinitions {
                 description: '全種類の泡を少なくとも1個ずつ割る',
                 icon: '🗂️',
                 category: 'collection',
-                type: 'single',' }
+                type: 'single',' }'
 
-                condition: { type: 'allBubbleTypes', value: true  },
+                condition: { type: 'allBubbleTypes', value: true,,
                 reward: { ap: 300 };
             // チャレンジ実績
             noItemChallenge: { ''
@@ -571,7 +571,7 @@ export class AchievementDefinitions {
                 description: 'アイテム使用なしで5000点を獲得',
                 icon: '🚫',
                 category: 'challenge',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'noItemScore', value: 5000  },
                 reward: { ap: 250 };
@@ -581,7 +581,7 @@ export class AchievementDefinitions {
                 description: 'AM6:00-AM8:00にプレイして1000点獲得',
                 icon: '🌅',
                 category: 'challenge',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'timeSpecificScore', startHour: 6, endHour: 8, score: 1000  },
                 reward: { ap: 150 };
@@ -591,7 +591,7 @@ export class AchievementDefinitions {
                 description: 'PM10:00-AM2:00にプレイして2000点獲得',
                 icon: '🦉',
                 category: 'challenge',
-                type: 'single',' }
+                type: 'single',' }'
 
                 condition: { type: 'timeSpecificScore', startHour: 22, endHour: 2, score: 2000  },
                 reward: { ap: 200 
@@ -605,7 +605,7 @@ export class AchievementDefinitions {
                 name: '基本プレイ',
                 description: '基本的なゲームプレイ実績',
                 icon: '🎮',
-                color: '#4CAF50';
+                color: '#4CAF50',
             },
 
             score: { ''
@@ -731,7 +731,7 @@ export class AchievementDefinitions {
     searchAchievements(filter: AchievementFilter): AchievementSearchResult { let achievements = Object.values(this.achievements),
 
         // フィルター適用
-        if(filter.category) {
+        if (filter.category) {
     
 }
             achievements = achievements.filter(a => a.category === filter.category); }
@@ -838,6 +838,6 @@ export class AchievementDefinitions {
 
         // 同じカテゴリの実績を関連として返す
         return this.getAchievementsByCategory(achievement.category),
-            .filter(a => a.id !== id)',
+            .filter(a => a.id !== id)','
             .slice(0, 5), // 最大5個 }
-    }'}
+    }'}'

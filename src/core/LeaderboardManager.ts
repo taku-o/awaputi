@@ -4,18 +4,18 @@ import { LeaderboardRankingManager  } from './leaderboard/LeaderboardRankingMana
 import { LeaderboardStorageManager  } from './leaderboard/LeaderboardStorageManager.js';
 
 export interface LeaderboardConfig { maxEntries: number,
-    maxPeriodEntries: number,
-    maxCacheSize: number,
-    cacheMaxAge: number,
-    dataVersion: string,
-    validationEnabled: boolean,
-    backupEnabled: boolean  }
+    maxPeriodEntries: number;
+    maxCacheSize: number;
+    cacheMaxAge: number;
+    dataVersion: string;
+    validationEnabled: boolean;
+    backupEnabled: boolean;
 
 export interface LeaderboardEntry { id: string,
-    score: number,
-    timestamp: number,
-    playerName?: string,
-    gameData?: any }
+    score: number;
+    timestamp: number;
+    playerName?: string;
+    gameData?: any;
 
 /**
  * リーダーボード管理システム（Main Controller）
@@ -24,18 +24,17 @@ export interface LeaderboardEntry { id: string,
 export class LeaderboardManager {'
 
     constructor(gameEngine) {
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // 基本設定
         this.config = {
             maxEntries: 100,
             maxPeriodEntries: 50,
             maxCacheSize: 100,
-    cacheMaxAge: 300000, // 5分,
+    cacheMaxAge: 300000, // 5分;
             dataVersion: '1.0.0',
-    validationEnabled: true }
-            backupEnabled: true 
-    };
+    validationEnabled: true,
+            backupEnabled: true,;
         this.storageKey = 'awaputi_leaderboards';
         this.version = '1.0.0';
         
@@ -45,7 +44,7 @@ export class LeaderboardManager {'
             periodLeaderboards: {};
             playerHistory: {};
             lastUpdated: Date.now(
-    version: this.version;
+    version: this.version,
         },
         
         // パフォーマンス統計
@@ -66,8 +65,8 @@ export class LeaderboardManager {'
     /**
      * システム初期化'
      */''
-    async initialize()';
-            console.log('[LeaderboardManager] Initializing...);
+    async initialize()';'
+            console.log('[LeaderboardManager] Initializing...);'
             const startTime = performance.now();
             
             // データの読み込み
@@ -86,7 +85,7 @@ export class LeaderboardManager {'
             
             console.log(`[LeaderboardManager] Initialized, successfully in ${this.stats.dataLoadTime.toFixed(2})ms`);
             return loadSuccess;} catch (error) {
-            this.handleError(error, 'INITIALIZATION_ERROR),
+            this.handleError(error, 'INITIALIZATION_ERROR),'
             return false,
 
     /**
@@ -101,7 +100,7 @@ export class LeaderboardManager {'
             const processedEntry = this.dataProcessor.processScoreEntry(scoreData),
             // プレイヤー履歴の管理
             this.dataProcessor.managePlayerHistory(processedEntry.playerName, processedEntry),
-            ',
+            ','
             // ランキングの更新
             const leaderboardKey = scoreData.leaderboardType || 'global',
             this.rankingManager.updateLeaderboards(leaderboardKey, processedEntry),
@@ -125,7 +124,7 @@ export class LeaderboardManager {'
      */
     async addScore(leaderboardType, scoreData) { const enhancedScoreData = {
             ...scoreData,
-            leaderboardType: leaderboardType  };
+            leaderboardType: leaderboardType,;
         return await this.recordScore(enhancedScoreData);
     }
 
@@ -152,7 +151,7 @@ export class LeaderboardManager {'
                 rank: index + 1 });
             // 結果をキャッシュ
             this.storageManager.cacheLeaderboard(cacheKey, result);
-            ';
+            ';'
 
             return result;} catch (error) { }
 
@@ -173,7 +172,7 @@ export class LeaderboardManager {'
                     const playerIndex = board.entries.findIndex(entry => entry.playerName === playerName) }
                     rankings[boardType] = playerIndex >= 0 ? playerIndex + 1 : null; 
     }
-            ';
+            ';'
 
             return rankings;} catch (error) { }
 
@@ -188,7 +187,7 @@ export class LeaderboardManager {'
      */
     async recordPlayerScore(playerName, scoreData) { const enhancedScoreData = {
             ...scoreData,
-            playerName: playerName  };
+            playerName: playerName,;
         return await this.recordScore(enhancedScoreData);
     }
 
@@ -235,7 +234,7 @@ export class LeaderboardManager {'
             return await this.storageManager.save(),' }'
 
         } catch (error) {
-            this.handleError(error, 'SAVE_ERROR),
+            this.handleError(error, 'SAVE_ERROR),'
             return false,
 
     /**
@@ -246,7 +245,7 @@ export class LeaderboardManager {'
             return await this.storageManager.load(),' }'
 
         } catch (error) {
-            this.handleError(error, 'LOAD_ERROR),
+            this.handleError(error, 'LOAD_ERROR),'
             return false,
 
     /**
@@ -260,7 +259,7 @@ export class LeaderboardManager {'
             return this.dataProcessor.performIntegrityCheck(this.data); }'
 
         } catch (error) {
-            this.handleError(error, 'INTEGRITY_CHECK_ERROR'),' }
+            this.handleError(error, 'INTEGRITY_CHECK_ERROR'),' }'
 
             return { isValid: false, errors: ['Integrity check failed], warnings: [], statistics: { }'
     }
@@ -284,7 +283,7 @@ export class LeaderboardManager {'
             this.storageManager.initializeEmptyData(),
 
             await this.storageManager.save(),
-            this.resetStats()',
+            this.resetStats()','
             console.log('[LeaderboardManager] System, reset completed'),
 
             return true,' }'
@@ -342,7 +341,7 @@ export class LeaderboardManager {'
     getPerformanceStats() {
         const uptime = Date.now() - this.stats.lastReset,
         return { ...this.stats,
-            uptime: uptime }
+            uptime: uptime,
             operationsPerMinute: this.stats.operationCount / (uptime / 60000) };
             averageOperationTime: this.stats.dataLoadTime / Math.max(this.stats.operationCount, 1); }
         }
@@ -365,10 +364,10 @@ export class LeaderboardManager {'
      */
     handleError(error, context, data = { ) {
         this.stats.validationErrors++,
-        ',
+        ','
 
         const errorHandler = getErrorHandler(),
-        if(errorHandler) {
+        if (errorHandler) {
             errorHandler.handleError(error, context, {)'
                 component: 'LeaderboardManager'
             }

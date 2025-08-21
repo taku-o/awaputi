@@ -4,107 +4,107 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  * Particle configuration interface
  */
 interface ParticleConfig { count: number,
-    type: string  }
+    type: string;
 
 /**
  * Theme colors interface
  */
 interface ThemeColors { primary: string[],
-    secondary: string[],
-    accent: string[] }
+    secondary: string[];
+    accent: string[];
 
 /**
  * Seasonal theme interface
  */
 interface SeasonalTheme { name: string,
-    colors: ThemeColors,
+    colors: ThemeColors;
     particles: {
-        [ke,y: string]: ParticleConfig };
+        [ke,y: string]: ParticleConfig,;
     weather: string,
-    priority: number;
+    priority: number,
 }
 
 /**
  * Event duration interface
  */
 interface EventDuration { start: string,
-    end: string  }
+    end: string;
 
 /**
  * Event theme interface
  */
 interface EventTheme { name: string,
-    duration: EventDuration,
-    colors: ThemeColors,
+    duration: EventDuration;
+    colors: ThemeColors;
     particles: {
-        [ke,y: string]: ParticleConfig };
-    priority: number;
+        [ke,y: string]: ParticleConfig,;
+    priority: number,
 }
 
 /**
  * Active event interface
  */
-interface ActiveEvent extends EventTheme { key: string }
+interface ActiveEvent extends EventTheme { key: string;
 
 /**
  * Particle interface
  */
 interface Particle { x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    size: number,
-    color: string,
-    life: number,
-    maxLife: number,
-    alpha: number,
-    gravity: number,
-    friction: number,
-    bounce?: number,
-    type: string,
-    rotation?: number,
-    rotationSpeed?: number,
-    scale?: number,
-    scaleSpeed?: number,
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    color: string;
+    life: number;
+    maxLife: number;
+    alpha: number;
+    gravity: number;
+    friction: number;
+    bounce?: number;
+    type: string;
+    rotation?: number;
+    rotationSpeed?: number;
+    scale?: number;
+    scaleSpeed?: number;
     maxTrailLength?: number,  }
-    trail?: Array<{ x: number,, y: number }>;
+    trail?: Array<{ x: number,, y: number;>;
     pulseSpeed?: number;
-    sway?: { amplitude: number,, frequency: number }
-    flutter?: { amplitude: number,, frequency: number }
-    drift?: { amplitude: number,, frequency: number }
+    sway?: { amplitude: number,, frequency: number,
+    flutter?: { amplitude: number,, frequency: number,
+    drift?: { amplitude: number,, frequency: number,
 
 /**
  * Particle manager interface
  */
 interface ParticleManager { particles: Particle[],
-    getParticleFromPool(): Particle,
-    shouldRenderEffect(effectType: string, priority: number): boolean,
-    adjustParticleCount(count: number): number }
+    getParticleFromPool(): Particle;
+    shouldRenderEffect(effectType: string, priority: number): boolean;
+    adjustParticleCount(count: number): number;
 
 /**
  * 季節限定効果専用レンダラー
  * 季節やイベントに応じた特別な視覚効果を管理
  */
 export class SeasonalEffectRenderer {
-    private particleManager: ParticleManager,
+    private particleManager: ParticleManager;
     private, seasonalThemes: Record<string, SeasonalTheme>,
-    private eventThemes: Record<string, EventTheme>,
-    private currentSeason: string,
-    private activeEvents: ActiveEvent[],
-    private, customTheme: any | null',
+    private eventThemes: Record<string, EventTheme>;
+    private currentSeason: string;
+    private activeEvents: ActiveEvent[];
+    private, customTheme: any | null','
 
     constructor(particleManager: ParticleManager) {
-        this.particleManager = particleManager,
+        this.particleManager = particleManager;
         
         // 季節テーマの定義
         this.seasonalThemes = {
             spring: {''
                 name: '春',
                 colors: {''
-                    primary: ['#FFB6C1', '#FFC0CB', '#FFE4E1', '#F0FFF0],
-                    secondary: ['#98FB98', '#90EE90', '#7CFC00', '#ADFF2F] }
+                    primary: ['#FFB6C1', '#FFC0CB', '#FFE4E1', '#F0FFF0];'
+                    secondary: ['#98FB98', '#90EE90', '#7CFC00', '#ADFF2F] }'
 
-                    accent: ['#FFD700', '#FFFF99', '#FFFACD] }
+                    accent: ['#FFD700', '#FFFF99', '#FFFACD] }'
                 },
 
                 particles: { }'
@@ -117,16 +117,16 @@ export class SeasonalEffectRenderer {
             }
 
                 },''
-                weather: 'gentle_breeze',
+                weather: 'gentle_breeze';
     priority: 5;
             },
 
             summer: { ''
                 name: '夏',
                 colors: {''
-                    primary: ['#FFD700', '#FFA500', '#FF8C00', '#FF7F50],
-                    secondary: ['#00CED1', '#40E0D0', '#48D1CC', '#AFEEEE],
-                    accent: ['#FF69B4', '#FF1493', '#DC143C] },
+                    primary: ['#FFD700', '#FFA500', '#FF8C00', '#FF7F50],'
+                    secondary: ['#00CED1', '#40E0D0', '#48D1CC', '#AFEEEE],'
+                    accent: ['#FF69B4', '#FF1493', '#DC143C] },'
 
                 particles: { }'
 
@@ -145,9 +145,9 @@ export class SeasonalEffectRenderer {
             autumn: { ''
                 name: '秋',
                 colors: {''
-                    primary: ['#FF8C00', '#FF7F50', '#CD853F', '#D2B48C],
-                    secondary: ['#8B4513', '#A0522D', '#BC8F8F', '#F4A460],
-                    accent: ['#B22222', '#DC143C', '#8B0000] },
+                    primary: ['#FF8C00', '#FF7F50', '#CD853F', '#D2B48C],'
+                    secondary: ['#8B4513', '#A0522D', '#BC8F8F', '#F4A460],'
+                    accent: ['#B22222', '#DC143C', '#8B0000] },'
 
                 particles: { }'
 
@@ -160,15 +160,15 @@ export class SeasonalEffectRenderer {
 
                 },''
                 weather: 'falling_leaves',
-    priority: 7;
+    priority: 7,
             },
 
             winter: { ''
                 name: '冬',
                 colors: {''
-                    primary: ['#E0FFFF', '#F0F8FF', '#F5F5F5', '#FFFFFF],
-                    secondary: ['#B0E0E6', '#87CEEB', '#87CEFA', '#6495ED],
-                    accent: ['#4169E1', '#0000CD', '#191970] },
+                    primary: ['#E0FFFF', '#F0F8FF', '#F5F5F5', '#FFFFFF],'
+                    secondary: ['#B0E0E6', '#87CEEB', '#87CEFA', '#6495ED],'
+                    accent: ['#4169E1', '#0000CD', '#191970] },'
 
                 particles: { }'
 
@@ -181,20 +181,20 @@ export class SeasonalEffectRenderer {
 
                 },''
                 weather: 'snowfall',
-    priority: 8;
+    priority: 8,
     },
         
         // イベントテーマの定義
         this.eventThemes = { halloween: {''
-                name: 'ハロウィン',' }
+                name: 'ハロウィン',' }'
 
                 duration: { start: '10-01', end: '11-01'
             },
 
-                colors: {;
-                    primary: ['#FF8C00', '#FF7F00', '#FF4500],
-                    secondary: ['#8B008B', '#4B0082', '#2F4F4F],
-                    accent: ['#00FF00', '#32CD32', '#7FFF00] },
+                colors: {,
+                    primary: ['#FF8C00', '#FF7F00', '#FF4500],'
+                    secondary: ['#8B008B', '#4B0082', '#2F4F4F],'
+                    accent: ['#00FF00', '#32CD32', '#7FFF00] },'
 
                 particles: { }'
 
@@ -204,19 +204,19 @@ export class SeasonalEffectRenderer {
             },''
                     magic_dust: { count: 12, type: 'magic_sparkle'
             },
-                priority: 9;
+                priority: 9,
             },
 
             christmas: { ''
-                name: 'クリスマス',' }
+                name: 'クリスマス',' }'
 
                 duration: { start: '12-01', end: '12-26'
             },
 
                 colors: { ''
-                    primary: ['#DC143C', '#B22222', '#8B0000],
-                    secondary: ['#228B22', '#32CD32', '#006400],
-                    accent: ['#FFD700', '#FFA500', '#FFFFFF] },
+                    primary: ['#DC143C', '#B22222', '#8B0000],'
+                    secondary: ['#228B22', '#32CD32', '#006400],'
+                    accent: ['#FFD700', '#FFA500', '#FFFFFF] },'
 
                 particles: { }'
 
@@ -226,19 +226,19 @@ export class SeasonalEffectRenderer {
             },''
                     snow_crystal: { count: 12, type: 'snowflake'
             },
-                priority: 10;
+                priority: 10,
             },
 
             new_year: { ''
-                name: '新年',' }
+                name: '新年',' }'
 
                 duration: { start: '12-31', end: '01-03'
             },
 
                 colors: { ''
-                    primary: ['#FFD700', '#FFA500', '#FF8C00],
-                    secondary: ['#DC143C', '#B22222', '#8B0000],
-                    accent: ['#4169E1', '#0000CD', '#8A2BE2] },
+                    primary: ['#FFD700', '#FFA500', '#FF8C00],'
+                    secondary: ['#DC143C', '#B22222', '#8B0000],'
+                    accent: ['#4169E1', '#0000CD', '#8A2BE2] },'
 
                 particles: { }'
 
@@ -252,15 +252,15 @@ export class SeasonalEffectRenderer {
             },
 
             valentine: { ''
-                name: 'バレンタイン',' }
+                name: 'バレンタイン',' }'
 
                 duration: { start: '02-01', end: '02-15'
             },
 
                 colors: { ''
-                    primary: ['#FF69B4', '#FF1493', '#DC143C],
-                    secondary: ['#FFB6C1', '#FFC0CB', '#FFE4E1],
-                    accent: ['#FFD700', '#FFFFFF', '#F0F8FF] },
+                    primary: ['#FF69B4', '#FF1493', '#DC143C],'
+                    secondary: ['#FFB6C1', '#FFC0CB', '#FFE4E1],'
+                    accent: ['#FFD700', '#FFFFFF', '#F0F8FF] },'
 
                 particles: { }'
 
@@ -275,9 +275,9 @@ export class SeasonalEffectRenderer {
         
         // 現在のテーマ状態
         this.currentSeason = this.detectCurrentSeason();
-        this.activeEvents = this.detectActiveEvents()';
-        console.log('[SeasonalEffectRenderer] 初期化完了 - 現在の季節:', this.currentSeason';
-        if(this.activeEvents.length > 0) {', ' }
+        this.activeEvents = this.detectActiveEvents()';'
+        console.log('[SeasonalEffectRenderer] 初期化完了 - 現在の季節:', this.currentSeason';'
+        if (this.activeEvents.length > 0) {', ' }
 
             console.log('[SeasonalEffectRenderer] アクティブイベント:', this.activeEvents.map(e => e.name); }
 }
@@ -295,7 +295,7 @@ export class SeasonalEffectRenderer {
             const event = eventType ? this.eventThemes[eventType] : this.getHighestPriorityEvent(),
             
             // イベントが優先、次に季節
-            if(event) {
+            if (event) {
     
 }
                 this.createEventEffect(x, y, event); }
@@ -303,7 +303,7 @@ export class SeasonalEffectRenderer {
                 this.createDefaultSeasonalEffect(x, y); }
             } catch (error) { getErrorHandler().handleError(error, 'SEASONAL_EFFECT_ERROR', {''
                 context: 'SeasonalEffectRenderer.createSeasonalEffect'
-            }';
+            }';'
         }
     }
     
@@ -314,7 +314,7 @@ export class SeasonalEffectRenderer {
      * @param {Object} theme - 季節テーマ'
      */''
     createSeasonEffect(x: number, y: number, theme: SeasonalTheme): void { // 品質チェック
-        if(!this.particleManager.shouldRenderEffect('seasonal', theme.priority) {
+        if (!this.particleManager.shouldRenderEffect('seasonal', theme.priority) {
             this.createSimplifiedSeasonalEffect(x, y, theme) }
             return; }
         }
@@ -325,15 +325,15 @@ export class SeasonalEffectRenderer {
 
         switch(seasonKey) {
 
-            case 'spring':',
+            case 'spring':','
                 this.createSpringEffect(x, y, theme),
 
                 break,
-            case 'summer':',
+            case 'summer':','
                 this.createSummerEffect(x, y, theme),
 
                 break,
-            case 'autumn':',
+            case 'autumn':','
                 this.createAutumnEffect(x, y, theme),
 
                 break,
@@ -369,7 +369,7 @@ export class SeasonalEffectRenderer {
             particle.color = theme.colors.primary[Math.floor(Math.random() * theme.colors.primary.length)],
             particle.life = 3000 + Math.random() * 2000,
             particle.maxLife = particle.life,
-            particle.alpha = 0.7 + Math.random()',
+            particle.alpha = 0.7 + Math.random()','
             particle.type = 'sakura_petal' }
             particle.rotationSpeed = (Math.random() - 0.5) * 5; }
             particle.sway = { amplitude: 20, frequency: 0.01  }; // 風による揺れ
@@ -438,7 +438,7 @@ export class SeasonalEffectRenderer {
             particle.vy = Math.random() * 40 + 30,
             particle.size = 4 + Math.random() * 4,
             particle.color = theme.colors.primary[Math.floor(Math.random() * theme.colors.primary.length)],
-            particle.life = 4000 + Math.random()',
+            particle.life = 4000 + Math.random()','
             particle.type = 'leaf' }
             particle.rotationSpeed = (Math.random() - 0.5) * 8; }
             particle.flutter = { amplitude: 15, frequency: 0.02  }; // ひらひら舞う
@@ -474,7 +474,7 @@ export class SeasonalEffectRenderer {
             particle.color = theme.colors.primary[Math.floor(Math.random() * theme.colors.primary.length)],
             particle.life = 5000 + Math.random() * 3000,
             particle.maxLife = particle.life,
-            particle.alpha = 0.6 + Math.random()',
+            particle.alpha = 0.6 + Math.random()','
             particle.type = 'snowflake' }
             particle.rotationSpeed = (Math.random() - 0.5) * 3; }
             particle.drift = { amplitude: 25, frequency: 0.008  }; // 風に流される
@@ -493,7 +493,7 @@ export class SeasonalEffectRenderer {
      * @param {Object} event - イベントテーマ
      */''
     createEventEffect(x: number, y: number, event: EventTheme | ActiveEvent): void { // 品質チェック
-        if(!this.particleManager.shouldRenderEffect('event', event.priority) {
+        if (!this.particleManager.shouldRenderEffect('event', event.priority) {
             this.createSimplifiedEventEffect(x, y, event) }
             return; }
         }
@@ -551,7 +551,7 @@ export class SeasonalEffectRenderer {
                 particle.vx = (Math.random() - 0.5) * 200,
 
                 particle.vy = (Math.random() - 0.5) * 200 - 50,
-                particle.size = 3 + Math.random()',
+                particle.size = 3 + Math.random()','
             case 'heart_sparkle':),
                 particle.vx = (Math.random() - 0.5) * 40,
                 particle.vy = (Math.random() - 0.5) * 40 - 20,
@@ -565,8 +565,8 @@ export class SeasonalEffectRenderer {
                 particle.vy = (Math.random() - 0.5) * 80,
                 particle.size = 2 + Math.random() * 3,
                 particle.gravity = 15,
-                particle.friction = 0.95,
-         }
+                particle.friction = 0.95
+}
                 break; }
 }
     
@@ -677,7 +677,7 @@ export class SeasonalEffectRenderer {
     colors: event.colors }
 
             particles: {},''
-            weather: ',
+            weather: ','
     priority: event.priority;
         },
         this.createSimplifiedSeasonalEffect(x, y, theme);
@@ -707,7 +707,7 @@ export class SeasonalEffectRenderer {
      * カスタムテーマを設定
      * @param {Object} customTheme - カスタムテーマ
      */''
-    setCustomTheme(customTheme: any): void { this.customTheme = customTheme,
+    setCustomTheme(customTheme: any): void { this.customTheme = customTheme;
         console.log('[SeasonalEffectRenderer] カスタムテーマ設定:', customTheme.name) }
     
     /**
@@ -741,4 +741,4 @@ export class SeasonalEffectRenderer {
         
         return effects;
 
-    }'}
+    }'}'

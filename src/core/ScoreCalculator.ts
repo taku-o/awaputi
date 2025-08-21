@@ -6,7 +6,7 @@
  */
 export class ScoreCalculator {
     constructor(gameConfig = null) {
-        this.gameConfig = gameConfig,
+        this.gameConfig = gameConfig;
         
         // デフォルトのスコア設定（GameConfigが利用できない場合のフォールバック）
         this.defaultScoreConfig = {
@@ -32,7 +32,7 @@ export class ScoreCalculator {
                 bonusMultiplier: 8,
     baseTimeout: 2000 };
             ageBonus: { earlyBonus: 2.0,    // 発生直後ボーナス（10%以内）
-                lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）,
+                lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）;
                 midBonus: 1.5       // 中盤ボーナス（50-70%）  }
         };
         console.log('ScoreCalculator, initialized');
@@ -42,8 +42,8 @@ export class ScoreCalculator {
      * スコア設定を取得
      * @returns {Object} スコア設定'
      */''
-    getScoreConfig()';
-        if(this.gameConfig && typeof, this.gameConfig.getScoreConfig === 'function) { return this.gameConfig.getScoreConfig() }'
+    getScoreConfig()';'
+        if (this.gameConfig && typeof, this.gameConfig.getScoreConfig === 'function) { return this.gameConfig.getScoreConfig() }'
         return this.defaultScoreConfig;
     }
     
@@ -76,7 +76,7 @@ export class ScoreCalculator {
         
         const config = this.getScoreConfig();
         
-        if(ageRatio < 0.1) {
+        if (ageRatio < 0.1) {
         
             // 発生直後ボーナス
         
@@ -160,9 +160,8 @@ export class ScoreCalculator {
                 age: this.calculateAgeBonus(ageRatio),
                 combo: comboMultiplier,
                 special: specialMultiplier,
-    item: itemMultiplier };
-                total: totalMultiplier 
-    };
+    item: itemMultiplier,;
+                total: totalMultiplier,;
             breakdown: { bubbleType,
                 ageRatio,
                 comboCount }
@@ -254,23 +253,23 @@ export class ScoreCalculator {
             timeRemaining = 0 }
             currentScore = 0 }
         } = gameState;
-        ';
+        ';'
 
         const strategy = { ''
             priority: 'normal',
             targetBubbles: [],
     reasoning: [] };
-        ';
+        ';'
         // コンボが高い場合は継続を優先
-        if(currentCombo >= 3) {
+        if (currentCombo >= 3) {
 
             strategy.priority = 'combo' }
 
             strategy.reasoning.push('高コンボ継続を優先'; }'
         }
-        ';
+        ';'
         // 時間が少ない場合は高得点泡を優先
-        if(timeRemaining < 30000) {
+        if (timeRemaining < 30000) {
             // 30秒未満
             strategy.priority = 'highScore' }
 
@@ -297,7 +296,7 @@ export class ScoreCalculator {
     getDebugInfo() {
         return { hasGameConfig: !!this.gameConfig }
 
-            scoreConfig: this.getScoreConfig('}
+            scoreConfig: this.getScoreConfig('}'
 
             version: '1.0.0' }))
     }

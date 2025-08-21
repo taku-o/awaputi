@@ -17,16 +17,16 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
     })'
 );
 (global as any').navigator = { ''
-    userAgent: 'Test Agent',',
+    userAgent: 'Test Agent',','
     platform: 'Test Platform',
-    hardwareConcurrency: 4,',
+    hardwareConcurrency: 4,','
     deviceMemory: 8' }'
     }'),'
 // Mock PerformanceConfig''
 jest.mock('../src/config/PerformanceConfig.js', () => ({ getPerformanceConfig: jest.fn(() => ({''
-        getOptimizationConfig: jest.fn((') => ({
-            targetFPS: 60,',
-            maxHistorySize: 1000,',
+        getOptimizationConfig: jest.fn((') => ({'
+            targetFPS: 60,','
+            maxHistorySize: 1000,','
             performanceLevel: 'high',
             adaptiveMode: true),
            , optimizationInterval: 100 }
@@ -64,17 +64,17 @@ const mockGameEngine = { canvas: {
 // Import after mocking''
 const { AdvancedPerformanceMonitor } = await import('../../src/debug/AdvancedPerformanceMonitor.js');
 describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
-    let consoleLogSpy: any,',
-    let consoleWarnSpy: any,',
+    let consoleLogSpy: any,','
+    let consoleWarnSpy: any,','
     beforeEach((') => { }'
         // Console spies' }'
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');'
         consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
         // Reset mock calls
         jest.clearAllMocks();
         jest.useFakeTimers();
         // Create instance
-        monitor = new AdvancedPerformanceMonitor(mockGameEngine: any);
+        monitor = new AdvancedPerformanceMonitor(mockGameEngine: any),
     });
     afterEach(() => {  if (monitor) { }
             monitor.destroy(); }
@@ -90,18 +90,18 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             expect(monitor.metricsCollector).toBeDefined(),
             expect(monitor.performanceAnalyzer).toBeDefined() }'
             expect(monitor.detailedProfiler).toBeDefined();' }'
-        }');
+        }');'
         test('should setup metrics objects', () => {  expect(monitor.metrics.frame).toBeDefined(),
             expect(monitor.metrics.memory).toBeDefined(),
             expect(monitor.metrics.render).toBeDefined(),
             expect(monitor.metrics.game).toBeDefined() }'
             expect(monitor.metrics.system).toBeDefined();' }'
-        }');
+        }');'
         test('should initialize history manager', () => {  expect(monitor.historyManager.maxSize).toBe(1000),
             expect(monitor.historyManager.retentionTime).toBe(5 * 60 * 1000),
             expect(monitor.historyManager.data).toBeDefined() }'
             expect(monitor.historyManager.data.fps).toEqual([]);' }'
-        }');
+        }');'
         test('should start monitoring automatically', () => {  expect(monitor.monitoring.enabled).toBe(true) }'
             expect(monitor.monitoring.intervalId).toBeDefined();' }'
         }');'
@@ -114,30 +114,30 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             expect(monitor.metrics.frame.frameTime).toBe(16.67),
             expect(monitor.metrics.frame.droppedFrames).toBe(2) }'
             expect(monitor.metrics.frame.fpsVariance).toBe(3.5););' }'
-        }');
+        }');'
         test('should collect memory metrics', () => {  monitor.metricsCollector.collectMemoryMetrics(),
             expect(monitor.metrics.memory.usedMemory).toBeCloseTo(47.68, 1), // 50MB in MB
             expect(monitor.metrics.memory.totalMemory).toBeCloseTo(95.37, 1), // 100MB in MB }'
             expect(monitor.metrics.memory.pressureLevel).toBeCloseTo(0.25, 2);' }'
-        }');
+        }');'
         test('should collect render metrics', () => {  monitor.metricsCollector.collectRenderMetrics(),
             expect(monitor.metrics.render.renderTime).toBe(12.5),
             expect(monitor.metrics.render.drawCalls).toBeGreaterThan(0) }'
             expect(monitor.metrics.render.vertexCount).toBeGreaterThan(0);' }'
-        }');
+        }');'
         test('should collect game metrics', () => {  monitor.metricsCollector.collectGameMetrics(),
             expect(monitor.metrics.game.bubbleCount).toBe(15),
             expect(monitor.metrics.game.particleCount).toBe(120),
             expect(monitor.metrics.game.effectCount).toBe(5),
             expect(monitor.metrics.game.currentScore).toBe(1500) }'
             expect(monitor.metrics.game.entityCount).toBe(135); // bubbles + particles);' }'
-        }');
+        }');'
         test('should collect system metrics', () => {  monitor.metricsCollector.collectSystemMetrics(),
-            expect(monitor.metrics.system.userAgent').toBe('Test Agent'),
-            expect(monitor.metrics.system.platform').toBe('Test Platform'),
+            expect(monitor.metrics.system.userAgent').toBe('Test Agent'),'
+            expect(monitor.metrics.system.platform').toBe('Test Platform'),'
             expect(monitor.metrics.system.hardwareConcurrency).toBe(4) }'
             expect(monitor.metrics.system.deviceMemory).toBe(8););' }'
-        }');
+        }');'
         test('should collect all metrics', (') => {  ''
             const collectFrameMetricsSpy = jest.spyOn(monitor.metricsCollector, 'collectFrameMetrics'),
             const collectMemoryMetricsSpy = jest.spyOn(monitor.metricsCollector, 'collectMemoryMetrics'),
@@ -162,7 +162,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             expect(monitor.historyManager.data.fps[0].value).toBe(55),
             expect(monitor.historyManager.data.memory).toHaveLength(1) }'
             expect(monitor.historyManager.data.memory[0].used).toBe(60););' }'
-        }');
+        }');'
         test('should limit history size', () => {  monitor.historyManager.maxSize = 3,
             // Add more data than max size
             for (let i = 0, i < 5, i++) { }
@@ -188,19 +188,19 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             expect(monitor.analysis.anomalies).toHaveLength(1),
             expect(monitor.analysis.anomalies[0].type').toBe('fps_critical'),' }'
             expect(monitor.analysis.anomalies[0].severity').toBe('critical'););' }'
-        }');
+        }');'
         test('should detect memory pressure anomalies', () => {  monitor.metrics.memory.pressureLevel = 0.85, // High pressure
             monitor.detectAnomalies(),'
             expect(monitor.analysis.anomalies).toHaveLength(1),
             expect(monitor.analysis.anomalies[0].type').toBe('memory_pressure'),' }'
             expect(monitor.analysis.anomalies[0].severity').toBe('critical'););' }'
-        }');
+        }');'
         test('should detect frame variance anomalies', () => {  monitor.metrics.frame.fpsVariance = 15, // High variance
             monitor.detectAnomalies(),'
             expect(monitor.analysis.anomalies).toHaveLength(1),
             expect(monitor.analysis.anomalies[0].type').toBe('frame_variance'),' }'
             expect(monitor.analysis.anomalies[0].severity').toBe('warning'););' }'
-        }');
+        }');'
         test('should generate FPS predictions', () => {  // Add some history data }
             for (let i = 0; i < 5; i++) { }
                 monitor.historyManager.data.fps.push({});
@@ -209,7 +209,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
                 }),'
             }''
             monitor.generatePredictions(')';
-            expect(monitor.analysis.predictions.has('fps_trend').toBe(true');
+            expect(monitor.analysis.predictions.has('fps_trend').toBe(true');'
             const fpsPrediction = monitor.analysis.predictions.get('fps_trend');
             expect(fpsPrediction.direction').toBe('degrading');'
             expect(fpsPrediction.confidence).toBeGreaterThan(0);'}');
@@ -217,14 +217,14 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             monitor.metrics.memory.pressureLevel = 0.75, // High memory
             monitor.metrics.render.drawCalls = 150, // High draw calls'
             monitor.generateRecommendations(),
-            expect(monitor.analysis.recommendations.length).toBeGreaterThan(0'),
+            expect(monitor.analysis.recommendations.length).toBeGreaterThan(0'),'
             const performanceRec = monitor.analysis.recommendations.find(r => r.type === 'performance'),'
             expect(performanceRec).toBeDefined(),
-            expect(performanceRec.priority').toBe('high'),
+            expect(performanceRec.priority').toBe('high'),'
             const memoryRec = monitor.analysis.recommendations.find(r => r.type === 'memory'),'
             expect(memoryRec).toBeDefined(),' }'
             expect(memoryRec.priority').toBe('medium'););' }'
-        }');
+        }');'
         test('should calculate trend correctly', () => {  const increasingValues = [10, 15, 20, 25, 30],
             const decreasingValues = [30, 25, 20, 15, 10],
             const stableValues = [20, 20, 20, 20, 20],
@@ -238,7 +238,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             expect(monitor.monitoring.intervalId).toBeNull(),
             monitor.startMonitoring() }'
             expect(monitor.monitoring.intervalId).toBeDefined();' }'
-        }');
+        }');'
         test('should stop monitoring', () => {  expect(monitor.monitoring.intervalId).toBeDefined() }
             monitor.stopMonitoring(); }'
             expect(monitor.monitoring.intervalId).toBeNull(});'}');
@@ -246,7 +246,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             const collectMetricsSpy = jest.spyOn(monitor, 'collectMetrics'),
             jest.advanceTimersByTime(150), // Advance by 150ms }'
             expect(collectMetricsSpy.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should not collect metrics when disabled', (') => {  ''
             const collectMetricsSpy = jest.spyOn(monitor, 'collectMetrics'),
             monitor.monitoring.enabled = false,
@@ -259,12 +259,12 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             const startProfilingSpy = jest.spyOn(monitor.detailedProfiler, 'startProfiling'),
             monitor.startProfiling('test-component'),' }'
             expect(startProfilingSpy.toHaveBeenCalledWith('test-component');' }'
-        }');
+        }');'
         test('should stop profiling', (') => {  ''
             const stopProfilingSpy = jest.spyOn(monitor.detailedProfiler, 'stopProfiling'),
             monitor.stopProfiling() }'
             expect(stopProfilingSpy.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should get profiling results', (') => {  ''
             const getResultsSpy = jest.spyOn(monitor.detailedProfiler, 'getResults'),
             monitor.getProfilingResults() }'
@@ -279,7 +279,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             expect(metrics.render).toBeDefined(),
             expect(metrics.game).toBeDefined() }'
             expect(metrics.system).toBeDefined();' }'
-        }');
+        }');'
         test('should get history data by type', () => {  // Add some test data }
             monitor.historyManager.data.fps = [}'
                 { timestamp: Date.now(), value: 60 },''
@@ -287,20 +287,20 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             const fpsHistory = monitor.getHistoryData('fps'),]
             expect(fpsHistory.toHaveLength(2),]'
             expect(fpsHistory[0].value).toBe(60),' }'
-        }');
+        }');'
         test('should get history data with time range', () => {  ''
             const now = Date.now(')',
             const recentHistory = monitor.getHistoryData('fps', 45000), // Last 45 seconds }'
             expect(recentHistory.toHaveLength(2);' }'
-        }');
+        }');'
         test('should get all history data', () => {  const allHistory = monitor.getHistoryData(),
             expect(allHistory.fps).toBeDefined(),
             expect(allHistory.memory).toBeDefined() }'
             expect(allHistory.frameTime).toBeDefined();' }'
-        }');
+        }');'
         test('should get analysis results', (') => { }'
             monitor.analysis.anomalies = [{ type: 'test', severity: 'warning' }];
-            monitor.analysis.predictions.set('test', { value: 100 }');
+            monitor.analysis.predictions.set('test', { value: 100 }');'
             monitor.analysis.recommendations = [{ type: 'test', priority: 'low' }];
             const results = monitor.getAnalysisResults();
             expect(results.anomalies).toHaveLength(1);
@@ -312,12 +312,12 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             expect(stats.totalSamples).toBe(100),
             expect(stats.uptime).toBeGreaterThan(0) }'
             expect(stats.samplesPerSecond).toBeGreaterThan(0);' }'
-        }');
+        }');'
         test('should generate report', (') => {  ''
             const generateReportSpy = jest.spyOn(monitor.performanceAnalyzer, 'generateReport'),
             monitor.generateReport() }'
             expect(generateReportSpy.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should update settings', () => {  const oldInterval = monitor.monitoring.interval,
             const newSettings = {
                 interval: 200,
@@ -380,7 +380,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
     describe('Integration with PerformanceOptimizer', (') => {  ''
         test('should integrate with existing PerformanceOptimizer', () => { }'
             expect(monitor.performanceOptimizer).toBe(mockGameEngine.performanceOptimizer););' }'
-        }');
+        }');'
         test('should handle frame completion from optimizer', () => {  const frameData = {
                 fps: 55,
                 frameTime: 18.18 }

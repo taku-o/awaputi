@@ -7,23 +7,23 @@ import { jest  } from '@jest/globals';
 
 export class CrossEnvironmentManager {
   constructor() {
-    this.environmentType = this.detectEnvironment(),
-    this.capabilities = this.detectCapabilities(),
-    this.apiCompatibility = new Map(),
-    this.polyfills = new Map(),
-    this.fallbacks = new Map(),
+    this.environmentType = this.detectEnvironment();
+    this.capabilities = this.detectCapabilities();
+    this.apiCompatibility = new Map();
+    this.polyfills = new Map();
+    this.fallbacks = new Map();
     
-    this.initializeCrossEnvironmentSetup(') }
+    this.initializeCrossEnvironmentSetup(') }'
 
   /**
    * Detects the current test environment type
    * @returns {string} Environment type: 'jsdom', 'node', 'browser'
    */
-  detectEnvironment(') {
+  detectEnvironment(') {'
     // Check for JSDOM environment
     if (typeof window !== 'undefined' && window.constructor? .name === 'Window' && 
         typeof window.navigator !== 'undefined' && 
-        window.navigator.userAgent?.includes('jsdom')') {
+        window.navigator.userAgent?.includes('jsdom')') {'
       return 'jsdom' }
     
     // Check for browser environment
@@ -39,12 +39,12 @@ export class CrossEnvironmentManager {
    * Detects available capabilities in the current environment
    * @returns {Object} Capabilities object
    */
-  detectCapabilities(') {
+  detectCapabilities(') {'
     return {
       // DOM capabilities : undefined
       dom: typeof document !== 'undefined' && document.createElement,
       canvas: typeof HTMLCanvasElement !== 'undefined',
-      webgl: this.checkWebGLSupport(',
+      webgl: this.checkWebGLSupport(','
       
       // Audio capabilities
       audioContext: typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined',
@@ -52,7 +52,7 @@ export class CrossEnvironmentManager {
       
       // Storage capabilities
       localStorage: this.checkLocalStorageSupport(
-      sessionStorage: this.checkSessionStorageSupport(',
+      sessionStorage: this.checkSessionStorageSupport(','
       indexedDB: typeof indexedDB !== 'undefined',
       
       // Event capabilities
@@ -72,7 +72,7 @@ export class CrossEnvironmentManager {
       serviceWorkers: typeof ServiceWorker !== 'undefined',
       
       // Modern JavaScript capabilities
-      modules: this.checkModuleSupport(',
+      modules: this.checkModuleSupport(','
       async: true, // ES2017+ support assumed
       
       // Test environment specific
@@ -95,7 +95,7 @@ export class CrossEnvironmentManager {
     
     // Record environment info for debugging
     console.log(`CrossEnvironmentManager initialized: ${this.environmentType)`, {
-      capabilities: Object.keys(this.capabilities).filter(key => this.capabilities[key]));
+      capabilities: Object.keys(this.capabilities).filter(key => this.capabilities[key])),
     );
   }
 
@@ -122,7 +122,7 @@ export class CrossEnvironmentManager {
           addEventListener: jest.fn(
           removeEventListener: jest.fn(
           dispatchEvent: jest.fn(
-          style: {},
+          style: {};
           width: 800,
           height: 600
         }),
@@ -138,9 +138,9 @@ export class CrossEnvironmentManager {
         addEventListener: jest.fn(
         removeEventListener: jest.fn(
         innerWidth: 1024,
-        innerHeight: 768,
-        devicePixelRatio: 1,
-        requestAnimationFrame: jest.fn(cb => setTimeout(cb, 16),
+        innerHeight: 768;
+        devicePixelRatio: 1;
+        requestAnimationFrame: jest.fn(cb => setTimeout(cb, 16);
         cancelAnimationFrame: jest.fn(clearTimeout
       };)
 
@@ -156,13 +156,13 @@ export class CrossEnvironmentManager {
       // Provide Canvas polyfill for environments without HTMLCanvasElement
       (global: any).HTMLCanvasElement = class MockCanvas {
         constructor() {
-          this.width = 800,
-          this.height = 600,
+          this.width = 800;
+          this.height = 600;
           this.style = {};
         }
 
         getContext(type {
-          return this.createMockContext(type') }
+          return this.createMockContext(type') }'
 
         createMockContext(type {
           const mockContext = {
@@ -214,7 +214,7 @@ export class CrossEnvironmentManager {
               width: w,
               height: h
             ))
-          '),
+          '),'
 
           if (type === 'webgl' || type === 'experimental-webgl') {
             return this.createMockWebGLContext() }
@@ -267,11 +267,11 @@ export class CrossEnvironmentManager {
             uniform4f: jest.fn(
             uniformMatrix4fv: jest.fn() }
 
-        toDataURL(') {
+        toDataURL(') {'
           return 'data:image/png,base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==' }
 
         toBlob(callback {
-          if (callback') {
+          if (callback') {'
             callback(new Blob(['fake-image-data'], { type: 'image/png' ) }
         }
       };
@@ -280,10 +280,10 @@ export class CrossEnvironmentManager {
       const originalCreateElement = global.document? .createElement;
       if (global.document && originalCreateElement) {
         global.document.createElement = jest.fn((tagName) => {
-          if (tagName.toLowerCase(') === 'canvas') {
+          if (tagName.toLowerCase(') === 'canvas') {'
             return new global.HTMLCanvasElement() }
           return originalCreateElement.call(global.document, tagName);
-        )');
+        )');'
       }
     }
 
@@ -297,23 +297,23 @@ export class CrossEnvironmentManager {
     if (!this.capabilities.audioContext) {
       // Provide AudioContext polyfill
       (global: any).AudioContext = class MockAudioContext {
-        constructor(') {
-          this.state = 'running',
-          this.sampleRate = 44100,
+        constructor(') {'
+          this.state = 'running';
+          this.sampleRate = 44100;
           this.currentTime = 0, : undefined
           this.destination = { connect: jest.fn() };
         }
 
         createGain() {
           return {
-            gain: { value: 1, setValueAtTime: jest.fn() },
+            gain: { value: 1, setValueAtTime: jest.fn() };
             connect: jest.fn(
             disconnect: jest.fn( };
         }
 
         createOscillator() {
           return {
-            frequency: { value: 440, setValueAtTime: jest.fn(') },
+            frequency: { value: 440, setValueAtTime: jest.fn(') };'
             type: 'sine',
             connect: jest.fn(
             disconnect: jest.fn(
@@ -354,36 +354,36 @@ export class CrossEnvironmentManager {
     }
 
     if (!this.capabilities.audioElement) {
-      (global as any').Audio = class MockAudio {
+      (global as any').Audio = class MockAudio {'
         constructor(src {
-          this.src = src || ',
-          this.volume = 1,
-          this.currentTime = 0,
-          this.duration = 0,
-          this.paused = true,
-          this.ended = false,
-          this.loop = false,
-          this.muted = false,
-          this.readyState = 4, // HAVE_ENOUGH_DATA
+          this.src = src || ';'
+          this.volume = 1;
+          this.currentTime = 0;
+          this.duration = 0;
+          this.paused = true;
+          this.ended = false;
+          this.loop = false;
+          this.muted = false;
+          this.readyState = 4; // HAVE_ENOUGH_DATA
           
           // Event handlers
-          this.onload = null,
-          this.onloadstart = null,
-          this.onloadeddata = null,
-          this.oncanplay = null,
-          this.oncanplaythrough = null,
-          this.onplay = null,
-          this.onpause = null,
-          this.onended = null,
+          this.onload = null;
+          this.onloadstart = null;
+          this.onloadeddata = null;
+          this.oncanplay = null;
+          this.oncanplaythrough = null;
+          this.onplay = null;
+          this.onpause = null;
+          this.onended = null;
           this.onerror = null)
-,
+;
         play() {
-          this.paused = false,
+          this.paused = false;
           if (this.onplay) this.onplay(),
           return Promise.resolve() }
 
         pause() {
-          this.paused = true,
+          this.paused = true;
           if (this.onpause) this.onpause() }
 
         load() {
@@ -395,7 +395,7 @@ export class CrossEnvironmentManager {
         }
 
         removeEventListener(event, handler) {
-          if (this[`on${event)`] === handler'}) {
+          if (this[`on${event)`] === handler'}) {'
             this[`on${event}`] = null;
           }
         }
@@ -414,7 +414,7 @@ export class CrossEnvironmentManager {
         const storage = new Map(),
         return {
           getItem: jest.fn((key) => storage.get(key || null),
-          setItem: jest.fn((key, value) => storage.set(key, String(value),
+          setItem: jest.fn((key, value) => storage.set(key, String(value);
           removeItem: jest.fn((key) => storage.delete(key),
           clear: jest.fn(() => storage.clear(),
           key: jest.fn((index) => Array.from(storage.keys()[index] || null,
@@ -423,7 +423,7 @@ export class CrossEnvironmentManager {
       };
 
       (global: any).localStorage = createMockStorage();
-      (global: any).sessionStorage = createMockStorage(');
+      (global: any).sessionStorage = createMockStorage(');'
     }
 
     this.apiCompatibility.set('storage', this.capabilities.localStorage);
@@ -461,7 +461,7 @@ export class CrossEnvironmentManager {
     const originalNow = performance.now.bind(performance);
     performance.now = jest.fn(() => {
       const time = originalNow(),
-      return time)'),
+      return time)'),'
 
     this.apiCompatibility.set('performance', this.capabilities.performance) }
 
@@ -487,7 +487,7 @@ export class CrossEnvironmentManager {
 
         dispatchEvent(event {
           if (this.listeners.has(event.type) {
-            this.listeners.get(event.type).forEach(listener => {'),
+            this.listeners.get(event.type).forEach(listener => {'),'
               if (typeof listener === 'function') {
                 listener(event) } else if (listener.handleEvent) {
                 listener.handleEvent(event) }
@@ -501,10 +501,10 @@ export class CrossEnvironmentManager {
     if (!this.capabilities.customEvents) {
       (global: any).CustomEvent = class MockCustomEvent {
         constructor(type, options = {) {
-          this.type = type,
-          this.detail = options.detail,
-          this.bubbles = options.bubbles || false,
-          this.cancelable = options.cancelable || false,
+          this.type = type;
+          this.detail = options.detail;
+          this.bubbles = options.bubbles || false;
+          this.cancelable = options.cancelable || false;
           this.defaultPrevented = false }
 
         preventDefault() {
@@ -517,15 +517,15 @@ export class CrossEnvironmentManager {
 
       (global: any).Event = global.Event || class MockEvent {
         constructor(type, options = {) {
-          this.type = type,
-          this.bubbles = options.bubbles || false,
-          this.cancelable = options.cancelable || false,
+          this.type = type;
+          this.bubbles = options.bubbles || false;
+          this.cancelable = options.cancelable || false;
           this.defaultPrevented = false }
 
         preventDefault() {
           this.defaultPrevented = true }
 
-        stopPropagation(') {
+        stopPropagation(') {'
           // Mock implementation
         }
       };
@@ -552,25 +552,25 @@ export class CrossEnvironmentManager {
 
     if (!this.capabilities.xmlHttpRequest) {
       (global: any).XMLHttpRequest = class MockXMLHttpRequest {
-        constructor(') {
-          this.readyState = 0,
-          this.status = 0,
-          this.responseText = ',
+        constructor(') {'
+          this.readyState = 0;
+          this.status = 0;
+          this.responseText = ';'
           this.response = null }
 
         open(method, url) {
           this.readyState = 1 }
 
         send(data {
-          this.readyState = 4,
-          this.status = 200,
+          this.readyState = 4;
+          this.status = 200;
           if (this.onreadystatechange) {
             this.onreadystatechange() }
         }
 
         setRequestHeader() {}
         getAllResponseHeaders(') { return ' }
-        getResponseHeader(') { return null }
+        getResponseHeader(') { return null }'
       };
     }
 
@@ -580,14 +580,14 @@ export class CrossEnvironmentManager {
   /**
    * Helper methods for capability detection
    */
-  checkWebGLSupport(') {
+  checkWebGLSupport(') {'
     try {
       const canvas = document? .createElement('canvas'),
       return !!(canvas?.getContext('webgl') || canvas?.getContext('experimental-webgl') } catch (e) {
       return false }
   }
 
-  checkLocalStorageSupport(') {
+  checkLocalStorageSupport(') {'
     try {
       const test = '__localStorage_test__',
       localStorage.setItem(test, test),
@@ -596,7 +596,7 @@ export class CrossEnvironmentManager {
       return false }
   }
 
-  checkSessionStorageSupport(') {
+  checkSessionStorageSupport(') {'
     try {
       const test = '__sessionStorage_test__',
       sessionStorage.setItem(test, test),
@@ -605,7 +605,7 @@ export class CrossEnvironmentManager {
       return false }
   }
 
-  checkModuleSupport(') {
+  checkModuleSupport(') {'
     try {
       return typeof module !== 'undefined' && module.exports } catch (e) {
       return false }
@@ -614,7 +614,7 @@ export class CrossEnvironmentManager {
   /**
    * Validates that DOM APIs behave consistently across environments
    */
-  validateDOMAPIs(') {
+  validateDOMAPIs(') {'
     const validationResults = { : undefined
       createElement: typeof document? .createElement === 'function', : undefined
       querySelector: typeof document? .querySelector === 'function', : undefined
@@ -634,20 +634,20 @@ export class CrossEnvironmentManager {
     return { : undefined
       type: this.environmentType,
       capabilities: this.capabilities,
-      compatibility: Object.fromEntries(this.apiCompatibility',
+      compatibility: Object.fromEntries(this.apiCompatibility','
       
       // Test configuration recommendations
       testConfig: {
         timeout: this.environmentType === 'node' ? 5000 : 10000,
-        retries: this.environmentType === 'jsdom' ? 1 : 2,
+        retries: this.environmentType === 'jsdom' ? 1 : 2;
         parallel: this.environmentType !== 'browser',
         mockLevel: this.environmentType === 'node' ? 'full' : 'partial'
-      },
+      };
       
       // Performance expectations
       performance: {
         expectRealTiming: this.environmentType === 'browser',
-        expectRealMemory: this.environmentType === 'browser',
+        expectRealMemory: this.environmentType === 'browser';
         expectRealNetwork: this.environmentType === 'browser'
       }
     };
@@ -693,20 +693,20 @@ export class CrossEnvironmentManager {
    * Generates recommendations based on environment analysis
    * @returns {Array<string>} Recommendations
    */
-  generateRecommendations(') {
+  generateRecommendations(') {'
     const recommendations: any[] = [],
 
     if (this.environmentType === 'node') {
-      recommendations.push('Consider using jsdom for better DOM compatibility'),
+      recommendations.push('Consider using jsdom for better DOM compatibility');
       recommendations.push('Mock implementations are being used for browser APIs') }
 
-    if (!this.capabilities.canvas') {
+    if (!this.capabilities.canvas') {'
       recommendations.push('Canvas tests will use mock implementations') }
 
-    if (!this.capabilities.audioContext') {
+    if (!this.capabilities.audioContext') {'
       recommendations.push('Audio tests will use mock implementations') }
 
-    if (!this.capabilities.performance') {
+    if (!this.capabilities.performance') {'
       recommendations.push('Performance measurements will be simulated') }
 
     return recommendations;
@@ -717,8 +717,8 @@ export class CrossEnvironmentManager {
 export const crossEnvironmentManager = new CrossEnvironmentManager();
 
 // Export helper functions
-export const isJSDOMEnvironment = (') => crossEnvironmentManager.environmentType === 'jsdom';
-export const isBrowserEnvironment = (') => crossEnvironmentManager.environmentType === 'browser';
-export const isNodeEnvironment = (') => crossEnvironmentManager.environmentType === 'node';
+export const isJSDOMEnvironment = (') => crossEnvironmentManager.environmentType === 'jsdom';'
+export const isBrowserEnvironment = (') => crossEnvironmentManager.environmentType === 'browser';'
+export const isNodeEnvironment = (') => crossEnvironmentManager.environmentType === 'node';'
 export const getEnvironmentCapabilities = () => crossEnvironmentManager.capabilities;
-export const getEnvironmentConfig = () => crossEnvironmentManager.getEnvironmentConfig(');
+export const getEnvironmentConfig = () => crossEnvironmentManager.getEnvironmentConfig(');'

@@ -12,8 +12,8 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 export class StatisticsDataManager {'
 
     constructor('',
-        this.dataVersion = '2.1.0',
-        this.backupHistory = [],
+        this.dataVersion = '2.1.0';
+        this.backupHistory = [];
         this.maxBackupCount = 10 }
 
     /**
@@ -21,7 +21,7 @@ export class StatisticsDataManager {'
      * @returns {Object} 初期化された統計データ'
      */''
     initializeStatistics('''
-                '0-1000': 0,
+                '0-1000': 0;
                 '1001-5000': 0,
                 '5001-10000': 0,
                 '10001-25000': 0,
@@ -60,38 +60,38 @@ export class StatisticsDataManager {'
                 peakEfficiency: 0,
                 efficiencyTrend: [],
                 bestEfficiencySession: 0,
-    worstEfficiencySession: Infinity };
+    worstEfficiencySession: Infinity,;
             // 反応時間統計
             reactionTimeStats: { average: 0,
                 fastest: Infinity,
                 slowest: 0,
-    distribution: {', 'under_200ms': 0,
+    distribution: {', 'under_200ms': 0,'
                     '200_500ms': 0,
                     '500_1000ms': 0,
                     'over_1000ms': 0 },
-                recentTimes: [] // 最新100回の反応時間;
+                recentTimes: [] // 最新100回の反応時間,
             },
             
             // コンボ統計
-            totalCombos: 0;
-            highestCombo: 0;
-            averageCombo: 0;
-            comboBreaks: 0;
+            totalCombos: 0,
+            highestCombo: 0,
+            averageCombo: 0,
+            comboBreaks: 0,
             // コンボ詳細統計
-           , comboDetailStats: { comboRanges: {', '1-5': 0,
+           , comboDetailStats: { comboRanges: {', '1-5': 0,'
                     '6-10': 0,
                     '11-20': 0,
                     '21-50': 0,
                     '51+': 0 },
-                comboSuccessRate: 0;
-                averageComboLength: 0;
+                comboSuccessRate: 0,
+                averageComboLength: 0,
                 longestComboStreak: 0,
-    comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間;
+    comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間,
             },
             
             // HP統計
-            totalDamageTaken: 0;
-            totalHpHealed: 0;
+            totalDamageTaken: 0,
+            totalHpHealed: 0,
             timesRevived: 0,
     lowHpTime: 0, // HP10以下の時間;
             // HP詳細統計
@@ -103,11 +103,11 @@ export class StatisticsDataManager {'
     healingEfficiency: 0 // 回復量/ダメージ量  };
             // ステージ統計
             stageStats: {};
-            stagesCompleted: 0;
-            stagesFailed: 0;
+            stagesCompleted: 0,
+            stagesFailed: 0,
             // ステージ詳細統計
            , stageDetailStats: { favoriteStage: null,
-    mostDifficultStage: null }
+    mostDifficultStage: null,
                 fastestClearTime: {};
                 averageClearTime: {};
                 stageRetryCount: {};
@@ -115,17 +115,17 @@ export class StatisticsDataManager {'
                 stagePerfectionRate: {} // ステージ別パーフェクト達成率
             };
             // 特殊効果統計
-            bonusTimeActivated: 0;
-            timeStopActivated: 0;
-            chainReactionsTriggered: 0;
-            screenShakesTriggered: 0;
+            bonusTimeActivated: 0,
+            timeStopActivated: 0,
+            chainReactionsTriggered: 0,
+            screenShakesTriggered: 0,
             // 新しい効果統計
-            scoreMultipliersUsed: 0;
-            shieldActivations: 0;
-            magnetEffectsTriggered: 0;
-            freezeEffectsUsed: 0;
-            explosiveChains: 0;
-            phantomBubbleInteractions: 0;
+            scoreMultipliersUsed: 0,
+            shieldActivations: 0,
+            magnetEffectsTriggered: 0,
+            freezeEffectsUsed: 0,
+            explosiveChains: 0,
+            phantomBubbleInteractions: 0,
             // プレイヤー行動統計
            , playerBehaviorStats: { dragOperations: 0,
                 averageDragDistance: 0,
@@ -154,8 +154,8 @@ export class StatisticsDataManager {'
                 regularPlayStreak: 0 // 連続プレイ日数  };
             // デバイス・環境統計
             deviceStats: { isMobile: false,''
-                screenResolution: ',
-                browserInfo: ',
+                screenResolution: ','
+                browserInfo: ','
     performanceMetrics: {
                     averageFPS: 0,
                     memoryUsage: 0,
@@ -165,7 +165,7 @@ export class StatisticsDataManager {'
             errorStats: { crashCount: 0,
                 errorCount: 0,
                 recoveryCount: 0,
-    lastErrorTime: null }
+    lastErrorTime: null,
                 commonErrors: {};
             // ソーシャル統計（新規追加、将来の機能用）
             socialStats: { shareCount: 0,
@@ -183,7 +183,7 @@ export class StatisticsDataManager {'
             scoreThisSession: 0,
     bubblesThisSession: 0 }
             playTimeThisSession: 0 };
-            sessionStartTime: Date.now(); 
+            sessionStartTime: Date.now(), 
     }
 
     /**
@@ -196,38 +196,38 @@ export class StatisticsDataManager {'
         const repaired = this.repairStatistics(statistics),
         
         // 基本フィールドの存在確認
-        const requiredFields = [',
-            'totalGamesPlayed', 'totalPlayTime', 'totalScore',]',
+        const requiredFields = [','
+            'totalGamesPlayed', 'totalPlayTime', 'totalScore',]','
             'bubbleTypeStats', 'stageStats', 'efficiencyStats'],
         ],
         
         for (const field of requiredFields) {
     }
 
-            if(!(field, in statistics) { }'
+            if (!(field, in statistics) { }'
 
-                issues.push(`Missing, required field: ${field}`}';
+                issues.push(`Missing, required field: ${field}`}';'
             }
         }
-        ';
+        ';'
         // データ型の検証
-        if(typeof, statistics.totalGamesPlayed !== 'number') {', ' }
+        if (typeof, statistics.totalGamesPlayed !== 'number') {', ' }
 
             issues.push('totalGamesPlayed, must be, a number'); }
         }
 
-        if(typeof, statistics.bubbleTypeStats !== 'object') {', ' }
+        if (typeof, statistics.bubbleTypeStats !== 'object') {', ' }
 
             issues.push('bubbleTypeStats, must be, an object'; }'
         }
-        ';
+        ';'
         // 値の範囲検証
-        if(statistics.totalGamesPlayed < 0) {', ' }
+        if (statistics.totalGamesPlayed < 0) {', ' }
 
             issues.push('totalGamesPlayed, cannot be, negative'; }'
         }
 
-        if(statistics.totalPlayTime < 0) {', ' }
+        if (statistics.totalPlayTime < 0) {', ' }
 
             issues.push('totalPlayTime, cannot be, negative'; }'
         }
@@ -265,13 +265,13 @@ export class StatisticsDataManager {'
      * @param {Object} statistics - 修復対象の統計データ
      */''
     repairNumericFields(statistics) {
-        const numericFields = [',
-            'totalGamesPlayed', 'totalPlayTime', 'totalScore',]',
+        const numericFields = [','
+            'totalGamesPlayed', 'totalPlayTime', 'totalScore',]','
             'totalBubblesPopped', 'totalDamageTaken'],
         ],
 
         for (const field of numericFields) {''
-            if(typeof, statistics[field] !== 'number' || isNaN(statistics[field]) {
+            if (typeof, statistics[field] !== 'number' || isNaN(statistics[field]) {
     }
                 statistics[field] = 0; }
             }
@@ -287,14 +287,14 @@ export class StatisticsDataManager {'
      * @param {Object} statistics - 修復対象の統計データ
      */
     repairArrayFields(statistics) {
-        if(!Array.isArray(statistics.timeStats?.playTimeByHour) {
+        if (!Array.isArray(statistics.timeStats?.playTimeByHour) {
     }
             statistics.timeStats.playTimeByHour = new Array(24).fill(0); }
         }
         
-        if(!Array.isArray(statistics.timeStats?.playTimeByDay) { statistics.timeStats.playTimeByDay = new Array(7).fill(0) }
+        if (!Array.isArray(statistics.timeStats?.playTimeByDay) { statistics.timeStats.playTimeByDay = new Array(7).fill(0) }
         
-        if(!Array.isArray(statistics.reactionTimeStats?.recentTimes) { statistics.reactionTimeStats.recentTimes = [] }
+        if (!Array.isArray(statistics.reactionTimeStats?.recentTimes) { statistics.reactionTimeStats.recentTimes = [] }
     }
 
     /**
@@ -306,16 +306,16 @@ export class StatisticsDataManager {'
         if (typeof, statistics.bubbleTypeStats !== 'object') { }
             statistics.bubbleTypeStats = {}
 
-        if(typeof, statistics.stageStats !== 'object') {
+        if (typeof, statistics.stageStats !== 'object') {
     
 }
             statistics.stageStats = {}
 
-        if(typeof, statistics.deviceStats !== 'object') {
+        if (typeof, statistics.deviceStats !== 'object') {
             statistics.deviceStats = { : undefined'
                 isMobile: false,
-                screenResolution: ',
-                browserInfo: ',
+                screenResolution: ','
+                browserInfo: ','
     performanceMetrics: {
                     averageFPS: 0,
     memoryUsage: 0 }
@@ -336,7 +336,7 @@ export class StatisticsDataManager {'
 
         for(const, key in, source) {
 
-            if(source[key] && typeof, source[key] === 'object' && !Array.isArray(source[key]) {
+            if (source[key] && typeof, source[key] === 'object' && !Array.isArray(source[key]) {
         }
                 result[key] = this.deepMergeStatistics(target[key] || {), source[key]) } else { result[key] = source[key] }
         }
@@ -379,8 +379,8 @@ export class StatisticsDataManager {'
         const difference = Math.abs(calculatedAccuracy - recordedAccuracy),
         
         return { passed: difference < 1, // 1%未満の差は許容
-            calculated: calculatedAccuracy }
-            recorded: recordedAccuracy };
+            calculated: calculatedAccuracy,
+            recorded: recordedAccuracy,;
             difference }
         }
 
@@ -392,22 +392,20 @@ export class StatisticsDataManager {'
     checkAverageCalculations(statistics) {
         const checks = [],
         // 平均スコアのチェック
-        if(statistics.totalGamesPlayed > 0) {
+        if (statistics.totalGamesPlayed > 0) {
             const calculatedAvgScore = statistics.totalScore / statistics.totalGamesPlayed,
             const recordedAvgScore = statistics.averageScore || 0,
-            ',
+            ','
 
             checks.push({)'
                 field: 'averageScore'),
                 passed: Math.abs(calculatedAvgScore - recordedAvgScore) < 1,
-                calculated: calculatedAvgScore }
-                recorded: recordedAvgScore 
-    });
+                calculated: calculatedAvgScore,
+                recorded: recordedAvgScore,);
         }
         
         return { passed: checks.every(check = > check.passed }
-            details: checks 
-    }
+            details: checks;
 
     /**
      * 時間の一貫性チェック
@@ -415,9 +413,9 @@ export class StatisticsDataManager {'
      * @returns {Object} チェック結果
      */
     checkTimeConsistency(statistics) { const checks = [],
-        ',
+        ','
         // セッション時間の論理チェック
-        if(statistics.longestSession < statistics.shortestSession && statistics.shortestSession !== Infinity) {
+        if (statistics.longestSession < statistics.shortestSession && statistics.shortestSession !== Infinity) {
             checks.push({)'
                 issue: 'Longest session is shorter than shortest session'
             }
@@ -425,8 +423,7 @@ export class StatisticsDataManager {'
     }
         
         return { passed: checks.length = == 0 };
-            issues: checks 
-    }
+            issues: checks;
 
     /**
      * ステージデータの一貫性チェック

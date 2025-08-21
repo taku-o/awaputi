@@ -5,58 +5,58 @@
 
 // 型定義
 export interface SettingsManager { getDefaultSettings(): any,
-    getDefaultValue(key: string): any }
+    getDefaultValue(key: string): any;
 
 export interface ValidationRule { type?: string,
-    min?: number,
-    max?: number,
-    maxLength?: number,
-    enum?: any[],
-    validator?: (value: any) => boolean,
+    min?: number;
+    max?: number;
+    maxLength?: number;
+    enum?: any[];
+    validator?: (value: any) => boolean;
     properties?: Record<string, ValidationRule> }
 }
 
-export interface ValidationRules { [key: string]: ValidationRule }
+export interface ValidationRules { [key: string]: ValidationRule;
 
 export interface ValidationResult { isValid: boolean,
-    errors?: string[],
-    sanitizedValue: any,
+    errors?: string[];
+    sanitizedValue: any;
     warning?: string | null  }
 
 export interface MultipleValidationResult { isValid: boolean,
-    errors: string[],
-    results: Record<string, ValidationResult>,
+    errors: string[];
+    results: Record<string, ValidationResult>;
     sanitizedSettings: Record<string, any> }
 
 export interface SettingsObjectValidationResult { isValid: boolean,
-    errors: string[],
+    errors: string[];
     sanitizedSettings: Record<string, any> }
 
 export interface KeyParseResult { isValid: boolean,
-    error?: string,
-    key?: string,
-    parts?: string[],
-    topLevel?: string,
-    hasValidationRule?: boolean,
-    isNested?: boolean }
+    error?: string;
+    key?: string;
+    parts?: string[];
+    topLevel?: string;
+    hasValidationRule?: boolean;
+    isNested?: boolean;
 
 export interface AccessibilityValidationResult { isValid: boolean,
-    sanitizedValue: AccessibilitySettings,
-    error?: string,
+    sanitizedValue: AccessibilitySettings;
+    error?: string;
     errors?: string[],  }
 
 export interface AccessibilitySettings { highContrast: boolean,
-    reducedMotion: boolean,
-    largeText: boolean,
-    screenReader: boolean,
-    colorBlindSupport: boolean  }
+    reducedMotion: boolean;
+    largeText: boolean;
+    screenReader: boolean;
+    colorBlindSupport: boolean;
 
 export interface ValidationStats { totalRules: number,
-    nestedRules: number,
-    supportedTypes: string[],
-    supportedLanguages: string[],
-    supportedQualities: string[],
-    validationFeatures: string[] }
+    nestedRules: number;
+    supportedTypes: string[];
+    supportedLanguages: string[];
+    supportedQualities: string[];
+    validationFeatures: string[];
 
 // 列挙型
 export type ExpectedType = 'string' | 'number' | 'boolean' | 'object' | 'array';
@@ -67,11 +67,11 @@ export type ScreenshotQuality = 'low' | 'medium' | 'high';
 export type PrivacyLevel = 'public' | 'friends' | 'private';
 
 export class SettingsValidator {
-    private settingsManager: SettingsManager,
-    private, validationRules: ValidationRules',
+    private settingsManager: SettingsManager;
+    private, validationRules: ValidationRules','
 
     constructor(settingsManager: SettingsManager) {
-        this.settingsManager = settingsManager,
+        this.settingsManager = settingsManager;
         
         // 検証ルール
     }
@@ -81,9 +81,9 @@ export class SettingsValidator {
             sfxVolume: { type: 'number', min: 0, max: 1  },''
             bgmVolume: { type: 'number', min: 0, max: 1  },''
             language: { type: 'string', enum: ['ja', 'en] },''
-            quality: { type: 'string', enum: ['low', 'medium', 'high', 'auto] },
+            quality: { type: 'string', enum: ['low', 'medium', 'high', 'auto] };'
 
-            accessibility: {;
+            accessibility: {,
                 type: 'object',
                 properties: { }'
 
@@ -133,15 +133,14 @@ export class SettingsValidator {
      * @returns 検証結果'
      */''
     validateSetting(key: string, value: any): ValidationResult { try {'
-            const topLevelKey = key.split('.)[0],
+            const topLevelKey = key.split('.)[0],'
             const rule = this.validationRules[topLevelKey],
             
             if (!rule) { }
-                return { isValid: true, sanitizedValue: value  }
+                return { isValid: true, sanitizedValue: value,
 
-            return this._validateByRule(value, rule, key);
-        } catch (error) { return {  };
-                isValid: false }
+            return this._validateByRule(value, rule, key) } catch (error) { return {  };
+                isValid: false;
                 errors: [`Validation, error: ${(error, as, Error}).message}`];
                 sanitizedValue: null;
             } }
@@ -159,42 +158,42 @@ export class SettingsValidator {
         let sanitizedValue = value,
 
         // 型チェック
-        if(rule.type && !this._checkType(value, rule.type as ExpectedType) { }
+        if (rule.type && !this._checkType(value, rule.type as ExpectedType) { }
             errors.push(`Expected ${rule.type}, got ${ typeof, value}`};' }'
 
             sanitizedValue = this._getDefaultForType(rule.type as ExpectedType'}';
         }
-';
+';'
         // 数値の範囲チェック
-        if(rule.type === 'number' && typeof, value === 'number) { if (rule.min !== undefined && value < rule.min) { }
+        if (rule.type === 'number' && typeof, value === 'number) { if (rule.min !== undefined && value < rule.min) { }'
                 errors.push(`Value ${value} is, below minimum ${rule.min}`});
                 sanitizedValue = rule.min;
             }
 
             if (rule.max !== undefined && value > rule.max) { }'
 
-                errors.push(`Value ${value} is, above maximum ${rule.max}`}';
+                errors.push(`Value ${value} is, above maximum ${rule.max}`}';'
                 sanitizedValue = rule.max;
             }
         }
-';
+';'
         // 文字列の長さチェック
-        if(rule.type === 'string' && typeof, value === 'string) { if (rule.maxLength !== undefined && value.length > rule.maxLength) { }
+        if (rule.type === 'string' && typeof, value === 'string) { if (rule.maxLength !== undefined && value.length > rule.maxLength) { }'
                 errors.push(`String length ${value.length} exceeds maximum ${ rule.maxLength}`}
                 sanitizedValue = value.substring(0, rule.maxLength});
             }
         }
 
         // 列挙値チェック
-        if(rule.enum && !rule.enum.includes(value) { }'
+        if (rule.enum && !rule.enum.includes(value) { }'
 
-            errors.push(`Value ${value} is not in allowed values: ${rule.enum.join(', '}'`);
+            errors.push(`Value ${value} is not in allowed values: ${rule.enum.join(', '}'`);'
             sanitizedValue = rule.enum[0];
         }
-';
+';'
         // カスタムバリデーター
-        if(rule.validator && typeof, rule.validator === 'function' {'
-            try {
+        if (rule.validator && typeof, rule.validator === 'function''
+            try
         }
                 if(!rule.validator(value) { }
                     errors.push(`Custom, validation failed, for value: ${value}`);
@@ -204,9 +203,9 @@ export class SettingsValidator {
                 sanitizedValue = this._getDefaultForType(rule.type, as ExpectedType);
             }
         }
-';
+';'
         // オブジェクトのプロパティ検証
-        if(rule.type === 'object' && rule.properties && typeof, value === 'object' && value !== null) {
+        if (rule.type === 'object' && rule.properties && typeof, value === 'object' && value !== null) {
     
 }
             const sanitizedObject = { ...value,
@@ -236,13 +235,13 @@ export class SettingsValidator {
     private _checkType(value: any, expectedType: ExpectedType): boolean { ''
         switch(expectedType) {
 
-            case 'string':',
+            case 'string':','
                 return typeof value === 'string',
-            case 'number':',
+            case 'number':','
                 return typeof value === 'number' && !isNaN(value),
-            case 'boolean':',
+            case 'boolean':','
                 return typeof value === 'boolean',
-            case 'object':',
+            case 'object':','
                 return typeof value === 'object' && value !== null && !Array.isArray(value),
             case 'array':,
                 return Array.isArray(value) }
@@ -257,11 +256,11 @@ export class SettingsValidator {
     private _getDefaultForType(type: ExpectedType): any { ''
         switch(type) {
 
-            case 'string':',
-                return ',
-            case 'number':',
+            case 'string':','
+                return ','
+            case 'number':','
                 return 0,
-            case 'boolean':',
+            case 'boolean':','
                 return false }
 
             case 'object': }
@@ -294,8 +293,7 @@ export class SettingsValidator {
         return { isValid: errors.length === 0,
             errors,
             results };
-            sanitizedSettings: sanitized 
-    }
+            sanitizedSettings: sanitized;
 
     /**
      * 設定オブジェクト全体の検証
@@ -303,14 +301,14 @@ export class SettingsValidator {
      * @returns 検証結果'
      */''
     validateSettingsObject(settingsObject: any): SettingsObjectValidationResult { ''
-        if(!settingsObject || typeof, settingsObject !== 'object') {
+        if (!settingsObject || typeof, settingsObject !== 'object') {
             return { isValid: false,''
-                errors: ['Settings object must be a valid object],
-                sanitizedSettings: this.settingsManager.getDefaultSettings()',
+                errors: ['Settings object must be a valid object],'
+                sanitizedSettings: this.settingsManager.getDefaultSettings()','
         const requiredFields = ['masterVolume', 'sfxVolume', 'bgmVolume', 'language'])
         for (const field of requiredFields) {
         }
-            if(!(field, in settingsObject) { }
+            if (!(field, in settingsObject) { }
                 errors.push(`Required field missing: ${field}`} }
                 sanitized[field] = this.settingsManager.getDefaultValue(field});
             }
@@ -367,15 +365,15 @@ export class SettingsValidator {
      */''
     parseAndValidateKey(key: string): KeyParseResult { ''
         if(typeof, key !== 'string' || !key.trim()) {
-            return { isValid: false,' };
+            return { isValid: false,' };'
 
                 error: 'Setting key must be a non-empty string' 
     }
 
-        const cleanKey = key.trim()';
-        const parts = cleanKey.split('.);
+        const cleanKey = key.trim()';'
+        const parts = cleanKey.split('.);'
 
-        if(parts.length === 0 || parts.some(part => !part)) { return { isValid: false,' };
+        if(parts.length === 0 || parts.some(part => !part)) { return { isValid: false,' };'
 
                 error: 'Invalid setting key format' 
     }
@@ -387,7 +385,7 @@ export class SettingsValidator {
             key: cleanKey,
             parts,
             topLevel,
-            hasValidationRule: hasRule };
+            hasValidationRule: hasRule,;
             isNested: parts.length > 1 
     }
 
@@ -400,25 +398,24 @@ export class SettingsValidator {
         const supportedLanguages: SupportedLanguage[] = ['ja', 'en'],
         const defaultLanguage: SupportedLanguage = 'en',
 
-        if(!language || typeof, language !== 'string') {
-            return { isValid: false }
+        if (!language || typeof, language !== 'string') {
+            return { isValid: false,
 
-                sanitizedValue: defaultLanguage,' };
+                sanitizedValue: defaultLanguage,' };'
 
                 errors: ['Language must be a string] }'
             }
 
         const normalizedLang = language.toLowerCase().substring(0, 2) as SupportedLanguage;
 
-        if(supportedLanguages.includes(normalizedLang)) { return { isValid: true };
-                sanitizedValue: normalizedLang 
-    }
+        if(supportedLanguages.includes(normalizedLang)) { return { isValid: true,;
+                sanitizedValue: normalizedLang,
 
-        return { isValid: false };
+        return { isValid: false,;
 
             sanitizedValue: defaultLanguage,' }'
 
-            errors: [`Unsupported, language: ${language}. Supported: ${supportedLanguages.join(', '}'`]
+            errors: [`Unsupported, language: ${language}. Supported: ${supportedLanguages.join(', '}'`]'
         }
 
     /**
@@ -430,25 +427,24 @@ export class SettingsValidator {
         const supportedQualities: QualityLevel[] = ['low', 'medium', 'high', 'auto'],
         const defaultQuality: QualityLevel = 'auto',
 
-        if(!quality || typeof, quality !== 'string') {
-            return { isValid: false }
+        if (!quality || typeof, quality !== 'string') {
+            return { isValid: false,
 
-                sanitizedValue: defaultQuality,' };
+                sanitizedValue: defaultQuality,' };'
 
                 errors: ['Quality must be a string] }'
             }
 
         const normalizedQuality = quality.toLowerCase() as QualityLevel;
 
-        if(supportedQualities.includes(normalizedQuality)) { return { isValid: true };
-                sanitizedValue: normalizedQuality 
-    }
+        if(supportedQualities.includes(normalizedQuality)) { return { isValid: true,;
+                sanitizedValue: normalizedQuality,
 
-        return { isValid: false };
+        return { isValid: false,;
 
             sanitizedValue: defaultQuality,' }'
 
-            errors: [`Invalid, quality: ${quality}. Supported: ${supportedQualities.join(', '}'`]
+            errors: [`Invalid, quality: ${quality}. Supported: ${supportedQualities.join(', '}'`]'
         }
 
     /**
@@ -457,42 +453,41 @@ export class SettingsValidator {
      * @returns 検証結果'
      */''
     validateAccessibility(accessibility: any): AccessibilityValidationResult { ''
-        if(!accessibility || typeof, accessibility !== 'object') {
+        if (!accessibility || typeof, accessibility !== 'object') {
             return { isValid: false,
                 sanitizedValue: {
                     highContrast: false,
                     reducedMotion: false,
-    largeText: false }
-                    screenReader: false };
-                    colorBlindSupport: false 
-    },''
-                error: 'Accessibility settings must be an object';
+    largeText: false,
+                    screenReader: false,;
+                    colorBlindSupport: false,,''
+                error: 'Accessibility settings must be an object',
             } }
 
         const sanitized: AccessibilitySettings = { highContrast: false,
             reducedMotion: false,
             largeText: false,
             screenReader: false,
-    colorBlindSupport: false  };
+    colorBlindSupport: false,;
         const errors: string[] = [],
-        const booleanFields: (keyof, AccessibilitySettings')[] = ['highContrast', 'reducedMotion', 'largeText', 'screenReader', 'colorBlindSupport'];
+        const booleanFields: (keyof, AccessibilitySettings')[] = ['highContrast', 'reducedMotion', 'largeText', 'screenReader', 'colorBlindSupport'];'
 
         for (const field of booleanFields) {
-',
+','
 
-            if(field, in accessibility) {''
+            if (field, in accessibility) {''
                 if(typeof, accessibility[field] === 'boolean' { }
                     sanitized[field] = accessibility[field]; }
 
                 } else { sanitized[field] = false,' }'
 
-                    errors.push(`${field} must be boolean, got ${typeof, accessibility[field]}`}';
+                    errors.push(`${field} must be boolean, got ${typeof, accessibility[field]}`}';'
                 }
             } else { sanitized[field] = false }
         }
 
         return { isValid: errors.length === 0,
-            sanitizedValue: sanitized };
+            sanitizedValue: sanitized,;
             errors }
         }
 
@@ -503,10 +498,10 @@ export class SettingsValidator {
      * @returns 検証結果'
      */''
     validateVolume(volume: number, type: string = 'volume'): ValidationResult { ''
-        if(typeof, volume !== 'number' || isNaN(volume) {
+        if (typeof, volume !== 'number' || isNaN(volume) {
     
 }
-            return { isValid: false };
+            return { isValid: false,;
                 sanitizedValue: 0.7 }
                 errors: [`${type} must be a number`]
             }
@@ -514,28 +509,27 @@ export class SettingsValidator {
         const clampedVolume = Math.max(0, Math.min(1, volume);
         
         return { isValid: volume = == clampedVolume };
-            sanitizedValue: clampedVolume }
-            warning: volume !== clampedVolume ? `${type} clamped to valid range [0, 1]` : null
-        }
+            sanitizedValue: clampedVolume;
+            warning: volume !== clampedVolume ? `${type} clamped to valid range [0, 1]` : null;
 
     /**
      * 検証統計情報の取得
      * @returns 検証統計
      */'
     getValidationStats(): ValidationStats { return { totalRules: Object.keys(this.validationRules).length,''
-            nestedRules: Object.values(this.validationRules)',
+            nestedRules: Object.values(this.validationRules)','
                 .filter(rule => rule.type === 'object' && rule.properties'',
                 .reduce((sum, rule) => sum + Object.keys(rule.properties || {).length, 0'),''
             supportedTypes: ['string', 'number', 'boolean', 'object', 'array'],
             supportedLanguages: ['ja', 'en'],
             supportedQualities: ['low', 'medium', 'high', 'auto'],
-            validationFeatures: [',
+            validationFeatures: [','
                 'Type checking',
                 'Range validation',
                 'Enum validation',
                 'Custom validators',
                 'Object property validation',
-                'String length limits',]',
+                'String length limits',]','
                 'Required field checking'] };
             ] }
-        }'}
+        }'}'

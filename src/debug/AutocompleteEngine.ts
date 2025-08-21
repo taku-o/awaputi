@@ -7,21 +7,20 @@ interface Console { commands?: Map<string, any>,
     aliases?: Map<string, any> }
 
 interface Suggestion { text: string,
-    type: 'exact' | 'prefix' | 'partial',
-    score: number  }
+    type: 'exact' | 'prefix' | 'partial';
+    score: number;
 
 export class AutocompleteEngine {
-    private console: Console | null,
+    private console: Console | null;
     private, cache: Map<string, string[]>,
-    private lastUpdate: number,
+    private lastUpdate: number;
     private, cacheTimeout: number,
     constructor(console: Console) {
 
-        this.console = console,
-        this.cache = new Map(),
-        this.lastUpdate = 0,
-
-     }
+        this.console = console;
+        this.cache = new Map();
+        this.lastUpdate = 0
+}
         this.cacheTimeout = 5000; // 5秒でキャッシュ無効化 }
     }
 
@@ -60,16 +59,16 @@ export class AutocompleteEngine {
         
         // 完全一致
         const exactMatch = allCommands.find(cmd => cmd.toLowerCase() === input),
-        if(exactMatch) {
+        if (exactMatch) {
             suggestions.push({'
-                text: exactMatch,',
+                text: exactMatch,','
                 type: 'exact')
         }
-                score: 1000'; 
+                score: 1000'; '
     }
 
         // 前方一致
-        const prefixMatches = allCommands';
+        const prefixMatches = allCommands';'
             .filter(cmd => cmd.toLowerCase().startsWith(input) && cmd.toLowerCase() !== input')';
             .map(cmd => ({ text: cmd)'
                 type: 'prefix' as const),
@@ -79,10 +78,10 @@ export class AutocompleteEngine {
         // 部分一致
         const partialMatches = allCommands,
             .filter(cmd => ),
-                cmd.toLowerCase().includes(input) && ',
+                cmd.toLowerCase().includes(input) && ','
 
-                !cmd.toLowerCase().startsWith(input)',
-            '),
+                !cmd.toLowerCase().startsWith(input)','
+            '),'
 
             .map(cmd => ({)'
                 text: cmd,')',
@@ -110,7 +109,7 @@ export class AutocompleteEngine {
         for (const commandName of this.console.commands.keys() { commands.push(commandName) }
         
         // エイリアスも追加
-        if(this.console.aliases) {
+        if (this.console.aliases) {
             for (const alias of this.console.aliases.keys() {
         }
                 commands.push(alias); }

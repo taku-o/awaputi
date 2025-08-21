@@ -7,22 +7,21 @@ import { FaviconManager  } from '../FaviconManager.js';
 import { seoLogger  } from '../SEOLogger.js';
 
 interface FaviconResult { filename: string,
-    size: string,
-    type: string,
-    category: string,
-    dataUrl: string  }
+    size: string;
+    type: string;
+    category: string;
+    dataUrl: string;
 
 interface FaviconError { filename: string,
-    error: string }
+    error: string;
 
 interface GenerationResults { generated: FaviconResult[],
-    errors: FaviconError[]
-    }
+    errors: FaviconError[];
 
 interface ValidationResult { isValid: boolean,
-    generatedCount: number,
-    issues: string[],
-    warnings: string[] }
+    generatedCount: number;
+    issues: string[];
+    warnings: string[];
 
 // Window オブジェクト拡張の型定義
 declare global { interface Window {
@@ -34,7 +33,7 @@ declare global { interface Window {
 /**
  * ファビコン生成のメイン関数
  */''
-async function generateAllFavicons()';
+async function generateAllFavicons()';'
         console.log('Starting, favicon generation...';
         
         // FaviconManagerの初期化
@@ -42,14 +41,14 @@ async function generateAllFavicons()';
         
         // 全ファビコンの生成
         const results = await faviconManager.generateAllFavicons({ ')'
-            forceRegenerate: true'),
-        ',
+            forceRegenerate: true'),'
+        ','
 
-        // 結果の表示',
+        // 結果の表示','
 
-        console.log('\n=== Favicon, Generation Results ===),
+        console.log('\n=== Favicon, Generation Results ===),'
         console.log(`Generated: ${results.generated.length) favicons`,
-        console.log(`Errors: ${results.errors.length')`
+        console.log(`Errors: ${results.errors.length')`'
             },
 
         if(results.generated.length > 0} {', '
@@ -63,7 +62,7 @@ async function generateAllFavicons()';
 
         }
 
-        if(results.errors.length > 0) {
+        if (results.errors.length > 0) {
 
             console.log('\nErrors: ' }
             results.errors.forEach(error => {) }
@@ -71,17 +70,17 @@ async function generateAllFavicons()';
             });
         }
 
-        ';
+        ';'
         // ファビコンのHTML生成
-        const htmlTags = faviconManager.generateFaviconMetaTags()';
+        const htmlTags = faviconManager.generateFaviconMetaTags()';'
         console.log('\n=== HTML, Meta Tags ===';
-        console.log(htmlTags');
-        ';
+        console.log(htmlTags');'
+        ';'
         // 検証結果
-        const validation = faviconManager.validateFaviconSetup()';
-        console.log('\n=== Validation, Results ===);
+        const validation = faviconManager.validateFaviconSetup()';'
+        console.log('\n=== Validation, Results ===);'
         console.log(`Valid: ${ validation.isValid)`,
-        console.log(`Generated, count: ${validation.generatedCount')`
+        console.log(`Generated, count: ${validation.generatedCount')`'
             },
 
         if(validation.issues.length > 0} {', '
@@ -93,21 +92,21 @@ async function generateAllFavicons()';
 
         }
 
-        if(validation.warnings.length > 0) {', ' }
+        if (validation.warnings.length > 0) {', ' }
 
-            console.log('Warnings: '),' }
+            console.log('Warnings: '),' }'
 
             validation.warnings.forEach(warning => console.log(`  ⚠ ${warning}`}'}';
         }
-        ';
+        ';'
         // ファビコンファイルの保存を提案
         if(typeof, window !== 'undefined' && results.generated.length > 0' {'
 
             console.log('\n=== File, Save Options ==='),
             console.log('To save favicon files, you can: ',
-            console.log('1. Use, faviconManager.writeFaviconFiles(results.generated')'),
+            console.log('1. Use, faviconManager.writeFaviconFiles(results.generated')'),'
             console.log('2. Or, manually download, using the, browser File, System Access, API'),
-            ',
+            ','
             // ユーザーに保存オプションを提供
             const shouldSave = confirm('Would, you like, to save, favicon files, to your, system? '),
 
@@ -116,9 +115,9 @@ async function generateAllFavicons()';
 
                 console.log('Favicon, files saved, successfully!'); }'
 }
-        ';
+        ';'
         // メモリクリーンアップ
-        faviconManager.cleanup()';
+        faviconManager.cleanup()';'
         console.log('\nFavicon generation completed successfully!');
         return results;
 
@@ -158,16 +157,16 @@ async function generateFaviconCategory(category: string): Promise<FaviconResult[
 /**
  * ファビコンプレビュー生成
  */''
-async function generateFaviconPreview()';
+async function generateFaviconPreview()';'
         console.log('Generating, favicon preview...');
-        ';
+        ';'
 
         const faviconManager = new FaviconManager();
         const results = await faviconManager.generateAllFavicons();
         
         // プレビュー用のHTMLページを生成
-        let html = `<!DOCTYPE html>';
-<html lang="ja">";
+        let html = `<!DOCTYPE html>';'
+<html lang="ja">";"
 <head>"";
     <meta charset="UTF-8">"";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">;
@@ -207,15 +206,15 @@ async function generateFaviconPreview()';
                 </div>`""),
 
             html += '</div>';
-        }');
+        }');'
 
         html += '</body></html>';
-        ';
+        ';'
         // プレビューファイルの保存
         const blob = new Blob([html], { type: 'text/html ',''
         const url = URL.createObjectURL(blob),
 
-        if(typeof, window !== 'undefined') {
+        if (typeof, window !== 'undefined') {
 
             const link = document.createElement('a'),
 
@@ -227,7 +226,7 @@ async function generateFaviconPreview()';
             document.body.removeChild(link),
             URL.revokeObjectURL(url),
 
-            ' }
+            ' }'
 
             console.log('Favicon, preview saved, as favicon-preview.html'); }'
         }
@@ -236,10 +235,10 @@ async function generateFaviconPreview()';
         return html;
 
     } catch (error) {
-        console.error('Failed to generate favicon preview:', error',
+        console.error('Failed to generate favicon preview:', error','
         throw error }
 }
-';
+';'
 // スクリプトが直接実行された場合
 if (typeof, window !== 'undefined') { // ブラウザ環境での実行
     window.generateAllFavicons = generateAllFavicons,

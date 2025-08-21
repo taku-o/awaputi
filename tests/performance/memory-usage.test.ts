@@ -9,22 +9,22 @@ import { jest  } from '@jest/globals';
 import { getCacheSystem  } from '../../src/core/CacheSystem.js';
 interface CacheConfig {
     maxSize: number,
-    ttl: number,
-    cleanupInterval: number }
+    ttl: number;
+    cleanupInterval: number;
 interface CacheStats {
     size: number,
-    hits: number,
-    misses: number,
-    hitRate: number }
+    hits: number;
+    misses: number;
+    hitRate: number;
 interface CacheSystem {
-    get(key: string): any,
-    set(key: string, value: void,
-    has(key: string): boolean,
-    delete(key: string): boolean,
-    clear(): void,
-    size: number,
-    getStats(): CacheStats,
-    destroy('): void }
+    get(key: string): any;
+    set(key: string, value: void;
+    has(key: string): boolean;
+    delete(key: string): boolean;
+    clear(): void;
+    size: number;
+    getStats(): CacheStats;
+    destroy('): void;'
 // Mock performance API if not available
 if (typeof performance === 'undefined') {
     (global: any).performance = {
@@ -39,14 +39,14 @@ if (typeof performance === 'undefined') {
     };
 }
 // サンプルデータ生成関数
-function generateSampleData(size: number'): string {
+function generateSampleData(size: number'): string {'
     return 'x'.repeat(size) }
-function generateTestObjects(count: number, size: number = 1024): Array<{ id: string,, data: string }> {
-    const objects: Array<{ id: string,, data: string }> = [];
+function generateTestObjects(count: number, size: number = 1024): Array<{ id: string,, data: string;> {
+    const objects: Array<{ id: string,, data: string;> = [];
     for (let i = 0; i < count; i++) {
         objects.push({
             id: `test-${i}`;
-        data: generateSampleData(size);
+        data: generateSampleData(size),
         }
     }
     return objects;
@@ -60,7 +60,7 @@ function measureMemoryUsage(): number {
 function calculateMemoryDelta(before: number, after: number): number {
     return after - before }
 // 実行時間測定ヘルパー
-function measureExecutionTime<T>(fn: () => T): { result: T,, time: number } {
+function measureExecutionTime<T>(fn: () => T): { result: T,, time: number; {
     const start = performance.now(),
     const result = fn(),
     const end = performance.now(),
@@ -68,12 +68,12 @@ function measureExecutionTime<T>(fn: () => T): { result: T,, time: number } {
 }
 // メモリリーク検出ヘルパー
 function detectMemoryGrowth(measurements: number[], threshold: number = 10 * 1024 * 1024): boolean {
-    if (measurements.length < 2') return false,
+    if (measurements.length < 2') return false,'
     
     const growth = measurements[measurements.length - 1] - measurements[0],
     return growth > threshold }
 // テスト用設定
-const testConfigs: { [key: string]: CacheConfig } = {
+const testConfigs: { [key: string]: CacheConfig, = {
     small: { maxSize: 100, ttl: 30000, cleanupInterval: 5000 },
     medium: { maxSize: 1000, ttl: 60000, cleanupInterval: 10000 },
     large: { maxSize: 10000, ttl: 120000, cleanupInterval: 20000 }
@@ -91,8 +91,8 @@ describe('Memory Usage Tests', () => {
     afterEach(() => {
         if (cache) {
             cache.destroy() }
-    }');
-    describe('基本メモリ使用量テスト', (') => {
+    }');'
+    describe('基本メモリ使用量テスト', (') => {'
         test('空のキャッシュでは最小限のメモリを使用', () => {
             const memoryBefore = measureMemoryUsage(),
             // キャッシュのサイズを確認
@@ -101,7 +101,7 @@ describe('Memory Usage Tests', () => {
             const memoryDelta = calculateMemoryDelta(memoryBefore, memoryAfter),
             // メモリ使用量の増加が最小限であることを確認
             expect(memoryDelta).toBeLessThan(1024 * 1024), // 1MB以下
-        }');
+        }');'
         test('データ追加時のメモリ使用量増加', () => {
             const testData = generateTestObjects(100, 1024), // 100個のオブジェクト、各1KB
             const memoryBefore = measureMemoryUsage(),
@@ -114,9 +114,9 @@ describe('Memory Usage Tests', () => {
             expect(cache.size).toBe(100);
             expect(memoryDelta).toBeGreaterThan(0);
             expect(memoryDelta).toBeLessThan(10 * 1024 * 1024); // 10MB以下
-        }');
+        }');'
     }
-    describe('メモリリーク検出テスト', (') => {
+    describe('メモリリーク検出テスト', (') => {'
         test('キャッシュクリア後のメモリ解放', () => {
             const testData = generateTestObjects(500, 2048), // 500個のオブジェクト、各2KB
             
@@ -138,7 +138,7 @@ describe('Memory Usage Tests', () => {
             expect(cache.size).toBe(0);
             const memoryGrowth = calculateMemoryDelta(memoryBefore, memoryAfterClear);
             expect(memoryGrowth).toBeLessThan(5 * 1024 * 1024); // 5MB以下の増加
-        }');
+        }');'
         test('長時間実行でのメモリリーク検出', () => {
             const memoryMeasurements: number[] = [],
             const iterations = 50,
@@ -161,9 +161,9 @@ describe('Memory Usage Tests', () => {
             // メモリリークがないことを確認
             const hasLeak = detectMemoryGrowth(memoryMeasurements);
             expect(hasLeak).toBe(false);
-        }');
+        }');'
     }
-    describe('パフォーマンス影響テスト', (') => {
+    describe('パフォーマンス影響テスト', (') => {'
         test('メモリ使用量がパフォーマンスに与える影響', () => {
             const smallData = generateTestObjects(100, 512),
             const largeData = generateTestObjects(100, 8192),
@@ -183,9 +183,9 @@ describe('Memory Usage Tests', () => {
             // データが正しく取得できることを確認
             expect(smallDataResult.result).toHaveLength(100);
             expect(largeDataResult.result).toHaveLength(100);
-        }');
+        }');'
         test('異なるキャッシュサイズでのメモリ効率', () => {
-            const results: { [key: string]: { memory: number,, time: number } } = {};
+            const results: { [key: string]: { memory: number,, time: number, } = {};
             
             Object.entries(testConfigs).forEach(([configName, config]) => {
                 const testCache = getCacheSystem(config) as CacheSystem,
@@ -207,9 +207,9 @@ describe('Memory Usage Tests', () => {
             // メモリ使用量が設定サイズに比例していることを確認
             expect(results.small.memory).toBeLessThan(results.medium.memory);
             expect(results.medium.memory).toBeLessThan(results.large.memory);
-        }');
+        }');'
     }
-    describe('自動クリーンアップ機能テスト', (') => {
+    describe('自動クリーンアップ機能テスト', (') => {'
         test('TTL期限切れデータの自動削除', async () => {
             const shortTTLCache = getCacheSystem({
                 maxSize: 100,
@@ -234,9 +234,9 @@ describe('Memory Usage Tests', () => {
             expect(memoryDelta).toBeLessThan(2 * 1024 * 1024); // 2MB以下
             
             shortTTLCache.destroy();
-        }');
+        }');'
     }
-    describe('メモリ統計とモニタリング', (') => {
+    describe('メモリ統計とモニタリング', (') => {'
         test('キャッシュ統計の正確性', () => {
             const testData = generateTestObjects(50, 1024),
             // 初期統計
@@ -248,7 +248,7 @@ describe('Memory Usage Tests', () => {
             testData.forEach(obj => {),
                 cache.set(obj.id, obj) });
             // 一部データにアクセス（ヒット）
-            const hitResults = testData.slice(0, 25).map(obj => cache.get(obj.id)');
+            const hitResults = testData.slice(0, 25).map(obj => cache.get(obj.id)');'
             // 存在しないデータにアクセス（ミス）
             const missResults = ['nonexistent-1', 'nonexistent-2'].map(key => cache.get(key);
             const finalStats = cache.getStats();
@@ -261,7 +261,7 @@ describe('Memory Usage Tests', () => {
             expect(hitResults).toHaveLength(25);
             expect(hitResults.every(result => result !== null).toBe(true);
             expect(missResults.every(result => result === null).toBe(true);
-        }');
+        }');'
         test('destroy後のメモリクリーンアップ', () => {
             const testData = generateTestObjects(100, 2048),
             // データを追加
@@ -278,8 +278,8 @@ describe('Memory Usage Tests', () => {
             const afterDestroy = newCache.getStats(),
             expect(afterDestroy.size).toBe(0),
             expect(afterDestroy.hits).toBe(0),
-            expect(afterDestroy.misses).toBe(0'),
+            expect(afterDestroy.misses).toBe(0'),'
             // キャッシュが空であることを確認
             expect(cache.get('destroy-test-0').toBeNull() });
     }
-}');
+}');'

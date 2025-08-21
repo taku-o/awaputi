@@ -8,49 +8,47 @@ import type { LocalizationManager } from '../core/LocalizationManager.js';
  * Test item interface
  */
 interface TestItem { id: string,
-    label: string,
-    value?: number,
-    progress?: number,
+    label: string;
+    value?: number;
+    progress?: number;
     countdown?: number,  }
 
 /**
  * Test category interface
  */
 interface TestCategory { label: string,
-    icon: string,
-    items: TestItem[]
-     }
+    icon: string;
+    items: TestItem[];
 
 /**
  * Test categories collection
  */
 interface TestCategories { bubbles: TestCategory,
-    combo: TestCategory,
-    ui: TestCategory,
-    achievement: TestCategory,
-    gameState: TestCategory,
-    bgm: TestCategory
-    }
+    combo: TestCategory;
+    ui: TestCategory;
+    achievement: TestCategory;
+    gameState: TestCategory;
+    bgm: TestCategory;
 
 /**
  * Batch test configuration
  */
 interface BatchTest { id: string,
-    label: string,
-    category: keyof TestCategories,
-    icon: string }
+    label: string;
+    category: keyof TestCategories;
+    icon: string;
 
 /**
  * 音響テストパネルクラス - 各音響要素の個別テスト再生機能
  */
 export class AudioTestPanel {
-    private audioManager: AudioManager,
-    private localizationManager: LocalizationManager,
-    private errorHandler: ErrorHandler,
+    private audioManager: AudioManager;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
     // テストカテゴリ
     private, testCategories: TestCategories = {
         bubbles: {''
-            label: 'audio.test.bubbles'',
+            label: 'audio.test.bubbles'','
     icon: '🫧',
             items: ['
             }'
@@ -214,7 +212,7 @@ export class AudioTestPanel {
     private, isOpen: boolean = false;
     constructor(audioManager: AudioManager) {
 
-        this.audioManager = audioManager,
+        this.audioManager = audioManager;
         this.localizationManager = getLocalizationManager() }
         this.errorHandler = getErrorHandler(); }
     }
@@ -223,11 +221,11 @@ export class AudioTestPanel {
      * テストパネルを作成
      * @returns {HTMLElement} パネル要素
      */''
-    createPanel()';
+    createPanel()';'
         const panel = document.createElement('div');
         panel.className = 'audio-test-panel';
 
-        panel.style.cssText = `';
+        panel.style.cssText = `';'
             background-color: rgba(0, 0, 0, 0.95);
             border: 2px solid #00ffff;
             border-radius: 15px,
@@ -235,10 +233,10 @@ export class AudioTestPanel {
             max-height: 600px,
             overflow-y: auto,
         `;
-        ';
+        ';'
         // タイトル
         const title = document.createElement('h3');
-        title.textContent = this.localizationManager.getText('audio.test.title);
+        title.textContent = this.localizationManager.getText('audio.test.title);'
         title.style.cssText = `;
             color: #00ffff;
             font-size: 20px,
@@ -277,7 +275,7 @@ export class AudioTestPanel {
             background-color: rgba(255, 255, 255, 0.05),
             border-radius: 10px,
         `,
-        ',
+        ','
         // カテゴリヘッダー
         const header = document.createElement('h4' }'
         header.innerHTML = `${category.icon} ${this.localizationManager.getText(category.label})`;
@@ -290,9 +288,9 @@ export class AudioTestPanel {
             gap: 10px,
         `;
         section.appendChild(header);
-        ';
+        ';'
         // テストボタングリッド
-        const grid = document.createElement('div);
+        const grid = document.createElement('div);'
         grid.style.cssText = `;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr);
@@ -305,9 +303,9 @@ export class AudioTestPanel {
         };
 
         section.appendChild(grid);
-        ';
+        ';'
         // BGMカテゴリには停止ボタンを追加
-        if(categoryKey === 'bgm') {
+        if (categoryKey === 'bgm') {
 
             const stopButton = document.createElement('button'),
             stopButton.className = 'bgm-stop-button',
@@ -326,7 +324,7 @@ export class AudioTestPanel {
             `,
 
             stopButton.addEventListener('click', () => { ''
-                this.stopBGMTest()',
+                this.stopBGMTest()','
                 stopButton.style.transform = 'scale(0.95)' }
 
                 setTimeout(() => { }'
@@ -339,7 +337,7 @@ export class AudioTestPanel {
 
                 stopButton.style.backgroundColor = 'rgba(255, 0, 0, 0.3)'; }
 
-            }');
+            }');'
 
             stopButton.addEventListener('mouseleave', () => { }
 
@@ -379,26 +377,26 @@ export class AudioTestPanel {
 
         button.addEventListener('click', () => { ''
             this.playTestSound(categoryKey, item),
-            ',
+            ','
             // ボタンアニメーション
             button.style.transform = 'scale(0.95)',
             button.style.backgroundColor = 'rgba(0, 255, 255, 0.3)',
             setTimeout(() => {''
-                button.style.transform = 'scale(1)',' }
+                button.style.transform = 'scale(1)',' }'
 
                 button.style.backgroundColor = 'rgba(0, 255, 255, 0.1)'; }
 
-            }, 200');
+            }, 200');'
         };
 
         button.addEventListener('mouseenter', () => {  ''
-            button.style.backgroundColor = 'rgba(0, 255, 255, 0.2)',' }
+            button.style.backgroundColor = 'rgba(0, 255, 255, 0.2)',' }'
 
             button.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.5)'; }
         };
 
         button.addEventListener('mouseleave', () => {  ''
-            button.style.backgroundColor = 'rgba(0, 255, 255, 0.1)',' }
+            button.style.backgroundColor = 'rgba(0, 255, 255, 0.1)',' }'
 
             button.style.boxShadow = 'none'; }
         };
@@ -411,7 +409,7 @@ export class AudioTestPanel {
      * @private
      * @returns {HTMLElement} セクション要素'
      */''
-    private createBatchTestSection()';
+    private createBatchTestSection()';'
         const section = document.createElement('div');
         section.className = 'batch-test-section';
         section.style.cssText = `;
@@ -439,7 +437,7 @@ export class AudioTestPanel {
         `;
         
         // 各カテゴリの一括テストボタン
-        const batchTests: BatchTest[] = [';
+        const batchTests: BatchTest[] = [';'
             { id: 'all_bubbles', label: '全泡音テスト', category: 'bubbles', icon: '🫧'
             },''
             { id: 'all_combo', label: '全コンボ音テスト', category: 'combo', icon: '🔥'
@@ -452,8 +450,8 @@ export class AudioTestPanel {
             }]
         ];
 
-        batchTests.forEach(test => {  '),
-            const button = document.createElement('button'),' }
+        batchTests.forEach(test => {  '),'
+            const button = document.createElement('button'),' }'
 
             button.className = 'batch-test-button'; }
             button.innerHTML = `${test.icon} ${test.label}`;
@@ -468,19 +466,19 @@ export class AudioTestPanel {
                 transition: all 0.3s ease;
             `;
 
-            button.addEventListener('click', () => { this.runBatchTest(test.category),' }
+            button.addEventListener('click', () => { this.runBatchTest(test.category),' }'
 
-            }');
+            }');'
 
             button.addEventListener('mouseenter', () => {  ''
-                button.style.backgroundColor = 'rgba(255, 165, 0, 0.3)',' }
+                button.style.backgroundColor = 'rgba(255, 165, 0, 0.3)',' }'
 
                 button.style.boxShadow = '0 0 10px rgba(255, 165, 0, 0.5)'; }
 
-            }');
+            }');'
 
             button.addEventListener('mouseleave', () => {  ''
-                button.style.backgroundColor = 'rgba(255, 165, 0, 0.2)',' }
+                button.style.backgroundColor = 'rgba(255, 165, 0, 0.2)',' }'
 
                 button.style.boxShadow = 'none'; }
             });
@@ -489,7 +487,7 @@ export class AudioTestPanel {
         };
 
         section.appendChild(buttonContainer);
-        ';
+        ';'
         // 進捗表示
         const progressContainer = document.createElement('div');
         progressContainer.id = 'batch-test-progress';
@@ -542,47 +540,47 @@ export class AudioTestPanel {
     private playTestSound(categoryKey: keyof TestCategories, item: TestItem): void { try {'
             switch(categoryKey) {', ' }
 
-                case 'bubbles':' }
+                case 'bubbles':' }'
 
-                    (this.audioManager, as any').playBubbleSound?.(item.id, 0, { volume: 0.7 };
+                    (this.audioManager, as any').playBubbleSound?.(item.id, 0, { volume: 0.7 };'
                     break;
 
                 case 'combo':
-                    if(item.value !== undefined && item.value <= 5) {
+                    if (item.value !== undefined && item.value <= 5) {
     
 }
                         (this.audioManager, as any).playComboSound?.(item.value, { volume: 0.7 } else if (item.value !== undefined) { // マイルストーン音' }'
 
-                        (this.audioManager, as any').playComboMilestoneSound?.(item.value, { volume: 0.7 }
+                        (this.audioManager, as any').playComboMilestoneSound?.(item.value, { volume: 0.7 }'
                     break;
 
-                case 'ui':';
-                    (this.audioManager as any').playUISound?.(item.id, { volume: 0.7 };
+                case 'ui':';'
+                    (this.audioManager as any').playUISound?.(item.id, { volume: 0.7 };'
                     break;
 
-                case 'achievement':';
+                case 'achievement':';'
                     if (item.progress !== undefined) { }'
 
                         (this.audioManager, as any').playAchievementProgressSound?.(item.progress, 'score', { volume: 0.7 } else { }'
 
-                        (this.audioManager as any').playAchievementSound?.(item.id, { volume: 0.7 }
+                        (this.audioManager as any').playAchievementSound?.(item.id, { volume: 0.7 }'
                     break;
 
                 case 'gameState':
-                    if(item.countdown !== undefined) {
+                    if (item.countdown !== undefined) {
     
 }
                         (this.audioManager, as any).playCountdownSound?.(item.countdown, { volume: 0.7 } else { }'
 
-                        (this.audioManager as any').playGameStateSound?.(item.id, { volume: 0.7 }
+                        (this.audioManager as any').playGameStateSound?.(item.id, { volume: 0.7 }'
                     break;
 
                 case 'bgm':
                     this.playBGMTest(item.id);
 
-                    break;'} catch (error) { this.errorHandler.handleError(error, 'AUDIO_TEST_ERROR', {)
+                    break;'} catch (error) { this.errorHandler.handleError(error, 'AUDIO_TEST_ERROR', {)'
                 category: categoryKey),
-                item: item  }
+                item: item,
     }
     
     /**
@@ -607,7 +605,7 @@ export class AudioTestPanel {
 
         } catch (error) { this.errorHandler.handleError(error, 'AUDIO_TEST_ERROR', {''
                 operation: 'playBGMTest'),
-                trackName: trackName  }
+                trackName: trackName,
     }
     
     /**
@@ -631,21 +629,20 @@ export class AudioTestPanel {
     private updateBGMButtonStates(activeTrack: string | null): void { ''
         if(!this.panel) return,
 
-        const bgmButtons = this.panel.querySelectorAll('.test-category-section: last-of-type .test-button,
+        const bgmButtons = this.panel.querySelectorAll('.test-category-section: last-of-type .test-button,'
         bgmButtons.forEach((button: Element, index: number) => { 
             const htmlButton = button as HTMLButtonElement,
 
             const item = this.testCategories.bgm.items[index],
-            if(item && item.id === activeTrack) {', ',
-
-             }
+            if (item && item.id === activeTrack) {', '
+}
 
                 htmlButton.style.backgroundColor = 'rgba(0, 255, 0, 0.3)'; }
 
                 htmlButton.style.borderColor = '#00ff00'; }
 
             } else {
-                htmlButton.style.backgroundColor = 'rgba(0, 255, 255, 0.1)',' }
+                htmlButton.style.backgroundColor = 'rgba(0, 255, 255, 0.1)',' }'
 
                 htmlButton.style.borderColor = '#00ffff'; }
 }
@@ -657,17 +654,17 @@ export class AudioTestPanel {
      */'
     private async runBatchTest(categoryKey: keyof, TestCategories): Promise<void> { const category = this.testCategories[categoryKey],
         if(!category) return,
-        ',
+        ','
         // 進捗表示を表示
         const progressContainer = document.getElementById('batch-test-progress'),
         const progressFill = document.getElementById('batch-test-progress-fill'),
-        const progressText = document.getElementById('batch-test-progress-text),
+        const progressText = document.getElementById('batch-test-progress-text),'
 
-        if(progressContainer) {', ' }
+        if (progressContainer) {', ' }
 
             progressContainer.style.display = 'block'; }
         }
-        ';
+        ';'
 
         const items = category.items;
         const delay = categoryKey === 'bgm' ? 3000 : 500; // BGMは長めに
@@ -683,7 +680,7 @@ export class AudioTestPanel {
             if (progressFill) { }
                 progressFill.style.width = `${progress}%`;
             }
-            if(progressText) {
+            if (progressText) {
     
 }
                 progressText.textContent = `${item.label} (${i + 1}/${items.length})`;
@@ -697,7 +694,7 @@ export class AudioTestPanel {
         }
         
         // 完了表示
-        if(progressText) {
+        if (progressText) {
     
 }
             progressText.textContent = `✅ ${category.label}テスト完了！`;
@@ -705,15 +702,15 @@ export class AudioTestPanel {
         
         // 3秒後に進捗表示を隠す
         setTimeout(() => {  ''
-            if(progressContainer) { }'
+            if (progressContainer) { }'
 
                 progressContainer.style.display = 'none'; }
 
             }''
-            if(progressFill) {', ' }
+            if (progressFill) {', ' }
 
                 progressFill.style.width = '0%'; }
-}, 3000';
+}, 3000';'
     }
     
     /**
@@ -721,8 +718,8 @@ export class AudioTestPanel {
      * @param {HTMLElement} container - 表示先のコンテナ
      */'
     open(container: HTMLElement): void { if (!this.panel) {''
-            this.panel = this.createPanel()',
-        container.innerHTML = ')
+            this.panel = this.createPanel()';'
+        container.innerHTML = ')'
         container.appendChild(this.panel),
         this.isOpen = true }
     

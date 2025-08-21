@@ -9,73 +9,71 @@ export interface TranslationValue { [key: string]: string | string[] | Translati
 
 export interface TranslationData { [key: string]: string | string[] }
 
-export interface AccessibilityTranslationData { [key: string]: string }
+export interface AccessibilityTranslationData { [key: string]: string;
 
 export interface TranslationCategoryStats { keyCount: number,
-    arrayCount: number  }
+    arrayCount: number;
 
 export interface AccessibilityCategoryStats {
-    keyCount: number }
+    keyCount: number;
 
 export interface TranslationStats { loadedLanguages: string[],
-    languageCount: number,
-    translations: Record<string, TranslationCategoryStats>,
+    languageCount: number;
+    translations: Record<string, TranslationCategoryStats>;
     accessibilityTranslations: Record<string, AccessibilityCategoryStats> }
 
 export interface TranslationSearchOptions { caseSensitive?: boolean,
-    exactMatch?: boolean,
-    includeAccessibility?: boolean }
+    exactMatch?: boolean;
+    includeAccessibility?: boolean;
 
 export interface TranslationSearchResult { language: string,
-    key: string,
-    value: string | string[],
-    category: TranslationCategory
-     }
+    key: string;
+    value: string | string[];
+    category: TranslationCategory;
 
 export interface TranslationValidationResult { isValid: boolean,
-    missingKeys: string[],
-    extraKeys: string[],
-    invalidValues: string[] }
+    missingKeys: string[];
+    extraKeys: string[];
+    invalidValues: string[];
 
 export interface TranslationExportOptions { includeAccessibility?: boolean,
-    format?: TranslationExportFormat,
-    languages?: string[] }
+    format?: TranslationExportFormat;
+    languages?: string[];
 
 export interface TranslationImportResult { success: boolean,
-    importedLanguages: string[],
-    errors: string[]  }
+    importedLanguages: string[];
+    errors: string[];
 
 export interface BulkTranslationOperation { language: string,
-    key: string,
-    value: string | string[],
-    operation: TranslationOperation
-    }
+    key: string;
+    value: string | string[];
+    operation: TranslationOperation;
 
 export interface TranslationMergeResult { mergedKeys: number,
-    conflictKeys: string[],
-    newKeys: number }
+    conflictKeys: string[];
+    newKeys: number;
 
 // 列挙型
 export type TranslationCategory = 'main' | 'accessibility';
 export type TranslationExportFormat = 'json' | 'csv' | 'yaml';
 export type TranslationOperation = 'add' | 'update' | 'delete';
-';
+';'
 // 定数
-export const SUPPORTED_LANGUAGES = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW] as const;
+export const SUPPORTED_LANGUAGES = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW] as const;'
 export type SupportedLanguage = typeof | SUPPORTED_LANGUAGES[number];
 
 export const DEFAULT_FALLBACK_LANGUAGE: SupportedLanguage = 'en',
 
 export class TranslationDataManager {
-    private translations: Map<string, TranslationData>,
-    private loadedLanguages: Set<string>,
-    private accessibilityTranslations: Map<string, AccessibilityTranslationData>,
+    private translations: Map<string, TranslationData>;
+    private loadedLanguages: Set<string>;
+    private accessibilityTranslations: Map<string, AccessibilityTranslationData>;
 
     constructor() {
 
-        this.translations = new Map(),
-        this.loadedLanguages = new Set(),
-        this.accessibilityTranslations = new Map(),
+        this.translations = new Map();
+        this.loadedLanguages = new Set();
+        this.accessibilityTranslations = new Map();
         
         // 翻訳データを初期化
         this.initializeTranslations() }
@@ -157,37 +155,37 @@ export class TranslationDataManager {
             'dataClear.title': 'データクリア確認',
             'dataClear.warning': 'すべてのデータが削除されます。',
             'dataClear.irreversible': 'この操作は取り消せません。',
-            'dataClear.items': [',
+            'dataClear.items': [','
                 'ユーザー名',
                 '所持AP・TAP',
                 'ハイスコア記録',
-                '開放済みステージ',]',
-                '所持アイテム']',
+                '開放済みステージ',]','
+                '所持アイテム']','
             ],
-            'dataClear.execute': '削除実行',',
-            'dataClear.cancel': 'キャンセル')',
+            'dataClear.execute': '削除実行',','
+            'dataClear.cancel': 'キャンセル')','
             // 操作説明
             'help.title': '操作説明',
             'help.basicControls': '基本操作',
             'help.gameTips': 'ゲームのコツ',
             'help.bubbleTypes': '泡の種類',
-            'help.controls': [',
+            'help.controls': [','
                 'クリック/タップ: 泡を割る',
                 'ドラッグ: 泡を吹き飛ばす',
                 '↑↓キー: メニュー選択',
                 'Enter: 決定',
-                'ESC: 戻る/終了',]',
-                'S: ショップ（ステージ選択時）']',
+                'ESC: 戻る/終了',]','
+                'S: ショップ（ステージ選択時）']','
             ],
-            'help.tips': [',
+            'help.tips': [','
                 '泡は時間が経つと危険になる',
                 '連続で割るとコンボボーナス',
                 'ピンクの泡でHP回復',
                 '毒の泡は避けよう',
-                '硬い泡は複数回クリック',]',
-                '特殊泡は画面外に逃がせる')]',
+                '硬い泡は複数回クリック',]','
+                '特殊泡は画面外に逃がせる')]','
             ]')',
-            'help.bubbles': '普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動')',
+            'help.bubbles': '普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動')','
             // ヘルプカテゴリ（新しく追加）
             'help.categories.gameplay': 'ゲームの基本',
             'help.categories.bubbles': '泡の種類',
@@ -227,8 +225,8 @@ export class TranslationDataManager {
             'confirm.yes': 'はい',
             'confirm.no': 'いいえ',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'キャンセル'}');
-        ';
+            'confirm.cancel': 'キャンセル'}');'
+        ';'
         // 英語翻訳
         this.translations.set('en', { // Menu
             'menu.title': 'BubblePop',
@@ -288,11 +286,11 @@ export class TranslationDataManager {
             'userInfo.tap': 'Total TAP',
             'userInfo.unlockedStages': 'Unlocked Stages',
             'userInfo.ownedItems': 'Owned Items',
-            'userInfo.highScores': 'High Scores',',
-            'userInfo.noRecords': 'No records yet')',
+            'userInfo.highScores': 'High Scores',','
+            'userInfo.noRecords': 'No records yet')','
             // Username
             'username.register': 'Register Username',')',
-            'username.change': 'Change Username')',
+            'username.change': 'Change Username')','
             'username.prompt': 'Enter username(max, 10 characters)',
             'username.inputHelp': 'Type and press Enter to confirm, ESC to cancel',
             'username.ok': 'OK',
@@ -301,12 +299,12 @@ export class TranslationDataManager {
             'dataClear.title': 'Data Clear Confirmation',
             'dataClear.warning': 'All data will be deleted.',
             'dataClear.irreversible': 'This action cannot be undone.',
-            'dataClear.items': [',
+            'dataClear.items': [','
                 'Username',
                 'AP & TAP',
                 'High Score Records',
-                'Unlocked Stages',]',
-                'Owned Items']',
+                'Unlocked Stages',]','
+                'Owned Items']','
             ],
             'dataClear.execute': 'Execute Delete',
             'dataClear.cancel': 'Cancel',
@@ -315,25 +313,25 @@ export class TranslationDataManager {
             'help.basicControls': 'Basic Controls',
             'help.gameTips': 'Game Tips',
             'help.bubbleTypes': 'Bubble Types',
-            'help.controls': [',
+            'help.controls': [','
                 'Click/Tap: Pop bubbles',
                 'Drag: Blow away bubbles',
                 '↑↓ Keys: Select menu',
                 'Enter: Confirm',
-                'ESC: Back/Exit',]',
-                'S: Shop(in, stage select)']',
+                'ESC: Back/Exit',]','
+                'S: Shop(in, stage select)']','
             ],
-            'help.tips': [',
+            'help.tips': [','
                 'Bubbles become dangerous over time',
                 'Pop consecutively for combo bonus',
                 'Pink bubbles restore HP',
                 'Avoid poison bubbles',
-                'Hard bubbles need multiple clicks',]',
-                'Push special bubbles off screen']',
+                'Hard bubbles need multiple clicks',]','
+                'Push special bubbles off screen']','
             ],
             'help.bubbles': 'Normal(Blue) Stone(Gray) Iron(Brown) Diamond(White) Pink(Heal) Poison(Green) Spiky(Chain) Rainbow(Bonus) Clock(Time) S-shape(Score) Electric(Hinder) Escape(Move)',
 
-            // Help Categories(newly, added)', 'help.categories.gameplay': 'Game Basics',
+            // Help Categories(newly, added)', 'help.categories.gameplay': 'Game Basics','
             'help.categories.bubbles': 'Bubble Types',
             'help.categories.controls': 'Controls',
             'help.categories.scoring': 'Scoring System',
@@ -366,12 +364,12 @@ export class TranslationDataManager {
             'error.audioNotSupported': 'Audio features are not available.',
             'error.storageNotSupported': 'Data storage is not available.',
 
-            // Common(newly, added)', 'common.back': 'Back',
+            // Common(newly, added)', 'common.back': 'Back','
             // Confirm
             'confirm.yes': 'Yes',
             'confirm.no': 'No',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'Cancel'}');
+            'confirm.cancel': 'Cancel'}');'
 
         this.loadedLanguages.add('ja');
         this.loadedLanguages.add('en';
@@ -427,8 +425,8 @@ export class TranslationDataManager {
             'accessibility.audio.vibrationFeedback': '振動フィードバック',
             'accessibility.audio.flashAlerts': '点滅アラート',
             'accessibility.audio.captionStyle': 'キャプションスタイル',
-            'accessibility.audio.captionSize': 'キャプションサイズ',',
-            'accessibility.audio.captionPosition': 'キャプション位置')',
+            'accessibility.audio.captionSize': 'キャプションサイズ',','
+            'accessibility.audio.captionPosition': 'キャプション位置')','
             // 運動機能アクセシビリティ
             'accessibility.motor.title': '運動機能支援',
             'accessibility.motor.alternativeInput': '代替入力方法',
@@ -438,8 +436,8 @@ export class TranslationDataManager {
             'accessibility.motor.pauseOptions': '一時停止オプション',
             'accessibility.motor.inputSettings': '入力設定',
             'accessibility.motor.gestureCustomization': 'ジェスチャーカスタマイズ',')',
-            'accessibility.motor.autoAdvance': '自動進行')'),
-        ',
+            'accessibility.motor.autoAdvance': '自動進行')'),'
+        ','
         // 英語アクセシビリティ翻訳
         this.accessibilityTranslations.set('en', {'
             // Accessibility Manager
@@ -488,8 +486,8 @@ export class TranslationDataManager {
             'accessibility.audio.vibrationFeedback': 'Vibration Feedback',
             'accessibility.audio.flashAlerts': 'Flash Alerts',
             'accessibility.audio.captionStyle': 'Caption Style',
-            'accessibility.audio.captionSize': 'Caption Size',',
-            'accessibility.audio.captionPosition': 'Caption Position')',
+            'accessibility.audio.captionSize': 'Caption Size',','
+            'accessibility.audio.captionPosition': 'Caption Position')','
             // Motor Accessibility
             'accessibility.motor.title': 'Motor Function Assistance',
             'accessibility.motor.alternativeInput': 'Alternative Input Methods',
@@ -509,7 +507,7 @@ export class TranslationDataManager {
      * @returns 翻訳テキスト
      */
     getTranslation(language: string, key: string, fallbackLanguage: string = DEFAULT_FALLBACK_LANGUAGE): string | string[] { // メイン翻訳から取得
-        if(this.translations.has(language) {
+        if (this.translations.has(language) {
             const langTranslations = this.translations.get(language)!,
             
             if (langTranslations[key] !== undefined) {
@@ -517,21 +515,21 @@ export class TranslationDataManager {
                 return langTranslations[key];
         
         // アクセシビリティ翻訳から取得
-        if(this.accessibilityTranslations.has(language) {
+        if (this.accessibilityTranslations.has(language) {
             const accessibilityLangTranslations = this.accessibilityTranslations.get(language)!,
             if (accessibilityLangTranslations[key] !== undefined) {
         }
                 return accessibilityLangTranslations[key];
         
         // フォールバック言語から取得
-        if(fallbackLanguage !== language) {
-            if(this.translations.has(fallbackLanguage) {
+        if (fallbackLanguage !== language) {
+            if (this.translations.has(fallbackLanguage) {
                 const fallbackTranslations = this.translations.get(fallbackLanguage)!,
                 if (fallbackTranslations[key] !== undefined) {
         }
                     return fallbackTranslations[key];
             
-            if(this.accessibilityTranslations.has(fallbackLanguage) {
+            if (this.accessibilityTranslations.has(fallbackLanguage) {
             
                 const fallbackAccessibilityTranslations = this.accessibilityTranslations.get(fallbackLanguage)!,
                 if (fallbackAccessibilityTranslations[key] !== undefined) {
@@ -625,18 +623,18 @@ export class TranslationDataManager {
 
                     ? searchValue === searchText || key === searchTerm: searchValue.includes(searchText) || key.includes(searchTerm,
 
-                if(matches) {
+                if (matches) {
                     results.push({
                         language,
-                        key)',
-                        value,') }
+                        key)','
+                        value,') }'
 
                         category: 'main'); 
     }
         }
         
         // アクセシビリティ翻訳を検索
-        if(includeAccessibility) {
+        if (includeAccessibility) {
             for(const [language, translations] of this.accessibilityTranslations.entries() {
                 for(const [key, value] of Object.entries(translations) {
                     const searchValue = caseSensitive ? value: value.toLowerCase(
@@ -644,11 +642,11 @@ export class TranslationDataManager {
                     const matches = exactMatch ,
                         ? searchValue === searchText || key === searchTerm: searchValue.includes(searchText) || key.includes(searchTerm,
 
-                    if(matches) {
+                    if (matches) {
                         results.push({
                             language,
-                            key)',
-                            value,') }
+                            key)','
+                            value,') }'
 
                             category: 'accessibility'); 
     }
@@ -672,7 +670,7 @@ export class TranslationDataManager {
         const targetTranslations = this.translations.get(language);
         const referenceTranslations = this.translations.get(referenceLanguage);
         
-        if(!targetTranslations || !referenceTranslations) {
+        if (!targetTranslations || !referenceTranslations) {
         
             result.isValid = false }
             return result;
@@ -682,21 +680,21 @@ export class TranslationDataManager {
         
         // 不足しているキーを検出
         for (const key of referenceKeys) {
-            if(!targetKeys.has(key) {
+            if (!targetKeys.has(key) {
         }
                 result.missingKeys.push(key); }
 }
         
         // 余分なキーを検出
         for (const key of targetKeys) {
-            if(!referenceKeys.has(key) {
+            if (!referenceKeys.has(key) {
         }
                 result.extraKeys.push(key); }
 }
         ;
         // 無効な値を検出
         for(const [key, value] of Object.entries(targetTranslations)) { ''
-            if(typeof, value !== 'string' && !Array.isArray(value) {
+            if (typeof, value !== 'string' && !Array.isArray(value) {
     
 }
 
@@ -705,7 +703,7 @@ export class TranslationDataManager {
             } else if(Array.isArray(value) && value.some(item => typeof, item !== 'string' { ''
                 result.invalidValues.push(key),' }'
 
-            } else if(typeof, value === 'string' && value.trim() === ') { result.invalidValues.push(key) }
+            } else if(typeof, value === 'string' && value.trim() === ') { result.invalidValues.push(key) }'
         }
         
         result.isValid = result.missingKeys.length === 0 && ;
@@ -733,17 +731,17 @@ export class TranslationDataManager {
             exportData[language] = {};
             
             // メイン翻訳
-            if(this.translations.has(language) { exportData[language].main = this.translations.get(language) }
+            if (this.translations.has(language) { exportData[language].main = this.translations.get(language) }
             
             // アクセシビリティ翻訳
-            if(includeAccessibility && this.accessibilityTranslations.has(language) { exportData[language].accessibility = this.accessibilityTranslations.get(language) }
+            if (includeAccessibility && this.accessibilityTranslations.has(language) { exportData[language].accessibility = this.accessibilityTranslations.get(language) }
         }
 
         switch(format) {
 
-            case 'json':',
+            case 'json':','
                 return JSON.stringify(exportData, null, 2),
-            case 'csv':',
+            case 'csv':','
                 return this.convertToCSV(exportData),
             case 'yaml':,
                 return this.convertToYAML(exportData),
@@ -767,11 +765,11 @@ export class TranslationDataManager {
 
             switch(format) {
 
-                case 'json':',
+                case 'json':','
                     parsedData = JSON.parse(data),
 
                     break,
-                case 'csv':',
+                case 'csv':','
                     parsedData = this.parseCSV(data),
 
                     break,
@@ -815,11 +813,11 @@ export class TranslationDataManager {
     executeBulkOperations(operations: BulkTranslationOperation[]): number { let executedCount = 0,
         
         for (const operation of operations) {
-        ',
+        ','
 
             try {'
                 switch(operation.operation) {''
-                    case 'add':' }
+                    case 'add':' }'
 
                     case 'update': }
                         const existingData = this.translations.get(operation.language) || {};
@@ -830,7 +828,7 @@ export class TranslationDataManager {
 
                     case 'delete':
                         const data = this.translations.get(operation.language);
-                        if(data && data[operation.key] !== undefined) {
+                        if (data && data[operation.key] !== undefined) {
                             delete data[operation.key] }
                             this.setLanguageData(operation.language, data); }
                         }
@@ -881,7 +879,7 @@ export class TranslationDataManager {
      * @returns CSV文字列'
      */''
     private convertToCSV(data: Record<string, any>): string { const rows: string[] = [],''
-        rows.push('Language,Category,Key,Value),
+        rows.push('Language,Category,Key,Value),'
         
         for(const [language, languageData] of Object.entries(data) {
         
@@ -890,9 +888,9 @@ export class TranslationDataManager {
     
 }
 
-                    const valueStr = Array.isArray(value) ? value.join('|') : value;' }
+                    const valueStr = Array.isArray(value) ? value.join('|') : value;' }'
 
-                    rows.push(`${language},${category},${key},"${valueStr"}"`"}";
+                    rows.push(`${language},${category},${key},"${valueStr"}"`"}";"
                 }
 }"
 
@@ -905,7 +903,7 @@ export class TranslationDataManager {
      * @returns YAML文字列'
      */''
     private convertToYAML(data: Record<string, any>): string { // 簡単なYAML変換（実際のプロジェクトではライブラリ使用推奨）
-        let yaml = ',
+        let yaml = ','
         for(const [language, languageData] of Object.entries(data) { }
             yaml += `${language}:\n`;
             for(const [category, categoryData] of Object.entries(languageData) {
@@ -915,7 +913,7 @@ export class TranslationDataManager {
 
                 for(const [key, value] of Object.entries(categoryData) { }'
 
-                    const valueStr = Array.isArray(value) ? `[${value.join(', '}']` : value;
+                    const valueStr = Array.isArray(value) ? `[${value.join(', '}']` : value;'
                     yaml += `    ${key}: "${valueStr}"\n`;
                 }
 }
@@ -932,13 +930,13 @@ export class TranslationDataManager {
         const data: Record<string, any> = {};
         
         for(let, i = 1; i < lines.length; i++) {
-        ',
+        ','
 
             const line = lines[i].trim(),
             if(!line) continue,
 
             const [language, category, key, value] = line.split(','),
-            const cleanValue = value.replace(/^"|"$/g, ') }
+            const cleanValue = value.replace(/^"|"$/g, ') }'
 
             if (!data[language]) data[language] = {};
             if(!data[language][category]) data[language][category] = {};
@@ -958,8 +956,8 @@ export class TranslationDataManager {
         const data: Record<string, any> = {};
         const lines = yaml.split('\n');
 
-        let currentLang = ';
-        let currentCategory = ';
+        let currentLang = ';'
+        let currentCategory = ';'
         
         for (const line of lines) {
         
@@ -971,11 +969,11 @@ export class TranslationDataManager {
 }
 
                 currentLang = line.split(':'[0]; }'
-                data[currentLang] = {} else if(line.match(/^  [a-z]+:/) { ''
-                currentCategory = line.trim().split(':)[0] }
-                data[currentLang][currentCategory] = {} else if(line.match(/^    /) { ''
+                data[currentLang] = {} else if (line.match(/^  [a-z]+:/) { ''
+                currentCategory = line.trim().split(':)[0] }'
+                data[currentLang][currentCategory] = {} else if (line.match(/^    /) { ''
                 const [key, ...valueParts] = line.trim().split(':'),
-                const value = valueParts.join(':'.trim().replace(/^"|"$/g, '),
+                const value = valueParts.join(':'.trim().replace(/^"|"$/g, '),'
                 data[currentLang][currentCategory][key] = value }
         }
         
@@ -998,7 +996,7 @@ export class TranslationDataManager {
      * 翻訳データのバックアップを作成
      * @returns バックアップデータ
      */
-    createBackup(): string { return this.exportTranslations({ includeAccessibility: true }
+    createBackup(): string { return this.exportTranslations({ includeAccessibility: true,
     
     /**
      * バックアップから復元
@@ -1019,7 +1017,7 @@ export class TranslationDataManager {
      * リソースの解放
      */
     destroy(): void { ''
-        this.clearTranslations()',
+        this.clearTranslations()','
         console.log('Translation, Data Manager, destroyed') }
 
-    }'}
+    }'}'

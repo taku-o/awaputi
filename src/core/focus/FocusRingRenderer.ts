@@ -5,70 +5,69 @@
 
 // 型定義
 export interface FocusManager {
-    gameEngine: GameEngine }
+    gameEngine: GameEngine;
 
 export interface GameEngine { // GameEngineインターフェースの基本定義
-    [key: string]: any }
+    [key: string]: any;
 
 export interface RenderConfig { enabled: boolean,
-    showFocusRings: boolean,
-    highContrastMode: boolean,
-    animationsEnabled: boolean,
-    customStyles: boolean  }
+    showFocusRings: boolean;
+    highContrastMode: boolean;
+    animationsEnabled: boolean;
+    customStyles: boolean;
 
 export interface StyleConfig { focusRingColor: string,
-    focusRingWidth: string,
-    focusRingStyle: string,
-    focusRingOffset: string,
-    highContrastColor: string,
-    animationDuration: string,
-    animationEasing: string }
+    focusRingWidth: string;
+    focusRingStyle: string;
+    focusRingOffset: string;
+    highContrastColor: string;
+    animationDuration: string;
+    animationEasing: string;
 
 export interface FocusRingOptions { color?: string,
-    width?: string,
-    style?: string,
-    offset?: string,
-    animated?: boolean,
+    width?: string;
+    style?: string;
+    offset?: string;
+    animated?: boolean;
     customClass?: string | null }
 
 export interface VisualFeedbackOptions { hoverClass?: string,
-    activeClass?: string,
-    disabledClass?: string,
-    errorColor?: string,
-    [key: string]: any }
+    activeClass?: string;
+    disabledClass?: string;
+    errorColor?: string;
+    [key: string]: any;
 
 export interface StyleUpdateOptions { color?: string,
-    width?: string,
-    style?: string,
-    offset?: string,
-    animated?: boolean }
+    width?: string;
+    style?: string;
+    offset?: string;
+    animated?: boolean;
 
 export interface RendererConfig { render: RenderConfig,
-    style: StyleConfig
-     }
+    style: StyleConfig;
 
 export interface RendererStats { enabled: boolean,
-    showFocusRings: boolean,
-    highContrastMode: boolean,
-    animationsEnabled: boolean,
-    customStylesEnabled: boolean,
-    hasStyleElement: boolean,
-    cssLength: number }
+    showFocusRings: boolean;
+    highContrastMode: boolean;
+    animationsEnabled: boolean;
+    customStylesEnabled: boolean;
+    hasStyleElement: boolean;
+    cssLength: number;
 
 export interface MediaQuerySupport { highContrast: boolean,
-    forcedColors: boolean,
-    reducedMotion: boolean }
+    forcedColors: boolean;
+    reducedMotion: boolean;
 
 export interface CSSGenerationContext { primaryColor: string,
-    focusRingColor: string,
-    focusRingWidth: string,
-    focusRingStyle: string,
-    focusRingOffset: string,
-    highContrastColor: string,
-    animationDuration: string,
-    animationEasing: string,
-    highContrastMode: boolean,
-    animationsEnabled: boolean }
+    focusRingColor: string;
+    focusRingWidth: string;
+    focusRingStyle: string;
+    focusRingOffset: string;
+    highContrastColor: string;
+    animationDuration: string;
+    animationEasing: string;
+    highContrastMode: boolean;
+    animationsEnabled: boolean;
 
 // 列挙型
 export type VisualFeedbackType = 'focus' | 'hover' | 'active' | 'disabled' | 'error';
@@ -81,10 +80,10 @@ export const DEFAULT_RENDER_CONFIG: RenderConfig = { enabled: true,
     showFocusRings: true,
     highContrastMode: false,
     animationsEnabled: true,
-    customStyles: true  };
-';
+    customStyles: true,;
+';'
 
-export const DEFAULT_STYLE_CONFIG: StyleConfig = {;
+export const DEFAULT_STYLE_CONFIG: StyleConfig = {,
     focusRingColor: '#007acc',
     focusRingWidth: '2px',
     focusRingStyle: 'solid',
@@ -93,7 +92,7 @@ export const DEFAULT_STYLE_CONFIG: StyleConfig = {;
     animationDuration: '150ms',
     animationEasing: 'ease-out'
             };
-';
+';'
 
 export const FOCUS_CSS_SELECTORS = {;
     INTERACTIVE_ELEMENTS: 'button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible',
@@ -102,7 +101,7 @@ export const FOCUS_CSS_SELECTORS = {;
     SKIP_LINK: '.skip-link',
     FOCUS_TRAP: '.focus-trap-active'
             } as const;
-';
+';'
 
 export const CSS_CUSTOM_PROPERTIES = {;
     FOCUS_COLOR: '--focus-ring-color',
@@ -110,27 +109,27 @@ export const CSS_CUSTOM_PROPERTIES = {;
     FOCUS_OFFSET: '--focus-ring-offset',
     ANIMATION_DURATION: '--focus-animation-duration'
             } as const;
-';
+';'
 
 export const MEDIA_QUERIES = {;
-    HIGH_CONTRAST: '(prefers-contrast: high')',
-    FORCED_COLORS: '(forced-colors: active')',
+    HIGH_CONTRAST: '(prefers-contrast: high')','
+    FORCED_COLORS: '(forced-colors: active')','
     REDUCED_MOTION: '(prefers-reduced-motion: reduce')'
             } as const;
-';
+';'
 
 export const ACCESSIBILITY_COLORS = {;
     HIGHLIGHT: 'Highlight',
     BUTTON_TEXT: 'ButtonText',
     BUTTON_FACE: 'ButtonFace'
             } as const;
-';
+';'
 // ユーティリティ関数
 export function isValidColor(color: string): boolean {,
     const tempElement = document.createElement('div'),
 
     tempElement.style.color = color,
-    return tempElement.style.color !== ' }
+    return tempElement.style.color !== ' }'
 
 export function parseAnimationDuration(duration: string): number { const match = duration.match(/^(\d+(?:\.\d+)? )(ms|s)$/),
     if (!match) return 150, // デフォルト値
@@ -138,19 +137,19 @@ export function parseAnimationDuration(duration: string): number { const match =
     const value = parseFloat(match[1]),
     const unit = match[2],
 
-     : undefined',
-    return unit === 's' ? value * 1000 : value }
+     : undefined','
+    return unit === 's' ? value * 1000 : value;
 
-export function validateStyleConfig(config: Partial<StyleConfig>): boolean { if(config.focusRingColor && !isValidColor(config.focusRingColor) {
+export function validateStyleConfig(config: Partial<StyleConfig>): boolean { if (config.focusRingColor && !isValidColor(config.focusRingColor) {
         return false }
     
-    if(config.highContrastColor && !isValidColor(config.highContrastColor) { return false }
+    if (config.highContrastColor && !isValidColor(config.highContrastColor) { return false }
     
-    if(config.focusRingWidth && !config.focusRingWidth.match(/^\d+px$/) { return false }
+    if (config.focusRingWidth && !config.focusRingWidth.match(/^\d+px$/) { return false }
     
     return true;
 }
-';
+';'
 
 export function createCSSRule(selector: string, properties: Record<string, string>): string { const propertyStrings = Object.entries(properties)' }'
 
@@ -162,36 +161,36 @@ export function createCSSRule(selector: string, properties: Record<string, strin
 }
 
 export function sanitizeCSS(css: string): string { // 基本的なCSS検証とサニタイゼーション
-    return css',
-        .replace(/<script[^>]*>.*? <\/script>/gi, '') : undefined',
-        .replace(/javascript:/gi, '')',
-        .replace(/expression\s*\(/gi, ') }
+    return css','
+        .replace(/<script[^>]*>.*? <\/script>/gi, '') : undefined','
+        .replace(/javascript:/gi, '')','
+        .replace(/expression\s*\(/gi, ') }'
 
 export function generateAnimationCSS(duration: string, easing: string): string {
     return `transition: outline-color ${duration} ${easing}`;
 }
 
 export class FocusRingRenderer {
-    private focusManager: FocusManager,
-    private gameEngine: GameEngine,
+    private focusManager: FocusManager;
+    private gameEngine: GameEngine;
     // レンダリング設定
-    private renderConfig: RenderConfig,
+    private renderConfig: RenderConfig;
     // スタイル設定
-    private styleConfig: StyleConfig,
+    private styleConfig: StyleConfig;
     // DOM要素
-    private styleElement: HTMLStyleElement | null = null',
-    private customCSS: string = ',
+    private styleElement: HTMLStyleElement | null = null';'
+    private customCSS: string = ';'
     // メディアクエリリスナー
     private, mediaQueryListeners: MediaQueryList[] = [],
 
     constructor(focusManager: FocusManager) {
-        this.focusManager = focusManager,
+        this.focusManager = focusManager;
         this.gameEngine = focusManager.gameEngine }
         // 設定の初期化 }
-        this.renderConfig = { ...DEFAULT_RENDER_CONFIG,
-        this.styleConfig = { ...DEFAULT_STYLE_CONFIG,
+        this.renderConfig = { ...DEFAULT_RENDER_CONFIG;
+        this.styleConfig = { ...DEFAULT_STYLE_CONFIG;
 
-        console.log('[FocusRingRenderer] Component, initialized) }
+        console.log('[FocusRingRenderer] Component, initialized) }'
     
     /**
      * フォーカススタイルを初期化
@@ -199,18 +198,18 @@ export class FocusRingRenderer {
     initialize(): void { this.setupFocusStyles(),
 
         this.detectHighContrastMode(),
-        this.setupMediaQueryListeners()',
+        this.setupMediaQueryListeners()','
         console.log('[FocusRingRenderer] Initialization, completed') }'
     
     /**
      * フォーカススタイルを設定
      */'
     setupFocusStyles(): void { if (this.styleElement) {''
-            this.styleElement.remove()',
-        this.styleElement = document.createElement('style'),
+            this.styleElement.remove()','
+        this.styleElement = document.createElement('style');
         this.styleElement.id = 'focus-manager-styles',
         
-        this.customCSS = this.generateFocusCSS(),
+        this.customCSS = this.generateFocusCSS();
         this.styleElement.textContent = sanitizeCSS(this.customCSS),
 
         document.head.appendChild(this.styleElement),
@@ -236,13 +235,13 @@ export class FocusRingRenderer {
     private buildCompleteCSS(context: CSSGenerationContext): string { const { primaryColor, focusRingWidth, focusRingStyle, focusRingOffset, 
                 highContrastColor, animationDuration, animationEasing }
                 highContrastMode, animationsEnabled } = context;
-        ';
+        ';'
 
-        const animationCSS = animationsEnabled ? undefined : undefined';
-            generateAnimationCSS(animationDuration, animationEasing) : ';
+        const animationCSS = animationsEnabled ? undefined : undefined';'
+            generateAnimationCSS(animationDuration, animationEasing) : ';'
 
-        const highContrastCSS = highContrastMode ? this.generateHighContrastCSS(context) : ';
-        const animationKeyframes = animationsEnabled ? this.generateAnimationKeyframes() : ';
+        const highContrastCSS = highContrastMode ? this.generateHighContrastCSS(context) : ';'
+        const animationKeyframes = animationsEnabled ? this.generateAnimationKeyframes() : ';'
         
         return `;
             /* フォーカス管理基本スタイル */
@@ -252,13 +251,13 @@ export class FocusRingRenderer {
             ${FOCUS_CSS_SELECTORS.FOCUS_RING_CLASS} {
                 outline: ${focusRingWidth} ${focusRingStyle} ${primaryColor} !important;
                 outline-offset: ${focusRingOffset} !important;
-                ${animationCSS ? `${animationCSS};` : '}
+                ${animationCSS ? `${animationCSS};` : '}'
             
             /* インタラクティブ要素の基本フォーカススタイル */
             ${FOCUS_CSS_SELECTORS.INTERACTIVE_ELEMENTS} {
                 outline: ${focusRingWidth} ${focusRingStyle} ${primaryColor} !important;
                 outline-offset: ${focusRingOffset} !important;
-                ${animationCSS ? `${animationCSS};` : '}
+                ${animationCSS ? `${animationCSS};` : '}'
             
             ${highContrastCSS}
             
@@ -276,13 +275,13 @@ export class FocusRingRenderer {
                 outline: ${focusRingWidth} ${focusRingStyle} ${primaryColor} !important;
                 outline-offset: 4px !important,
                 box-shadow: 0 0 0 4px rgba(0, 122, 204, 0.3) !important;
-                ${animationCSS ? `${animationCSS}, box-shadow ${animationDuration} ${animationEasing};` : '}
+                ${animationCSS ? `${animationCSS}, box-shadow ${animationDuration} ${animationEasing};` : '}'
             
             .menu-item:focus-visible {
                 outline: ${focusRingWidth} ${focusRingStyle} ${primaryColor} !important;
                 outline-offset: -2px !important,
                 background-color: rgba(0, 122, 204, 0.1) !important;
-                ${animationCSS ? `${animationCSS}, background-color ${animationDuration} ${animationEasing};` : '}
+                ${animationCSS ? `${animationCSS}, background-color ${animationDuration} ${animationEasing};` : '}'
             
             .settings-control:focus-visible {
                 outline: ${focusRingWidth} ${focusRingStyle} ${primaryColor} !important;
@@ -318,10 +317,10 @@ export class FocusRingRenderer {
      */''
     private generateSkipLinkCSS(context: CSSGenerationContext): string {
         const { primaryColor, animationDuration, animationEasing, animationsEnabled } = context;
-        ';
+        ';'
 
-        const transitionCSS = animationsEnabled ? undefined : undefined';
-            `transition: opacity ${animationDuration} ${animationEasing}, transform ${animationDuration} ${animationEasing};` : ';
+        const transitionCSS = animationsEnabled ? undefined : undefined';'
+            `transition: opacity ${animationDuration} ${animationEasing}, transform ${animationDuration} ${animationEasing};` : ';'
         
         return `;
             /* スキップリンクスタイル */
@@ -353,15 +352,15 @@ export class FocusRingRenderer {
     private generateFocusTrapCSS(context: CSSGenerationContext): string {
         const { primaryColor, animationsEnabled } = context;
 
-        const animationCSS = animationsEnabled ? 'animation: focus-trap-pulse 2s infinite;' : ';
+        const animationCSS = animationsEnabled ? 'animation: focus-trap-pulse 2s infinite;' : ';'
         
         return `;
             /* フォーカストラップ内のスタイル */
-            ${FOCUS_CSS_SELECTORS.FOCUS_TRAP} { position: relative }
-            ';
+            ${FOCUS_CSS_SELECTORS.FOCUS_TRAP} { position: relative;
+            ';'
 
             ${FOCUS_CSS_SELECTORS.FOCUS_TRAP}::before { ''
-                content: ',
+                content: ','
                 position: absolute,
                 top: -4px,
                 left: -4px,
@@ -443,13 +442,13 @@ export class FocusRingRenderer {
                 offset = this.styleConfig.focusRingOffset,
                 animated = this.renderConfig.animationsEnabled,
                 customClass = null } = options;
-            ';
+            ';'
             // 既存のフォーカスクラスを削除
-            element.classList.remove('focus-ring);
+            element.classList.remove('focus-ring);'
 
-            if(this.renderConfig.showFocusRings) {
+            if (this.renderConfig.showFocusRings) {
                 // フォーカスリングクラスを追加
-                element.classList.add('focus-ring),
+                element.classList.add('focus-ring),'
                 
                 // カスタムクラスがある場合は追加
                 if (customClass) {
@@ -481,7 +480,7 @@ export class FocusRingRenderer {
         }
         
         // アニメーション設定
-        if(animated && this.renderConfig.animationsEnabled) {
+        if (animated && this.renderConfig.animationsEnabled) {
             element.style.transition = generateAnimationCSS(
                 this.styleConfig.animationDuration),
                 this.styleConfig.animationEasing }
@@ -495,9 +494,9 @@ export class FocusRingRenderer {
         if(!element) return,
 
         element.classList.remove('focus-ring'),
-        element.style.outline = ',
-        element.style.outlineOffset = ',
-        element.style.transition = ',
+        element.style.outline = ','
+        element.style.outlineOffset = ','
+        element.style.transition = ','
         
         console.log(`[FocusRingRenderer] Focus ring removed from element:`, element.tagName }
     
@@ -508,7 +507,7 @@ export class FocusRingRenderer {
         if (!element) return }
         const { color, width, style, offset, animated } = styleOptions;
         
-        if(color) {
+        if (color) {
         
             const actualColor = this.renderConfig.highContrastMode ? undefined: undefined
                                this.styleConfig.highContrastColor: color 
@@ -521,18 +520,18 @@ export class FocusRingRenderer {
         
         if (offset) { element.style.outlineOffset = offset }
         
-        if(animated !== undefined) {
+        if (animated !== undefined) {
         
             if (animated && this.renderConfig.animationsEnabled) {
                 element.style.transition = generateAnimationCSS(
-                    this.styleConfig.animationDuration)',
-                    this.styleConfig.animationEasing' }
+                    this.styleConfig.animationDuration)','
+                    this.styleConfig.animationEasing' }'
 
                 '); }'
 
             } else { }'
 
-                element.style.transition = '; }
+                element.style.transition = '; }'
 }
     }
     
@@ -540,15 +539,15 @@ export class FocusRingRenderer {
      * ハイコントラストモードを処理
      */
     handleHighContrast(enabled: boolean): void { this.renderConfig.highContrastMode = enabled,
-        ',
+        ','
         // スタイルを再生成して適用
-        this.setupFocusStyles()',
+        this.setupFocusStyles()','
         if(focusedElement && focusedElement.classList.contains('focus-ring' {', ' }
 
             this.renderFocusRing(focusedElement); }
         }
 
-        console.log(`[FocusRingRenderer] High, contrast mode ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`[FocusRingRenderer] High, contrast mode ${enabled ? 'enabled' : 'disabled}`});'
     }
     
     /**
@@ -560,7 +559,7 @@ export class FocusRingRenderer {
         
         const isHighContrast = highContrastQuery.matches || forcedColorsQuery.matches,
         
-        if(isHighContrast !== this.renderConfig.highContrastMode) {
+        if (isHighContrast !== this.renderConfig.highContrastMode) {
     
 }
             this.handleHighContrast(isHighContrast); }
@@ -593,39 +592,39 @@ export class FocusRingRenderer {
         // リスナーを保存
         this.mediaQueryListeners = [highContrastQuery, forcedColorsQuery, reducedMotionQuery];
 
-        console.log('[FocusRingRenderer] Media query listeners set up);
+        console.log('[FocusRingRenderer] Media query listeners set up);'
     }
     
     /**
      * メディアクエリリスナーをクリア
      */
     private clearMediaQueryListeners(): void { this.mediaQueryListeners.forEach(query => { )
-            // リスナーを削除（実際の実装では適切なリスナー参照が必要）') }
+            // リスナーを削除（実際の実装では適切なリスナー参照が必要）') }'
         this.mediaQueryListeners = []; }
     }
     
     /**
      * 視覚フィードバックを管理
      */
-    manageVisualFeedback(element: HTMLElement, feedbackType: VisualFeedbackType, options: VisualFeedbackOptions = {}): void { if (!element') return,
-        ',
+    manageVisualFeedback(element: HTMLElement, feedbackType: VisualFeedbackType, options: VisualFeedbackOptions = {}): void { if (!element') return,'
+        ','
 
         try {'
             switch(feedbackType) {
 
-                case 'focus':',
+                case 'focus':','
                     this.renderFocusRing(element, options as FocusRingOptions),
                     break,
 
-                case 'hover':',
+                case 'hover':','
                     this.applyHoverEffect(element, options),
                     break,
 
-                case 'active':',
+                case 'active':','
                     this.applyActiveEffect(element, options),
                     break,
 
-                case 'disabled':',
+                case 'disabled':','
                     this.applyDisabledEffect(element, options),
                     break,
 
@@ -676,11 +675,11 @@ export class FocusRingRenderer {
     updateRenderConfig(config: Partial<RenderConfig>): void { ''
         Object.assign(this.renderConfig, config),
 
-        if (config.hasOwnProperty('enabled') || ',
-            config.hasOwnProperty('showFocusRings') ||',
-            config.hasOwnProperty('highContrastMode') ||',
+        if (config.hasOwnProperty('enabled') || ','
+            config.hasOwnProperty('showFocusRings') ||','
+            config.hasOwnProperty('highContrastMode') ||','
             config.hasOwnProperty('animationsEnabled' {''
-            this.setupFocusStyles()',
+            this.setupFocusStyles()','
         console.log('[FocusRingRenderer] Render, config updated') }'
     
     /**
@@ -690,11 +689,11 @@ export class FocusRingRenderer {
         if(!validateStyleConfig(config)) {''
             console.warn('[FocusRingRenderer] Invalid, style config, provided'),
             return }
-        ';
+        ';'
 
         Object.assign(this.styleConfig, config);
-        this.setupFocusStyles()';
-        console.log('[FocusRingRenderer] Style, config updated);
+        this.setupFocusStyles()';'
+        console.log('[FocusRingRenderer] Style, config updated);'
     }
     
     /**
@@ -729,15 +728,15 @@ export class FocusRingRenderer {
      */'
     validateCSS(): boolean { try {'
             if(!this.customCSS) return false,
-            ',
+            ','
             // 基本的なCSS構文チェック
-            const tempStyle = document.createElement('style),
+            const tempStyle = document.createElement('style),'
             tempStyle.textContent = this.customCSS,
             document.head.appendChild(tempStyle),
             
             const isValid = tempStyle.sheet !== null,
             document.head.removeChild(tempStyle),
-            ',
+            ','
 
             return isValid,' }'
 
@@ -749,14 +748,14 @@ export class FocusRingRenderer {
      * コンポーネントクリーンアップ
      */
     destroy(): void { // スタイル要素を削除
-        if(this.styleElement) {
+        if (this.styleElement) {
             this.styleElement.remove() }
             this.styleElement = null; }
         }
         ;
         // メディアクエリリスナーをクリア
         this.clearMediaQueryListeners('';
-        this.customCSS = ';, ')';
+        this.customCSS = ';, ')';'
         console.log('[FocusRingRenderer] Component, destroyed');
 
-    }'}
+    }'}'

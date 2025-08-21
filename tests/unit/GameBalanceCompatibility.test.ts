@@ -6,50 +6,50 @@ import { jest  } from '@jest/globals';
 interface MockErrorHandler {
     handleError: jest.Mock<(erro,r: Error, context?: any) => void> }
 interface MockLoggingSystem {
-    warn: jest.Mock<(...arg,s: any[]) => void>,
-    info: jest.Mock<(...arg,s: any[]) => void>,
-    error: jest.Mock<(...arg,s: any[]) => void>,
+    warn: jest.Mock<(...arg,s: any[]) => void>;
+    info: jest.Mock<(...arg,s: any[]) => void>;
+    error: jest.Mock<(...arg,s: any[]) => void>;
     debug: jest.Mock<(...arg,s: any[]) => void> }
 interface ScoreConfig {
-    baseScores: { [ke,y: string]: number };
-    combo: { multiplierIncrement: number };
-    ageBonus: { earlyBonus: number };
+    baseScores: { [ke,y: string]: number,;
+    combo: { multiplierIncrement: number,;
+    ageBonus: { earlyBonus: number,;
 }
 interface StageConfig {
-    unlockRequirements: { [ke,y: string]: number };
-    difficulty: { [key: string]: { spawnRate: number } };
+    unlockRequirements: { [ke,y: string]: number,;
+    difficulty: { [key: string]: { spawnRate: number, };
 }
 interface ItemConfig {
-    baseCosts: { [ke,y: string]: number };
-    effects: { [key: string]: number };
-    maxLevels: { [key: string]: number };
+    baseCosts: { [ke,y: string]: number,;
+    effects: { [key: string]: number,;
+    maxLevels: { [key: string]: number,;
 }
 interface BubbleConfig {
-    maxAge: { [ke,y: string]: number };
-    health: { [key: string]: number };
-    specialEffects: { [key: string]: { [effect: string]: number } };
+    maxAge: { [ke,y: string]: number,;
+    health: { [key: string]: number,;
+    specialEffects: { [key: string]: { [effect: string]: number, };
 }
 interface GameConfigInterface {
     getScoreConfig: jest.Mock<() => ScoreConfig>,
-    getStageConfig: jest.Mock<() => StageConfig>,
-    getItemConfig: jest.Mock<() => ItemConfig>,
-    getBubbleConfig: jest.Mock<() => BubbleConfig>,
-    calculateScore: jest.Mock<(bubbleTyp,e: string, ageRatio: number) => number>,
-    calculateComboMultiplier: jest.Mock<(comboCoun,t: number) => number>,
-    calculateItemCost: jest.Mock<(itemI,d: string, currentLevel: number) => number>,
-    isStageUnlocked: jest.Mock<(stageI,d: string, playerTAP: number') => boolean> }
+    getStageConfig: jest.Mock<() => StageConfig>;
+    getItemConfig: jest.Mock<() => ItemConfig>;
+    getBubbleConfig: jest.Mock<() => BubbleConfig>;
+    calculateScore: jest.Mock<(bubbleTyp,e: string, ageRatio: number) => number>;
+    calculateComboMultiplier: jest.Mock<(comboCoun,t: number) => number>;
+    calculateItemCost: jest.Mock<(itemI,d: string, currentLevel: number) => number>;
+    isStageUnlocked: jest.Mock<(stageI,d: string, playerTAP: number') => boolean> }'
 // ErrorHandlerとLoggingSystemをモック
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
     getErrorHandler: jest.fn((): MockErrorHandler => ({
-        handleError: jest.fn());
-)');
+        handleError: jest.fn()),
+)');'
 jest.mock('../../src/core/LoggingSystem.js', () => ({
     getLoggingSystem: jest.fn((): MockLoggingSystem => ({
         warn: jest.fn(
         info: jest.fn(
         error: jest.fn(
-        debug: jest.fn();
-)');
+        debug: jest.fn(),
+)');'
 // Import after mocking
 import { BALANCE_CONFIG, BalanceHelper  } from '../../src/core/GameBalanceCompatibility.js';
 import { getGameConfig  } from '../../src/config/GameConfig.js';
@@ -64,8 +64,8 @@ describe('GameBalanceCompatibility', () => {
     afterEach(() => {
         // モックを元に戻す
         console.warn = originalConsoleWarn,
-        console.error = originalConsoleError }');
-    describe('BALANCE_CONFIG互換性', (') => {
+        console.error = originalConsoleError }');'
+    describe('BALANCE_CONFIG互換性', (') => {'
         test('should provide access to scoring configuration', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
@@ -89,7 +89,7 @@ describe('GameBalanceCompatibility', () => {
             expect(console.warn).toHaveBeenCalled();
             // 元に戻す
             gameConfig.getScoreConfig = getScoreConfig;
-        }');
+        }');'
         test('should provide access to stages configuration', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
@@ -110,7 +110,7 @@ describe('GameBalanceCompatibility', () => {
             expect(console.warn).toHaveBeenCalled();
             // 元に戻す
             gameConfig.getStageConfig = getStageConfig;
-        }');
+        }');'
         test('should provide access to items configuration', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
@@ -134,7 +134,7 @@ describe('GameBalanceCompatibility', () => {
             expect(console.warn).toHaveBeenCalled();
             // 元に戻す
             gameConfig.getItemConfig = getItemConfig;
-        }');
+        }');'
         test('should provide access to bubbles configuration', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
@@ -158,15 +158,15 @@ describe('GameBalanceCompatibility', () => {
             expect(console.warn).toHaveBeenCalled();
             // 元に戻す
             gameConfig.getBubbleConfig = getBubbleConfig;
-        }');
-        test('should prevent direct modification of BALANCE_CONFIG', (') => {
+        }');'
+        test('should prevent direct modification of BALANCE_CONFIG', (') => {'
             // 直接設定を試みる
             (BALANCE_CONFIG.scoring = { test: 'value' });
             // エラーが表示されること
             expect(console.error).toHaveBeenCalled();
-        }');
+        }');'
     }
-    describe('BalanceHelper互換性', (') => {
+    describe('BalanceHelper互換性', (') => {'
         test('should calculate score correctly', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
@@ -175,7 +175,7 @@ describe('GameBalanceCompatibility', () => {
             gameConfig.calculateScore = jest.fn((bubbleType: string, ageRatio: number) => {
                 if (ageRatio < 0.1) return 30,
                 if (ageRatio > 0.9) return 45,
-                return 15)'),
+                return 15)'),'
             // 基本スコア
             const normalScore = BalanceHelper.calculateScore('normal', 0.5),
             expect(normalScore).toBe(15), // 年齢ボーナスなし
@@ -183,11 +183,11 @@ describe('GameBalanceCompatibility', () => {
             // 早期ボーナス
             const earlyScore = BalanceHelper.calculateScore('normal', 0.05),
             expect(earlyScore).toBe(30), // 2倍ボーナス
-            expect(gameConfig.calculateScore').toHaveBeenCalledWith('normal', 0.05),
+            expect(gameConfig.calculateScore').toHaveBeenCalledWith('normal', 0.05),'
             // 非推奨警告が表示されること
             expect(console.warn).toHaveBeenCalled(),
             // 元に戻す
-            gameConfig.calculateScore = calculateScore)'),
+            gameConfig.calculateScore = calculateScore)'),'
         test('should calculate combo multiplier correctly', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
@@ -204,7 +204,7 @@ describe('GameBalanceCompatibility', () => {
             // 非推奨警告が表示されること
             expect(console.warn).toHaveBeenCalled(),
             // 元に戻す
-            gameConfig.calculateComboMultiplier = calculateComboMultiplier)'),
+            gameConfig.calculateComboMultiplier = calculateComboMultiplier)'),'
         test('should calculate item cost correctly', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
@@ -213,7 +213,7 @@ describe('GameBalanceCompatibility', () => {
             gameConfig.calculateItemCost = jest.fn((itemId: string, currentLevel: number) => {
                 const baseCost = 75,
                 const multiplier = 1.3,
-                return Math.floor(baseCost * Math.pow(multiplier, currentLevel))'),
+                return Math.floor(baseCost * Math.pow(multiplier, currentLevel))'),'
             // レベル0（初回購入）
             const level0Cost = BalanceHelper.calculateItemCost('scoreMultiplier', 0),
             expect(level0Cost).toBe(75),
@@ -221,29 +221,29 @@ describe('GameBalanceCompatibility', () => {
             // レベル1（2回目購入）
             const level1Cost = BalanceHelper.calculateItemCost('scoreMultiplier', 1),
             expect(level1Cost).toBe(Math.floor(75 * 1.3),
-            expect(gameConfig.calculateItemCost').toHaveBeenCalledWith('scoreMultiplier', 1),
+            expect(gameConfig.calculateItemCost').toHaveBeenCalledWith('scoreMultiplier', 1),'
             // 非推奨警告が表示されること
             expect(console.warn).toHaveBeenCalled(),
             // 元に戻す
-            gameConfig.calculateItemCost = calculateItemCost)'),
+            gameConfig.calculateItemCost = calculateItemCost)'),'
         test('should check stage unlock correctly', () => {
             const gameConfig = getGameConfig() as unknown as GameConfigInterface,
             
             // スパイを設定
             const isStageUnlocked = gameConfig.isStageUnlocked,
-            gameConfig.isStageUnlocked = jest.fn((stageId: string, playerTAP: number') => {
+            gameConfig.isStageUnlocked = jest.fn((stageId: string, playerTAP: number') => {'
                 if (stageId === 'hard') return playerTAP >= 500,
                 if (stageId === 'veryHard') return playerTAP >= 2000,
-                return false)'),
+                return false)'),'
             expect(BalanceHelper.isStageUnlocked('hard', 500).toBe(true),
             expect(gameConfig.isStageUnlocked').toHaveBeenCalledWith('hard', 500'),
             expect(BalanceHelper.isStageUnlocked('hard', 499).toBe(false),
-            expect(gameConfig.isStageUnlocked').toHaveBeenCalledWith('hard', 499),
+            expect(gameConfig.isStageUnlocked').toHaveBeenCalledWith('hard', 499),'
             // 非推奨警告が表示されること
             expect(console.warn).toHaveBeenCalled(),
             // 元に戻す
-            gameConfig.isStageUnlocked = isStageUnlocked) }');
-    describe('警告システム', (') => {
+            gameConfig.isStageUnlocked = isStageUnlocked) }');'
+    describe('警告システム', (') => {'
         test('should show deprecation warnings', () => {
             // 警告出力をリセット
             (console.warn as jest.Mock).mockClear(),
@@ -255,10 +255,10 @@ describe('GameBalanceCompatibility', () => {
             expect(console.warn).toHaveBeenCalled(),
             // 非推奨メッセージが含まれることを確認
             const calls = (console.warn as jest.Mock).mock.calls,
-            const hasDeprecationWarning = calls.some(call => '),
+            const hasDeprecationWarning = calls.some(call => '),'
                 call.some(arg => typeof arg === 'string' && arg.includes('非推奨')}
             );
             expect(hasDeprecationWarning).toBe(true);
         });
     }
-}');
+}');'

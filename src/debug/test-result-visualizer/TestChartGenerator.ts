@@ -4,38 +4,37 @@
  */
 
 interface TestResult { id: string,
-    name: string,
-    status: 'passed' | 'failed' | 'skipped',
-    duration: number,
-    timestamp: number  }
+    name: string;
+    status: 'passed' | 'failed' | 'skipped';
+    duration: number;
+    timestamp: number;
 
 interface ChartData { labels: string[],
-    datasets: ChartDataset[]
-    }
+    datasets: ChartDataset[];
 
 interface ChartDataset { label: string,
-    data: number[],
-    backgroundColor?: string | string[],
-    borderColor?: string,
-    borderWidth?: number }
+    data: number[];
+    backgroundColor?: string | string[];
+    borderColor?: string;
+    borderWidth?: number;
 
 interface ChartOptions { responsive: boolean,
-    maintainAspectRatio: boolean,
+    maintainAspectRatio: boolean;
     plugins: {
         legend: {
             displa,y: boolean,
-            position?: string  };
+            position?: string;;
         title: { display: boolean,
-    text: string };
+    text: string,;
     scales?: { [axis: string]: {
             beginAtZero: boolean,
             title?: {
                 display: boolean,
-    text: string };
+    text: string,;
     }
 
 export class TestChartGenerator {
-    private visualizer: any',
+    private visualizer: any';'
     private defaultColors = {''
         passed: '#28a745',
         failed: '#dc3545',
@@ -45,32 +44,32 @@ export class TestChartGenerator {
             };
     constructor(visualizer: any) { this.visualizer = visualizer }
 
-    public generateSummaryCharts(): void { this.generateStatusPieChart(),
-        this.generateDurationBarChart(),
+    public generateSummaryCharts(): void { this.generateStatusPieChart();
+        this.generateDurationBarChart();
         this.generateTimelineChart() }
 
     public generatePerformanceCharts(): void { this.generatePerformanceTrendChart(),
-        this.generateDurationDistributionChart(),
+        this.generateDurationDistributionChart();
         this.generateSlowTestsChart() }
 
     public generateTrendsCharts(): void { this.generateHistoricalTrendChart(),
-        this.generateSuccessRateChart(),
+        this.generateSuccessRateChart();
         this.generateTestVelocityChart() }
 
     private generateStatusPieChart(): void { const results = this.getTestResults(),
-        if (!results.length) return,
+        if (!results.length) return;
 
-        const statusCounts = this.calculateStatusCounts(results),
-        ',
+        const statusCounts = this.calculateStatusCounts(results);
+        ';'
 
         const chartData: ChartData = {''
-            labels: ['Passed', 'Failed', 'Skipped'],
+            labels: ['Passed', 'Failed', 'Skipped'];
             datasets: [{]'
-                label: 'Test Results',],
-                data: [statusCounts.passed, statusCounts.failed, statusCounts.skipped],
-                backgroundColor: [this.defaultColors.passed,
-                    this.defaultColors.failed],
-                    this.defaultColors.skipped],
+                label: 'Test Results',];
+                data: [statusCounts.passed, statusCounts.failed, statusCounts.skipped];
+                backgroundColor: [this.defaultColors.passed;
+                    this.defaultColors.failed];
+                    this.defaultColors.skipped];
                 ]  }]
         };
 
@@ -85,24 +84,24 @@ export class TestChartGenerator {
                     text: 'Test Status Distribution'
             }
 };
-        this.renderChart('pie', chartData, options, 'status-pie-chart);
+        this.renderChart('pie', chartData, options, 'status-pie-chart);'
     }
 
     private generateDurationBarChart(): void { const results = this.getTestResults(),
-        if (!results.length) return,
+        if (!results.length) return;
 
-        const sortedResults = results,
-            .sort((a, b) => b.duration - a.duration),
+        const sortedResults = results;
+            .sort((a, b) => b.duration - a.duration);
             .slice(0, 10), // Top 10 slowest tests
-',
+';'
 
         const chartData: ChartData = {''
             labels: sortedResults.map(r => this.truncateTestName(r.name),
             datasets: [{''
-                label: 'Duration(ms)',
-                data: sortedResults.map(r => r.duration,
-                backgroundColor: sortedResults.map(r = > ')',
-                    r.status === 'failed' ? this.defaultColors.failed : this.defaultColors.primary']',
+                label: 'Duration(ms)';
+                data: sortedResults.map(r => r.duration;
+                backgroundColor: sortedResults.map(r = > ')';
+                    r.status === 'failed' ? this.defaultColors.failed : this.defaultColors.primary']';
                 ')  }]'
             }]
         };
@@ -111,7 +110,7 @@ export class TestChartGenerator {
             maintainAspectRatio: false,
     plugins: {
                 legend: {
-                    display: false  }
+                    display: false,
 
                 };
                 title: { display: true,''
@@ -126,21 +125,21 @@ export class TestChartGenerator {
             }
 }
         };
-        this.renderChart('bar', chartData, options, 'duration-bar-chart);
+        this.renderChart('bar', chartData, options, 'duration-bar-chart);'
     }
 
     private generateTimelineChart(): void { const results = this.getTestResults(),
-        if (!results.length) return,
+        if (!results.length) return;
 
-        const timelineData = this.generateTimelineData(results),
+        const timelineData = this.generateTimelineData(results);
 
         const chartData: ChartData = {
             labels: timelineData.labels,
             datasets: [{''
-                    label: 'Passed',
-    data: timelineData.passed,
-                    borderColor: this.defaultColors.passed,
-                    backgroundColor: this.defaultColors.passed + '20',
+                    label: 'Passed';
+    data: timelineData.passed;
+                    borderColor: this.defaultColors.passed;
+                    backgroundColor: this.defaultColors.passed + '20';
     borderWidth: 2  };
                 { ''
                     label: 'Failed',
@@ -171,25 +170,25 @@ export class TestChartGenerator {
             }
 }
         };
-        this.renderChart('line', chartData, options, 'timeline-chart);
+        this.renderChart('line', chartData, options, 'timeline-chart);'
     }
 
-    private generatePerformanceTrendChart()';
-        this.renderPlaceholderChart('Performance Trend', 'performance-trend-chart);
+    private generatePerformanceTrendChart()';'
+        this.renderPlaceholderChart('Performance Trend', 'performance-trend-chart);'
     }
 
     private generateDurationDistributionChart(): void { const results = this.getTestResults(),
-        if (!results.length) return,
-',
+        if (!results.length) return;
+';'
 
-        const durations = results.map(r => r.duration),
-        const distribution = this.calculateDurationDistribution(durations),
+        const durations = results.map(r => r.duration);
+        const distribution = this.calculateDurationDistribution(durations);
 
         const chartData: ChartData = {
             labels: distribution.labels,
             datasets: [{''
-                label: 'Number of Tests',
-                data: distribution.counts],
+                label: 'Number of Tests';
+                data: distribution.counts];
     backgroundColor: this.defaultColors.primary  }]
             }]
         };
@@ -197,7 +196,7 @@ export class TestChartGenerator {
             maintainAspectRatio: false,
     plugins: {
                 legend: {
-                    display: false  };
+                    display: false,;
                 title: { display: true,''
                     text: 'Test Duration Distribution'
             }
@@ -215,23 +214,23 @@ export class TestChartGenerator {
             }
 }
         };
-        this.renderChart('bar', chartData, options, 'duration-distribution-chart);
+        this.renderChart('bar', chartData, options, 'duration-distribution-chart);'
     }
 
-    private generateSlowTestsChart()';
-        this.renderPlaceholderChart('Slow Tests Analysis', 'slow-tests-chart);
+    private generateSlowTestsChart()';'
+        this.renderPlaceholderChart('Slow Tests Analysis', 'slow-tests-chart);'
     }
 
-    private generateHistoricalTrendChart()';
-        this.renderPlaceholderChart('Historical Trends', 'historical-trend-chart);
+    private generateHistoricalTrendChart()';'
+        this.renderPlaceholderChart('Historical Trends', 'historical-trend-chart);'
     }
 
-    private generateSuccessRateChart()';
-        this.renderPlaceholderChart('Success Rate Over Time', 'success-rate-chart);
+    private generateSuccessRateChart()';'
+        this.renderPlaceholderChart('Success Rate Over Time', 'success-rate-chart);'
     }
 
-    private generateTestVelocityChart()';
-        this.renderPlaceholderChart('Test Execution Velocity', 'test-velocity-chart);
+    private generateTestVelocityChart()';'
+        this.renderPlaceholderChart('Test Execution Velocity', 'test-velocity-chart);'
     }
 
     private getTestResults(): TestResult[] { // This would get results from the visualizer
@@ -239,14 +238,14 @@ export class TestChartGenerator {
 
     private calculateStatusCounts(results: TestResult[]): { passed: number,
         failed: number,
-    skipped: number  } { return results.reduce((counts, result) => { 
+    skipped: number; { return results.reduce((counts, result) => { 
             counts[result.status]++ }
             return counts;, { passed: 0, failed: 0, skipped: 0  });
     }
 
     private generateTimelineData(results: TestResult[]): { labels: string[],
         passed: number[],
-    failed: number[]  } { // Group results by time intervals
+    failed: number[]; { // Group results by time intervals
         const intervals = this.createTimeIntervals(results),
         
         return { labels: intervals.map(i => i.label,
@@ -256,7 +255,7 @@ export class TestChartGenerator {
 
     private createTimeIntervals(results: TestResult[]): Array<{ label: string,
         passed: number,
-    failed: number  }> { // Simplified implementation - would be more sophisticated in real usage
+    failed: number;> { // Simplified implementation - would be more sophisticated in real usage
         return [' }'
 
             { label: '0-5 min', passed: 10, failed: 2  },''
@@ -266,7 +265,7 @@ export class TestChartGenerator {
     }
 
     private calculateDurationDistribution(durations: number[]): { labels: string[],
-        counts: number[]  }
+        counts: number[],
 
     } { const buckets = [' }'
 
@@ -289,10 +288,10 @@ export class TestChartGenerator {
         return { labels: buckets.map(b => b.label) };
             counts }
         }
-';
+';'
 
     private truncateTestName(name: string, maxLength = 30): string { ''
-        return name.length > maxLength ? name.substring(0, maxLength) + '...' : name }
+        return name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
 
     private renderChart(type: string, data: ChartData, options: ChartOptions, containerId: string): void { // This would use a charting library like Chart.js }
         console.log(`Rendering ${type} chart in ${containerId}:`, { data, options ),
@@ -303,13 +302,13 @@ export class TestChartGenerator {
             container.innerHTML = `<div>Chart: ${options.plugins.title.text}</div>`;
         }
     }
-';
+';'
 
     private renderPlaceholderChart(title: string, containerId: string): void { const container = document.getElementById(containerId),
-        if(container) {
+        if (container) {
             container.innerHTML = ` }
 
-                <div style="padding: 20px; text-align: center;, border: 2px dashed #ccc; border-radius: 8px;"> }
+                <div style="padding: 20px, text-align: center,, border: 2px dashed #ccc, border-radius: 8px,"> }
                     <h4>${title}</h4>
                     <p>Chart implementation in progress...</p>;
                 </div>;

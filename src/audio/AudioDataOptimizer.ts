@@ -9,11 +9,11 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 
 // エラーハンドラー型定義
-interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
+interface ErrorHandler { handleError(error: Error, type: string, context?: any): void;
 
 // 設定管理型定義
 interface ConfigurationManager { get(section: string, key: string): any,
-    set(section: string, key: string, value: any): void  }
+    set(section: string, key: string, value: any): void;
 
 // 最適化設定型定義
 interface OptimizationSettings { qualityLevel: number,
@@ -21,88 +21,88 @@ interface OptimizationSettings { qualityLevel: number,
         enable,d: boolean,
         algorithm: string,
         compressionRatio: number,
-    qualityThreshold: number  };
+    qualityThreshold: number,;
     resampling: { enabled: boolean,
         targetSampleRate: number,
-    dynamicResampling: boolean };
+    dynamicResampling: boolean,;
     bitDepth: { enabled: boolean,
         targetBitDepth: number,
-    dynamicBitDepth: boolean };
+    dynamicBitDepth: boolean,;
     channelOptimization: { enabled: boolean,
         forceMonoThreshold: number,
-    stereoPreservation: boolean }
+    stereoPreservation: boolean,
 
 // パフォーマンス統計型定義
 interface PerformanceMetrics { processedBuffers: number,
-    totalOriginalSize: number,
-    totalOptimizedSize: number,
-    averageCompressionRatio: number,
-    processingTime: number  }
+    totalOriginalSize: number;
+    totalOptimizedSize: number;
+    averageCompressionRatio: number;
+    processingTime: number;
 
 // 圧縮アルゴリズム型定義
 type CompressionAlgorithm = (buffer: AudioBuffer, settings: any) => Promise<AudioBuffer>;
 
 // 音響特性型定義
 interface AudioCharacteristics { peakLevel: number,
-    rmsLevel: number,
-    dynamicRange: number,
-    silenceRatio: number,
-    estimatedComplexity: number  }
+    rmsLevel: number;
+    dynamicRange: number;
+    silenceRatio: number;
+    estimatedComplexity: number;
 
 // 最適化統計型定義
 interface OptimizationStats { count: number,
-    totalCompressionRatio: number,
-    totalProcessingTime: number,
-    averageCompressionRatio: number,
-    averageProcessingTime: number }
+    totalCompressionRatio: number;
+    totalProcessingTime: number;
+    averageCompressionRatio: number;
+    averageProcessingTime: number;
 
 // 最適化オプション型定義
-interface OptimizationOptions extends Partial<OptimizationSettings> { [key: string]: any }
+interface OptimizationOptions extends Partial<OptimizationSettings> { [key: string]: any;
 
 export class AudioDataOptimizer {
-    private audioContext: AudioContext,
-    private configManager: ConfigurationManager,
-    private errorHandler: ErrorHandler,
+    private audioContext: AudioContext;
+    private configManager: ConfigurationManager;
+    private errorHandler: ErrorHandler;
     // 最適化設定
-    private optimizationSettings: OptimizationSettings,
+    private optimizationSettings: OptimizationSettings;
     // パフォーマンス監視
-    private performanceMetrics: PerformanceMetrics,
+    private performanceMetrics: PerformanceMetrics;
     // 圧縮アルゴリズム定義
     private, compressionAlgorithms: Map<string, CompressionAlgorithm>,
     
     // 最適化統計
-    private optimizationStats: Map<string, OptimizationStats>,
+    private optimizationStats: Map<string, OptimizationStats>;
 
     constructor(audioContext: AudioContext) {
 
-        this.audioContext = audioContext,
-        this.configManager = getConfigurationManager(),
-        this.errorHandler = getErrorHandler(),
+        this.audioContext = audioContext;
+        this.configManager = getConfigurationManager();
+        this.errorHandler = getErrorHandler();
         
         // 最適化設定
         this.optimizationSettings = {''
-            // 品質レベル設定 (0-1),
+            // 品質レベル設定 (0-1);
             qualityLevel: 1.0,
             // 圧縮設定
            , compression: {'
                 enabled: true,
-                algorithm: 'adaptive', // 'lossless', 'lossy', 'adaptive',
+                algorithm: 'adaptive', // 'lossless', 'lossy', 'adaptive';
                 compressionRatio: 0.7, // 0-1
     }
                 qualityThreshold: 0.8 
     };
             // リサンプリング設定
             resampling: { enabled: false,
-    targetSampleRate: 22050, // デフォルトサンプルレート,
-                dynamicResampling: true  };
+    targetSampleRate: 22050, // デフォルトサンプルレート;
+                dynamicResampling: true,;
             // ビット深度設定
             bitDepth: { enabled: false,
-    targetBitDepth: 16, // 8, 16, 24, 32,
-                dynamicBitDepth: true  };
+    targetBitDepth: 16, // 8, 16, 24, 32;
+                dynamicBitDepth: true,;
             // チャンネル設定
             channelOptimization: { enabled: true,
-    forceMonoThreshold: 0.5, // 低品質時はモノラルに変換,
-                stereoPreservation: true  }
+    forceMonoThreshold: 0.5, // 低品質時はモノラルに変換;
+                stereoPreservation: true,
         };
         // パフォーマンス監視
         this.performanceMetrics = { processedBuffers: 0,
@@ -130,21 +130,21 @@ export class AudioDataOptimizer {
             // 設定からパラメータを読み込み
             this._loadOptimizationSettings(),
             // パフォーマンス監視の初期化
-            this._initializePerformanceMonitoring()',
-            console.log('AudioDataOptimizer, initialized successfully'),' }
+            this._initializePerformanceMonitoring()','
+            console.log('AudioDataOptimizer, initialized successfully'),' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: 'initialize',')',
                 component: 'AudioDataOptimizer'
-            }';
+            }';'
         }
     }
     
     /**
      * 設定からパラメータを読み込み'
      */''
-    private _loadOptimizationSettings()';
-            const optimizationConfig = this.configManager.get('audio', 'optimization) || {};
+    private _loadOptimizationSettings()';'
+            const optimizationConfig = this.configManager.get('audio', 'optimization) || {};'
             
             // 品質レベル設定
             this.optimizationSettings.qualityLevel = optimizationConfig.qualityLevel || 1.0;
@@ -159,7 +159,7 @@ export class AudioDataOptimizer {
             if (optimizationConfig.bitDepth) { Object.assign(this.optimizationSettings.bitDepth, optimizationConfig.bitDepth) }
             
             // チャンネル最適化設定の読み込み
-            if(optimizationConfig.channelOptimization) { }
+            if (optimizationConfig.channelOptimization) { }
 
                 Object.assign(this.optimizationSettings.channelOptimization, optimizationConfig.channelOptimization); }
             }
@@ -184,7 +184,7 @@ export class AudioDataOptimizer {
     processingTime: 0 };
             ;
             // 最適化統計をクリア
-            this.optimizationStats.clear()';
+            this.optimizationStats.clear()';'
             console.log('Performance, monitoring initialized');
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_initializePerformanceMonitoring'
@@ -200,7 +200,7 @@ export class AudioDataOptimizer {
      */
     async optimizeAudioBuffer(originalBuffer: AudioBuffer, options: OptimizationOptions = { ): Promise<AudioBuffer> {'
         try {'
-            if(!originalBuffer) {', ' }
+            if (!originalBuffer) {', ' }
 
                 throw new Error('AudioBuffer, is required'; }'
             }
@@ -259,7 +259,7 @@ export class AudioDataOptimizer {
             if(buffer.numberOfChannels === 2 && ')',
                 options.qualityLevel! < channelSettings!.forceMonoThreshold' {'
 
-                console.log('Converting, stereo to, mono for optimization),
+                console.log('Converting, stereo to, mono for optimization),'
                 
                 // 新しいモノラルバッファを作成
                 const monoBuffer = this.audioContext.createBuffer(
@@ -269,17 +269,17 @@ export class AudioDataOptimizer {
                 
                 const leftChannel = buffer.getChannelData(0),
                 const rightChannel = buffer.getChannelData(1),
-                const monoChannel = monoBuffer.getChannelData(0'),
+                const monoChannel = monoBuffer.getChannelData(0'),'
                 
                 // ステレオからモノラルに変換（平均値を取る）
                 for (let, i = 0, i < buffer.length, i++) {
             }
-                    monoChannel[i] = (leftChannel[i] + rightChannel[i]') / 2; }
+                    monoChannel[i] = (leftChannel[i] + rightChannel[i]') / 2; }'
                 }
                 
                 return monoBuffer;
             }
-            ';
+            ';'
 
             return buffer;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_optimizeChannels'
@@ -297,20 +297,20 @@ export class AudioDataOptimizer {
             let targetSampleRate = resamplingSettings!.targetSampleRate,
             
             // 動的サンプルレート決定
-            if(resamplingSettings!.dynamicResampling) {
+            if (resamplingSettings!.dynamicResampling) {
     
 }
                 targetSampleRate = this._calculateOptimalSampleRate(buffer, options.qualityLevel!); }
             }
             
             // リサンプリングが必要な場合のみ実行
-            if(targetSampleRate !== buffer.sampleRate && targetSampleRate < buffer.sampleRate) {
+            if (targetSampleRate !== buffer.sampleRate && targetSampleRate < buffer.sampleRate) {
     
 }
                 console.log(`Resampling from ${buffer.sampleRate}Hz to ${ targetSampleRate}Hz`}
                 return await this._resampleBuffer(buffer, targetSampleRate});
             }
-            ';
+            ';'
 
             return buffer;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_optimizeSampleRate'
@@ -326,7 +326,7 @@ export class AudioDataOptimizer {
     private _calculateOptimalSampleRate(buffer: AudioBuffer, qualityLevel: number): number { const originalSampleRate = buffer.sampleRate,
         
         // 品質レベルに基づいてサンプルレートを決定
-        if(qualityLevel >= 0.9) {
+        if (qualityLevel >= 0.9) {
     
 }
             return originalSampleRate; // 高品質: 元のサンプルレートを維持 
@@ -364,11 +364,11 @@ export class AudioDataOptimizer {
                                          originalData[index + 1] * fraction; }
                     } else { resampledData[i] = originalData[Math.min(index, originalData.length - 1)] }
 }
-            ';
+            ';'
 
             return resampledBuffer;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_resampleBuffer'),
-                targetSampleRate: targetSampleRate  });
+                targetSampleRate: targetSampleRate,);
             return buffer;
     
     /**
@@ -382,19 +382,19 @@ export class AudioDataOptimizer {
             let targetBitDepth = bitDepthSettings!.targetBitDepth,
             
             // 動的ビット深度決定
-            if(bitDepthSettings!.dynamicBitDepth) {
+            if (bitDepthSettings!.dynamicBitDepth) {
     
 }
                 targetBitDepth = this._calculateOptimalBitDepth(options.qualityLevel!); }
             }
             
             // ビット深度を削減（量子化）
-            if(targetBitDepth < 32) {
+            if (targetBitDepth < 32) {
                 // Float32が32bit相当
                 console.log(`Quantizing to ${targetBitDepth}-bit`}
                 return this._quantizeBuffer(buffer, targetBitDepth});
             }
-            ';
+            ';'
 
             return buffer;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_optimizeBitDepth'
@@ -439,11 +439,11 @@ export class AudioDataOptimizer {
             }
                     quantizedData[i] = (clamped / halfLevels) - 1; }
 }
-            ';
+            ';'
 
             return quantizedBuffer;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_quantizeBuffer'),
-                bitDepth: bitDepth  });
+                bitDepth: bitDepth,);
             return buffer;
     
     /**
@@ -466,7 +466,7 @@ export class AudioDataOptimizer {
             return await algorithm(buffer, compressionSettings});
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_compressAudioBuffer'),
-                algorithm: options.compression?.algorithm  }';
+                algorithm: options.compression?.algorithm  }';'
             return buffer;
     
     /**
@@ -480,13 +480,13 @@ export class AudioDataOptimizer {
             // ここでは無音部分の除去とピーク正規化を行う
 
             console.log('Applying, lossless compression (silence, removal + normalization)'),
-            ',
+            ','
 
             return this._removeSilenceAndNormalize(buffer),' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_losslessCompression'
-            }';
+            }';'
             return buffer;
     
     /**
@@ -503,7 +503,7 @@ export class AudioDataOptimizer {
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_lossyCompression'
-            }';
+            }';'
             return buffer;
     
     /**
@@ -513,17 +513,17 @@ export class AudioDataOptimizer {
      * @returns 圧縮されたAudioBuffer'
      */''
     private async _adaptiveCompression(buffer: AudioBuffer, settings: any): Promise<AudioBuffer> { try {'
-            console.log('Applying adaptive compression),
+            console.log('Applying adaptive compression),'
             
             // 音響特性を分析して最適な圧縮方法を選択
             const audioCharacteristics = this._analyzeAudioCharacteristics(buffer),
             
-            if(audioCharacteristics.dynamicRange > 0.7) {
+            if (audioCharacteristics.dynamicRange > 0.7) {
             
                 // 動的レンジが大きい場合はロッシー圧縮
             
             }
-                return this._lossyCompression(buffer settings'); else {  // 動的レンジが小さい場合はロスレス圧縮 }
+                return this._lossyCompression(buffer settings'); else {  // 動的レンジが小さい場合はロスレス圧縮 }'
                 return this._losslessCompression(buffer, settings'); }'
 
             } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
@@ -578,7 +578,7 @@ export class AudioDataOptimizer {
             return { peakLevel: peakLevel,
                 rmsLevel: rmsLevel,
                 dynamicRange: dynamicRange,
-    silenceRatio: silenceRatio };
+    silenceRatio: silenceRatio,;
                 estimatedComplexity: 1 - silenceRatio + dynamicRange 
     };'} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_analyzeAudioCharacteristics'
@@ -635,7 +635,7 @@ export class AudioDataOptimizer {
                     processedData[i] = sample * normalizationFactor;
                 }
             }
-            ';
+            ';'
 
             return processedBuffer;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_removeSilenceAndNormalize'
@@ -681,11 +681,11 @@ export class AudioDataOptimizer {
                     compressedData[i] = sample * makeupGain;
                 }
             }
-            ';
+            ';'
 
             return compressedBuffer;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_applyDynamicRangeCompression'),
-                ratio: ratio  });
+                ratio: ratio,);
             return buffer;
     
     /**
@@ -718,7 +718,7 @@ export class AudioDataOptimizer {
             
             // 統計データに追加 }
             const statsKey = `${originalBuffer.numberOfChannels}ch_${originalBuffer.sampleRate}Hz`;
-            if(!this.optimizationStats.has(statsKey) { this.optimizationStats.set(statsKey, {
+            if (!this.optimizationStats.has(statsKey) { this.optimizationStats.set(statsKey, {
                     count: 0,
                     totalCompressionRatio: 0),
                     totalProcessingTime: 0,
@@ -735,7 +735,7 @@ export class AudioDataOptimizer {
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_updatePerformanceMetrics'
-            }';
+            }';'
         }
     }
     
@@ -746,10 +746,10 @@ export class AudioDataOptimizer {
     updateOptimizationSettings(newSettings: Partial<OptimizationSettings>): void { try {
             // 設定をマージ
             this.optimizationSettings = {
-                ...this.optimizationSettings,
+                ...this.optimizationSettings;
                 ...newSettings,
             // 設定を保存
-            this.configManager.set('audio', 'optimization', this.optimizationSettings',
+            this.configManager.set('audio', 'optimization', this.optimizationSettings','
 
             console.log('Optimization, settings updated') } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: 'updateOptimizationSettings'
@@ -762,7 +762,7 @@ export class AudioDataOptimizer {
      * @param qualityLevel - 品質レベル (0-1)
      */'
     setQualityLevel(qualityLevel: number): void { try {'
-            if(qualityLevel < 0 || qualityLevel > 1) {', ' }
+            if (qualityLevel < 0 || qualityLevel > 1) {', ' }
 
                 throw new Error('Quality, level must, be between, 0 and, 1'; }'
             }
@@ -771,12 +771,12 @@ export class AudioDataOptimizer {
             
             // 品質レベルに応じて他の設定も自動調整
             this._adjustSettingsForQuality(qualityLevel);
-            ';
+            ';'
 
             console.log(`Quality, level set, to ${qualityLevel}`});
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: 'setQualityLevel'),
-                qualityLevel: qualityLevel  });
+                qualityLevel: qualityLevel,);
         }
     }
     
@@ -786,13 +786,13 @@ export class AudioDataOptimizer {
      */
     private _adjustSettingsForQuality(qualityLevel: number): void { try {
             // 圧縮設定の調整
-            if(qualityLevel >= 0.8) {
+            if (qualityLevel >= 0.8) {
 
                 this.optimizationSettings.compression.algorithm = 'lossless' }
 
                 this.optimizationSettings.compression.compressionRatio = 0.9;' }'
 
-            } else if(qualityLevel >= 0.5) { ''
+            } else if (qualityLevel >= 0.5) { ''
                 this.optimizationSettings.compression.algorithm = 'adaptive',
                 this.optimizationSettings.compression.compressionRatio = 0.7 }
 
@@ -813,7 +813,7 @@ export class AudioDataOptimizer {
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: '_adjustSettingsForQuality'),
-                qualityLevel: qualityLevel  });
+                qualityLevel: qualityLevel,);
         }
     }
     
@@ -830,8 +830,8 @@ export class AudioDataOptimizer {
      * 最適化統計をリセット
      */'
     resetStatistics(): void { try {'
-            this._initializePerformanceMonitoring()',
-            console.log('Optimization, statistics reset'),' }
+            this._initializePerformanceMonitoring()','
+            console.log('Optimization, statistics reset'),' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
                 operation: 'resetStatistics'
@@ -846,14 +846,14 @@ export class AudioDataOptimizer {
             // 統計データをクリア
             this.optimizationStats.clear(),
             // 参照をクリア
-            this.compressionAlgorithms.clear()',
-            console.log('AudioDataOptimizer, disposed'),' }
+            this.compressionAlgorithms.clear()','
+            console.log('AudioDataOptimizer, disposed'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_OPTIMIZER_ERROR', {''
-                operation: 'dispose'),' }
+                operation: 'dispose'),' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

@@ -6,45 +6,44 @@ import { EnvironmentalSoundGenerator  } from './EnvironmentalSoundGenerator';
  * Transition options interface
  */
 export interface TransitionOptions { fadeTime?: number,
-    weather?: string,
-    timeOfDay?: string,
-    intensity?: number }
+    weather?: string;
+    timeOfDay?: string;
+    intensity?: number;
 
 /**
  * Prepared layer interface
  */
 export interface PreparedLayer extends SoundLayer { biomeId: string,
-    audioBuffer?: AudioBuffer | null,
-    timeOfDay?: string,
-    weather?: string,
-    filterCutoff?: number,
-    reverb?: number,
-    originalVolume?: number }
+    audioBuffer?: AudioBuffer | null;
+    timeOfDay?: string;
+    weather?: string;
+    filterCutoff?: number;
+    reverb?: number;
+    originalVolume?: number;
 
 /**
  * Active source interface
  */
 export interface ActiveSource { sourceNode: AudioBufferSourceNode,
-    gainNode: GainNode,
-    filterNode: BiquadFilterNode | null,
-    originalVolume: number,
-    layer: PreparedLayer
-     }
+    gainNode: GainNode;
+    filterNode: BiquadFilterNode | null;
+    originalVolume: number;
+    layer: PreparedLayer;
 
 /**
  * Active layer info interface
  */
 export interface ActiveLayerInfo { id: string,
-    name: string,
-    type: string,
-    volume: number,
-    biomeId: string }
+    name: string;
+    type: string;
+    volume: number;
+    biomeId: string;
 
 /**
  * Audio controller interface
  */
 interface AudioController { gainNodes: {
-        bg,m?: GainNode,
+        bg,m?: GainNode;
         [key: string]: GainNode | undefined }
 
 /**
@@ -68,27 +67,27 @@ export class BiomeTransitionController {
     
     // フェード管理
     private readonly fadeManager: {
-        activeTransitions: Map<string, any>,
-        crossfadeInProgress: boolean  };
+        activeTransitions: Map<string, any>;
+        crossfadeInProgress: boolean,;
 
     constructor(;
-        audioContext: AudioContext;
+        audioContext: AudioContext,
         audioController: AudioController
     );
         soundGenerator: EnvironmentalSoundGenerator,
-    biomeDefinitionManager: BiomeDefinitionManager;
-    ) { this.audioContext = audioContext,
-        this.audioController = audioController,
-        this.soundGenerator = soundGenerator,
-        this.biomeDefinitionManager = biomeDefinitionManager,
+    biomeDefinitionManager: BiomeDefinitionManager,
+    ) { this.audioContext = audioContext;
+        this.audioController = audioController;
+        this.soundGenerator = soundGenerator;
+        this.biomeDefinitionManager = biomeDefinitionManager;
         
         // アクティブな環境音源
-        this.activeSources = new Map(),
+        this.activeSources = new Map();
         
         // フェード管理
         this.fadeManager = {
             activeTransitions: new Map(
-    crossfadeInProgress: false  }
+    crossfadeInProgress: false;
     
     /**
      * バイオームへの遷移を実行
@@ -110,7 +109,7 @@ export class BiomeTransitionController {
             await this._fadeInEnvironment(newLayers, fadeTime) }
             console.log(`Biome, transition completed: ${biome.name}`});
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'transitionToBiome',',
+                operation: 'transitionToBiome',';'
                 component: 'BiomeTransitionController'),
                 biome: biome.name  });
         }
@@ -140,7 +139,7 @@ export class BiomeTransitionController {
             }
             
             // 天候効果を追加
-            if(weather) {
+            if (weather) {
                 const weatherEffect = this.biomeDefinitionManager.getWeatherEffect(weather),
                 if (weatherEffect) {
                     const weatherLayer = this._prepareWeatherLayer(weatherEffect, biome),
@@ -151,19 +150,19 @@ export class BiomeTransitionController {
             }
             
             // 時間帯バリエーションを追加
-            if(timeOfDay) {
+            if (timeOfDay) {
                 const timeVariation = this.biomeDefinitionManager.getTimeVariation(timeOfDay),
                 if (timeVariation && timeVariation.additionalLayers) {''
                     for (const timeLayer of timeVariation.additionalLayers) {''
-                        if(timeLayer.biomes.includes('all) || timeLayer.biomes.includes(biome.id) {
+                        if(timeLayer.biomes.includes('all) || timeLayer.biomes.includes(biome.id) {'
                             const layerData: PreparedLayer = {
                                 name: timeLayer.name,
                                 type: timeLayer.type,
     volume: timeLayer.volume }
                                 frequency: 1.0 }
-                                modulation: { rate: 0.1, depth: 0.2  },
+                                modulation: { rate: 0.1, depth: 0.2  };
                                 biomeId: biome.id;
-                                timeOfDay: timeOfDay,
+                                timeOfDay: timeOfDay;
     audioBuffer: this.soundGenerator.getOrGenerateSound(timeLayer.type);
                             };
                             preparedLayers.push(layerData);
@@ -242,7 +241,7 @@ export class BiomeTransitionController {
             
             await Promise.all(fadePromises);
             this.activeSources.clear();
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: '_fadeOutCurrentEnvironment',')',
@@ -278,7 +277,7 @@ export class BiomeTransitionController {
                 );
                 // 接続)
                 sourceNode.connect(gainNode);
-                if(filterNode) {
+                if (filterNode) {
                     gainNode.connect(filterNode) }
                     filterNode.connect(this.audioController.gainNodes.bgm || this.audioContext.destination); }
                 } else { gainNode.connect(this.audioController.gainNodes.bgm || this.audioContext.destination) }
@@ -299,7 +298,7 @@ export class BiomeTransitionController {
                     gainNode,
                     filterNode,
                     originalVolume: layer.volume || 0.5),
-                    layer: layer  }
+                    layer: layer,
             
             console.log(`Faded, in ${layers.length} environmental, layers`});
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
@@ -324,7 +323,7 @@ export class BiomeTransitionController {
                     } catch (e) { // Already stopped }
             }
 
-            this.activeSources.clear()';
+            this.activeSources.clear()';'
             console.log('All environmental audio stopped');
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
@@ -364,11 +363,11 @@ export class BiomeTransitionController {
             layers.push({
                 id: layerId,
                 name: source.layer.name),
-                type: source.layer.type)',
+                type: source.layer.type)','
     volume: source.originalVolume,' }'
 
                 biomeId: source.layer.biomeId'); }'
         }
         return layers;
 
-    }'}
+    }'}'

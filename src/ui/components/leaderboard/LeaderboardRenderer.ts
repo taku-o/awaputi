@@ -16,116 +16,114 @@ interface GameEngine { // Add specific properties/methods as needed }
  * Color configuration interface
  */
 interface ColorConfig { background: string,
-    header: string,
-    tab: string,
-    tabActive: string,
-    text: string,
-    textSecondary: string,
-    border: string,
-    entry: string,
-    entryHover: string,
-    entrySelected: string,
-    gold: string,
-    silver: string,
-    bronze: string  }
+    header: string;
+    tab: string;
+    tabActive: string;
+    text: string;
+    textSecondary: string;
+    border: string;
+    entry: string;
+    entryHover: string;
+    entrySelected: string;
+    gold: string;
+    silver: string;
+    bronze: string;
 
 /**
  * Font configuration interface
  */
 interface FontConfig { header: string,
-    tab: string,
-    entry: string,
-    details: string }
+    tab: string;
+    entry: string;
+    details: string;
 
 /**
  * Animation configuration interface
  */
 interface AnimationConfig { fadeSpeed: number,
-    scrollSpeed: number,
-    hoverScale: number }
+    scrollSpeed: number;
+    hoverScale: number;
 
 /**
  * Render configuration interface
  */
 interface RenderConfig { colors: ColorConfig,
-    fonts: FontConfig,
-    animations: AnimationConfig
-    }
+    fonts: FontConfig;
+    animations: AnimationConfig;
 
 /**
  * Animation state interface
  */
 interface AnimationState { fadeOpacity: number,
-    scrollOffset: number,
-    hoverScale: number,
+    scrollOffset: number;
+    hoverScale: number;
     entryAnimations: Map<string, any> }
 
 /**
  * Layout configuration interface
  */
 interface LayoutConfig { padding: number,
-    entryHeight: number,
-    scrollOffset: number  }
+    entryHeight: number;
+    scrollOffset: number;
 
 /**
  * Ranking entry interface
  */
 interface RankingEntry { playerName?: string,
-    score?: number,
-    maxCombo?: number,
-    accuracy?: number,
-    playTime?: number,
+    score?: number;
+    maxCombo?: number;
+    accuracy?: number;
+    playTime?: number;
     timestamp: string | Date  }
 
 /**
  * Cached data interface
  */
-interface CachedData { rankings: RankingEntry[]
-    }
+interface CachedData { rankings: RankingEntry[];
 
 /**
  * UI state interface
  */
 interface UIState { lastUpdateTime?: number,
-    currentView: string,
-    sortBy: string,
-    cachedData?: CachedData | null,
-    selectedEntry?: RankingEntry | null,
-    hoveredEntry?: RankingEntry | null,
+    currentView: string;
+    sortBy: string;
+    cachedData?: CachedData | null;
+    selectedEntry?: RankingEntry | null;
+    hoveredEntry?: RankingEntry | null;
     showDetails?: boolean,  }
 
 /**
  * Config update interface
  */
 interface ConfigUpdate { colors?: Partial<ColorConfig>,
-    fonts?: Partial<FontConfig>,
-    animations?: Partial<AnimationConfig> }
+    fonts?: Partial<FontConfig>;
+    animations?: Partial<AnimationConfig>;
 
 /**
  * Tab definition interface
  */
 interface TabDefinition { id: string,
-    label: string  }
+    label: string;
 
 /**
  * Sort option interface
  */
 interface SortOption { id: string,
-    label: string }
+    label: string;
 
 /**
  * Entry detail interface
  */
 interface EntryDetail { label: string,
-    value: string }
+    value: string;
 
 export class LeaderboardRenderer {
-    private gameEngine: GameEngine,
-    private errorHandler: ErrorHandler,
+    private gameEngine: GameEngine;
+    private errorHandler: ErrorHandler;
     // レンダリング設定
     private, renderConfig: RenderConfig = {
         colors: {''
-            background: '#1a1a2e'',
+            background: '#1a1a2e'','
     header: '#16213e',
             tab: '#0f3460',
             tabActive: '#e94560',
@@ -197,7 +195,7 @@ export class LeaderboardRenderer {
             this.renderRankingList(context, x, sortY, width, listHeight, uiState, layout),
             
             // 詳細情報（選択時）
-            if(uiState.showDetails && uiState.selectedEntry) {
+            if (uiState.showDetails && uiState.selectedEntry) {
     
 }
                 this.renderEntryDetails(context, x, y, width, height, uiState);' }'
@@ -224,7 +222,7 @@ export class LeaderboardRenderer {
     ): void { // グラデーション背景
         const gradient = context.createLinearGradient(x, y, x, y + height),
         gradient.addColorStop(0, this.renderConfig.colors.background),
-        gradient.addColorStop(1, '#0f1419),
+        gradient.addColorStop(1, '#0f1419),'
         
         context.fillStyle = gradient,
         context.fillRect(x, y, width, height),
@@ -263,7 +261,7 @@ export class LeaderboardRenderer {
         context.fillText('🏆 リーダーボード', x + padding, y + 35),
         
         // 更新時間
-        if(uiState.lastUpdateTime) {
+        if (uiState.lastUpdateTime) {
 
             const updateTime = new Date(uiState.lastUpdateTime).toLocaleTimeString(' }''
             context.textAlign = 'right';) }
@@ -286,12 +284,12 @@ export class LeaderboardRenderer {
         context: CanvasRenderingContext2D,
     x: number, ;
         y: number );
-        width: number)',
-    uiState: UIState';
-    '): number { const tabHeight = 40,
+        width: number)','
+    uiState: UIState';'
+    '): number { const tabHeight = 40,'
         const padding = 20,
 
-        ',
+        ','
 
         const tabs: TabDefinition[] = ['
             }'
@@ -325,7 +323,7 @@ export class LeaderboardRenderer {
             context.fillText(tab.label, tabX + tabWidth / 2, y + 25),
             
             // アクティブタブの下線
-            if(isActive) {
+            if (isActive) {
     
 }
                 context.fillStyle = this.renderConfig.colors.text; }
@@ -349,11 +347,11 @@ export class LeaderboardRenderer {
     x: number, ;
         y: number );
         width: number,
-    uiState: UIState';
-    '): number { const optionHeight = 35,
+    uiState: UIState';'
+    '): number { const optionHeight = 35,'
         const padding = 20,
 
-        ',
+        ','
 
         const sortOptions: SortOption[] = ['
             }'
@@ -368,8 +366,8 @@ export class LeaderboardRenderer {
             }]
         ];
 
-        const optionWidth = (width - padding * 2') / sortOptions.length;
-        ';
+        const optionWidth = (width - padding * 2') / sortOptions.length;'
+        ';'
         // 背景
         context.fillStyle = '#1e1e2e';
         context.fillRect(x, y, width, optionHeight);
@@ -378,7 +376,7 @@ export class LeaderboardRenderer {
             const isActive = option.id === uiState.sortBy,
             
             // オプション背景
-            if(isActive) {
+            if (isActive) {
     
 }
                 context.fillStyle = this.renderConfig.colors.entrySelected;' }'
@@ -417,7 +415,7 @@ export class LeaderboardRenderer {
     layout: LayoutConfig;
     ): void { const data = uiState.cachedData,
         
-        if(!data || !data.rankings || data.rankings.length === 0) {
+        if (!data || !data.rankings || data.rankings.length === 0) {
         
             this.renderNoData(context, x, y, width, height) }
             return; }
@@ -442,7 +440,7 @@ export class LeaderboardRenderer {
         }
         
         // スクロールバー
-        if(data.rankings.length > maxEntries) {
+        if (data.rankings.length > maxEntries) {
             this.renderScrollbar(context, x + width - 15, y, 15, height) }
                                startIndex, data.rankings.length, maxEntries); }
 }
@@ -459,11 +457,11 @@ export class LeaderboardRenderer {
         context: CanvasRenderingContext2D;
         x: number );
         y: number,
-    width: number';
-    '): number { const headerHeight = 30,
+    width: number';'
+    '): number { const headerHeight = 30,'
         const padding = 20,
 
-        ',
+        ','
         // ヘッダー背景
         context.fillStyle = '#2a2d3a',
         context.fillRect(x, y, width, headerHeight),
@@ -472,11 +470,11 @@ export class LeaderboardRenderer {
         context.fillStyle = this.renderConfig.colors.textSecondary,
         context.font = this.renderConfig.fonts.details,
         context.textAlign = 'left',
-        ',
+        ','
         // 列ヘッダー
-        context.fillText('順位', x + padding, y + 20',
-        context.fillText('プレイヤー', x + padding + 80, y + 20',
-        context.fillText('スコア', x + width - 200, y + 20',
+        context.fillText('順位', x + padding, y + 20','
+        context.fillText('プレイヤー', x + padding + 80, y + 20','
+        context.fillText('スコア', x + width - 200, y + 20','
         context.fillText('日時', x + width - 100, y + 20),
         
         return y + headerHeight }
@@ -508,7 +506,7 @@ export class LeaderboardRenderer {
         
         // エントリー背景
         let bgColor = this.renderConfig.colors.entry,
-        if(isSelected) {
+        if (isSelected) {
     
 }
             bgColor = this.renderConfig.colors.entrySelected; }
@@ -522,15 +520,15 @@ export class LeaderboardRenderer {
         context.fillStyle = rankColor;
         context.font = 'bold ' + this.renderConfig.fonts.entry;
         context.textAlign = 'center';
-        context.fillText(rank.toString(), x + padding + 20, y + height / 2 + 5');
+        context.fillText(rank.toString(), x + padding + 20, y + height / 2 + 5');'
         
         // プレイヤー名
         context.fillStyle = this.renderConfig.colors.text;
         context.font = this.renderConfig.fonts.entry;
         context.textAlign = 'left';
-        const playerName = this.truncateText(context, entry.playerName || 'Unknown', 150';
+        const playerName = this.truncateText(context, entry.playerName || 'Unknown', 150';'
         context.fillText(playerName, x + padding + 80, y + height / 2 + 5);
-        ';
+        ';'
         // スコア
         context.textAlign = 'right';
         context.fillText(entry.score?.toLocaleString() || '0', x + width - 120, y + height / 2 + 5);
@@ -541,8 +539,8 @@ export class LeaderboardRenderer {
         const date = new Date(entry.timestamp).toLocaleDateString();
         context.fillText(date, x + width - 20, y + height / 2 + 5);
         // メダルアイコン（上位3位）
-        if(rank <= 3) {
-            : undefined',
+        if (rank <= 3) {
+            : undefined','
             const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉',
             context.font = '20px Arial' }
             context.fillText(medal, x + padding + 50, y + height / 2 + 5); }
@@ -560,9 +558,9 @@ export class LeaderboardRenderer {
         context: CanvasRenderingContext2D,
     x: number, ;
         y: number );
-        width: number)',
-    height: number';
-    '): void { context.fillStyle = this.renderConfig.colors.textSecondary,
+        width: number)','
+    height: number';'
+    '): void { context.fillStyle = this.renderConfig.colors.textSecondary,'
 
         context.font = this.renderConfig.fonts.entry,
         context.textAlign = 'center',
@@ -586,15 +584,15 @@ export class LeaderboardRenderer {
         width: number, ;
         height: number, ;
         scrollOffset: number );
-        totalItems: number)',
-    visibleItems: number';
+        totalItems: number)','
+    visibleItems: number';'
     '): void { // スクロールバー背景'
         context.fillStyle = '#333333',
         context.fillRect(x, y, width, height),
         
         // スクロールハンドル
         const handleHeight = Math.max(20, (visibleItems / totalItems) * height),
-        const handleY = y + (scrollOffset / (totalItems - visibleItems) * (height - handleHeight'),
+        const handleY = y + (scrollOffset / (totalItems - visibleItems) * (height - handleHeight'),'
 
         context.fillStyle = '#666666',
         context.fillRect(x + 2, handleY, width - 4, handleHeight) }
@@ -622,8 +620,8 @@ export class LeaderboardRenderer {
         const modalHeight = Math.min(300, height * 0.7),
 
         const modalX = x + (width - modalWidth) / 2,
-        const modalY = y + (height - modalHeight') / 2,
-        ',
+        const modalY = y + (height - modalHeight') / 2,'
+        ','
         // オーバーレイ背景
         context.fillStyle = 'rgba(0, 0, 0, 0.5)',
         context.fillRect(x, y, width, height),
@@ -643,7 +641,7 @@ export class LeaderboardRenderer {
         context.fillStyle = this.renderConfig.colors.text,
         context.font = this.renderConfig.fonts.header,
         context.textAlign = 'center',
-        context.fillText(entry.playerName || 'Unknown Player', modalX + modalWidth / 2, currentY + 30',
+        context.fillText(entry.playerName || 'Unknown Player', modalX + modalWidth / 2, currentY + 30','
         currentY += 60,
         
         // 詳細データ
@@ -659,11 +657,11 @@ export class LeaderboardRenderer {
             },''
             { label: '日時', value: new Date(entry.timestamp).toLocaleString('''
         context.textAlign = 'left',
-        ',
+        ','
         details.forEach(detail => { ')'
-            context.fillStyle = this.renderConfig.colors.textSecondary',
-            context.fillText(detail.label + ':', modalX + padding, currentY',
-            ',
+            context.fillStyle = this.renderConfig.colors.textSecondary','
+            context.fillText(detail.label + ':', modalX + padding, currentY','
+            ','
 
             context.fillStyle = this.renderConfig.colors.text,
             context.textAlign = 'right',
@@ -678,7 +676,7 @@ export class LeaderboardRenderer {
         const buttonHeight = 30;
         const buttonX = modalX + modalWidth - buttonWidth - padding;
         const buttonY = modalY + modalHeight - buttonHeight - padding;
-        ';
+        ';'
 
         context.fillStyle = this.renderConfig.colors.tabActive;
         context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
@@ -702,9 +700,9 @@ export class LeaderboardRenderer {
         context: CanvasRenderingContext2D,
     x: number, ;
         y: number );
-        width: number)',
-    height: number';
-    '): void { context.fillStyle = this.renderConfig.colors.textSecondary,
+        width: number)','
+    height: number';'
+    '): void { context.fillStyle = this.renderConfig.colors.textSecondary,'
 
         context.font = this.renderConfig.fonts.entry,
         context.textAlign = 'center',
@@ -728,9 +726,9 @@ export class LeaderboardRenderer {
      * @returns {string} 切り詰められたテキスト
      */'
     truncateText(context: CanvasRenderingContext2D, text: string, maxWidth: number): string { ''
-        if (context.measureText(text).width <= maxWidth') {
+        if (context.measureText(text).width <= maxWidth') {'
             return text }
-        ';
+        ';'
 
         let truncated = text;
         while(context.measureText(truncated + '...).width > maxWidth && truncated.length > 0' { ''
@@ -772,7 +770,7 @@ export class LeaderboardRenderer {
      * レンダラーを破棄
      */'
     dispose(): void { ]'
-        this.animationState.entryAnimations.clear()]',
+        this.animationState.entryAnimations.clear()]','
         console.log('[LeaderboardRenderer] Disposed') }
 
-    }'}
+    }'}'

@@ -18,106 +18,106 @@ import { createMetaTag,
 
 // メタデータコンテキストインターフェース
 interface MetadataContext { title?: string,
-    titleKey?: string,
-    description?: string,
-    descriptionKey?: string,
-    keywords?: string,
-    additionalKeywords?: string[],
-    pageKey?: string,
-    pageType?: string,
-    type?: string,
-    path?: string,
-    image?: string,
-    imageVariant?: 'default' | 'landscape' | 'portrait' | 'summary' | 'summaryLarge',
-    twitterImage?: string,
-    includeTagline?: boolean,
-    extended?: boolean,
-    gameState?: GameState,
-    forceRefresh?: boolean,
-    language?: string }
+    titleKey?: string;
+    description?: string;
+    descriptionKey?: string;
+    keywords?: string;
+    additionalKeywords?: string[];
+    pageKey?: string;
+    pageType?: string;
+    type?: string;
+    path?: string;
+    image?: string;
+    imageVariant?: 'default' | 'landscape' | 'portrait' | 'summary' | 'summaryLarge';
+    twitterImage?: string;
+    includeTagline?: boolean;
+    extended?: boolean;
+    gameState?: GameState;
+    forceRefresh?: boolean;
+    language?: string;
 
 // ゲーム状態インターフェース
 interface GameState { scene?: string,
-    score?: number,
-    highScore?: number,
-    level?: number,
-    playTime?: number,
-    bubblesPopped?: number,
-    combo?: number,
-    achievement?: string,
-    totalPlays?: number }
+    score?: number;
+    highScore?: number;
+    level?: number;
+    playTime?: number;
+    bubblesPopped?: number;
+    combo?: number;
+    achievement?: string;
+    totalPlays?: number;
 
 // 動的コンテンツインターフェース
 interface DynamicContent { gameState?: string,
-    currentScore?: number,
-    level?: number,
-    playingTime?: number,
-    bubblesPopped?: number }
+    currentScore?: number;
+    level?: number;
+    playingTime?: number;
+    bubblesPopped?: number;
 
 // メタデータインターフェース
 interface Metadata { language: LanguageCode,
-    url: string,
-    timestamp: number,
-    title: string,
-    description: string,
-    keywords: string,
-    image: string,
-    author: string,
-    siteName: string,
-    type: string,
-    twitterImage?: string,
+    url: string;
+    timestamp: number;
+    title: string;
+    description: string;
+    keywords: string;
+    image: string;
+    author: string;
+    siteName: string;
+    type: string;
+    twitterImage?: string;
     path?: string,  }
 
 // ローカライズされたメタデータインターフェース
 interface LocalizedMetadata { language: string,
-    title: string,
-    description: string,
-    keywords: string,
-    siteName: string,
-    locale: string,
-    direction: string,
-    charset: string  }
+    title: string;
+    description: string;
+    keywords: string;
+    siteName: string;
+    locale: string;
+    direction: string;
+    charset: string;
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string,
-    addLanguageChangeListener(callback: (lang: string) => void): void,
-    t(key: string, defaultValue?: string): string,
-    get(key: string, params?: Record<string, any>): string,
-    getTextDirection?(): string }
+    addLanguageChangeListener(callback: (lang: string) => void): void;
+    t(key: string, defaultValue?: string): string;
+    get(key: string, params?: Record<string, any>): string;
+    getTextDirection?(): string;
 
 // GameConfig インターフェース
-interface GameConfig { [key: string]: any }
+interface GameConfig { [key: string]: any;
 
 // 検証レポートインターフェース
 interface ValidationReport { timestamp: string,
-    issues: string[],
-    warnings: string[],
-    metadata: Record<string, string>,
-    isValid: boolean  }
+    issues: string[];
+    warnings: string[];
+    metadata: Record<string, string>;
+    isValid: boolean;
 
 // 動的メタハンドラー型
 type DynamicMetaHandler = (gameState: GameState) => Promise<string | null>;
 
 export class SEOMetaManager {
-    private localizationManager: LocalizationManager | null,
-    private gameConfig: GameConfig | null,
-    private baseUrl: string,
-    private currentLang: LanguageCode,
+    private localizationManager: LocalizationManager | null;
+    private gameConfig: GameConfig | null;
+    private baseUrl: string;
+    private currentLang: LanguageCode;
     private, metaCache: Map<string, string>,
-    private dynamicMetaHandlers: Map<string, DynamicMetaHandler>,
-    private initialized: boolean,
+    private dynamicMetaHandlers: Map<string, DynamicMetaHandler>;
+    private initialized: boolean;
     private, debouncedUpdate: (context: MetadataContext) => void,
     private currentLanguage?: string,
     
     constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
     
-        this.localizationManager = localizationManager,
-        this.gameConfig = gameConfig,
-        this.baseUrl = getBaseUrl(),
-        this.currentLang = SEOConfig.defaultLanguage,
-        this.metaCache = new Map(),
-        this.dynamicMetaHandlers = new Map(),
-        this.initialized = false,
+        this.localizationManager = localizationManager;
+        this.gameConfig = gameConfig;
+        this.baseUrl = getBaseUrl();
+        this.currentLang = SEOConfig.defaultLanguage;
+        this.metaCache = new Map();
+        this.dynamicMetaHandlers = new Map();
+        this.initialized = false;
         
         // デバウンスされたメタタグ更新関数
         this.debouncedUpdate = debounce(this._performUpdate.bind(this), 300) }
@@ -136,20 +136,20 @@ export class SEOMetaManager {
             this._registerDynamicHandlers(),
             
             // 言語変更リスナーの設定
-            if(this.localizationManager) {
+            if (this.localizationManager) {
     
 }
                 this.localizationManager.addLanguageChangeListener((newLang: string) => {  }
                     this.currentLang = normalizeLanguageCode(newLang); }
-                    this.updateMetaTags({ language: newLang });
+                    this.updateMetaTags({ language: newLang,);
                 });
                 
                 this.currentLang = normalizeLanguageCode(;
-                    this.localizationManager.getCurrentLanguage()';
-                ');
+                    this.localizationManager.getCurrentLanguage()';'
+                ');'
             }
 
-            ';
+            ';'
 
             this.initialized = true;
             seoLogger.info('SEOMetaManager, initialized successfully';} catch (error) {
@@ -160,9 +160,9 @@ export class SEOMetaManager {
      * メタタグの更新
      */'
     async updateMetaTags(context: MetadataContext = {}): Promise<void> { ''
-        if(!this.initialized) {
+        if (!this.initialized) {
 
-            seoLogger.warn('SEOMetaManager, not initialized) }
+            seoLogger.warn('SEOMetaManager, not initialized) }'
             return; }
         }
         
@@ -174,7 +174,7 @@ export class SEOMetaManager {
      * ゲーム状態に基づいた動的コンテンツでメタタグを更新
      */
     async updateDynamicContent(dynamicContent: DynamicContent): Promise<void> { try {'
-            if(!this.initialized) {
+            if (!this.initialized) {
 
                 seoLogger.warn('SEOMetaManager, not initialized') }
                 return; }
@@ -196,12 +196,12 @@ export class SEOMetaManager {
             await this.updateMetaTags(metadata);
 
             // ソーシャルメディア用の画像URL更新
-            if(dynamicContent.currentScore && dynamicContent.currentScore > 0) { }
+            if (dynamicContent.currentScore && dynamicContent.currentScore > 0) { }
 
                 await this._updateSocialImageForScore(dynamicContent.currentScore); }
             }
 
-            seoLogger.info('Dynamic content updated successfully', enhancedContext';} catch (error) { }
+            seoLogger.info('Dynamic content updated successfully', enhancedContext';} catch (error) { }'
 
             seoErrorHandler.handle(error as Error, 'updateDynamicContent', { dynamicContent });
         }
@@ -214,7 +214,7 @@ export class SEOMetaManager {
         
         // 動的タイトル生成
         let dynamicTitle = await this._getLocalizedTitle(),
-        if(gameSession.score && gameSession.score > 0) {
+        if (gameSession.score && gameSession.score > 0) {
     
 }
 
@@ -223,13 +223,13 @@ export class SEOMetaManager {
                 `スコア ${gameSession.score.toLocaleString(})`;
             dynamicTitle = `${dynamicTitle} - ${scoreText}`;
         }
-';
+';'
         // 動的説明文生成
         let dynamicDescription = await this._getLocalizedDescription(context);
         if(gameSession.scene === 'game' && gameSession.score && gameSession.score > 0' {'
 
             const gameplayText = this.localizationManager ? this.localizationManager.get('seo.gameplayDescription', {', : undefined'
-                    score: gameSession.score.toLocaleString()',
+                    score: gameSession.score.toLocaleString()','
                     bubbles: gameSession.bubblesPopped?.toLocaleString() || '0', : undefined
         
                     level: gameSession.level || 1  }
@@ -240,7 +240,7 @@ export class SEOMetaManager {
 
         return { title: dynamicTitle,
             description: dynamicDescription,
-    gameState: gameSession };
+    gameState: gameSession,;
             path: this._generateUrl({) }
 
     /**
@@ -250,19 +250,19 @@ export class SEOMetaManager {
             // スコアランクに基づいて画像を選択
             let imageUrl = '/assets/social/og-image.png', // デフォルト
 
-            if(score >= 100000) {', ' }
+            if (score >= 100000) {', ' }
 
                 imageUrl = '/assets/social/og-image-champion.png'; }
 
-            } else if(score >= 50000) { ''
-                imageUrl = '/assets/social/og-image-expert.png',' }
+            } else if (score >= 50000) { ''
+                imageUrl = '/assets/social/og-image-expert.png',' }'
 
-            } else if(score >= 10000) { ''
+            } else if (score >= 10000) { ''
                 imageUrl = '/assets/social/og-image-pro.png' }
-';
+';'
             // Open Graph画像の更新
-            this._updateMetaTag('property', 'og:image', imageUrl';
-            this._updateMetaTag('name', 'twitter:image', imageUrl';
+            this._updateMetaTag('property', 'og:image', imageUrl';'
+            this._updateMetaTag('name', 'twitter:image', imageUrl';'
 
             seoLogger.debug('Social image updated for score', { score, imageUrl ',' }
 
@@ -276,14 +276,14 @@ export class SEOMetaManager {
      * 言語変更時の処理
      */
     updateLanguage(newLanguage: string): void { try {
-            this.currentLanguage = newLanguage,
+            this.currentLanguage = newLanguage;
             
             // キャッシュをクリア
             this.metaCache.clear(),
             
             // メタタグを再生成・更新
-            this.updateMetaTags({ forceRefresh: true }
-            seoLogger.info(`SEOMetaManager, language updated, to ${newLanguage}`});'} catch (error) { }
+            this.updateMetaTags({ forceRefresh: true,
+            seoLogger.info(`SEOMetaManager, language updated, to ${newLanguage}`});'} catch (error) { }'
 
             seoErrorHandler.handle(error as Error, 'updateLanguage', { newLanguage });
         }
@@ -293,7 +293,7 @@ export class SEOMetaManager {
      * LocalizationManagerとの統合強化
      */
     async getLocalizedMetadata(context: MetadataContext = {}): Promise<LocalizedMetadata> { try {
-            if(!this.localizationManager) {
+            if (!this.localizationManager) {
     
 }
                 return this._generateFallbackMetadata(context);
@@ -307,17 +307,17 @@ export class SEOMetaManager {
     siteName: await this._getLocalizedSiteName(
                 locale: this._getOGLocale(
 
-                direction: this._getTextDirection('}
+                direction: this._getTextDirection('}'
 
                 charset: 'UTF-8' }'};)'
         } catch (error) {
-            return seoErrorHandler.handle(error as Error, 'getLocalizedMetadata', context',
+            return seoErrorHandler.handle(error as Error, 'getLocalizedMetadata', context','
     
     /**
      * ローカライズされたタイトル生成
      */'
     private async _getLocalizedTitle(context: MetadataContext = { }): Promise<string> { ''
-        if(!this.localizationManager) {', ' }
+        if (!this.localizationManager) {', ' }
 
             return context.title || 'BubblePop - 泡割りゲーム';
         
@@ -325,12 +325,12 @@ export class SEOMetaManager {
         if (context.titleKey) { return this.localizationManager.t(context.titleKey) }
         
         // ページタイプ別のタイトル
-        if(context.pageType) {
+        if (context.pageType) {
     
 }
             const titleKey = `seo.titles.${context.pageType}`;
             const pageTitle = this.localizationManager.t(titleKey);
-            if(pageTitle !== titleKey) {
+            if (pageTitle !== titleKey) {
                 // 翻訳が存在する場合
             }
                 return pageTitle;
@@ -346,7 +346,7 @@ export class SEOMetaManager {
      * ローカライズされた説明文生成
      */'
     private async _getLocalizedDescription(context: MetadataContext = { ): Promise<string> {''
-        if(!this.localizationManager) {', ' }
+        if (!this.localizationManager) {', ' }
 
             return context.description || 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
         
@@ -354,23 +354,23 @@ export class SEOMetaManager {
         if (context.descriptionKey) { return this.localizationManager.t(context.descriptionKey) }
         
         // ページタイプ別の説明
-        if(context.pageType) {
+        if (context.pageType) {
     
 }
             const descKey = `seo.descriptions.${context.pageType}`;
             const pageDesc = this.localizationManager.t(descKey);
-            if(pageDesc !== descKey) {
+            if (pageDesc !== descKey) {
                 // 翻訳が存在する場合
             }
                 return pageDesc;
         
         // ゲーム状態による動的説明
-        if(context.gameState) { }
+        if (context.gameState) { }
 
             return await this._enhanceDescriptionWithGameState(context.gameState);
-        ';
+        ';'
         // デフォルト説明
-        return this.localizationManager.t('seo.description') || ';
+        return this.localizationManager.t('seo.description') || ';'
             'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
     }
     
@@ -378,24 +378,24 @@ export class SEOMetaManager {
      * ローカライズされたキーワード生成
      */'
     private async _getLocalizedKeywords(context: MetadataContext): Promise<string> { ''
-        if(!this.localizationManager) {', ' }
+        if (!this.localizationManager) {', ' }
 
             return context.keywords || 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料';
 
-        const lang = this.localizationManager.getCurrentLanguage()';
-        const baseKeywords = this.localizationManager.t('seo.keywords') || ';
-        ';
+        const lang = this.localizationManager.getCurrentLanguage()';'
+        const baseKeywords = this.localizationManager.t('seo.keywords') || ';'
+        ';'
         // 言語固有のキーワード
-        const langKeywords = this.localizationManager.t(`seo.keywords.${ lang)`} || ';
-        ';
+        const langKeywords = this.localizationManager.t(`seo.keywords.${ lang)`} || ';'
+        ';'
         // ページタイプ固有のキーワード
-        let pageKeywords = ';
+        let pageKeywords = ';'
 
         if (context.pageType} { }'
 
             pageKeywords = this.localizationManager.t(`seo.keywords.${context.pageType}`}' || ';
         }
-        ';
+        ';'
         // キーワードの結合
         const keywordParts = [baseKeywords, langKeywords, pageKeywords].filter(k => k);
         return keywordParts.join(',';
@@ -405,12 +405,12 @@ export class SEOMetaManager {
      * テキスト方向の取得
      */'
     private _getTextDirection(): string { ''
-        if(!this.localizationManager) {', ' }
+        if (!this.localizationManager) {', ' }
 
             return 'ltr';
-        ';
+        ';'
 
-        return this.localizationManager.getTextDirection ? undefined : undefined';
+        return this.localizationManager.getTextDirection ? undefined : undefined';'
             this.localizationManager.getTextDirection() : 'ltr';
     }
     
@@ -424,7 +424,7 @@ export class SEOMetaManager {
             keywords: context.keywords || 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料',
             siteName: 'BubblePop',
             locale: 'ja_JP',
-            direction: 'ltr',' };
+            direction: 'ltr',' };'
 
             charset: 'UTF-8' 
     }
@@ -456,11 +456,11 @@ export class SEOMetaManager {
             // キャッシュの更新
             this._updateCache(metadata),
 
-            const duration = performance.now()',
+            const duration = performance.now()','
             seoLogger.performance('metaTagUpdate', duration, {),
                 tagsUpdated: Object.keys(metadata).length  });
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'metaTagUpdate', context' }
+            seoErrorHandler.handle(error as Error, 'metaTagUpdate', context' }'
     }
     
     /**
@@ -470,10 +470,10 @@ export class SEOMetaManager {
             language: this.currentLang,
     url: this._generateUrl(context,
             timestamp: Date.now(
-            title: ',
-            description: ',
-            keywords: ',
-            image: ',
+            title: ','
+            description: ','
+            keywords: ','
+            image: ','
             author: SEOConfig.metadata.author,
             siteName: await this._getLocalizedSiteName('''
             type: context.type || 'website',
@@ -497,9 +497,9 @@ export class SEOMetaManager {
      * タイトルの生成
      */''
     private async _generateTitle(context: MetadataContext): Promise<string> { ''
-        let title = ',
+        let title = ','
         
-        if(context.title) {
+        if (context.title) {
     
 }
             title = context.title; }
@@ -508,7 +508,7 @@ export class SEOMetaManager {
         } else { title = await this._getLocalizedSiteName() }
         
         // タグラインの追加
-        if(context.includeTagline !== false) {
+        if (context.includeTagline !== false) {
             const tagline = await this._getTagline() }
             if (tagline) { }
                 title = `${title} - ${tagline}`;
@@ -523,16 +523,16 @@ export class SEOMetaManager {
      * 説明文の生成
      */''
     private async _generateDescription(context: MetadataContext): Promise<string> { ''
-        let description = ',
+        let description = ','
         
-        if(context.description) {
+        if (context.description) {
     
 }
             description = context.description; }
 
         } else if (context.pageKey && this.localizationManager) { }'
 
-            description = this.localizationManager.t(`seo.descriptions.${context.pageKey}`}';
+            description = this.localizationManager.t(`seo.descriptions.${context.pageKey}`}';'
 
         } else {
             const descKey = context.extended ? 'extendedDescription' : 'defaultDescription',
@@ -553,7 +553,7 @@ export class SEOMetaManager {
     private async _generateKeywords(context: MetadataContext): Promise<string> { const baseKeywords = SEOConfig.metadata.keywords[this.currentLang] || 
                            SEOConfig.metadata.keywords.ja,
 
-        if(context.additionalKeywords) { }'
+        if (context.additionalKeywords) { }'
 
             return `${baseKeywords},${context.additionalKeywords.join(','})`;
         }
@@ -565,23 +565,23 @@ export class SEOMetaManager {
      * ソーシャル画像の選択
      */
     private async _selectSocialImage(context: MetadataContext): Promise<string> { // カスタム画像が指定されている場合
-        if(context.image) { }
+        if (context.image) { }
 
             return normalizeUrl(context.image);
-        ';
+        ';'
         // ゲーム状態に基づく動的画像生成
         if(context.gameState && this.dynamicMetaHandlers.has('socialImage)' { ''
-            const handler = this.dynamicMetaHandlers.get('socialImage)!,
+            const handler = this.dynamicMetaHandlers.get('socialImage)!,'
 
             const dynamicImage = await handler(context.gameState),
-            if(dynamicImage) {
+            if (dynamicImage) {
     
 }
                 return dynamicImage;
-        ';
+        ';'
         // デフォルト画像の選択
         const variant = context.imageVariant || 'default';
-        return getSocialImageUrl('openGraph', variant';
+        return getSocialImageUrl('openGraph', variant';'
     }
     
     /**
@@ -589,33 +589,33 @@ export class SEOMetaManager {
      */''
     private _updateBasicMetaTags(metadata: Metadata): void { // タイトル
         document.title = metadata.title || 'BubblePop - 泡を割って高スコアを目指そう！',
-        ',
+        ','
         // 説明
-        this._updateMetaTag('name', 'description', metadata.description',
-        ',
+        this._updateMetaTag('name', 'description', metadata.description','
+        ','
         // キーワード
-        this._updateMetaTag('name', 'keywords', metadata.keywords',
-        ',
+        this._updateMetaTag('name', 'keywords', metadata.keywords','
+        ','
         // 作者
-        this._updateMetaTag('name', 'author', metadata.author',
+        this._updateMetaTag('name', 'author', metadata.author','
         
         // 言語
         document.documentElement.lang = metadata.language,
-        this._updateMetaTag('name', 'language', metadata.language' }
+        this._updateMetaTag('name', 'language', metadata.language' }'
     
     /**
      * Open Graphタグの更新'
      */''
-    private _updateOpenGraphTags(metadata: Metadata): void { const ogTags: Record<string, string | string[] | number> = {', 'og:title': metadata.title,
+    private _updateOpenGraphTags(metadata: Metadata): void { const ogTags: Record<string, string | string[] | number> = {', 'og:title': metadata.title,'
             'og:description': metadata.description,
-            'og:image': metadata.image,' }
+            'og:image': metadata.image,' }'
 
-            'og:image:alt': `${metadata.siteName} - ${metadata.title}`,', 'og:url': metadata.url,
+            'og:image:alt': `${metadata.siteName} - ${metadata.title}`,', 'og:url': metadata.url,'
             'og:type': metadata.type,
             'og:site_name': metadata.siteName,
-            'og: locale': this._getOGLocale()';
+            'og: locale': this._getOGLocale()';'
         if(metadata.image.includes('og-image)' { ''
-            ogTags['og: image:width] = SEOConfig.socialImages.openGraph.width,
+            ogTags['og: image:width] = SEOConfig.socialImages.openGraph.width,'
             ogTags['og: image:height] = SEOConfig.socialImages.openGraph.height  }'
         
         // 代替言語
@@ -623,19 +623,19 @@ export class SEOMetaManager {
             .filter(lang => lang !== this.currentLang);
             .map(lang => this._getOGLocale(lang);
 
-        if(altLocales.length > 0) {', ' }
+        if (altLocales.length > 0) {', ' }
 
             ogTags['og: locale:alternate] = altLocales; }'
         }
         
         // タグの更新
-        Object.entries(ogTags).forEach(([property, content]) => {  if(Array.isArray(content) {
+        Object.entries(ogTags).forEach(([property, content]) => {  if (Array.isArray(content) {
                 // 複数値の場合は既存を削除して追加
                 this._removeMetaTags(property),
                 content.forEach(value => {) }
                     this._addMetaTag(property, String(value);' }'
 
-                }');
+                }');'
 
             } else { }'
 
@@ -646,31 +646,31 @@ export class SEOMetaManager {
     /**
      * Twitter Cardタグの更新'
      */''
-    private _updateTwitterCardTags(metadata: Metadata): void { const twitterTags: Record<string, string> = {', 'twitter:card': 'summary_large_image',
+    private _updateTwitterCardTags(metadata: Metadata): void { const twitterTags: Record<string, string> = {', 'twitter:card': 'summary_large_image','
             'twitter:title': truncateText(metadata.title, 70), // Twitter制限,
             'twitter:description': truncateText(metadata.description, 200), // Twitter制限,
-            'twitter:image': this._getTwitterImage(metadata),' }
+            'twitter:image': this._getTwitterImage(metadata),' }'
 
             'twitter:image:alt': `${metadata.siteName} - ${metadata.title}`
         };
-        ';
+        ';'
         // サイトのTwitterアカウントがある場合
         if ((SEOConfig, as any).socialAccounts?.twitter) { : undefined''
-            twitterTags['twitter: site] = (SEOConfig, as any).socialAccounts.twitter,
+            twitterTags['twitter: site] = (SEOConfig, as any).socialAccounts.twitter,'
         // タグの更新
         Object.entries(twitterTags).forEach(([property, content]) => { }'
 
             this._updateMetaTag('name', property, content); }
-        }';
+        }';'
     }
     
     /**
      * Canonical URLの更新'
      */''
     private _updateCanonicalUrl(metadata: Metadata): void { ''
-        let canonical = document.querySelector('link[rel="canonical"]),
+        let canonical = document.querySelector('link[rel="canonical"]),'
 
-        if(!canonical) {
+        if (!canonical) {
 
             canonical = document.createElement('link'),
             canonical.rel = 'canonical' }
@@ -684,26 +684,26 @@ export class SEOMetaManager {
      * hreflangタグの更新'
      */''
     private _updateHreflangTags(metadata: Metadata): void { // 既存のhreflangタグを削除
-        const existing = document.querySelectorAll('link[rel="alternate"][hreflang]),
+        const existing = document.querySelectorAll('link[rel="alternate"][hreflang]),'
         existing.forEach(tag => tag.remove(),
-        ',
+        ','
         // 各言語のhreflangタグを追加
-        SEOConfig.supportedLanguages.forEach(lang => { '),
+        SEOConfig.supportedLanguages.forEach(lang => { '),'
             const link = document.createElement('link'),
             link.rel = 'alternate',
 
             link.hreflang = lang,
-            link.href = getLocalizedUrl(lang, metadata.path || ') }
+            link.href = getLocalizedUrl(lang, metadata.path || ') }'
 
             document.head.appendChild(link);' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // x-defaultタグ
         const defaultLink = document.createElement('link');
         defaultLink.rel = 'alternate';
         defaultLink.hreflang = 'x-default';
-        defaultLink.href = getLocalizedUrl(SEOConfig.defaultLanguage, metadata.path || ');
+        defaultLink.href = getLocalizedUrl(SEOConfig.defaultLanguage, metadata.path || ');'
         document.head.appendChild(defaultLink);
     }
     
@@ -719,7 +719,7 @@ export class SEOMetaManager {
         
         let meta = document.querySelector(selector);
         
-        if(!meta) {
+        if (!meta) {
         
             meta = createMetaTag(property, content),"
             if (meta) { }"
@@ -733,7 +733,7 @@ export class SEOMetaManager {
      * メタタグの追加
      */
     private _addMetaTag(property: string, content: string): void { const meta = createMetaTag(property, content),
-        if(meta) {
+        if (meta) {
     
 }
             document.head.appendChild(meta); }
@@ -743,7 +743,7 @@ export class SEOMetaManager {
      * メタタグの削除'
      */''
     private _removeMetaTags(property: string): void { ''
-        const selector = property.startsWith('og:') || property.startsWith('article:')' }
+        const selector = property.startsWith('og:') || property.startsWith('article:')' }'
 
             ? `meta[property="${property}"]`""
             : `meta[name="${property}"]`;
@@ -758,9 +758,9 @@ export class SEOMetaManager {
     private _collectExistingMetaTags(): void { ""
         const metaTags = document.querySelectorAll('meta[name], meta[property]',
 
-        metaTags.forEach(tag => { '),
+        metaTags.forEach(tag => { '),'
             const property = tag.getAttribute('property') || tag.getAttribute('name'),
-            const content = tag.getAttribute('content),
+            const content = tag.getAttribute('content),'
             
             if (property && content) { }
                 this.metaCache.set(property, content); }
@@ -773,20 +773,20 @@ export class SEOMetaManager {
     /**
      * 動的メタハンドラーの登録'
      */''
-    private _registerDynamicHandlers()';
+    private _registerDynamicHandlers()';'
         this.registerDynamicHandler('socialImage', async (gameState: GameState) => {  if (!gameState || !gameState.score) return null,
-            ',
+            ','
             // スコアに基づく画像選択のロジック
-            if(gameState.score > 100000) { }'
+            if (gameState.score > 100000) { }'
 
                 return getSocialImageUrl('openGraph', 'default'; }
 
-            } else if(gameState.combo && gameState.combo > 50) { ''
+            } else if (gameState.combo && gameState.combo > 50) { ''
                 return getSocialImageUrl('openGraph', 'default' }
-            ';
+            ';'
 
-            return null;}');
-        ';
+            return null;}');'
+        ';'
         // タイトルの動的生成ハンドラー
         this.registerDynamicHandler('title', async (gameState: GameState) => {  if (!gameState) return null }
             if (gameState.achievement) { }
@@ -806,19 +806,19 @@ export class SEOMetaManager {
      * ローカライズされたサイト名の取得
      */'
     private async _getLocalizedSiteName(): Promise<string> { ''
-        if(this.localizationManager) {', ' }
+        if (this.localizationManager) {', ' }
 
-            return this.localizationManager.t('seo.siteName', SEOConfig.siteName';
+            return this.localizationManager.t('seo.siteName', SEOConfig.siteName';'
 
         return this.currentLang = == 'ja' ? SEOConfig.siteNameJa: SEOConfig.siteName 
     /**
      * タグラインの取得
      */'
-    private async _getTagline(): Promise<string> {,
-        if(this.localizationManager) {', ' }
+    private async _getTagline(): Promise<string> {;
+        if (this.localizationManager) {', ' }
 
             return this.localizationManager.t('seo.tagline');
-        ';
+        ';'
 
         const taglines: Record<string, string> = { ''
             ja: '泡を割って高スコアを目指そう！',
@@ -837,15 +837,15 @@ export class SEOMetaManager {
             additions.push(`最高スコア: ${gameState.highScore.toLocaleString(})`);
         }
         
-        if(gameState.totalPlays) {
+        if (gameState.totalPlays) {
     
 }
             additions.push(`${gameState.totalPlays}回プレイ済み`});
         }
 
-        if(additions.length > 0) { }'
+        if (additions.length > 0) { }'
 
-            return `${description} ${additions.join('、'}'`;
+            return `${description} ${additions.join('、'}'`;'
         }
         
         return description;
@@ -860,7 +860,7 @@ export class SEOMetaManager {
     /**
      * Open Graphロケールの取得'
      */''
-    private _getOGLocale(lang: LanguageCode = this.currentLang): string { const localeMap: Record<LanguageCode, string> = {', 'ja': 'ja_JP',
+    private _getOGLocale(lang: LanguageCode = this.currentLang): string { const localeMap: Record<LanguageCode, string> = {', 'ja': 'ja_JP','
             'en': 'en_US',
             'zh-CN': 'zh_CN',
             'zh-TW': 'zh_TW',
@@ -873,13 +873,13 @@ export class SEOMetaManager {
      * Twitter用画像の取得
      */'
     private _getTwitterImage(metadata: Metadata): string { // Twitter専用画像がある場合
-        if(metadata.twitterImage) {
+        if (metadata.twitterImage) {
     
 }
             return metadata.twitterImage;
-        ';
+        ';'
         // Twitter Card用の画像を使用
-        const twitterImageUrl = getSocialImageUrl('twitter', 'summaryLarge);
+        const twitterImageUrl = getSocialImageUrl('twitter', 'summaryLarge);'
         
         // Open Graph画像をフォールバック
         return twitterImageUrl || metadata.image;
@@ -917,14 +917,14 @@ export class SEOMetaManager {
         const title = document.title;
         if (title.length > 60) { }'
 
-            report.warnings.push(`Title, too long: ${title.length} characters (recommended: 60}`}';
+            report.warnings.push(`Title, too long: ${title.length} characters (recommended: 60}`}';'
         }
 
-        const description = this.metaCache.get('description);
+        const description = this.metaCache.get('description);'
 
         if (description && description.length > 155) { }'
 
-            report.warnings.push(`Description, too long: ${description.length} characters (recommended: 155}`}';
+            report.warnings.push(`Description, too long: ${description.length} characters (recommended: 155}`}';'
         }
         
         report.isValid = report.issues.length === 0;
@@ -940,14 +940,14 @@ export class SEOMetaManager {
     cleanup(): void { this.metaCache.clear(),
         this.dynamicMetaHandlers.clear(),
         
-        if(this.debouncedUpdate) {
-        ',
+        if (this.debouncedUpdate) {
+        ','
 
-            ' }
+            ' }'
 
             (this.debouncedUpdate, as any).cancel?.(); }'
         }
 
         seoLogger.info('SEOMetaManager, cleaned up');
 
-    }'} : undefined
+    }'} : undefined'

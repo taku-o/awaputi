@@ -16,18 +16,18 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
     })'
 );
 (global as any').navigator = { ''
-    userAgent: 'Test Agent',',
-    platform: 'Test Platform',',
-    language: 'en-US',',
+    userAgent: 'Test Agent',','
+    platform: 'Test Platform',','
+    language: 'en-US',','
     languages: ['en-US', 'en'],
     hardwareConcurrency: 4,
     deviceMemory: 8,
-    maxTouchPoints: 10,',
+    maxTouchPoints: 10,','
     connection: {''
         effectiveType: '4g',
         downlink: 10,
         rtt: 50,
-        saveData: false }
+        saveData: false,
     }),
 // Mock monitor
 const mockMonitor = { gameEngine: {'
@@ -61,17 +61,17 @@ const mockMonitor = { gameEngine: {'
 const { DetailedMetricsCollector } = await import('../../src/debug/DetailedMetricsCollector.js');
 describe('DetailedMetricsCollector', () => {  let collector: any,
     let consoleLogSpy: any,
-    let consoleWarnSpy: any,',
-    let consoleErrorSpy: any,',
+    let consoleWarnSpy: any,','
+    let consoleErrorSpy: any,','
     beforeEach((') => { }'
         // Console spies' }'
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');
-        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');'
+        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');'
         consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         // Reset mock calls
         jest.clearAllMocks();
         // Create instance
-        collector = new DetailedMetricsCollector(mockMonitor: any);
+        collector = new DetailedMetricsCollector(mockMonitor: any),
     });
     afterEach(() => {  if (collector) { }
             collector.destroy(); }
@@ -94,7 +94,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             expect(collector.profilingData.gameLoopBreakdown).toBeInstanceOf(Map: any),
             expect(collector.profilingData.webGLCalls).toEqual([]) }'
             expect(collector.profilingData.audioProcessing).toBeInstanceOf(Map: any);' }'
-        }');
+        }');'
         test('should initialize statistics tracking', () => {  expect(collector.statisticsTracking.sampleCount).toBe(0),
             expect(collector.statisticsTracking.errorCount).toBe(0),
             expect(collector.statisticsTracking.averageCollectionTime).toBe(0) }'
@@ -109,23 +109,23 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             expect(renderMetrics.drawCalls).toBeGreaterThanOrEqual(0),
             expect(renderMetrics.triangles).toBeGreaterThanOrEqual(0) }'
             expect(renderMetrics.vertices).toBeGreaterThanOrEqual(0);' }'
-        }');
+        }');'
         test('should estimate draw calls correctly', () => {  const drawCalls = collector.estimateDrawCalls(),
             expect(drawCalls.toBeGreaterThan(0),
             // Based on mock data: 25 bubbles, 150 particles, 8 effects
             // Expected: ceil(25/20) + ceil(150/100) + 8*2 = 2 + 2 + 16 = 20 }'
             expect(drawCalls).toBe(20););' }'
-        }');
+        }');'
         test('should estimate triangle count correctly', () => {  const triangles = collector.estimateTriangleCount(),
             expect(triangles.toBeGreaterThan(0),
             // Expected: 25*16 + 150*2 = 400 + 300 = 700 }'
             expect(triangles).toBe(700););' }'
-        }');
+        }');'
         test('should estimate vertex count correctly', () => {  const vertices = collector.estimateVertexCount(),
             expect(vertices.toBeGreaterThan(0),
             // Expected: 700 * 3 = 2100 }'
             expect(vertices).toBe(2100););' }'
-        }');
+        }');'
         test('should handle missing WebGL context', () => {  mockMonitor.gameEngine.canvas.getContext.mockReturnValue(null) }
             expect(() => { }
                 collector.collectRenderingDetails(});
@@ -137,30 +137,30 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             const memoryMetrics = collector.extendedMetrics.memory,
             expect(memoryMetrics.timestamp).toBeDefined() }'
             expect(memoryMetrics.heap).toBeDefined();' }'
-        }');
+        }');'
         test('should analyze memory allocation patterns', () => {  collector.analyzeMemoryAllocationPatterns(collector.extendedMetrics.memory),
             const memoryMetrics = collector.extendedMetrics.memory,
             expect(memoryMetrics.allocationPattern).toBeDefined() }'
             expect(memoryMetrics.allocationPattern.frequency).toBeGreaterThanOrEqual(0);' }'
-            expect(memoryMetrics.allocationPattern.trend).toMatch(/increasing|decreasing|stable/})');
+            expect(memoryMetrics.allocationPattern.trend).toMatch(/increasing|decreasing|stable/})');'
         test('should analyze GC patterns', () => {  collector.analyzeGCPatterns(collector.extendedMetrics.memory),
             const memoryMetrics = collector.extendedMetrics.memory,
             expect(memoryMetrics.garbageCollection).toBeDefined(),
             expect(memoryMetrics.garbageCollection.eventCount).toBeGreaterThanOrEqual(0) }'
             expect(memoryMetrics.garbageCollection.frequency).toBeGreaterThanOrEqual(0);' }'
-        }');
+        }');'
         test('should calculate memory trend correctly', () => { const history = [}
                 { used: 40 }, { used: 42 }, { used: 44 }, { used: 46 }, { used: 48 },]
                 { used: 50 }, { used: 52 }, { used: 54 }, { used: 56 }, { used: 58 }]
             ];
-            ';
+            ';'
             const trend = collector.calculateMemoryTrend(history);
-            expect(trend').toBe('increasing');'}');
+            expect(trend').toBe('increasing');'}');'
         test('should detect stable memory trend', () => { const history = [}
                 { used: 50 }, { used: 50 }, { used: 51 }, { used: 49 }, { used: 50 },]
                 { used: 50 }, { used: 51 }, { used: 49 }, { used: 50 }, { used: 50 }]
             ];
-            ';
+            ';'
             const trend = collector.calculateMemoryTrend(history);
             expect(trend').toBe('stable');'}');'
     }''
@@ -169,7 +169,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             collector.collectGameDetails(),
             const gameMetrics = collector.extendedMetrics.game }'
             expect(gameMetrics.timestamp).toBeDefined();' }'
-        }');
+        }');'
         test('should collect entity metrics', () => {  collector.collectEntityMetrics(collector.extendedMetrics.game),
             const gameMetrics = collector.extendedMetrics.game,
             expect(gameMetrics.entities).toBeDefined(),
@@ -179,7 +179,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             expect(gameMetrics.entities.bubbles.total).toBe(25),
             expect(gameMetrics.entities.particles.total).toBe(150) }'
             expect(gameMetrics.entities.effects.total).toBe(8););' }'
-        }');
+        }');'
         test('should collect physics metrics', () => {  collector.collectPhysicsMetrics(collector.extendedMetrics.game),
             const gameMetrics = collector.extendedMetrics.game,
             expect(gameMetrics.physics).toBeDefined(),
@@ -193,7 +193,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             collector.collectAudioDetails(),
             const audioMetrics = collector.extendedMetrics.audio }'
             expect(audioMetrics.timestamp).toBeDefined();' }'
-        }');
+        }');'
         test('should handle missing audio manager', () => {  const originalAudioManager = mockMonitor.gameEngine.audioManager,
             mockMonitor.gameEngine.audioManager = null }
             expect(() => { }
@@ -207,10 +207,10 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             const networkMetrics = collector.extendedMetrics.network,
             expect(networkMetrics.timestamp).toBeDefined(),'
             expect(networkMetrics.connection).toBeDefined(),
-            expect(networkMetrics.connection.effectiveType').toBe('4g'),
+            expect(networkMetrics.connection.effectiveType').toBe('4g'),'
             expect(networkMetrics.connection.downlink).toBe(10) }'
             expect(networkMetrics.connection.rtt).toBe(50););' }'
-        }');
+        }');'
         test('should handle missing connection info', () => {  const originalConnection = navigator.connection,
             delete navigator.connection }
             expect(() => { }
@@ -226,18 +226,18 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             expect(systemMetrics.device).toBeDefined(),
             expect(systemMetrics.capabilities).toBeDefined() }'
             expect(systemMetrics.performanceAPI).toBeDefined();' }'
-        }');
+        }');'
         test('should detect browser capabilities', () => {  collector.collectSystemDetails(),
             const systemMetrics = collector.extendedMetrics.system,
             expect(systemMetrics.capabilities.webgl).toBe(true),
             expect(systemMetrics.capabilities.localStorage).toBe(true) }'
             expect(systemMetrics.capabilities.indexedDB).toBe(true););' }'
-        }');
+        }');'
         test('should collect device information', () => {  collector.collectSystemDetails(),'
             const systemMetrics = collector.extendedMetrics.system,
-            expect(systemMetrics.device.userAgent').toBe('Test Agent'),
-            expect(systemMetrics.device.platform').toBe('Test Platform'),
-            expect(systemMetrics.device.language').toBe('en-US'),
+            expect(systemMetrics.device.userAgent').toBe('Test Agent'),'
+            expect(systemMetrics.device.platform').toBe('Test Platform'),'
+            expect(systemMetrics.device.language').toBe('en-US'),'
             expect(systemMetrics.device.hardwareConcurrency).toBe(4) }'
             expect(systemMetrics.device.deviceMemory).toBe(8););' }'
         }');'
@@ -246,10 +246,10 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
         test('should detect WebGL support', () => {
             const support = collector.detectWebGLSupport() }'
             expect(support).toBe(true););' }'
-        }');
+        }');'
         test('should detect WebGL2 support', () => {  const support = collector.detectWebGL2Support(),' }'
             expect(support).toBe(false'); // Mock doesn't support WebGL2);' }'
-        }');
+        }');'
         test('should detect WebAssembly support', () => {  // Mock WebAssembly
             (global: any).WebAssembly = { }
                 instantiate: jest.fn(); }
@@ -265,7 +265,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             expect(support).toBe(false: any),
             document.createElement = originalCreateElement }'
         );' }'
-    }');
+    }');'
     describe('Collection Process', (') => {  ''
         test('should collect all detailed metrics', (') => {''
             const collectRenderingSpy = jest.spyOn(collector, 'collectRenderingDetails'),
@@ -281,14 +281,14 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             expect(collectAudioSpy.toHaveBeenCalled(),
             expect(collectNetworkSpy.toHaveBeenCalled() }'
             expect(collectSystemSpy.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should update statistics after collection', () => {  const initialSampleCount = collector.statisticsTracking.sampleCount,
             
             collector.collectDetailedMetrics(),
             expect(collector.statisticsTracking.sampleCount).toBe(initialSampleCount + 1),
             expect(collector.statisticsTracking.lastSampleTime).toBeGreaterThan(0) }'
             expect(collector.statisticsTracking.averageCollectionTime).toBeGreaterThanOrEqual(0);' }'
-        }');
+        }');'
         test('should handle collection errors', (') => {  // Force an error''
             jest.spyOn(collector, 'collectRenderingDetails').mockImplementationOnce((') => { }'
                 throw new Error('Collection error'); }
@@ -307,14 +307,14 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
             expect(metrics.audio).toBeDefined(),
             expect(metrics.network).toBeDefined() }'
             expect(metrics.system).toBeDefined();' }'
-        }');
+        }');'
         test('should get profiling data', () => {  const profilingData = collector.getProfilingData(),
             expect(profilingData.renderPipeline).toBeDefined(),
             expect(profilingData.memoryAllocations).toEqual([]),
             expect(profilingData.gameLoopBreakdown).toBeDefined(),
             expect(profilingData.webGLCalls).toEqual([]) }'
             expect(profilingData.audioProcessing).toBeDefined();' }'
-        }');
+        }');'
         test('should get collection statistics', () => {  collector.collectDetailedMetrics(),
             const stats = collector.getCollectionStatistics(),
             expect(stats.sampleCount).toBeGreaterThan(0),
@@ -340,8 +340,8 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
     describe('Cleanup', (') => {  ''
         test('should destroy cleanly', (') => { }'
             // Add some test data' }'
-            collector.profilingData.renderPipeline.set('test', 'data'}');
-            collector.profilingData.memoryAllocations.push({ test: 'data' }');
+            collector.profilingData.renderPipeline.set('test', 'data'}');'
+            collector.profilingData.memoryAllocations.push({ test: 'data' }');'
             collector.profilingData.webGLCalls.push({ test: 'call' });
             collector.destroy();
             expect(collector.profilingData.renderPipeline.size).toBe(0);

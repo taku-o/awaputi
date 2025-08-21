@@ -2,70 +2,70 @@ import { getErrorHandler  } from '../ErrorHandler.js';
 
 // Type definitions
 interface DirtyRegionConfig { enabled?: boolean,
-    minRegionSize?: number,
-    maxRegionCount?: number,
-    mergeThreshold?: number,
-    expansionFactor?: number,
-    historySize?: number }
+    minRegionSize?: number;
+    maxRegionCount?: number;
+    mergeThreshold?: number;
+    expansionFactor?: number;
+    historySize?: number;
 
 interface DirtyRegion { x: number,
-    y: number,
-    width: number,
-    height: number,
-    timestamp: number,
-    frame: number  }
+    y: number;
+    width: number;
+    height: number;
+    timestamp: number;
+    frame: number;
 
 interface RegionHistory { frame: number,
-    regions: DirtyRegion[],
-    timestamp: number }
+    regions: DirtyRegion[];
+    timestamp: number;
 
 interface RegionStats { totalRegions: number,
-    mergedRegions: number,
-    skippedRedraws: number,
-    pixelsSaved: number,
-    performanceGain: number }
+    mergedRegions: number;
+    skippedRedraws: number;
+    pixelsSaved: number;
+    performanceGain: number;
 
 interface Hotspot { x: number,
-    y: number,
-    count: number }
+    y: number;
+    count: number;
 
 /**
  * Dirty Region Management System
  * ダーティリージョン管理システム - 効率的な部分再描画のための領域管理
  */
 export class AdvancedDirtyRegionManager {
-    private errorHandler: any,
-    private enabled: boolean,
-    private regions: Set<DirtyRegion>,
-    private mergedRegions: DirtyRegion[],
-    private frameRegions: Map<number, DirtyRegion[]>,
-    private minRegionSize: number,
-    private maxRegionCount: number,
-    private mergeThreshold: number,
-    private expansionFactor: number,
-    private regionHistory: RegionHistory[],
-    private historySize: number,
+    private errorHandler: any;
+    private enabled: boolean;
+    private regions: Set<DirtyRegion>;
+    private mergedRegions: DirtyRegion[];
+    private frameRegions: Map<number, DirtyRegion[]>;
+    private minRegionSize: number;
+    private maxRegionCount: number;
+    private mergeThreshold: number;
+    private expansionFactor: number;
+    private regionHistory: RegionHistory[];
+    private historySize: number;
     private, hotspots: Map<string, number>,
-    private stats: RegionStats,
+    private stats: RegionStats;
     constructor(config: DirtyRegionConfig = {) {
 
-        this.errorHandler = getErrorHandler(),
+        this.errorHandler = getErrorHandler();
         
         // Region management state
-        this.enabled = config.enabled !== undefined ? config.enabled: true,
-        this.regions = new Set<DirtyRegion>(),
-        this.mergedRegions = [],
+        this.enabled = config.enabled !== undefined ? config.enabled: true;
+        this.regions = new Set<DirtyRegion>();
+        this.mergedRegions = [];
         this.frameRegions = new Map<number, DirtyRegion[]>(),
         
         // Region optimization parameters
-        this.minRegionSize = config.minRegionSize || 32,
-        this.maxRegionCount = config.maxRegionCount || 8,
-        this.mergeThreshold = config.mergeThreshold || 0.3,
-        this.expansionFactor = config.expansionFactor || 1.1,
+        this.minRegionSize = config.minRegionSize || 32;
+        this.maxRegionCount = config.maxRegionCount || 8;
+        this.mergeThreshold = config.mergeThreshold || 0.3;
+        this.expansionFactor = config.expansionFactor || 1.1;
         
         // Region tracking
-        this.regionHistory = [],
-        this.historySize = config.historySize || 30,
+        this.regionHistory = [];
+        this.historySize = config.historySize || 30;
         this.hotspots = new Map<string, number>(),
         
         // Optimization statistics
@@ -159,7 +159,7 @@ export class AdvancedDirtyRegionManager {
      */
     clearRegions(): void { try {
             // Store regions in history
-            if(this.regions.size > 0) {
+            if (this.regions.size > 0) {
                 this.regionHistory.push({),
                     frame: this._getCurrentFrame(
     regions: Array.from(this.regions) }
@@ -277,4 +277,4 @@ export class AdvancedDirtyRegionManager {
      * Get current frame number
      */
     private _getCurrentFrame(): number { // Simple frame counter
-        return Math.floor(Date.now() / 16.67), // Approximate frame at 60fps }'}
+        return Math.floor(Date.now() / 16.67), // Approximate frame at 60fps }'}'

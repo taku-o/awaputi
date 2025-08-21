@@ -2,7 +2,7 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 import { getLocalizationManager  } from '../core/LocalizationManager.js';
 import { AudioTestPanel  } from './AudioTestPanel.js';
-';
+';'
 // サブコンポーネントのインポート
 import { AudioSettingsTabManager  } from './audio-settings/AudioSettingsTabManager.js';
 import { AudioSettingsTabRenderers  } from './audio-settings/AudioSettingsTabRenderers.js';
@@ -14,20 +14,18 @@ export interface AudioSettingsUIState { isOpen: boolean,
     container: HTMLElement | null  }
 
 export interface AudioSettingsUIComponents { audioTestPanel: AudioTestPanel,
-    tabManager: AudioSettingsTabManager,
-    uiComponentFactory: AudioSettingsUIComponentFactory,
-    tabRenderers: AudioSettingsTabRenderers,
-    dataManager: AudioSettingsDataManager
-    }
+    tabManager: AudioSettingsTabManager;
+    uiComponentFactory: AudioSettingsUIComponentFactory;
+    tabRenderers: AudioSettingsTabRenderers;
+    dataManager: AudioSettingsDataManager;
 
 export interface NotificationColors { bg: string,
-    border: string,
-    text: string }
+    border: string;
+    text: string;
 
 export interface NotificationColorsMap { success: NotificationColors,
-    error: NotificationColors,
-    info: NotificationColors
-    }
+    error: NotificationColors;
+    info: NotificationColors;
 
 /**
  * 音響設定UIクラス (Refactored)
@@ -40,53 +38,53 @@ export interface NotificationColorsMap { success: NotificationColors,
  * -, AudioSettingsDataManager: インポート・エクスポート、設定検証処理
  */
 export class AudioSettingsUI implements AudioSettingsUIState { private audioManager: any
-    private configManager: any,
-    private localizationManager: any,
-    private errorHandler: any,
+    private configManager: any;
+    private localizationManager: any;
+    private errorHandler: any;
     // UI要素
     public, container: HTMLElement | null,
-    public isOpen: boolean,
+    public isOpen: boolean;
     
     // Components
-    public audioTestPanel: AudioTestPanel,
+    public audioTestPanel: AudioTestPanel;
     public tabManager!: AudioSettingsTabManager,
     public uiComponentFactory!: AudioSettingsUIComponentFactory,
     public tabRenderers!: AudioSettingsTabRenderers,
     public dataManager!: AudioSettingsDataManager,
     
     // イベントリスナー
-    private eventListeners: Map<string, EventListener>,
+    private eventListeners: Map<string, EventListener>;
     
     // 設定変更の監視
-    private configWatchers: Set<string>,
+    private configWatchers: Set<string>;
     // Escape key handler
-    private escapeHandler: ((e: KeyboardEvent) => void) | null,
+    private escapeHandler: ((e: KeyboardEvent) => void) | null;
 
     constructor(audioManager: any) {
 
-        this.audioManager = audioManager,
-        this.configManager = getConfigurationManager(),
-        this.localizationManager = getLocalizationManager(),
-        this.errorHandler = getErrorHandler(),
+        this.audioManager = audioManager;
+        this.configManager = getConfigurationManager();
+        this.localizationManager = getLocalizationManager();
+        this.errorHandler = getErrorHandler();
         
         // UI要素
-        this.container = null,
-        this.isOpen = false,
+        this.container = null;
+        this.isOpen = false;
         
         // 音響テストパネル
-        this.audioTestPanel = new AudioTestPanel(audioManager),
+        this.audioTestPanel = new AudioTestPanel(audioManager);
         
         // サブコンポーネントの初期化
         this._initializeSubComponents(),
         
         // イベントリスナー
-        this.eventListeners = new Map(),
+        this.eventListeners = new Map();
         
         // 設定変更の監視
-        this.configWatchers = new Set(),
+        this.configWatchers = new Set();
         
         // Escape handler
-        this.escapeHandler = null,
+        this.escapeHandler = null;
         
         // 初期化
 
@@ -100,10 +98,10 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      */
     private _initializeSubComponents(): void { try {
             // タブマネージャー
-            this.tabManager = new AudioSettingsTabManager(this.audioManager, this.configManager),
+            this.tabManager = new AudioSettingsTabManager(this.audioManager; this.configManager),
             
             // UIコンポーネントファクトリー
-            this.uiComponentFactory = new AudioSettingsUIComponentFactory(this.audioManager, this.configManager),
+            this.uiComponentFactory = new AudioSettingsUIComponentFactory(this.audioManager; this.configManager),
             
             // タブレンダラー
             this.tabRenderers = new AudioSettingsTabRenderers(
@@ -113,7 +111,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
                 this.audioTestPanel),
             
             // データマネージャー
-            this.dataManager = new AudioSettingsDataManager(this.audioManager, this.configManager),
+            this.dataManager = new AudioSettingsDataManager(this.audioManager; this.configManager),
             
             // 相互連携の設定
             this.tabManager.setTabRenderers(this.tabRenderers),
@@ -139,13 +137,13 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             // コンテナ作成
             this.createContainer(),
             // 設定変更の監視を設定
-            this.setupConfigWatchers()',
-            console.log('AudioSettingsUI, initialized'),' }
+            this.setupConfigWatchers()','
+            console.log('AudioSettingsUI, initialized'),' }'
 
         } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
                 component: 'AudioSettingsUI',')',
                 operation: 'initialize'
-            }';
+            }';'
         }
     }
     
@@ -153,7 +151,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * UIコンテナを作成
      * @private'
      */''
-    private createContainer()';
+    private createContainer()';'
         this.container = document.createElement('div');
         this.container.className = 'audio-settings-ui';
         this.container.style.cssText = `;
@@ -184,7 +182,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         const tabNav = this.tabManager.createTabNavigation();
         this.tabManager.setContainer(this.container);
         this.container.appendChild(tabNav);
-        ';
+        ';'
         // コンテンツエリア
         const content = document.createElement('div');
         content.className = 'audio-settings-content';
@@ -213,7 +211,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * @private
      * @returns {HTMLElement} ヘッダー要素
      */''
-    private createHeader()';
+    private createHeader()';'
         const header = document.createElement('div');
         header.className = 'audio-settings-header';
         header.style.cssText = `;
@@ -224,10 +222,10 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             padding-bottom: 15px,
             border-bottom: 2px solid #00ffff,
         `;
-        ';
+        ';'
         // タイトル
         const title = document.createElement('h2');
-        title.textContent = this.localizationManager.getText('audio.settings.title);
+        title.textContent = this.localizationManager.getText('audio.settings.title);'
         title.style.cssText = `;
             margin: 0;
             font-size: 24px,
@@ -236,7 +234,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
         `;
         header.appendChild(title);
-        ';
+        ';'
         // 閉じるボタン
         const closeButton = document.createElement('button');
         closeButton.className = 'audio-settings-close';
@@ -252,13 +250,13 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         `;
         closeButton.addEventListener('click', () => this.close());
         closeButton.addEventListener('mouseenter', () => {  ''
-            closeButton.style.color = '#ff0000',' }
+            closeButton.style.color = '#ff0000',' }'
 
             closeButton.style.textShadow = '0 0 10px rgba(255, 0, 0, 0.5)'; }
 
-        }');
+        }');'
         closeButton.addEventListener('mouseleave', () => {  ''
-            closeButton.style.color = '#ffffff',' }
+            closeButton.style.color = '#ffffff',' }'
 
             closeButton.style.textShadow = 'none'; }
         });
@@ -274,7 +272,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * @private
      * @returns {HTMLElement} フッター要素
      */''
-    private createFooter()';
+    private createFooter()';'
         const footer = document.createElement('div');
         footer.className = 'audio-settings-footer';
         footer.style.cssText = `;
@@ -285,13 +283,13 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             padding-top: 15px,
             border-top: 2px solid #333333,
         `;
-        ';
+        ';'
         // リセットボタン
         const resetButton = document.createElement('button');
         resetButton.className = 'audio-settings-reset';
         resetButton.textContent = this.localizationManager.getText('audio.settings.reset';
 
-        resetButton.style.cssText = `';
+        resetButton.style.cssText = `';'
             background-color: rgba(255, 0, 0, 0.2);
             border: 2px solid #ff0000;
             color: #ff0000,
@@ -301,36 +299,36 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             font-size: 16px,
             transition: all 0.3s ease,
         `;
-        resetButton.addEventListener('click', () => this.dataManager.resetSettings().then(() => { this.tabManager.showTab(this.tabManager.getActiveTab(),' }
+        resetButton.addEventListener('click', () => this.dataManager.resetSettings().then(() => { this.tabManager.showTab(this.tabManager.getActiveTab(),' }'
 
-        }');
+        }');'
         resetButton.addEventListener('mouseenter', () => {  ''
-            resetButton.style.backgroundColor = 'rgba(255, 0, 0, 0.3)',' }
+            resetButton.style.backgroundColor = 'rgba(255, 0, 0, 0.3)',' }'
 
             resetButton.style.boxShadow = '0 0 10px rgba(255, 0, 0, 0.5)'; }
 
-        }');
+        }');'
         resetButton.addEventListener('mouseleave', () => {  ''
-            resetButton.style.backgroundColor = 'rgba(255, 0, 0, 0.2)',' }
+            resetButton.style.backgroundColor = 'rgba(255, 0, 0, 0.2)',' }'
 
             resetButton.style.boxShadow = 'none'; }
 
-        }';
+        }';'
         footer.appendChild(resetButton);
-        ';
+        ';'
         // 中央ボタングループ
         const middleGroup = document.createElement('div');
         middleGroup.style.cssText = `;
             display: flex,
     gap: 10px;
         `;
-        ';
+        ';'
         // インポートボタン
         const importButton = document.createElement('button');
         importButton.className = 'audio-settings-import';
         importButton.textContent = '📁 ' + this.localizationManager.getText('audio.settings.import';
 
-        importButton.style.cssText = `';
+        importButton.style.cssText = `';'
             background-color: rgba(0, 255, 0, 0.2);
             border: 2px solid #00ff00;
             color: #00ff00,
@@ -340,29 +338,29 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             font-size: 14px,
             transition: all 0.3s ease,
         `;
-        importButton.addEventListener('click', () => this.dataManager.importSettings().then(() => { this.tabManager.showTab(this.tabManager.getActiveTab(),' }
+        importButton.addEventListener('click', () => this.dataManager.importSettings().then(() => { this.tabManager.showTab(this.tabManager.getActiveTab(),' }'
 
-        }');
+        }');'
         importButton.addEventListener('mouseenter', () => { ,
-            importButton.style.backgroundColor = 'rgba(0, 255, 0, 0.3)',' }
+            importButton.style.backgroundColor = 'rgba(0, 255, 0, 0.3)',' }'
 
             importButton.style.boxShadow = '0 0 10px rgba(0, 255, 0, 0.5)'; }
 
-        }');
+        }');'
         importButton.addEventListener('mouseleave', () => { ,
-            importButton.style.backgroundColor = 'rgba(0, 255, 0, 0.2)',' }
+            importButton.style.backgroundColor = 'rgba(0, 255, 0, 0.2)',' }'
 
             importButton.style.boxShadow = 'none'; }
 
-        }';
+        }';'
         middleGroup.appendChild(importButton);
-        ';
+        ';'
         // エクスポートボタン
         const exportButton = document.createElement('button');
         exportButton.className = 'audio-settings-export';
         exportButton.textContent = '💾 ' + this.localizationManager.getText('audio.settings.export';
 
-        exportButton.style.cssText = `';
+        exportButton.style.cssText = `';'
             background-color: rgba(0, 255, 255, 0.2);
             border: 2px solid #00ffff;
             color: #00ffff,
@@ -374,20 +372,20 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         `;
         exportButton.addEventListener('click', () => this.dataManager.exportSettings());
         exportButton.addEventListener('mouseenter', () => { ,
-            exportButton.style.backgroundColor = 'rgba(0, 255, 255, 0.3)',' }
+            exportButton.style.backgroundColor = 'rgba(0, 255, 255, 0.3)',' }'
 
             exportButton.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.5)'; }
 
-        }');
+        }');'
         exportButton.addEventListener('mouseleave', () => { ,
-            exportButton.style.backgroundColor = 'rgba(0, 255, 255, 0.2)',' }
+            exportButton.style.backgroundColor = 'rgba(0, 255, 255, 0.2)',' }'
 
             exportButton.style.boxShadow = 'none'; }
         });
         middleGroup.appendChild(exportButton);
 
         footer.appendChild(middleGroup);
-        ';
+        ';'
         // 保存状態表示
         const saveStatus = document.createElement('span');
         saveStatus.className = 'audio-settings-save-status';
@@ -426,9 +424,9 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * 保存状態を表示
      * @private
      */''
-    private showSaveStatus()';
+    private showSaveStatus()';'
         const status = document.getElementById('audio-settings-save-status';
-        if(status) {
+        if (status) {
 
             status.style.opacity = '1' }
 
@@ -436,7 +434,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
                 status.style.opacity = '0'; }
 
-            }, 2000');
+            }, 2000');'
         }
     }
     
@@ -447,10 +445,10 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * @param {string} type - タイプ ('success', 'error', 'info')'
      */''
     private showNotification(message: string, type: string = 'info'): void { // 既存の通知があれば削除
-        const existingNotification = document.querySelector('.audio-settings-notification),
-        if(existingNotification) {
+        const existingNotification = document.querySelector('.audio-settings-notification),'
+        if (existingNotification) {
 
-            existingNotification.remove()',
+            existingNotification.remove()','
         const notification = document.createElement('div'),
         notification.className = 'audio-settings-notification',
         notification.textContent = message }
@@ -480,7 +478,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             box-shadow: 0 0 20px ${color.bg},
             animation: slideInFromRight 0.3s ease-out;
         `;
-        ';
+        ';'
         // アニメーション定義
         if(!document.querySelector('#audio-notification-styles)' { ''
             const style = document.createElement('style'),
@@ -500,7 +498,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         
         // 3秒後に自動削除
         setTimeout(() => {  ''
-            if(notification.parentNode) {
+            if (notification.parentNode) {
 
                 notification.style.animation = 'slideOutToRight 0.3s ease-in',
                 setTimeout(() => {
@@ -524,29 +522,29 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
     /**
      * 音響設定UIを開く
      */
-    public open(): void { if (this.isOpen) return,
+    public open(): void { if (this.isOpen) return;
 
         if(!this.container) return,
 
         this.container.style.display = 'block',
-        this.isOpen = true,
-        ',
+        this.isOpen = true;
+        ','
         // 開くアニメーション
         this.container.style.opacity = '0',
         this.container.style.transform = 'translate(-50%, -50%) scale(0.9)',
-        ',
+        ','
 
         requestAnimationFrame(() => { ''
             if(!this.container) return,
             this.container.style.transition = 'all 0.3s ease',
-            this.container.style.opacity = '1',' }
+            this.container.style.opacity = '1',' }'
 
             this.container.style.transform = 'translate(-50%, -50%) scale(1)'; }
 
-        }');
-        ';
+        }');'
+        ';'
         // UIサウンド
-        this.audioManager.playUISound('open', { volume: 0.3 ',
+        this.audioManager.playUISound('open', { volume: 0.3 ','
         // エスケープキーで閉じる
         this.escapeHandler = (e: KeyboardEvent') => { ''
             if(e.key === 'Escape' {'
@@ -554,7 +552,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
                 this.close() }
 
-        document.addEventListener('keydown', this.escapeHandler); }
+        document.addEventListener('keydown'; this.escapeHandler); }
     }
     
     /**
@@ -563,25 +561,25 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
     public close(): void { if (!this.isOpen) return,
 
         if(!this.container) return,
-        ',
+        ','
         // 閉じるアニメーション
         this.container.style.opacity = '0',
         this.container.style.transform = 'translate(-50%, -50%) scale(0.9)',
-        ',
+        ','
 
         setTimeout(() => { ''
-            if(this.container) { }'
+            if (this.container) { }'
 
                 this.container.style.display = 'none'; }
             }
 
             this.isOpen = false;'}, 300');
-        ';
+        ';'
         // UIサウンド
-        this.audioManager.playUISound('close', { volume: 0.3 }';
-        ';
+        this.audioManager.playUISound('close', { volume: 0.3 }';'
+        ';'
         // イベントリスナーを削除
-        if(this.escapeHandler) {
+        if (this.escapeHandler) {
 
             document.removeEventListener('keydown', this.escapeHandler) }
             this.escapeHandler = null; }
@@ -598,7 +596,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * リソースの解放
      */
     public dispose(): void { // サブコンポーネントのクリーンアップ
-        if(this.uiComponentFactory) {
+        if (this.uiComponentFactory) {
     
 }
             this.uiComponentFactory.dispose(); }
@@ -610,7 +608,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         });
         this.configWatchers.clear();
         // イベントリスナーを削除
-        if(this.escapeHandler) {', ' }
+        if (this.escapeHandler) {', ' }
 
             document.removeEventListener('keydown', this.escapeHandler); }
         }
@@ -620,7 +618,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         
         // 音響テストパネルを破棄
         if (this.audioTestPanel) { this.audioTestPanel.dispose() }
-        ';
+        ';'
 
         this.container = null;
         this.eventListeners.clear();

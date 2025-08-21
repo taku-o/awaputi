@@ -4,15 +4,15 @@
  */
 export class StatisticsVisualAccessibilityEnhancer {
     constructor(canvas, uiContainer, chartRenderer) {
-        this.canvas = canvas,
-        this.uiContainer = uiContainer,
-        this.chartRenderer = chartRenderer,
+        this.canvas = canvas;
+        this.uiContainer = uiContainer;
+        this.chartRenderer = chartRenderer;
         
         // 視覚アクセシビリティ設定
         this.config = {
             contrast: {
                 enabled: false,
-    level: 'normal', // normal, high, maximum,
+    level: 'normal', // normal, high, maximum;
                 ratio: {
                     normal: 4.5,
     high: 7.0 }
@@ -20,77 +20,76 @@ export class StatisticsVisualAccessibilityEnhancer {
     },''
                 backgroundColor: '#ffffff',
                 textColor: '#000000',
-                accentColor: '#0066cc';
+                accentColor: '#0066cc',
             },
             fontSize: { enabled: false,
-    scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%,
+    scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%;
                 minSize: 12,
                 maxSize: 48,
                 lineHeight: 1.4,
     letterSpacing: 0  };
             colorSupport: { enabled: true,''
-                colorBlindnessType: 'none', // none, protanopia, deuteranopia, tritanopia, monochrome,
+                colorBlindnessType: 'none', // none, protanopia, deuteranopia, tritanopia, monochrome;
                 patternSupport: true,
                 shapeSupport: true,
                 symbolSupport: true,
-    textureSupport: true  };
+    textureSupport: true,;
             magnification: { enabled: false,
-    level: 1.0, // 1.0-3.0,
+    level: 1.0, // 1.0-3.0;
                 followFocus: true,
-    smoothTransition: true }
-                zoomArea: { x: 0, y: 0, width: 200, height: 200  },
+    smoothTransition: true,
+                zoomArea: { x: 0, y: 0, width: 200, height: 200  };
             focus: { enabled: true,
     thickness: 3,
                 color: '#4A90E2',
-                style: 'solid', // solid, dashed, dotted,
+                style: 'solid', // solid, dashed, dotted;
                 radius: 4,
                 offset: 2,
-    animation: true  };
+    animation: true,;
             motion: { reducedMotion: false,
                 animationDuration: 300,
                 transitionDuration: 200,
                 parallaxDisabled: false,
-    autoplayDisabled: false 
-    };
+    autoplayDisabled: false,;
         // カラーパレット管理
         this.colorPalettes = { normal: {''
-                primary: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6],
-                secondary: ['#34495e', '#95a5a6', '#1abc9c', '#e67e22', '#8e44ad],
+                primary: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6];'
+                secondary: ['#34495e', '#95a5a6', '#1abc9c', '#e67e22', '#8e44ad];'
                 background: '#ffffff',
                 text: '#2c3e50',
                 grid: '#ecf0f1'
             };
             highContrast: { ''
-                primary: ['#000000', '#ffffff', '#ffff00', '#ff00ff', '#00ffff],
-                secondary: ['#808080', '#c0c0c0', '#008000', '#800080', '#008080],
+                primary: ['#000000', '#ffffff', '#ffff00', '#ff00ff', '#00ffff];'
+                secondary: ['#808080', '#c0c0c0', '#008000', '#800080', '#008080];'
                 background: '#ffffff',
                 text: '#000000',
                 grid: '#808080'
             };
             protanopia: { ''
-                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75],
-                secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74],
+                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'
+                secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74];'
                 background: '#ffffff',
                 text: '#2c3e50',
                 grid: '#ecf0f1'
             };
             deuteranopia: { ''
-                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75],
-                secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74],
+                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'
+                secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74];'
                 background: '#ffffff',
                 text: '#2c3e50',
                 grid: '#ecf0f1'
             };
             tritanopia: { ''
-                primary: ['#c41e3a', '#2ecc71', '#e67e22', '#8e44ad', '#1abc9c],
-                secondary: ['#7f8c8d', '#27ae60', '#d68910', '#7d3c98', '#148f77],
+                primary: ['#c41e3a', '#2ecc71', '#e67e22', '#8e44ad', '#1abc9c];'
+                secondary: ['#7f8c8d', '#27ae60', '#d68910', '#7d3c98', '#148f77];'
                 background: '#ffffff',
                 text: '#2c3e50',
                 grid: '#ecf0f1'
             };
             monochrome: { ''
-                primary: ['#000000', '#404040', '#808080', '#c0c0c0', '#ffffff],
-                secondary: ['#202020', '#606060', '#a0a0a0', '#e0e0e0', '#f8f8f8],
+                primary: ['#000000', '#404040', '#808080', '#c0c0c0', '#ffffff];'
+                secondary: ['#202020', '#606060', '#a0a0a0', '#e0e0e0', '#f8f8f8];'
                 background: '#ffffff',
                 text: '#000000',
                 grid: '#d0d0d0'
@@ -107,7 +106,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             diamond: 'diamond',
             circle: 'circle'
             };
-        ';
+        ';'
 
         this.symbols = {;
             circle: '●',
@@ -151,19 +150,19 @@ export class StatisticsVisualAccessibilityEnhancer {
     /**
      * システム設定の検出
      */''
-    detectSystemPreferences()';
-        if(window.matchMedia && window.matchMedia('(prefers-contrast: high)).matches) { this.config.contrast.enabled = true,
+    detectSystemPreferences()';'
+        if(window.matchMedia && window.matchMedia('(prefers-contrast: high)).matches) { this.config.contrast.enabled = true,'
             this.config.contrast.level = 'high' }
-        ';
+        ';'
         // 大きなフォントサイズの検出
-        if(window.matchMedia && window.matchMedia('(prefers-font-size: large)).matches) { this.config.fontSize.enabled = true,
+        if(window.matchMedia && window.matchMedia('(prefers-font-size: large)).matches) { this.config.fontSize.enabled = true,'
             this.config.fontSize.scale = 1.25 }
-        ';
+        ';'
         // アニメーション削減の検出
-        if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)).matches) { this.config.motion.reducedMotion = true,
+        if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)).matches) { this.config.motion.reducedMotion = true,'
             this.config.motion.animationDuration = 0,
             this.config.motion.transitionDuration = 0 }
-        ';
+        ';'
         // 色彩の検出
         if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)).matches) { ''
             this.config.contrast.backgroundColor = '#000000',
@@ -173,7 +172,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     /**
      * 動的スタイル要素の作成'
      */''
-    createDynamicStyleElement()';
+    createDynamicStyleElement()';'
         this.dynamicStyleElement = document.createElement('style');
         this.dynamicStyleElement.id = 'statistics-visual-accessibility';
         document.head.appendChild(this.dynamicStyleElement);
@@ -182,13 +181,13 @@ export class StatisticsVisualAccessibilityEnhancer {
     /**
      * CSS変数の設定'
      */''
-    setupCSSVariables()';
-        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale';
-        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight';
-        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing'px`),
-        this.cssVariables.set('--accessibility-focus-color', this.config.focus.color',
-        this.cssVariables.set('--accessibility-focus-thickness', `${this.config.focus.thickness'px`),
-        this.cssVariables.set('--accessibility-animation-duration', `${this.config.motion.animationDuration'ms`),
+    setupCSSVariables()';'
+        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale';'
+        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight';'
+        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing'px`),'
+        this.cssVariables.set('--accessibility-focus-color', this.config.focus.color','
+        this.cssVariables.set('--accessibility-focus-thickness', `${this.config.focus.thickness'px`),'
+        this.cssVariables.set('--accessibility-animation-duration', `${this.config.motion.animationDuration'ms`),'
         this.cssVariables.set('--accessibility-transition-duration', `${this.config.motion.transitionDuration)ms`};
         
         // CSS変数をDOMに適用
@@ -200,7 +199,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     /**
      * 拡大鏡の作成
      */''
-    createMagnifier()';
+    createMagnifier()';'
         this.magnifierElement = document.createElement('div');
         this.magnifierElement.className = 'accessibility-magnifier';
         this.magnifierElement.style.cssText = `;
@@ -217,7 +216,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         `;
 
-        const magnifierCanvas = document.createElement('canvas);
+        const magnifierCanvas = document.createElement('canvas);'
         magnifierCanvas.width = 200;
         magnifierCanvas.height = 200;
         magnifierCanvas.style.cssText = `;
@@ -233,7 +232,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     /**
      * フォーカス表示の作成'
      */''
-    createFocusIndicator()';
+    createFocusIndicator()';'
         this.focusIndicator = document.createElement('div');
         this.focusIndicator.className = 'accessibility-focus-indicator';
         this.focusIndicator.style.cssText = `;
@@ -266,9 +265,9 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     updateContrastSettings() {
 
-        const palette = this.getCurrentColorPalette()',
-        this.cssVariables.set('--accessibility-bg-color', palette.background',
-        this.cssVariables.set('--accessibility-text-color', palette.text',
+        const palette = this.getCurrentColorPalette()','
+        this.cssVariables.set('--accessibility-bg-color', palette.background','
+        this.cssVariables.set('--accessibility-text-color', palette.text','
         this.cssVariables.set('--accessibility-grid-color', palette.grid),
         
         // CSS変数の更新
@@ -277,19 +276,19 @@ export class StatisticsVisualAccessibilityEnhancer {
 
             root.style.setProperty(key, value); }
         };
-        ';
+        ';'
         // body要素にクラス追加
-        document.body.classList.toggle('high-contrast', this.config.contrast.enabled';
+        document.body.classList.toggle('high-contrast', this.config.contrast.enabled';'
         document.body.classList.toggle('maximum-contrast', this.config.contrast.level === 'maximum';
     }
     
     /**
      * フォント設定の更新  '
      */''
-    updateFontSettings()';
-        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale';
-        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight';
-        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing'px`};
+    updateFontSettings()';'
+        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale';'
+        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight';'
+        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing'px`};'
         
         const root = document.documentElement;
 
@@ -298,8 +297,8 @@ export class StatisticsVisualAccessibilityEnhancer {
             root.style.setProperty(key, value'}';
         };
 
-        document.body.classList.toggle('large-font', this.config.fontSize.enabled';
-        document.body.classList.toggle('extra-large-font', this.config.fontSize.scale >= 1.5';
+        document.body.classList.toggle('large-font', this.config.fontSize.enabled';'
+        document.body.classList.toggle('extra-large-font', this.config.fontSize.scale >= 1.5';'
     }
     
     /**
@@ -316,20 +315,20 @@ export class StatisticsVisualAccessibilityEnhancer {
 
             document.body.classList.add(this.config.colorSupport.colorBlindnessType); }
         }
-        ';
+        ';'
         // パターンサポートの適用
-        document.body.classList.toggle('pattern-support', this.config.colorSupport.patternSupport';
-        document.body.classList.toggle('shape-support', this.config.colorSupport.shapeSupport';
-        document.body.classList.toggle('symbol-support', this.config.colorSupport.symbolSupport';
-        document.body.classList.toggle('texture-support', this.config.colorSupport.textureSupport';
+        document.body.classList.toggle('pattern-support', this.config.colorSupport.patternSupport';'
+        document.body.classList.toggle('shape-support', this.config.colorSupport.shapeSupport';'
+        document.body.classList.toggle('symbol-support', this.config.colorSupport.symbolSupport';'
+        document.body.classList.toggle('texture-support', this.config.colorSupport.textureSupport';'
     }
     
     /**
      * モーション設定の更新'
      */''
-    updateMotionSettings()';
-        this.cssVariables.set('--accessibility-animation-duration', `${ this.config.motion.animationDuration'ms`),
-        this.cssVariables.set('--accessibility-transition-duration', `${this.config.motion.transitionDuration'ms`};
+    updateMotionSettings()';'
+        this.cssVariables.set('--accessibility-animation-duration', `${ this.config.motion.animationDuration'ms`),'
+        this.cssVariables.set('--accessibility-transition-duration', `${this.config.motion.transitionDuration'ms`};'
         
         const root = document.documentElement;
 
@@ -338,18 +337,18 @@ export class StatisticsVisualAccessibilityEnhancer {
             root.style.setProperty(key, value'}';
         };
 
-        document.body.classList.toggle('reduced-motion', this.config.motion.reducedMotion';
-        document.body.classList.toggle('no-parallax', this.config.motion.parallaxDisabled';
-        document.body.classList.toggle('no-autoplay', this.config.motion.autoplayDisabled';
+        document.body.classList.toggle('reduced-motion', this.config.motion.reducedMotion';'
+        document.body.classList.toggle('no-parallax', this.config.motion.parallaxDisabled';'
+        document.body.classList.toggle('no-autoplay', this.config.motion.autoplayDisabled';'
     }
     
     /**
      * 現在のカラーパレットの取得'
      */''
-    getCurrentColorPalette()';
+    getCurrentColorPalette()';'
         if (this.config.contrast.enabled && this.config.contrast.level === 'high') { return this.colorPalettes.highContrast }
 
-        if(this.config.colorSupport.colorBlindnessType !== 'none' { return this.colorPalettes[this.config.colorSupport.colorBlindnessType] || this.colorPalettes.normal }'
+        if (this.config.colorSupport.colorBlindnessType !== 'none' return this.colorPalettes[this.config.colorSupport.colorBlindnessType] || this.colorPalettes.normal }'
         
         return this.colorPalettes.normal;
     }
@@ -515,7 +514,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     bindEvents() {
         // システム設定変更の監視
-        if(window.matchMedia) {''
+        if (window.matchMedia) {''
             window.matchMedia('(prefers-contrast: high)').addEventListener('change', (e) => { 
     }
                 if (e.matches) { }
@@ -528,17 +527,17 @@ export class StatisticsVisualAccessibilityEnhancer {
 
                 this.updateMotionSettings();' }'
 
-            }');
+            }');'
 
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {  ''
-                if(e.matches) {', ' }
+                if (e.matches) {', ' }
 
                     this.config.contrast.backgroundColor = '#000000'; }
 
                     this.config.contrast.textColor = '#ffffff'; }
 
                 } else {
-                    this.config.contrast.backgroundColor = '#ffffff',' }
+                    this.config.contrast.backgroundColor = '#ffffff',' }'
 
                     this.config.contrast.textColor = '#000000'; }
                 }
@@ -550,7 +549,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         if (this.config.magnification.enabled) { this.bindMagnificationEvents() }
         ;
         // フォーカス表示のイベント
-        this.bindFocusEvents()';
+        this.bindFocusEvents()';'
         document.addEventListener('keydown', this.handleKeyDown.bind(this);
     }
     
@@ -559,7 +558,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     bindMagnificationEvents() {
 
-        if(this.canvas) {''
+        if (this.canvas) {''
             this.canvas.addEventListener('mousemove', this.handleMagnifierMove.bind(this)),
             this.canvas.addEventListener('mouseenter', this.showMagnifier.bind(this)),
             this.canvas.addEventListener('mouseleave', this.hideMagnifier.bind(this)) }
@@ -570,7 +569,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     /**
      * フォーカス表示のイベントバインディング'
      */''
-    bindFocusEvents()';
+    bindFocusEvents()';'
         document.addEventListener('focusin', this.handleFocusIn.bind(this));
         document.addEventListener('focusout', this.handleFocusOut.bind(this);
     }
@@ -582,20 +581,20 @@ export class StatisticsVisualAccessibilityEnhancer {
         // アクセシビリティ機能のキーボードショートカット
         if (event.ctrlKey || event.metaKey) {''
             switch(event.key) {''
-                case '+':',
-                case '=':',
+                case '+':','
+                case '=':','
                     event.preventDefault(),
-                    this.increaseFontSize()',
-                case '-':',
+                    this.increaseFontSize()','
+                case '-':','
                     event.preventDefault(),
-                    this.decreaseFontSize()',
-                case '0':',
+                    this.decreaseFontSize()','
+                case '0':','
                     event.preventDefault(),
-                    this.resetFontSize()',
+                    this.resetFontSize()','
                 case 'h':),
                     if (event.shiftKey) {
                         event.preventDefault(),
-                        this.toggleHighContrast()',
+                        this.toggleHighContrast()','
                 case 'm':),
                     if (event.shiftKey) {
                         event.preventDefault() }
@@ -627,7 +626,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     showMagnifier() {
 
-        if(this.config.magnification.enabled && this.magnifierElement) {
+        if (this.config.magnification.enabled && this.magnifierElement) {
     }
 
             this.magnifierElement.style.display = 'block'; }
@@ -638,7 +637,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     hideMagnifier() {
 
-        if(this.magnifierElement) {
+        if (this.magnifierElement) {
     }
 
             this.magnifierElement.style.display = 'none'; }
@@ -652,7 +651,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         const magnifierCanvas = this.magnifierElement.querySelector('canvas',
         if(!magnifierCanvas) return,
 
-        const ctx = magnifierCanvas.getContext('2d),
+        const ctx = magnifierCanvas.getContext('2d),'
         const magnification = this.config.magnification.level,
         
         // 元のCanvasから画像データを取得
@@ -660,12 +659,12 @@ export class StatisticsVisualAccessibilityEnhancer {
         const sourceY = Math.max(0, y - 50),
         const sourceWidth = Math.min(100, this.canvas.width - sourceX),
         const sourceHeight = Math.min(100, this.canvas.height - sourceY),
-        ',
+        ','
 
         try {'
-            const canvasContext = this.canvas.getContext('2d),
+            const canvasContext = this.canvas.getContext('2d),'
             const imageData = canvasContext.getImageData(sourceX, sourceY, sourceWidth, sourceHeight),
-            ',
+            ','
             // 拡大して描画
             ctx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height),
             ctx.imageSmoothingEnabled = false,
@@ -674,16 +673,16 @@ export class StatisticsVisualAccessibilityEnhancer {
             tempCanvas.width = sourceWidth,
 
             tempCanvas.height = sourceHeight,
-            const tempCtx = tempCanvas.getContext('2d),
+            const tempCtx = tempCanvas.getContext('2d),'
             tempCtx.putImageData(imageData, 0, 0),
             
             ctx.drawImage(
                 tempCanvas,
-                0, 0, sourceWidth, sourceHeight)',
+                0, 0, sourceWidth, sourceHeight)','
                 0, 0, magnifierCanvas.width, magnifierCanvas.height'',
-            '),
+            '),'
 
-            ',
+            ','
             // 十字線を描画
             ctx.strokeStyle = '#4A90E2',
             ctx.lineWidth = 2,
@@ -710,7 +709,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     toggleMagnification() {
         this.config.magnification.enabled = !this.config.magnification.enabled,
-        ',
+        ','
 
         if (this.config.magnification.enabled) {''
             this.bindMagnificationEvents() }
@@ -744,7 +743,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     showFocusIndicator(element) {
         if (!this.focusIndicator) return,
 
-        const rect = element.getBoundingClientRect(' }
+        const rect = element.getBoundingClientRect(' }'
 
         this.focusIndicator.style.display = 'block'; }
         this.focusIndicator.style.left = `${rect.left + scrollX - this.config.focus.offset}px`;)
@@ -752,7 +751,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.focusIndicator.style.width = `${rect.width + (this.config.focus.offset * 2})px`;
         this.focusIndicator.style.height = `${rect.height + (this.config.focus.offset * 2})px`;
 
-        if(this.config.focus.animation) {', ' }
+        if (this.config.focus.animation) {', ' }
 
             this.focusIndicator.style.animation = 'focus-pulse 1s ease-in-out infinite alternate'; }
 }
@@ -762,10 +761,10 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     hideFocusIndicator() {
 
-        if(this.focusIndicator) {''
+        if (this.focusIndicator) {''
             this.focusIndicator.style.display = 'none' }
 
-            this.focusIndicator.style.animation = '; }
+            this.focusIndicator.style.animation = '; }'
 }
     
     /**
@@ -773,7 +772,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */''
     enableHighContrast('';
         this.config.contrast.level = 'high';
-        this.updateContrastSettings()';
+        this.updateContrastSettings()';'
         this.announceChange('ハイコントラストモードを有効にしました';
     }
     
@@ -782,8 +781,8 @@ export class StatisticsVisualAccessibilityEnhancer {
      */''
     disableHighContrast('';
         this.config.contrast.level = 'normal';
-        this.updateContrastSettings()';
-        this.announceChange('ハイコントラストモードを無効にしました);
+        this.updateContrastSettings()';'
+        this.announceChange('ハイコントラストモードを無効にしました);'
     }
     
     /**
@@ -904,7 +903,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         }, 1000);
         
         // 音声合成による通知
-        if(window.speechSynthesis) {
+        if (window.speechSynthesis) {
 
             const utterance = new SpeechSynthesisUtterance(message),
             utterance.lang = 'ja-JP',
@@ -960,16 +959,16 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     destroy() {
         // イベントリスナーの削除
-        if(this.canvas) {''
-            this.canvas.removeEventListener('mousemove', this.handleMagnifierMove',
-            this.canvas.removeEventListener('mouseenter', this.showMagnifier',
-            this.canvas.removeEventListener('mouseleave', this.hideMagnifier' }
+        if (this.canvas) {''
+            this.canvas.removeEventListener('mousemove', this.handleMagnifierMove','
+            this.canvas.removeEventListener('mouseenter', this.showMagnifier','
+            this.canvas.removeEventListener('mouseleave', this.hideMagnifier' }'
 
-            this.canvas.removeEventListener('click', this.toggleMagnification'; }
+            this.canvas.removeEventListener('click', this.toggleMagnification'; }'
         }
 
-        document.removeEventListener('focusin', this.handleFocusIn';
-        document.removeEventListener('focusout', this.handleFocusOut';
+        document.removeEventListener('focusin', this.handleFocusIn';'
+        document.removeEventListener('focusout', this.handleFocusOut';'
         document.removeEventListener('keydown', this.handleKeyDown);
         
         // DOM要素の削除

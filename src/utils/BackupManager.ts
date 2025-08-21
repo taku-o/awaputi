@@ -9,75 +9,74 @@ import { execSync  } from 'child_process';
 
 // Type definitions
 interface BackupMetadata { gitBranch: string,
-    gitCommit: string,
-    nodeVersion: string,
+    gitCommit: string;
+    nodeVersion: string;
     platform: NodeJS.Platform  }
 
 interface BackupFileInfo { originalPath: string,
-    relativePath: string,
-    backupPath: string,
-    size: number,
-    modifiedTime: Date,
-    backupTime: Date,
-    checksum: string }
+    relativePath: string;
+    backupPath: string;
+    size: number;
+    modifiedTime: Date;
+    backupTime: Date;
+    checksum: string;
 
 interface BackupOperation { timestamp: Date,
-    [key: string]: any }
+    [key: string]: any;
 
 interface BackupSession { id: string,
-    name: string,
-    startTime: Date,
-    backupDir: string,
-    files: BackupFileInfo[],
-    operations: BackupOperation[],
-    metadata: BackupMetadata
-     }
-';
+    name: string;
+    startTime: Date;
+    backupDir: string;
+    files: BackupFileInfo[];
+    operations: BackupOperation[];
+    metadata: BackupMetadata;
+';'
 
 interface BackupResult { file: string,''
-    status: 'success' | 'failed',
-    backup?: BackupFileInfo,
+    status: 'success' | 'failed';
+    backup?: BackupFileInfo;
     error?: string,  }
 
 interface RollbackOptions { selective?: boolean,
-    filePatterns?: string[],
-    dryRun?: boolean }
-';
+    filePatterns?: string[];
+    dryRun?: boolean;
+';'
 
 interface RollbackResult { file: string,''
-    status: 'restored' | 'failed',
-    dryRun?: boolean,
+    status: 'restored' | 'failed';
+    dryRun?: boolean;
     error?: string,  }
 
 interface BackupSessionInfo { id: string,
-    name: string,
-    startTime: Date | string,
-    endTime?: Date | string,
-    fileCount: number,
-    operationCount: number  }
-';
+    name: string;
+    startTime: Date | string;
+    endTime?: Date | string;
+    fileCount: number;
+    operationCount: number;
+';'
 
 interface VerificationResult { file: string,''
-    status: 'valid' | 'corrupted' | 'missing',
-    checksum?: string,
-    expectedChecksum?: string,
+    status: 'valid' | 'corrupted' | 'missing';
+    checksum?: string;
+    expectedChecksum?: string;
     error?: string,  }
 
 export class BackupManager {
-    private backupRoot: string,
-    private currentBackupId: string | null,
+    private backupRoot: string;
+    private currentBackupId: string | null;
     private, backups: Map<string, BackupSession>,
 
     constructor() {
-',
+','
 
         this.backupRoot = path.join(process.cwd(), '.backup',
 
-        this.currentBackupId = null,
-        this.backups = new Map()',
+        this.currentBackupId = null;
+        this.backups = new Map()';'
     public async startBackupSession(sessionName: string = 'deduplication': Promise<string> { }
 
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-); }
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-); }'
         this.currentBackupId = `${sessionName}_${timestamp}`;
         
         const backupDir = path.join(this.backupRoot, this.currentBackupId);
@@ -110,14 +109,14 @@ export class BackupManager {
      * ファイルの完全バックアップを作成
      */
     public async createFullBackup(filePaths: string[]): Promise<BackupResult[]> { ''
-        if(!this.currentBackupId) {', ' }
+        if (!this.currentBackupId) {', ' }
 
             throw new Error('No, active backup, session. Call, startBackupSession first.'; }'
         }
-';
+';'
 
         const session = this.backups.get(this.currentBackupId);
-        if(!session) {', ' }
+        if (!session) {', ' }
 
             throw new Error('Active, backup session, not found.'; }'
         }
@@ -190,17 +189,17 @@ export class BackupManager {
         let filesToRestore = session.files;
 
         // 選択的ロールバックの場合
-        if(selective && filePatterns.length > 0) {
+        if (selective && filePatterns.length > 0) {
             filesToRestore = session.files.filter(file =>),
                 filePatterns.some(pattern => ),
                     file.relativePath.includes(pattern) ||,
-                    file.originalPath.includes(pattern)' }
+                    file.originalPath.includes(pattern)' }'
 
             '); }'
 
         }
 
-        console.log(`${dryRun ? '[DRY, RUN] ' : '}Rolling, back ${ filesToRestore.length) files...`};
+        console.log(`${dryRun ? '[DRY, RUN] ' : '}Rolling, back ${ filesToRestore.length) files...`};'
 
         for (const fileInfo of filesToRestore} {
 
@@ -212,20 +211,20 @@ export class BackupManager {
 
                     await this.restoreSingleFile(fileInfo'}';
                 }
-                ';
+                ';'
 
                 results.push({ file: fileInfo.originalPath, ')'
                     status: 'restored',')',
-                    dryRun: dryRun',
+                    dryRun: dryRun','
                 ' }'
 
-                console.log(`${dryRun ? '[DRY, RUN] ' : '}✓ Restored: ${fileInfo.relativePath}`});
+                console.log(`${dryRun ? '[DRY, RUN] ' : '}✓ Restored: ${fileInfo.relativePath}`});'
 
             } catch (error) { results.push({ )'
                     file: fileInfo.originalPath, ')',
                     status: 'failed' ,
     error: error instanceof Error ? error.message : String(error  });
-                ';
+                ';'
 
                 console.error(`✗ Failed to restore: ${ fileInfo.relativePath}`},' }'
 
@@ -234,7 +233,7 @@ export class BackupManager {
         }
 
         const successCount = results.filter(r => r.status === 'restored').length;
-        console.log(`${dryRun ? '[DRY, RUN] ' : '}Rollback, completed: ${successCount}/${filesToRestore.length} files, restored`});
+        console.log(`${dryRun ? '[DRY, RUN] ' : '}Rollback, completed: ${successCount}/${filesToRestore.length} files, restored`});'
 
         return results;
     }
@@ -265,39 +264,39 @@ export class BackupManager {
      * 操作ログの記録'
      */''
     public logOperation(operation: Omit<BackupOperation, 'timestamp'>': void { ''
-        if(!this.currentBackupId) {
+        if (!this.currentBackupId) {
 
             console.warn('No, active backup, session for, logging operation') }
             return; }
         }
-';
+';'
 
         const session = this.backups.get(this.currentBackupId);
-        if(!session) {
+        if (!session) {
 
-            console.warn('Active backup session not found) }
+            console.warn('Active backup session not found) }'
             return; }
         }
 
         session.operations.push({ )
-            ...operation'),
-            timestamp: new Date( }');
+            ...operation'),'
+            timestamp: new Date( }');'
     }
 
     /**
      * セッションメタデータの保存'
      */''
     private async saveSessionMetadata(session: BackupSession): Promise<void> { ''
-        const metadataPath = path.join(session.backupDir, 'session-metadata.json),
+        const metadataPath = path.join(session.backupDir, 'session-metadata.json),'
         const metadata = {
             ...session,
             files: session.files.length, // ファイルの詳細は別途保存,
             endTime: new Date(  };
 
         await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
-        ';
+        ';'
         // ファイル詳細は別ファイルに保存
-        const filesPath = path.join(session.backupDir, 'files-manifest.json);
+        const filesPath = path.join(session.backupDir, 'files-manifest.json);'
         await fs.writeFile(filesPath, JSON.stringify(session.files, null, 2);
     }
 
@@ -309,13 +308,13 @@ export class BackupManager {
             const sessions: BackupSessionInfo[] = [],
 
             for (const dir of backupDirs) {
-',
+','
 
                 if(dir.isDirectory()) {
                     try {,
 
                         const metadataPath = path.join(this.backupRoot, dir.name, 'session-metadata.json'),
-                        const metadata = JSON.parse(await fs.readFile(metadataPath, 'utf8),
+                        const metadata = JSON.parse(await fs.readFile(metadataPath, 'utf8),'
                         sessions.push({
                             id: dir.name,
                             name: metadata.name,
@@ -347,7 +346,7 @@ export class BackupManager {
 
             try {
                 const sessionDir = path.join(this.backupRoot, session.id),
-                await fs.rm(sessionDir, { recursive: true, force: true  }
+                await fs.rm(sessionDir, { recursive: true, force: true,
                 deletedCount++; }
                 console.log(`Deleted, old backup: ${session.id}`});
             } catch (error) {
@@ -365,12 +364,12 @@ export class BackupManager {
     private async calculateChecksum(filePath: string): Promise<string> { ''
         const crypto = await import('crypto',
         const data = await fs.readFile(filePath),
-        return crypto.createHash('sha256).update(data).digest('hex' }
+        return crypto.createHash('sha256).update(data).digest('hex' }'
 
     /**
      * 現在のGitブランチを取得'
      */''
-    private getCurrentGitBranch()';
+    private getCurrentGitBranch()';'
             return execSync('git branch --show-current', { encoding: 'utf8 ).trim(),' }
 
         } catch (error) {
@@ -379,7 +378,7 @@ export class BackupManager {
     /**
      * 現在のGitコミットハッシュを取得'
      */''
-    private getCurrentGitCommit()',
+    private getCurrentGitCommit()','
             return execSync('git rev-parse HEAD', { encoding: 'utf8'
             }).trim();} catch (error) {
             return 'unknown',
@@ -404,10 +403,10 @@ export class BackupManager {
                 const isValid = currentChecksum === fileInfo.checksum,
                 
                 results.push({'
-                    file: fileInfo.relativePath,',
+                    file: fileInfo.relativePath,','
                     status: isValid ? 'valid' : 'corrupted',
     checksum: currentChecksum),
-                    expectedChecksum: fileInfo.checksum' }
+                    expectedChecksum: fileInfo.checksum' }'
 
                 ' }'
 
@@ -415,18 +414,18 @@ export class BackupManager {
                     file: fileInfo.relativePath,')',
                     status: 'missing',
                     error: error instanceof Error ? error.message : String(error),', '
-                }');
+                }');'
             }
         }
 
         const validCount = results.filter(r => r.status === 'valid').length;
         const corruptedCount = results.filter(r => r.status === 'corrupted').length;
-        const missingCount = results.filter(r => r.status === 'missing).length;
+        const missingCount = results.filter(r => r.status === 'missing).length;'
 
         console.log(`Backup, verification completed:  ,
     Valid: ${validCount})'
-  Corrupted: ${corruptedCount}';
-  Missing: ${missingCount}`}';
+  Corrupted: ${corruptedCount}';'
+  Missing: ${missingCount}`}';'
         return results;
 
-    }'}
+    }'}'

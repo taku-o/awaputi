@@ -53,11 +53,11 @@ describe('Analytics System Integration Performance Tests', () => {
             await analyticsManager.destroy() }
         if (dashboard) {
             dashboard.destroy() }
-    }');
-    describe('システム初期化性能', (') => {
+    }');'
+    describe('システム初期化性能', (') => {'
         test('完全初期化時間', async () => {
             const startTime = performance.now(),
-            await analyticsManager.initialize('),
+            await analyticsManager.initialize('),'
             // ダッシュボードとアナライザーも初期化
             dashboard = new AnalyticsDashboard(document.createElement('div'),
             trendAnalyzer = new TrendAnalyzer(analyticsManager.storageManager),
@@ -67,7 +67,7 @@ describe('Analytics System Integration Performance Tests', () => {
             
             expect(initializationTime.toBeLessThan(INTEGRATION_THRESHOLDS.INITIALIZATION_TIME),
             expect(analyticsManager.isInitialized).toBe(true),
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(true) }');
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(true) }');'
         test('コンポーネント間接続確認', async () => {
             await analyticsManager.initialize(),
             // すべてのコンポーネントが正しく初期化されているか確認
@@ -77,12 +77,12 @@ describe('Analytics System Integration Performance Tests', () => {
             expect(analyticsManager.performanceOptimizer).toBeTruthy(),
             // コンポーネント間の依存関係確認
             expect(analyticsManager.dataCollector.privacyManager).toBe(analyticsManager.privacyManager),
-            expect(analyticsManager.dataCollector.storageManager).toBe(analyticsManager.storageManager) }');
+            expect(analyticsManager.dataCollector.storageManager).toBe(analyticsManager.storageManager) }');'
     }
-    describe('エンドツーエンドデータフロー性能', (') => {
+    describe('エンドツーエンドデータフロー性能', (') => {'
         test('データ収集→保存→取得フロー', async () => {
             await analyticsManager.initialize(),
-            const startTime = performance.now('),
+            const startTime = performance.now('),'
             // プレイヤー行動データの生成と送信
             const sessionData = {
                 sessionId: 'perf_test_session',
@@ -94,7 +94,7 @@ describe('Analytics System Integration Performance Tests', () => {
             
             analyticsManager.startSession(sessionData);
             // 複数のプレイヤー行動を記録
-            for (let i = 0; i < 50; i++') {
+            for (let i = 0; i < 50; i++') {'
                 analyticsManager.recordPlayerInteractionPattern({
                     bubbleType: 'normal',
                     action: 'popped'),
@@ -111,7 +111,7 @@ describe('Analytics System Integration Performance Tests', () => {
                         fps: 60 - Math.random() * 10,
                         memoryUsage: 50 * 1024 * 1024 + Math.random() * 10 * 1024 * 1024,
                         loadTime: Math.random() * 100
-                    }');
+                    }');'
                 }
             }
             
@@ -134,7 +134,7 @@ describe('Analytics System Integration Performance Tests', () => {
             
             expect(dataFlowTime.toBeLessThan(INTEGRATION_THRESHOLDS.DATA_FLOW_TIME),
             expect(stats.isInitialized).toBe(true),
-            expect(stats.dataCollector).toBeTruthy() }');
+            expect(stats.dataCollector).toBeTruthy() }');'
         test('リアルタイム分析パイプライン', async () => {
             await analyticsManager.initialize(),
             const startTime = performance.now(),
@@ -160,13 +160,13 @@ describe('Analytics System Integration Performance Tests', () => {
             // リアルタイム統計の確認
             const optimizationStats = analyticsManager.getPerformanceOptimizationStats();
             expect(optimizationStats.batchesProcessed).toBeGreaterThan(0);
-        }');
+        }');'
     }
-    describe('ダッシュボード描画性能', (') => {
+    describe('ダッシュボード描画性能', (') => {'
         test('基本統計ダッシュボード描画', async () => {
             await analyticsManager.initialize(),
             // テストデータの準備
-            await generateTestData(analyticsManager, 100'),
+            await generateTestData(analyticsManager, 100'),'
             // ダッシュボードの初期化
             const container = document.createElement('div'),
             dashboard = new AnalyticsDashboard(container),
@@ -176,13 +176,13 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now(),
             const renderTime = endTime - startTime,
             
-            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME)'),
+            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME)'),'
             // 描画されたコンテンツの確認
             const statsElements = container.querySelectorAll('[data-stat]'),
-            expect(statsElements.length).toBeGreaterThan(0) }');
+            expect(statsElements.length).toBeGreaterThan(0) }');'
         test('複雑な可視化の描画性能', async () => {
             await analyticsManager.initialize(),
-            await generateTestData(analyticsManager, 500'),
+            await generateTestData(analyticsManager, 500'),'
             const container = document.createElement('div'),
             dashboard = new AnalyticsDashboard(container),
             const startTime = performance.now(),
@@ -195,14 +195,14 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now(),
             const renderTime = endTime - startTime,
             
-            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME * 2) }');
+            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME * 2) }');'
     }
-    describe('分析エンジン性能', (') => {
+    describe('分析エンジン性能', (') => {'
         test('トレンド分析性能', async () => {
             await analyticsManager.initialize(),
             await generateTestData(analyticsManager, 1000),
             trendAnalyzer = new TrendAnalyzer(analyticsManager.storageManager),
-            const startTime = performance.now('),
+            const startTime = performance.now('),'
             // 週次トレンド分析
             const weeklyTrend = await trendAnalyzer.analyzeWeeklyTrend('score', Date.now() - 7 * 24 * 60 * 60 * 1000),
             // 異常パターン検出
@@ -212,7 +212,7 @@ describe('Analytics System Integration Performance Tests', () => {
             
             expect(analysisTime.toBeLessThan(INTEGRATION_THRESHOLDS.TREND_ANALYSIS_TIME),
             expect(weeklyTrend.toBeTruthy(),
-            expect(anomalies.length).toBeGreaterThan(0) }');
+            expect(anomalies.length).toBeGreaterThan(0) }');'
         test('比較分析性能', async () => {
             await analyticsManager.initialize(),
             await generateTestData(analyticsManager, 800),
@@ -220,12 +220,12 @@ describe('Analytics System Integration Performance Tests', () => {
             const startTime = performance.now(),
             // 過去データとの比較
             const comparison = await comparisonEngine.compareWithPast()
-                { score: 5000, accuracy: 0.85, playTime: 300 ',
+                { score: 5000, accuracy: 0.85, playTime: 300 ','
                 'week'
             ),
             // ベンチマーク比較
             const benchmarkComparison = await comparisonEngine.compareWithBenchmark()
-                { score: 5000, accuracy: 0.85 ',
+                { score: 5000, accuracy: 0.85 ','
                 'global'
             ),
             const endTime = performance.now(),
@@ -233,9 +233,9 @@ describe('Analytics System Integration Performance Tests', () => {
             
             expect(comparisonTime.toBeLessThan(INTEGRATION_THRESHOLDS.COMPARISON_TIME),
             expect(comparison.toBeTruthy(),
-            expect(benchmarkComparison.toBeTruthy() }');
+            expect(benchmarkComparison.toBeTruthy() }');'
     }
-    describe('同時処理性能', (') => {
+    describe('同時処理性能', (') => {'
         test('複数セッション同時処理', async () => {
             await analyticsManager.initialize(),
             const startTime = performance.now(),
@@ -255,15 +255,15 @@ describe('Analytics System Integration Performance Tests', () => {
             // すべてのセッションが正常に処理されたか確認
             const stats = analyticsManager.getAnalyticsStats();
             expect(stats.dataCollector).toBeTruthy();
-        }');
+        }');'
     }
-    describe('メモリ効率性', (') => {
+    describe('メモリ効率性', (') => {'
         test('システム全体メモリ使用量', async () => {
             const initialMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
             
             await analyticsManager.initialize(),
             // 大量のデータ処理
-            await generateTestData(analyticsManager, 2000'),
+            await generateTestData(analyticsManager, 2000'),'
             // ダッシュボードとアナライザーの初期化
             const container = document.createElement('div'),
             dashboard = new AnalyticsDashboard(container),
@@ -273,7 +273,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const peakMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
             const memoryUsage = peakMemory - initialMemory,
             
-            expect(memoryUsage.toBeLessThan(INTEGRATION_THRESHOLDS.SYSTEM_MEMORY_LIMIT) }');
+            expect(memoryUsage.toBeLessThan(INTEGRATION_THRESHOLDS.SYSTEM_MEMORY_LIMIT) }');'
         test('長時間実行メモリリーク検出', async () => {
             await analyticsManager.initialize(),
             const initialMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
@@ -293,9 +293,9 @@ describe('Analytics System Integration Performance Tests', () => {
             const memoryLeak = finalMemory - initialMemory;
             
             expect(memoryLeak.toBeLessThan(INTEGRATION_THRESHOLDS.MEMORY_LEAK_THRESHOLD);
-        }');
+        }');'
     }
-    describe('エラー耐性と回復性能', (') => {
+    describe('エラー耐性と回復性能', (') => {'
         test('部分的障害からの回復', async () => {
             await analyticsManager.initialize(),
             const startTime = performance.now(),
@@ -322,7 +322,7 @@ describe('Analytics System Integration Performance Tests', () => {
 });
 // ヘルパー関数: テストデータ生成
 async function generateTestData(analyticsManager, count) {
-    const sessionId = `test_session_${Date.now('})}`;
+    const sessionId = `test_session_${Date.now('})}`;'
     
     analyticsManager.startSession({
         sessionId: sessionId,
@@ -331,9 +331,9 @@ async function generateTestData(analyticsManager, count) {
        , startTime: Date.now(
         previousBestScore: Math.floor(Math.random() * 10000 });
     for (let i = 0; i < count; i++) {
-        analyticsManager.recordPlayerInteractionPattern({'),
+        analyticsManager.recordPlayerInteractionPattern({'),'
             bubbleType: ['normal', 'stone', 'rainbow', 'pink'][Math.floor(Math.random() * 4)],
-            action: Math.random(') > 0.2 ? 'popped' : 'missed',
+            action: Math.random(') > 0.2 ? 'popped' : 'missed','
             reactionTime: Math.random() * 2000,
             comboCount: Math.floor(Math.random() * 20,
             currentScore: i * 100 + Math.floor(Math.random() * 50,
@@ -345,7 +345,7 @@ async function generateTestData(analyticsManager, count) {
             analyticsManager.trackPerformanceMetrics({),
                 fps: 50 + Math.random() * 20,
                 memoryUsage: 50 * 1024 * 1024 + Math.random() * 20 * 1024 * 1024,
-        timestamp: Date.now( }');
+        timestamp: Date.now( }');'
         }
     }
     
@@ -367,14 +367,14 @@ async function generateTestData(analyticsManager, count) {
 async function simulateGameSession(analyticsManager, sessionId, interactionCount) {
     analyticsManager.startSession({
         sessionId: sessionId),
-       , stageId: `stage_${Math.floor(Math.random() * 5'})}`;
+       , stageId: `stage_${Math.floor(Math.random() * 5'})}`;'
         difficulty: ['easy', 'normal', 'hard'][Math.floor(Math.random() * 3)],
         startTime: Date.now(
         previousBestScore: Math.floor(Math.random() * 10000 });
     for (let i = 0; i < interactionCount; i++) {
-        analyticsManager.recordPlayerInteractionPattern({'),
+        analyticsManager.recordPlayerInteractionPattern({'),'
             bubbleType: ['normal', 'stone', 'rainbow', 'pink', 'clock'][Math.floor(Math.random() * 5)],
-            action: Math.random(') > 0.3 ? 'popped' : 'missed',
+            action: Math.random(') > 0.3 ? 'popped' : 'missed','
             reactionTime: Math.random() * 1500 + 200,
             comboCount: Math.floor(Math.random() * 15,
             currentScore: i * 150 + Math.floor(Math.random() * 100,
@@ -387,7 +387,7 @@ async function simulateGameSession(analyticsManager, sessionId, interactionCount
     }
     
     analyticsManager.updatePlayerBehaviorAnalysis({),
-        exitReason: Math.random(') > 0.8 ? 'quit' : 'completed',
+        exitReason: Math.random(') > 0.8 ? 'quit' : 'completed','
         finalScore: interactionCount * 150,
         completed: Math.random() > 0.2,
         timeRemaining: Math.max(0, 300000 - interactionCount * 2000),
@@ -396,5 +396,5 @@ async function simulateGameSession(analyticsManager, sessionId, interactionCount
         maxCombo: Math.floor(interactionCount / 5,
         activeItems: []
     });
-    await new Promise(resolve => setTimeout(resolve, 50)');
+    await new Promise(resolve => setTimeout(resolve, 50)');'
 }

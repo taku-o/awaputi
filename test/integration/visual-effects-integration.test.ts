@@ -5,14 +5,14 @@
 import { jest  } from '@jest/globals';
 import { JSDOM  } from 'jsdom';
 describe('Visual Effects Integration Tests', () => {  let dom: any,
-    let canvas: any,',
-    let gameEngine: any,',
-    beforeAll((') => {
+    let canvas: any,','
+    let gameEngine: any,','
+    beforeAll((') => {'
         // JSDOM環境のセットアップ
         dom = new JSDOM(`,
             <!DOCTYPE html>,
-            <html>',
-                <body>',
+            <html>','
+                <body>','
                     <canvas id="gameCanvas" width="800" height="600"></canvas>,
                 </body>,
             </html>,
@@ -48,25 +48,25 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             putImageData: jest.fn(
             setTransform: jest.fn(
             transform: jest.fn(
-            translate: jest.fn(),",
+            translate: jest.fn(),","
             rotate: jest.fn(),"",
             scale: jest.fn("),",
             globalAlpha: 1,"",
-            globalCompositeOperation: 'source-over',',
-            fillStyle: '#000',',
-            strokeStyle: '#000',',
-            lineWidth: 1,',
-            font: '10px sans-serif',',
-            textAlign: 'start',',
+            globalCompositeOperation: 'source-over',','
+            fillStyle: '#000',','
+            strokeStyle: '#000',','
+            lineWidth: 1,','
+            font: '10px sans-serif',','
+            textAlign: 'start',','
             textBaseline: 'alphabetic',
-            canvas: null }'
+            canvas: null,'
     });
-        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');
+        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');'
         canvas = document.getElementById('gameCanvas');
         mockContext.canvas = canvas;
     );'
     beforeEach(async () => {  // 各テスト前にGameEngineを初期化''
-        const { GameEngine ') = await import('../../src/core/GameEngine.js'),
+        const { GameEngine ') = await import('../../src/core/GameEngine.js'),'
         gameEngine = new GameEngine(canvas: any),
         // モックの初期化 }
         jest.clearAllMocks(); }
@@ -81,12 +81,12 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             // プロファイリング開始''
             gameEngine.effectProfiler.startProfiling(')',
             gameEngine.sceneManager.switchToScene('mainMenu'),
-            await simulateFrames(30'), // 0.5秒分のフレーム
-            ',
+            await simulateFrames(30'), // 0.5秒分のフレーム'
+            ','
             // ゲームシーンに遷移''
             gameEngine.sceneManager.switchToScene('game'),
             await simulateFrames(60), // 1秒分のフレーム
-            ',
+            ','
             // バブルポップエフェクトのテスト''
             for (let i = 0, i < 10, i++') { }'
                 simulateBubblePop('normal', 100 + i * 50, 100); }
@@ -94,9 +94,9 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             );
             // コンボエフェクトのテスト;
             for (let combo = 2; combo <= 15; combo++) { simulateComboEffect(combo) }'
-                await simulateFrames(10}')', ');
-            ';
-            // 特殊バブルエフェクトテスト';
+                await simulateFrames(10}')', ');'
+            ';'
+            // 特殊バブルエフェクトテスト';'
             const specialBubbles = ['rainbow', 'electric', 'spiky', 'diamond', 'boss'];
             for (const bubbleType of specialBubbles) { simulateBubblePop(bubbleType, 200, 200) }
                 await simulateFrames(15})
@@ -131,11 +131,11 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             const results: Record<string, any> = {};
             
             for(const quality of qualityLevels) {
-            ',
+            ','
                 gameEngine.effectQualityController.setQualityLevel(quality),
                 gameEngine.effectProfiler.startProfiling(')',
                 simulateBubblePop('normal', 400, 300),
-                simulateComboEffect(5'),
+                simulateComboEffect(5'),'
                 simulateBubblePop('rainbow', 450, 350) }
                 await simulateFrames(60); }
                 const result = gameEngine.effectProfiler.stopProfiling(};)
@@ -158,7 +158,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             );
             ;
             await simulateFrames(180); // 3秒分
-            ';
+            ';'
             // 自動品質調整が動作することを確認''
             const finalQuality = gameEngine.effectQualityController.getCurrentQualityLevel(')';
             const qualityOrder = ['low', 'medium', 'high', 'ultra'];)
@@ -189,11 +189,11 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             const results = gameEngine.effectProfiler.stopProfiling(),
             // 動きが減った状態でのパフォーマンス向上を確認 }'
             expect(results.analysis.frame.averageFPS).toBeGreaterThan(50);' }'
-        }');
+        }');'
         test('should provide alternative feedback for visual effects', async (') => {  // 代替フィードバック設定を有効化' }'
             gameEngine.settingsManager.setSetting('accessibility.alternativeFeedback', true); }
             gameEngine.start(};)
-            )';
+            )';'
             // バイブレーション対応デバイスのモック)
             (global: any).navigator = { vibrate: jest.fn(')'
             simulateBubblePop('boss', 400, 300),
@@ -215,7 +215,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             // モバイル環境でのパフォーマンス要件
             expect(results.analysis.frame.averageFPS).toBeGreaterThan(25) }'
             expect(results.analysis.memory.averageMemory).toBeLessThan(200);' }'
-        }');
+        }');'
         test('should handle touch-optimized effects', async () => {  mockMobileDevice(),
             gameEngine.start(),
             // タッチエフェクトのシミュレーション
@@ -256,7 +256,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
     function simulateFrames(count: any) { return new Promise(resolve => { 
             let frameCount = 0)
             const animate = () => {
-                if(frameCount < count) {
+                if (frameCount < count) {
                     gameEngine.update(16.67), // 60fps
                 }
                     gameEngine.render(); }
@@ -273,7 +273,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             gameEngine.enhancedParticleManager.createBubbleDestructionEffect(x, y, bubbleType};)
         }
         );
-        if(gameEngine.audioManager) {
+        if (gameEngine.audioManager) {
     
 }
             gameEngine.audioManager.playSound(`bubble_${bubbleType)`});
@@ -283,11 +283,11 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             gameEngine.enhancedParticleManager.createComboEffect(comboCount};)
         }
         );
-        if(gameEngine.enhancedEffectManager) {', ' }'
+        if (gameEngine.enhancedEffectManager) {', ' }'
             if (comboCount >= 6') { }'
-                gameEngine.enhancedEffectManager.screenFlash(500, 'rgba(255, 215, 0, 0.3')'};
+                gameEngine.enhancedEffectManager.screenFlash(500, 'rgba(255, 215, 0, 0.3')'};'
             }
-            if(comboCount >= 11) {
+            if (comboCount >= 11) {
     
 }
                 gameEngine.enhancedEffectManager.screenShake(300, 5};)
@@ -298,10 +298,10 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         })'
     });
     function mockMobileDevice(')';
-        Object.defineProperty(global.navigator, 'userAgent', { '),
+        Object.defineProperty(global.navigator, 'userAgent', { '),'
             value: 'Mozilla/5.0 (iPhone, CPU iPhone OS 14_0 like Mac OS X') AppleWebKit/605.1.15','
             configurable: true' }'
-        }');
+        }');'
         Object.defineProperty(global.window, 'innerWidth', { value: 375, configurable: true )'),''
         Object.defineProperty(global.window, 'innerHeight', { value: 812, configurable: true ) }
         global.window.DeviceMotionEvent = class DeviceMotionEvent extends Event {};

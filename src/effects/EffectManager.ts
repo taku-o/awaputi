@@ -3,101 +3,98 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Effect Manager types
 export interface ColorRGBA { r: number,
-    g: number,
-    b: number,
-    a: number  }
+    g: number;
+    b: number;
+    a: number;
 export interface CurrentTransform {
-    shake: { ,x: number,, y: number },
-    zoom: number;
-    rotation: number;
-    flash: ColorRGBA;
-    tint: ColorRGBA;
-    blur: number;
-    contrast: number;
+    shake: { ,x: number,, y: number,;
+    zoom: number,
+    rotation: number,
+    flash: ColorRGBA,
+    tint: ColorRGBA,
+    blur: number,
+    contrast: number,
     brightness: number,
-    saturation: number;
+    saturation: number,
 }
 export interface Transforms { shakeX: number[],
-    shakeY: number[],
-    zoom: number[],
-    rotation: number[],
-    flash: ColorRGBA[],
-    tint: ColorRGBA[],
-    blur: number[],
-    contrast: number[],
-    brightness: number[],
-    saturation: number[]  }
+    shakeY: number[];
+    zoom: number[];
+    rotation: number[];
+    flash: ColorRGBA[];
+    tint: ColorRGBA[];
+    blur: number[];
+    contrast: number[];
+    brightness: number[];
+    saturation: number[];
 export interface EffectParameters { shakeIntensity: number,
-    flashDuration: number,
-    zoomSensitivity: number,
-    enabled: boolean,
+    flashDuration: number;
+    zoomSensitivity: number;
+    enabled: boolean;
     shake: { duratio,n: number,
-    damping: number  }
+    damping: number,
  };
-    flash: { intensity: number  
-    };
+    flash: { intensity: number,;
     zoom: { duration: number,
-    easing: string  
-    };
-    tint: { intensity: number }
-        duration: number }
+    easing: string,;
+    tint: { intensity: number,
+        duration: number,
 
 export interface BaseEffect { id: number,
-    type: EffectType,
-    duration: number,
-    elapsed: number  }
-';
+    type: EffectType;
+    duration: number;
+    elapsed: number;
+';'
 
 export interface ShakeEffect extends BaseEffect {,
-    type: 'shake',
-    intensity: number,
-    shakeType: ShakeType,
-    frequency: number,
-    damping: number }
-';
+    type: 'shake';
+    intensity: number;
+    shakeType: ShakeType;
+    frequency: number;
+    damping: number;
+';'
 
 export interface FlashEffect extends BaseEffect {,
-    type: 'flash',
-    color: ColorRGBA,
-    intensity: number,
-    fadeType: FadeType
-    }
-';
+    type: 'flash';
+    color: ColorRGBA;
+    intensity: number;
+    fadeType: FadeType;
+';'
 
 export interface TintEffect extends BaseEffect {,
-    type: 'tint',
-    color: ColorRGBA,
-    intensity: number,
-    easing: string }
-';
+    type: 'tint';
+    color: ColorRGBA;
+    intensity: number;
+    easing: string;
+';'
 
 export interface ZoomEffect extends BaseEffect {,
-    type: 'zoom',
-    targetZoom: number,
-    startZoom: number,
-    easing: string }
-';
+    type: 'zoom';
+    targetZoom: number;
+    startZoom: number;
+    easing: string;
+';'
 
 export interface RotationEffect extends BaseEffect {,
-    type: 'rotation',
-    targetRotation: number,
-    startRotation: number,
-    easing: string }
-';
+    type: 'rotation';
+    targetRotation: number;
+    startRotation: number;
+    easing: string;
+';'
 
 export interface BlurEffect extends BaseEffect {,
-    type: 'blur',
-    targetBlur: number,
-    startBlur: number,
-    easing: string }
-';
+    type: 'blur';
+    targetBlur: number;
+    startBlur: number;
+    easing: string;
+';'
 
 export interface FilterEffect extends BaseEffect {,
-    type: 'filter',
-    filterType: FilterType,
-    targetValue: number,
-    startValue: number,
-    easing: string }
+    type: 'filter';
+    filterType: FilterType;
+    targetValue: number;
+    startValue: number;
+    easing: string;
 export type Effect = ShakeEffect | FlashEffect | TintEffect | ZoomEffect | RotationEffect | BlurEffect | FilterEffect;
 
 export type EffectType = 'shake' | 'flash' | 'tint' | 'zoom' | 'rotation' | 'blur' | 'filter';
@@ -110,35 +107,35 @@ export type FilterType = 'contrast' | 'brightness' | 'saturation';
  * 画面揺れ、フラッシュ、ズーム、色調変更などの全画面効果を管理
  */
 export class EffectManager {
-    private canvas: HTMLCanvasElement,
-    private effects: Effect[],
-    private effectId: number,
-    private effectsConfig: any,
+    private canvas: HTMLCanvasElement;
+    private effects: Effect[];
+    private effectId: number;
+    private effectsConfig: any;
     private, configWatchers: Map<string, any>,
-    private currentTransform: CurrentTransform,
+    private currentTransform: CurrentTransform;
     private, transforms: Transforms,
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas,
-        this.effects = [],
-        this.effectId = 0,
+        this.canvas = canvas;
+        this.effects = [];
+        this.effectId = 0;
         
         // 設定システムとの連携
-        this.effectsConfig = getEffectsConfig(),
-        this.configWatchers = new Map(),
+        this.effectsConfig = getEffectsConfig();
+        this.configWatchers = new Map();
         
         // 現在の変換状態
 
      }
         this.currentTransform = { }
-            shake: { x: 0, y: 0  },
+            shake: { x: 0, y: 0  };
             zoom: 1;
-            rotation: 0,
-    flash: { r: 0, g: 0, b: 0, a: 0  },
-            tint: { r: 0, g: 0, b: 0, a: 0  },
+            rotation: 0;
+    flash: { r: 0, g: 0, b: 0, a: 0  };
+            tint: { r: 0, g: 0, b: 0, a: 0  };
             blur: 0;
             contrast: 1;
-            brightness: 1,
+            brightness: 1;
     saturation: 1;
         },
         
@@ -162,35 +159,35 @@ export class EffectManager {
      * 設定変更の監視を設定
      * @private
      */''
-    private _setupConfigWatchers()';
+    private _setupConfigWatchers()';'
             const shakeWatcher = configManager.watch('effects', 'screen.shakeIntensity', (newValue: number) => {  }
 ;
                 console.log(`[EffectManager] 画面揺れ強度が変更されました: ${newValue}`);
-            }');
-            this.configWatchers.set('shakeIntensity', shakeWatcher';
-            ';
+            }');'
+            this.configWatchers.set('shakeIntensity', shakeWatcher';'
+            ';'
             // フラッシュ時間の監視
             const flashWatcher = configManager.watch('effects', 'screen.flashDuration', (newValue: number) => {  }
 ;
                 console.log(`[EffectManager] フラッシュ時間が変更されました: ${newValue}ms`);
-            }');
-            this.configWatchers.set('flashDuration', flashWatcher';
-            ';
+            }');'
+            this.configWatchers.set('flashDuration', flashWatcher';'
+            ';'
             // ズーム感度の監視
             const zoomWatcher = configManager.watch('effects', 'screen.zoomSensitivity', (newValue: number) => {  }
 ;
                 console.log(`[EffectManager] ズーム感度が変更されました: ${newValue}`);
-            }');
-            this.configWatchers.set('zoomSensitivity', zoomWatcher';
-            ';
+            }');'
+            this.configWatchers.set('zoomSensitivity', zoomWatcher';'
+            ';'
             // 画面効果有効状態の監視
             const enabledWatcher = configManager.watch('effects', 'screen.enabled', (newValue: boolean) => {  };
                 console.log(`[EffectManager] 画面効果有効状態が変更されました: ${newValue}`);
                 if (!newValue) { this.clearEffects() }
 
                 }'}');
-            this.configWatchers.set('enabled', enabledWatcher';
-            ';
+            this.configWatchers.set('enabled', enabledWatcher';'
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager._setupConfigWatchers'
@@ -202,7 +199,7 @@ export class EffectManager {
      */
     private _getEffectParameters(): EffectParameters | null { try {
             // effectsConfigが無効な場合はnullを返す
-            if(!this.effectsConfig) {
+            if (!this.effectsConfig) {
     
 }
                 return null;
@@ -217,9 +214,9 @@ export class EffectManager {
                 tint: screenConfig.tint ;
     } } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager._getEffectParameters',' }
+                context: 'EffectManager._getEffectParameters',' }'
 
-            }');
+            }');'
             // エラーの場合もnullを返す
             return null;
     /**
@@ -229,17 +226,17 @@ export class EffectManager {
             const params = this._getEffectParameters(),
             
             // 設定が取得できない場合は何もしない
-            if(!params) {
+            if (!params) {
     
 }
                 return -1;
             ;
             // 画面効果が無効な場合は何もしない
-            if(!params.enabled) { return -1 }
+            if (!params.enabled) { return -1 }
             // 設定値を適用
             const adjustedIntensity = intensity * params.shakeIntensity;
             const configDuration = duration || params.shake.duration;
-            ';
+            ';'
 
             const effect: ShakeEffect = { id: this.effectId++,''
                 type: 'shake',
@@ -254,9 +251,9 @@ export class EffectManager {
             return effect.id;
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager.addScreenShake',' }
+                context: 'EffectManager.addScreenShake',' }'
 
-            }');
+            }');'
             return -1;
     /**
      * フラッシュ効果を追加'
@@ -265,34 +262,33 @@ export class EffectManager {
             const params = this._getEffectParameters(),
             
             // 設定が取得できない場合は何もしない
-            if(!params) {
+            if (!params) {
     
 }
                 return -1;
             ;
             // 画面効果が無効な場合は何もしない
-            if(!params.enabled) { return -1 }
+            if (!params.enabled) { return -1 }
             // 設定値を適用
             const adjustedIntensity = intensity * params.flash.intensity;
             // durationが指定されていない場合は設定から取得、指定されている場合はそれを使用
             const configDuration = duration !== undefined ? duration: params.flashDuration,
 
-            const effect: FlashEffect = { id: this.effectId++,',
+            const effect: FlashEffect = { id: this.effectId++,','
                 type: 'flash',
                 color: this.parseColor(color),
                 intensity: adjustedIntensity,
                 duration: configDuration,
                 elapsed: 0,
-    fadeType: fadeType 
- };
+    fadeType: fadeType,;
             this.effects.push(effect);
             return effect.id;
 
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager.addFlash',' }
+                context: 'EffectManager.addFlash',' }'
 
-            }');
+            }');'
             return -1;
     /**
      * 色調効果を追加'
@@ -301,33 +297,32 @@ export class EffectManager {
             const params = this._getEffectParameters(),
             
             // 設定が取得できない場合は何もしない
-            if(!params) {
+            if (!params) {
     
 }
                 return -1;
             ;
             // 画面効果が無効な場合は何もしない
-            if(!params.enabled) { return -1 }
+            if (!params.enabled) { return -1 }
             // 設定値を適用
             const adjustedIntensity = intensity * params.tint.intensity;
             const configDuration = duration !== undefined ? duration: params.tint.duration,
 
-            const effect: TintEffect = { id: this.effectId++,',
+            const effect: TintEffect = { id: this.effectId++,','
                 type: 'tint',
                 color: this.parseColor(color),
                 intensity: adjustedIntensity,
                 duration: configDuration,
                 elapsed: 0,
-    easing: easing 
- };
+    easing: easing,;
             this.effects.push(effect);
             return effect.id;
 
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager.addTint',' }
+                context: 'EffectManager.addTint',' }'
 
-            }');
+            }');'
             return -1;
     /**
      * ズーム効果を追加'
@@ -335,7 +330,7 @@ export class EffectManager {
     public addZoom(targetZoom: number, duration?: number, easing: string = 'easeOut': number { try {'
             const params = this._getEffectParameters(),
             
-            if(!params || !params.enabled) {
+            if (!params || !params.enabled) {
     
 }
                 return -1;
@@ -344,26 +339,25 @@ export class EffectManager {
             const clampedZoom = Math.max(0.5, Math.min(3.0, adjustedZoom)); // 範囲制限
             const configDuration = duration !== undefined ? duration: params.zoom.duration,
 
-            const effect: ZoomEffect = { id: this.effectId++,',
+            const effect: ZoomEffect = { id: this.effectId++,','
                 type: 'zoom',
                 targetZoom: clampedZoom,
                 startZoom: this.currentTransform.zoom,
                 duration: configDuration,
                 elapsed: 0,
-    easing: easing 
- };
+    easing: easing,;
             this.effects.push(effect);
             return effect.id;
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.addZoom'
-            }';
+            }';'
             return -1;
     /**
      * 色文字列またはColorRGBAオブジェクトを解析'
      */''
     private parseColor(color: string | ColorRGBA): ColorRGBA { ''
-        if(typeof, color === 'object') {
+        if (typeof, color === 'object') {
     
 }
             return color;
@@ -383,7 +377,7 @@ export class EffectManager {
     public update(deltaTime: number): void { // 効果を更新し、期限切れの効果を削除
         this.effects = this.effects.filter(effect => { )
             effect.elapsed += deltaTime)
-            return effect.elapsed < effect.duration),
+            return effect.elapsed < effect.duration);
         
         // 変換状態をリセット
         this.resetTransforms(),
@@ -412,27 +406,27 @@ export class EffectManager {
 
         switch(effect.type) {
 
-            case 'shake':',
+            case 'shake':','
                 this.applyShakeEffect(effect, progress),
 
                 break,
-            case 'flash':',
+            case 'flash':','
                 this.applyFlashEffect(effect, progress),
 
                 break,
-            case 'tint':',
+            case 'tint':','
                 this.applyTintEffect(effect, progress),
 
                 break,
-            case 'zoom':',
+            case 'zoom':','
                 this.applyZoomEffect(effect, progress),
 
                 break,
-            case 'rotation':',
+            case 'rotation':','
                 this.applyRotationEffect(effect, progress),
 
                 break,
-            case 'blur':',
+            case 'blur':','
                 this.applyBlurEffect(effect, progress),
 
                 break,
@@ -452,16 +446,16 @@ export class EffectManager {
 
         switch(effect.shakeType) {
 
-            case 'random':',
+            case 'random':','
                 shakeX = (Math.random() - 0.5) * intensity * 2,
                 shakeY = (Math.random() - 0.5) * intensity * 2,
 
                 break,
-            case 'horizontal':',
+            case 'horizontal':','
                 shakeX = Math.sin(time) * intensity,
 
                 break,
-            case 'vertical':',
+            case 'vertical':','
                 shakeY = Math.sin(time) * intensity,
 
                 break,
@@ -480,8 +474,8 @@ export class EffectManager {
 
         switch(effect.fadeType) {
 
-            case 'out':',
-                alpha = (1 - progress') * effect.intensity,
+            case 'out':','
+                alpha = (1 - progress') * effect.intensity,'
 
                 break,
             case 'in':,
@@ -494,8 +488,7 @@ export class EffectManager {
         const flashColor: ColorRGBA = { r: effect.color.r,
             g: effect.color.g,
             b: effect.color.b,
-    a: alpha 
- };
+    a: alpha,;
         this.transforms.flash.push(flashColor);
     }
     
@@ -508,7 +501,7 @@ export class EffectManager {
         const tintColor: ColorRGBA = { r: effect.color.r,
             g: effect.color.g,
             b: effect.color.b,
-    a: alpha  }
+    a: alpha,
  };
         this.transforms.tint.push(tintColor);
     }
@@ -542,11 +535,11 @@ export class EffectManager {
 
         switch(effect.filterType) {
 
-            case 'contrast':',
+            case 'contrast':','
                 this.transforms.contrast.push(value),
 
                 break,
-            case 'brightness':',
+            case 'brightness':','
                 this.transforms.brightness.push(value),
 
                 break,
@@ -561,14 +554,14 @@ export class EffectManager {
     private applyEasing(progress: number, easing: string): number { ''
         switch(easing) {
 
-            case 'easeIn':',
+            case 'easeIn':','
                 return progress * progress,
-            case 'easeOut':',
+            case 'easeOut':','
                 return 1 - (1 - progress) * (1 - progress'),'''
             case 'easeInOut':,
-                return progress < 0.5 ',
+                return progress < 0.5 ','
 
-                    ? 2 * progress * progress ',
+                    ? 2 * progress * progress ','
                     : 1 - Math.pow(-2 * progress + 2, 2) / 2,
             case 'easeOutBounce':,
                 if (progress < 1 / 2.75) {
@@ -608,11 +601,11 @@ export class EffectManager {
     public addRotation(angle: number, duration: number, easing: string = 'linear': number { try {'
             const params = this._getEffectParameters(),
 
-            if(!params || !params.enabled) {
+            if (!params || !params.enabled) {
     
 }
                 return -1;
-            ';
+            ';'
 
             const effect: RotationEffect = { id: this.effectId++,''
                 type: 'rotation',
@@ -620,16 +613,15 @@ export class EffectManager {
                 targetRotation: this.currentTransform.rotation + angle,
                 duration: duration,
                 elapsed: 0,
-    easing: easing 
- };
+    easing: easing,;
             this.effects.push(effect);
             return effect.id;
 
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager.addRotation',' }
+                context: 'EffectManager.addRotation',' }'
 
-            }');
+            }');'
             return -1;
     /**
      * ぼかし効果を追加'
@@ -637,11 +629,11 @@ export class EffectManager {
     public addBlur(intensity: number, duration: number, easing: string = 'easeInOut': number { try {'
             const params = this._getEffectParameters(),
 
-            if(!params || !params.enabled) {
+            if (!params || !params.enabled) {
     
 }
                 return -1;
-            ';
+            ';'
 
             const effect: BlurEffect = { id: this.effectId++,''
                 type: 'blur',
@@ -649,16 +641,15 @@ export class EffectManager {
                 targetBlur: intensity,
                 duration: duration,
                 elapsed: 0,
-    easing: easing 
- };
+    easing: easing,;
             this.effects.push(effect);
             return effect.id;
 
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager.addBlur',' }
+                context: 'EffectManager.addBlur',' }'
 
-            }');
+            }');'
             return -1;
     /**
      * フィルター効果を追加（コントラスト、明度、彩度）'
@@ -666,11 +657,11 @@ export class EffectManager {
     public addFilter(filterType: FilterType, targetValue: number, duration: number, easing: string = 'easeInOut': number { try {'
             const params = this._getEffectParameters(),
             
-            if(!params || !params.enabled) {
+            if (!params || !params.enabled) {
     
 }
                 return -1;
-            ';
+            ';'
 
             let startValue = 1;
             switch(filterType) {
@@ -686,7 +677,7 @@ export class EffectManager {
                 case 'saturation':,
                     startValue = this.currentTransform.saturation }
                     break; }
-            ';
+            ';'
 
             const effect: FilterEffect = { id: this.effectId++,''
                 type: 'filter',
@@ -695,8 +686,7 @@ export class EffectManager {
                 targetValue: targetValue,
                 duration: duration,
                 elapsed: 0,
-    easing: easing 
- };
+    easing: easing,;
             this.effects.push(effect);
             return effect.id;
 
@@ -747,25 +737,25 @@ export class EffectManager {
         }
         
         // フィルター効果
-        if(this.currentTransform.contrast !== 1 || this.currentTransform.brightness !== 1 || this.currentTransform.saturation !== 1) {
+        if (this.currentTransform.contrast !== 1 || this.currentTransform.brightness !== 1 || this.currentTransform.saturation !== 1) {
             const filterParts = [] }
             if (this.currentTransform.contrast !== 1) { }
                 filterParts.push(`contrast(${this.currentTransform.contrast}`});
             }
-            if(this.currentTransform.brightness !== 1) {
+            if (this.currentTransform.brightness !== 1) {
     
 }
                 filterParts.push(`brightness(${this.currentTransform.brightness}`});
             }
-            if(this.currentTransform.saturation !== 1) {
+            if (this.currentTransform.saturation !== 1) {
     
 }
                 filterParts.push(`saturate(${this.currentTransform.saturation}`});
             }
 
-            if(filterParts.length > 0) {
+            if (filterParts.length > 0) {
 
-                const existingFilter = context.filter !== 'none' ? context.filter + ', ' : ' }
+                const existingFilter = context.filter !== 'none' ? context.filter + ', ' : ' }'
 
                 context.filter = existingFilter + filterParts.join(', '); }
         }
@@ -773,9 +763,9 @@ export class EffectManager {
      * フラッシュとティントを適用
      */
     public applyOverlays(context: CanvasRenderingContext2D): void { // フラッシュを適用
-        if(this.currentTransform.flash.a > 0) {
+        if (this.currentTransform.flash.a > 0) {
 
-            context.save(')
+            context.save(')'
         }''
             context.globalCompositeOperation = 'screen';) }
             context.fillStyle = `rgba(${this.currentTransform.flash.r}, ${this.currentTransform.flash.g}, ${this.currentTransform.flash.b}, ${ this.currentTransform.flash.a}`;
@@ -784,9 +774,9 @@ export class EffectManager {
         }
         
         // ティントを適用
-        if(this.currentTransform.tint.a > 0) {
+        if (this.currentTransform.tint.a > 0) {
 
-            context.save(')
+            context.save(')'
         }''
             context.globalCompositeOperation = 'multiply';) }
             context.fillStyle = `rgba(${this.currentTransform.tint.r}, ${this.currentTransform.tint.g}, ${this.currentTransform.tint.b}, ${ this.currentTransform.tint.a}`;
@@ -797,12 +787,12 @@ export class EffectManager {
      * 特定の効果を削除
      */
     public removeEffect(effectId: number): boolean { const initialLength = this.effects.length,
-        this.effects = this.effects.filter(effect => effect.id !== effectId),
+        this.effects = this.effects.filter(effect => effect.id !== effectId);
         return this.effects.length < initialLength,
     /**
      * 全ての効果をクリア
      */
-    public clearEffects(): void { this.effects = [],
+    public clearEffects(): void { this.effects = [];
         this.resetTransforms(),
         this.calculateFinalTransform() }
     /**
@@ -818,8 +808,8 @@ export class EffectManager {
     /**
      * 効果の統計を取得
      */
-    public getEffectStats(): { [key in EffectType]: number } {
-        const stats = {} as { [key in EffectType]: number };
+    public getEffectStats(): { [key in EffectType]: number; {
+        const stats = {} as { [key in EffectType]: number;;
         
         this.effects.forEach(effect => {  ) }
             stats[effect.type] = (stats[effect.type] || 0) + 1; }
@@ -834,18 +824,18 @@ export class EffectManager {
     public addTimeStopEffect(duration: number): void { try {
             // 青いフラッシュ
             this.addFlash('#0088FF', 0.3, 200, 'out'),
-            ',
+            ','
             // 画面の軽いズームイン
             this.addZoom(1.05, 300, 'easeOut',
             setTimeout(() => { }'
 
                 this.addZoom(1.0, duration - 300, 'easeIn'; }
 
-            }, 300');
-            ';
+            }, 300');'
+            ';'
             // 青い色調
             this.addTint('#0088FF', 0.2, duration, 'easeInOut');
-            ';
+            ';'
             // 軽いぼかし効果
             this.addBlur(2, 200, 'easeOut';
             setTimeout(() => { }'
@@ -855,20 +845,20 @@ export class EffectManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.addTimeStopEffect'
-            }';
+            }';'
         }
     /**
      * ボーナスタイム効果'
      */''
     public addBonusTimeEffect(duration: number): void { try {
             // 金色のフラッシュ
-            this.addFlash('#FFD700', 0.4, 300, 'out),
+            this.addFlash('#FFD700', 0.4, 300, 'out),'
             
             // パルスズーム
             for(let, i = 0, i < duration / 1000, i++) {
 
                 setTimeout(() => { ''
-                    this.addZoom(1.02, 200, 'easeOut) }
+                    this.addZoom(1.02, 200, 'easeOut) }'
 
                     setTimeout(() => { }'
 
@@ -876,13 +866,13 @@ export class EffectManager {
 
                     }, 200';}, i * 1000');
             }
-            ';
+            ';'
             // 金色の色調
-            this.addTint('#FFD700', 0.15, duration, 'easeInOut);
+            this.addTint('#FFD700', 0.15, duration, 'easeInOut);'
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.addBonusTimeEffect'
-            }';
+            }';'
         }
     /**
      * 爆発効果'
@@ -890,10 +880,10 @@ export class EffectManager {
     public addExplosionEffect(_x: number, _y: number, intensity: number = 1): void { try {
             // 中心からの画面揺れ
             this.addScreenShake(15 * intensity, 500, 'circular'),
-            ',
+            ','
             // 白いフラッシュ
             this.addFlash('#FFFFFF', 0.6 * intensity, 150, 'out'),
-            ',
+            ','
             // 一瞬のズームアウト
             this.addZoom(0.95, 100, 'easeOut',
             setTimeout(() => { }'
@@ -903,66 +893,66 @@ export class EffectManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.addExplosionEffect'
-            }';
+            }';'
         }
     /**
      * ダメージ効果'
      */''
-    public addDamageEffect()';
+    public addDamageEffect()';'
             this.addFlash('#FF0000', 0.4, 200, 'out');
-            ';
+            ';'
             // 短い画面揺れ
             this.addScreenShake(8, 300, 'random');
-            ';
+            ';'
             // 一瞬の赤い色調
-            this.addTint('#FF0000', 0.3, 400, 'easeOut);
+            this.addTint('#FF0000', 0.3, 400, 'easeOut);'
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.addDamageEffect'
-            }';
+            }';'
         }
     /**
      * 回復効果'
      */''
-    public addHealEffect()';
+    public addHealEffect()';'
             this.addFlash('#00FF00', 0.3, 400, 'inout');
-            ';
+            ';'
             // 優しいズームイン
             this.addZoom(1.02, 300, 'easeInOut';
             setTimeout(() => { }'
 
                 this.addZoom(1.0, 300, 'easeInOut'; }
 
-            }, 300');
-            ';
+            }, 300');'
+            ';'
             // 緑の色調
-            this.addTint('#00FF88', 0.2, 600, 'easeInOut);
+            this.addTint('#00FF88', 0.2, 600, 'easeInOut);'
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.addHealEffect'
-            }';
+            }';'
         }
     /**
      * 電気効果'
      */''
-    public addElectricEffect()';
-            this.addScreenShake(20, 800, 'random);
+    public addElectricEffect()';'
+            this.addScreenShake(20, 800, 'random);'
             
             // 黄色いフラッシュ（点滅）
             for(let, i = 0; i < 4; i++) { }
 
                 setTimeout(() => { }'
 
-                    this.addFlash('#FFFF00', 0.5, 100, 'out); }
-                }, i * 200';
+                    this.addFlash('#FFFF00', 0.5, 100, 'out); }'
+                }, i * 200';'
             }
-            ';
+            ';'
             // 軽い回転
             this.addRotation((Math.random() - 0.5) * 0.1, 200, 'easeOut');
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.addElectricEffect'
-            }';
+            }';'
         }
     /**
      * 変換をリセット（GameEngineとの互換性）
@@ -1010,18 +1000,18 @@ export class EffectManager {
             });
                 (this.transforms, as any)[key] = [];' }'
 
-            }');
+            }');'
 
             console.log('[EffectManager] エフェクトシステムを無効化しました';
 
         } catch (error') { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.disable'
-            }';
+            }';'
         }
     /**
      * エフェクトシステムを有効化'
      */''
-    public enable()';
+    public enable()';'
         console.log('[EffectManager] エフェクトシステムを有効化しました');'
     }
     
@@ -1032,22 +1022,22 @@ export class EffectManager {
     public setQualityLevel(level: string): void { try {'
             switch(level) {
 
-                case 'low':',
+                case 'low':','
                     // 低品質: エフェクトを無効化または大幅削減
-                    this.disable()',
+                    this.disable()','
                     console.log('[EffectManager] 品質レベルを低に設定: エフェクトを無効化'),'
 
                     break,
-                case 'medium':',
+                case 'medium':','
                     // 中品質: 一部のエフェクトを削減
-                    this.clearEffects()',
+                    this.clearEffects()','
                     console.log('[EffectManager] 品質レベルを中に設定: エフェクトを削減'),'
 
                     break,
                 case 'high':,
-                default:',
+                default:','
                     // 高品質: 全エフェクト有効（デフォルト）
-                    this.enable()',
+                    this.enable()','
                     console.log('[EffectManager] 品質レベルを高に設定: 全エフェクト有効' }
 
                     break;' }'
@@ -1057,11 +1047,11 @@ export class EffectManager {
     
     /**
      * 設定値を動的に変更
-     */')
+     */')'
     public setConfigValue(key: string, value: any): boolean { try {'
             switch(key) {
 
-                case 'shakeIntensity':',
+                case 'shakeIntensity':','
                     if (this.effectsConfig.setShakeIntensity) {
             }
 
@@ -1070,14 +1060,14 @@ export class EffectManager {
 
                     break;
                 case 'flashDuration':
-                    if(this.effectsConfig.setFlashDuration) {', ' }
+                    if (this.effectsConfig.setFlashDuration) {', ' }
 
                         this.effectsConfig.setFlashDuration(value); }
                     }
 
                     break;
                 case 'zoomSensitivity':
-                    if(this.effectsConfig.setZoomSensitivity) {', ' }
+                    if (this.effectsConfig.setZoomSensitivity) {', ' }
 
                         this.effectsConfig.setZoomSensitivity(value); }
                     }
@@ -1095,7 +1085,7 @@ export class EffectManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.setConfigValue'
-            }';
+            }';'
             return false;
     /**
      * 現在の設定値を取得
@@ -1103,11 +1093,11 @@ export class EffectManager {
     public getConfigValue(key: string): any { try {'
             switch(key) {
 
-                case 'shakeIntensity':',
+                case 'shakeIntensity':','
                     return this.effectsConfig.getShakeIntensity?.() || 1.0, : undefined'''
-                case 'flashDuration':',
+                case 'flashDuration':','
                     return this.effectsConfig.getFlashDuration?.() || 300, : undefined'''
-                case 'zoomSensitivity':',
+                case 'zoomSensitivity':','
                     return this.effectsConfig.getZoomSensitivity?.() || 1.0, : undefined'''
                 case 'enabled':,
                     return this.effectsConfig.isScreenEffectEnabled?.() || true, : undefined
@@ -1129,7 +1119,7 @@ export class EffectManager {
             if (!params) return,
             
             // 設定が無効な場合は全効果をクリア
-            if(!params.enabled) {
+            if (!params.enabled) {
 
                 this.clearEffects() }
 
@@ -1165,7 +1155,7 @@ export class EffectManager {
             const params = this._getEffectParameters(),
             
             // 画面効果が無効になった場合、全ての効果をクリア
-            if(params && !params.enabled) {
+            if (params && !params.enabled) {
 
                 this.clearEffects() }
 
@@ -1183,7 +1173,7 @@ export class EffectManager {
             if (this.effectsConfig?.configManager?.unwatch) { }
                 this.effectsConfig.configManager.unwatch(watcher); }
 });
-        this.configWatchers.clear()';
+        this.configWatchers.clear()';'
         console.log('[EffectManager] Disposed, successfully';
     }
     
@@ -1203,55 +1193,55 @@ export class EffectManager {
             // 暗いティント効果を適用して夜間の雰囲気を演出
             const nightDuration = duration || 5000, // デフォルト5秒間
             const nightEffect = this.addTint('#000033', intensity, nightDuration, 'easeInOut'),
-            ',
+            ','
             // コントラストを少し下げて暗い雰囲気を強化
             this.addFilter('contrast', 0.8, nightDuration, 'easeInOut'),
-            ',
+            ','
             // 明度を下げて全体的に暗くする
-            this.addFilter('brightness', 0.6, nightDuration, 'easeInOut) }
+            this.addFilter('brightness', 0.6, nightDuration, 'easeInOut) }'
             console.log(`[EffectManager] ナイトモードを有効化: intensity=${intensity}, duration=${nightDuration}ms`});
             
             // 主要なエフェクトID（ティント）を返す
             return nightEffect;
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager.enableNightMode',' }
+                context: 'EffectManager.enableNightMode',' }'
 
-            }');
+            }');'
             return -1;
     /**
      * 視界制限を設定
      * 霧や煙などの効果で視界を制限する'
      */''
-    public setVisibilityReduction(reduction: number, duration?: number, effectType: 'fog' | 'smoke' | 'darkness' = 'fog): number { try {
+    public setVisibilityReduction(reduction: number, duration?: number, effectType: 'fog' | 'smoke' | 'darkness' = 'fog): number { try {'
             const effectDuration = duration || 3000, // デフォルト3秒間
             let effectId = -1,
 
             switch(effectType) {
 
-                case 'fog':',
+                case 'fog':','
                     // 白っぽい霧効果（彩度を下げ、軽いぼかし）
                     effectId = this.addTint('#CCCCCC', reduction * 0.4, effectDuration, 'easeInOut'),
                     this.addFilter('saturation', 1 - reduction * 0.3, effectDuration, 'easeInOut'),
                     this.addBlur(reduction * 2, effectDuration, 'easeInOut'),
                     break,
 
-                case 'smoke':',
+                case 'smoke':','
                     // 暗い煙効果（暗いティントとぼかし）
                     effectId = this.addTint('#444444', reduction * 0.6, effectDuration, 'easeInOut'),
                     this.addBlur(reduction * 3, effectDuration, 'easeInOut'),
                     this.addFilter('contrast', 1 + reduction * 0.2, effectDuration, 'easeInOut'),
                     break,
 
-                case 'darkness':',
+                case 'darkness':','
                     // 暗闇効果（暗いティントと明度低下）
                     effectId = this.addTint('#000000', reduction * 0.7, effectDuration, 'easeInOut'),
                     this.addFilter('brightness', 1 - reduction * 0.4, effectDuration, 'easeInOut',
                     break,
 
-                    ' }
+                    ' }'
 
-                default: console.warn(`[EffectManager] 未知の視界制限タイプ: ${effectType}`},' }
+                default: console.warn(`[EffectManager] 未知の視界制限タイプ: ${effectType}`},' }'
 '
                     effectId = this.addTint('#CCCCCC', reduction * 0.5, effectDuration, 'easeInOut'});
             }
@@ -1261,15 +1251,15 @@ export class EffectManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
                 context: 'EffectManager.setVisibilityReduction'
-            }';
+            }';'
             return -1;
     /**
      * 復活エフェクトを作成
      * プレイヤーが復活アイテムを使用した時の特別なエフェクト'
      */''
-    public createRevivalEffect()';
+    public createRevivalEffect()';'
             this.addFlash('#FFFFFF', 0.8, 300, 'easeOut');
-            ';
+            ';'
             // 一時的にズームイン
             this.addZoom(1.2, 200, 'easeOut';
             setTimeout(() => { }'
@@ -1284,23 +1274,23 @@ export class EffectManager {
 
                 this.addTint('#FFD700', 0.3, 1000, 'easeInOut'; }
 
-            }, 300');
-            ';
+            }, 300');'
+            ';'
             // 明度を一時的に上げる
             this.addFilter('brightness', 1.5, 400, 'easeOut';
             setTimeout(() => { }'
 
                 this.addFilter('brightness', 1.0, 600, 'easeIn'; }
 
-            }, 400');
+            }, 400');'
 
             console.log('[EffectManager] Revival, effect created';
 
-        } catch (error') {
+        } catch (error') {'
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {''
-                context: 'EffectManager.createRevivalEffect',' }
+                context: 'EffectManager.createRevivalEffect',' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

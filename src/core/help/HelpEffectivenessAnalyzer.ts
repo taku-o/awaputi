@@ -6,122 +6,118 @@ import { HelpReportGenerator  } from './effectiveness/HelpReportGenerator.js';
 
 // 型定義
 export interface GameEngine { helpAnalytics?: any,
-    helpFeedbackSystem?: any }
-export interface HelpAnalyzer { [key: string]: any }
-export interface HelpFeedbackSystem { [key: string]: any }
+    helpFeedbackSystem?: any;
+export interface HelpAnalyzer { [key: string]: any;
+export interface HelpFeedbackSystem { [key: string]: any;
 export interface EffectivenessConfig { minDataThreshold: number,
-    effectivenessThreshold: number,
-    trendAnalysisPeriod: number,
-    improvementThreshold: number,
-    reportCacheTimeout: number  }
+    effectivenessThreshold: number;
+    trendAnalysisPeriod: number;
+    improvementThreshold: number;
+    reportCacheTimeout: number;
 export interface UsageMetrics { totalSessions: number,
-    uniqueUsers: number,
-    averageSessionDuration: number,
-    pageViewsPerSession: number,
-    searchUsageRate: number,
-    returnUserRate: number  }
+    uniqueUsers: number;
+    averageSessionDuration: number;
+    pageViewsPerSession: number;
+    searchUsageRate: number;
+    returnUserRate: number;
 export interface EngagementMetrics { timeSpentPerTopic: Map<string, number>,
-    interactionRate: number,
-    searchSuccessRate: number,
-    navigationPatterns: Map<string, number>,
+    interactionRate: number;
+    searchSuccessRate: number;
+    navigationPatterns: Map<string, number>;
     exitPoints: Map<string, number> }
 export interface SatisfactionMetrics { averageRating: number,
-    helpfulnessRate: number,
-    feedbackVolume: number,
-    sentimentScore: number,
-    improvementRequests: string[]  }
+    helpfulnessRate: number;
+    feedbackVolume: number;
+    sentimentScore: number;
+    improvementRequests: string[];
 export interface EffectivenessMetrics { problemSolvingRate: number,
-    contentUtilization: Map<string, number>,
-    userSuccessRate: number,
-    knowledgeGapIdentification: Map<string, number>,
-    contentQualityScore: number  }
+    contentUtilization: Map<string, number>;
+    userSuccessRate: number;
+    knowledgeGapIdentification: Map<string, number>;
+    contentQualityScore: number;
 export interface AnalysisMetrics { usage: UsageMetrics,
-    engagement: EngagementMetrics,
-    satisfaction: SatisfactionMetrics,
-    effectiveness: EffectivenessMetrics
-     }
+    engagement: EngagementMetrics;
+    satisfaction: SatisfactionMetrics;
+    effectiveness: EffectivenessMetrics;
 export interface AnalysisOptions { period?: string,
-    includeTrends?: boolean,
-    includeRecommendations?: boolean,
-    detailLevel?: string,
-    [key: string]: any }
-export interface RawData { [key: string]: any }
+    includeTrends?: boolean;
+    includeRecommendations?: boolean;
+    detailLevel?: string;
+    [key: string]: any;
+export interface RawData { [key: string]: any;
 export interface UsageAnalysis { summary: any,
-    [key: string]: any }
+    [key: string]: any;
 export interface EngagementAnalysis { summary: any,
-    [key: string]: any }
+    [key: string]: any;
 export interface SatisfactionAnalysis { summary: any,
-    [key: string]: any }
+    [key: string]: any;
 export interface EffectivenessScore { overall: number,
-    [key: string]: any }
-export interface TrendAnalysis { [key: string]: any }
-export interface Recommendations { [key: string]: any }
-export interface DataQuality { [key: string]: any }
+    [key: string]: any;
+export interface TrendAnalysis { [key: string]: any;
+export interface Recommendations { [key: string]: any;
+export interface DataQuality { [key: string]: any;
 export interface AnalysisResult { timestamp: number,
-    period: string,
-    dataQuality: DataQuality,
-    overallEffectivenessScore: number,
+    period: string;
+    dataQuality: DataQuality;
+    overallEffectivenessScore: number;
     keyMetrics: {
         usag,e: any,
         engagement: any,
-    satisfaction: any 
- };
+    satisfaction: any,;
     detailedAnalysis: { usage: UsageAnalysis,
         engagement: EngagementAnalysis,
         satisfaction: SatisfactionAnalysis,
-    effectiveness: EffectivenessScore 
-};
-    trends: TrendAnalysis | null;
+    effectiveness: EffectivenessScore,;
+    trends: TrendAnalysis | null,
     recommendations: Recommendations | null,
     metadata: { analysisOptions: AnalysisOptions,
         dataVolume: any,
-    confidenceLevel: any }
+    confidenceLevel: any,
 
 export interface SystemStatus { initialized: boolean,
     components: {
         metricsCollecto,r: boolean,
         dataAnalyzer: boolean,
-    reportGenerator: boolean 
- };
+    reportGenerator: boolean,;
     metrics: AnalysisMetrics,
-    lastActivity: number;
+    lastActivity: number,
 }
 export interface PerformanceStats { metricsCollection: any,
-    dataAnalysis: any,
-    reportGeneration: any  }
+    dataAnalysis: any;
+    reportGeneration: any;
 export interface ConfigResult { main: EffectivenessConfig,
-    metricsCollector: any,
-    dataAnalyzer: any,
-    reportGenerator: any  }
+    metricsCollector: any;
+    dataAnalyzer: any;
+    reportGenerator: any;
 /**
  * HelpEffectivenessAnalyzer (Main, Controller)
  * ヘルプ効果測定・分析ツール
  * Main Controller Patternによる軽量オーケストレーター
  */
 export class HelpEffectivenessAnalyzer {
-    private gameEngine: GameEngine,
-    private loggingSystem: LoggingSystem,
-    private helpAnalytics: HelpAnalyzer | null,
-    private helpFeedbackSystem: HelpFeedbackSystem | null,
-    private config: EffectivenessConfig,
-    private metrics: AnalysisMetrics,
-    private metricsCollector: HelpMetricsCollector,
-    private dataAnalyzer: HelpDataAnalyzer,
+    private gameEngine: GameEngine;
+    private loggingSystem: LoggingSystem;
+    private helpAnalytics: HelpAnalyzer | null;
+    private helpFeedbackSystem: HelpFeedbackSystem | null;
+    private config: EffectivenessConfig;
+    private metrics: AnalysisMetrics;
+    private metricsCollector: HelpMetricsCollector;
+    private dataAnalyzer: HelpDataAnalyzer;
     private, reportGenerator: HelpReportGenerator,
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem(),
+        this.gameEngine = gameEngine;
+        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // 分析対象システムの参照
-        this.helpAnalytics = null,
-        this.helpFeedbackSystem = null,
+        this.helpAnalytics = null;
+        this.helpFeedbackSystem = null;
         
         // 分析設定
         this.config = {
-            minDataThreshold: 5,          // 最小データ数の閾値,
-            effectivenessThreshold: 0.7,  // 効果性判定閾値（70%）,
-            trendAnalysisPeriod: 30,      // トレンド分析期間（日）,
+            minDataThreshold: 5;          // 最小データ数の閾値;
+            effectivenessThreshold: 0.7,  // 効果性判定閾値（70%）;
+            trendAnalysisPeriod: 30,      // トレンド分析期間（日）;
             improvementThreshold: 0.1,    // 改善提案閾値（10%）
     }
             reportCacheTimeout: 300000    // レポートキャッシュ有効期限（5分） ;
@@ -138,11 +134,11 @@ export class HelpEffectivenessAnalyzer {
     returnUserRate: 0 
 };
             // エンゲージメント指標
-            engagement: { timeSpentPerTopic: new Map<string, number>(),
+            engagement: { timeSpentPerTopic: new Map<string, number>();
                 interactionRate: 0,
                 searchSuccessRate: 0,
-    navigationPatterns: new Map<string, number>(),
-                exitPoints: new Map<string, number>( },
+    navigationPatterns: new Map<string, number>();
+                exitPoints: new Map<string, number>( };
             
             // 満足度指標
             satisfaction: { averageRating: 0,
@@ -153,9 +149,9 @@ export class HelpEffectivenessAnalyzer {
 };
             // 効果性指標
             effectiveness: { problemSolvingRate: 0,
-    contentUtilization: new Map<string, number>(),
+    contentUtilization: new Map<string, number>();
                 userSuccessRate: 0,
-    knowledgeGapIdentification: new Map<string, number>(),
+    knowledgeGapIdentification: new Map<string, number>();
                 contentQualityScore: 0 
  }
         },
@@ -165,7 +161,7 @@ export class HelpEffectivenessAnalyzer {
         this.dataAnalyzer = new HelpDataAnalyzer(this);
         this.reportGenerator = new HelpReportGenerator(this);
 
-        console.log('[HelpEffectivenessAnalyzer] Main Controller initialized with sub-components);
+        console.log('[HelpEffectivenessAnalyzer] Main Controller initialized with sub-components);'
         this.initialize();
     }
     
@@ -176,12 +172,12 @@ export class HelpEffectivenessAnalyzer {
             // 依存システムの取得
             this.initializeDependentSystems(),
             // 定期分析の開始
-            this.startPeriodicAnalysis()',
-            this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Help effectiveness analyzer initialized',' }
+            this.startPeriodicAnalysis()','
+            this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Help effectiveness analyzer initialized',' }'
 
         } catch (error) {
-            this.loggingSystem.error('HelpEffectivenessAnalyzer', 'Failed to initialize analyzer', error',
-            ErrorHandler.handle(error as Error, 'HelpEffectivenessAnalyzer.initialize) }
+            this.loggingSystem.error('HelpEffectivenessAnalyzer', 'Failed to initialize analyzer', error','
+            ErrorHandler.handle(error as Error, 'HelpEffectivenessAnalyzer.initialize) }'
     }
     
     /**
@@ -189,16 +185,16 @@ export class HelpEffectivenessAnalyzer {
      */
     async initializeDependentSystems(): Promise<void> { try {
             // HelpAnalyticsの取得
-            if(this.gameEngine.helpAnalytics) {
+            if (this.gameEngine.helpAnalytics) {
     
 }
                 this.helpAnalytics = this.gameEngine.helpAnalytics; }
             ;
             // HelpFeedbackSystemの取得
-            if(this.gameEngine.helpFeedbackSystem) { this.helpFeedbackSystem = this.gameEngine.helpFeedbackSystem }
+            if (this.gameEngine.helpFeedbackSystem) { this.helpFeedbackSystem = this.gameEngine.helpFeedbackSystem }
 
             this.loggingSystem.debug('HelpEffectivenessAnalyzer', 'Dependent systems initialized';} catch (error) {
-            this.loggingSystem.error('HelpEffectivenessAnalyzer', 'Failed to initialize dependent systems', error' }
+            this.loggingSystem.error('HelpEffectivenessAnalyzer', 'Failed to initialize dependent systems', error' }'
     }
     
     /**
@@ -216,11 +212,11 @@ export class HelpEffectivenessAnalyzer {
                 ...options,
 
             this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Starting comprehensive effectiveness analysis'),
-            ',
+            ','
             // 1. データ収集と検証（メトリクス収集に委譲）
             const rawData = await this.metricsCollector.collectRawData(analysisOptions.period || 'all',
             if(!this.metricsCollector.validateDataQuality(rawData)) { ''
-                throw new Error('Insufficient, data quality, for analysis) }
+                throw new Error('Insufficient, data quality, for analysis) }'
             // 2. 使用率分析（メトリクス収集に委譲）
             const usageAnalysis = this.metricsCollector.analyzeUsageMetrics(rawData);
             
@@ -236,20 +232,20 @@ export class HelpEffectivenessAnalyzer {
                 satisfaction: satisfactionAnalysis),
             // 6. トレンド分析（オプション）（データ分析に委譲）
             let, trendAnalysis: TrendAnalysis | null = null,
-            if(analysisOptions.includeTrends) {', ' }
+            if (analysisOptions.includeTrends) {', ' }
 
-                trendAnalysis = await this.dataAnalyzer.analyzeTrends(rawData, analysisOptions.period || 'all); }
+                trendAnalysis = await this.dataAnalyzer.analyzeTrends(rawData, analysisOptions.period || 'all); }'
             // 7. 改善提案生成（オプション）（データ分析に委譲）
             let recommendations: Recommendations | null = null,
-            if(analysisOptions.includeRecommendations) { recommendations = this.dataAnalyzer.generateRecommendations({
+            if (analysisOptions.includeRecommendations) { recommendations = this.dataAnalyzer.generateRecommendations({
                     usage: usageAnalysis,
                     engagement: engagementAnalysis),
                     satisfaction: satisfactionAnalysis,
-    effectivenessScore: effectivenessScore }
+    effectivenessScore: effectivenessScore,
                     trends: trendAnalysis); }
             // 8. 統合分析結果の構築
             const analysisResult: AnalysisResult = { ''
-                timestamp: Date.now()',
+                timestamp: Date.now()','
     period: analysisOptions.period || 'all'),
                 dataQuality: this.metricsCollector.assessDataQuality(rawData),
                 // 主要指標
@@ -263,24 +259,23 @@ export class HelpEffectivenessAnalyzer {
                 detailedAnalysis: { usage: usageAnalysis,
                     engagement: engagementAnalysis,
                     satisfaction: satisfactionAnalysis,
-    effectiveness: effectivenessScore 
-};
+    effectiveness: effectivenessScore,;
                 // 追加分析
-                trends: trendAnalysis;
-                recommendations: recommendations;
+                trends: trendAnalysis,
+                recommendations: recommendations,
                 // メタデータ
                , metadata: { analysisOptions: analysisOptions,
     dataVolume: this.metricsCollector.calculateDataVolume(rawData,
                     confidenceLevel: this.metricsCollector.calculateConfidenceLevel(rawData  }
             };
 
-            this.loggingSystem.info('HelpEffectivenessAnalyzer);
+            this.loggingSystem.info('HelpEffectivenessAnalyzer);'
                 `Effectiveness analysis completed. Overall score: ${effectivenessScore.overall.toFixed(2})`);
             
             return analysisResult;
 
         } catch (error) {
-            this.loggingSystem.error('HelpEffectivenessAnalyzer', 'Failed to analyze effectiveness', error',
+            this.loggingSystem.error('HelpEffectivenessAnalyzer', 'Failed to analyze effectiveness', error','
             throw error }
     }
     
@@ -296,7 +291,7 @@ export class HelpEffectivenessAnalyzer {
 
         } catch (error) { }
 
-            this.loggingSystem.error('HelpEffectivenessAnalyzer', `Failed to generate ${reportType} report`, error';
+            this.loggingSystem.error('HelpEffectivenessAnalyzer', `Failed to generate ${reportType} report`, error';'
             throw error; }
 }
     /**
@@ -313,7 +308,7 @@ export class HelpEffectivenessAnalyzer {
         setInterval(async () => { 
             try {
                 await this.analyzeEffectiveness({)'
-                    period: 'recent',') }
+                    period: 'recent',') }'
 
                     detailLevel: 'summary'),' }');
                 this.loggingSystem.debug('HelpEffectivenessAnalyzer', 'Periodic analysis completed';} catch (error) {
@@ -336,7 +331,7 @@ export class HelpEffectivenessAnalyzer {
         if ((this.reportGenerator, as any).config) { ''
             Object.assign((this.reportGenerator, as any).config, newConfig') }'
 
-        this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Configuration updated);
+        this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Configuration updated);'
     }
     
     /**
@@ -357,7 +352,7 @@ export class HelpEffectivenessAnalyzer {
             components: {
                 metricsCollector: !!this.metricsCollector,
     dataAnalyzer: !!this.dataAnalyzer };
-                reportGenerator: !!this.reportGenerator ;
+                reportGenerator: !!this.reportGenerator ,
     },
             metrics: { ...this.metrics,
             lastActivity: Date.now() }
@@ -411,13 +406,13 @@ export class HelpEffectivenessAnalyzer {
      */
     cleanup(): void { try {
             // サブコンポーネントのクリーンアップ
-            if(this.metricsCollector) {
+            if (this.metricsCollector) {
     
 }
                 this.metricsCollector.destroy(); }
             if (this.dataAnalyzer) { this.dataAnalyzer.destroy() }
-            if(this.reportGenerator) {
-            ',
+            if (this.reportGenerator) {
+            ','
 
                 this.reportGenerator.destroy() }
 

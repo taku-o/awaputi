@@ -8,46 +8,45 @@ import path from 'path';
 
 // Type definitions
 interface ImportPatterns { namedImport: RegExp,
-    defaultImport: RegExp,
-    namespaceImport: RegExp,
-    sideEffectImport: RegExp,
-    dynamicImport: RegExp,
-    requireCall: RegExp
-     }
-';
+    defaultImport: RegExp;
+    namespaceImport: RegExp;
+    sideEffectImport: RegExp;
+    dynamicImport: RegExp;
+    requireCall: RegExp;
+';'
 
 interface ImportInfo { ''
-    type: 'named' | 'default' | 'namespace' | 'sideEffect' | 'dynamic',
-    importedName: string | null,
-    sourcePath: string,
-    fullMatch: string,
-    lineNumber: number,
-    startIndex: number,
-    endIndex: number,
-    containingFile?: string }
+    type: 'named' | 'default' | 'namespace' | 'sideEffect' | 'dynamic';
+    importedName: string | null;
+    sourcePath: string;
+    fullMatch: string;
+    lineNumber: number;
+    startIndex: number;
+    endIndex: number;
+    containingFile?: string;
 
 interface ImportSearchResults { byClassName: Map<string, ImportInfo[]>,
-    byFileName: Map<string, ImportInfo[]>,
-    total: number  }
-';
+    byFileName: Map<string, ImportInfo[]>;
+    total: number;
+';'
 
 interface UpdateResult { file: string,''
-    status: 'updated' | 'failed',
-    changes?: number,
+    status: 'updated' | 'failed';
+    changes?: number;
     error?: string,  }
 
 interface ValidationIssue { type: string,
-    line: number,
-    content: string,
-    message: string  }
+    line: number;
+    content: string;
+    message: string;
 
 interface ImportPathInfo { path: string,
-    line: number,
-    type: string }
+    line: number;
+    type: string;
 
 export class ImportUpdater {
-    private cache: Map<string, any>,
-    private importPatterns: ImportPatterns,
+    private cache: Map<string, any>;
+    private importPatterns: ImportPatterns;
     constructor() {
 
         this.cache = new Map<string, any>(),
@@ -56,11 +55,11 @@ export class ImportUpdater {
             // 各種インポートパターンの正規表現' }'
 
             namedImport: /import\s*\{\s*([^}]+')\s*\}\s*from\s*['"`]([^'"`]+")['"`]/g,""
-            defaultImport: /import\s+(\w+")\s+from\s*['"`]([^'"`]+")['"`]/g,
-            namespaceImport: /import\s*\*\s*as\s+(\w+")\s+from\s*['"`]([^'"`]+")['"`]/g,
-            sideEffectImport: /import\s*['"`]([^'"`]+")['"`]/g,
-            dynamicImport: /import\s*\(\s*['"`]([^'"`]+")['"`]\s*\")/g,
-            requireCall: /require\s*\(\s*['"`]([^'"`]+")['"`]\s*\)/g;
+            defaultImport: /import\s+(\w+")\s+from\s*['"`]([^'"`]+")['"`]/g,'
+            namespaceImport: /import\s*\*\s*as\s+(\w+")\s+from\s*['"`]([^'"`]+")['"`]/g,'
+            sideEffectImport: /import\s*['"`]([^'"`]+")['"`]/g,'
+            dynamicImport: /import\s*\(\s*['"`]([^'"`]+")['"`]\s*\")/g,'
+            requireCall: /require\s*\(\s*['"`]([^'"`]+")['"`]\s*\)/g;'
         } }
 
     /**
@@ -75,13 +74,13 @@ export class ImportUpdater {
 
         for (const filePath of jsFiles) {"
             try {""
-                const content = await fs.readFile(filePath, 'utf8),
+                const content = await fs.readFile(filePath, 'utf8),'
                 const imports = this.extractImportsFromContent(content, filePath),
                 
                 for (const importInfo of imports) {
                     // クラス名での検索
-                    if(className && this.matchesClassName(importInfo, className) {
-                        if(!results.byClassName.has(className) {
+                    if (className && this.matchesClassName(importInfo, className) {
+                        if (!results.byClassName.has(className) {
         }
                             results.byClassName.set(className, []); }
                         }
@@ -90,8 +89,8 @@ export class ImportUpdater {
                         results.total++ }
                     
                     // ファイル名での検索
-                    if(fileName && this.matchesFileName(importInfo, fileName) {
-                        if(!results.byFileName.has(fileName) {
+                    if (fileName && this.matchesFileName(importInfo, fileName) {
+                        if (!results.byFileName.has(fileName) {
                     }
                             results.byFileName.set(fileName, []); }
                         }
@@ -111,10 +110,10 @@ export class ImportUpdater {
      */''
     extractImportsFromContent(content: string, filePath: string): ImportInfo[] { const imports: ImportInfo[] = [],''
         const lines = content.split('\n',
-',
+','
         // 名前付きインポート
         for (const match of content.matchAll(this.importPatterns.namedImport)) {''
-            const importedNames = match[1].split(').map(name => name.trim(),
+            const importedNames = match[1].split(').map(name => name.trim(),'
             const sourcePath = match[2],
             const lineNumber = this.findLineNumber(content, match.index),
 
@@ -193,14 +192,14 @@ export class ImportUpdater {
 
         for (const filePath of filesToUpdate) {
             try {'
-                const content = await fs.readFile(filePath, 'utf8),
+                const content = await fs.readFile(filePath, 'utf8),'
                 const updatedContent = this.updateImportPathsInContent(
                     content,
                     oldPath,
                     newPath),
                     filePath,
 
-                if(updatedContent !== content) {''
+                if (updatedContent !== content) {''
                     await fs.writeFile(filePath, updatedContent, 'utf8'),
                     results.push({)'
                         file: filePath,')',
@@ -208,11 +207,11 @@ export class ImportUpdater {
                         changes: this.countChanges(content, updatedContent); }
 
                     });'} catch (error) { results.push({'
-                    file: filePath,',
-                    status: 'failed',',
+                    file: filePath,','
+                    status: 'failed',','
                     error: error.message',' }'
 
-                }');
+                }');'
             }
         }
 
@@ -260,10 +259,10 @@ export class ImportUpdater {
 
         for (const filePath of filesToUpdate) {
             try {'
-                const content = await fs.readFile(filePath, 'utf8),
+                const content = await fs.readFile(filePath, 'utf8),'
                 const updatedContent = this.updateNamedImportsInContent(content, oldName, newName),
 
-                if(updatedContent !== content) {''
+                if (updatedContent !== content) {''
                     await fs.writeFile(filePath, updatedContent, 'utf8'),
                     results.push({)'
                         file: filePath,')',
@@ -271,11 +270,11 @@ export class ImportUpdater {
                         changes: this.countChanges(content, updatedContent); }
 
                     });'} catch (error) { results.push({'
-                    file: filePath,',
-                    status: 'failed',',
+                    file: filePath,','
+                    status: 'failed',','
                     error: error.message',' }'
 
-                }');
+                }');'
             }
         }
 
@@ -289,14 +288,14 @@ export class ImportUpdater {
     updateNamedImportsInContent(content: string, oldName: string, newName: string): string { // 名前付きインポートのパターンをより厳密に
         const namedImportPattern = new RegExp(' }''
             `import\\s*\\{([^}]*\\b${oldName}\\b[^)]*')\\}\\s*from\\s*(['"\`][^'"\`]+['"\`]")`,"", 'g';
-        ';
-        ';
+        ';'
+        ';'
 
         return content.replace(namedImportPattern, (match, importList, fromClause) => { }'
 
             const updatedImportList = importList.replace() }
 
-                new RegExp(`\\b${oldName}\\b`, 'g),
+                new RegExp(`\\b${oldName}\\b`, 'g),'
                 newName;
             );
             return `import { ${updatedImportList.trim( }) } from ${fromClause}`;
@@ -307,23 +306,23 @@ export class ImportUpdater {
      * インポート構文の検証'
      */''
     validateImportSyntax(content: string): ValidationIssue[] { const issues: ValidationIssue[] = [],''
-        const lines = content.split('\n),
+        const lines = content.split('\n),'
         
         // 基本的な構文チェック
         for(let, i = 0, i < lines.length, i++) {
 
-            const line = lines[i].trim()',
+            const line = lines[i].trim()','
             if (line.startsWith('import ') && !line.includes('from' {'
                 // import文にfromがない（サイドエフェクト以外）
                 if(!this.importPatterns.sideEffectImport.test(line)) {
                     issues.push({''
-                        type: 'missing_from),
-                        line: i + 1',
+                        type: 'missing_from),'
+                        line: i + 1','
     content: line,' }'
 
-                        message: 'Import statement missing "from" clause')'); 
+                        message: 'Import statement missing "from" clause')'); '
     }
-            ';
+            ';'
             // 閉じ括弧の不一致
             if (line.includes('import { ') && !line.includes()) {
                 let, foundClosing = false,
@@ -333,10 +332,10 @@ export class ImportUpdater {
                         foundClosing = true }
                         break; }
 }''
-                if(!foundClosing) {
+                if (!foundClosing) {
                     issues.push({''
-                        type: 'unclosed_brace),
-                        line: i + 1',
+                        type: 'unclosed_brace),'
+                        line: i + 1','
     content: line,' }'
 
                         message: 'Unclosed brace in import statement'); 
@@ -354,7 +353,7 @@ export class ImportUpdater {
 
                 content: circular.path,') }'
 
-                message: `Potential circular dependency, detected: ${circular.path}`');
+                message: `Potential circular dependency, detected: ${circular.path}`');'
         }
         
         return issues;
@@ -370,13 +369,13 @@ export class ImportUpdater {
         const files: string[] = [],
         
         async function scanDirectory(dir: string): Promise<void> { try { }
-                const entries = await fs.readdir(dir, { withFileTypes: true });
+                const entries = await fs.readdir(dir, { withFileTypes: true,);
                 
                 for (const entry of entries) {
                 
                     const fullPath = path.join(dir, entry.name),
                     
-                    if(entry.isDirectory() {
+                    if (entry.isDirectory() {
     
 }
 
@@ -389,7 +388,7 @@ export class ImportUpdater {
         }
 
         await scanDirectory(rootDir);
-        this.cache.set('allJsFiles', files';
+        this.cache.set('allJsFiles', files';'
         return files;
     }
 
@@ -410,13 +409,13 @@ export class ImportUpdater {
      */
     calculateRelativePath(fromDir: string, toPath: string): string { ''
         let relativePath = path.relative(fromDir, toPath),
-        ',
+        ','
         // 拡張子を除去（.jsファイルの場合）
         if(relativePath.endsWith('.js' {', ' }
 
             relativePath = relativePath.slice(0, -3); }
         }
-        ';
+        ';'
         // 相対パスが現在のディレクトリを指さない場合は./を追加
         if (!relativePath.startsWith('../') && !relativePath.startsWith('./)' { ''
             relativePath = './' + relativePath }
@@ -430,12 +429,12 @@ export class ImportUpdater {
     extractSourcePathFromMatch(patternName: string, groups: string[]): string | null { ''
         switch(patternName) {
 
-            case 'namedImport':',
-            case 'defaultImport':',
-            case 'namespaceImport':',
+            case 'namedImport':','
+            case 'defaultImport':','
+            case 'namespaceImport':','
                 return groups[1], // 2番目のグループがパス
-            case 'sideEffectImport':',
-            case 'dynamicImport':',
+            case 'sideEffectImport':','
+            case 'dynamicImport':','
             case 'requireCall':,
                 return groups[0], // 1番目のグループがパス
         }
@@ -450,8 +449,8 @@ export class ImportUpdater {
      * ファイル名マッチング
      */
     matchesFileName(importInfo: ImportInfo, fileName: string): boolean { const sourcePath = importInfo.sourcePath,
-        return sourcePath.includes(fileName) || ',
-               path.basename(sourcePath) === fileName ||',
+        return sourcePath.includes(fileName) || ','
+               path.basename(sourcePath) === fileName ||','
                path.basename(sourcePath, '.js' === fileName }'
 
     /**
@@ -465,7 +464,7 @@ export class ImportUpdater {
      */''
     countChanges(oldContent: string, newContent: string): number { ''
         const oldLines = oldContent.split('\n'),
-        const newLines = newContent.split('\n),
+        const newLines = newContent.split('\n),'
         let changes = 0,
         
         const maxLines = Math.max(oldLines.length, newLines.length),
@@ -491,8 +490,7 @@ export class ImportUpdater {
                     paths.push({)
                         path: sourcePath,
     line: this.findLineNumber(content, match.index) }
-                        type: patternName 
-    });
+                        type: patternName;);
                 }
 }
         
@@ -504,10 +502,10 @@ export class ImportUpdater {
      */
     detectCircularDependencies(importPaths: ImportPathInfo[]): ImportPathInfo[] { // 現在は基本的な検出のみ実装
         // 将来的にはより詳細な依存関係グラフ分析を追加
-        const suspiciousPaths = importPaths.filter(imp => '),
-            imp.path.includes('..') && ',
-            imp.path.split('../).length > 3,
-        ',
+        const suspiciousPaths = importPaths.filter(imp => '),'
+            imp.path.includes('..') && ','
+            imp.path.split('../).length > 3,'
+        ','
         
         return suspiciousPaths,
 

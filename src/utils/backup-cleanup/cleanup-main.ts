@@ -9,56 +9,56 @@ import process from 'process';
 
 // Type definitions
 interface CommandLineOptions { dryRun: boolean,
-    verbose: boolean,
-    safetyMode: boolean,
-    confirmationRequired: boolean,
-    help: boolean,
-    reportOutputDir?: string  }
+    verbose: boolean;
+    safetyMode: boolean;
+    confirmationRequired: boolean;
+    help: boolean;
+    reportOutputDir?: string;
 
 interface SizeReduction { reduction: {
         filesRemove,d: number,
-    wordsRemoved: number };
-    impact: { repositorySizeReduction: string }
+    wordsRemoved: number,;
+    impact: { repositorySizeReduction: string,
 
 interface CleanupResults { deletion?: {
-        sizeReductio,n?: SizeReduction };
-    reports?: { reportFileName?: string }
+        sizeReductio,n?: SizeReduction;;
+    reports?: { reportFileName?: string;
 
 interface ExecutionState { phase: string,
-    results: CleanupResults,
+    results: CleanupResults;
     errors: Array<Error | string>  }
 
 interface CleanupSummary { filesProcessed: number,
-    filesDeleted: number,
-    errorsEncountered: number,
-    totalExecutionTime?: number }
-';
+    filesDeleted: number;
+    errorsEncountered: number;
+    totalExecutionTime?: number;
+';'
 
 interface CleanupResult { ''
-    status: 'success' | 'no_safe_files' | 'no_verified_safe_files' | 'user_cancelled' | 'error' | 'interrupted',
-    executionState: ExecutionState,
-    summary: CleanupSummary,
-    dryRun: boolean,
-    recommendations?: string[] }
+    status: 'success' | 'no_safe_files' | 'no_verified_safe_files' | 'user_cancelled' | 'error' | 'interrupted';
+    executionState: ExecutionState;
+    summary: CleanupSummary;
+    dryRun: boolean;
+    recommendations?: string[];
 
-async function main()';
+async function main()';'
     console.log('🧹 Backup, File Cleanup, Tool - Issue #104');
-    console.log('========================================\n);
+    console.log('========================================\n);'
     
     // コマンドライン引数の解析
     const args = process.argv.slice(2);
     const options = parseCommandLineArgs(args);
     
     // ヘルプの表示
-    if(options.help) {
+    if (options.help) {
         showHelp() }
         return; }
     }
     ;
     try { // CleanupOrchestratorの初期化
-        const orchestrator = new CleanupOrchestrator(options'),
+        const orchestrator = new CleanupOrchestrator(options'),'
 
-        console.log('Configuration: '),' }
+        console.log('Configuration: '),' }'
 
         console.log(`- Dry, Run: ${options.dryRun ? 'Yes (No, files, will, be, deleted'}'' : 'No'}`);
         console.log(`- Verbose: ${ options.verbose ? 'Yes' : 'No'`),''
@@ -92,17 +92,17 @@ function parseCommandLineArgs(args: string[]): CommandLineOptions { const option
         verbose: false,
         safetyMode: true,
         confirmationRequired: true,
-    help: false };
+    help: false,;
     for(let, i = 0; i < args.length; i++) {
         const arg = args[i],
 
         switch(arg) {''
-            case '--dry-run':',
+            case '--dry-run':','
             case '-d':,
                 options.dryRun = true,
 
                 break,
-            case '--verbose':',
+            case '--verbose':','
             case '-v':,
                 options.verbose = true,
 
@@ -115,12 +115,12 @@ function parseCommandLineArgs(args: string[]): CommandLineOptions { const option
                 options.confirmationRequired = false,
 
                 break,
-            case '--help':',
+            case '--help':','
             case '-h':,
                 options.help = true,
 
                 break,
-            case '--output-dir':',
+            case '--output-dir':','
             case '-o':,
                 if (i + 1 < args.length) {
     
@@ -170,7 +170,7 @@ For more information, see: https://github.com/taku-o/awaputi/issues/104,
  */''
 function displayResults(result: CleanupResult): void { ''
     console.log('\n📊 CLEANUP, RESULTS'),
-    console.log('==================\n) }
+    console.log('==================\n) }'
     console.log(`Status: ${getStatusEmoji(result.status}) ${result.status.toUpperCase(})`);
     console.log(`Phase: ${ result.executionState.phase)`,
     console.log(`Files, Processed: ${result.summary.filesProcessed)`,
@@ -182,16 +182,16 @@ function displayResults(result: CleanupResult): void { ''
     
 }
         const seconds = Math.round(result.summary.totalExecutionTime / 1000); }
-        console.log(`Execution Time: ${seconds}s`}');
+        console.log(`Execution Time: ${seconds}s`}');'
     }
 
-    if(result.dryRun') {', ' }
+    if (result.dryRun') {', ' }'
 
         console.log('\n🔍 DRY, RUN: No, files were, actually deleted'); }'
     }
-    ';
+    ';'
     // サイズ削減情報
-    if(result.executionState.results.deletion?.sizeReduction) {
+    if (result.executionState.results.deletion?.sizeReduction) {
         const sizeReduction = result.executionState.results.deletion.sizeReduction, : undefined''
         console.log('\n💾 SIZE, REDUCTION: ',
         console.log(`- Disk Space Saved: ${sizeReduction.impact.repositorySizeReduction }`} }
@@ -199,9 +199,9 @@ function displayResults(result: CleanupResult): void { ''
         console.log(`- Words Removed: ${sizeReduction.reduction.wordsRemoved.toLocaleString(})`);
     }
 
-    ';
+    ';'
     // エラー情報
-    if(result.executionState.errors.length > 0) {
+    if (result.executionState.errors.length > 0) {
 
         console.log('\n⚠️  ERRORS, ENCOUNTERED: ' }
         result.executionState.errors.forEach((error, index) => {  }
@@ -210,9 +210,9 @@ function displayResults(result: CleanupResult): void { ''
         });
     }
 
-    ';
+    ';'
     // 推奨事項
-    if(result.recommendations && result.recommendations.length > 0) {
+    if (result.recommendations && result.recommendations.length > 0) {
 
         console.log('\n📋 RECOMMENDATIONS: ' }
         result.recommendations.forEach((rec, index) => { }
@@ -232,7 +232,7 @@ function displayResults(result: CleanupResult): void { ''
  * ステータス絵文字の取得'
  */''
 function getStatusEmoji(status: CleanupResult['status]': string { ''
-    const emojis: Record<CleanupResult['status'], string> = {', 'success': '✅',
+    const emojis: Record<CleanupResult['status'], string> = {', 'success': '✅','
         'no_safe_files': '⚠️',
         'no_verified_safe_files': '⚠️',
         'user_cancelled': '🚫',
@@ -244,7 +244,7 @@ function getStatusEmoji(status: CleanupResult['status]': string { ''
 
 // スクリプトが直接実行された場合
 if (import.meta.url === `file://${ process.argv[1])`) {
-    main(}.catch(error => { }' }
+    main(}.catch(error => { }' }'
 
         console.error('Unhandled error: ', error); }
 

@@ -2,20 +2,20 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Type definitions for quality scaling and performance optimization
 interface ParticleManager { setQualityLevel(quality: string): void,
-    maxParticles: number,
-    particles: Particle[],
-    backgroundEnabled: boolean,
-    backgroundParticles: Particle[],
-    returnParticleToPool(particle: Particle): void }
+    maxParticles: number;
+    particles: Particle[];
+    backgroundEnabled: boolean;
+    backgroundParticles: Particle[];
+    returnParticleToPool(particle: Particle): void;
 
 interface Particle { type: string,
-    life: number,
-    maxLife: number,
-    size: number  }
-';
+    life: number;
+    maxLife: number;
+    size: number;
+';'
 
 interface PerformanceMonitor { ''
-    getCurrentMetrics('',
+    getCurrentMetrics('';
 type, QualityLevelName = 'potato' | 'low' | 'medium' | 'high' | 'ultra' | 'insane'
 
 /**
@@ -23,20 +23,20 @@ type, QualityLevelName = 'potato' | 'low' | 'medium' | 'high' | 'ultra' | 'insan
  * デバイス性能に応じてパーティクル効果の品質を動的に調整
  */
 export, class QualityScalingSystem {
-    private, particleManager: ParticleManager,
-    private, performanceMonitor: PerformanceMonitor | null,
-    private, qualityLevels: QualityLevels,
-    private, currentQuality: string,
-    private, autoAdjustEnabled: boolean,
-    private, performanceThresholds: PerformanceThresholds,
-    private, adjustmentHistory: AdjustmentRecord[],
-    private, lastAdjustmentTime: number,
-    private, adjustmentCooldown: number,
-    private, fallbackEffects: FallbackEffects',
-')',
+    private, particleManager: ParticleManager;
+    private, performanceMonitor: PerformanceMonitor | null;
+    private, qualityLevels: QualityLevels;
+    private, currentQuality: string;
+    private, autoAdjustEnabled: boolean;
+    private, performanceThresholds: PerformanceThresholds;
+    private, adjustmentHistory: AdjustmentRecord[];
+    private, lastAdjustmentTime: number;
+    private, adjustmentCooldown: number;
+    private, fallbackEffects: FallbackEffects';'
+')';
     constructor(particleManager: ParticleManager, performanceMonitor: PerformanceMonitor | null = null) {
-        this.particleManager = particleManager,
-        this.performanceMonitor = performanceMonitor,
+        this.particleManager = particleManager;
+        this.performanceMonitor = performanceMonitor;
         
         // 品質レベル定義
         this.qualityLevels = {', 'potato': {''
@@ -45,7 +45,7 @@ export, class QualityScalingSystem {
     sizeMultiplier: 0.6,
                 complexityLevel: 0,
                 enabledEffects: ['circle'],
-                disabledFeatures: ['trail', 'glow', 'background', 'lighting'],
+                disabledFeatures: ['trail', 'glow', 'background', 'lighting'];
                 maxParticles: 50 }
 
                 description: '最低品質 - 古い端末向け' 
@@ -54,8 +54,8 @@ export, class QualityScalingSystem {
                 countMultiplier: 0.25,
     sizeMultiplier: 0.8,
                 complexityLevel: 1,
-                enabledEffects: ['circle', 'star', 'diamond'],
-                disabledFeatures: ['trail', 'glow', 'background'],
+                enabledEffects: ['circle', 'star', 'diamond'];
+                disabledFeatures: ['trail', 'glow', 'background'];
                 maxParticles: 150,
                 description: '低品質 - 軽量モード'
             }
@@ -65,7 +65,7 @@ export, class QualityScalingSystem {
                 countMultiplier: 0.5,
     sizeMultiplier: 0.9,
                 complexityLevel: 2,
-                enabledEffects: ['circle', 'star', 'diamond', 'advanced_circle', 'hexagon'],
+                enabledEffects: ['circle', 'star', 'diamond', 'advanced_circle', 'hexagon'];
                 disabledFeatures: ['background'],
                 maxParticles: 300,
                 description: '中品質 - バランス重視'
@@ -76,7 +76,7 @@ export, class QualityScalingSystem {
                 countMultiplier: 1.0,
     sizeMultiplier: 1.0,
                 complexityLevel: 3,
-                enabledEffects: ['*],
+                enabledEffects: ['*],'
     disabledFeatures: [],
                 maxParticles: 500,
                 description: '高品質 - 標準設定'
@@ -87,7 +87,7 @@ export, class QualityScalingSystem {
                 countMultiplier: 1.5,
     sizeMultiplier: 1.2,
                 complexityLevel: 4,
-                enabledEffects: ['*],
+                enabledEffects: ['*],'
     disabledFeatures: [],
                 maxParticles: 800,
                 description: '最高品質 - ハイエンド向け'
@@ -98,13 +98,13 @@ export, class QualityScalingSystem {
                 countMultiplier: 2.0,
     sizeMultiplier: 1.5,
                 complexityLevel: 5,
-                enabledEffects: ['*],
+                enabledEffects: ['*],'
     disabledFeatures: [],
                 maxParticles: 1200,
                 description: '狂気品質 - 実験的設定'
             }
         };
-        ';
+        ';'
         // 現在の品質レベル
         this.currentQuality = 'high';
         
@@ -149,10 +149,10 @@ export, class QualityScalingSystem {
         this.currentQuality = quality;
         
         // パーティクルマネージャーに品質設定を適用
-        if(this.particleManager) {
+        if (this.particleManager) {
             this.particleManager.setQualityLevel(quality),
-            this.applyQualitySettings()',
-        this.recordAdjustment(oldQuality, quality, force ? 'manual' : 'auto) }
+            this.applyQualitySettings()','
+        this.recordAdjustment(oldQuality, quality, force ? 'manual' : 'auto) }'
         console.log(`[QualityScalingSystem] 品質レベル変更: ${oldQuality} → ${quality}`});
         return true;
     }
@@ -163,19 +163,19 @@ export, class QualityScalingSystem {
     private applyQualitySettings(): void { const settings = this.qualityLevels[this.currentQuality],
         
         // パーティクル数制限
-        if(this.particleManager.maxParticles !== settings.maxParticles) {
+        if (this.particleManager.maxParticles !== settings.maxParticles) {
     
 }
             this.particleManager.maxParticles = settings.maxParticles; }
         }
         
         // 現在のパーティクル数が制限を超えている場合は削減
-        if(this.particleManager.particles.length > settings.maxParticles) {
+        if (this.particleManager.particles.length > settings.maxParticles) {
             const excessCount = this.particleManager.particles.length - settings.maxParticles }
 
             this.removeExcessParticles(excessCount); }
         }
-        ';
+        ';'
         // 背景パーティクルの調整
         if(settings.disabledFeatures.includes('background' {'
             this.particleManager.backgroundEnabled = false }
@@ -209,7 +209,7 @@ export, class QualityScalingSystem {
      * @param particle - パーティクル
      * @returns 優先度 (低いほど削除されやすい)
      */''
-    private getParticlePriority(particle: Particle): number { const typePriorities: Record<string, number> = {', 'background': 1,
+    private getParticlePriority(particle: Particle): number { const typePriorities: Record<string, number> = {', 'background': 1,'
             'circle': 2,
             'advanced_circle': 3,
             'star': 4,
@@ -255,9 +255,9 @@ export, class QualityScalingSystem {
             // 品質レベル調整
             this.adjustQualityLevel(adjustmentDirection);
             this.lastAdjustmentTime = now;
-            ';
+            ';'
 
-        } catch (error) { getErrorHandler()',
+        } catch (error) { getErrorHandler()','
                 context: 'QualityScalingSystem.autoAdjustQuality' });
         }
     }
@@ -275,7 +275,7 @@ export, class QualityScalingSystem {
         let newIndex = currentIndex + direction,
         newIndex = Math.max(0, Math.min(qualityOrder.length - 1, newIndex),
         
-        if(newIndex !== currentIndex) {
+        if (newIndex !== currentIndex) {
         
             const newQuality = qualityOrder[newIndex] }
             this.setQualityLevel(newQuality); }
@@ -287,11 +287,11 @@ export, class QualityScalingSystem {
      * @returns サポート状況
      */
     public isEffectSupported(effectType: string): boolean { const settings = this.qualityLevels[this.currentQuality],
-        ',
+        ','
         // 無効化された機能をチェック
         if(settings.disabledFeatures.includes(effectType)) {
             return false }
-        ';
+        ';'
         // 有効な効果をチェック
         if(settings.enabledEffects.includes('*' { return true }'
         
@@ -304,7 +304,7 @@ export, class QualityScalingSystem {
      * @returns フォールバック効果タイプ
      */
     public getFallbackEffect(originalType: string): string { // サポートされている場合は元のタイプを返す
-        if(this.isEffectSupported(originalType) {
+        if (this.isEffectSupported(originalType) {
     
 }
             return originalType;
@@ -314,7 +314,7 @@ export, class QualityScalingSystem {
         ;
         // フォールバック効果もサポートされていない場合は再帰的に検索
         while(fallbackType && !this.isEffectSupported(fallbackType)) { fallbackType = this.fallbackEffects[fallbackType] }
-        ';
+        ';'
         // 最終的なフォールバック
         return fallbackType || 'circle';
     }
@@ -330,7 +330,7 @@ export, class QualityScalingSystem {
             from,
             to,
             reason,
-            performance: this.performanceMonitor ? this.performanceMonitor.getCurrentMetrics() : null  });
+            performance: this.performanceMonitor ? this.performanceMonitor.getCurrentMetrics() : null,);
         // 履歴サイズ制限
         if (this.adjustmentHistory.length > 50) { this.adjustmentHistory.shift() }
     }
@@ -365,18 +365,18 @@ export, class QualityScalingSystem {
      * デバイス性能を評価して推奨品質を取得
      * @returns 推奨品質レベル
      */''
-    public getRecommendedQuality()';
+    public getRecommendedQuality()';'
         const canvas = document.createElement('canvas');
         const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl';
         
         let score = 0;
-        ';
+        ';'
         // WebGLサポート
-        if(gl) {
+        if (gl) {
             score += 2,
-            ',
+            ','
             // GPU情報
-            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info),
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info),'
 
             if (debugInfo) {''
                 const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL),
@@ -385,9 +385,9 @@ export, class QualityScalingSystem {
                     score += 2; }
 }
         }
-        ';
+        ';'
         // メモリ情報
-        if('deviceMemory' in, navigator) {
+        if ('deviceMemory' in, navigator) {
             const deviceMemory = (navigator, as any).deviceMemory,
             if (deviceMemory >= 8) score += 3,
             else if (deviceMemory >= 4) score += 2 }
@@ -395,13 +395,13 @@ export, class QualityScalingSystem {
         }
         
         // CPUコア数
-        if(navigator.hardwareConcurrency) {
+        if (navigator.hardwareConcurrency) {
             if (navigator.hardwareConcurrency >= 8) score += 2 }
             else if (navigator.hardwareConcurrency >= 4) score += 1; }
         }
         
         // モバイル検出
-        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera, Mini/i.test(navigator.userAgent) { score -= 2 }
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera, Mini/i.test(navigator.userAgent) { score -= 2 }
         ;
         // 品質レベル決定
         if(score >= 8) return 'ultra';
@@ -423,10 +423,10 @@ export, class QualityScalingSystem {
     /**
      * デバッグ情報を出力'
      */''
-    public debugInfo()';
+    public debugInfo()';'
         console.group('[QualityScalingSystem] デバッグ情報');
         console.log('現在の品質:', this.getCurrentQualitySettings());
         console.log('パフォーマンス統計:', this.getPerformanceStats());
         console.log('推奨品質:', this.getRecommendedQuality());
         console.log('調整履歴:', this.adjustmentHistory.slice(-5);
-        console.groupEnd(');
+        console.groupEnd(');'

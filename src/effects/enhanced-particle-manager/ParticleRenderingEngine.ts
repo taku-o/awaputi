@@ -4,44 +4,42 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 type ErrorHandler = ReturnType<typeof getErrorHandler>;
 
 interface ParticleManager { // Placeholder for particle manager interface
-    [key: string]: any }
+    [key: string]: any;
 
 // Export interfaces for rendering
 export interface ParticleType { renderMethod: string,
-    cost: RenderingCost
-     }
+    cost: RenderingCost;
 ;
 export interface ExtendedParticleTypes { // 高度な基本パーティクル
-    'advanced_circle': ParticleType,', 'glow_circle': ParticleType,', 'trail_particle': ParticleType,
-    ',
+    'advanced_circle': ParticleType,', 'glow_circle': ParticleType,', 'trail_particle': ParticleType;
+    ';'
     // カスタム形状
-    'hexagon': ParticleType,', 'triangle': ParticleType,', 'cross': ParticleType,
-    ',
+    'hexagon': ParticleType,', 'triangle': ParticleType,', 'cross': ParticleType;
+    ';'
     // 高級エフェクト
-    'energy_orb': ParticleType,', 'magic_sparkle': ParticleType,', 'plasma_burst': ParticleType,
+    'energy_orb': ParticleType,', 'magic_sparkle': ParticleType,', 'plasma_burst': ParticleType;
     
-    [key: string]: ParticleType }
+    [key: string]: ParticleType;
 
 export interface RenderingSettings { batchRendering: boolean,
-    antiAliasing: boolean,
-    shadowQuality: ShadowQuality,
-    textureFiltering: TextureFiltering
-     }
+    antiAliasing: boolean;
+    shadowQuality: ShadowQuality;
+    textureFiltering: TextureFiltering;
 
 export interface TrailPoint { x: number,
-    y: number,
-    alpha?: number }
+    y: number;
+    alpha?: number;
 
 export interface RenderableParticle { x: number,
-    y: number,
-    size?: number,
-    color?: string,
-    alpha?: number,
-    active: boolean,
-    type?: string,
-    gradient?: boolean,
-    trail?: TrailPoint[],
-    rotation?: number }
+    y: number;
+    size?: number;
+    color?: string;
+    alpha?: number;
+    active: boolean;
+    type?: string;
+    gradient?: boolean;
+    trail?: TrailPoint[];
+    rotation?: number;
 
 export type RenderingCost = 'low' | 'medium' | 'high';
 export type ShadowQuality = 'low' | 'medium' | 'high';
@@ -52,21 +50,20 @@ export type TextureFiltering = 'linear' | 'nearest';
  * パーティクル描画処理エンジン - レンダリングメソッドと描画最適化
  */
 export class ParticleRenderingEngine {
-    private canvas: HTMLCanvasElement,
-    private particleManager: ParticleManager,
-    private errorHandler: ErrorHandler,
+    private canvas: HTMLCanvasElement;
+    private particleManager: ParticleManager;
+    private errorHandler: ErrorHandler;
     // 拡張パーティクルタイプの定義
     private readonly, extendedParticleTypes: ExtendedParticleTypes,
     // レンダリング設定
-    private renderingSettings: RenderingSettings,
+    private renderingSettings: RenderingSettings;
     constructor(canvas: HTMLCanvasElement, particleManager: ParticleManager) {
 
-        this.canvas = canvas,
-        this.particleManager = particleManager,
+        this.canvas = canvas;
+        this.particleManager = particleManager
+}
 
-     }
-
-        this.errorHandler = getErrorHandler('}
+        this.errorHandler = getErrorHandler('}'
 
             'advanced_circle': { renderMethod: 'renderAdvancedCircle', cost: 'low'
             },', 'glow_circle': { renderMethod: 'renderGlowCircle', cost: 'medium'
@@ -99,7 +96,7 @@ export class ParticleRenderingEngine {
             if(!particle || !particle.active) return,
 
             const particleType = this.extendedParticleTypes[particle.type || 'basic'],
-            if(particleType && this.hasRenderMethod(particleType.renderMethod) {
+            if (particleType && this.hasRenderMethod(particleType.renderMethod) {
     
 }
                 this.callRenderMethod(particleType.renderMethod, context, particle); }
@@ -108,7 +105,7 @@ export class ParticleRenderingEngine {
 
             } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderParticle'
-            }';
+            }';'
         }
     }
     
@@ -133,13 +130,13 @@ export class ParticleRenderingEngine {
             context.beginPath(),
             context.arc(particle.x, particle.y, particle.size || 2, 0, Math.PI * 2),
             context.fill(),
-            ',
+            ','
 
             context.restore(),' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderBasicParticle'
-            }';
+            }';'
         }
     }
     
@@ -150,20 +147,20 @@ export class ParticleRenderingEngine {
             context.save('',
             context.fillStyle = particle.color || '#ffffff'),
             // グラデーション効果)
-            if(particle.gradient) {
+            if (particle.gradient) {
                 const gradient = context.createRadialGradient(
                     particle.x, particle.y, 0),
-                    particle.x, particle.y, particle.size || 2)',
-                '),
+                    particle.x, particle.y, particle.size || 2)','
+                '),'
                 gradient.addColorStop(0, particle.color || '#ffffff'),
-                gradient.addColorStop(1, 'transparent) }
+                gradient.addColorStop(1, 'transparent) }'
                 context.fillStyle = gradient; }
             }
             
             context.beginPath();
             context.arc(particle.x, particle.y, particle.size || 2, 0, Math.PI * 2);
             context.fill();
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderAdvancedCircle'
@@ -179,13 +176,13 @@ export class ParticleRenderingEngine {
             
             const glowSize = (particle.size || 2) * 2,
             const gradient = context.createRadialGradient(
-                particle.x, particle.y, 0)',
+                particle.x, particle.y, 0)','
                 particle.x, particle.y, glowSize'',
-            '),
+            '),'
 
             gradient.addColorStop(0, particle.color || '#ffffff'),
             gradient.addColorStop(0.5, `${particle.color || '#ffffff'80`),
-            gradient.addColorStop(1, 'transparent),
+            gradient.addColorStop(1, 'transparent),'
             
             context.globalAlpha = particle.alpha || 1.0,
             context.fillStyle = gradient,
@@ -205,12 +202,12 @@ export class ParticleRenderingEngine {
      */
     renderTrailParticle(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {
             context.save(),
-            ',
+            ','
             // 軌跡描画
-            if(particle.trail && particle.trail.length > 1) { }'
+            if (particle.trail && particle.trail.length > 1) { }'
 
                 context.strokeStyle = `${particle.color || '#ffffff'}40`;
-                context.lineWidth = (particle.size || 2') * 0.5;
+                context.lineWidth = (particle.size || 2') * 0.5;'
                 context.lineCap = 'round';
                 
                 context.beginPath();
@@ -229,11 +226,11 @@ export class ParticleRenderingEngine {
             context.beginPath();
             context.arc(particle.x, particle.y, particle.size || 2, 0, Math.PI * 2);
             context.fill();
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderTrailParticle'
-            }';
+            }';'
         }
     }
     
@@ -261,11 +258,11 @@ export class ParticleRenderingEngine {
             }
             context.closePath();
             context.fill();
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderHexagon'
-            }';
+            }';'
         }
     }
     
@@ -290,13 +287,13 @@ export class ParticleRenderingEngine {
             context.lineTo(size * 0.866, size * 0.5),
             context.closePath(),
             context.fill(),
-            ',
+            ','
 
             context.restore(),' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderTriangle'
-            }';
+            }';'
         }
     }
     
@@ -304,7 +301,7 @@ export class ParticleRenderingEngine {
      * 十字パーティクル描画
      */'
     renderCross(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {'
-            context.save()',
+            context.save()','
             context.strokeStyle = particle.color || '#ffffff',')'
             context.lineWidth = Math.max(1, (particle.size || 2) * 0.2),
             context.lineCap = 'round',
@@ -324,7 +321,7 @@ export class ParticleRenderingEngine {
             context.moveTo(x - size, y),
             context.lineTo(x + size, y),
             context.stroke(),
-            ',
+            ','
 
             context.restore(),' }'
 
@@ -347,11 +344,11 @@ export class ParticleRenderingEngine {
             // 外側の光
             const outerGradient = context.createRadialGradient(
                 particle.x, particle.y, 0),
-                particle.x, particle.y, glowSize)',
-            '),
+                particle.x, particle.y, glowSize)','
+            '),'
             outerGradient.addColorStop(0, `${particle.color || '#00ffff'80`),
             outerGradient.addColorStop(0.7, `${particle.color || '#00ffff'20`),
-            outerGradient.addColorStop(1, 'transparent),
+            outerGradient.addColorStop(1, 'transparent),'
             
             context.globalAlpha = particle.alpha || 1.0,
             context.fillStyle = outerGradient,
@@ -363,11 +360,11 @@ export class ParticleRenderingEngine {
             // 内側のコア
             const, coreGradient = context.createRadialGradient(),
                 particle.x, particle.y, 0),
-                particle.x, particle.y, (particle.size || 2) * pulsation',
-            '),
+                particle.x, particle.y, (particle.size || 2) * pulsation','
+            '),'
             coreGradient.addColorStop(0, '#ffffff'),
             coreGradient.addColorStop(0.8, particle.color || '#00ffff'),
-            coreGradient.addColorStop(1, 'transparent),
+            coreGradient.addColorStop(1, 'transparent),'
             
             context.fillStyle = coreGradient,
             context.beginPath(),
@@ -376,14 +373,14 @@ export class ParticleRenderingEngine {
 
             context.restore(});'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderEnergyOrb'
-            }';
+            }';'
         }
     }
     
     /**
      * バッチ描画を有効化'
      */''
-    enableBatchRendering()';
+    enableBatchRendering()';'
         console.log('[ParticleRenderingEngine] バッチ描画を有効化しました');
     }
     
@@ -392,4 +389,4 @@ export class ParticleRenderingEngine {
      */''
     updateRenderingSettings(newSettings: Partial<RenderingSettings>): void {'
         this.renderingSettings = { ...this.renderingSettings, ...newSettings,
-        console.log('[ParticleRenderingEngine] レンダリング設定を更新しました') }'}
+        console.log('[ParticleRenderingEngine] レンダリング設定を更新しました') }'}'

@@ -14,41 +14,39 @@ import { normalizeUrl,
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string,
-    addLanguageChangeListener(callback: (lang: string) => void): void,
-    t(key: string, defaultValue?: string): string,
-    getSupportedLanguages(): string[] }
+    addLanguageChangeListener(callback: (lang: string) => void): void;
+    t(key: string, defaultValue?: string): string;
+    getSupportedLanguages(): string[];
 
 // SEOMetaManager インターフェース
 interface SEOMetaManager { updateMetaTags(context: any): Promise<void>,''
-    updateLanguage(language: string): void }
+    updateLanguage(language: string): void;
 
 // hreflangタグインターフェース
 interface HreflangTag { hreflang: string,
-    href: string,
+    href: string;
     rel: 'alternate'
             }
 
 // 言語別URLマッピングインターフェース
-interface LanguageUrlMapping { [language: string]: string }
+interface LanguageUrlMapping { [language: string]: string;
 
 export class SEOI18nManager {
-    private localizationManager: LocalizationManager | null,
-    private seoMetaManager: SEOMetaManager | null,
-    private baseUrl: string,
+    private localizationManager: LocalizationManager | null;
+    private seoMetaManager: SEOMetaManager | null;
+    private baseUrl: string;
     private, hreflangCache: Map<string, HreflangTag[]>,
-    private currentLanguage: LanguageCode,
+    private currentLanguage: LanguageCode;
     private, initialized: boolean,
     constructor(localizationManager: LocalizationManager | null = null, seoMetaManager: SEOMetaManager | null = null) {
     
-        this.localizationManager = localizationManager,
-        this.seoMetaManager = seoMetaManager,
-        this.baseUrl = getBaseUrl(),
-        this.hreflangCache = new Map(),
-        this.currentLanguage = SEOConfig.defaultLanguage,
-        this.initialized = false,
-        
-    
-     }
+        this.localizationManager = localizationManager;
+        this.seoMetaManager = seoMetaManager;
+        this.baseUrl = getBaseUrl();
+        this.hreflangCache = new Map();
+        this.currentLanguage = SEOConfig.defaultLanguage;
+        this.initialized = false
+}
         this._initialize(); }
     }
     
@@ -56,17 +54,17 @@ export class SEOI18nManager {
      * 初期化処理
      */
     private _initialize(): void { try {
-            if(this.localizationManager) {
-                this.currentLanguage = this.localizationManager.getCurrentLanguage() as LanguageCode,
+            if (this.localizationManager) {
+                this.currentLanguage = this.localizationManager.getCurrentLanguage() as LanguageCode;
                 
                 // 言語変更リスナーの設定
             }
                 this.localizationManager.addLanguageChangeListener((newLang: string) => {  }
                     this.handleLanguageChange(newLang, as LanguageCode);' }'
 
-                }');
+                }');'
             }
-            ';
+            ';'
 
             this.initialized = true;
             seoLogger.info('SEOI18nManager, initialized successfully';} catch (error) {
@@ -79,7 +77,7 @@ export class SEOI18nManager {
     generateHreflangTags(path: string = ''): HreflangTag[] { ''
         const cacheKey = generateCacheKey('hreflang', { path ),
         
-        if(this.hreflangCache.has(cacheKey) {
+        if (this.hreflangCache.has(cacheKey) {
     
 }
             return this.hreflangCache.get(cacheKey)!;
@@ -95,8 +93,8 @@ export class SEOI18nManager {
 
                 rel: 'alternate' 
     });
-        }';
-        ';
+        }';'
+        ';'
         // x-default タグの追加
         const defaultUrl = getLocalizedUrl(SEOConfig.defaultLanguage, path);
 
@@ -112,11 +110,11 @@ export class SEOI18nManager {
     /**
      * 言語変更の処理
      */
-    private handleLanguageChange(newLanguage: LanguageCode): void { this.currentLanguage = newLanguage,
+    private handleLanguageChange(newLanguage: LanguageCode): void { this.currentLanguage = newLanguage;
         this.hreflangCache.clear(),
         
         // SEOMetaManagerに言語変更を通知
-        if(this.seoMetaManager) {
+        if (this.seoMetaManager) {
     
 }
             this.seoMetaManager.updateLanguage(newLanguage); }
@@ -128,8 +126,8 @@ export class SEOI18nManager {
     /**
      * 現在の言語の取得
      */''
-    getCurrentLanguage()';
-    generateLanguageUrlMapping(path: string = '): LanguageUrlMapping {
+    getCurrentLanguage()';'
+    generateLanguageUrlMapping(path: string = '): LanguageUrlMapping {'
         const mapping: LanguageUrlMapping = {}
         SEOConfig.supportedLanguages.forEach(lang => {  ) }
             mapping[lang] = getLocalizedUrl(lang, path); }
@@ -142,7 +140,7 @@ export class SEOI18nManager {
      * リソースのクリーンアップ
      */'
     cleanup(): void { ''
-        this.hreflangCache.clear()',
+        this.hreflangCache.clear()','
         seoLogger.info('SEOI18nManager, cleaned up') }
 
-    }'}
+    }'}'

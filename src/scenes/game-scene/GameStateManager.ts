@@ -6,23 +6,23 @@
 
 // Type definitions
 interface GameState { isInitialized: boolean,
-    isGameStarted: boolean,
-    gameStartTime: number,
-    lastUpdateTime: number,
-    lastScore?: number  }
+    isGameStarted: boolean;
+    gameStartTime: number;
+    lastUpdateTime: number;
+    lastScore?: number;
 
 interface PlayerData { currentHP: number,
-    maxHP: number,
-    currentScore: number,
-    reset(): void }
+    maxHP: number;
+    currentScore: number;
+    reset(): void;
 
 interface ScoreManager { resetCombo(): void,
-    addScore(points: number): void,
-    addScoreMultiplier(multiplier: number): void,
-    getCombo(): number }
+    addScore(points: number): void;
+    addScoreMultiplier(multiplier: number): void;
+    getCombo(): number;
 
 interface BubbleManager { clearAllBubbles(): void,
-    getBubbleCount(): number }
+    getBubbleCount(): number;
 
 interface ItemManager { ownedItems: string[],
     getItem(itemId: string): Item | null }
@@ -30,62 +30,61 @@ interface ItemManager { ownedItems: string[],
 interface Item { id: string,
     effect: {
         typ,e: string,
-    value: number  }
+    value: number,
 
-interface StageManager { startStage(stageName: string): boolean }
+interface StageManager { startStage(stageName: string): boolean;
 
 interface GameStats { isGameStarted: boolean,
-    isPaused: boolean,
-    isGameOver: boolean,
-    gameTime: number,
-    timeRemaining: number,
-    score: number,
-    hp: number,
-    maxHP: number,
-    bubbleCount: number,
-    comboCount: number  }
+    isPaused: boolean;
+    isGameOver: boolean;
+    gameTime: number;
+    timeRemaining: number;
+    score: number;
+    hp: number;
+    maxHP: number;
+    bubbleCount: number;
+    comboCount: number;
 
 interface TimeWarnings { timeWarning: boolean,
-    urgentWarning: boolean,
+    urgentWarning: boolean;
     message: string | null }
 
 interface DebugInfo { gameState: GameState,
-    isPaused: boolean,
-    isGameOver: boolean,
-    gameStats: GameStats
-    }
+    isPaused: boolean;
+    isGameOver: boolean;
+    gameStats: GameStats;
 
 interface Bubble { type: string,
-    x: number,
-    y: number }
+    x: number;
+    y: number;
 
 // Minimal GameEngine interface
 interface GameEngine { playerData: PlayerData,
-    scoreManager: ScoreManager,
-    bubbleManager: BubbleManager,
-    itemManager: ItemManager,
-    stageManager?: StageManager,
-    isGameOver: boolean,
-    timeRemaining: number,
-    bonusTimeRemaining: number,
-    timeStopRemaining: number,
-    scoreMultiplier: number,
-    screenShakeRemaining: number,
-    screenShakeIntensity: number,
-    inputDisabled: boolean,
-    isTimeStopActive(): boolean,
-    startBonusTime(): void,
-    startTimeStop(): void }
+    scoreManager: ScoreManager;
+    bubbleManager: BubbleManager;
+    itemManager: ItemManager;
+    stageManager?: StageManager;
+    isGameOver: boolean;
+    timeRemaining: number;
+    bonusTimeRemaining: number;
+    timeStopRemaining: number;
+    scoreMultiplier: number;
+    screenShakeRemaining: number;
+    screenShakeIntensity: number;
+    inputDisabled: boolean;
+    isTimeStopActive(): boolean;
+    startBonusTime(): void;
+    startTimeStop(): void;
 
 export class GameStateManager {
-    private gameEngine: GameEngine,
-    private gameState: GameState,
+    private gameEngine: GameEngine;
+    private gameState: GameState;
     public, isPaused: boolean,
 
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.isPaused = false,
+        this.gameEngine = gameEngine;
+        this.isPaused = false;
         
         // 状態管理
         this.gameState = {
@@ -103,7 +102,7 @@ export class GameStateManager {
         this.gameEngine.scoreManager.resetCombo(),
         this.gameEngine.bubbleManager.clearAllBubbles(),
         this.gameEngine.isGameOver = false,
-        this.isPaused = false,
+        this.isPaused = false;
         
         // アイテム効果を適用
         this.applyItemEffects(),
@@ -112,12 +111,12 @@ export class GameStateManager {
         this.resetSpecialEffects(),
         
         // デフォルトステージを開始（バブル生成に必要）
-        if(this.gameEngine.stageManager) {
+        if (this.gameEngine.stageManager) {
             const stageStarted = this.gameEngine.stageManager.startStage('normal',
-            if(stageStarted) {
+            if (stageStarted) {
         }
 
-                console.log('Default, stage (normal') started for bubble spawning'); }
+                console.log('Default, stage (normal') started for bubble spawning'); }'
 
             } else { }'
 
@@ -127,15 +126,15 @@ export class GameStateManager {
         // 状態管理の更新
         this.gameState.isGameStarted = true;
         this.gameState.gameStartTime = Date.now();
-        this.gameState.lastUpdateTime = Date.now()';
+        this.gameState.lastUpdateTime = Date.now()';'
         console.log('Game, started');
     }
     
     /**
      * ゲーム終了処理'
      */''
-    public endGame()';
-        console.log('Game, ended);
+    public endGame()';'
+        console.log('Game, ended);'
     }
     
     /**
@@ -147,8 +146,8 @@ export class GameStateManager {
     /**
      * ポーズ状態の切り替え'
      */''
-    public togglePause()';
-        console.log(`Game ${this.isPaused ? 'paused' : 'resumed}`});
+    public togglePause()';'
+        console.log(`Game ${this.isPaused ? 'paused' : 'resumed}`});'
     }
     
     /**
@@ -160,7 +159,7 @@ export class GameStateManager {
     /**
      * アイテム効果を適用
      */
-    private applyItemEffects(): void { const itemManager = this.gameEngine.itemManager,
+    private applyItemEffects(): void { const itemManager = this.gameEngine.itemManager;
         
         // スコア倍率アップアイテム
         itemManager.ownedItems.forEach(itemId => { ),
@@ -190,7 +189,7 @@ export class GameStateManager {
             return }
         
         // 時間経過（時間停止中は除く）
-        if(!this.gameEngine.isTimeStopActive() {
+        if (!this.gameEngine.isTimeStopActive() {
             this.gameEngine.timeRemaining -= deltaTime,
             
             if (this.gameEngine.timeRemaining <= 0) {
@@ -209,7 +208,7 @@ export class GameStateManager {
      * ゲームオーバーの発動
      */
     public triggerGameOver(): void { this.gameEngine.isGameOver = true,
-        this.endGame()',
+        this.endGame()','
         console.log('Game, Over triggered') }'
     
     /**
@@ -219,13 +218,13 @@ export class GameStateManager {
      */'
     public onBubbleDestroyed(bubble: Bubble, points: number): void { // スコア更新
         this.gameEngine.scoreManager.addScore(points),
-        ',
+        ','
         // 特殊効果の判定
         if(bubble.type === 'rainbow' {', ' }
 
             this.gameEngine.startBonusTime() }
 
-        } else if(bubble.type === 'clock) { this.gameEngine.startTimeStop() }'
+        } else if (bubble.type === 'clock) { this.gameEngine.startTimeStop() }'
     }
     
     /**
@@ -235,7 +234,7 @@ export class GameStateManager {
     public onPlayerDamaged(damage: number): void { const playerData = this.gameEngine.playerData,
         playerData.currentHP = Math.max(0, playerData.currentHP - damage) }
         console.log(`Player, took ${damage} damage. HP: ${playerData.currentHP}/${ playerData.maxHP)`};
-        ';
+        ';'
         // 低HP警告
         if(playerData.currentHP <= playerData.maxHP * 0.25 && playerData.currentHP > 0} { }'
 
@@ -267,9 +266,9 @@ export class GameStateManager {
 
         switch(effectType} {'
 
-            case 'rainbow':',
+            case 'rainbow':','
                 this.gameEngine.startBonusTime('''
-            case 'clock': ',
+            case 'clock': ','
                 this.gameEngine.startTimeStop('',
             case 'electric':,
                 // 電気効果の処理
@@ -292,7 +291,7 @@ export class GameStateManager {
      * @returns スコアが変化したかどうか
      */
     public checkScoreChange(): boolean { const currentScore = this.gameEngine.playerData.currentScore,
-        if(currentScore !== this.gameState.lastScore) {
+        if (currentScore !== this.gameState.lastScore) {
             this.gameState.lastScore = currentScore }
             return true;
         return false;
@@ -306,17 +305,17 @@ export class GameStateManager {
         const warnings: TimeWarnings = {
             timeWarning: false,
             urgentWarning: false,
-    message: null };
+    message: null,;
         ;
         // 30秒以下で警告
-        if(timeRemaining <= 30000 && timeRemaining > 29000) {
+        if (timeRemaining <= 30000 && timeRemaining > 29000) {
             warnings.timeWarning = true }
 
             warnings.message = 'TIME WARNING!'; }
         }
-        ';
+        ';'
         // 10秒以下で緊急警告
-        if(timeRemaining <= 10000 && timeRemaining > 9000) {
+        if (timeRemaining <= 10000 && timeRemaining > 9000) {
             warnings.urgentWarning = true }
 
             warnings.message = 'HURRY UP!'; }
@@ -346,15 +345,15 @@ export class GameStateManager {
      * @returns 状態が有効かどうか
      */
     public validateGameState(): boolean { const playerData = this.gameEngine.playerData,
-        ',
+        ','
         // 基本的な状態チェック
-        if(playerData.currentHP < 0) {
+        if (playerData.currentHP < 0) {
 
-            console.warn('Invalid HP detected, triggering game over),
+            console.warn('Invalid HP detected, triggering game over),'
             this.triggerGameOver() }
             return false;
 
-        if(this.gameEngine.timeRemaining < 0') {
+        if (this.gameEngine.timeRemaining < 0') {'
 
             console.warn('Invalid time remaining detected',
             this.gameEngine.timeRemaining = 0,
@@ -370,6 +369,6 @@ export class GameStateManager {
      */
     public getDebugInfo(): DebugInfo { return { gameState: this.gameState,
             isPaused: this.isPaused,
-            isGameOver: this.gameEngine.isGameOver,' };
+            isGameOver: this.gameEngine.isGameOver,' };'
 
-            gameStats: this.getGameStats() }')
+            gameStats: this.getGameStats() }')'

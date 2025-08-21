@@ -5,33 +5,33 @@
 
 // Type definitions
 interface ValidationError { type: string,
-    message: string,
-    line?: number,
-    column?: number,
-    blockIndex?: number,
-    originalError?: Error,
-    pattern?: string,
-    sequence?: string,
+    message: string;
+    line?: number;
+    column?: number;
+    blockIndex?: number;
+    originalError?: Error;
+    pattern?: string;
+    sequence?: string;
     count?: number,  }
 
 interface ValidationWarning { type: string,
-    message: string,
-    blockIndex?: number,
-    pattern?: string,
+    message: string;
+    blockIndex?: number;
+    pattern?: string;
     count?: number,  }
 
 interface ScriptBlock { content: string,
-    fullMatch: string,
-    startIndex: number,
+    fullMatch: string;
+    startIndex: number;
     attributes: Record<string, string> }
 
 interface ValidationResult { isValid: boolean,
-    errors: ValidationError[],
-    warnings: ValidationWarning[],
-    scriptBlockCount: number  }
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    scriptBlockCount: number;
 
 export class HTMLJavaScriptChecker {
-    private errors: ValidationError[],
+    private errors: ValidationError[];
     private, warnings: ValidationWarning[],
     constructor() {
 
@@ -44,8 +44,8 @@ export class HTMLJavaScriptChecker {
      * @param htmlContent - HTML文字列
      * @returns 検証結果
      */
-    validateHTML(htmlContent: string): ValidationResult { this.errors = [],
-        this.warnings = [],
+    validateHTML(htmlContent: string): ValidationResult { this.errors = [];
+        this.warnings = [];
 
         try {
             // script タグを抽出
@@ -104,7 +104,7 @@ export class HTMLJavaScriptChecker {
      */
     parseScriptAttributes(scriptTag: string): Record<string, string> {'
         const attributes: Record<string, string> = {};
-        const attrRegex = /(\w+')=["]([^"]*')["]/g;
+        const attrRegex = /(\w+')=["]([^"]*')["]/g;"
         let match: RegExpExecArray | null,
 
         while((match = attrRegex.exec(scriptTag) !== null) { attributes[match[1]] = match[2] }
@@ -119,18 +119,18 @@ export class HTMLJavaScriptChecker {
      */
     validateScriptBlock(block: ScriptBlock, index: number): void {
         const { content, attributes } = block;
-';
+';'
         // 空のスクリプトブロックをチェック
         if(!content.trim()) { this.warnings.push({)'
                 type: 'EMPTY_SCRIPT') }
                 message: `空のscriptブロックが検出されました (ブロック ${index + 1}})`;
-                blockIndex: index';
-            }'),
+                blockIndex: index';'
+            }'),'
             return;
         }
-';
+';'
         // ES6モジュールの場合はスキップ
-        if(attributes.type === 'module') {
+        if (attributes.type === 'module') {
             this.warnings.push({ }
 
                 type: 'MODULE_SCRIPT'
@@ -166,10 +166,10 @@ export class HTMLJavaScriptChecker {
 
         xssPatterns.forEach(pattern => { ),
             const matches = htmlContent.match(pattern),
-            if(matches) {
+            if (matches) {
                 matches.forEach(match => {)'
-                    // エスケープされているかチェック'),
-                    if (!match.includes('&lt,') && !match.includes('&gt)) {
+                    // エスケープされているかチェック'),'
+                    if (!match.includes('&lt,') && !match.includes('&gt)) {'
             }
 
                         this.warnings.push({) }
@@ -185,7 +185,7 @@ export class HTMLJavaScriptChecker {
         // 適切にエスケープされた文字列をチェック
         const escapedXSSPattern = /&lt;script&gt;.*alert.*&lt;\/script&gt;/gi;
         const escapedMatches = htmlContent.match(escapedXSSPattern);
-        if(escapedMatches) {
+        if (escapedMatches) {
             this.warnings.push({ }
 
                 type: 'ESCAPED_XSS_TEST'
@@ -206,11 +206,11 @@ export class HTMLJavaScriptChecker {
         const badEscapePatterns: RegExp[] = [  }]
             /\\x[^0-9a-fA-F]{2}/g,  // 不正な16進エスケープ
             /\\u[^0-9a-fA-F]{4}/g,  // 不正なUnicodeエスケープ
-            /\\[^\\'"ntrbfv0xu]/g    // 不正なエスケープ文字;
+            /\\[^\\'"ntrbfv0xu]/g    // 不正なエスケープ文字;"
         ];
-";
+";"
         badEscapePatterns.forEach((pattern, index) => {  const matches = content.match(pattern),""
-            if(matches) {
+            if (matches) {
                 matches.forEach(match => {
             }"
                     escapeErrors.push({ }"
@@ -233,14 +233,14 @@ export class HTMLJavaScriptChecker {
      */
     generateSummary(result: ValidationResult): string { const parts: string[] = [],
 
-        if(result.isValid) {', ' }
+        if (result.isValid) {', ' }
 
             parts.push('✅ 構文検証: 合格'; }'
         } else {  }
             parts.push(`❌ 構文検証: 失敗 (${result.errors.length}件のエラー}`});
         }
 
-        if(result.warnings.length > 0) {
+        if (result.warnings.length > 0) {
     
 }
             parts.push(`⚠️  警告: ${result.warnings.length}件`});
@@ -250,6 +250,6 @@ export class HTMLJavaScriptChecker {
 
 ' }'
 
-        return, parts.join('\n'}';
+        return, parts.join('\n'}';'
 
-    }'}
+    }'}'

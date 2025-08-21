@@ -8,48 +8,47 @@ import { AchievementHelpSystem  } from '../../../ui/AchievementHelpSystem.js';
 
 // ヘルプセクションのインターフェース
 interface HelpSection { id: string,
-    name: string,
-    icon: string  }
+    name: string;
+    icon: string;
 
 // ヘルプコンテンツのインターフェース
 interface HelpContent { title: string,
     content: string[] | string }
 
 // ヘルプコンテンツマップのインターフェース
-interface HelpContentMap { [sectionId: string]: HelpContent }
+interface HelpContentMap { [sectionId: string]: HelpContent;
 
 // ヘルプシステム状態のインターフェース
 interface HelpSystemStatus { isActive: boolean,
-    currentSection: string,
-    hasContent: boolean,
-    availableSections: number,
-    systemType: string  }
+    currentSection: string;
+    hasContent: boolean;
+    availableSections: number;
+    systemType: string;
 
 // ゲームエンジンのインターフェース
 interface GameEngine { canvas: HTMLCanvasElement,
-    achievementManager?: any }
+    achievementManager?: any;
 
 // イベントバスのインターフェース
 interface EventBus { on(event: string, callback: (data?: any) => void): void,
-    off(event: string, callback?: (data?: any) => void): void,
-    emit(event: string, data?: any): void 
-    }
+    off(event: string, callback?: (data?: any) => void): void;
+    emit(event: string, data?: any): void;
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any,''
-    set(key: string, value: any): void  }
+    set(key: string, value: any): void;
 
 export class UserHelpIntegration {
-    private gameEngine: GameEngine,
-    private eventBus: EventBus,
-    private sceneState: SceneState,
+    private gameEngine: GameEngine;
+    private eventBus: EventBus;
+    private sceneState: SceneState;
     // ヘルプシステム
-    private helpSystem: AchievementHelpSystem | null = null,
-    private achievementHelpSystem: AchievementHelpSystem | null = null,
+    private helpSystem: AchievementHelpSystem | null = null;
+    private achievementHelpSystem: AchievementHelpSystem | null = null;
     // ヘルプ状態
-    private currentHelpSection: string = 'overview',
-    private helpContent: HelpContentMap | null = null,
-    private isHelpSystemActive: boolean = false,
+    private currentHelpSection: string = 'overview';
+    private helpContent: HelpContentMap | null = null;
+    private isHelpSystemActive: boolean = false;
     // ヘルプセクション定義
     private, helpSections: HelpSection[] = [' }'
 
@@ -71,9 +70,9 @@ export class UserHelpIntegration {
     private contentPadding: number = 20;
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.sceneState = sceneState,
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.sceneState = sceneState;
         
         this.initialize() }
         this.setupEventListeners(); }
@@ -89,16 +88,16 @@ export class UserHelpIntegration {
      * イベントリスナーをセットアップ
      */
     private setupEventListeners(): void { ''
-        if(this.eventBus) {', ' }
+        if (this.eventBus) {', ' }
 
             this.eventBus.on('helpSectionChanged', (section: string) => {  }
 
                 this.changeHelpSection(section);' }'
 
-            }');
+            }');'
 
             this.eventBus.on('helpSystemToggle', (active: boolean) => { this.isHelpSystemActive = active,' 
-    }');
+    }');'
 
             this.eventBus.on('helpContentReload', () => { this.loadHelpContent() });
         }
@@ -109,13 +108,13 @@ export class UserHelpIntegration {
      */
     private initializeHelpSystem(): void { try {
             // 実績マネージャーが利用可能な場合のみヘルプシステムを初期化
-            if(this.gameEngine.achievementManager) {
+            if (this.gameEngine.achievementManager) {
 
-                this.achievementHelpSystem = new AchievementHelpSystem(this.gameEngine.achievementManager),
-                this.helpSystem = this.achievementHelpSystem,
-                this.isHelpSystemActive = true,
+                this.achievementHelpSystem = new AchievementHelpSystem(this.gameEngine.achievementManager);
+                this.helpSystem = this.achievementHelpSystem;
+                this.isHelpSystemActive = true;
 
-                ' }
+                ' }'
 
                 console.log('Help, system initialized, successfully'); }
 
@@ -126,7 +125,7 @@ export class UserHelpIntegration {
 
             } catch (error) {
             console.warn('Failed to initialize help system:', error),
-            this.helpSystem = null,
+            this.helpSystem = null;
             this.isHelpSystemActive = false }
     }
     
@@ -140,9 +139,9 @@ export class UserHelpIntegration {
             }
             ;
             // イベントバスに通知
-            if(this.eventBus) {', ' }
+            if (this.eventBus) {', ' }
 
-                this.eventBus.emit('helpContentLoaded', this.helpContent'; }
+                this.eventBus.emit('helpContentLoaded', this.helpContent'; }'
 
             } catch (error) {
             console.error('Failed to load help content:', error),
@@ -161,7 +160,7 @@ export class UserHelpIntegration {
         const contentWidth = canvas.width - this.contentPadding * 2,
         const contentX = this.contentPadding,
         
-        if(helpTabComponent && helpTabComponent.isActive) {
+        if (helpTabComponent && helpTabComponent.isActive) {
         
             // 新しいHelpTabコンポーネントでレンダリング
         
@@ -179,7 +178,7 @@ export class UserHelpIntegration {
         
         let currentY = y + this.contentPadding,
         // ヘルプシステムが利用可能かチェック
-        if(!this.isHelpSystemActive || !this.helpContent) {
+        if (!this.isHelpSystemActive || !this.helpContent) {
 
             context.fillStyle = '#cccccc',
             context.font = '18px Arial',
@@ -211,18 +210,18 @@ export class UserHelpIntegration {
 
         for(let, i = 0, i < this.helpSections.length, i++) {
             const section = this.helpSections[i],
-            const isActive = this.currentHelpSection === section.id,
-            ',
+            const isActive = this.currentHelpSection === section.id;
+            ','
             // ボタン背景
             context.fillStyle = isActive ? '#4CAF50' : '#2196F3',
             context.fillRect(currentX, y, buttonWidth, buttonHeight),
-            ',
+            ','
             // ボタン枠線
             context.strokeStyle = '#333',
 
             context.lineWidth = 1,
             context.strokeRect(currentX, y, buttonWidth, buttonHeight),
-            ',
+            ','
             // ボタンテキスト
             context.fillStyle = '#ffffff',
             context.font = '12px Arial',
@@ -255,23 +254,23 @@ export class UserHelpIntegration {
         const content = this.helpContent[this.currentHelpSection],
 
         if(!content) return,
-        ',
+        ','
         // セクション背景
         context.fillStyle = '#16213e',
         context.fillRect(x, y, width, height),
-        ',
+        ','
         // セクション枠線
         context.strokeStyle = '#333',
 
         context.lineWidth = 1,
         context.strokeRect(x, y, width, height),
-        ',
+        ','
         // セクションタイトル
         context.fillStyle = '#ffffff',
         context.font = 'bold 18px Arial',
         context.textAlign = 'left',
-        context.fillText(content.title || 'ヘルプ', x + 15, y + 25',
-        ',
+        context.fillText(content.title || 'ヘルプ', x + 15, y + 25','
+        ','
         // コンテンツ描画
         context.fillStyle = '#cccccc',
         context.font = '14px Arial',
@@ -282,8 +281,8 @@ export class UserHelpIntegration {
         let currentY = y + 50,
         const maxY = y + height - padding,
         
-        if(content.content && Array.isArray(content.content) {
-        ',
+        if (content.content && Array.isArray(content.content) {
+        ','
 
             for (const line of content.content) {''
                 if(currentY + lineHeight > maxY) break,
@@ -292,14 +291,14 @@ export class UserHelpIntegration {
                     currentY += lineHeight / 2 }
                     continue; }
                 }
-                ';
+                ';'
                 // 特別なスタイリング
-                if (line.startsWith('🎯 ') || line.startsWith('⏰ ') || ';
+                if (line.startsWith('🎯 ') || line.startsWith('⏰ ') || ';'
                     line.startsWith('💡 ') || line.startsWith('🏆 ')' { ''
-                    context.fillStyle = '#FFD700',' }
+                    context.fillStyle = '#FFD700',' }'
 
                 } else if(line.startsWith('❓ ')' { ''
-                    context.fillStyle = '#87CEEB',' }
+                    context.fillStyle = '#87CEEB',' }'
 
                 } else if(line.startsWith('📋 ')' { ''
                     context.fillStyle = '#90EE90' }
@@ -312,7 +311,7 @@ export class UserHelpIntegration {
                 this.renderWrappedHelpText(context, line, textX, currentY, width - padding * 2, lineHeight);
                 currentY += lineHeight;
 
-            }'} else if(typeof, content.content === 'string) { this.renderWrappedHelpText(context, content.content, textX, currentY, width - padding * 2, lineHeight) }'
+            }'} else if (typeof, content.content === 'string) { this.renderWrappedHelpText(context, content.content, textX, currentY, width - padding * 2, lineHeight) }'
     }
     
     /**
@@ -323,11 +322,11 @@ export class UserHelpIntegration {
     text: string, ;
         x: number, ;
         y: number );
-        maxWidth: number)',
-    lineHeight: number';
+        maxWidth: number)','
+    lineHeight: number';'
     '): void { ''
         const words = text.split(', '),
-        let line = ',
+        let line = ','
         let currentY = y,
 
         for(let, n = 0, n < words.length, n++) {
@@ -336,16 +335,16 @@ export class UserHelpIntegration {
             const metrics = context.measureText(testLine),
             const testWidth = metrics.width,
 
-            ',
+            ','
 
             if (testWidth > maxWidth && n > 0) {''
-                context.fillText(line.trim(), x, currentY'),
+                context.fillText(line.trim(), x, currentY'),'
                 line = words[n] + ', ' }
                 currentY += lineHeight; }
             } else { line = testLine }
         }
         
-        if(line.trim() { context.fillText(line.trim(), x, currentY) }
+        if (line.trim() { context.fillText(line.trim(), x, currentY) }
     }
     
     /**
@@ -356,10 +355,10 @@ export class UserHelpIntegration {
         const relativeX = x,
         const relativeY = y - contentY,
         
-        if(helpTabComponent && helpTabComponent.isActive) {
+        if (helpTabComponent && helpTabComponent.isActive) {
         
             // 新しいHelpTabコンポーネントでクリック処理
-            if(helpTabComponent.handleClick(relativeX, relativeY) {
+            if (helpTabComponent.handleClick(relativeX, relativeY) {
     
 }
                 return true; // コンポーネントが処理した場合 }
@@ -379,7 +378,7 @@ export class UserHelpIntegration {
         const selectorY = 120 + this.contentPadding, // headerHeight + contentPadding
         
         // セクション選択ボタンの範囲内かチェック
-        if(y >= selectorY && y <= selectorY + buttonHeight) {
+        if (y >= selectorY && y <= selectorY + buttonHeight) {
             let currentX = this.contentPadding,
             
             for (let, i = 0, i < this.helpSections.length, i++) {
@@ -399,16 +398,16 @@ export class UserHelpIntegration {
     /**
      * ヘルプセクションを変更
      */
-    public changeHelpSection(sectionId: string): void { if(this.helpSections.find(s => s.id === sectionId) {
-            this.currentHelpSection = sectionId,
+    public changeHelpSection(sectionId: string): void { if (this.helpSections.find(s => s.id === sectionId) {
+            this.currentHelpSection = sectionId;
             
             // ヘルプシステムにも通知（存在する場合）
             if (this.helpSystem && (this.helpSystem, as any).changeHelpSection) {
                 (this.helpSystem, as any).changeHelpSection(sectionId) }
             }
-            ';
+            ';'
             // イベントバスに通知
-            if(this.eventBus) { }
+            if (this.eventBus) { }
 
                 this.eventBus.emit('helpSectionChanged', sectionId); }
             }
@@ -422,132 +421,132 @@ export class UserHelpIntegration {
      */''
     private generateBasicHelpContent('''
                 title: '概要',
-                content: [';
+                content: [';'
                     '📋 このゲームについて',
-                    ',
+                    ','
                     'バブルポップゲームは、画面に現れるバブルをクリックして消すゲームです。',
                     '制限時間内にできるだけ多くのバブルを消して高得点を目指しましょう。',
-                    ',
+                    ','
                     '🎯 基本的な操作',
                     '• バブルをクリック: バブルを消す',
                     '• ドラッグ: バブルを押し退ける',
                     '• 連続でバブルを消すとコンボボーナスが発生します',
-                    ',
+                    ','
                     '⏰ ゲームの流れ',
                     '1. ステージを選択',
                     '2. 制限時間内でバブルを消す',
-                    '3. スコアとAPを獲得',]';
+                    '3. スコアとAPを獲得',]';'
                     '4. 実績解除を目指す'];
                 ];
             },
 
             categories: { ''
                 title: 'バブルカテゴリ',
-                content: [',
+                content: [','
                     '📁 バブルの種類',
-                    ',
+                    ','
                     '🔵 通常バブル',
                     '• Normal: 基本的なバブル（1回クリックで消える）',
                     '• Stone: 硬いバブル（2回クリック必要）',
                     '• Iron: より硬いバブル（3回クリック必要）',
                     '• Diamond: 最も硬いバブル（5回クリック必要）',
-                    ',
+                    ','
                     '🌈 特殊バブル',
                     '• Rainbow: ボーナスタイム発動',
                     '• Pink: HP回復',
                     '• Clock: 時間停止効果',
                     '• Electric: 画面震動＋一時的操作無効',
-                    '• Poison: ポップ時ダメージ',]',
+                    '• Poison: ポップ時ダメージ',]','
                     '• Boss: 大型で高HP'],
                 ]  },
 
             progress: { ')'
-                title: '進捗システム')',
-    content: [',
+                title: '進捗システム')','
+    content: [','
                     '📊 進捗の仕組み',
-                    ',
+                    ','
                     '🏆 AP(Awaputi, Points)',
                     '• ゲームをプレイして獲得',
                     '• アイテム購入に使用',
                     '• 実績解除でボーナス',
-                    ',
+                    ','
                     '📈 TAP(Total, AP)',
                     '• 累計獲得AP',
                     '• ステージアンロックの条件',
                     '• プレイヤーレベルの指標',
-                    ',
+                    ','
                     '🎯 実績システム',
                     '• スコア実績: 高得点達成',
                     '• プレイ実績: ゲーム回数',
-                    '• スキル実績: テクニック系',]',
+                    '• スキル実績: テクニック系',]','
                     '• コレクション実績: バブル種類'],
                 ] },
 
             rewards: { ''
                 title: '報酬システム',
-                content: [',
+                content: [','
                     '🏆 報酬の種類',
-                    ',
+                    ','
                     '💰 ゲーム報酬',
                     '• バブル消去: 基本スコア＋AP',
                     '• コンボボーナス: 連続消去でボーナス',
                     '• ステージクリア: クリアボーナス',
                     '• タイムボーナス: 残り時間に応じて',
-                    ',
+                    ','
                     '🏅 実績報酬',
                     '• 実績解除時にAPボーナス',
                     '• 特別な称号獲得',
                     '• 隠し要素のアンロック',
-                    ',
+                    ','
                     '🎁 アイテム',
                     '• ショップで購入可能',
-                    '• ゲームを有利にする効果',]',
+                    '• ゲームを有利にする効果',]','
                     '• 限定アイテムも存在'],
                 ] },
 
             tips: { ''
                 title: 'プレイのコツ',
-                content: [',
+                content: [','
                     '💡 上達のヒント',
-                    ',
+                    ','
                     '🎯 効率的なプレイ',
                     '• 硬いバブルは早めに処理',
                     '• コンボを意識した消去順序',
                     '• 特殊バブルのタイミングを見極める',
                     '• ドラッグを活用した位置調整',
-                    ',
+                    ','
                     '⚡ 高得点のコツ',
                     '• 連続コンボでボーナス稼ぎ',
                     '• ボーナスタイム中は積極的に',
                     '• 時間停止中の効率プレイ',
                     '• 画面の隅まで注意深く',
-                    ',
+                    ','
                     '🛡️ 危険回避',
                     '• Poisonバブルの早期処理',
-                    '• HPの管理を怠らない',]',
+                    '• HPの管理を怠らない',]','
                     '• Electricバブルは慎重に'],
                 ] },
 
             faq: { ''
                 title: 'よくある質問',
-                content: [',
+                content: [','
                     '❓ よくある質問',
-                    ',
+                    ','
                     'Q: ゲームが重い場合は？',
                     'A: 設定画面で品質設定を下げてください。',
-                    ',
+                    ','
                     'Q: データが消えた場合は？',
                     'A: ブラウザのキャッシュクリアが原因の可能性があります。',
                     '   データエクスポート機能でバックアップを取ることをお勧めします。',
-                    ',
+                    ','
                     'Q: 実績が解除されない？',
                     'A: 条件を満たしていても表示に時間がかかる場合があります。',
                     '   ページをリロードしてみてください。',
-                    ',
+                    ','
                     'Q: アイテムの効果は？',
                     'A: ショップでアイテムを選択すると詳細説明が表示されます。',
-                    ',
-                    'Q: 操作方法を忘れた？',]',
+                    ','
+                    'Q: 操作方法を忘れた？',]','
                     'A: ゲーム中にF1キーでヘルプを表示できます。'],
                 ]  }
         }
@@ -555,10 +554,10 @@ export class UserHelpIntegration {
     /**
      * エラー時のヘルプコンテンツを生成'
      */''
-    private generateErrorHelpContent()';
-                title: 'エラー')',
-    content: [';
-                    'ヘルプコンテンツの読み込みに失敗しました。',]';
+    private generateErrorHelpContent()';'
+                title: 'エラー')','
+    content: [';'
+                    'ヘルプコンテンツの読み込みに失敗しました。',]';'
                     'ページをリロードして再度お試しください。'];
                 ];
             }
@@ -584,7 +583,7 @@ export class UserHelpIntegration {
      */
     public getHelpContent(sectionId?: string): HelpContent | HelpContentMap | null { if (!this.helpContent) return null,
         
-        if(sectionId) {
+        if (sectionId) {
     
 }
             return this.helpContent[sectionId] || null;
@@ -596,7 +595,7 @@ export class UserHelpIntegration {
      * ヘルプシステムの状態を取得'
      */''
     public getSystemStatus('''
-            systemType: this.helpSystem ? 'achievement' : 'basic);
+            systemType: this.helpSystem ? 'achievement' : 'basic);'
         }'
     
     /**
@@ -611,7 +610,7 @@ export class UserHelpIntegration {
      * コンポーネントのクリーンアップ
      */'
     public cleanup(): void { ''
-        if(this.eventBus) {
+        if (this.eventBus) {
 
             this.eventBus.off('helpSectionChanged'),
             this.eventBus.off('helpSystemToggle') }
@@ -623,4 +622,4 @@ export class UserHelpIntegration {
         this.helpSystem = null;
         this.achievementHelpSystem = null;
         this.helpContent = null;
-    }'}
+    }'}'

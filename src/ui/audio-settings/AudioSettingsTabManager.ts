@@ -9,7 +9,7 @@ import type { LocalizationManager } from '../../core/LocalizationManager.js';
  * Tab definition interface
  */
 interface TabDefinition { label: string,
-    icon: string  }
+    icon: string;
 
 /**
  * Tab key type'
@@ -20,20 +20,20 @@ type TabKey = 'volume' | 'quality' | 'effects' | 'accessibility' | 'test';
  * Tab renderers interface
  */
 interface TabRenderers { renderVolumeTab(content: HTMLElement): void,
-    renderQualityTab(content: HTMLElement): void,
-    renderEffectsTab(content: HTMLElement): void,
-    renderAccessibilityTab(content: HTMLElement): void,
-    renderTestTab(content: HTMLElement): void }
+    renderQualityTab(content: HTMLElement): void;
+    renderEffectsTab(content: HTMLElement): void;
+    renderAccessibilityTab(content: HTMLElement): void;
+    renderTestTab(content: HTMLElement): void;
 
 /**
  * Audio Settings Tab Manager
  * オーディオ設定タブ管理 - タブナビゲーション、タブ描画処理
  */
 export class AudioSettingsTabManager {
-    private audioManager: AudioManager,
-    private configManager: ConfigurationManager,
-    private localizationManager: LocalizationManager,
-    private errorHandler: ErrorHandler,
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
     // タブ定義
     private, tabs: Record<TabKey, TabDefinition> = { }'
 
@@ -53,8 +53,8 @@ export class AudioSettingsTabManager {
     private, tabRenderers: TabRenderers | null = null;
     constructor(audioManager: AudioManager, configManager: ConfigurationManager) {
 
-        this.audioManager = audioManager,
-        this.configManager = configManager,
+        this.audioManager = audioManager;
+        this.configManager = configManager;
         this.localizationManager = getLocalizationManager() }
         this.errorHandler = getErrorHandler(); }
     }
@@ -67,7 +67,7 @@ export class AudioSettingsTabManager {
     /**
      * タブナビゲーションを作成'
      */''
-    createTabNavigation()';
+    createTabNavigation()';'
         const nav = document.createElement('div');
         nav.className = 'audio-settings-tabs';
         nav.style.cssText = `;
@@ -79,12 +79,12 @@ export class AudioSettingsTabManager {
 
         Object.entries(this.tabs).forEach(([key, tab]) => {  const tabKey = key as TabKey,' }'
 
-            const button = document.createElement('button');' }
+            const button = document.createElement('button');' }'
 
-            button.className = `audio-settings-tab ${tabKey === this.activeTab ? 'active' : '}`;
+            button.className = `audio-settings-tab ${tabKey === this.activeTab ? 'active' : '}`;'
             button.innerHTML = `${tab.icon} ${this.localizationManager.getText(tab.label'}'`;
 
-            button.style.cssText = `';
+            button.style.cssText = `';'
                 background: ${tabKey === this.activeTab ? 'rgba(0, 255, 255, 0.2'}'' : 'none'},''
                 border: 2px solid ${tabKey === this.activeTab ? '#00ffff' : '#333333'},''
                 color: ${tabKey === this.activeTab ? '#00ffff' : '#999999'};
@@ -97,14 +97,14 @@ export class AudioSettingsTabManager {
 
             button.addEventListener('click', () => this.showTab(tabKey));
             button.addEventListener('mouseenter', () => {  ''
-                if(tabKey !== this.activeTab) {', ' }
+                if (tabKey !== this.activeTab) {', ' }
 
                     button.style.borderColor = '#666666'; }
 
                     button.style.color = '#cccccc'; }
 };
             button.addEventListener('mouseleave', () => {  ''
-                if(tabKey !== this.activeTab) {', ' }
+                if (tabKey !== this.activeTab) {', ' }
 
                     button.style.borderColor = '#333333'; }
 
@@ -123,10 +123,10 @@ export class AudioSettingsTabManager {
     showTab(tabKey: TabKey): void { try {
             // 現在のタブを非アクティブ化
             const tabs = this.container.querySelectorAll('.audio-settings-tab',
-            tabs.forEach(tab => { '),
+            tabs.forEach(tab => { '),'
                 tab.classList.remove('active'),
                 tab.style.background = 'none',
-                tab.style.borderColor = '#333333',' }
+                tab.style.borderColor = '#333333',' }'
 
                 tab.style.color = '#999999'; }
             };
@@ -134,7 +134,7 @@ export class AudioSettingsTabManager {
             // 新しいタブをアクティブ化
             const activeTabButton = Array.from(tabs).find(tab => );
                 tab.textContent?.includes(this.tabs[tabKey].icon) as HTMLElement | undefined;
-            if(activeTabButton) {
+            if (activeTabButton) {
 
                 activeTabButton.classList.add('active'),
                 activeTabButton.style.background = 'rgba(0, 255, 255, 0.2)',
@@ -144,27 +144,27 @@ export class AudioSettingsTabManager {
             }
             
             this.activeTab = tabKey;
-            ';
+            ';'
             // コンテンツを更新
             const content = document.getElementById('audio-settings-content';
-            if(content && this.tabRenderers) {
+            if (content && this.tabRenderers) {
 
-                content.innerHTML = ',
+                content.innerHTML = ','
 
                 switch(tabKey) { : undefined''
-                    case 'volume':',
+                    case 'volume':','
                         this.tabRenderers.renderVolumeTab(content),
 
                         break,
-                    case 'quality':',
+                    case 'quality':','
                         this.tabRenderers.renderQualityTab(content),
 
                         break,
-                    case 'effects':',
+                    case 'effects':','
                         this.tabRenderers.renderEffectsTab(content),
 
                         break,
-                    case 'accessibility':',
+                    case 'accessibility':','
                         this.tabRenderers.renderAccessibilityTab(content),
 
                         break,
@@ -177,9 +177,9 @@ export class AudioSettingsTabManager {
             if (this.audioManager) { }'
 
                 (this.audioManager, as any').playUISound?.('tab_switch', { volume: 0.3 };'} catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
-                component: 'AudioSettingsTabManager',',
+                component: 'AudioSettingsTabManager',','
                 operation: 'showTab'),
-                tabKey: tabKey  }
+                tabKey: tabKey,
     }
     
     /**

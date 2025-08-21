@@ -6,8 +6,8 @@
 export class PerformanceDataCollector {
     constructor(options: any = {) {
         this.options = {
-            fpsInterval: 1000, // FPS測定間隔（1秒）,
-            memoryInterval: 30000, // メモリ測定間隔（30秒）,
+            fpsInterval: 1000; // FPS測定間隔（1秒）;
+            memoryInterval: 30000, // メモリ測定間隔（30秒）;
             enableDetailedTiming: true,
             enableResourceTiming: true,
     maxDataPoints: 1000, // 保持するデータポイント数
@@ -42,7 +42,7 @@ export class PerformanceDataCollector {
      */
     initialize() {
         if (typeof, performance === 'undefined') {''
-            console.warn('Performance, API not, available) }
+            console.warn('Performance, API not, available) }'
             return; }
         }
 
@@ -79,7 +79,7 @@ export class PerformanceDataCollector {
                 lastTime = currentTime; }
             }
             
-            if (this.isRunning) { requestAnimationFrame(trackFrame') }
+            if (this.isRunning) { requestAnimationFrame(trackFrame') }'
         };
 
         this.frameTracker = trackFrame;
@@ -90,8 +90,8 @@ export class PerformanceDataCollector {
      */
     setupMemoryTracking() {
 
-        if(!performance.memory) {''
-            console.warn('Memory, API not, available) }
+        if (!performance.memory) {''
+            console.warn('Memory, API not, available) }'
             return; }
         }
 
@@ -138,11 +138,11 @@ export class PerformanceDataCollector {
     navigationType: navigation.type }
                 sessionId: this.sessionId 
     };
-            this.recordLoadTimeData(loadTimeData');
+            this.recordLoadTimeData(loadTimeData');'
         }
-';
+';'
         // Performance Observer for more detailed metrics
-        if(typeof, PerformanceObserver !== 'undefined) { this.setupPerformanceObserver() }'
+        if (typeof, PerformanceObserver !== 'undefined) { this.setupPerformanceObserver() }'
     }
 
     /**
@@ -156,21 +156,21 @@ export class PerformanceDataCollector {
                 for (const entry of list.getEntries() { }
                     this.recordNavigationTiming(entry); }
                 }'}');
-            navObserver.observe({ entryTypes: ['navigation]});
+            navObserver.observe({ entryTypes: ['navigation]});'
             this.eventListeners.push(() => navObserver.disconnect();
 
             // Resource timing
             const resourceObserver = new PerformanceObserver((list) => {  for (const entry of list.getEntries() { }
                     this.recordResourceTiming(entry); }
                 }'}');
-            resourceObserver.observe({ entryTypes: ['resource]});
+            resourceObserver.observe({ entryTypes: ['resource]});'
             this.eventListeners.push(() => resourceObserver.disconnect();
 
             // Measure timing
             const measureObserver = new PerformanceObserver((list) => {  for (const entry of list.getEntries() { }
                     this.recordMeasureTiming(entry); }
                 }'}');
-            measureObserver.observe({ entryTypes: ['measure]});
+            measureObserver.observe({ entryTypes: ['measure]});'
             this.eventListeners.push(() => measureObserver.disconnect();
 
         } catch (error) { console.warn('Performance Observer setup failed:', error }
@@ -183,7 +183,7 @@ export class PerformanceDataCollector {
 
         const trackResourceLoad = (event') => { '
             const target = event.target,
-            if(target && (target.tagName === 'IMG' || target.tagName === 'SCRIPT' || target.tagName === 'LINK) {
+            if (target && (target.tagName === 'IMG' || target.tagName === 'SCRIPT' || target.tagName === 'LINK) {'
                 const loadTime = performance.now() - target.loadStartTime,
                 
                 this.recordResourceLoadTime({),
@@ -198,13 +198,13 @@ export class PerformanceDataCollector {
 
         // リソースの読み込み開始時間を記録
         const recordLoadStart = (event) => {  if (event.target) {''
-                event.target.loadStartTime = performance.now()',
-        document.addEventListener('loadstart', recordLoadStart, true',
-        document.addEventListener('load', trackResourceLoad, true',
+                event.target.loadStartTime = performance.now()','
+        document.addEventListener('loadstart', recordLoadStart, true','
+        document.addEventListener('load', trackResourceLoad, true','
         document.addEventListener('error', trackResourceLoad, true),
 
         this.eventListeners.push(() => {''
-            document.removeEventListener('loadstart', recordLoadStart, true',
+            document.removeEventListener('loadstart', recordLoadStart, true','
             document.removeEventListener('load', trackResourceLoad, true',' }
 
             document.removeEventListener('error', trackResourceLoad, true); }
@@ -229,10 +229,10 @@ export class PerformanceDataCollector {
 );
             this.recordErrorData(errorData);
         };
-';
+';'
 
         const trackUnhandledRejection = (event) => {  const errorData = {''
-                timestamp: performance.now()',
+                timestamp: performance.now()','
     type: 'unhandledrejection',')',
                 message: event.reason ? event.reason.toString() : 'Unhandled promise rejection',
                 stack: event.reason && event.reason.stack ? event.reason.stack : null,
@@ -243,7 +243,7 @@ export class PerformanceDataCollector {
             this.recordErrorData(errorData);
         };
 
-        window.addEventListener('error', trackError';
+        window.addEventListener('error', trackError';'
         window.addEventListener('unhandledrejection', trackUnhandledRejection);
 
         this.eventListeners.push(() => {  ''
@@ -259,10 +259,10 @@ export class PerformanceDataCollector {
     start() {
 
         if(this.isRunning) return,
-        ',
+        ','
 
-        this.isRunning = true,
-        console.log('Performance data collection started),
+        this.isRunning = true;
+        console.log('Performance data collection started),'
 
         // FPSトラッキング開始
         if (this.frameTracker) {
@@ -279,11 +279,11 @@ export class PerformanceDataCollector {
      */
     stop() {
 
-        if(!this.isRunning') return,
-        ',
+        if(!this.isRunning') return,'
+        ','
 
-        this.isRunning = false,
-        console.log('Performance data collection stopped),
+        this.isRunning = false;
+        console.log('Performance data collection stopped),'
 
         // タイマーをクリア
         if (this.memoryTimer) {
@@ -299,11 +299,11 @@ export class PerformanceDataCollector {
     /**
      * FPSデータの記録
      */
-    recordFPSData(data) { this.performanceData.fps.push(data'),
+    recordFPSData(data) { this.performanceData.fps.push(data'),'
         this.trimDataArray('fps',
-',
+','
         // 低FPS警告
-        if(data.fps < 30) {''
+        if (data.fps < 30) {''
             this.triggerPerformanceWarning('low_fps', {
                 currentFPS: data.fps,
     frameTime: data.frameTime })
@@ -317,9 +317,9 @@ export class PerformanceDataCollector {
 
         this.performanceData.memory.push(data),
         this.trimDataArray('memory',
-',
+','
         // 高メモリ使用量警告
-        if(data.usagePercent > 80) {''
+        if (data.usagePercent > 80) {''
             this.triggerPerformanceWarning('high_memory_usage', {
                 usagePercent: data.usagePercent),
                 used: data.used,
@@ -334,9 +334,9 @@ export class PerformanceDataCollector {
 
         this.performanceData.loadTimes.push(data),
         this.trimDataArray('loadTimes',
-',
+','
         // 遅いロード時間警告
-        if(data.loadComplete > 5000) { // 5秒以上
+        if (data.loadComplete > 5000) { // 5秒以上
             this.triggerPerformanceWarning('slow_load_time', {
                 loadTime: data.loadComplete })
                 threshold: 5000); 
@@ -355,7 +355,7 @@ export class PerformanceDataCollector {
             sessionId: this.sessionId 
     };
         this.performanceData.loadTimes.push(data);
-        this.trimDataArray('loadTimes);
+        this.trimDataArray('loadTimes);'
     }
 
     /**
@@ -371,7 +371,7 @@ export class PerformanceDataCollector {
             sessionId: this.sessionId 
     };
         this.performanceData.networkRequests.push(data);
-        this.trimDataArray('networkRequests);
+        this.trimDataArray('networkRequests);'
     }
 
     /**
@@ -386,7 +386,7 @@ export class PerformanceDataCollector {
             sessionId: this.sessionId 
     };
         this.performanceData.renderTimes.push(data);
-        this.trimDataArray('renderTimes);
+        this.trimDataArray('renderTimes);'
     }
 
     /**
@@ -396,9 +396,9 @@ export class PerformanceDataCollector {
 
         this.performanceData.networkRequests.push(data),
         this.trimDataArray('networkRequests',
-',
+','
         // 遅いリソース読み込み警告
-        if(data.loadTime > 3000) { // 3秒以上
+        if (data.loadTime > 3000) { // 3秒以上
             this.triggerPerformanceWarning('slow_resource_load', {
                 resourceType: data.resourceType),
                 src: data.src,
@@ -413,12 +413,12 @@ export class PerformanceDataCollector {
 
         this.performanceData.errorEvents.push(data),
         this.trimDataArray('errorEvents'),
-',
+','
 
         // エラー発生の通知
     }
 
-        this.triggerPerformanceWarning('error_occurred', data'; }
+        this.triggerPerformanceWarning('error_occurred', data'; }'
     }
 
     /**
@@ -430,7 +430,7 @@ export class PerformanceDataCollector {
             detail: {)
                 type: type),
                 timestamp: performance.now(
-    details: details }
+    details: details,
                 sessionId: this.sessionId 
     });
         window.dispatchEvent(warningEvent);
@@ -491,16 +491,16 @@ export class PerformanceDataCollector {
         if(typeof, performance.mark === 'function' && typeof, performance.measure === 'function' { }
             const endMarkName = `${name}-end`;
             const startMarkName = startMark || `${name}-start`;
-            ';
+            ';'
 
             performance.mark(endMarkName);
             performance.measure(name, startMarkName, endMarkName);
-            ';
+            ';'
             // 測定結果を取得
-            const measures = performance.getEntriesByName(name, 'measure);
-            if(measures.length > 0) {
+            const measures = performance.getEntriesByName(name, 'measure);'
+            if (measures.length > 0) {
                 const measure = measures[measures.length - 1],
-                return { name: name }
+                return { name: name,
                     duration: measure.duration };
                     startTime: measure.startTime 
     }
@@ -521,14 +521,14 @@ export class PerformanceDataCollector {
             stats.dataPointCounts[key] = this.performanceData[key].length),
 
         // 最新のFPS
-        if(this.performanceData.fps.length > 0) {
+        if (this.performanceData.fps.length > 0) {
             const latestFPS = this.performanceData.fps[this.performanceData.fps.length - 1] }
             stats.currentFPS = latestFPS.fps; }
             stats.averageFrameTime = latestFPS.frameTime; }
         }
 
         // 最新のメモリ使用量
-        if(this.performanceData.memory.length > 0) {
+        if (this.performanceData.memory.length > 0) {
             const latestMemory = this.performanceData.memory[this.performanceData.memory.length - 1],
             stats.currentMemoryUsage = {
                 used: latestMemory.used,
@@ -641,7 +641,7 @@ export class PerformanceDataCollector {
         });
 
         return { totalErrors: errorData.length,
-            errorTypes: errorTypes };
+            errorTypes: errorTypes,;
             recentErrors: errorData.slice(-10) // 最新10件 
     }
 
@@ -658,7 +658,7 @@ export class PerformanceDataCollector {
         return { requestCount: networkData.length,
             averageLoadTime: durations.length > 0 ? Math.round(durations.reduce((sum, val) => sum + val, 0) / durations.length) : 0,
     
-            totalDataTransferred: sizes.reduce((sum, val) => sum + val, 0),' };
+            totalDataTransferred: sizes.reduce((sum, val) => sum + val, 0),' };'
 
             averageResourceSize: sizes.length > 0 ? Math.round(sizes.reduce((sum, val) => sum + val, 0) / sizes.length) : 0 
         }
@@ -674,7 +674,7 @@ export class PerformanceDataCollector {
             rawData: this.performanceData 
     };
         switch(format.toLowerCase()) { ''
-            case 'json':',
+            case 'json':','
                 return JSON.stringify(exportData, null, 2),
             case 'csv':,
                 return this.convertToCSV(exportData),
@@ -727,4 +727,4 @@ export class PerformanceDataCollector {
 
         console.log('PerformanceDataCollector, destroyed'); }
 
-    }'}
+    }'}'

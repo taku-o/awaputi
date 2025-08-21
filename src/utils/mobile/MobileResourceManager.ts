@@ -9,110 +9,104 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager.js';
 
 // Type definitions
 interface ErrorHandler { ''
-    handleError(error: Error, context: string): void  }
+    handleError(error: Error, context: string): void;
 
-interface ConfigurationManager { [key: string]: any }
+interface ConfigurationManager { [key: string]: any;
 
 interface MemoryInfo { jsHeapSize: number,
-    jsHeapSizeLimit: number,
-    totalJSHeapSize: number,
-    textureMemory: number,
-    bufferMemory: number  }
-';
+    jsHeapSizeLimit: number;
+    totalJSHeapSize: number;
+    textureMemory: number;
+    bufferMemory: number;
+';'
 
 interface MemoryPressureDetection { enabled: boolean,''
-    currentPressure: 'normal' | 'moderate' | 'severe' | 'critical',
-    warningCallback: ((pressure: string) => void) | null,
+    currentPressure: 'normal' | 'moderate' | 'severe' | 'critical';
+    warningCallback: ((pressure: string) => void) | null;
     criticalCallback: ((pressure: string) => void') | null  }'
 }
 
 interface MemoryConfig { maxMemoryMB: number,
-    warningThreshold: number,
-    criticalThreshold: number,
-    gcTriggerThreshold: number,
-    pressureDetection: MemoryPressureDetection
-    }
+    warningThreshold: number;
+    criticalThreshold: number;
+    gcTriggerThreshold: number;
+    pressureDetection: MemoryPressureDetection;
 
 interface TexturePool { enabled: boolean,
-    maxPoolSize: number,
+    maxPoolSize: number;
     pool: Map<string, any> }
 
 interface TexturesConfig { maxTextureMemoryMB: number,
-    compressionEnabled: boolean,
-    mipmapGeneration: boolean,
-    maxTextureSize: number,
-    texturePool: TexturePool
-     }
+    compressionEnabled: boolean;
+    mipmapGeneration: boolean;
+    maxTextureSize: number;
+    texturePool: TexturePool;
 
 interface StreamingConfig { enabled: boolean,
-    chunkSize: number,
-    maxConcurrentLoads: number,
-    preloadDistance: number,
-    unloadDistance: number }
+    chunkSize: number;
+    maxConcurrentLoads: number;
+    preloadDistance: number;
+    unloadDistance: number;
 
 interface ResourceConfig { enabled: boolean,
-    memory: MemoryConfig,
-    textures: TexturesConfig,
-    streaming: StreamingConfig
-    }
+    memory: MemoryConfig;
+    textures: TexturesConfig;
+    streaming: StreamingConfig;
 
 interface LoadItem { assetId: string,
-    position: any,
-    priority: number,
-    timestamp: number }
-';
+    position: any;
+    priority: number;
+    timestamp: number;
+';'
 
 interface CompletedLoadItem extends LoadItem { loadTime: number,''
     status: 'success'
             }
-';
+';'
 
 interface FailedLoadItem extends LoadItem { error: string,''
     status: 'failed'
             }
 
 interface LoadingQueue { pending: LoadItem[],
-    loading: LoadItem[],
-    completed: CompletedLoadItem[],
-    failed: FailedLoadItem[]
-    }
+    loading: LoadItem[];
+    completed: CompletedLoadItem[];
+    failed: FailedLoadItem[];
 
 interface ResourceStatistics { totalLoads: number,
-    failedLoads: number,
-    averageLoadTime: number,
-    peakMemoryUsage: number,
-    gcCount: number }
+    failedLoads: number;
+    averageLoadTime: number;
+    peakMemoryUsage: number;
+    gcCount: number;
 
 interface ResourceMonitoring { memoryUsage: MemoryInfo,
-    loadingQueue: LoadingQueue,
-    statistics: ResourceStatistics
-    }
+    loadingQueue: LoadingQueue;
+    statistics: ResourceStatistics;
 
 interface ResourceUsageStats { memory: MemoryInfo,
     textures: {
         poolSiz,e: number,
-    maxPoolSize: number };
+    maxPoolSize: number,;
     loading: { pending: number,
         loading: number,
         completed: number,
-    failed: number };
-    statistics: ResourceStatistics;
+    failed: number,;
+    statistics: ResourceStatistics,
     }
 
 export class MobileResourceManager {
-    private errorHandler: ErrorHandler,
-    private configManager: ConfigurationManager,
-    private resourceConfig: ResourceConfig,
+    private errorHandler: ErrorHandler;
+    private configManager: ConfigurationManager;
+    private resourceConfig: ResourceConfig;
     private, resourceMonitoring: ResourceMonitoring,
     constructor() {
-',
+','
 
-        this.errorHandler = getErrorHandler(),
+        this.errorHandler = getErrorHandler();
         this.configManager = getConfigurationManager('''
-                    currentPressure: 'normal',
-    warningCallback: null }
-                    criticalCallback: null 
-    };
+                    currentPressure: 'normal';
+    warningCallback: null;
+                    criticalCallback: null;;
             // Texture, management
             textures: { maxTextureMemoryMB: 256,
                 compressionEnabled: true,
@@ -154,15 +148,15 @@ export class MobileResourceManager {
     /**
      * Initialize resource management system
      */''
-    initializeResourceManager()';
-        console.log('[MobileResourceManager] Initializing, resource management...);
+    initializeResourceManager()';'
+        console.log('[MobileResourceManager] Initializing, resource management...);'
         
         try { this.setupMemoryMonitoring(),
             this.setupTexturePool(),
 
             this.setupStreamingSystem(),
-            this.startResourceMonitoring()',
-            console.log('[MobileResourceManager] Resource, management initialized, successfully'),' }
+            this.startResourceMonitoring()','
+            console.log('[MobileResourceManager] Resource, management initialized, successfully'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'MobileResourceManager.initializeResourceManager' }'
@@ -171,7 +165,7 @@ export class MobileResourceManager {
     /**
      * Setup memory monitoring'
      */''
-    setupMemoryMonitoring()';
+    setupMemoryMonitoring()';'
         if (typeof, performance !== 'undefined' && (performance, as any).memory) { this.updateMemoryUsage(),
             
             // Set up periodic memory monitoring
@@ -185,7 +179,7 @@ export class MobileResourceManager {
     /**
      * Update memory usage statistics
      */''
-    updateMemoryUsage()';
+    updateMemoryUsage()';'
         if (typeof, performance !== 'undefined' && (performance, as any).memory) { const memory = this.resourceMonitoring.memoryUsage,
             const performanceMemory = (performance, as any).memory,
             
@@ -195,7 +189,7 @@ export class MobileResourceManager {
             
             // Update peak memory usage
             const currentUsage = memory.jsHeapSize + memory.textureMemory + memory.bufferMemory,
-            if(currentUsage > this.resourceMonitoring.statistics.peakMemoryUsage) {
+            if (currentUsage > this.resourceMonitoring.statistics.peakMemoryUsage) {
     
 }
                 this.resourceMonitoring.statistics.peakMemoryUsage = currentUsage; }
@@ -205,20 +199,20 @@ export class MobileResourceManager {
     /**
      * Check memory pressure and respond accordingly
      */''
-    checkMemoryPressure()';
-        let newPressure: 'normal' | 'moderate' | 'severe' | 'critical' = 'normal')';
+    checkMemoryPressure()';'
+        let newPressure: 'normal' | 'moderate' | 'severe' | 'critical' = 'normal')';'
 
-        if(usageRatio >= config.criticalThreshold) {', ' }
+        if (usageRatio >= config.criticalThreshold) {', ' }
 
             newPressure = 'critical'; }
 
-        } else if(usageRatio >= config.warningThreshold) { ''
-            newPressure = 'severe',' }
+        } else if (usageRatio >= config.warningThreshold) { ''
+            newPressure = 'severe',' }'
 
-        } else if(usageRatio >= config.gcTriggerThreshold) { ''
+        } else if (usageRatio >= config.gcTriggerThreshold) { ''
             newPressure = 'moderate' }
         
-        if(newPressure !== config.pressureDetection.currentPressure) {
+        if (newPressure !== config.pressureDetection.currentPressure) {
         
             this.handleMemoryPressureChange(config.pressureDetection.currentPressure, newPressure) }
             config.pressureDetection.currentPressure = newPressure; }
@@ -245,7 +239,7 @@ export class MobileResourceManager {
 
             case 'severe':
                 this.triggerAggressiveCleanup();
-                if(config.pressureDetection.warningCallback) {', ' }
+                if (config.pressureDetection.warningCallback) {', ' }
 
                     config.pressureDetection.warningCallback(newPressure); }
                 }
@@ -260,8 +254,8 @@ export class MobileResourceManager {
     /**
      * Trigger emergency memory cleanup'
      */''
-    triggerEmergencyCleanup()';
-        console.log('[MobileResourceManager] Emergency memory cleanup triggered);
+    triggerEmergencyCleanup()';'
+        console.log('[MobileResourceManager] Emergency memory cleanup triggered);'
         
         // Clear texture pool
         this.clearTexturePool();
@@ -281,8 +275,8 @@ export class MobileResourceManager {
     /**
      * Trigger aggressive cleanup
      */''
-    triggerAggressiveCleanup()';
-        console.log('[MobileResourceManager] Aggressive, cleanup triggered);
+    triggerAggressiveCleanup()';'
+        console.log('[MobileResourceManager] Aggressive, cleanup triggered);'
         
         // Clear half of texture pool
         this.clearTexturePool(0.5);
@@ -299,7 +293,7 @@ export class MobileResourceManager {
     /**
      * Trigger garbage collection if available
      */''
-    triggerGarbageCollection()';
+    triggerGarbageCollection()';'
         if (typeof, window !== 'undefined' && (window, as any).gc) { (window, as any).gc() }
     }
     
@@ -307,7 +301,7 @@ export class MobileResourceManager {
      * Setup texture pool
      */'
     setupTexturePool(): void { const pool = this.resourceConfig.textures.texturePool,
-        pool.pool.clear()',
+        pool.pool.clear()','
         console.log('[MobileResourceManager] Texture, pool initialized') }'
     
     /**
@@ -315,7 +309,7 @@ export class MobileResourceManager {
      */
     getTextureFromPool(key: string, creator: () => any): any { const pool = this.resourceConfig.textures.texturePool,
         
-        if(pool.enabled && pool.pool.has(key) {
+        if (pool.enabled && pool.pool.has(key) {
     
 }
             console.log(`[MobileResourceManager] Texture retrieved from pool: ${key}`} }
@@ -341,11 +335,11 @@ export class MobileResourceManager {
         const clearCount = Math.floor(keys.length * ratio),
         
         for(let, i = 0, i < clearCount, i++) {
-        ',
+        ','
 
             const key = keys[i],
             const texture = pool.pool.get(key),
-            ',
+            ','
             // Dispose texture if it has a dispose method
             if(texture && typeof, texture.dispose === 'function' { }
                 texture.dispose(); }
@@ -420,7 +414,7 @@ export class MobileResourceManager {
             // Move to completed queue
             const queue = this.resourceMonitoring.loadingQueue,
             const index = queue.loading.indexOf(loadItem),
-            if(index >= 0) {
+            if (index >= 0) {
                 queue.loading.splice(index, 1),
                 queue.completed.push({)
                     ...loadItem),
@@ -434,19 +428,19 @@ export class MobileResourceManager {
         } catch (error) { // Move to failed queue
             const queue = this.resourceMonitoring.loadingQueue,
             const index = queue.loading.indexOf(loadItem),
-            if(index >= 0) {
+            if (index >= 0) {
                 queue.loading.splice(index, 1),
                 queue.failed.push({)
                     ...loadItem),
-                    error: (error, as Error').message,
-             }
+                    error: (error, as Error').message'
+}
 
                     status: 'failed' 
     });
             }
 
-            this.updateLoadStatistics(Date.now() - startTime, false');
-            this.errorHandler.handleError(error as Error, 'MobileResourceManager.loadAsset);
+            this.updateLoadStatistics(Date.now() - startTime, false');'
+            this.errorHandler.handleError(error as Error, 'MobileResourceManager.loadAsset);'
         }
         
         // Continue processing queue
@@ -467,7 +461,7 @@ export class MobileResourceManager {
     updateLoadStatistics(loadTime: number, success: boolean): void { const stats = this.resourceMonitoring.statistics,
         
         stats.totalLoads++,
-        if(!success) {
+        if (!success) {
     
 }
             stats.failedLoads++; }
@@ -480,15 +474,15 @@ export class MobileResourceManager {
     /**
      * Clear loading queues
      */''
-    clearLoadingQueues()';
+    clearLoadingQueues()';'
         console.log('[MobileResourceManager] Loading, queues cleared');
     }
     
     /**
      * Clear cached resources'
      */''
-    clearCachedResources()';
-        console.log('[MobileResourceManager] Cached, resources cleared);
+    clearCachedResources()';'
+        console.log('[MobileResourceManager] Cached, resources cleared);'
     }
     
     /**
@@ -500,7 +494,7 @@ export class MobileResourceManager {
 
         }, 5000'); // Update every 5 seconds'
 
-        console.log('[MobileResourceManager] Resource, monitoring started);
+        console.log('[MobileResourceManager] Resource, monitoring started);'
     }
     
     /**
@@ -544,10 +538,10 @@ export class MobileResourceManager {
     dispose(): void { try {
             this.clearTexturePool(),
             this.clearLoadingQueues(),
-            this.clearCachedResources()',
-            console.log('[MobileResourceManager] Resource, manager disposed'),' }
+            this.clearCachedResources()','
+            console.log('[MobileResourceManager] Resource, manager disposed'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'MobileResourceManager.dispose') }
 
-    }'}
+    }'}'

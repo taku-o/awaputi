@@ -9,22 +9,22 @@ describe('Configuration Access Performance Tests', () => {
     let configManager: any,
     
     beforeEach(() => {
-        configManager = getConfigurationManager('),
+        configManager = getConfigurationManager('),'
         // テスト用の設定値を準備
-        configManager.set('game', 'scoring.baseScore', 100'),
-        configManager.set('game', 'bubbles.maxAge', 5000'),
-        configManager.set('audio', 'volumes.master', 0.7'),
-        configManager.set('effects', 'particles.maxCount', 500'),
+        configManager.set('game', 'scoring.baseScore', 100'),'
+        configManager.set('game', 'bubbles.maxAge', 5000'),'
+        configManager.set('audio', 'volumes.master', 0.7'),'
+        configManager.set('effects', 'particles.maxCount', 500'),'
         configManager.set('performance', 'optimization.maxBubbles', 20),
         // キャッシュをクリア
         configManager.clearCache() });
     afterEach(() => {
-        configManager.clearCache() }');
+        configManager.clearCache() }');'
     test('基本的な設定アクセス速度', () => {
         const iterations = 10000,
         const startTime = performance.now(),
         // 同じ設定値に繰り返しアクセス
-        for (let i = 0, i < iterations, i++') {
+        for (let i = 0, i < iterations, i++') {'
             configManager.get('game', 'scoring.baseScore') }
         
         const endTime = performance.now();
@@ -34,13 +34,13 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`基本アクセス: ${iterations)回, 総時間: ${totalTime.toFixed(2})}ms, 平均: ${avgTime.toFixed(4})}ms`);
         // 平均アクセス時間が0.1ms以下であることを確認
         expect(avgTime.toBeLessThan(0.1);
-    }');
+    }');'
     test('キャッシュ効果の測定', () => {
         const iterations = 1000,
         
         // 初回アクセス（キャッシュなし）
         const startTimeNoCache = performance.now(),
-        for (let i = 0, i < iterations, i++') {
+        for (let i = 0, i < iterations, i++') {'
             configManager.get('game', 'bubbles.maxAge') }
         const endTimeNoCache = performance.now();
         const timeNoCache = endTimeNoCache - startTimeNoCache;
@@ -49,7 +49,7 @@ describe('Configuration Access Performance Tests', () => {
         configManager.warmupCache();
         // キャッシュありアクセス
         const startTimeWithCache = performance.now();
-        for (let i = 0; i < iterations; i++') {
+        for (let i = 0; i < iterations; i++') {'
             configManager.get('game', 'bubbles.maxAge') }
         const endTimeWithCache = performance.now();
         const timeWithCache = endTimeWithCache - startTimeWithCache;
@@ -61,8 +61,8 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`改善率: ${improvement.toFixed(2})}%`);
         // キャッシュにより少なくとも2%の改善があることを確認
         expect(improvement.toBeGreaterThan(2);
-    }');
-    test('複数キーの同時アクセス性能', (') => {
+    }');'
+    test('複数キーの同時アクセス性能', (') => {'
         const keys = [
             ['game', 'scoring.baseScore'],
             ['game', 'bubbles.maxAge'],
@@ -85,8 +85,8 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`複数キーアクセス: ${iterations)回, 総時間: ${totalTime.toFixed(2})}ms, 平均: ${avgTime.toFixed(4})}ms`);
         // 平均アクセス時間が0.2ms以下であることを確認
         expect(avgTime.toBeLessThan(0.2);
-    }');
-    test('プリロードキーの効果測定', (') => {
+    }');'
+    test('プリロードキーの効果測定', (') => {'
         const testKey = 'game.test.preload',
         
         // プリロードキーとして登録
@@ -94,7 +94,7 @@ describe('Configuration Access Performance Tests', () => {
         configManager.addPreloadKey('game', 'test.preload'),
         const iterations = 1000,
         const startTime = performance.now(),
-        for (let i = 0, i < iterations, i++') {
+        for (let i = 0, i < iterations, i++') {'
             configManager.get('game', 'test.preload') }
         
         const endTime = performance.now();
@@ -104,8 +104,8 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`プリロードキーアクセス: ${iterations)回, 総時間: ${totalTime.toFixed(2})}ms, 平均: ${avgTime.toFixed(4})}ms`);
         // プリロードキーは非常に高速であることを確認
         expect(avgTime.toBeLessThan(0.05);
-    }');
-    test('遅延読み込みの性能', (') => {
+    }');'
+    test('遅延読み込みの性能', (') => {'
         let loadCount = 0,
         
         // 遅延読み込み関数を登録
@@ -121,7 +121,7 @@ describe('Configuration Access Performance Tests', () => {
         const iterations = 100;
         const startTime = performance.now();
         // 同じ遅延読み込みキーに複数回アクセス
-        for (let i = 0; i < iterations; i++') {
+        for (let i = 0; i < iterations; i++') {'
             configManager.get('test', 'lazy') }
         
         const endTime = performance.now();
@@ -132,8 +132,8 @@ describe('Configuration Access Performance Tests', () => {
         expect(loadCount.toBe(1);
         // キャッシュにより2回目以降は高速であることを確認
         expect(totalTime.toBeLessThan(50); // 50ms以下
-    }');
-    test('キャッシュヒット率の測定', (') => {
+    }');'
+    test('キャッシュヒット率の測定', (') => {'
         const keys = [
             ['game', 'scoring.baseScore'],
             ['audio', 'volumes.master'],
@@ -156,16 +156,16 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`キャッシュミス数: ${stats.cacheMisses)`),
         // ヒット率が50%以上であることを確認
         expect(hitRate.toBeGreaterThan(50)});
-    }');
+    }');'
     test('メモリ使用量の監視', () => {
         // 大量の設定値を作成
-        for (let i = 0, i < 100, i++') {
+        for (let i = 0, i < 100, i++') {'
             configManager.set('test', `key${i}`, `value${i}`);
         }
         
         // 各設定値に複数回アクセス（キャッシュに保存させる）
         for (let i = 0; i < 100; i++) {
-            for (let j = 0, j < 5, j++') {
+            for (let j = 0, j < 5, j++') {'
                 configManager.get('test', `key${i)`});
             }
         }
@@ -178,8 +178,8 @@ describe('Configuration Access Performance Tests', () => {
         // メモリ使用量が合理的な範囲内であることを確認
         const, memoryKB = parseInt(cacheStats.memoryUsage),
         expect(memoryKB.toBeLessThan(1000}); // 1MB以下
-    }');
-    test('大量アクセス時の安定性', (') => {
+    }');'
+    test('大量アクセス時の安定性', (') => {'
         const iterations = 50000,
         const keys = [
             ['game', 'scoring.baseScore'],
@@ -213,13 +213,13 @@ describe('Configuration Access Performance Tests', () => {
         expect(errorCount.toBe(0),
         // 平均アクセス時間が合理的であることを確認
         expect(avgTime.toBeLessThan(0.1)});
-    }');
+    }');'
     test('キャッシュ最適化の効果', () => {
         // 最適化前の状態を測定
         const beforeStats = configManager.getPerformanceStats(),
         // 様々なキーにアクセスしてアクセス統計を蓄積
         const testKeys: any[] = [],
-        for (let i = 0, i < 50, i++') {
+        for (let i = 0, i < 50, i++') {'
             const key = `test.key${i}`;
             configManager.set('test', `key${i}`, `value${i}`);
             testKeys.push(['test', `key${i)`]});
@@ -234,11 +234,11 @@ describe('Configuration Access Performance Tests', () => {
         
         // 手動で最適化を実行
         configManager._optimizeCache();
-        const afterStats = configManager.getPerformanceStats(');
-        console.log('最適化前のキャッシュサイズ:', beforeStats.cachedKeys');
-        console.log('最適化後のキャッシュサイズ:', afterStats.cachedKeys');
+        const afterStats = configManager.getPerformanceStats(');'
+        console.log('最適化前のキャッシュサイズ:', beforeStats.cachedKeys');'
+        console.log('最適化後のキャッシュサイズ:', afterStats.cachedKeys');'
         console.log('頻繁にアクセスされるキー:', afterStats.topAccessedKeys.slice(0, 5);
         // 最適化により頻繁にアクセスされるキーがキャッシュされることを確認
         expect(afterStats.cachedKeys).toBeGreaterThan(beforeStats.cachedKeys);
-    }');
+    }');'
 }

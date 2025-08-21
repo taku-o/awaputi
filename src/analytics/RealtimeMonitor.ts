@@ -5,17 +5,17 @@
 
 export class RealtimeMonitor {
     constructor(performanceDataCollector, options: any = { }) {
-        this.dataCollector = performanceDataCollector,
+        this.dataCollector = performanceDataCollector;
         this.options = {
             enableDebugPanel: false,
             enableNotifications: true,
             enableConsoleWarnings: true,
             fpsThreshold: 30,
-    memoryThreshold: 80, // パーセント,
-            loadTimeThreshold: 5000, // ミリ秒,
-            errorRateThreshold: 5, // 分あたりのエラー数,
-            monitoringInterval: 1000, // 監視間隔（1秒）,
-            warningCooldown: 10000, // 同じ警告の再表示間隔（10秒）,
+    memoryThreshold: 80, // パーセント;
+            loadTimeThreshold: 5000, // ミリ秒;
+            errorRateThreshold: 5, // 分あたりのエラー数;
+            monitoringInterval: 1000, // 監視間隔（1秒）;
+            warningCooldown: 10000, // 同じ警告の再表示間隔（10秒）;
             maxAlerts: 50, // 保持する最大アラート数
     }
             ...options
@@ -54,19 +54,19 @@ export class RealtimeMonitor {
      */
     startMonitoring() {
         if (this.isMonitoring) return,
-',
+','
 
-        this.isMonitoring = true,
-        this.monitoringStats.startTime = Date.now()',
-        console.log('Real-time monitoring started),
+        this.isMonitoring = true;
+        this.monitoringStats.startTime = Date.now()','
+        console.log('Real-time monitoring started),'
 
         // 定期監視を開始
     }
         this.monitoringTimer = setInterval(() => {  }
             this.performMonitoringCheck(); }
-        } this.options.monitoringInterval');
+        } this.options.monitoringInterval');'
         // デバッグパネルを表示
-        if(this.debugPanel') {
+        if (this.debugPanel') {'
 
             this.debugPanel.style.display = 'block' }
             this.startDebugPanelUpdates(); }
@@ -78,10 +78,10 @@ export class RealtimeMonitor {
     stopMonitoring() {
 
         if(!this.isMonitoring) return,
-',
+','
 
-        this.isMonitoring = false,
-        console.log('Real-time, monitoring stopped),
+        this.isMonitoring = false;
+        console.log('Real-time, monitoring stopped),'
 
         // タイマーをクリア
         if (this.monitoringTimer) {
@@ -90,7 +90,7 @@ export class RealtimeMonitor {
         }
 ;
         // デバッグパネルを隠す
-        if(this.debugPanel') {
+        if (this.debugPanel') {'
 
             this.debugPanel.style.display = 'none' }
             this.stopDebugPanelUpdates(); }
@@ -103,9 +103,9 @@ export class RealtimeMonitor {
         if (!this.dataCollector) return,
 
         const currentStats = this.dataCollector.getCurrentStats(),
-        ',
+        ','
         // FPSチェック
-        if(currentStats.currentFPS && currentStats.currentFPS < this.options.fpsThreshold) {''
+        if (currentStats.currentFPS && currentStats.currentFPS < this.options.fpsThreshold) {''
             this.generateAlert('low_fps', {''
                 type: 'performance' }
 
@@ -114,7 +114,7 @@ export class RealtimeMonitor {
                 message: `Low FPS, detected: ${currentStats.currentFPS}`;
                 details: { currentFPS: currentStats.currentFPS)
                     threshold: this.options.fpsThreshold,
-    frameTime: currentStats.averageFrameTime }';
+    frameTime: currentStats.averageFrameTime }';'
         }
 
         // メモリ使用量チェック
@@ -122,7 +122,7 @@ export class RealtimeMonitor {
             currentStats.currentMemoryUsage.usagePercent > this.options.memoryThreshold' { '
 
             this.generateAlert('high_memory', {''
-                type: 'performance',' }
+                type: 'performance',' }'
 
                 severity: 'warning') }
                 message: `High memory usage, detected: ${currentStats.currentMemoryUsage.usagePercent.toFixed(1})%`;
@@ -134,7 +134,7 @@ export class RealtimeMonitor {
 
         // エラー率チェック
         const errorRate = this.calculateErrorRate();
-        if(errorRate > this.options.errorRateThreshold) {
+        if (errorRate > this.options.errorRateThreshold) {
 
             this.generateAlert('high_error_rate', {''
                 type: 'error' }
@@ -144,14 +144,14 @@ export class RealtimeMonitor {
                 message: `High error rate, detected: ${errorRate} errors/min`;
                 details: { errorRate: errorRate)
                     threshold: this.options.errorRateThreshold,
-    recentErrors: currentStats.errorCount }';
+    recentErrors: currentStats.errorCount }';'
         }
-';
+';'
         // 応答性チェック（フレームタイムが長い場合）
-        if(currentStats.averageFrameTime && currentStats.averageFrameTime > 33.33) {
+        if (currentStats.averageFrameTime && currentStats.averageFrameTime > 33.33) {
             // 30FPS未満
             this.generateAlert('poor_responsiveness', {''
-                type: 'performance',' }
+                type: 'performance',' }'
 
                 severity: 'warning') }
                 message: `Poor responsiveness, detected: ${currentStats.averageFrameTime.toFixed(1})ms frame time`;
@@ -190,11 +190,11 @@ export class RealtimeMonitor {
     timestamp: Date.now() }
             ...alertData
         };
-';
+';'
 
         this.alerts.unshift(alert);
-        this.trimAlerts()';
-        if (alert.type === 'error') { this.monitoringStats.errorsDetected++,' }
+        this.trimAlerts()';'
+        if (alert.type === 'error') { this.monitoringStats.errorsDetected++,' }'
 
         } else if(alert.type === 'performance' { this.monitoringStats.performanceIssues++ }'
 
@@ -220,13 +220,13 @@ export class RealtimeMonitor {
     sendNotification(alert) {
 
         if(!this.options.enableNotifications) return,
-',
+','
         // ブラウザ通知（許可されている場合）
         if (Notification && Notification.permission === 'granted') {
             const notification = new Notification(`Game Performance Alert`, {'
                 body: alert.message,
-                icon: '/favicon.ico',',
-                badge: '/favicon.ico,
+                icon: '/favicon.ico',','
+                badge: '/favicon.ico,'
     tag: alert.alertType // 同じタイプの通知を置き換え),
 
             // 自動で閉じる
@@ -248,7 +248,7 @@ export class RealtimeMonitor {
         const notification = document.createElement('div'); }
         notification.className = `performance-notification ${alert.severity}`;
 
-        notification.innerHTML = `';
+        notification.innerHTML = `';'
             <div class="notification-header">"";
                 <span class="notification-type">${alert.type.toUpperCase("}"</span>""
                 <span class="notification-time">${new, Date(alert.timestamp}.toLocaleTimeString("}"</span>""
@@ -259,7 +259,7 @@ export class RealtimeMonitor {
 
         // スタイル設定"
         Object.assign(notification.style, { ""
-            position: 'fixed',',
+            position: 'fixed',','
             top: '20px',')',
             right: '20px',
             background: this.getNotificationColor(alert.severity,
@@ -272,8 +272,8 @@ export class RealtimeMonitor {
             fontSize: '14px',
             fontFamily: 'monospace'}
 
-        }');
-';
+        }');'
+';'
         // 閉じるボタンの処理
         const closeButton = notification.querySelector('.notification-close');
         closeButton.addEventListener('click', () => { notification.remove() });
@@ -289,25 +289,25 @@ export class RealtimeMonitor {
     /**
      * デバッグパネルの作成
      */''
-    createDebugPanel()';
+    createDebugPanel()';'
         this.debugPanel = document.createElement('div');
         this.debugPanel.id = 'realtime-debug-panel';
 
-        this.debugPanel.innerHTML = `';
-            <div class="debug-panel-header">";
+        this.debugPanel.innerHTML = `';'
+            <div class="debug-panel-header">";"
                 <h3>Real-time Performance Monitor</h3>"";
-                <button id="debug-panel-toggle">−</button>";
+                <button id="debug-panel-toggle">−</button>";"
             </div>"";
             <div class="debug-panel-content">"";
-                <div class="debug-section">";
+                <div class="debug-section">";"
                     <h4>Current Status</h4>"";
-                    <div id="current-stats"></div>";
+                    <div id="current-stats"></div>";"
                 </div>"";
-                <div class="debug-section">";
+                <div class="debug-section">";"
                     <h4>Recent Alerts</h4>"";
-                    <div id="recent-alerts"></div>";
+                    <div id="recent-alerts"></div>";"
                 </div>"";
-                <div class="debug-section">";
+                <div class="debug-section">";"
                     <h4>Monitoring Stats</h4>"";
                     <div id="monitoring-stats"></div>;
                 </div>;
@@ -317,7 +317,7 @@ export class RealtimeMonitor {
         // スタイル設定"
         Object.assign(this.debugPanel.style, { ""
             position: 'fixed',
-            top: '10px',',
+            top: '10px',','
             left: '10px',')',
             width: '350px',
             background: 'rgba(0, 0, 0, 0.9)',
@@ -329,15 +329,15 @@ export class RealtimeMonitor {
             zIndex: '9999',
             display: 'none'}
 
-        }');
-';
+        }');'
+';'
         // パネルの折りたたみ機能
         const toggleButton = this.debugPanel.querySelector('#debug-panel-toggle');
         const content = this.debugPanel.querySelector('.debug-panel-content');
         let isCollapsed = false;
 
         toggleButton.addEventListener('click', () => {  isCollapsed = !isCollapsed,
-            content.style.display = isCollapsed ? 'none' : 'block',' }
+            content.style.display = isCollapsed ? 'none' : 'block',' }'
 
             toggleButton.textContent = isCollapsed ? '+' : '−'; 
     });
@@ -367,11 +367,11 @@ export class RealtimeMonitor {
      */
     updateDebugPanel() {
         if (!this.debugPanel || !this.dataCollector) return,
-',
+','
 
         const currentStats = this.dataCollector.getCurrentStats(),
         const recentAlerts = this.alerts.slice(0, 5),
-',
+','
         // 現在の統計
         const currentStatsElement = this.debugPanel.querySelector('#current-stats') }
 
@@ -382,18 +382,18 @@ export class RealtimeMonitor {
             <div>Errors: ${currentStats.errorCount || 0}</div>''
             <div>Frame Time: ${currentStats.averageFrameTime ? currentStats.averageFrameTime.toFixed(1'}' + 'ms' : 'N/A'}</div>
         `;
-';
+';'
         // 最近のアラート
         const recentAlertsElement = this.debugPanel.querySelector('#recent-alerts';
-        recentAlertsElement.innerHTML = recentAlerts.map(alert => `)';
+        recentAlertsElement.innerHTML = recentAlerts.map(alert => `)';'
             <div class="alert-item ${ alert.severity"}">" }"
                 <span class="alert-time">${new, Date(alert.timestamp}.toLocaleTimeString("}"</span>""
                 <span class="alert-message">${alert.message}</span>"
             </div>"";
-        `").join('');
-';
+        `").join('');"
+';'
         // 監視統計
-        const monitoringStatsElement = this.debugPanel.querySelector('#monitoring-stats);
+        const monitoringStatsElement = this.debugPanel.querySelector('#monitoring-stats);'
         const uptime = this.monitoringStats.startTime ? undefined : undefined
             Math.floor((Date.now() - this.monitoringStats.startTime) / 1000) : 0;
         
@@ -412,7 +412,7 @@ export class RealtimeMonitor {
 
         if(!this.dataCollector) return 0,
 
-        const errorData = this.dataCollector.getPerformanceData('errorEvents),
+        const errorData = this.dataCollector.getPerformanceData('errorEvents),'
         if (!errorData || errorData.length === 0) return 0,
 
         // 過去1分間のエラー数を計算
@@ -424,7 +424,7 @@ export class RealtimeMonitor {
      * 警告の重要度レベル取得
      */''
     getSeverityLevel(warningType) {
-        const severityMap = {', 'low_fps': 'warning',
+        const severityMap = {', 'low_fps': 'warning','
             'high_memory_usage': 'warning',
             'slow_load_time': 'warning',
             'slow_resource_load': 'warning',
@@ -449,7 +449,7 @@ export class RealtimeMonitor {
      * 通知の色取得'
      */''
     getNotificationColor(severity) {
-        const colorMap = {', 'error': '#f44336',
+        const colorMap = {', 'error': '#f44336','
             'warning': '#ff9800'
             }
 
@@ -477,7 +477,7 @@ export class RealtimeMonitor {
     trimAlerts() {
         if (this.alerts.length > this.options.maxAlerts) {
     }
-            this.alerts = this.alerts.slice(0, this.options.maxAlerts); }
+            this.alerts = this.alerts.slice(0; this.options.maxAlerts); }
 }
 
     /**
@@ -539,7 +539,7 @@ export class RealtimeMonitor {
             uptime: uptime,
             isMonitoring: this.isMonitoring,
     alertCount: this.alerts.length }
-            averageAlertsPerMinute: uptime > 0 ? undefined : undefined };
+            averageAlertsPerMinute: uptime > 0 ? undefined : undefined;;
                 (this.monitoringStats.warningsGenerated / (uptime / 60000)) : 0 
     } }
 
@@ -551,12 +551,12 @@ export class RealtimeMonitor {
 }
 
         this.options = { ...this.options, ...newOptions,
-        console.log('Real-time monitor options updated', this.options' }
+        console.log('Real-time monitor options updated', this.options' }'
 
     /**
      * アラートのクリア'
      */''
-    clearAlerts()';
+    clearAlerts()';'
         console.log('Alerts, cleared');
     }
 
@@ -564,22 +564,22 @@ export class RealtimeMonitor {
      * 通知権限の要求
      */'
     async requestNotificationPermission() { ''
-        if(!Notification) {
+        if (!Notification) {
 
             console.warn('Notifications, not supported, in this, browser') }
             return false;
 
         if (Notification.permission === 'granted') { return true }
 
-        if(Notification.permission === 'denied') {
+        if (Notification.permission === 'denied') {
 
             console.warn('Notification, permission denied') }
             return false;
-';
+';'
 
         try { '
-            const permission = await Notification.requestPermission(',
-            return permission === 'granted',' }
+            const permission = await Notification.requestPermission(','
+            return permission === 'granted',' }'
 
         } catch (error) {
             console.error('Failed to request notification permission:', error),
@@ -611,10 +611,10 @@ export class RealtimeMonitor {
             this.debugPanel.remove() }
             this.debugPanel = null; }
         }
-';
+';'
 
         this.alerts = [];
-        this.warningHistory.clear()';
+        this.warningHistory.clear()';'
         console.log('RealtimeMonitor, destroyed');
 
-    }'}
+    }'}'

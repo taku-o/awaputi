@@ -5,8 +5,8 @@ import type { BubbleDragSystem as IBubbleDragSystem,
     Vector2  } from '../../types/game';
 
 interface DragHistoryEntry { x: number,
-    y: number,
-    time: number  }
+    y: number;
+    time: number;
 
 /**
  * BubbleDragSystem - 泡ドラッグ操作システム
@@ -30,7 +30,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
         for(let, i = bubbles.length - 1, i >= 0, i--) {
             const bubble = bubbles[i],
             
-            if(bubble.containsPoint(x, y) {
+            if (bubble.containsPoint(x, y) {
                 this.draggedBubble = bubble }
                 this.isDragging = true; }
                 this.__dragStartPosition = { x, y };
@@ -73,7 +73,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
         const dragDistance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
         
         // 最小ドラッグ距離をチェック
-        if(dragDistance < 15) {
+        if (dragDistance < 15) {
             this.resetDrag() }
             return false;
         
@@ -129,7 +129,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
             x: dragVector.x * 0.6 + velocity.x * 0.4,
     y: dragVector.y * 0.6 + velocity.y * 0.4 };
         const magnitude = Math.sqrt(combinedVector.x * combinedVector.x + combinedVector.y * combinedVector.y);
-        if(magnitude === 0) {
+        if (magnitude === 0) {
     
 }
             return { x: 0, y: 0  }
@@ -141,7 +141,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     /**
      * ドラッグ状態をリセット
      */
-    resetDrag(): void { this.isDragging = false,
+    resetDrag(): void { this.isDragging = false;
         this.draggedBubble = null }
         this.__dragStartPosition = { x: 0, y: 0  }
         this.__dragCurrentPosition = { x: 0, y: 0  }
@@ -152,7 +152,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      * ドラッグ軌跡の描画（デバッグ用）
      */
     renderDragTrail(context: CanvasRenderingContext2D, renderQuality: number): void { if (renderQuality > 0.8 && this.isDragging && this.dragHistory.length > 1) {''
-            context.save()',
+            context.save()','
             context.strokeStyle = 'rgba(255, 255, 0, 0.5)',
             context.lineWidth = 2,
             context.setLineDash([3, 3]),

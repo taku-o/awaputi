@@ -8,13 +8,13 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 export class SocialAccessibilityManager {'
 
     constructor(socialSharingManager) {
-        this.socialSharingManager = socialSharingManager,
+        this.socialSharingManager = socialSharingManager;
         
         // 設定
         this.config = {
             // WCAG 準拠設定
             wcag: {''
-                level: 'AA', // A, AA, AAA,
+                level: 'AA'; // A, AA, AAA;
                 colorContrast: {
                     normal: 4.5 }
                     large: 3.0 
@@ -34,7 +34,7 @@ export class SocialAccessibilityManager {'
             keyboard: { enabled: true,''
                 tabSequence: 'logical',
                 shortcuts: true,
-    focusTrapping: true  };
+    focusTrapping: true,;
             // 高コントラスト設定
             highContrast: { enabled: false,''
                 backgroundColor: '#000000',
@@ -44,19 +44,18 @@ export class SocialAccessibilityManager {'
             // 動きの軽減設定
             reducedMotion: { enabled: false,
                 animations: false,
-    transitions: false 
-    };
+    transitions: false,;
         // 状態管理
         this.state = { enabled: true,
             currentFocus: null,
             focusHistory: [],
             announcements: [],
-    screenReaderActive: false  };
+    screenReaderActive: false,;
         // DOM要素管理
         this.elements = { announcer: null,
             skipLinks: null,
             focusIndicator: null,
-    contrastOverlay: null  };
+    contrastOverlay: null,;
         // イベントハンドラー
         this.handlers = { keydown: this.handleKeydown.bind(this,
             focus: this.handleFocus.bind(this),
@@ -66,7 +65,7 @@ export class SocialAccessibilityManager {'
         
         // ショートカットキー定義
         this.shortcuts = {
-            'Alt+1': 'focusMainShareButton',
+            'Alt+1': 'focusMainShareButton';
             'Alt+2': 'showShareDialog',
             'Alt+3': 'toggleHighContrast',
             'Alt+4': 'announceCurrentState',
@@ -77,7 +76,7 @@ export class SocialAccessibilityManager {'
             announcements: 0,
     keyboardInteractions: 0 }
             shortcutUses: {};
-            accessibilityViolations: 0;
+            accessibilityViolations: 0,
         },
         
         this.initialize();
@@ -103,43 +102,43 @@ export class SocialAccessibilityManager {'
             // 初期設定の適用
             this.applyInitialSettings(),
             // ARIA Live Regionsの設定
-            this.setupLiveRegions()',
+            this.setupLiveRegions()','
             this.log('SocialAccessibilityManager初期化完了' }
 
             ' }'
 
         } catch (error) {
-            this.handleError('ACCESSIBILITY_INIT_FAILED', error' }
+            this.handleError('ACCESSIBILITY_INIT_FAILED', error' }'
     }
     
     /**
      * ユーザー設定の検出'
      */''
-    detectUserPreferences()';
-        if(window.matchMedia('(prefers-contrast: high)).matches) { this.config.highContrast.enabled = true }', ';
+    detectUserPreferences()';'
+        if(window.matchMedia('(prefers-contrast: high)).matches) { this.config.highContrast.enabled = true }', ';'
         // 動きの軽減の検出
         if(window.matchMedia('(prefers-reduced-motion: reduce)).matches) { this.config.reducedMotion.enabled = true }';
         // カラースキームの検出
-        const darkMode = window.matchMedia('(prefers-color-scheme: dark)).matches,
-        if(darkMode) {
+        const darkMode = window.matchMedia('(prefers-color-scheme: dark)).matches,'
+        if (darkMode) {
 
             this.config.highContrast.backgroundColor = '#000000' }
 
             this.config.highContrast.textColor = '#ffffff'; }
         }
-        ';
+        ';'
         // 言語設定の検出
         const language = navigator.language || 'ja';
         this.config.screenReader.language = language.split('-')[0];
 
         this.log('ユーザー設定検出完了', { highContrast: this.config.highContrast.enabled)
-           , reducedMotion: this.config.reducedMotion.enabled,',
+           , reducedMotion: this.config.reducedMotion.enabled,','
             language: this.config.screenReader.language  }
     
     /**
      * アクセシビリティ要素の作成'
      */''
-    createAccessibilityElements()';
+    createAccessibilityElements()';'
         this.elements.announcer = document.createElement('div');
         this.elements.announcer.id = 'social-accessibility-announcer';
         this.elements.announcer.setAttribute('aria-live', 'polite');
@@ -154,21 +153,21 @@ export class SocialAccessibilityManager {'
             clip: rect(1px, 1px, 1px, 1px) !important,
             clip-path: inset(50%) !important,
         `;
-        ';
+        ';'
         // スキップリンク
         this.elements.skipLinks = document.createElement('div');
         this.elements.skipLinks.id = 'social-skip-links';
         this.elements.skipLinks.className = 'skip-links';
 
-        this.elements.skipLinks.innerHTML = `';
+        this.elements.skipLinks.innerHTML = `';'
             <a href="#social-share-main" class="skip-link">メイン共有ボタンにスキップ</a>"";
             <a href="#social-platforms" class="skip-link">プラットフォーム選択にスキップ</a>"";
             <a href="#social-content" class="skip-link">共有コンテンツにスキップ</a>;
         `;
-        ";
+        ";"
         // フォーカス表示の強化""
         this.elements.focusIndicator = document.createElement('style';
-        this.elements.focusIndicator.textContent = this.generateFocusStyles()';
+        this.elements.focusIndicator.textContent = this.generateFocusStyles()';'
         this.elements.contrastOverlay = document.createElement('div');
         this.elements.contrastOverlay.id = 'social-contrast-overlay';
         this.elements.contrastOverlay.style.display = 'none';
@@ -192,7 +191,7 @@ export class SocialAccessibilityManager {'
             .share-button-main:focus,
             .share-button-platform:focus,
             .share-dialog button:focus,
-            .leaderboard-entry:focus }
+            .leaderboard-entry: focus;
             .challenge-item:focus { }
                 outline: ${focusWidth} solid ${focusColor} !important;
                 outline-offset: 2px !important,
@@ -245,17 +244,17 @@ export class SocialAccessibilityManager {'
     /**
      * イベントリスナーの設定
      */''
-    setupEventListeners()';
-        document.addEventListener('keydown', this.handlers.keydown';
-        ';
+    setupEventListeners()';'
+        document.addEventListener('keydown', this.handlers.keydown';'
+        ';'
         // フォーカスイベント
-        document.addEventListener('focusin', this.handlers.focus';
-        document.addEventListener('focusout', this.handlers.blur';
-        ';
+        document.addEventListener('focusin', this.handlers.focus';'
+        document.addEventListener('focusout', this.handlers.blur';'
+        ';'
         // メディアクエリの監視
-        window.matchMedia('(prefers-contrast: high)').addEventListener('change,
-            this.handlers.preferredColorSchemeChange';
-        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change,
+        window.matchMedia('(prefers-contrast: high)').addEventListener('change,'
+            this.handlers.preferredColorSchemeChange';'
+        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change,'
             this.handlers.preferredReducedMotionChange);
     }
     
@@ -265,21 +264,21 @@ export class SocialAccessibilityManager {'
     detectScreenReader() {
         // 一般的なスクリーンリーダーの検出
         const userAgent = navigator.userAgent.toLowerCase('',
-        const screenReaders = ['nvda', 'jaws', 'voiceover', 'talkback', 'orca'],', ')',
+        const screenReaders = ['nvda', 'jaws', 'voiceover', 'talkback', 'orca'],', ')','
         this.state.screenReaderActive = screenReaders.some(sr => userAgent.includes(sr)),
-        ',
+        ','
         // より詳細な検出（Windows環境でのScreen Reader API）
-        if ('speechSynthesis' in, window' {
+        if ('speechSynthesis' in, window'
     }
             this.state.screenReaderActive = true; }
         }
-        ';
+        ';'
         // Accessibility APIの検出
         if(navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {', ' }
 
             navigator.userAgentData.getHighEntropyValues(['uaFullVersion]'.then(ua => { }
 
-                // より詳細な検出ロジック)'; }
+                // より詳細な検出ロジック)'; }'
         }
 
         this.log('スクリーンリーダー検出', { active: this.state.screenReaderActive });
@@ -310,12 +309,12 @@ export class SocialAccessibilityManager {'
         ];
 
         ')';
-        liveRegions.forEach(region => {  '),
+        liveRegions.forEach(region => {  '),'
             const element = document.createElement('div'),
 
             element.id = region.id,
-            element.setAttribute('aria-live', region.priority',
-            element.setAttribute('aria-label', region.label',
+            element.setAttribute('aria-live', region.priority','
+            element.setAttribute('aria-label', region.label','
             element.className = 'sr-only',
             element.style.cssText = this.elements.announcer.style.cssText }
             document.body.appendChild(element); }
@@ -335,21 +334,21 @@ export class SocialAccessibilityManager {'
             this.executeShortcut(this.shortcuts[shortcutKey]) }
             return; }
         }
-        ';
+        ';'
         // Tab キーによるフォーカス管理
         if(event.key === 'Tab' {', ' }
 
             this.handleTabNavigation(event); }
         }
-        ';
+        ';'
         // Escape キーによるダイアログ閉じる
         if(event.key === 'Escape' {', ' }
 
             this.handleEscapeKey(event); }
         }
-        ';
+        ';'
         // 矢印キーによるナビゲーション
-        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(event.key) { this.handleArrowNavigation(event) }
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(event.key) { this.handleArrowNavigation(event) }'
     }
     
     /**
@@ -374,14 +373,14 @@ export class SocialAccessibilityManager {'
         this.stats.shortcutUses[action] = (this.stats.shortcutUses[action] || 0) + 1,
 
         switch(action) {''
-            case 'focusMainShareButton':',
+            case 'focusMainShareButton':','
                 this.focusMainShareButton('''
-            case 'showShareDialog': ',
+            case 'showShareDialog': ','
                 this.showShareDialog('',
-            case 'toggleHighContrast':',
+            case 'toggleHighContrast':','
                 this.toggleHighContrast('',
-            case 'announceCurrentState':',
-                this.announceCurrentState()',
+            case 'announceCurrentState':','
+                this.announceCurrentState()','
             case 'closeCurrentDialog':),
                 this.closeCurrentDialog() }
                 break; }
@@ -421,16 +420,16 @@ export class SocialAccessibilityManager {'
         // 共有ボタンの状態更新
         if(element.classList.contains('share-button-main)' {''
             const expanded = element.getAttribute('aria-expanded') === 'true',
-            if(expanded) {
+            if (expanded) {
     }
 
                 this.announce('共有オプションが展開されました'); }
 }
-        ';
+        ';'
         // ダイアログの状態更新
         if(element.closest('.share-dialog)' { ''
             const dialog = element.closest('.share-dialog'),
-            if(dialog.style.display !== 'none') {', ' }
+            if (dialog.style.display !== 'none') {', ' }
 
                 this.announce('共有ダイアログが開いています'); }
 }
@@ -452,31 +451,31 @@ export class SocialAccessibilityManager {'
 
             timestamp: Date.now(),' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 適切なLive Regionを選択
-        const regionId = priority === 'assertive' ? undefined : undefined';
+        const regionId = priority === 'assertive' ? undefined : undefined';'
             'social-urgent-announcements' : 'social-status-announcements';
         
         const region = document.getElementById(regionId) || this.elements.announcer;
 
-        if(region) {
+        if (region) {
             // 一度クリアしてから新しいメッセージを設定
-            region.textContent = ' }
+            region.textContent = ' }'
             setTimeout(() => {  }
 
                 region.textContent = message;' }'
 
-            }, 100');
+            }, 100');'
         }
 
-        this.log('アナウンス実行', { message, priority }';
+        this.log('アナウンス実行', { message, priority }';'
     }
     
     /**
      * 高コントラストモードの有効化'
      */''
-    enableHighContrast()';
+    enableHighContrast()';'
         document.body.classList.add('high-contrast-mode');
 
         this.config.highContrast.enabled = true;
@@ -487,12 +486,12 @@ export class SocialAccessibilityManager {'
     /**
      * 高コントラストモードの無効化'
      */''
-    disableHighContrast()';
+    disableHighContrast()';'
         document.body.classList.remove('high-contrast-mode');
 
         this.config.highContrast.enabled = false;
         this.announce('高コントラストモードが無効になりました');
-        this.log('高コントラストモード無効化);
+        this.log('高コントラストモード無効化);'
     }
     
     /**
@@ -508,7 +507,7 @@ export class SocialAccessibilityManager {'
     /**
      * 動きの軽減モードの有効化'
      */''
-    enableReducedMotion()';
+    enableReducedMotion()';'
         document.body.classList.add('reduced-motion-mode');
 
         this.config.reducedMotion.enabled = true;
@@ -519,7 +518,7 @@ export class SocialAccessibilityManager {'
     /**
      * 動きの軽減モードの無効化'
      */''
-    disableReducedMotion()';
+    disableReducedMotion()';'
         document.body.classList.remove('reduced-motion-mode');
 
         this.config.reducedMotion.enabled = false;
@@ -530,9 +529,9 @@ export class SocialAccessibilityManager {'
     /**
      * メイン共有ボタンにフォーカス'
      */''
-    focusMainShareButton()';
-        const mainButton = document.querySelector('.share-button-main);
-        if(mainButton) {
+    focusMainShareButton()';'
+        const mainButton = document.querySelector('.share-button-main);'
+        if (mainButton) {
 
             mainButton.focus() }
 
@@ -544,7 +543,7 @@ export class SocialAccessibilityManager {'
      */
     showShareDialog() {
 
-        if(this.socialSharingManager) {
+        if (this.socialSharingManager) {
             // デフォルト共有データで表示
             this.socialSharingManager.promptShareScore({)
                 score: 0,' }'
@@ -569,19 +568,19 @@ export class SocialAccessibilityManager {'
         let, state = 'BubblePopソーシャル機能。';
 
         ')';
-        if(this.state.currentFocus) {
+        if (this.state.currentFocus) {
         const element = this.state.currentFocus,
             const role = element.getAttribute('role) || element.tagName.toLowerCase()',
-            const label = element.getAttribute('aria-label) || element.textContent }
+            const label = element.getAttribute('aria-label) || element.textContent }'
             state += `現在フォーカス中: ${role} ${label}。`;
         }
 
-        if(this.config.highContrast.enabled) {', ' }
+        if (this.config.highContrast.enabled) {', ' }
 
             state += '高コントラストモード有効。'; }
         }
 
-        if(this.config.reducedMotion.enabled) {', ' }
+        if (this.config.reducedMotion.enabled) {', ' }
 
             state += '動きの軽減モード有効。'; }
         }
@@ -592,11 +591,11 @@ export class SocialAccessibilityManager {'
     /**
      * 現在のダイアログを閉じる'
      */''
-    closeCurrentDialog()';
-        const openDialog = document.querySelector('.share-dialog[style*="block"]";
-        if(openDialog) {
+    closeCurrentDialog()';'
+        const openDialog = document.querySelector('.share-dialog[style*="block"]";'
+        if (openDialog) {
 
-            const closeButton = openDialog.querySelector('.dialog-close),
+            const closeButton = openDialog.querySelector('.dialog-close),'
 
             if (closeButton) {''
                 closeButton.click() }
@@ -630,7 +629,7 @@ export class SocialAccessibilityManager {'
      */''
     handleTabNavigation(event) {
         // フォーカストラップの実装
-        const dialog = event.target.closest('[role="dialog"]),
+        const dialog = event.target.closest('[role="dialog"]),'
         if (dialog) {
     }
             this.handleDialogTabNavigation(event, dialog); }
@@ -641,8 +640,8 @@ export class SocialAccessibilityManager {'
      */
     handleDialogTabNavigation(event, dialog) {
 
-        const focusableElements = dialog.querySelectorAll()',
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"),
+        const focusableElements = dialog.querySelectorAll()','
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"),'
         
         if (focusableElements.length === 0) return,
         
@@ -655,7 +654,7 @@ export class SocialAccessibilityManager {'
                 event.preventDefault() }
                 lastElement.focus(); }
 } else {  // Tab
-            if(document.activeElement === lastElement) {
+            if (document.activeElement === lastElement) {
     
 }
                 event.preventDefault(); }
@@ -668,10 +667,10 @@ export class SocialAccessibilityManager {'
      */''
     handleEscapeKey(event) {
         // 最上位のモーダルを閉じる
-        const modals = document.querySelectorAll('[role="dialog"]:not([style*="none"])",
-        if(modals.length > 0) {
+        const modals = document.querySelectorAll('[role="dialog"]:not([style*="none"])",'
+        if (modals.length > 0) {
             const topModal = modals[modals.length - 1],
-            const closeButton = topModal.querySelector('[aria-label*="閉じる"], .dialog-close),
+            const closeButton = topModal.querySelector('[aria-label*="閉じる"], .dialog-close),'
             if (closeButton) {
     }
                 closeButton.click(); }
@@ -687,9 +686,9 @@ export class SocialAccessibilityManager {'
 
             this.handlePlatformButtonNavigation(event); }
         }
-        ';
+        ';'
         // リーダーボード項目間のナビゲーション
-        if(event.target.classList.contains('leaderboard-entry) { this.handleLeaderboardNavigation(event) }'
+        if (event.target.classList.contains('leaderboard-entry) { this.handleLeaderboardNavigation(event) }'
     }
     
     /**
@@ -697,18 +696,18 @@ export class SocialAccessibilityManager {'
      */''
     handlePlatformButtonNavigation(event) {
 
-        const buttons = Array.from(document.querySelectorAll('.share-button-platform),
+        const buttons = Array.from(document.querySelectorAll('.share-button-platform),'
         const currentIndex = buttons.indexOf(event.target),
         
         if (currentIndex === -1) return,
-        ',
+        ','
 
         let nextIndex,
         switch(event.key) {''
-            case 'ArrowUp':',
-            case 'ArrowLeft':',
+            case 'ArrowUp':','
+            case 'ArrowLeft':','
                 event.preventDefault('',
-            case 'ArrowDown':',
+            case 'ArrowDown':','
             case 'ArrowRight':),
                 event.preventDefault(),
                 nextIndex = currentIndex === buttons.length - 1 ? 0 : currentIndex + 1,
@@ -724,16 +723,16 @@ export class SocialAccessibilityManager {'
      */''
     handleLeaderboardNavigation(event) {
 
-        const entries = Array.from(document.querySelectorAll('.leaderboard-entry),
+        const entries = Array.from(document.querySelectorAll('.leaderboard-entry),'
         const currentIndex = entries.indexOf(event.target),
         
         if (currentIndex === -1) return,
-        ',
+        ','
 
         let nextIndex,
         switch(event.key) {''
-            case 'ArrowUp':',
-                event.preventDefault()',
+            case 'ArrowUp':','
+                event.preventDefault()','
             case 'ArrowDown':),
                 event.preventDefault(),
                 nextIndex = currentIndex === entries.length - 1 ? 0 : currentIndex + 1,
@@ -747,22 +746,22 @@ export class SocialAccessibilityManager {'
     /**
      * アクセシビリティ検証'
      */''
-    validateAccessibility()';
+    validateAccessibility()';'
         const focusableElements = document.querySelectorAll('button, [href], input, select, textarea';
-        focusableElements.forEach(element => { '),
-            if(!element.hasAttribute('tabindex' && element.tabIndex < 0') {
+        focusableElements.forEach(element => { '),'
+            if (!element.hasAttribute('tabindex' && element.tabIndex < 0') {'
                 violations.push({)'
-                    type: 'FOCUSABLE_ELEMENT_WITHOUT_TABINDEX')',
+                    type: 'FOCUSABLE_ELEMENT_WITHOUT_TABINDEX')','
                     element,' }'
 
                     message: 'フォーカス可能要素にtabindexが設定されていません'); 
-    }';
+    }';'
 
             }'}');
-        ';
+        ';'
         // ARIA属性の検証
         const ariaElements = document.querySelectorAll('[aria-label], [aria-labelledby], [aria-describedby]';
-        ariaElements.forEach(element => { '),
+        ariaElements.forEach(element => { '),'
             const labelledby = element.getAttribute('aria-labelledby',
             if(labelledby && !document.getElementById(labelledby)) {
                 violations.push({)'
@@ -771,16 +770,16 @@ export class SocialAccessibilityManager {'
                     element,') }'
 
                     message: `aria-labelledbyで参照されているID "${labelledby}" が存在しません`);
-                }";
+                }";"
             }""
-        }");
-        ";
+        }");"
+        ";"
         // カラーコントラストの検証""
-        const buttons = document.querySelectorAll('button);
+        const buttons = document.querySelectorAll('button);'
         buttons.forEach(button => {  ),
 
             const contrast = this.calculateColorContrast(button),
-            if(contrast < this.config.wcag.colorContrast.normal) {
+            if (contrast < this.config.wcag.colorContrast.normal) {
                 violations.push({ }''
                     type: 'INSUFFICIENT_COLOR_CONTRAST') }
                     element: button) }
@@ -791,9 +790,9 @@ export class SocialAccessibilityManager {'
         
         this.stats.accessibilityViolations = violations.length;
 
-        if(violations.length > 0) {', ' }
+        if (violations.length > 0) {', ' }
 
-            this.log('アクセシビリティ違反検出', { violations '), 'warn') }
+            this.log('アクセシビリティ違反検出', { violations '), 'warn') }'
         
         return violations;
     }
@@ -854,7 +853,7 @@ export class SocialAccessibilityManager {'
     
 }
         this.config = { ...this.config, ...newConfig,
-        this.applyInitialSettings()',
+        this.applyInitialSettings()','
         this.log('アクセシビリティ設定更新', newConfig) }
     
     /**
@@ -897,9 +896,9 @@ export class SocialAccessibilityManager {'
     /**
      * クリーンアップ'
      */''
-    destroy()';
-        document.removeEventListener('keydown', this.handlers.keydown';
-        document.removeEventListener('focusin', this.handlers.focus';
+    destroy()';'
+        document.removeEventListener('keydown', this.handlers.keydown';'
+        document.removeEventListener('focusin', this.handlers.focus';'
         document.removeEventListener('focusout', this.handlers.blur);
         
         // DOM要素の削除
@@ -908,7 +907,7 @@ export class SocialAccessibilityManager {'
                 element.parentNode.removeChild(element); }
             }'}');
 
-        this.log('SocialAccessibilityManager破棄完了);
+        this.log('SocialAccessibilityManager破棄完了);'
     }
     
     /**
@@ -922,9 +921,9 @@ export class SocialAccessibilityManager {'
             timestamp: Date.now(); 
     };
 
-        if(ErrorHandler) {', ' }
+        if (ErrorHandler) {', ' }
 
-            ErrorHandler.handleError(error, 'SocialAccessibilityManager', context'; }
+            ErrorHandler.handleError(error, 'SocialAccessibilityManager', context'; }'
         }
 
         this.log('エラー発生', errorInfo, 'error');
@@ -941,4 +940,4 @@ export class SocialAccessibilityManager {'
 
         console[consoleMethod](`[SocialAccessibilityManager] ${message}`, data || '');
 
-    }'}
+    }'}'

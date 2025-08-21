@@ -4,7 +4,7 @@
  */
 export class StatisticsErrorHandler {
     constructor(statisticsManager) {
-        this.statisticsManager = statisticsManager,
+        this.statisticsManager = statisticsManager;
         
         // エラーハンドリング設定
         this.config = {
@@ -20,17 +20,17 @@ export class StatisticsErrorHandler {
                 TIMEOUT_ERROR: 'timeout_error' 
     };
             severityLevels: { LOW: 1,      // 軽微なエラー（ログのみ）
-                MEDIUM: 2,   // 中程度（警告表示）,
-                HIGH: 3,     // 重大（自動復旧試行）,
+                MEDIUM: 2,   // 中程度（警告表示）;
+                HIGH: 3,     // 重大（自動復旧試行）;
                 CRITICAL: 4  // 致命的（セーフモード移行）  };
             recovery: { maxRetryAttempts: 3,
                 retryDelayMs: 1000,
                 autoRecoveryEnabled: true,
                 safeModeEnabled: true,
-    fallbackDataEnabled: true };
+    fallbackDataEnabled: true,;
             monitoring: { errorTrackingEnabled: true,
                 maxErrorHistory: 1000,
-    alertThreshold: 10, // 10分間に10エラーで警告,
+    alertThreshold: 10, // 10分間に10エラーで警告;
                 alertWindowMs: 600000 // 10分間  }
         };
         // エラー状態管理
@@ -62,11 +62,11 @@ export class StatisticsErrorHandler {
             disableAnimations: true,
             simplifiedRendering: true,
             limitedDataCollection: true,
-    emergencyBackup: true  };
+    emergencyBackup: true,;
         // フォールバックデータ
         this.fallbackData = { statistics: this.createFallbackStatistics(
             config: this.createFallbackConfig(
-    lastKnownGood: null  };
+    lastKnownGood: null,;
         // エラー通知システム
         this.notificationCallbacks = new Set();
         this.alertSystem = { isEnabled: true,
@@ -88,7 +88,7 @@ export class StatisticsErrorHandler {
     /**
      * グローバルエラーハンドラーの設定
      */''
-    setupGlobalErrorHandlers()';
+    setupGlobalErrorHandlers()';'
         if (typeof, window !== 'undefined') {
 
             window.addEventListener('error', (event) => { '
@@ -105,7 +105,7 @@ export class StatisticsErrorHandler {
     }
 
                 ';}');
-            ';
+            ';'
             // Promiseの未捕捉拒否
             window.addEventListener('unhandledrejection', (event) => { this.handleError(event.reason,
                     this.config.errorTypes.CALCULATION_ERROR,
@@ -114,14 +114,14 @@ export class StatisticsErrorHandler {
             }
                         promise: event.promise) 
     });
-            }';
+            }';'
         }
     }
     
     /**
      * パフォーマンス監視の設定'
      */''
-    setupPerformanceMonitoring()';
+    setupPerformanceMonitoring()';'
         if (typeof, performance !== 'undefined' && performance.memory) { setInterval(() => {  }
                 this.checkMemoryUsage(); }
             }, 30000); // 30秒間隔
@@ -136,7 +136,7 @@ export class StatisticsErrorHandler {
      */
     async handleError(error, errorType = null, context = {}) { try {
             // エラータイプの自動判定
-            if(!errorType) {
+            if (!errorType) {
     
 }
                 errorType = this.classifyError(error); }
@@ -158,16 +158,16 @@ export class StatisticsErrorHandler {
             if (severity >= this.config.severityLevels.HIGH && this.config.recovery.autoRecoveryEnabled) { await this.attemptRecovery(errorDetails) }
             
             // セーフモードの判定
-            if(severity >= this.config.severityLevels.CRITICAL || this.shouldEnterSafeMode() { await this.enterSafeMode(errorDetails) }
+            if (severity >= this.config.severityLevels.CRITICAL || this.shouldEnterSafeMode() { await this.enterSafeMode(errorDetails) }
             
             return { handled: true,
                 errorId: errorDetails.id,
-    severity: severity };
+    severity: severity,;
                 recoveryAttempted: severity >= this.config.severityLevels.HIGH 
     } catch (handlingError) { // エラーハンドリング自体のエラー
             console.error('Error handler failed:', handlingError),
             await this.enterEmergencyMode(error, handlingError) }
-            return { handled: false, emergencyMode: true  }
+            return { handled: false, emergencyMode: true,
     }
     
     /**
@@ -175,9 +175,9 @@ export class StatisticsErrorHandler {
      */
     classifyError(error) {
 
-        const message = error.message?.toLowerCase() || ',
-        const stack = error.stack?.toLowerCase() || ',
-        ',
+        const message = error.message?.toLowerCase() || ','
+        const stack = error.stack?.toLowerCase() || ','
+        ','
         // メッセージによる分類
         if (message.includes('quota') || message.includes('storage)' {
     }
@@ -193,7 +193,7 @@ export class StatisticsErrorHandler {
         // スタックトレースによる分類
         if (stack.includes('canvas') || stack.includes('render)' { return this.config.errorTypes.RENDERING_ERROR }
 
-        if (stack.includes('statistics') || stack.includes('calculate) { return this.config.errorTypes.CALCULATION_ERROR }
+        if (stack.includes('statistics') || stack.includes('calculate) { return this.config.errorTypes.CALCULATION_ERROR }'
         
         // 特定のエラータイプ
         if (error, instanceof TypeError || error, instanceof ReferenceError) { return this.config.errorTypes.CALCULATION_ERROR }
@@ -319,7 +319,7 @@ export class StatisticsErrorHandler {
         const { type, fingerprint } = errorDetails;
         
         // タイプ別メトリクス
-        if(!this.errorMetrics.has(type) {
+        if (!this.errorMetrics.has(type) {
             this.errorMetrics.set(type, {
                 count: 0),
                 lastOccurred: null,
@@ -361,16 +361,16 @@ export class StatisticsErrorHandler {
         const pattern = {
             type: errorDetails.type,
     fingerprint: errorDetails.fingerprint,
-            hour: new Date(errorDetails.timestamp).getHours('}
+            hour: new Date(errorDetails.timestamp).getHours('}'
 
             context: errorDetails.context.source || 'unknown' }))
         );
         const patternKey = JSON.stringify(pattern);
         const count = this.errorPatterns.get(patternKey) || 0;
         this.errorPatterns.set(patternKey, count + 1);
-        ';
+        ';'
         // 頻繁なパターンの検出
-        if(count > 5) {', ' }
+        if (count > 5) {', ' }
 
             console.warn('Frequent error pattern detected:', pattern); }
 }
@@ -388,7 +388,7 @@ export class StatisticsErrorHandler {
         }
         
         // ユーザー向けアラート
-        if(severity >= this.config.severityLevels.HIGH && this.shouldShowAlert() { this.showUserAlert(errorDetails, severity) }
+        if (severity >= this.config.severityLevels.HIGH && this.shouldShowAlert() { this.showUserAlert(errorDetails, severity) }
         
         // コンソールログ
         this.logError(errorDetails, severity);
@@ -452,7 +452,7 @@ export class StatisticsErrorHandler {
         try {
             const recoveryStrategy = this.recoveryStrategies.get(errorDetails.type),
             
-            if(recoveryStrategy) {
+            if (recoveryStrategy) {
             
                 const result = await recoveryStrategy(errorDetails) }
                 if (result.success) { }
@@ -479,13 +479,13 @@ export class StatisticsErrorHandler {
     async handleDataCorruption(errorDetails) { try {
             // バックアップからの復元
             const backupRestored = await this.restoreFromBackup(),
-            if(backupRestored) { }'
+            if (backupRestored) { }'
 
                 return { success: true, method: 'backup_restore'
             }
-            ';
+            ';'
             // フォールバックデータの使用
-            await this.useFallbackData()';
+            await this.useFallbackData()';'
             return { success: true, method: 'fallback_data'
             }) catch (error) {
             return { success: false, reason: error.message  }
@@ -497,14 +497,14 @@ export class StatisticsErrorHandler {
     async handleStorageFull(errorDetails) { try {
             // 古いデータの削除,
             const cleaned = await this.cleanupOldData(),
-            if(cleaned) { }'
+            if (cleaned) { }'
 
                 return { success: true, method: 'data_cleanup'
             }
             
             // 圧縮の実行
             const compressed = await this.compressStorageData();
-            if(compressed) { }'
+            if (compressed) { }'
 
                 return { success: true, method: 'data_compression'
             }
@@ -521,8 +521,8 @@ export class StatisticsErrorHandler {
             // 統計の再計算
             await this.recalculateStatistics('}''
             return { success: true, method: 'recalculation'
-            }'} catch (error) { // セーフな統計値の使用
-            await this.useSafeStatistics('}
+            }'} catch (error) { // セーフな統計値の使用'
+            await this.useSafeStatistics('}'
 
             return { success: true, method: 'safe_statistics'
             }
@@ -535,8 +535,8 @@ export class StatisticsErrorHandler {
             // キャンバスのリセット
             await this.resetRenderingContext('}''
             return { success: true, method: 'context_reset'
-            }'} catch (error) { // フォールバックレンダリングの使用
-            await this.useFallbackRendering('}
+            }'} catch (error) { // フォールバックレンダリングの使用'
+            await this.useFallbackRendering('}'
 
             return { success: true, method: 'fallback_rendering'
             }
@@ -607,7 +607,7 @@ export class StatisticsErrorHandler {
             await this.applySafeModeFeatures(),
             
             // 緊急バックアップの作成
-            if(this.safeModeFeatures.emergencyBackup) {
+            if (this.safeModeFeatures.emergencyBackup) {
     
 }
                 await this.createEmergencyBackup(); }
@@ -616,11 +616,11 @@ export class StatisticsErrorHandler {
             // 通知の送信
             for (const callback of this.notificationCallbacks) { try {
                     await callback({''
-                        type: 'safe_mode_entered,
-    reason: errorDetails }
-                        timestamp: Date.now() });'} catch (error) { console.error('Safe mode notification failed:', error }
+                        type: 'safe_mode_entered,'
+    reason: errorDetails,
+                        timestamp: Date.now() });'} catch (error) { console.error('Safe mode notification failed:', error }'
 
-                }'} catch (error) {
+                }'} catch (error) {'
             console.error('Failed to enter safe mode:', error),
             await this.enterEmergencyMode(errorDetails, error) }
     }
@@ -629,7 +629,7 @@ export class StatisticsErrorHandler {
      * セーフモード機能の適用
      */
     async applySafeModeFeatures() { // 統計システムの簡略化
-        if(this.safeModeFeatures.reducedStatistics) {
+        if (this.safeModeFeatures.reducedStatistics) {
     
 }
             await this.enableReducedStatistics(); }
@@ -681,7 +681,7 @@ export class StatisticsErrorHandler {
             return { hasData: !!this.statisticsManager.statistics }
                 dataSize: JSON.stringify(this.statisticsManager.statistics || {).length };
                 lastUpdate: this.statisticsManager.lastUpdateTime || null 
-    };'} catch (error) { }
+    };'} catch (error) { }'
 
             return { error: 'unable_to_get_state' 
     }
@@ -702,26 +702,25 @@ export class StatisticsErrorHandler {
         try {
             let totalSize = 0,
             for (let, key in, localStorage) {
-                if(localStorage.hasOwnProperty(key) {
+                if (localStorage.hasOwnProperty(key) {
     
 }
                     totalSize += localStorage[key].length; }
 }
-            return { used: totalSize } catch (error) { return null,
+            return { used: totalSize; catch (error) { return null,
     
     checkMemoryUsage() { const memory = this.getMemoryUsage(),
         if (memory && memory.used > memory.limit * 0.9) {''
-            this.handleError()',
+            this.handleError()','
                 new Error('Memory usage critical }'
                 this.config.errorTypes.MEMORY_ERROR }
-                { memoryUsage: memory 
-    }
+                { memoryUsage: memory,
 
-    checkStorageUsage()';
-            const testKey = 'storage_test_' + Date.now()';
+    checkStorageUsage()';'
+            const testKey = 'storage_test_' + Date.now()';'
             const testData = 'x'.repeat(1024); // 1KB
             localStorage.setItem(testKey, testData);
-            localStorage.removeItem(testKey);'} catch (error) {
+            localStorage.removeItem(testKey);'} catch (error) {'
             if(error.name === 'QuotaExceededError' {'
                 this.handleError(
                     error }
@@ -739,8 +738,7 @@ export class StatisticsErrorHandler {
                 totalGames: 0,
     totalPlayTime: 0 }
                 averageSessionTime: 0 };
-                lastPlayTime: null 
-    };
+                lastPlayTime: null;;
             scoreStats: { totalScore: 0,
                 highestScore: 0,
                 averageScore: 0,
@@ -755,8 +753,8 @@ export class StatisticsErrorHandler {
 
     createFallbackConfig('';
             rendering: { quality: 'low' };
-            animations: { enabled: false };
-            statistics: { detailed: false }))
+            animations: { enabled: false,;
+            statistics: { detailed: false,))
     }
     
     /**
@@ -787,7 +785,7 @@ export class StatisticsErrorHandler {
     async exitSafeMode() { ''
         if(!this.errorState.isInSafeMode) return,
 
-        console.info('Exiting safe mode),
+        console.info('Exiting safe mode),'
         this.errorState.isInSafeMode = false,
         this.errorState.consecutiveErrors = 0,
         
@@ -796,22 +794,22 @@ export class StatisticsErrorHandler {
     
     // エラー履歴のクリア
     clearErrorHistory() {
-        this.errorHistory = [],
+        this.errorHistory = [];
         this.errorMetrics.clear(),
         this.errorPatterns.clear() }
         this.saveErrorHistory(); }
     }
     
     // 設定の更新
-    updateConfig(newConfig) { Object.assign(this.config newConfig') }
+    updateConfig(newConfig) { Object.assign(this.config newConfig') }'
     
     /**
      * データ永続化
      */
 
-    loadErrorHistory()';
-            const saved = localStorage.getItem('statistics_error_history);
-            if(saved) {
+    loadErrorHistory()';'
+            const saved = localStorage.getItem('statistics_error_history);'
+            if (saved) {
                 const data = JSON.parse(saved),
                 this.errorHistory = data.history || [] }
 
@@ -826,13 +824,13 @@ export class StatisticsErrorHandler {
                 metrics: Array.from(this.errorMetrics.entries(
                 timestamp: Date.now(  }
 
-            localStorage.setItem('statistics_error_history', JSON.stringify(data);' }
+            localStorage.setItem('statistics_error_history', JSON.stringify(data);' }'
 
         } catch (error) { console.warn('Failed to save error history:', error }
     }
 
-    createInitialBackup()';
-        console.debug('Initial, backup created);
+    createInitialBackup()';'
+        console.debug('Initial, backup created);'
     }
     
     /**
@@ -840,7 +838,7 @@ export class StatisticsErrorHandler {
      */
     destroy() {
         this.notificationCallbacks.clear(),
-        this.errorHistory = [],
+        this.errorHistory = [];
 
         this.errorMetrics.clear() }
 

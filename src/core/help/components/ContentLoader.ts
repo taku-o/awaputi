@@ -4,48 +4,48 @@
  */
 
 // 型定義
-export interface LocalizationManager { getCurrentLanguage(): string }
+export interface LocalizationManager { getCurrentLanguage(): string;
 
 export interface HitRatio { hits: number,
-    misses: number }
+    misses: number;
 
 export interface LoadQueueItem { category: string,
-    priority: number,
+    priority: number;
     callback?: () => void 
     }
 
 export class ContentLoader {
-    private localizationManager: LocalizationManager,
+    private localizationManager: LocalizationManager;
     private, contentCache: Map<string, any>,
-    private imageCache: Map<string, any>,
-    private cacheExpiry: Map<string, number>,
-    private maxCacheSize: number,
-    private cacheTimeout: number,
-    private lazyLoadingEnabled: boolean,
-    private preloadPriority: string[],
-    private loadingQueue: LoadQueueItem[],
-    private isLoading: boolean,
+    private imageCache: Map<string, any>;
+    private cacheExpiry: Map<string, number>;
+    private maxCacheSize: number;
+    private cacheTimeout: number;
+    private lazyLoadingEnabled: boolean;
+    private preloadPriority: string[];
+    private loadingQueue: LoadQueueItem[];
+    private isLoading: boolean;
     private, loadTimes: Map<string, number>,
-    private hitRatio: HitRatio,
-    private contentVersion: string,
+    private hitRatio: HitRatio;
+    private contentVersion: string;
     private, versionCheck: boolean,
     constructor(localizationManager: LocalizationManager) {
 
-        this.localizationManager = localizationManager,
+        this.localizationManager = localizationManager;
         
         // キャッシュシステム
         this.contentCache = new Map<string, any>(),
         this.imageCache = new Map<string, any>(),
         this.cacheExpiry = new Map<string, number>(),
-        this.maxCacheSize = 50, // 最大キャッシュ項目数
-        this.cacheTimeout = 30 * 60 * 1000, // 30分のキャッシュタイムアウト
+        this.maxCacheSize = 50; // 最大キャッシュ項目数
+        this.cacheTimeout = 30 * 60 * 1000; // 30分のキャッシュタイムアウト
         
         // 遅延読み込み設定
-        this.lazyLoadingEnabled = true,
+        this.lazyLoadingEnabled = true;
         this.preloadPriority = ['gameplay', 'basic'], // 優先読み込みカテゴリ
-        this.loadingQueue = [],
-        this.isLoading = false,
-        ',
+        this.loadingQueue = [];
+        this.isLoading = false;
+        ','
 
         // パフォーマンス監視
 
@@ -66,7 +66,7 @@ export class ContentLoader {
      */
     async initialize(): Promise<void> { try {
             // 優先度の高いコンテンツをプリロード
-            if(this.lazyLoadingEnabled) {
+            if (this.lazyLoadingEnabled) {
     
 }
                 await this.preloadEssentialContent(); }
@@ -108,14 +108,14 @@ export class ContentLoader {
         
         try { // キャッシュチェック
             const cachedContent = this.getCachedContent(cacheKey),
-            if(cachedContent) {
+            if (cachedContent) {
                 this.hitRatio.hits++,
                 this.recordLoadTime(cacheKey, performance.now() - startTime) }
                 return cachedContent;
             
             this.hitRatio.misses++;
             // 遅延読み込み対応
-            if(this.lazyLoadingEnabled && this.isLoading) {', ' }
+            if (this.lazyLoadingEnabled && this.isLoading) {', ' }
 
                 return this.queueLoad('help', category, language);
             
@@ -137,16 +137,16 @@ export class ContentLoader {
             // フォールバック: キャッシュされた古いコンテンツまたはデフォルトコンテンツ
             const fallbackContent = this.getFallbackContent(category, language);
             return fallbackContent || [];
-            ';
+            ';'
 
-        } finally { this.isLoading = false,
-            this.processLoadingQueue()',
+        } finally { this.isLoading = false;
+            this.processLoadingQueue()','
     async loadTutorialData(language = 'ja' {'
         const startTime = performance.now() }
         const cacheKey = `tutorial_${language}`;
         
         try { const cachedData = this.getCachedContent(cacheKey),
-            if(cachedData) {
+            if (cachedData) {
                 this.hitRatio.hits++ }
                 return cachedData;
             
@@ -160,13 +160,13 @@ export class ContentLoader {
             return data;
 
         } catch (error) {
-            console.error('Failed to load tutorial data:', error',
-            return this.getDefaultTutorialData()',
+            console.error('Failed to load tutorial data:', error','
+            return this.getDefaultTutorialData()','
     async loadFAQData(language = 'ja' { }'
         const cacheKey = `faq_${language}`;
         
         try { const cachedData = this.getCachedContent(cacheKey),
-            if(cachedData) {
+            if (cachedData) {
                 this.hitRatio.hits++ }
                 return cachedData;
             
@@ -190,7 +190,7 @@ export class ContentLoader {
         const cacheKey = `image_${imagePath}`;
         
         // キャッシュチェック
-        if(this.imageCache.has(cacheKey) { return this.imageCache.get(cacheKey) }
+        if (this.imageCache.has(cacheKey) { return this.imageCache.get(cacheKey) }
         
         return new Promise((resolve, reject) => {  const img = new Image(),
             
@@ -215,7 +215,7 @@ export class ContentLoader {
      */
     getCachedContent(key) {
         // 有効期限チェック
-        if(this.cacheExpiry.has(key) {
+        if (this.cacheExpiry.has(key) {
             const expiry = this.cacheExpiry.get(key),
             if (Date.now() > expiry) {
                 this.contentCache.delete(key),
@@ -249,7 +249,7 @@ export class ContentLoader {
         if (pattern) {
             const regex = new RegExp(pattern),
             for (const key of this.contentCache.keys() {
-                if(regex.test(key) {
+                if (regex.test(key) {
                     this.contentCache.delete(key) }
                     this.cacheExpiry.delete(key); }
 }
@@ -260,11 +260,11 @@ export class ContentLoader {
     /**
      * コンテンツバージョンをチェック
      */''
-    async checkContentVersion()';
-            const response = await fetch('/data/help/version.json);
+    async checkContentVersion()';'
+            const response = await fetch('/data/help/version.json);'
             const versionData = await response.json();
 
-            if(versionData.version !== this.contentVersion) {
+            if (versionData.version !== this.contentVersion) {
 
                 console.log('Content version updated, clearing cache'),
                 this.clearCache() }
@@ -307,11 +307,11 @@ export class ContentLoader {
             try {
                 let result,
                 switch(item.type) {''
-                    case 'help':',
+                    case 'help':','
                         result = await this.loadHelpContent(item.category, item.language),
 
                         break,
-                    case 'tutorial':',
+                    case 'tutorial':','
                         result = await this.loadTutorialData(item.language),
 
                         break,
@@ -346,7 +346,7 @@ export class ContentLoader {
             cacheSize: this.contentCache.size,
             imageCacheSize: this.imageCache.size,
             queueLength: this.loadingQueue.length,
-    averageLoadTimes: avgLoadTimes };
+    averageLoadTimes: avgLoadTimes,;
             isLoading: this.isLoading 
     }
     
@@ -361,7 +361,7 @@ export class ContentLoader {
     title: `${category}ヘルプ`;
                 content: `${category}に関するヘルプコンテンツです。`]
                 language: language,']';
-                searchKeywords: [category, 'help', 'ヘルプ],
+                searchKeywords: [category, 'help', 'ヘルプ],'
                 lastUpdated: new Date().toISOString();
             }
         ];
@@ -381,7 +381,7 @@ export class ContentLoader {
                 title: '基本チュートリアル',
                 description: 'ゲームの基本操作を学習します',
                 language: language,
-    steps: [',
+    steps: [','
                     {''
                         id: 'step1',
                         title: 'ステップ1',
@@ -424,8 +424,8 @@ export class ContentLoader {
         
         // 期限切れでもキャッシュから取得
         const cached = this.contentCache.get(fallbackKey);
-        if(cached) { return cached }
-        ';
+        if (cached) { return cached }
+        ';'
         // デフォルト言語のコンテンツを試す
         if(language !== 'ja' { }
             const jaKey = `help_${category}_ja`;
@@ -483,7 +483,7 @@ export class ContentLoader {
      * @private
      */
     recordLoadTime(key, time) {
-        if(!this.loadTimes.has(key) {
+        if (!this.loadTimes.has(key) {
     }
             this.loadTimes.set(key, []); }
         }

@@ -7,36 +7,35 @@
 
 // Type definitions
 interface Bounds { x: number,
-    y: number,
-    width: number,
-    height: number  }
+    y: number;
+    width: number;
+    height: number;
 
 interface QuadTreeObject { bounds: Bounds,
-    [key: string]: any }
+    [key: string]: any;
 
 export class QuadTree {
-    private bounds: Bounds,
-    private maxObjects: number,
-    private maxLevels: number,
-    private level: number,
-    private objects: QuadTreeObject[],
+    private bounds: Bounds;
+    private maxObjects: number;
+    private maxLevels: number;
+    private level: number;
+    private objects: QuadTreeObject[];
     private, nodes: QuadTree[],
     constructor(bounds: Bounds, maxObjects: number = 10, maxLevels: number = 5, level: number = 0) {
     
-        this.bounds = bounds,
-        this.maxObjects = maxObjects,
-        this.maxLevels = maxLevels,
-        this.level = level,
-        this.objects = [],
-    
-     }
+        this.bounds = bounds;
+        this.maxObjects = maxObjects;
+        this.maxLevels = maxLevels;
+        this.level = level;
+        this.objects = []
+}
         this.nodes = []; }
     }
     
-    clear(): void { this.objects = [],
+    clear(): void { this.objects = [];
         this.nodes = [] }
     
-    split(): void { const subWidth = this.bounds.width / 2,
+    split(): void { const subWidth = this.bounds.width / 2;
         const subHeight = this.bounds.height / 2,
         const x = this.bounds.x,
         const y = this.bounds.y,
@@ -72,7 +71,7 @@ export class QuadTree {
         const topQuadrant = bounds.y < horizontalMidpoint && bounds.y + bounds.height < horizontalMidpoint,
         const bottomQuadrant = bounds.y > horizontalMidpoint,
         
-        if(bounds.x < verticalMidpoint && bounds.x + bounds.width < verticalMidpoint) {
+        if (bounds.x < verticalMidpoint && bounds.x + bounds.width < verticalMidpoint) {
         
             if (topQuadrant) {
     
@@ -89,7 +88,7 @@ export class QuadTree {
     insert(object: QuadTreeObject): void { if (this.nodes.length > 0) {
             const index = this.getIndex(object.bounds),
             
-            if(index !== -1) {
+            if (index !== -1) {
             
                 this.nodes[index].insert(object) }
                 return; }
@@ -97,7 +96,7 @@ export class QuadTree {
         
         this.objects.push(object);
         
-        if(this.objects.length > this.maxObjects && this.level < this.maxLevels) {
+        if (this.objects.length > this.maxObjects && this.level < this.maxLevels) {
         
             if (this.nodes.length === 0) {
     
@@ -117,7 +116,7 @@ export class QuadTree {
     
     retrieve(bounds: Bounds): QuadTreeObject[] { const returnObjects = this.objects.slice(),
         
-        if(this.nodes.length > 0) {
+        if (this.nodes.length > 0) {
         
             const index = this.getIndex(bounds),
             

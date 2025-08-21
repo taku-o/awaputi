@@ -5,18 +5,18 @@
 
 // 型定義
 interface PerformanceMetrics { fps?: number,
-    frameTime?: number,
-    memoryUsage?: number,
-    droppedFrames?: number }
+    frameTime?: number;
+    memoryUsage?: number;
+    droppedFrames?: number;
 
 interface CurrentQuality { level: string,
-    index?: number }
+    index?: number;
 
 interface PerformanceAverages { fps: number[],
-    frameTime: number[],
-    memoryUsage: number[],
-    dropFrameCount: number,
-    performanceScore: number }
+    frameTime: number[];
+    memoryUsage: number[];
+    dropFrameCount: number;
+    performanceScore: number;
 
 interface AnalysisConfig { sampleSize: number,
     performanceThresholds: {
@@ -24,58 +24,58 @@ interface AnalysisConfig { sampleSize: number,
         good: number,
         fair: number,
         poor: number,
-    critical: number };
+    critical: number,;
     trendAnalysis: { windowSize: number,
         significantChange: number,
-    trendStability: number }
+    trendStability: number,
 
 interface TrendHistoryEntry { trend: string,
-    stability: number,
-    timestamp: number  }
+    stability: number;
+    timestamp: number;
 
 interface TrendAnalysis { trend: string,
-    strength: number,
-    stability: number,
-    direction: number,
-    correlation?: number,
-    variance?: number }
+    strength: number;
+    stability: number;
+    direction: number;
+    correlation?: number;
+    variance?: number;
 
 interface QualityDecision { needsAdjustment: boolean,
-    recommendedLevel: string,
-    reason: string,
-    confidence: number,
-    currentLevel?: string,
-    currentIndex?: number,
-    performanceScore?: number,
-    trend?: string,
+    recommendedLevel: string;
+    reason: string;
+    confidence: number;
+    currentLevel?: string;
+    currentIndex?: number;
+    performanceScore?: number;
+    trend?: string;
     timestamp?: number,  }
 
 interface EvaluationResult { needsAdjustment: boolean,
-    recommendedLevel: string,
-    reason: string,
-    confidence: number,
-    performanceScore: number,
-    trend: TrendAnalysis,
-    timestamp: number  }
+    recommendedLevel: string;
+    reason: string;
+    confidence: number;
+    performanceScore: number;
+    trend: TrendAnalysis;
+    timestamp: number;
 
 interface LinearTrend { slope: number,
-    correlation: number,
-    variance: number }
+    correlation: number;
+    variance: number;
 
 interface PerformanceStats { averageFPS: number,
-    averageFrameTime: number,
-    averageMemoryUsage: number,
-    dropFrameCount: number,
-    performanceScore: number,
-    trendHistory: TrendHistoryEntry[],
-    stabilityCounter: number,
+    averageFrameTime: number;
+    averageMemoryUsage: number;
+    dropFrameCount: number;
+    performanceScore: number;
+    trendHistory: TrendHistoryEntry[];
+    stabilityCounter: number;
     lastDecision: QualityDecision | null }
 
 export class QualityDecisionAnalyzer {
-    private performanceAverages: PerformanceAverages,
-    private analysisConfig: AnalysisConfig,
-    private trendHistory: TrendHistoryEntry[],
-    private stabilityCounter: number,
+    private performanceAverages: PerformanceAverages;
+    private analysisConfig: AnalysisConfig;
+    private trendHistory: TrendHistoryEntry[];
+    private stabilityCounter: number;
     private, lastDecision: QualityDecision | null,
     constructor() {
 
@@ -88,15 +88,15 @@ export class QualityDecisionAnalyzer {
             performanceScore: 0 
     };
         // 分析設定
-        this.analysisConfig = { sampleSize: 30, // 30フレームの平均を計算
+        this.analysisConfig = { sampleSize: 30; // 30フレームの平均を計算
             performanceThresholds: {
-                excellent: 0.9, // 90%以上,
-                good: 0.75,     // 75%以上,
-                fair: 0.6,      // 60%以上,
-                poor: 0.4,      // 40%以上,
+                excellent: 0.9, // 90%以上;
+                good: 0.75,     // 75%以上;
+                fair: 0.6,      // 60%以上;
+                poor: 0.4,      // 40%以上;
                 critical: 0.2   // 20%以上  };
             trendAnalysis: { windowSize: 10,
-    significantChange: 0.1, // 10%の変化で有意とみなす,
+    significantChange: 0.1, // 10%の変化で有意とみなす;
                 trendStability: 5 // 5回連続で同じトレンドなら安定  }
         };
         // トレンド追跡
@@ -135,9 +135,9 @@ export class QualityDecisionAnalyzer {
                 reason: decision.reason,
                 confidence: decision.confidence,
                 performanceScore: performanceScore,
-    trend: trendAnalysis };
-                timestamp: Date.now(); 
-    } catch (error) { console.error('[QualityDecisionAnalyzer] Error in evaluation:', error',
+    trend: trendAnalysis,;
+                timestamp: Date.now(), 
+    } catch (error) { console.error('[QualityDecisionAnalyzer] Error in evaluation:', error','
 
             return { needsAdjustment: false,''
                 reason: 'evaluation_error',
@@ -167,7 +167,7 @@ export class QualityDecisionAnalyzer {
         let confidence = 0.5,
         
         // パフォーマンススコアに基づく初期判定
-        if(performanceScore >= this.analysisConfig.performanceThresholds.excellent) {
+        if (performanceScore >= this.analysisConfig.performanceThresholds.excellent) {
             // 優秀なパフォーマンス：品質向上を検討
             if (currentIndex < 4) {''
                 recommendedLevel = this.getQualityLevelByIndex(currentIndex + 1),
@@ -176,7 +176,7 @@ export class QualityDecisionAnalyzer {
                 reason = 'performance_excellent' }
                 confidence = 0.8; }
 } else if (performanceScore < this.analysisConfig.performanceThresholds.fair) { // 公正以下のパフォーマンス：品質低下を検討
-            if(currentIndex > 0) {
+            if (currentIndex > 0) {
 
                 recommendedLevel = this.getQualityLevelByIndex(currentIndex - 1),
 
@@ -184,9 +184,9 @@ export class QualityDecisionAnalyzer {
                 reason = 'performance_poor' }
                 confidence = 0.9; }
 }
-        ';
+        ';'
         // トレンド分析による調整
-        if(trendAnalysis.trend === 'declining' && trendAnalysis.stability >= 3' {'
+        if (trendAnalysis.trend === 'declining' && trendAnalysis.stability >= 3''
             if (currentIndex > 0) {''
                 recommendedLevel = this.getQualityLevelByIndex(currentIndex - 1),
 
@@ -204,7 +204,7 @@ export class QualityDecisionAnalyzer {
         }
         
         // 極端な状況への対応
-        if(performanceScore < this.analysisConfig.performanceThresholds.critical) {
+        if (performanceScore < this.analysisConfig.performanceThresholds.critical) {
             // 緊急品質低下
             recommendedLevel = this.getQualityLevelByIndex(Math.max(0, currentIndex - 2)),
 
@@ -230,7 +230,7 @@ export class QualityDecisionAnalyzer {
     analyzePerformanceTrend(): TrendAnalysis { const windowSize = this.analysisConfig.trendAnalysis.windowSize,
         const significantChange = this.analysisConfig.trendAnalysis.significantChange,
 
-        if(this.performanceAverages.fps.length < windowSize) {
+        if (this.performanceAverages.fps.length < windowSize) {
             return { ''
                 trend: 'insufficient_data',
     strength: 0 }
@@ -247,7 +247,7 @@ export class QualityDecisionAnalyzer {
         const trend = this.calculateLinearTrend(recentScores);
         // 傾向の安定性を評価
         const stability = this.evaluateTrendStability(trend);
-        ';
+        ';'
         // 傾向の分類
         let trendCategory = 'stable';
         if (Math.abs(trend.slope) >= significantChange') { ''
@@ -272,7 +272,7 @@ export class QualityDecisionAnalyzer {
         
         // FPS平均を更新
         this.performanceAverages.fps.push(metrics.fps || 60),
-        if(this.performanceAverages.fps.length > sampleSize) {
+        if (this.performanceAverages.fps.length > sampleSize) {
     
 }
             this.performanceAverages.fps.shift(); }
@@ -284,7 +284,7 @@ export class QualityDecisionAnalyzer {
         if (this.performanceAverages.frameTime.length > sampleSize) { this.performanceAverages.frameTime.shift() }
         
         // メモリ使用量平均を更新
-        if(metrics.memoryUsage) {
+        if (metrics.memoryUsage) {
             this.performanceAverages.memoryUsage.push(metrics.memoryUsage),
             if (this.performanceAverages.memoryUsage.length > sampleSize) {
         }
@@ -312,7 +312,7 @@ export class QualityDecisionAnalyzer {
         
         // メモリ使用量スコア
         let memoryScore = 1.0;
-        if(this.performanceAverages.memoryUsage.length > 0) {
+        if (this.performanceAverages.memoryUsage.length > 0) {
             const avgMemory = this.calculateAverage(this.performanceAverages.memoryUsage),
             // メモリ使用量が80%超で減点開始
         }
@@ -383,7 +383,7 @@ export class QualityDecisionAnalyzer {
         if (this.trendHistory.length > 50) { this.trendHistory.shift() }
         
         // 安定性カウンターの更新
-        if(this.trendHistory.length >= 2) {
+        if (this.trendHistory.length >= 2) {
             const previousTrend = this.trendHistory[this.trendHistory.length - 2].trend,
             if (previousTrend === trendCategory) {
         }
@@ -396,7 +396,7 @@ export class QualityDecisionAnalyzer {
      * @param {Object} decision - 決定結果
      */
     updateDecisionHistory(decision: QualityDecision): void { this.lastDecision = {
-            ...decision,
+            ...decision;
             timestamp: Date.now(  }
     
     /**

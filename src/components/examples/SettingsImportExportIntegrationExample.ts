@@ -13,14 +13,13 @@ import { SettingsImportExportComponent  } from '../SettingsImportExportComponent
 interface GameEngine { // Define game engine interface properties as needed }
 
 interface SettingItem { key: string,
-    label: string,
-    type: string,
-    component?: string,
-    description?: string,
+    label: string;
+    type: string;
+    component?: string;
+    description?: string;
     category?: string,  }
 
-interface ExtendedSettingItems { accessibility: SettingItem[]
-    }
+interface ExtendedSettingItems { accessibility: SettingItem[];
 
 /**
  * SettingsSceneでの統合例
@@ -29,12 +28,12 @@ interface ExtendedSettingItems { accessibility: SettingItem[]
  * アクセシビリティ設定カテゴリに設定管理コンポーネントを追加する例です。
  */
 export class SettingsImportExportIntegrationExample {
-    private gameEngine: GameEngine,
-    private settingsImportExportComponent: SettingsImportExportComponent | null,
+    private gameEngine: GameEngine;
+    private settingsImportExportComponent: SettingsImportExportComponent | null;
     private, isIntegrated: boolean,
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         this.settingsImportExportComponent = null }
         this.isIntegrated = false; }
     }
@@ -70,7 +69,7 @@ export class SettingsImportExportIntegrationExample {
      */
     handleSettingsImportExportComponent(settingItem: SettingItem, parentElement: HTMLElement): HTMLElement | null { try {
             // コンポーネント初期化
-            if(!this.settingsImportExportComponent) {
+            if (!this.settingsImportExportComponent) {
     
 }
                 this.settingsImportExportComponent = new SettingsImportExportComponent(this.gameEngine); }
@@ -79,11 +78,11 @@ export class SettingsImportExportIntegrationExample {
             // 親要素に追加
             const componentElement = this.settingsImportExportComponent.initialize(parentElement);
             
-            if(componentElement) {
+            if (componentElement) {
             ,
                 // イベントリスナーの設定
                 this.setupEventListeners(componentElement),
-                ',
+                ','
 
                 this.isIntegrated = true }
 
@@ -93,7 +92,7 @@ export class SettingsImportExportIntegrationExample {
             return componentElement;
 
         } catch (error) {
-            console.error('[SettingsImportExportIntegration] Integration error:', error',
+            console.error('[SettingsImportExportIntegration] Integration error:', error','
             return null,
     
     /**
@@ -105,8 +104,8 @@ export class SettingsImportExportIntegrationExample {
 
             this.handleSettingsExported(customEvent.detail); }'
 
-        }');
-        ';
+        }');'
+        ';'
         // インポート成功時
         componentElement.addEventListener('settingsImported', (event) => {  const customEvent = event as CustomEvent }
             this.handleSettingsImported(customEvent.detail); }
@@ -117,37 +116,37 @@ export class SettingsImportExportIntegrationExample {
      * 設定エクスポート成功時の処理'
      */''
     private handleSettingsExported(detail: any): void { ''
-        console.log('[SettingsImportExportIntegration] Settings exported:', detail',
-        ',
+        console.log('[SettingsImportExportIntegration] Settings exported:', detail','
+        ','
         // ユーザーフィードバック
-        this.showUserFeedback('success', `設定をエクスポートしました: ${detail.filename'`),
-        ',
+        this.showUserFeedback('success', `設定をエクスポートしました: ${detail.filename'`),'
+        ','
         // アナリティクス記録
         this.recordAnalytics('settings_exported', {
                 filename: detail.filename });
             dataSize: detail.dataSize } }
-            timestamp: detail.timestamp)}';
+            timestamp: detail.timestamp)}';'
     }
     
     /**
      * 設定インポート成功時の処理'
      */''
     private handleSettingsImported(detail: any): void { ''
-        console.log('[SettingsImportExportIntegration] Settings imported:', detail',
+        console.log('[SettingsImportExportIntegration] Settings imported:', detail','
         
         // ユーザーフィードバック
         const warningsText = detail.warnings && detail.warnings.length > 0 ' }'
 
             ? `\n注意: ${detail.warnings.join(', '}'` ''
-            : ';
-        this.showUserFeedback('success);
+            : ';'
+        this.showUserFeedback('success);'
             `設定をインポートしました: ${detail.settingsCount}項目が適用されました${ warningsText)`,
-        ',
+        ','
         // SettingsSceneの再描画を要求
         this.requestSettingsRefresh('''
         this.recordAnalytics('settings_imported', {
-            filename: detail.filename',
-    settingsCount: detail.settingsCount }';
+            filename: detail.filename','
+    settingsCount: detail.settingsCount }';'
             warnings: detail.warnings,'} }'
 
             timestamp: detail.timestamp'}';
@@ -187,12 +186,12 @@ export class SettingsImportExportIntegrationExample {
     /**
      * コンポーネントの有効性確認
      */
-    isComponentEnabled(): boolean { return this.settingsImportExportComponent ? this.settingsImportExportComponent.isEnabled() : false }
+    isComponentEnabled(): boolean { return this.settingsImportExportComponent ? this.settingsImportExportComponent.isEnabled() : false;
     
     /**
      * 統計情報の取得
      */
-    getComponentStats(): any { return this.settingsImportExportComponent ? this.settingsImportExportComponent.getStats() : null }
+    getComponentStats(): any { return this.settingsImportExportComponent ? this.settingsImportExportComponent.getStats() : null;
     
     /**
      * 操作履歴の取得
@@ -208,13 +207,13 @@ export class SettingsImportExportIntegrationExample {
      * コンポーネントの破棄
      */
     destroy(): void { try {
-            if(this.settingsImportExportComponent) {
+            if (this.settingsImportExportComponent) {
 
-                this.settingsImportExportComponent.destroy()',
+                this.settingsImportExportComponent.destroy()','
             console.log('[SettingsImportExportIntegration] Integration, destroyed') }
 
             ' }'
 
         } catch (error) { console.error('[SettingsImportExportIntegration] Destruction error:', error }
 
-    }'}
+    }'}'

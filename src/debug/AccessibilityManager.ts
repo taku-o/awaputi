@@ -2,32 +2,31 @@
  * Accessibility Manager - デバッグインターフェースのアクセシビリティ管理
  */
 
-interface DebugInterface { debugPanel?: HTMLElement }
+interface DebugInterface { debugPanel?: HTMLElement;
 
 interface FocusManagement { focusableElements: Element[],
-    currentFocusIndex: number,
-    focusTrap: boolean  }
+    currentFocusIndex: number;
+    focusTrap: boolean;
 
 interface AccessibilityInfo { screenReaderDetected: boolean,
-    keyboardNavigationEnabled: boolean,
-    focusableElementsCount: number,
-    currentFocusIndex: number }
+    keyboardNavigationEnabled: boolean;
+    focusableElementsCount: number;
+    currentFocusIndex: number;
 
 export class DebugAccessibilityManager {
-    private debugInterface: DebugInterface,
-    private isScreenReaderDetected: boolean,
-    private keyboardNavigationEnabled: boolean,
+    private debugInterface: DebugInterface;
+    private isScreenReaderDetected: boolean;
+    private keyboardNavigationEnabled: boolean;
     private, focusManagement: FocusManagement,
     constructor(debugInterface: DebugInterface) {
 
-        this.debugInterface = debugInterface,
-        this.isScreenReaderDetected = false,
-        this.keyboardNavigationEnabled = true,
+        this.debugInterface = debugInterface;
+        this.isScreenReaderDetected = false;
+        this.keyboardNavigationEnabled = true;
         this.focusManagement = {
             focusableElements: [],
     currentFocusIndex: -1 }
-            focusTrap: false 
-    };
+            focusTrap: false;;
         this.initialize();
     }
 
@@ -45,13 +44,13 @@ export class DebugAccessibilityManager {
      */
     private detectScreenReader(): void { // スクリーンリーダーの一般的な検出方法
         this.isScreenReaderDetected = !!(
-            window.speechSynthesis ||,
-            window.navigator.userAgent.includes('NVDA') ||',
-            window.navigator.userAgent.includes('JAWS') ||',
-            window.navigator.userAgent.includes('VoiceOver') ||',
-            document.body.classList.contains('screenreader-text),
+            window.speechSynthesis ||;
+            window.navigator.userAgent.includes('NVDA') ||','
+            window.navigator.userAgent.includes('JAWS') ||','
+            window.navigator.userAgent.includes('VoiceOver') ||','
+            document.body.classList.contains('screenreader-text),'
 
-        if(this.isScreenReaderDetected) {
+        if (this.isScreenReaderDetected) {
 
             console.log('Screen reader detected, enabling enhanced accessibility features' }
             this.enableScreenReaderSupport(); }
@@ -60,10 +59,10 @@ export class DebugAccessibilityManager {
     /**
      * キーボードナビゲーションを設定'
      */''
-    private setupKeyboardNavigation()';
+    private setupKeyboardNavigation()';'
         document.addEventListener('keydown', (event) => {  ''
             if(!this.keyboardNavigationEnabled) return,
-            ',
+            ','
             // デバッグパネルが表示されている場合のみ処理
             if(!this.debugInterface.debugPanel || this.debugInterface.debugPanel.style.display === 'none' { }'
                 return; }
@@ -78,11 +77,11 @@ export class DebugAccessibilityManager {
      */''
     private handleKeyboardNavigation(event: KeyboardEvent): void {
         const { key, ctrlKey, altKey, shiftKey } = event;
-';
+';'
         // ESCキーでフォーカスを外す
         if(key === 'Escape' {'
 
-            this.clearFocus()',
+            this.clearFocus()','
         if(key === 'Tab' {'
             event.preventDefault(),
             if (shiftKey) {
@@ -90,21 +89,21 @@ export class DebugAccessibilityManager {
                 this.focusPrevious(); }
 
             } else {
-                this.focusNext()',
-        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(key) {', ' }
+                this.focusNext()','
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(key) {', ' }'
 
             this.handleArrowKeyNavigation(event); }
             return; }
         }
-';
+';'
         // Enterキーまたはスペースキーでアクティベート
-        if(key === 'Enter' || key === ', ') {
+        if (key === 'Enter' || key === ', ') {
             this.activateCurrentElement(event) }
             return; }
         }
 
         // Ctrl+数字キーでパネル切り替え
-        if(ctrlKey && /^[1-6]$/.test(key) {
+        if (ctrlKey && /^[1-6]$/.test(key) {
             event.preventDefault(),
             this.switchPanelByNumber(parseInt(key) - 1) }
             return; }
@@ -116,14 +115,14 @@ export class DebugAccessibilityManager {
     private handleArrowKeyNavigation(event: KeyboardEvent): void {
         const { key } = event;
         const currentElement = document.activeElement;
-        ';
+        ';'
         // タブ内での矢印キー移動
         if(currentElement && currentElement.classList.contains('debug-tab' {'
 
-            event.preventDefault()',
+            event.preventDefault()','
             const tabs = Array.from(this.debugInterface.debugPanel!.querySelectorAll('.debug-tab',
             const currentIndex = tabs.indexOf(currentElement),
-            ',
+            ','
 
             let nextIndex: number | undefined,
             if (key === 'ArrowLeft') {
@@ -131,7 +130,7 @@ export class DebugAccessibilityManager {
 
                 nextIndex = currentIndex > 0 ? currentIndex - 1 : tabs.length - 1;' }'
 
-            } else if(key === 'ArrowRight' { nextIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0 }'
+            } else if (key === 'ArrowRight' nextIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0 }'
             
             if (nextIndex !== undefined && tabs[nextIndex]) { (tabs[nextIndex] as, HTMLElement).focus() }
 }
@@ -140,7 +139,7 @@ export class DebugAccessibilityManager {
      * 現在の要素をアクティベート'
      */''
     private activateCurrentElement(event: KeyboardEvent): void { const currentElement = document.activeElement as HTMLElement,
-        if(currentElement && (currentElement.tagName === 'BUTTON' || currentElement.tagName === 'A) {
+        if (currentElement && (currentElement.tagName === 'BUTTON' || currentElement.tagName === 'A) {'
             event.preventDefault() }
             currentElement.click(); }
 }
@@ -151,8 +150,8 @@ export class DebugAccessibilityManager {
     private switchPanelByNumber(index: number): void { ''
         if(!this.debugInterface.debugPanel) return,
 
-        const tabs = this.debugInterface.debugPanel.querySelectorAll('.debug-tab),
-        if(tabs[index]) {
+        const tabs = this.debugInterface.debugPanel.querySelectorAll('.debug-tab),'
+        if (tabs[index]) {
             (tabs[index] as, HTMLElement).click() }
             (tabs[index] as, HTMLElement).focus(); }
 }
@@ -162,10 +161,10 @@ export class DebugAccessibilityManager {
      */'
     private setupARIASupport(): void { const debugPanel = this.debugInterface.debugPanel,
         if(!debugPanel) return,
-',
+','
         // メインパネルにrole属性を設定
         debugPanel.setAttribute('role', 'application'),
-        debugPanel.setAttribute('aria-label', 'Debug Interface),
+        debugPanel.setAttribute('aria-label', 'Debug Interface),'
 
         // タブパネルのARIA属性を設定
         this.setupTabsARIA(),
@@ -181,22 +180,22 @@ export class DebugAccessibilityManager {
 
         const tabsContainer = this.debugInterface.debugPanel.querySelector('.debug-tabs'),
         const tabs = this.debugInterface.debugPanel.querySelectorAll('.debug-tab'),
-        const panels = this.debugInterface.debugPanel.querySelectorAll('.debug-panel),
+        const panels = this.debugInterface.debugPanel.querySelectorAll('.debug-panel),'
 
-        if(tabsContainer) {
+        if (tabsContainer) {
 
             tabsContainer.setAttribute('role', 'tablist') }
 
             tabsContainer.setAttribute('aria-label', 'Debug panels'; }
         }
-';
+';'
 
         tabs.forEach((tab, index) => {  ''
-            const panelName = (tab, as HTMLElement').dataset.panel,
+            const panelName = (tab, as HTMLElement').dataset.panel,'
 
             ' }'
 
-            tab.setAttribute('role', 'tab');' }
+            tab.setAttribute('role', 'tab');' }'
 
             tab.setAttribute('aria-controls', `panel-${panelName}`;
             tab.setAttribute('id', `tab-${panelName}`;
@@ -209,11 +208,11 @@ export class DebugAccessibilityManager {
 
             ' }'
 
-            panel.setAttribute('role', 'tabpanel');' }
+            panel.setAttribute('role', 'tabpanel');' }'
 
             panel.setAttribute('aria-labelledby', `tab-${panelName}`;
-            panel.setAttribute('tabindex', '0);
-        }';
+            panel.setAttribute('tabindex', '0);'
+        }';'
     }
 
     /**
@@ -221,32 +220,32 @@ export class DebugAccessibilityManager {
      */'
     private setupPanelContentARIA(): void { ''
         if(!this.debugInterface.debugPanel) return,
-        ',
+        ','
         // ライブリージョンの設定
         const statusElement = this.debugInterface.debugPanel.querySelector('#debug-status-text',
-        if(statusElement) {
+        if (statusElement) {
 
             statusElement.setAttribute('aria-live', 'polite') }
 
             statusElement.setAttribute('aria-atomic', 'true'); }
         }
-';
+';'
         // エラーパネルのライブリージョン
         const errorList = this.debugInterface.debugPanel.querySelector('#error-list';
-        if(errorList) {
+        if (errorList) {
 
             errorList.setAttribute('aria-live', 'polite') }
 
             errorList.setAttribute('aria-label', 'Error messages'); }
         }
-';
+';'
         // コンソール出力のライブリージョン
         const consoleOutput = this.debugInterface.debugPanel.querySelector('#console-output';
-        if(consoleOutput) {
+        if (consoleOutput) {
 
             consoleOutput.setAttribute('aria-live', 'polite') }
 
-            consoleOutput.setAttribute('aria-label', 'Console output); }
+            consoleOutput.setAttribute('aria-label', 'Console output); }'
 }
 
     /**
@@ -256,13 +255,13 @@ export class DebugAccessibilityManager {
         
         // フォーカストラップの設定
         const debugPanel = this.debugInterface.debugPanel,
-        if(debugPanel) {', ' }
+        if (debugPanel) {', ' }
 
             debugPanel.addEventListener('focusin', () => {  }
 
                 this.focusManagement.focusTrap = true;' }'
 
-            }');
+            }');'
 
             debugPanel.addEventListener('focusout', (event) => {  // フォーカスがパネル外に移動した場合
                 if (!debugPanel.contains((event, as FocusEvent).relatedTarget as Node)) { }
@@ -276,7 +275,7 @@ export class DebugAccessibilityManager {
      */
     updateFocusableElements(): void { const debugPanel = this.debugInterface.debugPanel,
         if(!debugPanel) return,
-',
+','
 
         const focusableSelectors = [']',
             'button:not([disabled])',
@@ -284,10 +283,10 @@ export class DebugAccessibilityManager {
             'select:not([disabled])',
             'textarea:not([disabled])',
             'a[href]',
-            '[tabindex]:not([tabindex="-1"]",
+            '[tabindex]:not([tabindex="-1"]",'
         ],
 
-        this.focusManagement.focusableElements = Array.from()',
+        this.focusManagement.focusableElements = Array.from()','
             debugPanel.querySelectorAll(focusableSelectors.join(', ')).filter(el => { )
             // 非表示要素を除外),
             const rect = el.getBoundingClientRect() }
@@ -335,7 +334,7 @@ export class DebugAccessibilityManager {
      */'
     private enableScreenReaderSupport(): void { const debugPanel = this.debugInterface.debugPanel,
         if(!debugPanel) return,
-',
+','
         // スクリーンリーダー用の説明テキストを追加
         const description = document.createElement('div'),
         description.className = 'sr-only',
@@ -348,14 +347,14 @@ export class DebugAccessibilityManager {
     /**
      * ライブリージョンを設定
      */''
-    private setupLiveRegions()';
+    private setupLiveRegions()';'
         const assertiveRegion = document.createElement('div');
         assertiveRegion.className = 'sr-only';
         assertiveRegion.setAttribute('aria-live', 'assertive');
         assertiveRegion.setAttribute('aria-atomic', 'true');
         assertiveRegion.id = 'debug-assertive-live-region';
         document.body.appendChild(assertiveRegion);
-';
+';'
         // ポライトなライブリージョン（一般的な更新用）
         const politeRegion = document.createElement('div');
         politeRegion.className = 'sr-only';
@@ -369,28 +368,28 @@ export class DebugAccessibilityManager {
      * ライブリージョンに通知'
      */''
     announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite'): void { ''
-        const regionId = priority === 'assertive' ? undefined : undefined',
+        const regionId = priority === 'assertive' ? undefined : undefined','
             'debug-assertive-live-region' : 'debug-polite-live-region',
         
         const region = document.getElementById(regionId),
-        if(region) {
+        if (region) {
             region.textContent = message,
-            ',
+            ','
 
             // 一定時間後にクリア（重複を避けるため）
         }
 
             setTimeout(() => { }'
 
-                region.textContent = '; }
-            }, 1000';
+                region.textContent = '; }'
+            }, 1000';'
         }
     }
 
     /**
      * アクセシビリティスタイルを追加'
      */''
-    private addAccessibilityStyles()';
+    private addAccessibilityStyles()';'
         if(document.getElementById('debug-accessibility-styles)' return;
 
         const style = document.createElement('style');
@@ -468,10 +467,10 @@ export class DebugAccessibilityManager {
         skipLink.textContent = 'Skip to debug content',
 
         debugPanel.insertBefore(skipLink, debugPanel.firstChild),
-',
+','
         // コンテンツエリアにIDを設定
         const content = debugPanel.querySelector('.debug-content',
-        if(content && !content.id) {', ' }
+        if (content && !content.id) {', ' }
 
             content.id = 'debug-content'; }
 }
@@ -481,15 +480,15 @@ export class DebugAccessibilityManager {
      */'
     onPanelSwitch(panelName: string): void { ''
         if(!this.debugInterface.debugPanel) return,
-        ',
+        ','
         // ARIA属性の更新
-        const tabs = this.debugInterface.debugPanel.querySelectorAll('.debug-tab),
+        const tabs = this.debugInterface.debugPanel.querySelectorAll('.debug-tab),'
 
         tabs.forEach(tab => { ),
-            const isActive = (tab, as HTMLElement').dataset.panel === panelName,
-            tab.setAttribute('aria-selected', isActive ? 'true' : 'false'),' }
+            const isActive = (tab, as HTMLElement').dataset.panel === panelName,'
+            tab.setAttribute('aria-selected', isActive ? 'true' : 'false'),' }'
 
-            tab.setAttribute('tabindex', isActive ? '0' : '-1); 
+            tab.setAttribute('tabindex', isActive ? '0' : '-1); '
     });
 
         // スクリーンリーダーに通知
@@ -516,12 +515,12 @@ export class DebugAccessibilityManager {
     /**
      * 破棄
      */''
-    destroy()';
+    destroy()';'
         const assertiveRegion = document.getElementById('debug-assertive-live-region');
         const politeRegion = document.getElementById('debug-polite-live-region';
-        ';
+        ';'
 
         if (assertiveRegion) assertiveRegion.remove();
-        if (politeRegion) politeRegion.remove()';
+        if (politeRegion) politeRegion.remove()';'
         const style = document.getElementById('debug-accessibility-styles';
         if (style) style.remove();

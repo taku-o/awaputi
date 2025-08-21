@@ -8,7 +8,7 @@ interface GameEngine { eventListeners: Map<string, Function[]>,
     // 他のプロパティは必要に応じて追加 }
 
 export class GameEngineEventManager {
-    private gameEngine: GameEngine,
+    private gameEngine: GameEngine;
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine }
     
@@ -17,7 +17,7 @@ export class GameEngineEventManager {
      * @param eventName - イベント名
      * @param listener - リスナー関数
      */
-    on(eventName: string, listener: Function): void { if(!this.gameEngine.eventListeners.has(eventName) {
+    on(eventName: string, listener: Function): void { if (!this.gameEngine.eventListeners.has(eventName) {
             this.gameEngine.eventListeners.set(eventName, []) }
         this.gameEngine.eventListeners.get(eventName)!.push(listener);
     }
@@ -28,7 +28,7 @@ export class GameEngineEventManager {
      * @param data - イベントデータ
      */
     emit(eventName: string, data?: any): void { const listeners = this.gameEngine.eventListeners.get(eventName),
-        if(listeners) {
+        if (listeners) {
             listeners.forEach(listener => { )
         }
                 try {) }
@@ -46,7 +46,7 @@ export class GameEngineEventManager {
      * @param listener - リスナー関数
      */
     off(eventName: string, listener: Function): void { const listeners = this.gameEngine.eventListeners.get(eventName),
-        if(listeners) {
+        if (listeners) {
             const index = listeners.indexOf(listener),
             if (index !== -1) {
         }
@@ -65,7 +65,7 @@ export class GameEngineEventManager {
      * リソースの破棄
      */
     destroy(): void { // イベントリスナーのクリア
-        this.gameEngine.eventListeners.clear()',
+        this.gameEngine.eventListeners.clear()','
         console.log('[GameEngineEventManager] Destroyed') }
 }
 

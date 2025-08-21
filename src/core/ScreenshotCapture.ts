@@ -8,24 +8,24 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 export class ScreenshotCapture {'
 
     constructor(gameEngine) {
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // 設定
         this.config = {''
-            defaultFormat: 'png',
+            defaultFormat: 'png';
     quality: {
                 high: 0.92,
     medium: 0.8 }
                 low: 0.6 
     };
             maxWidth: 1200;
-            maxHeight: 630,
+            maxHeight: 630;
     compression: {
                 png: { quality: 1.0 };
                 jpeg: { quality: 0.8 };
                 webp: { quality: 0.8 };
             optimization: { enabled: true,
-    targetSizeKB: 500, // 500KB以下に最適化,
+    targetSizeKB: 500, // 500KB以下に最適化;
                 maxAttempts: 3  }
         };
         // キャプチャ状態
@@ -47,8 +47,8 @@ export class ScreenshotCapture {'
         
         // パフォーマンス最適化機能の初期化 (Task, 18);
         this.setupCaptureQueue();
-        this.setupAutoMemoryManagement()';
-        this.log('ScreenshotCapture初期化完了);
+        this.setupAutoMemoryManagement()';'
+        this.log('ScreenshotCapture初期化完了);'
     }
     
     /**
@@ -56,25 +56,25 @@ export class ScreenshotCapture {'
      */
     async captureGameCanvas(options = { ) {
         try {'
-            if(this.capturing) {', ' }
+            if (this.capturing) {', ' }
 
                 throw new Error('スクリーンショット作成中です'; }'
             }
-            ';
+            ';'
 
             this.capturing = true;
             const startTime = performance.now('''
-                quality: options.quality || 'high';
-                maxWidth: options.maxWidth || this.config.maxWidth);
+                quality: options.quality || 'high',
+                maxWidth: options.maxWidth || this.config.maxWidth),
                 maxHeight: options.maxHeight || this.config.maxHeight,
-    optimize: options.optimize !== false);
+    optimize: options.optimize !== false),
                 filename: options.filename || this.generateFilename(
-    includeUI: options.includeUI !== false;
+    includeUI: options.includeUI !== false,
             },
             
             // ゲームCanvasの取得
             const canvas = this.getGameCanvas();
-            if(!canvas) {', ' }
+            if (!canvas) {', ' }
 
                 throw new Error('ゲームCanvasが見つかりません'; }'
             }
@@ -107,7 +107,7 @@ export class ScreenshotCapture {'
                 time: `${Math.round(captureTime})ms`
             });
             return screenshotData;
-            ';
+            ';'
 
         } catch (error) {
             this.updateStats(false, 0, 0),
@@ -121,7 +121,7 @@ export class ScreenshotCapture {'
     async captureRegion(x, y, width, height, options = { ) {
         try {
             const canvas = this.getGameCanvas(),
-            if(!canvas) {', ' }
+            if (!canvas) {', ' }
 
                 throw new Error('ゲームCanvasが見つかりません'; }'
             }
@@ -135,18 +135,18 @@ export class ScreenshotCapture {'
             width = Math.min(width, canvasWidth - x);
             height = Math.min(height, canvasHeight - y);
 
-            if(width <= 0 || height <= 0) {', ' }
+            if (width <= 0 || height <= 0) {', ' }
 
                 throw new Error('不正な領域指定です'); }
             }
-            ';
+            ';'
             // 一時的なCanvasを作成
             const regionCanvas = document.createElement('canvas');
             regionCanvas.width = width;
 
             regionCanvas.height = height;
             const regionCtx = regionCanvas.getContext('2d';
-            ';
+            ';'
             // 指定領域をコピー
             regionCtx.drawImage(canvas, x, y, width, height, 0, 0, width, height);
             
@@ -157,7 +157,7 @@ export class ScreenshotCapture {'
                 maxHeight: this.config.maxHeight,
     optimize: true,
                 ...options,
-                filename: options.filename || this.generateFilename('region  };
+                filename: options.filename || this.generateFilename('region  };'
             
             return await this.createScreenshot(regionCanvas, captureOptions);
 
@@ -174,15 +174,15 @@ export class ScreenshotCapture {'
      */
     async captureWithOverlay(overlayData, options = { ) {
         try {
-            if(!this.overlayEnabled) {
+            if (!this.overlayEnabled) {
     
 }
                 return await this.captureGameCanvas(options);
-            ';
+            ';'
             // ScreenshotOverlayの初期化
-            if(!this.screenshotOverlay) { }'
+            if (!this.screenshotOverlay) { }'
 
-                const { ScreenshotOverlay } = await import('./ScreenshotOverlay.js);
+                const { ScreenshotOverlay } = await import('./ScreenshotOverlay.js);'
                 this.screenshotOverlay = new ScreenshotOverlay(this.gameEngine);
             }
             
@@ -197,11 +197,11 @@ export class ScreenshotCapture {'
 
             switch(overlayData.type) {
 
-                case 'score':',
+                case 'score':','
                     overlayCanvas = await this.screenshotOverlay.createScoreOverlay(baseCanvas, overlayData.data, options.overlay),
 
                     break,
-                case 'achievement':',
+                case 'achievement':','
                     overlayCanvas = await this.screenshotOverlay.createAchievementOverlay(baseCanvas, overlayData.data, options.overlay),
 
                     break,
@@ -224,13 +224,12 @@ export class ScreenshotCapture {'
             
             return { ...overlayScreenshot,
                 overlayType: overlayData.type };
-                hasOverlay: true 
-    } catch (error) { }
+                hasOverlay: true; catch (error) { }
 
-            this.handleError('OVERLAY_CAPTURE_FAILED', error, { overlayData, options }';
-            ';
+            this.handleError('OVERLAY_CAPTURE_FAILED', error, { overlayData, options }';'
+            ';'
             // フォールバック: オーバーレイなしでの取得
-            this.log('オーバーレイなしでの取得にフォールバック', null, 'warn);
+            this.log('オーバーレイなしでの取得にフォールバック', null, 'warn);'
             return await this.captureGameCanvas(options);
     
     /**
@@ -238,48 +237,45 @@ export class ScreenshotCapture {'
      */''
     async captureWithScore(scoreData, options = { )) {
         const result = await this.captureWithOverlay({)'
-            type: 'score','),
+            type: 'score','),'
 
             data: scoreData', options'),
-        ',
+        ','
 
         return { ...result,''
             overlayType: 'score'
             };
-            hasOverlay: true 
-    }
+            hasOverlay: true,
     
     /**
      * 実績情報付きスクリーンショットの取得'
      */''
     async captureWithAchievement(achievementData, options = { )) {
         const result = await this.captureWithOverlay({)'
-            type: 'achievement','),
+            type: 'achievement','),'
 
             data: achievementData', options'),
-        ',
+        ','
 
         return { ...result,''
             overlayType: 'achievement'
             };
-            hasOverlay: true 
-    }
+            hasOverlay: true,
     
     /**
      * カスタムオーバーレイ付きスクリーンショットの取得'
      */''
     async captureWithCustomOverlay(customData, options = { )) {
         const result = await this.captureWithOverlay({)'
-            type: 'custom','),
+            type: 'custom','),'
 
             data: customData', options'),
-        ',
+        ','
 
         return { ...result,''
             overlayType: 'custom'
             };
-            hasOverlay: true 
-    }
+            hasOverlay: true,
     
     /**
      * BlobからCanvasを作成
@@ -292,13 +288,13 @@ export class ScreenshotCapture {'
                 canvas.width = img.width,
                 canvas.height = img.height,
 
-                const ctx = canvas.getContext('2d),
+                const ctx = canvas.getContext('2d),'
                 ctx.drawImage(img, 0, 0),
                 
                 URL.revokeObjectURL(img.src) }
                 resolve(canvas); }
             };
-            ';
+            ';'
 
             img.onerror = () => {  ''
                 URL.revokeObjectURL(img.src),' }'
@@ -320,7 +316,7 @@ export class ScreenshotCapture {'
             
             let targetCanvas = sourceCanvas,
             
-            if(needsResize) {
+            if (needsResize) {
     
 }
                 targetCanvas = this.resizeCanvas(sourceCanvas, options.maxWidth, options.maxHeight); }
@@ -331,12 +327,12 @@ export class ScreenshotCapture {'
             const qualityValue = this.getQualityValue(options.quality, options.format);
 
             switch(options.format.toLowerCase()) { ''
-                case 'jpeg':',
-                case 'jpg':',
+                case 'jpeg':','
+                case 'jpg':','
                     imageData = await this.createJPEG(targetCanvas, qualityValue),
 
                     break,
-                case 'webp':',
+                case 'webp':','
                     imageData = await this.createWebP(targetCanvas, qualityValue),
 
                     break,
@@ -382,13 +378,13 @@ export class ScreenshotCapture {'
             newHeight = newWidth / aspectRatio; }
         }
 
-        if(newHeight > maxHeight) {
+        if (newHeight > maxHeight) {
             newHeight = maxHeight }
             newWidth = newHeight * aspectRatio; }
         }
-        ';
+        ';'
         // リサイズ用Canvasを作成
-        const resizedCanvas = document.createElement('canvas);
+        const resizedCanvas = document.createElement('canvas);'
 
         resizedCanvas.width = Math.round(newWidth);
         resizedCanvas.height = Math.round(newHeight);
@@ -409,7 +405,7 @@ export class ScreenshotCapture {'
      */
     async createPNG(canvas) { return new Promise((resolve, reject) => { 
             canvas.toBlob(async (blob) => {''
-                if(!blob) {', ' }
+                if (!blob) {', ' }
 
                     reject(new, Error('PNG画像の作成に失敗しました'; }'
                     return; }
@@ -428,7 +424,7 @@ export class ScreenshotCapture {'
                 } catch (error) {
                     reject(error) }
 
-                }'}, 'image/png');
+                }'}, 'image/png');'
         });
     }
     
@@ -437,7 +433,7 @@ export class ScreenshotCapture {'
      */
     async createJPEG(canvas, quality) { return new Promise((resolve, reject) => { '
             canvas.toBlob(async (blob) => {''
-                if(!blob) {', ' }
+                if (!blob) {', ' }
 
                     reject(new, Error('JPEG画像の作成に失敗しました'; }'
                     return; }
@@ -456,7 +452,7 @@ export class ScreenshotCapture {'
                 } catch (error) {
                     reject(error) }
 
-                }'}, 'image/jpeg', quality);
+                }'}, 'image/jpeg', quality);'
         });
     }
     
@@ -469,10 +465,10 @@ export class ScreenshotCapture {'
                 reject(new, Error('WebPはサポートされていません' }'
                 return; }
             }
-            ';
+            ';'
 
             canvas.toBlob(async (blob) => {  ''
-                if(!blob) {', ' }
+                if (!blob) {', ' }
 
                     reject(new, Error('WebP画像の作成に失敗しました'; }'
                     return; }
@@ -491,7 +487,7 @@ export class ScreenshotCapture {'
                 } catch (error) {
                     reject(error) }
 
-                }'}, 'image/webp', quality);
+                }'}, 'image/webp', quality);'
         });
     }
     
@@ -501,7 +497,7 @@ export class ScreenshotCapture {'
     async optimizeImage(imageData, options) { try {
             const targetSize = this.config.optimization.targetSizeKB * 1024,
             
-            if(imageData.size <= targetSize) {
+            if (imageData.size <= targetSize) {
     
 }
                 return imageData;
@@ -530,7 +526,7 @@ export class ScreenshotCapture {'
             return optimizedData;
 
         } catch (error) {
-            this.log('画像最適化に失敗、元の画像を返します', error, 'warn),
+            this.log('画像最適化に失敗、元の画像を返します', error, 'warn),'
             return imageData,
     
     /**
@@ -545,23 +541,23 @@ export class ScreenshotCapture {'
                 img.onload = resolve }
                 img.onerror = reject; }'
 
-            }');
+            }');'
 
             const canvas = document.createElement('canvas');
             canvas.width = img.width;
 
             canvas.height = img.height;
-            const ctx = canvas.getContext('2d);
+            const ctx = canvas.getContext('2d);'
             ctx.drawImage(img, 0, 0);
             
             // 品質を下げて再作成
             const newQuality = this.getQualityValue(options.quality, options.format) * reductionFactor;
-            ';
+            ';'
 
             let newImageData;
             switch(options.format.toLowerCase()) { ''
-                case 'jpeg':',
-                case 'jpg':',
+                case 'jpeg':','
+                case 'jpg':','
                     newImageData = await this.createJPEG(canvas, newQuality),
 
                     break,
@@ -585,7 +581,7 @@ export class ScreenshotCapture {'
 
         } catch (error) { }
 
-            this.handleError('IMAGE_QUALITY_REDUCTION_FAILED', error, { reductionFactor, options }';
+            this.handleError('IMAGE_QUALITY_REDUCTION_FAILED', error, { reductionFactor, options }';'
             return imageData;
     
     /**
@@ -593,7 +589,7 @@ export class ScreenshotCapture {'
      */''
     generateFilename(prefix = 'screenshot' {'
         const now = new Date(),
-        const timestamp = now.toISOString().replace(/[:.]/g, '-).slice(0, -5) }
+        const timestamp = now.toISOString().replace(/[:.]/g, '-).slice(0, -5) }'
         const random = Math.random().toString(36).substr(2, 5); }
         return `${prefix}-${timestamp}-${random}`;
     }
@@ -606,9 +602,9 @@ export class ScreenshotCapture {'
         if (this.gameEngine && this.gameEngine.canvas) {
     }
             return this.gameEngine.canvas;
-        ';
+        ';'
         // 直接DOMから取得を試行
-        const canvas = document.querySelector('canvas#gameCanvas, canvas.game-canvas, canvas);
+        const canvas = document.querySelector('canvas#gameCanvas, canvas.game-canvas, canvas);'
         if (canvas) { return canvas }
         
         return null;
@@ -631,9 +627,9 @@ export class ScreenshotCapture {'
     /**
      * WebPサポートの確認'
      */''
-    isWebPSupported()';
+    isWebPSupported()';'
             const canvas = document.createElement('canvas');
-            return canvas.toDataURL('image/webp').indexOf('data: image/webp) === 0 } catch (error) { return false,
+            return canvas.toDataURL('image/webp').indexOf('data: image/webp) === 0 } catch (error) { return false,'
     
     /**
      * 統計の更新
@@ -690,10 +686,10 @@ export class ScreenshotCapture {'
             if (capture.url) { }
                 URL.revokeObjectURL(capture.url); }
             }'}');
-        ';
+        ';'
 
         this.captureHistory = [];
-        this.log('キャプチャ履歴をクリアしました);
+        this.log('キャプチャ履歴をクリアしました);'
     }
     
     /**
@@ -712,8 +708,8 @@ export class ScreenshotCapture {'
             getErrorHandler().handleError(error, 'ScreenshotCapture', context',' }
 
         } catch (handlerError) {
-            console.warn('[ScreenshotCapture] ErrorHandler利用でエラー:', handlerError' }
-        ';
+            console.warn('[ScreenshotCapture] ErrorHandler利用でエラー:', handlerError' }'
+        ';'
         // ローカルログの記録
         this.log('エラー発生', errorInfo, 'error');
     }
@@ -727,7 +723,7 @@ export class ScreenshotCapture {'
         const, consoleMethod = level === 'error' ? 'error' : ' }''
                             level === 'warn' ? 'warn' : 'log';) }
 
-        console[consoleMethod](`[ScreenshotCapture] ${message}`, data || ');
+        console[consoleMethod](`[ScreenshotCapture] ${message}`, data || ');'
     }
     
     /**
@@ -764,7 +760,7 @@ export class ScreenshotCapture {'
                             processed: true,
     timestamp: Date.now( }
                         
-                        self.postMessage({ success: true, data: result  } catch (error) { }
+                        self.postMessage({ success: true, data: result, catch (error) { }
 
                         self.postMessage({ success: false, error: error.message  });
                     }
@@ -777,7 +773,7 @@ export class ScreenshotCapture {'
             worker.onmessage = (e) => {  }
                 const { success, data, error } = e.data;
                 
-                if(success) {
+                if (success) {
                 
                     // メインスレッドでCanvas処理を完了
                 
@@ -839,7 +835,7 @@ export class ScreenshotCapture {'
      * スクリーンショットキュー管理 (Task, 18.1)
      */
     setupCaptureQueue() {
-        this.captureQueue = [],
+        this.captureQueue = [];
         this.isProcessingQueue = false }
         this.maxQueueSize = 10; }
     }
@@ -849,7 +845,7 @@ export class ScreenshotCapture {'
      */
     async queueCapture(options = { ) {
         return new Promise((resolve, reject) => { ''
-            if(this.captureQueue.length >= this.maxQueueSize) {', ' }
+            if (this.captureQueue.length >= this.maxQueueSize) {', ' }
 
                 reject(new, Error('スクリーンショットキューが満杯です'; }'
                 return; }
@@ -903,7 +899,7 @@ export class ScreenshotCapture {'
                     count: this.captureHistory.length,
                     totalSizeBytes: totalSize,
     totalSizeKB: Math.round(totalSize / 1024) };
-                    totalSizeMB: Math.round(totalSize / (1024 * 1024); 
+                    totalSizeMB: Math.round(totalSize / (1024 * 1024), 
     },
                 queue: { size: this.captureQueue ? this.captureQueue.length : 0,
                     maxSize: this.maxQueueSize || 0,
@@ -911,7 +907,7 @@ export class ScreenshotCapture {'
                 stats: { ...this.stats,
                     memoryEfficiency: this.stats.totalSize > 0 ? undefined : undefined
                         Math.round((this.stats.successes / this.stats.totalSize) * 1024) : 0 
-            };'} catch (error) {
+            };'} catch (error) {'
             console.warn('[ScreenshotCapture] メモリ使用量計算エラー:', error),
             return null,
     
@@ -970,7 +966,7 @@ export class ScreenshotCapture {'
         this.clearHistory();
         
         // 最後のキャプチャのクリーンアップ
-        if(this.lastCapture && this.lastCapture.url) {
+        if (this.lastCapture && this.lastCapture.url) {
 
             URL.revokeObjectURL(this.lastCapture.url) }
             this.lastCapture = null; }
@@ -978,4 +974,4 @@ export class ScreenshotCapture {'
 
         this.log('ScreenshotCapture クリーンアップ完了');
 
-    }'}
+    }'}'

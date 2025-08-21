@@ -4,15 +4,15 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * 遷移効果オプションインターフェース
  */'
 interface TransitionOptions { ''
-    direction?: 'in' | 'out' | 'cross',
-    easing?: string,
-    color?: string,
+    direction?: 'in' | 'out' | 'cross';
+    easing?: string;
+    color?: string;
 
-    intensity?: number,
-    slideDirection?: 'left' | 'right' | 'up' | 'down',
+    intensity?: number;
+    slideDirection?: 'left' | 'right' | 'up' | 'down';
     zoomType?: 'in' | 'out' }
 
-    center?: { x: number,, y: number }''
+    center?: { x: number,, y: number,''
     pattern?: 'horizontal' | 'vertical' | 'circular' | 'diamond';
     noiseScale?: number;
     threshold?: number;
@@ -22,19 +22,18 @@ interface TransitionOptions { ''
  * 遷移効果インターフェース
  */'
 interface TransitionEffect { id: number,''
-    type: 'transition',
-    transitionType: string,
-    duration: number,
-    elapsed: number,
-    options: TransitionOptions
-     }
+    type: 'transition';
+    transitionType: string;
+    duration: number;
+    elapsed: number;
+    options: TransitionOptions;
 
 /**
  * Effect Transition Renderer
  * 画面遷移効果の描画処理 - フェード、スライド、ズーム、ワイプ、ディゾルブ効果
  */
 export class EffectTransitionRenderer {
-    private canvas: HTMLCanvasElement,
+    private canvas: HTMLCanvasElement;
     private, errorHandler: any,
     constructor(canvas: HTMLCanvasElement) {
 
@@ -50,7 +49,7 @@ export class EffectTransitionRenderer {
     renderFadeTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number): void { try {'
             const alpha = effect.options.direction === 'in' ? progress: (1 - progress,
 
-            context.save()',
+            context.save()','
             context.fillStyle = effect.options.color || '#000000')
             context.fillRect(0, 0, this.canvas.width, this.canvas.height),
 
@@ -98,7 +97,7 @@ export class EffectTransitionRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderSlideTransition'
-            }';
+            }';'
         }
     }
     
@@ -113,12 +112,12 @@ export class EffectTransitionRenderer {
 
             context.scale(scale, scale);
             context.translate(-center.x, -center.y);
-            ';
+            ';'
 
             context.globalAlpha = 1 - progress;
             context.fillStyle = effect.options.color || '#000000';
             context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderZoomTransition'
@@ -133,15 +132,15 @@ export class EffectTransitionRenderer {
             const canvas = this.canvas,
 
             context.save('',
-            context.fillStyle = effect.options.color || '#000000',', ')',
+            context.fillStyle = effect.options.color || '#000000',', ')','
             switch(effect.options.pattern) {
 
-                case 'horizontal':',
+                case 'horizontal':','
                     const width = canvas.width * progress,
                     context.fillRect(0, 0, width, canvas.height),
 
                     break,
-                case 'vertical':',
+                case 'vertical':','
                     const height = canvas.height * progress,
                     context.fillRect(0, 0, canvas.width, height),
 
@@ -153,7 +152,7 @@ export class EffectTransitionRenderer {
                     context.fill() }
                     break; }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderWipeTransition'
@@ -173,16 +172,16 @@ export class EffectTransitionRenderer {
             for(let, i = 0, i < data.length, i += 4) {
             
                 const noise = Math.random(),
-                if(noise < progress * (effect.options.threshold || 0.5) {
+                if (noise < progress * (effect.options.threshold || 0.5) {
     
 }
                     data[i + 3] = 0; // アルファ値を0に }
 }
-            ';
+            ';'
 
             context.putImageData(imageData, 0, 0);'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderDissolveTransition'
-            }';
+            }';'
         }
     }
     
@@ -192,23 +191,23 @@ export class EffectTransitionRenderer {
     renderTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number): void { ''
         switch(effect.transitionType) {
 
-            case 'fade':',
+            case 'fade':','
                 this.renderFadeTransition(context, effect, progress),
 
                 break,
-            case 'slide':',
+            case 'slide':','
                 this.renderSlideTransition(context, effect, progress),
 
                 break,
-            case 'zoom':',
+            case 'zoom':','
                 this.renderZoomTransition(context, effect, progress),
 
                 break,
-            case 'wipe':',
+            case 'wipe':','
                 this.renderWipeTransition(context, effect, progress),
 
                 break,
-            case 'dissolve':',
+            case 'dissolve':','
                 this.renderDissolveTransition(context, effect, progress) }
                 break; }
-}'}
+}'}'

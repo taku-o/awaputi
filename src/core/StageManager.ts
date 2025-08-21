@@ -12,8 +12,8 @@ import type { StageManager as IStageManager,
  * ゲームステージの設定、開放条件、進行管理を専門的に処理します
  */
 export class StageManager implements IStageManager { public gameEngine: any,
-    public currentStage: CurrentStage | null = null,
-    public stageConfigs: Record<string, StageConfig>,
+    public currentStage: CurrentStage | null = null;
+    public stageConfigs: Record<string, StageConfig>;
 
     constructor(gameEngine: any) {
 
@@ -34,7 +34,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 spawnRate: 1.0,
     maxBubbles: 10,
                 unlockCondition: null, // 最初から開放;
-                unlockMessage: ';
+                unlockMessage: ';'
             },
 
             normal: { ''
@@ -45,11 +45,11 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 spawnRate: 1.5,
     maxBubbles: 20,
                 unlockCondition: null, // 最初から開放,
-                unlockMessage: '};
+                unlockMessage: '};'
             hard: { ''
                 name: 'ちょっと硬いアワアワ',
                 description: '硬い泡が多く出現するステージ',
-                duration: 300000,',
+                duration: 300000,','
                 bubbleTypes: ['normal', 'stone', 'iron', 'rainbow', 'pink', 'clock', 'score', 'poison]',
                 spawnRate: 1.6, // 1.8 -> 1.6 (少し緩和),
                 maxBubbles: 22, // 25 -> 22(少し緩和),' }'
@@ -167,15 +167,15 @@ export class StageManager implements IStageManager { public gameEngine: any,
         }
         
         console.log(`Stage ${ stageId) is, unlocked`};
-        ';
+        ';'
         // BubbleManagerの存在確認
         if(!this.gameEngine.bubbleManager} { }'
 
-            console.error('BubbleManager, not found, in gameEngine'}';
+            console.error('BubbleManager, not found, in gameEngine'}';'
             return false;
         }
 
-        console.log('BubbleManager exists, setting stage config...);
+        console.log('BubbleManager exists, setting stage config...);'
         
         this.currentStage = { id: stageId,
             config: config,
@@ -183,8 +183,8 @@ export class StageManager implements IStageManager { public gameEngine: any,
         // ゲームエンジンにステージ情報を設定
         this.gameEngine.timeRemaining = config.duration;
         
-        try { const configResult = this.gameEngine.bubbleManager.setStageConfig(config'),
-            if(configResult') { }
+        try { const configResult = this.gameEngine.bubbleManager.setStageConfig(config'),'
+            if (configResult') { }'
 
                 console.log(`Stage, config set, successfully`); }
 
@@ -205,7 +205,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
      * ステージが開放されているかチェック
      */
     isStageUnlocked(stageId: string): boolean { const config = this.stageConfigs[stageId],
-        if(!config || !config.unlockCondition) {
+        if (!config || !config.unlockCondition) {
     
 }
             return true; // 開放条件がない場合は開放済み }
@@ -216,12 +216,12 @@ export class StageManager implements IStageManager { public gameEngine: any,
 
         switch(condition.type) {
 
-            case 'tap':',
+            case 'tap':','
                 return playerData.tap >= condition.value,
-            case 'highScore':',
+            case 'highScore':','
                 return(playerData.highScores[condition.stage || '] || 0' >= condition.value,
-            case 'stageComplete':',
-                return playerData.unlockedStages.includes(condition.stage || ') }
+            case 'stageComplete':','
+                return playerData.unlockedStages.includes(condition.stage || ') }'
             default: return false;
     
     /**
@@ -231,7 +231,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         
         for(const [stageId, config] of Object.entries(this.stageConfigs) {
         
-            if(this.isStageUnlocked(stageId) {
+            if (this.isStageUnlocked(stageId) {
                 unlockedStages.push({
                     id: stageId),
                     name: config.name,
@@ -248,15 +248,15 @@ export class StageManager implements IStageManager { public gameEngine: any,
     getLockedStages(): LockedStageInfo[] { const lockedStages: LockedStageInfo[] = [],
         
         for(const [stageId, config] of Object.entries(this.stageConfigs) {
-        ',
+        ','
 
             if(!this.isStageUnlocked(stageId)) {
                 lockedStages.push({
                     id: stageId),
-                    name: config.name)',
+                    name: config.name)','
     description: config.description,' }'
 
-                    unlockMessage: config.unlockMessage || '); 
+                    unlockMessage: config.unlockMessage || '); '
     }
         
         return lockedStages;
@@ -279,7 +279,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         const config = this.currentStage.config;
         const elapsedTime = config.duration - timeRemaining;
         
-        config.bossEvents?.forEach((event, index) => {  if(elapsedTime >= event.time && !this.currentStage!.bossEventsTriggered.includes(index) {
+        config.bossEvents?.forEach((event, index) => {  if (elapsedTime >= event.time && !this.currentStage!.bossEventsTriggered.includes(index) {
                 this.triggerBossEvent(event) }
                 this.currentStage!.bossEventsTriggered.push(index); }
 });
@@ -306,7 +306,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         const playerData = this.gameEngine.playerData,
         
         // ハイスコア更新
-        if(!playerData.highScores[stageId] || finalScore > playerData.highScores[stageId]) {
+        if (!playerData.highScores[stageId] || finalScore > playerData.highScores[stageId]) {
     
 }
             playerData.highScores[stageId] = finalScore; }
@@ -321,8 +321,8 @@ export class StageManager implements IStageManager { public gameEngine: any,
         // データ保存
         playerData.save();
 
-        console.log(`Stage completed: ${this.currentStage.config.name}, Score: ${finalScore}, AP gained: ${apGain}`}';
+        console.log(`Stage completed: ${this.currentStage.config.name}, Score: ${finalScore}, AP gained: ${apGain}`}';'
         
         this.currentStage = null;
 
-    }'}
+    }'}'

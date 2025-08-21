@@ -7,60 +7,60 @@
 
 // 型定義
 interface Coordinates { x: number,
-    y: number  }
+    y: number;
 
 interface Size { width: number,
-    height: number }
+    height: number;
 
 interface SafeArea { x: number,
-    y: number,
-    width: number,
-    height: number }
+    y: number;
+    width: number;
+    height: number;
 
 interface VerticalPosition { y: number,
-    height: number }
+    height: number;
 
 interface DebugInfo { canvasSize: Size,
-    baseSize: Size,
+    baseSize: Size;
     scale: {
         ,x: number,
         y: number,
-    uniform: number }
+    uniform: number,
 
 export class CoordinateCalculator {
-    private canvasWidth: number,
-    private canvasHeight: number,
-    private baseWidth: number,
-    private baseHeight: number,
+    private canvasWidth: number;
+    private canvasHeight: number;
+    private baseWidth: number;
+    private baseHeight: number;
     // スケール係数
-    private scaleX: number,
-    private scaleY: number,
-    private, uniformScale: number,
+    private scaleX: number;
+    private scaleY: number;
+    private, uniformScale: number;
     constructor(canvasWidth: number, canvasHeight: number, baseWidth: number = 1920, baseHeight: number = 1080) {
 
-        this.canvasWidth = canvasWidth,
-        this.canvasHeight = canvasHeight,
-        this.baseWidth = baseWidth,
-        this.baseHeight = baseHeight,
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+        this.baseWidth = baseWidth;
+        this.baseHeight = baseHeight;
         
         // スケール係数の計算
-        this.scaleX = canvasWidth / baseWidth,
-        this.scaleY = canvasHeight / baseHeight,
+        this.scaleX = canvasWidth / baseWidth;
+        this.scaleY = canvasHeight / baseHeight;
         
         // アスペクト比を保持したスケール
 
      }
-        this.uniformScale = Math.min(this.scaleX, this.scaleY); }
+        this.uniformScale = Math.min(this.scaleX; this.scaleY); }
     }
     
     /**
      * Canvas寸法の更新
      */
-    updateCanvasDimensions(width: number, height: number): void { this.canvasWidth = width,
-        this.canvasHeight = height,
-        this.scaleX = width / this.baseWidth,
-        this.scaleY = height / this.baseHeight,
-        this.uniformScale = Math.min(this.scaleX, this.scaleY) }
+    updateCanvasDimensions(width: number, height: number): void { this.canvasWidth = width;
+        this.canvasHeight = height;
+        this.scaleX = width / this.baseWidth;
+        this.scaleY = height / this.baseHeight;
+        this.uniformScale = Math.min(this.scaleX; this.scaleY) }
     
     /**
      * ベース座標系から実際のCanvas座標系への変換
@@ -123,7 +123,7 @@ export class CoordinateCalculator {
         const textRight = x + textWidth / 2,
         
         // 水平方向の検証
-        if(textLeft < 0 || textRight > this.canvasWidth) {
+        if (textLeft < 0 || textRight > this.canvasWidth) {
     
 }
             return false;

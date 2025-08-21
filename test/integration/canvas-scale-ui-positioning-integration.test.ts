@@ -7,14 +7,14 @@ import { JSDOM  } from 'jsdom';
 describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
     let canvas: any,
     let responsiveCanvasManager: any,
-    let scaledCoordinateManager: any,',
-    let gameUIManager: any,',
-    beforeAll((') => {
+    let scaledCoordinateManager: any,','
+    let gameUIManager: any,','
+    beforeAll((') => {'
         // JSDOM環境のセットアップ
         dom = new JSDOM(`,
             <!DOCTYPE html>,
-            <html>',
-                <body>',
+            <html>','
+                <body>','
                     <canvas id="gameCanvas" width="800" height="600"></canvas>,
                 </body>,
             </html>,
@@ -49,20 +49,20 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             stroke: jest.fn(
             setTransform: jest.fn(
             transform: jest.fn(
-            translate: jest.fn(),",
+            translate: jest.fn(),","
             rotate: jest.fn(),"",
             scale: jest.fn("),",
             globalAlpha: 1,"",
-            globalCompositeOperation: 'source-over',',
-            fillStyle: '#000',',
-            strokeStyle: '#000',',
-            lineWidth: 1,',
-            font: '10px sans-serif',',
-            textAlign: 'start',',
+            globalCompositeOperation: 'source-over',','
+            fillStyle: '#000',','
+            strokeStyle: '#000',','
+            lineWidth: 1,','
+            font: '10px sans-serif',','
+            textAlign: 'start',','
             textBaseline: 'alphabetic',
-            canvas: null }'
+            canvas: null,'
     });
-        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');
+        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');'
         canvas = document.getElementById('gameCanvas');
         mockContext.canvas = canvas;
     );'
@@ -70,9 +70,9 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
         const { ResponsiveCanvasManager ') = await import('../../src/ui/managers/ResponsiveCanvasManager.js')'),' }'
         const { ScaledCoordinateManager } = await import('../../src/utils/ScaledCoordinateManager.js');
         const { GameUIManager } = await import('../../src/ui/managers/GameUIManager.js');
-        responsiveCanvasManager = new ResponsiveCanvasManager(canvas: any);
-        scaledCoordinateManager = new ScaledCoordinateManager(responsiveCanvasManager: any);
-        gameUIManager = new GameUIManager(responsiveCanvasManager: any);
+        responsiveCanvasManager = new ResponsiveCanvasManager(canvas: any),
+        scaledCoordinateManager = new ScaledCoordinateManager(responsiveCanvasManager: any),
+        gameUIManager = new GameUIManager(responsiveCanvasManager: any),
         // モックの初期化'
         jest.clearAllMocks();'}');
     describe('ResponsiveCanvasManager Integration', (') => {  ''
@@ -89,7 +89,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             expect(scaleInfo.scaleFactor).toBeGreaterThan(0),
             expect(scaleInfo.displayWidth).toBe(1200) }'
             expect(scaleInfo.displayHeight).toBe(900);' }'
-        }');
+        }');'
         test('should handle canvas resize events correctly', async () => { const onScaleChangeMock = jest.fn() as jest.Mock }
             scaledCoordinateManager.onScaleChange(onScaleChangeMock};
             
@@ -99,9 +99,9 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             });
                 { width: 480, height: 320 },  // モバイルサイズ]
                 { width: 1920, height: 1080 } // デスクトップサイズ)]
-            ]';
+            ]';'
             );
-            for(const size of resizeSizes') {', ',
+            for(const size of resizeSizes') {', ','
                 Object.defineProperty(canvas, 'clientWidth', { value: size.width, configurable: true )'),''
                 Object.defineProperty(canvas, 'clientHeight', { value: size.height, configurable: true ,
                 responsiveCanvasManager.updateCanvasSize(),
@@ -126,7 +126,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             expect(testPositions.time.x).toBeGreaterThan(0),
             // 右寄せ要素（コンボ表示）の確認 }'
             expect(testPositions.combo.x).toBeGreaterThan(testPositions.score.x);' }'
-        }');
+        }');'
         test('should position UI elements correctly on tablet', async () => {  // タブレットサイズ設定
             simulateScreenSize(1024, 768),
             const testPositions = testUIElementPositioning(),
@@ -148,7 +148,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             // モバイル特有のレイアウト調整を確認
             const canvasInfo = scaledCoordinateManager.getCanvasInfo() }'
             expect(canvasInfo.scaleFactor).toBeDefined();' }'
-        }');
+        }');'
         test('should handle orientation changes', async () => {  // ポートレート（縦向き）
             simulateScreenSize(375, 812),
             const portraitPositions = testUIElementPositioning(),
@@ -171,13 +171,13 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
                 { width: 1200, height: 900, scale: 1.5 },]
                 { width: 400, height: 300, scale: 0.5 }]
             ];', ';
-            for(const testCase of testScales') {
+            for(const testCase of testScales') {'
     
 }
                 simulateScreenSize(testCase.width, testCase.height};
                 );
                 const mockEvent = { clientX: 100)'
-                   , clientY: 100,',
+                   , clientY: 100,','
                     type: 'click'),
                 
                 const convertedEvent = inputConverter.convertMouseEvent(mockEvent),
@@ -194,7 +194,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
             const inputConverter = new InputCoordinateConverter(scaledCoordinateManager: any);'
             // モバイルサイズ設定''
-            simulateScreenSize(375, 812');
+            simulateScreenSize(375, 812');'
             const mockTouchEvent = { touches: [{
                     clientX: 200,],
                     clientY: 400 }]'
@@ -220,17 +220,17 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
                 {
                     point: { x: 50, y: 50 },
                     rect: { x: 100, y: 100, width: 100, height: 100 },
-                    expected: false;
+                    expected: false,
                 },
                 {
                     point: { x: 200, y: 200 },
                     circle: { x: 200, y: 200, radius: 50 },
-                    expected: true;
+                    expected: true,
                 },
                 {
                     point: { x: 300, y: 300 },
                     circle: { x: 200, y: 200, radius: 50 },
-                    expected: false];
+                    expected: false],
                 }]
             ],
             
@@ -240,7 +240,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
                     const result = inputConverter.isPointInScaledRect(testCase.point, testCase.rect) }
                     expect(result).toBe(testCase.expected); }
                 };
-                if(testCase.circle) {
+                if (testCase.circle) {
                     const result = inputConverter.isPointInScaledCircle(testCase.point, testCase.circle, testCase.circle.radius) }
                     expect(result).toBe(testCase.expected); }
                 }
@@ -277,8 +277,8 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
     }'
     // ヘルパー関数''
     function simulateScreenSize(width, height') { }'
-        Object.defineProperty(canvas, 'clientWidth', { value: width, configurable: true }');
-        Object.defineProperty(canvas, 'clientHeight', { value: height, configurable: true });
+        Object.defineProperty(canvas, 'clientWidth', { value: width, configurable: true,');'
+        Object.defineProperty(canvas, 'clientHeight', { value: height, configurable: true,);
         responsiveCanvasManager.updateCanvasSize();'
     }''
     function testUIElementPositioning(')';

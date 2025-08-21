@@ -7,134 +7,130 @@
 
 // Type definitions for Performance Diagnostics System
 interface DiagnosticOptions { duration?: number,
-    includeBottleneckAnalysis?: boolean,
-    includeAnomalyDetection?: boolean,
-    includeRootCauseAnalysis?: boolean,
-    generateRecommendations?: boolean,
-    detailLevel?: 'basic' | 'standard' | 'comprehensive',
-    focusMetric?: string,
-    [key: string]: any }
+    includeBottleneckAnalysis?: boolean;
+    includeAnomalyDetection?: boolean;
+    includeRootCauseAnalysis?: boolean;
+    generateRecommendations?: boolean;
+    detailLevel?: 'basic' | 'standard' | 'comprehensive';
+    focusMetric?: string;
+    [key: string]: any;
 
 interface DiagnosticSession { id: number,
-    startTime: number,
-    endTime?: number,
-    duration?: number,
-    options: DiagnosticOptions,
-    results: DiagnosticResults
-     }
+    startTime: number;
+    endTime?: number;
+    duration?: number;
+    options: DiagnosticOptions;
+    results: DiagnosticResults;
 
 interface CollectedDataSummary { totalMetrics: number,
-    collectionDuration: number,
-    metricsPerSecond: number,
-    categories: string[],
+    collectionDuration: number;
+    metricsPerSecond: number;
+    categories: string[];
     dataQuality: 'excellent' | 'good' | 'fair' | 'poor'
             }
 
 interface CollectedData { summary: CollectedDataSummary,
-    metrics: Record<string, any>,
-    timestamps: number[],
+    metrics: Record<string, any>;
+    timestamps: number[];
     metadata: Record<string, any> }
 
 interface Bottleneck { id: string,
 
-    component: string,
-    severity: 'low' | 'medium' | 'high' | 'critical',
-    impact: number,
-    description: string,
-    metrics: Record<string, any>,
-    suggested_actions: string[]  }
+    component: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    impact: number;
+    description: string;
+    metrics: Record<string, any>;
+    suggested_actions: string[];
 
 interface Anomaly { id: string,
-    type: string,
-    detection_time: number,
-    severity: 'low' | 'medium' | 'high',
-    description: string,
-    metrics: Record<string, any>,
-    confidence: number  }
+    type: string;
+    detection_time: number;
+    severity: 'low' | 'medium' | 'high';
+    description: string;
+    metrics: Record<string, any>;
+    confidence: number;
 
 interface RootCause { id: string,
-    component: string,
-    cause: string,
-    evidence: string[],
-    confidence: number,
-    impact_assessment: string,
-    remediation_steps: string[] }
+    component: string;
+    cause: string;
+    evidence: string[];
+    confidence: number;
+    impact_assessment: string;
+    remediation_steps: string[];
 
 interface Recommendation { id: string,
-    category: string,
-    priority: 'low' | 'medium' | 'high' | 'urgent',
-    title: string,
-    description: string,
-    estimated_impact: string,
-    implementation_difficulty: 'easy' | 'medium' | 'hard',
-    steps: string[]  }
-';
+    category: string;
+    priority: 'low' | 'medium' | 'high' | 'urgent';
+    title: string;
+    description: string;
+    estimated_impact: string;
+    implementation_difficulty: 'easy' | 'medium' | 'hard';
+    steps: string[];
+';'
 interface OverallAssessment { score: number, // 0-100
-    grade: 'A' | 'B' | 'C' | 'D' | 'F',
-    summary: string,
-    key_issues: string[],
-    strengths: string[],
-    critical_recommendations: string[] }
+    grade: 'A' | 'B' | 'C' | 'D' | 'F';
+    summary: string;
+    key_issues: string[];
+    strengths: string[];
+    critical_recommendations: string[];
 
 interface AnalysisResults { bottlenecks: Bottleneck[],
-    anomalies: Anomaly[],
-    rootCauses: RootCause[],
-    recommendations?: Recommendation[]
-    }
+    anomalies: Anomaly[];
+    rootCauses: RootCause[];
+    recommendations?: Recommendation[];
 
 interface DiagnosticResults { dataCollection?: CollectedDataSummary,
-    bottlenecks?: Bottleneck[],
-    anomalies?: Anomaly[],
-    rootCauses?: RootCause[],
-    recommendations?: Recommendation[],
-    overallAssessment?: OverallAssessment }
+    bottlenecks?: Bottleneck[];
+    anomalies?: Anomaly[];
+    rootCauses?: RootCause[];
+    recommendations?: Recommendation[];
+    overallAssessment?: OverallAssessment;
 
 interface DiagnosticReport { timestamp: number,
-    sessionId: number,
-    summary: OverallAssessment,
-    details: DiagnosticResults,
-    charts?: any[],
+    sessionId: number;
+    summary: OverallAssessment;
+    details: DiagnosticResults;
+    charts?: any[];
     metadata: Record<string, any> }
 
 interface DiagnosticCapabilities {
-    dataCollection: { availabl,e: boolean, [key: string]: any },
-    analysis: { available: boolean, [key: string]: any },
-    reporting: { available: boolean, [key: string]: any }
+    dataCollection: { availabl,e: boolean, [key: string]: any,;
+    analysis: { available: boolean, [key: string]: any,;
+    reporting: { available: boolean, [key: string]: any,
 
 interface ComponentConfig { dataCollection?: any,
-    analysis?: any,
-    reporting?: any }
+    analysis?: any;
+    reporting?: any;
 
 interface ComponentReferences { dataCollector: DiagnosticDataCollector,
-    analyzer: DiagnosticAnalyzer,
-    reporter: DiagnosticReporter
-     }
+    analyzer: DiagnosticAnalyzer;
+    reporter: DiagnosticReporter;
 
 interface QuickDiagnosisResult { session: DiagnosticSession,
-    report: DiagnosticReport
-    }
+    report: DiagnosticReport;
 
 // Component interfaces (will, be replaced, when actual, files are, converted);
-interface DiagnosticDataCollector { collectDiagnosticData(options: DiagnosticOptions): Promise<CollectedData> }
-    getCollectionStatus?(): { available: boolean, [key: string]: any }
+interface DiagnosticDataCollector { collectDiagnosticData(options: DiagnosticOptions): Promise<CollectedData>;
+    getCollectionStatus?(): { available: boolean, [key: string]: any,
     configure?(config: any): void,
     destroy?(): void;
 }
 
 interface DiagnosticAnalyzer { initialize(): Promise<void>,
-    runAnalyses(collectedData: CollectedData, options: DiagnosticOptions): Promise<AnalysisResults>,
-    generateOverallAssessment(analysisResults: AnalysisResults): Promise<OverallAssessment>,
-    identifyBottlenecks(collectedData: CollectedData): Promise<Bottleneck[]>,
-    detectAnomalies(collectedData: CollectedData): Promise<Anomaly[]> }
-    getAnalysisCapabilities?(): { available: boolean, [key: string]: any }
+    runAnalyses(collectedData: CollectedData, options: DiagnosticOptions): Promise<AnalysisResults>;
+    generateOverallAssessment(analysisResults: AnalysisResults): Promise<OverallAssessment>;
+    identifyBottlenecks(collectedData: CollectedData): Promise<Bottleneck[]>;
+    detectAnomalies(collectedData: CollectedData): Promise<Anomaly[]>;
+    getAnalysisCapabilities?(): { available: boolean, [key: string]: any,
     configure?(config: any): void,
     destroy?(): void;
 }
 
 interface DiagnosticReporter { initialize(): Promise<void>,
-    generateRecommendations(analysisResults: AnalysisResults): Promise<Recommendation[]>,
-    generateReport(diagnosticSession: DiagnosticSession): Promise<DiagnosticReport> }
-    getReportingCapabilities?(): { available: boolean, [key: string]: any }
+    generateRecommendations(analysisResults: AnalysisResults): Promise<Recommendation[]>;
+    generateReport(diagnosticSession: DiagnosticSession): Promise<DiagnosticReport>;
+    getReportingCapabilities?(): { available: boolean, [key: string]: any,
     configure?(config: any): void,
     destroy?(): void;
 }
@@ -142,7 +138,7 @@ interface DiagnosticReporter { initialize(): Promise<void>,
 // Dummy implementations for missing dependencies (will, be replaced, when actual, files are, converted);
 class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async collectDiagnosticData(options: DiagnosticOptions): Promise<CollectedData> {
         console.log(`[DiagnosticDataCollector] Collecting data for ${options.duration}ms`};
-        ';
+        ';'
 
         // Simulate data collection' }'
 
@@ -152,7 +148,7 @@ class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async co
                 totalMetrics: 150,
     collectionDuration: options.duration || 5000,
                 metricsPerSecond: 30,
-                categories: ['performance', 'memory', 'network', 'rendering'],' };
+                categories: ['performance', 'memory', 'network', 'rendering'],' };'
 
                 dataQuality: 'good' 
     };
@@ -167,25 +163,25 @@ class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async co
             }))
     }]
     )];
-    getCollectionStatus(): { available: boolean, [key: string]: any } {
+    getCollectionStatus(): { available: boolean, [key: string]: any; {
         return { available: true, collectorsActive: 4  }
 
     configure(config: any): void { ''
         console.log('[DiagnosticDataCollector] Configuration, updated') }'
 
-    destroy()';
+    destroy()';'
         console.log('[DiagnosticDataCollector] Destroyed');
     }
 }
-';
+';'
 
 class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
-    async initialize()',
+    async initialize()','
         console.log('[DiagnosticAnalyzer] Initialized') }'
 
     async runAnalyses(collectedData: CollectedData, options: DiagnosticOptions): Promise<AnalysisResults> { ''
         console.log('[DiagnosticAnalyzer] Running, analyses'),
-        ',
+        ','
 
         const bottlenecks: Bottleneck[] = [{''
             id: 'bottle_001',
@@ -195,9 +191,9 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
             description: 'Rendering pipeline showing moderate bottlenecks'
             }]'
             metrics: { avgRenderTime: 18.5 },']'
-            suggested_actions: ['Reduce particle count', 'Lower rendering quality];
+            suggested_actions: ['Reduce particle count', 'Lower rendering quality];'
         }];
-        ';
+        ';'
 
         const anomalies: Anomaly[] = [{ ''
             id: 'anom_001',
@@ -212,26 +208,26 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
 
         const rootCauses: RootCause[] = [{ ''
             id: 'root_001',
-            component: 'particle_system',]',
+            component: 'particle_system',]','
             cause: 'Excessive particle generation',']',
             evidence: ['High particle count', 'Memory growth pattern]',
             confidence: 0.8,
             impact_assessment: 'Moderate performance impact',
-            remediation_steps: ['Implement particle pooling', 'Add culling system] }];
+            remediation_steps: ['Implement particle pooling', 'Add culling system] }];'
         
         return { bottlenecks, anomalies, rootCauses }
 
     ')';
     async generateOverallAssessment(analysisResults: AnalysisResults): Promise<OverallAssessment> { const score = 75, // Calculate based on analysis results
-        ',
+        ','
 
         return { score,''
             grade: score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : score >= 60 ? 'D' : 'F',
             summary: 'System performance is generally good with some optimization opportunities',
-            key_issues: ['Moderate rendering bottlenecks', 'Memory usage patterns],
+            key_issues: ['Moderate rendering bottlenecks', 'Memory usage patterns],'
             strengths: ['Stable frame rate', 'Good network performance],' };
 
-            critical_recommendations: ['Optimize particle system', 'Implement memory pooling] }
+            critical_recommendations: ['Optimize particle system', 'Implement memory pooling] }'
         }
 
     async identifyBottlenecks(collectedData: CollectedData): Promise<Bottleneck[]> { return [{''
@@ -242,7 +238,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
             description: 'Minor audio processing delays'
             }]'
             metrics: { audioLatency: 12.5 },']'
-            suggested_actions: ['Use audio pooling];
+            suggested_actions: ['Use audio pooling];'
         }] }
 
     async detectAnomalies(collectedData: CollectedData): Promise<Anomaly[]> { return [{''
@@ -262,14 +258,14 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
     configure(config: any): void { ''
         console.log('[DiagnosticAnalyzer] Configuration, updated') }'
 
-    destroy()';
+    destroy()';'
         console.log('[DiagnosticAnalyzer] Destroyed');
     }
 }
-';
+';'
 
 class DummyDiagnosticReporter implements DiagnosticReporter { ''
-    async initialize()',
+    async initialize()','
         console.log('[DiagnosticReporter] Initialized') }'
 
     async generateRecommendations(analysisResults: AnalysisResults): Promise<Recommendation[]> { return [{''
@@ -280,9 +276,9 @@ class DummyDiagnosticReporter implements DiagnosticReporter { ''
             description: 'Implement particle pooling and culling to improve performance',
             estimated_impact: 'Moderate performance improvement',
             implementation_difficulty: 'medium',
-            steps: [',
+            steps: [','
                 'Implement object pooling for particles',
-                'Add frustum culling',]',
+                'Add frustum culling',]','
                 'Optimize particle shaders'],
             ] }];
     }
@@ -310,24 +306,24 @@ class DummyDiagnosticReporter implements DiagnosticReporter { ''
     configure(config: any): void { ''
         console.log('[DiagnosticReporter] Configuration, updated') }'
 
-    destroy()';
-        console.log('[DiagnosticReporter] Destroyed);
+    destroy()';'
+        console.log('[DiagnosticReporter] Destroyed);'
     }
 }
 
 export class PerformanceDiagnostics {
-    private dataCollector: DiagnosticDataCollector,
-    private analyzer: DiagnosticAnalyzer,
-    private reporter: DiagnosticReporter,
-    private initialized: boolean,
+    private dataCollector: DiagnosticDataCollector;
+    private analyzer: DiagnosticAnalyzer;
+    private reporter: DiagnosticReporter;
+    private initialized: boolean;
     constructor() {
 
         // Initialize sub-components (using dummy implementations),
-        this.dataCollector = new DummyDiagnosticDataCollector(),
-        this.analyzer = new DummyDiagnosticAnalyzer(),
-        this.reporter = new DummyDiagnosticReporter(),
+        this.dataCollector = new DummyDiagnosticDataCollector();
+        this.analyzer = new DummyDiagnosticAnalyzer();
+        this.reporter = new DummyDiagnosticReporter();
         
-        this.initialized = false,
+        this.initialized = false;
 
         this.initializeDiagnostics() }
 
@@ -339,16 +335,16 @@ export class PerformanceDiagnostics {
             await this.analyzer.initialize(),
             await this.reporter.initialize(),
 
-            console.log('[PerformanceDiagnostics] Main, controller initialized, successfully'),' }
+            console.log('[PerformanceDiagnostics] Main, controller initialized, successfully'),' }'
 
         } catch (error) {
-            console.error('[PerformanceDiagnostics] Failed to initialize:', error',
+            console.error('[PerformanceDiagnostics] Failed to initialize:', error','
             throw error }
     }
-';
+';'
 
     async runComprehensiveDiagnosis(options: DiagnosticOptions = {}): Promise<QuickDiagnosisResult> { ''
-        if(!this.initialized) {', ' }
+        if (!this.initialized) {', ' }
 
             throw new Error('PerformanceDiagnostics, not initialized'); }
         }
@@ -371,7 +367,7 @@ export class PerformanceDiagnostics {
             const analysisResults = await this.analyzer.runAnalyses(collectedData, diagnosticSession.options),
             
             // 推奨事項生成 - delegated to reporter
-            if(diagnosticSession.options.generateRecommendations) {
+            if (diagnosticSession.options.generateRecommendations) {
     
 }
                 analysisResults.recommendations = await this.reporter.generateRecommendations(analysisResults); }
@@ -391,9 +387,8 @@ export class PerformanceDiagnostics {
             // 診断レポート生成 - delegated to reporter
             const report = await this.reporter.generateReport(diagnosticSession);
             
-            return { session: diagnosticSession };
-                report: report 
-    } catch (error) {
+            return { session: diagnosticSession,;
+                report: report; catch (error) {
             console.error('[PerformanceDiagnostics] Comprehensive diagnosis failed:', error),
             throw error }
     }
@@ -432,7 +427,7 @@ export class PerformanceDiagnostics {
     async quickDiagnosis(targetMetric: string | null = null): Promise<QuickDiagnosisResult> { const options: DiagnosticOptions = {'
             duration: 5000, // 5秒,
             detailLevel: 'basic',
-    includeRootCauseAnalysis: false  };
+    includeRootCauseAnalysis: false,;
         if (targetMetric) { options.focusMetric = targetMetric }
 
         return await this.runComprehensiveDiagnosis(options);
@@ -482,11 +477,11 @@ export class PerformanceDiagnostics {
      */
     getDiagnosticCapabilities(): DiagnosticCapabilities { return {  };
             dataCollection: this.dataCollector.getCollectionStatus ? undefined : undefined 
-                this.dataCollector.getCollectionStatus() : { available: true };
+                this.dataCollector.getCollectionStatus() : { available: true,;
             analysis: this.analyzer.getAnalysisCapabilities ? undefined : undefined
-                this.analyzer.getAnalysisCapabilities() : { available: true };
+                this.analyzer.getAnalysisCapabilities() : { available: true,;
             reporting: this.reporter.getReportingCapabilities ? undefined : undefined
-                this.reporter.getReportingCapabilities() : { available: true }
+                this.reporter.getReportingCapabilities() : { available: true,
 
     /**
      * Configure diagnostic components
@@ -497,15 +492,15 @@ export class PerformanceDiagnostics {
         
         if (config.analysis) { this.analyzer.configure && this.analyzer.configure(config.analysis) }
         
-        if(config.reporting) {
-        ',
+        if (config.reporting) {
+        ','
 
-            ' }
+            ' }'
 
             this.reporter.configure && this.reporter.configure(config.reporting); }
         }
 
-        console.log('[PerformanceDiagnostics] Configuration, updated);
+        console.log('[PerformanceDiagnostics] Configuration, updated);'
     }
 
     /**
@@ -523,8 +518,8 @@ export class PerformanceDiagnostics {
             // Destroy sub-components
             this.dataCollector.destroy && this.dataCollector.destroy(),
             this.analyzer.destroy && this.analyzer.destroy(),
-            this.reporter.destroy && this.reporter.destroy()',
-            console.log('[PerformanceDiagnostics] Main, controller destroyed'),' }
+            this.reporter.destroy && this.reporter.destroy()','
+            console.log('[PerformanceDiagnostics] Main, controller destroyed'),' }'
 
         } catch (error) { console.error('[PerformanceDiagnostics] Error during cleanup:', error }
 }

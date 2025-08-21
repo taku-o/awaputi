@@ -4,13 +4,13 @@
  */
 
 interface Issue { id: string,
-    type: 'performance' | 'memory' | 'error' | 'warning',
-    severity: 'low' | 'medium' | 'high' | 'critical',
-    title: string,
-    description: string,
-    solution?: string,
-    context: any,
-    timestamp: number  }
+    type: 'performance' | 'memory' | 'error' | 'warning';
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    title: string;
+    description: string;
+    solution?: string;
+    context: any;
+    timestamp: number;
 
 interface DetectionRule { id: string,
     name: string,' }'
@@ -23,7 +23,7 @@ interface DetectionRule { id: string,
 }
 
 export class CommonIssueDetector {
-    private rules: DetectionRule[] = [],
+    private rules: DetectionRule[] = [];
     private, detectedIssues: Issue[] = [],
     constructor() {
     
@@ -33,8 +33,8 @@ export class CommonIssueDetector {
 
     private initializeDefaultRules('''
                 id: 'high_memory_usage',
-                name: 'High Memory Usage',';
-                pattern: (data: any') => data.memoryUsage > 100 * 1024 * 1024, // 100MB;
+                name: 'High Memory Usage',';'
+                pattern: (data: any') => data.memoryUsage > 100 * 1024 * 1024, // 100MB;'
                 type: 'memory',
                 severity: 'high',
                 description: 'Memory usage is higher than expected',
@@ -44,7 +44,7 @@ export class CommonIssueDetector {
             { ''
                 id: 'low_fps',
                 name: 'Low FPS',
-                pattern: (data: any') => data.fps < 30,
+                pattern: (data: any') => data.fps < 30,'
                 type: 'performance',
                 severity: 'medium',
                 description: 'Frame rate is below optimal threshold',
@@ -89,7 +89,7 @@ export class CommonIssueDetector {
 
     private checkRule(rule: DetectionRule, data: any): Issue | null { let matches = false,
 
-        if(rule.pattern, instanceof RegExp) {
+        if (rule.pattern, instanceof RegExp) {
             // Pattern matching for string data
             const stringData = typeof data === 'string' ? data: JSON.stringify(data,
 
@@ -99,7 +99,7 @@ export class CommonIssueDetector {
         } else if(typeof, rule.pattern === 'function' { // Function-based detection'
             matches = rule.pattern(data) }
 
-        if(matches) {
+        if (matches) {
 
             return { id: this.generateIssueId(
                 type: rule.type,
@@ -117,12 +117,12 @@ export class CommonIssueDetector {
         if (filter) {
     
 }
-            if(filter.type) { }
+            if (filter.type) { }
                 filtered = filtered.filter(issue => issue.type === filter.type); }
             }
             if (filter.severity) { filtered = filtered.filter(issue => issue.severity === filter.severity) }
             }
-            if(filter.timeframe) {
+            if (filter.timeframe) {
                 const cutoff = Date.now() - filter.timeframe }
                 filtered = filtered.filter(issue => issue.timestamp > cutoff); }
 }
@@ -134,13 +134,13 @@ export class CommonIssueDetector {
 
     public clearIssues(): void { this.detectedIssues = [] }
 
-    public getStatistics(): { total: number }
-        byType: { [type: string]: number };
-        bySeverity: { [severity: string]: number };
-        recent: number;
+    public getStatistics(): { total: number,
+        byType: { [type: string]: number,;
+        bySeverity: { [severity: string]: number,;
+        recent: number,
     } {
-        const byType: { [type: string]: number } = {}
-        const bySeverity: { [severity: string]: number } = {}
+        const byType: { [type: string]: number, = {}
+        const bySeverity: { [severity: string]: number, = {}
         const oneHourAgo = Date.now() - 3600000;
         
         let recent = 0;
@@ -158,10 +158,10 @@ export class CommonIssueDetector {
             bySeverity };
             recent }
         }
-';
+';'
 
     private generateIssueId(): string { }'
 
         return `issue_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`;
 
-    }'}
+    }'}'

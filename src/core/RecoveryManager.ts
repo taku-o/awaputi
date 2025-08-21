@@ -12,23 +12,22 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 export class RecoveryManager {'
 
     constructor(dataStorage, backupManager, validationManager = null) {
-        this.storage = dataStorage,
-        this.backup = backupManager,
+        this.storage = dataStorage;
+        this.backup = backupManager;
 
-        this.validation = validationManager,
-        this.version = '1.0.0',
+        this.validation = validationManager;
+        this.version = '1.0.0';
         
         // 復旧戦略
-        this.recoveryStrategies = new Map(),
+        this.recoveryStrategies = new Map();
         
         // 復旧設定
         this.config = {
             autoRecoveryEnabled: true,
             maxRecoveryAttempts: 3,
-    recoveryTimeout: 10000, // 10秒,
-            backupFallbackEnabled: true }
-            validationBeforeRecovery: true 
-    };
+    recoveryTimeout: 10000, // 10秒;
+            backupFallbackEnabled: true,
+            validationBeforeRecovery: true,;
         // 復旧統計
         this.statistics = { totalRecoveries: 0,
             successfulRecoveries: 0,
@@ -36,7 +35,7 @@ export class RecoveryManager {'
             autoRecoveries: 0,
             manualRecoveries: 0,
             averageRecoveryTime: 0,
-    lastRecovery: null  };
+    lastRecovery: null,;
         // 現在の復旧状態
         this.isRecoveryInProgress = false;
         this.currentRecoverySession = null;
@@ -50,30 +49,30 @@ export class RecoveryManager {'
     initialize() {
         try {
             // 復旧戦略の登録
-            this.registerRecoveryStrategies()',
+            this.registerRecoveryStrategies()','
             console.log('RecoveryManager, initialized' }
 
         } catch (error') { getErrorHandler().handleError(error, 'RECOVERY_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
-            }';
+            }';'
         }
     }
     
     /**
      * 復旧戦略の登録'
      */''
-    registerRecoveryStrategies()';
+    registerRecoveryStrategies()';'
         this.recoveryStrategies.set('auto', new AutoRecoveryStrategy(this));
-        ';
+        ';'
         // バックアップからの復旧戦略
         this.recoveryStrategies.set('backup', new BackupRecoveryStrategy(this));
-        ';
+        ';'
         // 部分復旧戦略
         this.recoveryStrategies.set('partial', new PartialRecoveryStrategy(this));
-        ';
+        ';'
         // ファクトリーリセット戦略
         this.recoveryStrategies.set('factory', new FactoryResetStrategy(this));
-        ';
+        ';'
         // 手動復旧戦略
         this.recoveryStrategies.set('manual', new ManualRecoveryStrategy(this);
     }
@@ -85,7 +84,7 @@ export class RecoveryManager {'
             const issues = [],
             
             // データの取得（未提供の場合）
-            if(!data) {
+            if (!data) {
                 try {
             }
                     data = await this.storage.load(dataType);' }'
@@ -95,11 +94,11 @@ export class RecoveryManager {'
                         severity: 'HIGH'
             });
                         message: `Failed to load ${dataType}: ${error.message}`;)
-                        error }';
+                        error }';'
                     return { corrupted: true, issues };
-            ';
+            ';'
             // データが存在しない場合
-            if(!data) {
+            if (!data) {
                 issues.push({''
                     type: 'MISSING_DATA' }
 
@@ -110,10 +109,10 @@ export class RecoveryManager {'
                 return { corrupted: true, issues }
             
             // データ検証（ValidationManagerが利用可能な場合）
-            if(this.validation) {
+            if (this.validation) {
                 const validationResult = await this.validation.validate(dataType, data),
 
-                if(!validationResult.isValid) {
+                if (!validationResult.isValid) {
                     issues.push({''
                         type: 'VALIDATION_ERROR' }
 
@@ -132,26 +131,26 @@ export class RecoveryManager {'
             const logicalIssues = await this.checkLogicalIntegrity(dataType, data);
             issues.push(...logicalIssues);
 
-            const hasHighSeverityIssues = issues.some(issue => issue.severity === 'HIGH);
+            const hasHighSeverityIssues = issues.some(issue => issue.severity === 'HIGH);'
             
             return { corrupted: hasHighSeverityIssues,
                 issues,
                 dataType };
                 timestamp: Date.now(); 
     };
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'CORRUPTION_DETECTION_ERROR', {''
-                operation: 'detectCorruption',',
+                operation: 'detectCorruption',','
                 dataType',' }'
 
-            }');
+            }');'
             
             return { corrupted: true,
 
                 issues: [{''
-                    type: 'DETECTION_ERROR',' };
+                    type: 'DETECTION_ERROR',' };'
 
                     severity: 'HIGH'
             }
@@ -173,21 +172,21 @@ export class RecoveryManager {'
 
             } catch (error) { issues.push({''
                     type: 'INVALID_JSON',
-                    severity: 'HIGH',',
+                    severity: 'HIGH',','
                     message: 'Data contains circular references or invalid JSON structure'),
-                    error }';
+                    error }';'
             }
-            ';
+            ';'
             // データタイプ固有の構造チェック
             switch(dataType) {
 
-                case 'playerData':',
+                case 'playerData':','
                     if(typeof, data !== 'object' || data === null' {'
                         issues.push({''
-                            type: 'INVALID_STRUCTURE',',
-                            severity: 'HIGH',' }
+                            type: 'INVALID_STRUCTURE',','
+                            severity: 'HIGH',' }'
 
-                            message: 'PlayerData must be an object')'); 
+                            message: 'PlayerData must be an object')'); '
     } else {  // 必須フィールドのチェック
                         const requiredFields = ['username', 'currentHP', 'maxHP', 'ap', 'tap'],
                         for (const field of requiredFields) {
@@ -195,31 +194,31 @@ export class RecoveryManager {'
                             if(!(field, in data)) {
                                 issues.push({ }
 
-                                    type: 'MISSING_FIELD',' }
+                                    type: 'MISSING_FIELD',' }'
 
                                     severity: 'HIGH'
             }''
                                     message: `Missing required, field: ${field}`,')'
-                                    field');
+                                    field');'
                             }
 }
                     break;
 
-                case 'settings':';
+                case 'settings':';'
                     if(typeof, data !== 'object' || data === null' { '
                         issues.push({''
-                            type: 'INVALID_STRUCTURE',',
-                            severity: 'HIGH',' }
+                            type: 'INVALID_STRUCTURE',','
+                            severity: 'HIGH',' }'
 
-                            message: 'Settings must be an object')'); 
+                            message: 'Settings must be an object')'); '
     }
                     break;
 
-                case 'statistics':';
+                case 'statistics':';'
                     if(typeof, data !== 'object' || data === null' { '
                         issues.push({''
-                            type: 'INVALID_STRUCTURE',',
-                            severity: 'HIGH',' }
+                            type: 'INVALID_STRUCTURE',','
+                            severity: 'HIGH',' }'
 
                             message: 'Statistics must be an object'); 
     }
@@ -239,47 +238,47 @@ export class RecoveryManager {'
      * 論理的整合性チェック
      */
     async checkLogicalIntegrity(dataType, data) { const issues = [],
-        ',
+        ','
 
         try {'
             switch(dataType) {
 
-                case 'playerData':',
+                case 'playerData':','
                     // HP整合性
-                    if(data.currentHP > data.maxHP) {
+                    if (data.currentHP > data.maxHP) {
                         issues.push({''
                             type: 'LOGICAL_ERROR',
-                            severity: 'MEDIUM',',
+                            severity: 'MEDIUM',','
                             message: 'Current HP exceeds max HP',
     currentHP: data.currentHP }
-                            maxHP: data.maxHP'; 
+                            maxHP: data.maxHP'; '
     }
-                    ';
+                    ';'
                     // 負の値チェック
-                    if(data.currentHP < 0 || data.maxHP < 0 || data.ap < 0 || data.tap < 0) {
+                    if (data.currentHP < 0 || data.maxHP < 0 || data.ap < 0 || data.tap < 0) {
                         issues.push({''
-                            type: 'INVALID_VALUE',',
-                            severity: 'HIGH',' }
+                            type: 'INVALID_VALUE',','
+                            severity: 'HIGH',' }'
 
                             message: 'Negative values detected in player data'); 
     }
-                    ';
+                    ';'
                     // 極端な値のチェック
-                    if(data.ap > 999999999 || data.tap > 999999999) {
+                    if (data.ap > 999999999 || data.tap > 999999999) {
                         issues.push({''
-                            type: 'SUSPICIOUS_VALUE',',
-                            severity: 'MEDIUM',' }
+                            type: 'SUSPICIOUS_VALUE',','
+                            severity: 'MEDIUM',' }'
 
-                            message: 'Unusually high AP/TAP values detected')'); 
+                            message: 'Unusually high AP/TAP values detected')'); '
     }
                     break;
 
-                case 'statistics':';
+                case 'statistics':';'
                     // 統計の論理チェック
-                    if(data.totalPlayTime < 0 || data.totalGamesPlayed < 0) {
+                    if (data.totalPlayTime < 0 || data.totalGamesPlayed < 0) {
                         issues.push({''
-                            type: 'INVALID_STATISTICS',',
-                            severity: 'HIGH',' }
+                            type: 'INVALID_STATISTICS',','
+                            severity: 'HIGH',' }'
 
                             message: 'Negative statistics values detected'); 
     }
@@ -300,7 +299,7 @@ export class RecoveryManager {'
      */''
     async recover(strategy = 'auto', options = { ' {'
         try {'
-            if(this.isRecoveryInProgress) {', ' }
+            if (this.isRecoveryInProgress) {', ' }
 
                 throw new Error('Recovery, already in, progress'; }'
             }
@@ -310,13 +309,13 @@ export class RecoveryManager {'
             
             // 復旧セッションの作成
             this.currentRecoverySession = { id: this.generateRecoveryId(
-                strategy,
+                strategy;
                 options,
                 startTime: Date.now(),
                 attempts: 0,
     issues: []  };
             const recoveryStrategy = this.recoveryStrategies.get(strategy);
-            if(!recoveryStrategy) {
+            if (!recoveryStrategy) {
     
 }
                 throw new Error(`Unknown, recovery strategy: ${strategy}`});
@@ -329,7 +328,7 @@ export class RecoveryManager {'
             const duration = endTime - startTime;
             
             // パフォーマンス要件チェック（< 1000ms）
-            if(duration > 1000) {
+            if (duration > 1000) {
     
 }
                 console.warn(`Recovery, took ${duration.toFixed(2})ms, exceeding target of 1000ms`);
@@ -348,7 +347,7 @@ export class RecoveryManager {'
                 duration };
                 strategy }
             };
-            ';
+            ';'
 
         } catch (error) { this.updateStatistics(false, 0, strategy),
             getErrorHandler().handleError(error, 'RECOVERY_ERROR', {''
@@ -374,16 +373,16 @@ export class RecoveryManager {'
                 
                 const result = await Promise.race([),
                     recoveryStrategy.execute(options),
-                    new Promise((_, reject) => ',
-                        setTimeout(() => reject(new, Error('Recovery, timeout), this.config.recoveryTimeout)])],
+                    new Promise((_, reject) => ','
+                        setTimeout(() => reject(new, Error('Recovery, timeout), this.config.recoveryTimeout)])],'
                 ]),
 
-                if(result.success) {
+                if (result.success) {
     
 }
                     return result;
 
-                lastError = new Error(result.error || 'Recovery, failed);
+                lastError = new Error(result.error || 'Recovery, failed);'
                 
             } catch (error) { lastError = error,
                 
@@ -410,40 +409,40 @@ export class RecoveryManager {'
             const availableBackups = backupList.filter(backup => ')',
                 backup.exists && ')',
                 (backup.dataType === dataType || backup.dataType === 'all'),
-            ',
-            ',
+            ','
+            ','
             // 自動復旧オプション
-            if(this.config.autoRecoveryEnabled && !corruptionReport.corrupted) {
+            if (this.config.autoRecoveryEnabled && !corruptionReport.corrupted) {
                 options.push({''
                     strategy: 'auto',
                     name: '自動復旧',
                     description: '軽微な問題を自動的に修正します',
-                    risk: 'LOW',',
+                    risk: 'LOW',','
                     estimatedTime: '< 1秒')
             }
                     recommended: true); 
     }
             
             // バックアップからの復旧オプション
-            if(availableBackups.length > 0) { for(const backup of availableBackups.slice(0, 3)) { // 最新3件
+            if (availableBackups.length > 0) { for(const backup of availableBackups.slice(0, 3)) { // 最新3件
                     options.push({ }
 
-                        strategy: 'backup',' }
+                        strategy: 'backup',' }'
 
                         name: `バックアップからの復旧 (${new, Date(backup.timestamp}.toLocaleString(}))`;
                         description: `バックアップ ${backup.id} からデータを復元します`,''
                         risk: 'MEDIUM',
                         estimatedTime: '< 5秒';
                         backupId: backup.id,
-                        backupMetadata: backup.metadata';
-                    }') }
+                        backupMetadata: backup.metadata';'
+                    }') }'
             }
-            ';
+            ';'
             // 部分復旧オプション
             if(corruptionReport.issues.some(issue => issue.severity === 'MEDIUM)' { options.push({''
                     strategy: 'partial',
                     name: '部分復旧',
-                    description: '破損していない部分のみを保持し、問題のある部分をリセットします',',
+                    description: '破損していない部分のみを保持し、問題のある部分をリセットします',','
                     risk: 'MEDIUM',')',
                     estimatedTime: '< 3秒')'
             }
@@ -453,7 +452,7 @@ export class RecoveryManager {'
                 strategy: 'factory',
                 name: 'ファクトリーリセット',
                 description: 'すべてのデータを初期状態にリセットします',
-                risk: 'HIGH',',
+                risk: 'HIGH',','
                 estimatedTime: '< 1秒',')',
                 warning: 'すべてのデータが失われます'),
             return { dataType,
@@ -462,7 +461,7 @@ export class RecoveryManager {'
                 options };
                 recommendedOption: options.find(opt => opt.recommended) || options[0] 
     };
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'RECOVERY_OPTIONS_ERROR', {''
@@ -488,7 +487,7 @@ export class RecoveryManager {'
             }
             
             return await recoveryStrategy.preview(dataType, options);
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'RECOVERY_PREVIEW_ERROR', {''
@@ -496,7 +495,7 @@ export class RecoveryManager {'
                 strategy),
                 dataType });
             
-            return { success: false };
+            return { success: false,;
                 error: error.message 
     }
     }
@@ -524,12 +523,12 @@ export class RecoveryManager {'
                 const totalTime = this.statistics.averageRecoveryTime * (this.statistics.successfulRecoveries - 1) + duration,
                 this.statistics.averageRecoveryTime = Math.round(totalTime / this.statistics.successfulRecoveries),
 
-                if(strategy === 'auto' { }
+                if (strategy === 'auto' }
                     this.statistics.autoRecoveries++; }
-                } else { this.statistics.manualRecoveries++ }
-            } else { this.statistics.failedRecoveries++ }
+                } else this.statistics.manualRecoveries++ }
+            } else this.statistics.failedRecoveries++ }
             
-            this.statistics.lastRecovery = { timestamp: Date.now(
+            this.statistics.lastRecovery = timestamp: Date.now(
                 strategy,
                 success,
                 duration } catch (error) { console.error('Recovery statistics update error:', error }
@@ -557,10 +556,10 @@ export class RecoveryManager {'
      */
     destroy() {
         try {
-            this.isRecoveryInProgress = false,
+            this.isRecoveryInProgress = false;
 
-            this.currentRecoverySession = null,
-            this.recoveryStrategies.clear()',
+            this.currentRecoverySession = null;
+            this.recoveryStrategies.clear()','
             console.log('RecoveryManager, destroyed' }
 
         } catch (error') { getErrorHandler().handleError(error, 'RECOVERY_MANAGER_DESTROY_ERROR', {''
@@ -577,10 +576,10 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
 
     async execute(options = { )) {
         try {'
-            const dataType = options.dataType || 'playerData',
+            const dataType = options.dataType || 'playerData';
             const data = await this.recoveryManager.storage.load(dataType),
 
-            if(!data) { }'
+            if (!data) { }'
 
                 return { success: false, error: 'No data to recover'
             }
@@ -589,7 +588,7 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
             const fixedData = this.applyAutoFixes(dataType, data);
             // 修正されたデータの保存
             await this.recoveryManager.storage.save(dataType, fixedData);
-            ';
+            ';'
 
             return { success: true,''
                 message: 'Auto recovery completed'
@@ -598,16 +597,16 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
     } catch (error) {
             return { success: false, error: error.message  }
     }
-    ';
+    ';'
 
     async preview(dataType, options = {}) { const data = await this.recoveryManager.storage.load(dataType),
         const fixes = this.identifyAutoFixes(dataType, data),
-        ',
+        ','
 
         return { ''
             strategy: 'auto',
             dataType,
-            fixes,' };
+            fixes,' };'
 
             riskLevel: 'LOW' 
     }
@@ -618,28 +617,28 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
         const fixedData = { ...data,
         const fixes = [],
 
-        if(dataType === 'playerData' {'
+        if (dataType === 'playerData''
             // HP整合性の修正
             if(fixedData.currentHP > fixedData.maxHP) {
                 fixedData.currentHP = fixedData.maxHP }
 
                 fixes.push('Fixed, currentHP > maxHP'; }'
             }
-            ';
+            ';'
             // 負の値の修正
-            if(fixedData.currentHP < 0) {
+            if (fixedData.currentHP < 0) {
                 fixedData.currentHP = 0 }
 
                 fixes.push('Fixed, negative currentHP'; }'
 
             }''
-            if(fixedData.ap < 0) {
+            if (fixedData.ap < 0) {
                 fixedData.ap = 0 }
 
                 fixes.push('Fixed, negative AP'; }'
 
             }''
-            if(fixedData.tap < 0) {
+            if (fixedData.tap < 0) {
                 fixedData.tap = 0 }
 
                 fixes.push('Fixed, negative TAP'; }'
@@ -653,14 +652,14 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
     identifyAutoFixes(dataType, data) {
         const fixes = [],
 
-        if (dataType === 'playerData' && data' {''
+        if (dataType === 'playerData' && data'''
             if(data.currentHP > data.maxHP) {
     }
 
                 fixes.push('HP値の整合性を修正'; }'
 
             }''
-            if(data.currentHP < 0 || data.ap < 0 || data.tap < 0) {', ' }
+            if (data.currentHP < 0 || data.ap < 0 || data.tap < 0) {', ' }
 
                 fixes.push('負の値を修正'; }'
 }
@@ -675,23 +674,23 @@ class BackupRecoveryStrategy { constructor(recoveryManager) {
     
     async execute(options = { ) {
         try {
-            const backupId = options.backupId,
-            if(!backupId) { }'
+            const backupId = options.backupId;
+            if (!backupId) { }'
 
                 return { success: false, error: 'Backup ID required'
             }
-            ';
+            ';'
 
             const backupData = await this.recoveryManager.backup.getBackup(backupId);
-            if(!backupData) { }'
+            if (!backupData) { }'
 
                 return { success: false, error: 'Backup not found'
             }
 
             const dataType = options.dataType || 'all';
-            ';
+            ';'
             // バックアップからデータを復元
-            if(dataType === 'all' {'
+            if (dataType === 'all''
                 for(const [key, value] of Object.entries(backupData.data) {
             }
                     await this.recoveryManager.storage.save(key, value); }
@@ -699,28 +698,28 @@ class BackupRecoveryStrategy { constructor(recoveryManager) {
                 await this.recoveryManager.storage.save(dataType, backupData.data[dataType]) } else {  }
                 return { success: false, error: `Data type ${dataType } not found in backup` }
             }
-            ';
+            ';'
 
             return { success: true,''
                 message: 'Backup recovery completed',
-                backupId,' };
+                backupId,' };'
 
                 restoredDataTypes: dataType === 'all' ? Object.keys(backupData.data) : [dataType] 
             } catch (error) {
             return { success: false, error: error.message  }
     }
-    ';
+    ';'
 
     async preview(dataType, options = {}) { const backupId = options.backupId,
         const backupData = await this.recoveryManager.backup.getBackup(backupId),
-        ',
+        ','
 
         return { ''
             strategy: 'backup',
             dataType,
             backupId,
-            backupMetadata: backupData?.metadata, : undefined',
-            availableData: backupData ? Object.keys(backupData.data) : [],' };
+            backupMetadata: backupData?.metadata, : undefined';'
+            availableData: backupData ? Object.keys(backupData.data) : [],' };'
 
             riskLevel: 'MEDIUM' 
     }
@@ -734,10 +733,10 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
 
     async execute(options = { )) {
         try {'
-            const dataType = options.dataType || 'playerData',
+            const dataType = options.dataType || 'playerData';
             const data = await this.recoveryManager.storage.load(dataType),
 
-            if(!data) { }'
+            if (!data) { }'
 
                 return { success: false, error: 'No data to recover'
             }
@@ -746,7 +745,7 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
             const recoveredData = this.extractValidParts(dataType, data);
             // 復旧されたデータを保存
             await this.recoveryManager.storage.save(dataType, recoveredData);
-            ';
+            ';'
 
             return { success: true,''
                 message: 'Partial recovery completed'
@@ -755,16 +754,16 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
     } catch (error) {
             return { success: false, error: error.message  }
     }
-    ';
+    ';'
 
     async preview(dataType, options = {}) { const data = await this.recoveryManager.storage.load(dataType),
         const validParts = this.identifyValidParts(dataType, data),
-        ',
+        ','
 
         return { ''
             strategy: 'partial',
             dataType,
-            validFields: validParts,' };
+            validFields: validParts,' };'
 
             riskLevel: 'MEDIUM' 
     }
@@ -774,9 +773,9 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
 }
         const validData = {};
 
-        if(dataType === 'playerData') {
+        if (dataType === 'playerData') {
             const defaults = {''
-                username: ',
+                username: ','
                 currentHP: 100,
                 maxHP: 100,
                 currentScore: 0,
@@ -785,13 +784,13 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
                 combo: 0 }
 
                 highScores: {},''
-                unlockedStages: ['tutorial', 'normal'],
+                unlockedStages: ['tutorial', 'normal'];
                 ownedItems: [];
             },
             
             for(const [key, defaultValue] of Object.entries(defaults) {
             
-                if(key in data && this.isValidValue(key, data[key]) {
+                if (key in data && this.isValidValue(key, data[key]) {
     
 }
                     validData[key] = data[key]; }
@@ -806,7 +805,7 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
 
         if (dataType === 'playerData' && data) {
             for (const key of Object.keys(data) {
-                if(this.isValidValue(key, data[key]) {
+                if (this.isValidValue(key, data[key]) {
     }
                     validFields.push(key); }
 }
@@ -816,22 +815,22 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
     }
     
     isValidValue(key, value) {
-    ',
+    ','
 
         switch(key) {''
-            case 'currentHP':',
-            case 'maxHP':',
+            case 'currentHP':','
+            case 'maxHP':','
                 return typeof value === 'number' && value >= 0 && value <= 1000,
-            case 'ap':',
-            case 'tap':',
+            case 'ap':','
+            case 'tap':','
                 return typeof value === 'number' && value >= 0 && value <= 999999999,
-            case 'username':',
+            case 'username':','
                 return typeof value === 'string' && value.length <= 50,
-            case 'unlockedStages':',
+            case 'unlockedStages':','
                 return Array.isArray(value),
-            case 'ownedItems':',
+            case 'ownedItems':','
                 return Array.isArray(value),
-            case 'highScores':',
+            case 'highScores':','
                 return typeof value === 'object' && value !== null }
             default: return true;
 }
@@ -844,7 +843,7 @@ class FactoryResetStrategy { constructor(recoveryManager) {
 
     async execute(options = { )) {
         try {'
-            const dataType = options.dataType || 'all',
+            const dataType = options.dataType || 'all';
 
             if(dataType === 'all' {'
                 // すべてのデータを初期化
@@ -859,10 +858,10 @@ class FactoryResetStrategy { constructor(recoveryManager) {
 
                 await this.recoveryManager.storage.remove(dataType); }
             }
-            ';
+            ';'
 
             return { success: true,''
-                message: 'Factory reset completed',' };
+                message: 'Factory reset completed',' };'
 
                 resetDataTypes: dataType === 'all' ? 'all' : [dataType] 
             } catch (error) {
@@ -872,7 +871,7 @@ class FactoryResetStrategy { constructor(recoveryManager) {
     async preview(dataType, options = {}) { return { ''
             strategy: 'factory',
             dataType,
-            warning: 'All data will be permanently lost',' };
+            warning: 'All data will be permanently lost',' };'
 
             riskLevel: 'HIGH' 
     }
@@ -886,17 +885,17 @@ class ManualRecoveryStrategy { constructor(recoveryManager) {
     
     async execute(options = { ) {
         try {
-            const dataType = options.dataType,
+            const dataType = options.dataType;
             const recoveryData = options.recoveryData,
 
-            if(!dataType || !recoveryData) { }'
+            if (!dataType || !recoveryData) { }'
 
                 return { success: false, error: 'Data type and recovery data required'
             }
-            ';
+            ';'
             // 手動で提供されたデータを保存
             await this.recoveryManager.storage.save(dataType, recoveryData);
-            ';
+            ';'
 
             return { success: true,''
                 message: 'Manual recovery completed'
@@ -909,7 +908,7 @@ class ManualRecoveryStrategy { constructor(recoveryManager) {
     async preview(dataType, options = {}) { return { ''
             strategy: 'manual',
             dataType,
-            requiresUserInput: true,' };
+            requiresUserInput: true,' };'
 
             riskLevel: 'VARIABLE' 
-    }'}
+    }'}'

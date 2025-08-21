@@ -8,47 +8,47 @@
 
 // Type definitions
 interface LocalModeManager { isInitialized: boolean,
-    config: LocalModeConfig,
-    executionContext?: ExecutionContext,
-    _initializationMetrics?: InitializationMetrics,
-    _resourcePreloadPromises?: Map<string, Promise<any>>,
-    _componentCache?: Map<string, any>,
-    initializationPromise?: Promise<any> }
+    config: LocalModeConfig;
+    executionContext?: ExecutionContext;
+    _initializationMetrics?: InitializationMetrics;
+    _resourcePreloadPromises?: Map<string, Promise<any>>;
+    _componentCache?: Map<string, any>;
+    initializationPromise?: Promise<any>;
 
 interface LocalModeConfig { debugMode?: boolean,
-    enableErrorHandling?: boolean,
-    enableMetaTagOptimization?: boolean,
-    enableFaviconGeneration?: boolean,
-    enableDeveloperGuidance?: boolean,
-    enablePerformanceOptimizations?: boolean,
-    maxConcurrentTasks?: number,
-    [key: string]: any }
+    enableErrorHandling?: boolean;
+    enableMetaTagOptimization?: boolean;
+    enableFaviconGeneration?: boolean;
+    enableDeveloperGuidance?: boolean;
+    enablePerformanceOptimizations?: boolean;
+    maxConcurrentTasks?: number;
+    [key: string]: any;
 
 interface ExecutionContext { isLocal: boolean,
-    protocol: string,
-    url: string,
-    domain: string,
-    path: string,
-    canUseCanvas?: boolean,
-    canUseLocalStorage?: boolean,
+    protocol: string;
+    url: string;
+    domain: string;
+    path: string;
+    canUseCanvas?: boolean;
+    canUseLocalStorage?: boolean;
     canUseModules?: boolean,  }
 
 interface InitializationMetrics { startTime: number | null,
-    endTime: number | null,
-    componentTimes: Record<string, number>,
-    totalExecutionTime: number,
-    optimizationsApplied: string[]  }
+    endTime: number | null;
+    componentTimes: Record<string, number>;
+    totalExecutionTime: number;
+    optimizationsApplied: string[];
 
 interface StatusInfo { isInitialized: boolean,
-    isLocalMode: boolean,
-    config: LocalModeConfig,
+    isLocalMode: boolean;
+    config: LocalModeConfig;
     executionContext: {
         protoco,l: string,
     isLocal: boolean,
-        canUseCanvas?: boolean,
-        canUseLocalStorage?: boolean,
-        canUseModules?: boolean } | null;
-    timestamp: string;
+        canUseCanvas?: boolean;
+        canUseLocalStorage?: boolean;
+        canUseModules?: boolean; | null;
+    timestamp: string,
 }
 
 interface HealthCheck { overall: 'healthy' | 'degraded' | 'unhealthy',
@@ -56,43 +56,43 @@ interface HealthCheck { overall: 'healthy' | 'degraded' | 'unhealthy',
     checks: Record<string, {''
         status: 'pass' | 'warning' | 'fail',
     message: string,
-        value?: any  }>;
-    warnings: string[];
+        value?: any;>;
+    warnings: string[],
     errors: string[],
-    score: number;
+    score: number,
 }
 
 interface ComponentDebugInfo { available: boolean,
-    error?: string,
-    context?: any,
-    stats?: any,
-    initialized?: boolean,
-    support?: any }
+    error?: string;
+    context?: any;
+    stats?: any;
+    initialized?: boolean;
+    support?: any;
 
 interface DebugInfo { status: StatusInfo,
-    components: Record<string, ComponentDebugInfo>,
+    components: Record<string, ComponentDebugInfo>;
     performance: {
         initializationMetric,s: InitializationMetrics | null,
     resourcePreloads: {
             coun,t: number,
-    promises: string[]  };
+    promises: string[],;
         componentCache: { size: number,
-    keys: string[] };
+    keys: string[],;
     cache: { componentCache?: {
             size: number,
     entries: [string, any][] };
         resourcePreloads?: { size: number,
-    keys: string[] };
+    keys: string[],;
         error?: string;
     };
-    errors: any;
+    errors: any,
     browser: any,
-    resources: any;
+    resources: any,
 }
 
 interface ConfigChange { key: string,
-    old: any,
-    new: any  }
+    old: any;
+    new: any;
 
 export default class LocalModeStatusManager { /**
      * 状態情報取得
@@ -109,7 +109,7 @@ export default class LocalModeStatusManager { /**
                 canUseCanvas: manager.executionContext.canUseCanvas,
                 canUseLocalStorage: manager.executionContext.canUseLocalStorage,
     canUseModules: manager.executionContext.canUseModules } : null;
-            timestamp: new Date().toISOString();
+            timestamp: new Date().toISOString(),
         }
     
     /**
@@ -134,9 +134,9 @@ export default class LocalModeStatusManager { /**
     static updateConfig(manager: LocalModeManager, newConfig: Partial<LocalModeConfig>): LocalModeConfig {
         const oldConfig = { ...manager.config,
         manager.config = { ...manager.config, ...newConfig,
-        ',
+        ','
         // 設定変更のログ
-        if(manager.config.debugMode) {
+        if (manager.config.debugMode) {
 
             console.log('LocalModeManager configuration updated:', {
                 old: oldConfig),
@@ -166,57 +166,57 @@ export default class LocalModeStatusManager { /**
             status: manager.isInitialized ? 'pass' : 'fail',
             message: manager.isInitialized ? 'Initialized successfully' : 'Not initialized'
             };
-        ';
+        ';'
         // 実行コンテキストチェック
-        if(manager.executionContext) {
+        if (manager.executionContext) {
             health.checks.executionContext = {''
                 status: manager.executionContext.isLocal ? 'pass' : 'warning' }
 
                 message: manager.executionContext.isLocal ? 'Local execution detected' : 'Not in local mode' 
             };
-            ';
+            ';'
             // ブラウザ機能チェック
-            const capabilities = ['canUseCanvas', 'canUseLocalStorage', 'canUseModules] as const;
+            const capabilities = ['canUseCanvas', 'canUseLocalStorage', 'canUseModules] as const;'
             capabilities.forEach(cap => {  const, supported = manager.executionContext![cap],
 
                 health.checks[cap] = { }''
-                    status: supported ? 'pass' : 'warning',') 
+                    status: supported ? 'pass' : 'warning',') '
                     message: `${cap}: ${supported ? 'supported' : 'not, supported'}`);
-                if(!supported) {
+                if (!supported) {
     
 }
                     health.warnings.push(`${cap} is, not supported`});
                 }
             });
         }
-        ';
+        ';'
         // パフォーマンスチェック
-        if(manager._initializationMetrics?.totalExecutionTime) {
+        if (manager._initializationMetrics?.totalExecutionTime) {
             const initTime = manager._initializationMetrics.totalExecutionTime,
 
             health.checks.performance = { : undefined'
         
                 status: initTime < 5000 ? 'pass' : 'warning', 
                 message: `Initialization, time: ${Math.round(initTime })ms`;
-                value: initTime';
+                value: initTime','
             };
-            if(initTime >= 5000) {', ' }
+            if (initTime >= 5000) {', ' }
 
                 health.warnings.push('Slow, initialization detected'; }'
 }
-        ';
+        ';'
         // スコア計算
         const checks = Object.values(health.checks);
-        const passCount = checks.filter(check => check.status === 'pass).length;
+        const passCount = checks.filter(check => check.status === 'pass).length;'
         const totalCount = checks.length;
         health.score = totalCount > 0 ? Math.round((passCount / totalCount) * 100) : 0;
-        ';
+        ';'
         // 全体状態判定
-        if(health.score >= 80) {', ' }
+        if (health.score >= 80) {', ' }
 
             health.overall = 'healthy'; }
 
-        } else if(health.score >= 60) { ''
+        } else if (health.score >= 60) { ''
             health.overall = 'degraded' }
 
         } else { }'
@@ -236,7 +236,7 @@ export default class LocalModeStatusManager { /**
         
         // LocalExecutionDetector
         try { const LocalExecutionDetector = ''
-                (typeof, require !== 'undefined' && require('../LocalExecutionDetector.js)' ||',
+                (typeof, require !== 'undefined' && require('../LocalExecutionDetector.js)' ||','
                 (typeof, window !== 'undefined' && (window, as any).LocalExecutionDetector),
                 
             components.localExecutionDetector = {
@@ -247,7 +247,7 @@ export default class LocalModeStatusManager { /**
         
         // FaviconGenerator
         try { const FaviconGenerator =''
-                (typeof, require !== 'undefined' && require('../FaviconGenerator.js)' ||',
+                (typeof, require !== 'undefined' && require('../FaviconGenerator.js)' ||','
                 (typeof, window !== 'undefined' && (window, as any).FaviconGenerator),
                 
             components.faviconGenerator = {
@@ -257,7 +257,7 @@ export default class LocalModeStatusManager { /**
         
         // DeveloperGuidanceSystem
         try { const DeveloperGuidanceSystem =''
-                (typeof, require !== 'undefined' && require('../DeveloperGuidanceSystem.js)' ||',
+                (typeof, require !== 'undefined' && require('../DeveloperGuidanceSystem.js)' ||','
                 (typeof, window !== 'undefined' && (window, as any).DeveloperGuidanceSystem),
                 
             components.developerGuidanceSystem = {
@@ -267,7 +267,7 @@ export default class LocalModeStatusManager { /**
         
         // LocalExecutionErrorHandler
         try { const LocalExecutionErrorHandler =''
-                (typeof, require !== 'undefined' && require('../LocalExecutionErrorHandler.js)' ||',
+                (typeof, require !== 'undefined' && require('../LocalExecutionErrorHandler.js)' ||','
                 (typeof, window !== 'undefined' && (window, as any).LocalExecutionErrorHandler),
                 
             components.localExecutionErrorHandler = {
@@ -278,7 +278,7 @@ export default class LocalModeStatusManager { /**
         
         // BrowserCompatibilityManager
         try { const BrowserCompatibilityManager =''
-                (typeof, require !== 'undefined' && require('../BrowserCompatibilityManager.js)' ||',
+                (typeof, require !== 'undefined' && require('../BrowserCompatibilityManager.js)' ||','
                 (typeof, window !== 'undefined' && (window, as any).BrowserCompatibilityManager),
                 
             components.browserCompatibilityManager = {
@@ -295,8 +295,8 @@ export default class LocalModeStatusManager { /**
      */
     private static _getPerformanceDebugInfo(manager: LocalModeManager) { return { initializationMetrics: manager._initializationMetrics || null,
             resourcePreloads: {
-                count: manager._resourcePreloadPromises?.size || 0, : undefined };
-                promises: Array.from(manager._resourcePreloadPromises?.keys() || []); 
+                count: manager._resourcePreloadPromises?.size || 0, : undefined;;
+                promises: Array.from(manager._resourcePreloadPromises?.keys() || []), 
     }, : undefined
             componentCache: { size: manager._componentCache?.size || 0, : undefined
                 keys: Array.from(manager._componentCache?.keys() || [] 
@@ -308,12 +308,12 @@ export default class LocalModeStatusManager { /**
      */ : undefined
     private static _getCacheDebugInfo(manager: LocalModeManager) { try {
             return { componentCache: {
-                    size: manager._componentCache?.size || 0, : undefined };
-                    entries: Array.from(manager._componentCache?.entries() || []); 
+                    size: manager._componentCache?.size || 0, : undefined;;
+                    entries: Array.from(manager._componentCache?.entries() || []), 
     }, : undefined
                 resourcePreloads: { size: manager._resourcePreloadPromises?.size || 0, : undefined
                     keys: Array.from(manager._resourcePreloadPromises?.keys() || [] 
-             } catch (error) { : undefined }
+             } catch (error) { : undefined;
             return { error: (error, as Error).message }
     }
     
@@ -321,11 +321,11 @@ export default class LocalModeStatusManager { /**
      * エラーデバッグ情報取得
      * @private'
      */''
-    private static _getErrorDebugInfo()';
-                (typeof, require !== 'undefined' && require('./LocalModeErrorHandler.js)' ||';
+    private static _getErrorDebugInfo()';'
+                (typeof, require !== 'undefined' && require('./LocalModeErrorHandler.js)' ||';'
                 (typeof, window !== 'undefined' && (window, as any).LocalModeErrorHandler);
                 
-            return LocalModeErrorHandler?.getErrorStats?.() || { available: false } catch (error) {
+            return LocalModeErrorHandler?.getErrorStats?.() || { available: false; catch (error) {
             return { available: false, error: (error, as Error).message  }
     }
     
@@ -333,7 +333,7 @@ export default class LocalModeStatusManager { /**
      * ブラウザデバッグ情報取得
      * @private'
      */''
-    private static _getBrowserDebugInfo()';
+    private static _getBrowserDebugInfo()';'
         if (typeof, window === 'undefined') { }
 
             return { environment: 'non-browser' }
@@ -343,7 +343,7 @@ export default class LocalModeStatusManager { /**
             href: window.location.href,
             localStorage: typeof localStorage !== 'undefined',
             sessionStorage: typeof sessionStorage !== 'undefined',
-            canvas: !!document.createElement('canvas').getContext,' };
+            canvas: !!document.createElement('canvas').getContext,' };'
 
             performance: typeof performance !== 'undefined' 
     }
@@ -365,7 +365,7 @@ export default class LocalModeStatusManager { /**
     private static _getChangedKeys(oldConfig: LocalModeConfig, newConfig: LocalModeConfig): ConfigChange[] { const changed: ConfigChange[] = [],
         
         Object.keys(newConfig).forEach(key => { ),
-            if(oldConfig[key] !== newConfig[key]) {
+            if (oldConfig[key] !== newConfig[key]) {
                 changed.push({)
                     key }
                     old: oldConfig[key]) }
@@ -376,4 +376,4 @@ export default class LocalModeStatusManager { /**
         
         return changed;
 
-    }'}
+    }'}'

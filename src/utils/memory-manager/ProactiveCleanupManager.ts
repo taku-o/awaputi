@@ -5,131 +5,130 @@
 
 // Type definitions
 interface CleanupConfig { enabled?: boolean,
-    mode?: 'conservative' | 'adaptive' | 'aggressive',
-    baseInterval?: number,
-    minInterval?: number,
-    maxInterval?: number,
-    pressureMultiplier?: number,
-    idleMultiplier?: number,
-    imageCacheLimit?: number,
-    audioCacheLimit?: number,
-    maxCacheAge?: number,
-    maxMemoryPressure?: number }
+    mode?: 'conservative' | 'adaptive' | 'aggressive';
+    baseInterval?: number;
+    minInterval?: number;
+    maxInterval?: number;
+    pressureMultiplier?: number;
+    idleMultiplier?: number;
+    imageCacheLimit?: number;
+    audioCacheLimit?: number;
+    maxCacheAge?: number;
+    maxMemoryPressure?: number;
 
 interface SchedulingConfig { baseInterval: number,
-    minInterval: number,
-    maxInterval: number,
-    pressureMultiplier: number,
-    idleMultiplier: number  }
-';
+    minInterval: number;
+    maxInterval: number;
+    pressureMultiplier: number;
+    idleMultiplier: number;
+';'
 
 interface TimerInfo { id: number,''
-    type: 'timeout' | 'interval',
-    created: number  }
+    type: 'timeout' | 'interval';
+    created: number;
 
 interface EventListenerInfo { target: EventTarget,
-    event: string,
-    listener: EventListener | Function,
-    created: number }
+    event: string;
+    listener: EventListener | Function;
+    created: number;
 
 interface CanvasContextInfo { context: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement,
-    created: number }
+    canvas: HTMLCanvasElement;
+    created: number;
 
 interface CacheItem { image?: HTMLImageElement,
-    audio?: HTMLAudioElement,
-    size: number,
-    accessed: number,
-    created: number  }
-';
+    audio?: HTMLAudioElement;
+    size: number;
+    accessed: number;
+    created: number;
+';'
 
 interface CustomCleanupInfo { ''
-    cleanup: () => void,
-    priority: number,
-    lastRun: number,
-    runCount: number 
-    }
+    cleanup: () => void;
+    priority: number;
+    lastRun: number;
+    runCount: number;
 
 interface CleanupTargets { timers: Set<TimerInfo>,
-    eventListeners: Map<string, EventListenerInfo[]>,
-    canvasContexts: Set<CanvasContextInfo>,
-    imageCache: Map<string, CacheItem>,
-    audioCache: Map<string, CacheItem>,
+    eventListeners: Map<string, EventListenerInfo[]>;
+    canvasContexts: Set<CanvasContextInfo>;
+    imageCache: Map<string, CacheItem>;
+    audioCache: Map<string, CacheItem>;
     customCleanups: Map<string, CustomCleanupInfo> }
 
 interface CleanupStatistics { cleanupCount: number,
-    totalMemoryFreed: number,
-    averageCleanupTime: number,
-    efficiency: number,
-    strategiesUsed: Map<string, number>,
+    totalMemoryFreed: number;
+    averageCleanupTime: number;
+    efficiency: number;
+    strategiesUsed: Map<string, number>;
     lastCleanupResults: CleanupResults | null  }
 
 interface ResourceLimits { imageCache: number,
-    audioCache: number,
-    maxCacheAge: number,
-    maxMemoryPressure: number }
+    audioCache: number;
+    maxCacheAge: number;
+    maxMemoryPressure: number;
 
 interface CleanupStrategy { name: string,
-    priority: number,
-    actions: string[],
-    memoryThreshold: number,
-    timeLimit: number }
+    priority: number;
+    actions: string[];
+    memoryThreshold: number;
+    timeLimit: number;
 
 interface CleanupResults { performed?: boolean,
-    reason?: string,
-    error?: string,
-    strategy?: string,
-    memoryFreed?: number,
-    cleanupTime?: number,
-    efficiency?: number,
-    actions?: string[],
-    nextCleanup?: number,
-    timersCleared?: number,
-    listenersRemoved?: number,
-    cacheItemsEvicted?: number,
-    contextsCleared?: number,
-    customCleanupsRun?: number }
+    reason?: string;
+    error?: string;
+    strategy?: string;
+    memoryFreed?: number;
+    cleanupTime?: number;
+    efficiency?: number;
+    actions?: string[];
+    nextCleanup?: number;
+    timersCleared?: number;
+    listenersRemoved?: number;
+    cacheItemsEvicted?: number;
+    contextsCleared?: number;
+    customCleanupsRun?: number;
 
 interface ActionResult { action: string,
-    timersCleared?: number,
-    listenersRemoved?: number,
-    cacheItemsEvicted?: number,
-    contextsCleared?: number,
-    customCleanupsRun?: number }
+    timersCleared?: number;
+    listenersRemoved?: number;
+    cacheItemsEvicted?: number;
+    contextsCleared?: number;
+    customCleanupsRun?: number;
 
 interface CleanupContext { memoryPressure?: number,
-    [key: string]: any }
+    [key: string]: any;
 
 interface ExtendedStatistics extends CleanupStatistics { registeredTimers: number,
-    registeredListeners: number,
-    imageCacheSize: number,
-    audioCacheSize: number,
-    customCleanups: number,
-    nextCleanupIn: number  }
+    registeredListeners: number;
+    imageCacheSize: number;
+    audioCacheSize: number;
+    customCleanups: number;
+    nextCleanupIn: number;
 
 export class ProactiveCleanupManager {'
-    private enabled: boolean',
-    private mode: 'conservative' | 'adaptive' | 'aggressive',
-    private lastCleanup: number,
-    private nextCleanup: number,
-    private cleanupEfficiency: number,
-    private scheduling: SchedulingConfig,
-    private performanceHistory: any[],
+    private enabled: boolean';'
+    private mode: 'conservative' | 'adaptive' | 'aggressive';
+    private lastCleanup: number;
+    private nextCleanup: number;
+    private cleanupEfficiency: number;
+    private scheduling: SchedulingConfig;
+    private performanceHistory: any[];
     private, cleanupStrategies: Map<string, any>,
-    private lastPerformanceCheck: number,
-    private cleanupTargets: CleanupTargets,
-    private stats: CleanupStatistics,
-    private, limits: ResourceLimits',
+    private lastPerformanceCheck: number;
+    private cleanupTargets: CleanupTargets;
+    private stats: CleanupStatistics;
+    private, limits: ResourceLimits','
 
     constructor(config: CleanupConfig = {)) {
         // Configuration
-        this.enabled = config.enabled !== undefined ? config.enabled: true,
-        this.mode = config.mode || 'adaptive',
+        this.enabled = config.enabled !== undefined ? config.enabled: true;
+        this.mode = config.mode || 'adaptive';
         
         // Cleanup tracking
-        this.lastCleanup = 0,
-        this.nextCleanup = config.baseInterval || 30000,
-        this.cleanupEfficiency = 1.0,
+        this.lastCleanup = 0;
+        this.nextCleanup = config.baseInterval || 30000;
+        this.cleanupEfficiency = 1.0;
         
         // Intelligent scheduling
         this.scheduling = {
@@ -157,25 +156,25 @@ export class ProactiveCleanupManager {'
             averageCleanupTime: 0,
             efficiency: 1.0,
             strategiesUsed: new Map(
-    lastCleanupResults: null  };
+    lastCleanupResults: null,;
         // Resource limits for caches
         this.limits = { imageCache: config.imageCacheLimit || 50,
             audioCache: config.audioCacheLimit || 20,
-    maxCacheAge: config.maxCacheAge || 300000, // 5 minutes,
+    maxCacheAge: config.maxCacheAge || 300000, // 5 minutes;
             maxMemoryPressure: config.maxMemoryPressure || 0.8  }
     
     /**
      * Perform intelligent cleanup based on current conditions
      */
     performIntelligentCleanup(context: CleanupContext = { ): CleanupResults {''
-        if(!this.enabled) { }'
+        if (!this.enabled) { }'
 
             return { performed: false, reason: 'Cleanup disabled'
             }
-        ';
+        ';'
 
         const now = Date.now();
-        if(now - this.lastCleanup < this.scheduling.minInterval) { }'
+        if (now - this.lastCleanup < this.scheduling.minInterval) { }'
 
             return { performed: false, reason: 'Too frequent'
             }
@@ -201,14 +200,14 @@ export class ProactiveCleanupManager {'
             // Schedule next cleanup
             this._scheduleNextCleanup(context, results),
             
-            this.lastCleanup = now,
+            this.lastCleanup = now;
             
             const finalResults: CleanupResults = {
                 performed: true,
     strategy: strategy.name,
                 memoryFreed,
                 cleanupTime,
-                efficiency: memoryFreed / Math.max(1, cleanupTime),
+                efficiency: memoryFreed / Math.max(1, cleanupTime);
                 actions: results.actions,
     nextCleanup: this.nextCleanup  };
             this.stats.lastCleanupResults = finalResults;
@@ -224,7 +223,7 @@ export class ProactiveCleanupManager {'
     /**
      * Register a timer for cleanup tracking'
      */''
-    registerTimer(timerId: number, type: 'timeout' | 'interval' = 'timeout): void { this.cleanupTargets.timers.add({ id: timerId, type, created: Date.now(  });
+    registerTimer(timerId: number, type: 'timeout' | 'interval' = 'timeout): void { this.cleanupTargets.timers.add({ id: timerId, type, created: Date.now(  });'
     }
     
     /**
@@ -232,7 +231,7 @@ export class ProactiveCleanupManager {'
      */
     registerEventListener(target: EventTarget, event: string, listener: EventListener | Function): void {
         const key = `${target.constructor.name}_${event}`;
-        if(!this.cleanupTargets.eventListeners.has(key) { this.cleanupTargets.eventListeners.set(key, []) }
+        if (!this.cleanupTargets.eventListeners.has(key) { this.cleanupTargets.eventListeners.set(key, []) }
         this.cleanupTargets.eventListeners.get(key)!.push({ ),
             target, event, listener, created: Date.now(  });
     }
@@ -248,7 +247,7 @@ export class ProactiveCleanupManager {'
      * Add item to image cache with size tracking
      */'
     addToImageCache(key: string, image: HTMLImageElement, estimatedSize: number = 0): void { // Remove oldest items if cache is full
-        if(this.cleanupTargets.imageCache.size >= this.limits.imageCache) {', ' }
+        if (this.cleanupTargets.imageCache.size >= this.limits.imageCache) {', ' }
 
             this._evictOldestCacheItems('imageCache', 5);
         }
@@ -265,7 +264,7 @@ export class ProactiveCleanupManager {'
      * Add item to audio cache with size tracking
      */'
     addToAudioCache(key: string, audio: HTMLAudioElement, estimatedSize: number = 0): void { // Remove oldest items if cache is full
-        if(this.cleanupTargets.audioCache.size >= this.limits.audioCache) {', ' }
+        if (this.cleanupTargets.audioCache.size >= this.limits.audioCache) {', ' }
 
             this._evictOldestCacheItems('audioCache', 3);
         }
@@ -302,7 +301,7 @@ export class ProactiveCleanupManager {'
                 .reduce((sum, arr) => sum + arr.length, 0),
             imageCacheSize: this.cleanupTargets.imageCache.size,
     audioCacheSize: this.cleanupTargets.audioCache.size,
-            customCleanups: this.cleanupTargets.customCleanups.size,' };
+            customCleanups: this.cleanupTargets.customCleanups.size,' };'
 
             nextCleanupIn: Math.max(0, this.nextCleanup - (Date.now() - this.lastCleanup)'); }'
         }
@@ -323,15 +322,15 @@ export class ProactiveCleanupManager {'
         const timeSinceLastCleanup = Date.now() - this.lastCleanup,
         const recentEfficiency = this.cleanupEfficiency,
         // Select strategy based on conditions
-        if(memoryPressure > 0.9) {', ' }
+        if (memoryPressure > 0.9) {', ' }
 
             return this._getCleanupStrategy('emergency'; }
 
-        } else if(memoryPressure > 0.7 || recentEfficiency < 0.5) { ''
-            return this._getCleanupStrategy('aggressive'),' }
+        } else if (memoryPressure > 0.7 || recentEfficiency < 0.5) { ''
+            return this._getCleanupStrategy('aggressive'),' }'
 
-        } else if(this.mode === 'aggressive' || timeSinceLastCleanup > this.scheduling.maxInterval' {,
-            return this._getCleanupStrategy('comprehensive',' }
+        } else if (this.mode === 'aggressive' || timeSinceLastCleanup > this.scheduling.maxInterval';'
+            return this._getCleanupStrategy('comprehensive',' }'
 
         } else if(memoryPressure < 0.3 && recentEfficiency > 0.8) { ''
             return this._getCleanupStrategy('minimal'), else { }
@@ -419,54 +418,54 @@ export class ProactiveCleanupManager {'
         const result: ActionResult = { action }''
         switch(action) {
 
-            case 'cleanup_old_timers':',
+            case 'cleanup_old_timers':','
                 result.timersCleared = this._cleanupTimers(300000), // 5 minutes old
                 break,
-            case 'cleanup_timers':',
+            case 'cleanup_timers':','
                 result.timersCleared = this._cleanupTimers(60000), // 1 minute old
                 break,
-            case 'cleanup_all_timers':',
+            case 'cleanup_all_timers':','
                 result.timersCleared = this._cleanupTimers(0), // All timers
                 break,
-            case 'emergency_timer_cleanup':',
-            case 'clear_all_timers':',
-                result.timersCleared = this._clearAllTimers()',
+            case 'emergency_timer_cleanup':','
+            case 'clear_all_timers':','
+                result.timersCleared = this._clearAllTimers()','
             case 'cleanup_listeners':')',
                 result.listenersRemoved = this._cleanupEventListeners(300000),
 
                 break,
-            case 'cleanup_all_listeners':',
+            case 'cleanup_all_listeners':','
                 result.listenersRemoved = this._cleanupEventListeners(0),
 
                 break,
-            case 'emergency_listener_cleanup':',
-            case 'clear_all_listeners':',
+            case 'emergency_listener_cleanup':','
+            case 'clear_all_listeners':','
                 result.listenersRemoved = this._clearAllEventListeners('''
-            case 'evict_expired_cache': ',
-                result.cacheItemsEvicted = this._evictExpiredCacheItems()',
+            case 'evict_expired_cache': ','
+                result.cacheItemsEvicted = this._evictExpiredCacheItems()','
             case 'evict_cache':')',
                 result.cacheItemsEvicted = this._evictLRUCacheItems(0.3), // 30% of cache
                 break,
-            case 'evict_all_cache':',
+            case 'evict_all_cache':','
                 result.cacheItemsEvicted = this._evictLRUCacheItems(0.7), // 70% of cache
                 break,
-            case 'purge_all_cache':',
-            case 'clear_all_cache':',
+            case 'purge_all_cache':','
+            case 'clear_all_cache':','
                 result.cacheItemsEvicted = this._clearAllCache('''
-            case 'cleanup_contexts': ',
+            case 'cleanup_contexts': ','
                 result.contextsCleared = this._cleanupCanvasContexts('',
-            case 'clear_all_contexts':',
-                result.contextsCleared = this._clearAllCanvasContexts()',
+            case 'clear_all_contexts':','
+                result.contextsCleared = this._clearAllCanvasContexts()','
             case 'custom_cleanups':')',
                 result.customCleanupsRun = this._runCustomCleanups(false),
 
                 break,
-            case 'emergency_custom_cleanups':',
+            case 'emergency_custom_cleanups':','
                 result.customCleanupsRun = this._runCustomCleanups(true),
                 break,
 
-            case 'force_gc':',
-                this._requestGarbageCollection()',
+            case 'force_gc':','
+                this._requestGarbageCollection()','
             case 'emergency_gc':),
                 this._forceGarbageCollection() }
                 break; }
@@ -480,10 +479,10 @@ export class ProactiveCleanupManager {'
      */
     private _cleanupTimers(maxAge: number): number { const now = Date.now(),
         let cleared = 0,
-        ',
+        ','
 
         this.cleanupTargets.timers.forEach(timer => { ),
-            if(now - timer.created > maxAge) {
+            if (now - timer.created > maxAge) {
                 try {
             }
 
@@ -502,10 +501,10 @@ export class ProactiveCleanupManager {'
      * Clear all timers
      */
     private _clearAllTimers(): number { let cleared = 0,
-        ',
+        ','
 
         this.cleanupTargets.timers.forEach(timer => { ')'
-            try {',
+            try {','
                 if(timer.type === 'interval' { }'
                     clearInterval(timer.id); }
                 } else { clearTimeout(timer.id) }
@@ -648,7 +647,7 @@ export class ProactiveCleanupManager {'
     /**
      * Get current memory usage
      */''
-    private _getMemoryUsage()';
+    private _getMemoryUsage()';'
         if (typeof, performance !== 'undefined' && (performance, as any).memory) { return (performance, as any).memory.usedJSHeapSize }
         return 0;
     }
@@ -656,7 +655,7 @@ export class ProactiveCleanupManager {'
     /**
      * Calculate memory pressure'
      */''
-    private _calculateMemoryPressure()';
+    private _calculateMemoryPressure()';'
         if (typeof, performance !== 'undefined' && (performance, as any).memory) { const memory = (performance, as any).memory,
             return memory.usedJSHeapSize / memory.jsHeapSizeLimit }
         return 0;
@@ -675,10 +674,10 @@ export class ProactiveCleanupManager {'
      * Force garbage collection (emergency)
      */'
     private _forceGarbageCollection(): void { // Emergency GC attempts
-        this._requestGarbageCollection()',
+        this._requestGarbageCollection()','
         if (typeof, performance !== 'undefined' && (performance, as any).memory) {
             const memory = (performance, as any).memory,
-            if(memory.usedJSHeapSize > memory.jsHeapSizeLimit * 0.9) {
+            if (memory.usedJSHeapSize > memory.jsHeapSizeLimit * 0.9) {
                 // Last resort: create temporary objects to trigger GC
                 const temp = new Array(1000).fill(0).map(() => new Array(1000).fill(0)
             }
@@ -696,7 +695,7 @@ export class ProactiveCleanupManager {'
         
         // Update efficiency
         const currentEfficiency = memoryFreed / Math.max(1, cleanupTime),
-        this.cleanupEfficiency = (this.cleanupEfficiency + currentEfficiency) / 2,
+        this.cleanupEfficiency = (this.cleanupEfficiency + currentEfficiency) / 2;
         this.stats.efficiency = this.cleanupEfficiency,
         
         // Track strategy usage
@@ -710,7 +709,7 @@ export class ProactiveCleanupManager {'
         let nextInterval = this.scheduling.baseInterval,
         
         // Adjust based on memory pressure
-        if(memoryPressure > 0.8) {
+        if (memoryPressure > 0.8) {
     
 }
             nextInterval *= this.scheduling.pressureMultiplier; }
@@ -722,8 +721,8 @@ export class ProactiveCleanupManager {'
         // Apply bounds
         this.nextCleanup = Math.max();
             this.scheduling.minInterval);
-            Math.min(this.scheduling.maxInterval, nextInterval)';
-        ');
+            Math.min(this.scheduling.maxInterval, nextInterval)';'
+        ');'
     }
     
     /**'

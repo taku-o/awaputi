@@ -2,45 +2,45 @@ import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface Suggestion { action: string,
-    code?: string,
-    description: string,
-    priority: 'low' | 'medium' | 'high',
-    category: string,
-    score?: number  }
+    code?: string;
+    description: string;
+    priority: 'low' | 'medium' | 'high';
+    category: string;
+    score?: number;
 
 interface Pattern { id: string,
-    name: string,
-    category: string,
+    name: string;
+    category: string;
     severity: 'low' | 'medium' | 'high' | 'critical'
             }
 
 interface Test { name: string,
-    error?: string,
-    [key: string]: any }
+    error?: string;
+    [key: string]: any;
 
 interface ContextualSuggestion { action: string,
-    code: string,
-    description: string  }
+    code: string;
+    description: string;
 
 interface ComponentPattern { pattern: RegExp,
-    name: string }
+    name: string;
 
 interface SuggestionStatistics { totalPatterns: number,
-    totalSuggestions: number,
-    suggestionsByCategory: Record<string, number>,
+    totalSuggestions: number;
+    suggestionsByCategory: Record<string, number>;
     suggestionsByPriority: Record<string, number> }
 
-interface MainController { [key: string]: any }
+interface MainController { [key: string]: any;
 
 /**
  * DebugSuggestionEngine - デバッグ提案生成・テンプレート処理コンポーネント
  */
 export class DebugSuggestionEngine extends BaseComponent { private debugSuggestions: Map<string, Suggestion[]>,
-    private contextualSuggestions: Map<string, Record<string, ContextualSuggestion[]>>,
+    private contextualSuggestions: Map<string, Record<string, ContextualSuggestion[]>>;
 
     constructor(mainController: MainController) {
 
-        super(mainController, 'DebugSuggestionEngine),
+        super(mainController, 'DebugSuggestionEngine),'
         this.debugSuggestions = new Map<string, Suggestion[]>() }
         this.contextualSuggestions = new Map<string, Record<string, ContextualSuggestion[]>>(); }
     }
@@ -51,11 +51,11 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
     /**
      * デバッグ提案システムを設定'
      */''
-    setupDebugSuggestions()';
+    setupDebugSuggestions()';'
         this.debugSuggestions.set('null_reference', [{ ')'
-                action: 'Add null checks'),' }
+                action: 'Add null checks'),' }'
 
-                code: 'if(object && object.property) { /* use object.property */ }',''
+                code: 'if (object && object.property) { /* use object.property */ }',''
                 description: 'オブジェクトとプロパティの存在確認を追加',
                 priority: 'high',
                 category: 'safety';
@@ -63,7 +63,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
 
             { ''
                 action: 'Use optional chaining',
-                code: 'object?.property?.method?.()', : undefined',
+                code: 'object?.property?.method?.()', : undefined','
                 description: 'オプショナルチェーニングで安全にアクセス',
                 priority: 'high',
                 category: 'modern'
@@ -77,17 +77,17 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             };
             { ''
                 action: 'Use nullish coalescing',
-                code: 'const value = object.property ? ? defaultValue', : undefined',
+                code: 'const value = object.property ? ? defaultValue', : undefined','
                 description: 'null/undefinedの場合のみデフォルト値を使用',
                 priority: 'medium',
                 category: 'modern'
             }]'
             }']'
-        ]'),
+        ]'),'
 
         this.debugSuggestions.set('assertion_failure', [{ ')'
                 action: 'Add debug logging',
-                code: 'console.log("Expected:", expected, "Actual:", actual",
+                code: 'console.log("Expected:", expected, "Actual:", actual",'
                 description: '期待値と実際の値をログ出力して比較',
                 priority: 'high',
                 category: 'debugging'
@@ -114,7 +114,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 category: 'debugging'
             }]'
             }']'
-        ]'),
+        ]'),'
 
         this.debugSuggestions.set('async_error', [{ ')'
                 action: 'Add await',
@@ -124,7 +124,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 category: 'async'
             };
             { ''
-                action: 'Handle promise rejection',' }
+                action: 'Handle promise rejection',' }'
 
                 code: 'try { await asyncFunc( } catch (error) { /* handle */ }',''
                 description: 'Promise拒否のエラーハンドリングを追加',
@@ -141,7 +141,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             };
             { ]'
                 action: 'Add timeout handling',']',
-                code: 'await Promise.race([asyncFunc(), timeout(5000)]')',
+                code: 'await Promise.race([asyncFunc(), timeout(5000)]')','
                 description: 'タイムアウト処理を追加',
                 priority: 'medium',
                 category: 'reliability'
@@ -149,20 +149,20 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
 
             }']'),
 
-        this.debugSuggestions.set('type_error', [{ '),
+        this.debugSuggestions.set('type_error', [{ '),'
 
-                action: 'Check function existence'),' }
+                action: 'Check function existence'),' }'
 
-                code: 'if (typeof, obj.method === "function") { obj.method(" }',''
+                code: 'if (typeof, obj.method === "function") { obj.method(" }',''"
                 description: '関数の存在確認を追加',
                 priority: 'high',
                 category: 'safety';
             },
 
             { ''
-                action: 'Validate object structure',' }
+                action: 'Validate object structure',' }'
 
-                code: 'if(obj && obj.constructor === ExpectedClass) { /* use obj */ }',''
+                code: 'if (obj && obj.constructor === ExpectedClass) { /* use obj */ }',''
                 description: 'オブジェクトの型を確認',
                 priority: 'high',
                 category: 'validation';
@@ -176,7 +176,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 category: 'validation'
             }]'
             }']'
-        ]'),
+        ]'),'
 
         this.debugSuggestions.set('timeout_error', [{ ')'
                 action: 'Increase timeout',
@@ -193,14 +193,14 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 category: 'performance'
             };
             { ''
-                action: 'Mock heavy operations',' }
+                action: 'Mock heavy operations',' }'
 
-                code: 'jest.mock("./heavyModule", () => ({ /* mock */ }")',''
+                code: 'jest.mock("./heavyModule", () => ({ /* mock */ }")',''"
                 description: '重い処理をモック化',
                 priority: 'medium',
                 category: 'testing]';
             }']'
-        ]'),
+        ]'),'
 
         this.debugSuggestions.set('memory_error', [{ ')'
                 action: 'Use object pools',
@@ -211,7 +211,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             };
             { ''
                 action: 'Clean up resources',
-                code: 'window.addEventListener("beforeunload", cleanup",
+                code: 'window.addEventListener("beforeunload", cleanup",'
                 description: 'リソースのクリーンアップ処理を追加',
                 priority: 'high',
                 category: 'memory'
@@ -224,7 +224,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 category: 'monitoring'
             }]'
             }']'
-        ]'),
+        ]'),'
 
         this.debugSuggestions.set('configuration_error', [{ ')'
                 action: 'Validate configuration',
@@ -235,7 +235,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             };
             { ''
                 action: 'Use default fallbacks',
-                code: 'const value = config.value ? ? DEFAULT_VALUE', : undefined',
+                code: 'const value = config.value ? ? DEFAULT_VALUE', : undefined','
                 description: 'デフォルト設定のフォールバックを追加',
                 priority: 'medium',
                 category: 'safety'
@@ -248,13 +248,13 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 category: 'debugging'
             }]
             }]
-        ]';
+        ]';'
     }
 
     /**
      * コンテキスト特化の提案を設定'
      */''
-    setupContextualSuggestions()';
+    setupContextualSuggestions()';'
         this.contextualSuggestions.set('BubbleManager', { null_reference: [{''
                     action: 'Check GameEngine initialization',
                     code: 'await gameEngine.initialize(), console.log(gameEngine.bubbleManager)',''
@@ -264,24 +264,24 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             ],
             assertion_failure: [{ ''
                     action: 'Verify bubble properties',
-                    code: 'console.log("Bubble:", bubble.type, bubble.x, bubble.y",
+                    code: 'console.log("Bubble:", bubble.type, bubble.x, bubble.y",'
                     description: 'バブルのプロパティを確認'
             }]
                 }]'
-            ]';
-        }'),
+            ]';'
+        }'),'
 
         this.contextualSuggestions.set('ScoreManager', { assertion_failure: [{''
-                    action: 'Check GameBalance values',' }
+                    action: 'Check GameBalance values',' }'
 
                     code: 'import { BUBBLE_CONFIGS  } from "./config/GameBalance.js",''
-                    description: 'GameBalance.jsの設定値を確認]';
+                    description: 'GameBalance.jsの設定値を確認]',
                 }')]'
-            ]'),
+            ]'),'
 
         this.contextualSuggestions.set('Canvas', { null_reference: [{''
                     action: 'Mock Canvas for tests',
-                    code: 'import "jest-canvas-mock",
+                    code: 'import "jest-canvas-mock",'
                     description: 'テスト環境でCanvas APIをモック化'
             }])
                 })]
@@ -327,14 +327,14 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
         const suggestions: Suggestion[] = [],
         const componentName = this.extractComponentName(test.name);
         
-        if(componentName && this.contextualSuggestions.has(componentName) {
-        ',
+        if (componentName && this.contextualSuggestions.has(componentName) {
+        ','
 
             const contextSuggestions = this.contextualSuggestions.get(componentName)!,
-            if(contextSuggestions[pattern.id]) {
+            if (contextSuggestions[pattern.id]) {
                 suggestions.push(...contextSuggestions[pattern.id].map(s => ({'
-                    ...s,',
-                    category: 'contextual',')
+                    ...s,','
+                    category: 'contextual',')'
         }
 
                     priority: 'high' as const)); 
@@ -350,35 +350,35 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
      */
     generateTestSpecificSuggestions(test: Test): Suggestion[] { if (!test || !test.name) {
             return [] }
-';
+';'
 
         const suggestions: Suggestion[] = [],
-        const testName = test.name.toLowerCase()';
+        const testName = test.name.toLowerCase()';'
         if (testName.includes('async') || testName.includes('promise)) { suggestions.push({)'
-                action: 'Add async/await to test'),' }
+                action: 'Add async/await to test'),' }'
 
                 code: 'test("async test", async () => { await asyncOperation( })',''
                 description: 'テスト関数をasyncにして非同期処理を適切に処理',
                 priority: 'high',
-                category: 'test_structure'';
-            }') }
+                category: 'test_structure'';'
+            }') }'
 
         if (testName.includes('mock') || testName.includes('spy)) { suggestions.push({)'
-                action: 'Reset mocks between tests'),' }
+                action: 'Reset mocks between tests'),' }'
 
                 code: 'beforeEach(() => { jest.clearAllMocks( })',''
                 description: 'テスト間でモックをリセット',
                 priority: 'medium',
-                category: 'test_hygiene'';
-            }') }
+                category: 'test_hygiene'';'
+            }') }'
 
         if (testName.includes('render') || testName.includes('canvas)) { suggestions.push({)'
                 action: 'Setup Canvas mock',
-                code: 'Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {...)",''
+                code: 'Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {...)",''"
                 description: 'Canvas関連テストにモックを設定',
                 priority: 'high',
                 category: 'test_setup'
-            }';
+            }';'
         }
 ;
         return suggestions;
@@ -417,18 +417,18 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
      * @returns スコア
      */''
     calculateSuggestionScore(suggestion: Suggestion, pattern: Pattern, test: Test): number { let score = 0,
-',
+','
 
         // 基本スコア' }'
 
         const priorityScore = { 'high': 10, 'medium': 5, 'low': 2 };
         score += priorityScore[suggestion.priority] || 2;
-';
+';'
         // カテゴリボーナス
         if (suggestion.category === 'contextual') score += 5;
         if (suggestion.category === 'safety') score += 3;
         if (suggestion.category === 'debugging') score += 2;
-';
+';'
         // パターン適合度
         if(pattern && pattern.severity === 'high' score += 3;
 
@@ -442,7 +442,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
      */'
     extractComponentName(testName: string): string | null { ''
         if(!testName) return null,
-',
+','
 
         const componentPatterns: ComponentPattern[] = [' }'
 
@@ -465,7 +465,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
         ];
 
         for (const { pattern, name ) of componentPatterns) {
-            if(pattern.test(testName) {
+            if (pattern.test(testName) {
     
 }
                 return name;
@@ -496,8 +496,8 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             for (const suggestion of suggestions) {
                 // カテゴリ別統計
                 const category = suggestion.category || 'general',
-                stats.suggestionsByCategory[category] = (stats.suggestionsByCategory[category] || 0') + 1,
-',
+                stats.suggestionsByCategory[category] = (stats.suggestionsByCategory[category] || 0') + 1,'
+','
                 // 優先度別統計
                 const priority = suggestion.priority || 'medium' }
                 stats.suggestionsByPriority[priority] = (stats.suggestionsByPriority[priority] || 0) + 1; }

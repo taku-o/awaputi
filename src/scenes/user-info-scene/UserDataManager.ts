@@ -9,95 +9,93 @@ import type { EventBus } from '../../core/EventBus';
 
 // User profile interface
 interface UserProfile { username: string,
-    level: number,
-    experience: number,
-    joinDate: Date,
-    totalPlaytime: number,
-    gamesPlayed: number,
-    lastActive: Date
-     }
+    level: number;
+    experience: number;
+    joinDate: Date;
+    totalPlaytime: number;
+    gamesPlayed: number;
+    lastActive: Date;
 
 // Basic statistics interface
 interface BasicStatistics { totalScore: number,
-    averageScore: number,
-    bestScore: number,
-    totalPlaytime: number,
-    gamesPlayed: number }
+    averageScore: number;
+    bestScore: number;
+    totalPlaytime: number;
+    gamesPlayed: number;
 
 // Bubble statistics interface
 interface BubbleStatistics { totalPopped: number,
-    normalPopped: number,
-    specialPopped: number,
-    bossDefeated: number,
-    electricActivated: number,
-    favoriteType: string }
+    normalPopped: number;
+    specialPopped: number;
+    bossDefeated: number;
+    electricActivated: number;
+    favoriteType: string;
 
 // Combo statistics interface
 interface ComboStatistics { maxCombo: number,
-    averageCombo: number,
-    totalCombos: number,
-    perfectCombos: number }
+    averageCombo: number;
+    totalCombos: number;
+    perfectCombos: number;
 
 // Stage statistics interface
 interface StageStatistics { stagesCleared: number,
-    currentStage: number,
-    bestStageScore: Record<string, number>,
+    currentStage: number;
+    bestStageScore: Record<string, number>;
     stageCompletionTimes: Record<string, number> }
 
 // Performance statistics interface
 interface PerformanceStatistics { averageFPS: number,
-    averageResponseTime: number,
-    optimalSettings: string,
-    recommendedQuality: string  }
+    averageResponseTime: number;
+    optimalSettings: string;
+    recommendedQuality: string;
 
 // Complete user statistics interface
 interface UserStatistics { basic: BasicStatistics,
-    bubble: BubbleStatistics,
-    combo: ComboStatistics,
-    stage: StageStatistics,
-    performance: PerformanceStatistics
-    }
+    bubble: BubbleStatistics;
+    combo: ComboStatistics;
+    stage: StageStatistics;
+    performance: PerformanceStatistics;
 
 // Achievement interfaces
 interface Achievement { id: string,
-    name: string,
-    description: string,
-    icon: string,
-    unlocked: boolean,
-    unlockedAt?: Date,
-    progress?: number,
-    maxProgress?: number,
-    category?: string }
+    name: string;
+    description: string;
+    icon: string;
+    unlocked: boolean;
+    unlockedAt?: Date;
+    progress?: number;
+    maxProgress?: number;
+    category?: string;
 
 interface AchievementProgress { id: string,
-    name: string,
-    progress: number,
-    maxProgress: number,
-    percentage: number  }
+    name: string;
+    progress: number;
+    maxProgress: number;
+    percentage: number;
 
 interface UserAchievements { unlocked: Achievement[],
-    total: number,
-    progress: AchievementProgress[],
-    recent: Achievement[],
+    total: number;
+    progress: AchievementProgress[];
+    recent: Achievement[];
     categories: Record<string, Achievement[]> }
 
 // Data cache interface
 interface DataCache { statistics: UserStatistics | null,
-    achievements: UserAchievements | null,
-    profile: UserProfile | null,
-    lastUpdate: number  }
+    achievements: UserAchievements | null;
+    profile: UserProfile | null;
+    lastUpdate: number;
 
 // Export data interface
 interface ExportData { version: string,
-    exportedAt: string,
-    profile: UserProfile,
-    statistics: UserStatistics,
-    achievements: Achievement[],
+    exportedAt: string;
+    profile: UserProfile;
+    statistics: UserStatistics;
+    achievements: Achievement[];
     settings: Record<string, any> }
 
 // Import data interface
-interface ImportData { version: string }
-    profile?: { username?: string };
+interface ImportData { version: string;
+    profile?: { username?: string;;
     statistics?: Partial<UserStatistics>;
     achievements?: Achievement[];
     settings?: Record<string, any>;
@@ -106,50 +104,50 @@ interface ImportData { version: string }
 // Statistics manager interface (minimal, definition for, type safety);
 interface StatisticsManager { getStatistics(): Partial<{
         totalScore: number,
-        averageScore: number,
-        bestScore: number,
-        totalPlaytime: number,
-    gamesPlayed: number  }>;
+        averageScore: number;
+        bestScore: number;
+        totalPlaytime: number;
+    gamesPlayed: number;>;
     getBubbleStatistics(): Partial<BubbleStatistics>;
     getComboStatistics(): Partial<ComboStatistics>;
     getStageStatistics(): Partial<StageStatistics>;
-    importStatistics?(statistics: Partial<UserStatistics>): void,
+    importStatistics?(statistics: Partial<UserStatistics>): void;
 
 // Achievement manager interface (minimal, definition for, type safety);
-interface AchievementManager { getAchievements(): Achievement[] }
+interface AchievementManager { getAchievements(): Achievement[];
 
 // Player data interface (minimal, definition for, type safety);
 interface PlayerData { username?: string,
-    joinDate?: Date,
-    setUsername?(username: string): void, 
+    joinDate?: Date;
+    setUsername?(username: string): void;
 // Scene state interface
 interface SceneState { // Add scene state properties as needed
-    [key: string]: any }
+    [key: string]: any;
 
 export class UserDataManager {
-    private gameEngine: GameEngine,
-    private eventBus: EventBus,
-    private sceneState: SceneState,
+    private gameEngine: GameEngine;
+    private eventBus: EventBus;
+    private sceneState: SceneState;
     // データキャッシュ
-    private dataCache: DataCache,
+    private dataCache: DataCache;
     // 更新間隔（5秒）
     private readonly, CACHE_INTERVAL: number = 5000,
     
     // データアクセス用のマネージャー
-    private statisticsManager: StatisticsManager | null,
-    private achievementManager: AchievementManager | null,
+    private statisticsManager: StatisticsManager | null;
+    private achievementManager: AchievementManager | null;
     private, playerData: PlayerData | null,
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
     
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.sceneState = sceneState,
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.sceneState = sceneState;
         
         // データキャッシュ
         this.dataCache = {
             statistics: null,
             achievements: null,
-    profile: null }
+    profile: null,
             lastUpdate: 0 
     };
         // データアクセス用のマネージャー
@@ -157,28 +155,28 @@ export class UserDataManager {
         this.achievementManager = gameEngine.achievementManager || null;
         this.playerData = gameEngine.playerData || null;
         // イベントリスナーの設定
-        this.setupEventListeners()';
+        this.setupEventListeners()';'
         console.log('[UserDataManager] ユーザーデータ管理システムを初期化しました');
     }
     
     /**
      * イベントリスナーの設定'
      */''
-    private setupEventListeners()';
-        this.eventBus.on('dataUpdateRequired', () => { this.invalidateCache(),' }
+    private setupEventListeners()';'
+        this.eventBus.on('dataUpdateRequired', () => { this.invalidateCache(),' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // プロフィール更新イベント
-        this.eventBus.on('profileUpdated', () => { this.invalidateProfileCache(),' }
+        this.eventBus.on('profileUpdated', () => { this.invalidateProfileCache(),' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 統計更新イベント
-        this.eventBus.on('statisticsUpdated', () => { this.invalidateStatisticsCache(),' }
+        this.eventBus.on('statisticsUpdated', () => { this.invalidateStatisticsCache(),' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 実績更新イベント
         this.eventBus.on('achievementsUpdated', () => { this.invalidateAchievementsCache() });
     }
@@ -186,7 +184,7 @@ export class UserDataManager {
     /**
      * ユーザープロフィール情報を取得'
      */''
-    public async getUserProfile()';
+    public async getUserProfile()';'
         if(this.isCacheValid('profile)' { return this.dataCache.profile! }', ';
 
         try { const profile: UserProfile = {''
@@ -196,7 +194,7 @@ export class UserDataManager {
     joinDate: this.playerData?.joinDate || new Date(), : undefined
                 totalPlaytime: this.getTotalPlaytime(
                 gamesPlayed: this.getTotalGamesPlayed(
-                lastActive: new Date()',
+                lastActive: new Date()','
             this.updateCacheTime('profile',
             
             return profile,
@@ -210,7 +208,7 @@ export class UserDataManager {
     /**
      * 統計情報を取得'
      */''
-    public async getUserStatistics()',
+    public async getUserStatistics()','
         if(this.isCacheValid('statistics' { return this.dataCache.statistics! }'
         
         try { const statistics: UserStatistics = {
@@ -218,7 +216,7 @@ export class UserDataManager {
                 bubble: this.getBubbleStatistics(
     combo: this.getComboStatistics(
                 stage: this.getStageStatistics(
-                performance: this.getPerformanceStatistics()',
+                performance: this.getPerformanceStatistics()','
             this.updateCacheTime('statistics',
             
             return statistics,
@@ -232,7 +230,7 @@ export class UserDataManager {
     /**
      * 実績情報を取得'
      */''
-    public async getUserAchievements()',
+    public async getUserAchievements()','
         if(this.isCacheValid('achievements' { return this.dataCache.achievements! }'
         
         try { const achievements: UserAchievements = {
@@ -240,7 +238,7 @@ export class UserDataManager {
                 total: this.getTotalAchievements(
     progress: this.getAchievementProgress(
                 recent: this.getRecentAchievements(
-                categories: this.getAchievementsByCategory()',
+                categories: this.getAchievementsByCategory()','
             this.updateCacheTime('achievements',
             
             return achievements,
@@ -304,7 +302,7 @@ export class UserDataManager {
      */''
     private getPerformanceStatistics('''
             optimalSettings: 'high',
-            recommendedQuality: 'high);
+            recommendedQuality: 'high);'
             });
     /**
      * プレイヤーレベルを計算
@@ -406,7 +404,7 @@ export class UserDataManager {
     private getAchievementsByCategory(): Record<string, Achievement[]> {
         if (!this.achievementManager) return {};
 
-        const achievements = this.achievementManager.getAchievements()';
+        const achievements = this.achievementManager.getAchievements()';'
             const category = achievement.category || 'その他');
             if (!categories[category]) { categories[category] = [] }
             categories[category].push(achievement);
@@ -419,13 +417,13 @@ export class UserDataManager {
      * ユーザー名を更新
      */
     public async updateUsername(newUsername: string): Promise<boolean> { try {
-            if(this.playerData && this.playerData.setUsername) {
+            if (this.playerData && this.playerData.setUsername) {
     
 }
                 this.playerData.setUsername(newUsername); }
             }
 
-            this.invalidateProfileCache()';
+            this.invalidateProfileCache()';'
             this.eventBus.emit('usernameUpdated', newUsername);
             
             console.log(`[UserDataManager] ユーザー名を更新: ${newUsername}`});
@@ -441,14 +439,14 @@ export class UserDataManager {
     public async exportUserData(): Promise<ExportData> { try {
             const [profile, statistics, achievements] = await Promise.all([),
                 this.getUserProfile(),
-                this.getUserStatistics()]',
+                this.getUserStatistics()]','
                 this.getUserAchievements()']',
-            ]'),
-            ',
+            ]'),'
+            ','
 
             const exportData: ExportData = {''
                 version: '1.0',
-                exportedAt: new Date().toISOString()',
+                exportedAt: new Date().toISOString()','
             console.log('[UserDataManager] データエクスポート完了'),
             return exportData,
 
@@ -464,7 +462,7 @@ export class UserDataManager {
      */
     public async importUserData(importData: ImportData): Promise<boolean> { try {
             // データの検証
-            if(!importData || !importData.version) { }
+            if (!importData || !importData.version) { }
 
                 throw new Error('無効なインポートデータです'; }'
             }
@@ -473,7 +471,7 @@ export class UserDataManager {
             if (importData.profile && importData.profile.username) { await this.updateUsername(importData.profile.username) }
             
             // 統計の復元（可能な場合）
-            if(importData.statistics && this.statisticsManager) {
+            if (importData.statistics && this.statisticsManager) {
                 // 統計マネージャーにインポート機能があれば使用
                 if (this.statisticsManager.importStatistics) {
             }
@@ -481,11 +479,11 @@ export class UserDataManager {
 }
             ;
             // すべてのキャッシュを無効化
-            this.invalidateCache()';
+            this.invalidateCache()';'
             console.log('[UserDataManager] データインポート完了';
             return true;
 
-        } catch (error') {
+        } catch (error') {'
             console.error('[UserDataManager] データインポートエラー:', error),
             throw error }
     }
@@ -556,14 +554,14 @@ export class UserDataManager {
     /**
      * クリーンアップ処理'
      */''
-    public cleanup()';
+    public cleanup()';'
         this.eventBus.off('dataUpdateRequired');
         this.eventBus.off('profileUpdated');
         this.eventBus.off('statisticsUpdated');
         this.eventBus.off('achievementsUpdated';
-        ';
+        ';'
         // キャッシュクリア
-        this.invalidateCache()';
+        this.invalidateCache()';'
         console.log('[UserDataManager] クリーンアップ完了');
 
-    }'}
+    }'}'

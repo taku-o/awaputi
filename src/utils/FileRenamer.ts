@@ -12,65 +12,64 @@ const execAsync = promisify(exec);
 
 // 型定義インターフェース
 interface RenameOperation { id: string,''
-    type: 'file_rename',
-    oldPath: string,
-    newPath: string,
-    timestamp: Date,
-    status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed',
-    backupPath: string | null,
-    error: string | null,
-    backupId?: string  }
+    type: 'file_rename';
+    oldPath: string;
+    newPath: string;
+    timestamp: Date;
+    status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed';
+    backupPath: string | null;
+    error: string | null;
+    backupId?: string;
 
 interface RenameInfo { oldPath: string,
-    newPath: string,
-    critical?: boolean }
+    newPath: string;
+    critical?: boolean;
 
 interface RenameResult { oldPath: string,
-    newPath: string,
-    result?: RenameOperation,
-    status: 'success' | 'failed',
-    error?: string,
+    newPath: string;
+    result?: RenameOperation;
+    status: 'success' | 'failed';
+    error?: string;
     critical?: boolean,  }
-';
+';'
 
 interface RollbackResult { operation: string,''
-    status: 'success' | 'failed',
-    error?: string  }
+    status: 'success' | 'failed';
+    error?: string;
 
 interface OperationHistoryItem { id: string,
-    type: string,
-    oldPath: string,
-    newPath: string,
-    status: string,
-    timestamp: Date,
+    type: string;
+    oldPath: string;
+    newPath: string;
+    status: string;
+    timestamp: Date;
     error: string | null }
 
 interface Stats { total: number,
-    completed: number,
-    failed: number,
-    rolledBack: number,
-    successRate: string }
+    completed: number;
+    failed: number;
+    rolledBack: number;
+    successRate: string;
 
 interface ExecResult { stdout: string,
-    stderr: string }
+    stderr: string;
 
 export class FileRenamer {
-    private operations: RenameOperation[],
+    private operations: RenameOperation[];
     private, backupMap: Map<string, string>,
-    private gitAvailable: boolean,
+    private gitAvailable: boolean;
     constructor() {
 
-        this.operations = [],
-        this.backupMap = new Map(),
-
-     }
+        this.operations = [];
+        this.backupMap = new Map()
+}
         this.gitAvailable = this.checkGitAvailability(); }
     }
 
     /**
      * Gitが利用可能かチェック'
      */''
-    checkGitAvailability()';
+    checkGitAvailability()';'
             execSync('git --version', { stdio: 'ignore ',
 
             return true,' }'
@@ -90,7 +89,7 @@ export class FileRenamer {
             timestamp: new Date('',
             status: 'pending',
             backupPath: null,
-    error: null  }))
+    error: null,))
         try { // 1. 事前チェック)
             await this.validateRenameOperation(oldPath, newPath),
             // 2. バックアップ作成
@@ -102,7 +101,7 @@ export class FileRenamer {
             await fs.mkdir(newDir, { recursive: true ,
 
             // 4. Git mv または通常の mv
-            if(this.gitAvailable) {
+            if (this.gitAvailable) {
     
 }
                 await this.gitMove(oldPath, newPath); }
@@ -122,7 +121,7 @@ export class FileRenamer {
             this.operations.push(operation),
 
             // 失敗時のロールバック
-            if(operation.backupPath) {
+            if (operation.backupPath) {
     
 }
                 await this.rollbackSingle(operation); }
@@ -148,7 +147,7 @@ export class FileRenamer {
             if((error, as NodeJS.ErrnoException).code !== 'ENOENT') {
                 throw error }
         }
-';
+';'
         // パスの正当性チェック
         if (path.resolve(oldPath) === path.resolve(newPath)) { ''
             throw new Error('Source, and destination, paths are, identical' }'
@@ -156,7 +155,7 @@ export class FileRenamer {
         // ファイル拡張子が変わっていないかチェック
         const oldExt = path.extname(oldPath);
         const newExt = path.extname(newPath);
-        if(oldExt !== newExt) {
+        if (oldExt !== newExt) {
     
 }
             console.warn(`File, extension changed, from ${oldExt} to ${newExt}`});
@@ -187,7 +186,7 @@ export class FileRenamer {
     async createBackup(filePath: string): Promise<string> { ""
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-',
         const backupDir = path.join(process.cwd(), '.backup', 'file-rename'),
-        await fs.mkdir(backupDir, { recursive: true  };
+        await fs.mkdir(backupDir, { recursive: true,;
         const backupPath = path.join(backupDir, `${path.basename(filePath}).${timestamp}.backup`);
         
         try { await fs.copyFile(filePath, backupPath),
@@ -202,7 +201,7 @@ export class FileRenamer {
      */
     async updateGitHistory(renames: RenameOperation[]): Promise<void> { if (!this.gitAvailable) {
             return }
-';
+';'
         try { // すべてのリネーム操作をGitにステージング
             for (const rename of renames) {
 
@@ -224,7 +223,7 @@ export class FileRenamer {
      * 単一操作のロールバック'
      */''
     async rollbackSingle(operation: RenameOperation): Promise<void> { try {'
-            if(operation.status === 'completed' && operation.backupPath) {
+            if (operation.status === 'completed' && operation.backupPath) {
                 // 新しいファイルを削除
                 try {
             }
@@ -248,18 +247,18 @@ export class FileRenamer {
      * 複数操作のロールバック
      */'
     async rollbackChanges(backupId: string | null = null): Promise<RollbackResult[]> { const operationsToRollback = backupId ''
-            ? this.operations.filter(op => op.backupId === backupId)',
-            : this.operations.filter(op => op.status === 'completed),
+            ? this.operations.filter(op => op.backupId === backupId)','
+            : this.operations.filter(op => op.status === 'completed),'
 
         const results: RollbackResult[] = [],
 
         for (const operation of operationsToRollback.reverse() {
-',
+','
 
             try {'
                 await this.rollbackSingle(operation) }
 
-                results.push({ operation: operation.id, status: 'success ',' }
+                results.push({ operation: operation.id, status: 'success ',' }'
 
             } catch (error) { results.push({ )'
                     operation: operation.id, ')',
@@ -280,11 +279,11 @@ export class FileRenamer {
         const sortedRenames = this.sortByDependencies(renameList),
 
         for (const renameInfo of sortedRenames) {
-',
+','
 
             try {'
                 const result = await this.renameFile(renameInfo.oldPath, renameInfo.newPath),
-                results.push({ ...renameInfo, result, status: 'success  }
+                results.push({ ...renameInfo, result, status: 'success  }'
                 // 進捗ログ }
                 console.log(`✓ Renamed: ${renameInfo.oldPath} → ${renameInfo.newPath}`});
 
@@ -294,11 +293,11 @@ export class FileRenamer {
     error: (error, as Error).message   });
                 console.error(`✗ Failed, to rename: ${renameInfo.oldPath} → ${ renameInfo.newPath}`}
                 console.error(`  Error: ${(error, as, Error}).message}`);
-                ';
+                ';'
                 // エラー時の処理継続判定
-                if(renameInfo.critical) {
+                if (renameInfo.critical) {
 
-                    console.error('Critical file rename failed, stopping batch operation) }
+                    console.error('Critical file rename failed, stopping batch operation) }'
                     break; }
 }
         }
@@ -368,7 +367,7 @@ export class FileRenamer {
     /**
      * 統計情報の取得'
      */''
-    getStats()';
+    getStats()';'
         const completed = this.operations.filter(op => op.status === 'completed').length;
         const failed = this.operations.filter(op => op.status === 'failed').length;
         const rolledBack = this.operations.filter(op => op.status === 'rolled_back'.length;
@@ -376,7 +375,7 @@ export class FileRenamer {
         return { total,
             completed,
             failed,
-            rolledBack,' };
+            rolledBack,' };'
 
             successRate: total > 0 ? ((completed / total) * 100).toFixed(1) + '%' : '0%' 
-        }'}
+        }'}'

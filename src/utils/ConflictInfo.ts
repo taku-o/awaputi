@@ -10,88 +10,87 @@ type ConflictStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 type OperationType = 'file' | 'class';
 
 interface ConflictSummary { name: string,
-    type: ConflictType,
-    severity: SeverityLevel,
-    status: ConflictStatus,
-    filesCount: number,
-    progress: string,
-    canResolve: boolean  }
+    type: ConflictType;
+    severity: SeverityLevel;
+    status: ConflictStatus;
+    filesCount: number;
+    progress: string;
+    canResolve: boolean;
 
 interface ConflictJSON { name: string,
-    type: ConflictType,
-    files: string[],
-    severity: SeverityLevel,
-    strategy: string | null,
-    newNames: string[],
-    status: ConflictStatus,
+    type: ConflictType;
+    files: string[];
+    severity: SeverityLevel;
+    strategy: string | null;
+    newNames: string[];
+    status: ConflictStatus;
     dependencies: Array<{
-        nam,e: string,
-        type: ConflictType,
-    status: ConflictStatus
-    }>;
+        nam,e: string;
+        type: ConflictType;
+    status: ConflictStatus;>;
     progress: number;
-    createdAt: string,
+    createdAt: string;
     updatedAt: string;
 }
 
 interface RenameOperationJSON { type: OperationType,
-    oldName: string,
-    newName: string,
-    filePath: string,
-    status: ConflictStatus,
-    error: string | null,
-    canExecute: boolean,
-    dependenciesCount: number,
-    createdAt: string,
+    oldName: string;
+    newName: string;
+    filePath: string;
+    status: ConflictStatus;
+    error: string | null;
+    canExecute: boolean;
+    dependenciesCount: number;
+    createdAt: string;
     executedAt: string | null  }
 
 export class ConflictInfo {
-    public name: string,
+    public name: string;
     public, type: ConflictType,
-    public files: string[],
-    public severity: SeverityLevel,
-    public strategy: string | null,
-    public newNames: string[],
-    public status: ConflictStatus,
-    public dependencies: ConflictInfo[],
-    public createdAt: Date,
-    public updatedAt: Date,
+    public files: string[];
+    public severity: SeverityLevel;
+    public strategy: string | null;
+    public newNames: string[];
+    public status: ConflictStatus;
+    public dependencies: ConflictInfo[];
+    public createdAt: Date;
+    public updatedAt: Date;
 
     constructor(name: string, type: ConflictType, files: string[], severity: SeverityLevel) {
-        this.name = name,           // 重複している名前
-        this.type = type,           // 'class' | 'file''
-        this.files = files,         // 関連ファイルのリスト
-        this.severity = severity,   // 'high' | 'medium' | 'low'
-        this.strategy = null,       // 解決戦略
-        this.newNames = [],         // 新しい名前のリスト
-        this.status = 'pending',    // 'pending' | 'in_progress' | 'completed' | 'failed'
-        this.dependencies = [],     // 依存する他の競合
-        this.createdAt = new Date(),
-     }
+        this.name = name;           // 重複している名前
+        this.type = type;           // 'class' | 'file''
+        this.files = files;         // 関連ファイルのリスト
+        this.severity = severity;   // 'high' | 'medium' | 'low'
+        this.strategy = null;       // 解決戦略
+        this.newNames = [];         // 新しい名前のリスト
+        this.status = 'pending';    // 'pending' | 'in_progress' | 'completed' | 'failed'
+        this.dependencies = [];     // 依存する他の競合
+        this.createdAt = new Date()
+}
         this.updatedAt = new Date(); }
     }
 
     /**
      * 解決戦略を設定
      */
-    setStrategy(strategy: string): void { this.strategy = strategy,
+    setStrategy(strategy: string): void { this.strategy = strategy;
         this.updatedAt = new Date() }
 
     /**
      * 新しい名前を設定
      */
-    setNewNames(names: string | string[]): void { this.newNames = Array.isArray(names) ? names: [names],
+    setNewNames(names: string | string[]): void { this.newNames = Array.isArray(names) ? names: [names];
         this.updatedAt = new Date( 
     /**
      * ステータスを更新
      */
-    updateStatus(status: ConflictStatus): void { this.status = status,
+    updateStatus(status: ConflictStatus): void { this.status = status;
         this.updatedAt = new Date(),  }
 
     /**
      * 依存関係を追加
      */
-    addDependency(conflictInfo: ConflictInfo): void { if(!this.dependencies.find(dep => dep.name === conflictInfo.name) {
+    addDependency(conflictInfo: ConflictInfo): void { if (!this.dependencies.find(dep => dep.name === conflictInfo.name) {
             this.dependencies.push(conflictInfo),
             this.updatedAt = new Date() }
 }
@@ -99,7 +98,7 @@ export class ConflictInfo {
     /**
      * 解決可能かどうかチェック
      */''
-    canResolve()';
+    canResolve()';'
         return this.dependencies.every(dep => dep.status === 'completed';
     }
 
@@ -131,7 +130,7 @@ export class ConflictInfo {
                 status: dep.status)),
             progress: this.getProgress(
     createdAt: this.createdAt.toISOString() };
-            updatedAt: this.updatedAt.toISOString(); 
+            updatedAt: this.updatedAt.toISOString(), 
     }
 
     /**
@@ -150,27 +149,27 @@ export class ConflictInfo {
  * リネーム操作情報を管理するデータモデル
  */
 export class RenameOperation {
-    public type: OperationType,
-    public oldName: string,
-    public newName: string,
-    public filePath: string,
-    public dependencies: RenameOperation[],
-    public status: ConflictStatus,
-    public error: string | null,
-    public executedAt: Date | null,
-    public createdAt: Date,
+    public type: OperationType;
+    public oldName: string;
+    public newName: string;
+    public filePath: string;
+    public dependencies: RenameOperation[];
+    public status: ConflictStatus;
+    public error: string | null;
+    public executedAt: Date | null;
+    public createdAt: Date;
 
     constructor(type: OperationType, oldName: string, newName: string, filePath: string) {
 
-        this.type = type,           // 'file' | 'class'
-        this.oldName = oldName,
-        this.newName = newName,
-        this.filePath = filePath,
+        this.type = type;           // 'file' | 'class'
+        this.oldName = oldName;
+        this.newName = newName;
+        this.filePath = filePath;
 
-        this.dependencies = [],     // 依存する他の操作
-        this.status = 'pending',    // 'pending' | 'in_progress' | 'completed' | 'failed'
-        this.error = null,          // エラー情報
-        this.executedAt = null,     // 実行日時
+        this.dependencies = [];     // 依存する他の操作
+        this.status = 'pending';    // 'pending' | 'in_progress' | 'completed' | 'failed'
+        this.error = null;          // エラー情報
+        this.executedAt = null;     // 実行日時
      }
         this.createdAt = new Date(); }
     }
@@ -187,22 +186,22 @@ export class RenameOperation {
      * 操作を失敗としてマーク'
      */''
     markFailed(error: string): void { ''
-        this.status = 'failed',
-        this.error = error,
+        this.status = 'failed';
+        this.error = error;
         this.executedAt = new Date() }
 
     /**
      * 依存関係を追加
      */
-    addDependency(operation: RenameOperation): void { if(!this.dependencies.find(dep => dep.oldName === operation.oldName) {
+    addDependency(operation: RenameOperation): void { if (!this.dependencies.find(dep => dep.oldName === operation.oldName) {
             this.dependencies.push(operation) }
 }
 
     /**
      * 実行可能かどうかチェック'
      */''
-    canExecute()';
-        return this.dependencies.every(dep => dep.status === 'completed);
+    canExecute()';'
+        return this.dependencies.every(dep => dep.status === 'completed);'
     }
 
     /**
@@ -216,6 +215,6 @@ export class RenameOperation {
             error: this.error,
             canExecute: this.canExecute(
     dependenciesCount: this.dependencies.length,
-            createdAt: this.createdAt.toISOString(),' };
+            createdAt: this.createdAt.toISOString(),' };'
 
             executedAt: this.executedAt ? this.executedAt.toISOString() }'

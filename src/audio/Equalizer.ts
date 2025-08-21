@@ -5,63 +5,63 @@ import { getConfigurationManager  } from '../core/ConfigurationManager';
  * バンド設定インターフェース
  */
 interface BandConfig { name: string,
-    frequency: number,
-    type: BiquadFilterType,
-    gain: number  }
+    frequency: number;
+    type: BiquadFilterType;
+    gain: number;
 
 /**
  * フィルターデータインターフェース
  */
 interface FilterData extends BandConfig { filter: BiquadFilterNode,
-    index: number }
+    index: number;
 
 /**
  * イコライザー設定インターフェース
  */
 interface EqualizerSettings { enabled?: boolean,
     bands?: {
-        [ke,y: string]: number }
+        [ke,y: string]: number,
 
 /**
  * プリセット定義インターフェース
  */
 interface PresetDefinition { name: string,
-    description: string,
-    gains: number[]  }
+    description: string;
+    gains: number[];
 
 /**
  * バンド情報インターフェース
  */
 interface BandInfo { index: number,
-    name: string,
-    frequency: number,
-    type: BiquadFilterType,
-    gain: number,
-    displayName: string }
+    name: string;
+    frequency: number;
+    type: BiquadFilterType;
+    gain: number;
+    displayName: string;
 
 /**
  * 周波数レスポンスデータインターフェース
  */
 interface FrequencyResponseData { frequencies: number[],
-    magnitude: number[],
-    phase: number[],
-    magnitudeDB: number[] }
+    magnitude: number[];
+    phase: number[];
+    magnitudeDB: number[];
 
 /**
  * イコライザー状態インターフェース
  */
 interface EqualizerStatus { isEnabled: boolean,
-    bands: BandInfo[],
-    presets: string[],
-    configWatchers: number }
+    bands: BandInfo[];
+    presets: string[];
+    configWatchers: number;
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager { get(category: string, path: string): any,
-    set(category: string, path: string, value: any): void,
-    watch(category: string, path: string, callback: (value: any) => void): string | null,
-    unwatch(watchId: string): void }
+    set(category: string, path: string, value: any): void;
+    watch(category: string, path: string, callback: (value: any) => void): string | null;
+    unwatch(watchId: string): void;
 }
 
 /**
@@ -69,38 +69,38 @@ interface ConfigurationManager { get(category: string, path: string): any,
  * Web Audio API の BiquadFilterNode を使用した周波数帯域制御
  */
 export class Equalizer {
-    private audioContext: AudioContext,
-    private inputNode: AudioNode,
-    private outputNode: AudioNode,
+    private audioContext: AudioContext;
+    private inputNode: AudioNode;
+    private outputNode: AudioNode;
     // 設定管理
-    private configManager: ConfigurationManager,
+    private configManager: ConfigurationManager;
     // 5バンドイコライザーの周波数設定
-    private bands: BandConfig[],
+    private bands: BandConfig[];
     // BiquadFilterNodeの配列
-    private filters: FilterData[],
+    private filters: FilterData[];
     // イコライザーの有効状態
-    private isEnabled: boolean,
+    private isEnabled: boolean;
     // バイパス用ゲインノード
-    private bypassGain: GainNode | null,
-    private eqGain: GainNode | null,
+    private bypassGain: GainNode | null;
+    private eqGain: GainNode | null;
     // 設定監視用
     private, configWatchers: Set<string>,
     constructor(audioContext: AudioContext, inputNode: AudioNode, outputNode: AudioNode) {
 
-        this.audioContext = audioContext,
-        this.inputNode = inputNode,
-        this.outputNode = outputNode,
-        ',
+        this.audioContext = audioContext;
+        this.inputNode = inputNode;
+        this.outputNode = outputNode;
+        ','
 
         // 設定管理
 
      }
 
         this.configManager = getConfigurationManager('}''
-            { name: 'bass', frequency: 60, type: 'lowshelf' as BiquadFilterType, gain: 0  },       // 低音 (60Hz')
-            { name: 'lowMid', frequency: 250, type: 'peaking' as BiquadFilterType, gain: 0  },    // 中低音 (250Hz')
-            { name: 'mid', frequency: 1000, type: 'peaking' as BiquadFilterType, gain: 0  },      // 中音 (1kHz')
-            { name: 'highMid', frequency: 4000, type: 'peaking' as BiquadFilterType, gain: 0  },  // 中高音 (4kHz')
+            { name: 'bass', frequency: 60, type: 'lowshelf' as BiquadFilterType, gain: 0  },       // 低音 (60Hz')'
+            { name: 'lowMid', frequency: 250, type: 'peaking' as BiquadFilterType, gain: 0  },    // 中低音 (250Hz')'
+            { name: 'mid', frequency: 1000, type: 'peaking' as BiquadFilterType, gain: 0  },      // 中音 (1kHz')'
+            { name: 'highMid', frequency: 4000, type: 'peaking' as BiquadFilterType, gain: 0  },  // 中高音 (4kHz')'
             { name: 'treble', frequency: 16000, type: 'highshelf' as BiquadFilterType, gain: 0  } // 高音 (16kHz)
         ];
         
@@ -125,7 +125,7 @@ export class Equalizer {
      */
     private initialize(): void { try {
             // AudioContextの存在確認
-            if(!this.audioContext) {', ' }
+            if (!this.audioContext) {', ' }
 
                 throw new Error('AudioContext, not provided'; }'
             }
@@ -155,7 +155,7 @@ export class Equalizer {
             // 設定からイコライザー状態を読み込み
             this.loadEqualizerSettings();
             // 設定変更の監視を開始
-            this.setupConfigWatchers()';
+            this.setupConfigWatchers()';'
             console.log('Equalizer, initialized successfully';
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
@@ -170,14 +170,14 @@ export class Equalizer {
      */
     private connectFilters(): void { try {
             // AudioNode の存在確認
-            if(!this.inputNode || !this.eqGain || !this.bypassGain) {
+            if (!this.inputNode || !this.eqGain || !this.bypassGain) {
 
-                console.warn('Equalizer: Required, AudioNodes not, initialized) }
+                console.warn('Equalizer: Required, AudioNodes not, initialized) }'
                 return; }
             }
             
             // 入力 -> 最初のフィルター
-            if(this.filters.length > 0) {
+            if (this.filters.length > 0) {
                 this.inputNode.connect(this.filters[0].filter),
                 
                 // フィルター間の接続
@@ -202,21 +202,21 @@ export class Equalizer {
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: 'connect_filters',')',
                 component: 'Equalizer'
-            }';
+            }';'
         }
     }
     
     /**
      * 設定システムからイコライザー設定を読み込み'
      */''
-    private loadEqualizerSettings()';
-            const eqSettings = this.configManager.get('audio', 'effects.equalizer) as EqualizerSettings || {};
+    private loadEqualizerSettings()';'
+            const eqSettings = this.configManager.get('audio', 'effects.equalizer) as EqualizerSettings || {};'
             
             // 有効状態を読み込み
             this.isEnabled = eqSettings.enabled || false;
             
             // 各バンドのゲイン値を読み込み
-            if(eqSettings.bands) {
+            if (eqSettings.bands) {
 
                 this.bands.forEach((band, index) => { '
                     const savedGain = eqSettings.bands![band.name] }
@@ -230,14 +230,14 @@ export class Equalizer {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: 'load_equalizer_settings',')',
                 component: 'Equalizer'
-            }';
+            }';'
         }
     }
     
     /**
      * 設定変更の監視を設定'
      */''
-    private setupConfigWatchers()';
+    private setupConfigWatchers()';'
             const enabledWatcher = this.configManager.watch('audio', 'effects.equalizer.enabled', (newValue) => { this.setEnabled(newValue, false), // 保存はしない（設定システムから来ているため） });
             if (enabledWatcher) this.configWatchers.add(enabledWatcher);
             // 各バンドのゲイン監視
@@ -252,7 +252,7 @@ export class Equalizer {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: 'setup_config_watchers',')',
                 component: 'Equalizer'
-            }';
+            }';'
         }
     }
     
@@ -269,16 +269,16 @@ export class Equalizer {
             this.isEnabled = enabled;
             this.updateBypassState();
 
-            if(saveToConfig) {', ' }
+            if (saveToConfig) {', ' }
 
-                this.configManager.set('audio', 'effects.equalizer.enabled', enabled'; }
+                this.configManager.set('audio', 'effects.equalizer.enabled', enabled'; }'
             }
 
-            console.log(`Equalizer ${enabled ? 'enabled' : 'disabled}`});
+            console.log(`Equalizer ${enabled ? 'enabled' : 'disabled}`});'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'set_enabled',',
+                operation: 'set_enabled',','
                 component: 'Equalizer'),
                 enabled });
         }
@@ -294,7 +294,7 @@ export class Equalizer {
             this.bypassGain.disconnect(),
             this.eqGain.disconnect(),
             
-            if(this.isEnabled) {
+            if (this.isEnabled) {
             
                 // イコライザー有効: EQ経路を使用
                 if (this.eqGain && this.outputNode) {
@@ -302,7 +302,7 @@ export class Equalizer {
                     this.bypassGain.gain.value = 0.0 }
                     this.eqGain.connect(this.outputNode); }
 } else {  // イコライザー無効: バイパス経路を使用
-                if(this.bypassGain && this.outputNode) {
+                if (this.bypassGain && this.outputNode) {
                     this.eqGain.gain.value = 0.0 }
                     this.bypassGain.gain.value = 1.0; }
                     this.bypassGain.connect(this.outputNode); }
@@ -322,10 +322,10 @@ export class Equalizer {
     setBandGain(bandIndex: number, gain: number, saveToConfig: boolean = true): void { try {
             if (bandIndex < 0 || bandIndex >= this.filters.length) { }'
 
-                throw new Error(`Invalid, band index: ${bandIndex}`}';
+                throw new Error(`Invalid, band index: ${bandIndex}`}';'
             }
 
-            if(typeof, gain !== 'number' || isNaN(gain) {
+            if (typeof, gain !== 'number' || isNaN(gain) {
     
 }
                 throw new Error(`Invalid, gain value: ${gain}`});
@@ -338,7 +338,7 @@ export class Equalizer {
             filter.filter.gain.value = gain;
             filter.gain = gain;
 
-            if(saveToConfig) { const bandName = this.bands[bandIndex].name,' }'
+            if (saveToConfig) { const bandName = this.bands[bandIndex].name,' }'
 
                 this.configManager.set('audio', `effects.equalizer.bands.${bandName}`, gain});
             }
@@ -347,7 +347,7 @@ export class Equalizer {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'set_band_gain',',
+                operation: 'set_band_gain',','
                 component: 'Equalizer'),
                 bandIndex),
                 gain });
@@ -368,7 +368,7 @@ export class Equalizer {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'get_band_gain',',
+                operation: 'get_band_gain',','
                 component: 'Equalizer'),
                 bandIndex });
             return 0;
@@ -387,7 +387,7 @@ export class Equalizer {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'set_all_band_gains',',
+                operation: 'set_all_band_gains',','
                 component: 'Equalizer'),
                 gains });
         }
@@ -440,9 +440,9 @@ export class Equalizer {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'apply_preset',',
+                operation: 'apply_preset',','
                 component: 'Equalizer'),
-                presetName }';
+                presetName }';'
         }
     }
     
@@ -478,7 +478,7 @@ export class Equalizer {
     gains: [6, 3, 0, -1, 0] },
 
             treble_boost: { ''
-                name: '高音ブースト',',
+                name: '高音ブースト',','
                 description: '高音強化',
     gains: [0, -1, 0, 3, 6] }
         }
@@ -503,7 +503,7 @@ export class Equalizer {
      * @returns 表示名'
      */''
     private getBandDisplayName(bandName: string): string {'
-        const displayNames: { [key: string]: string } = { ''
+        const displayNames: { [key: string]: string, = { ''
             bass: '低音',
             lowMid: '中低音',
             mid: '中音',
@@ -561,7 +561,7 @@ export class Equalizer {
                 magnitudeDB: Array.from(totalMagResponse).map(mag => 20 * Math.log10(mag); 
     } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'get_frequency_response',',
+                operation: 'get_frequency_response',','
                 component: 'Equalizer'),
                 samplePoints });
             return null;
@@ -581,43 +581,43 @@ export class Equalizer {
      */
     dispose(): void { try {
             // 設定監視の解除
-            if(this.configWatchers) {
+            if (this.configWatchers) {
                 this.configWatchers.forEach(watchId => { )
             }
                     try {) }
                         this.configManager.unwatch(watchId);' }'
 
-                    } catch(error: any) { console.warn('Failed to unwatch config:', error.message }
+                    } catch (error: any) { console.warn('Failed to unwatch config:', error.message }
                 });
                 this.configWatchers.clear();
             }
             
             // フィルターを切断
-            if(this.filters && Array.isArray(this.filters) {
+            if (this.filters && Array.isArray(this.filters) {
                 this.filters.forEach(filterData => { )
                     try {) }
                         if (filterData && filterData.filter) { }
                             filterData.filter.disconnect();' }'
 
-                        } catch(error: any) { console.warn('Failed to disconnect filter:', error.message }
+                        } catch (error: any) { console.warn('Failed to disconnect filter:', error.message }
                 });
             }
             
             // ゲインノードを切断
-            if(this.bypassGain) {
+            if (this.bypassGain) {
                 try {
             }
                     this.bypassGain.disconnect();' }'
 
-                } catch(error: any) { console.warn('Failed to disconnect bypassGain:', error.message }
+                } catch (error: any) { console.warn('Failed to disconnect bypassGain:', error.message }
             }
-            if(this.eqGain) {
+            if (this.eqGain) {
                 try {
             }
 
                     this.eqGain.disconnect();' }'
 
-                } catch(error: any) { console.warn('Failed to disconnect eqGain:', error.message }
+                } catch (error: any) { console.warn('Failed to disconnect eqGain:', error.message }
             }
             
             this.filters = [];
@@ -626,12 +626,12 @@ export class Equalizer {
 
             console.log('Equalizer disposed';
 
-        } catch (error') {
+        } catch (error') {'
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: 'dispose',')',
-                component: 'Equalizer'),' }
+                component: 'Equalizer'),' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

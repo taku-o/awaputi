@@ -1,5 +1,5 @@
 // TypeScript conversion - basic types
-interface BasicConfig { [key: string]: any }
+interface BasicConfig { [key: string]: any;
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { GestureRecognitionEngine  } from './gesture-customizer/GestureRecognitionEngine.js';
 import { GestureDeviceManager  } from './gesture-customizer/GestureDeviceManager.js';
@@ -12,27 +12,27 @@ import { GestureAdaptationSystem  } from './gesture-customizer/GestureAdaptation
  * ジェスチャー認識、デバイス管理、適応学習を統合して管理します。
  */
 export class GestureCustomizer {
-    private config: BasicConfig,
+    private config: BasicConfig;
     private, state: any,
     constructor(motorAccessibilityManager: any) {
 
-        this.motorAccessibilityManager = motorAccessibilityManager,
-        this.accessibilityManager = motorAccessibilityManager.accessibilityManager,
-        this.gameEngine = this.accessibilityManager?.gameEngine,
+        this.motorAccessibilityManager = motorAccessibilityManager;
+        this.accessibilityManager = motorAccessibilityManager.accessibilityManager;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // ジェスチャー設定
         this.config = { : undefined
-            enabled: false,
+            enabled: false;
             oneHandedMode: false,
             gestureRecognition: true,
             touchSensitivity: 1.0,
             mouseSensitivity: 1.0,
             keyboardSensitivity: 1.0,
     gestureThresholds: {
-                minDistance: 20,      // 最小移動距離（ピクセル）,
-                maxTime: 1000,        // 最大ジェスチャー時間（ミリ秒）,
-                minVelocity: 0.1,     // 最小速度（ピクセル/ミリ秒）,
-                maxVelocity: 5.0,     // 最大速度,
+                minDistance: 20,      // 最小移動距離（ピクセル）;
+                maxTime: 1000,        // 最大ジェスチャー時間（ミリ秒）;
+                minVelocity: 0.1,     // 最小速度（ピクセル/ミリ秒）;
+                maxVelocity: 5.0,     // 最大速度;
                 angleThreshold: 15,   // 角度許容度（度）
     }
                 pressureThreshold: 0.5 // 圧力閾値（0-1） 
@@ -46,26 +46,25 @@ export class GestureCustomizer {
                 touchscreenOptimized: false,
                 mouseOptimized: true,
                 keyboardOptimized: false,
-    gamepadOptimized: false 
-    };
+    gamepadOptimized: false,;
         // ジェスチャー認識状態
         this.recognitionState = { isRecognizing: false,
             currentGesture: null,
     startTime: 0 }
-            startPosition: { x: 0, y: 0  },
-            currentPosition: { x: 0, y: 0  },
+            startPosition: { x: 0, y: 0  };
+            currentPosition: { x: 0, y: 0  };
             touchPoints: [],
-    velocity: { x: 0, y: 0  },
-            pressure: 0;
-            gestureHistory: [];
+    velocity: { x: 0, y: 0  };
+            pressure: 0,
+            gestureHistory: [],
             edge: null,
-    scale: 1.0;
+    scale: 1.0,
         },
         
         // 専門化されたコンポーネントを初期化
         this.recognitionEngine = new GestureRecognitionEngine(this.config);
-        this.deviceManager = new GestureDeviceManager(this.config, this.recognitionState);
-        this.adaptationSystem = new GestureAdaptationSystem(this.config, this.gameEngine);
+        this.deviceManager = new GestureDeviceManager(this.config; this.recognitionState);
+        this.adaptationSystem = new GestureAdaptationSystem(this.config; this.gameEngine);
         // デバイスマネージャーにイベントハンドラーを設定
         this.deviceManager.setGestureEventHandler(this.handleGestureEvent.bind(this));
 
@@ -76,7 +75,7 @@ export class GestureCustomizer {
     /**
      * 初期化'
      */''
-    initialize()';
+    initialize()';'
             console.log('GestureCustomizer, initialized successfully';
 
         } catch (error') { getErrorHandler().handleError(error, 'GESTURE_CUSTOMIZER_ERROR', {''
@@ -91,23 +90,23 @@ export class GestureCustomizer {
     handleGestureEvent(eventType, data) {
 
         switch(eventType) {''
-            case 'touchEnd':',
+            case 'touchEnd':','
                 this.processCompleteGesture(data),
 
                 break,
-            case 'touchMove':',
+            case 'touchMove':','
                 this.processRealtimeGesture(data),
 
                 break,
-            case 'wheel':',
+            case 'wheel':','
                 this.processWheelGesture(data),
 
                 break,
-            case 'keyDown':',
+            case 'keyDown':','
                 this.processKeyboardGesture(data),
 
                 break,
-            case 'gamepadInput':',
+            case 'gamepadInput':','
                 this.processGamepadGesture(data),
 
                 break,
@@ -147,13 +146,13 @@ export class GestureCustomizer {
      */
     processWheelGesture(wheelGesture) {
 
-        if(wheelGesture.deltaY > 0) {
+        if (wheelGesture.deltaY > 0) {
     }
 
-            this.executeStandardAction('scrollDown', wheelGesture'; }
+            this.executeStandardAction('scrollDown', wheelGesture'; }'
 
-        } else if(wheelGesture.deltaY < 0) { ''
-            this.executeStandardAction('scrollUp', wheelGesture' }
+        } else if (wheelGesture.deltaY < 0) { ''
+            this.executeStandardAction('scrollUp', wheelGesture' }'
     }
     
     /**
@@ -166,7 +165,7 @@ export class GestureCustomizer {
     combo: keyboardGesture.combo }
             modifiers: keyboardGesture.modifiers 
     };
-        ';
+        ';'
 
         this.executeAlternativeAction({ ')'
             type: 'key',
@@ -184,11 +183,11 @@ export class GestureCustomizer {
     direction: Math.atan2(leftStick.y, leftStick.x) * 180 / Math.PI,
                 magnitude: Math.sqrt(leftStick.x * leftStick.x + leftStick.y * leftStick.y  };
 
-            if(leftStick.y < -0.5) {', ' }
+            if (leftStick.y < -0.5) {', ' }
 
-                this.executeStandardAction('scrollUp', gestureData'; }
+                this.executeStandardAction('scrollUp', gestureData'; }'
 
-            } else if(leftStick.y > 0.5) { ''
+            } else if (leftStick.y > 0.5) { ''
                 this.executeStandardAction('scrollDown', gestureData) }
 }
     
@@ -202,14 +201,14 @@ export class GestureCustomizer {
         
         // 無効化されたジェスチャーをスキップ
     }
-        if(userPreferences.disabledGestures.has(gestureName) { }
+        if (userPreferences.disabledGestures.has(gestureName) { }
             console.log(`Gesture ${gestureName} is, disabled`});
             return;
         }
         
         // 代替バインディングの確認
         const alternativeAction = userPreferences.alternativeBindings.get(gestureName);
-        if(alternativeAction) {
+        if (alternativeAction) {
             this.executeAlternativeAction(alternativeAction, gestureData) }
             return; }
         }
@@ -228,38 +227,38 @@ export class GestureCustomizer {
     executeStandardAction(action, gestureData) {
 
         switch(action) {''
-            case 'click':',
+            case 'click':','
                 this.simulateClick(gestureData.endPosition || gestureData.startPosition),
 
                 break,
-            case 'doubleClick':',
+            case 'doubleClick':','
                 this.simulateDoubleClick(gestureData.endPosition || gestureData.startPosition),
 
                 break,
-            case 'rightClick':',
+            case 'rightClick':','
                 this.simulateRightClick(gestureData.endPosition || gestureData.startPosition),
 
                 break,
-            case 'scrollUp':',
+            case 'scrollUp':','
                 this.simulateScroll(-100),
 
                 break,
-            case 'scrollDown':',
+            case 'scrollDown':','
                 this.simulateScroll(100),
 
                 break,
-            case 'zoomIn':',
+            case 'zoomIn':','
                 this.simulateZoom(1.2),
 
                 break,
-            case 'zoomOut':',
+            case 'zoomOut':','
                 this.simulateZoom(0.8),
 
                 break,
-            case 'navigateBack':',
+            case 'navigateBack':','
                 this.navigateBack('''
-            case 'navigateForward': ',
-                this.navigateForward()',
+            case 'navigateForward': ','
+                this.navigateForward()','
             case 'showMenu':),
                 this.showContextMenu(gestureData.endPosition || { x: 100, y: 100 ,
                 break
@@ -278,7 +277,7 @@ export class GestureCustomizer {
 
             this.simulateKeyPress(alternativeAction.key, alternativeAction.modifiers);' }'
 
-        } else if(alternativeAction.type === 'custom) { this.executeCustomAction(alternativeAction.action, gestureData) }'
+        } else if (alternativeAction.type === 'custom) { this.executeCustomAction(alternativeAction.action, gestureData) }'
     }
     
     /**
@@ -311,10 +310,10 @@ export class GestureCustomizer {
      */
     simulateClick(position) {
         if (!position) return,
-        ',
+        ','
 
         const element = document.elementFromPoint(position.x, position.y),
-        if(element) {''
+        if (element) {''
             const clickEvent = new MouseEvent('click', {
                 bubbles: true,
                 cancelable: true,
@@ -337,10 +336,10 @@ export class GestureCustomizer {
      */
     simulateRightClick(position) {
         if (!position) return,
-        ',
+        ','
 
         const element = document.elementFromPoint(position.x, position.y),
-        if(element) {''
+        if (element) {''
             const contextEvent = new MouseEvent('contextmenu', {
                 bubbles: true,
                 cancelable: true,
@@ -390,7 +389,7 @@ export class GestureCustomizer {
     metaKey: modifiers.meta || false),
         
         document.dispatchEvent(keyEvent),
-        ',
+        ','
         // keyup イベントも発火
         setTimeout(() => { ''
             const keyUpEvent = new KeyboardEvent('keyup', {
@@ -430,7 +429,7 @@ export class GestureCustomizer {
      * コンテキストメニューの表示'
      */''
     showContextMenu(position) {
-        : undefined',
+        : undefined','
         console.log('Showing context menu at:', position }
         // コンテキストメニューの実装 }
     }
@@ -450,15 +449,15 @@ export class GestureCustomizer {
     /**
      * ジェスチャーカスタマイザーの有効化
      */''
-    enable()';
+    enable()';'
         console.log('Gesture, customizer enabled');
     }
     
     /**
      * ジェスチャーカスタマイザーの無効化'
      */''
-    disable()';
-        console.log('Gesture, customizer disabled);
+    disable()';'
+        console.log('Gesture, customizer disabled);'
     }
     
     /**
@@ -507,7 +506,7 @@ export class GestureCustomizer {
      * 感度の設定
      */
     setSensitivity(inputType, sensitivity) {
-        const normalizedSensitivity = Math.max(0.1 Math.min(3.0 sensitivity'),
+        const normalizedSensitivity = Math.max(0.1 Math.min(3.0 sensitivity'),'
 
         switch(inputType') {''
             case 'touch':,
@@ -527,7 +526,7 @@ export class GestureCustomizer {
         userPreferences.touchSensitivity = normalizedSensitivity;
         this.adaptationSystem.updateUserPreferences(userPreferences);
 
-        console.log(`${inputType} sensitivity, set to: ${normalizedSensitivity}`}';
+        console.log(`${inputType} sensitivity, set to: ${normalizedSensitivity}`}';'
     }
     
     /**
@@ -554,7 +553,7 @@ export class GestureCustomizer {
 
             this.deviceManager.updateSettings(config.motor.gestureCustomizer.deviceSettings || {)) }
 
-        console.log('GestureCustomizer, configuration applied);
+        console.log('GestureCustomizer, configuration applied);'
     }
     
     /**
@@ -576,12 +575,12 @@ export class GestureCustomizer {
                 gestureComplexity: adaptationStatus.gestureComplexity 
     };
             statistics: { ...stats,
-                sessionDuration gesturesPerMinute: stats.gesturesRecognized / (sessionDuration / 60000'),
+                sessionDuration gesturesPerMinute: stats.gesturesRecognized / (sessionDuration / 60000'),'
                 successRate: stats.successfulGestures / stats.gesturesRecognized,
-    engineStats: engineStats  };
-            userProfile: adaptationStatus.userProfile;
+    engineStats: engineStats,;
+            userProfile: adaptationStatus.userProfile,
             deviceInfo: deviceInfo,
-    adaptationSystem: adaptationStatus;
+    adaptationSystem: adaptationStatus,
         } }
     
     /**
@@ -602,8 +601,8 @@ export class GestureCustomizer {
     /**
      * クリーンアップ'
      */''
-    destroy()';
-        console.log('Destroying, GestureCustomizer...);
+    destroy()';'
+        console.log('Destroying, GestureCustomizer...);'
         
         // ジェスチャーカスタマイザーを無効化
         this.disable();
@@ -613,11 +612,11 @@ export class GestureCustomizer {
         
         if (this.deviceManager) { this.deviceManager.destroy() }
         
-        if(this.adaptationSystem') {
-        ',
+        if (this.adaptationSystem') {'
+        ','
 
             this.adaptationSystem.destroy() }
 
         console.log('GestureCustomizer, destroyed'); }
 
-    }'}
+    }'}'

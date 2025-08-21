@@ -8,42 +8,42 @@ import { VoiceInputController  } from './alternative-input-manager/VoiceInputCon
 import { HeadTrackingController  } from './alternative-input-manager/HeadTrackingController.js';
 
 interface MotorAccessibilityManager { accessibilityManager?: {
-        gameEngin,e?: unknown }
+        gameEngin,e?: unknown;
 
 interface InputConfig { enabled: boolean,
     inputMethods: {
         switchInpu,t: boolean,
         eyeTracking: boolean,
         voiceControl: boolean,
-    headTracking: boolean  };
-    [key: string]: unknown }
+    headTracking: boolean,;
+    [key: string]: unknown,
 
 export class AlternativeInputManager {
-    private motorAccessibilityManager: MotorAccessibilityManager,
-    private accessibilityManager: unknown,
-    private gameEngine: unknown,
-    private switchController: SwitchInputController,
-    private eyeTrackingController: EyeTrackingController,
-    private voiceController: VoiceInputController,
-    private headTrackingController: HeadTrackingController,
+    private motorAccessibilityManager: MotorAccessibilityManager;
+    private accessibilityManager: unknown;
+    private gameEngine: unknown;
+    private switchController: SwitchInputController;
+    private eyeTrackingController: EyeTrackingController;
+    private voiceController: VoiceInputController;
+    private headTrackingController: HeadTrackingController;
     private, config: InputConfig,
     constructor(motorAccessibilityManager: MotorAccessibilityManager) {
 
-        this.motorAccessibilityManager = motorAccessibilityManager,
-        this.accessibilityManager = motorAccessibilityManager.accessibilityManager,
-        this.gameEngine = this.accessibilityManager?.gameEngine,
+        this.motorAccessibilityManager = motorAccessibilityManager;
+        this.accessibilityManager = motorAccessibilityManager.accessibilityManager;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // サブコンポーネントを初期化
-        this.switchController = new SwitchInputController(),
-        this.eyeTrackingController = new EyeTrackingController(),
-        this.voiceController = new VoiceInputController(),
+        this.switchController = new SwitchInputController();
+        this.eyeTrackingController = new EyeTrackingController();
+        this.voiceController = new VoiceInputController();
         this.headTrackingController = new HeadTrackingController('''
-            activationMethod: 'dwell',
+            activationMethod: 'dwell';
     supportedMethods: {
-                switch: true,      // スイッチ入力,
-                eyeTracking: true, // 視線追跡,
-                voiceControl: true,// 音声制御,
-                headTracking: true,// 頭部追跡,
+                switch: true,      // スイッチ入力;
+                eyeTracking: true, // 視線追跡;
+                voiceControl: true,// 音声制御;
+                headTracking: true,// 頭部追跡;
                 singleKey: true,   // 単一キー操作
     }
                 scanning: true     // スキャニング入力 
@@ -53,12 +53,12 @@ export class AlternativeInputManager {
                 scanMode: 'auto',
                 activationTime: 100,
                 dwellTime: 1000),
-                numberOfSwitches: 1',
+                numberOfSwitches: 1','
     switchMapping: new Map([']',
                     ['space', 'primary'],
                     ['enter', 'secondary'],
                     ['escape', 'cancel]',
-                ]') },
+                ]') },'
             eyeTracking: { enabled: false,
                 calibrationPoints: 9,
                 dwellTime: 800,
@@ -82,20 +82,20 @@ export class AlternativeInputManager {
                     ['下', 'down'],
                     ['左', 'left'],
                     ['右', 'right]',
-                ]'),
+                ]'),'
                 continuousListening: false,
-    pushToTalk: true  };
+    pushToTalk: true,;
             headTracking: { enabled: false,
                 sensitivity: 1.0,
                 deadZone: 0.1,
                 smoothing: 0.5,
                 calibrationTime: 3000,
-    gestureRecognition: true };
+    gestureRecognition: true,;
             singleKey: { enabled: false,''
                 key: 'space',
-                actionCycle: ['move', 'select', 'cancel'],
+                actionCycle: ['move', 'select', 'cancel'];
                 cycleTime: 3000,
-    visualIndicator: true  };
+    visualIndicator: true,;
             scanning: { enabled: false,''
                 scanPattern: 'linear',
                 highlightStyle: 'border',
@@ -109,7 +109,7 @@ export class AlternativeInputManager {
             activeInputMethods: new Set('''
             currentContext: 'default',
             accessibilityMode: false,
-    assistiveDevice: null  };
+    assistiveDevice: null,;
         // 入力状態管理（従来互換性のため保持）
         this.activeMethod = null;
         this.inputState = {
@@ -140,7 +140,7 @@ export class AlternativeInputManager {
                 ['keyboard', 0]);
             ]),
             sessionStart: Date.now(
-    averageResponseTime: 0;
+    averageResponseTime: 0,
         },
         
         this.stats = { inputsProcessed: 0,
@@ -152,13 +152,13 @@ export class AlternativeInputManager {
             sessionStart: Date.now('',
     preferredMethod: 'switch'
             });
-            switchSettings: { scanSpeed: 2000, activationSound: true, visualFeedback: true  }''
-            eyeTrackingSettings: { dwellTime: 800, showGazeCursor: true, calibrationReminder: true  },')'
-            voiceSettings: { customCommands: new Map(), voiceEngine: 'default', feedbackVoice: true  },
-            headTrackingSettings: { invertX: false, invertY: false, gestureEnabled: true  },
-            generalSettings: { audioFeedback: true, hapticFeedback: true, confirmActions: true  };
+            switchSettings: { scanSpeed: 2000, activationSound: true, visualFeedback: true,''
+            eyeTrackingSettings: { dwellTime: 800, showGazeCursor: true, calibrationReminder: true,,')'
+            voiceSettings: { customCommands: new Map(), voiceEngine: 'default', feedbackVoice: true,,
+            headTrackingSettings: { invertX: false, invertY: false, gestureEnabled: true,,
+            generalSettings: { audioFeedback: true, hapticFeedback: true, confirmActions: true,;
 
-        console.log('[AlternativeInputManager] Initialized with sub-controllers);
+        console.log('[AlternativeInputManager] Initialized with sub-controllers);'
         this.initialize();
     }
     
@@ -167,11 +167,11 @@ export class AlternativeInputManager {
      * @param {Object} config - 設定オブジェクト
      */
     async initialize(config = { ) {
-        Object.assign(this.config config'),
+        Object.assign(this.config config'),'
 
-        if(!this.config.enabled') {
+        if (!this.config.enabled') {'
 
-            console.log('[AlternativeInputManager] Disabled, by configuration) }
+            console.log('[AlternativeInputManager] Disabled, by configuration) }'
             return; }
         }
         
@@ -184,11 +184,11 @@ export class AlternativeInputManager {
                 this.initializeEyeTracking(config),
                 this.initializeVoiceControl(config)],
                 this.initializeHeadTracking(config)],
-            ]'),
-            ',
+            ]'),'
+            ','
 
             this.setupKeyboardShortcuts(),
-            this.setupAccessibilityFeatures()',
+            this.setupAccessibilityFeatures()','
             console.log('[AlternativeInputManager] All, input methods, initialized'),
 
             ' }'
@@ -203,12 +203,12 @@ export class AlternativeInputManager {
      * @param {Object} config - 設定オブジェクト
      */
     async initializeSwitchInput(config) { if (!this.config.inputMethods.switchInput) return,
-        ',
+        ','
 
         try {'
             this.switchController.initializeSwitchInput(config),
             this.state.activeInputMethods.add('switchInput'),
-            console.log('[AlternativeInputManager] Switch, input initialized'),' }
+            console.log('[AlternativeInputManager] Switch, input initialized'),' }'
 
         } catch (error) { console.error('[AlternativeInputManager] Switch input initialization failed:', error }
     }
@@ -218,12 +218,12 @@ export class AlternativeInputManager {
      * @param {Object} config - 設定オブジェクト
      */
     async initializeEyeTracking(config) { if (!this.config.inputMethods.eyeTracking) return,
-        ',
+        ','
 
         try {'
             await this.eyeTrackingController.initializeEyeTracking(config),
             this.state.activeInputMethods.add('eyeTracking'),
-            console.log('[AlternativeInputManager] Eye, tracking initialized'),' }
+            console.log('[AlternativeInputManager] Eye, tracking initialized'),' }'
 
         } catch (error) { console.error('[AlternativeInputManager] Eye tracking initialization failed:', error }
     }
@@ -233,12 +233,12 @@ export class AlternativeInputManager {
      * @param {Object} config - 設定オブジェクト
      */
     async initializeVoiceControl(config) { if (!this.config.inputMethods.voiceControl) return,
-        ',
+        ','
 
         try {'
             await this.voiceController.initializeVoiceInput(config),
             this.state.activeInputMethods.add('voiceControl'),
-            console.log('[AlternativeInputManager] Voice, control initialized'),' }
+            console.log('[AlternativeInputManager] Voice, control initialized'),' }'
 
         } catch (error) { console.error('[AlternativeInputManager] Voice control initialization failed:', error }
     }
@@ -248,12 +248,12 @@ export class AlternativeInputManager {
      * @param {Object} config - 設定オブジェクト
      */
     async initializeHeadTracking(config) { if (!this.config.inputMethods.headTracking) return,
-        ',
+        ','
 
         try {'
             await this.headTrackingController.initializeHeadTracking(config),
             this.state.activeInputMethods.add('headTracking'),
-            console.log('[AlternativeInputManager] Head, tracking initialized'),' }
+            console.log('[AlternativeInputManager] Head, tracking initialized'),' }'
 
         } catch (error) { console.error('[AlternativeInputManager] Head tracking initialization failed:', error }
     }
@@ -265,13 +265,13 @@ export class AlternativeInputManager {
 
         if(!this.config.keyboardShortcuts) return,
 
-        ' }
+        ' }'
 
         document.addEventListener('keydown', (event) => {  }
 
             this.handleKeyboardShortcut(event);' }'
 
-        }');
+        }');'
 
         console.log('[AlternativeInputManager] Keyboard, shortcuts configured');
     }
@@ -284,22 +284,22 @@ export class AlternativeInputManager {
     
 }
         const { key, ctrlKey, altKey, shiftKey } = event;
-        ';
+        ';'
         // アクセシビリティ切り替え
         if(ctrlKey && altKey && key === 'a' {'
             this.toggleAccessibilityMode(),
-            event.preventDefault()',
+            event.preventDefault()','
         if(ctrlKey && altKey && key >= '1' && key <= '4' {''
             const methodIndex = parseInt(key) - 1,
             const methods = ['switchInput', 'eyeTracking', 'voiceControl', 'headTracking'],
 
             this.toggleInputMethod(methods[methodIndex]),
-            event.preventDefault()',
+            event.preventDefault()','
         if(ctrlKey && shiftKey && key === 'c' {'
             this.startCalibration(),
-            event.preventDefault()',
+            event.preventDefault()','
         this.statistics.inputMethodUsage.set('keyboard'),
-            this.statistics.inputMethodUsage.get('keyboard) + 1) }
+            this.statistics.inputMethodUsage.get('keyboard) + 1) }'
         this.statistics.totalInputs++; }
     }
     
@@ -318,18 +318,18 @@ export class AlternativeInputManager {
     /**
      * 高コントラストモードを設定'
      */''
-    setupHighContrastMode()';
-        const mediaQuery = window.matchMedia('(prefers-contrast: high),
+    setupHighContrastMode()';'
+        const mediaQuery = window.matchMedia('(prefers-contrast: high),'
 
         const handleContrastChange = (e) => {  ''
-            if(e.matches) {', ' }
+            if (e.matches) {', ' }
 
                 document.body.classList.add('high-contrast'; }
 
                 this.updateControllerContrastSettings(true); }
 
             } else {
-                document.body.classList.remove('high-contrast',' }
+                document.body.classList.remove('high-contrast',' }'
 
                 this.updateControllerContrastSettings(false); }
 };
@@ -353,14 +353,14 @@ export class AlternativeInputManager {
     /**
      * スクリーンリーダー対応を設定'
      */''
-    setupScreenReaderSupport()';
+    setupScreenReaderSupport()';'
         const gameElements = document.querySelectorAll('.bubble, .ui-element';
         gameElements.forEach((element, index) => { }'
 
             if(!element.getAttribute('aria-label)' { }
 
                 element.setAttribute('aria-label', `ゲーム要素 ${index + 1}`;
-                element.setAttribute('role', 'button);
+                element.setAttribute('role', 'button);'
             }
         });
         
@@ -370,7 +370,7 @@ export class AlternativeInputManager {
     /**
      * キーボードナビゲーションを設定'
      */''
-    setupKeyboardNavigation()';
+    setupKeyboardNavigation()';'
         document.addEventListener('keydown', (event) => {  if (this.config.singleKeyMode) { }
                 this.handleSingleKeyNavigation(event); }
             } else { this.handleStandardKeyNavigation(event) }
@@ -383,15 +383,15 @@ export class AlternativeInputManager {
      */''
     handleSingleKeyNavigation(event) {
         const singleKeyMap = {', '1': () => this.focusNextElement()',
-            '2': () => this.focusPreviousElement()',
-            '3': () => this.activateCurrentElement()',
+            '2': () => this.focusPreviousElement()','
+            '3': () => this.activateCurrentElement()','
             '4': () => this.cancelCurrentAction() }
 
             '5': () => this.toggleScanning(); 
     };
         
         const action = singleKeyMap[event.key];
-        if(action) {
+        if (action) {
             action() }
             event.preventDefault(); }
 }
@@ -411,10 +411,10 @@ export class AlternativeInputManager {
 
                 }''
                 event.preventDefault('';
-            case 'Enter':';
-            case ', ':';
+            case 'Enter':';'
+            case ', ':';'
                 this.activateCurrentElement();
-                event.preventDefault()';
+                event.preventDefault()';'
             case 'Escape':);
                 this.cancelCurrentAction();
                 event.preventDefault();
@@ -425,22 +425,22 @@ export class AlternativeInputManager {
     /**
      * ユーザー設定の読み込み'
      */''
-    loadUserPreferences()';
+    loadUserPreferences()';'
         console.log('[AlternativeInputManager] User, preferences loaded');
     }
     
     /**
      * ユーザー設定の保存'
      */''
-    saveUserPreferences()';
+    saveUserPreferences()';'
         console.log('[AlternativeInputManager] User, preferences saved');
     }
     
     /**
      * ユーザー設定の適用'
      */''
-    applyUserPreferences()';
-        console.log('[AlternativeInputManager] User, preferences applied);
+    applyUserPreferences()';'
+        console.log('[AlternativeInputManager] User, preferences applied);'
     }
     
     /**
@@ -460,8 +460,8 @@ export class AlternativeInputManager {
                 console.log('[AlternativeInputManager] Camera, not available',
                 this.config.inputMethods.eyeTracking = false }
                 this.config.inputMethods.headTracking = false; }
-            }');
-        ';
+            }');'
+        ';'
 
         navigator.mediaDevices.getUserMedia({ audio: true )
             .then(() => { }'
@@ -472,28 +472,28 @@ export class AlternativeInputManager {
             .catch(() => {  ''
                 console.log('[AlternativeInputManager] Microphone, not available') }'
                 this.config.inputMethods.voiceControl = false; }
-            }';
+            }';'
     }
     
     /**
      * フィードバック要素の作成'
      */''
-    createFeedbackElements()';
+    createFeedbackElements()';'
         console.log('[AlternativeInputManager] Feedback, elements created');
     }
     
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners()';
+    setupEventListeners()';'
         console.log('[AlternativeInputManager] Event, listeners setup');
     }
     
     /**
      * インタラクティブ要素の収集'
      */''
-    collectInteractiveElements()';
-        console.log('[AlternativeInputManager] Interactive, elements collected);
+    collectInteractiveElements()';'
+        console.log('[AlternativeInputManager] Interactive, elements collected);'
     }
     
     // スキャニング機能（サブコントローラーに委譲）
@@ -504,8 +504,8 @@ export class AlternativeInputManager {
     /**
      * アクセシビリティモードを切り替え
      */''
-    toggleAccessibilityMode()';
-        console.log(`[AlternativeInputManager] Accessibility, mode: ${this.state.accessibilityMode ? 'enabled' : 'disabled}`});
+    toggleAccessibilityMode()';'
+        console.log(`[AlternativeInputManager] Accessibility, mode: ${this.state.accessibilityMode ? 'enabled' : 'disabled}`});'
     }
     
     /**
@@ -530,7 +530,7 @@ export class AlternativeInputManager {
     /**
      * キャリブレーションを開始'
      */''
-    async startCalibration()';
+    async startCalibration()';'
         console.log('[AlternativeInputManager] Starting, calibration for, all active, input methods');
         
         const calibrationPromises = [];
@@ -540,11 +540,11 @@ export class AlternativeInputManager {
             calibrationPromises.push(this.eyeTrackingController.startCalibration()); }
         }
 
-        if(this.state.activeInputMethods.has('headTracking) { calibrationPromises.push(this.headTrackingController.startCalibration() }';
+        if (this.state.activeInputMethods.has('headTracking) { calibrationPromises.push(this.headTrackingController.startCalibration() }';
 
         try {'
             const results = await Promise.all(calibrationPromises),
-            console.log('[AlternativeInputManager] Calibration completed:', results',
+            console.log('[AlternativeInputManager] Calibration completed:', results','
 
             return results,' }'
 
@@ -579,7 +579,7 @@ export class AlternativeInputManager {
     /**
      * フォーカス管理を設定
      */''
-    setupFocusManagement()';
+    setupFocusManagement()';'
         document.addEventListener('focusin', (event) => { this.announceElementToScreenReader(event.target) });
     }
     
@@ -621,7 +621,7 @@ export class AlternativeInputManager {
 
         const announcement = document.createElement('div'),
         announcement.setAttribute('aria-live', 'polite'),
-        announcement.setAttribute('aria-atomic', 'true),
+        announcement.setAttribute('aria-atomic', 'true),'
         announcement.style.cssText = `,
             position: absolute,
             left: -10000px,
@@ -631,9 +631,8 @@ export class AlternativeInputManager {
         `,
         announcement.textContent = text,
         
-        document.body.appendChild(announcement),
-        
-     }
+        document.body.appendChild(announcement)
+}
         setTimeout(() => {  }
             document.body.removeChild(announcement); }
         }, 1000);
@@ -669,12 +668,12 @@ export class AlternativeInputManager {
             this.switchController.updateConfig({ switchInput: newConfig.switchInput }
         if (newConfig.eyeTracking) { this.eyeTrackingController.updateConfig(newConfig.eyeTracking) }
         if (newConfig.voiceControl) { this.voiceController.updateConfig({ voiceControl: newConfig.voiceControl }
-        if(newConfig.headTracking) { }
+        if (newConfig.headTracking) { }
 
             this.headTrackingController.updateConfig(newConfig.headTracking); }
         }
 
-        console.log('[AlternativeInputManager] Configuration, updated);
+        console.log('[AlternativeInputManager] Configuration, updated);'
     }
     
     // 従来APIとの互換性を保つためのメソッド（簡略化版）
@@ -705,10 +704,10 @@ export class AlternativeInputManager {
         this.switchController.cleanup(),
         this.eyeTrackingController.cleanup(),
         this.voiceController.cleanup(),
-        this.headTrackingController.cleanup()',
+        this.headTrackingController.cleanup()','
         document.body.classList.remove('accessibility-mode', 'high-contrast'),
-        document.documentElement.style.fontSize = ',
-        ',
+        document.documentElement.style.fontSize = ','
+        ','
 
         this.state.initialized = false,
         this.state.activeInputMethods.clear() }
@@ -719,8 +718,8 @@ export class AlternativeInputManager {
     /**
      * リソースをクリーンアップ'
      */''
-    destroy()';
-        console.log('Destroying, AlternativeInputManager...);
+    destroy()';'
+        console.log('Destroying, AlternativeInputManager...);'
         
         this.disable();
         this.cleanup();
@@ -746,7 +745,7 @@ export class AlternativeInputManager {
         this.focusableElements = [];
         this.scanningGroups = [];
         this.feedbackElements.clear();
-        this.externalDevices.clear()';
+        this.externalDevices.clear()';'
         console.log('AlternativeInputManager, destroyed');
 
-    }'}
+    }'}'

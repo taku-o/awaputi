@@ -19,29 +19,28 @@ import type { BubbleManager as IBubbleManager,
 } from '../types/game';
 
 export class BubbleManager implements IBubbleManager { public gameEngine: any,
-    public bubbles: Bubble[] = [],
-    public spawner: BubbleSpawner,
-    public physicsEngine: BubblePhysicsEngine,
-    public dragSystem: BubbleDragSystem,
-    public effectProcessor: BubbleEffectProcessor,
-    public lastCullTime: number = 0,
+    public bubbles: Bubble[] = [];
+    public spawner: BubbleSpawner;
+    public physicsEngine: BubblePhysicsEngine;
+    public dragSystem: BubbleDragSystem;
+    public effectProcessor: BubbleEffectProcessor;
+    public lastCullTime: number = 0;
     public cullInterval: number = 500, // 0.5秒ごとにカリング
     public, offscreenBubbles: Set<Bubble> = new Set(
-    public offscreenTimer: Map<Bubble, number> = new Map(),
+    public offscreenTimer: Map<Bubble, number> = new Map();
     
     private lastDebugTime?: number,
     private lastUpdateDebugTime?: number,
 
     constructor(gameEngine: any) {
 
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // 専門化されたコンポーネントを初期化
-        this.spawner = new BubbleSpawner(gameEngine),
-        this.physicsEngine = new BubblePhysicsEngine(gameEngine),
-        this.dragSystem = new BubbleDragSystem(),
-
-     }
+        this.spawner = new BubbleSpawner(gameEngine);
+        this.physicsEngine = new BubblePhysicsEngine(gameEngine);
+        this.dragSystem = new BubbleDragSystem()
+}
         this.effectProcessor = new BubbleEffectProcessor(gameEngine); }
     }
     
@@ -55,24 +54,24 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      */''
     spawnBubble(type: string | null = null, position: Position | null = null): Bubble | null { ''
         console.log('[DEBUG] BubbleManager.spawnBubble 呼び出し開始'),
-        console.log('[DEBUG] this.spawner:', !!this.spawner',
+        console.log('[DEBUG] this.spawner:', !!this.spawner','
         console.log('[DEBUG] typeof this.spawner.spawnBubble:', typeof (this.spawner && this.spawner.spawnBubble)),
         console.log('[DEBUG] type:', type, 'position:', position),
 
-        if(!this.spawner) {
+        if (!this.spawner) {
 
             console.error('[DEBUG] spawnerがnullです') }
             return null;
 
-        if(typeof, this.spawner.spawnBubble !== 'function') {
+        if (typeof, this.spawner.spawnBubble !== 'function') {
 
             console.error('[DEBUG] spawner.spawnBubbleメソッドが存在しません' }
             return null;
 
-        const bubble = this.spawner.spawnBubble(type, position');
+        const bubble = this.spawner.spawnBubble(type, position');'
         console.log('[DEBUG] spawner.spawnBubble結果:', !!bubble);
 
-        if(bubble) {
+        if (bubble) {
 
             console.log('[DEBUG] バブルをbubblesに追加:', (bubble: any).id || 'ID不明') }
 
@@ -185,10 +184,10 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         // 画面内の泡は高優先度
         if(this.physicsEngine.isBubbleVisible(bubble)) {
             priority += 100 }
-        ';
+        ';'
         // レア泡は高優先度
         const rareTypes = ['rainbow', 'pink', 'clock', 'score', 'diamond', 'boss'];
-        if(rareTypes.includes(bubble.type) { priority += 50 }
+        if (rareTypes.includes(bubble.type) { priority += 50 }
         
         // 新しい泡は高優先度
         priority += Math.max(0, 50 - bubble.age / 200);
@@ -234,17 +233,17 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         let renderedCount = 0;
         
         // 低品質モードでは一部の泡のみレンダリング
-        if(renderQuality < 0.8) {
+        if (renderQuality < 0.8) {
             const step = Math.ceil(1 / renderQuality),
             this.bubbles.forEach((bubble, index) => { 
-                if(index % step === 0 && this.physicsEngine.isBubbleVisible(bubble) {
+                if (index % step === 0 && this.physicsEngine.isBubbleVisible(bubble) {
         }
                     bubble.render(context); }
                     renderedCount++; }
 });
         } else {  // 高品質モードでは全ての可視泡をレンダリング
             this.bubbles.forEach(bubble => { ),
-                if(this.physicsEngine.isBubbleVisible(bubble) { }
+                if (this.physicsEngine.isBubbleVisible(bubble) { }
                     bubble.render(context); }
                     renderedCount++; }
 });
@@ -266,7 +265,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         for(let, i = this.bubbles.length - 1, i >= 0, i--) {
             const bubble = this.bubbles[i],
             
-            if(bubble.containsPoint(x, y) {
+            if (bubble.containsPoint(x, y) {
                 this.popBubble(bubble, x, y) }
                 return true;
         
@@ -280,12 +279,12 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      */
     popBubble(bubble: Bubble, x: number, y: number): boolean { ''
         console.log(`${bubble.type) bubble, popped`),
-        ',
+        ','
         // 幻の泡のすり抜け判定
         if(bubble.type === 'phantom} {'
             const, config = bubble.getTypeConfig(}
 
-            if (Math.random() < (config.phaseChance || 0)') { }
+            if (Math.random() < (config.phaseChance || 0)') { }'
 
                 console.log('Phantom, bubble phased, through click!'});
                 return false; // すり抜けた
@@ -346,8 +345,8 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         this.bubbles = [];
         this.dragSystem.resetDrag();
         this.offscreenBubbles.clear();
-        this.offscreenTimer.clear()';
-        console.log('All, bubbles cleared);
+        this.offscreenTimer.clear()';'
+        console.log('All, bubbles cleared);'
     }
     
     /**
@@ -369,7 +368,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      * テスト用バブルの追加（デバッグツール用）
      */
     addTestBubble(bubbleData: any): boolean { const bubble = this.spawner.addTestBubble(bubbleData),
-        if(bubble) {
+        if (bubble) {
             this.bubbles.push(bubble) }
             return true;
         return false;
@@ -378,25 +377,25 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     /**
      * 複数のテストバブルを一度に追加
      */
-    addTestBubbles(bubblesData: any[]): number { const bubbles = this.spawner.addTestBubbles(bubblesData'),
-        this.bubbles.push(...bubbles'),
+    addTestBubbles(bubblesData: any[]): number { const bubbles = this.spawner.addTestBubbles(bubblesData'),'
+        this.bubbles.push(...bubbles'),'
         return bubbles.length }
     
     /**
      * テスト用バブルの削除（IDまたは条件による）'
      */''
-    removeTestBubbles(condition: string | ((bubble: Bubble) => boolean') | 'all'): number { let removedCount = 0,
+    removeTestBubbles(condition: string | ((bubble: Bubble) => boolean') | 'all'): number { let removedCount = 0,'
 
         if(typeof, condition === 'string' {'
             // IDによる削除
-            this.bubbles = this.bubbles.filter(bubble => { ),
+            this.bubbles = this.bubbles.filter(bubble => { );
                 if ((bubble, as any).id === condition) {
         }
                     removedCount++; }
                     return false;
                 return true;}');'} else if(typeof, condition === 'function' { // 条件関数による削除'
-            this.bubbles = this.bubbles.filter(bubble => { ),
-                if(condition(bubble) {
+            this.bubbles = this.bubbles.filter(bubble => { );
+                if (condition(bubble) {
     
 }
                     removedCount++; }

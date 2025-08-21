@@ -1,5 +1,5 @@
 // TypeScript conversion - basic types
-interface BasicConfig { [key: string]: any }
+interface BasicConfig { [key: string]: any;
 /**
  * DeviceSpecificHandler - デバイス固有の最適化を提供するマネージャー
  * iOS、Android、Web各プラットフォーム固有の最適化を実装
@@ -10,9 +10,9 @@ interface BasicConfig { [key: string]: any }
 import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 class DeviceSpecificHandler { constructor(gameEngine: any) {
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         this.errorHandler = ErrorHandler.getInstance('''
-            browser: 'unknown',
+            browser: 'unknown';
             version: 'unknown' }
             devicePixelRatio: window.devicePixelRatio || 1 
     };
@@ -25,7 +25,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
             };
             touchDelayFix: { fastClickEnabled: true,
                 touchCalloutDisabled: true,
-    touchDelayReduced: true };
+    touchDelayReduced: true,;
             metaTags: { webAppCapable: true,''
                 statusBarStyle: 'black-translucent',
                 viewportFit: 'cover'
@@ -35,15 +35,14 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         this.androidConfig = { blinkOptimizations: {
                 compositorThreaded: true,
                 acceleratedCanvas: true,
-    gpuRasterization: true };
+    gpuRasterization: true,;
             performanceOptimizations: { reducedMotion: false,
                 lowMemoryMode: false,
-    powerSaveMode: false };
+    powerSaveMode: false,;
             touchOptimizations: { ''
                 touchAction: 'manipulation',
                 passiveListeners: true,
-    preventZoom: true 
-    };
+    preventZoom: true,;
         // 高DPI対応設定
         this.highDPIConfig = { scaling: {
                 autoScale: true,
@@ -73,7 +72,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
             this.setupBrowserSpecificFixes(),
             this.setupEventListeners() }
 
-            console.log('[DeviceSpecificHandler] デバイス固有最適化初期化完了', this.platform'; }
+            console.log('[DeviceSpecificHandler] デバイス固有最適化初期化完了', this.platform'; }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'DeviceSpecificHandler.initialize' }'
@@ -85,9 +84,9 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     detectPlatform() {
         const userAgent = navigator.userAgent,
         const platform = navigator.platform,
-        ',
+        ','
         // iOS検出
-        this.platform.isIOS = /iPad|iPhone|iPod/.test(userAgent) || ',
+        this.platform.isIOS = /iPad|iPhone|iPod/.test(userAgent) || ','
                              (platform === 'MacIntel' && navigator.maxTouchPoints > 1),
         
         // Android検出
@@ -106,10 +105,10 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
             this.platform.browser = 'safari'; }
 
         } else if(/Chrome/.test(userAgent)) { ''
-            this.platform.browser = 'chrome',' }
+            this.platform.browser = 'chrome',' }'
 
         } else if(/Firefox/.test(userAgent)) { ''
-            this.platform.browser = 'firefox',' }
+            this.platform.browser = 'firefox',' }'
 
         } else if(/Edge/.test(userAgent)) { ''
             this.platform.browser = 'edge' }
@@ -126,7 +125,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * ブラウザバージョン検出
      */''
-    detectBrowserVersion()';
+    detectBrowserVersion()';'
         if(this.platform.browser === 'safari' {', ' }
 
             match = userAgent.match(/Version\/(\d+\.\d+)/');' }
@@ -146,7 +145,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * ノッチ検出'
      */''
-    detectNotch()';
+    detectNotch()';'
         const testElement = document.createElement('div');
         testElement.style.position = 'fixed';
         testElement.style.top = '0';
@@ -164,9 +163,9 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * セーフエリアサポート検出'
      */''
-    detectSafeAreaSupport()';
-        return CSS.supports('padding-top: env(safe-area-inset-top)') ||';
-               CSS.supports('padding-top: constant(safe-area-inset-top) }
+    detectSafeAreaSupport()';'
+        return CSS.supports('padding-top: env(safe-area-inset-top)') ||';'
+               CSS.supports('padding-top: constant(safe-area-inset-top) }'
     
     /**
      * プラットフォーム最適化適用
@@ -203,12 +202,12 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * WebKit最適化適用'
      */''
-    applyWebKitOptimizations()';
+    applyWebKitOptimizations()';'
         canvas.style.transform = 'translateZ(0)';
         canvas.style.webkitTransform = 'translateZ(0)';
-        ';
+        ';'
         // コンテナ最適化
-        if(container) {
+        if (container) {
 
             container.style.webkitOverflowScrolling = 'touch' }
 
@@ -226,15 +225,15 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         }
         ;
         // タッチコールアウト無効化
-        if(this.iosConfig.touchDelayFix.touchCalloutDisabled) {
+        if (this.iosConfig.touchDelayFix.touchCalloutDisabled) {
 
             document.body.style.webkitTouchCallout = 'none' }
 
             document.body.style.webkitUserSelect = 'none'; }
         }
-        ';
+        ';'
         // CSS touch-action設定
-        if(this.iosConfig.touchDelayFix.touchDelayReduced) {', ' }
+        if (this.iosConfig.touchDelayFix.touchDelayReduced) {', ' }
 
             this.gameEngine.canvas.style.touchAction = 'manipulation'; }
 }
@@ -242,20 +241,20 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * FastClick代替実装'
      */''
-    setupFastClick()';
+    setupFastClick()';'
         this.gameEngine.canvas.addEventListener('touchstart', (e) => {  touchStartTime = Date.now(),
-            if(e.touches.length > 0) {
+            if (e.touches.length > 0) {
     
 }
                 touchStartPos.x = e.touches[0].clientX; }
                 touchStartPos.y = e.touches[0].clientY; }
 
-            }'}, { passive: true }');
+            }'}, { passive: true,');
 
         this.gameEngine.canvas.addEventListener('touchend', (e) => {  const touchEndTime = Date.now(),
             const duration = touchEndTime - touchStartTime,
             
-            if(duration < 200 && e.changedTouches.length > 0) {
+            if (duration < 200 && e.changedTouches.length > 0) {
             
                 const touchEndPos = {
     
@@ -267,7 +266,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
                     Math.pow(touchEndPos.x - touchStartPos.x, 2) +;
                     Math.pow(touchEndPos.y - touchStartPos.y, 2);
 
-                if(distance < 10) {
+                if (distance < 10) {
                     // 即座にクリックイベントを発火
                     const clickEvent = new MouseEvent('click', {
                         bubbles: true,
@@ -276,7 +275,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     clientY: touchEndPos.y) }
                     e.target.dispatchEvent(clickEvent); }
 }
-        }, { passive: true });
+        }, { passive: true,);
     }
     
     /**
@@ -296,9 +295,9 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         metaTags.forEach(({ name, content )) => { }'
 
             let meta = document.querySelector(`meta[name="${name}"]`";"
-            if(!meta) {"
+            if (!meta) {"
 
-                meta = document.createElement('meta),
+                meta = document.createElement('meta),'
                 meta.name = name }
                 document.head.appendChild(meta); }
             }
@@ -320,13 +319,13 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
             document.documentElement.style.setProperty('--vh', `${vh}px`);
         };
 
-        updateViewportHeight()';
-        window.addEventListener('resize', updateViewportHeight';
-        ';
+        updateViewportHeight()';'
+        window.addEventListener('resize', updateViewportHeight';'
+        ';'
         // スクロール禁止
-        document.body.addEventListener('touchmove', (e) => { e.preventDefault(),' }
+        document.body.addEventListener('touchmove', (e) => { e.preventDefault(),' }'
 
-        }, { passive: false }');
+        }, { passive: false,');'
         
         // ダブルタップズーム防止
         let lastTouchEnd = 0;
@@ -358,25 +357,25 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
      */
     applyBlinkOptimizations() {
         const canvas = this.gameEngine.canvas,
-        ',
+        ','
         // コンポジター最適化
-        if(this.androidConfig.blinkOptimizations.compositorThreaded) {''
+        if (this.androidConfig.blinkOptimizations.compositorThreaded) {''
             canvas.style.willChange = 'transform, opacity' }
 
             canvas.style.contain = 'layout style paint'; }
         }
-        ';
+        ';'
         // Canvas2D加速有効化
-        if(this.androidConfig.blinkOptimizations.acceleratedCanvas) {
+        if (this.androidConfig.blinkOptimizations.acceleratedCanvas) {
 
-            const ctx = canvas.getContext('2d),
+            const ctx = canvas.getContext('2d),'
             if (ctx.willReadFrequently !== undefined) {
         }
                 ctx.willReadFrequently = false; }
 }
-        ';
+        ';'
         // GPU ラスタライゼーション
-        if(this.androidConfig.blinkOptimizations.gpuRasterization) {
+        if (this.androidConfig.blinkOptimizations.gpuRasterization) {
 
             canvas.style.imageRendering = 'optimizeSpeed' }
 
@@ -386,12 +385,12 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * Android パフォーマンス最適化'
      */''
-    applyAndroidPerformanceOptimizations()';
+    applyAndroidPerformanceOptimizations()';'
         if ('memory' in, performance && performance.memory) {
         const memoryRatio = performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit,
             if (memoryRatio > 0.8) {
                 this.androidConfig.performanceOptimizations.lowMemoryMode = true,
-                this.enableLowMemoryMode()',
+                this.enableLowMemoryMode()','
         if ('getBattery' in, navigator) {
             navigator.getBattery().then((battery) => { 
                 if (battery.charging === false && battery.level < 0.2) {
@@ -413,12 +412,12 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         }
         
         // パフォーマンス設定調整
-        if(this.gameEngine.performanceOptimizer) { }
+        if (this.gameEngine.performanceOptimizer) { }
 
             this.gameEngine.performanceOptimizer.setLowMemoryMode(true); }
         }
 
-        console.log('[DeviceSpecificHandler] 低メモリモード有効化);
+        console.log('[DeviceSpecificHandler] 低メモリモード有効化);'
     }
     
     /**
@@ -432,12 +431,12 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         }
         
         // エフェクト削減
-        if(this.gameEngine.effectsManager') { }
+        if (this.gameEngine.effectsManager') { }'
 
             this.gameEngine.effectsManager.setQualityLevel(0.5); }
         }
 
-        console.log('[DeviceSpecificHandler] 省電力モード有効化);
+        console.log('[DeviceSpecificHandler] 省電力モード有効化);'
     }
     
     /**
@@ -463,8 +462,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * パッシブタッチリスナー設定
      */''
-    setupPassiveTouchListeners()';
-        ['touchstart', 'touchmove].forEach(eventType => {  ),
+    setupPassiveTouchListeners()';'
+        ['touchstart', 'touchmove].forEach(eventType => {  ),'
             canvas.addEventListener(eventType, (e) => { }
                 // パッシブイベント処理 }
             }, passiveOptions);
@@ -474,14 +473,14 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * ズーム防止
      */''
-    preventZoom()';
+    preventZoom()';'
         this.gameEngine.canvas.addEventListener('touchend', (e) => {  const now = Date.now(),
             if (now - lastTouchEnd <= 300) { }
                 e.preventDefault(); }
             }
 
             lastTouchEnd = now;'}');
-        ';
+        ';'
         // ピンチズーム防止
         this.gameEngine.canvas.addEventListener('gesturestart', (e) => { e.preventDefault() });
     }
@@ -501,17 +500,17 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * デスクトップマウス最適化'
      */''
-    setupDesktopMouseOptimizations()';
+    setupDesktopMouseOptimizations()';'
         canvas.addEventListener('pointermove', (e) => {  ''
             if(e.pointerType === 'mouse' { }
                 // 高精度マウス座標処理 }
                 this.handleHighPrecisionMouse(e); }
             }'}');
-        ';
+        ';'
         // マウスホイール最適化
         canvas.addEventListener('wheel', (e) => {  // スムーズスクロール処理 }
             this.handleSmoothWheel(e); }
-        }, { passive: false });
+        }, { passive: false,);
     }
     
     /**
@@ -545,8 +544,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * デスクトップキーボード最適化
      */''
-    setupDesktopKeyboardOptimizations()';
-        document.addEventListener('keydown', (e) => {  if(this.gameEngine.isGameActive() { }
+    setupDesktopKeyboardOptimizations()';'
+        document.addEventListener('keydown', (e) => {  if (this.gameEngine.isGameActive() { }
                 this.handleGameKeyboard(e); }
 });
     }
@@ -556,13 +555,13 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
      */
     handleGameKeyboard(e) {
 
-        // フルスクリーン切り替え (F11'),
+        // フルスクリーン切り替え (F11'),'
         if(e.key === 'F11' {'
             e.preventDefault() }
             this.toggleFullscreen(); }
         }
 
-        // パフォーマンス情報表示 (Ctrl+Shift+P');
+        // パフォーマンス情報表示 (Ctrl+Shift+P');'
         if(e.ctrlKey && e.shiftKey && e.key === 'P' {'
             e.preventDefault() }
             this.togglePerformanceInfo(); }
@@ -581,13 +580,13 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * Canvas高DPI最適化'
      */''
-    optimizeCanvasForHighDPI()';
-        const ctx = canvas.getContext('2d);
+    optimizeCanvasForHighDPI()';'
+        const ctx = canvas.getContext('2d);'
         
-        if(this.highDPIConfig.scaling.autoScale) {
+        if (this.highDPIConfig.scaling.autoScale) {
         
             const dpr = Math.min(this.platform.devicePixelRatio, this.highDPIConfig.scaling.maxScale),
-            ',
+            ','
             // Canvas内部解像度設定
             const rect = canvas.getBoundingClientRect('',
             canvas.style.width = rect.width + 'px',
@@ -595,7 +594,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
             // コンテキストスケーリング)
             ctx.scale(dpr, dpr),
             // Canvas最適化プロパティ設定
-            if(this.highDPIConfig.rendering.sharpText) {
+            if (this.highDPIConfig.rendering.sharpText) {
     
 }
 
@@ -624,7 +623,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         };
         
         // ResizeObserver使用
-        if(window.ResizeObserver) {
+        if (window.ResizeObserver) {
             const observer = new ResizeObserver(checkDPRChange) }
 
             observer.observe(this.gameEngine.canvas); }
@@ -642,12 +641,12 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         
         // 高DPI環境でのレンダリング最適化
         if (this.platform.devicePixelRatio > 1) {''
-            if(this.highDPIConfig.rendering.crispEdges) {''
+            if (this.highDPIConfig.rendering.crispEdges) {''
                 canvas.style.imageRendering = 'crisp-edges' }
 
                 canvas.style.imageRendering = '-webkit-optimize-contrast'; }
             }
-            ';
+            ';'
             // アンチエイリアシング設定
             const ctx = canvas.getContext('2d');
             ctx.imageSmoothingEnabled = this.highDPIConfig.rendering.antialiasing !== 'none';
@@ -661,12 +660,12 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     setupBrowserSpecificFixes() {
 
         switch(this.platform.browser) {''
-            case 'safari':',
+            case 'safari':','
                 this.applySafariFixes('''
-            case 'chrome': ',
+            case 'chrome': ','
                 this.applyChromeFixes('',
-            case 'firefox':',
-                this.applyFirefoxFixes()',
+            case 'firefox':','
+                this.applyFirefoxFixes()','
             case 'edge':),
                 this.applyEdgeFixes() }
                 break; }
@@ -719,9 +718,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
 
                     audioContext.resume() }
 
-            document.addEventListener('touchstart', resumeAudio, { once: true }';
-            document.addEventListener('click', resumeAudio, { once: true 
-    }
+            document.addEventListener('touchstart', resumeAudio, { once: true,';'
+            document.addEventListener('click', resumeAudio, { once: true,
     
     /**
      * Chrome固有修正
@@ -756,7 +754,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
 };
         
         // 重要な関数を最適化
-        if(this.gameEngine.update) {
+        if (this.gameEngine.update) {
     
 }
             optimizeFunction(() => {});
@@ -778,7 +776,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
      */''
     setupFirefoxOptimizations('';
         canvas.style.imageRendering = '-moz-crisp-edges';
-        ';
+        ';'
         // Quantum最適化
         canvas.style.willChange = 'transform, opacity';
     }
@@ -802,17 +800,17 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * イベントリスナー設定'
      */''
-    setupEventListeners()';
+    setupEventListeners()';'
         window.addEventListener('orientationchange', () => {  setTimeout(() => { }
                 this.handleOrientationChange(); }
 
             }, 100);'}');
-        ';
+        ';'
         // ウィンドウサイズ変更
-        window.addEventListener('resize', () => { this.handleResize(),' }
+        window.addEventListener('resize', () => { this.handleResize(),' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 可視性変更
         document.addEventListener('visibilitychange', () => { this.handleVisibilityChange() });
     }
@@ -829,7 +827,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
             if (this.gameEngine.handleOrientationChange) {''
                 this.gameEngine.handleOrientationChange() }
 
-            console.log('[DeviceSpecificHandler] 画面向き変更処理完了');' }
+            console.log('[DeviceSpecificHandler] 画面向き変更処理完了');' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'DeviceSpecificHandler.handleOrientationChange' }'
@@ -875,7 +873,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
             this.gameEngine.performanceOptimizer.setBackgroundMode(true); }
         }
 
-        console.log('[DeviceSpecificHandler] バックグラウンドモード有効化);
+        console.log('[DeviceSpecificHandler] バックグラウンドモード有効化);'
     }
     
     /**
@@ -889,8 +887,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
         }
         ;
         // DPI再確認
-        this.setupHighDPISupport()';
-        console.log('[DeviceSpecificHandler] フォアグラウンドモード復帰);
+        this.setupHighDPISupport()';'
+        console.log('[DeviceSpecificHandler] フォアグラウンドモード復帰);'
     }
     
     /**
@@ -949,10 +947,10 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
     /**
      * クリーンアップ'
      */''
-    cleanup()';
-            window.removeEventListener('orientationchange', this.handleOrientationChange';
-            window.removeEventListener('resize', this.handleResize';
-            document.removeEventListener('visibilitychange', this.handleVisibilityChange';
+    cleanup()';'
+            window.removeEventListener('orientationchange', this.handleOrientationChange';'
+            window.removeEventListener('resize', this.handleResize';'
+            document.removeEventListener('visibilitychange', this.handleVisibilityChange';'
 
             console.log('[DeviceSpecificHandler] クリーンアップ完了');
         } catch (error) {
@@ -961,7 +959,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {
 
 // シングルトンインスタンス
 let deviceSpecificHandlerInstance = null;
-';
+';'
 
 export function getDeviceSpecificHandler(gameEngine = null) { if (!deviceSpecificHandlerInstance && gameEngine) {''
         deviceSpecificHandlerInstance = new DeviceSpecificHandler(gameEngine) }

@@ -11,13 +11,13 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 export class SettingsNotificationSystem {
     constructor() {
         // 通知リスナー
-        this.listeners = new Map(),
+        this.listeners = new Map();
         
         // コンポーネント監視
-        this.componentWatchers = new Map(),
+        this.componentWatchers = new Map();
         
         // 通知履歴
-        this.notificationHistory = [],
+        this.notificationHistory = [];
         
         // 通知統計
         this.stats = {
@@ -28,8 +28,8 @@ export class SettingsNotificationSystem {
     };
         ;
         // デバッグモード
-        this.debugMode = this._isDebugMode()';
-        this._logDebug('SettingsNotificationSystem, initialized);
+        this.debugMode = this._isDebugMode()';'
+        this._logDebug('SettingsNotificationSystem, initialized);'
     }
     
     /**
@@ -42,9 +42,9 @@ export class SettingsNotificationSystem {
     addListener(settingKey, callback, options = { ) {
         try {
             const listenerId = this._generateListenerId(),
-            ',
+            ','
 
-            if(!this.listeners.has(settingKey) {
+            if (!this.listeners.has(settingKey) {
     }
 
                 this.listeners.set(settingKey, new Map()); }
@@ -58,9 +58,9 @@ export class SettingsNotificationSystem {
                     priority: options.priority || 'normal',
                     context: options.context || 'unknown'
             };
-                addedAt: Date.now();
+                addedAt: Date.now(),
                 callCount: 0,
-    lastCalled: null;
+    lastCalled: null,
             },
             
             this.listeners.get(settingKey).set(listenerId, listenerInfo);
@@ -68,7 +68,7 @@ export class SettingsNotificationSystem {
             this._logDebug(`Listener, added: ${settingKey} (ID: ${listenerId}`});
             
             return listenerId;
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
@@ -85,7 +85,7 @@ export class SettingsNotificationSystem {
     removeListener(listenerId) {
         try {
             for (const [settingKey, listeners] of this.listeners) {
-                if(listeners.has(listenerId) {
+                if (listeners.has(listenerId) {
                     listeners.delete(listenerId),
                     
                     // 空になったら削除
@@ -99,7 +99,7 @@ export class SettingsNotificationSystem {
             
             this._logWarning(`Listener, not found: ${listenerId}`});
             return false;
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
@@ -125,9 +125,8 @@ export class SettingsNotificationSystem {
                 watchedSettings: [...watchedSettings],
                 addedAt: Date.now(),
                 updateCount: 0,
-    lastUpdated: null }
-                isActive: true 
-    };
+    lastUpdated: null,
+                isActive: true,;
             this.componentWatchers.set(watcherId, watcherInfo);
             
             // 各設定に対してリスナーを追加
@@ -136,13 +135,13 @@ export class SettingsNotificationSystem {
                     this._updateComponent(watcherId, settingKey, newValue, oldValue); }
                 }, {'
                     context: `component:${componentName}`,''
-                    priority: 'high';
+                    priority: 'high',
                 }) }
             
             this._logDebug(`Component, watcher added: ${componentName} (ID: ${watcherId}`});
             
             return watcherId;
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
@@ -158,7 +157,7 @@ export class SettingsNotificationSystem {
      */
     removeComponentWatcher(watcherId) {
         try {
-            if(this.componentWatchers.has(watcherId) {
+            if (this.componentWatchers.has(watcherId) {
                 const watcherInfo = this.componentWatchers.get(watcherId),
                 watcherInfo.isActive = false,
                 
@@ -169,7 +168,7 @@ export class SettingsNotificationSystem {
             
             this._logWarning(`Component, watcher not, found: ${watcherId}`});
             return false;
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
@@ -195,7 +194,7 @@ export class SettingsNotificationSystem {
                 oldValue,
                 metadata,
                 timestamp: Date.now(
-    processed: false }
+    processed: false,
                 listeners: [] 
     };
             // 通知履歴に追加
@@ -203,18 +202,18 @@ export class SettingsNotificationSystem {
             this._trimNotificationHistory();
             // リスナーに通知
             this._notifyListeners(settingKey, newValue, oldValue, notification);
-            ';
+            ';'
             // ワイルドカードリスナーに通知
             this._notifyListeners('*', newValue, oldValue, notification);
             
             notification.processed = true;
             
             this._logDebug(`Setting, change notified: ${settingKey} = ${newValue}`});
-            ';
+            ';'
 
         } catch (error) { this.stats.failedNotifications++,
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
-                operation: 'notifyChange),
+                operation: 'notifyChange),'
                 settingKey,
                 newValue),
                 oldValue });
@@ -226,7 +225,7 @@ export class SettingsNotificationSystem {
      * @private
      */
     _notifyListeners(settingKey, newValue, oldValue, notification) {
-        if(!this.listeners.has(settingKey) {
+        if (!this.listeners.has(settingKey) {
     }
             return; }
         }
@@ -246,7 +245,7 @@ export class SettingsNotificationSystem {
                 
                 notification.listeners.push({ id: listenerInfo.id)
                    , context: listenerInfo.options.context),
-                    success: true  } catch (error) { notification.listeners.push({
+                    success: true, catch (error) { notification.listeners.push({
                     id: listenerInfo.id),
                     context: listenerInfo.options.context,
     success: false),
@@ -290,23 +289,23 @@ export class SettingsNotificationSystem {
      */
     _updateComponent(watcherId, settingKey, newValue, oldValue) {
         try {
-            if(!this.componentWatchers.has(watcherId) {
+            if (!this.componentWatchers.has(watcherId) {
     }
                 return; }
             }
             
             const watcherInfo = this.componentWatchers.get(watcherId);
 
-            if(!watcherInfo.isActive) { return }
+            if (!watcherInfo.isActive) { return }
             
             const { component, componentName } = watcherInfo;
-            ';
+            ';'
             // コンポーネントの更新メソッドを呼び出し
             if(typeof, component.onSettingChange === 'function' {', ' }
 
                 component.onSettingChange(settingKey, newValue, oldValue);' }'
 
-            } else if(typeof, component.updateSetting === 'function) { component.updateSetting(settingKey, newValue) } else {  // 設定キーに基づいて適切なメソッドを呼び出し }'
+            } else if (typeof, component.updateSetting === 'function) { component.updateSetting(settingKey, newValue) } else {  // 設定キーに基づいて適切なメソッドを呼び出し }'
                 this._callComponentMethod(component, settingKey, newValue); }
             }
             
@@ -315,14 +314,14 @@ export class SettingsNotificationSystem {
             this.stats.componentUpdates++;
             
             this._logDebug(`Component, updated: ${componentName}.${settingKey} = ${newValue}`});
-            ';
+            ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
-                operation: '_updateComponent),
+                operation: '_updateComponent),'
                 watcherId,
                 settingKey),
-                newValue }';
+                newValue }';'
         }
     }
     
@@ -332,7 +331,7 @@ export class SettingsNotificationSystem {
      */''
     _callComponentMethod(component, settingKey, newValue) {
         // 設定キーに基づいてメソッド名を推測
-        const methodMappings = {', 'masterVolume': 'setMasterVolume',
+        const methodMappings = {', 'masterVolume': 'setMasterVolume','
             'sfxVolume': 'setSfxVolume',
             'bgmVolume': 'setBgmVolume',
             'language': 'setLanguage',
@@ -479,10 +478,10 @@ export class SettingsNotificationSystem {
                     clearTimeout(listener.debounceTimer); }
 }
         }
-        ';
+        ';'
 
         this.listeners.clear();
-        this.componentWatchers.clear()';
+        this.componentWatchers.clear()';'
         this._logDebug('SettingsNotificationSystem, cleaned up';
     }
     
@@ -490,10 +489,10 @@ export class SettingsNotificationSystem {
      * デバッグモード判定
      * @private'
      */''
-    _isDebugMode()';
+    _isDebugMode()';'
             if (typeof, window !== 'undefined' && window.location' {'
 
-                return new URLSearchParams(window.location.search).has('debug') ||' }
+                return new URLSearchParams(window.location.search).has('debug') ||' }'
 
                        (typeof, localStorage !== 'undefined' && localStorage.getItem('debugMode') === 'true'); }
             }

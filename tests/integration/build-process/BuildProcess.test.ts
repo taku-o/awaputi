@@ -12,9 +12,9 @@ describe('Build Process Integration', () => {
     let moduleValidator: any,
     beforeAll(() => {
         htmlChecker = new HTMLJavaScriptChecker(),
-        moduleValidator = new JavaScriptModuleValidator() }');
-    describe('Fixed Files Validation', (') => {
-        test('test-error-handler.html should load without syntax errors', async (') => {
+        moduleValidator = new JavaScriptModuleValidator() }');'
+    describe('Fixed Files Validation', (') => {'
+        test('test-error-handler.html should load without syntax errors', async (') => {'
             // test-error-handler.html の内容を検証
             const testHTML = `
                 <!DOCTYPE html>
@@ -27,8 +27,8 @@ describe('Build Process Integration', () => {
                     <script>
                         // 修正されたXSSテストコード
                         const invalidInputs = [
-                            { value: 'a'.repeat(100'), desc: '長すぎる文字列' },
-                            { value: '&lt,script&gt,alert("xss"")&lt,/script&gt,', desc: 'HTMLタグを含む文字列' },
+                            { value: 'a'.repeat(100'), desc: '長すぎる文字列' },'
+                            { value: '&lt,script&gt,alert("xss"")&lt,/script&gt,', desc: 'HTMLタグを含む文字列' },"
                             { value: 123, desc: '数値' },
                             { value: null, desc: 'null値' }
                         ];
@@ -42,32 +42,32 @@ describe('Build Process Integration', () => {
             const result = htmlChecker.validateHTML(testHTML);
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
-            expect(result.scriptBlockCount).toBe(1');
+            expect(result.scriptBlockCount).toBe(1');'
             // エスケープされたXSSテストコードの確認
             expect(result.warnings.some(w => w.type === 'ESCAPED_XSS_TEST').toBe(true);
-        }');
-        test('LocalizationManager.js should parse correctly', async (') => {
+        }');'
+        test('LocalizationManager.js should parse correctly', async (') => {'
             // LocalizationManager のモック構造テスト
             const localizationManager = `
                 import { TranslationDataManager  } from './localization-manager/TranslationDataManager';
                 import { CulturalAdaptationHandler  } from './localization-manager/CulturalAdaptationHandler';
                 import { I18nIntegrationController  } from './localization-manager/I18nIntegrationController';
                 export class LocalizationManager {
-                    constructor(') {
-                        this.currentLanguage = 'ja',
-                        this.fallbackLanguage = 'en',
+                    constructor(') {'
+                        this.currentLanguage = 'ja';
+                        this.fallbackLanguage = 'en';
                         
-                        this.translationDataManager = new TranslationDataManager(),
-                        this.culturalAdaptationHandler = new CulturalAdaptationHandler(),
-                        this.integrationController = new I18nIntegrationController(),
-                        this.languageChangeListeners = new Set(),
+                        this.translationDataManager = new TranslationDataManager();
+                        this.culturalAdaptationHandler = new CulturalAdaptationHandler();
+                        this.integrationController = new I18nIntegrationController();
+                        this.languageChangeListeners = new Set();
                         this.initializeAsync() }
                     
                     async initializeAsync() {
                         try {
                             await this.translationDataManager.initialize(),
                             await this.culturalAdaptationHandler.initialize(),
-                            await this.integrationController.initialize() } catch (error') {
+                            await this.integrationController.initialize() } catch (error') {'
                             console.error('LocalizationManager initialization failed:', error) }
                     }
                     
@@ -76,14 +76,14 @@ describe('Build Process Integration', () => {
                     
                     setLanguage(language {
                         if (this.currentLanguage !== language) {
-                            this.currentLanguage = language,
+                            this.currentLanguage = language;
                             this.notifyLanguageChange(language) }
                     }
                     
                     notifyLanguageChange(language {
                         this.languageChangeListeners.forEach(listener => {
                             try {),
-                                listener(language) } catch (error') {
+                                listener(language) } catch (error') {'
                                 console.error('Language change listener error:', error) }
                         });
                     }
@@ -96,9 +96,9 @@ describe('Build Process Integration', () => {
             expect(result.statistics.exports).toBe(1);
             expect(result.statistics.classes).toBe(1);
             expect(result.statistics.functions).toBe(1); // async initializeAsync
-        }');
+        }');'
     }
-    describe('Resource Availability Tests', (') => {
+    describe('Resource Availability Tests', (') => {'
         test('favicon.ico should be available', () => {
             // favicon.ico の存在確認テスト
             // 実際のファイルシステムアクセスはテスト環境に依存するため、
@@ -108,8 +108,8 @@ describe('Build Process Integration', () => {
                 // favicon.ico が作成されたことをシミュレート
                 return true };
             expect(mockFaviconCheck().toBe(true);
-        }');
-        test('should handle 404 errors gracefully', (') => {
+        }');'
+        test('should handle 404 errors gracefully', (') => {'
             // 404エラーの適切な処理テスト
             const mockResourceLoader = {
                 loadResource(path {
@@ -121,22 +121,20 @@ describe('Build Process Integration', () => {
                 
                 handleResourceError(error {
                     // 404エラーを適切に処理
-                    if (error.status === 404') {
+                    if (error.status === 404') {'
                         console.warn('Resource not found, continuing without it'),
-                        return { handled: true };
-                    }
-                    return { handled: false };
-                }
+                        return { handled: true }
+                    return { handled: false }
             };
             const faviconResult = mockResourceLoader.loadResource('favicon.ico');
-            expect(faviconResult.status).toBe(200');
+            expect(faviconResult.status).toBe(200');'
             const missingResult = mockResourceLoader.loadResource('missing.ico');
             expect(missingResult.status).toBe(404);
             const handlingResult = mockResourceLoader.handleResourceError(missingResult);
             expect(handlingResult.handled).toBe(true);
-        }');
+        }');'
     }
-    describe('Development Server Startup', (') => {
+    describe('Development Server Startup', (') => {'
         test('should start without syntax errors in console', async () => {
             // 開発サーバー起動時のエラー検証シミュレーション
             const mockConsoleErrors: any[] = [],
@@ -146,8 +144,8 @@ describe('Build Process Integration', () => {
                 <html>
                 <body>
                     <script>
-                        const testData = [')
-                            { value: '&lt,script&gt,alert("test"")&lt,/script&gt,', desc: 'escaped HTML' }
+                        const testData = [')'
+                            { value: '&lt,script&gt,alert("test"")&lt,/script&gt,', desc: 'escaped HTML' }"
                         ];
                     </script>
                 </body>
@@ -166,13 +164,13 @@ describe('Build Process Integration', () => {
                 mockConsoleErrors.push(...moduleValidationResult.errors.map(e => e.message) }
             // サーバー起動時にエラーがないことを確認
             expect(mockConsoleErrors.toHaveLength(0);
-        }');
+        }');'
         test('should maintain functionality after fixes', () => {
             // 修正後も機能が維持されることを確認
             const mockErrorHandler = {
-                validateInput(value, type, options') {
+                validateInput(value, type, options') {'
                     // エラーハンドリング機能のテスト
-                    if (type === 'string' && options.escapeHtml') {
+                    if (type === 'string' && options.escapeHtml') {'
                         // HTMLエスケープ処理
                         const escaped = value.replace(/</g, '&lt,').replace(/>/g, '&gt,'),
                         return {
@@ -184,14 +182,14 @@ describe('Build Process Integration', () => {
                     return { isValid: true, sanitizedValue: value, errors: [] };
                 }
             };
-            const testInput = '<script>alert("xss"")</script>';
+            const testInput = '<script>alert("xss"")</script>';"
             const result = mockErrorHandler.validateInput(testInput, 'string', { escapeHtml: true ,
             expect(result.isValid).toBe(true),
-            expect(result.sanitizedValue').toBe('&lt,script&gt'),alert("xss"")&lt,/script&gt,'),
-            expect(result.errors).toHaveLength(0) }');
+            expect(result.sanitizedValue').toBe('&lt,script&gt'),alert("xss"")&lt,/script&gt,'),"
+            expect(result.errors).toHaveLength(0) }');'
     }
-    describe('Full Build Process Verification', (') => {
-        test('complete build process should succeed', async (') => {
+    describe('Full Build Process Verification', (') => {'
+        test('complete build process should succeed', async (') => {'
             // 完全なビルドプロセスのシミュレーション
             const buildSteps = [
                 'HTML構文検証',
@@ -203,7 +201,7 @@ describe('Build Process Integration', () => {
             const buildResults: any[] = [],
             // Step 1: HTML構文検証
             const htmlResult = htmlChecker.validateHTML(`
-                <html><body>')
+                <html><body>')'
                     <script>console.log('Build test'),</script>
                 </body></html>
             `),
@@ -214,7 +212,7 @@ describe('Build Process Integration', () => {
             // Step, 2: JavaScript構文検証
             const jsResult = await moduleValidator.validateModule(`
                 export class BuildTest {),
-                    constructor(') {
+                    constructor(') {'
                         this.status = 'ready' }
                 }
             `);
@@ -242,4 +240,4 @@ describe('Build Process Integration', () => {
             expect(buildResults.every(result => result.success).toBe(true),
             expect(buildResults[buildResults.length - 1].errors).toBe(0) });
     }
-}');
+}');'

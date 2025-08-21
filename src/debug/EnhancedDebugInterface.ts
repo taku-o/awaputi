@@ -12,39 +12,39 @@ import { DebugVisualization  } from './interface/DebugVisualization.js';
 import { DebugDataExporter  } from './interface/DebugDataExporter.js';
 
 interface GameEngine { // Game engine interface }
-';
+';'
 
 interface ErrorHandler { ''
     handleComponentError: (error: Error, component: string, operation: string') => any }'
 }
-';
+';'
 
 interface DebugComponent { initialized?: boolean,
-    setErrorHandler?: (handler: ErrorHandler['handleComponentError]) => void,
-    initialize?: () => Promise<void> | void,
-    cleanup?: () => void,
-    switchPanel?: (panelId: string) => void,
-    registerShortcut?: (shortcut: string, callback: () => void, options?: any) => void,
-    setTheme?: (theme: string) => void,
-    exportData?: (data: any, filename: string, format?: string) => void,
-    getActivePanel?: () => string,
-    getPanelHistory?: () => string[],
-    getRegisteredPanels?: () => any[],
-    getShortcuts?: () => Map<string, any>,
-    getShortcutConflicts?: () => any[],
-    getCurrentTheme?: () => string | null,
-    getAvailableThemes?: () => string[],
-    getCurrentBreakpoint?: () => string,
-    isTouchDevice?: () => boolean,
-    getOrientation?: () => string,
-    getIntegrationTestResults?: () => any,
-    exportIntegrationTestResults?: (format?: string) => void,
-    getRequirementsValidationResults?: () => any,
-    exportRequirementsValidationResults?: (format?: string) => void,
-    getFinalValidationResults?: () => any,
-    exportFinalValidationResults?: (format?: string) => void,
-    updatePanelUI?: () => void,
-    applyResponsiveLayout?: () => void,
+    setErrorHandler?: (handler: ErrorHandler['handleComponentError]) => void;'
+    initialize?: () => Promise<void> | void;
+    cleanup?: () => void;
+    switchPanel?: (panelId: string) => void;
+    registerShortcut?: (shortcut: string, callback: () => void, options?: any) => void;
+    setTheme?: (theme: string) => void;
+    exportData?: (data: any, filename: string, format?: string) => void;
+    getActivePanel?: () => string;
+    getPanelHistory?: () => string[];
+    getRegisteredPanels?: () => any[];
+    getShortcuts?: () => Map<string, any>;
+    getShortcutConflicts?: () => any[];
+    getCurrentTheme?: () => string | null;
+    getAvailableThemes?: () => string[];
+    getCurrentBreakpoint?: () => string;
+    isTouchDevice?: () => boolean;
+    getOrientation?: () => string;
+    getIntegrationTestResults?: () => any;
+    exportIntegrationTestResults?: (format?: string) => void;
+    getRequirementsValidationResults?: () => any;
+    exportRequirementsValidationResults?: (format?: string) => void;
+    getFinalValidationResults?: () => any;
+    exportFinalValidationResults?: (format?: string) => void;
+    updatePanelUI?: () => void;
+    applyResponsiveLayout?: () => void;
     setShortcutsEnabled?: (enabled: boolean) => void 
     }
 
@@ -53,39 +53,39 @@ interface ComponentDefinition { name: string,
     }
 
 interface Position { x: number,
-    y: number }
+    y: number;
 
 interface Size { width: number,
-    height: number }
+    height: number;
 
 interface Settings { theme: string,
-    autoSave: boolean,
-    keyboardNavigation: boolean,
-    shortcuts: boolean,
-    performanceMonitoring: boolean }
+    autoSave: boolean;
+    keyboardNavigation: boolean;
+    shortcuts: boolean;
+    performanceMonitoring: boolean;
 
 interface SessionData { sessionId: string,
-    position?: Position,
-    size?: Size,
-    activePanel: string,
-    settings?: Settings,
-    timestamp: number,
-    history?: string[] }
+    position?: Position;
+    size?: Size;
+    activePanel: string;
+    settings?: Settings;
+    timestamp: number;
+    history?: string[];
 
 interface PanelConfig { title?: string,
-    component?: any,
-    icon?: string,
-    shortcut?: string }
+    component?: any;
+    icon?: string;
+    shortcut?: string;
 
 export class EnhancedDebugInterface extends EffectDebugInterface { private components: Map<string, DebugComponent>,
-    private initialized: boolean,
-    private errorHandler: ErrorHandler,
-    private sessionId: string,
+    private initialized: boolean;
+    private errorHandler: ErrorHandler;
+    private sessionId: string;
     public, activePanel: string,
-    private panelHistory: string[],
-    private layout: string,
-    private position: Position,
-    private size: Size,
+    private panelHistory: string[];
+    private layout: string;
+    private position: Position;
+    private size: Size;
     private, settings: Settings,
     protected container?: HTMLElement | null,
 
@@ -94,11 +94,11 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         super(gameEngine),
         
         // Main Controller Pattern用の設定
-        this.components = new Map(),
-        this.initialized = false,
-        this.errorHandler = ComponentErrorHandler,
-        this.sessionId = this.generateSessionId('',
-        this.activePanel = 'console',
+        this.components = new Map();
+        this.initialized = false;
+        this.errorHandler = ComponentErrorHandler;
+        this.sessionId = this.generateSessionId('';
+        this.activePanel = 'console';
 
         this.panelHistory = [] }
 
@@ -111,7 +111,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             autoSave: true,
             keyboardNavigation: true,
             shortcuts: true,
-    performanceMonitoring: true }))
+    performanceMonitoring: true,))
         );
         this.initializeEnhancedFeatures();
     }
@@ -136,7 +136,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         for (const { name, class: ComponentClass ) of components) {
             try {
                 const component = new ComponentClass(this),
-                if(component.setErrorHandler) {
+                if (component.setErrorHandler) {
     
 }
                     component.setErrorHandler(this.errorHandler.handleComponentError); }
@@ -150,7 +150,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             }
 }
 
-    private createFallbackComponent(name: string): DebugComponent { return { initialized: false };
+    private createFallbackComponent(name: string): DebugComponent { return { initialized: false,;
             // 基本的なフォールバック実装 }
             switchPanel: () => {},
             registerShortcut: () => {},
@@ -166,14 +166,14 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     }
 
     private createEnhancedDebugPanel(): void { // 基本的なコンテナを作成（EffectDebugInterfaceの拡張）
-        if(this.container) {
+        if (this.container) {
 
-            this.container.remove()',
-        this.container = document.createElement('div'),
+            this.container.remove()','
+        this.container = document.createElement('div');
         this.container.id = 'enhanced-debug-interface',
         this.container.className = 'debug-interface enhanced',
         this.container.style.cssText = ` }
-            position: fixed }
+            position: fixed;
             top: ${this.position.y}px,
             left: ${this.position.x}px,
             width: ${this.size.width}px,
@@ -183,18 +183,18 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         `;
 
         // 基本構造を作成
-        this.container.innerHTML = `';
+        this.container.innerHTML = `';'
             <div class="debug-header">"";
                 <div class="debug-title">Enhanced Debug Interface</div>"";
                 <div class="debug-controls">"";
                     <button class="debug-btn minimize-btn" title="Minimize">−</button>"";
                     <button class="debug-btn settings-btn" title="Settings">⚙</button>"";
                     <button class="debug-btn close-btn" title="Close">×</button>;
-                </div>";
+                </div>";"
             </div>"";
             <div class="debug-body">"";
                 <div class="debug-tabs"></div>"";
-                <div class="debug-content"></div>";
+                <div class="debug-content"></div>";"
             </div>"";
             <div class="debug-footer">"";
                 <div class="debug-status">Ready</div>"";
@@ -210,39 +210,39 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
     private initializeComponentUI(): void { // パネルマネージャーにデフォルトパネルを作成させる""
         const panelManager = this.getComponent('panelManager',
-        if(panelManager && panelManager.switchPanel) {
+        if (panelManager && panelManager.switchPanel) {
             // デフォルトパネルは既にregisterDefaultPanelsで登録済み
         }
 
             panelManager.switchPanel('console'; }'
 }
-';
+';'
 
     private bindEnhancedEvents(): void { ''
         if(!this.container) return,
-',
+','
         // ヘッダーボタンのイベント
         const minimizeBtn = this.container.querySelector('.minimize-btn') as HTMLButtonElement,
         const settingsBtn = this.container.querySelector('.settings-btn') as HTMLButtonElement,
-        const closeBtn = this.container.querySelector('.close-btn) as HTMLButtonElement,
+        const closeBtn = this.container.querySelector('.close-btn) as HTMLButtonElement,'
 
-        if(minimizeBtn) {', ' }
+        if (minimizeBtn) {', ' }
 
             minimizeBtn.addEventListener('click', () => this.minimize(); }
 
         }''
-        if(settingsBtn) {', ' }
+        if (settingsBtn) {', ' }
 
             settingsBtn.addEventListener('click', () => this.showSettings(); }
 
         }''
-        if(closeBtn) {', ' }
+        if (closeBtn) {', ' }
 
             closeBtn.addEventListener('click', () => this.hide(); }
 }
 
-    private setupDraggableInterface()';
-        const header = this.container?.querySelector('.debug-header) as HTMLElement;
+    private setupDraggableInterface()';'
+        const header = this.container?.querySelector('.debug-header) as HTMLElement;'
         if (header) { this.makeDraggable(header) }
     }
  : undefined
@@ -258,8 +258,8 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
      * パネルを登録（後方互換性）
      */''
     public registerPanel(id: string, config: PanelConfig): void { ''
-        const panelManager = this.getComponent('panelManager),
-        if(panelManager && panelManager.switchPanel) {
+        const panelManager = this.getComponent('panelManager),'
+        if (panelManager && panelManager.switchPanel) {
             // Assume panelManager has registerPanel method
         }
             (panelManager, as any).registerPanel(id, config); }
@@ -269,8 +269,8 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
      * パネルを切り替え（後方互換性）
      */''
     public switchPanel(panelId: string): void { ''
-        const panelManager = this.getComponent('panelManager),
-        if(panelManager && panelManager.switchPanel) {
+        const panelManager = this.getComponent('panelManager),'
+        if (panelManager && panelManager.switchPanel) {
             panelManager.switchPanel(panelId) }
             this.activePanel = panelId; }
 }
@@ -279,8 +279,8 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
      * ショートカットを登録（後方互換性）'
      */''
     public registerShortcut(shortcut: string, callback: () => void, options: any = {}'): void { ''
-        const commandProcessor = this.getComponent('commandProcessor),
-        if(commandProcessor && commandProcessor.registerShortcut) {
+        const commandProcessor = this.getComponent('commandProcessor),'
+        if (commandProcessor && commandProcessor.registerShortcut) {
     
 }
             commandProcessor.registerShortcut(shortcut, callback, options); }
@@ -290,8 +290,8 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
      * テーマを設定（後方互換性）'
      */''
     public setTheme(theme: string): void { ''
-        const visualizer = this.getComponent('visualizer),
-        if(visualizer && visualizer.setTheme) {
+        const visualizer = this.getComponent('visualizer),'
+        if (visualizer && visualizer.setTheme) {
 
             visualizer.setTheme(theme) }
             this.settings.theme = theme; }
@@ -301,34 +301,34 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
      * データをエクスポート（後方互換性）'
      */''
     public exportData(data: any, filename: string, format: string = 'json'): void {,
-        const dataExporter = this.getComponent('dataExporter),
-        if(dataExporter && dataExporter.exportData) {
+        const dataExporter = this.getComponent('dataExporter),'
+        if (dataExporter && dataExporter.exportData) {
     
 }
             dataExporter.exportData(data, filename, format); }
 }
 
     // === ウィンドウ操作 ===
-';
+';'
 
     public show(): void { ''
-        if(this.container) {
+        if (this.container) {
 
             this.container.style.display = 'block' }
             this.saveSessionData(); }
 }
-';
+';'
 
     public hide(): void { ''
-        if(this.container) {
+        if (this.container) {
 
             this.container.style.display = 'none' }
             this.saveSessionData(); }
 }
-';
+';'
 
     public toggle(): void { ''
-        if(this.container) {
+        if (this.container) {
 
             const isVisible = this.container.style.display !== 'none',
             if (isVisible) {
@@ -336,10 +336,10 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
                 this.hide(); }
             } else { this.show() }
 }
-';
+';'
 
     public minimize(): void { ''
-        if(this.container) {
+        if (this.container) {
 
             this.container.classList.toggle('minimized'),
             const body = this.container.querySelector('.debug-body') as HTMLElement,
@@ -352,38 +352,38 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
                 this.container.style.height = '40px'; }
 
             } else {
-                body.style.display = 'block',' }
+                body.style.display = 'block',' }'
 
                 footer.style.display = 'block'; }
                 this.container.style.height = `${this.size.height}px`;
             }
 }
 
-    public restore()';
-        if(this.container && this.container.classList.contains('minimized) { this.minimize(), // toggles minimized state }'
+    public restore()';'
+        if (this.container && this.container.classList.contains('minimized) { this.minimize(), // toggles minimized state }'
     }
 
-    public showSettings()';
+    public showSettings()';'
         const modal = document.createElement('div');
         modal.className = 'debug-settings-modal';
 
-        modal.innerHTML = `';
-            <div class="modal-content">";
+        modal.innerHTML = `';'
+            <div class="modal-content">";"
                 <h3>Debug Interface Settings</h3>"";
-                <div class="setting-group">";
+                <div class="setting-group">";"
                     <label>Theme:</label>"";
                     <select id="theme-select">"";
                         <option value="default">Default</option>"";
                         <option value="dark">Dark</option>"";
                         <option value="light">Light</option>;
-                    </select>";
+                    </select>";"
                 </div>"";
-                <div class="setting-group">";
+                <div class="setting-group">";"
                     <label>"";
-                        <input type="checkbox" id="shortcuts-enabled" ${this.settings.shortcuts ? 'checked' : '}>
+                        <input type="checkbox" id="shortcuts-enabled" ${this.settings.shortcuts ? 'checked' : '}>'
                         Enable Shortcuts;
-                    </label>';
-                </div>';
+                    </label>';'
+                </div>';'
                 <div class="modal-actions">"";
                     <button id="save-settings">Save</button>"";
                     <button id="cancel-settings">Cancel</button>;
@@ -392,14 +392,14 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         `;"
 
         document.body.appendChild(modal);
-";
+";"
         // イベントハンドラー""
         const saveBtn = modal.querySelector('#save-settings') as HTMLButtonElement;
         const cancelBtn = modal.querySelector('#cancel-settings') as HTMLButtonElement;
 
         saveBtn.addEventListener('click', () => {  ''
             const themeSelect = modal.querySelector('#theme-select') as HTMLSelectElement,
-            const shortcutsCheck = modal.querySelector('#shortcuts-enabled) as HTMLInputElement,
+            const shortcutsCheck = modal.querySelector('#shortcuts-enabled) as HTMLInputElement,'
             
             const theme = themeSelect.value,
             const shortcuts = shortcutsCheck.checked,
@@ -407,18 +407,18 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             this.setTheme(theme),
             this.settings.shortcuts = shortcuts,
 
-            const commandProcessor = this.getComponent('commandProcessor),
+            const commandProcessor = this.getComponent('commandProcessor),'
             if (commandProcessor && commandProcessor.setShortcutsEnabled) { }
                 commandProcessor.setShortcutsEnabled(shortcuts); }
             }
-            ';
+            ';'
 
             this.saveSettings();
-            modal.remove()';
+            modal.remove()';'
         cancelBtn.addEventListener('click', () => { modal.remove() }
 
     // === ドラッグ&リサイズ機能 ===
-';
+';'
 
     private makeDraggable(handle: HTMLElement): void { ''
         if(!handle || !this.container) return,
@@ -452,13 +452,13 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         };
 
         document.addEventListener('mouseup', () => {  ''
-            if(isDragging) {
+            if (isDragging) {
                 isDragging = false }
 
                 handle.style.cursor = 'grab'; }
                 this.saveSessionData(); }
 }
-';
+';'
 
     private makeResizable(element: HTMLElement): void { ''
         if(!element) return,
@@ -494,7 +494,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
             const deltaX = e.clientX - startX,
             const deltaY = e.clientY - startY,
-            ',
+            ','
 
             this.size.width = Math.max(400, startWidth + deltaX),
             this.size.height = Math.max(300, startHeight + deltaY) }
@@ -519,15 +519,15 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             size: this.size,
             activePanel: this.activePanel,
     settings: this.settings,
-            timestamp: Date.now()',
-            localStorage.setItem('debug_session', JSON.stringify(sessionData),' }
+            timestamp: Date.now()','
+            localStorage.setItem('debug_session', JSON.stringify(sessionData),' }'
 
         } catch (error) { console.warn('Failed to save session data:', error }
     }
 
-    public loadSettings()';
-            const sessionData = localStorage.getItem('debug_session);
-            if(sessionData) {
+    public loadSettings()';'
+            const sessionData = localStorage.getItem('debug_session);'
+            if (sessionData) {
                 const data: SessionData = JSON.parse(sessionData,
                 
                 if (data.position) {
@@ -535,26 +535,26 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
                     this.position = data.position; }
                 }
                 if (data.size) { this.size = data.size }
-                if(data.settings) {
+                if (data.settings) {
     
 }
                     this.settings = { ...this.settings, ...data.settings }
                 if (data.activePanel) { this.activePanel = data.activePanel }
 
-                }'} catch (error) { console.warn('Failed to load settings:', error }
+                }'} catch (error) { console.warn('Failed to load settings:', error }'
     }
 
     public saveSettings(): void { this.saveSessionData() }
 
     // === API取得メソッド（後方互換性） ===
 
-    public getActivePanel()';
-        const panelManager = this.getComponent('panelManager);
+    public getActivePanel()';'
+        const panelManager = this.getComponent('panelManager);'
         return panelManager?.getActivePanel ? panelManager.getActivePanel() : this.activePanel;
     }
 
-    public getPanelHistory()';
-        const panelManager = this.getComponent('panelManager);
+    public getPanelHistory()';'
+        const panelManager = this.getComponent('panelManager);'
         return panelManager?.getPanelHistory ? panelManager.getPanelHistory() : this.panelHistory;
     }
 
@@ -567,78 +567,78 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             timestamp: Date.now(); 
     }
 
-    public getRegisteredPanels()';
-        const panelManager = this.getComponent('panelManager);
+    public getRegisteredPanels()';'
+        const panelManager = this.getComponent('panelManager);'
         return panelManager?.getRegisteredPanels ? panelManager.getRegisteredPanels() : [];
     }
 
-    public getShortcuts()';
-        const commandProcessor = this.getComponent('commandProcessor);
+    public getShortcuts()';'
+        const commandProcessor = this.getComponent('commandProcessor);'
         return commandProcessor?.getShortcuts ? commandProcessor.getShortcuts() : new Map();
     }
 
-    public getShortcutConflicts()';
-        const commandProcessor = this.getComponent('commandProcessor);
+    public getShortcutConflicts()';'
+        const commandProcessor = this.getComponent('commandProcessor);'
         return commandProcessor?.getShortcutConflicts ? commandProcessor.getShortcutConflicts() : [];
     }
 
-    public getCurrentTheme()';
-        const visualizer = this.getComponent('visualizer);
+    public getCurrentTheme()';'
+        const visualizer = this.getComponent('visualizer);'
         return visualizer?.getCurrentTheme ? visualizer.getCurrentTheme() : null;
     }
 
-    public getAvailableThemes()';
-        const visualizer = this.getComponent('visualizer);
+    public getAvailableThemes()';'
+        const visualizer = this.getComponent('visualizer);'
         return visualizer?.getAvailableThemes ? visualizer.getAvailableThemes() : [];
     }
 
-    public getCurrentBreakpoint()';
+    public getCurrentBreakpoint()';'
         const visualizer = this.getComponent('visualizer';
         return visualizer?.getCurrentBreakpoint ? visualizer.getCurrentBreakpoint() : 'desktop';
     }
 
-    public isTouchDevice()';
-        const visualizer = this.getComponent('visualizer);
+    public isTouchDevice()';'
+        const visualizer = this.getComponent('visualizer);'
         return visualizer?.isTouchDevice ? visualizer.isTouchDevice() : false;
     }
 
-    public getOrientation()';
+    public getOrientation()';'
         const visualizer = this.getComponent('visualizer';
         return visualizer?.getOrientation ? visualizer.getOrientation() : 'landscape';
     }
 
     // === テスト関連API（後方互換性） ===
 
-    public getIntegrationTestResults()';
+    public getIntegrationTestResults()';'
         const dataExporter = this.getComponent('dataExporter';
-        return dataExporter?.getIntegrationTestResults ? dataExporter.getIntegrationTestResults()';
+        return dataExporter?.getIntegrationTestResults ? dataExporter.getIntegrationTestResults()';'
     public exportIntegrationTestResults(format: string = 'json'): void {,
-        const dataExporter = this.getComponent('dataExporter),
-        if(dataExporter?.exportIntegrationTestResults) {
+        const dataExporter = this.getComponent('dataExporter),'
+        if (dataExporter?.exportIntegrationTestResults) {
     
 }
             dataExporter.exportIntegrationTestResults(format); }
 }
 
- : undefined';
-    public getRequirementsValidationResults()';
+ : undefined';'
+    public getRequirementsValidationResults()';'
         const dataExporter = this.getComponent('dataExporter';
-        return dataExporter?.getRequirementsValidationResults ? dataExporter.getRequirementsValidationResults()';
+        return dataExporter?.getRequirementsValidationResults ? dataExporter.getRequirementsValidationResults()';'
     public exportRequirementsValidationResults(format: string = 'json'): void {,
-        const dataExporter = this.getComponent('dataExporter),
-        if(dataExporter?.exportRequirementsValidationResults) {
+        const dataExporter = this.getComponent('dataExporter),'
+        if (dataExporter?.exportRequirementsValidationResults) {
     
 }
             dataExporter.exportRequirementsValidationResults(format); }
 }
 
- : undefined';
-    public getFinalValidationResults()';
+ : undefined';'
+    public getFinalValidationResults()';'
         const dataExporter = this.getComponent('dataExporter';
-        return dataExporter?.getFinalValidationResults ? dataExporter.getFinalValidationResults()';
+        return dataExporter?.getFinalValidationResults ? dataExporter.getFinalValidationResults()';'
     public exportFinalValidationResults(format: string = 'json'): void {,
-        const dataExporter = this.getComponent('dataExporter),
-        if(dataExporter?.exportFinalValidationResults) {
+        const dataExporter = this.getComponent('dataExporter),'
+        if (dataExporter?.exportFinalValidationResults) {
     
 }
             dataExporter.exportFinalValidationResults(format); }
@@ -655,7 +655,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         this.components.clear();
 
         // DOM要素の削除
-        if(this.container) {
+        if (this.container) {
             this.container.remove() }
             this.container = null; }
         }
@@ -668,12 +668,12 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
     // === リフレッシュ機能 ===
 
-    public refresh()';
-        const panelManager = this.getComponent('panelManager);
-        if(panelManager?.updatePanelUI) {
+    public refresh()';'
+        const panelManager = this.getComponent('panelManager);'
+        if (panelManager?.updatePanelUI) {
 
-            panelManager.updatePanelUI()',
-        const visualizer = this.getComponent('visualizer),
+            panelManager.updatePanelUI()','
+        const visualizer = this.getComponent('visualizer),'
 
         if (visualizer?.applyResponsiveLayout) {''
             visualizer.applyResponsiveLayout() }
@@ -682,11 +682,11 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     }
 
     // === ステータス更新 ===
- : undefined';
+ : undefined';'
     public updateStatus(message: string): void { ''
         const statusElement = this.container?.querySelector('.debug-status' as HTMLElement,
-        if(statusElement) {
+        if (statusElement) {
     
 }
             statusElement.textContent = message; }
-}'} : undefined
+}'} : undefined'

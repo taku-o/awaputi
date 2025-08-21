@@ -4,17 +4,16 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date 
- }
+    timeRange?: { start: Date, end: Date,
     filters?: Record<string, any>;
     metrics?: string[];
 }
 
 export interface AnalysisResult { success: boolean,
-    data?: any,
-    insights?: string[],
-    recommendations?: string[],
-    timestamp: number  }
+    data?: any;
+    insights?: string[];
+    recommendations?: string[];
+    timestamp: number;
 export class GameBalanceAnalyzer {
     constructor() {
     
@@ -24,7 +23,7 @@ export class GameBalanceAnalyzer {
             bubbleFrequency: {};
             completionRates: {};
             averagePlayTimes: {};
-            playerPerformance: {;
+            playerPerformance: {,
 } }
     
     /**
@@ -72,11 +71,11 @@ export class GameBalanceAnalyzer {
                 type: 'score_distribution_anomaly',
                 severity: 'high' }''
                 message: 'Extreme score outliers detected') }
-                data: { avgScore, maxScore, ratio: maxScore / avgScore  }';
+                data: { avgScore, maxScore, ratio: maxScore / avgScore  }';'
         }
-        ';
+        ';'
         // スコア範囲の異常チェック
-        if(maxScore - minScore > avgScore * 10) {
+        if (maxScore - minScore > avgScore * 10) {
             warnings.push({''
                 type: 'score_range_anomaly',
                 severity: 'medium' }''
@@ -97,10 +96,10 @@ export class GameBalanceAnalyzer {
         
         Object.entries(bubbleFrequency).forEach(([bubbleType, frequency]) => { '
             // 特定バブルタイプの出現頻度異常
-            if(frequency > avgFreq * 3) {
+            if (frequency > avgFreq * 3) {
                 warnings.push({ }
 
-                    type: 'bubble_frequency_anomaly',' }
+                    type: 'bubble_frequency_anomaly',' }'
 
                     severity: 'medium'
             });
@@ -118,15 +117,15 @@ export class GameBalanceAnalyzer {
      */
     checkCompletionRateWarnings(completionRate, warnings) {
 
-        if(completionRate < 0.1) {
+        if (completionRate < 0.1) {
             warnings.push({''
                 type: 'low_completion_rate',
                 severity: 'high' }''
                 message: 'Very low stage completion rate') }
 
-                data: { completionRate }';} else if(completionRate > 0.95) { warnings.push({''
+                data: { completionRate }';} else if (completionRate > 0.95) { warnings.push({''
                 type: 'high_completion_rate',
-                severity: 'medium',',
+                severity: 'medium',','
                 message: 'Stage may be too easy'
             }
                 data: { completionRate });
@@ -140,18 +139,18 @@ export class GameBalanceAnalyzer {
         const expectedPlayTime = 5 * 60 * 1000, // 5分想定
         const playTimeRatio = averagePlayTime / expectedPlayTime,
 
-        if(playTimeRatio < 0.2) {
+        if (playTimeRatio < 0.2) {
             warnings.push({''
                 type: 'short_play_time',
                 severity: 'medium' }''
                 message: 'Players finishing stages very quickly') }
 
-                data: { averagePlayTime, ratio: playTimeRatio  }';} else if(playTimeRatio > 2.0) { warnings.push({''
+                data: { averagePlayTime, ratio: playTimeRatio,';} else if (playTimeRatio > 2.0) { warnings.push({''
                 type: 'long_play_time',
-                severity: 'medium',',
+                severity: 'medium',','
                 message: 'Players taking unusually long to complete stages'
             }
-                data: { averagePlayTime, ratio: playTimeRatio  });
+                data: { averagePlayTime, ratio: playTimeRatio,);
         }
     /**
      * ゲームバランスデータの収集
@@ -160,19 +159,19 @@ export class GameBalanceAnalyzer {
     collectGameBalanceData(data) {
 
         switch(data.type) {''
-            case 'score':',
+            case 'score':','
                 this.collectScoreData(data),
 
                 break,
-            case 'bubble_spawn':',
+            case 'bubble_spawn':','
                 this.collectBubbleSpawnData(data),
 
                 break,
-            case 'stage_completion':',
+            case 'stage_completion':','
                 this.collectStageCompletionData(data),
 
                 break,
-            case 'difficulty':',
+            case 'difficulty':','
                 this.collectDifficultyData(data),
 
                 break,
@@ -205,7 +204,7 @@ export class GameBalanceAnalyzer {
 }
         const key = `${spawnData.stageId}_${spawnData.difficulty}`;
         
-        if(!this.balanceMetrics.bubbleFrequency[key]) {
+        if (!this.balanceMetrics.bubbleFrequency[key]) {
     
 }
             this.balanceMetrics.bubbleFrequency[key] = {}
@@ -223,7 +222,7 @@ export class GameBalanceAnalyzer {
 }
         const key = `${completionData.stageId}_${completionData.difficulty}`;
         
-        if(!this.balanceMetrics.completionRates[key]) {
+        if (!this.balanceMetrics.completionRates[key]) {
         
             this.balanceMetrics.completionRates[key] = {
                 attempts: 0,
@@ -250,7 +249,7 @@ export class GameBalanceAnalyzer {
 }
         const key = `${difficultyData.stageId}_${difficultyData.difficulty}`;
         
-        if(!this.balanceMetrics.playerPerformance[key]) {
+        if (!this.balanceMetrics.playerPerformance[key]) {
         
             this.balanceMetrics.playerPerformance[key] = {
                 accuracySum: 0,
@@ -327,8 +326,8 @@ export class GameBalanceAnalyzer {
             ...Object.keys(this.balanceMetrics.bubbleFrequency)];
         ]);
 
-        allKeys.forEach(key => {  '),
-            const [stageId, difficulty] = key.split('_),
+        allKeys.forEach(key => {  '),'
+            const [stageId, difficulty] = key.split('_),'
             const stats = this.getBalanceStats(stageId, difficulty) }
             if (!report.stages[stageId]) { }
                 report.stages[stageId] = {}
@@ -336,13 +335,13 @@ export class GameBalanceAnalyzer {
             report.stages[stageId][difficulty] = stats;
             
             // 全体メトリクスの更新
-            if(stats.attempts > 0) {
+            if (stats.attempts > 0) {
                 report.globalMetrics.totalAttempts += stats.attempts }
                 report.globalMetrics.totalCompletions += stats.completionRate * stats.attempts; }
         });
         
         // 全体完了率の計算
-        if(report.globalMetrics.totalAttempts > 0) {
+        if (report.globalMetrics.totalAttempts > 0) {
             report.globalMetrics.averageCompletionRate =  }
                 report.globalMetrics.totalCompletions / report.globalMetrics.totalAttempts; }
         return report;

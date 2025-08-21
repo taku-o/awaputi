@@ -14,183 +14,178 @@ interface GameEngine { canvas: HTMLCanvasElement,
         handleSwipeLeft(gesture: GestureData): void,
         handleSwipeRight(gesture: GestureData): void,
         handleTap(position: Position): void,
-        handleDoubleTap(position: Position): void };
+        handleDoubleTap(position: Position): void,;
     cameraManager?: { zoomIn(scale: number, center: Position): void,
         zoomOut(scale: number, center: Position): void,
-        rotate(angle: number): void };
-    uiManager?: { showContextMenu(position: Position): void };
-    effectsManager?: { createWhirlwindEffect(center: Position, direction: string): void  };
-    customGestureHandler?: { handle(gesture: GestureData): void }
+        rotate(angle: number): void,;
+    uiManager?: { showContextMenu(position: Position): void,;
+    effectsManager?: { createWhirlwindEffect(center: Position, direction: string): void,;
+    customGestureHandler?: { handle(gesture: GestureData): void,
 
 interface Position { x: number,
-    y: number  }
+    y: number;
 
 interface Touch { identifier: number,
-    clientX: number,
-    clientY: number,
-    pageX?: number,
-    pageY?: number,
-    screenX?: number,
-    screenY?: number,
-    target?: EventTarget | null,
-    force?: number,
-    radiusX?: number,
-    radiusY?: number,
-    rotationAngle?: number }
+    clientX: number;
+    clientY: number;
+    pageX?: number;
+    pageY?: number;
+    screenX?: number;
+    screenY?: number;
+    target?: EventTarget | null;
+    force?: number;
+    radiusX?: number;
+    radiusY?: number;
+    rotationAngle?: number;
 
 interface GestureConfig { swipe: {
         minDistanc,e: number,
         maxDuration: number,
         velocityThreshold: number,
         angleThreshold: number,
-    directions: string[] };
+    directions: string[],;
     pinch: { minScale: number,
         maxScale: number,
         scaleThreshold: number,
         centerThreshold: number,
-    simultaneousTouch: boolean };
+    simultaneousTouch: boolean,;
     tap: { maxDuration: number,
         maxMovement: number,
         doubleTapInterval: number,
         longPressDelay: number,
-    multiTapSupport: boolean };
+    multiTapSupport: boolean,;
     advanced: { circularGesture: boolean,
         customPatterns: boolean,
         gestureChaining: boolean,
-    machinesLearning: boolean }
+    machinesLearning: boolean,
 
 interface GestureState { active: boolean,
-    type: string | null,
-    startTime: number,
-    startPosition: Position,
-    currentPosition: Position,
-    velocity: Position,
-    scale: number,
-    rotation: number,
-    touches: TouchState[],
-    pinch?: PinchState,
-    rotation?: RotationState,
+    type: string | null;
+    startTime: number;
+    startPosition: Position;
+    currentPosition: Position;
+    velocity: Position;
+    scale: number;
+    rotation: number;
+    touches: TouchState[];
+    pinch?: PinchState;
+    rotation?: RotationState;
      }
 
 interface TouchState { id: number,
-    startX: number,
-    startY: number,
-    currentX: number,
-    currentY: number,
-    path: PathPoint[]
-     }
+    startX: number;
+    startY: number;
+    currentX: number;
+    currentY: number;
+    path: PathPoint[];
 
 interface PathPoint { x: number,
-    y: number,
-    time: number }
+    y: number;
+    time: number;
 
 interface PinchState { initialDistance: number,
-    currentDistance: number,
-    initialScale: number,
-    currentScale: number,
-    center: Position
-    }
+    currentDistance: number;
+    initialScale: number;
+    currentScale: number;
+    center: Position;
 
 interface RotationState { initialAngle: number,
-    currentAngle: number,
-    totalRotation: number }
+    currentAngle: number;
+    totalRotation: number;
 
 interface GestureData { type: string,
-    direction?: string,
-    velocity?: number,
-    distance?: number,
-    duration?: number,
-    startPosition?: Position,
-    endPosition?: Position,
-    scale?: number,
-    center?: Position,
-    count?: number,
-    position?: Position,
-    angle?: number,
-    radius?: number,
-    totalAngle?: number,
-    name?: string,
-    pattern?: unknown,
-    similarity?: number }
+    direction?: string;
+    velocity?: number;
+    distance?: number;
+    duration?: number;
+    startPosition?: Position;
+    endPosition?: Position;
+    scale?: number;
+    center?: Position;
+    count?: number;
+    position?: Position;
+    angle?: number;
+    radius?: number;
+    totalAngle?: number;
+    name?: string;
+    pattern?: unknown;
+    similarity?: number;
 
 interface GesturePattern { type: string,
-    direction?: string,
-    scale?: string,
-    count?: number,
-    pattern?: string }
+    direction?: string;
+    scale?: string;
+    count?: number;
+    pattern?: string;
 
 interface GesturePatterns { basic: Record<string, GesturePattern>,
-    advanced: Record<string, GesturePattern>,
+    advanced: Record<string, GesturePattern>;
     custom: Map<string, GesturePattern> }
 
 interface GestureHistory { type: string | null,
-    timestamp: number,
-    duration: number,
-    touches: number,
-    startPosition: Position,
-    endPosition: Position
-     }
+    timestamp: number;
+    duration: number;
+    touches: number;
+    startPosition: Position;
+    endPosition: Position;
 
 interface LearningData { patterns: Map<string, unknown>,
-    accuracy: Map<string, number>,
+    accuracy: Map<string, number>;
     adaptiveThresholds: Map<string, number> }
 
 interface CircularResult { isCircular: boolean,
-    direction?: string,
-    center?: Position,
-    radius?: number,
-    totalAngle?: number }
+    direction?: string;
+    center?: Position;
+    radius?: number;
+    totalAngle?: number;
 
 interface MovementData { dx: number,
-    dy: number,
-    distance: number,
-    angle: number,
-    velocity: number  }
+    dy: number;
+    distance: number;
+    angle: number;
+    velocity: number;
 
 interface GestureAnalyzer { pathAnalyzer: PathAnalyzer,
-    patternMatcher: PatternMatcher,
-    learningEngine: LearningEngine
-    }
+    patternMatcher: PatternMatcher;
+    learningEngine: LearningEngine;
 
 interface GestureStatistics { totalGestures: number,
-    typeDistribution: Record<string, number>,
-    averageDuration: number,
-    customGestureCount: number  }
+    typeDistribution: Record<string, number>;
+    averageDuration: number;
+    customGestureCount: number;
 
 class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
-    private errorHandler: ErrorHandler,
-    private gestureConfig: GestureConfig,
-    private gestureState: GestureState,
-    private gesturePatterns: GesturePatterns,
-    private gestureHistory: GestureHistory[],
-    private maxHistoryLength: number,
-    private learningData: LearningData,
+    private errorHandler: ErrorHandler;
+    private gestureConfig: GestureConfig;
+    private gestureState: GestureState;
+    private gesturePatterns: GesturePatterns;
+    private gestureHistory: GestureHistory[];
+    private maxHistoryLength: number;
+    private learningData: LearningData;
     private, longPressTimer: ReturnType<typeof setTimeout> | null,
     private gestureAnalyzer?: GestureAnalyzer,
 
     constructor(gameEngine: GameEngine) {
-',
+','
 
-        this.gameEngine = gameEngine,
-        this.errorHandler = ErrorHandler.getInstance('}
+        this.gameEngine = gameEngine;
+        this.errorHandler = ErrorHandler.getInstance('}'
 
-                directions: ['up', 'down', 'left', 'right', 'diagonal] }
+                directions: ['up', 'down', 'left', 'right', 'diagonal] }'
             },
             pinch: { minScale: 0.1,
                 maxScale: 5.0,
                 scaleThreshold: 0.05,
                 centerThreshold: 20,
-    simultaneousTouch: true };
+    simultaneousTouch: true,;
             tap: { maxDuration: 200,
                 maxMovement: 10,
                 doubleTapInterval: 300,
                 longPressDelay: 500,
-    multiTapSupport: true };
+    multiTapSupport: true,;
             advanced: { circularGesture: true,
                 customPatterns: true,
                 gestureChaining: true,
-    machinesLearning: false 
-    };
+    machinesLearning: false,;
         // ジェスチャー状態管理
         this.gestureState = { active: false,
             type: null,
@@ -198,9 +193,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             startPosition: { x: 0, y: 0  },
             currentPosition: { x: 0, y: 0  },
             velocity: { x: 0, y: 0  },
-            scale: 1.0;
+            scale: 1.0,
             rotation: 0,
-    touches: [];
+    touches: [],
         },
         
         // ジェスチャーパターン
@@ -236,7 +231,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
                 star: { type: 'path', pattern: 'star'
             }))
             // カスタムジェスチャー)
-            custom: new Map();
+            custom: new Map(),
         };
         
         // ジェスチャー履歴
@@ -257,8 +252,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     private initialize(): void { try {
             this.setupEventListeners(),
             this.loadGestureSettings(),
-            this.initializeGestureAnalysis()',
-            console.log('[AdvancedGestureRecognitionSystem] 高度ジェスチャー認識システム初期化完了'),' }
+            this.initializeGestureAnalysis()','
+            console.log('[AdvancedGestureRecognitionSystem] 高度ジェスチャー認識システム初期化完了'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.initialize' }'
@@ -267,30 +262,30 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * イベントリスナー設定'
      */''
-    private setupEventListeners()';
-        canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false }');
-        canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false }');
-        canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false }');
-        canvas.addEventListener('touchcancel', (e) => this.handleTouchCancel(e), { passive: false }');
-        ';
+    private setupEventListeners()';'
+        canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false,');'
+        canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false,');'
+        canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false,');'
+        canvas.addEventListener('touchcancel', (e) => this.handleTouchCancel(e), { passive: false,');'
+        ';'
         // マウスイベント（デスクトップ対応）
         canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
         canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e);
-        ';
+        ';'
         // ポインターイベント（統一処理）
-        if(window.PointerEvent) {
+        if (window.PointerEvent) {
 
             canvas.addEventListener('pointerdown', (e) => this.handlePointerDown(e)),
             canvas.addEventListener('pointermove', (e) => this.handlePointerMove(e)) }
 
             canvas.addEventListener('pointerup', (e) => this.handlePointerUp(e)); }
         }
-        ';
+        ';'
         // ジェスチャーイベント（iOS Safari）
-        canvas.addEventListener('gesturestart', (e) => this.handleGestureStart(e), { passive: false }');
-        canvas.addEventListener('gesturechange', (e) => this.handleGestureChange(e), { passive: false }');
-        canvas.addEventListener('gestureend', (e) => this.handleGestureEnd(e), { passive: false });
+        canvas.addEventListener('gesturestart', (e) => this.handleGestureStart(e), { passive: false,');'
+        canvas.addEventListener('gesturechange', (e) => this.handleGestureChange(e), { passive: false,');'
+        canvas.addEventListener('gestureend', (e) => this.handleGestureEnd(e), { passive: false,);
     }
     
     /**
@@ -303,7 +298,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             this.startGestureRecognition(touches),
             
             // マルチタッチ検出
-            if(touches.length > 1) {
+            if (touches.length > 1) {
     
 }
                 this.startMultiTouchGesture(touches); }
@@ -322,7 +317,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             const touches = Array.from(e.touches),
             this.updateGestureRecognition(touches),
             
-            if(this.gestureState.active) {
+            if (this.gestureState.active) {
     
 }
 
@@ -340,7 +335,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             this.endGestureRecognition(touches),
             
             // ジェスチャー完了判定
-            if(e.touches.length === 0) {
+            if (e.touches.length === 0) {
     
 }
                 this.completeGestureAnalysis();' }'
@@ -454,7 +449,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             currentY: touch.clientY) }
             path: [{ x: touch.clientX, y: touch.clientY, time: Date.now(  }]});
         
-        if(touches.length = == 1) {
+        if (touches.length = == 1) {
         
             this.gestureState.startPosition = {
                 x: touches[0].clientX }
@@ -482,14 +477,14 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     private startMultiTouchGesture(touches: Touch[]): void { ''
         this.gestureState.type = 'multi',
         
-        if(touches.length === 2) {
+        if (touches.length === 2) {
     
 }
             this.startPinchGestureDetection(touches); }
         }
         
         // 長押しタイマーをクリア
-        if(this.longPressTimer) {
+        if (this.longPressTimer) {
             clearTimeout(this.longPressTimer) }
             this.longPressTimer = null; }
 }
@@ -506,8 +501,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             currentDistance: distance,
             initialScale: 1.0,
     currentScale: 1.0 }
-            center: center 
-    }
+            center: center;
     
     /**
      * ジェスチャー認識更新
@@ -531,7 +525,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         });
         
         // 位置更新
-        if(touches.length = == 1) {
+        if (touches.length = == 1) {
             this.gestureState.currentPosition = {
                 x: touches[0].clientX }
                 y: touches[0].clientY 
@@ -609,7 +603,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     analyzeSwipeGesture(movement) {
         const angle = movement.angle,
         let direction = 'unknown',
-        ',
+        ','
         // 方向判定
         if (Math.abs(angle) < this.gestureConfig.swipe.angleThreshold) {
     }
@@ -617,10 +611,10 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             direction = 'right'; }
 
         } else if (Math.abs(angle - 180) < this.gestureConfig.swipe.angleThreshold) { ''
-            direction = 'left',' }
+            direction = 'left',' }'
 
         } else if (Math.abs(angle - 90) < this.gestureConfig.swipe.angleThreshold) { ''
-            direction = 'down',' }
+            direction = 'down',' }'
 
         } else if (Math.abs(angle - 270) < this.gestureConfig.swipe.angleThreshold) { ''
             direction = 'up' }
@@ -653,7 +647,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     detectCircularPath(path) {
     
 }
-        if (path.length < 10) return { isCircular: false }
+        if (path.length < 10) return { isCircular: false,
         const center = this.calculatePathCenter(path);
         const radii = path.map(point => this.calculateDistance(center, point);
         
@@ -676,8 +670,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         return { isCircular,
             direction,
             center,
-            radius: avgRadius };
-            totalAngle: Math.abs(totalAngleChange); 
+            radius: avgRadius,;
+            totalAngle: Math.abs(totalAngleChange), 
     }
     
     /**
@@ -775,7 +769,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             direction: direction,
     velocity: movement.velocity,
             distance: movement.distance,
-            duration: Date.now()',
+            duration: Date.now()','
         this.dispatchGestureEvent('swipe', gesture) }
         this.handleSwipeGameAction(gesture); }
     }
@@ -784,22 +778,22 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             type: 'pinch',
     scale: this.gestureState.pinch.currentScale,
             center: this.gestureState.pinch.center,
-            direction: this.gestureState.pinch.currentScale > 1 ? 'out' : 'in);
+            direction: this.gestureState.pinch.currentScale > 1 ? 'out' : 'in);'
         }''
 
         this.dispatchGestureEvent('pinch', gesture);
         this.handlePinchGameAction(gesture);
     }
     
-    recognizeTapGesture() { ',
+    recognizeTapGesture() { ','
 
         const tapCount = this.detectMultiTap('''
-            type: 'tap),
+            type: 'tap),'
             count: tapCount,
     position: this.gestureState.startPosition }
             duration: Date.now() - this.gestureState.startTime 
     };
-        if(tapCount > 1) {
+        if (tapCount > 1) {
     
 }
             gesture.type = `${tapCount}tap`;
@@ -809,10 +803,10 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         this.handleTapGameAction(gesture);
     }
 
-    recognizeLongPress()';
-            type: 'longpress')',
+    recognizeLongPress()';'
+            type: 'longpress')','
     position: this.gestureState.startPosition,
-            duration: Date.now()';
+            duration: Date.now()';'
         this.dispatchGestureEvent('longpress', gesture);
         this.handleLongPressGameAction(gesture);
     }
@@ -832,7 +826,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     recognizeRotationGesture('''
             type: 'rotation',
             angle: this.gestureState.rotation.totalRotation,
-            direction: this.gestureState.rotation.totalRotation > 0 ? 'clockwise' : 'counterclockwise);
+            direction: this.gestureState.rotation.totalRotation > 0 ? 'clockwise' : 'counterclockwise);'
         }''
 
         this.dispatchGestureEvent('rotation', gesture);
@@ -843,9 +837,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         const gesture = {''
             type: 'custom',
             name: name,
-    pattern: pattern }
-            similarity: similarity 
-    };
+    pattern: pattern,
+            similarity: similarity,;
         this.dispatchGestureEvent('custom', gesture);
         this.handleCustomGameAction(gesture);
     }
@@ -856,15 +849,15 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     handleSwipeGameAction(gesture) {
 
         switch(gesture.direction) {''
-            case 'up':',
+            case 'up':','
                 this.gameEngine.bubbleManager?.handleSwipeUp(gesture),
 
                 break, : undefined''
-            case 'down':',
+            case 'down':','
                 this.gameEngine.bubbleManager?.handleSwipeDown(gesture),
 
                 break, : undefined''
-            case 'left':',
+            case 'left':','
                 this.gameEngine.bubbleManager?.handleSwipeLeft(gesture),
 
                 break, : undefined''
@@ -991,7 +984,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     detectMultiTap() {
     ,
         // 直近のタップ履歴をチェック
-        const now = Date.now()',
+        const now = Date.now()','
             g.type === 'tap' && ),
             now - g.timestamp < this.gestureConfig.tap.doubleTapInterval) }
         return recentTaps.length + 1;
@@ -1047,19 +1040,19 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * ジェスチャー設定読み込み
      */''
-    loadGestureSettings()';
-            const savedSettings = localStorage.getItem('bubblepop_gesture_settings);
+    loadGestureSettings()';'
+            const savedSettings = localStorage.getItem('bubblepop_gesture_settings);'
             if (savedSettings) { const settings = JSON.parse(savedSettings) }
 
-                this.gestureConfig = { ...this.gestureConfig, ...settings,'} catch (error) {
-            console.warn('[AdvancedGestureRecognitionSystem] ジェスチャー設定読み込みエラー:', error' }
+                this.gestureConfig = { ...this.gestureConfig, ...settings,'} catch (error) {'
+            console.warn('[AdvancedGestureRecognitionSystem] ジェスチャー設定読み込みエラー:', error' }'
     }
     
     /**
      * ジェスチャー設定保存'
      */''
-    saveGestureSettings()';
-            localStorage.setItem('bubblepop_gesture_settings', JSON.stringify(this.gestureConfig);'} catch (error) {
+    saveGestureSettings()';'
+            localStorage.setItem('bubblepop_gesture_settings', JSON.stringify(this.gestureConfig);'} catch (error) {'
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.saveGestureSettings' }'
     }
     
@@ -1113,7 +1106,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         try {
             this.resetGestureState(),
             this.saveGestureSettings() }
-            console.log('[AdvancedGestureRecognitionSystem] クリーンアップ完了');' }
+            console.log('[AdvancedGestureRecognitionSystem] クリーンアップ完了');' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.cleanup' }'

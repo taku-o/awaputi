@@ -17,45 +17,45 @@ import { SeasonalParticleRenderer  } from './seasonal-effect-manager/SeasonalPar
  * Configuration Manager interface
  */
 interface ConfigurationManager { get<T>(key: string, defaultValue: T): T,
-    watch(key: string, callback: (value: any) => void): void  }
+    watch(key: string, callback: (value: any) => void): void;
 }
 
 /**
  * Error Handler interface
  */
-interface ErrorHandler { handleError(error: any, context?: string): void }
+interface ErrorHandler { handleError(error: any, context?: string): void;
 
 /**
  * Effect Quality Controller interface
  */
-interface EffectQualityController { [key: string]: any }
+interface EffectQualityController { [key: string]: any;
 
 /**
  * Theme information interface
  */
 interface ThemeInfo { season: string,
-    event: string | null,
-    theme: any,
-    isCustom: boolean  }
+    event: string | null;
+    theme: any;
+    isCustom: boolean;
 
 /**
  * Effect statistics interface
  */
 interface EffectStats { particlesCreated: number,
-    effectsTriggered: number,
-    themeChanges: number,
-    customThemesLoaded: number }
+    effectsTriggered: number;
+    themeChanges: number;
+    customThemesLoaded: number;
 
 /**
  * Settings data interface
  */
 interface SettingsData { currentSeason?: string,
-    customTheme?: any,
+    customTheme?: any;
     settings?: {
-        seasonalEffectsEnable,d?: boolean,
-        autoSeasonDetection?: boolean,
-        eventEffectsEnabled?: boolean,
-        backgroundEffectEnabled?: boolean };
+        seasonalEffectsEnable,d?: boolean;
+        autoSeasonDetection?: boolean;
+        eventEffectsEnabled?: boolean;
+        backgroundEffectEnabled?: boolean;;
     customThemes?: any;
 }
 
@@ -63,65 +63,65 @@ interface SettingsData { currentSeason?: string,
  * Debug information interface
  */
 interface DebugInfo { currentSeason: string,
-    currentEvent: string | null,
-    activeTheme: string | undefined,
-    isCustomTheme: boolean,
-    detectorStatus: any,
-    effectStats: any,
+    currentEvent: string | null;
+    activeTheme: string | undefined;
+    isCustomTheme: boolean;
+    detectorStatus: any;
+    effectStats: any;
     componentStatus: {
         themeManage,r: boolean,
         seasonDetector: boolean,
         customThemeManager: boolean,
-    particleRenderer: boolean  }
+    particleRenderer: boolean,
 
 export class SeasonalEffectManager {
-    private configManager: ConfigurationManager,
-    private errorHandler: ErrorHandler,
-    private qualityController: EffectQualityController,
-    private themeManager: ThemeManager,
-    private seasonDetector: SeasonDetector,
-    private customThemeManager: CustomThemeManager,
-    private particleRenderer: SeasonalParticleRenderer,
+    private configManager: ConfigurationManager;
+    private errorHandler: ErrorHandler;
+    private qualityController: EffectQualityController;
+    private themeManager: ThemeManager;
+    private seasonDetector: SeasonDetector;
+    private customThemeManager: CustomThemeManager;
+    private particleRenderer: SeasonalParticleRenderer;
     // 現在のテーマ状態
-    private currentSeason: string,
-    private currentEvent: string | null,
-    private activeTheme: any,
-    private customTheme: any,
+    private currentSeason: string;
+    private currentEvent: string | null;
+    private activeTheme: any;
+    private customTheme: any;
     private lastLoggedTheme: string | null, // ログ出力制御用
     
     // 設定
-    private seasonalEffectsEnabled: boolean,
-    private autoSeasonDetection: boolean,
-    private eventEffectsEnabled: boolean,
-    private customThemesEnabled: boolean,
-    private, backgroundEffectEnabled: boolean,
+    private seasonalEffectsEnabled: boolean;
+    private autoSeasonDetection: boolean;
+    private eventEffectsEnabled: boolean;
+    private customThemesEnabled: boolean;
+    private, backgroundEffectEnabled: boolean;
     constructor() {
 
-        this.configManager = getConfigurationManager(),
-        this.errorHandler = getErrorHandler(),
-        this.qualityController = getEffectQualityController(),
+        this.configManager = getConfigurationManager();
+        this.errorHandler = getErrorHandler();
+        this.qualityController = getEffectQualityController();
         
         // 専門化されたコンポーネントを初期化
-        this.themeManager = new ThemeManager(),
-        this.seasonDetector = new SeasonDetector(),
-        this.customThemeManager = new CustomThemeManager(),
-        this.particleRenderer = new SeasonalParticleRenderer(this.qualityController, this.errorHandler),
-        ',
+        this.themeManager = new ThemeManager();
+        this.seasonDetector = new SeasonDetector();
+        this.customThemeManager = new CustomThemeManager();
+        this.particleRenderer = new SeasonalParticleRenderer(this.qualityController; this.errorHandler);
+        ';'
         // 現在のテーマ状態
-        this.currentSeason = 'spring',
-        this.currentEvent = null,
-        this.activeTheme = null,
-        this.customTheme = null,
-        this.lastLoggedTheme = null, // ログ出力制御用
+        this.currentSeason = 'spring';
+        this.currentEvent = null;
+        this.activeTheme = null;
+        this.customTheme = null;
+        this.lastLoggedTheme = null; // ログ出力制御用
         
         // 設定
-        this.seasonalEffectsEnabled = true,
-        this.autoSeasonDetection = true,
-        this.eventEffectsEnabled = true,
-        this.customThemesEnabled = true,
-        this.backgroundEffectEnabled = true,
+        this.seasonalEffectsEnabled = true;
+        this.autoSeasonDetection = true;
+        this.eventEffectsEnabled = true;
+        this.customThemesEnabled = true;
+        this.backgroundEffectEnabled = true;
         
-        this._initializeSeasonalSettings(),
+        this._initializeSeasonalSettings();
         this._loadCustomThemes() }
         this._updateCurrentTheme(); }
     }
@@ -130,15 +130,15 @@ export class SeasonalEffectManager {
      * 季節エフェクト設定の初期化
      * @private
      */''
-    private _initializeSeasonalSettings()';
-            this.seasonalEffectsEnabled = this.configManager.get('effects.seasonal.enabled', true';
-            this.autoSeasonDetection = this.configManager.get('effects.seasonal.autoDetection', true';
-            this.eventEffectsEnabled = this.configManager.get('effects.seasonal.events', true';
-            this.backgroundEffectEnabled = this.configManager.get('effects.seasonal.background', true';
-            ';
+    private _initializeSeasonalSettings()';'
+            this.seasonalEffectsEnabled = this.configManager.get('effects.seasonal.enabled', true';'
+            this.autoSeasonDetection = this.configManager.get('effects.seasonal.autoDetection', true';'
+            this.eventEffectsEnabled = this.configManager.get('effects.seasonal.events', true';'
+            this.backgroundEffectEnabled = this.configManager.get('effects.seasonal.background', true';'
+            ';'
             // 設定の監視
             this.configManager.watch('effects.seasonal.enabled', (value: boolean) => { this.setSeasonalEffectsEnabled(value),' 
-    }');
+    }');'
 
             this.configManager.watch('effects.seasonal.autoDetection', (value: boolean) => { this.setAutoSeasonDetection(value) });
 
@@ -162,7 +162,7 @@ export class SeasonalEffectManager {
      * @private
      */
     private _updateCurrentTheme(): void { // カスタムテーマが設定されている場合は優先
-        if(this.customTheme && this.customThemesEnabled) {
+        if (this.customTheme && this.customThemesEnabled) {
     
 }
             this.activeTheme = this.customTheme; }
@@ -170,7 +170,7 @@ export class SeasonalEffectManager {
             return;
         }
         
-        if(this.autoSeasonDetection && this.seasonDetector.shouldCheckSeason() {
+        if (this.autoSeasonDetection && this.seasonDetector.shouldCheckSeason() {
         
             this.currentSeason = this.seasonDetector.detectCurrentSeason() }
             this.seasonDetector.updateLastSeasonCheck(); }
@@ -178,7 +178,7 @@ export class SeasonalEffectManager {
         
         // イベントテーマのチェック
         const activeEvent = this.seasonDetector.getActiveEvent(this.themeManager.eventThemes);
-        if(activeEvent && this.eventEffectsEnabled) {
+        if (activeEvent && this.eventEffectsEnabled) {
             this.currentEvent = activeEvent }
             this.activeTheme = this.themeManager.getEventTheme(activeEvent); }
         } else {  this.currentEvent = null }
@@ -186,7 +186,7 @@ export class SeasonalEffectManager {
         }
         
         // ログ出力頻度を制御（前回と異なるテーマの場合のみ）
-        if(!this.lastLoggedTheme || this.lastLoggedTheme !== this.activeTheme.name) {
+        if (!this.lastLoggedTheme || this.lastLoggedTheme !== this.activeTheme.name) {
     
 }
             console.log(`[SeasonalEffectManager] テーマ更新: ${this.activeTheme.name}`});
@@ -231,7 +231,7 @@ export class SeasonalEffectManager {
      */
     update(deltaTime: number): void { try {
             // 季節チェック（頻度制御を追加）
-            if(this.seasonDetector.shouldCheckSeason() {
+            if (this.seasonDetector.shouldCheckSeason() {
                 const previousTheme = this.activeTheme?.name,
                 this._updateCurrentTheme(),
                 
@@ -259,14 +259,14 @@ export class SeasonalEffectManager {
         
         try {
             // 背景エフェクトの描画
-            if(this.backgroundEffectEnabled) {
+            if (this.backgroundEffectEnabled) {
     
 }
                 this._renderBackgroundEffects(context); }
             }
             
             // 季節パーティクルの描画
-            this.particleRenderer.renderParticles(context);'} catch (error) {
+            this.particleRenderer.renderParticles(context);'} catch (error) {'
             this.errorHandler.handleError(error, 'SeasonalEffectManager.render' }'
     }
     
@@ -293,8 +293,8 @@ export class SeasonalEffectManager {
      * @param {string} season - 季節名
      */
     setSeason(season: string): void { if (this.themeManager.getAvailableSeasons().includes(season) {
-            this.currentSeason = season,
-            this.autoSeasonDetection = false,
+            this.currentSeason = season;
+            this.autoSeasonDetection = false;
             this._updateCurrentTheme() }
     }
     
@@ -302,8 +302,8 @@ export class SeasonalEffectManager {
      * カスタムテーマを設定
      * @param {Object} theme - カスタムテーマ
      */
-    setCustomTheme(theme: any): void { if(this.themeManager.validateTheme(theme) {
-            this.customTheme = theme,
+    setCustomTheme(theme: any): void { if (this.themeManager.validateTheme(theme) {
+            this.customTheme = theme;
             this._updateCurrentTheme() }
     }
     
@@ -311,8 +311,8 @@ export class SeasonalEffectManager {
      * 季節エフェクトの有効/無効を設定
      * @param {boolean} enabled - 有効フラグ
      */
-    setSeasonalEffectsEnabled(enabled: boolean): void { this.seasonalEffectsEnabled = enabled,
-        if(!enabled) {
+    setSeasonalEffectsEnabled(enabled: boolean): void { this.seasonalEffectsEnabled = enabled;
+        if (!enabled) {
     
 }
             this.particleRenderer.clearAllEffects(); }
@@ -322,8 +322,8 @@ export class SeasonalEffectManager {
      * 自動季節検出の有効/無効を設定
      * @param {boolean} enabled - 有効フラグ
      */
-    setAutoSeasonDetection(enabled: boolean): void { this.autoSeasonDetection = enabled,
-        if(enabled) {
+    setAutoSeasonDetection(enabled: boolean): void { this.autoSeasonDetection = enabled;
+        if (enabled) {
     
 }
             this._updateCurrentTheme(); }
@@ -333,7 +333,7 @@ export class SeasonalEffectManager {
      * イベントエフェクトの有効/無効を設定
      * @param {boolean} enabled - 有効フラグ
      */
-    setEventEffectsEnabled(enabled: boolean): void { this.eventEffectsEnabled = enabled,
+    setEventEffectsEnabled(enabled: boolean): void { this.eventEffectsEnabled = enabled;
         this._updateCurrentTheme() }
     
     /**
@@ -426,7 +426,7 @@ export class SeasonalEffectManager {
      * @returns {boolean} インポート成功かどうか
      */
     importSettings(settingsData: SettingsData): boolean { try {
-            if(settingsData.settings) {
+            if (settingsData.settings) {
     
 }
                 Object.assign(this, settingsData.settings); }
@@ -440,7 +440,7 @@ export class SeasonalEffectManager {
             
             this._updateCurrentTheme();
             return true;} catch (error) {
-            this.errorHandler.handleError(error, 'SeasonalEffectManager.importSettings),
+            this.errorHandler.handleError(error, 'SeasonalEffectManager.importSettings),'
             return false,
     
     /**
@@ -454,7 +454,7 @@ export class SeasonalEffectManager {
      */
     dispose(): void { try {
             // エフェクトのクリア
-            this.clearAllEffects()',
+            this.clearAllEffects()','
             if(this.particleRenderer && typeof, this.particleRenderer.dispose === 'function' {'
 
                 this.particleRenderer.dispose() }

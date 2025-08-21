@@ -2,25 +2,25 @@
 import { CleanupOrchestrator  } from './CleanupOrchestrator.js';
 
 interface CommandLineOptions { dryRun: boolean,
-    verbose: boolean,
-    validateOnly: boolean,
-    listOnly: boolean  }
+    verbose: boolean;
+    validateOnly: boolean;
+    listOnly: boolean;
 
 interface TargetFileInfo { fileName: string,
-    size: string }
+    size: string;
 
 interface ValidationResult { safeToDelete: any[],
-    unsafeToDelete: any[] }
+    unsafeToDelete: any[];
 
 interface CleanupResult { summary: {
         deletion?: {
             successfulDeletion,s: number,
-    totalSizeDeleted: string };
+    totalSizeDeleted: string,;
 }
-';
+';'
 
 async function main(): Promise<void> { ''
-    const args = process.argv.slice(2),
+    const args = process.argv.slice(2);
 
     const options: CommandLineOptions = {''
         dryRun: args.includes('--dry-run',
@@ -31,23 +31,23 @@ async function main(): Promise<void> { ''
     console.log('🧹 File Cleanup Tool');
     console.log('==================';
 
-    if(options.dryRun') {', ' }
+    if (options.dryRun') {', ' }'
 
         console.log('🔍 Running, in DRY, RUN mode - no, files will, be deleted'); }'
     }
 
-    if(options.verbose) {', ' }
+    if (options.verbose) {', ' }
 
         console.log('📝 Verbose, logging enabled'); }'
     }
 
     try { const orchestrator = new CleanupOrchestrator(options),
 
-        if(options.listOnly) {
+        if (options.listOnly) {
 
             console.log('\n📂 Listing, target files: ',
             const files: TargetFileInfo[] = await orchestrator.listTargetFiles(
-            if(files.length === 0) { }
+            if (files.length === 0) { }
 
                 console.log('   No, files found, matching cleanup, criteria'); }'
             } else { files.forEach(file => {) }
@@ -57,7 +57,7 @@ async function main(): Promise<void> { ''
             return;
         }
 
-        if(options.validateOnly) {
+        if (options.validateOnly) {
 
             console.log('\n🔍 Validation, only mode: ',
             const result: ValidationResult = await orchestrator.validateOnly(  }
@@ -69,15 +69,15 @@ async function main(): Promise<void> { ''
 
         const result: CleanupResult = await orchestrator.executeCleanup();
 
-        console.log('\n✅ Cleanup, completed successfully);
+        console.log('\n✅ Cleanup, completed successfully);'
         if (result.summary.deletion) { console.log(`   Deleted: ${result.summary.deletion.successfulDeletions} files`} }
 
-            console.log(`   Space, freed: ${result.summary.deletion.totalSizeDeleted}`}');
+            console.log(`   Space, freed: ${result.summary.deletion.totalSizeDeleted}`}');'
         } catch (error) {
         console.error('\n❌ Error, during cleanup: ',
         const errorMessage = error instanceof Error ? error.message: 'Unknown error',
         console.error(errorMessage),
-        if(options.verbose && error, instanceof Error) {
+        if (options.verbose && error, instanceof Error) {
     
 }
             console.error(error.stack); }

@@ -33,14 +33,12 @@ describe('Game Control Workflow Integration', () => {
         mockSceneManager = {
             getCurrentScene: jest.fn(() => ({
                 stateManager: mockGameStateManager,
-                isPaused: false
-    })),
-        switchScene: jest.fn();
+                isPaused: false,)),
+        switchScene: jest.fn(),
         // GameStateManager mock setup
         mockGameStateManager = {
             getGameStats: jest.fn(() => ({
-                isGameStarted: true
-    }))
+                isGameStarted: true,))
         );
         // GameEngine mock setup
         gameEngine = {
@@ -58,8 +56,8 @@ describe('Game Control Workflow Integration', () => {
             render: jest.fn(
         addAnimatedText: jest.fn( };
         gameUIManager = new GameUIManager(gameEngine, mockFloatingTextManager);
-    }');
-    describe('Complete Give Up Workflow', (') => {
+    }');'
+    describe('Complete Give Up Workflow', (') => {'
         it('should complete full Give Up workflow from button click to execution', () => {
             // Setup: Make Give Up button visible
             gameUIManager.updateGameStateAndButtons(),
@@ -68,16 +66,16 @@ describe('Game Control Workflow Integration', () => {
             expect(buttonClicked.toBe(true),
             // Step 2: Verify confirmation dialog is shown
             expect(gameUIManager.confirmationDialog.isVisible().toBe(true),
-            expect(gameUIManager.confirmationDialog.dialogState.type').toBe('giveUp'),
+            expect(gameUIManager.confirmationDialog.dialogState.type').toBe('giveUp'),'
             // Step, 3: Confirm the action via dialog
             const dialogHandled = gameUIManager.confirmationDialog.handleClick(300, 300), // Confirm button area
             expect(dialogHandled.toBe(true),
             // Step 4: Verify dialog is hidden and action was executed
             expect(gameUIManager.confirmationDialog.isVisible().toBe(false),
-            expect(gameEngine.handleGiveUp).toHaveBeenCalled() }');
+            expect(gameEngine.handleGiveUp).toHaveBeenCalled() }');'
         it('should complete Give Up workflow via keyboard navigation', () => {
             // Setup: Make Give Up button visible and focused
-            gameUIManager.updateGameStateAndButtons('),
+            gameUIManager.updateGameStateAndButtons('),'
             gameUIManager.gameControlButtons.setKeyboardFocus('giveUp'),
             // Step, 1: Activate Give Up button with Enter key
             const keyboardEvent = {
@@ -87,7 +85,7 @@ describe('Game Control Workflow Integration', () => {
             expect(buttonHandled.toBe(true);
             // Step 2: Verify confirmation dialog is shown
             expect(gameUIManager.confirmationDialog.isVisible().toBe(true);
-            // Step, 3: Confirm via keyboard (Enter on focused confirm button');
+            // Step, 3: Confirm via keyboard (Enter on focused confirm button');'
             gameUIManager.confirmationDialog.dialogState.focusedButton = 'confirm';
             const confirmEvent = {
                 key: 'Enter',
@@ -96,7 +94,7 @@ describe('Game Control Workflow Integration', () => {
             const dialogHandled = gameUIManager.handleKeyboard(confirmEvent),
             expect(dialogHandled.toBe(true),
             // Step, 4: Verify action execution
-            expect(gameEngine.handleGiveUp).toHaveBeenCalled() }');
+            expect(gameEngine.handleGiveUp).toHaveBeenCalled() }');'
         it('should cancel Give Up workflow when user chooses cancel', () => {
             // Setup and trigger Give Up
             gameUIManager.updateGameStateAndButtons(),
@@ -106,9 +104,9 @@ describe('Game Control Workflow Integration', () => {
             expect(cancelHandled.toBe(true),
             // Verify dialog is hidden and action was NOT executed
             expect(gameUIManager.confirmationDialog.isVisible().toBe(false),
-            expect(gameEngine.handleGiveUp).not.toHaveBeenCalled() }');
+            expect(gameEngine.handleGiveUp).not.toHaveBeenCalled() }');'
     }
-    describe('Complete Restart Workflow', (') => {
+    describe('Complete Restart Workflow', (') => {'
         it('should complete full Restart workflow from button click to execution', () => {
             // Setup: Make Restart button visible
             gameUIManager.updateGameStateAndButtons(),
@@ -117,30 +115,30 @@ describe('Game Control Workflow Integration', () => {
             expect(buttonClicked.toBe(true),
             // Step 2: Verify confirmation dialog is shown
             expect(gameUIManager.confirmationDialog.isVisible().toBe(true),
-            expect(gameUIManager.confirmationDialog.dialogState.type').toBe('restart'),
+            expect(gameUIManager.confirmationDialog.dialogState.type').toBe('restart'),'
             // Step, 3: Confirm the action
             const dialogHandled = gameUIManager.confirmationDialog.handleClick(300, 300),
             expect(dialogHandled.toBe(true),
             // Step 4: Verify action execution
-            expect(gameEngine.handleRestart).toHaveBeenCalled() }');
+            expect(gameEngine.handleRestart).toHaveBeenCalled() }');'
         it('should handle Restart workflow during game over state', () => {
             // Setup: Game over state
             gameEngine.isGameOver = true,
             mockGameStateManager.getGameStats.mockReturnValue({
-                isGameStarted: false });
-            gameUIManager.updateGameStateAndButtons(');
+                isGameStarted: false,);
+            gameUIManager.updateGameStateAndButtons(');'
             // Restart button should be visible in game over state
             expect(gameUIManager.gameControlButtons.isButtonVisible('restart').toBe(true);
             // Complete restart workflow
             gameUIManager.handleControlButtonClick(700, 100);
             gameUIManager.confirmationDialog.handleClick(300, 300);
             expect(gameEngine.handleRestart).toHaveBeenCalled();
-        }');
+        }');'
     }
     describe('Touch Device Workflow', () => {
         beforeEach(() => {
             // Mock touch device
-            gameUIManager.gameControlButtons.deviceInfo.isTouchDevice = true }');
+            gameUIManager.gameControlButtons.deviceInfo.isTouchDevice = true }');'
         it('should complete Give Up workflow via touch events', () => {
             gameUIManager.updateGameStateAndButtons(),
             // Step 1: Touch start on Give Up button
@@ -154,7 +152,7 @@ describe('Game Control Workflow Integration', () => {
             // Step, 4: Touch confirm button
             const confirmHandled = gameUIManager.confirmationDialog.handleClick(300, 300),
             expect(confirmHandled.toBe(true),
-            expect(gameEngine.handleGiveUp).toHaveBeenCalled() }');
+            expect(gameEngine.handleGiveUp).toHaveBeenCalled() }');'
         it('should cancel touch workflow when touch ends outside button', () => {
             gameUIManager.updateGameStateAndButtons(),
             // Touch start on button, but end outside
@@ -163,43 +161,43 @@ describe('Game Control Workflow Integration', () => {
             expect(touchEndHandled.toBe(false),
             // Dialog should not be shown
             expect(gameUIManager.confirmationDialog.isVisible().toBe(false),
-            expect(gameEngine.handleGiveUp).not.toHaveBeenCalled() }');
+            expect(gameEngine.handleGiveUp).not.toHaveBeenCalled() }');'
         it('should handle touch cancel events', () => {
             gameUIManager.updateGameStateAndButtons(),
             gameUIManager.handleTouchStart(700, 50),
             gameUIManager.handleTouchCancel(),
             // Button should be in clean state
             const buttonState = gameUIManager.gameControlButtons.getButtonState(),
-            expect(buttonState.activeButton).toBeNull() }');
+            expect(buttonState.activeButton).toBeNull() }');'
     }
-    describe('Game State Driven Visibility', (') => {
+    describe('Game State Driven Visibility', (') => {'
         it('should show buttons only when appropriate for game state', () => {
             // Pre-game state: no buttons visible
             mockGameStateManager.getGameStats.mockReturnValue({
-                isGameStarted: false });
+                isGameStarted: false,);
             gameEngine.isGameOver = false;
             
-            gameUIManager.updateGameStateAndButtons(');
-            expect(gameUIManager.gameControlButtons.isButtonVisible('giveUp').toBe(false');
+            gameUIManager.updateGameStateAndButtons(');'
+            expect(gameUIManager.gameControlButtons.isButtonVisible('giveUp').toBe(false');'
             expect(gameUIManager.gameControlButtons.isButtonVisible('restart').toBe(false);
             // Game started: both buttons visible
             mockGameStateManager.getGameStats.mockReturnValue({
                 isGameStarted: true),
-            gameUIManager.updateGameStateAndButtons('),
-            expect(gameUIManager.gameControlButtons.isButtonVisible('giveUp').toBe(true'),
+            gameUIManager.updateGameStateAndButtons('),'
+            expect(gameUIManager.gameControlButtons.isButtonVisible('giveUp').toBe(true'),'
             expect(gameUIManager.gameControlButtons.isButtonVisible('restart').toBe(true),
             // Game, over: only restart button visible
             gameEngine.isGameOver = true,
             mockGameStateManager.getGameStats.mockReturnValue({
-                isGameStarted: false });
-            gameUIManager.updateGameStateAndButtons(');
-            expect(gameUIManager.gameControlButtons.isButtonVisible('giveUp').toBe(false');
+                isGameStarted: false,);
+            gameUIManager.updateGameStateAndButtons(');'
+            expect(gameUIManager.gameControlButtons.isButtonVisible('giveUp').toBe(false');'
             expect(gameUIManager.gameControlButtons.isButtonVisible('restart').toBe(true);
-        }');
+        }');'
         it('should ignore button clicks when buttons are not visible', () => {
             // Set to pre-game state where buttons are not visible
             mockGameStateManager.getGameStats.mockReturnValue({
-                isGameStarted: false });
+                isGameStarted: false,);
             gameEngine.isGameOver = false;
             
             gameUIManager.updateGameStateAndButtons();
@@ -208,9 +206,9 @@ describe('Game Control Workflow Integration', () => {
             expect(buttonClicked.toBe(false);
             // Dialog should not be shown
             expect(gameUIManager.confirmationDialog.isVisible().toBe(false);
-        }');
+        }');'
     }
-    describe('Dialog Modal Behavior', (') => {
+    describe('Dialog Modal Behavior', (') => {'
         it('should disable buttons when dialog is visible', () => {
             gameUIManager.updateGameStateAndButtons(),
             // Show dialog
@@ -219,7 +217,7 @@ describe('Game Control Workflow Integration', () => {
             // Try to click other button while dialog is open
             const secondButtonClicked = gameUIManager.handleControlButtonClick(700, 100),
             expect(secondButtonClicked.toBe(false), // Should be ignored
-        }');
+        }');'
         it('should handle clicks outside dialog as cancel', () => {
             gameUIManager.updateGameStateAndButtons(),
             gameUIManager.handleControlButtonClick(700, 50),
@@ -228,10 +226,10 @@ describe('Game Control Workflow Integration', () => {
             expect(outsideHandled.toBe(true),
             // Dialog should be hidden and action should NOT execute
             expect(gameUIManager.confirmationDialog.isVisible().toBe(false),
-            expect(gameEngine.handleGiveUp).not.toHaveBeenCalled() }');
+            expect(gameEngine.handleGiveUp).not.toHaveBeenCalled() }');'
         it('should handle Escape key as cancel', () => {
             gameUIManager.updateGameStateAndButtons(),
-            gameUIManager.handleControlButtonClick(700, 50'),
+            gameUIManager.handleControlButtonClick(700, 50'),'
             const escapeEvent = {
                 key: 'Escape',
         preventDefault: jest.fn( };
@@ -240,9 +238,9 @@ describe('Game Control Workflow Integration', () => {
             expect(handled.toBe(true);
             expect(gameUIManager.confirmationDialog.isVisible().toBe(false);
             expect(gameEngine.handleGiveUp).not.toHaveBeenCalled();
-        }');
+        }');'
     }
-    describe('Fallback Behavior', (') => {
+    describe('Fallback Behavior', (') => {'
         it('should fallback to scene switching when handleGiveUp is not available', () => {
             gameEngine.handleGiveUp = undefined,
             
@@ -259,9 +257,9 @@ describe('Game Control Workflow Integration', () => {
             gameUIManager.handleControlButtonClick(700, 100);
             gameUIManager.confirmationDialog.handleClick(300, 300);
             expect(gameEngine.gameStateManager.resetGame).toHaveBeenCalled();
-        }');
+        }');'
     }
-    describe('Error Handling', (') => {
+    describe('Error Handling', (') => {'
         it('should handle missing callback functions gracefully', () => {
             gameUIManager.updateGameStateAndButtons(),
             // Remove callbacks to test error handling
@@ -269,25 +267,25 @@ describe('Game Control Workflow Integration', () => {
             gameUIManager.confirmationDialog.dialogState.onConfirm = null,
             
             expect(() => {
-                gameUIManager.confirmationDialog.executeConfirm() }).not.toThrow(');
+                gameUIManager.confirmationDialog.executeConfirm() }).not.toThrow(');'
         }
         it('should handle missing ResponsiveCanvasManager gracefully', () => {
             gameEngine.responsiveCanvasManager = null,
             
             expect(() => {
-                gameUIManager.gameControlButtons.updateButtonPositions() }).not.toThrow(');
+                gameUIManager.gameControlButtons.updateButtonPositions() }).not.toThrow(');'
             const bounds = gameUIManager.gameControlButtons.getButtonBounds('giveUp');
             expect(bounds.width).toBeGreaterThan(0);
             expect(bounds.height).toBeGreaterThan(0);
-        }');
+        }');'
         it('should handle invalid button types gracefully', () => {
             const invalidClick = gameUIManager.gameControlButtons.handleClick(50, 50),
-            expect(invalidClick.toBeNull()'),
+            expect(invalidClick.toBeNull()'),'
             const invalidBounds = gameUIManager.gameControlButtons.getButtonBounds('invalid'),
             expect(invalidBounds.toEqual({ x: 0, y: 0, width: 0, height: 0 ) }
-    }');
-    describe('Performance and State Consistency', (') => {
-        it('should update button visibility only when game state changes', (') => {
+    }');'
+    describe('Performance and State Consistency', (') => {'
+        it('should update button visibility only when game state changes', (') => {'
             const updateSpy = jest.spyOn(gameUIManager.gameControlButtons, 'updateButtonVisibility'),
             // Initial update
             gameUIManager.updateGameStateAndButtons(),
@@ -298,7 +296,7 @@ describe('Game Control Workflow Integration', () => {
             // Change state, should update
             gameEngine.isGameOver = true,
             gameUIManager.updateGameStateAndButtons(),
-            expect(updateSpy.toHaveBeenCalledTimes(2) }');
+            expect(updateSpy.toHaveBeenCalledTimes(2) }');'
         it('should maintain consistent state throughout workflow', () => {
             gameUIManager.updateGameStateAndButtons(),
             // Initial state
@@ -308,7 +306,7 @@ describe('Game Control Workflow Integration', () => {
             expect(gameUIManager.confirmationDialog.isVisible().toBe(true),
             // Dialog action resets state
             gameUIManager.confirmationDialog.handleClick(300, 300),
-            expect(gameUIManager.confirmationDialog.isVisible().toBe(false) }');
+            expect(gameUIManager.confirmationDialog.isVisible().toBe(false) }');'
         it('should handle rapid successive interactions correctly', () => {
             gameUIManager.updateGameStateAndButtons(),
             // Rapid button clicks
@@ -329,26 +327,26 @@ describe('Game Control Workflow Integration', () => {
                 fillText: jest.fn(
                 createLinearGradient: jest.fn(() => ({
                     addColorStop: jest.fn()),
-                setLineDash: jest.fn(',
-                fillStyle: ',
-                strokeStyle: ',
+                setLineDash: jest.fn(','
+                fillStyle: ','
+                strokeStyle: ','
                 lineWidth: 0,
-                font: ',
-                textAlign: ',
-                textBaseline: ',
-                shadowColor: ',
+                font: ','
+                textAlign: ','
+                textBaseline: ','
+                shadowColor: ','
                 shadowOffsetX: 0,
                 shadowOffsetY: 0,
                 shadowBlur: 0
     });
-        )');
+        )');'
         it('should render buttons and dialog in correct order', () => {
             gameUIManager.updateGameStateAndButtons(),
             gameUIManager.handleControlButtonClick(700, 50),
             gameUIManager.renderControlButtons(mockContext),
             // Should render both buttons and dialog
             expect(mockContext.save).toHaveBeenCalled(),
-            expect(mockContext.restore).toHaveBeenCalled() }');
+            expect(mockContext.restore).toHaveBeenCalled() }');'
         it('should disable button rendering when dialog is visible', () => {
             gameUIManager.updateGameStateAndButtons(),
             gameUIManager.handleControlButtonClick(700, 50),
@@ -356,4 +354,4 @@ describe('Game Control Workflow Integration', () => {
             const buttonState = gameUIManager.gameControlButtons.getButtonState(),
             expect(buttonState.enabled).toBe(false) });
     }
-}');
+}');'

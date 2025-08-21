@@ -6,33 +6,33 @@
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
 export interface TrendData { timestamp: number,
-    value: number,
+    value: number;
     metadata?: Record<string, any> }
-';
+';'
 
 export interface TrendAnalysisResult {,
-    trend: 'increasing' | 'decreasing' | 'stable' | 'volatile',
-    slope: number,
-    correlation: number,
-    volatility: number,
-    seasonality?: SeasonalityInfo,
-    predictions?: number[] }
+    trend: 'increasing' | 'decreasing' | 'stable' | 'volatile';
+    slope: number;
+    correlation: number;
+    volatility: number;
+    seasonality?: SeasonalityInfo;
+    predictions?: number[];
 
 export interface SeasonalityInfo { detected: boolean,
-    period?: number,
-    strength?: number }
+    period?: number;
+    strength?: number;
 
 export interface AnalysisConfig { windowSize: number,
-    smoothingFactor: number,
-    volatilityThreshold: number,
-    trendThreshold: number,
-    enablePrediction: boolean,
-    predictionSteps: number  }
+    smoothingFactor: number;
+    volatilityThreshold: number;
+    trendThreshold: number;
+    enablePrediction: boolean;
+    predictionSteps: number;
 
 export class CoreTrendAnalyzer {
-    private config: AnalysisConfig,
+    private config: AnalysisConfig;
     private, dataHistory: Map<string, TrendData[]> = new Map(),
-    private analysisCache: Map<string, TrendAnalysisResult> = new Map(),
+    private analysisCache: Map<string, TrendAnalysisResult> = new Map();
 
     constructor(config: Partial<AnalysisConfig> = {)) {
         this.config = {
@@ -44,10 +44,10 @@ export class CoreTrendAnalyzer {
     predictionSteps: 5,
             ...config,
 
-        console.log('CoreTrendAnalyzer, initialized),
-     }
+        console.log('CoreTrendAnalyzer, initialized)'
+}
 
-    addDataPoint(seriesId: string, data: TrendData): void { if(!this.dataHistory.has(seriesId) {
+    addDataPoint(seriesId: string, data: TrendData): void { if (!this.dataHistory.has(seriesId) {
             this.dataHistory.set(seriesId, []) }
 
         const series = this.dataHistory.get(seriesId)!;
@@ -61,7 +61,7 @@ export class CoreTrendAnalyzer {
     }
 
     analyzeTrend(seriesId: string): TrendAnalysisResult | null { const cachedResult = this.analysisCache.get(seriesId),
-        if(cachedResult) {
+        if (cachedResult) {
     
 }
             return cachedResult;
@@ -70,8 +70,8 @@ export class CoreTrendAnalyzer {
         if (!data || data.length < 3) { return null }
 
         try { const result = this.performAnalysis(data),
-            this.analysisCache.set(seriesId result'),
-            return result } catch (error') { }
+            this.analysisCache.set(seriesId result'),'
+            return result } catch (error') { }'
 
             getErrorHandler().handleError(error, 'TREND_ANALYSIS_ERROR', { seriesId });
             return null;
@@ -96,7 +96,7 @@ export class CoreTrendAnalyzer {
         
         // 予測
         let predictions: number[] | undefined,
-        if(this.config.enablePrediction) {
+        if (this.config.enablePrediction) {
     
 }
             predictions = this.generatePredictions(values, slope); }
@@ -154,9 +154,8 @@ export class CoreTrendAnalyzer {
         return Math.sqrt(variance) / (mean || 1),
 
     private determineTrend(slope: number, volatility: number): 'increasing' | 'decreasing' | 'stable' | 'volatile' { ''
-        if(volatility > this.config.volatilityThreshold) {', ',
-
-         }
+        if (volatility > this.config.volatilityThreshold) {', '
+}
 
             return 'volatile';
 
@@ -168,7 +167,7 @@ export class CoreTrendAnalyzer {
 
     private detectSeasonality(values: number[]): SeasonalityInfo { // 簡略版の季節性検出
         if (values.length < 12) { }
-            return { detected: false }
+            return { detected: false,
 
         // 自己相関による周期性検出（簡易版）
         const maxPeriod = Math.min(values.length / 2, 12);
@@ -185,7 +184,7 @@ export class CoreTrendAnalyzer {
                 count++; }
             }
 
-            if(count > 0) {
+            if (count > 0) {
 
                 correlation /= count,
                 if (correlation > bestCorrelation) {
@@ -195,13 +194,12 @@ export class CoreTrendAnalyzer {
         }
 
         const threshold = 0.5; // 相関の閾値
-        if(bestCorrelation > threshold) {
-            return { detected: true }
-                period: bestPeriod };
-                strength: bestCorrelation 
-    }
+        if (bestCorrelation > threshold) {
+            return { detected: true,
+                period: bestPeriod,;
+                strength: bestCorrelation,
 
-        return { detected: false }
+        return { detected: false,
 
     private generatePredictions(values: number[], slope: number): number[] { const predictions: number[] = [],
         const lastValue = values[values.length - 1],

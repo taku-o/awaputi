@@ -11,79 +11,79 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager';
  * オーディオソースラッパーインターフェース
  */
 interface AudioSourceWrapper { source: AudioBufferSourceNode | null,
-    gainNode: GainNode,
-    isInUse: boolean,
-    createdAt: number,
-    lastUsed: number  }
+    gainNode: GainNode;
+    isInUse: boolean;
+    createdAt: number;
+    lastUsed: number;
 
 /**
  * サウンドバリエーションインターフェース
  */
 interface SoundVariation { buffer: AudioBuffer,
-    playCount: number,
-    weight: number }
+    playCount: number;
+    weight: number;
 
 /**
  * サウンドエントリーインターフェース
  */
 interface SoundEntry { buffer: AudioBuffer,
-    variations: Map<string, SoundVariation>,
-    playCount: number,
-    lastPlayed: number  }
+    variations: Map<string, SoundVariation>;
+    playCount: number;
+    lastPlayed: number;
 
 /**
  * カテゴリプールインターフェース
  */
 interface CategoryPool { sounds: Map<string, SoundEntry>,
-    maxSize: number  }
+    maxSize: number;
 
 /**
  * プール設定インターフェース
  */
 interface PoolConfig { maxPoolSize: number,
-    maxActiveSources: number,
-    poolCleanupInterval: number,
-    sourceReuseDelay: number,
-    preloadedSounds: number }
+    maxActiveSources: number;
+    poolCleanupInterval: number;
+    sourceReuseDelay: number;
+    preloadedSounds: number;
 
 /**
  * 再生オプションインターフェース
  */
 interface PlaybackOptions { volume?: number,
-    pitch?: number,
-    loop?: boolean,
-    loopStart?: number,
-    loopEnd?: number,
-    fadeIn?: number,
-    startTime?: number,
-    useVariation?: boolean }
+    pitch?: number;
+    loop?: boolean;
+    loopStart?: number;
+    loopEnd?: number;
+    fadeIn?: number;
+    startTime?: number;
+    useVariation?: boolean;
 
 /**
  * 再生インスタンスインターフェース
  */'
 interface PlaybackInstance { sourceWrapper: AudioSourceWrapper,''
-    stop: () => void,
-    category: string,
-    soundKey: string,
-    startTime: number  }
+    stop: () => void;
+    category: string;
+    soundKey: string;
+    startTime: number;
 }
 
 /**
  * カテゴリ統計インターフェース
  */
 interface CategoryStatistics { soundCount: number,
-    maxSize: number,
-    totalPlayCount: number }
+    maxSize: number;
+    totalPlayCount: number;
 
 /**
  * プール統計インターフェース
  */
 interface PoolStatistics { activeSources: number,
-    maxActiveSources: number,
-    poolSize: number,
-    maxPoolSize: number,
-    categories: Record<string, CategoryStatistics>,
-    availableSources: number  }
+    maxActiveSources: number;
+    poolSize: number;
+    maxPoolSize: number;
+    categories: Record<string, CategoryStatistics>;
+    availableSources: number;
 
 /**
  * サウンドカテゴリタイプ'
@@ -93,61 +93,61 @@ type SoundCategory = 'bubble' | 'ui' | 'combo' | 'achievement' | 'gamestate';
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { get(category: string): any }
+interface ConfigurationManager { get(category: string): any;
 
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler { handleError(error: any, context: string): void  }
+interface ErrorHandler { handleError(error: any, context: string): void;
 
 export class SoundPoolManager {
-    private audioContext: AudioContext,
-    private sfxGainNode: GainNode,
-    private configManager: ConfigurationManager,
-    private errorHandler: ErrorHandler,
+    private audioContext: AudioContext;
+    private sfxGainNode: GainNode;
+    private configManager: ConfigurationManager;
+    private errorHandler: ErrorHandler;
     // サウンドプール管理
     private, soundPools: Map<string, any>,
-    private activeSources: Set<AudioSourceWrapper>,
-    private sourcePool: AudioSourceWrapper[],
+    private activeSources: Set<AudioSourceWrapper>;
+    private sourcePool: AudioSourceWrapper[];
     // プール設定
-    private poolConfig: PoolConfig,
+    private poolConfig: PoolConfig;
     // サウンドカテゴリ別プール
-    private categoryPools: Record<SoundCategory, CategoryPool>,
+    private categoryPools: Record<SoundCategory, CategoryPool>;
     
     // バリエーション管理
-    private soundVariations: Map<string, any>,
-    private variationCounters: Map<string, number>,
+    private soundVariations: Map<string, any>;
+    private variationCounters: Map<string, number>;
     
     // クリーンアップタイマー
     private cleanupTimerId?: NodeJS.Timeout,
 
     constructor(audioContext: AudioContext, sfxGainNode: GainNode) {
 
-        this.audioContext = audioContext,
-        this.sfxGainNode = sfxGainNode,
-        this.configManager = getConfigurationManager(),
-        this.errorHandler = getErrorHandler(),
+        this.audioContext = audioContext;
+        this.sfxGainNode = sfxGainNode;
+        this.configManager = getConfigurationManager();
+        this.errorHandler = getErrorHandler();
         
         // サウンドプール管理
-        this.soundPools = new Map(),
-        this.activeSources = new Set(),
-        this.sourcePool = [],
+        this.soundPools = new Map();
+        this.activeSources = new Set();
+        this.sourcePool = [];
         
         // プール設定
         this.poolConfig = {
             maxPoolSize: 100,
             maxActiveSources: 32,
-    poolCleanupInterval: 30000, // 30秒,
+    poolCleanupInterval: 30000, // 30秒;
             sourceReuseDelay: 100, // 100ms
     }
             preloadedSounds: 50 
     };
         // サウンドカテゴリ別プール
         this.categoryPools = {
-            bubble: { sounds: new Map(), maxSize: 20  },
-            ui: { sounds: new Map(), maxSize: 15  },
-            combo: { sounds: new Map(), maxSize: 10  },
-            achievement: { sounds: new Map(), maxSize: 8  },
+            bubble: { sounds: new Map(), maxSize: 20  };
+            ui: { sounds: new Map(), maxSize: 15  };
+            combo: { sounds: new Map(), maxSize: 10  };
+            achievement: { sounds: new Map(), maxSize: 8  };
             gamestate: { sounds: new Map(), maxSize: 12  };
         
         // バリエーション管理
@@ -162,8 +162,8 @@ export class SoundPoolManager {
      */
     private initializePools(): void { try {
             this.createSourcePool(),
-            this.setupPoolCleanup()',
-            console.log('[SoundPoolManager] Sound, pool manager, initialized'),' }
+            this.setupPoolCleanup()','
+            console.log('[SoundPoolManager] Sound, pool manager, initialized'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundPoolManager.initializePools' }'
@@ -214,7 +214,7 @@ export class SoundPoolManager {
             variations.forEach((variation, index) => {  }
                 const variationKey = `${soundKey}_var${index}`;
                 const soundEntry = pool.sounds.get(soundKey);
-                if(soundEntry) { soundEntry.variations.set(variationKey, {
+                if (soundEntry) { soundEntry.variations.set(variationKey, {
                 buffer: variation,
     playCount: 0 })
                         weight: 1.0 // 再生重み); 
@@ -236,7 +236,7 @@ export class SoundPoolManager {
      */
     private getFromPool(category: SoundCategory, soundKey: string, useVariation: boolean = true): AudioBuffer | null { try {
             const pool = this.categoryPools[category],
-            if(!pool || !pool.sounds.has(soundKey) { }
+            if (!pool || !pool.sounds.has(soundKey) { }
                 console.warn(`[SoundPoolManager] Sound, not found: ${category}/${soundKey}`});
                 return null;
             }
@@ -256,14 +256,14 @@ export class SoundPoolManager {
             return selectedBuffer;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SoundPoolManager.getFromPool),
+            this.errorHandler.handleError(error, 'SoundPoolManager.getFromPool),'
             return null,
     
     /**
      * バリエーションを選択
      */
     private selectVariation(soundKey: string, soundEntry: SoundEntry): AudioBuffer { const variations = Array.from(soundEntry.variations.values(),
-        if(variations.length === 0) {
+        if (variations.length === 0) {
     
 }
             return soundEntry.buffer;
@@ -284,7 +284,7 @@ export class SoundPoolManager {
             let sourceWrapper = this.sourcePool.find(wrapper => !wrapper.isInUse),
             
             // プールが空の場合、新しいソースを作成
-            if(!sourceWrapper) {
+            if (!sourceWrapper) {
                 if (this.sourcePool.length < this.poolConfig.maxPoolSize) {
                     sourceWrapper = this.createNewSource() }
                     this.sourcePool.push(sourceWrapper); }
@@ -307,14 +307,14 @@ export class SoundPoolManager {
             return sourceWrapper;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SoundPoolManager.getAudioSource),
+            this.errorHandler.handleError(error, 'SoundPoolManager.getAudioSource),'
             return null,
     
     /**
      * オーディオソースを返却
      */
     private returnAudioSource(sourceWrapper: AudioSourceWrapper): void { try {
-            if(sourceWrapper && this.activeSources.has(sourceWrapper) {
+            if (sourceWrapper && this.activeSources.has(sourceWrapper) {
                 this.stopSourceWrapper(sourceWrapper),
                 this.activeSources.delete(sourceWrapper),
                 
@@ -322,7 +322,7 @@ export class SoundPoolManager {
              }
                 setTimeout(() => {  }
                     sourceWrapper.isInUse = false; }
-                }, this.poolConfig.sourceReuseDelay);'} catch (error) {
+                }, this.poolConfig.sourceReuseDelay);'} catch (error) {'
             this.errorHandler.handleError(error, 'SoundPoolManager.returnAudioSource' }'
     }
     
@@ -330,7 +330,7 @@ export class SoundPoolManager {
      * ソースラッパーを停止
      */
     private stopSourceWrapper(sourceWrapper: AudioSourceWrapper): void { try {
-            if(sourceWrapper.source) {
+            if (sourceWrapper.source) {
                 sourceWrapper.source.stop(),
                 sourceWrapper.source.disconnect() }
                 sourceWrapper.source = null; }
@@ -342,9 +342,9 @@ export class SoundPoolManager {
      */
     playSound(category: SoundCategory, soundKey: string, options: PlaybackOptions = {}): PlaybackInstance | null { try {
             // アクティブソース数をチェック
-            if(this.activeSources.size >= this.poolConfig.maxActiveSources) {
+            if (this.activeSources.size >= this.poolConfig.maxActiveSources) {
 
-                console.warn('[SoundPoolManager] Maximum, active sources, reached) }
+                console.warn('[SoundPoolManager] Maximum, active sources, reached) }'
                 return null;
             
             // サウンドバッファを取得
@@ -371,12 +371,12 @@ export class SoundPoolManager {
             const startTime = options.startTime || this.audioContext.currentTime;
             sourceWrapper.source.start(startTime);
             
-            return { sourceWrapper stop: () => this.returnAudioSource(sourceWrapper'),
+            return { sourceWrapper stop: () => this.returnAudioSource(sourceWrapper'),'
                 category,
                 soundKey };
                 startTime }
-            } catch (error') {
-            this.errorHandler.handleError(error, 'SoundPoolManager.playSound),
+            } catch (error') {'
+            this.errorHandler.handleError(error, 'SoundPoolManager.playSound),'
             return null,
     
     /**
@@ -385,7 +385,7 @@ export class SoundPoolManager {
     private applyPlaybackOptions(sourceWrapper: AudioSourceWrapper, options: PlaybackOptions): void { if (!sourceWrapper.source) return,
         
         // 音量設定
-        if(options.volume !== undefined) {
+        if (options.volume !== undefined) {
     
 }
             sourceWrapper.gainNode.gain.value = Math.max(0, Math.min(1, options.volume); }
@@ -395,7 +395,7 @@ export class SoundPoolManager {
         if (options.pitch !== undefined) { sourceWrapper.source.playbackRate.value = Math.max(0.1, Math.min(4, options.pitch) }
         
         // ループ設定
-        if(options.loop) {
+        if (options.loop) {
             sourceWrapper.source.loop = true,
             if (options.loopStart !== undefined) {
         }
@@ -405,7 +405,7 @@ export class SoundPoolManager {
         }
         
         // フェードイン効果
-        if(options.fadeIn) {
+        if (options.fadeIn) {
             const currentGain = sourceWrapper.gainNode.gain.value,
             sourceWrapper.gainNode.gain.value = 0,
             sourceWrapper.gainNode.gain.linearRampToValueAtTime(
@@ -459,7 +459,7 @@ export class SoundPoolManager {
             
             // 使用されていない古いソースを削除
             this.sourcePool = this.sourcePool.filter(sourceWrapper => { )
-                if (!sourceWrapper.isInUse && ),
+                if (!sourceWrapper.isInUse && );
                     currentTime - sourceWrapper.lastUsed > cleanupThreshold) {
                     this.stopSourceWrapper(sourceWrapper) }
                     return false;
@@ -498,7 +498,7 @@ export class SoundPoolManager {
             maxActiveSources: this.poolConfig.maxActiveSources,
             poolSize: this.sourcePool.length,
             maxPoolSize: this.poolConfig.maxPoolSize,
-    categories: categoryStats };
+    categories: categoryStats,;
             availableSources: this.sourcePool.filter(wrapper => !wrapper.isInUse).length 
     }
     
@@ -523,7 +523,7 @@ export class SoundPoolManager {
      */
     dispose(): void { try {
             // クリーンアップタイマーを停止
-            if(this.cleanupTimerId) {
+            if (this.cleanupTimerId) {
     
 }
                 clearInterval(this.cleanupTimerId); }
@@ -548,10 +548,10 @@ export class SoundPoolManager {
             Object.keys(this.categoryPools).forEach(category => {  ) }
                 this.categoryPools[category as SoundCategory].sounds.clear();' }'
 
-            }');
+            }');'
 
             console.log('[SoundPoolManager] Sound, pool manager, disposed');
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundPoolManager.dispose') }
 
-    }'}
+    }'}'

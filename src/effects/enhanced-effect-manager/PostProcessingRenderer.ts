@@ -7,13 +7,13 @@ interface EnhancedTransform { depthOfField: number,
     motionBlur: {
         ,x: number,
         y: number,
-    intensity: number  };
-    chromatic: number;
-    vignette: number;
-    noise: number;
+    intensity: number,;
+    chromatic: number,
+    vignette: number,
+    noise: number,
     scanlines: number,
     glitch: { intensity: number,
-    frequency: number }
+    frequency: number,
 
 /**
  * レンダリング設定インターフェース
@@ -26,20 +26,20 @@ interface RenderSettings { enablePostProcessing: boolean,''
  * グリッチ効果設定インターフェース
  */
 interface GlitchEffect { intensity: number,
-    frequency: number }
+    frequency: number;
 
 /**
  * フォーカスポイントインターフェース
  */
 interface FocusPoint { x: number,
-    y: number }
+    y: number;
 
 /**
  * Post Processing Renderer
  * ポストプロセッシング効果レンダラー - ビネット、ノイズ、スキャンライン、グリッチ効果
  */
 export class PostProcessingRenderer {
-    private canvas: HTMLCanvasElement,
+    private canvas: HTMLCanvasElement;
     private, errorHandler: any,
     constructor(canvas: HTMLCanvasElement) {
 
@@ -56,7 +56,7 @@ export class PostProcessingRenderer {
             if (!renderSettings.enablePostProcessing) return,
             
             // ビネット効果
-            if(enhancedTransform.vignette > 0) {
+            if (enhancedTransform.vignette > 0) {
     
 }
                 this.renderVignetteEffect(context, enhancedTransform.vignette); }
@@ -87,9 +87,9 @@ export class PostProcessingRenderer {
             const gradient = context.createRadialGradient(),
                 canvas.width / 2, canvas.height / 2, 0),
 
-                canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 2',
-            '),
-            gradient.addColorStop(0, 'rgba(0, 0, 0, 0)),
+                canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 2','
+            '),'
+            gradient.addColorStop(0, 'rgba(0, 0, 0, 0)),'
             gradient.addColorStop(1, `rgba(0, 0, 0, ${intensity)`};
 
             context.globalCompositeOperation = 'multiply';
@@ -120,7 +120,7 @@ export class PostProcessingRenderer {
             }
                 data[i + 2] += noise; // B }
             }
-            ';
+            ';'
 
             context.putImageData(imageData, 0, 0);'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderNoiseEffect'
@@ -134,13 +134,13 @@ export class PostProcessingRenderer {
     renderScanlinesEffect(context: CanvasRenderingContext2D, intensity: number): void { try {
             const canvas = this.canvas,
             context.save('',
-            context.globalCompositeOperation = 'multiply',', ')',
+            context.globalCompositeOperation = 'multiply',', ')','
             for(let, y = 0, y < canvas.height, y += 4) {
 
                 context.fillStyle = 'rgba(0, 0, 0, 0.1)' }
                 context.fillRect(0, y, canvas.width, 2); }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderScanlinesEffect'
@@ -176,7 +176,7 @@ export class PostProcessingRenderer {
      */
     applyEnhancedTransform(context: CanvasRenderingContext2D, enhancedTransform: EnhancedTransform): void { try {
             // モーションブラーフィルター
-            if(enhancedTransform.motionBlur.intensity > 0) {
+            if (enhancedTransform.motionBlur.intensity > 0) {
     
 }
                 const blur = enhancedTransform.motionBlur.intensity; }
@@ -205,8 +205,8 @@ export class PostProcessingRenderer {
             const, focusRadius = 100,
             const, gradient = context.createRadialGradient(
                 focusPoint.x, focusPoint.y, 0),
-                focusPoint.x, focusPoint.y, focusRadius)',
-            '),
+                focusPoint.x, focusPoint.y, focusRadius)','
+            '),'
             gradient.addColorStop(0, 'rgba(0, 0, 0, 0)'),
             gradient.addColorStop(1, 'rgba(0, 0, 0, 1)'};
 
@@ -215,9 +215,9 @@ export class PostProcessingRenderer {
             context.fillRect(0, 0, canvas.width, canvas.height}
 
             context.restore(});'} catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'PostProcessingRenderer.renderDepthBlurEffect',' }
+                context: 'PostProcessingRenderer.renderDepthBlurEffect',' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

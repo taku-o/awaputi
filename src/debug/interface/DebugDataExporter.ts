@@ -2,93 +2,92 @@ import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface ExportFormat { name: string,
-    extension: string,
-    mimeType: string,
+    extension: string;
+    mimeType: string;
     exporter: (data: any') => string  }'
 }
 
 interface ExportOptions { includeMetadata?: boolean,
-    compressed?: boolean,
-    [key: string]: any }
+    compressed?: boolean;
+    [key: string]: any;
 
 interface ExportStatistics { totalExports: number,
-    successfulExports: number,
-    failedExports: number  }
+    successfulExports: number;
+    failedExports: number;
 
 interface ExportRecord { filename: string,
-    format: string,
-    size?: number,
-    error?: string,
-    timestamp: number,
-    success: boolean }
-';
+    format: string;
+    size?: number;
+    error?: string;
+    timestamp: number;
+    success: boolean;
+';'
 
 interface TestSuite { suite: string,''
-    status: 'ready' | 'running' | 'completed' | 'failed',
-    results: TestResult[],
-    summary: TestSummary
-     }
-';
+    status: 'ready' | 'running' | 'completed' | 'failed';
+    results: TestResult[];
+    summary: TestSummary;
+';'
 
 interface TestResult { name: string,''
-    status: 'passed' | 'failed' | 'skipped',
-    duration?: number,
+    status: 'passed' | 'failed' | 'skipped';
+    duration?: number;
     error?: string,  }
 
 interface TestSummary { passed: number,
-    failed: number,
-    skipped: number  }
+    failed: number;
+    skipped: number;
 
 interface PanelData { panelId: string,
-    timestamp: number,
-    sessionId: string,
-    version: string,
-    type: string,
-    [key: string]: any }
+    timestamp: number;
+    sessionId: string;
+    version: string;
+    type: string;
+    [key: string]: any;
 
 interface MetricsData { fps: number,
-    memory: number,
-    cpu: number,
-    gpu: number  }
+    memory: number;
+    cpu: number;
+    gpu: number;
 
 interface NetworkPerformance { download: number,
-    upload: number,
-    latency: number }
+    upload: number;
+    latency: number;
 
 interface GCInfo { collections: number,
-    totalTime: number,
-    averageTime: number }
+    totalTime: number;
+    averageTime: number;
 
 interface MainController { container?: HTMLElement,
-    sessionId: string,
-    settings?: any,
-    getComponent(name: string): any }
+    sessionId: string;
+    settings?: any;
+    getComponent(name: string): any;
 
 interface PanelManager { getActivePanel(): string | null }
-    getRegisteredPanels(): { id: string }[];
+    getRegisteredPanels(): { id: string,[];
     getPanelStatistics?(): any;
 }
 
-interface CommandProcessor { getShortcutStatistics?(): any }
+interface CommandProcessor { getShortcutStatistics?(): any;
 
 interface Visualizer { charts: Map<string, HTMLElement>,
-    getCurrentTheme?(): any,
-    getResponsiveLayout?(): any }
+    getCurrentTheme?(): any;
+    getResponsiveLayout?(): any;
 
 /**
  * DebugDataExporter - デバッグデータのエクスポート・テスト結果管理コンポーネント
  */
 export class DebugDataExporter extends BaseComponent { private exportFormats: Map<string, ExportFormat>,
-    private testResults: Map<string, TestSuite>,
-    private exportHistory: ExportRecord[],
-    private, exportStatistics: ExportStatistics',
+    private testResults: Map<string, TestSuite>;
+    private exportHistory: ExportRecord[];
+    private, exportStatistics: ExportStatistics','
 
     constructor(mainController: MainController) {
 
-        super(mainController, 'DebugDataExporter),
+        super(mainController, 'DebugDataExporter),'
         this.exportFormats = new Map<string, ExportFormat>(),
         this.testResults = new Map<string, TestSuite>(),
-        this.exportHistory = [],
+        this.exportHistory = [];
         this.exportStatistics = {
             totalExports: 0,
     successfulExports: 0 }
@@ -103,36 +102,36 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      */''
     setupExportFormats('';
         this.exportFormats.set('json', {
-            name: 'JSON',',
-            extension: '.json',')',
+            name: 'JSON',';'
+            extension: '.json',')';
             mimeType: 'application/json',
             exporter: (data: any) => JSON.stringify(data, null, 2),' }'
 
-        }');
-';
+        }');'
+';'
         // CSV形式
         this.exportFormats.set('csv', {
-            name: 'CSV',',
+            name: 'CSV',','
             extension: '.csv',')',
             mimeType: 'text/csv',
             exporter: (data: any) => this.convertToCSV(data),'
             }'
 
-        }');
-';
+        }');'
+';'
         // TXT形式
         this.exportFormats.set('txt', {
-            name: 'Text',',
+            name: 'Text',','
             extension: '.txt',')',
             mimeType: 'text/plain',
             exporter: (data: any) => this.convertToText(data),'
             }'
 
-        }');
-';
+        }');'
+';'
         // XML形式
         this.exportFormats.set('xml', {
-            name: 'XML',',
+            name: 'XML',','
             extension: '.xml',')',
             mimeType: 'application/xml',
     exporter: (data: any) => this.convertToXML(data)  }
@@ -144,27 +143,27 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      */''
     initializeTestSuites('''
         this.testResults.set('integration', { ''
-            suite: 'Integration Tests',',
-            status: 'ready')',
+            suite: 'Integration Tests',','
+            status: 'ready')','
     results: [],' }'
 
-            summary: { passed: 0, failed: 0, skipped: 0  }');
-';
+            summary: { passed: 0, failed: 0, skipped: 0  }');'
+';'
         // 要件検証結果を初期化
         this.testResults.set('requirements', { ''
-            suite: 'Requirements Validation',',
-            status: 'ready')',
+            suite: 'Requirements Validation',','
+            status: 'ready')','
     results: [],' }'
 
-            summary: { passed: 0, failed: 0, skipped: 0  }');
-';
+            summary: { passed: 0, failed: 0, skipped: 0  }');'
+';'
         // 最終検証結果を初期化
         this.testResults.set('final', { ''
-            suite: 'Final Validation',',
-            status: 'ready')',
+            suite: 'Final Validation',','
+            status: 'ready')','
     results: [],' }'
 
-            summary: { passed: 0, failed: 0, skipped: 0  }');
+            summary: { passed: 0, failed: 0, skipped: 0  }');'
     }
 
     /**
@@ -176,14 +175,14 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
         const panelManager = (this.mainController, as MainController').getComponent('panelManager) as PanelManager,
         const activePanel = panelManager?.getActivePanel(),
 
-        if(!activePanel) {
+        if (!activePanel) {
 
-            console.warn('No, active panel, to export) }
+            console.warn('No, active panel, to export) }'
             return; }
         }
 
         const panelData = this.collectPanelData(activePanel);
-        this.exportData(panelData, `${activePanel}-data` format options}');
+        this.exportData(panelData, `${activePanel}-data` format options}');'
     }
 
     /**
@@ -191,24 +190,24 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * @param panelId - パネルID
      * @returns パネルデータ
      */ : undefined
-    collectPanelData(panelId: string'): PanelData { const controller = this.mainController as MainController,
+    collectPanelData(panelId: string'): PanelData { const controller = this.mainController as MainController,'
         const baseData: PanelData = {'
             panelId: panelId,
             timestamp: Date.now('',
     version: '1.0.0',
             type: 'unknown'
-            })', ')';
+            })', ')';'
         switch(panelId) {
 
-            case 'console':',
+            case 'console':','
                 return { ...baseData, ...this.collectConsoleData('''
-            case 'performance':',
+            case 'performance':','
                 return { ...baseData, ...this.collectPerformanceData('''
-            case 'memory':',
+            case 'memory':','
                 return { ...baseData, ...this.collectMemoryData('''
-            case 'network':' }
+            case 'network':' }'
 
-                return { ...baseData, ...this.collectNetworkData(',
+                return { ...baseData, ...this.collectNetworkData(','
             case 'settings': }
                 return { ...baseData, ...this.collectSettingsData(),
             default: return baseData,
@@ -217,21 +216,21 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * コンソールデータを収集
      * @returns コンソールデータ'
      */''
-    collectConsoleData()',
+    collectConsoleData()','
         const consoleOutput = controller.container?.querySelector('.console-output'),
 
         return { : undefined''
             type: 'console',
-            output: consoleOutput?.textContent || ', : undefined
+            output: consoleOutput?.textContent || ', : undefined'
             commandHistory: this.getCommandHistory() };
-            timestamp: Date.now(); 
+            timestamp: Date.now(), 
     }
 
     /**
      * パフォーマンスデータを収集
      * @returns パフォーマンスデータ'
      */''
-    collectPerformanceData()';
+    collectPerformanceData()';'
         const visualizer = controller.getComponent('visualizer') as Visualizer;
 
         return { ''
@@ -240,30 +239,30 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
                 fps: this.getCurrentFPS(),
                 memory: this.getCurrentMemoryUsage(
     cpu: this.getCurrentCPUUsage() };
-                gpu: this.getCurrentGPUUsage(); 
+                gpu: this.getCurrentGPUUsage(), 
     },
             charts: visualizer ? this.exportChartData() : {};
-            timestamp: Date.now();
+            timestamp: Date.now(),
         }
 
     /**
      * メモリデータを収集
      * @returns メモリデータ'
      */''
-    collectMemoryData()';
+    collectMemoryData()';'
             type: 'memory',
     usage: { used: (performance, as any).memory?.usedJSHeapSize || 0, : undefined
                 total: (performance, as any).memory?.totalJSHeapSize || 0, : undefined
                 limit: (performance, as any).memory?.jsHeapSizeLimit || 0  }, : undefined
             gc: this.getGCInfo(
-    timestamp: Date.now();
+    timestamp: Date.now(),
         }
 
     /**
      * ネットワークデータを収集
      * @returns ネットワークデータ'
      */''
-    collectNetworkData()';
+    collectNetworkData()';'
             type: 'network');
             requests: this.getNetworkRequests();
             performance: this.getNetworkPerformance(
@@ -274,7 +273,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * 設定データを収集
      * @returns 設定データ'
      */''
-    collectSettingsData()';
+    collectSettingsData()';'
         const visualizer = controller.getComponent('visualizer') as Visualizer;
 
         return { };
@@ -311,7 +310,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
                , format: format),
                 size: exportedData.length),
                 timestamp: Date.now(
-    success: true  });
+    success: true,);
             this.exportStatistics.totalExports++;
             this.exportStatistics.successfulExports++;
 
@@ -328,8 +327,8 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
                 success: false'
             }'
 
-            }');
-            this._handleError('data export', error';
+            }');'
+            this._handleError('data export', error';'
         }
     }
 
@@ -359,22 +358,22 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * @param data - データ
      * @returns CSV文字列
      */'
-    convertToCSV(data: any): string { if(Array.isArray(data) {''
-            if(data.length === 0) return ',
+    convertToCSV(data: any): string { if (Array.isArray(data) {''
+            if(data.length === 0) return ','
 
             const headers = Object.keys(data[0]),
-            const csvLines = [headers.join(')],
+            const csvLines = [headers.join(')],'
             
             data.forEach((row: any) => { '
                 const values = headers.map(header => {)  }
 
-                    const value = row[header]'); }
+                    const value = row[header]'); }'
 
-                    return typeof value === 'string' ? `"${value.replace(/"/g, '""'}'"` : value;"
+                    return typeof value === 'string' ? `"${value.replace(/"/g, '""'}'"` : value;"'
                 }");""
-                csvLines.push(values.join(',';}');
+                csvLines.push(values.join(',';}');'
 
-            return csvLines.join('\n);
+            return csvLines.join('\n);'
         } else {  // オブジェクトの場合はkey-value形式 }
             return Object.entries(data)' }'
 
@@ -411,7 +410,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
 
             } else { }'
 
-                lines.push(`${spaces}${key}: ${value}`}';
+                lines.push(`${spaces}${key}: ${value}`}';'
             }
         }
 
@@ -437,7 +436,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      */ : undefined''
     objectToXML(obj: any, indent: number = 0): string { ''
         const spaces = ', '.repeat(indent),
-        let xml = ',
+        let xml = ','
 
         for(const [key, value] of Object.entries(obj)) {''
             const tagName = key.replace(/[^a-zA-Z0-9]/g, '_'),
@@ -463,7 +462,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
             .replace(/&/g, '&amp,')
             .replace(/</g, '&lt,')
             .replace(/>/g, '&gt,')
-            .replace(/"/g, '&quot,')
+            .replace(/"/g, '&quot,')"
             .replace(/'/g, '&apos) }
 
     /**
@@ -473,7 +472,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
     addToExportHistory(record: ExportRecord): void { this.exportHistory.unshift(record),
         
         // 履歴の長さを制限（最大50件）
-        if(this.exportHistory.length > 50) {
+        if (this.exportHistory.length > 50) {
     
 }
             this.exportHistory = this.exportHistory.slice(0, 50); }
@@ -485,7 +484,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * 統合テスト結果を取得
      * @returns テスト結果
      */''
-    getIntegrationTestResults()';
+    getIntegrationTestResults()';'
         return this.testResults.get('integration');
     }
 
@@ -493,17 +492,17 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * 統合テスト結果をエクスポート
      * @param format - エクスポート形式'
      */''
-    exportIntegrationTestResults(format: string = 'json): void { const results = this.getIntegrationTestResults(),
-        if(results) {', ' }
+    exportIntegrationTestResults(format: string = 'json): void { const results = this.getIntegrationTestResults(),'
+        if (results) {', ' }
 
-            this.exportData(results, 'integration-test-results', format'; }
+            this.exportData(results, 'integration-test-results', format'; }'
 }
 
     /**
      * 要件検証結果を取得
      * @returns 検証結果'
      */''
-    getRequirementsValidationResults()';
+    getRequirementsValidationResults()';'
         return this.testResults.get('requirements');
     }
 
@@ -511,17 +510,17 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * 要件検証結果をエクスポート
      * @param format - エクスポート形式'
      */''
-    exportRequirementsValidationResults(format: string = 'json): void { const results = this.getRequirementsValidationResults(),
-        if(results) {', ' }
+    exportRequirementsValidationResults(format: string = 'json): void { const results = this.getRequirementsValidationResults(),'
+        if (results) {', ' }
 
-            this.exportData(results, 'requirements-validation-results', format'; }
+            this.exportData(results, 'requirements-validation-results', format'; }'
 }
 
     /**
      * 最終検証結果を取得
      * @returns 検証結果'
      */''
-    getFinalValidationResults()';
+    getFinalValidationResults()';'
         return this.testResults.get('final');
     }
 
@@ -529,8 +528,8 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * 最終検証結果をエクスポート
      * @param format - エクスポート形式'
      */''
-    exportFinalValidationResults(format: string = 'json): void { const results = this.getFinalValidationResults(),
-        if(results) {', ' }
+    exportFinalValidationResults(format: string = 'json): void { const results = this.getFinalValidationResults(),'
+        if (results) {', ' }
 
             this.exportData(results, 'final-validation-results', format); }
 }
@@ -596,8 +595,8 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * チャートデータをエクスポート
      * @returns チャートデータ
      */''
-    exportChartData()';
-        const visualizer = controller.getComponent('visualizer) as Visualizer;
+    exportChartData()';'
+        const visualizer = controller.getComponent('visualizer) as Visualizer;'
         if (!visualizer) return {};
 
         const chartData: Record<string, any> = {};
@@ -636,7 +635,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * 全データをエクスポート
      * @param format - エクスポート形式'
      */''
-    exportAllData(format: string = 'json): void { const controller = this.mainController as MainController,
+    exportAllData(format: string = 'json): void { const controller = this.mainController as MainController,'
         const allData = {
             debugInterface: {
                 sessionId: controller.sessionId,
@@ -644,21 +643,21 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
             panels: {} as Record<string, PanelData>,
             testResults: Object.fromEntries(this.testResults,
             statistics: { ''
-                export: this.getExportStatistics()',
-    panels: (controller.getComponent('panelManager) as PanelManager'?.getPanelStatistics?.(), : undefined',
+                export: this.getExportStatistics()','
+    panels: (controller.getComponent('panelManager) as PanelManager'?.getPanelStatistics?.(), : undefined','
                 shortcuts: (controller.getComponent('commandProcessor) as CommandProcessor'?.getShortcutStatistics?.('
             }
         };
-';
+';'
         // 各パネルのデータを収集
-        const panelManager = controller.getComponent('panelManager) as PanelManager;
-        if(panelManager) {
+        const panelManager = controller.getComponent('panelManager) as PanelManager;'
+        if (panelManager) {
             const panels = panelManager.getRegisteredPanels() }
             panels.forEach(panel => { ) }
 
                 allData.panels[panel.id] = this.collectPanelData(panel.id);' }'
 
-            }');
+            }');'
         }
 
         this.exportData(allData, 'debug-interface-complete', format);
@@ -668,7 +667,7 @@ export class DebugDataExporter extends BaseComponent { private exportFormats: Ma
      * クリーンアップ
      */ : undefined
     cleanup(): void { this.testResults.clear(),
-        this.exportHistory = [],
+        this.exportHistory = [];
         this.exportStatistics = {
             totalExports: 0,
             successfulExports: 0,

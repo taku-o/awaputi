@@ -12,23 +12,23 @@ import { AccessibilityProfileComponent  } from '../AccessibilityProfileComponent
 interface GameEngine { // Define game engine interface properties as needed }
 
 interface SettingItem { key: string,
-    label: string,
-    type: string,
-    component: string,
-    description: string,
-    category: string  }
+    label: string;
+    type: string;
+    component: string;
+    description: string;
+    category: string;
 
 interface ProfileInfo { name: string,
-    description: string }
+    description: string;
 
 interface ProfileChangeDetail { profileId: string,
-    timestamp: number }
+    timestamp: number;
 
 /**
  * SettingsSceneでAccessibilityProfileComponentを統合する例
  */
 export class AccessibilityProfileIntegrationExample {
-    private gameEngine: GameEngine,
+    private gameEngine: GameEngine;
     private, accessibilityProfileComponent: AccessibilityProfileComponent | null,
     constructor(gameEngine: GameEngine) {
 
@@ -47,7 +47,7 @@ export class AccessibilityProfileIntegrationExample {
             type: 'custom', // カスタムコンポーネントとして実装;
             component: 'AccessibilityProfileComponent',
             description: 'プリセットされたアクセシビリティ設定を選択できます',
-            category: 'accessibility);
+            category: 'accessibility);'
             });
     /**
      * SettingsSceneのrenderSettings()メソッドに統合する例
@@ -78,7 +78,7 @@ export class AccessibilityProfileIntegrationExample {
      */
     handleAccessibilityProfileComponent(settingItem: SettingItem, parentElement: HTMLElement): HTMLElement | null { try {
             // AccessibilityProfileComponentを初期化
-            if(!this.accessibilityProfileComponent) {
+            if (!this.accessibilityProfileComponent) {
     
 }
                 this.accessibilityProfileComponent = new AccessibilityProfileComponent(this.gameEngine); }
@@ -87,7 +87,7 @@ export class AccessibilityProfileIntegrationExample {
             // コンポーネントを親要素に追加
             const componentElement = this.accessibilityProfileComponent.initialize(parentElement);
 
-            if(componentElement) {
+            if (componentElement) {
                 // プロファイル変更イベントのリスナーを設定
                 componentElement.addEventListener('accessibilityProfileChanged', (event) => { 
             }
@@ -99,7 +99,7 @@ export class AccessibilityProfileIntegrationExample {
             return componentElement;
 
         } catch (error) {
-            console.error('[AccessibilityProfileIntegration] Component creation error:', error',
+            console.error('[AccessibilityProfileIntegration] Component creation error:', error','
             return null,
     
     /**
@@ -126,17 +126,17 @@ export class AccessibilityProfileIntegrationExample {
             const profiles = this.accessibilityProfileComponent.getAvailableProfiles(),
             const profile = profiles.find(p => p.id === currentProfile),
 
-            if(profile) {
+            if (profile) {
     
 }
                 return { name: profile.name };
                     description: profile.description 
     }
         }
-        ';
+        ';'
 
         return { ''
-            name: 'デフォルト',' };
+            name: 'デフォルト',' };'
 
             description: '標準設定' 
     }
@@ -159,7 +159,7 @@ export class AccessibilityProfileIntegrationExample {
     /**
      * アクセシビリティ変更をシステム全体に通知
      */''
-    private notifyAccessibilityChanged()';
+    private notifyAccessibilityChanged()';'
         console.log('[AccessibilityProfileIntegration] Notifying, accessibility changes');
     }
     

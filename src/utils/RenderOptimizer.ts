@@ -5,54 +5,53 @@
 
 // 型定義
 interface Viewport { x: number,
-    y: number,
-    width: number,
-    height: number  }
+    y: number;
+    width: number;
+    height: number;
 interface Region { x: number,
-    y: number,
-    width: number,
-    height: number  }
+    y: number;
+    width: number;
+    height: number;
 interface RenderStats { totalObjects: number,
-    renderedObjects: number,
-    culledObjects: number,
-    dirtyRegions: number,
-    renderTime: number  }
+    renderedObjects: number;
+    culledObjects: number;
+    dirtyRegions: number;
+    renderTime: number;
 interface RenderObject { id?: string,
-    x: number,
-    y: number,
-    width?: number,
-    height?: number,
-    size?: number,
-    color?: string,
-    rotation?: number,
-    scale?: number,
-    opacity?: number,
-    type?: string,
+    x: number;
+    y: number;
+    width?: number;
+    height?: number;
+    size?: number;
+    color?: string;
+    rotation?: number;
+    scale?: number;
+    opacity?: number;
+    type?: string;
     render?: (ctx: CanvasRenderingContext2D) => void  }
 interface Layer { canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D,
-    zIndex: number,
-    isDirty: boolean,
-    objects: RenderObject[]
-     }
+    context: CanvasRenderingContext2D;
+    zIndex: number;
+    isDirty: boolean;
+    objects: RenderObject[];
 interface PerformanceStats { fps: number,
-    deltaTime: number,
-    frameCount: number,
-    avgFrameTime: number,
+    deltaTime: number;
+    frameCount: number;
+    avgFrameTime: number;
     memoryUsage: {
         usedJSHeapSiz,e: number,
         totalJSHeapSize: number,
-    jsHeapSizeLimit: number  }
+    jsHeapSizeLimit: number,
 
 export class RenderOptimizer {
-    private canvas: HTMLCanvasElement,
-    private context: CanvasRenderingContext2D,
-    private width: number,
-    private height: number,
+    private canvas: HTMLCanvasElement;
+    private context: CanvasRenderingContext2D;
+    private width: number;
+    private height: number;
     // 差分レンダリング用
-    private, dirtyRegions: Region[] }
-    private lastFrameObjects: Map<string, RenderObject & { layer: string }>;
-    private currentFrameObjects: Map<string, RenderObject & { layer: string }>;
+    private, dirtyRegions: Region[];
+    private lastFrameObjects: Map<string, RenderObject & { layer: string;>;
+    private currentFrameObjects: Map<string, RenderObject & { layer: string;>;
     
     // レイヤーシステム
     private layers: Map<string, Layer>;
@@ -66,13 +65,13 @@ export class RenderOptimizer {
     private, offscreenContext: CanvasRenderingContext2D;
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas,
-        const context = canvas.getContext('2d',
-        if(!context) {
+        this.canvas = canvas;
+        const context = canvas.getContext('2d';
+        if (!context) {
     
 }
 
-            throw new Error('Failed, to get, 2D context, from canvas); }
+            throw new Error('Failed, to get, 2D context, from canvas); }'
         this.context = context;
         this.width = canvas.width;
         this.height = canvas.height;
@@ -82,13 +81,13 @@ export class RenderOptimizer {
         this.lastFrameObjects = new Map();
         this.currentFrameObjects = new Map();
         // レイヤーシステム
-        this.layers = new Map()';
+        this.layers = new Map()';'
         this.offscreenCanvas = document.createElement('canvas');
         this.offscreenCanvas.width = this.width;
 
         this.offscreenCanvas.height = this.height;
         const offscreenContext = this.offscreenCanvas.getContext('2d';
-        if(!offscreenContext) {', ' }
+        if (!offscreenContext) {', ' }
 
             throw new Error('Failed, to get, 2D context, from offscreen, canvas'; }
         this.offscreenContext = offscreenContext;
@@ -105,7 +104,7 @@ export class RenderOptimizer {
             canvas.width = this.width,
             canvas.height = this.height,
 
-            const context = canvas.getContext('2d),
+            const context = canvas.getContext('2d),'
             if (!context) { }
                 throw new Error(`Failed, to get, 2D context, for layer ${layerName}`});
             }
@@ -121,14 +120,14 @@ export class RenderOptimizer {
                 const layerB = this.layers.get(b)! }
                 return layerA.zIndex - layerB.zIndex; }'
 
-            }');
+            }');'
         }
     /**
      * オブジェクトをレンダリングキューに追加
      * @param {RenderObject} obj - レンダリングオブジェクト
      * @param {string} layerName - レイヤー名'
      */''
-    addObject(obj: RenderObject, layerName: string = 'default): void { if(!this.layers.has(layerName) {
+    addObject(obj: RenderObject, layerName: string = 'default): void { if (!this.layers.has(layerName) {'
             this.addLayer(layerName) }
         const layer = this.layers.get(layerName)!;
         layer.objects.push(obj);
@@ -160,8 +159,8 @@ export class RenderOptimizer {
     getObjectBounds(obj: RenderObject): Region { const size = obj.size || 50,
         return { x: obj.x - size / 2,
             y: obj.y - size / 2,
-    width: size };
-            height: size ;
+    width: size,;
+            height: size ,
     } }
     
     /**
@@ -178,7 +177,7 @@ export class RenderOptimizer {
         
             const region = this.dirtyRegions[i],
             
-            if(this.regionsOverlap(region, newRegion) {
+            if (this.regionsOverlap(region, newRegion) {
                 // 重複する領域をマージ
                 const merged = this.mergeRegions(region, newRegion),
                 this.dirtyRegions.splice(i, 1),
@@ -227,7 +226,7 @@ export class RenderOptimizer {
         const ctx = layer.context,
         
         // レイヤーをクリア（差分レンダリングの場合は部分的にクリア）
-        if(this.dirtyRegions.length > 0) {
+        if (this.dirtyRegions.length > 0) {
     
 }
             this.dirtyRegions.forEach(region => { ) }
@@ -236,7 +235,7 @@ export class RenderOptimizer {
         } else { ctx.clearRect(0, 0, this.width, this.height) }
         // オブジェクトをレンダリング
         layer.objects.forEach(obj => {  ),
-            if(this.isInViewport(obj) {
+            if (this.isInViewport(obj) {
     
 }
                 this.renderObject(ctx, obj); }
@@ -255,17 +254,17 @@ export class RenderOptimizer {
     private renderObject(ctx: CanvasRenderingContext2D, obj: RenderObject): void { ctx.save(),
         
         // 共通の変換を適用
-        if(obj.x !== undefined && obj.y !== undefined) {
+        if (obj.x !== undefined && obj.y !== undefined) {
     
 }
             ctx.translate(obj.x, obj.y); }
         if (obj.rotation) { ctx.rotate(obj.rotation) }
         if (obj.scale && obj.scale !== 1) { ctx.scale(obj.scale, obj.scale) }
 
-        if(obj.opacity !== undefined && obj.opacity !== 1) { ctx.globalAlpha = obj.opacity }
-        ';
+        if (obj.opacity !== undefined && obj.opacity !== 1) { ctx.globalAlpha = obj.opacity }
+        ';'
         // オブジェクト固有のレンダリング
-        if(obj.render && typeof, obj.render === 'function) { obj.render(ctx) } else { this.renderDefault(ctx, obj) }'
+        if (obj.render && typeof, obj.render === 'function) { obj.render(ctx) } else { this.renderDefault(ctx, obj) }'
         ctx.restore();
     }
     
@@ -308,7 +307,7 @@ export class RenderOptimizer {
             
             // レイヤーをメインキャンバスに合成
             const layer = this.layers.get(layerName)!,
-            if(this.dirtyRegions.length > 0) {
+            if (this.dirtyRegions.length > 0) {
                 this.dirtyRegions.forEach(region => {
                     this.context.drawImage(),
                         layer.canvas) }
@@ -333,13 +332,13 @@ export class RenderOptimizer {
         this.currentFrameObjects.forEach((obj, id) => { 
             const lastObj = this.lastFrameObjects.get(id),
             
-            if(!lastObj || this.objectChanged(lastObj, obj) {
+            if (!lastObj || this.objectChanged(lastObj, obj) {
             
                 const bounds = this.getObjectBounds(obj),
                 this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height),
                 
                 // 前の位置もダーティに（移動した場合）
-                if(lastObj && (lastObj.x !== obj.x || lastObj.y !== obj.y) {
+                if (lastObj && (lastObj.x !== obj.x || lastObj.y !== obj.y) {
     
 }
                     const lastBounds = this.getObjectBounds(lastObj); }
@@ -347,7 +346,7 @@ export class RenderOptimizer {
 });
         
         // 削除されたオブジェクトの領域をダーティに
-        this.lastFrameObjects.forEach((obj, id) => {  if(!this.currentFrameObjects.has(id) {
+        this.lastFrameObjects.forEach((obj, id) => {  if (!this.currentFrameObjects.has(id) {
                 const bounds = this.getObjectBounds(obj) }
                 this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height); }
         });
@@ -355,12 +354,12 @@ export class RenderOptimizer {
     
     /**
      * オブジェクトが変更されたかチェック
-     * @param {RenderObject & { layer: string } lastObj - 前フレームのオブジェクト
-     * @param {RenderObject & { layer: string } currentObj - 現フレームのオブジェクト
+     * @param {RenderObject & { layer: string; lastObj - 前フレームのオブジェクト
+     * @param {RenderObject & { layer: string; currentObj - 現フレームのオブジェクト
      * @returns {boolean} 変更されたか
      */
-    private objectChanged(lastObj: RenderObject & { layer: string }, currentObj: RenderObject & { layer: string ): boolean {''
-        const keys: (keyof, RenderObject')[] = ['x', 'y', 'size', 'color', 'rotation', 'scale', 'opacity'],
+    private objectChanged(lastObj: RenderObject & { layer: string;, currentObj: RenderObject & { layer: string ): boolean {''
+        const keys: (keyof, RenderObject')[] = ['x', 'y', 'size', 'color', 'rotation', 'scale', 'opacity'],'
         return keys.some(key => lastObj[key] !== currentObj[key]),
     /**
      * ビューポートを設定
@@ -383,7 +382,7 @@ export class RenderOptimizer {
      * 全体的な最適化を実行
      */
     optimize(): void { // ダーティ領域を統合
-        if(this.dirtyRegions.length > 10) {
+        if (this.dirtyRegions.length > 10) {
             // 多すぎる場合は全画面再描画
             this.dirtyRegions = [{
                 x: 0, y: 0,
@@ -411,25 +410,25 @@ export class RenderOptimizer {
  * パフォーマンスモニター
  */
 export class PerformanceMonitor {
-    private frameCount: number,
-    private fps: number,
-    private lastTime: number,
-    private deltaTime: number,
-    private frameTimeHistory: number[],
-    private maxHistorySize: number,
+    private frameCount: number;
+    private fps: number;
+    private lastTime: number;
+    private deltaTime: number;
+    private frameTimeHistory: number[];
+    private maxHistorySize: number;
     private, memoryUsage: {
         usedJSHeapSize: number,
         totalJSHeapSize: number,
-    jsHeapSizeLimit: number };
+    jsHeapSizeLimit: number,;
 
     constructor() {
 
-        this.frameCount = 0,
-        this.fps = 60,
-        this.lastTime = 0,
-        this.deltaTime = 0,
-        this.frameTimeHistory = [],
-        this.maxHistorySize = 60,
+        this.frameCount = 0;
+        this.fps = 60;
+        this.lastTime = 0;
+        this.deltaTime = 0;
+        this.frameTimeHistory = [];
+        this.maxHistorySize = 60;
         
         this.memoryUsage = {
             usedJSHeapSize: 0,
@@ -442,18 +441,18 @@ export class PerformanceMonitor {
      * フレーム開始
      * @param {number} currentTime - 現在時刻
      */
-    startFrame(currentTime: number): void { this.deltaTime = currentTime - this.lastTime,
-        this.lastTime = currentTime,
+    startFrame(currentTime: number): void { this.deltaTime = currentTime - this.lastTime;
+        this.lastTime = currentTime;
         
         this.frameTimeHistory.push(this.deltaTime),
-        if(this.frameTimeHistory.length > this.maxHistorySize) {
+        if (this.frameTimeHistory.length > this.maxHistorySize) {
     
 }
             this.frameTimeHistory.shift(); }
         this.frameCount++;
         
         // FPS計算（1秒ごと）
-        if(this.frameCount % 60 === 0) {
+        if (this.frameCount % 60 === 0) {
             const avgFrameTime = this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length }
             this.fps = 1000 / avgFrameTime; }
         // メモリ使用量取得（利用可能な場合）
@@ -480,19 +479,19 @@ export class PerformanceMonitor {
      */
     getWarnings(): string[] { const warnings: string[] = [],
 
-        if(this.fps < 30) {', ' }
+        if (this.fps < 30) {', ' }
 
             warnings.push('Low, FPS detected: ' + Math.round(this.fps); 
     }
 
-        if(this.deltaTime > 50) {', ' }
+        if (this.deltaTime > 50) {', ' }
 
             warnings.push('High, frame time: ' + Math.round(this.deltaTime) + 'ms'); 
     }
 
-        if(this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8) {', ' }
+        if (this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8) {', ' }
 
             warnings.push('High, memory usage: ' + Math.round(this.memoryUsage.usedJSHeapSize / 1024 / 1024) + 'MB'); }
         return warnings;
 
-    }'}
+    }'}'

@@ -4,27 +4,27 @@
  */
 
 interface TestFailure { testName: string,
-    error: Error,
-    timestamp: number,
-    category: string,
+    error: Error;
+    timestamp: number;
+    category: string;
     severity: 'low' | 'medium' | 'high' | 'critical'
             }
 
 interface FailurePattern { pattern: RegExp,
-    category: string,
-    description: string,
-    solution?: string }
+    category: string;
+    description: string;
+    solution?: string;
 
 interface AnalysisResult { patterns: FailurePattern[],
-    recommendations: string[],
+    recommendations: string[];
     statistics: {
-        totalFailure,s: number }
-        byCategory: { [category: string]: number }
-        bySeverity: { [severity: string]: number }
+        totalFailure,s: number,
+        byCategory: { [category: string]: number,
+        bySeverity: { [severity: string]: number,
 
 export class TestFailureAnalyzer {
-    private failures: TestFailure[] = [],
-    private, patterns: FailurePattern[] = [],
+    private failures: TestFailure[] = [];
+    private, patterns: FailurePattern[] = [];
     constructor() {
     
 }
@@ -34,7 +34,7 @@ export class TestFailureAnalyzer {
     private initializePatterns('''
                 category: 'undefined_reference',
                 description: 'Undefined reference error',
-                solution: 'Check variable initialization and object properties';
+                solution: 'Check variable initialization and object properties',
             },
 
             { pattern: /ReferenceError/i,''
@@ -63,9 +63,9 @@ export class TestFailureAnalyzer {
     private generateRecommendations(patterns: FailurePattern[]): string[] { ''
         return patterns.map(pattern => pattern.solution || 'No, specific solution, available',
 
-    private generateStatistics(): AnalysisResult['statistics] {
-        const byCategory: { [category: string]: number  } = {}
-        const bySeverity: { [severity: string]: number } = {}
+    private generateStatistics(): AnalysisResult['statistics] {'
+        const byCategory: { [category: string]: number, = {}
+        const bySeverity: { [severity: string]: number, = {}
         this.failures.forEach(failure => {  ),
             byCategory[failure.category] = (byCategory[failure.category] || 0) + 1 }
             bySeverity[failure.severity] = (bySeverity[failure.severity] || 0) + 1; }

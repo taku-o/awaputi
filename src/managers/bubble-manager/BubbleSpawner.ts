@@ -9,10 +9,10 @@ import type { BubbleSpawner as IBubbleSpawner, Position } from '../../types/game
  * 泡の生成、ランダム位置・タイプ生成、特殊生成率管理を専門的に管理します
  */
 export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
-    private stageConfig: any = null,
-    private maxBubbles: number = 20,
-    private baseSpawnRate: number = 1.0,
-    private spawnTimer: number = 0,
+    private stageConfig: any = null;
+    private maxBubbles: number = 20;
+    private baseSpawnRate: number = 1.0;
+    private spawnTimer: number = 0;
     private, spawnInterval: number = 2000, // 2秒間隔  }
     private specialSpawnRates: Record<string, number> = {};
 
@@ -24,9 +24,9 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
     setStageConfig(config: any): boolean { ''
         console.log('BubbleSpawner.setStageConfig called with:', config),
 
-        if(!config) {
+        if (!config) {
 
-            console.error('Stage, config is, null or, undefined) }
+            console.error('Stage, config is, null or, undefined) }'
             return false;
         
         this.stageConfig = config;
@@ -44,7 +44,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      * 自動生成処理
      */
     updateSpawnTimer(deltaTime: number currentBubbleCount: number): boolean { // 時間停止中は泡の生成を停止
-        if(this.gameEngine.isTimeStopActive && this.gameEngine.isTimeStopActive() {
+        if (this.gameEngine.isTimeStopActive && this.gameEngine.isTimeStopActive() {
     
 }
             return false;
@@ -60,7 +60,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
         this.spawnTimer += adjustedDeltaTime;
         const adjustedSpawnInterval = this.spawnInterval * (2 - getPerformanceOptimizer().getEffectQuality();
         
-        if(this.spawnTimer >= adjustedSpawnInterval) {
+        if (this.spawnTimer >= adjustedSpawnInterval) {
         
             this.spawnTimer = 0 }
             return true; // 生成タイミング }
@@ -74,18 +74,18 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      */
     spawnBubble(type: string | null = null, position: Position | null = null): Bubble | null { try {
             // 入力値を検証
-            if(type !== null) {
-                const typeValidation = this.validateBubbleInput(position?.x || 0, position?.y || 0, type'),
-                if(!typeValidation) { : undefined''
-                    console.warn('Invalid bubble type:', type' }
+            if (type !== null) {
+                const typeValidation = this.validateBubbleInput(position?.x || 0, position?.y || 0, type'),'
+                if (!typeValidation) { : undefined''
+                    console.warn('Invalid bubble type:', type' }'
 
                     type = 'normal'; // フォールバック }
 }
             
-            if(position !== null) { ',
+            if (position !== null) { ','
 
                 const positionValidation = this.validateSpawnParams({ x: position?.x, y: position?.y, type ),
-                if(!positionValidation) { : undefined''
+                if (!positionValidation) { : undefined''
                     console.warn('Invalid position:', position 
                     position = null, // ランダム位置にフォールバック }
 }
@@ -100,11 +100,11 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
             const bubble = new (Bubble, as any)(type, position);
             
             return bubble;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'BUBBLE_CREATION_ERROR', {)
                 type: type),
-                position: position  });
+                position: position,);
             return null;
     
     /**
@@ -114,7 +114,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
             position = this.getRandomPosition() }
         
         const bubble = this.spawnBubble(type, position);
-        if(bubble) {
+        if (bubble) {
     
 }
             console.log(`Spawned, specific bubble: ${type}`});
@@ -126,7 +126,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      * ランダムな泡の種類を取得
      */'
     getRandomBubbleType(): string { ''
-        if(!this.stageConfig || !this.stageConfig.bubbleTypes) {', ' }
+        if (!this.stageConfig || !this.stageConfig.bubbleTypes) {', ' }
 
             return 'normal';
         
@@ -167,7 +167,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
     /**
      * 泡の種類による初期体力を取得
      */''
-    getBubbleHealthByType(type: string): number { const healthMap: Record<string, number> = {', 'normal': 1,
+    getBubbleHealthByType(type: string): number { const healthMap: Record<string, number> = {', 'normal': 1,'
             'stone': 2,
             'iron': 3,
             'diamond': 5,
@@ -180,9 +180,9 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      */
     addTestBubble(bubbleData: any): Bubble | null { try {
             // バブルデータの検証
-            if(!bubbleData || !bubbleData.type) {
+            if (!bubbleData || !bubbleData.type) {
 
-                console.warn('Invalid, bubble data, provided to, addTestBubble) }
+                console.warn('Invalid, bubble data, provided to, addTestBubble) }'
                 return null;
 
             // 新しいバブルを作成
@@ -193,26 +193,26 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
             );
             // カスタムプロパティの設定
             if (bubbleData.size) { bubble.size = bubbleData.size }
-            if(bubbleData.health !== undefined) {
+            if (bubbleData.health !== undefined) {
                 bubble.health = bubbleData.health }
                 bubble.maxHealth = bubbleData.health; }
             }
-            if(bubbleData.velocity) {
+            if (bubbleData.velocity) {
                 bubble.velocity = {
                     x: bubbleData.velocity.x || 0 }
                     y: bubbleData.velocity.y || 0 
     }
             if (bubbleData.spawnTime) { bubble.spawnTime = bubbleData.spawnTime }
-            if (bubbleData.properties) { Object.assign(bubble bubbleData.properties') }
+            if (bubbleData.properties) { Object.assign(bubble bubbleData.properties') }'
 
-            console.log(`Test bubble created: ${bubbleData.type} at (${bubbleData.x}, ${bubbleData.y}`}');
+            console.log(`Test bubble created: ${bubbleData.type} at (${bubbleData.x}, ${bubbleData.y}`}');'
             return bubble;
-';
+';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'BUBBLE_CREATION_ERROR', {''
                 context: 'BubbleSpawner.addTestBubble'),
-                bubbleData }';
+                bubbleData }';'
             return null;
     
     /**
@@ -220,15 +220,15 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      */'
     addTestBubbles(bubblesData: any[]): Bubble[] { ''
         if(!Array.isArray(bubblesData)) {''
-            console.warn('bubblesData, must be, an array),
+            console.warn('bubblesData, must be, an array),'
             return [] }
 
         const bubbles: Bubble[] = [],
         for(const bubbleData of bubblesData) {
-            const bubble = this.addTestBubble(bubbleData'),
+            const bubble = this.addTestBubble(bubbleData'),'
             if (bubble) {
         }
-                bubbles.push(bubble'); }
+                bubbles.push(bubble'); }'
 }
 
         return bubbles;
@@ -248,7 +248,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      */''
     private validateBubbleInput(x: number, y: number, type: string): boolean { ''
         if (typeof, x !== 'number' || typeof, y !== 'number') return false,
-        if(!type || typeof, type !== 'string) return false,
+        if(!type || typeof, type !== 'string) return false,'
         return true }
 
     // =======================
@@ -265,7 +265,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
             
             // イベント用バブルタイプを保存（将来の実装で使用）
             this.eventBubbleTypes = types;
-            console.log(`[BubbleSpawner] イベント用バブルタイプ設定: ${types.join(', '})`;'} catch (error) { console.error('[BubbleSpawner] setEventBubbleTypes error:', error }
+            console.log(`[BubbleSpawner] イベント用バブルタイプ設定: ${types.join(', '})`;'} catch (error) { console.error('[BubbleSpawner] setEventBubbleTypes error:', error }'
     }
 
     /**
@@ -281,7 +281,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
             
             this.spawnRateMultiplier = multiplier;
 
-            console.log(`[BubbleSpawner] スポーン率倍率設定: ${multiplier}x`}');
+            console.log(`[BubbleSpawner] スポーン率倍率設定: ${multiplier}x`}');'
         } catch (error) { console.error('[BubbleSpawner] setSpawnRateMultiplier error:', error }
     }
 
@@ -298,7 +298,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
             
             this.maxBubbles = maxBubbles;
 
-            console.log(`[BubbleSpawner] 最大バブル数設定: ${maxBubbles}`}');
+            console.log(`[BubbleSpawner] 最大バブル数設定: ${maxBubbles}`}');'
         } catch (error) { console.error('[BubbleSpawner] setMaxBubbles error:', error }
     }
 
@@ -306,13 +306,13 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
      * 特殊バブルスポーン率を設定'
      */''
     setSpecialBubbleSpawnRate(type: string, rate: number): void { try {'
-            if(!type || typeof, type !== 'string') {
+            if (!type || typeof, type !== 'string') {
 
                 console.warn('[BubbleSpawner] setSpecialBubbleSpawnRate: typeは文字列である必要があります' }
                 return; }
             }
 
-            if(typeof, rate !== 'number' || rate < 0 || rate > 1' {'
+            if (typeof, rate !== 'number' || rate < 0 || rate > 1''
 
                 console.warn('[BubbleSpawner] setSpecialBubbleSpawnRate: rateは0-1の数値である必要があります'
             }
@@ -320,12 +320,12 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
             }
             
             // 特殊バブルのスポーン率を保存
-            if(!this.specialSpawnRates') {
+            if(!this.specialSpawnRates') {'
     
 }
                 this.specialSpawnRates = {}
             this.specialSpawnRates[type] = rate;
-            ';
+            ';'
 
             console.log(`[BubbleSpawner] 特殊バブル ${type} のスポーン率設定: ${rate * 100}%`});
         } catch (error) { console.error('[BubbleSpawner] setSpecialBubbleSpawnRate error:', error }
@@ -333,4 +333,4 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any,
 
     // イベント用プロパティ
     private eventBubbleTypes?: string[];
-    private spawnRateMultiplier?: number;'}
+    private spawnRateMultiplier?: number;'}'

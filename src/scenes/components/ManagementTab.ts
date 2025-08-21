@@ -5,51 +5,51 @@
 import { TabComponent  } from './TabComponent.js';
 
 interface UserData { username: string,
-    ap: number,
-    tap: number,
-    highScore: number,
-    unlockedStages: any[],
-    ownedItems: any[],
-    registrationDate: Date,
-    lastPlayDate: Date,
-    totalPlayTime: number,
-    gamesPlayed: number  }
+    ap: number;
+    tap: number;
+    highScore: number;
+    unlockedStages: any[];
+    ownedItems: any[];
+    registrationDate: Date;
+    lastPlayDate: Date;
+    totalPlayTime: number;
+    gamesPlayed: number;
 interface GameEngine { playerData?: {
-        getUsername(): string,
-        getAP(): number,
-        getTotalAP(): number,
-        getHighScore(): number,
-        getUnlockedStages(): any[],
-        getOwnedItems(): any[],
-        getRegistrationDate(): Date,
-        getLastPlayDate(): Date,
-        getTotalPlayTime(): number,
-        getGamesPlayed(): number,
-        resetAll(): void };
-    statisticsManager?: { reset(): void };
-    achievementManager?: { reset(): void }
+        getUsername(): string;
+        getAP(): number;
+        getTotalAP(): number;
+        getHighScore(): number;
+        getUnlockedStages(): any[];
+        getOwnedItems(): any[];
+        getRegistrationDate(): Date;
+        getLastPlayDate(): Date;
+        getTotalPlayTime(): number;
+        getGamesPlayed(): number;
+        resetAll(): void;;
+    statisticsManager?: { reset(): void;;
+    achievementManager?: { reset(): void;
 
 interface EventBus { on(event: string, callback: Function): void,
-    off(event: string): void,
-    emit(event: string, data?: any): void }
+    off(event: string): void;
+    emit(event: string, data?: any): void;
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean,
-    reducedMotion: boolean  }
+    largeText: boolean;
+    reducedMotion: boolean;
 interface TabState {
-    accessibilitySettings: AccessibilitySettings }
+    accessibilitySettings: AccessibilitySettings;
 export class ManagementTab extends TabComponent { // サブコンポーネント
-    private userInfoRenderer: UserInfoRenderer | null = null,
-    private dataManagementRenderer: DataManagementRenderer | null = null,
+    private userInfoRenderer: UserInfoRenderer | null = null;
+    private dataManagementRenderer: DataManagementRenderer | null = null;
     // UI状態
-    private scrollPosition: number = 0,
-    private maxScrollPosition: number = 0,
+    private scrollPosition: number = 0;
+    private maxScrollPosition: number = 0;
     // レイアウト設定
-    private sectionSpacing: number = 40,
-    private contentPadding: number = 20,
-    private buttonHeight: number = 40,
-    private buttonSpacing: number = 15,
+    private sectionSpacing: number = 40;
+    private contentPadding: number = 20;
+    private buttonHeight: number = 40;
+    private buttonSpacing: number = 15;
     // データ
-    private userData: UserData | null = null,
+    private userData: UserData | null = null;
     private, lastDataUpdate: number = 0,
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
     
@@ -61,8 +61,8 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     initialize(): void { super.initialize(),
         
         // サブコンポーネントを初期化
-        this.userInfoRenderer = new UserInfoRenderer(this.gameEngine, this.eventBus, this.state),
-        this.dataManagementRenderer = new DataManagementRenderer(this.gameEngine, this.eventBus, this.state),
+        this.userInfoRenderer = new UserInfoRenderer(this.gameEngine; this.eventBus, this.state),
+        this.dataManagementRenderer = new DataManagementRenderer(this.gameEngine; this.eventBus, this.state),
         
         this.userInfoRenderer.initialize(),
         this.dataManagementRenderer.initialize(),
@@ -74,7 +74,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      */
     private loadUserData(): void { try {
             const playerData = this.gameEngine.playerData,
-            if(playerData) {
+            if (playerData) {
                 this.userData = {
                     username: playerData.getUsername(),
                     ap: playerData.getAP(),
@@ -87,9 +87,9 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     totalPlayTime: playerData.getTotalPlayTime( }
                     gamesPlayed: playerData.getGamesPlayed(); 
     }
-            ';
+            ';'
 
-            this.lastDataUpdate = Date.now();'} catch (error) {
+            this.lastDataUpdate = Date.now();'} catch (error) {'
             console.error('Failed to load user data:', error),
             this.userData = null }
     }
@@ -144,7 +144,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      * データの定期更新
      */
     private updateDataIfNeeded(): void { const now = Date.now(),
-        if(now - this.lastDataUpdate > 5000) {
+        if (now - this.lastDataUpdate > 5000) {
             // 5秒間隔
         }
             this.loadUserData(); }
@@ -160,18 +160,18 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      */
     private renderScrollbar(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         if(this.maxScrollPosition <= 0) return,
-        ',
+        ','
         // スクロールバー背景
         context.fillStyle = '#E9ECEF',
         context.fillRect(x, y, width, height),
         
         // スクロールバートラック
         const trackHeight = height * (height / (height + this.maxScrollPosition)),
-        const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight'),
+        const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight'),'
 
         context.fillStyle = '#6C757D',
         context.fillRect(x + 2, trackY, width - 4, trackHeight),
-        ',
+        ','
         // スクロールバー枠線
         context.strokeStyle = '#CED4DA',
         context.lineWidth = 1,
@@ -188,7 +188,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
         const userInfoHeight = this.estimateUserInfoHeight(),
         const dataManagementY = userInfoHeight + this.sectionSpacing + this.contentPadding,
         
-        if(relativeY >= dataManagementY) {
+        if (relativeY >= dataManagementY) {
         
             const dataY = relativeY - dataManagementY }
             return this.dataManagementRenderer!.handleClick(x, dataY);
@@ -201,35 +201,35 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     handleInput(event: KeyboardEvent | WheelEvent): boolean { ''
         if(!this.isActive) return false,
 
-        if(event.type === 'keydown' {'
+        if (event.type === 'keydown''
             const keyEvent = event as KeyboardEvent,
             switch(keyEvent.key) {''
-                case 'ArrowUp':',
+                case 'ArrowUp':','
                     event.preventDefault(),
                     this.scroll(-30),
                     return true,
 
-                case 'ArrowDown':',
+                case 'ArrowDown':','
                     event.preventDefault(),
                     this.scroll(30),
                     return true,
 
-                case 'PageUp':',
+                case 'PageUp':','
                     event.preventDefault(),
                     this.scroll(-200),
                     return true,
 
-                case 'PageDown':',
+                case 'PageDown':','
                     event.preventDefault(),
                     this.scroll(200),
                     return true,
 
-                case 'Home':',
+                case 'Home':','
                     event.preventDefault('''
                 case 'End': ' }''
                     event.preventDefault() }
 
-        } else if(event.type === 'wheel) { const wheelEvent = event as WheelEvent,
+        } else if (event.type === 'wheel) { const wheelEvent = event as WheelEvent,'
             event.preventDefault(),
             this.scroll(wheelEvent.deltaY),
             return true }
@@ -250,7 +250,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      */
     update(deltaTime: number): void { super.update(deltaTime),
         
-        if(this.isActive) {
+        if (this.isActive) {
         
             // サブコンポーネントの更新
             if (this.userInfoRenderer) {
@@ -264,7 +264,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      */
     cleanup(): void { super.cleanup(),
         
-        if(this.userInfoRenderer) {
+        if (this.userInfoRenderer) {
     
 }
             this.userInfoRenderer.cleanup(); }
@@ -278,26 +278,26 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
  * 現在のユーザー情報を表示
  */
 class UserInfoRenderer { private gameEngine: GameEngine
-    private eventBus: EventBus,
-    private state: TabState,
+    private eventBus: EventBus;
+    private state: TabState;
     private, textSettings: {
         titleFont: string,
         labelFont: string,
         valueFont: string,
         titleColor: string,
         labelColor: string,
-    valueColor: string };
+    valueColor: string,;
     
-    private isInitialized: boolean = false;
+    private isInitialized: boolean = false,
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.state = state,
-        ',
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.state = state;
+        ','
 
         this.textSettings = {''
-            titleFont: '18px bold sans-serif',
+            titleFont: '18px bold sans-serif';
             labelFont: '14px sans-serif',
             valueFont: '14px bold sans-serif',
             titleColor: '#212529',
@@ -317,7 +317,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
     private applyAccessibilitySettings(): void {
         const settings = this.state.accessibilitySettings || {};
 
-        if(settings.largeText) {
+        if (settings.largeText) {
 
             this.textSettings.titleFont = '22px bold sans-serif',
             this.textSettings.labelFont = '16px sans-serif' }
@@ -325,7 +325,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
             this.textSettings.valueFont = '16px bold sans-serif'; }
         }
 
-        if(settings.highContrast) {
+        if (settings.highContrast) {
 
             this.textSettings.titleColor = '#000000',
             this.textSettings.labelColor = '#000000' }
@@ -352,14 +352,14 @@ class UserInfoRenderer { private gameEngine: GameEngine
         context.fillText('現在のユーザー情報', x, currentY),
         currentY += 35,
 
-        if(!userData) {
+        if (!userData) {
             // データがない場合
             context.font = this.textSettings.labelFont,
             context.fillStyle = this.textSettings.labelColor,
-            context.fillText('ユーザーデータを読み込み中...', x + 10, currentY' }
+            context.fillText('ユーザーデータを読み込み中...', x + 10, currentY' }'
             return currentY - y + 25;
         // ユーザー情報項目
-        const infoItems = [';
+        const infoItems = [';'
             { label: 'ユーザー名', value: userData.username || '(未設定')', key: 'username'
             },''
             { label: 'AP(Awaputi, Points)', value: userData.ap?.toLocaleString() || '0', key: 'ap'
@@ -386,7 +386,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
             context.font = this.textSettings.labelFont,
             context.fillStyle = this.textSettings.labelColor,
             context.textAlign = 'left',
-            context.fillText(item.label + ':', x + 10, currentY',
+            context.fillText(item.label + ':', x + 10, currentY','
             
             // 値
             context.font = this.textSettings.valueFont,
@@ -434,11 +434,11 @@ class UserInfoRenderer { private gameEngine: GameEngine
      * @returns 切り詰められたテキスト
      */'
     private truncateText(context: CanvasRenderingContext2D, text: string, maxWidth: number): string { const textWidth = context.measureText(text).width,
-        if(textWidth <= maxWidth) {
+        if (textWidth <= maxWidth) {
     
 }
             return text;
-        ';
+        ';'
 
         let truncated = text;
         while(context.measureText(truncated + '...).width > maxWidth && truncated.length > 0' { ''
@@ -460,35 +460,35 @@ class UserInfoRenderer { private gameEngine: GameEngine
  * データのエクスポート・インポート・管理機能
  */
 interface Button { id: string,
-    label: string,
-    color: string,
-    description: string  }
+    label: string;
+    color: string;
+    description: string;
 class DataManagementRenderer { private gameEngine: GameEngine
-    private eventBus: EventBus,
-    private state: TabState,
+    private eventBus: EventBus;
+    private state: TabState;
     private, textSettings: {
         titleFont: string,
         labelFont: string,
         buttonFont: string,
         titleColor: string,
         labelColor: string,
-    buttonTextColor: string };
+    buttonTextColor: string,;
     
     // ボタン設定
-    private buttons: Button[];
-    private buttonHeight: number = 40;
-    private buttonSpacing: number = 15;
-    private hoveredButton: number = -1;
-    private, isInitialized: boolean = false;
+    private buttons: Button[],
+    private buttonHeight: number = 40,
+    private buttonSpacing: number = 15,
+    private hoveredButton: number = -1,
+    private, isInitialized: boolean = false,
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.state = state,
-        ',
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.state = state;
+        ','
 
         this.textSettings = {''
-            titleFont: '18px bold sans-serif',
+            titleFont: '18px bold sans-serif';
             labelFont: '14px sans-serif',
             buttonFont: '14px bold sans-serif',
             titleColor: '#212529',
@@ -499,9 +499,9 @@ class DataManagementRenderer { private gameEngine: GameEngine
         
         // ボタン設定
         this.buttons = [{;
-                id: 'username',
-                label: 'ユーザー名変更',
-                color: '#007BFF',
+                id: 'username';
+                label: 'ユーザー名変更';
+                color: '#007BFF';
                 description: 'ユーザー名を変更します'
             };
             { ''
@@ -543,7 +543,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
     private applyAccessibilitySettings(): void {
         const settings = this.state.accessibilitySettings || {};
 
-        if(settings.largeText) {
+        if (settings.largeText) {
 
             this.textSettings.titleFont = '22px bold sans-serif',
             this.textSettings.labelFont = '16px sans-serif' }
@@ -551,7 +551,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
             this.textSettings.buttonFont = '16px bold sans-serif'; }
         }
 
-        if(settings.highContrast) {
+        if (settings.highContrast) {
 
             this.textSettings.titleColor = '#000000',
             this.textSettings.labelColor = '#000000' }
@@ -574,7 +574,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         context.fillStyle = this.textSettings.titleColor,
         context.textAlign = 'left',
         context.textBaseline = 'top',
-        context.fillText('データ管理', x, currentY',
+        context.fillText('データ管理', x, currentY','
         currentY += 35,
         
         // 説明テキスト
@@ -607,18 +607,18 @@ class DataManagementRenderer { private gameEngine: GameEngine
      * @param button - ボタン情報
      * @param index - ボタンインデックス
      */
-    private renderButton(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, button: Button, index: number): void { const isHovered = this.hoveredButton === index,
+    private renderButton(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, button: Button, index: number): void { const isHovered = this.hoveredButton === index;
         const cornerRadius = 6,
         
         // ボタン背景色を決定
         let backgroundColor = button.color,
-        if(isHovered) {
+        if (isHovered) {
     
 }
             backgroundColor = this.lightenColor(button.color, 0.1); }
         ;
         // 高コントラストモードの調整
-        if(this.state.accessibilitySettings.highContrast) {', ' }
+        if (this.state.accessibilitySettings.highContrast) {', ' }
 
             backgroundColor = '#000000'; }
         // ボタン背景を描画
@@ -633,7 +633,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         context.stroke();
         
         // ホバー時の効果
-        if(isHovered) {
+        if (isHovered) {
             context.strokeStyle = this.darkenColor(button.color, 0.3),
             context.lineWidth = 2,
             this.roundRect(context, x, y, width, height, cornerRadius),
@@ -641,9 +641,9 @@ class DataManagementRenderer { private gameEngine: GameEngine
         context.textAlign = 'center',
         context.textBaseline = 'middle')
         context.fillText(button.label, x + width / 2, y + height / 2),
-        ',
+        ','
         // 説明テキストを描画
-        if(button.description) {
+        if (button.description) {
             context.fillStyle = this.textSettings.labelColor,
             context.font = '12px sans-serif',
             context.textAlign = 'left',
@@ -683,33 +683,33 @@ class DataManagementRenderer { private gameEngine: GameEngine
     private async handleButtonClick(buttonId: string): Promise<void> { try {'
             switch(buttonId) {
 
-                case 'username':',
-                    await (this.gameEngine, as any).userInfoScene?.showUsernameChangeDialog()',
+                case 'username':','
+                    await (this.gameEngine, as any).userInfoScene?.showUsernameChangeDialog()','
                 case 'export':')',
-                    await (this.gameEngine, as any).userInfoScene?.showDataExportDialog()',
+                    await (this.gameEngine, as any).userInfoScene?.showDataExportDialog()','
                 case 'import':')',
-                    await (this.gameEngine, as any).userInfoScene?.showDataImportDialog()',
+                    await (this.gameEngine, as any).userInfoScene?.showDataImportDialog()','
                 case 'statsExport':')',
                     await (this.gameEngine, as any).userInfoScene?.showStatisticsExportDialog('',
-                case 'reset':',
+                case 'reset':','
                     await this.handleDataReset() }
 
-                    console.warn('Unknown button clicked:', buttonId'; }
+                    console.warn('Unknown button clicked:', buttonId'; }'
 
             } catch (error) {
-            console.error('Button click error:', error',
+            console.error('Button click error:', error','
             this.eventBus.emit('component-error', {''
-                component: 'DataManagementRenderer',',
+                component: 'DataManagementRenderer',','
                 operation: 'handleButtonClick'),
-                error }';
+                error }';'
         }
     /**
      * データリセット処理'
      */''
-    private async handleDataReset()';
-        const confirmed = confirm('本当に全データをリセットしますか？この操作は元に戻せません。);
+    private async handleDataReset()';'
+        const confirmed = confirm('本当に全データをリセットしますか？この操作は元に戻せません。);'
         
-        if(confirmed) {
+        if (confirmed) {
         
             try {
                 if (this.gameEngine.playerData) {
@@ -717,18 +717,18 @@ class DataManagementRenderer { private gameEngine: GameEngine
 }
                     this.gameEngine.playerData.resetAll(); }
                 if (this.gameEngine.statisticsManager) { this.gameEngine.statisticsManager.reset() }
-                if(this.gameEngine.achievementManager) {
-                ',
+                if (this.gameEngine.achievementManager) {
+                ','
 
-                    ' }
+                    ' }'
 
                     this.gameEngine.achievementManager.reset() }
 
                 this.eventBus.emit('data-reset', { timestamp: Date.now( });
 
                 alert('データがリセットされました。';} catch (error) {
-                console.error('Data reset error:', error',
-                alert('データリセット中にエラーが発生しました。) }
+                console.error('Data reset error:', error','
+                alert('データリセット中にエラーが発生しました。) }'
         }
     /**
      * ホバー処理
@@ -739,7 +739,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         const buttonX = 20,
         let buttonY = 65,
         
-        this.hoveredButton = -1,
+        this.hoveredButton = -1;
         
         for(let, i = 0, i < this.buttons.length, i++) {
         
@@ -762,7 +762,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         let r = (num >> 16) + amount * 255,
 
         let g = (num >> 8 & 0x00FF) + amount * 255,
-        let b = (num & 0x0000FF') + amount * 255,
+        let b = (num & 0x0000FF') + amount * 255,'
         
         r = r > 255 ? 255 : r,
         g = g > 255 ? 255 : g,
@@ -782,7 +782,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         let r = (num >> 16) * (1 - amount),
 
         let g = (num >> 8 & 0x00FF) * (1 - amount),
-        let b = (num & 0x0000FF) * (1 - amount'),
+        let b = (num & 0x0000FF) * (1 - amount'),'
 
         return (usePound ? '#' : ') + (Math.round(r) << 16 | Math.round(g) << 8 | Math.round(b).toString(16).padStart(6, '0) }
     /**

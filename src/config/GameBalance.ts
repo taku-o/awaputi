@@ -16,11 +16,10 @@
 export interface ScoringConfig { baseScores: Record<string, number>,
     combo: {
         multiplierIncremen,t: number,
-    maxMultiplier: number 
- };
+    maxMultiplier: number,;
     ageBonus: { earlyBonus: number,
         midBonus: number,
-    lateBonus: number }
+    lateBonus: number,
 
 /**
  * ステージ設定の型定義
@@ -28,37 +27,36 @@ export interface ScoringConfig { baseScores: Record<string, number>,
 export interface StagesConfig { unlockRequirements: Record<string, number>,
     difficulty: Record<string, {
         spawnRate: number,
-    maxBubbles: number  }>;
+    maxBubbles: number,>;
 }
 
 /**
  * アイテム設定の型定義
  */
 export interface ItemsConfig { baseCosts: Record<string, number>,
-    costMultiplier: number,
-    effects: Record<string, number>,
+    costMultiplier: number;
+    effects: Record<string, number>;
     maxLevels: Record<string, number> }
 /**
  * バブル設定の型定義
  */
 export interface BubblesConfig { maxAge: Record<string, number>,
-    health: Record<string, number>,
+    health: Record<string, number>;
     specialEffects: Record<string, Record<string, number>> }
 /**
  * 変更ログエントリーの型定義
  */
 export interface ChangelogEntry { version: string,
-    date: string,
-    changes: string[]  }
+    date: string;
+    changes: string[];
 /**
  * 元のゲームバランス設定の型定義
  */
 export interface OriginalBalanceConfig { scoring: ScoringConfig,
-    stages: StagesConfig,
-    items: ItemsConfig,
-    bubbles: BubblesConfig,
-    changelog: ChangelogEntry[]
-     }
+    stages: StagesConfig;
+    items: ItemsConfig;
+    bubbles: BubblesConfig;
+    changelog: ChangelogEntry[];
 /**
  * 元のゲームバランス設定
  * 互換性レイヤーが参照する基本設定
@@ -175,7 +173,7 @@ export class OriginalBalanceHelper {
         let multiplier = 1,
         
         // 年齢ボーナス適用
-        if(ageRatio < 0.1) {
+        if (ageRatio < 0.1) {
     
 }
             multiplier = ORIGINAL_BALANCE_CONFIG.scoring.ageBonus.earlyBonus; }
@@ -211,10 +209,10 @@ export class OriginalBalanceHelper {
      */''
     static isStageUnlocked(stageId: string, playerTAP: number): boolean { const requirement = ORIGINAL_BALANCE_CONFIG.stages.unlockRequirements[stageId],
         return !requirement || playerTAP >= requirement,
-',
+','
 // 互換性レイヤーからエクスポートされたオブジェクトを再エクスポート
 export { BALANCE_CONFIG, BalanceHelper  } from '../core/GameBalanceCompatibility.js';
-';
+';'
 // 新しいAPIも同時にエクスポート（移行を促進）
 export { getGameConfig  } from '../config/GameConfig.js';
 export { getConfigurationManager  } from '../core/ConfigurationManager.js';

@@ -11,8 +11,8 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
  */
 export class StatisticsTimeSeriesManager {
     constructor() {
-        this.timeSeriesData = [],
-        this.maxDataPoints = 1000, // 最大データポイント数
+        this.timeSeriesData = [];
+        this.maxDataPoints = 1000; // 最大データポイント数
         this.aggregationIntervals = {
             hourly: 60 * 60 * 1000,
             daily: 24 * 60 * 60 * 1000,
@@ -65,13 +65,13 @@ export class StatisticsTimeSeriesManager {
             // 日付フィルタリング
             if (startDate) { filteredData = filteredData.filter(point => point.timestamp >= startDate) }
             }
-            if(endDate) { }
+            if (endDate) { }
 
                 filteredData = filteredData.filter(point => point.timestamp <= endDate); }
             }
-';
+';'
             // 集計処理
-            if(aggregation !== 'none) { filteredData = this.aggregateData(filteredData, aggregation, metric) }'
+            if (aggregation !== 'none) { filteredData = this.aggregateData(filteredData, aggregation, metric) }'
 
             // データ制限
             if (limit && filteredData.length > limit) { filteredData = filteredData.slice(-limit) }
@@ -79,7 +79,7 @@ export class StatisticsTimeSeriesManager {
             return filteredData;
 
         } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getTimeSeriesData),
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getTimeSeriesData),'
             return [],
 
     /**
@@ -101,7 +101,7 @@ export class StatisticsTimeSeriesManager {
             data.forEach(point => {  ),
                 const bucketTime = Math.floor(point.timestamp / intervalMs) * intervalMs,
                 
-                if(!aggregated[bucketTime]) {
+                if (!aggregated[bucketTime]) {
                 
                     aggregated[bucketTime] = {
                         timestamp: bucketTime,
@@ -133,18 +133,18 @@ export class StatisticsTimeSeriesManager {
     getAggregatedTimeSeriesData(period = 'daily', days = 30) {
         try {
             const now = Date.now(),
-            const startDate = now - (days * 24 * 60 * 60 * 1000'),
+            const startDate = now - (days * 24 * 60 * 60 * 1000'),'
 
             const scoreData = this.getTimeSeriesData({)
-                startDate)',
+                startDate)','
                 aggregation: period,')',
-                metric: 'score')'),
+                metric: 'score')'),'
             const efficiencyData = this.getTimeSeriesData({)
-                startDate)',
+                startDate)','
                 aggregation: period,')',
-                metric: 'efficiency')'),
+                metric: 'efficiency')'),'
             const playTimeData = this.getTimeSeriesData({)
-                startDate)',
+                startDate)','
                 aggregation: period,')',
                 metric: 'playTime'),
             return { score: scoreData,
@@ -154,7 +154,7 @@ export class StatisticsTimeSeriesManager {
                 days };
                 summary: this.generateSummary(scoreData, efficiencyData, playTimeData); }
             } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getAggregatedTimeSeriesData) }
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getAggregatedTimeSeriesData) }'
             return { score: [], efficiency: [], playTime: [], period, days, summary: { }
     }
 
@@ -167,7 +167,7 @@ export class StatisticsTimeSeriesManager {
             if (this.timeSeriesData.length === 0) {
     }
                 return { totalDataPoints: 0 };
-                    dateRange: null }
+                    dateRange: null;
                     trends: {};
                     peaks: {};
                     averages: {}
@@ -186,9 +186,9 @@ export class StatisticsTimeSeriesManager {
                 peaks: this.findPeaks(
     averages: this.calculateAverages();
             } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getTimeSeriesStatisticsSummary),
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getTimeSeriesStatisticsSummary),'
             return { totalDataPoints: 0 };
-                dateRange: null }
+                dateRange: null;
                 trends: {};
                 peaks: {};
                 averages: {
@@ -204,12 +204,12 @@ export class StatisticsTimeSeriesManager {
             const cutoffTime = Date.now() - (days * 24 * 60 * 60 * 1000),
             const recentData = this.timeSeriesData.filter(point => point.timestamp >= cutoffTime),
 
-            if(recentData.length === 0) {
+            if (recentData.length === 0) {
                 return { period: days,
                     gamesPlayed: 0,
     averageScore: 0 }
 
-                    averageEfficiency: 0,' };
+                    averageEfficiency: 0,' };'
 
                     trend: 'no-data' 
     }
@@ -227,10 +227,10 @@ export class StatisticsTimeSeriesManager {
             const secondHalf = recentData.slice(midPoint);
 
             let trend = 'stable';
-            if(firstHalf.length > 0 && secondHalf.length > 0) {
+            if (firstHalf.length > 0 && secondHalf.length > 0) {
                 const firstAvg = firstHalf.reduce((sum, point) => sum + point.score, 0) / firstHalf.length,
                 const secondAvg = secondHalf.reduce((sum, point) => sum + point.score, 0) / secondHalf.length,
-                ',
+                ','
 
                 const improvement = (secondAvg - firstAvg) / firstAvg,
                 if(improvement > 0.1) trend = 'improving' }
@@ -250,7 +250,7 @@ export class StatisticsTimeSeriesManager {
             return { period: days,
                 gamesPlayed: 0,
     averageScore: 0,
-                averageEfficiency: 0,' };
+                averageEfficiency: 0,' };'
 
                 trend: 'no-data' 
     }
@@ -270,7 +270,7 @@ export class StatisticsTimeSeriesManager {
                 hourCounts[date.getHours()]++; }
                 dayCounts[date.getDay()]++; }
             });
-';
+';'
 
             const peakHour = hourCounts.indexOf(Math.max(...hourCounts);
             const peakDay = dayCounts.indexOf(Math.max(...dayCounts));
@@ -278,15 +278,15 @@ export class StatisticsTimeSeriesManager {
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
             return { peakHour: {
-                    hour: peakHour };
-                    count: hourCounts[peakHour] }
+                    hour: peakHour,;
+                    count: hourCounts[peakHour],
                     timeRange: `${peakHour}:00-${peakHour + 1}:00`
                 };
                 peakDay: { day: peakDay,
                     name: dayNames[peakDay],
-    count: dayCounts[peakDay] };
+    count: dayCounts[peakDay],;
                 hourDistribution: hourCounts,
-    dayDistribution: dayCounts;
+    dayDistribution: dayCounts,
             } } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPeakPlayingTimes'),
 
@@ -307,7 +307,7 @@ export class StatisticsTimeSeriesManager {
         try {
             const playTimes = this.timeSeriesData.map(point => point.playTime),
 
-            if(playTimes.length === 0) {
+            if (playTimes.length === 0) {
     }
                 return { }
                     distribution: {};
@@ -317,7 +317,7 @@ export class StatisticsTimeSeriesManager {
                 } }
 
             // 時間を分単位のバケットに分類
-            const buckets = { ', '0-1min': 0,
+            const buckets = { ', '0-1min': 0,'
                 '1-3min': 0,
                 '3-5min': 0,
                 '5-10min': 0,
@@ -327,10 +327,10 @@ export class StatisticsTimeSeriesManager {
             playTimes.forEach(time => {  ),
 
                 const minutes = time / (60 * 1000),
-                if(minutes <= 1) buckets['0-1min]++,
-                else if(minutes <= 3) buckets['1-3min]++,
-                else if(minutes <= 5) buckets['3-5min]++,
-                else if(minutes <= 10) buckets['5-10min]++,
+                if(minutes <= 1) buckets['0-1min]++,'
+                else if(minutes <= 3) buckets['1-3min]++,'
+                else if(minutes <= 5) buckets['3-5min]++,'
+                else if(minutes <= 10) buckets['5-10min]++,'
                 else if(minutes <= 15) buckets['10-15min]++,' }
 
                 else buckets['15+min]++; }'
@@ -343,7 +343,7 @@ export class StatisticsTimeSeriesManager {
             return { distribution: buckets,
                 average: Math.round(average),
                 median: Math.round(median,
-    shortest: sortedTimes[0] };
+    shortest: sortedTimes[0],;
                 longest: sortedTimes[sortedTimes.length - 1] 
     } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPlayTimeDistribution'),
@@ -363,9 +363,9 @@ export class StatisticsTimeSeriesManager {
      */''
     compareTimePeriods(period1 = '7d', period2 = '14d' {'
         try {'
-            const now = Date.now()',
+            const now = Date.now()','
             const days1 = parseInt(period1.replace('d', ')',
-            const days2 = parseInt(period2.replace('d', '),
+            const days2 = parseInt(period2.replace('d', '),'
 
             const data1 = this.timeSeriesData.filter(point => ),
                 point.timestamp >= now - (days1 * 24 * 60 * 60 * 1000)),
@@ -384,7 +384,7 @@ export class StatisticsTimeSeriesManager {
                     playTimeChange: this.calculatePercentageChange(stats2.totalPlayTime, stats1.totalPlayTime),
                     gamesChange: this.calculatePercentageChange(stats2.totalGames, stats1.totalGames }
             } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'compareTimePeriods) }
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'compareTimePeriods) }'
             return { period1: {}, period2: {}, comparison: {
     }
 
@@ -434,11 +434,11 @@ export class StatisticsTimeSeriesManager {
         const recent = this.timeSeriesData.slice(-20); }
         const trends = {};
 
-        ['score', 'efficiency', 'playTime].forEach(metric => {  ) }
+        ['score', 'efficiency', 'playTime].forEach(metric => {  ) }'
 
             trends[metric] = this.calculateTrendFromData(recent, metric);' }'
 
-        }');
+        }');'
 
         return trends;
     }
@@ -483,7 +483,7 @@ export class StatisticsTimeSeriesManager {
                 max: Math.max(...scores),
                 maxIndex: scores.indexOf(Math.max(...scores,
     min: Math.min(...scores) };
-                minIndex: scores.indexOf(Math.min(...scores);
+                minIndex: scores.indexOf(Math.min(...scores),
             },
             efficiency: { max: Math.max(...efficiencies),
                 maxIndex: efficiencies.indexOf(Math.max(...efficiencies),
@@ -535,7 +535,7 @@ export class StatisticsTimeSeriesManager {
      * データサイズを取得
      * @returns {number} データポイント数
      */
-    getDataSize() { return this.timeSeriesData.length,
+    getDataSize() { return this.timeSeriesData.length;
 
 // シングルトンインスタンス管理
 let statisticsTimeSeriesManagerInstance = null,

@@ -5,125 +5,121 @@
 
 // 型定義
 export interface DataRecovery { statisticsManager: StatisticsManager,
-    errorHandler: ErrorHandler
-     }
+    errorHandler: ErrorHandler;
 
 export interface StatisticsManager { getDefaultStatistics(): DefaultStatistics,
-    [key: string]: any }
+    [key: string]: any;
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void;
 
 export interface DefaultStatistics { totalScore: number,
-    averageScore: number,
-    playTime: number,
-    totalGamesPlayed: number,
-    wins: number,
-    losses: number,
-    bubbleStats: BubbleStats,
-    comboStats: ComboStats,
-    timeStats: TimeStats,
-    achievementStats: AchievementStats,
-    sessionStats: SessionStats,
-    [key: string]: any }
+    averageScore: number;
+    playTime: number;
+    totalGamesPlayed: number;
+    wins: number;
+    losses: number;
+    bubbleStats: BubbleStats;
+    comboStats: ComboStats;
+    timeStats: TimeStats;
+    achievementStats: AchievementStats;
+    sessionStats: SessionStats;
+    [key: string]: any;
 
 export interface BubbleStats { normal: number,
-    electric: number,
-    diamond: number,
-    rainbow: number,
-    [key: string]: number }
+    electric: number;
+    diamond: number;
+    rainbow: number;
+    [key: string]: number;
 
 export interface ComboStats { maxCombo: number,
-    totalCombos: number,
-    averageCombo: number  }
+    totalCombos: number;
+    averageCombo: number;
 
 export interface TimeStats { playTime: number,
-    averageSessionTime: number }
+    averageSessionTime: number;
 
 export interface AchievementStats { total: number,
-    unlocked: number }
+    unlocked: number;
 
 export interface SessionStats { recentSessions?: SessionData[],
-    [key: string]: any }
+    [key: string]: any;
 
 export interface SessionData { timestamp: number,
-    duration: number,
-    score: number,
-    [key: string]: any }
+    duration: number;
+    score: number;
+    [key: string]: any;
 
 export interface ValidationConfig { strictMode: boolean,
-    validateChecksums: boolean,
-    validateStructure: boolean,
-    validateRanges: boolean,
-    allowPartialValidation: boolean  }
+    validateChecksums: boolean;
+    validateStructure: boolean;
+    validateRanges: boolean;
+    allowPartialValidation: boolean;
 
 export interface ValidationStats { totalValidations: number,
-    successfulValidations: number,
-    failedValidations: number,
+    successfulValidations: number;
+    failedValidations: number;
     lastValidationTime: number | null }
 
 export interface IntegrityAnalysis { isValid: boolean,
-    validFields: string[],
-    invalidFields: string[],
-    validFieldsRatio: number,
-    integrityScore: number,
-    errors: string[],
-    warnings: string[] }
+    validFields: string[];
+    invalidFields: string[];
+    validFieldsRatio: number;
+    integrityScore: number;
+    errors: string[];
+    warnings: string[];
 
 export interface CorruptionAnalysis { isCorrupted: boolean,
-    corruptionLevel: number,
-    corruptedFields: string[],
-    corruptionTypes: CorruptionType[],
-    repairability: RepairabilityLevel,
-    analysis: CorruptionAnalysisDetails
-    }
+    corruptionLevel: number;
+    corruptedFields: string[];
+    corruptionTypes: CorruptionType[];
+    repairability: RepairabilityLevel;
+    analysis: CorruptionAnalysisDetails;
 
 export interface CorruptionAnalysisDetails { typeCheck?: DataTypeCheckResult,
-    rangeCheck?: DataRangeCheckResult,
-    structureCheck?: DataStructureCheckResult,
-    logicCheck?: LogicalConsistencyCheckResult,
-    error?: string }
+    rangeCheck?: DataRangeCheckResult;
+    structureCheck?: DataStructureCheckResult;
+    logicCheck?: LogicalConsistencyCheckResult;
+    error?: string;
 
 export interface DataTypeCheckResult { hasIssues: boolean,
-    corruptedFields: string[]  }
+    corruptedFields: string[];
 
 export interface DataRangeCheckResult { hasIssues: boolean,
-    corruptedFields: string[] }
+    corruptedFields: string[];
 
 export interface DataStructureCheckResult { hasIssues: boolean,
-    corruptedFields: string[] }
+    corruptedFields: string[];
 
 export interface LogicalConsistencyCheckResult { hasIssues: boolean,
-    corruptedFields: string[] }
+    corruptedFields: string[];
 
 export interface StructureValidationResult { isValid: boolean,
-    missingFields: string[],
-    extraFields: string[],
-    typeErrors: TypeError[],
-    error?: string }
+    missingFields: string[];
+    extraFields: string[];
+    typeErrors: TypeError[];
+    error?: string;
 
 export interface TypeError { field: string,
-    expected: string,
-    actual: string }
+    expected: string;
+    actual: string;
 
 export interface RangeValidationResult { isValid: boolean,
-    rangeErrors: RangeError[],
-    error?: string }
+    rangeErrors: RangeError[];
+    error?: string;
 
 export interface RangeError { field: string,
-    value: number,
-    expected: NumericRange
-    }
+    value: number;
+    expected: NumericRange;
 
 export interface NumericRange { min: number,
-    max: number }
+    max: number;
 
 export interface ValidationStatsResult { totalValidations: number,
-    successfulValidations: number,
-    failedValidations: number,
-    lastValidationTime: number | null,
-    availableRules: string[],
-    config: ValidationConfig
-    }
+    successfulValidations: number;
+    failedValidations: number;
+    lastValidationTime: number | null;
+    availableRules: string[];
+    config: ValidationConfig;
 
 // コールバック型
 export type ValidationFunction = (data: any) => boolean | Promise<boolean>;
@@ -133,17 +129,17 @@ export type CorruptionType = 'type_mismatch' | 'range_violation' | 'structure_da
 export type RepairabilityLevel = 'low' | 'medium' | 'high';
 
 export class RecoveryValidation {
-    private dataRecovery: DataRecovery,
-    private statisticsManager: StatisticsManager,
-    private errorHandler: ErrorHandler,
+    private dataRecovery: DataRecovery;
+    private statisticsManager: StatisticsManager;
+    private errorHandler: ErrorHandler;
     private, validationRules: Map<string, ValidationFunction>,
-    private validationConfig: ValidationConfig,
-    private, validationStats: ValidationStats',
+    private validationConfig: ValidationConfig;
+    private, validationStats: ValidationStats','
 
     constructor(dataRecovery: DataRecovery) {
-        this.dataRecovery = dataRecovery,
-        this.statisticsManager = dataRecovery.statisticsManager,
-        this.errorHandler = dataRecovery.errorHandler,
+        this.dataRecovery = dataRecovery;
+        this.statisticsManager = dataRecovery.statisticsManager;
+        this.errorHandler = dataRecovery.errorHandler;
         
         // データ検証規則
         this.validationRules = new Map<string, ValidationFunction>([']',
@@ -153,22 +149,21 @@ export class RecoveryValidation {
             ['comboStats', this.validateComboStats.bind(this)],
             ['timeStats', this.validateTimeStats.bind(this)],
             ['achievementStats', this.validateAchievementStats.bind(this)],
-            ['sessionStats', this.validateSessionStats.bind(this)]',
-        ]'),
+            ['sessionStats', this.validateSessionStats.bind(this)]','
+        ]'),'
         
         // 検証設定
         this.validationConfig = {
             strictMode: false,
             validateChecksums: true,
             validateStructure: true,
-    validateRanges: true }
-            allowPartialValidation: true 
-    };
+    validateRanges: true,
+            allowPartialValidation: true,;
         // 検証統計
         this.validationStats = { totalValidations: 0,
             successfulValidations: 0,
             failedValidations: 0,
-    lastValidationTime: null  };
+    lastValidationTime: null,;
         console.log('[RecoveryValidation] Component, initialized');
     }
     
@@ -178,7 +173,7 @@ export class RecoveryValidation {
      * @returns 整合性分析結果'
      */''
     async analyzeDataIntegrity(data: Record<string, any>): Promise<IntegrityAnalysis> { try {'
-            console.log('[RecoveryValidation] Starting, data integrity, analysis),
+            console.log('[RecoveryValidation] Starting, data integrity, analysis),'
             
             const analysis: IntegrityAnalysis = {
                 isValid: true,
@@ -193,7 +188,7 @@ export class RecoveryValidation {
             
             // 各フィールドを検証
             for(const [fieldName, validationFn] of this.validationRules.entries() {
-                if(data.hasOwnProperty(fieldName) {
+                if (data.hasOwnProperty(fieldName) {
                     totalFields++,
                     
                     try {
@@ -217,10 +212,10 @@ export class RecoveryValidation {
             if (analysis.isValid) { this.validationStats.successfulValidations++ } else { this.validationStats.failedValidations++ }
             this.validationStats.lastValidationTime = Date.now();
             
-            console.log(`[RecoveryValidation] Integrity analysis completed: ${analysis.integrityScore}%`}');
+            console.log(`[RecoveryValidation] Integrity analysis completed: ${analysis.integrityScore}%`}');'
             return analysis;
 
-        } catch (error') { }
+        } catch (error') { }'
 
             this.errorHandler.handleError(error as Error, 'DATA_INTEGRITY_ANALYSIS_ERROR', { data });
             return { isValid: false,
@@ -251,7 +246,7 @@ export class RecoveryValidation {
                 analysis: {};
             // データ型チェック
             const typeCheck = this._checkDataTypes(data);
-            if(typeCheck.hasIssues) {
+            if (typeCheck.hasIssues) {
 
                 corruption.corruptedFields.push(...typeCheck.corruptedFields),
 
@@ -260,7 +255,7 @@ export class RecoveryValidation {
             
             // 値範囲チェック
             const rangeCheck = this._checkDataRanges(data);
-            if(rangeCheck.hasIssues) {
+            if (rangeCheck.hasIssues) {
 
                 corruption.corruptedFields.push(...rangeCheck.corruptedFields),
 
@@ -269,7 +264,7 @@ export class RecoveryValidation {
             
             // 構造整合性チェック
             const structureCheck = this._checkDataStructure(data);
-            if(structureCheck.hasIssues) {
+            if (structureCheck.hasIssues) {
 
                 corruption.corruptedFields.push(...structureCheck.corruptedFields),
 
@@ -278,7 +273,7 @@ export class RecoveryValidation {
             
             // 論理整合性チェック
             const logicCheck = this._checkLogicalConsistency(data);
-            if(logicCheck.hasIssues) {
+            if (logicCheck.hasIssues) {
 
                 corruption.corruptedFields.push(...logicCheck.corruptedFields),
 
@@ -291,11 +286,11 @@ export class RecoveryValidation {
             corruption.corruptionLevel = totalFields > 0 ? uniqueCorruptedFields.length / totalFields: 0,
             corruption.isCorrupted = corruption.corruptionLevel > 0;
             // 修復可能性を評価
-            if(corruption.corruptionLevel < 0.3) {', ' }
+            if (corruption.corruptionLevel < 0.3) {', ' }
 
                 corruption.repairability = 'high'; }
 
-            } else if(corruption.corruptionLevel < 0.7) { ''
+            } else if (corruption.corruptionLevel < 0.7) { ''
                 corruption.repairability = 'medium' }
 
             } else { }'
@@ -318,7 +313,7 @@ export class RecoveryValidation {
 
                 corruptionLevel: 1.0,
                 corruptedFields: Object.keys(data,
-                corruptionTypes: ['analysis_error'],' };
+                corruptionTypes: ['analysis_error'],' };'
 
                 repairability: 'low'
             }
@@ -340,10 +335,10 @@ export class RecoveryValidation {
                 hash = ((hash << 5) - hash) + char }
                 hash = hash & hash; // 32bit integer }
             }
-            ';
+            ';'
 
             return Math.abs(hash).toString(16);} catch (error) {
-            console.warn('[RecoveryValidation] Checksum calculation failed:', error',
+            console.warn('[RecoveryValidation] Checksum calculation failed:', error','
             return '0',
     
     /**
@@ -360,14 +355,14 @@ export class RecoveryValidation {
     typeErrors: []  };
             // 必須フィールドの存在確認
             for (const key of Object.keys(expectedStructure) {
-                if(!(key, in data) {
+                if (!(key, in data) {
                     validation.missingFields.push(key) }
                     validation.isValid = false; }
 }
             
             // 余分なフィールドの確認
             for (const key of Object.keys(data) {
-                if(!(key, in expectedStructure) {
+                if (!(key, in expectedStructure) {
             }
                     validation.extraFields.push(key); }
 }
@@ -414,7 +409,7 @@ export class RecoveryValidation {
                 winRate: { min: 0, max: 1  };
 
             for(const [field, range] of Object.entries(numericRanges)) { ''
-                if(field, in data && typeof, data[field] === 'number' {'
+                if (field, in data && typeof, data[field] === 'number''
                     if (data[field] < range.min || data[field] > range.max) {
                         validation.rangeErrors.push({)
                             field,
@@ -463,7 +458,7 @@ export class RecoveryValidation {
         const requiredFields = ['totalScore', 'averageScore', 'highestScore'],
         for (const field of requiredFields) {
 
-            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {
+            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {'
         }
                 return false;
         
@@ -481,7 +476,7 @@ export class RecoveryValidation {
         const requiredBubbleTypes = ['normal', 'electric', 'diamond', 'rainbow'],
         for (const bubbleType of requiredBubbleTypes) {
 
-            if(!(bubbleType, in data) || typeof data[bubbleType] !== 'number' || data[bubbleType] < 0' {
+            if(!(bubbleType, in data) || typeof data[bubbleType] !== 'number' || data[bubbleType] < 0' {'
         }
                 return false;
         
@@ -499,7 +494,7 @@ export class RecoveryValidation {
         const requiredFields = ['maxCombo', 'totalCombos', 'averageCombo'],
         for (const field of requiredFields) {
 
-            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {
+            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {'
         }
                 return false;
         
@@ -517,7 +512,7 @@ export class RecoveryValidation {
         const requiredFields = ['playTime', 'averageSessionTime'],
         for (const field of requiredFields) {
 
-            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {
+            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {'
         }
                 return false;
         
@@ -535,7 +530,7 @@ export class RecoveryValidation {
         const requiredFields = ['total', 'unlocked'],
         for (const field of requiredFields) {
 
-            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {
+            if(!(field, in data) || typeof data[field] !== 'number' || data[field] < 0' {'
         }
                 return false;
         
@@ -550,7 +545,7 @@ export class RecoveryValidation {
     validateSessionStats(data: any): boolean { ''
         if (!data || typeof, data !== 'object') return false,
 
-        if('recentSessions' in, data && !Array.isArray(data.recentSessions) {
+        if ('recentSessions' in, data && !Array.isArray(data.recentSessions) {
     
 }
             return false;
@@ -567,7 +562,7 @@ export class RecoveryValidation {
     private _checkDataTypes(data: Record<string, any>): DataTypeCheckResult { const result: DataTypeCheckResult = {
             hasIssues: false,
     corruptedFields: [] };
-        ';
+        ';'
 
         const expectedTypes: Record<string, string> = { ''
             totalScore: 'number',
@@ -618,7 +613,7 @@ export class RecoveryValidation {
     corruptedFields: [] };
         const requiredFields = ['totalScore', 'totalGamesPlayed', 'bubbleStats'];
         for (const field of requiredFields) {
-            if(!(field, in data) {
+            if (!(field, in data) {
                 result.hasIssues = true }
                 result.corruptedFields.push(field); }
 }
@@ -635,9 +630,9 @@ export class RecoveryValidation {
     private _checkLogicalConsistency(data: Record<string, any>): LogicalConsistencyCheckResult { const result: LogicalConsistencyCheckResult = {
             hasIssues: false,
     corruptedFields: [] };
-        ';
+        ';'
         // ゲーム数の整合性チェック
-        if('wins' in, data && 'losses' in, data && 'totalGamesPlayed' in, data' {'
+        if ('wins' in, data && 'losses' in, data && 'totalGamesPlayed' in, data''
 
             if(data.totalGamesPlayed !== data.wins + data.losses) {
                 result.hasIssues = true }
@@ -667,7 +662,7 @@ export class RecoveryValidation {
     /**
      * 検証統計をリセット'
      */''
-    resetValidationStats()';
+    resetValidationStats()';'
         console.log('[RecoveryValidation] Validation, statistics reset');
 
-    }'}
+    }'}'

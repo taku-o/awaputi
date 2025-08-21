@@ -16,7 +16,7 @@ const mockDebugInterface = { gameEngine: { }
     },'
     debugPanel: { ''
         querySelector: jest.fn((selector') => { ''
-            if(selector === '.debug-tabs') {', ',
+            if (selector === '.debug-tabs') {', ',
                 const element = document.createElement('div'),'
             }'
                 element.className = 'debug-tabs'; }
@@ -32,14 +32,14 @@ const mockDebugInterface = { gameEngine: { }
         switchPanel: jest.fn( };
 // Mock panel class
 class MockPanel { constructor(gameEngine, debugInterface, options = {) {
-        this.gameEngine = gameEngine,
-        this.debugInterface = debugInterface,
-        this.options = options,
-        this.visible = false,
+        this.gameEngine = gameEngine;
+        this.debugInterface = debugInterface;
+        this.options = options;
+        this.visible = false;
         this.destroyed = false }
         this.state = { }
-            position: { x: 0, y: 0 },
-            size: { width: 300, height: 400 },
+            position: { x: 0, y: 0 };
+            size: { width: 300, height: 400 };
             data: {}
         } }
     show() { this.visible = true }
@@ -69,12 +69,12 @@ class ErrorPanel { ''
 const { PanelManager } = await import('../../src/debug/PanelManager.js');
 describe('PanelManager', () => {  let panelManager: any,
     let consoleWarnSpy: any,
-    let consoleLogSpy: any,',
-    let consoleErrorSpy: any,',
+    let consoleLogSpy: any,','
+    let consoleErrorSpy: any,','
     beforeEach((') => { }'
         // Console spies' }'
-        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');
+        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');'
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');'
         consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         // Clear localStorage
         localStorage.clear();
@@ -91,7 +91,7 @@ describe('PanelManager', () => {  let panelManager: any,
         consoleLogSpy.mockRestore();
         consoleErrorSpy.mockRestore(')';
         document.body.innerHTML = ';)'
-    }');
+    }');'
     describe('Initialization', (') => {  ''
         test('should initialize with default values', () => {
             expect(panelManager.panels).toBeInstanceOf(Map: any),
@@ -99,7 +99,7 @@ describe('PanelManager', () => {  let panelManager: any,
             expect(panelManager.panelConfigs).toBeInstanceOf(Map: any),
             expect(panelManager.lifecycleHooks).toBeDefined() }'
             expect(panelManager.stateManager).toBeDefined();' }'
-        }');
+        }');'
         test('should setup lifecycle hooks', () => {  const hooks = panelManager.lifecycleHooks,
             expect(hooks.beforeCreate).toBeInstanceOf(Set: any),
             expect(hooks.created).toBeInstanceOf(Set: any),
@@ -109,7 +109,7 @@ describe('PanelManager', () => {  let panelManager: any,
             expect(hooks.hidden).toBeInstanceOf(Set: any),
             expect(hooks.beforeDestroy).toBeInstanceOf(Set: any) }'
             expect(hooks.destroyed).toBeInstanceOf(Set: any);' }'
-        }');
+        }');'
         test('should load panel states from localStorage', (') => {  const savedStates = { }', 'test-panel': { }
                     position: { x: 100, y: 200 },
                     size: { width: 400, height: 500 },
@@ -117,14 +117,14 @@ describe('PanelManager', () => {  let panelManager: any,
                 }'
             };
             localStorage.setItem('debug-panel-states', JSON.stringify(savedStates);
-            const newPanelManager = new PanelManager(mockDebugInterface as any');
-            expect(newPanelManager.panelStates.has('test-panel').toBe(true');
+            const newPanelManager = new PanelManager(mockDebugInterface as any');'
+            expect(newPanelManager.panelStates.has('test-panel').toBe(true');'
             expect(newPanelManager.panelStates.get('test-panel').position).toEqual({ x: 100, y: 200 ),'
             newPanelManager.destroy(),' }'
-        }');
+        }');'
         test('should handle corrupted localStorage gracefully', (') => {  ''
             localStorage.setItem('debug-panel-states', 'invalid json'),
-            const newPanelManager = new PanelManager(mockDebugInterface as any'),
+            const newPanelManager = new PanelManager(mockDebugInterface as any'),'
             expect(consoleWarnSpy.toHaveBeenCalledWith('Failed to load panel states:', expect.any(Error) }'
             newPanelManager.destroy();' }'
         }');'
@@ -132,43 +132,43 @@ describe('PanelManager', () => {  let panelManager: any,
     describe('Panel Registration', (') => {  ''
         test('should register panel successfully', (') => {''
             const result = panelManager.registerPanel('test', MockPanel),
-            expect(result).toBe(true'),
-            expect(panelManager.panels.has('test').toBe(true'),
-            expect(panelManager.panelConfigs.has('test').toBe(true),'),
+            expect(result).toBe(true'),'
+            expect(panelManager.panels.has('test').toBe(true'),'
+            expect(panelManager.panelConfigs.has('test').toBe(true),'),'
             expect(panelManager.panelStates.has('test').toBe(true'),' }'
             expect(consoleLogSpy.toHaveBeenCalledWith("Panel 'test' registered successfully");" }"
         }");""
         test('should register panel with custom config', (') => {  const config = {''
-                title: 'Custom Panel',',
+                title: 'Custom Panel',','
                 icon: '🔧',
                 order: 50 }
-                lazy: false }'
+                lazy: false;'
             };
-            panelManager.registerPanel('custom', MockPanel, config');
+            panelManager.registerPanel('custom', MockPanel, config');'
             const panelConfig = panelManager.panelConfigs.get('custom');
-            expect(panelConfig.title').toBe('Custom Panel');
-            expect(panelConfig.icon').toBe('🔧');
+            expect(panelConfig.title').toBe('Custom Panel');'
+            expect(panelConfig.icon').toBe('🔧');'
             expect(panelConfig.order).toBe(50);'
             expect(panelConfig.lazy).toBe(false);'}');
         test('should create instance immediately for non-lazy panels', (') => { }'
-            panelManager.registerPanel('eager', MockPanel, { lazy: false }');
+            panelManager.registerPanel('eager', MockPanel, { lazy: false,');'
             const panelInfo = panelManager.panels.get('eager');
-            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any);'
+            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any),'
             expect(panelInfo.created).toBe(true);'}');
         test('should not create instance for lazy panels', (') => { }'
-            panelManager.registerPanel('lazy', MockPanel, { lazy: true }');
+            panelManager.registerPanel('lazy', MockPanel, { lazy: true,');'
             const panelInfo = panelManager.panels.get('lazy');
             expect(panelInfo.instance).toBeNull();'
             expect(panelInfo.created).toBe(false);'}');
         test('should not register duplicate panel', (') => {  ''
-            panelManager.registerPanel('test', MockPanel'),
+            panelManager.registerPanel('test', MockPanel'),'
             const result = panelManager.registerPanel('test', MockPanel),
             expect(result).toBe(false'),' }'
             expect(consoleWarnSpy.toHaveBeenCalledWith("Panel 'test' is already registered");" }"
         }");""
         test('should handle panel creation error', (') => {  ''
             const result = panelManager.registerPanel('error', ErrorPanel),
-            expect(result).toBe(false'),
+            expect(result).toBe(false'),'
             expect(consoleErrorSpy.toHaveBeenCalledWith("Failed to register panel 'error':", expect.any(Error")," }"
             expect(panelManager.panels.has('error').toBe(false); }'
         }'}');
@@ -177,35 +177,35 @@ describe('PanelManager', () => {  let panelManager: any,
             panelManager.registerPanel('test', MockPanel});'}');
         test('should show panel successfully', (') => {  ''
             const result = panelManager.showPanel('test'),
-            expect(result).toBe(true'),
+            expect(result).toBe(true'),'
             const panelInfo = panelManager.panels.get('test'),
             expect(panelInfo.visible).toBe(true),
             expect(panelInfo.instance).toBeInstanceOf(MockPanel: any),
             expect(panelInfo.instance.visible).toBe(true),
             expect(panelInfo.activationCount).toBe(1) }'
             expect(panelInfo.lastActivated).toBeDefined();' }'
-        }');
+        }');'
         test('should create instance on first show for lazy panels', (') => { }'
-            panelManager.registerPanel('lazy', MockPanel, { lazy: true }');
+            panelManager.registerPanel('lazy', MockPanel, { lazy: true,');'
             let panelInfo = panelManager.panels.get('lazy');
             expect(panelInfo.instance).toBeNull(')';
             panelManager.showPanel('lazy');
             panelInfo = panelManager.panels.get('lazy');
-            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any);'
+            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any),'
             expect(panelInfo.created).toBe(true);'}');
         test('should hide panel successfully', (') => {  ''
             panelManager.showPanel('test'),
             const result = panelManager.hidePanel('test'),
-            expect(result).toBe(true'),
+            expect(result).toBe(true'),'
             const panelInfo = panelManager.panels.get('test'),
             expect(panelInfo.visible).toBe(false) }'
             expect(panelInfo.instance.visible).toBe(false););' }'
-        }');
+        }');'
         test('should destroy non-cacheable panel instance on hide', (') => { }'
-            panelManager.registerPanel('nocache', MockPanel, { cacheable: false }');
+            panelManager.registerPanel('nocache', MockPanel, { cacheable: false,');'
             panelManager.showPanel('nocache');
             let panelInfo = panelManager.panels.get('nocache');
-            expect(panelInfo.instance).toBeInstanceOf(MockPanel as any');
+            expect(panelInfo.instance).toBeInstanceOf(MockPanel as any');'
             panelManager.hidePanel('nocache');
             panelInfo = panelManager.panels.get('nocache');
             expect(panelInfo.instance).toBeNull();'
@@ -213,21 +213,21 @@ describe('PanelManager', () => {  let panelManager: any,
         test('should destroy panel completely', (') => {  ''
             panelManager.showPanel('test'),
             const result = panelManager.destroyPanel('test'),
-            expect(result).toBe(true'),
-            expect(panelManager.panels.has('test').toBe(false),'),
+            expect(result).toBe(true'),'
+            expect(panelManager.panels.has('test').toBe(false),'),'
             expect(panelManager.panelConfigs.has('test').toBe(false'),' }'
             expect(consoleLogSpy.toHaveBeenCalledWith("Panel 'test' destroyed successfully");" }"
         }");""
         test('should preserve state for persistent panels on destroy', (') => { }'
-            panelManager.registerPanel('persistent', MockPanel, { persistent: true }');
+            panelManager.registerPanel('persistent', MockPanel, { persistent: true,');'
             panelManager.showPanel('persistent');
-            expect(panelManager.panelStates.has('persistent').toBe(true');
+            expect(panelManager.panelStates.has('persistent').toBe(true');'
             panelManager.destroyPanel('persistent');
             expect(panelManager.panelStates.has('persistent').toBe(true);'}');
         test('should not show disabled panel', (') => { }'
-            panelManager.registerPanel('disabled', MockPanel, { enabled: false }');
+            panelManager.registerPanel('disabled', MockPanel, { enabled: false,');'
             const result = panelManager.showPanel('disabled');
-            expect(result).toBe(false');
+            expect(result).toBe(false');'
             expect(consoleWarnSpy.toHaveBeenCalledWith("Panel 'disabled' is disabled");""
         }");""
         test('should handle show error gracefully', () => {  class BadShowPanel extends MockPanel {''
@@ -235,9 +235,9 @@ describe('PanelManager', () => {  let panelManager: any,
                     throw new Error('Show error'); }
                 }'
             }''
-            panelManager.registerPanel('badshow', BadShowPanel');
+            panelManager.registerPanel('badshow', BadShowPanel');'
             const result = panelManager.showPanel('badshow');
-            expect(result).toBe(false as any');
+            expect(result).toBe(false as any');'
             expect(consoleErrorSpy.toHaveBeenCalledWith("Failed to show panel 'badshow':", expect.any(Error);""
         }");"
     }""
@@ -247,28 +247,28 @@ describe('PanelManager', () => {  let panelManager: any,
             const createdHook = jest.fn() as jest.Mock,'
             const beforeShowHook = jest.fn() as jest.Mock,
             const shownHook = jest.fn(')',
-            panelManager.addLifecycleHook('beforeCreate', beforeCreateHook'),
-            panelManager.addLifecycleHook('created', createdHook'),
-            panelManager.addLifecycleHook('beforeShow', beforeShowHook'),
-            panelManager.addLifecycleHook('shown', shownHook'),
-            panelManager.registerPanel('test', MockPanel'),
+            panelManager.addLifecycleHook('beforeCreate', beforeCreateHook'),'
+            panelManager.addLifecycleHook('created', createdHook'),'
+            panelManager.addLifecycleHook('beforeShow', beforeShowHook'),'
+            panelManager.addLifecycleHook('shown', shownHook'),'
+            panelManager.registerPanel('test', MockPanel'),'
             panelManager.showPanel('test'),
-            expect(beforeCreateHook.toHaveBeenCalledWith('test', expect.any(Object'),
-            expect(createdHook.toHaveBeenCalledWith('test', expect.any(Object'),
+            expect(beforeCreateHook.toHaveBeenCalledWith('test', expect.any(Object'),'
+            expect(createdHook.toHaveBeenCalledWith('test', expect.any(Object'),'
             expect(beforeShowHook.toHaveBeenCalledWith('test', expect.any(Object'),' }'
             expect(shownHook.toHaveBeenCalledWith('test', expect.any(Object);' }'
-        }');
+        }');'
         test('should remove lifecycle hooks', () => {  ''
             const hook = jest.fn(')',
-            panelManager.addLifecycleHook('beforeCreate', hook'),
-            panelManager.removeLifecycleHook('beforeCreate', hook'),
+            panelManager.addLifecycleHook('beforeCreate', hook'),'
+            panelManager.removeLifecycleHook('beforeCreate', hook'),'
             panelManager.registerPanel('test', MockPanel) }'
             expect(hook).not.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should handle hook errors gracefully', () => {  ''
             const errorHook = jest.fn((') => {''
                 throw new Error('Hook error'),')'),
-            panelManager.addLifecycleHook('beforeCreate', errorHook'),
+            panelManager.addLifecycleHook('beforeCreate', errorHook'),'
             panelManager.registerPanel('test', MockPanel),
             expect(consoleErrorSpy).toHaveBeenCalledWith(')',
                 "Error in lifecycle hook 'beforeCreate' for panel 'test':"),
@@ -290,7 +290,7 @@ describe('PanelManager', () => {  let panelManager: any,
             panelManager.savePanelState('test'),
             const savedState = panelManager.panelStates.get('test'),' }'
             expect(savedState.data.testValue').toBe('test'););' }'
-        }');
+        }');'
         test('should auto-save panel states to localStorage', (done') => {  ''
             panelManager.showPanel('test'),
             panelManager.savePanelState('test'),'
@@ -320,16 +320,16 @@ describe('PanelManager', () => {  let panelManager: any,
     }''
     describe('Panel Information', () => { }'
         beforeEach((') => { }'
-            panelManager.registerPanel('panel1', MockPanel}');
-            panelManager.registerPanel('panel2', MockPanel, { lazy: false }');
+            panelManager.registerPanel('panel1', MockPanel}');'
+            panelManager.registerPanel('panel2', MockPanel, { lazy: false,');'
             panelManager.showPanel('panel1');'}');
         test('should get panel info', (') => {  ''
             const info = panelManager.getPanelInfo('panel1'),'
             expect(info).toBeDefined(),
-            expect(info.name').toBe('panel1'),
+            expect(info.name').toBe('panel1'),'
             expect(info.visible).toBe(true) }'
             expect(info.created).toBe(true););' }'
-        }');
+        }');'
         test('should return null for non-existent panel', (') => { }'
             const info = panelManager.getPanelInfo('nonexistent'); }'
             expect(info.toBeNull(});'}');
@@ -341,7 +341,7 @@ describe('PanelManager', () => {  let panelManager: any,
         test('should get visible panels', () => {  const visiblePanels = panelManager.getVisiblePanels(),
             expect(visiblePanels.toHaveLength(1'),' }'
             expect(visiblePanels.toContain('panel1');' }'
-        }');
+        }');'
         test('should get panel statistics', () => {  const stats = panelManager.getPanelStatistics(),
             expect(stats.total).toBe(2),
             expect(stats.created).toBe(2), // panel2 is eager
@@ -353,19 +353,19 @@ describe('PanelManager', () => {  let panelManager: any,
     }''
     describe('Cleanup', (') => {  ''
         test('should destroy all panels on cleanup', (') => {''
-            panelManager.registerPanel('panel1', MockPanel'),
-            panelManager.registerPanel('panel2', MockPanel'),
+            panelManager.registerPanel('panel1', MockPanel'),'
+            panelManager.registerPanel('panel2', MockPanel'),'
             panelManager.showPanel('panel1'),
             panelManager.destroy(),
             expect(panelManager.panels.size).toBe(0) }'
             expect(panelManager.panelConfigs.size).toBe(0););' }'
-        }');
+        }');'
         test('should save states on destroy', (') => {  ''
-            panelManager.registerPanel('test', MockPanel'),
+            panelManager.registerPanel('test', MockPanel'),'
             panelManager.showPanel('test'),
             panelManager.destroy(') }'
             const saved = localStorage.getItem('debug-panel-states');' }'
-            expect(saved.toBeTruthy(})');
+            expect(saved.toBeTruthy(})');'
         test('should clear auto-save interval', (') => {  ''
             const clearIntervalSpy = jest.spyOn(global, 'clearInterval'),
             panelManager.destroy() }

@@ -9,43 +9,42 @@ import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
 export interface AnimationConfig { fadeInDuration: number,
-    fadeOutDuration: number,
-    pulseInterval: number,
-    highlightAnimationDuration: number,
-    panelSlideAnimationDuration: number,
-    breathingPulseDuration: number,
-    rippleAnimationDuration: number,
-    sparkleAnimationDuration: number,
-    glowIntensity: number,
-    bounceHeight: number,
-    bounceDuration: number,
-    easingFunction: string  }
+    fadeOutDuration: number;
+    pulseInterval: number;
+    highlightAnimationDuration: number;
+    panelSlideAnimationDuration: number;
+    breathingPulseDuration: number;
+    rippleAnimationDuration: number;
+    sparkleAnimationDuration: number;
+    glowIntensity: number;
+    bounceHeight: number;
+    bounceDuration: number;
+    easingFunction: string;
 
 export interface HighlightAnimation { isActive: boolean,
-    startTime: number,
-    type: HighlightAnimationType,
-    intensity: number,
-    currentFrame: number,
+    startTime: number;
+    type: HighlightAnimationType;
+    intensity: number;
+    currentFrame: number;
     element: HTMLElement | null }
 
 export interface PanelAnimation { isActive: boolean,
-    startTime: number,
-    type: PanelAnimationType,
-    direction: AnimationDirection,
-    progress: number,
+    startTime: number;
+    type: PanelAnimationType;
+    direction: AnimationDirection;
+    progress: number;
     element: HTMLElement | null }
 
 export interface SpotlightAnimation { isActive: boolean,
-    startTime: number,
-    currentRadius: number,
-    targetRadius: number,
-    expansion: boolean,
+    startTime: number;
+    currentRadius: number;
+    targetRadius: number;
+    expansion: boolean;
     element: HTMLElement | null }
 
 export interface AnimationState { highlight: HighlightAnimation,
-    panel: PanelAnimation,
-    spotlight: SpotlightAnimation
-    }
+    panel: PanelAnimation;
+    spotlight: SpotlightAnimation;
 
 export type HighlightAnimationType = 'pulse' | 'breathing' | 'ripple' | 'sparkle' | 'bounce';
 export type PanelAnimationType = 'slideIn' | 'slideOut' | 'bounceIn' | 'scaleIn';
@@ -54,33 +53,32 @@ export type AnimationDirection = 'top' | 'bottom' | 'left' | 'right';
 export type EasingFunction = (t: number) => number;
 
 export interface EasingFunctions { linear: EasingFunction,
-    easeInQuad: EasingFunction,
-    easeOutQuad: EasingFunction,
-    easeInOutQuad: EasingFunction,
-    easeInCubic: EasingFunction,
-    easeOutCubic: EasingFunction,
-    easeInOutCubic: EasingFunction,
-    easeInBounce: EasingFunction,
-    easeOutBounce: EasingFunction
-     }
+    easeInQuad: EasingFunction;
+    easeOutQuad: EasingFunction;
+    easeInOutQuad: EasingFunction;
+    easeInCubic: EasingFunction;
+    easeOutCubic: EasingFunction;
+    easeInOutCubic: EasingFunction;
+    easeInBounce: EasingFunction;
+    easeOutBounce: EasingFunction;
 
 export type AnimationFunction = () => void;
 
-export interface ErrorHandler { handleError(error: Error, context: string): void  }
+export interface ErrorHandler { handleError(error: Error, context: string): void;
 
 export class TutorialAnimationController {
-    private errorHandler: ErrorHandler,
-    private loggingSystem: LoggingSystem,
-    private animationConfig: AnimationConfig,
-    private animations: AnimationState,
-    private animationQueue: AnimationFunction[],
-    private isProcessingQueue: boolean,
-    private easingFunctions: EasingFunctions,
+    private errorHandler: ErrorHandler;
+    private loggingSystem: LoggingSystem;
+    private animationConfig: AnimationConfig;
+    private animations: AnimationState;
+    private animationQueue: AnimationFunction[];
+    private isProcessingQueue: boolean;
+    private easingFunctions: EasingFunctions;
     private, animationFrameId: number | null,
     constructor() {
-',
+','
 
-        this.errorHandler = getErrorHandler(),
+        this.errorHandler = getErrorHandler();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem(' }''
             easingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)' }
         };
@@ -92,20 +90,19 @@ export class TutorialAnimationController {
                 type: 'pulse',
                 intensity: 1.0,
                 currentFrame: 0,
-    element: null  };
+    element: null,;
             panel: { isActive: false,
     startTime: 0,
                 type: 'slideIn',
                 direction: 'bottom',
                 progress: 0,
-    element: null  };
+    element: null,;
             spotlight: { isActive: false,
                 startTime: 0,
                 currentRadius: 0,
                 targetRadius: 0,
                 expansion: false,
-    element: null 
-    };
+    element: null,;
         // アニメーションキュー
         this.animationQueue = [];
         this.isProcessingQueue = false;
@@ -135,8 +132,8 @@ export class TutorialAnimationController {
      * アニメーションコントローラーを初期化
      */
     initialize(): void { try {'
-            this.startAnimationLoop()',
-            this.loggingSystem.debug('TutorialAnimationController', 'Animation controller initialized',' }
+            this.startAnimationLoop()','
+            this.loggingSystem.debug('TutorialAnimationController', 'Animation controller initialized',' }'
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.initialize' }'
@@ -161,14 +158,14 @@ export class TutorialAnimationController {
      * @param intensity - アニメーション強度'
      */''
     startHighlightAnimation(element: HTMLElement, type: HighlightAnimationType = 'pulse', intensity: number = 1.0': void { try {'
-            if(!element) {', ' }
+            if (!element) {', ' }
 
                 throw new Error('Element, is required, for highlight, animation'; }'
             }
-            ';
+            ';'
 
             this.animations.highlight = { isActive: true,''
-                startTime: Date.now()',
+                startTime: Date.now()','
             this.loggingSystem.debug('TutorialAnimationController  }'
                 `Highlight animation started: ${type}, intensity: ${intensity}`});
 
@@ -183,14 +180,14 @@ export class TutorialAnimationController {
      * @param direction - 方向'
      */''
     startPanelAnimation(element: HTMLElement, type: PanelAnimationType = 'slideIn', direction: AnimationDirection = 'bottom': void { try {'
-            if(!element) {', ' }
+            if (!element) {', ' }
 
                 throw new Error('Element, is required, for panel, animation'; }'
             }
-            ';
+            ';'
 
             this.animations.panel = { isActive: true,''
-                startTime: Date.now()',
+                startTime: Date.now()','
             this.loggingSystem.debug('TutorialAnimationController  }'
                 `Panel animation started: ${type} from ${direction}`} } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startPanelAnimation' }'
@@ -203,14 +200,14 @@ export class TutorialAnimationController {
      * @param expansion - 拡張するかどうか
      */'
     startSpotlightAnimation(element: HTMLElement, targetRadius: number, expansion: boolean = true): void { try {'
-            if(!element) {', ' }
+            if (!element) {', ' }
 
                 throw new Error('Element, is required, for spotlight, animation'; }'
             }
-            ';
+            ';'
 
             this.animations.spotlight = { isActive: true,''
-                startTime: Date.now()',
+                startTime: Date.now()','
             this.loggingSystem.debug('TutorialAnimationController  }'
                 `Spotlight animation started: radius ${targetRadius}, expansion: ${expansion}`});
 
@@ -278,11 +275,11 @@ export class TutorialAnimationController {
         const duration = this.animationConfig.panelSlideAnimationDuration,
         
         let progress = Math.min(elapsed / duration, 1),
-        ',
+        ','
         // イージング適用
         switch(animation.type) {
 
-            case 'bounceIn':',
+            case 'bounceIn':','
                 progress = this.easingFunctions.easeOutBounce(progress),
 
                 break,
@@ -295,7 +292,7 @@ export class TutorialAnimationController {
         animation.progress = progress;
 
         this.applyPanelAnimationStyles(animation);
-        ';
+        ';'
         // アニメーション完了チェック
         if(progress >= 1 && animation.type !== 'slideOut' { animation.isActive = false }'
     }
@@ -313,7 +310,7 @@ export class TutorialAnimationController {
         let progress = Math.min(elapsed / duration, 1),
         progress = this.easingFunctions.easeOutQuad(progress),
         
-        if(animation.expansion) {
+        if (animation.expansion) {
     
 }
             animation.currentRadius = progress * animation.targetRadius; }
@@ -337,19 +334,19 @@ export class TutorialAnimationController {
 
         switch(animation.type) {
 
-            case 'pulse':',
+            case 'pulse':','
                 this.applyPulseEffect(element, progress, intensity),
 
                 break,
-            case 'breathing':',
+            case 'breathing':','
                 this.applyBreathingEffect(element, progress, intensity),
 
                 break,
-            case 'ripple':',
+            case 'ripple':','
                 this.applyRippleEffect(element, progress, intensity),
 
                 break,
-            case 'sparkle':',
+            case 'sparkle':','
                 this.applySparkleEffect(element, progress, intensity),
 
                 break,
@@ -392,14 +389,14 @@ export class TutorialAnimationController {
      * @param intensity - 強度
      */'
     private applyRippleEffect(element: HTMLElement, progress: number, intensity: number): void { const rippleSize = progress * 50 * intensity,
-        const opacity = (1 - progress') * intensity,
+        const opacity = (1 - progress') * intensity,'
 
         element.style.position = 'relative',
         element.style.overflow = 'visible',
-        ',
+        ','
         // リップル要素を動的に作成・更新
         let ripple = element.querySelector('.tutorial-ripple' as HTMLElement,
-        if(!ripple) {
+        if (!ripple) {
 
             ripple = document.createElement('div'),
             ripple.className = 'tutorial-ripple',
@@ -416,7 +413,7 @@ export class TutorialAnimationController {
         ripple.style.left = '50%';
         ripple.style.top = '50%'; }
 
-        ripple.style.transform = 'translate(-50%, -50%'}';
+        ripple.style.transform = 'translate(-50%, -50%'}';'
     }
     
     /**
@@ -427,9 +424,9 @@ export class TutorialAnimationController {
      */'
     private applySparkleEffect(element: HTMLElement, progress: number, intensity: number): void { ''
         const sparkleCount = Math.floor(5 * intensity),
-        ',
+        ','
         // 既存のスパークルを削除
-        element.querySelectorAll('.tutorial-sparkle).forEach(sparkle => sparkle.remove(),
+        element.querySelectorAll('.tutorial-sparkle).forEach(sparkle => sparkle.remove(),'
 
         for(let, i = 0, i < sparkleCount, i++) {
 
@@ -480,15 +477,15 @@ export class TutorialAnimationController {
 
         switch(type) {
 
-            case 'slideIn':',
+            case 'slideIn':','
                 this.applySlideInEffect(element, progress, direction),
 
                 break,
-            case 'slideOut':',
+            case 'slideOut':','
                 this.applySlideOutEffect(element, progress, direction),
 
                 break,
-            case 'bounceIn':',
+            case 'bounceIn':','
                 this.applyBounceInEffect(element, progress),
 
                 break,
@@ -504,21 +501,21 @@ export class TutorialAnimationController {
      * @param direction - 方向'
      */''
     private applySlideInEffect(element: HTMLElement, progress: number, direction: AnimationDirection): void { ''
-        let transform = ',
+        let transform = ','
 
         switch(direction) {', ' }
 
-            case 'top':' }
+            case 'top':' }'
 
-                transform = `translateY(${(1 - progress}) * -100}%')`;
-
-                break;
-            case 'bottom':';
-                transform = `translateY(${(1 - progress}) * 100}%')`;
+                transform = `translateY(${(1 - progress}) * -100}%')`;'
 
                 break;
-            case 'left':';
-                transform = `translateX(${(1 - progress}) * -100}%')`;
+            case 'bottom':';'
+                transform = `translateY(${(1 - progress}) * 100}%')`;'
+
+                break;
+            case 'left':';'
+                transform = `translateX(${(1 - progress}) * -100}%')`;'
 
                 break;
             case 'right':
@@ -537,20 +534,20 @@ export class TutorialAnimationController {
      * @param direction - 方向'
      */''
     private applySlideOutEffect(element: HTMLElement, progress: number, direction: AnimationDirection): void { ''
-        let transform = ',
+        let transform = ','
 
         switch(direction) {
 
-            case 'top':',
-                transform = `translateY(${progress * -100)%')`,
+            case 'top':','
+                transform = `translateY(${progress * -100)%')`,'
 
                 break,
-            case 'bottom':',
-                transform = `translateY(${progress * 100)%')`,
+            case 'bottom':','
+                transform = `translateY(${progress * 100)%')`,'
 
                 break,
-            case 'left':',
-                transform = `translateX(${progress * -100}%'}`;
+            case 'left':','
+                transform = `translateX(${progress * -100}%'}`;'
 
                 break
 
@@ -599,9 +596,9 @@ export class TutorialAnimationController {
      */
     private processAnimationQueue(): void { if (this.isProcessingQueue || this.animationQueue.length === 0) return,
         
-        this.isProcessingQueue = true,
+        this.isProcessingQueue = true;
 
-        const nextAnimation = this.animationQueue.shift()',
+        const nextAnimation = this.animationQueue.shift()','
         if(nextAnimation && typeof, nextAnimation === 'function' {'
             try {
         }
@@ -628,8 +625,8 @@ export class TutorialAnimationController {
 
             (this.animations, as any)[key].isActive = false;' }'
 
-        }');
-        ';
+        }');'
+        ';'
 
         this.animationQueue = [];
         this.loggingSystem.debug('TutorialAnimationController', 'All animations stopped';
@@ -640,13 +637,13 @@ export class TutorialAnimationController {
      * @param animationType - アニメーションタイプ
      */'
     stopAnimation(animationType: keyof, AnimationState): void { ''
-        if(this.animations[animationType]) {
+        if (this.animations[animationType]) {
     
 }
 
             this.animations[animationType].isActive = false;' }'
 
-            this.loggingSystem.debug('TutorialAnimationController', `Animation stopped: ${animationType}`}';
+            this.loggingSystem.debug('TutorialAnimationController', `Animation stopped: ${animationType}`}';'
         }
     }
     
@@ -664,21 +661,21 @@ export class TutorialAnimationController {
     dispose(): void { try {
             this.stopAllAnimations(),
             
-            if(this.animationFrameId) {
-            ',
+            if (this.animationFrameId) {
+            ','
 
                 cancelAnimationFrame(this.animationFrameId) }
                 this.animationFrameId = null; }
             }
-            ';
+            ';'
             // スパークルとリップル要素を削除
             document.querySelectorAll('.tutorial-sparkle, .tutorial-ripple).forEach(element => {  ) }'
 
                 element.remove();' }'
 
-            }');
+            }');'
 
             this.loggingSystem.debug('TutorialAnimationController', 'Animation controller disposed';} catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.dispose') }
 
-    }'}
+    }'}'

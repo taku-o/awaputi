@@ -4,7 +4,7 @@
  */
 export class StatisticsFilterManager {
     constructor(statisticsManager) {
-        this.statisticsManager = statisticsManager,
+        this.statisticsManager = statisticsManager;
         
         // フィルター期間の定義
     }
@@ -19,8 +19,8 @@ export class StatisticsFilterManager {
             last30days: { label: '過去30日間', days: 30  },''
             last90days: { label: '過去90日間', days: 90  },''
             thisYear: { label: '今年', days: 365  },''
-            allTime: { label: '全期間', days: null  },''
-            custom: { label: 'カスタム', days: null  };
+            allTime: { label: '全期間', days: null,,''
+            custom: { label: 'カスタム', days: null,;
         
         // 現在のフィルター設定
         this.currentFilter = {;
@@ -45,14 +45,14 @@ export class StatisticsFilterManager {
      */''
     setPeriod(period, customStart = null, customEnd = null) {', ' }
 
-        if(!this.filterPeriods[period] && period !== 'custom' { }
+        if (!this.filterPeriods[period] && period !== 'custom' }
 
-            throw new Error(`Invalid, filter period: ${period}`}';
+            throw new Error(`Invalid, filter period: ${period}`}';'
         }
         
         this.currentFilter.period = period;
 
-        if(period === 'custom' {'
+        if(period === 'custom''
 
             if(!customStart || !customEnd) {
         }
@@ -64,9 +64,9 @@ export class StatisticsFilterManager {
         } else {  this.currentFilter.customStart = null }
             this.currentFilter.customEnd = null; }
         }
-        ';
+        ';'
         // キャッシュをクリア
-        this.clearCache()';
+        this.clearCache()';'
         this.emit('filterChanged', { period: this.currentFilter.period)
            , customStart: this.currentFilter.customStart),
             customEnd: this.currentFilter.customEnd  }
@@ -75,16 +75,16 @@ export class StatisticsFilterManager {
      * カテゴリフィルターの設定
      */
     setCategories(categories) {
-        if(!Array.isArray(categories) {
+        if (!Array.isArray(categories) {
     }
             categories = [categories]; }
         }
-        ';
+        ';'
 
         this.currentFilter.categories = categories;
-        this.clearCache()';
+        this.clearCache()';'
         this.emit('categoriesChanged', { ')'
-            categories: this.currentFilter.categories' }
+            categories: this.currentFilter.categories' }'
     
     /**
      * ソート設定'
@@ -93,11 +93,11 @@ export class StatisticsFilterManager {
 
         const validSortFields = ['date', 'score', 'accuracy', 'combo', 'playTime'],
         const validSortOrders = ['asc', 'desc'] }
-        if(!validSortFields.includes(sortBy) { }
+        if (!validSortFields.includes(sortBy) { }
             throw new Error(`Invalid, sort field: ${sortBy}`});
         }
         
-        if(!validSortOrders.includes(sortOrder) {
+        if (!validSortOrders.includes(sortOrder) {
     
 }
             throw new Error(`Invalid, sort order: ${sortOrder}`});
@@ -106,7 +106,7 @@ export class StatisticsFilterManager {
         this.currentFilter.sortBy = sortBy;
 
         this.currentFilter.sortOrder = sortOrder;
-        this.clearCache()';
+        this.clearCache()';'
         this.emit('sortingChanged', { sortBy: this.currentFilter.sortBy)
            , sortOrder: this.currentFilter.sortOrder }
     
@@ -116,12 +116,12 @@ export class StatisticsFilterManager {
     async getFilteredStatistics() { const cacheKey = this.generateCacheKey(),
         
         // キャッシュチェック
-        if(this.filterState.cachedResults.has(cacheKey) {
+        if (this.filterState.cachedResults.has(cacheKey) {
     
 }
             return this.filterState.cachedResults.get(cacheKey);
         
-        if(this.filterState.isApplying) {
+        if (this.filterState.isApplying) {
         
             // 既に処理中の場合は少し待ってから再試行
             await new Promise(resolve => setTimeout(resolve, 100) }
@@ -158,13 +158,13 @@ export class StatisticsFilterManager {
              };
             // 結果をキャッシュ
             this.filterState.cachedResults.set(cacheKey, result);
-            this.filterState.lastApplied = Date.now()';
+            this.filterState.lastApplied = Date.now()';'
             this.emit('dataFiltered', result);
             
             return result;
 
         } catch (error) {
-            console.error('Filter application failed:', error',
+            console.error('Filter application failed:', error','
             this.emit('filterError', error),
             throw error } finally { this.filterState.isApplying = false }
     }
@@ -174,7 +174,7 @@ export class StatisticsFilterManager {
      */
     calculateDateRange() {
 
-        const now = new Date()',
+        const now = new Date()','
         if (this.currentFilter.period === 'custom') {
     }
             return { start: this.currentFilter.customStart };
@@ -185,8 +185,7 @@ export class StatisticsFilterManager {
             return { }
 
                 start: new Date(0), // Unix epoch };
-                end: now 
-    }
+                end: now;
 
         if(this.currentFilter.period === 'today' {'
             const start = new Date(now),
@@ -214,48 +213,47 @@ export class StatisticsFilterManager {
             start.setDate(start.getDate() - dayOfWeek) }
 
             start.setHours(0, 0, 0, 0); }
-            return { start, end: now  }
+            return { start, end: now,
 
         if(this.currentFilter.period === 'thisMonth' {', ' }
 
             const start = new Date(now.getFullYear(), now.getMonth(), 1'); }'
-            return { start, end: now  }
+            return { start, end: now,
 
-        if(this.currentFilter.period === 'thisYear) { const start = new Date(now.getFullYear(), 0, 1) }'
-            return { start, end: now  }
+        if (this.currentFilter.period === 'thisYear) { const start = new Date(now.getFullYear(), 0, 1) }'
+            return { start, end: now,
         
         // デフォルト: 指定日数前から現在まで
         const start = new Date(now);
         start.setDate(start.getDate() - (period.days || 7));
         start.setHours(0, 0, 0, 0);
         
-        return { start, end: now  }
+        return { start, end: now,
     
     /**
      * 時系列データの取得
      */
     async getTimeSeriesData(dateRange) { try {
             // StatisticsManagerから時系列データを取得
-            if(this.statisticsManager.timeSeriesDataManager) {
-                const dailyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange()',
-                    'daily', dateRange.start, dateRange.end',
+            if (this.statisticsManager.timeSeriesDataManager) {
+                const dailyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange()','
+                    'daily', dateRange.start, dateRange.end','
 
-                '),
+                '),'
 
-                ',
+                ','
 
                 const weeklyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange(),
 
-                    'weekly', dateRange.start, dateRange.end',
+                    'weekly', dateRange.start, dateRange.end','
                 
-                return { daily: dailyData }
-                    weekly: weeklyData };
-                    range: dateRange 
-    }
-            ';
+                return { daily: dailyData,
+                    weekly: weeklyData,;
+                    range: dateRange,
+            ';'
 
-            return { daily: [], weekly: [], range: dateRange  }'} catch (error) { console.warn('Failed to get time series data:', error }
-            return { daily: [], weekly: [], range: dateRange  }
+            return { daily: [], weekly: [], range: dateRange,'} catch (error) { console.warn('Failed to get time series data:', error }'
+            return { daily: [], weekly: [], range: dateRange,
     }
     
     /**
@@ -267,15 +265,15 @@ export class StatisticsFilterManager {
         let filteredStats = { ...rawStats,
         
         // 日付範囲フィルター
-        if(timeSeriesData.daily.length > 0) {
+        if (timeSeriesData.daily.length > 0) {
             // 時系列データから期間内のデータを抽出
         }
 
             filteredStats = this.filterByDateRange(filteredStats, dateRange, timeSeriesData); }
         }
-        ';
+        ';'
         // カテゴリフィルター
-        if(!this.currentFilter.categories.includes('all) { filteredStats = this.filterByCategories(filteredStats, this.currentFilter.categories) }'
+        if (!this.currentFilter.categories.includes('all) { filteredStats = this.filterByCategories(filteredStats, this.currentFilter.categories) }'
         
         return filteredStats;
     }
@@ -289,7 +287,7 @@ export class StatisticsFilterManager {
         const filteredStats = { ...stats,
         
         // 各統計項目を期間でフィルタリング
-        if(stats.sessions) {
+        if (stats.sessions) {
             filteredStats.sessions = stats.sessions.filter(session => { ) }
                 const sessionDate = new Date(session.timestamp); }
                 return sessionDate >= dateRange.start && sessionDate <= dateRange.end;);
@@ -317,13 +315,13 @@ export class StatisticsFilterManager {
 }
         const sortedStats = { ...stats,
         
-        if(stats.sessions && Array.isArray(stats.sessions) {
+        if (stats.sessions && Array.isArray(stats.sessions) {
         
             sortedStats.sessions = [...stats.sessions].sort((a, b) => { 
                 let aValue, bValue,
 
                 switch(this.currentFilter.sortBy) {''
-                    case 'date':',
+                    case 'date':','
                         aValue = new Date(a.timestamp),
                         bValue = new Date(b.timestamp),
 
@@ -351,7 +349,7 @@ export class StatisticsFilterManager {
                         bValue = b.timestamp; }
                 }
 
-                if(this.currentFilter.sortOrder === 'asc) { return aValue > bValue ? 1 : -1 } else { return aValue < bValue ? 1 : -1) }
+                if (this.currentFilter.sortOrder === 'asc) { return aValue > bValue ? 1 : -1 } else { return aValue < bValue ? 1 : -1) }'
         
         return sortedStats;
     }
@@ -379,10 +377,10 @@ export class StatisticsFilterManager {
     generateSummary(stats) {
         const sessions = stats.sessions || [],
 
-        if(sessions.length === 0) {
+        if (sessions.length === 0) {
     }
 
-            return { isEmpty: true,' };
+            return { isEmpty: true,' };'
 
                 message: '選択された期間にはデータがありません' 
     }
@@ -401,7 +399,7 @@ export class StatisticsFilterManager {
             averagePlayTime: totalPlayTime / sessions.length,
     averageAccuracy: avgAccuracy,
             maxCombo,
-            period: this.currentFilter.period,' };
+            period: this.currentFilter.period,' };'
 
             periodLabel: this.filterPeriods[this.currentFilter.period]?.label || 'カスタム期間' 
     }
@@ -414,7 +412,7 @@ export class StatisticsFilterManager {
      */''
     filterByPeriod(statisticsData, period) {
         try {'
-            if(!statisticsData || period === 'all' || period === 'allTime) {
+            if (!statisticsData || period === 'all' || period === 'allTime) {'
     }
                 return statisticsData;
             
@@ -422,7 +420,7 @@ export class StatisticsFilterManager {
             let startDate = null;
             
             const filterConfig = this.filterPeriods[period];
-            if(filterConfig && filterConfig.days !== null) {
+            if (filterConfig && filterConfig.days !== null) {
                 startDate = new Date(now),
                 startDate.setDate(now.getDate() - filterConfig.days),
                 
@@ -436,12 +434,12 @@ export class StatisticsFilterManager {
                 statisticsData.sessions.filter(session => {  ),
                     if (!session.timestamp || !startDate) return true,
                     const sessionDate = new Date(session.timestamp) }
-                    return sessionDate >= startDate; : undefined }) : [];
+                    return sessionDate >= startDate; : undefined;) : [];
             
             return { ...statisticsData,
                 sessions: filteredSessions,
                 filteredPeriod: period,
-    filterStartDate: startDate };
+    filterStartDate: startDate,;
                 sessionCount: filteredSessions.length 
     } catch (error) {
             console.error('Error filtering statistics by period:', error),
@@ -455,8 +453,8 @@ export class StatisticsFilterManager {
 }
         const { period, customStart, customEnd, categories, sortBy, sortOrder } = this.currentFilter;
 
-        const customDates = customStart && customEnd ? undefined : undefined';
-            `${customStart.getTime(})-${customEnd.getTime('}'` : ';
+        const customDates = customStart && customEnd ? undefined : undefined';'
+            `${customStart.getTime(})-${customEnd.getTime('}'` : ';'
 
         return `${period}_${customDates}_${categories.join(','})_${sortBy}_${sortOrder}`;
     }
@@ -475,10 +473,10 @@ export class StatisticsFilterManager {
             customEnd: null,
             categories: ['all'],
             sortBy: 'date',
-            sortOrder: 'desc);
+            sortOrder: 'desc);'
         }''
 
-        this.clearCache()';
+        this.clearCache()';'
         this.emit('filtersReset', this.currentFilter);
     }
     
@@ -506,7 +504,7 @@ export class StatisticsFilterManager {
      * イベントハンドラの登録
      */
     on(eventName, handler) {
-        if(!this.eventHandlers.has(eventName) {
+        if (!this.eventHandlers.has(eventName) {
     }
             this.eventHandlers.set(eventName, []); }
         }

@@ -4,75 +4,73 @@
  */
 
 interface DebugInterface { gameEngine?: GameEngine,
-    debugPanel: HTMLElement,
-    switchPanel(name: string): void }
+    debugPanel: HTMLElement;
+    switchPanel(name: string): void;
 
 interface GameEngine { // Game engine interface }
 
-interface PanelClass { new(gameEngine?: GameEngine, debugInterface?: DebugInterface, options?: PanelOptions): PanelInstance }
+interface PanelClass { new(gameEngine?: GameEngine, debugInterface?: DebugInterface, options?: PanelOptions): PanelInstance;
 
 interface PanelInstance { show?(): void,
-    hide?(): void,
-    destroy?(): void,
-    getState?(): any,
-    setState?(state: any): void, 
+    hide?(): void;
+    destroy?(): void;
+    getState?(): any;
+    setState?(state: any): void;
 interface PanelOptions { name: string,
-    config: PanelConfig,
-    savedState?: PanelState,
-    panelManager: PanelManager
-     }
+    config: PanelConfig;
+    savedState?: PanelState;
+    panelManager: PanelManager;
 
 interface PanelConfig { title: string,
-    icon: string,
-    order: number,
-    enabled: boolean,
-    persistent: boolean,
-    cacheable: boolean,
-    lazy: boolean,
-    resizable: boolean,
-    minimizable: boolean,
-    closable: boolean }
+    icon: string;
+    order: number;
+    enabled: boolean;
+    persistent: boolean;
+    cacheable: boolean;
+    lazy: boolean;
+    resizable: boolean;
+    minimizable: boolean;
+    closable: boolean;
 
 interface PanelInfo { name: string,
-    PanelClass: PanelClass,
-    instance: PanelInstance | null,
-    config: PanelConfig,
-    created: boolean,
-    visible: boolean,
-    lastActivated: number | null,
-    activationCount: number,
-    renderTime: number }
+    PanelClass: PanelClass;
+    instance: PanelInstance | null;
+    config: PanelConfig;
+    created: boolean;
+    visible: boolean;
+    lastActivated: number | null;
+    activationCount: number;
+    renderTime: number;
 
 interface PanelState {
-    position: { ,x: number,, y: number },
-    size: { width: number,, height: number },
+    position: { ,x: number,, y: number,;
+    size: { width: number,, height: number,;
     minimized: boolean,
     settings: Record<string, any>;
     data: Record<string, any>;
     history: any[],
-    lastUpdated: number;
+    lastUpdated: number,
 }
 
 interface LifecycleHooks { beforeCreate: Set<LifecycleCallback>,
-    created: Set<LifecycleCallback>,
-    beforeShow: Set<LifecycleCallback>,
-    shown: Set<LifecycleCallback>,
-    beforeHide: Set<LifecycleCallback>,
-    hidden: Set<LifecycleCallback>,
-    beforeDestroy: Set<LifecycleCallback>,
-    destroyed: Set<LifecycleCallback>
-     }
+    created: Set<LifecycleCallback>;
+    beforeShow: Set<LifecycleCallback>;
+    shown: Set<LifecycleCallback>;
+    beforeHide: Set<LifecycleCallback>;
+    hidden: Set<LifecycleCallback>;
+    beforeDestroy: Set<LifecycleCallback>;
+    destroyed: Set<LifecycleCallback>;
 
 interface StateManager { saveEnabled: boolean,
-    storageKey: string,
-    maxStateHistory: number }
+    storageKey: string;
+    maxStateHistory: number;
 
 interface PanelStatistics { total: number,
-    created: number,
-    visible: number,
-    cached: number,
-    totalActivations: number,
-    totalRenderTime: number,
+    created: number;
+    visible: number;
+    cached: number;
+    totalActivations: number;
+    totalRenderTime: number;
     panels: Record<string, {
         created: boolean,
         visible: boolean,
@@ -84,26 +82,26 @@ interface PanelStatistics { total: number,
 type LifecycleCallback = (panelName: string, data: any) => void;
 
 export class PanelManager {
-    private debugInterface: DebugInterface,
+    private debugInterface: DebugInterface;
     private, panels: Map<string, PanelInfo>,
-    private panelStates: Map<string, PanelState>,
-    private panelConfigs: Map<string, PanelConfig>,
-    private lifecycleHooks: LifecycleHooks,
+    private panelStates: Map<string, PanelState>;
+    private panelConfigs: Map<string, PanelConfig>;
+    private lifecycleHooks: LifecycleHooks;
     private, stateManager: StateManager,
     private autoSaveInterval?: NodeJS.Timeout,
 
     constructor(debugInterface: DebugInterface) {
 
-        this.debugInterface = debugInterface,
-        this.panels = new Map(),
-        this.panelStates = new Map(),
-        this.panelConfigs = new Map(),
+        this.debugInterface = debugInterface;
+        this.panels = new Map();
+        this.panelStates = new Map();
+        this.panelConfigs = new Map();
         
         // パネルライフサイクル
         this.lifecycleHooks = {
             beforeCreate: new Set(
     created: new, Set(
-            beforeShow: new, Set(),
+            beforeShow: new, Set();
             shown: new Set(),
             beforeHide: new Set(),
             hidden: new Set(
@@ -131,12 +129,12 @@ export class PanelManager {
     public registerPanel(name: string, PanelClass: PanelClass, config: Partial<PanelConfig> = { ): boolean {''
         if(this.panels.has(name)) { }'
 
-            console.warn(`Panel '${name}' is, already registered`}';
+            console.warn(`Panel '${name}' is, already registered`}';'
             return false;
         }
-';
+';'
         try { // ライフサイクルフック実行
-            this.executeLifecycleHook('beforeCreate', name, { PanelClass, config )',
+            this.executeLifecycleHook('beforeCreate', name, { PanelClass, config )','
 
             // パネル設定の設定
             const defaultConfig: PanelConfig = {
@@ -149,7 +147,7 @@ export class PanelManager {
                 lazy: true,
                 resizable: true,
                 minimizable: true,
-    closable: false  };
+    closable: false,;
             const panelConfig = { ...defaultConfig, ...config,
             this.panelConfigs.set(name, panelConfig),
 
@@ -171,9 +169,9 @@ export class PanelManager {
             this.initializePanelState(name),
             // UI要素の追加
             this.addPanelToUI(name, panelConfig),
-',
+','
             // ライフサイクルフック実行
-            this.executeLifecycleHook('created', name, { panelInstance, config: panelConfig )',
+            this.executeLifecycleHook('created', name, { panelInstance, config: panelConfig )','
 
 ' }'
 
@@ -207,30 +205,30 @@ export class PanelManager {
      * @returns 表示成功可否
      */'
     public showPanel(name: string): boolean { const panelInfo = this.panels.get(name),
-        if(!panelInfo) { }'
+        if (!panelInfo) { }'
 
             console.warn(`Panel '${name}' not, found`});
             return false;
         }
 
-        if(!panelInfo.config.enabled) { }'
+        if (!panelInfo.config.enabled) { }'
 
-            console.warn(`Panel '${name}' is, disabled`}';
+            console.warn(`Panel '${name}' is, disabled`}';'
             return false;
         }
-';
+';'
         try { // ライフサイクルフック実行
             this.executeLifecycleHook('beforeShow', name, panelInfo),
 
             // Lazy loading の場合、初回表示時にインスタンス作成
-            if(!panelInfo.instance && panelInfo.config.lazy) {
+            if (!panelInfo.instance && panelInfo.config.lazy) {
                 panelInfo.instance = this.createPanelInstance(name, panelInfo.PanelClass) }
                 panelInfo.created = true; }
             }
 ;
             // パネルの表示処理
-            const startTime = performance.now()';
-            if(panelInfo.instance && typeof, panelInfo.instance.show === 'function) { panelInfo.instance.show() }'
+            const startTime = performance.now()';'
+            if (panelInfo.instance && typeof, panelInfo.instance.show === 'function) { panelInfo.instance.show() }'
 
             // パネル情報の更新
             panelInfo.visible = true;
@@ -242,7 +240,7 @@ export class PanelManager {
             this.updatePanelUI(name, true);
             // ステートの保存
             this.savePanelState(name);
-';
+';'
             // ライフサイクルフック実行
             this.executeLifecycleHook('shown', name, panelInfo);
 
@@ -250,7 +248,7 @@ export class PanelManager {
 
         } catch (error) { }
 
-            console.error(`Failed to show panel '${name}':`, error';
+            console.error(`Failed to show panel '${name}':`, error';'
             return false;
 
     /**
@@ -259,14 +257,14 @@ export class PanelManager {
      * @returns 非表示成功可否
      */'
     public hidePanel(name: string): boolean { const panelInfo = this.panels.get(name),
-        if(!panelInfo || !panelInfo.visible) {
+        if (!panelInfo || !panelInfo.visible) {
     
 }
             return false;
-';
+';'
         try { // ライフサイクルフック実行
-            this.executeLifecycleHook('beforeHide', name, panelInfo',
-',
+            this.executeLifecycleHook('beforeHide', name, panelInfo','
+','
             // パネルの非表示処理
             if(panelInfo.instance && typeof, panelInfo.instance.hide === 'function' { }
                 panelInfo.instance.hide(); }
@@ -282,11 +280,11 @@ export class PanelManager {
             this.savePanelState(name);
 
             // キャッシュ不可の場合、インスタンスを破棄
-            if(!panelInfo.config.cacheable && !panelInfo.config.persistent) { }
+            if (!panelInfo.config.cacheable && !panelInfo.config.persistent) { }
 
                 this.destroyPanelInstance(name); }
             }
-';
+';'
             // ライフサイクルフック実行
             this.executeLifecycleHook('hidden', name, panelInfo);
 
@@ -294,7 +292,7 @@ export class PanelManager {
 
         } catch (error) { }
 
-            console.error(`Failed to hide panel '${name}':`, error';
+            console.error(`Failed to hide panel '${name}':`, error';'
             return false;
 
     /**
@@ -303,16 +301,16 @@ export class PanelManager {
      * @returns 破棄成功可否
      */'
     public destroyPanel(name: string): boolean { const panelInfo = this.panels.get(name),
-        if(!panelInfo) {
+        if (!panelInfo) {
     
 }
             return false;
-';
+';'
         try { // ライフサイクルフック実行
             this.executeLifecycleHook('beforeDestroy', name, panelInfo),
 
             // パネルが表示中の場合は非表示にする
-            if(panelInfo.visible) {
+            if (panelInfo.visible) {
     
 }
                 this.hidePanel(name); }
@@ -329,13 +327,13 @@ export class PanelManager {
             this.panelConfigs.delete(name);
             
             // ステートの削除（persistent でない場合）
-            if(!panelInfo.config.persistent) { }
+            if (!panelInfo.config.persistent) { }
 
                 this.panelStates.delete(name); }
             }
-';
+';'
             // ライフサイクルフック実行
-            this.executeLifecycleHook('destroyed', name, { name )',
+            this.executeLifecycleHook('destroyed', name, { name )','
 
 ' }'
 
@@ -344,7 +342,7 @@ export class PanelManager {
 
         } catch (error) { }
 
-            console.error(`Failed to destroy panel '${name}':`, error';
+            console.error(`Failed to destroy panel '${name}':`, error';'
             return false;
 
     /**
@@ -352,7 +350,7 @@ export class PanelManager {
      * @param name - パネル名
      */'
     private destroyPanelInstance(name: string): void { const panelInfo = this.panels.get(name),
-        if(panelInfo && panelInfo.instance) {
+        if (panelInfo && panelInfo.instance) {
 
             if(typeof, panelInfo.instance.destroy === 'function' { }
                 panelInfo.instance.destroy(); }
@@ -366,7 +364,7 @@ export class PanelManager {
      * パネルステートの初期化
      * @param name - パネル名
      */
-    private initializePanelState(name: string): void { if(!this.panelStates.has(name) {
+    private initializePanelState(name: string): void { if (!this.panelStates.has(name) {
             this.panelStates.set(name, { }
                 position: { x: 0, y: 0  })
                 size: { width: 300, height: 400  })
@@ -387,7 +385,7 @@ export class PanelManager {
         const panelInfo = this.panels.get(name),
         const currentState = this.panelStates.get(name),
 
-        if(panelInfo && panelInfo.instance && currentState) {
+        if (panelInfo && panelInfo.instance && currentState) {
             // インスタンスから現在の状態を取得
             if(typeof, panelInfo.instance.getState === 'function' {'
                 const instanceState = panelInfo.instance.getState() }
@@ -409,7 +407,7 @@ export class PanelManager {
     public restorePanelState(name: string): void { const panelInfo = this.panels.get(name),
         const savedState = this.panelStates.get(name),
 
-        if(panelInfo && panelInfo.instance && savedState) {
+        if (panelInfo && panelInfo.instance && savedState) {
 
             if(typeof, panelInfo.instance.setState === 'function' { }
                 panelInfo.instance.setState(savedState); }
@@ -431,15 +429,15 @@ export class PanelManager {
         newTab.innerHTML = `${config.icon} ${config.title}`;
         newTab.title = config.title;
 
-        if(!config.enabled) {
+        if (!config.enabled) {
 
             newTab.classList.add('disabled' }
 
             (newTab, as HTMLButtonElement').disabled = true; }'
         }
-';
+';'
         // 順序に基づいて挿入位置を決定
-        const existingTabs = Array.from(tabsContainer.querySelectorAll('.debug-tab);
+        const existingTabs = Array.from(tabsContainer.querySelectorAll('.debug-tab);'
         let insertIndex = existingTabs.length;
         
         for(let, i = 0; i < existingTabs.length; i++) {
@@ -453,10 +451,10 @@ export class PanelManager {
 }
 
         if (insertIndex >= existingTabs.length) { tabsContainer.appendChild(newTab) } else { tabsContainer.insertBefore(newTab, existingTabs[insertIndex]) }
-';
+';'
         // パネルコンテンツエリアの追加
         this.addPanelContentArea(name);
-';
+';'
         // クリックイベントの設定
         newTab.addEventListener('click', () => {  if (config.enabled) { }
                 this.debugInterface.switchPanel(name); }
@@ -484,7 +482,7 @@ export class PanelManager {
      * @param name - パネル名'
      */''
     private removePanelFromUI(name: string): void { // タブの削除
-        const tab = this.debugInterface.debugPanel.querySelector(`[data-panel="${name""]`};
+        const tab = this.debugInterface.debugPanel.querySelector(`[data-panel="${name""]`};"
         if (tab} { }
             tab.remove(});
         }
@@ -502,18 +500,18 @@ export class PanelManager {
      * @param visible - 表示状態"
      */""
     private updatePanelUI(name: string, visible: boolean): void { ""
-        const tab = this.debugInterface.debugPanel.querySelector(`[data-panel="${name""]`),
+        const tab = this.debugInterface.debugPanel.querySelector(`[data-panel="${name""]`),"
         const, panel = document.getElementById(`panel-${name)`};
 
         if(visible} {
-",
+","
             " }"
             if (tab) tab.classList.add('active'; }
 
             if(panel) panel.classList.add('active'});
 
         } else {
-            if(tab) tab.classList.remove('active',' }
+            if(tab) tab.classList.remove('active',' }'
 
             if(panel) panel.classList.remove('active'; }'
 }
@@ -525,7 +523,7 @@ export class PanelManager {
      * @param data - フックデータ
      */
     private executeLifecycleHook(hookName: keyof LifecycleHooks, panelName: string, data: any): void { const hooks = this.lifecycleHooks[hookName],
-        if(hooks) {
+        if (hooks) {
             hooks.forEach(callback => { )
         }
                 try {) }
@@ -583,9 +581,9 @@ export class PanelManager {
         try { }
             const stateData: Record<string, PanelState> = {};
             for (const [name, state] of this.panelStates) { stateData[name] = state }
-';
+';'
 
-            localStorage.setItem(this.stateManager.storageKey, JSON.stringify(stateData);'} catch (error) { console.warn('Failed to auto-save panel states:', error }
+            localStorage.setItem(this.stateManager.storageKey, JSON.stringify(stateData);'} catch (error) { console.warn('Failed to auto-save panel states:', error }'
     }
 
     /**
@@ -593,13 +591,13 @@ export class PanelManager {
      */
     private loadPanelStates(): void { try {
             const saved = localStorage.getItem(this.stateManager.storageKey),
-            if(saved) {
+            if (saved) {
                 const stateData = JSON.parse(saved),
                 for(const [name, state] of Object.entries(stateData) {
             }
                     this.panelStates.set(name, state as PanelState); }
 
-                }'} catch (error) { console.warn('Failed to load panel states:', error }
+                }'} catch (error) { console.warn('Failed to load panel states:', error }'
     }
 
     /**
@@ -673,7 +671,7 @@ export class PanelManager {
      * クリーンアップ
      */
     public destroy(): void { // 自動保存の停止
-        if(this.autoSaveInterval) {
+        if (this.autoSaveInterval) {
     
 }
             clearInterval(this.autoSaveInterval); }
@@ -687,13 +685,13 @@ export class PanelManager {
 
             this.destroyPanel(name); }
         }
-';
+';'
         // イベントリスナーの削除
         window.removeEventListener('beforeunload', this.savePanelStates.bind(this));
 
         console.log('PanelManager, destroyed');
     }
 }
-';
+';'
 // デフォルトエクスポート
 export default PanelManager;

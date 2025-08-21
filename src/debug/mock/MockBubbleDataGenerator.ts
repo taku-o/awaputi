@@ -4,24 +4,24 @@
  */
 
 interface BubbleData { id: string,
-    x: number,
-    y: number,
-    radius: number,
-    color: string,
-    type: string }
-    velocity: { x: number,, y: number },
-    timestamp: number;
+    x: number;
+    y: number;
+    radius: number;
+    color: string;
+    type: string;
+    velocity: { x: number,, y: number,,
+    timestamp: number,
 }
 
 interface GenerationOptions { count?: number,
-    minRadius?: number,
-    maxRadius?: number,
-    colors?: string[],
-    types?: string[] }
-    bounds?: { width: number,, height: number }
+    minRadius?: number;
+    maxRadius?: number;
+    colors?: string[];
+    types?: string[];
+    bounds?: { width: number,, height: number,
 
 export class MockBubbleDataGenerator {
-    private defaultColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff],
+    private defaultColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff],'
     private defaultTypes = ['normal', 'special', 'bonus', 'power'],
 
     public generateBubble(options: Partial<GenerationOptions> = {): BubbleData {  }
@@ -41,9 +41,9 @@ export class MockBubbleDataGenerator {
                 x: (Math.random() - 0.5) * 200 };
                 y: (Math.random() - 0.5) * 200 
     };
-            timestamp: Date.now();
+            timestamp: Date.now(),
         }
-';
+';'
 
     public generateBubbles(count: number, options: Partial<GenerationOptions> = { ): BubbleData[] {''
         return Array.from({ length: count ), () => this.generateBubble(options)) }
@@ -52,9 +52,9 @@ export class MockBubbleDataGenerator {
     public generateBubblePattern(pattern: 'grid' | 'circle' | 'random', count: number': BubbleData[] { ''
         switch(pattern) {
 
-            case 'grid':',
+            case 'grid':','
                 return this.generateGridPattern(count),
-            case 'circle':',
+            case 'circle':','
                 return this.generateCirclePattern(count),
             case 'random': }
             default: return this.generateBubbles(count);
@@ -98,10 +98,10 @@ export class MockBubbleDataGenerator {
 
         return bubbles;
     }
-';
+';'
 
     private generateId(): string { }'
 
         return `bubble_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`;
 
-    }'}
+    }'}'

@@ -6,74 +6,73 @@
 
 // 言語コード型
 export type LanguageCode = 'ja' | 'en' | 'zh-CN' | 'zh-TW' | 'ko';
-';
+';'
 // プラットフォーム型
 export type SocialPlatform = 'openGraph' | 'twitter' | 'linkedin' | 'pinterest';
-';
+';'
 // 画像バリアント型
 export type ImageVariant = 'default' | 'landscape' | 'portrait' | 'summary' | 'summaryLarge';
 
 // メタデータ設定インターフェース
 interface MetadataConfig { author: string,
-    keywords: Record<string, string>,
-    defaultDescription: Record<string, string>,
+    keywords: Record<string, string>;
+    defaultDescription: Record<string, string>;
     extendedDescription: Record<string, string> }
 
 // ソーシャル画像設定インターフェース
 interface SocialImageConfig { default: string,
-    landscape?: string,
-    portrait?: string,
-    summary?: string,
-    summaryLarge?: string,
-    width: number,
-    height: number  }
+    landscape?: string;
+    portrait?: string;
+    summary?: string;
+    summaryLarge?: string;
+    width: number;
+    height: number;
 
 // ソーシャルメディア画像設定インターフェース
 interface SocialImagesConfig { openGraph: SocialImageConfig,
-    twitter: SocialImageConfig,
-    linkedin: Omit<SocialImageConfig, 'landscape' | 'portrait' | 'summary' | 'summaryLarge'>,
-    pinterest: Omit<SocialImageConfig, 'landscape' | 'portrait' | 'summary' | 'summaryLarge'>,
-    fallback: string  }
+    twitter: SocialImageConfig;
+    linkedin: Omit<SocialImageConfig, 'landscape' | 'portrait' | 'summary' | 'summaryLarge'>;
+    pinterest: Omit<SocialImageConfig, 'landscape' | 'portrait' | 'summary' | 'summaryLarge'>;
+    fallback: string;
 
 // 組織構造化データインターフェース
 interface OrganizationStructuredData { name: string,
-    url: string,
-    logo: string,
-    sameAs: string[] }
+    url: string;
+    logo: string;
+    sameAs: string[];
 
 // ゲーム構造化データインターフェース
 interface GameStructuredData { name: string,
-    alternateName: string,
-    genre: string[],
-    platform: string[],
-    operatingSystem: string[],
-    contentRating: string,
-    inLanguage: string[],
-    isAccessibleForFree: boolean,
-    applicationCategory: string,
+    alternateName: string;
+    genre: string[];
+    platform: string[];
+    operatingSystem: string[];
+    contentRating: string;
+    inLanguage: string[];
+    isAccessibleForFree: boolean;
+    applicationCategory: string;
     offers: {
         pric,e: string,
-    priceCurrency: string }
+    priceCurrency: string,
 
 // Webアプリケーション構造化データインターフェース
 interface WebApplicationStructuredData { applicationCategory: string,
-    permissions: string[],
-    browserRequirements: string,
-    memoryRequirements: string,
-    storageRequirements: string  }
+    permissions: string[];
+    browserRequirements: string;
+    memoryRequirements: string;
+    storageRequirements: string;
 
 // 構造化データ設定インターフェース
 interface StructuredDataConfig { organization: OrganizationStructuredData,
-    game: GameStructuredData,
-    webApplication: WebApplicationStructuredData
-    }
+    game: GameStructuredData;
+    webApplication: WebApplicationStructuredData;
 
 // robots.txt設定インターフェース
 interface RobotsConfig { userAgent: string,
-    allow: string[],
-    disallow: string[],
-    crawlDelay: number,
-    sitemapUrl: string }
+    allow: string[];
+    disallow: string[];
+    crawlDelay: number;
+    sitemapUrl: string;
 ;
 // サイトマップ頻度型
 type ChangeFrequency = 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
@@ -82,60 +81,58 @@ type ChangeFrequency = 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'y
 interface SitemapConfig { changeFrequency: {
         hom,e: ChangeFrequency,
         help: ChangeFrequency,
-    assets: ChangeFrequency };
+    assets: ChangeFrequency,;
     priority: { home: number,
         help: number,
         languageVariants: number,
-    assets: number }
+    assets: number,
 
 // ファビコン設定インターフェース
 interface FaviconConfig { sizes: number[],
-    appleTouchIcon: number[],
-    msTile: number[],
-    androidChrome: number[]  }
+    appleTouchIcon: number[];
+    msTile: number[];
+    androidChrome: number[];
 
 // 画像最適化設定インターフェース
 interface ImageOptimizationConfig { quality: number,
-    formats: string[],
-    lazyLoad: boolean }
+    formats: string[];
+    lazyLoad: boolean;
 
 // キャッシング設定インターフェース
 interface CachingConfig { socialImages: number,
-    structuredData: number,
-    metaTags: number }
+    structuredData: number;
+    metaTags: number;
 
 // パフォーマンス設定インターフェース
 interface PerformanceConfig { imagOptimization: ImageOptimizationConfig,
-    caching: CachingConfig
-    }
+    caching: CachingConfig;
 
 // エラーハンドリング設定インターフェース
 interface ErrorHandlingConfig { missingImage: {
         useDefaul,t: boolean,
-    logError: boolean };
+    logError: boolean,;
     invalidStructuredData: { useFallback: boolean,
-    minimalSchema: boolean };
+    minimalSchema: boolean,;
     metaTagFailure: { ensureBasicTags: boolean,
-    logToConsole: boolean }
+    logToConsole: boolean,
 
 // SEO設定インターフェース
 export interface SEOConfigType { baseUrl: string,
-    siteName: string,
-    siteNameJa: string,
-    defaultLanguage: LanguageCode,
-    supportedLanguages: LanguageCode[],
-    metadata: MetadataConfig,
-    socialImages: SocialImagesConfig,
-    structuredData: StructuredDataConfig,
-    robots: RobotsConfig,
-    sitemap: SitemapConfig,
-    favicon: FaviconConfig,
-    performance: PerformanceConfig,
-    errorHandling: ErrorHandlingConfig
-     }
+    siteName: string;
+    siteNameJa: string;
+    defaultLanguage: LanguageCode;
+    supportedLanguages: LanguageCode[];
+    metadata: MetadataConfig;
+    socialImages: SocialImagesConfig;
+    structuredData: StructuredDataConfig;
+    robots: RobotsConfig;
+    sitemap: SitemapConfig;
+    favicon: FaviconConfig;
+    performance: PerformanceConfig;
+    errorHandling: ErrorHandlingConfig;
 ;
 export const SEOConfig: SEOConfigType = { // 基本設定
-    baseUrl: 'https://bubblepop-game.com, // 本番環境のURLに更新する必要があります,
+    baseUrl: 'https://bubblepop-game.com, // 本番環境のURLに更新する必要があります,'
     siteName: 'BubblePop',
     siteNameJa: 'バブルポップ',
     defaultLanguage: 'ja',
@@ -179,14 +176,14 @@ export const SEOConfig: SEOConfigType = { // 基本設定
             width: 1000,
     height: 1500 
     },''
-        fallback: '/assets/screenshots/game-portrait.png';
+        fallback: '/assets/screenshots/game-portrait.png',
     },
     
     // 構造化データ設定
     structuredData: { organization: {''
             name: 'BubblePop Game Team',
             url: 'https://bubblepop-game.com',
-            logo: 'https://bubblepop-game.com/assets/icons/icon-512x512.png,
+            logo: 'https://bubblepop-game.com/assets/icons/icon-512x512.png,'
     sameAs: [,
                 // ソーシャルメディアプロファイルURLを追加]
             ]  },
@@ -217,8 +214,8 @@ export const SEOConfig: SEOConfigType = { // 基本設定
     // robots.txt設定
     robots: { ''
         userAgent: '*',
-        allow: ['/', '/assets/', '/help/],
-        disallow: ['/src/', '/test*', '/debug*', '/*.log', '/.git/', '/node_modules/],
+        allow: ['/', '/assets/', '/help/],'
+        disallow: ['/src/', '/test*', '/debug*', '/*.log', '/.git/', '/node_modules/],'
         crawlDelay: 0,
         sitemapUrl: '/sitemap.xml'
             };
@@ -243,7 +240,7 @@ export const SEOConfig: SEOConfigType = { // 基本設定
     performance: { imagOptimization: {
             quality: 85,
             formats: ['webp', 'png', 'jpg'],
-            lazyLoad: true  };
+            lazyLoad: true,;
         caching: { socialImages: 604800, // 7日間（秒）
             structuredData: 86400, // 1日（秒）,
             metaTags: 3600 // 1時間（秒）  }
@@ -251,21 +248,20 @@ export const SEOConfig: SEOConfigType = { // 基本設定
     // エラーハンドリング設定
     errorHandling: { missingImage: {
             useDefault: true,
-    logError: true };
+    logError: true,;
         invalidStructuredData: { useFallback: true,
-    minimalSchema: true };
+    minimalSchema: true,;
         metaTagFailure: { ensureBasicTags: true,
-    logToConsole: true 
-    };
+    logToConsole: true,;
 ;
 // 環境別URL設定
-export function getBaseUrl()';
+export function getBaseUrl()';'
     if (typeof, window === 'undefined') { return SEOConfig.baseUrl }
     
     const { protocol, host } = window.location;
-    ';
+    ';'
     // 本番環境
-    if(host === 'bubblepop-game.com' || host === 'www.bubblepop-game.com') {
+    if (host === 'bubblepop-game.com' || host === 'www.bubblepop-game.com') {
     
 }
         return `${protocol}//${host}`;
@@ -281,15 +277,15 @@ export function getBaseUrl()';
 }
 ;
 // 言語別URL生成
-export function getLocalizedUrl(lang: LanguageCode = SEOConfig.defaultLanguage, path: string = '): string { const baseUrl = getBaseUrl(),
+export function getLocalizedUrl(lang: LanguageCode = SEOConfig.defaultLanguage, path: string = '): string { const baseUrl = getBaseUrl(),'
 
-    if(lang === SEOConfig.defaultLanguage) { }
+    if (lang === SEOConfig.defaultLanguage) { }
         return `${baseUrl}${path}`;
     }
     
     return `${baseUrl}/${lang}${path}`;
 }
-';
+';'
 // ソーシャルメディア画像URL生成
 export function getSocialImageUrl(platform: SocialPlatform = 'openGraph', variant: ImageVariant = 'default': string {;
     const baseUrl = getBaseUrl(' }''

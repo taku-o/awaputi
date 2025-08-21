@@ -1,9 +1,9 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 型定義
-interface AudioAccessibilityManager { accessibilityManager?: AccessibilityManager }
+interface AudioAccessibilityManager { accessibilityManager?: AccessibilityManager;
 
-interface AccessibilityManager { gameEngine?: GameEngine }
+interface AccessibilityManager { gameEngine?: GameEngine;
 
 interface GameEngine { audioManager?: AudioManager,
     addEventListener?: (event: string, handler: (event: any) => void) => void  }
@@ -14,25 +14,25 @@ interface AudioManager { playSound?: (soundId: string, options?: PlaySoundOption
     }
 
 interface PlaySoundOptions { volume?: number,
-    category?: string }
+    category?: string;
 
 interface PlayMusicOptions { volume?: number,
-    loop?: boolean }
+    loop?: boolean;
 
 interface CaptionConfig { enabled: boolean,
-    realTimeCaption: boolean,
-    soundEffectDescriptions: boolean,
-    musicDescriptions: boolean,
-    ambientSoundDescriptions: boolean,
-    captionDelay: number,
-    maxCaptionLines: number,
+    realTimeCaption: boolean;
+    soundEffectDescriptions: boolean;
+    musicDescriptions: boolean;
+    ambientSoundDescriptions: boolean;
+    captionDelay: number;
+    maxCaptionLines: number;
     captionDuration: {
         shor,t: number,
         medium: number,
         long: number,
-    persistent: number  };
+    persistent: number,;
     positioning: { default: string,
-    alternatives: string[] };
+    alternatives: string[],;
     styling: { fontSize: string,
         fontFamily: string,
         fontWeight: string,
@@ -45,155 +45,154 @@ interface CaptionConfig { enabled: boolean,
         margin: string,
         textShadow: string,
         lineHeight: string,
-    letterSpacing: string };
+    letterSpacing: string,;
     animation: { fadeIn: number,
         fadeOut: number,
         slideIn: boolean,
-    bounce: boolean }
+    bounce: boolean,
 
 interface SoundDescription { text: string,
-    category: string,
-    duration: string  }
+    category: string;
+    duration: string;
 
 interface MusicDescription { text: string,
-    mood: string,
-    tempo: string }
+    mood: string;
+    tempo: string;
 
 interface CaptionStats { captionsDisplayed: number,
-    captionsByCategory: Map<string, number>,
-    averageDisplayTime: number,
-    totalDisplayTime: number,
-    userInteractions: number,
-    sessionStart: number  }
+    captionsByCategory: Map<string, number>;
+    averageDisplayTime: number;
+    totalDisplayTime: number;
+    userInteractions: number;
+    sessionStart: number;
 
 interface UserPreferences { enabled: boolean,
-    position: string,
-    fontSize: number,
-    fontFamily: string,
-    textColor: string,
-    backgroundColor: string,
-    showSoundEffects: boolean,
-    showMusic: boolean,
-    showAmbientSounds: boolean,
-    autoHide: boolean,
-    hideDelay: number,
-    customDescriptions: Map<string, string>,
-    languagePreference: string,
-    verbosityLevel: string  }
+    position: string;
+    fontSize: number;
+    fontFamily: string;
+    textColor: string;
+    backgroundColor: string;
+    showSoundEffects: boolean;
+    showMusic: boolean;
+    showAmbientSounds: boolean;
+    autoHide: boolean;
+    hideDelay: number;
+    customDescriptions: Map<string, string>;
+    languagePreference: string;
+    verbosityLevel: string;
 
 interface LanguageConfig { soundPrefix: string,
-    musicPrefix: string,
+    musicPrefix: string;
     categories: {
         gam,e: string,
         ui: string,
         special: string,
-    ambient: string }
+    ambient: string,
 
 interface CaptionData { element: HTMLElement,
-    startTime: number,
-    duration: number,
-    description: SoundDescription,
-    options: any  }
+    startTime: number;
+    duration: number;
+    description: SoundDescription;
+    options: any;
 
 interface AudioEvent { soundId: string,
-    category: string,
-    volume: number,
-    duration: number }
+    category: string;
+    volume: number;
+    duration: number;
 
 interface GameEvent { bubble?: any,
-    count?: number,
-    type?: string,
-    level?: number,
-    score?: number,
-    message?: string }
+    count?: number;
+    type?: string;
+    level?: number;
+    score?: number;
+    message?: string;
 
 interface AccessibilityEvent extends Event { detail: {
         component: string,
-    config: any }
+    config: any,
 
 interface ManualCaptionOptions { category?: string,
-    duration?: string }
+    duration?: string;
 
 interface CaptionReport { timestamp: string,
     configuration: {
         enable,d: boolean,
         position: string,
         verbosityLevel: string,
-    language: string  };
+    language: string,;
     statistics: CaptionStats & { sessionDuration: number,
-        captionsPerMinute: number,
-        activeCaptions: number,
-    customDescriptions: number };
-    userPreferences: UserPreferences,
+        captionsPerMinute: number;
+        activeCaptions: number;
+    customDescriptions: number;;
+    userPreferences: UserPreferences;
     performance: { averageDisplayTime: number,
-    maxConcurrentCaptions: number }
+    maxConcurrentCaptions: number,
 
 /**
  * キャプション管理クラス
  * 音声コンテンツのリアルタイム字幕表示とカスタマイズ可能なスタイリング
  */
 export class CaptionManager {
-    private audioAccessibilityManager: AudioAccessibilityManager,
-    private accessibilityManager?: AccessibilityManager,
-    private gameEngine?: GameEngine,
-    private config: CaptionConfig,
-    private, soundDescriptions: Map<string, SoundDescription>,
-    private musicDescriptions: Map<string, MusicDescription>,
-    private activeCaptions: Map<number, CaptionData>,
-    private captionQueue: any[],
-    private captionContainer: HTMLElement | null,
-    private maxCaptionId: number,
-    private dynamicStyleSheet: HTMLStyleElement | null,
-    private currentStyle: string,
-    private stats: CaptionStats,
-    private userPreferences: UserPreferences,
-    private, languageSupport: Map<string, LanguageConfig>,
+    private audioAccessibilityManager: AudioAccessibilityManager;
+    private accessibilityManager?: AccessibilityManager;
+    private gameEngine?: GameEngine;
+    private config: CaptionConfig;
+    private, soundDescriptions: Map<string, SoundDescription>;
+    private musicDescriptions: Map<string, MusicDescription>;
+    private activeCaptions: Map<number, CaptionData>;
+    private captionQueue: any[];
+    private captionContainer: HTMLElement | null;
+    private maxCaptionId: number;
+    private dynamicStyleSheet: HTMLStyleElement | null;
+    private currentStyle: string;
+    private stats: CaptionStats;
+    private userPreferences: UserPreferences;
+    private, languageSupport: Map<string, LanguageConfig>;
 
     constructor(audioAccessibilityManager: AudioAccessibilityManager) {
-        this.audioAccessibilityManager = audioAccessibilityManager,
-        this.accessibilityManager = audioAccessibilityManager.accessibilityManager,
-        this.gameEngine = this.accessibilityManager?.gameEngine,
+        this.audioAccessibilityManager = audioAccessibilityManager;
+        this.accessibilityManager = audioAccessibilityManager.accessibilityManager;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // キャプション設定
         this.config = { : undefined
-            enabled: false,
+            enabled: false;
             realTimeCaption: true,
             soundEffectDescriptions: true,
             musicDescriptions: true,
             ambientSoundDescriptions: false,
-    captionDelay: 0, // ミリ秒,
+    captionDelay: 0, // ミリ秒;
             maxCaptionLines: 3,
     captionDuration: {
-                short: 2000,   // 短い音響効果,
-                medium: 4000,  // 中程度の音,
+                short: 2000,   // 短い音響効果;
+                medium: 4000,  // 中程度の音;
                 long: 6000,    // 長い音楽やナレーション
     }
                 persistent: -1 // 手動で消去するまで表示 
     };
             positioning: { ''
                 default: 'bottom-center',
-                alternatives: ['top-center', 'bottom-left', 'bottom-right', 'center] },
+                alternatives: ['top-center', 'bottom-left', 'bottom-right', 'center] };'
 
             styling: { ''
                 fontSize: '16px',
-                fontFamily: 'Arial, sans-serif',
+                fontFamily: 'Arial, sans-serif';
                 fontWeight: 'bold',
                 textColor: '#ffffff',
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                backgroundColor: 'rgba(0, 0, 0, 0.8)';
                 borderColor: '#ffffff',
                 borderWidth: '2px',
                 borderRadius: '8px',
                 padding: '12px 16px',
                 margin: '10px',
-                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)';
                 lineHeight: '1.4',
                 letterSpacing: '0.5px'
             };
             animation: { fadeIn: 300,
                 fadeOut: 300,
                 slideIn: true,
-    bounce: false 
-    };
+    bounce: false,;
         // 音響効果の説明マッピング
         this.soundDescriptions = new Map<string, SoundDescription>([
             // ゲーム音響効果]'
@@ -261,8 +260,8 @@ export class CaptionManager {
             }],''
             ['gameOverTheme', { text: '♪ ゲームオーバーテーマ', mood: 'sad', tempo: 'slow'
             }]
-        ]';
-        ';
+        ]';'
+        ';'
         // キャプション表示管理
         this.activeCaptions = new Map('';
         this.currentStyle = 'default';
@@ -273,12 +272,12 @@ export class CaptionManager {
             averageDisplayTime: 0,
             totalDisplayTime: 0,
     userInteractions: 0,
-            sessionStart: Date.now()',
-            position: 'bottom-center')',
+            sessionStart: Date.now()','
+            position: 'bottom-center')','
     fontSize: 16,
             fontFamily: 'Arial',
-            textColor: '#ffffff',')',
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            textColor: '#ffffff',')';
+            backgroundColor: 'rgba(0, 0, 0, 0.8)';
             showSoundEffects: true,
             showMusic: true,
             showAmbientSounds: false,
@@ -302,8 +301,8 @@ export class CaptionManager {
                 }]'
             }],''
             ['en', { ''
-                soundPrefix: '♪ ',',
-                musicPrefix: '♫ ')',
+                soundPrefix: '♪ ',';'
+                musicPrefix: '♫ ')','
     categories: {''
                     game: 'Game Sound',
                     ui: 'UI Sound',
@@ -313,7 +312,7 @@ export class CaptionManager {
                 }]'
             }]']'),
 
-        console.log('CaptionManager, initialized);
+        console.log('CaptionManager, initialized);'
         this.initialize();
     }
     
@@ -330,21 +329,21 @@ export class CaptionManager {
             // 動的スタイルシートの作成
             this.createDynamicStyleSheet(),
             // イベントリスナーの設定
-            this.setupEventListeners()',
+            this.setupEventListeners()','
             console.log('CaptionManager, initialized successfully') }'
 
         } catch (error) { getErrorHandler().handleError(error, 'CAPTION_MANAGER_ERROR', {''
                 operation: 'initialize'
-            }';
+            }';'
         }
     }
     
     /**
      * ユーザー設定の読み込み'
      */''
-    private loadUserPreferences()';
-            const saved = localStorage.getItem('captionManager_preferences);
-            if(saved) {
+    private loadUserPreferences()';'
+            const saved = localStorage.getItem('captionManager_preferences);'
+            if (saved) {
                 const preferences = JSON.parse(saved),
                 Object.assign(this.userPreferences, preferences),
                 
@@ -356,7 +355,7 @@ export class CaptionManager {
                 
                 // 設定を適用
                 this.config.enabled = this.userPreferences.enabled;
-                this.updateStyleFromPreferences();'} catch (error) { console.warn('Failed to load caption manager preferences:', error }
+                this.updateStyleFromPreferences();'} catch (error) { console.warn('Failed to load caption manager preferences:', error }'
     }
     
     /**
@@ -367,21 +366,21 @@ export class CaptionManager {
                 ...this.userPreferences,
                 customDescriptions: Array.from(this.userPreferences.customDescriptions.entries()  };
 
-            localStorage.setItem('captionManager_preferences);
+            localStorage.setItem('captionManager_preferences);'
 
-                JSON.stringify(preferences);'} catch (error) { console.warn('Failed to save caption manager preferences:', error }
+                JSON.stringify(preferences);'} catch (error) { console.warn('Failed to save caption manager preferences:', error }'
     }
     
     /**
      * キャプションコンテナの作成'
      */''
-    private createCaptionContainer()';
+    private createCaptionContainer()';'
         this.captionContainer = document.createElement('div');
         this.captionContainer.id = 'caption-container';
         this.captionContainer.className = 'caption-container';
         this.captionContainer.setAttribute('role', 'region');
         this.captionContainer.setAttribute('aria-label', 'Audio captions');
-        this.captionContainer.setAttribute('aria-live', 'polite);
+        this.captionContainer.setAttribute('aria-live', 'polite);'
         
         // 初期位置の設定
         this.updateContainerPosition();
@@ -415,19 +414,19 @@ export class CaptionManager {
                     transform: 'translateX(-50%)' 
     };
                 break;
-            case 'bottom-left':';
+            case 'bottom-left':';'
                 positionStyles = { ...positionStyles,''
                     bottom: '20px',
                     left: '20px'
             };
                 break;
-            case 'bottom-right':';
+            case 'bottom-right':';'
                 positionStyles = { ...positionStyles,''
                     bottom: '20px',
                     right: '20px'
             };
                 break;
-            case 'center':';
+            case 'center':';'
                 positionStyles = { ...positionStyles,''
                     top: '50%',
                     left: '50%',
@@ -435,7 +434,7 @@ export class CaptionManager {
 
                 break;
             case 'bottom-center':
-            default:';
+            default:';'
                 positionStyles = { ...positionStyles,''
                     bottom: '20px',
                     left: '50%',
@@ -450,7 +449,7 @@ export class CaptionManager {
     /**
      * 動的スタイルシートの作成'
      */''
-    private createDynamicStyleSheet()';
+    private createDynamicStyleSheet()';'
         this.dynamicStyleSheet = document.createElement('style');
         this.dynamicStyleSheet.id = 'caption-manager-styles';
         this.updateStyleSheet();
@@ -474,7 +473,7 @@ export class CaptionManager {
                 flex-direction: column,
                 gap: 8px;
                 max-height: 300px,
-                overflow-y: auto }
+                overflow-y: auto;
             
             /* 個別キャプションのスタイル */
             .caption-item {
@@ -562,7 +561,7 @@ export class CaptionManager {
             .high-contrast .caption-item { background: #000000,
                 color: #ffffff,
     border: 3px solid #ffffff,
-                text-shadow: none }
+                text-shadow: none;
             
             /* アクセシビリティ強化 */
             .caption-item:focus { outline: 3px solid #ffffff,
@@ -571,7 +570,7 @@ export class CaptionManager {
             .reduced-motion .caption-item { transition: opacity 0.1s ease,
                 animation: none !important  }
             
-            .reduced-motion .caption-item.visible { transform: none }
+            .reduced-motion .caption-item.visible { transform: none;
         `;
     }
     
@@ -587,15 +586,15 @@ export class CaptionManager {
      * イベントリスナーの設定
      */'
     private setupEventListeners(): void { // ゲームオーディオイベントの監視
-        if(this.gameEngine) {
+        if (this.gameEngine) {
             // 音響効果イベント
         }
 
             this.gameEngine.addEventListener?.('audioPlayed', (event: AudioEvent) => {  
                 this.handleAudioEvent(event),' }'
 
-            }');
-            ';
+            }');'
+            ';'
             // 特定のゲームイベント
             this.gameEngine.addEventListener?.('bubblePopped', (event: GameEvent') => { ' 
                 this.displayCaption('bubblePop', { bubble: event.bubble  }';}');
@@ -621,22 +620,22 @@ export class CaptionManager {
         }
         
         // AudioManager との連携
-        if(this.gameEngine?.audioManager) {
+        if (this.gameEngine?.audioManager) {
 
-            this.setupAudioManagerIntegration()',
+            this.setupAudioManagerIntegration()','
         document.addEventListener('keydown', (event: KeyboardEvent) => { '
             if (event.ctrlKey && event.shiftKey) {''
                 switch(event.key) {''
-                    case 'C':',
+                    case 'C':','
                         event.preventDefault(),
-                        this.toggle()',
+                        this.toggle()','
                     case 'X':),
-                        event.preventDefault(),
-         }
+                        event.preventDefault()
+}
                         this.clearAllCaptions(); }
                         break; }
 }'}');
-        ';
+        ';'
         // 設定変更の監視
         document.addEventListener('accessibilitySettingsChanged', (event: AccessibilityEvent) => {  ''
             if(event.detail.component === 'captions' { }'
@@ -650,13 +649,13 @@ export class CaptionManager {
     private setupAudioManagerIntegration(): void { const audioManager = this.gameEngine!.audioManager!,
         
         // オリジナルの play メソッドをラップ
-        if(audioManager.playSound) {
+        if (audioManager.playSound) {
     
 }
             const originalPlaySound = audioManager.playSound.bind(audioManager); }
             audioManager.playSound = (soundId: string, options: PlaySoundOptions = {}) => {  const result = originalPlaySound(soundId, options),
                 // キャプション表示
-                if(this.config.enabled) {
+                if (this.config.enabled) {
                     this.displayCaption(soundId, {
                 })'
                         volume: options.volume || 1.0,') }'
@@ -684,7 +683,7 @@ export class CaptionManager {
         const { soundId, category, volume, duration } = event;
         
         // カテゴリフィルタリング
-        if(!this.shouldShowCaption(category) { return }
+        if (!this.shouldShowCaption(category) { return }
         
         this.displayCaption(soundId, {
                 category
@@ -699,11 +698,11 @@ export class CaptionManager {
     private shouldShowCaption(category: string): boolean { ''
         switch(category) {
 
-            case 'game':',
-            case 'ui':',
-            case 'special':',
+            case 'game':','
+            case 'ui':','
+            case 'special':','
                 return this.userPreferences.showSoundEffects,
-            case 'music':',
+            case 'music':','
                 return this.userPreferences.showMusic,
             case 'ambient':,
                 return this.userPreferences.showAmbientSounds }
@@ -722,7 +721,7 @@ export class CaptionManager {
         // カスタム説明の確認
         const customDescription = this.userPreferences.customDescriptions.get(soundId),
         if (customDescription) { }
-            description = { ...description, text: customDescription  }
+            description = { ...description, text: customDescription,
         
         // 冗長性レベル適用
         description = this.applyVerbosityLevel(description, options);
@@ -745,7 +744,7 @@ export class CaptionManager {
 
         const language = this.languageSupport.get(this.userPreferences.languagePreference)! }
         const text = `${language.musicPrefix}${musicDescription.text}`;
-        ';
+        ';'
 
         const description: SoundDescription = { text,''
             category: 'music',
@@ -762,7 +761,7 @@ export class CaptionManager {
      * 音響効果説明の取得
      */'
     private getAudioDescription(soundId: string, options: any): SoundDescription | null { const description = this.soundDescriptions.get(soundId),
-        if(!description) {
+        if (!description) {
             // デフォルト説明の生成
         }
             return { }
@@ -782,14 +781,14 @@ export class CaptionManager {
 
         switch(level) {
 
-            case 'minimal':',
+            case 'minimal':','
                 // 最小限の情報のみ
                 text = text.split('（')[0], // 括弧内の詳細を削除
                 break,
 
-            case 'detailed':',
+            case 'detailed':','
                 // 詳細な情報を追加
-                if(options.volume && options.volume !== 1.0) {
+                if (options.volume && options.volume !== 1.0) {
         }
 
                     const volumeDesc = options.volume > 1.0 ? '大音量で' : '小音量で'; }
@@ -815,7 +814,7 @@ export class CaptionManager {
      * キャプション継続時間の取得
      */
     private getDurationForSound(soundId: string, category: string): number { const description = this.soundDescriptions.get(soundId),
-        if(description && description.duration) {
+        if (description && description.duration) {
             return this.config.captionDuration[description.duration as keyof typeof this.config.captionDuration] ||  }
                    this.config.captionDuration.medium; }
         }
@@ -823,9 +822,9 @@ export class CaptionManager {
         // カテゴリベースのデフォルト
         switch(category) {
 
-            case 'ui':',
+            case 'ui':','
                 return this.config.captionDuration.short,
-            case 'music':',
+            case 'music':','
             case 'ambient':,
                 return this.config.captionDuration.persistent }
             default: return this.config.captionDuration.medium;
@@ -842,19 +841,19 @@ export class CaptionManager {
 
         captionElement.textContent = description.text;
         captionElement.setAttribute('role', 'status');
-        captionElement.setAttribute('aria-label', `Audio caption: ${ description.text'`},
+        captionElement.setAttribute('aria-label', `Audio caption: ${ description.text'`},'
         // 冗長性レベルクラスの追加
         if(this.userPreferences.verbosityLevel !== 'normal} { }'
             captionElement.classList.add(`caption-${this.userPreferences.verbosityLevel}`});
         }
-        ';
+        ';'
         // アニメーション設定
-        if(this.config.animation.slideIn) {', ' }
+        if (this.config.animation.slideIn) {', ' }
 
             captionElement.classList.add('slide-in'; }'
 
         }''
-        if(this.config.animation.bounce) {', ' }
+        if (this.config.animation.bounce) {', ' }
 
             captionElement.classList.add('bounce-in'; }'
         }
@@ -909,10 +908,10 @@ export class CaptionManager {
      */
     private hideCaption(captionId: number): void { const captionData = this.activeCaptions.get(captionId),
         if(!captionData) return,
-        ',
+        ','
 
         const element = captionData.element,
-        element.classList.add('fade-out),
+        element.classList.add('fade-out),'
         
         setTimeout(() => { 
             if (element.parentNode) { }
@@ -955,13 +954,13 @@ export class CaptionManager {
     enable(): void { this.config.enabled = true,
         this.userPreferences.enabled = true,
 
-        if(this.captionContainer) {', ' }
+        if (this.captionContainer) {', ' }
 
             this.captionContainer.style.display = 'flex'; }
         }
 
-        this.saveUserPreferences()';
-        console.log('Caption, manager enabled);
+        this.saveUserPreferences()';'
+        console.log('Caption, manager enabled);'
     }
     
     /**
@@ -973,13 +972,13 @@ export class CaptionManager {
         // すべてのアクティブキャプションをクリア
         this.clearAllCaptions(),
 
-        if(this.captionContainer') {', ' }
+        if (this.captionContainer') {', ' }'
 
             this.captionContainer.style.display = 'none'; }
         }
 
-        this.saveUserPreferences()';
-        console.log('Caption, manager disabled);
+        this.saveUserPreferences()';'
+        console.log('Caption, manager disabled);'
     }
     
     /**
@@ -996,7 +995,7 @@ export class CaptionManager {
             this.hideCaption(captionId) }
 
         }''
-        console.log('All, captions cleared);
+        console.log('All, captions cleared);'
     }
     
     /**
@@ -1010,7 +1009,7 @@ export class CaptionManager {
     /**
      * 位置の設定
      */
-    setPosition(position: string): void { if(!this.config.positioning.alternatives.includes(position) { }
+    setPosition(position: string): void { if (!this.config.positioning.alternatives.includes(position) { }
             console.warn(`Invalid, position: ${position}`});
             return;
         }
@@ -1041,7 +1040,7 @@ export class CaptionManager {
         
         this.updateStyleFromPreferences(),
         this.saveUserPreferences() }
-        console.log(`Caption colors changed - text: ${textColor}, background: ${backgroundColor}`}');
+        console.log(`Caption colors changed - text: ${textColor}, background: ${backgroundColor}`}');'
     }
     
     /**
@@ -1049,7 +1048,7 @@ export class CaptionManager {
      */''
     setVerbosityLevel(level: string): void { ''
         const validLevels = ['minimal', 'normal', 'detailed'],
-        if(!validLevels.includes(level) { }
+        if (!validLevels.includes(level) { }
             console.warn(`Invalid, verbosity level: ${level}`});
             return;
         }
@@ -1063,7 +1062,7 @@ export class CaptionManager {
     /**
      * 言語設定
      */
-    setLanguage(language: string): void { if(!this.languageSupport.has(language) { }
+    setLanguage(language: string): void { if (!this.languageSupport.has(language) { }
             console.warn(`Unsupported, language: ${language}`});
             return;
         }
@@ -1097,7 +1096,7 @@ export class CaptionManager {
      */
     applyConfig(config: any): void { if (config.audio?.captions) {
             Object.assign(this.config, config.audio.captions),
-            this.updateStyleFromPreferences()',
+            this.updateStyleFromPreferences()','
         console.log('CaptionManager, configuration applied') }'
     
     /**
@@ -1137,8 +1136,8 @@ export class CaptionManager {
     /**
      * クリーンアップ'
      */''
-    destroy()';
-        console.log('Destroying, CaptionManager...);
+    destroy()';'
+        console.log('Destroying, CaptionManager...);'
         
         // キャプションマネージャーを無効化
         this.disable();
@@ -1157,7 +1156,7 @@ export class CaptionManager {
         this.captionQueue.length = 0;
         this.soundDescriptions.clear();
         this.musicDescriptions.clear();
-        this.languageSupport.clear()';
+        this.languageSupport.clear()';'
         console.log('CaptionManager, destroyed');
 
-    }'}
+    }'}'

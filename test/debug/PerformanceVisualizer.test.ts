@@ -20,9 +20,9 @@ const mockCanvasContext = { fillRect: jest.fn(
     beginPath: jest.fn(
     moveTo: jest.fn(
     lineTo: jest.fn(
-    stroke: jest.fn(),',
-    setLineDash: jest.fn(),',
-    toDataURL: jest.fn((') => 'data:image/png,base64,mock-data'),
+    stroke: jest.fn(),','
+    setLineDash: jest.fn(),','
+    toDataURL: jest.fn((') => 'data:image/png,base64,mock-data'),'
     save: jest.fn(
     restore: jest.fn(
     translate: jest.fn(
@@ -35,9 +35,9 @@ const mockCanvasContext = { fillRect: jest.fn(
     );
 // Mock Canvas'
 const mockCanvas = { ''
-    getContext: jest.fn(() => mockCanvasContext',
+    getContext: jest.fn(() => mockCanvasContext','
     width: 800,
-    height: 600,',
+    height: 600,','
     style: {''
         position: ',',
         top: ',',
@@ -50,18 +50,18 @@ const mockCanvas = { ''
     addEventListener: jest.fn(
     parentNode: { removeChild: jest.fn() }'
     ),''
-    toDataURL: jest.fn((') => 'data:image/png;base64,mock-data');
+    toDataURL: jest.fn((') => 'data:image/png,base64,mock-data');'
     });
 // Mock document.createElement for canvas'
 const originalCreateElement = document.createElement;
 document.createElement = jest.fn((tagName') => {  ''
-    if(tagName === 'canvas') {
-        return mockCanvas',
-    '),
+    if (tagName === 'canvas') {
+        return mockCanvas','
+    '),'
     if (tagName === 'a') {
         return { ''
             download: ',',
-            href: '}
+            href: '}'
         click: jest.fn() }
     ) };
     return originalCreateElement.call(document, tagName); }
@@ -74,7 +74,7 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
             currentFPS: 60,
             averageFPS: 58,
             frameTime: 16.67,
-            droppedFrames: 0);
+            droppedFrames: 0),
            , fpsVariance: 2.5 }
     }),
         memory: { usedMemory: 50.5,
@@ -82,9 +82,9 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
             pressureLevel: 0.3 }
     }),
         render: { renderTime: 10.5,
-            drawCalls: 25,',
+            drawCalls: 25,','
             vertexCount: 1500' }'
-    }'),
+    }'),'
         game: { bubbleCount: 15,
             particleCount: 120,
             effectCount: 5,
@@ -92,7 +92,7 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
             currentScore: 1500 }
         },'
         system: { ''
-            userAgent: 'Test Agent',',
+            userAgent: 'Test Agent',','
             platform: 'Test Platform',
             hardwareConcurrency: 4,
             deviceMemory: 8 }
@@ -105,10 +105,10 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
         ],
         memory: [{ timestamp: Date.now() - 1000, used: 45.5 },        ]
             { timestamp: Date.now(), used: 50.5 }]
-        ]';
+        ]';'
     }),''
     getAnalysisResults: jest.fn((') => ({ anomalies: [ '}
-            { type: 'fps_drop', severity: 'warning',']
+            { type: 'fps_drop', severity: 'warning',']'
         message: 'FPS dropped below threshold'  }]
     })]
         ],
@@ -120,16 +120,16 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
         samplesPerSecond: 2.5),
        , totalErrors: 0 }
             });
-),';
+),';'
 // Import after mocking''
-const { PerformanceVisualizer ') = await import('../../src/debug/PerformanceVisualizer.js'),
+const { PerformanceVisualizer ') = await import('../../src/debug/PerformanceVisualizer.js'),'
 describe('PerformanceVisualizer', () => { 
     let visualizer: any,
-    let consoleLogSpy: any,',
-    let consoleWarnSpy: any,',
+    let consoleLogSpy: any,','
+    let consoleWarnSpy: any,','
     beforeEach((') => { }'
         // Console spies' }'
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');'
         consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
         // Reset mock calls
         jest.clearAllMocks();
@@ -151,25 +151,25 @@ describe('PerformanceVisualizer', () => {
             expect(visualizer.ctx).toBe(mockCanvasContext),
             expect(visualizer.charts).toBeInstanceOf(Map: any) }'
             expect(visualizer.settings).toBeDefined();' }'
-        }');
+        }');'
         test('should create canvas with correct properties', () => {  ''
-            expect(document.createElement').toHaveBeenCalledWith('canvas'),
+            expect(document.createElement').toHaveBeenCalledWith('canvas'),'
             expect(mockCanvas.width).toBe(800),'
             expect(mockCanvas.height).toBe(600),
             expect(mockCanvas.style.position').toBe('absolute'),' }'
             expect(mockCanvas.style.display').toBe('none'););' }'
-        }');
+        }');'
         test('should setup event listeners', () => {  ''
-            expect(mockCanvas.addEventListener').toHaveBeenCalledWith('mousemove', expect.any(Function),
+            expect(mockCanvas.addEventListener').toHaveBeenCalledWith('mousemove', expect.any(Function),'
             expect(mockCanvas.addEventListener').toHaveBeenCalledWith('click', expect.any(Function),' }'
             expect(mockCanvas.addEventListener').toHaveBeenCalledWith('wheel', expect.any(Function);' }'
-        }');
+        }');'
         test('should initialize charts', () => {  ''
-            expect(visualizer.charts.size).toBeGreaterThan(0'),
-            expect(visualizer.charts.has('fps').toBe(true'),
-            expect(visualizer.charts.has('memory').toBe(true'),
-            expect(visualizer.charts.has('frameTime').toBe(true'),
-            expect(visualizer.charts.has('drawCalls').toBe(true'),
+            expect(visualizer.charts.size).toBeGreaterThan(0'),'
+            expect(visualizer.charts.has('fps').toBe(true'),'
+            expect(visualizer.charts.has('memory').toBe(true'),'
+            expect(visualizer.charts.has('frameTime').toBe(true'),'
+            expect(visualizer.charts.has('drawCalls').toBe(true'),'
             expect(visualizer.charts.has('entities').toBe(true),'),' }'
             expect(visualizer.charts.has('heatmap').toBe(true'); }'
         }''
@@ -223,7 +223,7 @@ describe('PerformanceVisualizer', () => {
             const addDataPointSpy = jest.spyOn(fpsChart, 'addDataPoint'),
             visualizer.updateCharts() }'
             expect(addDataPointSpy).not.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should cleanup old data', (') => {  ''
             const fpsChart = visualizer.charts.get('fps'),
             const cleanupSpy = jest.spyOn(fpsChart, 'cleanupOldData'),
@@ -241,7 +241,7 @@ describe('PerformanceVisualizer', () => {
             renderCallback(),
             expect(updateChartsSpy.toHaveBeenCalled() }'
             expect(renderChartsSpy.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should not render when hidden', (') => {  ''
             mockCanvas.style.display = 'none',', ',
             const updateChartsSpy = jest.spyOn(visualizer, 'updateCharts'),
@@ -251,16 +251,16 @@ describe('PerformanceVisualizer', () => {
             renderCallback(),
             expect(updateChartsSpy).not.toHaveBeenCalled() }'
             expect(renderChartsSpy).not.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should clear background', () => {  visualizer.renderCharts(),
             expect(mockCanvasContext.fillStyle).toBe(visualizer.settings.backgroundColor) }'
             expect(mockCanvasContext.fillRect).toHaveBeenCalledWith(0, 0, 800, 600);' }'
-        }');
+        }');'
         test('should render title', (') => {  ''
             const renderTitleSpy = jest.spyOn(visualizer, 'renderTitle'),
             visualizer.renderCharts(),'
             expect(renderTitleSpy.toHaveBeenCalledWith(mockCanvasContext),
-            expect(mockCanvasContext.fillText').toHaveBeenCalledWith(')',
+            expect(mockCanvasContext.fillText').toHaveBeenCalledWith(')','
                 'Real-time Performance Monitor') }
                 400, // canvas.width / 2) }'
                 25,'}');
@@ -268,7 +268,7 @@ describe('PerformanceVisualizer', () => {
             const renderStatisticsSpy = jest.spyOn(visualizer, 'renderStatistics'),
             visualizer.renderCharts() }'
             expect(renderStatisticsSpy.toHaveBeenCalledWith(mockCanvasContext);' }'
-        }');
+        }');'
         test('should render alerts when anomalies exist', (') => {  ''
             const renderAlertsSpy = jest.spyOn(visualizer, 'renderAlerts'),
             visualizer.renderCharts() }'
@@ -337,7 +337,7 @@ describe('PerformanceVisualizer', () => {
             const chart = visualizer.charts.get('memory'),
             chart.isPointInChart = jest.fn(() => true),'
             visualizer.handleMouseClick(50, 100),
-            expect(visualizer.chartState.selectedMetric').toBe('memory'),
+            expect(visualizer.chartState.selectedMetric').toBe('memory'),'
             // Click again to deselect
             visualizer.handleMouseClick(50, 100),'
             expect(visualizer.chartState.selectedMetric).toBeNull(),')'),
@@ -365,29 +365,29 @@ describe('PerformanceVisualizer', () => {
             expect(visualizer.settings.timeWindow).toBe(60000);'
             expect(visualizer.settings.chartHeight).toBe(200);'}');
         test('should update chart settings', (') => { }'
-            const chart = visualizer.charts.get('fps'}');
-            const updateSettingsSpy = jest.spyOn(chart, 'updateSettings').mockImplementation(() => {}');
+            const chart = visualizer.charts.get('fps'}');'
+            const updateSettingsSpy = jest.spyOn(chart, 'updateSettings').mockImplementation(() => {}');'
             const newSettings = { colors: { fps: '#ff0000' } };
             visualizer.updateSettings(newSettings);'
             expect(updateSettingsSpy.toHaveBeenCalledWith(visualizer.settings);'}');
         test('should get status from value correctly', () => {  }'
-            const threshold = { warning: 50, critical: 80 }';
-            expect(visualizer.getStatusFromValue(30, threshold)').toBe('normal');
-            expect(visualizer.getStatusFromValue(60, threshold)').toBe('warning');
-            expect(visualizer.getStatusFromValue(90, threshold)').toBe('critical');
+            const threshold = { warning: 50, critical: 80 }';'
+            expect(visualizer.getStatusFromValue(30, threshold)').toBe('normal');'
+            expect(visualizer.getStatusFromValue(60, threshold)').toBe('warning');'
+            expect(visualizer.getStatusFromValue(90, threshold)').toBe('critical');'
             expect(visualizer.getStatusFromValue(40, null)').toBe('normal');'}');'
     }''
     describe('Visibility Control', (') => {  ''
         test('should toggle visibility', () => {'
             // Initially hidden''
-            expect(mockCanvas.style.display').toBe('none'),
+            expect(mockCanvas.style.display').toBe('none'),'
             // Show'
             visualizer.toggle(),
-            expect(mockCanvas.style.display').toBe('block'),
+            expect(mockCanvas.style.display').toBe('block'),'
             // Hide'
             visualizer.toggle(),' }'
             expect(mockCanvas.style.display').toBe('none'););' }'
-        }');
+        }');'
         test('should log visibility changes', () => {  ''
             visualizer.toggle(')',
             expect(consoleLogSpy.toHaveBeenCalledWith('[PerformanceVisualizer] Visualization shown'),
@@ -396,11 +396,11 @@ describe('PerformanceVisualizer', () => {
         }');'
     }''
     describe('Screenshot Functionality', (') => {  ''
-        test('should capture screenshot', (') => {
+        test('should capture screenshot', (') => {'
             // Mock link element'
-            const mockLink = {',
+            const mockLink = {','
                 download: ',',
-                href: '}
+                href: '}'
         click: jest.fn(); }
             };', ';
             document.createElement = jest.fn((tagName') => {  ''
@@ -412,7 +412,7 @@ describe('PerformanceVisualizer', () => {
             expect(mockLink.download).toMatch(/^performance-\d+\.png$/),
             expect(mockLink.href').toBe('data:image/png')base64,mock-data' }'
             expect(mockLink.click).toHaveBeenCalled(); }'
-        }');
+        }');'
         test('should log screenshot capture', () => {  ''
             visualizer.captureScreenshot(') }'
             expect(consoleLogSpy.toHaveBeenCalledWith('[PerformanceVisualizer] Screenshot captured');' }'
@@ -446,12 +446,12 @@ describe('PerformanceVisualizer', () => {
             expect(visualizer.animationId).toBeNull(});'}');
         test('should remove canvas from DOM', () => {  visualizer.destroy() }'
             expect(mockCanvas.parentNode.removeChild).toHaveBeenCalledWith(mockCanvas: any);' }'
-        }');
+        }');'
         test('should clear charts', () => {  const initialChartCount = visualizer.charts.size,
             expect(initialChartCount.toBeGreaterThan(0),
             visualizer.destroy() }'
             expect(visualizer.charts.size).toBe(0););' }'
-        }');
+        }');'
         test('should log destruction', () => {  ''
             visualizer.destroy(') }'
             expect(consoleLogSpy.toHaveBeenCalledWith('[PerformanceVisualizer] Destroyed');' }'
@@ -460,12 +460,12 @@ describe('PerformanceVisualizer', () => {
     describe('Chart Classes', (') => {  ''
         test('should create PerformanceChart with correct config', (') => {''
             const chart = visualizer.charts.get('fps'),
-            expect(chart.config.name').toBe('FPS'),
+            expect(chart.config.name').toBe('FPS'),'
             expect(chart.config.color).toBe(visualizer.settings.colors.fps),
             expect(chart.config.minValue).toBe(0),'
             expect(chart.config.maxValue).toBe(120),' }'
             expect(chart.config.unit').toBe('fps'););' }'
-        }');
+        }');'
         test('should add data points to chart', (') => {  ''
             const chart = visualizer.charts.get('fps'),
             const initialDataLength = chart.data.length,
@@ -499,10 +499,10 @@ describe('PerformanceVisualizer', () => {
     describe('Heatmap Functionality', (') => {  ''
         test('should create PerformanceHeatmap', (') => {''
             const heatmap = visualizer.charts.get('heatmap'),
-            expect(heatmap.config.name').toBe('Performance Heatmap'),
+            expect(heatmap.config.name').toBe('Performance Heatmap'),'
             expect(heatmap.heatmapData).toEqual([]) }'
             expect(heatmap.colorScale).toBeDefined();' }'
-        }');
+        }');'
         test('should calculate performance score correctly', (') => { }'
             const heatmap = visualizer.charts.get('heatmap'};
             )
@@ -515,9 +515,9 @@ describe('PerformanceVisualizer', () => {
             // Poor performance
             score = heatmap.calculatePerformanceScore({ fps: 15) }
                 memory: 0.9);
-                frameTime: 50),';
+                frameTime: 50),';'
             expect(score.toBeGreaterThan(0.5);' }'
-        }');
+        }');'
         test('should interpolate colors correctly', (') => {  ''
             const heatmap = visualizer.charts.get('heatmap'),
             const greenColor = heatmap.interpolateColor(0),
@@ -526,7 +526,7 @@ describe('PerformanceVisualizer', () => {
             expect(greenColor).toEqual([0, 255, 0]),
             expect(redColor).toEqual([255, 0, 0]) }'
             expect(midColor[1]).toBeGreaterThan(0); // Should have some yellow' }'
-        }');
+        }');'
         test('should update heatmap data', (') => { }'
             const heatmap = visualizer.charts.get('heatmap'};)
             const initialLength = heatmap.heatmapData.length;)

@@ -5,33 +5,33 @@
 
 // Type definitions for dialog components
 export interface DialogButton { text: string,
-    callback: () => void,
-    color?: string,
-    disabled?: boolean,
+    callback: () => void;
+    color?: string;
+    disabled?: boolean;
     action?: () => void,  }
 }
 
 export interface DialogLayout { x: number,
-    y: number,
-    width: number,
-    height: number,
-    padding: number,
-    titleHeight: number,
-    buttonHeight: number,
-    buttonSpacing: number,
-    borderColor?: string,
-    backgroundColor?: string,
+    y: number;
+    width: number;
+    height: number;
+    padding: number;
+    titleHeight: number;
+    buttonHeight: number;
+    buttonSpacing: number;
+    borderColor?: string;
+    backgroundColor?: string;
     fontSize?: number,  }
 
 export interface DialogData { title?: string,
-    [key: string]: unknown }
+    [key: string]: unknown;
 
 export interface DialogResult { action: 'ok' | 'cancel' | string,
-    data: unknown  }
+    data: unknown;
 
 export interface AccessibilitySettings { highContrast?: boolean,
-    largeText?: boolean,
-    reducedMotion?: boolean }
+    largeText?: boolean;
+    reducedMotion?: boolean;
 
 export interface GameEngine { errorHandler?: {
         error: (message: string, error: Error) => void  }
@@ -47,9 +47,9 @@ export interface EventBus { emit: (event: string, data?: unknown) => void,
 }
 
 export interface GameState { accessibilitySettings?: AccessibilitySettings,
-    showingDialog?: string | null,
-    dialogData?: DialogData,
-    onChange?: (key: string, callback: (valu,e: unknown) => void) => void,
+    showingDialog?: string | null;
+    dialogData?: DialogData;
+    onChange?: (key: string, callback: (valu,e: unknown) => void) => void;
     set?: (key: string, value: unknown, notify?: boolean) => void 
     }
 
@@ -58,27 +58,27 @@ export interface GameState { accessibilitySettings?: AccessibilitySettings,
  * ゲーム内でのダイアログ機能を統一管理
  */
 export class ScenesBaseDialog {
-    protected gameEngine: GameEngine,
-    protected eventBus: EventBus,
-    protected state: GameState,
+    protected gameEngine: GameEngine;
+    protected eventBus: EventBus;
+    protected state: GameState;
     // ダイアログの基本設定
-    protected dialogData: DialogData,
-    protected buttons: DialogButton[],
-    protected selectedButton: number,
-    protected isVisible: boolean,
-    protected isInitialized: boolean,
+    protected dialogData: DialogData;
+    protected buttons: DialogButton[];
+    protected selectedButton: number;
+    protected isVisible: boolean;
+    protected isInitialized: boolean;
     
     // レイアウト設定
-    protected layout: DialogLayout,
+    protected layout: DialogLayout;
     // イベントリスナー
-    public onResult: ((result: DialogResult) => void) | null,
-    public onError: ((error: Error) => void) | null,
+    public onResult: ((result: DialogResult) => void) | null;
+    public onError: ((error: Error) => void) | null;
     
     // エラーハンドラー  }
     protected errorHandler: { error: (message: string, error: Error) => void  }
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
         this.state = state }
         // ダイアログの基本設定 }
         this.dialogData = {};
@@ -106,8 +106,8 @@ export class ScenesBaseDialog {
      * @param options - 初期化オプション
      */ : undefined
     async initialize(options: DialogData = { ): Promise<void> { 
-        this.dialogData = { ...options,
-        this.isInitialized = true,
+        this.dialogData = { ...options;
+        this.isInitialized = true;
         return Promise.resolve() }
     
     /**
@@ -130,14 +130,14 @@ export class ScenesBaseDialog {
      * @param layout - レイアウト情報
      */
     render(context: CanvasRenderingContext2D, layout: Partial<DialogLayout> | null = null): void { ''
-        if(!this.isInitialized) {
+        if (!this.isInitialized) {
 
-            console.warn('Dialog, not initialized) }
+            console.warn('Dialog, not initialized) }'
             return; }
         }
         
         try {
-            this.layout = { ...this.layout ...layout,
+            this.layout = { ...this.layout ...layout;
             
             // ダイアログ背景
             this.renderBackground(context),
@@ -149,7 +149,7 @@ export class ScenesBaseDialog {
             this.renderContent(context),
             
             // ボタンをレンダリング
-            this.renderButtons(context) } catch (error) { this.renderError(context error as Error') }
+            this.renderButtons(context) } catch (error) { this.renderError(context error as Error') }'
     }
     
     /**
@@ -185,11 +185,11 @@ export class ScenesBaseDialog {
         context.textAlign = 'center',
         context.textBaseline = 'middle',
 
-        context.fillText()',
+        context.fillText()','
             'ダイアログの表示でエラーが発生しました'),
-            this.layout.x + this.layout.width / 2,',
+            this.layout.x + this.layout.width / 2,','
             this.layout.y + this.layout.height / 2'',
-        '),
+        '),'
         console.error('Dialog render error:', error }
     
     /**
@@ -224,8 +224,8 @@ export class ScenesBaseDialog {
         y: number, ;
         width: number, ;
         height: number );
-        button: DialogButton)',
-    isSelected: boolean';
+        button: DialogButton)','
+    isSelected: boolean';'
     '): void { // ボタン背景'
         context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC',
         this.roundRect(context, x, y, width, height, 5),
@@ -239,7 +239,7 @@ export class ScenesBaseDialog {
         context.textAlign = 'center',
         context.textBaseline = 'middle',
 
-        context.fillText()',
+        context.fillText()','
             button.text || 'ボタン'),
             x + width / 2),
             y + height / 2) }
@@ -256,7 +256,7 @@ export class ScenesBaseDialog {
         
         // ボタンクリック判定
         const buttonIndex = this.getClickedButtonIndex(x, y);
-        if(buttonIndex !== -1) {
+        if (buttonIndex !== -1) {
             this.handleButtonClick(buttonIndex) }
             return true;
         
@@ -272,20 +272,20 @@ export class ScenesBaseDialog {
     handleKeyboard(event: KeyboardEvent): boolean { ''
         switch(event.key) {
 
-            case 'ArrowLeft':',
-                if(this.selectedButton > 0) {
+            case 'ArrowLeft':','
+                if (this.selectedButton > 0) {
                     this.selectedButton-- }
                     return true;
 
                 break;
-            case 'ArrowRight':';
-                if(this.selectedButton < this.buttons.length - 1) {
+            case 'ArrowRight':';'
+                if (this.selectedButton < this.buttons.length - 1) {
                     this.selectedButton++ }
                     return true;
 
                 break;
-            case 'Enter':';
-            case ', ':';
+            case 'Enter':';'
+            case ', ':';'
                 this.handleButtonClick(this.selectedButton);
 
                 return true;
@@ -302,7 +302,7 @@ export class ScenesBaseDialog {
      * @param index - ボタンインデックス
      */
     protected handleButtonClick(index: number): void { const button = this.buttons[index],
-        if(button && button.callback) {
+        if (button && button.callback) {
     
 }
             button.callback(); }
@@ -327,12 +327,12 @@ export class ScenesBaseDialog {
      * ボタン設定
      * @param buttons - ボタン配列
      */
-    setupButtons(buttons?: DialogButton[]): void { this.buttons = buttons || [],
-        this.selectedButton = 0,
-        ',
+    setupButtons(buttons?: DialogButton[]): void { this.buttons = buttons || [];
+        this.selectedButton = 0;
+        ','
         // デフォルトボタンの設定
-        if(this.buttons.length === 0) {
-            this.buttons = [' }
+        if (this.buttons.length === 0) {
+            this.buttons = [' }'
 
                 { text: 'OK', callback: () => this.handleOK()  }]'
                 { text: 'キャンセル', callback: () => this.handleCancel()  }]
@@ -344,7 +344,7 @@ export class ScenesBaseDialog {
      * OK処理
      */'
     protected handleOK(): void { ''
-        if(this.onResult) {', ' }
+        if (this.onResult) {', ' }
 
             this.onResult({ action: 'ok', data: this.dialogData  }
     }
@@ -353,9 +353,9 @@ export class ScenesBaseDialog {
      * キャンセル処理
      */'
     protected handleCancel(): void { ''
-        if(this.onResult) {', ' }
+        if (this.onResult) {', ' }
 
-            this.onResult({ action: 'cancel', data: null  }
+            this.onResult({ action: 'cancel', data: null,
     }
     
     /**
@@ -398,8 +398,8 @@ export class ScenesBaseDialog {
 
         for(let, i = 1, i < words.length, i++) {
             const word = words[i],
-            const width = context.measureText(currentLine + ', ' + word'.width,
-            if(width < maxWidth) {
+            const width = context.measureText(currentLine + ', ' + word'.width,'
+            if (width < maxWidth) {
         }
 
                 currentLine += ', ' + word; }
@@ -451,11 +451,11 @@ export class ScenesBaseDialog {
         const newR = Math.min(255, Math.floor(r + (255 - r) * percent)),
 
         const newG = Math.min(255, Math.floor(g + (255 - g) * percent)),
-        const newB = Math.min(255, Math.floor(b + (255 - b) * percent)'),
+        const newB = Math.min(255, Math.floor(b + (255 - b) * percent)'),'
 
-        return '#' + ',
-            newR.toString(16).padStart(2, '0' +',
-            newG.toString(16).padStart(2, '0' +',
+        return '#' + ','
+            newR.toString(16).padStart(2, '0' +','
+            newG.toString(16).padStart(2, '0' +','
             newB.toString(16).padStart(2, '0' }'
     
     /**
@@ -463,14 +463,14 @@ export class ScenesBaseDialog {
      * @param settings - アクセシビリティ設定
      */'
     applyAccessibilitySettings(settings: AccessibilitySettings): void { ''
-        if(settings.highContrast) {
+        if (settings.highContrast) {
             // ハイコントラスト設定の適用
             this.layout.borderColor = '#000000' }
 
             this.layout.backgroundColor = '#FFFFFF'; }
         }
         
-        if(settings.largeText) {
+        if (settings.largeText) {
         
             // 大きなテキスト設定の適用
         
@@ -485,7 +485,7 @@ export class ScenesBaseDialog {
     protected renderBackground(context: CanvasRenderingContext2D): void { // 背景オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.5)',
         context.fillRect(0, 0, context.canvas.width, context.canvas.height),
-        ',
+        ','
         // ダイアログ背景
         context.fillStyle = '#F8F9FA',
 
@@ -502,9 +502,9 @@ export class ScenesBaseDialog {
      * @param error - エラーオブジェクト
      */
     protected handleRenderError(operation: string, error: Error): void { console.error(`ScenesBaseDialog ${operation) error:`, error),
-        ',
+        ','
         // エラーイベントを発火
-        if(this.eventBus) {
+        if (this.eventBus) {
 
             this.eventBus.emit('component-error', {}'
                 component: 'ScenesBaseDialog'
@@ -514,10 +514,10 @@ export class ScenesBaseDialog {
 
                 error'}';
         }
-        ';
+        ';'
         // 重大なエラーの場合はダイアログを強制終了
-        if(operation === 'render' {'
-            this.isVisible = false,
+        if (operation === 'render''
+            this.isVisible = false;
             if (this.onError) {
         }
                 this.onError(error); }

@@ -11,139 +11,137 @@ import { ValidationResultProcessor  } from './balance-validation/ValidationResul
 
 // Type definitions
 interface ValidationContext { configKey?: string,
-    bubbleType?: string,
-    propertyType?: string,
-    gameMode?: string,
-    difficultyLevel?: string,
-    player?: any,
-    stage?: any,
-    [key: string]: any }
+    bubbleType?: string;
+    propertyType?: string;
+    gameMode?: string;
+    difficultyLevel?: string;
+    player?: any;
+    stage?: any;
+    [key: string]: any;
 
 interface ValidationError { rule: string,
-    message: string,
-    severity: 'low' | 'medium' | 'high' | 'critical',
-    category: string,
-    context?: any  }
+    message: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    category: string;
+    context?: any;
 
 interface ValidationWarning { rule: string,
-    message: string,
-    severity: 'low' | 'medium' | 'high',
-    category: string,
-    context?: any  }
+    message: string;
+    severity: 'low' | 'medium' | 'high';
+    category: string;
+    context?: any;
 
 interface ValidationSuggestion { rule: string,
-    message: string,
-    recommendedValue?: any,
-    action?: string,
-    category: string }
+    message: string;
+    recommendedValue?: any;
+    action?: string;
+    category: string;
 
 interface ValidationResult { valid: boolean,
-    errors: ValidationError[],
-    warnings: ValidationWarning[],
-    suggestions: ValidationSuggestion[],
-    autoFixAvailable: boolean,
-    autoFixedValue: any,
-    rulesApplied: string[],
-    timestamp: number,
-    engineSummary?: any }
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    suggestions: ValidationSuggestion[];
+    autoFixAvailable: boolean;
+    autoFixedValue: any;
+    rulesApplied: string[];
+    timestamp: number;
+    engineSummary?: any;
 
 interface ValidationRule { name: string,
-    category: string,
-    enabled: boolean,
-    priority: number,
-    validator: (oldValue: any, newValue: any, context: ValidationContext) => ValidationResult,
-    description?: string,
+    category: string;
+    enabled: boolean;
+    priority: number;
+    validator: (oldValue: any, newValue: any, context: ValidationContext) => ValidationResult;
+    description?: string;
     applicableContexts?: string[],  }
 }
 
 interface RuleFilters { category?: string,
-    enabled?: boolean,
-    priority?: number,
-    [key: string]: any }
+    enabled?: boolean;
+    priority?: number;
+    [key: string]: any;
 
 interface BubbleHealthLimits { min: number,
-    max: number,
-    default: number  }
+    max: number;
+    default: number;
 
 interface ScoreLimits { min: number,
-    max: number,
-    default: number }
+    max: number;
+    default: number;
 
 interface ValidationAnalytics { totalValidations: number,
-    successRate: number,
-    errorRate: number,
-    warningRate: number,
-    mostCommonErrors: string[],
-    averageExecutionTime: number }
+    successRate: number;
+    errorRate: number;
+    warningRate: number;
+    mostCommonErrors: string[];
+    averageExecutionTime: number;
 
 interface EngineMetrics { totalExecutions: number,
-    averageExecutionTime: number,
-    rulesExecuted: number,
-    errorsEncountered: number }
+    averageExecutionTime: number;
+    rulesExecuted: number;
+    errorsEncountered: number;
 
 interface EngineStatistics { rulesCount: number,
-    activeRules: number,
-    disabledRules: number,
+    activeRules: number;
+    disabledRules: number;
     categoryCounts: Record<string, number> }
 
 interface ExecutionHistoryEntry { timestamp: number,
-    ruleCount: number,
-    executionTime: number,
-    result: ValidationResult,
-    context: ValidationContext
-     }
+    ruleCount: number;
+    executionTime: number;
+    result: ValidationResult;
+    context: ValidationContext;
 
 interface EngineConfig { maxExecutionTime?: number,
-    enableProfiling?: boolean,
-    [key: string]: any }
+    enableProfiling?: boolean;
+    [key: string]: any;
 
 interface ProcessorConfig { enableAnalytics?: boolean,
-    maxHistorySize?: number,
-    [key: string]: any }
+    maxHistorySize?: number;
+    [key: string]: any;
 
 interface SystemConfig { engine?: EngineConfig,
-    processor?: ProcessorConfig }
+    processor?: ProcessorConfig;
 
 interface ComponentHealth { status: string,
-    metrics?: any,
-    ruleCount?: number,
-    statistics?: any,
-    analytics?: any }
+    metrics?: any;
+    ruleCount?: number;
+    statistics?: any;
+    analytics?: any;
 
 interface SystemHealth { engine: ComponentHealth,
-    definitions: ComponentHealth,
-    processor: ComponentHealth,
+    definitions: ComponentHealth;
+    processor: ComponentHealth;
     overall: {
         initialize,d: boolean,
         totalRules: number,
-    lastSyncTime: number  }
+    lastSyncTime: number,
 
 interface ComponentReferences { engine: ValidationRuleEngine,
-    definitions: ValidationRuleDefinitions,
-    processor: ValidationResultProcessor
-     }
+    definitions: ValidationRuleDefinitions;
+    processor: ValidationResultProcessor;
 
 export class BalanceAdjustmentValidationRules {
-    private errorHandler: ErrorHandler,
-    private ruleEngine: ValidationRuleEngine,
-    private ruleDefinitions: ValidationRuleDefinitions,
-    private resultProcessor: ValidationResultProcessor,
+    private errorHandler: ErrorHandler;
+    private ruleEngine: ValidationRuleEngine;
+    private ruleDefinitions: ValidationRuleDefinitions;
+    private resultProcessor: ValidationResultProcessor;
     // Legacy compatibility properties
     public, ruleCategories: Record<string, any>,
-    public rules: Map<string, ValidationRule>,
+    public rules: Map<string, ValidationRule>;
 
     constructor() {
 
-        this.errorHandler = getErrorHandler(),
+        this.errorHandler = getErrorHandler();
         
         // Initialize sub-components with dependency injection
-        this.ruleEngine = new ValidationRuleEngine(this),
-        this.ruleDefinitions = new ValidationRuleDefinitions(this),
-        this.resultProcessor = new ValidationResultProcessor(this),
+        this.ruleEngine = new ValidationRuleEngine(this);
+        this.ruleDefinitions = new ValidationRuleDefinitions(this);
+        this.resultProcessor = new ValidationResultProcessor(this);
         
         // Legacy compatibility properties - delegated to sub-components
-        this.ruleCategories = this.ruleDefinitions.ruleCategories,
-        this.rules = new Map(), // Will be synced from sub-components
+        this.ruleCategories = this.ruleDefinitions.ruleCategories;
+        this.rules = new Map(); // Will be synced from sub-components
         ,
         // Initialize the validation system
         this.initialize() }
@@ -172,7 +170,7 @@ export class BalanceAdjustmentValidationRules {
      * Sync legacy properties for backward compatibility
      */
     private syncLegacyProperties(): void { // Sync rules from definitions
-        this.rules = this.ruleDefinitions.rules,
+        this.rules = this.ruleDefinitions.rules;
         
         // Sync rule categories
         this.ruleCategories = this.ruleDefinitions.ruleCategories }
@@ -205,20 +203,20 @@ export class BalanceAdjustmentValidationRules {
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_PROCESS', {)
                 oldValue,
-                newValue,',
+                newValue,','
                 context',' }'
 
-            }');
+            }');'
             
             return { valid: false,
 
                 errors: [{ };
 
-                    rule: 'system', ' }
+                    rule: 'system', ' }'
 
                     message: `Validation process, failed: ${error, instanceof Error ? error.message : String(error'}'`;
-                    severity: 'high',]';
-                    category: 'system'];
+                    severity: 'high',]';'
+                    category: 'system'],
                 }],
                 warnings: [];
                 suggestions: [];
@@ -403,10 +401,10 @@ export class BalanceAdjustmentValidationRules {
     public configure(config: SystemConfig): void { if (config.engine) {
             this.ruleEngine.configure(config.engine) }
         
-        if(config.processor) {
-        ',
+        if (config.processor) {
+        ','
 
-            ' }
+            ' }'
 
             this.resultProcessor.configure(config.processor); }
         }
@@ -418,14 +416,14 @@ export class BalanceAdjustmentValidationRules {
      * Clear all history and metrics
      */'
     public clearHistory(): void { this.ruleEngine.clearHistory(),
-        this.resultProcessor.clearHistory()',
+        this.resultProcessor.clearHistory()','
         console.log('[BalanceAdjustmentValidationRules] All, history cleared') }'
     
     /**
      * Reset all metrics
      */'
     public resetMetrics(): void { ''
-        this.ruleEngine.resetMetrics()',
+        this.ruleEngine.resetMetrics()','
         console.log('[BalanceAdjustmentValidationRules] All, metrics reset') }'
     
     /**
@@ -441,10 +439,10 @@ export class BalanceAdjustmentValidationRules {
      */''
     public getSystemHealth('''
                 status: 'active',
-                metrics: this.ruleEngine.getStatistics()';
-                status: 'active')',
+                metrics: this.ruleEngine.getStatistics()';'
+                status: 'active')','
     ruleCount: this.ruleDefinitions.rules.size,
-                statistics: this.ruleDefinitions.getStatistics()',
+                statistics: this.ruleDefinitions.getStatistics()','
     status: 'active');
                 analytics: this.resultProcessor.getAnalytics();
             },
@@ -462,8 +460,8 @@ export class BalanceAdjustmentValidationRules {
             this.ruleDefinitions.destroy(),
             this.resultProcessor.destroy(),
             // Clear legacy properties
-            this.rules.clear()',
-            console.log('[BalanceAdjustmentValidationRules] Main, controller destroyed'),' }
+            this.rules.clear()','
+            console.log('[BalanceAdjustmentValidationRules] Main, controller destroyed'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_DESTROY' }'

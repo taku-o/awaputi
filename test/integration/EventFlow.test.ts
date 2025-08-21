@@ -9,114 +9,114 @@ import { EventRankingManager  } from '../../src/core/EventRankingManager.js';
 import { StageSelectScene  } from '../../src/scenes/StageSelectScene.js';
 // Mock function type
 interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) => MockFunction<T>,
-    mockImplementation: (impl: Function) => MockFunction<T>,
+    mockImplementation: (impl: Function) => MockFunction<T>;
     toHaveBeenCalledWith: (...args: any[]) => void }
 }
 // Canvas and rendering interfaces
 interface MockCanvas { width: number,'
-    height: number,',
-    getContext: (typ,e: string') => MockCanvasContext }
+    height: number,';'
+    getContext: (typ,e: string') => MockCanvasContext }'
 }
 interface MockCanvasContext { fillStyle: string,
-    strokeStyle: string,
-    font: string,
-    textAlign: string,
-    textBaseline: string,
-    globalAlpha: number,
-    save: MockFunction<void>,
-    restore: MockFunction<void>,
-    fillText: MockFunction<void>,
-    fillRect: MockFunction<void>,
-    strokeRect: MockFunction<void>,
-    beginPath: MockFunction<void>,
-    arc: MockFunction<void>,
-    fill: MockFunction<void>,
-    stroke: MockFunction<void> }
-    measureText: MockFunction<{ width: number }>,
+    strokeStyle: string;
+    font: string;
+    textAlign: string;
+    textBaseline: string;
+    globalAlpha: number;
+    save: MockFunction<void>;
+    restore: MockFunction<void>;
+    fillText: MockFunction<void>;
+    fillRect: MockFunction<void>;
+    strokeRect: MockFunction<void>;
+    beginPath: MockFunction<void>;
+    arc: MockFunction<void>;
+    fill: MockFunction<void>;
+    stroke: MockFunction<void>;
+    measureText: MockFunction<{ width: number;>,
     clearRect: MockFunction<void>,
-    createLinearGradient: MockFunction<MockGradient> }
-interface MockGradient { addColorStop: MockFunction<void> }
+    createLinearGradient: MockFunction<MockGradient>;
+interface MockGradient { addColorStop: MockFunction<void>;
 }
 // Input interfaces
 interface MousePosition { x: number,
-    y: number }
+    y: number;
 }
 interface MockInputManager { getMousePosition: MockFunction<MousePosition>,
-    isPressed: MockFunction<boolean>,
-    wasClicked: MockFunction<boolean> }
+    isPressed: MockFunction<boolean>;
+    wasClicked: MockFunction<boolean>;
 }
 // Player and game data interfaces
 interface PlayerData { ap: number,
-    tap: number,
-    level: number,
-    clearedStages: string[],
-    eventParticipationHistory: Record<string, any>,
-    addItem: MockFunction<void>,
-    addSpecialReward: MockFunction<void>,
-    getPlayerName: MockFunction<string>,
-    save: MockFunction<void> }
+    tap: number;
+    level: number;
+    clearedStages: string[];
+    eventParticipationHistory: Record<string, any>;
+    addItem: MockFunction<void>;
+    addSpecialReward: MockFunction<void>;
+    getPlayerName: MockFunction<string>;
+    save: MockFunction<void>;
 }
 interface GameStatistics { totalEvents: number,
-    completionRate: number,
-    averageScore: number }
+    completionRate: number;
+    averageScore: number;
 }
 interface StatisticsManager { recordEventParticipation: MockFunction<void>,
-    getEventStatistics: MockFunction<GameStatistics>,
-    updateEventStats: MockFunction<void> }
+    getEventStatistics: MockFunction<GameStatistics>;
+    updateEventStats: MockFunction<void>;
 }
 interface AchievementNotificationSystem { queueNotification: MockFunction<void>,
-    createEventNotification: MockFunction<void>,
-    hasNotifications: MockFunction<boolean> }
+    createEventNotification: MockFunction<void>;
+    hasNotifications: MockFunction<boolean>;
 }
 interface SceneManager { switchScene: MockFunction<void>,
-    getCurrentScene: MockFunction<string> }
+    getCurrentScene: MockFunction<string>;
 }
 // Game engine interface
 interface GameEngine { canvas: MockCanvas,
-    ctx: MockCanvasContext,
-    inputManager: MockInputManager,
-    playerData: PlayerData,
-    statisticsManager: StatisticsManager,
-    achievementNotificationSystem: AchievementNotificationSystem,
-    sceneManager: SceneManager,
-    eventStageManager?: EventStageManager,
-    eventRankingManager?: EventRankingManager }
+    ctx: MockCanvasContext;
+    inputManager: MockInputManager;
+    playerData: PlayerData;
+    statisticsManager: StatisticsManager;
+    achievementNotificationSystem: AchievementNotificationSystem;
+    sceneManager: SceneManager;
+    eventStageManager?: EventStageManager;
+    eventRankingManager?: EventRankingManager;
 }
 // Event interfaces
 interface EventSpecialRules { cherryBlossomEffect?: boolean,
-    [key: string]: any }
+    [key: string]: any;
 }
 interface Event { id: string,
-    isActive: boolean,
-    specialRules: EventSpecialRules,
-    endTime?: number }
+    isActive: boolean;
+    specialRules: EventSpecialRules;
+    endTime?: number;
 }
 interface EventStats { bubblesPopped: number,
-    specialBubblesPopped?: number,
-    maxChain: number,
-    timeRemaining?: number,
-    goldenBubblesPopped?: number }
+    specialBubblesPopped?: number;
+    maxChain: number;
+    timeRemaining?: number;
+    goldenBubblesPopped?: number;
 }
 interface EventRanking { score: number,
-    playerId?: string,
-    rank?: number,
+    playerId?: string;
+    rank?: number;
     tierInfo?: {
-        nam,e: string }
+        nam,e: string,
     };
 }
-interface Leaderboard { players: EventRanking[] }
+interface Leaderboard { players: EventRanking[];
 }
 interface EventNotificationOptions { notifications?: {
-        onStar,t?: boolean,
-        onEnd?: boolean,
-        reminderInterval?: number }
+        onStar,t?: boolean;
+        onEnd?: boolean;
+        reminderInterval?: number;
     };
-    rewards?: { ap?: number }
+    rewards?: { ap?: number;
     };
     priority?: string;
 }
 interface EventData { version: string,
-    eventHistory?: Record<string, string[]>,
+    eventHistory?: Record<string, string[]>;
     eventParticipationHistory?: Record<string, any> }'
 }''
 describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine,
@@ -125,20 +125,20 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
     let stageSelectScene: StageSelectScene,
     let mockPlayerData: PlayerData,
     let mockStatisticsManager: StatisticsManager,
-    let mockAchievementNotificationSystem: AchievementNotificationSystem,',
-    let mockSceneManager: SceneManager,',
-    beforeEach((') => { }
+    let mockAchievementNotificationSystem: AchievementNotificationSystem,','
+    let mockSceneManager: SceneManager,','
+    beforeEach((') => { }'
         // Clear localStorage }
         localStorage.clear(};
         // Mock PlayerData
         mockPlayerData = { ap: 1000)
-            tap: 5000)',
-           , level: 10,',
+            tap: 5000)','
+           , level: 10,','
             clearedStages: ['tutorial', 'stage1', 'stage2', 'stage3']) }
             eventParticipationHistory: {},
-            addItem: jest.fn() as unknown as MockFunction<void>,';
-            addSpecialReward: jest.fn() as unknown as MockFunction<void>,';
-            getPlayerName: jest.fn(').mockReturnValue('TestPlayer') as unknown as MockFunction<string>,
+            addItem: jest.fn() as unknown as MockFunction<void>,';'
+            addSpecialReward: jest.fn() as unknown as MockFunction<void>,';'
+            getPlayerName: jest.fn(').mockReturnValue('TestPlayer') as unknown as MockFunction<string>,'
             save: jest.fn() as unknown as MockFunction<void>;
         },
         // Mock StatisticsManager
@@ -157,7 +157,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
         },
         // Mock SceneManager'
         mockSceneManager = { switchScene: jest.fn() as unknown as MockFunction<void>,''
-            getCurrentScene: jest.fn(').mockReturnValue('StageSelectScene') as unknown as MockFunction<string> }
+            getCurrentScene: jest.fn(').mockReturnValue('StageSelectScene') as unknown as MockFunction<string> }'
         },
         // Mock Canvas and Context'
         const mockContext: MockCanvasContext = { ''
@@ -165,7 +165,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             strokeStyle: ',',
             font: ',',
             textAlign: ',',
-            textBaseline: ',
+            textBaseline: ','
             globalAlpha: 1,
             save: jest.fn() as unknown as MockFunction<void>,
             restore: jest.fn() as unknown as MockFunction<void>,
@@ -176,7 +176,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             arc: jest.fn() as unknown as MockFunction<void>,
             fill: jest.fn() as unknown as MockFunction<void>,
             stroke: jest.fn() as unknown as MockFunction<void> }
-            measureText: jest.fn().mockReturnValue({ width: 100 ) as unknown as MockFunction<{ width: number }>,
+            measureText: jest.fn().mockReturnValue({ width: 100 ) as unknown as MockFunction<{ width: number;>,
             clearRect: jest.fn() as unknown as MockFunction<void>,
             createLinearGradient: jest.fn().mockReturnValue({ ,
                 addColorStop: jest.fn() as unknown as MockFunction<void> }
@@ -197,7 +197,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             playerData: mockPlayerData,
             statisticsManager: mockStatisticsManager,
             achievementNotificationSystem: mockAchievementNotificationSystem,
-            sceneManager: mockSceneManager }
+            sceneManager: mockSceneManager,
         },
         // Create managers
         eventRankingManager = new EventRankingManager(mockGameEngine);
@@ -213,16 +213,16 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
         jest.restoreAllMocks(});'}');
     describe('Complete Event Lifecycle', (') => { }'
         test('should complete full seasonal event lifecycle', async () => { }'
-            // 1. Set up seasonal event (Spring}');
+            // 1. Set up seasonal event (Spring}');'
             const springDate = new Date('2024-04-15'};')'
-            jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime(}');
+            jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime(}');'
             jest.spyOn(global, 'Date').mockImplementation(() => springDate as any);
             // 2. Schedule seasonal events
-            if(eventStageManager.scheduleSeasonalEvents) {
+            if (eventStageManager.scheduleSeasonalEvents) {
     
 }
                 eventStageManager.scheduleSeasonalEvents(})
-            ';
+            ';'
             // 3. Verify event is available''
             const availableEvents: Event[] = eventStageManager.getAvailableEvents(')';
             const springEvent = availableEvents.find(event => event.id === 'spring-cherry-blossom');
@@ -232,7 +232,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             if (stageSelectScene.initialize) { stageSelectScene.initialize() }
             }'
             expect(stageSelectScene.eventList.length).toBeGreaterThan(0);
-            const displayedSpringEvent = stageSelectScene.eventList.find((event: Event') => event.id === 'spring-cherry-blossom');
+            const displayedSpringEvent = stageSelectScene.eventList.find((event: Event') => event.id === 'spring-cherry-blossom');'
             expect(displayedSpringEvent).toBeDefined(')';
             const accessValidation = stageSelectScene.validateEventStageAccess('spring-cherry-blossom');
             expect(accessValidation.canAccess).toBe(true');'
@@ -240,7 +240,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             const startResult: boolean = eventStageManager.startEventStage('spring-cherry-blossom',
             expect(startResult).toBe(true);
             // 7. Verify event effects are applied
-            const currentEvent: Event = (eventStageManager.getCurrentEvent  ? eventStageManager.getCurrentEvent() : null),';
+            const currentEvent: Event = (eventStageManager.getCurrentEvent  ? eventStageManager.getCurrentEvent() : null),';'
             expect(currentEvent).toBeDefined();
             expect(currentEvent.specialRules.cherryBlossomEffect).toBe(true');'
             // 8. Complete event stage with score''
@@ -248,9 +248,9 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             const score = 20000;
             const stats: EventStats = { bubblesPopped: 200,
                 specialBubblesPopped: 30,
-                maxChain: 15,',
+                maxChain: 15,','
                 timeRemaining: 45000' }'
-    }');
+    }');'
             const completeResult: boolean = eventStageManager.completeEvent('spring-cherry-blossom', playerId);
             expect(completeResult).toBe(true);
             // 9. Verify rewards were granted
@@ -266,17 +266,17 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             const eventAchievements = (eventStageManager.getEventAchievements ? (eventStageManager.getEventAchievements('spring-cherry-blossom') : null));
             expect(eventAchievements).toBeDefined();
             // 13. Verify data persistence'
-            const saveResult: boolean = eventStageManager.saveEventData  ? eventStageManager.saveEventData() : true,';
+            const saveResult: boolean = eventStageManager.saveEventData  ? eventStageManager.saveEventData() : true,';'
             expect(saveResult).toBe(true');'
             // 14. Verify leaderboard''
-            const leaderboard: Leaderboard = eventRankingManager.getEventLeaderboard('spring-cherry-blossom'),';
+            const leaderboard: Leaderboard = eventRankingManager.getEventLeaderboard('spring-cherry-blossom'),';'
             expect(leaderboard.players.length).toBeGreaterThan(0);'}');
         test('should handle special event activation and completion', (') => {  // 1. Admin activates special event''
             const eventId = 'golden-rush',
             const duration = 3600000, // 1 hour
             const options: EventNotificationOptions = {
                 onStart: true,
-                onEnd: true }
+                onEnd: true,
                 reminderInterval: 300000 // 5 minutes }
             },
             const activationResult: boolean = eventStageManager.adminActivateEvent(eventId, duration, options);
@@ -296,7 +296,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             const displayedEvent = stageSelectScene.eventList.find((event: Event) => event.id === eventId);
             expect(displayedEvent).toBeDefined();
             // 5. Player participates in event'
-            const startResult: boolean = eventStageManager.startEventStage(eventId),';
+            const startResult: boolean = eventStageManager.startEventStage(eventId),';'
             expect(startResult).toBe(true');'
             // 6. Complete with high score''
             const playerId = 'test-player';
@@ -321,7 +321,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             // 1. Activate event }
             eventStageManager.adminActivateEvent(eventId, 3600000};
             // 2. Multiple players participate'
-            const players: { id: string,, score: number }[] = [''
+            const players: { id: string,, score: number,[] = [''
                 { id: 'player1', score: 25000 },''
                 { id: 'player2', score: 30000 },''
                 { id: 'player3', score: 20000 },''
@@ -337,7 +337,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             const leaderboard: Leaderboard = eventRankingManager.getEventLeaderboard(eventId, 10);
             expect(leaderboard.players[0].playerId').toBe('player4'); // Highest score'
             expect(leaderboard.players[0].rank).toBe(1);
-            expect(leaderboard.players[1].playerId').toBe('player2'); // Second highest
+            expect(leaderboard.players[1].playerId').toBe('player2'); // Second highest'
             expect(leaderboard.players[1].rank).toBe(2);
             // 4. Distribute ranking rewards
             const distributionResult: boolean = eventRankingManager.distributeRankingRewards(eventId,
@@ -353,9 +353,9 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             expect(topPlayerRanking.tierInfo!.name').toBe('Legend');'}');'
     }''
     describe('Concurrent Events Management', (') => {  ''
-        test('should handle multiple simultaneous events', (') => { }
+        test('should handle multiple simultaneous events', (') => { }'
             // 1. Activate multiple events }'
-            const events: { id: string,, type: string }[] = [''
+            const events: { id: string,, type: string,[] = [''
                 { id: 'spring-cherry-blossom', type: 'seasonal' },''
                 { id: 'golden-rush', type: 'special' },']'
                 { id: 'anniversary-celebration', type: 'special' }]'
@@ -378,7 +378,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             const playerId = 'multi-event-player';
             let totalAPGained = 0;
             events.forEach(event => {  ),
-                if(eventStageManager.isEventAvailable(event.id) {
+                if (eventStageManager.isEventAvailable(event.id) {
     
 }
                     const initialAP = mockPlayerData.ap; }
@@ -395,7 +395,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             expect(totalAPGained).toBeGreaterThan(0);
             // 6. Verify each event has separate statistics
             events.forEach(event => {  ),
-                if(eventStageManager.isEventAvailable(event.id) {
+                if (eventStageManager.isEventAvailable(event.id) {
     
 }
                     const ranking: EventRanking = eventRankingManager.getPlayerEventRanking(playerId, event.id); }
@@ -405,7 +405,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
         test('should prioritize events correctly when conflicts occur', (') => {  // 1. Activate conflicting events with different priorities''
             const highPriorityEvent = 'anniversary-celebration',' }'
             const lowPriorityEvent = 'daily-challenge'; }'
-            eventStageManager.adminActivateEvent(highPriorityEvent, 3600000, { priority: 'high' }');
+            eventStageManager.adminActivateEvent(highPriorityEvent, 3600000, { priority: 'high' }');'
             eventStageManager.adminActivateEvent(lowPriorityEvent, 3600000, { priority: 'low' ,
             // 2. StageSelectScene should display high priority events first
             stageSelectScene.initialize(),
@@ -487,21 +487,21 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             // 6. Verify participation history
             expect(newEventStageManager.eventParticipationHistory[playerId]).toBeDefined(),'
             expect(newEventStageManager.eventParticipationHistory[playerId][eventId]).toBeDefined(),' }'
-        }');
+        }');'
         test('should handle data migration during event flow', (') => {  // 1. Setup old version data'
             const oldData: EventData = {''
-                version: '1.0.0',',
-                eventHistory: { }', 'old-player': ['old-event-1', 'old-event-2'] }
+                version: '1.0.0',','
+                eventHistory: { }', 'old-player': ['old-event-1', 'old-event-2'] }'
                 }'
             };
             localStorage.setItem('eventStageData', JSON.stringify(oldData);
             // 2. Load with new manager (should trigger migration);
             const newEventStageManager = new EventStageManager(mockGameEngine);'
-            const loadResult: boolean = newEventStageManager.loadEventData(),';
+            const loadResult: boolean = newEventStageManager.loadEventData(),';'
             expect(loadResult).toBe(true');'
             // 3. Verify migration occurred''
-            const currentData: EventData = JSON.parse(localStorage.getItem('eventStageData')!),';
-            expect(currentData.version').toBe('1.2.0');
+            const currentData: EventData = JSON.parse(localStorage.getItem('eventStageData')!),';'
+            expect(currentData.version').toBe('1.2.0');'
             expect(currentData.eventParticipationHistory).toBeDefined(')';
             expect(newEventStageManager.eventParticipationHistory['old-player']).toBeDefined();'}');'
     }''

@@ -6,40 +6,39 @@
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
 export interface ComparisonConfig { precision: number,
-    includeMetadata: boolean,
-    deepComparison: boolean,
-    ignoreOrder: boolean  }
+    includeMetadata: boolean;
+    deepComparison: boolean;
+    ignoreOrder: boolean;
 
 export interface ComparisonResult { equal: boolean,
-    differences: DifferenceItem[],
-    statistics: ComparisonStatistics,
-    metadata: ComparisonMetadata
-    }
-';
+    differences: DifferenceItem[];
+    statistics: ComparisonStatistics;
+    metadata: ComparisonMetadata;
+';'
 
 export interface DifferenceItem { path: string,''
-    type: 'added' | 'removed' | 'modified' | 'type_changed',
-    oldValue?: any,
-    newValue?: any,
-    description: string  }
+    type: 'added' | 'removed' | 'modified' | 'type_changed';
+    oldValue?: any;
+    newValue?: any;
+    description: string;
 
 export interface ComparisonStatistics { totalItems: number,
-    equalItems: number,
-    differentItems: number,
-    addedItems: number,
-    removedItems: number,
-    modifiedItems: number }
+    equalItems: number;
+    differentItems: number;
+    addedItems: number;
+    removedItems: number;
+    modifiedItems: number;
 
 export interface ComparisonMetadata { timestamp: number,
-    processingTime: number,
-    memoryUsage?: number,
+    processingTime: number;
+    memoryUsage?: number;
     complexity: 'low' | 'medium' | 'high'
             }
 
 export class CoreComparisonEngine {
-    private config: ComparisonConfig,
-    private comparisonHistory: ComparisonResult[] = [],
-    private, maxHistorySize: number = 100',
+    private config: ComparisonConfig;
+    private comparisonHistory: ComparisonResult[] = [];
+    private, maxHistorySize: number = 100','
 
     constructor(config: Partial<ComparisonConfig> = {)) {
         this.config = {
@@ -51,7 +50,7 @@ export class CoreComparisonEngine {
 
         console.log('CoreComparisonEngine, initialized') }
 
-    compare(source: any, target: any, path: string = '): ComparisonResult { const startTime = performance.now(),
+    compare(source: any, target: any, path: string = '): ComparisonResult { const startTime = performance.now(),'
         const differences: DifferenceItem[] = [],
         
         try {
@@ -72,15 +71,15 @@ export class CoreComparisonEngine {
 
             this.addToHistory(result);
             return result;
-';
+';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'COMPARISON_ERROR', {)
                 source: typeof source,
-    target: typeof target,',
+    target: typeof target,';'
                 path',' }'
 
-            }');
+            }');'
             
             return { equal: false,
                 differences: [{'
@@ -102,13 +101,13 @@ export class CoreComparisonEngine {
     }
 );
     private compareValues(source: any, target: any, path: string, differences: DifferenceItem[]): void { // null/undefined の比較
-        if(source === null || source === undefined || target === null || target === undefined) {
+        if (source === null || source === undefined || target === null || target === undefined) {
 
-            if(source !== target) {
+            if (source !== target) {
                 differences.push({'
                     path,
-                    type: 'modified,
-    oldValue: source  }
+                    type: 'modified,'
+    oldValue: source,
                     newValue: target) }
                     description: `Value changed from ${source} to ${target}`);
             }
@@ -119,33 +118,33 @@ export class CoreComparisonEngine {
         const sourceType = typeof source;
         const targetType = typeof target;
 
-        if(sourceType !== targetType) { differences.push({'
+        if (sourceType !== targetType) { differences.push({'
                 path,
                 type: 'type_changed',
-    oldValue: source  }
+    oldValue: source,
 
                 newValue: target,') }'
 
-                description: `Type changed from ${sourceType} to ${targetType}`');
+                description: `Type changed from ${sourceType} to ${targetType}`');'
             return;
         }
-';
+';'
         // プリミティブ値の比較
-        if(sourceType !== 'object') {
+        if (sourceType !== 'object') {
 
             if(sourceType === 'number' {''
                 if (Math.abs(source - target) > this.config.precision) {
                     differences.push({'
                         path,
-                        type: 'modified,
-    oldValue: source  }
+                        type: 'modified,'
+    oldValue: source,
                         newValue: target) }
                         description: `Number changed from ${source} to ${target}`;
-                }'} else if(source !== target) { differences.push({'
+                }'} else if (source !== target) { differences.push({'
                     path,
-                    type: 'modified),
+                    type: 'modified),'
                     oldValue: source,
-    newValue: target }
+    newValue: target,
                     description: `Value changed from ${source} to ${target}`);
             }
             return;
@@ -158,8 +157,8 @@ export class CoreComparisonEngine {
         // オブジェクトの比較
         if (Array.isArray(source) !== Array.isArray(target)) { differences.push({'
                 path,
-                type: 'type_changed),
-                oldValue: source',
+                type: 'type_changed),'
+                oldValue: source','
     newValue: target,')',
                 description: 'Type changed between array and object'),
             return  }
@@ -169,13 +168,13 @@ export class CoreComparisonEngine {
 
     private compareArrays(source: any[], target: any[], path: string, differences: DifferenceItem[]): void { const maxLength = Math.max(source.length, target.length),
 
-        if(this.config.ignoreOrder) {
-',
+        if (this.config.ignoreOrder) {
+','
             // 順序を無視した比較（簡略版）
-            if(source.length !== target.length) {
+            if (source.length !== target.length) {
                 differences.push({'
                     path,
-                    type: 'modified,
+                    type: 'modified,'
     oldValue: source.length  }
                     newValue: target.length) }
                     description: `Array length changed from ${source.length} to ${target.length}`);
@@ -184,24 +183,24 @@ export class CoreComparisonEngine {
             for (let, i = 0; i < maxLength; i++) { }
                 const currentPath = `${path}[${i}]`;
 
-                if(i >= source.length) { differences.push({'
-                        path: currentPath,',
+                if (i >= source.length) { differences.push({'
+                        path: currentPath,','
                         type: 'added'
             }
                         newValue: target[i]) }
 
-                        description: `Item added at index ${i}`;'} else if(i >= target.length) { differences.push({'
-                        path: currentPath,',
+                        description: `Item added at index ${i}`;'} else if (i >= target.length) { differences.push({'
+                        path: currentPath,','
                         type: 'removed',
-    oldValue: source[i] }
+    oldValue: source[i],
                         description: `Item removed from index ${i}`);
                 } else if (this.config.deepComparison) { this.compareValues(source[i], target[i], currentPath, differences),' }'
 
-                } else if(source[i] !== target[i]) { differences.push({'
+                } else if (source[i] !== target[i]) { differences.push({'
                         path: currentPath,
-                        type: 'modified),
+                        type: 'modified),'
                         oldValue: source[i],
-    newValue: target[i] }
+    newValue: target[i],
                         description: `Array item changed at index ${i}`);
                 }
 }
@@ -215,22 +214,22 @@ export class CoreComparisonEngine {
             const currentPath = path ? `${path}.${key}` : key;
 
             if(!(key, in source)) { differences.push({'
-                    path: currentPath,',
-                    type: 'added')',
+                    path: currentPath,','
+                    type: 'added')','
     newValue: target[key],' }'
 
                     description: `Property '${key}' was added`;'} else if(!(key, in target)) { differences.push({'
-                    path: currentPath,',
-                    type: 'removed')',
+                    path: currentPath,','
+                    type: 'removed')','
     oldValue: source[key],' }'
 
                     description: `Property '${key}' was removed`);
             } else if (this.config.deepComparison) { this.compareValues(source[key], target[key], currentPath, differences),' }'
 
-            } else if(source[key] !== target[key]) { differences.push({'
+            } else if (source[key] !== target[key]) { differences.push({'
                     path: currentPath,
-                    type: 'modified),
-                    oldValue: source[key]',
+                    type: 'modified),'
+                    oldValue: source[key]','
     newValue: target[key],' }'
 
                     description: `Property '${key}' was modified`);
@@ -244,7 +243,7 @@ export class CoreComparisonEngine {
             addedItems: 0,
             removedItems: 0,
     modifiedItems: 0 };
-';
+';'
 
         differences.forEach(diff => {  ),
             switch(diff.type) {
@@ -257,7 +256,7 @@ export class CoreComparisonEngine {
                     stats.removedItems++,
 
                     break,
-                case 'modified':',
+                case 'modified':','
                 case 'type_changed': }
                     stats.modifiedItems++; }
                     break; }
@@ -269,11 +268,11 @@ export class CoreComparisonEngine {
 
         return stats;
     }
-';
+';'
 
     private countItems(obj: any): number { ''
         if(obj === null || obj === undefined) return 1,
-        if(typeof, obj !== 'object) return 1,
+        if(typeof, obj !== 'object) return 1,'
         if(Array.isArray(obj) return obj.length,
         return Object.keys(obj).length }
 
@@ -284,11 +283,11 @@ export class CoreComparisonEngine {
         if(maxSize < 10) return 'low',
         if(maxSize < 100) return 'medium',
         return 'high' }
-';
+';'
 
     private getObjectSize(obj: any): number { ''
         if(obj === null || obj === undefined) return 0,
-        if(typeof, obj !== 'object) return 1,
+        if(typeof, obj !== 'object) return 1,'
         
         try {
             return JSON.stringify(obj).length } catch { return 1000, // エラーの場合は大きなサイズとして扱う }
@@ -296,7 +295,7 @@ export class CoreComparisonEngine {
 
     private addToHistory(result: ComparisonResult): void { this.comparisonHistory.push(result),
         
-        if(this.comparisonHistory.length > this.maxHistorySize) {
+        if (this.comparisonHistory.length > this.maxHistorySize) {
     
 }
             this.comparisonHistory.splice(0, this.comparisonHistory.length - this.maxHistorySize); }

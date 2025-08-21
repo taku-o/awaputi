@@ -11,42 +11,42 @@ import DeveloperGuidanceSystem from '../DeveloperGuidanceSystem.js';
 
 // Type definitions
 interface ErrorStats { totalErrors: number,
-    errorsByType: Map<string, number>,
-    errorsByComponent: Map<string, number>,
-    recoveredErrors: number,
-    unrecoverableErrors: number  }
+    errorsByType: Map<string, number>;
+    errorsByComponent: Map<string, number>;
+    recoveredErrors: number;
+    unrecoverableErrors: number;
 
 interface ErrorMetadata { [key: string]: any,
-    feature?: string,
-    policy?: string,
-    component?: string,
-    config?: any,
-    resource?: string,
-    localModeContext?: boolean,
-    timestamp?: string }
+    feature?: string;
+    policy?: string;
+    component?: string;
+    config?: any;
+    resource?: string;
+    localModeContext?: boolean;
+    timestamp?: string;
 
 interface ErrorStatsOutput { mainErrorHandler: any,
-    localErrorHandler: any,
+    localErrorHandler: any;
     localMode: {
         totalError,s: number,
-    errorsByType: Record<string, number>,
-        errorsByComponent: Record<string, number>,
+    errorsByType: Record<string, number>;
+        errorsByComponent: Record<string, number>;
         recoveredErrors: number,
         unrecoverableErrors: number,
-    recoveryRate: number  }
+    recoveryRate: number,
 
 interface InitializationErrorConfig { enableDeveloperGuidance?: boolean,
-    [key: string]: any }
+    [key: string]: any;
 
 interface InitializationGuidanceOptions { component: string,
-    error: string,
-    suggestions: string[]  }
+    error: string;
+    suggestions: string[];
 
 interface ErrorInfo { error: string,
-    stack?: string,
-    context: string,
-    metadata: ErrorMetadata,
-    timestamp: string }
+    stack?: string;
+    context: string;
+    metadata: ErrorMetadata;
+    timestamp: string;
 
 export default class LocalModeErrorHandler { /**
      * エラー統計
@@ -54,7 +54,7 @@ export default class LocalModeErrorHandler { /**
     private static _errorStats: ErrorStats = {
         totalErrors: 0,
     errorsByType: new Map(
-        errorsByComponent: new Map()',
+        errorsByComponent: new Map()','
     static handleError(error: Error, context: string = 'GENERAL', metadata: ErrorMetadata = {)': void {'
         this._errorStats.totalErrors++,
         this._updateErrorStats('type', error.name || 'UnknownError'),
@@ -66,10 +66,10 @@ export default class LocalModeErrorHandler { /**
                 this._delegateToLocalExecutionErrorHandler(error, context, metadata) } else { this._handleErrorLocally(error, context, metadata) }
             
             // 回復可能なエラーの場合は統計更新
-            if(this._isRecoverableError(error) { this._errorStats.recoveredErrors++ } else { this._errorStats.unrecoverableErrors++,' }'
+            if (this._isRecoverableError(error) { this._errorStats.recoveredErrors++ } else { this._errorStats.unrecoverableErrors++,' }'
 
             } catch (handlingError) {
-            console.error('Error in error handling:', handlingError',
+            console.error('Error in error handling:', handlingError','
             this._errorStats.unrecoverableErrors++ }
     }
     
@@ -128,7 +128,7 @@ export default class LocalModeErrorHandler { /**
             this._applyInitializationFallback(component, error),
             
             // 開発者ガイダンス表示
-            if(config.enableDeveloperGuidance) {
+            if (config.enableDeveloperGuidance) {
                 const guidanceOptions: InitializationGuidanceOptions = {
                     component,
                     error: error.message }
@@ -153,7 +153,7 @@ export default class LocalModeErrorHandler { /**
                 errorsByComponent: Object.fromEntries(this._errorStats.errorsByComponent),
                 recoveredErrors: this._errorStats.recoveredErrors,
     unrecoverableErrors: this._errorStats.unrecoverableErrors };
-                recoveryRate: this._calculateRecoveryRate(); 
+                recoveryRate: this._calculateRecoveryRate(), 
     }
     
     /**
@@ -173,10 +173,9 @@ export default class LocalModeErrorHandler { /**
     private static _delegateToLocalExecutionErrorHandler(error: Error, context: string, metadata: ErrorMetadata): void { const enhancedMetadata: ErrorMetadata = {
             ...metadata,
             localModeContext: true,
-            timestamp: new Date().toISOString()',
-        if(context.includes('RESOURCE' {', ',
-
-         }
+            timestamp: new Date().toISOString()','
+        if(context.includes('RESOURCE' {', '
+}
 
             (LocalExecutionErrorHandler, as any').handleResourceError(error, metadata.resource || 'unknown');' }
 
@@ -200,15 +199,15 @@ export default class LocalModeErrorHandler { /**
             timestamp: new Date().toISOString(  };
 
         console.group(`🚨 LocalMode Error (${ context)`),
-        console.error('Error:', error.message',
-        console.error('Context:', context',
+        console.error('Error:', error.message','
+        console.error('Context:', context','
         console.error('Metadata:', metadata};
         if(error.stack} { }'
 
-            console.error('Stack:', error.stack}';
+            console.error('Stack:', error.stack}';'
 
         }''
-        console.groupEnd()';
+        console.groupEnd()';'
     private static _updateErrorStats(category: 'type' | 'component', key: string': void { ''
         const statsMap = category === 'type' ? this._errorStats.errorsByType: this._errorStats.errorsByComponent,
         statsMap.set(key, (statsMap.get(key) || 0) + 1 
@@ -216,14 +215,14 @@ export default class LocalModeErrorHandler { /**
      * 回復可能エラーかチェック
      * @private'
      */''
-    private static _isRecoverableError(error: Error): boolean { const recoverableTypes: string[] = [', 'NetworkError',
+    private static _isRecoverableError(error: Error): boolean { const recoverableTypes: string[] = [', 'NetworkError','
             'TimeoutError',
-            'TypeError',]',
+            'TypeError',]','
             'ReferenceError'],
         ],
 
-        return recoverableTypes.includes(error.name) || ',
-               error.message.includes('CORS') ||',
+        return recoverableTypes.includes(error.name) || ','
+               error.message.includes('CORS') ||','
                error.message.includes('loading' }'
     
     /**
@@ -245,11 +244,11 @@ export default class LocalModeErrorHandler { /**
      * @private
      */'
     private static _mitigateSecurityIssue(policy: string): void { ''
-        const mitigations: Record<string, () => void> = {', 'X-Frame-Options': () => { }
+        const mitigations: Record<string, () => void> = {', 'X-Frame-Options': () => { }'
 
                 console.warn('X-Frame-Options policy detected, optimizing for local execution'); }
 
-            },', 'Content-Security-Policy': () => { }
+            },', 'Content-Security-Policy': () => { }'
 
                 console.warn('CSP policy detected, applying local execution adjustments'); }'
 };
@@ -263,15 +262,15 @@ export default class LocalModeErrorHandler { /**
      * @private
      */'
     private static _applyInitializationFallback(component: string, error: Error): void { ''
-        const fallbacks: Record<string, () => void> = {', 'faviconGenerator': () => { }
+        const fallbacks: Record<string, () => void> = {', 'faviconGenerator': () => { }'
 
                 console.warn('Favicon generation failed, continuing without favicons'); }
 
-            },', 'metaTagOptimizer': () => { }
+            },', 'metaTagOptimizer': () => { }'
 
                 console.warn('Meta tag optimization failed, using default tags'); }
 
-            },', 'developerGuidance': () => { }
+            },', 'developerGuidance': () => { }'
 
                 console.warn('Developer guidance system failed, continuing silently'); }'
 };
@@ -286,16 +285,16 @@ export default class LocalModeErrorHandler { /**
      */''
     private static _getInitializationSuggestions(component: string, error: Error): string[] { const suggestions: Record<string, string[]> = {', 'faviconGenerator': [',
                 'Check if Canvas API is supported in this browser',
-                'Verify localStorage permissions for caching',]',
-                'Try running with a local server instead of file://']',
+                'Verify localStorage permissions for caching',]','
+                'Try running with a local server instead of file://']','
             ],
-            'metaTagOptimizer': [',
+            'metaTagOptimizer': [','
                 'Check if DOM manipulation permissions are available',
-                'Verify document.head access',]',
+                'Verify document.head access',]','
                 'Try refreshing the page'],
             ] };
 
-        return suggestions[component] || ['Try refreshing the page', 'Check browser console for details];
+        return suggestions[component] || ['Try refreshing the page', 'Check browser console for details];'
     }
     
     /**

@@ -16,7 +16,7 @@ global.__PROD__ = false;
  * 最終統合検証テスト
  * 全機能の動作確認と既存システムとの互換性検証
  */
-describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #106')', () => {
+describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #106')', () => {'
     // タイムアウト設定（CI環境対応）
     jest.setTimeout(30000),
     let analyticsManager: any,
@@ -31,8 +31,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             enableGameAnalytics: true,
             enablePerformanceTracking: true,
             enableBehaviorAnalysis: true,
-            autoInitialize: false
-        });
+            autoInitialize: false,);
     }
     afterEach(async () => {
         // クリーンアップ
@@ -40,8 +39,8 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             await analyticsManager.destroy() }
         if (dashboard) {
             dashboard.destroy() }
-    }');
-    describe('システム全体統合テスト', (') => {
+    }');'
+    describe('システム全体統合テスト', (') => {'
         test('完全システム初期化とコンポーネント連携確認', async () => {
             // 初期化
             await analyticsManager.initialize(),
@@ -50,7 +49,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             expect(analyticsManager.privacyManager).toBeTruthy(),
             expect(analyticsManager.storageManager).toBeTruthy(),
             expect(analyticsManager.dataCollector).toBeTruthy(),
-            expect(analyticsManager.performanceOptimizer).toBeTruthy('),
+            expect(analyticsManager.performanceOptimizer).toBeTruthy('),'
             // 関連コンポーネントの初期化
             const container = document.createElement('div'),
             dashboard = new AnalyticsDashboard(container),
@@ -62,9 +61,9 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             expect(dashboard.chartRenderer).toBeTruthy(),
             expect(dashboard.dataVisualizer).toBeTruthy(),
             expect(trendAnalyzer.storageManager).toBe(analyticsManager.storageManager),
-            expect(comparisonEngine.storageManager).toBe(analyticsManager.storageManager) }');
+            expect(comparisonEngine.storageManager).toBe(analyticsManager.storageManager) }');'
         test('エンドツーエンドワークフロー検証', async () => {
-            await analyticsManager.initialize('),
+            await analyticsManager.initialize('),'
             // 1. セッション開始
             const sessionData = {
                 sessionId: 'integration_test_session',
@@ -77,10 +76,10 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             analyticsManager.startSession(sessionData);
             // 2. プレイヤー行動データ収集
             const interactions: any[] = [],
-            for (let i = 0; i < 50; i++') {
+            for (let i = 0; i < 50; i++') {'
                 const interaction = {
                     bubbleType: ['normal', 'stone', 'rainbow', 'pink'][i % 4],
-                    action: Math.random(') > 0.2 ? 'popped' : 'missed',
+                    action: Math.random(') > 0.2 ? 'popped' : 'missed','
                     reactionTime: Math.random() * 1000 + 200,
                     comboCount: Math.floor(i / 5,
                     currentScore: i * 100,
@@ -97,7 +96,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 analyticsManager.trackPerformanceMetrics({),
                     fps: 55 + Math.random() * 10,
                     memoryUsage: 50 * 1024 * 1024 + Math.random() * 20 * 1024 * 1024,
-        timestamp: Date.now( }');
+        timestamp: Date.now( }');'
             }
             
             // 4. セッション終了
@@ -126,21 +125,21 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             const performanceReport = analyticsManager.generatePerformanceReport();
             expect(performanceReport.summary).toBeTruthy();
             expect(performanceReport.recommendations).toBeInstanceOf(Array);
-        }');
+        }');'
     }
-    describe('既存システムとの互換性検証', (') => {
+    describe('既存システムとの互換性検証', (') => {'
         test('ゲームエンジンとの統合確認', async () => {
             await analyticsManager.initialize(),
             // 既存のゲームエンジンAPIとの互換性テスト
             const mockGameEngine = {
-                getState: (') => ({
+                getState: (') => ({'
                     currentStage: 'stage_1',
                     playerHP: 100,
                     score: 2500,
                     timeRemaining: 180000
                 }),
                 addEventListener: jest.fn(
-        removeEventListener: jest.fn()' };
+        removeEventListener: jest.fn()' };'
             
             // ゲームエンジンからのイベント処理
             const gameEventData = {
@@ -162,7 +161,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     stageProgress: 0.4,
                     playerHP: 100,
                     timeRemaining: 180000 });
-            }).not.toThrow(');
+            }).not.toThrow(');'
         }
         test('プレイヤーデータシステムとの統合確認', async () => {
             await analyticsManager.initialize(),
@@ -170,27 +169,27 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             const mockPlayerData = {
                 getBestScore: (stageId) => 5000,
                 getPlayTime: () => 3600000,
-                getAchievements: (') => ['first_pop', 'combo_master'],
-        updateStats: jest.fn()' };
+                getAchievements: (') => ['first_pop', 'combo_master'],'
+        updateStats: jest.fn()' };'
             
             // プレイヤーデータとの連携確認
             const sessionData = {
                 sessionId: 'compatibility_test',
                 stageId: 'stage_1',
                 difficulty: 'normal',
-                startTime: Date.now(',
+                startTime: Date.now(','
         previousBestScore: mockPlayerData.getBestScore('stage_1'),
             
             analyticsManager.startSession(sessionData),
             // セッション後のプレイヤーデータ更新確認
             const sessionStats = analyticsManager.getAnalyticsStats(),
             expect(sessionStats.playerSkillLevel).toBeTruthy(),
-            expect(sessionStats.playStyleDistribution).toBeTruthy() }');
+            expect(sessionStats.playStyleDistribution).toBeTruthy() }');'
         test('設定システムとの統合確認', async () => {
             await analyticsManager.initialize(),
             // 既存のSettingsManagerとの連携テスト
             const mockSettingsManager = {
-                get: jest.fn((key') => {
+                get: jest.fn((key') => {'
                     const settings = {
                         'analytics.enabled': true,
                         'analytics.privacyMode': false,
@@ -201,14 +200,14 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
         addEventListener: jest.fn( };
             
             // 設定変更への対応確認
-            analyticsManager.updateSettings({'),
+            analyticsManager.updateSettings({'),'
                 enableGameAnalytics: mockSettingsManager.get('analytics.enabled',
         enablePerformanceTracking: mockSettingsManager.get('performance.monitoring') }
             const stats = analyticsManager.getAnalyticsStats();
             expect(stats.isGameAnalyticsEnabled).toBe(true);
-        }');
+        }');'
     }
-    describe('データ整合性とエラー耐性', (') => {
+    describe('データ整合性とエラー耐性', (') => {'
         test('不正データでのエラー処理確認', async () => {
             await analyticsManager.initialize(),
             // 不正データの投入テスト
@@ -223,14 +222,14 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             expect(() => {
                 analyticsManager.trackPerformanceMetrics({
                     fps: NaN,
-                    memoryUsage: undefined });
+                    memoryUsage: undefined,);
             }).not.toThrow();
             // システムが正常に動作し続けることを確認
             const stats = analyticsManager.getAnalyticsStats();
             expect(stats.isInitialized).toBe(true);
-        }');
+        }');'
         test('データ破損からの回復テスト', async () => {
-            await analyticsManager.initialize('),
+            await analyticsManager.initialize('),'
             // 正常なデータを保存
             analyticsManager.startSession({
                 sessionId: 'recovery_test',
@@ -238,7 +237,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 difficulty: 'normal'),
                , startTime: Date.now(
                 previousBestScore: 3000
-            }');
+            }');'
             // 破損データの模擬
             try {
                 await analyticsManager.storageManager.saveData('sessions', {
@@ -250,7 +249,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             const stats = analyticsManager.getAnalyticsStats();
             expect(stats.isInitialized).toBe(true);
             // 正常なデータ保存が継続できることを確認
-            expect((') => {
+            expect((') => {'
                 analyticsManager.recordPlayerInteractionPattern({
                     bubbleType: 'normal',
                     action: 'popped',
@@ -262,13 +261,13 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     timeRemaining: 290000 });
             }).not.toThrow();
         }
-    }');
-    describe('APIエンドポイント検証', (') => {
+    }');'
+    describe('APIエンドポイント検証', (') => {'
         test('全APIエンドポイントの動作確認', async () => {
             await analyticsManager.initialize(),
             // テストデータの準備
             await generateTestData(analyticsManager),
-            analyticsAPI = new AnalyticsAPI(analyticsManager.storageManager'),
+            analyticsAPI = new AnalyticsAPI(analyticsManager.storageManager'),'
             // 基本統計API
             analyticsAPI.registerEndpoint('/stats/basic', async () => {
                 return {
@@ -276,11 +275,11 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     averageScore: 4500,
                     totalPlayTime: 1800000
                 };
-            }');
+            }');'
             const basicStats = await analyticsAPI.getData({
                 endpoint: '/stats/basic' });
             expect(basicStats.totalSessions).toBe(10);
-            expect(basicStats.averageScore).toBe(4500');
+            expect(basicStats.averageScore).toBe(4500');'
             // 集計データAPI
             const aggregatedData = await analyticsAPI.getAggregatedData({
                 table: 'sessions',
@@ -290,31 +289,31 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     avgScore: { $avg: 'finalScore' }
                 });
             expect(aggregatedData.toBeInstanceOf(Array);
-        }');
+        }');'
         test('データエクスポート機能の完全検証', async () => {
             await analyticsManager.initialize(),
             await generateTestData(analyticsManager),
-            exportManager = new ExportManager(analyticsManager.storageManager'),
+            exportManager = new ExportManager(analyticsManager.storageManager'),'
             // JSON形式エクスポート
             const jsonData = await exportManager.exportToJSON({
                 tables: ['sessions'],
                 anonymize: true),
-            expect(typeof jsonData').toBe('string'),
-            expect(() => JSON.parse(jsonData).not.toThrow()'),
+            expect(typeof jsonData').toBe('string'),'
+            expect(() => JSON.parse(jsonData).not.toThrow()'),'
             // CSV形式エクスポート
             const csvData = await exportManager.exportToCSV('sessions', {
                 columns: ['sessionId', 'stageId', 'finalScore']),
-            expect(typeof csvData').toBe('string'),
-            expect(csvData.toContain('sessionId,stageId,finalScore')'),
+            expect(typeof csvData').toBe('string'),'
+            expect(csvData.toContain('sessionId,stageId,finalScore')'),'
             // フィルタ付きエクスポート
             const filteredData = await exportManager.exportFiltered({
                 table: 'sessions',
-                filters: { completed: true };
-                format: 'json');
+                filters: { completed: true,;
+                format: 'json'),
             expect(filteredData.toBeTruthy();
-        }');
+        }');'
     }
-    describe('パフォーマンス要件検証', (') => {
+    describe('パフォーマンス要件検証', (') => {'
         test('レスポンス時間要件確認', async () => {
             await analyticsManager.initialize(),
             // 初期化時間
@@ -327,7 +326,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // データ処理時間
             const processStart = performance.now(),
-            for (let i = 0, i < 100, i++') {
+            for (let i = 0, i < 100, i++') {'
                 analyticsManager.recordPlayerInteractionPattern({
                     bubbleType: 'normal',
                     action: 'popped',
@@ -342,7 +341,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             expect(processTime.toBeLessThan(500); // 500ms以内
             
             await newManager.destroy();
-        }');
+        }');'
         test('メモリ使用量要件確認', async () => {
             const initialMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
             
@@ -358,11 +357,11 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             const memoryIncrease = finalMemory - initialMemory;
             
             expect(memoryIncrease.toBeLessThan(50 * 1024 * 1024); // 50MB以内
-        }');
+        }');'
     }
-    describe('セキュリティとプライバシー検証', (') => {
+    describe('セキュリティとプライバシー検証', (') => {'
         test('データ匿名化の完全性確認', async () => {
-            await analyticsManager.initialize('),
+            await analyticsManager.initialize('),'
             const sensitiveData = {
                 userId: 'user123',
                 email: 'test@example.com',
@@ -382,7 +381,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             expect(anonymizedData.sessionData).toBeTruthy();
             expect(anonymizedData.sessionData.score).toBe(5000);
             expect(anonymizedData.anonymized).toBe(true);
-        }');
+        }');'
         test('GDPR準拠機能の検証', async () => {
             await analyticsManager.initialize(),
             // データアクセス権
@@ -390,14 +389,14 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             expect(exportedData.toBeTruthy(),
             // データ削除権
             await generateTestData(analyticsManager, 50),
-            await analyticsManager.deleteData('),
+            await analyticsManager.deleteData('),'
             // データが削除されたことを確認
             const remainingData = await analyticsManager.storageManager.getData('sessions', {),
-            expect(Object.keys(remainingData.length).toBe(0) }');
+            expect(Object.keys(remainingData.length).toBe(0) }');'
     }
-    describe('要件適合性最終検証', (') => {
+    describe('要件適合性最終検証', (') => {'
         test('要件1: プレイヤー行動分析システム', async () => {
-            await analyticsManager.initialize('),
+            await analyticsManager.initialize('),'
             // セッション記録
             analyticsManager.startSession({
                 sessionId: 'req1_test',
@@ -405,7 +404,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 difficulty: 'normal'),
                , startTime: Date.now(
                 previousBestScore: 3000
-            }');
+            }');'
             // インタラクション記録
             analyticsManager.recordPlayerInteractionPattern({
                 bubbleType: 'rainbow',
@@ -415,7 +414,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 currentScore: 1200,
                 stageProgress: 0.3,
                 playerHP: 85,
-                timeRemaining: 210000)'),
+                timeRemaining: 210000)'),'
             // 離脱記録
             analyticsManager.updatePlayerBehaviorAnalysis({
                 exitReason: 'quit',
@@ -425,25 +424,25 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 hpRemaining: 85),
             // 長時間プレイマークの確認
             const stats = analyticsManager.getAnalyticsStats(),
-            expect(stats.isInitialized).toBe(true) }');
+            expect(stats.isInitialized).toBe(true) }');'
         test('要件2: ゲームバランス分析システム', async () => {
-            await analyticsManager.initialize('),
+            await analyticsManager.initialize('),'
             // バブル生成記録
             analyticsManager.trackGameBalance({
                 bubbleSpawn: {
                     bubbleType: 'boss',
                     spawnPosition: { x: 400, y: 200 });
-                    spawnTiming: Date.now(',
+                    spawnTiming: Date.now(','
                     surroundingBubbles: ['normal', 'stone']
                 }
-            }');
+            }');'
             // スコア獲得記録
             analyticsManager.trackGameBalance({
                 scoreEvent: {
                     scoreGain: 500,
                     source: 'combo_bonus',
                     comboMultiplier: 2.0
-                })');
+                })');'
             // アイテム使用記録
             analyticsManager.trackGameBalance({
                 itemUsage: {
@@ -454,7 +453,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 });
             const stats = analyticsManager.getAnalyticsStats();
             expect(stats.dataCollector).toBeTruthy();
-        }');
+        }');'
         test('要件3-10: 全要件統合確認', async () => {
             await analyticsManager.initialize(),
             // パフォーマンス分析
@@ -462,10 +461,10 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 fps: 58,
                 memoryUsage: 45 * 1024 * 1024,
                 loadTimes: { total: 1200 });
-            }');
+            }');'
             // エラー追跡
             const testError = new Error('Test error');
-            analyticsManager.trackError(testError, { context: 'integration_test' )',
+            analyticsManager.trackError(testError, { context: 'integration_test' )','
             // データ可視化
             const container = document.createElement('div'),
             dashboard = new AnalyticsDashboard(container),
@@ -482,7 +481,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
 });
 // ヘルパー関数: テストデータ生成
 async function generateTestData(analyticsManager, count = 100) {
-    const sessionId = `test_session_${Date.now('})}`;
+    const sessionId = `test_session_${Date.now('})}`;'
     
     analyticsManager.startSession({
         sessionId: sessionId,
@@ -491,9 +490,9 @@ async function generateTestData(analyticsManager, count = 100) {
        , startTime: Date.now(
         previousBestScore: Math.floor(Math.random() * 5000 });
     for (let i = 0; i < count; i++) {
-        analyticsManager.recordPlayerInteractionPattern({'),
+        analyticsManager.recordPlayerInteractionPattern({'),'
             bubbleType: ['normal', 'stone', 'rainbow', 'pink', 'clock'][Math.floor(Math.random() * 5)],
-            action: Math.random(') > 0.25 ? 'popped' : 'missed',
+            action: Math.random(') > 0.25 ? 'popped' : 'missed','
             reactionTime: Math.random() * 1000 + 100,
             comboCount: Math.floor(Math.random() * 20,
             currentScore: i * 75 + Math.floor(Math.random() * 50,
@@ -509,7 +508,7 @@ async function generateTestData(analyticsManager, count = 100) {
     }
     
     analyticsManager.updatePlayerBehaviorAnalysis({),
-        exitReason: Math.random(') > 0.7 ? 'quit' : 'completed',
+        exitReason: Math.random(') > 0.7 ? 'quit' : 'completed','
         finalScore: count * 75,
         completed: Math.random() > 0.3,
         timeRemaining: Math.max(0, 300000 - count * 2500),
@@ -518,5 +517,5 @@ async function generateTestData(analyticsManager, count = 100) {
         maxCombo: Math.floor(count / 8,
         activeItems: []
     });
-    await new Promise(resolve => setTimeout(resolve, 100)');
+    await new Promise(resolve => setTimeout(resolve, 100)');'
 }

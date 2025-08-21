@@ -5,30 +5,30 @@
 
 // 型定義
 interface EventData { event_category?: string,
-    event_label?: string,
-    session_id?: string,
-    game_version?: string,
-    [key: string]: any }
+    event_label?: string;
+    session_id?: string;
+    game_version?: string;
+    [key: string]: any;
 
 interface WebVitalMetric { name: string,
-    id: string,
-    value: number  }
+    id: string;
+    value: number;
 
 interface MemoryInfo { used: number,
-    total: number,
-    limit: number }
+    total: number;
+    limit: number;
 
 interface PerformanceDetails { fps?: number,
-    timestamp?: number,
-    [key: string]: any }
+    timestamp?: number;
+    [key: string]: any;
 
 interface ErrorData { error_message: string,
-    error_stack?: string,
-    context: string,
-    session_id: string,
-    timestamp: number,
-    user_agent: string,
-    url: string  }
+    error_stack?: string;
+    context: string;
+    session_id: string;
+    timestamp: number;
+    user_agent: string;
+    url: string;
 
 // グローバル変数の型定義
 declare global { const __PROD__: boolean,
@@ -39,7 +39,7 @@ declare global { const __PROD__: boolean,
     const __BUILD_TIME__: string,
     
     interface Window {
-        gtag?: (command: string, targetId: string, parameters?: any) => void,
+        gtag?: (command: string, targetId: string, parameters?: any) => void;
         Sentry?: {
             init: (config: any) => void,
             setTag: (key: string, value: string) => void,
@@ -55,18 +55,18 @@ declare global { const __PROD__: boolean,
     interface Performance { memory?: {
             usedJSHeapSiz,e: number,
             totalJSHeapSize: number,
-    jsHeapSizeLimit: number  }
+    jsHeapSizeLimit: number,
 }
 
 class Analytics { private isEnabled: boolean
-    private sessionId: string,
+    private sessionId: string;
     private, startTime: number,
     constructor() {
 
         this.isEnabled = (typeof, __PROD__ !== 'undefined' ? __PROD__ : false') && ',
                         (typeof, __ANALYTICS_ID__ !== 'undefined' ? !!__ANALYTICS_ID__: false,
-        this.sessionId = this.generateSessionId(),
-        this.startTime = Date.now(),
+        this.sessionId = this.generateSessionId();
+        this.startTime = Date.now();
         
         if (this.isEnabled) {
             this.initializeAnalytics(),
@@ -78,41 +78,40 @@ class Analytics { private isEnabled: boolean
      * Initialize Google Analytics or other analytics providers'
      */''
     private initializeAnalytics('''
-        const analyticsId = typeof __ANALYTICS_ID__ !== 'undefined' ? __ANALYTICS_ID__: ',
+        const analyticsId = typeof __ANALYTICS_ID__ !== 'undefined' ? __ANALYTICS_ID__: ','
         const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ',';
         const buildTime = typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__: ')';
 
-        if(analyticsId && typeof, window.gtag !== 'undefined') {
+        if (analyticsId && typeof, window.gtag !== 'undefined') {
             // Google Analytics 4
             window.gtag('config', analyticsId, {''
-                page_title: 'BubblePop Game),
-                page_location: window.location.href',
+                page_title: 'BubblePop Game),'
+                page_location: window.location.href','
     custom_map: { }
 
                     custom_parameter_1: 'game_version') 
-    }');
-            ';
+    }');'
+            ';'
             // Set custom dimensions
             window.gtag('config', analyticsId, { game_version: version)
-               , build_time: buildTime 
-    }
+               , build_time: buildTime,
 
     /**
      * Initialize error tracking (Sentry, or similar)'
      */''
     private initializeErrorTracking('''
-        const sentryDsn = typeof __SENTRY_DSN__ !== 'undefined' ? __SENTRY_DSN__: ',
-        const isProd = typeof __PROD__ !== 'undefined' ? __PROD__: false,';
-        const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ')';
+        const sentryDsn = typeof __SENTRY_DSN__ !== 'undefined' ? __SENTRY_DSN__: ','
+        const isProd = typeof __PROD__ !== 'undefined' ? __PROD__: false,';'
+        const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ')',
 
-        if(sentryDsn && typeof, window.Sentry !== 'undefined') {
+        if (sentryDsn && typeof, window.Sentry !== 'undefined') {
             window.Sentry.init({'
-                dsn: sentryDsn,',
+                dsn: sentryDsn,','
                 environment: isProd ? 'production' : 'development'),
                 release: version),
                 beforeSend(event: any) {
                     // Filter out non-critical errors
-                    if(event.exception) {
+                    if (event.exception) {
                         const error = event.exception.values[0],
                         if (error && error.type === 'ChunkLoadError') {
             }
@@ -123,15 +122,15 @@ class Analytics { private isEnabled: boolean
 
                 }'}');
 
-            window.Sentry.setTag('game.version', version';
-            window.Sentry.setTag('game.session', this.sessionId';
+            window.Sentry.setTag('game.version', version';'
+            window.Sentry.setTag('game.session', this.sessionId';'
         }
     }
 
     /**
      * Initialize performance tracking'
      */''
-    private initializePerformanceTracking()';
+    private initializePerformanceTracking()';'
         if(typeof, window.webVitals !== 'undefined' {'
             window.webVitals.getCLS(this.sendWebVital.bind(this),
             window.webVitals.getFID(this.sendWebVital.bind(this),
@@ -150,7 +149,7 @@ class Analytics { private isEnabled: boolean
     trackEvent(eventName: string, parameters: EventData = { ): void {''
         if(!this.isEnabled) return,
 
-        const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ',
+        const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ','
         const eventData: EventData = {''
             event_category: 'game',
             event_label: eventName,
@@ -158,18 +157,17 @@ class Analytics { private isEnabled: boolean
     game_version: version,
             ...parameters,
 
-        if(typeof, window.gtag !== 'undefined') {', ',
+        if (typeof, window.gtag !== 'undefined') {', '
+}
 
-         }
-
-            window.gtag('event', eventName, eventData'; }
+            window.gtag('event', eventName, eventData'; }'
         }
-';
+';'
         // Also log to console in development
         const isDev = typeof __DEV__ !== 'undefined' ? __DEV__: false,
-        if(isDev) {', ' }
+        if (isDev) {', ' }
 
-            console.log('Analytics Event:', eventName, eventData'; }
+            console.log('Analytics Event:', eventName, eventData'; }'
 }
 
     /**
@@ -187,7 +185,7 @@ class Analytics { private isEnabled: boolean
     trackGameEnd(stageName: string, score: number, duration: number, reason: string): void { ''
         this.trackEvent('game_end', {
             stage_name: stageName),
-            final_score: score',
+            final_score: score','
     game_duration: duration,')',
             end_reason: reason, // 'completed', 'game_over', 'quit'),
             timestamp: Date.now(  });
@@ -198,9 +196,9 @@ class Analytics { private isEnabled: boolean
      */''
     trackBubbleInteraction(bubbleType: string, action: string, score: number = 0): void { ''
         this.trackEvent('bubble_interaction', {'
-            bubble_type: bubbleType,',
+            bubble_type: bubbleType,','
             action: action, // 'popped', 'missed', 'expired'),
-            score_gained: score  }
+            score_gained: score,
 
     /**
      * Track performance issues'
@@ -209,11 +207,11 @@ class Analytics { private isEnabled: boolean
         this.trackEvent('performance_issue', {
                 issue_type: issueType),
             details: JSON.stringify(details,
-    user_agent: navigator.userAgent)',
+    user_agent: navigator.userAgent)','
             timestamp: Date.now(),' 
             })'
 
-        }');
+        }');'
     }
 
     /**
@@ -224,26 +222,26 @@ class Analytics { private isEnabled: boolean
 
         const errorData: ErrorData = {'
             error_message: error.message,
-            error_stack: error.stack || ',
+            error_stack: error.stack || ','
     context: context,
             session_id: this.sessionId,
-            timestamp: Date.now()',
+            timestamp: Date.now()','
         if(typeof, window.Sentry !== 'undefined' {'
             window.Sentry.captureException(error, {
                 tags: {
          }
-                    context: context })'
+                    context: context,)'
                 },')'
-                extra: errorData');
+                extra: errorData');'
         }
-';
+';'
         // Send to Google Analytics as exception
-        if(typeof, window.gtag !== 'undefined') {
+        if (typeof, window.gtag !== 'undefined') {
 
             window.gtag('event', 'exception', {)
                 description: error.message,
-    fatal: false }
-                ...errorData';
+    fatal: false,
+                ...errorData';'
         }
     }
 
@@ -251,11 +249,11 @@ class Analytics { private isEnabled: boolean
      * Send Web Vitals metrics'
      */''
     private sendWebVital(metric: WebVitalMetric): void { ''
-        if(typeof, window.gtag !== 'undefined') {
+        if (typeof, window.gtag !== 'undefined') {
 
             window.gtag('event', metric.name, {''
                 event_category: 'Web Vitals',')',
-                event_label: metric.id',
+                event_label: metric.id','
                 value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value, non_interaction: true)  }
             });
         }
@@ -272,14 +270,14 @@ class Analytics { private isEnabled: boolean
             frameCount++,
             const currentTime = performance.now(),
             
-            if(currentTime - lastTime >= 1000) {
+            if (currentTime - lastTime >= 1000) {
             
                 const fps = Math.round((frameCount * 1000) / (currentTime - lastTime)),
-                ' }
+                ' }'
 
-                if(fps < 30) { }'
+                if (fps < 30) { }'
 
-                    this.trackPerformanceIssue('low_fps', { fps, timestamp: currentTime  }
+                    this.trackPerformanceIssue('low_fps', { fps, timestamp: currentTime,
                 
                 frameCount = 0;
                 lastTime = currentTime;
@@ -291,7 +289,7 @@ class Analytics { private isEnabled: boolean
         requestAnimationFrame(trackFPS);
 
         // Track memory usage (if, available);
-        if(performance.memory) {
+        if (performance.memory) {
             setInterval(() => { 
                 const memoryInfo: MemoryInfo = {
                     used: performance.memory!.usedJSHeapSize }
@@ -300,24 +298,24 @@ class Analytics { private isEnabled: boolean
     };
                 const usagePercent = (memoryInfo.used / memoryInfo.limit) * 100;
 
-                if(usagePercent > 80) {', ' }
+                if (usagePercent > 80) {', ' }
 
                     this.trackPerformanceIssue('high_memory_usage', memoryInfo); }
-}, 30000'; // Check every 30 seconds
+}, 30000'; // Check every 30 seconds'
         }
     }
 
     /**
      * Generate unique session ID
      */''
-    private generateSessionId()';
+    private generateSessionId()';'
         return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
     /**
      * Track page visibility changes'
      */''
-    trackVisibilityChange()';
+    trackVisibilityChange()';'
         document.addEventListener('visibilitychange', () => {  ''
             this.trackEvent('visibility_change', {
                 visible: !document.hidden) })
@@ -338,15 +336,15 @@ class Analytics { private isEnabled: boolean
                 engagementTime += Date.now() - lastActiveTime; }
 
             }''
-            lastActiveTime = Date.now()';
-        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart].forEach(event => {  ),
+            lastActiveTime = Date.now()';'
+        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart].forEach(event => {  ),'
             document.addEventListener(event, () => {
-                if(!isActive) {
+                if (!isActive) {
     
 }
                     isActive = true; }
                     lastActiveTime = Date.now(); }
-}, { passive: true });
+}, { passive: true,);
         });
 
         // Track inactivity
@@ -358,7 +356,7 @@ class Analytics { private isEnabled: boolean
 
         // Send engagement data periodically
         setInterval(() => { ''
-            if(engagementTime > 0) {
+            if (engagementTime > 0) {
 
                 this.trackEvent('user_engagement', { }
                     engagement_time: engagementTime) }

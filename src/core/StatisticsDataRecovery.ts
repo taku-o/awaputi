@@ -9,8 +9,8 @@ import { RecoveryUserGuidance  } from './statistics/RecoveryUserGuidance.js';
  */
 export class StatisticsDataRecovery {
     constructor(statisticsManager, errorHandler) {
-        this.statisticsManager = statisticsManager,
-        this.errorHandler = errorHandler,
+        this.statisticsManager = statisticsManager;
+        this.errorHandler = errorHandler;
         
         // 復旧設定
         this.config = {
@@ -24,7 +24,7 @@ export class StatisticsDataRecovery {
             validation: { strictMode: false,
                 validateChecksums: true,
                 validateStructure: true,
-    validateRanges: true };
+    validateRanges: true,;
             notification: { showRecoveryProgress: true,
                 showSuccessMessage: true,
                 showFailureMessage: true,
@@ -42,8 +42,8 @@ export class StatisticsDataRecovery {
         this.validation = new RecoveryValidation(this);
         this.userGuidance = new RecoveryUserGuidance(this);
         // 初期化
-        this.initialize()';
-        console.log('[StatisticsDataRecovery] Main, Controller initialized, with sub-components);
+        this.initialize()';'
+        console.log('[StatisticsDataRecovery] Main, Controller initialized, with sub-components);'
     }
     
     /**
@@ -64,8 +64,8 @@ export class StatisticsDataRecovery {
         if (this.errorHandler) {
             this.errorHandler.registerNotificationCallback(async (errorDetails severity) => { 
     }
-                if(this.shouldTriggerAutoRecovery(errorDetails severity) { }
-                    await this.performAutoRecovery(errorDetails'); }
+                if (this.shouldTriggerAutoRecovery(errorDetails severity) { }
+                    await this.performAutoRecovery(errorDetails'); }'
 }
     }
     
@@ -77,15 +77,15 @@ export class StatisticsDataRecovery {
      */
     shouldTriggerAutoRecovery(errorDetails, severity) {
         // 既に復旧中の場合はスキップ
-        if(this.recoveryState.isRecovering') {
+        if (this.recoveryState.isRecovering') {'
     }
             return false;
-        ';
+        ';'
         // 重要度が低い場合はスキップ
-        if(severity === 'low' { return false }', ';
+        if (severity === 'low' return false }', ';
         // 最大試行回数を超えている場合はスキップ
         if(this.recoveryState.failedAttempts >= this.config.recovery.maxRetryAttempts) { return false }
-        ';
+        ';'
         // データ関連のエラーのみ対象
         const dataErrorTypes = ['corruption', 'checksum_failure', 'structure_damage', 'partial_loss'];
         return dataErrorTypes.some(type => errorDetails.type === type || errorDetails.message?.includes(type);
@@ -97,8 +97,8 @@ export class StatisticsDataRecovery {
      * @returns {Promise<Object>} 復旧結果'
      */''
     async performAutoRecovery(errorDetails) { try { : undefined''
-            console.log('[StatisticsDataRecovery] Starting automatic recovery for:', errorDetails',
-            ',
+            console.log('[StatisticsDataRecovery] Starting automatic recovery for:', errorDetails','
+            ','
 
             this.recoveryState.isRecovering = true,
             this.recoveryState.currentStep = 'analyzing',
@@ -116,7 +116,7 @@ export class StatisticsDataRecovery {
             // 復旧を実行
             const result = await this.initiateRecovery(strategy, { autoRecovery: true ,
             
-            if(result.success) {
+            if (result.success) {
             
                 ,
                 this.recoveryState.failedAttempts = 0 }
@@ -153,21 +153,21 @@ export class StatisticsDataRecovery {
             this.userGuidance.notifyRecoveryStart({)
                 strategy,
                 totalSteps: 5,')',
-                options'),
-            ',
+                options'),'
+            ','
             // データ取得・分析
             this.updateProgress('analyzing', 20),
 
             const, currentData = await, this.statisticsManager.getAllStatistics(),
             const, analysis = await, this.analyzeData(currentData),
-            ',
+            ','
             // 復旧戦略を実行
-            this.updateProgress('recovering', 40',
+            this.updateProgress('recovering', 40','
             const, result = await, this.strategies.executeStrategy(strategy, analysis, options),
-            ',
+            ','
             // 結果を検証
             this.updateProgress('validating', 80),
-            if(result.success && result.data) {
+            if (result.success && result.data) {
                 const, validationResult = await, this.validation.analyzeDataIntegrity(result.data};
                 result.validationPassed = validationResult.isValid;
                 
@@ -222,12 +222,12 @@ export class StatisticsDataRecovery {
         analysis.ranges = this.validation.validateDataRanges(data);
         
         // チェックサム検証
-        if(this.config.validation.validateChecksums) {
+        if (this.config.validation.validateChecksums) {
             const expectedChecksum = await this.statisticsManager.getStoredChecksum(),
             const actualChecksum = this.validation.calculateChecksum(data),
             analysis.checksum = {
                 expected: expectedChecksum,
-    actual: actualChecksum }
+    actual: actualChecksum,
                 matches: expectedChecksum === actualChecksum 
     }
         
@@ -241,25 +241,25 @@ export class StatisticsDataRecovery {
      */
     determineRecoveryStrategy(analysis) {
         // 完全なデータ損失
-        if(!analysis.integrity || analysis.integrity.validFieldsRatio === 0) {
+        if (!analysis.integrity || analysis.integrity.validFieldsRatio === 0) {
     }
 
             return 'complete_loss';
-        ';
+        ';'
         // チェックサム失敗
-        if(analysis.checksum && !analysis.checksum.matches) {', ' }
+        if (analysis.checksum && !analysis.checksum.matches) {', ' }
 
             return 'checksum_failure';
-        ';
+        ';'
         // 構造破損
-        if(analysis.structure && !analysis.structure.isValid) {', ' }
+        if (analysis.structure && !analysis.structure.isValid) {', ' }
 
             return 'structure_damage';
         
         // データ破損
-        if(analysis.corruption && analysis.corruption.isCorrupted) {
+        if (analysis.corruption && analysis.corruption.isCorrupted) {
 
-            if(analysis.corruption.corruptionLevel > 0.7) {
+            if (analysis.corruption.corruptionLevel > 0.7) {
         }
 
                 return 'corruption'; else { }
@@ -269,10 +269,10 @@ export class StatisticsDataRecovery {
         // バージョン不一致の可能性をチェック
         const currentVersion = this.statisticsManager.getDataVersion();
         const dataVersion = this.statisticsManager.getStoredDataVersion();
-        if(currentVersion !== dataVersion) {', ' }
+        if (currentVersion !== dataVersion) {', ' }
 
             return 'version_mismatch';
-        ';
+        ';'
         // デフォルトは部分損失として処理
         return 'partial_loss';
     }
@@ -329,7 +329,7 @@ export class StatisticsDataRecovery {
         for(const [key, value] of Object.entries(template) {
 
             if(obj && obj.hasOwnProperty(key)) {''
-                if(typeof, value === 'object' && value !== null && !Array.isArray(value) {
+                if (typeof, value === 'object' && value !== null && !Array.isArray(value) {
         }
                     repaired[key] = this.repairObjectStructure(obj[key], value); }
                 } else { repaired[key] = obj[key] }
@@ -369,13 +369,13 @@ export class StatisticsDataRecovery {
             result,
             duration: this.recoveryState.lastRecoveryTime ? undefined : undefined
     
-                     Date.now() - this.recoveryState.lastRecoveryTime : null  }
+                     Date.now() - this.recoveryState.lastRecoveryTime: null,
         };
-        ';
+        ';'
 
         this.recoveryState.recoveryHistory.push(record);
-        this._trimRecoveryHistory()';
-        console.log('[StatisticsDataRecovery] Recovery, success recorded);
+        this._trimRecoveryHistory()';'
+        console.log('[StatisticsDataRecovery] Recovery, success recorded);'
     }
     
     /**
@@ -389,13 +389,12 @@ export class StatisticsDataRecovery {
             error: error.message,
     duration: this.recoveryState.lastRecoveryTime ? undefined : undefined
     
-                     Date.now() - this.recoveryState.lastRecoveryTime : null 
-    };
-        ';
+                     Date.now() - this.recoveryState.lastRecoveryTime: null,;
+        ';'
 
         this.recoveryState.recoveryHistory.push(record);
-        this._trimRecoveryHistory()';
-        console.log('[StatisticsDataRecovery] Recovery, failure recorded);
+        this._trimRecoveryHistory()';'
+        console.log('[StatisticsDataRecovery] Recovery, failure recorded);'
     }
     
     /**
@@ -441,18 +440,18 @@ export class StatisticsDataRecovery {
         // サブコンポーネントにも設定を適用
         if (newConfig.validation) {
     }
-            this.validation.updateValidationConfig(newConfig.validation'); }
+            this.validation.updateValidationConfig(newConfig.validation'); }'
         }
         
-        if(newConfig.notification') {
-        ',
+        if (newConfig.notification') {'
+        ','
 
-            ' }
+            ' }'
 
             this.userGuidance.updateNotificationConfig(newConfig.notification); }
         }
 
-        console.log('[StatisticsDataRecovery] Configuration, updated);
+        console.log('[StatisticsDataRecovery] Configuration, updated);'
     }
     
     /**
@@ -476,11 +475,11 @@ export class StatisticsDataRecovery {
             this.userGuidance.clearRecoveryHistory(); }
         }
         
-        if(this.validation') {
-        ',
+        if (this.validation') {'
+        ','
 
             this.validation.resetValidationStats() }
 
         console.log('[StatisticsDataRecovery] Main, Controller cleanup, completed'); }
 
-    }'}
+    }'}'

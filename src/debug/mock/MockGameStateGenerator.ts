@@ -4,25 +4,25 @@
  */
 
 interface GameState { id: string,
-    level: number,
-    score: number,
-    lives: number,
-    bubbles: any[],
+    level: number;
+    score: number;
+    lives: number;
+    bubbles: any[];
     player: {
         ,x: number,
         y: number,
-    angle: number  };
-    gameMode: string;
-    timeRemaining: number;
+    angle: number,;
+    gameMode: string,
+    timeRemaining: number,
     powerUps: string[],
-    timestamp: number;
+    timestamp: number,
 }
 
 interface StateGenerationOptions { level?: number,
-    minScore?: number,
-    maxScore?: number,
-    bubbleCount?: number,
-    gameMode?: string }
+    minScore?: number;
+    maxScore?: number;
+    bubbleCount?: number;
+    gameMode?: string;
 
 export class MockGameStateGenerator {
     private gameModes = ['classic', 'puzzle', 'arcade', 'challenge'],
@@ -59,8 +59,8 @@ export class MockGameStateGenerator {
             
             states.push(this.generateGameState({)
                 level,
-                minScore: score }
-                maxScore: score + 1000)); 
+                minScore: score,
+                maxScore: score + 1000)), 
     }
 
         return states;
@@ -81,8 +81,8 @@ export class MockGameStateGenerator {
             id: `bubble_${i}`)
             x: Math.random() * 800,
             y: Math.random() * 400 + 50,
-            color: this.getRandomColor()',
-    type: 'normal');
+            color: this.getRandomColor()','
+    type: 'normal'),
         }) }
 
     private generateRandomPowerUps(): string[] { const count = Math.floor(Math.random() * 3),
@@ -92,10 +92,10 @@ export class MockGameStateGenerator {
     private getRandomColor('',
         const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'])
         return colors[Math.floor(Math.random() * colors.length)] }
-';
+';'
 
     private generateId(): string { }'
 
         return `gamestate_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`;
 
-    }'}
+    }'}'

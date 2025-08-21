@@ -10,109 +10,106 @@
 
 // 型定義
 export interface DataProcessorConfig { outlierThreshold: number,
-    minimumSampleSize: number,
-    maximumSampleSize: number,
-    defaultSamplingRate: number,
-    maxProcessingTime: number  }
+    minimumSampleSize: number;
+    maximumSampleSize: number;
+    defaultSamplingRate: number;
+    maxProcessingTime: number;
 
 export interface QualityMetrics { completeness: number,
-    consistency: number,
-    accuracy: number,
-    validity: number }
+    consistency: number;
+    accuracy: number;
+    validity: number;
 
 export interface ProcessedComparisonData { timestamp: string,
-    original?: ComparisonInputData,
-    processed: NormalizedComparisonData,
-    metadata: ProcessingMetadata,
-    error?: string }
+    original?: ComparisonInputData;
+    processed: NormalizedComparisonData;
+    metadata: ProcessingMetadata;
+    error?: string;
 
 export interface ComparisonInputData { dataset1: number[],
-    dataset2: number[],
+    dataset2: number[];
     metadata?: Record<string, any> }
 
 export interface NormalizedComparisonData { dataset1: number[],
-    dataset2: number[],
-    metadata: NormalizationMetadata
-     }
+    dataset2: number[];
+    metadata: NormalizationMetadata;
 
 export interface NormalizationMetadata { normalizationType: NormalizationType,
-    timestamp: string,
-    outlierRemoval?: OutlierRemovalMetadata,
-    sampling?: SamplingMetadata,
-    [key: string]: any }
+    timestamp: string;
+    outlierRemoval?: OutlierRemovalMetadata;
+    sampling?: SamplingMetadata;
+    [key: string]: any;
 
 export interface ProcessingMetadata { processingTime: number,
-    qualityScore: number,
-    warnings: string[],
-    errors: string[]  }
+    qualityScore: number;
+    warnings: string[];
+    errors: string[];
 
 export interface ValidationResult { valid: boolean,
-    errors: string[],
-    warnings: string[],
-    quality?: number }
+    errors: string[];
+    warnings: string[];
+    quality?: number;
 
 export interface DatasetValidationResult { errors: string[],
-    warnings: string[] }
+    warnings: string[];
 
 export interface OutlierRemovalMetadata { threshold: number,
-    timestamp: string,
-    dataset1: OutlierStats,
-    dataset2: OutlierStats
-    }
+    timestamp: string;
+    dataset1: OutlierStats;
+    dataset2: OutlierStats;
 
 export interface OutlierStats { original: number,
-    cleaned: number,
-    removed: number }
+    cleaned: number;
+    removed: number;
 
 export interface SamplingMetadata { method: SamplingMethod,
-    rate: number,
-    timestamp: string }
+    rate: number;
+    timestamp: string;
 
 export interface ProcessingOptions { removeOutliers?: boolean,
-    normalizationType?: NormalizationType,
-    targetMin?: number,
-    targetMax?: number,
-    outlierThreshold?: number,
-    sampling?: SamplingOptions }
+    normalizationType?: NormalizationType;
+    targetMin?: number;
+    targetMax?: number;
+    outlierThreshold?: number;
+    sampling?: SamplingOptions;
 
 export interface SamplingOptions { method?: SamplingMethod,
-    rate?: number }
+    rate?: number;
 
 export interface StatisticalSummary { mean: number,
-    median: number,
-    stddev: number,
-    range: number,
-    count: number  }
+    median: number;
+    stddev: number;
+    range: number;
+    count: number;
 
 export interface DataQualityReport { overallQuality: number,
-    dataset1Quality: number,
-    dataset2Quality: number,
-    completenessScore: number,
-    varianceScore: number,
-    sizeScore: number,
-    balanceScore: number }
+    dataset1Quality: number;
+    dataset2Quality: number;
+    completenessScore: number;
+    varianceScore: number;
+    sizeScore: number;
+    balanceScore: number;
 
 export interface NormalizationResult { data: number[],
-    method: NormalizationType,
-    parameters: NormalizationParameters
-    }
+    method: NormalizationType;
+    parameters: NormalizationParameters;
 
 export interface NormalizationParameters { mean?: number,
-    stddev?: number,
-    min?: number,
-    max?: number,
-    median?: number,
-    iqr?: number }
+    stddev?: number;
+    min?: number;
+    max?: number;
+    median?: number;
+    iqr?: number;
 
 export interface SamplingResult { originalSize: number,
-    sampledSize: number,
-    method: SamplingMethod,
-    rate: number,
-    data: number[]  }
+    sampledSize: number;
+    method: SamplingMethod;
+    rate: number;
+    data: number[];
 
 export interface QuantileResult { value: number,
-    quantile: number,
-    position: number }
+    quantile: number;
+    position: number;
 
 // 列挙型
 export type NormalizationType = 'none' | 'z-score' | 'min-max' | 'robust';
@@ -142,7 +139,7 @@ export const VALIDATION_THRESHOLDS = { minValidRatio: 0.5,
     warningValidRatio: 0.8,
     maxOutlierRatio: 0.1,
     minBalanceRatio: 0.5  } as const;
-';
+';'
 // ユーティリティ関数
 export function isValidNumber(value: any): value is number {,
     return typeof value === 'number' && !isNaN(value) && isFinite(value) }
@@ -173,7 +170,7 @@ export function calculateBasicStats(data: number[]): StatisticalSummary { if (da
 export function calculateMedianFromSorted(sortedData: number[]): number { const n = sortedData.length,
     if (n === 0) return 0,
     
-    if(n % 2 === 0) {
+    if (n % 2 === 0) {
     
 }
         return (sortedData[n / 2 - 1] + sortedData[n / 2]) / 2; else { return sortedData[Math.floor(n / 2)],
@@ -186,7 +183,7 @@ export function calculateQuantileFromSorted(sortedData: number[], quantile: numb
     const lower = Math.floor(index),
     const upper = Math.ceil(index),
     
-    if(lower === upper) {
+    if (lower === upper) {
     
 }
         return sortedData[lower];
@@ -194,7 +191,7 @@ export function calculateQuantileFromSorted(sortedData: number[], quantile: numb
     const weight = index - lower;
     return sortedData[lower] * (1 - weight) + sortedData[upper] * weight;
 }
-';
+';'
 
 export function interpretQualityScore(score: number): string {,
     if(score >= QUALITY_THRESHOLDS.excellent) return 'excellent',
@@ -202,10 +199,10 @@ export function interpretQualityScore(score: number): string {,
     if(score >= QUALITY_THRESHOLDS.acceptable) return 'acceptable',
     if(score >= QUALITY_THRESHOLDS.poor) return 'poor',
     return 'very_poor' }
-';
+';'
 
 export function createProcessingError(message: string, processingTime: number = 0): ProcessedComparisonData { return {,
-        timestamp: new Date().toISOString()',
+        timestamp: new Date().toISOString()','
     normalizationType: 'none'
             };
                 timestamp: new Date().toISOString(); 
@@ -218,7 +215,7 @@ export function createProcessingError(message: string, processingTime: number = 
     } }
 
 export class ComparisonDataProcessor {
-    private config: DataProcessorConfig,
+    private config: DataProcessorConfig;
     private, qualityMetrics: QualityMetrics,
     constructor(config: Partial<DataProcessorConfig> = {) {
         this.config = { ...DEFAULT_CONFIG, ...config,
@@ -232,7 +229,7 @@ export class ComparisonDataProcessor {
         
         try {
             const processedData: ProcessedComparisonData = {''
-                timestamp: new Date().toISOString()',
+                timestamp: new Date().toISOString()','
     normalizationType: 'none'),
                         timestamp: new Date().toISOString(  }
                 }
@@ -243,7 +240,7 @@ export class ComparisonDataProcessor {
     };
             // データ検証
             const validation = this.validateComparisonData(rawData);
-            if(!validation.valid) {
+            if (!validation.valid) {
                 processedData.metadata.errors = validation.errors }
                 return processedData;
             
@@ -254,7 +251,7 @@ export class ComparisonDataProcessor {
             if (options.removeOutliers !== false) { processedData.processed = this.removeOutliers(processedData.processed, options) }
             
             // サンプリング（必要な場合）
-            if(options.sampling && this.shouldSample(processedData.processed) { processedData.processed = this.sampleData(processedData.processed, options.sampling) }
+            if (options.sampling && this.shouldSample(processedData.processed) { processedData.processed = this.sampleData(processedData.processed, options.sampling) }
             
             // データ品質計算
             processedData.metadata.qualityScore = this.calculateDataQuality(processedData.processed);
@@ -276,11 +273,11 @@ export class ComparisonDataProcessor {
     validateComparisonData(data: any): ValidationResult { const errors: string[] = [],
         const warnings: string[] = [],
         // 基本構造チェック
-        if(!data || typeof, data !== 'object') {', ' }
+        if (!data || typeof, data !== 'object') {', ' }
 
             errors.push('Data, must be, an object'); }
             return { valid: false, errors, warnings }
-        ';
+        ';'
         // データセットの存在チェック
         const requiredFields = ['dataset1', 'dataset2'];
         for (const field of requiredFields) { if (!data[field]) { }
@@ -288,14 +285,14 @@ export class ComparisonDataProcessor {
             }
         }
 
-        if(errors.length > 0) {
+        if (errors.length > 0) {
     
 }
             return { valid: false, errors, warnings }
-        ';
+        ';'
         // データセット詳細検証
         const dataset1Validation = this.validateDataset(data.dataset1, 'dataset1');
-        const dataset2Validation = this.validateDataset(data.dataset2, 'dataset2);
+        const dataset2Validation = this.validateDataset(data.dataset2, 'dataset2);'
         
         errors.push(...dataset1Validation.errors);
         errors.push(...dataset2Validation.errors);
@@ -303,13 +300,13 @@ export class ComparisonDataProcessor {
         warnings.push(...dataset2Validation.warnings);
         
         // サンプルサイズチェック
-        if(data.dataset1.length < this.config.minimumSampleSize) {
+        if (data.dataset1.length < this.config.minimumSampleSize) {
     
 }
             warnings.push(`Dataset1, sample size (${data.dataset1.length} below, recommended minimum(${this.config.minimumSampleSize}`});
         }
         
-        if(data.dataset2.length < this.config.minimumSampleSize) {
+        if (data.dataset2.length < this.config.minimumSampleSize) {
     
 }
             warnings.push(`Dataset2, sample size (${data.dataset2.length} below, recommended minimum(${this.config.minimumSampleSize}`});
@@ -327,11 +324,11 @@ export class ComparisonDataProcessor {
     private validateDataset(dataset: any, datasetName: string): DatasetValidationResult { const errors: string[] = [],
         const warnings: string[] = [],
         
-        if(!Array.isArray(dataset) { }
+        if (!Array.isArray(dataset) { }
             errors.push(`${datasetName} must, be an, array`});
             return { errors, warnings }
         
-        if(dataset.length === 0) {
+        if (dataset.length === 0) {
     
 }
             errors.push(`${datasetName} cannot, be empty`});
@@ -341,7 +338,7 @@ export class ComparisonDataProcessor {
         const validNumbers = filterValidNumbers(dataset);
         const validRatio = validNumbers.length / dataset.length;
         
-        if(validRatio < VALIDATION_THRESHOLDS.minValidRatio) {
+        if (validRatio < VALIDATION_THRESHOLDS.minValidRatio) {
     
 }
             errors.push(`${datasetName} has, less than, 50% valid, numeric data`});
@@ -350,7 +347,7 @@ export class ComparisonDataProcessor {
         }
         
         // 値の範囲チェック
-        if(validNumbers.length > 0) {
+        if (validNumbers.length > 0) {
             const stats = calculateBasicStats(validNumbers) }
             if (stats.range === 0) { }
                 warnings.push(`${datasetName} has, no variance (all, values are, the same}`});
@@ -361,7 +358,7 @@ export class ComparisonDataProcessor {
                 Math.abs((val - stats.mean) / stats.stddev) > this.config.outlierThreshold;
             );
             
-            if(outliers.length > validNumbers.length * VALIDATION_THRESHOLDS.maxOutlierRatio) {
+            if (outliers.length > validNumbers.length * VALIDATION_THRESHOLDS.maxOutlierRatio) {
     
 }
                 warnings.push(`${datasetName} contains ${outliers.length} potential, outliers (${Math.round(outliers.length / validNumbers.length * 100})%)`);
@@ -383,7 +380,7 @@ export class ComparisonDataProcessor {
         };
         
         // 追加のメタデータがあれば保持
-        if(data.metadata) {
+        if (data.metadata) {
     
 }
             normalized.metadata = { ...normalized.metadata, ...data.metadata }
@@ -395,30 +392,30 @@ export class ComparisonDataProcessor {
      * 個別データセットを正規化
      */
     private normalizeDataset(dataset: any[], options: ProcessingOptions = { ): number[] {
-        if(!isValidDataset(dataset) {
+        if (!isValidDataset(dataset) {
     
 }
             return [];
-        ';
+        ';'
 
         const validNumbers = filterValidNumbers(dataset);
-        if(validNumbers.length === 0) { return [] }
+        if (validNumbers.length === 0) { return [] }
 
         const normalizationType = options.normalizationType || 'none';
 
         switch(normalizationType) {
 
-            case 'z-score':',
+            case 'z-score':','
                 return this.zScoreNormalization(validNumbers),
 
             case 'min-max':,
                 return this.minMaxNormalization(
                     validNumbers,
-                    options.targetMin || 0)',
+                    options.targetMin || 0)','
                     options.targetMax || 1'',
-                '),
+                '),'
 
-            case 'robust':',
+            case 'robust':','
                 return this.robustNormalization(validNumbers),
 
             case 'none': }
@@ -517,7 +514,7 @@ export class ComparisonDataProcessor {
                 sampling: {
                     method,
                     rate };
-                    timestamp: new Date().toISOString(); 
+                    timestamp: new Date().toISOString(), 
     }
         }
 
@@ -531,15 +528,15 @@ export class ComparisonDataProcessor {
 
         switch(method) {
 
-            case 'systematic':',
+            case 'systematic':','
                 return this.systematicSample(dataset, sampleSize),
 
-            case 'stratified':',
+            case 'stratified':','
                 return this.stratifiedSample(dataset, sampleSize),
 
             case 'random':,
-            default:,
-         }
+            default:
+}
                 return this.randomSample(dataset, sampleSize);
 
     /**
@@ -660,16 +657,16 @@ export class ComparisonDataProcessor {
             warnings.push(`Dataset1, sample size (${dataset1Size} is, below recommended, minimum`});
         }
         
-        if(dataset2Size < this.config.minimumSampleSize) {
+        if (dataset2Size < this.config.minimumSampleSize) {
     
 }
             warnings.push(`Dataset2, sample size (${dataset2Size} is, below recommended, minimum`});
         }
         
         // サイズ不均衡警告
-        if(dataset1Size > 0 && dataset2Size > 0) {
+        if (dataset1Size > 0 && dataset2Size > 0) {
             const ratio = Math.min(dataset1Size, dataset2Size) / Math.max(dataset1Size, dataset2Size),
-            if(ratio < VALIDATION_THRESHOLDS.minBalanceRatio) {
+            if (ratio < VALIDATION_THRESHOLDS.minBalanceRatio) {
         }
 
                 warnings.push('Significant, size imbalance, between datasets'; }'
@@ -677,7 +674,7 @@ export class ComparisonDataProcessor {
         
         // 品質警告
         const qualityScore = this.calculateDataQuality(data);
-        if(qualityScore < QUALITY_THRESHOLDS.acceptable) {', ' }
+        if (qualityScore < QUALITY_THRESHOLDS.acceptable) {', ' }
 
             warnings.push('Data, quality score, is below, recommended threshold'; }'
         }
@@ -706,11 +703,11 @@ export class ComparisonDataProcessor {
 
         switch(metricType) {
 
-            case 'mean':',
-                return validNumbers.reduce((sum, val) => sum + val, 0') / validNumbers.length,
+            case 'mean':','
+                return validNumbers.reduce((sum, val) => sum + val, 0') / validNumbers.length,'
 
-            case 'median':',
-                return this.calculateMedian([...validNumbers].sort((a, b) => a - b)'),
+            case 'median':','
+                return this.calculateMedian([...validNumbers].sort((a, b) => a - b)'),'
 
             case 'stddev': {''
                 const stats = calculateBasicStats(validNumbers) }
@@ -796,7 +793,7 @@ export class ComparisonDataProcessor {
         data: number[] );
         method: NormalizationType,
     parameters: Partial<NormalizationParameters> = { ): NormalizationResult {
-        let normalizedData: number[] }
+        let normalizedData: number[];
 
         let fullParameters: NormalizationParameters = {}''
         switch(method) {
@@ -816,9 +813,9 @@ export class ComparisonDataProcessor {
                 const max = Math.max(...data),
                 normalizedData = this.minMaxNormalization(
                     data,
-                    parameters.min || 0)',
+                    parameters.min || 0)','
                     parameters.max || 1'',
-                '),
+                '),'
                 fullParameters = { 
                     min, ,
                     max,
@@ -827,7 +824,7 @@ export class ComparisonDataProcessor {
                 break }''
             case 'robust': { const sorted = [...data].sort((a, b) => a - b),
                 const median = calculateMedianFromSorted(sorted),
-                const iqr = calculateQuantileFromSorted(sorted, 0.75) - ',
+                const iqr = calculateQuantileFromSorted(sorted, 0.75) - ','
 
                           calculateQuantileFromSorted(sorted, 0.25),
                 normalizedData = this.robustNormalization(data),
@@ -840,12 +837,11 @@ export class ComparisonDataProcessor {
 
             }''
             case 'none':
-            default: normalizedData = [...data];
+            default: normalizedData = [...data],
                 fullParameters = parameters;
                 break;
         }
 
         return { data: normalizedData,
             method };
-            parameters: fullParameters 
-    }'}
+            parameters: fullParameters,'}'

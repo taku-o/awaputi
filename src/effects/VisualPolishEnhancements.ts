@@ -5,136 +5,130 @@
 
 // Type definitions for visual polish and enhancement systems
 interface GameEngine { enhancedEffectManager?: EnhancedEffectManager,
-    enhancedParticleManager?: EnhancedParticleManager,
-    animationManager?: AnimationManager }
+    enhancedParticleManager?: EnhancedParticleManager;
+    animationManager?: AnimationManager;
 
 interface EnhancedEffectManager { setTransitionSmoothing(enabled: boolean, duration: number): void,
-    setGradientProfiles(profiles: GradientProfiles): void }
+    setGradientProfiles(profiles: GradientProfiles): void;
 
 interface EnhancedParticleManager { enableSmoothTransitions(enabled: boolean): void,
-    setTimingProfiles(profiles: TimingProfiles): void,
-    setColorPalettes(palettes: ColorPalettes): void,
-    setPhysicsEnhancements(enhancements: PhysicsEnhancements): void }
+    setTimingProfiles(profiles: TimingProfiles): void;
+    setColorPalettes(palettes: ColorPalettes): void;
+    setPhysicsEnhancements(enhancements: PhysicsEnhancements): void;
 
 interface AnimationManager { setEasingFunctions(functions: EasingFunctions): void,
-    setSubtleAnimations(animations: SubtleAnimations): void }
+    setSubtleAnimations(animations: SubtleAnimations): void;
 }
 
 interface PolishSettings { smoothTransitions: boolean,
-    enhancedTiming: boolean,
-    refinedColors: boolean,
-    improvedPhysics: boolean,
-    subtleAnimations: boolean  }
+    enhancedTiming: boolean;
+    refinedColors: boolean;
+    improvedPhysics: boolean;
+    subtleAnimations: boolean;
 
 interface TimingProfile { duration: number,
-    fadeStart?: number,
-    scaleStart?: number,
-    particleDelay?: number }
+    fadeStart?: number;
+    scaleStart?: number;
+    particleDelay?: number;
 
 interface ComboTimingProfile {
-    basic: { duratio,n: number,, intensity: number },
-    enhanced: { duration: number,, intensity: number },
-    spectacular: { duration: number,, intensity: number }
+    basic: { duratio,n: number,, intensity: number,;
+    enhanced: { duration: number,, intensity: number,;
+    spectacular: { duration: number,, intensity: number,
 
 interface ScreenEffectsProfile {
-    flash: { duratio,n: number,, fadeOut: number },
-    shake: { duration: number,, intensity: number }
+    flash: { duratio,n: number,, fadeOut: number,;
+    shake: { duration: number,, intensity: number,
 
 interface TimingProfiles { bubble_pop: TimingProfile,
-    combo_effect: ComboTimingProfile,
-    screen_effects: ScreenEffectsProfile
-     }
+    combo_effect: ComboTimingProfile;
+    screen_effects: ScreenEffectsProfile;
 
-interface EasingFunction { (t: number): number }
+interface EasingFunction { (t: number): number;
 
 interface EasingFunctions { easeOutQuart: EasingFunction,
-    easeInOutCubic: EasingFunction,
-    easeOutElastic: EasingFunction,
-    easeOutBounce: EasingFunction
-     }
+    easeInOutCubic: EasingFunction;
+    easeOutElastic: EasingFunction;
+    easeOutBounce: EasingFunction;
 
 interface ColorPalettes { bubble_effects: {
         norma,l: string[],
         rainbow: string[],
         electric: string[],
         spiky: string[],
-    diamond: string[] };
+    diamond: string[],;
     combo_effects: { basic: string[],
         enhanced: string[],
-    spectacular: string[] };
+    spectacular: string[],;
     seasonal: { spring: string[],
         summer: string[],
         autumn: string[],
-    winter: string[] }
+    winter: string[],
 
 interface GradientProfile { type: 'radial' | 'linear',
-    colors: string[],
-    stops: number[]  }
+    colors: string[];
+    stops: number[];
 
 interface GradientProfiles { bubble_destruction: GradientProfile,
-    combo_glow: GradientProfile,
-    screen_flash: GradientProfile
-    }
+    combo_glow: GradientProfile;
+    screen_flash: GradientProfile;
 
 interface PhysicsProfile { gravity?: number,
-    airResistance?: number,
-    bounce?: number,
-    spin?: boolean,
-    tumble?: boolean,
-    floatiness?: number,
-    wobble?: number,
-    surface_tension?: number,
-    wave_propagation?: boolean,
-    energy_conservation?: boolean,
-    momentum_transfer?: boolean }
+    airResistance?: number;
+    bounce?: number;
+    spin?: boolean;
+    tumble?: boolean;
+    floatiness?: number;
+    wobble?: number;
+    surface_tension?: number;
+    wave_propagation?: boolean;
+    energy_conservation?: boolean;
+    momentum_transfer?: boolean;
 
 interface PhysicsEnhancements { particle_physics: PhysicsProfile,
-    bubble_physics: PhysicsProfile,
-    effect_physics: PhysicsProfile
-     }
+    bubble_physics: PhysicsProfile;
+    effect_physics: PhysicsProfile;
 
 interface SubtleAnimation { enabled: boolean,
-    amplitude?: number,
-    frequency?: number,
-    phase_offset?: number,
-    scale_range?: [number, number],
-    duration?: number,
-    opacity_range?: [number, number],
-    delay?: number,
-    intensity_range?: [number, number],
-    easing?: string }
+    amplitude?: number;
+    frequency?: number;
+    phase_offset?: number;
+    scale_range?: [number, number];
+    duration?: number;
+    opacity_range?: [number, number];
+    delay?: number;
+    intensity_range?: [number, number];
+    easing?: string;
 
 interface SubtleAnimations { idle_floating: SubtleAnimation,
-    breathing_effect: SubtleAnimation,
-    shimmer_effect: SubtleAnimation,
-    glow_pulse: SubtleAnimation
-     }
+    breathing_effect: SubtleAnimation;
+    shimmer_effect: SubtleAnimation;
+    glow_pulse: SubtleAnimation;
 
 type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
 
 interface QualityProfile { smoothTransitions: boolean,
-    enhancedTiming: boolean,
-    refinedColors: boolean,
-    improvedPhysics: boolean,
-    subtleAnimations: boolean  }
+    enhancedTiming: boolean;
+    refinedColors: boolean;
+    improvedPhysics: boolean;
+    subtleAnimations: boolean;
 
 export class VisualPolishEnhancements {
-    private gameEngine: GameEngine,
-    private enabled: boolean,
+    private gameEngine: GameEngine;
+    private enabled: boolean;
     private, polishSettings: PolishSettings,
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.enabled = true,
+        this.gameEngine = gameEngine;
+        this.enabled = true;
         
         // 仕上げ設定
         this.polishSettings = {
             smoothTransitions: true,
             enhancedTiming: true,
             refinedColors: true,
-    improvedPhysics: true }
-            subtleAnimations: true 
-    };
+    improvedPhysics: true,
+            subtleAnimations: true,;
         this.initialize();
     }
 
@@ -148,7 +142,7 @@ export class VisualPolishEnhancements {
         
         // エフェクト遷移の滑らかさを改善
         const enhancedEffectManager = this.gameEngine.enhancedEffectManager,
-        if(enhancedEffectManager) {
+        if (enhancedEffectManager) {
     
 }
             enhancedEffectManager.setTransitionSmoothing(true, 300); // 300ms duration }
@@ -201,7 +195,7 @@ export class VisualPolishEnhancements {
         // アニメーションマネージャーにイージング関数を設定
         if (this.gameEngine.animationManager) { this.gameEngine.animationManager.setEasingFunctions(easingFunctions) }
     }
-';
+';'
 
     private setupColorRefinements(): void { ''
         if(!this.polishSettings.refinedColors) return,
@@ -209,22 +203,22 @@ export class VisualPolishEnhancements {
         // 洗練されたカラーパレット
         const refinedColorPalettes: ColorPalettes = {
             bubble_effects: {''
-                normal: ['#4A90E2', '#7B68EE', '#9370DB],
-                rainbow: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#F39C12', '#E74C3C', '#9B59B6],
-                electric: ['#00D4FF', '#0099CC', '#0066FF', '#FFFFFF],
-                spiky: ['#FF4757', '#FF3838', '#FF6B6B],
-                diamond: ['#C7ECEE', '#DCEDC1', '#FFD93D', '#6BCF7F] },
+                normal: ['#4A90E2', '#7B68EE', '#9370DB],'
+                rainbow: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#F39C12', '#E74C3C', '#9B59B6],'
+                electric: ['#00D4FF', '#0099CC', '#0066FF', '#FFFFFF],'
+                spiky: ['#FF4757', '#FF3838', '#FF6B6B],'
+                diamond: ['#C7ECEE', '#DCEDC1', '#FFD93D', '#6BCF7F] },'
 
             combo_effects: { ''
-                basic: ['#FFD700', '#FFA500', '#FF8C00],
-                enhanced: ['#FF69B4', '#FF1493', '#DC143C],
-                spectacular: ['#00FF7F', '#00CED1', '#1E90FF', '#9400D3', '#FF69B4] },
+                basic: ['#FFD700', '#FFA500', '#FF8C00],'
+                enhanced: ['#FF69B4', '#FF1493', '#DC143C],'
+                spectacular: ['#00FF7F', '#00CED1', '#1E90FF', '#9400D3', '#FF69B4] },'
 
             seasonal: { ''
-                spring: ['#FFB6C1', '#98FB98', '#87CEEB', '#DDA0DD],
-                summer: ['#FFD700', '#FF7F50', '#32CD32', '#00CED1],
-                autumn: ['#FF8C00', '#DC143C', '#B8860B', '#8B4513],
-                winter: ['#B0C4DE', '#AFEEEE', '#F0F8FF', '#E0E6F8] }
+                spring: ['#FFB6C1', '#98FB98', '#87CEEB', '#DDA0DD],'
+                summer: ['#FFD700', '#FF7F50', '#32CD32', '#00CED1],'
+                autumn: ['#FF8C00', '#DC143C', '#B8860B', '#8B4513],'
+                winter: ['#B0C4DE', '#AFEEEE', '#F0F8FF', '#E0E6F8] }'
         };
         
         // カラーパレットを適用
@@ -235,19 +229,19 @@ export class VisualPolishEnhancements {
     }
 
     private setupGradientEnhancements('''
-                type: 'radial',';
-                colors: ['rgba(255, 255, 255, 0.8)', 'rgba(100, 150, 255, 0.6)', 'rgba(50, 100, 200, 0.2)],
+                type: 'radial',';'
+                colors: ['rgba(255, 255, 255, 0.8)', 'rgba(100, 150, 255, 0.6)', 'rgba(50, 100, 200, 0.2)],'
                 stops: [0, 0.5, 1.0];
             },
 
             combo_glow: { ''
                 type: 'radial',
-                colors: ['rgba(255, 215, 0, 0.9)', 'rgba(255, 140, 0, 0.5)', 'rgba(255, 69, 0, 0.1)],
+                colors: ['rgba(255, 215, 0, 0.9)', 'rgba(255, 140, 0, 0.5)', 'rgba(255, 69, 0, 0.1)],'
                 stops: [0, 0.6, 1.0] },
 
             screen_flash: { ''
                 type: 'linear',
-                colors: ['rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.0)],
+                colors: ['rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.0)],'
                 stops: [0, 0.3, 1.0] }
         };
         
@@ -263,18 +257,17 @@ export class VisualPolishEnhancements {
                 airResistance: 0.95,
                 bounce: 0.7,
                 spin: true,
-    tumble: true };
+    tumble: true,;
             bubble_physics: { floatiness: 0.8,
                 wobble: 0.2,
     surface_tension: 0.1 };
             effect_physics: { wave_propagation: true,
                 energy_conservation: true,
-    momentum_transfer: true 
-    };
+    momentum_transfer: true,;
         // 物理設定を適用
         if (this.gameEngine.enhancedParticleManager) { this.gameEngine.enhancedParticleManager.setPhysicsEnhancements(physicsEnhancements) }
     }
-';
+';'
 
     private setupSubtleAnimations(): void { ''
         if(!this.polishSettings.subtleAnimations) return,
@@ -310,23 +303,22 @@ export class VisualPolishEnhancements {
                 enhancedTiming: false,
                 refinedColors: false,
                 improvedPhysics: false,
-    subtleAnimations: false  };
+    subtleAnimations: false,;
             medium: { smoothTransitions: true,
                 enhancedTiming: false,
                 refinedColors: true,
                 improvedPhysics: false,
-    subtleAnimations: false };
+    subtleAnimations: false,;
             high: { smoothTransitions: true,
                 enhancedTiming: true,
                 refinedColors: true,
                 improvedPhysics: true,
-    subtleAnimations: false };
+    subtleAnimations: false,;
             ultra: { smoothTransitions: true,
                 enhancedTiming: true,
                 refinedColors: true,
                 improvedPhysics: true,
-    subtleAnimations: true 
-    };
+    subtleAnimations: true,;
         const profile = qualityProfiles[qualityLevel] || qualityProfiles.medium;
         this.polishSettings = { ...this.polishSettings, ...profile,
         
@@ -352,7 +344,7 @@ export class VisualPolishEnhancements {
             enhancedTiming: false,
             refinedColors: false,
             improvedPhysics: false,
-    subtleAnimations: false };
+    subtleAnimations: false,;
         this.applyPolishSettings();
     }
 
@@ -363,7 +355,7 @@ export class VisualPolishEnhancements {
             enhancedTiming: true,
             refinedColors: true,
             improvedPhysics: true,
-    subtleAnimations: true };
+    subtleAnimations: true,;
         this.applyPolishSettings();
     }
 
@@ -376,9 +368,9 @@ export class VisualPolishEnhancements {
             this.applyPolishSettings() }
     }
 
-    public setEnabled(enabled: boolean): void { this.enabled = enabled,
+    public setEnabled(enabled: boolean): void { this.enabled = enabled;
         
-        if(!enabled) {
+        if (!enabled) {
     
 }
             this.optimizeForPerformance(); }

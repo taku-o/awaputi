@@ -14,11 +14,11 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         super(gameEngine),
         
         // サブコンポーネントの初期化
-        this.eventStageDataManager = new EventStageDataManager(this),
-        this.stageSelectDataManager = new StageSelectDataManager(this),
+        this.eventStageDataManager = new EventStageDataManager(this);
+        this.stageSelectDataManager = new StageSelectDataManager(this);
 
-        ',
-     }
+        '
+}
 
     }
 
@@ -46,11 +46,11 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
      * 描画処理
      */''
     render(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
-        ',
+        ','
         // 背景
         context.fillStyle = '#001122',
         context.fillRect(0, 0, canvas.width, canvas.height),
-        ',
+        ','
         // タイトル
         context.save('',
         context.fillStyle = '#FFFFFF',
@@ -80,7 +80,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
      * 入力処理
      */''
     handleInput(event: Event): void { ''
-        if(event.type === 'keydown' {'
+        if (event.type === 'keydown''
             const keyEvent = event as KeyboardEvent,
             // ステージ関連のキー入力を処理
             if(this.stageSelectDataManager.handleStageKeyInput(keyEvent) {
@@ -91,15 +91,15 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
             // その他のキー入力
             switch(keyEvent.code) {
 
-                case 'KeyH':',
+                case 'KeyH':','
                     this.gameEngine.sceneManager.switchScene('help'),
 
                     break,
-                case 'Escape':',
+                case 'Escape':','
                     this.sceneManager.switchScene('menu') }
                     break; }
 
-            }'} else if(event.type === 'click) { this.handleClick(event, as MouseEvent) }'
+            }'} else if (event.type === 'click) { this.handleClick(event, as MouseEvent) }'
     }
     
     /**
@@ -111,7 +111,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         const y = event.clientY - rect.top,
         
         // イベント通知バッジのクリック判定
-        if(this.eventStageDataManager.handleEventNotificationClick(x, y) {
+        if (this.eventStageDataManager.handleEventNotificationClick(x, y) {
     
 }
             return; }
@@ -121,14 +121,14 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         // イベントステージのクリック判定
         const eventSectionY = 120;
         const eventSectionHeight = 200;
-        if(y >= eventSectionY && y <= eventSectionY + eventSectionHeight) {
+        if (y >= eventSectionY && y <= eventSectionY + eventSectionHeight) {
             this.eventStageDataManager.handleEventStageClick(x, y) }
             return; }
         }
         
         // 通常ステージのクリック判定
         const stageStartY = 340;
-        if(y >= stageStartY) {
+        if (y >= stageStartY) {
             this.stageSelectDataManager.handleStageClick(x, y) }
             return; }
 }
@@ -167,6 +167,6 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         this.eventStageDataManager.setEventState({)
             selectedEventIndex: -1,
     showingEvents: false,')',
-            eventScrollOffset: 0' }
+            eventScrollOffset: 0' }'
 
-    }'}
+    }'}'

@@ -8,14 +8,14 @@ import { jest } from '@jest/globals';
 // Mock DOM環境
 global.HTMLCanvasElement = class HTMLCanvasElement {
     constructor() {
-        this.width = 800,
+        this.width = 800;
         this.height = 600 }
     
     getContext() {
         return {
-            fillRect: jest.fn(',
-            fillStyle: ',
-            strokeStyle: ',
+            fillRect: jest.fn(','
+            fillStyle: ','
+            strokeStyle: ','
             lineWidth: 1,
             font: '12px Arial',
             measureText: jest.fn(() => ({ width: 100 )),
@@ -39,11 +39,11 @@ global.console = {
     log: jest.fn(
     warn: jest.fn(
     error: jest.fn(
-        clear: jest.fn()' };
-describe('Phase G End-to-End統合テスト', (') => {
+        clear: jest.fn()' };'
+describe('Phase G End-to-End統合テスト', (') => {'
     
-    describe('Phase G.1: Balance Adjuster Tool E2Eテスト', (') => {
-        test('balance-adjusterツールの基本動作確認', async (') => {
+    describe('Phase G.1: Balance Adjuster Tool E2Eテスト', (') => {'
+        test('balance-adjusterツールの基本動作確認', async (') => {'
             try {
                 // Dynamic import with error handling
                 const { BalanceAdjuster } = await import('../../tools/balance/balance-adjuster.js');
@@ -58,7 +58,7 @@ describe('Phase G End-to-End統合テスト', (') => {
                 // セッション初期化確認
                 expect(adjuster.session).toBeDefined();
                 expect(adjuster.session.startTime).toBeDefined();
-                expect(adjuster.pendingChanges).toEqual({)'),
+                expect(adjuster.pendingChanges).toEqual({)'),'
                 console.log('✅ BalanceAdjuster基本動作確認完了') } catch (error) {
                 // エラーの場合はモック動作確認
                 console.warn(`BalanceAdjuster実装エラー (${error.message}), モック動作で継続`);
@@ -73,10 +73,10 @@ describe('Phase G End-to-End統合テスト', (') => {
                 
                 expect(mockAdjuster.dataLoader.loadCurrentConfiguration().toBeDefined();
                 expect(mockAdjuster.calculator.previewBalanceImpact({)).toBeDefined(),
-                await expect(mockAdjuster.validator.runQuickTests({)').resolves.toHaveProperty('passed'),
-                await expect(mockAdjuster.exporter.saveChanges({}, {)').resolves.toHaveProperty('success') }
-        }');
-        test('コンポーネント連携動作確認', async (') => {
+                await expect(mockAdjuster.validator.runQuickTests({)').resolves.toHaveProperty('passed'),'
+                await expect(mockAdjuster.exporter.saveChanges({}, {)').resolves.toHaveProperty('success') }'
+        }');'
+        test('コンポーネント連携動作確認', async (') => {'
             try {
                 // コンポーネント個別インポート確認
                 const components = [
@@ -98,7 +98,7 @@ describe('Phase G End-to-End統合テスト', (') => {
                 }
                 // 最低1つのコンポーネントが読み込めることを確認
                 expect(loadedComponents.length).toBeGreaterThan(0);
-            } catch (error') {
+            } catch (error') {'
                 console.warn('コンポーネント連携テストエラー:', error.message),
                 // フォールバックテスト
                 const mockComponents = {
@@ -110,10 +110,10 @@ describe('Phase G End-to-End統合テスト', (') => {
                 
                 expect(Object.keys(mockComponents).toHaveLength(4);
             }
-        }');
+        }');'
     }
-    describe('Phase G.2: AudioAccessibilitySupport E2Eテスト', (') => {
-        test('AudioAccessibilitySupportの基本動作確認', async (') => {
+    describe('Phase G.2: AudioAccessibilitySupport E2Eテスト', (') => {'
+        test('AudioAccessibilitySupportの基本動作確認', async (') => {'
             try {
                 const { AudioAccessibilitySupport } = await import('../../src/audio/accessibility/AudioAccessibilitySupport.js');
                 // モック AudioManager
@@ -134,7 +134,7 @@ describe('Phase G End-to-End統合テスト', (') => {
                 expect(support.settingsManager).toBeDefined();
                 // 初期化テスト
                 const initResult = await support.initialize();
-                expect(initResult.toBe(true)');
+                expect(initResult.toBe(true)');'
                 console.log('✅ AudioAccessibilitySupport基本動作確認完了');
             ) catch (error) {
                 console.warn(`AudioAccessibilitySupport実装エラー (${error.message}), モック動作で継続`);
@@ -149,25 +149,25 @@ describe('Phase G End-to-End統合テスト', (') => {
                 
                 await expect(mockSupport.initialize().resolves.toBe(true),
                 expect(mockSupport.getStatus().initialized).toBe(true) }
-        }');
-        test('アクセシビリティ機能統合テスト', async (') => {
+        }');'
+        test('アクセシビリティ機能統合テスト', async (') => {'
             try {
                 const { AudioAccessibilitySupport } = await import('../../src/audio/accessibility/AudioAccessibilitySupport.js');
-                const mockAudioManager = { volume: 1.0, muted: false };
+                const mockAudioManager = { volume: 1.0, muted: false,;
                 const support = new AudioAccessibilitySupport(mockAudioManager);
                 await support.initialize();
                 // API呼び出しテスト
-                expect((') => support.showVisualNotification('test message').not.toThrow();
-                expect((') => support.addAudioDescription('game', 'bubble_pop').not.toThrow();
-                expect((') => support.processAudioEvent('bubble_pop', {}, {)).not.toThrow(),
+                expect((') => support.showVisualNotification('test message').not.toThrow();'
+                expect((') => support.addAudioDescription('game', 'bubble_pop').not.toThrow();'
+                expect((') => support.processAudioEvent('bubble_pop', {}, {)).not.toThrow(),'
                 // 設定管理テスト
                 const settings = support.getSettings(),
                 expect(settings.toBeDefined(),
                 await expect(support.updateSettings({)).resolves.not.toThrow(),
                 // ステータス確認
-                const status = support.getStatus('),
-                expect(status.toHaveProperty('initialized')'),
-                expect(status.toHaveProperty('components')'),
+                const status = support.getStatus('),'
+                expect(status.toHaveProperty('initialized')'),'
+                expect(status.toHaveProperty('components')'),'
                 console.log('✅ アクセシビリティ機能統合テスト完了') } catch (error) {
                 console.warn(`アクセシビリティ統合テストエラー (${error.message}), フォールバック実行`);
                 // フォールバック: 基本的なアクセシビリティテスト
@@ -175,17 +175,16 @@ describe('Phase G End-to-End統合テスト', (') => {
                     visualNotifications: true,
                     audioDescriptions: true,
                     hapticFeedback: navigator.vibrate ? true : false,
-                    colorIndicators: true
-                };
+                    colorIndicators: true,;
                 
                 expect(accessibilityFeatures.visualNotifications).toBe(true);
                 expect(accessibilityFeatures.audioDescriptions).toBe(true);
                 expect(accessibilityFeatures.colorIndicators).toBe(true);
             }
-        }');
+        }');'
     }
-    describe('Phase G.3 & G.4: Visual Manager E2Eテスト', (') => {
-        test('Visual Managerシステムの基本確認', async (') => {
+    describe('Phase G.3 & G.4: Visual Manager E2Eテスト', (') => {'
+        test('Visual Managerシステムの基本確認', async (') => {'
             // VisualFocusManagerとVisualFeedbackManagerの基本テスト
             const visualSystems = [
                 'VisualFocusManager',
@@ -210,7 +209,7 @@ describe('Phase G End-to-End統合テスト', (') => {
                         system = await import(fallbackPath),
                         loadPath = fallbackPath }
                     
-                    results.push({ name: systemName, loaded: true, path: loadPath });
+                    results.push({ name: systemName, loaded: true, path: loadPath,);
                     console.log(`✅ ${systemName} 読み込み成功: ${loadPath)`});
                 } catch (error) {
                     results.push({ name: systemName, loaded: false, error: error.message });
@@ -223,10 +222,10 @@ describe('Phase G End-to-End統合テスト', (') => {
             expect(loadedSystems.length).toBeGreaterThanOrEqual(0); // 0でもOK（モックで継続）
             
             console.log(`Visual Manager読み込み結果: ${loadedSystems.length}/${visualSystems.length)`});
-        }');
+        }');'
     }
-    describe('Phase G Cross-System統合テスト', (') => {
-        test('システム間データフロー確認', async (') => {
+    describe('Phase G Cross-System統合テスト', (') => {'
+        test('システム間データフロー確認', async (') => {'
             // 複数システム間のデータ連携をシミュレート
             const dataFlow = {
                 balanceChange: {
@@ -237,12 +236,12 @@ describe('Phase G End-to-End統合テスト', (') => {
                 accessibilityEvent: {
                     source: 'AudioAccessibilitySupport', 
                     target: 'VisualFeedbackManager',
-                    data: { eventType: 'score_update', visualCue: true }
+                    data: { eventType: 'score_update', visualCue: true,
                 },
                 focusChange: {
                     source: 'VisualFocusManager',
                     target: 'AudioAccessibilitySupport',
-                    data: { focusedElement: 'bubble', announce: true }
+                    data: { focusedElement: 'bubble', announce: true,
                 }
             };
             
@@ -251,13 +250,13 @@ describe('Phase G End-to-End統合テスト', (') => {
                 expect(flow.source).toBeDefined(),
                 expect(flow.target).toBeDefined(),
                 expect(flow.data).toBeDefined(),
-                expect(typeof flow.data').toBe('object'),
+                expect(typeof flow.data').toBe('object'),'
                 console.log(`✅ データフロー確認: ${flowName} (${flow.source} → ${flow.target)`});
             }
             
             expect(Object.keys(dataFlow).toHaveLength(3);
-        }');
-        test('エラー伝播システムテスト', async (') => {
+        }');'
+        test('エラー伝播システムテスト', async (') => {'
             // システム間エラー処理の確認
             const errorScenarios = [
                 {
@@ -292,8 +291,8 @@ describe('Phase G End-to-End統合テスト', (') => {
             }
             
             expect(errorScenarios.toHaveLength(3);
-        }');
-        test('パフォーマンス指標統合確認', async (') => {
+        }');'
+        test('パフォーマンス指標統合確認', async (') => {'
             // システム全体のパフォーマンス指標確認
             const performanceMetrics = {
                 initialization: {
@@ -314,15 +313,15 @@ describe('Phase G End-to-End統合テスト', (') => {
             expect(performanceMetrics.initialization.target).toBeDefined();
             expect(performanceMetrics.memoryUsage.target).toBeDefined();
             expect(performanceMetrics.responseTime.target).toBeDefined();
-            expect(performanceMetrics.initialization.systems).toHaveLength(3');
+            expect(performanceMetrics.initialization.systems).toHaveLength(3');'
             console.log('✅ パフォーマンス指標確認完了');
             console.log(`初期化目標: ${performanceMetrics.initialization.target)`),
             console.log(`メモリ使用量目標: ${performanceMetrics.memoryUsage.target)`),
             console.log(`応答時間目標: ${performanceMetrics.responseTime.target)`});
-        }');
+        }');'
     }
-    describe('Phase G総合品質確認', (') => {
-        test('システム全体の安定性確認', (') => {
+    describe('Phase G総合品質確認', (') => {'
+        test('システム全体の安定性確認', (') => {'
             // 統合されたシステム全体の安定性指標
             const qualityMetrics = {
                 codeComplexity: {
@@ -355,14 +354,14 @@ describe('Phase G End-to-End統合テスト', (') => {
                 console.log(`✅ 品質指標 ${metric}: ${data.achieved)`});
             }
             
-            expect(Object.keys(qualityMetrics).toHaveLength(4)');
+            expect(Object.keys(qualityMetrics).toHaveLength(4)');'
             console.log('\n🎯 Phase G統合テスト総合評価:');
             console.log('- Main Controller Pattern導入完了');
-            console.log('- ファイルサイズ制限達成 (< 2,500語')');
+            console.log('- ファイルサイズ制限達成 (< 2,500語')');'
             console.log('- API後方互換性維持');
             console.log('- システム統合性確認');
-        }');
-        test('Phase G完了確認', (') => {
+        }');'
+        test('Phase G完了確認', (') => {'
             // Phase G全体の完了状況確認
             const phaseGCompletion = {
                 'Phase G.1': {
@@ -393,11 +392,11 @@ describe('Phase G End-to-End統合テスト', (') => {
             
             // 完了状況の検証
             const completedPhases = Object.entries(phaseGCompletion)
-                .filter(([phase, data]') => data.status === 'completed');
+                .filter(([phase, data]') => data.status === 'completed');'
             expect(completedPhases.toHaveLength(4);
             const totalComponents = Object.values(phaseGCompletion)
                 .reduce((sum, phase) => sum + phase.components, 0);
-            expect(totalComponents.toBe(18'); // 4 + 6 + 4 + 4
+            expect(totalComponents.toBe(18'); // 4 + 6 + 4 + 4'
             
             console.log('\n🚀 Phase G完了確認:');
             console.log(`✅ 完了フェーズ: ${completedPhases.length)/4`),
@@ -408,4 +407,4 @@ describe('Phase G End-to-End統合テスト', (') => {
             expect(totalComponents.toBeGreaterThan(0)});
         });
     }
-}');
+}');'

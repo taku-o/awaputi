@@ -6,13 +6,13 @@
 // パフォーマンス測定ユーティリティ
 export class PerformanceMeasurement {
     constructor(name {
-        this.name = name,
-        this.measurements = [],
+        this.name = name;
+        this.measurements = [];
         this.memoryBaseline = null)
-,
+;
     startMeasurement() {
-        this.startTime = performance.now(),
-        this.memoryBaseline = performance.memory ? performance.memory.usedJSHeapSize: 0,
+        this.startTime = performance.now();
+        this.memoryBaseline = performance.memory ? performance.memory.usedJSHeapSize: 0;
         return this }
 
     endMeasurement() {
@@ -41,14 +41,14 @@ export class PerformanceMeasurement {
             duration: {
                 min: Math.min(...durations,
                 max: Math.max(...durations,
-                average: durations.reduce((a, b) => a + b, 0) / durations.length,
+                average: durations.reduce((a, b) => a + b, 0) / durations.length;
                 median: this.calculateMedian(durations),
                , p95: this.calculatePercentile(durations, 95),
-                p99: this.calculatePercentile(durations, 99) },
+                p99: this.calculatePercentile(durations, 99) };
             memory: {
                 min: Math.min(...memoryUsages,
                 max: Math.max(...memoryUsages,
-                average: memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length,
+                average: memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length;
                 total: memoryUsages.reduce((a, b) => a + b, 0) }
         };
     }
@@ -58,7 +58,7 @@ export class PerformanceMeasurement {
         const mid = Math.floor(sorted.length / 2),
         return sorted.length % 2 === 0 
             ? (sorted[mid - 1] + sorted[mid]) / 2 
-            : sorted[mid] }
+            : sorted[mid];
 
     calculatePercentile(arr, percentile) {
         const sorted = [...arr].sort((a, b) => a - b),
@@ -72,7 +72,7 @@ export class DataGenerator {
         const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'electric', 'boss'],
         const events: any[] = [],
 
-        for (let i = 0, i < count, i++') {
+        for (let i = 0, i < count, i++') {'
             events.push({
                 type: 'bubble_popped'),
                , timestamp: Date.now() + i,
@@ -82,7 +82,7 @@ export class DataGenerator {
                     combo: Math.floor(Math.random() * 20) + 1,
                     position: {
                         x: Math.floor(Math.random() * 800,
-                        y: Math.floor(Math.random() * 600 },
+                        y: Math.floor(Math.random() * 600 };
                     sessionId: `session-${Math.floor(i / 100})}`
                 }
             });
@@ -99,7 +99,7 @@ export class DataGenerator {
         for (let i = 0, i < days, i++) {
             const date = new Date(startDate: any),
             date.setDate(date.getDate() + i),
-            const dateStr = date.toISOString(').split('T')[0],
+            const dateStr = date.toISOString(').split('T')[0],'
 
             data.set(dateStr, {),
                 games: Math.floor(Math.random() * 10) + 1,
@@ -114,7 +114,7 @@ export class DataGenerator {
     }
 
     static generateLargeStatisticsData() {
-        const bubbleTypeStats = new Map('),
+        const bubbleTypeStats = new Map('),'
         const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'electric', 'boss'],
         
         bubbleTypes.forEach(type => {
@@ -203,5 +203,5 @@ export const PerformanceTestHelper = {
         const mean = values.reduce((a, b) => a + b, 0) / values.length,
         const squareDiffs = values.map(value => Math.pow(value - mean, 2),
         const avgSquareDiff = squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length,
-        return Math.sqrt(avgSquareDiff') }
+        return Math.sqrt(avgSquareDiff') }'
 };

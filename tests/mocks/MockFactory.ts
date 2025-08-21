@@ -37,7 +37,7 @@ export class MockFactory {
         translate: jest.fn(
         transform: jest.fn(
         setTransform: jest.fn(
-        resetTransform: jest.fn(',
+        resetTransform: jest.fn(','
         
         // Styles
         fillStyle: '#000000',
@@ -73,14 +73,14 @@ export class MockFactory {
           addColorStop: jest.fn()),
         
         // Pattern methods
-        createPattern: jest.fn(',
+        createPattern: jest.fn(','
         
         // Compositing
         globalCompositeOperation: 'source-over'
       )),
       
       // Canvas element properties
-      style: {},
+      style: {};
       addEventListener: jest.fn(
       removeEventListener: jest.fn(
       getBoundingClientRect: jest.fn(() => ({
@@ -170,7 +170,7 @@ export class MockFactory {
       reset: jest.fn(
       
       // Missing method that tests expect
-      evaluateCondition: jest.fn(() => true',
+      evaluateCondition: jest.fn(() => true','
       
       // Rate limiting and endpoints
       endpoints: new Map([
@@ -201,7 +201,7 @@ export class MockFactory {
       
       // Event queuing
       queue: [],
-      flush: jest.fn(() => Promise.resolve()',
+      flush: jest.fn(() => Promise.resolve()','
       
       // Properties
       apiKey: 'test-api-key',
@@ -261,7 +261,7 @@ export class MockFactory {
     
     return {
       getItem: jest.fn((key) => store.get(key || null),
-      setItem: jest.fn((key, value) => store.set(key, String(value),
+      setItem: jest.fn((key, value) => store.set(key, String(value);
       removeItem: jest.fn((key) => store.delete(key),
       clear: jest.fn(() => store.clear(),
       key: jest.fn((index) => Array.from(store.keys()[index] || null,
@@ -327,12 +327,12 @@ export class MockFactory {
     // Image mock
     (global: any).Image = jest.fn(() => ({
       addEventListener: jest.fn(
-      removeEventListener: jest.fn(',
+      removeEventListener: jest.fn(','
       width: 100,
       height: 100,
       onload: null,
       onerror: null,
-      src: ')),
+      src: ')),'
     
     // Audio mock
     (global: any).Audio = jest.fn(() => ({
@@ -349,7 +349,7 @@ export class MockFactory {
     
     // URL mock
     (global: any).URL = {
-      createObjectURL: jest.fn((') => 'blob:mock-url'),
+      createObjectURL: jest.fn((') => 'blob:mock-url'),'
       revokeObjectURL: jest.fn(),
     
     // Console methods (preserve existing, add missing),
@@ -358,4 +358,4 @@ export class MockFactory {
     if (!global.console.debug) global.console.debug = jest.fn() as jest.Mock) }
 
 // Auto-setup global mocks when this module is imported
-MockFactory.setupGlobalMocks(');
+MockFactory.setupGlobalMocks(');'

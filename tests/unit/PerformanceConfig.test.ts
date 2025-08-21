@@ -8,39 +8,39 @@ import { getErrorHandler  } from '../../src/utils/ErrorHandler.js';
 // モックの型定義
 interface MockCall {
     category: string,
-    key: string,
-    defaultValue?: any }
+    key: string;
+    defaultValue?: any;
 interface SetCall {
     category: string,
-    key: string,
-    value: any }
+    key: string;
+    value: any;
 interface ValidationRule {
-    type?: string,
-    min?: number,
-    max?: number,
+    type?: string;
+    min?: number;
+    max?: number;
     validator?: (valu,e: any) => boolean | string }
 interface MockConfigManager {
     get: jest.Mock<any, [string, string, any? ]>, : undefined
-    set: jest.Mock<boolean, [string, string, any]>,
-    setValidationRule: jest.Mock<void, [string, string, any]>,
+    set: jest.Mock<boolean, [string, string, any]>;
+    setValidationRule: jest.Mock<void, [string, string, any]>;
     getCategory: jest.Mock<any, [string]> }
 interface QualityPreset {
     renderQuality: number,
-    particleQuality: number,
-    effectQuality: number,
-    audioQuality: number,
-    enableShadows: boolean,
-    enableBlur: boolean,
-    enableAntiAliasing: boolean,
-    enableReflections: boolean }
+    particleQuality: number;
+    effectQuality: number;
+    audioQuality: number;
+    enableShadows: boolean;
+    enableBlur: boolean;
+    enableAntiAliasing: boolean;
+    enableReflections: boolean;
 interface PerformanceOptimizer {
     targetFPS: number,
-    maxHistorySize: number,
-    adaptiveMode?: boolean,
-    performanceLevel?: string,
-    setAdaptiveMode: (mod,e: boolean) => void,
-    optimizationInterval: number,
-    setPerformanceLevel: (leve,l: string) => void,
+    maxHistorySize: number;
+    adaptiveMode?: boolean;
+    performanceLevel?: string;
+    setAdaptiveMode: (mod,e: boolean) => void;
+    optimizationInterval: number;
+    setPerformanceLevel: (leve,l: string) => void;
     settings: Record<string, any> }
 // モックの設定
 let mockGetCalls: MockCall[] = [],
@@ -57,10 +57,9 @@ const mockConfigManager: MockConfigManager = {
     get: mockGet,
     set: mockSet,
     setValidationRule: mockSetValidationRule,
-    getCategory: mockGetCategory
-    });
+    getCategory: mockGetCategory,);
 // ConfigurationManagerのモック
-const mockGetConfigurationManager = jest.fn(() => mockConfigManager');
+const mockGetConfigurationManager = jest.fn(() => mockConfigManager');'
 describe('PerformanceConfig', () => {
     let performanceConfig: PerformanceConfig,
     
@@ -69,42 +68,42 @@ describe('PerformanceConfig', () => {
         mockGetCalls = [],
         
         // 新しいインスタンスを作成
-        performanceConfig = new PerformanceConfig())'),
-    describe('初期化', (') => {
+        performanceConfig = new PerformanceConfig())'),'
+    describe('初期化', (') => {'
         test('コンストラクタが正しく初期化されること', () => {
             expect(performanceConfig).toBeDefined(),
-            expect(mockGetConfigurationManager).toHaveBeenCalled())'),
+            expect(mockGetConfigurationManager).toHaveBeenCalled())'),'
         test('初期化時に最適化設定が登録されること', () => {
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.targetFPS', 60),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.adaptiveMode', true),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.performanceLevel', 'high'),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.maxBubbles', 30),
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.targetFPS', 60),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.adaptiveMode', true),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.performanceLevel', 'high'),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.maxBubbles', 30),'
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.maxParticles', 600))'),
         test('初期化時にリソース制限設定が登録されること', () => {
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.memoryThreshold', 100),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.fpsThreshold', 30),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.maxTextureSize', 3048),
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.memoryThreshold', 100),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.fpsThreshold', 30),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.maxTextureSize', 3048),'
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.autoAdjust', true) }');
         test('初期化時に品質設定が登録されること', () => {
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.renderQuality', 1.0),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.particleQuality', 1.0),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.effectQuality', 1.0),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.audioQuality', 1.0),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.enableShadows', true),
-            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.enableBlur', true),
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.renderQuality', 1.0),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.particleQuality', 1.0),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.effectQuality', 1.0),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.audioQuality', 1.0),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.enableShadows', true),'
+            expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.enableBlur', true),'
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.enableAntiAliasing', true) }');
         test('初期化時に検証ルールが設定されること', () => {
-            expect(mockConfigManager.setValidationRule').toHaveBeenCalledWith('performance', 'optimization.targetFPS', expect.any(Object),
-            expect(mockConfigManager.setValidationRule').toHaveBeenCalledWith('performance', 'limits.memoryThreshold', expect.any(Object),
+            expect(mockConfigManager.setValidationRule').toHaveBeenCalledWith('performance', 'optimization.targetFPS', expect.any(Object),'
+            expect(mockConfigManager.setValidationRule').toHaveBeenCalledWith('performance', 'limits.memoryThreshold', expect.any(Object),'
             expect(mockConfigManager.setValidationRule').toHaveBeenCalledWith('performance', 'quality.renderQuality', expect.any(Object) }');
     }
-    describe('最適化設定', (') => {
+    describe('最適化設定', (') => {'
         test('getOptimizationConfig が正しい最適化設定を返すこと', () => {
             mockConfigManager.get
                 .mockReturnValueOnce(60) // targetFPS
                 .mockReturnValueOnce(true) // adaptiveMode
                 .mockReturnValueOnce(3000) // optimizationInterval
-                .mockReturnValueOnce(30') // maxHistorySize
+                .mockReturnValueOnce(30') // maxHistorySize'
                 .mockReturnValueOnce('medium') // performanceLevel
                 .mockReturnValueOnce(15) // maxBubbles
                 .mockReturnValueOnce(300) // maxParticles
@@ -112,7 +111,7 @@ describe('PerformanceConfig', () => {
                 .mockReturnValueOnce(10), // maxTimePerFrame
                 
             const optimizationConfig = performanceConfig.getOptimizationConfig(),
-            expect(optimizationConfig').toEqual({
+            expect(optimizationConfig').toEqual({'
                 targetFPS: 60,
                 adaptiveMode: true,
                 optimizationInterval: 3000,
@@ -121,7 +120,7 @@ describe('PerformanceConfig', () => {
                 maxBubbles: 15,
                 maxParticles: 300,
                 workloadDistribution: true,
-                maxTimePerFrame: 10)') }
+                maxTimePerFrame: 10)') }'
         test('getTargetFPS が正しい値を返すこと', () => {
             mockConfigManager.get.mockReturnValueOnce(60),
             expect(performanceConfig.getTargetFPS().toBe(60),
@@ -130,9 +129,9 @@ describe('PerformanceConfig', () => {
             mockConfigManager.get.mockReturnValueOnce(true),
             expect(performanceConfig.isAdaptiveModeEnabled().toBe(true),
             expect(mockConfigManager.get').toHaveBeenCalledWith('performance', 'optimization.adaptiveMode', true) }');
-        test('getPerformanceLevel が正しい値を返すこと', (') => {
+        test('getPerformanceLevel が正しい値を返すこと', (') => {'
             mockConfigManager.get.mockReturnValueOnce('medium'),
-            expect(performanceConfig.getPerformanceLevel()').toBe('medium'),
+            expect(performanceConfig.getPerformanceLevel()').toBe('medium'),'
             expect(mockConfigManager.get').toHaveBeenCalledWith('performance', 'optimization.performanceLevel', 'high') }');
         test('getMaxBubbles が正しい値を返すこと', () => {
             mockConfigManager.get.mockReturnValueOnce(15),
@@ -148,7 +147,7 @@ describe('PerformanceConfig', () => {
         test('setAdaptiveModeEnabled が正しく設定されること', () => {
             performanceConfig.setAdaptiveModeEnabled(true),
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.adaptiveMode', true) }');
-        test('setPerformanceLevel が正しく設定されること', (') => {
+        test('setPerformanceLevel が正しく設定されること', (') => {'
             performanceConfig.setPerformanceLevel('medium'),
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.performanceLevel', 'medium') }');
         test('setMaxBubbles が正しく設定されること', () => {
@@ -158,7 +157,7 @@ describe('PerformanceConfig', () => {
             performanceConfig.setMaxParticles(300),
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'optimization.maxParticles', 300) }');
     }
-    describe('リソース制限設定', (') => {
+    describe('リソース制限設定', (') => {'
         test('getResourceLimitConfig が正しいリソース制限設定を返すこと', () => {
             mockConfigManager.get
                 .mockReturnValueOnce(80) // memoryThreshold
@@ -179,7 +178,7 @@ describe('PerformanceConfig', () => {
                 autoAdjust: true,
                 warningThreshold: 0.7,
                 criticalThreshold: 0.9,
-                cleanupInterval: 30000)') }
+                cleanupInterval: 30000)') }'
         test('getMemoryThreshold が正しい値を返すこと', () => {
             mockConfigManager.get.mockReturnValueOnce(80),
             expect(performanceConfig.getMemoryThreshold().toBe(80),
@@ -209,7 +208,7 @@ describe('PerformanceConfig', () => {
             performanceConfig.setAutoAdjustEnabled(true),
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'limits.autoAdjust', true) }');
     }
-    describe('品質設定', (') => {
+    describe('品質設定', (') => {'
         test('getQualityConfig が正しい品質設定を返すこと', () => {
             mockConfigManager.get
                 .mockReturnValueOnce(0.8) // renderQuality
@@ -230,7 +229,7 @@ describe('PerformanceConfig', () => {
                 enableShadows: true,
                 enableBlur: true,
                 enableAntiAliasing: true,
-                enableReflections: true)') }
+                enableReflections: true)') }'
         test('getRenderQuality が正しい値を返すこと', () => {
             mockConfigManager.get.mockReturnValueOnce(0.8),
             expect(performanceConfig.getRenderQuality().toBe(0.8),
@@ -288,7 +287,7 @@ describe('PerformanceConfig', () => {
             performanceConfig.setReflectionsEnabled(true),
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance', 'quality.enableReflections', true) }');
     }
-    describe('品質プリセット', (') => {
+    describe('品質プリセット', (') => {'
         test('applyQualityPreset が正しくプリセットを適用すること', () => {
             // プリセットのモック
             const mockPreset: QualityPreset = {
@@ -299,53 +298,52 @@ describe('PerformanceConfig', () => {
                 enableShadows: true,
                 enableBlur: true,
                 enableAntiAliasing: true,
-                enableReflections: true
-            };
+                enableReflections: true,;
             
             // モックの設定
             let getCalls: MockCall[] = [],
             let setCalls: SetCall[] = [],
             
             mockConfigManager.get = jest.fn((category: string, key: string): any => {
-                getCalls.push({ category, key }');
+                getCalls.push({ category, key }');'
                 if (key === 'performance.quality.presets.low') return mockPreset;
                 return null;
             });
             mockConfigManager.set = jest.fn((category: string, key: string, value: any) => {
                 setCalls.push({ category, key, value )});
                 return true;
-            )');
+            )');'
             const result = performanceConfig.applyQualityPreset('low');
-            expect(result).toBe(true');
-            expect(getCalls.some(call => call.key === 'performance.quality.presets.low').toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.renderQuality' && call.value === 0.7).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.particleQuality' && call.value === 0.3).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.effectQuality' && call.value === 0.2).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.audioQuality' && call.value === 0.5).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.enableShadows' && call.value === true).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.enableBlur' && call.value === true).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.enableAntiAliasing' && call.value === true).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.enableReflections' && call.value === true).toBe(true');
+            expect(result).toBe(true');'
+            expect(getCalls.some(call => call.key === 'performance.quality.presets.low').toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.renderQuality' && call.value === 0.7).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.particleQuality' && call.value === 0.3).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.effectQuality' && call.value === 0.2).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.audioQuality' && call.value === 0.5).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.enableShadows' && call.value === true).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.enableBlur' && call.value === true).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.enableAntiAliasing' && call.value === true).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.enableReflections' && call.value === true).toBe(true');'
             expect(setCalls.some(call => call.key === 'optimization.performanceLevel' && call.value === 'low').toBe(true);
-        }');
-        test('applyQualityPreset が無効なプリセット名でtrueを返すこと', (') => {
+        }');'
+        test('applyQualityPreset が無効なプリセット名でtrueを返すこと', (') => {'
             const result = performanceConfig.applyQualityPreset('invalid'),
-            expect(result).toBe(true) }');
+            expect(result).toBe(true) }');'
     }
-    describe('PerformanceOptimizer連携', (') => {
+    describe('PerformanceOptimizer連携', (') => {'
         test('applyToPerformanceOptimizer がPerformanceOptimizerに設定を適用すること', () => {
             // PerformanceOptimizerのモック
             const mockOptimizer: PerformanceOptimizer = {
                 targetFPS: 60,
                 maxHistorySize: 30,
-                setAdaptiveMode: function(mode: boolean) { this.adaptiveMode = mode },
+                setAdaptiveMode: function(mode: boolean) { this.adaptiveMode = mode };
                 optimizationInterval: 1000,
-                setPerformanceLevel: function(level: string) { this.performanceLevel = level },
+                setPerformanceLevel: function(level: string) { this.performanceLevel = level };
                 settings: {}
             };
             
             // 設定のモック
-            mockConfigManager.get = jest.fn((category: string, key: string, defaultValue?: any'): any => {
+            mockConfigManager.get = jest.fn((category: string, key: string, defaultValue?: any'): any => {'
                 // 最適化設定
                 if (key === 'optimization.targetFPS') return 60,
                 if (key === 'optimization.adaptiveMode') return true,
@@ -371,7 +369,7 @@ describe('PerformanceConfig', () => {
             expect(mockOptimizer.maxHistorySize).toBe(30);
             expect(mockOptimizer.adaptiveMode).toBe(true);
             expect(mockOptimizer.optimizationInterval).toBe(3000);
-            expect(mockOptimizer.performanceLevel').toBe('medium');
+            expect(mockOptimizer.performanceLevel').toBe('medium');'
             expect(mockOptimizer.settings).toEqual({
                 maxBubbles: 15,
                 maxParticles: 300,
@@ -381,8 +379,8 @@ describe('PerformanceConfig', () => {
                 audioQuality: 0.9,
                 enableShadows: true,
                 enableBlur: true,
-                enableAntiAliasing: true)') }
-        test('syncFromPerformanceOptimizer がPerformanceOptimizerから設定を同期すること', (') => {
+                enableAntiAliasing: true)') }'
+        test('syncFromPerformanceOptimizer がPerformanceOptimizerから設定を同期すること', (') => {'
             // PerformanceOptimizerのモック
             const mockOptimizer: PerformanceOptimizer = {
                 targetFPS: 60,
@@ -401,8 +399,7 @@ describe('PerformanceConfig', () => {
                     audioQuality: 0.9,
                     enableShadows: true,
                     enableBlur: true,
-                    enableAntiAliasing: true
-                }
+                    enableAntiAliasing: true,
             };
             
             // モックの設定
@@ -411,25 +408,25 @@ describe('PerformanceConfig', () => {
                 setCalls.push({ category, key, value )});
                 return true;
             );
-            performanceConfig.syncFromPerformanceOptimizer(mockOptimizer');
-            expect(setCalls.some(call => call.key === 'optimization.targetFPS' && call.value === 60).toBe(true');
-            expect(setCalls.some(call => call.key === 'optimization.adaptiveMode' && call.value === true).toBe(true');
-            expect(setCalls.some(call => call.key === 'optimization.performanceLevel' && call.value === 'medium').toBe(true');
-            expect(setCalls.some(call => call.key === 'optimization.maxBubbles' && call.value === 15).toBe(true');
-            expect(setCalls.some(call => call.key === 'optimization.maxParticles' && call.value === 300).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.renderQuality' && call.value === 0.8).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.particleQuality' && call.value === 0.6).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.effectQuality' && call.value === 0.7).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.audioQuality' && call.value === 0.9).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.enableShadows' && call.value === true).toBe(true');
-            expect(setCalls.some(call => call.key === 'quality.enableBlur' && call.value === true).toBe(true');
+            performanceConfig.syncFromPerformanceOptimizer(mockOptimizer');'
+            expect(setCalls.some(call => call.key === 'optimization.targetFPS' && call.value === 60).toBe(true');'
+            expect(setCalls.some(call => call.key === 'optimization.adaptiveMode' && call.value === true).toBe(true');'
+            expect(setCalls.some(call => call.key === 'optimization.performanceLevel' && call.value === 'medium').toBe(true');'
+            expect(setCalls.some(call => call.key === 'optimization.maxBubbles' && call.value === 15).toBe(true');'
+            expect(setCalls.some(call => call.key === 'optimization.maxParticles' && call.value === 300).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.renderQuality' && call.value === 0.8).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.particleQuality' && call.value === 0.6).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.effectQuality' && call.value === 0.7).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.audioQuality' && call.value === 0.9).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.enableShadows' && call.value === true).toBe(true');'
+            expect(setCalls.some(call => call.key === 'quality.enableBlur' && call.value === true).toBe(true');'
             expect(setCalls.some(call => call.key === 'quality.enableAntiAliasing' && call.value === true).toBe(true);
-        }');
+        }');'
     }
-    describe('シングルトンパターン', (') => {
+    describe('シングルトンパターン', (') => {'
         test('getPerformanceConfig が常に同じインスタンスを返すこと', () => {
             const instance1 = getPerformanceConfig(),
             const instance2 = getPerformanceConfig(),
             expect(instance1).toBe(instance2) });
     }
-}');
+}');'

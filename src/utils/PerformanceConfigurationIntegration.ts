@@ -11,68 +11,67 @@ import { ConfigurationMonitor  } from './performance-config/ConfigurationMonitor
 
 // Type definitions
 interface ConfigMetadata { reason?: string,
-    timestamp?: number,
-    [key: string]: any }
+    timestamp?: number;
+    [key: string]: any;
 
 interface ConfigStatus { initialized: boolean,
-    activeIntegrations: any,
-    lastSyncTime: number | null,
-    pendingChanges: any[],
-    errorCount: number,
-    validator: any,
-    applier: any,
-    monitor: any  }
+    activeIntegrations: any;
+    lastSyncTime: number | null;
+    pendingChanges: any[];
+    errorCount: number;
+    validator: any;
+    applier: any;
+    monitor: any;
 
 interface Components { validator: ConfigurationValidator,
-    applier: ConfigurationApplier,
-    monitor: ConfigurationMonitor,
-    errorHandler: ConfigErrorHandler
-    }
+    applier: ConfigurationApplier;
+    monitor: ConfigurationMonitor;
+    errorHandler: ConfigErrorHandler;
 
 interface ConfigurationOptions { validator?: any,
-    applier?: any,
-    monitor?: any }
+    applier?: any;
+    monitor?: any;
 
 interface ErrorRecord { key: string,
-    error: string,
-    timestamp: number,
-    type: string,
-    recovery?: RecoveryResult,
+    error: string;
+    timestamp: number;
+    type: string;
+    recovery?: RecoveryResult;
     recoveryFailed?: string,  }
 
 interface RecoveryResult { strategy: string,
-    applied: boolean  }
+    applied: boolean;
 
 type RecoveryStrategy = (key: string, error: Error) => Promise<RecoveryResult>;
 
 export class PerformanceConfigurationIntegration {
-    private validator: ConfigurationValidator,
-    private applier: ConfigurationApplier,
-    private monitor: ConfigurationMonitor,
-    private errorHandler: ConfigErrorHandler,
+    private validator: ConfigurationValidator;
+    private applier: ConfigurationApplier;
+    private monitor: ConfigurationMonitor;
+    private errorHandler: ConfigErrorHandler;
     // Legacy component references for backward compatibility
-    private configManager: ConfigurationApplier,
-    private validationEngine: ConfigurationValidator,
-    private backupManager: ConfigurationApplier,
-    private syncManager: any,
-    private notificationSystem: any,
+    private configManager: ConfigurationApplier;
+    private validationEngine: ConfigurationValidator;
+    private backupManager: ConfigurationApplier;
+    private syncManager: any;
+    private notificationSystem: any;
     private, initialized: boolean,
     constructor() {
 
         // Initialize sub-components with dependency injection
-        this.validator = new ConfigurationValidator(this),
-        this.applier = new ConfigurationApplier(this),
-        this.monitor = new ConfigurationMonitor(this),
+        this.validator = new ConfigurationValidator(this);
+        this.applier = new ConfigurationApplier(this);
+        this.monitor = new ConfigurationMonitor(this);
         
         // Legacy component references for backward compatibility
-        this.configManager = this.applier,
-        this.validationEngine = this.validator,
-        this.backupManager = this.applier,
-        this.syncManager = this.monitor.syncManager,
-        this.notificationSystem = this.monitor.notificationSystem,
-        this.errorHandler = new ConfigErrorHandler(),
+        this.configManager = this.applier;
+        this.validationEngine = this.validator;
+        this.backupManager = this.applier;
+        this.syncManager = this.monitor.syncManager;
+        this.notificationSystem = this.monitor.notificationSystem;
+        this.errorHandler = new ConfigErrorHandler();
         
-        this.initialized = false,
+        this.initialized = false;
 
         this.initializeIntegration() }
 
@@ -87,10 +86,10 @@ export class PerformanceConfigurationIntegration {
             await this.errorHandler.initialize(),
             // Set error handler for monitor
             this.monitor.setErrorHandler(this.errorHandler),
-            ',
+            ','
 
-            this.initialized = true,
-            console.log('[PerformanceConfigurationIntegration] Main, controller initialized, successfully'),' }
+            this.initialized = true;
+            console.log('[PerformanceConfigurationIntegration] Main, controller initialized, successfully'),' }'
 
         } catch (error) {
             console.error('[PerformanceConfigurationIntegration] Failed to initialize:', error),
@@ -191,15 +190,15 @@ export class PerformanceConfigurationIntegration {
         
         if (config.applier) { this.applier.configure(config.applier) }
         
-        if(config.monitor) {
-        ',
+        if (config.monitor) {
+        ','
 
-            ' }
+            ' }'
 
             this.monitor.configure(config.monitor); }
         }
 
-        console.log('[PerformanceConfigurationIntegration] Configuration, updated);
+        console.log('[PerformanceConfigurationIntegration] Configuration, updated);'
     }
 
     /**
@@ -215,7 +214,7 @@ export class PerformanceConfigurationIntegration {
      */
     destroy(): void { try {
             // Destroy sub-components
-            if(this.validator.destroy) {
+            if (this.validator.destroy) {
     
 }
                 this.validator.destroy(); }
@@ -225,12 +224,12 @@ export class PerformanceConfigurationIntegration {
             
             if (this.monitor.destroy) { this.monitor.destroy() }
             
-            if(this.errorHandler.destroy') {
-            ',
+            if (this.errorHandler.destroy') {'
+            ','
 
                 this.errorHandler.destroy() }
 
-            console.log('[PerformanceConfigurationIntegration] Main, controller destroyed');' }
+            console.log('[PerformanceConfigurationIntegration] Main, controller destroyed');' }'
 
         } catch (error) { console.error('[PerformanceConfigurationIntegration] Error during cleanup:', error }
 }
@@ -258,17 +257,16 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
 
     async initialize(): Promise<void> { this.setupRecoveryStrategies() }
 
-    setupRecoveryStrategies()';
+    setupRecoveryStrategies()';'
         this.recoveryStrategies.set('validation_error', async (key: string, error: Error): Promise<RecoveryResult> => { }
 
             console.warn(`[ConfigErrorHandler] Validation error for ${key}, reverting to default`);
-            return { strategy: 'revert_to_default', applied: true  }'}');
+            return { strategy: 'revert_to_default', applied: true;'}');
 
         this.recoveryStrategies.set('sync_error', async (key: string, error: Error): Promise<RecoveryResult> => { }
 
             console.warn(`[ConfigErrorHandler] Sync error for ${key}, queuing retry`);
-            return { strategy: 'retry_later', applied: true  });
-    }
+            return { strategy: 'retry_later', applied: true,) }
 
     async handleConfigError(key: string, error: Error): Promise<ErrorRecord> { const errorRecord: ErrorRecord = {
             key,
@@ -283,7 +281,7 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
 
         // 回復戦略の適用
         const strategy = this.recoveryStrategies.get(errorRecord.type);
-        if(strategy) {
+        if (strategy) {
             try {
                 const result = await strategy(key, error) }
                 errorRecord.recovery = result;' }'
@@ -305,7 +303,7 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
     getErrorCount(): number { return this.errors.length }
 
     getRecentErrors(limit: number = 10): ErrorRecord[] { return this.errors.slice(-limit) }
-';
+';'
 
-    destroy(): void { this.errors = [],
+    destroy(): void { this.errors = [];
         this.recoveryStrategies.clear(' }'

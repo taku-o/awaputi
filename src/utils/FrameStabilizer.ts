@@ -13,118 +13,117 @@ import { getErrorHandler  } from './ErrorHandler.js';
 
 // 型定義
 interface PreciseFrameTime { time: number,
-    timestamp: number  }
+    timestamp: number;
 
 interface FrameTimingAnalysis { preciseFrameTimes: PreciseFrameTime[],
-    frameTimeBuffer: number[],
-    bufferIndex: number,
-    bufferFull: boolean,
-    variance: number,
-    standardDeviation: number,
-    mean: number,
-    median: number,
-    percentile95: number,
-    percentile99: number,
-    stabilityScore: number,
-    consistencyRating: 'excellent' | 'good' | 'fair' | 'poor' | 'critical',
-    jitterLevel: number,
-    smoothnessIndex: number  }
+    frameTimeBuffer: number[];
+    bufferIndex: number;
+    bufferFull: boolean;
+    variance: number;
+    standardDeviation: number;
+    mean: number;
+    median: number;
+    percentile95: number;
+    percentile99: number;
+    stabilityScore: number;
+    consistencyRating: 'excellent' | 'good' | 'fair' | 'poor' | 'critical';
+    jitterLevel: number;
+    smoothnessIndex: number;
 
 interface TargetAdjustment { from: number,
-    to: number,
-    timestamp: number,
-    reason: string,
-    stabilityScore: number }
+    to: number;
+    timestamp: number;
+    reason: string;
+    stabilityScore: number;
 
 interface AdaptiveTargeting { baseTargetFPS: number,
-    currentTargetFPS: number,
-    adaptiveTargetFPS: number,
-    confidenceLevel: number,
-    adjustmentHistory: TargetAdjustment[],
-    lastAdjustmentTime: number,
-    adjustmentCooldown: number,
-    performanceZone: 'optimal' | 'good' | 'acceptable' | 'poor' | 'critical',
-    zoneTransitionThreshold: number,
-    conservativeMode: boolean,
-    aggressiveOptimization: boolean,
-    gradualAdjustment: boolean  }
+    currentTargetFPS: number;
+    adaptiveTargetFPS: number;
+    confidenceLevel: number;
+    adjustmentHistory: TargetAdjustment[];
+    lastAdjustmentTime: number;
+    adjustmentCooldown: number;
+    performanceZone: 'optimal' | 'good' | 'acceptable' | 'poor' | 'critical';
+    zoneTransitionThreshold: number;
+    conservativeMode: boolean;
+    aggressiveOptimization: boolean;
+    gradualAdjustment: boolean;
 
 interface PredictionData { prediction: number,
-    timestamp: number }
+    timestamp: number;
 
 interface FramePacing { enabled: boolean,
-    targetInterval: number,
-    actualInterval: number,
-    pacingError: number,
-    correctionFactor: number,
-    nextFramePrediction: number,
-    predictionAccuracy: number,
-    predictionHistory: PredictionData[],
-    vsyncDetected: boolean,
-    refreshRate: number,
-    tearingRisk: number }
+    targetInterval: number;
+    actualInterval: number;
+    pacingError: number;
+    correctionFactor: number;
+    nextFramePrediction: number;
+    predictionAccuracy: number;
+    predictionHistory: PredictionData[];
+    vsyncDetected: boolean;
+    refreshRate: number;
+    tearingRisk: number;
 
 interface QualityLevel { multiplier: number,
-    threshold: number }
+    threshold: number;
 
 interface QualityAdjustment { currentLevel: string,
-    targetLevel: string,
-    transitionProgress: number,
-    transitionDuration: number,
-    transitionStartTime: number,
-    adjustmentCurve: 'smooth' | 'linear' | 'exponential',
-    hysteresisThreshold: number,
+    targetLevel: string;
+    transitionProgress: number;
+    transitionDuration: number;
+    transitionStartTime: number;
+    adjustmentCurve: 'smooth' | 'linear' | 'exponential';
+    hysteresisThreshold: number;
     qualityLevels: Record<string, QualityLevel> }
 
 interface StabilizationThresholds { excellentStability: number,
-    goodStability: number,
-    acceptableStability: number,
-    poorStability: number,
-    frameDropTolerance: number,
-    consistencyRequirement: number,
-    criticalVariance: number,
-    emergencyFPS: number,
-    panicModeThreshold: number  }
+    goodStability: number;
+    acceptableStability: number;
+    poorStability: number;
+    frameDropTolerance: number;
+    consistencyRequirement: number;
+    criticalVariance: number;
+    emergencyFPS: number;
+    panicModeThreshold: number;
 
 interface Recommendations { immediate: string[],
-    shortTerm: string[],
-    longTerm: string[],
-    technical: string[] }
+    shortTerm: string[];
+    longTerm: string[];
+    technical: string[];
 
 interface StabilizationStatus { timing: FrameTimingAnalysis,
-    adaptive: AdaptiveTargeting,
-    pacing: FramePacing,
-    quality: QualityAdjustment,
-    thresholds: StabilizationThresholds,
-    recommendations: Recommendations
-    }
-';
+    adaptive: AdaptiveTargeting;
+    pacing: FramePacing;
+    quality: QualityAdjustment;
+    thresholds: StabilizationThresholds;
+    recommendations: Recommendations;
+';'
 
 interface ErrorHandler { ''
-    handleError(error: Error, context: any): void  }
+    handleError(error: Error, context: any): void;
 
 type StabilizationMode = 'conservative' | 'balanced' | 'aggressive';
 
 export class FrameStabilizer {
-    private errorHandler: ErrorHandler,
-    private targetFPS: number,
-    private targetFrameTime: number,
-    private frameTimingAnalysis: FrameTimingAnalysis,
-    private adaptiveTargeting: AdaptiveTargeting,
-    private framePacing: FramePacing,
-    private qualityAdjustment: QualityAdjustment,
+    private errorHandler: ErrorHandler;
+    private targetFPS: number;
+    private targetFrameTime: number;
+    private frameTimingAnalysis: FrameTimingAnalysis;
+    private adaptiveTargeting: AdaptiveTargeting;
+    private framePacing: FramePacing;
+    private qualityAdjustment: QualityAdjustment;
     private, stabilizationThresholds: StabilizationThresholds,
     constructor(targetFPS: number = 60) {
 
-        this.errorHandler = getErrorHandler(),
-        this.targetFPS = targetFPS,
-        this.targetFrameTime = 1000 / targetFPS,
+        this.errorHandler = getErrorHandler();
+        this.targetFPS = targetFPS;
+        this.targetFrameTime = 1000 / targetFPS;
         
         // Frame timing analysis
         this.frameTimingAnalysis = {
             // High-resolution frame time tracking
-            preciseFrameTimes: [],
-            frameTimeBuffer: new Array(120).fill(16.67), // 2 seconds at 60fps,
+            preciseFrameTimes: [];
+            frameTimeBuffer: new Array(120).fill(16.67), // 2 seconds at 60fps;
             bufferIndex: 0,
             bufferFull: false,
             // Statistical analysis
@@ -136,7 +135,7 @@ export class FrameStabilizer {
             percentile99: 16.67,
             // Stability metrics
            , stabilityScore: 1.0,
-            consistencyRating: 'excellent', // 'excellent', 'good', 'fair', 'poor', 'critical',
+            consistencyRating: 'excellent', // 'excellent', 'good', 'fair', 'poor', 'critical';
             jitterLevel: 0, // 0-10 scale
     }
             smoothnessIndex: 1.0 // 0-1, higher is smoother }
@@ -156,7 +155,7 @@ export class FrameStabilizer {
             // Adjustment parameters
             conservativeMode: false,
             aggressiveOptimization: false,
-    gradualAdjustment: true  };
+    gradualAdjustment: true,;
         // Frame pacing optimization
         this.framePacing = { enabled: true,
             targetInterval: 16.67,
@@ -172,7 +171,7 @@ export class FrameStabilizer {
             refreshRate: 60,
     tearingRisk: 0  };
         // Quality adjustment algorithms
-        this.qualityAdjustment = {,
+        this.qualityAdjustment = {;
             currentLevel: 'high',
             targetLevel: 'high',
             transitionProgress: 1.0,
@@ -183,11 +182,11 @@ export class FrameStabilizer {
            , adjustmentCurve: 'smooth', // 'smooth', 'linear', 'exponential',
             hysteresisThreshold: 0.05, // Prevent oscillation,
             // Quality levels definition
-            qualityLevels: { }', 'ultra': { multiplier: 1.2, threshold: 0.95  },', 'high': { multiplier: 1.0, threshold: 0.85  },', 'medium': { multiplier: 0.8, threshold: 0.70  },', 'low': { multiplier: 0.6, threshold: 0.50  },', 'minimal': { multiplier: 0.4, threshold: 0.30  }
+            qualityLevels: { }', 'ultra': { multiplier: 1.2, threshold: 0.95  },', 'high': { multiplier: 1.0, threshold: 0.85  },', 'medium': { multiplier: 0.8, threshold: 0.70  },', 'low': { multiplier: 0.6, threshold: 0.50  },', 'minimal': { multiplier: 0.4, threshold: 0.30  }'
         };
         
         // Performance thresholds
-        this.stabilizationThresholds = { excellentStability: 2.0, // variance < 2ms
+        this.stabilizationThresholds = { excellentStability: 2.0; // variance < 2ms
             goodStability: 5.0,      // variance < 5ms,
             acceptableStability: 10.0, // variance < 10ms,
             poorStability: 20.0,      // variance < 20ms,
@@ -248,7 +247,7 @@ export class FrameStabilizer {
         this.frameTimingAnalysis.bufferIndex = ,
             (this.frameTimingAnalysis.bufferIndex + 1) % this.frameTimingAnalysis.frameTimeBuffer.length,
         
-        if(this.frameTimingAnalysis.bufferIndex === 0) {
+        if (this.frameTimingAnalysis.bufferIndex === 0) {
     
 }
             this.frameTimingAnalysis.bufferFull = true; }
@@ -310,17 +309,17 @@ export class FrameStabilizer {
             1 - (variance / (maxAcceptableVariance * 4)), // Scale to make it more gradual
         ,
         // Determine consistency rating
-        if(variance < this.stabilizationThresholds.excellentStability) {', ' }
+        if (variance < this.stabilizationThresholds.excellentStability) {', ' }
 
             this.frameTimingAnalysis.consistencyRating = 'excellent'; }
 
-        } else if(variance < this.stabilizationThresholds.goodStability) { ''
-            this.frameTimingAnalysis.consistencyRating = 'good',' }
+        } else if (variance < this.stabilizationThresholds.goodStability) { ''
+            this.frameTimingAnalysis.consistencyRating = 'good',' }'
 
-        } else if(variance < this.stabilizationThresholds.acceptableStability) { ''
-            this.frameTimingAnalysis.consistencyRating = 'fair',' }
+        } else if (variance < this.stabilizationThresholds.acceptableStability) { ''
+            this.frameTimingAnalysis.consistencyRating = 'fair',' }'
 
-        } else if(variance < this.stabilizationThresholds.poorStability) { ''
+        } else if (variance < this.stabilizationThresholds.poorStability) { ''
             this.frameTimingAnalysis.consistencyRating = 'poor' }
 
         } else { }'
@@ -367,7 +366,7 @@ export class FrameStabilizer {
      * Predict next frame time using historical data
      */
     private predictNextFrameTime(): void { const recentFrames = this.frameTimingAnalysis.preciseFrameTimes.slice(-10),
-        if(recentFrames.length < 5) {
+        if (recentFrames.length < 5) {
             this.framePacing.nextFramePrediction = this.frameTimingAnalysis.mean }
             return; }
         }
@@ -415,7 +414,7 @@ export class FrameStabilizer {
                 accuracies.push(accuracy); }
 }
         
-        if(accuracies.length > 0) {
+        if (accuracies.length > 0) {
         
             this.framePacing.predictionAccuracy =  }
                 accuracies.reduce((sum, acc) => sum + acc, 0) / accuracies.length; }
@@ -521,18 +520,18 @@ export class FrameStabilizer {
     updatePerformanceZone(stabilityScore, currentFPS) {
         const fpsRatio = currentFPS / this.adaptiveTargeting.baseTargetFPS,
 
-        if(stabilityScore > 0.9 && fpsRatio > 0.95) {
+        if (stabilityScore > 0.9 && fpsRatio > 0.95) {
     }
 
             this.adaptiveTargeting.performanceZone = 'optimal'; }
 
-        } else if(stabilityScore > 0.7 && fpsRatio > 0.85) { ''
-            this.adaptiveTargeting.performanceZone = 'good',' }
+        } else if (stabilityScore > 0.7 && fpsRatio > 0.85) { ''
+            this.adaptiveTargeting.performanceZone = 'good',' }'
 
-        } else if(stabilityScore > 0.5 && fpsRatio > 0.70) { ''
-            this.adaptiveTargeting.performanceZone = 'acceptable',' }
+        } else if (stabilityScore > 0.5 && fpsRatio > 0.70) { ''
+            this.adaptiveTargeting.performanceZone = 'acceptable',' }'
 
-        } else if(stabilityScore > 0.3 && fpsRatio > 0.50) { ''
+        } else if (stabilityScore > 0.3 && fpsRatio > 0.50) { ''
             this.adaptiveTargeting.performanceZone = 'poor' }
 
         } else { }'
@@ -549,15 +548,15 @@ export class FrameStabilizer {
         const baseFPS = this.adaptiveTargeting.baseTargetFPS,
 
         switch(zone) {''
-            case 'optimal':',
+            case 'optimal':','
                 return Math.min(baseFPS * 1.1, this.framePacing.refreshRate), // Can increase target
-            case 'good':',
+            case 'good':','
                 return baseFPS,
-            case 'acceptable':',
+            case 'acceptable':','
                 return baseFPS * 0.95,
-            case 'poor':',
+            case 'poor':','
                 return baseFPS * 0.85,
-            case 'critical':',
+            case 'critical':','
                 return Math.max(baseFPS * 0.7, 30), // Dont go below 30 FPS
     }
             default: return baseFPS;
@@ -596,19 +595,19 @@ export class FrameStabilizer {
         const currentIndex = levels.indexOf(currentLevel),
         
         let recommendedLevel = currentLevel,
-        ',
+        ','
         // Determine recommended quality level based on performance zone
         switch(zone) {''
-            case 'optimal':',
+            case 'optimal':','
                 if(currentIndex > 0) recommendedLevel = levels[currentIndex - 1], // Increase quality
                 break,
             case 'good':,
                 // Stay at current level
                 break,
-            case 'acceptable':',
+            case 'acceptable':','
                 if(currentIndex < levels.length - 1) recommendedLevel = levels[currentIndex + 1], // Decrease quality
                 break,
-            case 'poor':',
+            case 'poor':','
                 if(currentIndex < levels.length - 2) recommendedLevel = levels[currentIndex + 2], // Decrease more
                 break,
             case 'critical':,
@@ -618,7 +617,7 @@ export class FrameStabilizer {
         }
         
         // Apply hysteresis to prevent oscillation
-        if(recommendedLevel !== this.qualityAdjustment.targetLevel) {
+        if (recommendedLevel !== this.qualityAdjustment.targetLevel) {
             const threshold = this.qualityAdjustment.hysteresisThreshold,
             if(this.frameTimingAnalysis.stabilityScore > threshold || ),
                 this.frameTimingAnalysis.stabilityScore < (1 - threshold) {
@@ -631,39 +630,39 @@ export class FrameStabilizer {
      * Get stabilization recommendations
      * @returns Recommendations for improving frame rate stability
      */''
-    getStabilizationRecommendations()';
+    getStabilizationRecommendations()';'
         if (zone === 'critical') {
 
             recommendations.immediate.push('Reduce, quality settings, immediately'),
             recommendations.immediate.push('Close, background applications') }
 
-            recommendations.immediate.push('Enable, conservative performance, mode');' }
+            recommendations.immediate.push('Enable, conservative performance, mode');' }'
 
         } else if (zone === 'poor') { ''
             recommendations.immediate.push('Lower, particle effects, quality'),
             recommendations.immediate.push('Reduce, rendering resolution' }', ';
         // Short-term improvements
-        if(analysis.jitterLevel > 5) {
+        if (analysis.jitterLevel > 5) {
 
             recommendations.shortTerm.push('Enable, frame pacing, optimization') }
 
             recommendations.shortTerm.push('Adjust, VSync settings'); }
         }
 
-        if(analysis.consistencyRating === 'poor' || analysis.consistencyRating === 'critical') {
+        if (analysis.consistencyRating === 'poor' || analysis.consistencyRating === 'critical') {
 
             recommendations.shortTerm.push('Enable, adaptive quality, mode') }
 
             recommendations.shortTerm.push('Increase, frame time, tolerance'; }'
         }
-        ';
+        ';'
         // Long-term optimizations
-        if(this.framePacing.tearingRisk > 0.3) {', ' }
+        if (this.framePacing.tearingRisk > 0.3) {', ' }
 
             recommendations.longTerm.push('Consider, enabling VSync, or FreeSync/G-Sync'; }'
         }
 
-        if(analysis.variance > this.stabilizationThresholds.goodStability) {
+        if (analysis.variance > this.stabilizationThresholds.goodStability) {
 
             recommendations.longTerm.push('Optimize, system for, consistent performance') }
 
@@ -688,9 +687,9 @@ export class FrameStabilizer {
             pacing: this.framePacing,
             quality: this.qualityAdjustment,
     thresholds: this.stabilizationThresholds,
-            recommendations: this.getStabilizationRecommendations()',
+            recommendations: this.getStabilizationRecommendations()','
      * @param mode - Stabilization mode ('conservative', 'balanced', 'aggressive')'
-     */' };
+     */' };'
 
     forceStabilization(targetFPS: number, mode: StabilizationMode = 'balanced': void { }'
         console.log(`[FrameStabilizer] Force, stabilization to ${targetFPS} FPS (${ mode) mode}`};
@@ -699,7 +698,7 @@ export class FrameStabilizer {
         this.adaptiveTargeting.currentTargetFPS = targetFPS;
         this.targetFPS = targetFPS;
         this.targetFrameTime = 1000 / targetFPS;
-        ';
+        ';'
 
         // Configure mode-specific settings' }'
 
@@ -749,7 +748,7 @@ let _frameStabilizer: FrameStabilizer | null = null,
 export function getFrameStabilizer(targetFPS: number = 60): FrameStabilizer { if (!_frameStabilizer) {
         try {'
             _frameStabilizer = new FrameStabilizer(targetFPS),
-            console.log('[FrameStabilizer] グローバルインスタンスを作成しました'),' }
+            console.log('[FrameStabilizer] グローバルインスタンスを作成しました'),' }'
 
         } catch (error) {
             console.error('[FrameStabilizer] インスタンス作成エラー:', error),
@@ -765,11 +764,11 @@ export function getFrameStabilizer(targetFPS: number = 60): FrameStabilizer { if
  */
 export function reinitializeFrameStabilizer(targetFPS: number = 60): void { try {'
         _frameStabilizer = new FrameStabilizer(targetFPS),
-        console.log('[FrameStabilizer] 再初期化完了'),' }
+        console.log('[FrameStabilizer] 再初期化完了'),' }'
 
     } catch (error) {
-        console.error('[FrameStabilizer] 再初期化エラー:', error' }
+        console.error('[FrameStabilizer] 再初期化エラー:', error' }'
 }
-';
+';'
 // 後方互換性のため
 export const frameStabilizer = getFrameStabilizer;

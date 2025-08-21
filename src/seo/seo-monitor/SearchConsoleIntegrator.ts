@@ -5,44 +5,42 @@
  */
 
 interface SEOConfig { // 必要に応じて設定オブジェクトの型を定義
-    [key: string]: any }
+    [key: string]: any;
 
 interface SitemapValidationResult { exists: boolean,
-    status?: number,
-    lastModified?: string | null,
-    error?: string }
+    status?: number;
+    lastModified?: string | null;
+    error?: string;
 
 interface RobotsTxtValidationResult { exists: boolean,
-    status?: number,
-    content?: string | null,
-    error?: string }
+    status?: number;
+    content?: string | null;
+    error?: string;
 
 interface StructuredDataResult { valid: boolean,
-    type?: string,
-    data?: any,
-    error?: string }
+    type?: string;
+    data?: any;
+    error?: string;
 
 interface IndexablePage { url: string,
-    title: string,
-    priority: number  }
+    title: string;
+    priority: number;
 
 interface SearchConsoleAPIReadiness { hasVerificationTag: boolean,
-    hasGoogleAnalytics: boolean,
-    hasSitemap: boolean,
-    hasRobotsTxt: boolean }
+    hasGoogleAnalytics: boolean;
+    hasSitemap: boolean;
+    hasRobotsTxt: boolean;
 
 interface SearchConsoleIntegrationData { timestamp: number,
-    sitemap: SitemapValidationResult,
-    robots: RobotsTxtValidationResult,
-    structuredData: StructuredDataResult[],
-    pages: IndexablePage[],
-    readyForIntegration: boolean,
-    verificationMethods: string[],
-    apiReady: SearchConsoleAPIReadiness
-    }
+    sitemap: SitemapValidationResult;
+    robots: RobotsTxtValidationResult;
+    structuredData: StructuredDataResult[];
+    pages: IndexablePage[];
+    readyForIntegration: boolean;
+    verificationMethods: string[];
+    apiReady: SearchConsoleAPIReadiness;
 
-interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[]
-    }
+interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[];
 
 declare global { interface Window {
         gtag?: (...args: any[]) => void,
@@ -50,7 +48,7 @@ declare global { interface Window {
 }
 
 export class SearchConsoleIntegrator {
-    private config: SEOConfig,
+    private config: SEOConfig;
     private, monitoringData: MonitoringData,
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
@@ -73,7 +71,7 @@ export class SearchConsoleIntegrator {
                 readyForIntegration: true,
     verificationMethods: ['HTML file upload',
                     'HTML tag',
-                    'Domain name provider',]',
+                    'Domain name provider',]','
                     'Google Analytics'],
                 ],
                 apiReady: this.checkSearchConsoleAPIReadiness() };
@@ -84,17 +82,17 @@ export class SearchConsoleIntegrator {
             return integrationData;
 
         } catch (error) {
-            console.error('Failed to prepare Search Console integration', error',
+            console.error('Failed to prepare Search Console integration', error','
             return null,
     
     /**
      * サイトマップの検証'
      */''
-    private async validateSitemap()',
+    private async validateSitemap()','
             const response = await fetch('/sitemap.xml'),
             return { exists: response.ok,
 
-                status: response.status,' };
+                status: response.status,' };'
 
                 lastModified: response.headers.get('last-modified'; }'
 
@@ -106,11 +104,11 @@ export class SearchConsoleIntegrator {
     /**
      * robots.txtの検証'
      */''
-    private async validateRobotsTxt()';
-            const response = await fetch('/robots.txt);
+    private async validateRobotsTxt()';'
+            const response = await fetch('/robots.txt);'
             return { exists: response.ok,
                 status: response.status };
-                content: response.ok ? await response.text() : null };'} catch (error) { return { exists: false, ' };
+                content: response.ok ? await response.text() : null;;'} catch (error) { return { exists: false, ' };
 
                 error: error instanceof Error ? error.message : 'Unknown error'  
     }
@@ -118,23 +116,23 @@ export class SearchConsoleIntegrator {
     /**
      * 構造化データの検証'
      */''
-    private validateStructuredData()';
+    private validateStructuredData()';'
         if (typeof, document === 'undefined') { return [] }
 
-        const scripts = document.querySelectorAll('script[type="application/ld+json"]";
+        const scripts = document.querySelectorAll('script[type="application/ld+json"]";'
         const results: StructuredDataResult[] = [],
 
         scripts.forEach(script => {  ')'
             try {',' }'
 
-                const data = JSON.parse(script.textContent || '');' }
+                const data = JSON.parse(script.textContent || '');' }'
 
                 results.push({ valid: true, type: data['@type], data }';} catch (error) { results.push({ )'
                     valid: false, ')',
                     error: error instanceof Error ? error.message : 'Unknown error'
             });
             }
-        }';
+        }';'
         
         return results;
     }
@@ -142,9 +140,9 @@ export class SearchConsoleIntegrator {
     /**
      * インデックス可能ページの取得'
      */''
-    private getIndexablePages()';
-        const defaultTitle = typeof document !== 'undefined' ? document.title: 'BubblePop')';
-        return [';
+    private getIndexablePages()';'
+        const defaultTitle = typeof document !== 'undefined' ? document.title: 'BubblePop')';'
+        return [';'
             { url: '/', title: defaultTitle, priority: 1.0  },]'
             { url: '/help', title: 'Help - BubblePop', priority: 0.8  }]
         ];
@@ -153,18 +151,16 @@ export class SearchConsoleIntegrator {
     /**
      * Search Console API準備状況のチェック'
      */''
-    private checkSearchConsoleAPIReadiness()';
-        if(typeof, document === 'undefined' || typeof, window === 'undefined') {
+    private checkSearchConsoleAPIReadiness()';'
+        if (typeof, document === 'undefined' || typeof, window === 'undefined') {
             return { hasVerificationTag: false,
-                hasGoogleAnalytics: false }
-                hasSitemap: true };
-                hasRobotsTxt: true 
-    }
-        ';
+                hasGoogleAnalytics: false,
+                hasSitemap: true,;
+                hasRobotsTxt: true,
+        ';'
 
         return { ''
             hasVerificationTag: !!document.querySelector('meta[name="google-site-verification"]'),
             hasGoogleAnalytics: !!window.gtag || !!window.ga,
-    hasSitemap: true };
-            hasRobotsTxt: true 
-    }'}
+    hasSitemap: true,;
+            hasRobotsTxt: true,'}'

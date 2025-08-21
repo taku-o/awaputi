@@ -16,13 +16,13 @@ interface TestEnvironment { // Define based on implementation }
  */
 export class TestSupportTools extends BaseComponent { private gameEngine: GameEngine
     private components = new Map<string, TestComponent>(),
-    private testEnvironment: TestEnvironment | null = null,
+    private testEnvironment: TestEnvironment | null = null;
     private isRunning = false,
     private initialized = false,
 
     constructor(gameEngine: GameEngine) {
 
-        super(null, 'TestSupportTools) }
+        super(null, 'TestSupportTools) }'
         this.gameEngine = gameEngine; }
     }
 
@@ -31,10 +31,10 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
      */
     public async initialize(): Promise<void> { if (this.initialized) {
             return }
-';
+';'
 
         try {'
-            this.setupTestEnvironment()',
+            this.setupTestEnvironment()','
             this.components.set('executionManager', new TestExecutionManager(this)),
             this.components.set('mockDataManager', new MockDataManager(this)),
             this.components.set('benchmarkManager', new BenchmarkManager(this)),
@@ -46,9 +46,9 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
             }
                     await component.initialize(); }
 }
-';
+';'
 
-            this.initialized = true;'} catch (error) {
+            this.initialized = true;'} catch (error) {'
             this._handleError('Failed to initialize TestSupportTools', error),
             throw error }
     }

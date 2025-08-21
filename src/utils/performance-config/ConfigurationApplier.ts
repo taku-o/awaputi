@@ -5,83 +5,80 @@
 
 // Configuration interfaces
 interface ConfigMetadata { reason?: string,
-    category?: string,
-    timestamp?: number,
-    profile?: string,
-    originalTimestamp?: number,
-    rollbackTimestamp?: number,
-    [key: string]: any }
+    category?: string;
+    timestamp?: number;
+    profile?: string;
+    originalTimestamp?: number;
+    rollbackTimestamp?: number;
+    [key: string]: any;
 
 interface ConfigBackup { value: any,
-    timestamp: number,
-    metadata: ConfigMetadata
-     }
+    timestamp: number;
+    metadata: ConfigMetadata;
 
 interface ConfigProfile { created: number,
-    [key: string]: any }
+    [key: string]: any;
 
 interface ConfigChangeNotification { key: string,
-    newValue: any,
-    oldValue: any,
-    metadata: ConfigMetadata
-     }
+    newValue: any;
+    oldValue: any;
+    metadata: ConfigMetadata;
 
 interface SetResult { success: boolean,
-    oldValue: any,
-    newValue: any }
+    oldValue: any;
+    newValue: any;
 
 interface ApplyResult { key: string,
-    status: 'success' | 'error',
-    result?: SetResult,
-    error?: string }
+    status: 'success' | 'error';
+    result?: SetResult;
+    error?: string;
 
 interface BackupResult { key: string,
-    backupCount: number  }
+    backupCount: number;
 
 interface ResetResult { resetKeys: string[],
-    category?: string,
-    status?: string,
-    message?: string }
-';
+    category?: string;
+    status?: string;
+    message?: string;
+';'
 
 interface ProfileResult { name: string,''
     status: 'created' | 'loaded'
             }
-    changes?: Record<string, { oldValue: any,, newValue: any }>;
+    changes?: Record<string, { oldValue: any,, newValue: any,>;
 }
 
 interface RollbackResult { key: string,
-    value: any,
-    oldValue: any,
-    originalTimestamp: number,
-    rollbackTimestamp: number  }
-';
+    value: any;
+    oldValue: any;
+    originalTimestamp: number;
+    rollbackTimestamp: number;
+';'
 
 interface UpdateItem { id: string,''
-    handler: (data: any') => Promise<void>,
-    data: any,
-    priority: 'high' | 'normal' | 'low',
-    queuedAt: number,
-    status?: 'completed' | 'failed',
-    completedAt?: number,
-    failedAt?: number,
-    error?: string }
+    handler: (data: any') => Promise<void>;'
+    data: any;
+    priority: 'high' | 'normal' | 'low';
+    queuedAt: number;
+    status?: 'completed' | 'failed';
+    completedAt?: number;
+    failedAt?: number;
+    error?: string;
 
 interface UpdateStatus { queueLength: number,
-    updating: boolean,
-    recentUpdates: UpdateItem[]
-     }
+    updating: boolean;
+    recentUpdates: UpdateItem[];
 
 interface ApplierStatus { configCount: number,
-    profileCount: number,
-    listenerCount: number,
-    updateQueueLength: number,
-    updating: boolean,
-    backupCount: number }
+    profileCount: number;
+    listenerCount: number;
+    updateQueueLength: number;
+    updating: boolean;
+    backupCount: number;
 
 interface ApplierConfiguration { maxBackupsPerKey?: number,
-    updateInterval?: number }
-';
+    updateInterval?: number;
+';'
 // Configuration category types
 type ConfigCategory = 'frameStabilization' | 'memoryManagement' | 'qualityControl' | 'rendering' | 'mobile' | 'general';
 
@@ -90,33 +87,33 @@ type ConfigChangeCallback = (notification: ConfigChangeNotification) => void;
 type UnsubscribeFunction = () => void;
 
 // Main controller interface
-interface MainController { [key: string]: any }
+interface MainController { [key: string]: any;
 
 export class ConfigurationApplier {
-    private mainController: MainController,
+    private mainController: MainController;
     private, config: Map<string, any>,
-    private profiles: Map<string, ConfigProfile>,
-    private listeners: Map<ConfigCategory, Set<ConfigChangeCallback>>,
-    private defaults: Map<string, any>,
-    private updateQueue: UpdateItem[],
-    private updating: boolean,
-    private updateHistory: UpdateItem[],
+    private profiles: Map<string, ConfigProfile>;
+    private listeners: Map<ConfigCategory, Set<ConfigChangeCallback>>;
+    private defaults: Map<string, any>;
+    private updateQueue: UpdateItem[];
+    private updating: boolean;
+    private updateHistory: UpdateItem[];
     private, backups: Map<string, ConfigBackup[]>,
-    private maxBackupsPerKey: number,
+    private maxBackupsPerKey: number;
     constructor(mainController: MainController) {
 
-        this.mainController = mainController,
+        this.mainController = mainController;
         this.config = new Map<string, any>(),
         this.profiles = new Map<string, ConfigProfile>(),
         this.listeners = new Map<ConfigCategory, Set<ConfigChangeCallback>>(),
         this.defaults = new Map<string, any>(),
-        this.updateQueue = [],
-        this.updating = false,
-        this.updateHistory = [],
+        this.updateQueue = [];
+        this.updating = false;
+        this.updateHistory = [];
         this.backups = new Map<string, ConfigBackup[]>(),
-        this.maxBackupsPerKey = 10,
+        this.maxBackupsPerKey = 10;
 
-        ' }
+        ' }'
 
     }
 
@@ -130,7 +127,7 @@ export class ConfigurationApplier {
         await this.loadCurrentConfig(),
 
         await this.loadBackups(),
-        this.startUpdateProcessor()',
+        this.startUpdateProcessor()','
         console.log('[ConfigurationApplier] All, applier components, initialized') }'
     
     /**
@@ -158,8 +155,8 @@ export class ConfigurationApplier {
             'rendering.enableOptimization': true,
             'rendering.dirtyRegions': true,
             'rendering.viewportCulling': true,
-            'rendering.batchRendering': true,';
-            'rendering.layerCaching': true';
+            'rendering.batchRendering': true,';'
+            'rendering.layerCaching': true';'
             // モバイル最適化設定
             'mobile.enableOptimization': true,
             'mobile.deviceDetection': true,
@@ -177,23 +174,23 @@ export class ConfigurationApplier {
     /**
      * Load current configuration from storage'
      */''
-    private async loadCurrentConfig()';
-            const saved = localStorage.getItem('performance_config);
-            if(saved) {
+    private async loadCurrentConfig()';'
+            const saved = localStorage.getItem('performance_config);'
+            if (saved) {
                 const parsedConfig = JSON.parse(saved),
                 for(const [key, value] of Object.entries(parsedConfig) {
             }
                     this.config.set(key, value); }
 
-                }'} catch (error) { console.error('[ConfigurationApplier] Failed to load saved config:', error }
+                }'} catch (error) { console.error('[ConfigurationApplier] Failed to load saved config:', error }'
     }
     
     /**
      * Load configuration backups'
      */''
-    private async loadBackups()';
-            const saved = localStorage.getItem('performance_config_backups);
-            if(saved) {
+    private async loadBackups()';'
+            const saved = localStorage.getItem('performance_config_backups);'
+            if (saved) {
                 const parsed = JSON.parse(saved) }
 
                 this.backups = new Map<string, ConfigBackup[]>(Object.entries(parsed);' }'
@@ -214,7 +211,7 @@ export class ConfigurationApplier {
      */
     private async processUpdateQueue(): Promise<void> { if (this.updating || this.updateQueue.length === 0) return,
         
-        this.updating = true,
+        this.updating = true;
         
         try {
             while(this.updateQueue.length > 0) {
@@ -222,7 +219,7 @@ export class ConfigurationApplier {
                 if (update) {
             }
                     await this.processUpdate(update); }
-                }'} catch (error) { console.error('[ConfigurationApplier] Update processing failed:', error } finally { this.updating = false }
+                }'} catch (error) { console.error('[ConfigurationApplier] Update processing failed:', error } finally { this.updating = false }'
     }
     
     /**
@@ -230,7 +227,7 @@ export class ConfigurationApplier {
      * @param update - Update object
      */'
     private async processUpdate(update: UpdateItem): Promise<void> { try {'
-            await update.handler(update.data),
+            await update.handler(update.data);
             
             const completedUpdate: UpdateItem = {'
                 ...update,
@@ -277,7 +274,7 @@ export class ConfigurationApplier {
         
         // Save configuration
         await this.saveConfig() }
-        return { success: true, oldValue, newValue: value  }
+        return { success: true, oldValue, newValue: value,
     
     /**
      * Apply multiple configuration changes
@@ -314,7 +311,7 @@ export class ConfigurationApplier {
      * @returns Backup result
      */
     private async createBackup(key: string, value: any, metadata: ConfigMetadata = { ): Promise<BackupResult> {
-        if(!this.backups.has(key) {
+        if (!this.backups.has(key) {
     
 }
             this.backups.set(key, []); }
@@ -337,7 +334,7 @@ export class ConfigurationApplier {
      */
     private async saveBackups(): Promise<void> { try {'
             const backupsObj = Object.fromEntries(this.backups),
-            localStorage.setItem('performance_config_backups', JSON.stringify(backupsObj),' }
+            localStorage.setItem('performance_config_backups', JSON.stringify(backupsObj),' }'
 
         } catch (error) { console.error('[ConfigurationApplier] Failed to save backups:', error }
     }
@@ -358,7 +355,7 @@ export class ConfigurationApplier {
      * @param callback - Change callback
      * @returns Unsubscribe function
      */
-    onConfigChange(category: ConfigCategory, callback: ConfigChangeCallback): UnsubscribeFunction { if(!this.listeners.has(category) {
+    onConfigChange(category: ConfigCategory, callback: ConfigChangeCallback): UnsubscribeFunction { if (!this.listeners.has(category) {
             this.listeners.set(category, new Set<ConfigChangeCallback>() }
         this.listeners.get(category)!.add(callback);
         
@@ -374,7 +371,7 @@ export class ConfigurationApplier {
     private notifyChange(key: string, newValue: any, oldValue: any, metadata: ConfigMetadata): void { const category = this.categorizeKey(key),
         const listeners = this.listeners.get(category),
         
-        if(listeners) {
+        if (listeners) {
         
             for (const callback of listeners) {
                 try {
@@ -405,7 +402,7 @@ export class ConfigurationApplier {
      */'
     private async saveConfig(): Promise<void> { try {'
             const configObj = Object.fromEntries(this.config),
-            localStorage.setItem('performance_config', JSON.stringify(configObj),' }
+            localStorage.setItem('performance_config', JSON.stringify(configObj),' }'
 
         } catch (error) { console.error('[ConfigurationApplier] Failed to save config:', error }
     }
@@ -451,7 +448,7 @@ export class ConfigurationApplier {
 
         await this.saveConfig('''
             status: 'success', ')';
-            message: 'All configurations reset to defaults');
+            message: 'All configurations reset to defaults'),
             resetKeys ;
         }
     
@@ -466,10 +463,10 @@ export class ConfigurationApplier {
         // プロファイルの保存
         try {'
             const profiles = Object.fromEntries(this.profiles),
-            localStorage.setItem('performance_config_profiles', JSON.stringify(profiles),' }
+            localStorage.setItem('performance_config_profiles', JSON.stringify(profiles),' }'
 
         } catch (error) {
-            console.error('[ConfigurationApplier] Failed to save profile:', error',
+            console.error('[ConfigurationApplier] Failed to save profile:', error','
             throw error }
 
         return { name, status: 'created'
@@ -481,13 +478,13 @@ export class ConfigurationApplier {
      * @returns Profile load result
      */'
     async loadProfile(name: string): Promise<ProfileResult> { const profile = this.profiles.get(name),
-        if(!profile) { }'
+        if (!profile) { }'
 
-            throw new Error(`Profile '${name}' not, found`}';
+            throw new Error(`Profile '${name}' not, found`}';'
         }
-        ';
+        ';'
 
-        const changes: Record<string, { oldValue: any,, newValue: any }> = {}''
+        const changes: Record<string, { oldValue: any,, newValue: any,> = {}''
         for(const [key, value] of Object.entries(profile)) { ''
             if(key !== 'created' {'
                 const oldValue = this.config.get(key),
@@ -498,7 +495,7 @@ export class ConfigurationApplier {
                     profile: name) }
                     timestamp: Date.now(); 
     });
-                changes[key] = { oldValue, newValue: value  }
+                changes[key] = { oldValue, newValue: value,
         }
 
         await this.saveConfig(''
@@ -538,7 +535,7 @@ export class ConfigurationApplier {
             value: backup.value,
             oldValue,
             originalTimestamp: backup.timestamp };
-            rollbackTimestamp: Date.now(); 
+            rollbackTimestamp: Date.now(), 
     }
     
     /**
@@ -628,9 +625,9 @@ export class ConfigurationApplier {
         this.profiles.clear(),
         this.listeners.clear(),
         this.defaults.clear(),
-        this.updateQueue = [],
-        this.updateHistory = [],
-        this.backups.clear()',
+        this.updateQueue = [];
+        this.updateHistory = [];
+        this.backups.clear()','
         console.log('[ConfigurationApplier] Applier, destroyed') }
 
-    }'}
+    }'}'

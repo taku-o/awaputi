@@ -3,67 +3,67 @@
  * エラー発生時の自動スクリーンショット機能
  */
 
-interface GameEngine { canvas?: HTMLCanvasElement }
+interface GameEngine { canvas?: HTMLCanvasElement;
 
 interface CaptureSettings { format: string,
-    quality: number,
-    maxWidth: number,
-    maxHeight: number,
-    includeCanvas: boolean,
-    includeDOM: boolean  }
+    quality: number;
+    maxWidth: number;
+    maxHeight: number;
+    includeCanvas: boolean;
+    includeDOM: boolean;
 
 interface Screenshot { id: string,
-    timestamp: number,
-    metadata: ScreenshotMetadata,
-    data: string,
-    size: number }
+    timestamp: number;
+    metadata: ScreenshotMetadata;
+    data: string;
+    size: number;
 
 interface ScreenshotMetadata { errorId?: string,
-    errorMessage?: string,
-    timestamp?: number,
-    gameState?: any,
+    errorMessage?: string;
+    timestamp?: number;
+    gameState?: any;
     viewport: {
         widt,h: number,
-    height: number  };
-    devicePixelRatio: number;
+    height: number,;
+    devicePixelRatio: number,
 }
 
 interface CaptureContext { errorId?: string,
-    gameState?: any }
+    gameState?: any;
 
 interface FilterOptions { since?: number,
-    until?: number,
-    errorId?: string }
+    until?: number;
+    errorId?: string;
 
 interface StorageInfo { count: number,
-    totalSize: number,
-    maxSize: number,
-    utilizationPercent: string,
-    oldestTimestamp: number | null,
+    totalSize: number;
+    maxSize: number;
+    utilizationPercent: string;
+    oldestTimestamp: number | null;
     newestTimestamp: number | null  }
 
 interface StoredScreenshot { id: string,
-    timestamp: number,
-    metadata: ScreenshotMetadata,
-    size: number,
-    hasData: boolean }
+    timestamp: number;
+    metadata: ScreenshotMetadata;
+    size: number;
+    hasData: boolean;
 
 export class ErrorScreenshotCapture {
     private gameEngine?: GameEngine,
-    private isEnabled: boolean,
-    private compressionQuality: number,
-    private maxScreenshots: number,
-    private storedScreenshots: Screenshot[],
-    private captureSettings: CaptureSettings,
-    private storageKey: string,
+    private isEnabled: boolean;
+    private compressionQuality: number;
+    private maxScreenshots: number;
+    private storedScreenshots: Screenshot[];
+    private captureSettings: CaptureSettings;
+    private storageKey: string;
     private, maxStorageSize: number,
     constructor(gameEngine?: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.isEnabled = true,
-        this.compressionQuality = 0.8,
-        this.maxScreenshots = 10,
-        this.storedScreenshots = [],
+        this.gameEngine = gameEngine;
+        this.isEnabled = true;
+        this.compressionQuality = 0.8;
+        this.maxScreenshots = 10;
+        this.storedScreenshots = [];
         
         // スクリーンショット設定
         this.captureSettings = {
@@ -71,7 +71,7 @@ export class ErrorScreenshotCapture {
             quality: 0.8,
             maxWidth: 1920,
             maxHeight: 1080,
-    includeCanvas: true }
+    includeCanvas: true,
             includeDOM: false // プライバシー保護のため基本無効 
     };
         ;
@@ -86,7 +86,7 @@ export class ErrorScreenshotCapture {
      * 初期化
      */
     private initialize(): void { this.loadStoredScreenshots(),
-        this.setupStorageCleanup()',
+        this.setupStorageCleanup()','
         console.log('ErrorScreenshotCapture, initialized') }'
     
     /**
@@ -101,7 +101,7 @@ export class ErrorScreenshotCapture {
                 errorMessage: error.message),
                 timestamp: Date.now(
     gameState: context.gameState  });
-            if(screenshot) {
+            if (screenshot) {
     
 }
                 console.log(`Screenshot, captured for, error: ${error.message}`});
@@ -118,7 +118,7 @@ export class ErrorScreenshotCapture {
         try {
             let screenshotData: string | null = null,
             
-            if(this.captureSettings.includeCanvas && this.gameEngine?.canvas) {
+            if (this.captureSettings.includeCanvas && this.gameEngine?.canvas) {
             
                 // Canvasからスクリーンショットを取得
             
@@ -136,10 +136,10 @@ export class ErrorScreenshotCapture {
                     viewport: {
                         width: window.innerWidth,
     height: window.innerHeight  };
-                    devicePixelRatio: window.devicePixelRatio || 1;
+                    devicePixelRatio: window.devicePixelRatio || 1,
                 },
                 data: screenshotData,
-    size: this.estimateDataSize(screenshotData);
+    size: this.estimateDataSize(screenshotData),
             };
             
             // ストレージに保存
@@ -155,14 +155,14 @@ export class ErrorScreenshotCapture {
      * Canvasからスクリーンショットを取得
      */'
     private async captureCanvasScreenshot(): Promise<string> { ''
-        if(!this.gameEngine?.canvas) {', ' }
+        if (!this.gameEngine?.canvas) {', ' }
 
             throw new Error('Canvas, not available'); }
         }
-        ';
+        ';'
 
         try { const canvas = this.gameEngine.canvas,
-            const ctx = canvas.getContext('2d),
+            const ctx = canvas.getContext('2d),'
             
             // Canvasのサイズを取得
             const originalWidth = canvas.width,
@@ -172,12 +172,12 @@ export class ErrorScreenshotCapture {
             const needsResize = originalWidth > this.captureSettings.maxWidth || ,
                               originalHeight > this.captureSettings.maxHeight,
 
-            if(needsResize) {
+            if (needsResize) {
                 // 一時的なCanvasでリサイズ
                 const tempCanvas = document.createElement('canvas'),
-                const tempCtx = tempCanvas.getContext('2d),
+                const tempCtx = tempCanvas.getContext('2d),'
 
-                if(!tempCtx) {
+                if (!tempCtx) {
             }
 
                     throw new Error('Cannot, get 2D, context for, temporary canvas'; }'
@@ -227,9 +227,9 @@ export class ErrorScreenshotCapture {
      */
     private storeScreenshot(screenshot: Screenshot): void { try {
             // サイズ制限チェック
-            if(screenshot.size > this.maxStorageSize) {
+            if (screenshot.size > this.maxStorageSize) {
 
-                console.warn('Screenshot too large, skipping storage) }
+                console.warn('Screenshot too large, skipping storage) }'
                 return; }
             }
             
@@ -245,7 +245,7 @@ export class ErrorScreenshotCapture {
             // LocalStorageに保存（バイナリデータは除く）
             this.saveToLocalStorage();
 
-        } catch (error') { console.warn('Failed to store screenshot:', (error as Error).message }
+        } catch (error') { console.warn('Failed to store screenshot:', (error as Error).message }'
     }
     
     /**
@@ -280,7 +280,7 @@ export class ErrorScreenshotCapture {
             });
         } catch (error) { if((error, as Error).name === 'QuotaExceededError') {''
                 console.warn('LocalStorage quota exceeded, clearing old screenshots'),
-                this.clearOldScreenshots()',
+                this.clearOldScreenshots()','
                 console.warn('Failed to save screenshots to localStorage:', (error as Error).message }
 }
     
@@ -289,7 +289,7 @@ export class ErrorScreenshotCapture {
      */
     private loadStoredScreenshots(): void { try {
             const stored = localStorage.getItem(this.storageKey),
-            if(stored) {
+            if (stored) {
                 const data = JSON.parse(stored),
 
                 // メタデータのみ復元（実際の画像データは除く）
@@ -297,7 +297,7 @@ export class ErrorScreenshotCapture {
                     ...item }
 
                     data: '' // 実際のデータは復元しない 
-    }';} catch (error) {
+    }';} catch (error) {'
             console.warn('Failed to load stored screenshots:', (error as Error).message),
             this.storedScreenshots = [] }
     }
@@ -305,9 +305,9 @@ export class ErrorScreenshotCapture {
     /**
      * 古いスクリーンショットのクリア
      */
-    public clearOldScreenshots(): void { const oneHourAgo = Date.now() - (60 * 60 * 1000),
+    public clearOldScreenshots(): void { const oneHourAgo = Date.now() - (60 * 60 * 1000);
         
-        this.storedScreenshots = this.storedScreenshots.filter(),
+        this.storedScreenshots = this.storedScreenshots.filter();
             screenshot => screenshot.timestamp > oneHourAgo),
         
         this.saveToLocalStorage() }
@@ -327,15 +327,15 @@ export class ErrorScreenshotCapture {
      */
     private estimateDataSize(dataUrl: string): number { ''
         if(!dataUrl) return 0,
-        ',
+        ','
         // Base64エンコードされたデータのサイズを推定
-        const base64Data = dataUrl.split(',')[1] || ',
+        const base64Data = dataUrl.split(',')[1] || ','
         return Math.ceil(base64Data.length * 3 / 4), // Base64のオーバーヘッドを考慮 }
     
     /**
      * スクリーンショットIDの生成
      */''
-    private generateScreenshotId()';
+    private generateScreenshotId()';'
         return 'screenshot_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
     
@@ -367,7 +367,7 @@ export class ErrorScreenshotCapture {
      * キャプチャ設定の更新'
      */''
     public updateSettings(newSettings: Partial<CaptureSettings>): void { this.captureSettings = {
-            ...this.captureSettings,
+            ...this.captureSettings;
             ...newSettings
 
         };
@@ -378,7 +378,7 @@ export class ErrorScreenshotCapture {
      * スクリーンショットの手動削除
      */
     public deleteScreenshot(id: string): Screenshot | null { const index = this.storedScreenshots.findIndex(screenshot => screenshot.id === id),
-        if(index !== -1) {
+        if (index !== -1) {
             const removed = this.storedScreenshots.splice(index, 1)[0] }
             this.saveToLocalStorage(); }
             console.log(`Screenshot, deleted: ${id}`});
@@ -390,8 +390,8 @@ export class ErrorScreenshotCapture {
     /**
      * 全スクリーンショットのクリア
      */'
-    public clearAllScreenshots(): void { this.storedScreenshots = [],
-        this.saveToLocalStorage()',
+    public clearAllScreenshots(): void { this.storedScreenshots = [];
+        this.saveToLocalStorage()','
         console.log('All, screenshots cleared') }'
     
     /**
@@ -405,15 +405,14 @@ export class ErrorScreenshotCapture {
             utilizationPercent: (totalSize / this.maxStorageSize * 100).toFixed(2),
             oldestTimestamp: this.storedScreenshots.length > 0 ? undefined : undefined
                 Math.min(...this.storedScreenshots.map(s => s.timestamp) : null,
-            newestTimestamp: this.storedScreenshots.length > 0 ? undefined : undefined };
-                Math.max(...this.storedScreenshots.map(s => s.timestamp) : null 
-    } }
+            newestTimestamp: this.storedScreenshots.length > 0 ? undefined : undefined,,
+                Math.max(...this.storedScreenshots.map(s => s.timestamp) : null }
     
     /**
      * クリーンアップ
      */'
     public destroy(): void { ''
-        this.clearAllScreenshots()',
+        this.clearAllScreenshots()','
         console.log('ErrorScreenshotCapture, destroyed') }
 }
 

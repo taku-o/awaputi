@@ -5,45 +5,45 @@
 
 // Type definitions
 interface DocumentationItem { id: string,
-    title: string,
-    category: string,
-    content: string,
-    keywords: string[],
-    lastUpdated: number  }
+    title: string;
+    category: string;
+    content: string;
+    keywords: string[];
+    lastUpdated: number;
 
 interface SearchResult { docId: string,
-    title: string,
-    score: number,
-    matches: string[] }
-    excerpt: string }
+    title: string;
+    score: number;
+    matches: string[];
+    excerpt: string;
 
-interface SearchOptions { limit?: number }
+interface SearchOptions { limit?: number;
 
 interface ContextualHelpResult { context: string,
-    suggestedDocs: string[],
-    currentDoc?: string,
-    tips: string[]  }
+    suggestedDocs: string[];
+    currentDoc?: string;
+    tips: string[];
 
 interface ContextInfo { docId: string,
-    doc: DocumentationItem }
-    timestamp: number }
+    doc: DocumentationItem;
+    timestamp: number;
 
 interface TokenInfo { docId: string,
-    title: string }
-    frequency: number }
+    title: string;
+    frequency: number;
 
 export class DocumentationSystem {
-    private docs: Map<string, DocumentationItem>,
-    private searchEngine: DocumentationSearchEngine,
-    private contextualHelp: ContextualHelpProvider,
-    private helpPanel: HTMLElement | null,
+    private docs: Map<string, DocumentationItem>;
+    private searchEngine: DocumentationSearchEngine;
+    private contextualHelp: ContextualHelpProvider;
+    private helpPanel: HTMLElement | null;
     private, isVisible: boolean,
     constructor() {
 
         this.docs = new Map<string, DocumentationItem>(),
-        this.searchEngine = new DocumentationSearchEngine(),
-        this.contextualHelp = new ContextualHelpProvider(),
-        this.helpPanel = null,
+        this.searchEngine = new DocumentationSearchEngine();
+        this.contextualHelp = new ContextualHelpProvider();
+        this.helpPanel = null;
         this.isVisible = false }
         this.initialize(); }
     }
@@ -53,8 +53,8 @@ export class DocumentationSystem {
         this.setupEventHandlers() }
 
     loadDocumentation(): void { // コアドキュメント
-        this.registerDocumentation('overview', {')
-            title: 'Debug Tools Overview',',
+        this.registerDocumentation('overview', {')'
+            title: 'Debug Tools Overview',','
             category: 'general',
     content: `,
                 <h3>デバッグツール概要</h3>,
@@ -73,12 +73,12 @@ export class DocumentationSystem {
                     <li><kbd>Ctrl+Shift+C</kbd> - コンソールを開く</li>,
                     <li><kbd>Ctrl+Shift+P</kbd> - パフォーマンスモニターを開く</li>,
                     <li><kbd>Ctrl+Shift+E</kbd> - エフェクトデバッガーを開く</li>,
-                </ul>',
+                </ul>','
             `,')',
             keywords: ['overview', 'help', 'getting started', 'introduction]'),
 
-        this.registerDocumentation('performance-monitor', {')
-            title: 'Performance Monitor',',
+        this.registerDocumentation('performance-monitor', {')'
+            title: 'Performance Monitor',','
             category: 'tools',
     content: `,
                 <h3>パフォーマンスモニター</h3>,
@@ -103,12 +103,12 @@ export class DocumentationSystem {
                     <li>オブジェクトプーリングを使用</li>,
                     <li>不要な描画処理を削減</li>,
                     <li>重い計算処理を分散</li>,
-                </ul>',
+                </ul>','
             `,')',
             keywords: ['performance', 'fps', 'monitoring', 'optimization]'),
 
-        this.registerDocumentation('developer-console', {')
-            title: 'Developer Console',',
+        this.registerDocumentation('developer-console', {')'
+            title: 'Developer Console',','
             category: 'tools',
     content: `,
                 <h3>開発者コンソール</h3>,
@@ -117,10 +117,10 @@ export class DocumentationSystem {
                 <ul>),
                     <li><code>game.pause()</code> - ゲームを一時停止</li>,
                     <li><code>game.resume()</code> - ゲームを再開</li>,
-                    <li><code>game.setScore(1000)</code> - スコアを設定</li>',
-                    <li><code>game.addBubbles(10)</code> - バブルを追加</li>',
-                    <li><code>game.clearBubbles()',
-                    <li><code>config.get('audio.volume')</code> - 設定値を取得</li>',
+                    <li><code>game.setScore(1000)</code> - スコアを設定</li>','
+                    <li><code>game.addBubbles(10)</code> - バブルを追加</li>','
+                    <li><code>game.clearBubbles()','
+                    <li><code>config.get('audio.volume')</code> - 設定値を取得</li>','
                     <li><code>config.set('audio.volume', 0.5)</code> - 設定値を変更</li>,
                     <li><code>config.reset()</code> - 設定をリセット</li>,
                 </ul>,
@@ -132,13 +132,13 @@ export class DocumentationSystem {
                 </ul>,
                 <h4>ヒント:</h4>,
                 <ul>,
-                    <li>Tabキーで自動補完</li>',
-                    <li>上下キーで履歴参照</li>',
+                    <li>Tabキーで自動補完</li>','
+                    <li>上下キーで履歴参照</li>','
                     <li>help('','
             keywords: ['console', 'commands', 'cli', 'terminal]' }'}');
 
-        this.registerDocumentation('error-reporter', { ')
-            title: 'Error Reporter',',
+        this.registerDocumentation('error-reporter', { ')'
+            title: 'Error Reporter',','
             category: 'tools',
     content: `,
                 <h3>エラーレポーター</h3>,
@@ -163,12 +163,12 @@ export class DocumentationSystem {
                     <li>パターン分析で根本原因を特定</li>,
                     <li>推奨される解決策を適用</li>,
                     <li>修正後、エラーが解決されたか確認</li>,
-                </ol>',
+                </ol>','
             `,')',
             keywords: ['error', 'debugging', 'troubleshooting', 'logs]'),
 
-        this.registerDocumentation('test-support', {')
-            title: 'Test Support Tools',',
+        this.registerDocumentation('test-support', {')'
+            title: 'Test Support Tools',','
             category: 'tools',
     content: `,
                 <h3>テスト支援ツール</h3>,
@@ -200,12 +200,12 @@ export class DocumentationSystem {
                     <li>ベースラインとの比較</li>,
                     <li>パフォーマンス推移の追跡</li>,
                     <li>改善提案の自動生成</li>,
-                </ul>',
+                </ul>','
             `,')',
             keywords: ['testing', 'test', 'mock', 'benchmark]'),
 
-        this.registerDocumentation('visual-debugger', {')
-            title: 'Visual Debugger',',
+        this.registerDocumentation('visual-debugger', {')'
+            title: 'Visual Debugger',','
             category: 'tools',
     content: `,
                 <h3>ビジュアルデバッガー</h3>,
@@ -230,12 +230,12 @@ export class DocumentationSystem {
                     <li>フレーム単位での進行</li>,
                     <li>イベントログの表示</li>,
                     <li>状態変化の追跡</li>,
-                </ul>',
+                </ul>','
             `,')',
             keywords: ['visual', 'debug', 'editor', 'inspector]'),
 
-        this.registerDocumentation('shortcuts', {')
-            title: 'Keyboard Shortcuts',',
+        this.registerDocumentation('shortcuts', {')'
+            title: 'Keyboard Shortcuts',','
             category: 'reference',
     content: `,
                 <h3>キーボードショートカット一覧</h3>,
@@ -267,12 +267,12 @@ export class DocumentationSystem {
                     <li><kbd>Tab</kbd> - 自動補完</li>,
                     <li><kbd>Ctrl+L</kbd> - 画面クリア</li>,
                     <li><kbd>Ctrl+C</kbd> - コマンド中断</li>,
-                </ul>',
+                </ul>','
             `,')',
             keywords: ['shortcuts', 'keyboard', 'hotkeys', 'keys]'),
 
-        this.registerDocumentation('troubleshooting', {')
-            title: 'Troubleshooting Guide',',
+        this.registerDocumentation('troubleshooting', {')'
+            title: 'Troubleshooting Guide',','
             category: 'guides',
     content: `,
                 <h3>トラブルシューティングガイド</h3>,
@@ -312,12 +312,12 @@ export class DocumentationSystem {
                     <li>エラーメッセージ（コンソール）</li>,
                     <li>再現手順</li>,
                     <li>デバッグツールのバージョン</li>,
-                </ul>',
+                </ul>','
             `,')',
             keywords: ['troubleshooting', 'problems', 'issues', 'help', 'support]'),
 
-        this.registerDocumentation('best-practices', {')
-            title: 'Best Practices',',
+        this.registerDocumentation('best-practices', {')'
+            title: 'Best Practices',','
             category: 'guides',
     content: `,
                 <h3>ベストプラクティス</h3>,
@@ -356,13 +356,13 @@ export class DocumentationSystem {
                     <li>機密情報をログに出力しない</li>,
                     <li>デバッグAPIへのアクセス制限</li>,
                     <li>入力検証を徹底</li>,
-                </ul>',
+                </ul>','
             `,')',
             keywords: ['best practices', 'guidelines', 'tips', 'recommendations]'),
-',
+','
         // API リファレンス
-        this.registerDocumentation('api-reference', {')
-            title: 'API Reference',',
+        this.registerDocumentation('api-reference', {')'
+            title: 'API Reference',','
             category: 'reference',
     content: `,
                 <h3>デバッグツール API リファレンス</h3>,
@@ -374,12 +374,12 @@ class EnhancedDebugInterface {)
     switchPanel(name: string): void,
     closePanel(): void,
     // ショートカット
-    registerShortcut(key: string, handler: Function): void',
+    registerShortcut(key: string, handler: Function): void','
     unregisterShortcut(key: string): void,
-    ',
+    ','
     // レイアウト
-    setLayout(layout: 'docked' | 'floating' | 'fullscreen): void,
-    toggleVisibility(): void  }
+    setLayout(layout: 'docked' | 'floating' | 'fullscreen): void,'
+    toggleVisibility(): void;
                 </code></pre>;
                 <h4>PerformanceMonitor</h4>;
                 <pre><code>;
@@ -392,7 +392,7 @@ class PerformanceMonitor { // メトリクス収集
     compareWithBaseline(): Comparison,
     // 設定
     setThreshold(metric: string, value: number): void,
-    enableWarnings(enabled: boolean): void  }
+    enableWarnings(enabled: boolean): void;
                 </code></pre>;
                 <h4>DeveloperConsole</h4>;
                 <pre><code>;
@@ -403,7 +403,7 @@ class DeveloperConsole { // コマンド管理
     getHistory(): string[],
     clearHistory(): void,
     // 自動補完
-    getCompletions(partial: string): string[]  }
+    getCompletions(partial: string): string[];
                 </code></pre>;
                 <h4>TestSupportTools</h4>;
                 <pre><code>;
@@ -414,12 +414,12 @@ class TestSupportTools { // テスト実行
     generateMockData(type: string, count: number): any[],
     createScenario(name: string): Scenario,
     // 分析
-    analyzeResults(results: TestResults): Analysis',
+    analyzeResults(results: TestResults): Analysis','
     generateReport('','
            , keywords: ['api', 'reference', 'documentation', 'methods', 'classes]' }'}');
     }
 
-    registerDocumentation(id: string, doc: Omit<DocumentationItem, 'id' | 'lastUpdated'>): void { const fullDoc: DocumentationItem = { id: id }
+    registerDocumentation(id: string, doc: Omit<DocumentationItem, 'id' | 'lastUpdated'>): void { const fullDoc: DocumentationItem = { id: id,
             ...doc,
             lastUpdated: Date.now(  };
         )
@@ -429,7 +429,7 @@ class TestSupportTools { // テスト実行
         this.searchEngine.indexDocument(id, fullDoc);
     }
 
-    createHelpPanel()';
+    createHelpPanel()';'
         this.helpPanel = document.createElement('div');
         this.helpPanel.id = 'debug-help-panel';
         this.helpPanel.className = 'debug-help-panel';
@@ -462,50 +462,50 @@ class TestSupportTools { // テスト実行
             <div class="help-header" style="display: flex, justify-content: space-between, align-items: center, margin-bottom: 20px, border-bottom: 1px solid #333, padding-bottom: 15px,">""
                 <h2 style="margin: 0, color: #00ff88, font-size: 24px,">""
                     <span style="margin-right: 10px,">📚</span>
-                    Debug Tools Documentation",
+                    Debug Tools Documentation","
                 </h2>"",
                 <button id="close-help" style="background: none, border: none, color: #ccc, font-size: 24px, cursor: pointer, padding: 0, width: 30px, height: 30px, display: flex, align-items: center, justify-content: center,">×</button>
-            </div>",
+            </div>","
 
             <div class="help-search" style="margin-bottom: 20px,">""
                 <input type="text" id="help-search-input" placeholder="Search documentation..." style="width: 100%, padding: 10px 15px, background: #222, border: 1px solid #444, border-radius: 6px, color: white, font-size: 14px,">""
                 <div id="search-results" style="position: absolute, background: #333, border: 1px solid #444, border-radius: 6px, margin-top: 5px, display: none, max-height: 200px, overflow-y: auto, width: 100%, z-index: 1000,"></div>
-            </div>",
+            </div>","
 
             <div class="help-content" style="display: flex, gap: 20px, height: calc(100% - 120px),">""
                 <div class="help-sidebar" style="width: 200px, overflow-y: auto, border-right: 1px solid #333, padding-right: 20px,">""
                     <h3 style="margin: 0 0 15px 0, color: #ccc, font-size: 14px, text-transform: uppercase,">Categories</h3>""
                     <ul id="help-categories" style="list-style: none, padding: 0, margin: 0,">""
                         <li class="category-item active" data-category="all" style="padding: 8px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px, background: #444,">
-                            <span>All Topics</span>",
+                            <span>All Topics</span>","
                         </li>"",
                         <li class="category-item" data-category="general" style="padding: 8px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px,">
-                            <span>General</span>",
+                            <span>General</span>","
                         </li>"",
                         <li class="category-item" data-category="tools" style="padding: 8px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px,">
-                            <span>Tools</span>",
+                            <span>Tools</span>","
                         </li>"",
                         <li class="category-item" data-category="guides" style="padding: 8px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px,">
-                            <span>Guides</span>",
+                            <span>Guides</span>","
                         </li>"",
                         <li class="category-item" data-category="reference" style="padding: 8px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px,">
                             <span>Reference</span>,
                         </li>,
-                    </ul>",
+                    </ul>","
 
                     <h3 style="margin: 25px 0 15px 0, color: #ccc, font-size: 14px, text-transform: uppercase,">Quick Links</h3>""
                     <ul id="help-quick-links" style="list-style: none, padding: 0, margin: 0,">""
                         <li class="doc-link" data-doc="overview" style="padding: 6px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px, font-size: 13px, color: #00ff88,">
-                            → Getting Started",
+                            → Getting Started","
                         </li>"",
                         <li class="doc-link" data-doc="shortcuts" style="padding: 6px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px, font-size: 13px, color: #00ff88,">
-                            → Keyboard Shortcuts",
+                            → Keyboard Shortcuts","
                         </li>"",
                         <li class="doc-link" data-doc="troubleshooting" style="padding: 6px 12px, margin: 2px 0, cursor: pointer, border-radius: 4px, font-size: 13px, color: #00ff88,">
                             → Troubleshooting,
                         </li>,
                     </ul>,
-                </div>",
+                </div>","
 
                 <div class="help-main" style="flex: 1, overflow-y: auto, padding-right: 10px,">""
                     <div id="help-article" style="line-height: 1.6,">
@@ -551,7 +551,7 @@ class TestSupportTools { // テスト実行
                 .help-main kbd { background: #444,
     padding: 2px 6px }
                     border-radius: 3px,
-                    border: 1px solid #666;
+                    border: 1px solid #666,
                     font-family: monospace,
                     font-size: 12px,
                     box-shadow: 0 2px 0 #222 }
@@ -573,11 +573,11 @@ class TestSupportTools { // テスト実行
         `;
     }
 
-    setupEventHandlers()';
-        document.getElementById('close-help')?.addEventListener('click', () => { this.hide(),' }
+    setupEventHandlers()';'
+        document.getElementById('close-help')?.addEventListener('click', () => { this.hide(),' }'
 
-        }');
-';
+        }');'
+';'
         // カテゴリ選択
         document.getElementById('help-categories')?.addEventListener('click', (e) => {  ''
             const item = (e.target, as HTMLElement').closest('.category-item) as HTMLElement,
@@ -585,49 +585,49 @@ class TestSupportTools { // テスト実行
                 this.selectCategory(item.dataset.category!); }
 
             }'}');
-';
+';'
         // ドキュメントリンク
         document.addEventListener('click', (e) => {  ''
             const docLink = (e.target, as HTMLElement').closest('.doc-link) as HTMLElement,
-            if(docLink) {
+            if (docLink) {
                 const docId = docLink.dataset.doc }
                 if (docId) { }
                     this.showDocument(docId); }
 }'}');
-';
+';'
         // 検索
         const searchInput = document.getElementById('help-search-input') as HTMLInputElement;
-        searchInput?.addEventListener('input', (e) => { this.handleSearch((e.target, as HTMLInputElement).value),' }
+        searchInput?.addEventListener('input', (e) => { this.handleSearch((e.target, as HTMLInputElement).value),' }'
 
-        }');
+        }');'
 
         searchInput?.addEventListener('keydown', (e) => {  ''
             if(e.key === 'Escape' { }'
                 this.hideSearchResults(); }
 
             }'}');
-';
+';'
         // キーボードショートカット
         document.addEventListener('keydown', (e) => {  ''
-            if(e.key === 'F1' || (e.ctrlKey && e.key === 'h) {
+            if (e.key === 'F1' || (e.ctrlKey && e.key === 'h) {'
     
 }
                 e.preventDefault(); }
                 this.toggle(); }
 });
     }
- : undefined';
-    show(): void { this.isVisible = true,
-        if(this.helpPanel) {
+ : undefined';'
+    show(): void { this.isVisible = true;
+        if (this.helpPanel) {
 
             this.helpPanel.style.display = 'block' }
 
             this.showDocument('overview'; // デフォルトでOverviewを表示 }'
 }
-';
+';'
 
-    hide(): void { this.isVisible = false,
-        if(this.helpPanel) {
+    hide(): void { this.isVisible = false;
+        if (this.helpPanel) {
 
             this.helpPanel.style.display = 'none' }
             this.hideSearchResults(); }
@@ -638,15 +638,15 @@ class TestSupportTools { // テスト実行
     }
 
     selectCategory(category: string): void { // カテゴリボタンの状態更新
-        document.querySelectorAll('.category-item'.forEach(item => { '),
-            item.classList.remove('active',' }
+        document.querySelectorAll('.category-item'.forEach(item => { '),'
+            item.classList.remove('active',' }'
 
             (item, as HTMLElement').style.background = '; }
 
-        }');
+        }');'
 
         const selectedItem = document.querySelector(`[data-category="${category}"]`" as HTMLElement;""
-        if(selectedItem) {""
+        if (selectedItem) {""
 
             selectedItem.classList.add('active') }
 
@@ -658,40 +658,40 @@ class TestSupportTools { // テスト実行
     }
 
     showCategoryDocuments(category: string): void { ''
-        const docs = category === 'all' ? undefined : undefined',
-            Array.from(this.docs.values() :',
+        const docs = category === 'all' ? undefined : undefined','
+            Array.from(this.docs.values() :','
             Array.from(this.docs.values().filter(doc => doc.category === category),
-',
+','
 
         const content = `}'
 
-            <h3>Documents in ${category === 'all' ? 'All, Categories' : category}</h3>';
-            <div class="doc-list">";
+            <h3>Documents in ${category === 'all' ? 'All, Categories' : category;</h3>';'
+            <div class="doc-list">";"
                 ${ docs.map(doc => `}""
                     <div, class="doc-item" style="background: #333; padding: 15px;, margin: 10px, 0; border-radius: 8px,  cursor: pointer;", "};" }"")
-                         onclick="window.debugDocs.showDocument('${doc.id}'}'">""
+                         onclick="window.debugDocs.showDocument('${doc.id}'}'">""'
                         <h4 style="margin: 0 0 5px 0;, color: #00ff88;">${doc.title}</h4>""
                         <p style="margin: 0; color: #ccc; font-size: 13px;">""
                             Category: ${doc.category} | Keywords: ${doc.keywords.join(', '}''
-                        </p>';
-                    </div>';
+                        </p>';'
+                    </div>';'
                 `).join('')}
             </div>;
         `;
 
-        const helpArticle = document.getElementById('help-article);
+        const helpArticle = document.getElementById('help-article);'
         if (helpArticle) { helpArticle.innerHTML = content }
     }
-';
+';'
 
     showDocument(docId: string): void { const doc = this.docs.get(docId),
-        if(!doc) {
+        if (!doc) {
 
             this.showError('Document, not found') }
             return; }
         }
 
-        const helpArticle = document.getElementById('help-article);
+        const helpArticle = document.getElementById('help-article);'
         if (helpArticle) { helpArticle.innerHTML = doc.content }
 
         // コンテキストヘルプを更新
@@ -707,10 +707,10 @@ class TestSupportTools { // テスト実行
     }
 
     showSearchResults(results: SearchResult[]): void { ''
-        const resultsDiv = document.getElementById('search-results),
+        const resultsDiv = document.getElementById('search-results),'
         if (!resultsDiv) return,
 
-        if(results.length === 0) {', ' }
+        if (results.length === 0) {', ' }
 
             resultsDiv.innerHTML = '<div style="padding: 10px;, color: #ccc;">No results found</div>'; 
     } else {  resultsDiv.innerHTML = results.map(result => `) }
@@ -727,17 +727,17 @@ class TestSupportTools { // テスト実行
         resultsDiv.style.display = 'block';
     }
 
-    hideSearchResults()';
+    hideSearchResults()';'
         const resultsDiv = document.getElementById('search-results';
-        if(resultsDiv) {', ' }
+        if (resultsDiv) {', ' }
 
             resultsDiv.style.display = 'none'; }
 }
 
     showError(message: string): void { ''
         const helpArticle = document.getElementById('help-article',
-        if(helpArticle) {
-            helpArticle.innerHTML = `',
+        if (helpArticle) {
+            helpArticle.innerHTML = `','
                 <div style="text-align: center, padding: 50px,, color: #ff6b6b,">
         }
                     <h3>Error</h3> }
@@ -784,13 +784,13 @@ class TestSupportTools { // テスト実行
  * ドキュメント検索エンジン
  */
 class DocumentationSearchEngine { private index: Map<string, Map<string, TokenInfo>>,
-    private stopWords: Set<string>,
+    private stopWords: Set<string>;
     constructor() {
-",
+","
 
         this.index = new Map<string, Map<string, TokenInfo>>(),"
         this.stopWords = new Set([ "", ]
-            'the', 'is', 'at', 'which', 'on', 'and', 'a', 'an', 'as', 'are',]',
+            'the', 'is', 'at', 'which', 'on', 'and', 'a', 'an', 'as', 'are',]','
             'の', 'は', 'が', 'を', 'に', 'で', 'と', 'も', 'や', 'から'])
             });
         ]); }
@@ -800,7 +800,7 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         const tokens = this.tokenize(doc.title + ', ' + doc.content + '' + doc.keywords.join(', '),
         
         tokens.forEach(token => { ),
-            if(!this.index.has(token) { }
+            if (!this.index.has(token) { }
                 this.index.set(token, new Map<string, TokenInfo>(); }
             }
             
@@ -820,10 +820,10 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         // 再インデックス
         this.indexDocument(docId, doc);
     }
-';
+';'
 
     tokenize(text: string): string[] { return text''
-            .toLowerCase()',
+            .toLowerCase()','
             .replace(/[^\w\s\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]/g, ', '),
             .split(/\s+/),
             .filter(token => token.length > 1 && !this.stopWords.has(token) }
@@ -836,7 +836,7 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         queryTokens.forEach(token => { ),
             const tokenIndex = this.index.get(token),
 
-            if(tokenIndex) {
+            if (tokenIndex) {
                 tokenIndex.forEach((docInfo, docId) => {''
                     if(!results.has(docId)) {
                         results.set(docId, { docId: docId)
@@ -846,7 +846,7 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
 
                             matches: [],') }'
 
-                            excerpt: '); 
+                            excerpt: '); '
     });
                     }
                     
@@ -857,15 +857,15 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
             }
 
             // 部分一致検索
-            this.index.forEach((tokenIndex, indexToken) => {  if(indexToken.includes(token) {
+            this.index.forEach((tokenIndex, indexToken) => {  if (indexToken.includes(token) {
                     tokenIndex.forEach((docInfo, docId) => {''
                         if(!results.has(docId)) {
                             results.set(docId, { docId: docId)
                                 title: docInfo.title,
-    score: 0)' }
+    score: 0)' }'
                                 matches: [],') }'
 
-                                excerpt: '); 
+                                excerpt: '); '
     });
                         }
                         
@@ -904,87 +904,87 @@ class ContextualHelpProvider { private currentContext: ContextInfo | null
 
     constructor() {
 
-        this.currentContext = null,
+        this.currentContext = null;
         this.contextMappings = new Map<string, string[]>() }
         this.setupContextMappings(); }
 
     }
 
     setupContextMappings('';
-        this.contextMappings.set('performance-issues', [ ';
-            'performance-monitor','; ]
+        this.contextMappings.set('performance-issues', [ ';'
+            'performance-monitor','; ]'
             'best-practices',')]';
             'troubleshooting')']';
-        ]');
+        ]');'
 
-        this.contextMappings.set('error-occurred', [ ';
-            'error-reporter','; ]
+        this.contextMappings.set('error-occurred', [ ';'
+            'error-reporter','; ]'
             'troubleshooting',')]';
             'api-reference')']';
-        ]');
+        ]');'
 
-        this.contextMappings.set('test-failure', [ ';
-            'test-support','; ]
+        this.contextMappings.set('test-failure', [ ';'
+            'test-support','; ]'
             'troubleshooting',')]';
             'best-practices')']';
-        ]');
+        ]');'
 
-        this.contextMappings.set('console-usage', [ ';
-            'developer-console','; ]
+        this.contextMappings.set('console-usage', [ ';'
+            'developer-console','; ]'
             'shortcuts',')]';
             'api-reference')']';
-        ]');
+        ]');'
 
-        this.contextMappings.set('visual-debugging', [ ';
-            'visual-debugger','; ]
+        this.contextMappings.set('visual-debugging', [ ';'
+            'visual-debugger','; ]'
             'shortcuts',')]';
             'best-practices')];
         ]);
     }
 
     updateContext(docId: string, doc: DocumentationItem): void { this.currentContext = { docId: docId,
-    doc: doc }
+    doc: doc,
             timestamp: Date.now(
             });
     getHelp(context: string): ContextualHelpResult { const relatedDocs = this.contextMappings.get(context) || [],
         return { context: context,
             suggestedDocs: relatedDocs,
-    currentDoc: this.currentContext?.docId, : undefined };
-            tips: this.getContextualTips(context); 
+    currentDoc: this.currentContext?.docId, : undefined;;
+            tips: this.getContextualTips(context), 
     }
 
     getSuggestedDocs(context: string): string[] { return this.contextMappings.get(context) || [] }
 
     getContextualTips(context: string): string[] { const tips: Record<string, string[]> = {', 'performance-issues': [ ',
                 'Check FPS and frame time in Performance Monitor', ]
-                'Run benchmarks to identify bottlenecks',]',
-                'Enable performance warnings for proactive monitoring']',
+                'Run benchmarks to identify bottlenecks',]','
+                'Enable performance warnings for proactive monitoring']','
             ],
-            'error-occurred': [ ',
+            'error-occurred': [ ','
                 'Check Error Reporter for detailed stack traces', ]
-                'Look for similar errors in history',]',
-                'Use suggested fixes from error analysis']',
+                'Look for similar errors in history',]','
+                'Use suggested fixes from error analysis']','
             ],
-            'test-failure': [ ',
+            'test-failure': [ ','
                 'Analyze failure patterns in Test Support Tools', ]
-                'Generate mock data for isolated testing',]',
-                'Check test coverage for gaps']',
+                'Generate mock data for isolated testing',]','
+                'Check test coverage for gaps']','
             ],
-            'console-usage': [ ',
+            'console-usage': [ ','
                 'Use Tab for command auto-completion', ]
-                'Type help() for available commands',]',
-                'Use up/down arrows for command history']',
+                'Type help() for available commands',]','
+                'Use up/down arrows for command history']','
             ],
-            'visual-debugging': [ ',
+            'visual-debugging': [ ','
                 'Enable hitbox display for collision debugging', ]
-                'Use frame-by-frame stepping for detailed analysis',]',
+                'Use frame-by-frame stepping for detailed analysis',]','
                 'Save and restore game states for testing'],
             ] };
 
         return tips[context] || [];
     }
 
-    destroy(): void { this.currentContext = null,
+    destroy(): void { this.currentContext = null;
         this.contextMappings.clear() }
 }
 

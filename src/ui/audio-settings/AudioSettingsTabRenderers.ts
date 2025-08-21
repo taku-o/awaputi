@@ -9,35 +9,35 @@ import type { ErrorHandler } from '../../utils/ErrorHandler.js';
  * UI Component Factory interface
  */
 interface UIComponentFactory { createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions): void,
-    createToggleOption(container: HTMLElement, options: ToggleOptionOptions): void,
-    createRadioGroup(container: HTMLElement, options: RadioGroupOptions): void,
-    createDropdown(container: HTMLElement, options: DropdownOptions): void,
-    createVerticalSlider(container: HTMLElement, options: VerticalSliderOptions): void,
-    updateVolumeSliders(enabled: boolean): void }
+    createToggleOption(container: HTMLElement, options: ToggleOptionOptions): void;
+    createRadioGroup(container: HTMLElement, options: RadioGroupOptions): void;
+    createDropdown(container: HTMLElement, options: DropdownOptions): void;
+    createVerticalSlider(container: HTMLElement, options: VerticalSliderOptions): void;
+    updateVolumeSliders(enabled: boolean): void;
 
 /**
  * Audio Test Panel interface
  */'
 interface AudioTestPanel { ''
-    open(container: HTMLElement): void }
+    open(container: HTMLElement): void;
 
 /**
  * Volume Slider Options
  */
 interface VolumeSliderOptions { id: string,
-    label: string,
-    icon: string,
-    category: 'master' | 'bgm' | 'sfx',
-    defaultValue: number,
+    label: string;
+    icon: string;
+    category: 'master' | 'bgm' | 'sfx';
+    defaultValue: number;
     previewSound: string | null  }
 
 /**
  * Toggle Option Options
  */
 interface ToggleOptionOptions { id: string,
-    label: string,
-    icon: string,
-    defaultValue: boolean,
+    label: string;
+    icon: string;
+    defaultValue: boolean;
     onChange: (value: boolean) => void 
     }
 
@@ -45,9 +45,9 @@ interface ToggleOptionOptions { id: string,
  * Radio Group Options
  */
 interface RadioGroupOptions { id: string,
-    label: string,
-    icon: string }
-    options: Array<{ value: string,, label: string }>,
+    label: string;
+    icon: string;
+    options: Array<{ value: string,, label: string;>,
     defaultValue: string,
     onChange: (value: string) => void;
 }
@@ -56,9 +56,9 @@ interface RadioGroupOptions { id: string,
  * Dropdown Options
  */
 interface DropdownOptions { id: string,
-    label: string,
-    icon: string }
-    options: Array<{ value: number | string,, label: string }>,
+    label: string;
+    icon: string;
+    options: Array<{ value: number | string,, label: string;>,
     defaultValue: number | string,
     onChange: (value: string) => void;
 }
@@ -67,12 +67,12 @@ interface DropdownOptions { id: string,
  * Vertical Slider Options
  */
 interface VerticalSliderOptions { id: string,
-    label: string,
-    icon: string,
-    min: number,
-    max: number,
-    defaultValue: number,
-    unit: string,
+    label: string;
+    icon: string;
+    min: number;
+    max: number;
+    defaultValue: number;
+    unit: string;
     onChange: (value: number') => void  }'
 }
 
@@ -86,21 +86,20 @@ type QualityPreset = 'low' | 'medium' | 'high' | 'ultra';
  * オーディオ設定タブ描画器 - 各タブのコンテンツ描画処理
  */
 export class AudioSettingsTabRenderers {
-    private audioManager: AudioManager,
-    private configManager: ConfigurationManager,
-    private uiComponentFactory: UIComponentFactory,
-    private audioTestPanel: AudioTestPanel,
-    private localizationManager: LocalizationManager,
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private uiComponentFactory: UIComponentFactory;
+    private audioTestPanel: AudioTestPanel;
+    private localizationManager: LocalizationManager;
     private, errorHandler: ErrorHandler,
     constructor(audioManager: AudioManager, configManager: ConfigurationManager, uiComponentFactory: UIComponentFactory, audioTestPanel: AudioTestPanel) {
 
-        this.audioManager = audioManager,
-        this.configManager = configManager,
-        this.uiComponentFactory = uiComponentFactory,
-        this.audioTestPanel = audioTestPanel,
-        this.localizationManager = getLocalizationManager(),
-
-     }
+        this.audioManager = audioManager;
+        this.configManager = configManager;
+        this.uiComponentFactory = uiComponentFactory;
+        this.audioTestPanel = audioTestPanel;
+        this.localizationManager = getLocalizationManager()
+}
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -115,43 +114,43 @@ export class AudioSettingsTabRenderers {
         // マスター音量
         this.uiComponentFactory.createVolumeSlider(volumeSection, {''
             id: 'master-volume',
-            label: 'audio.settings.volume.master',',
+            label: 'audio.settings.volume.master',','
             icon: '🎵',')',
             category: 'master',
             defaultValue: this.audioManager.getVolume('master',
             previewSound: 'success'}
 
-        }');
+        }');'
         // BGM音量
         this.uiComponentFactory.createVolumeSlider(volumeSection, { ''
             id: 'bgm-volume',
-            label: 'audio.settings.volume.bgm',',
+            label: 'audio.settings.volume.bgm',','
             icon: '🎼',')',
             category: 'bgm',
             defaultValue: this.audioManager.getVolume('bgm',
             previewSound: null'
             }'
 
-        }');
+        }');'
         // 効果音音量
         this.uiComponentFactory.createVolumeSlider(volumeSection, { ''
             id: 'sfx-volume',
-            label: 'audio.settings.volume.sfx',',
+            label: 'audio.settings.volume.sfx',','
             icon: '🔔',')',
             category: 'sfx',
             defaultValue: this.audioManager.getVolume('sfx',
             previewSound: 'pop'
             });
         container.appendChild(volumeSection);
-        ';
+        ';'
         // ミュート設定
         const muteSection = document.createElement('div');
         muteSection.className = 'settings-section';
         muteSection.style.marginTop = '30px';
-        ';
+        ';'
 
         this.uiComponentFactory.createToggleOption(muteSection, { ''
-            id: 'mute-all',',
+            id: 'mute-all',','
             label: 'audio.settings.volume.muteAll',')',
             icon: '🔇',
     defaultValue: (this.audioManager, as any).isMuted || false,
@@ -182,19 +181,19 @@ export class AudioSettingsTabRenderers {
             { value: 'ultra', label: 'audio.settings.quality.ultra'
             }]
         ];
-        ';
+        ';'
 
         this.uiComponentFactory.createRadioGroup(qualitySection, { ''
             id: 'quality-preset',
-            label: 'audio.settings.quality.preset',',
-            icon: '🎚️')',
+            label: 'audio.settings.quality.preset',','
+            icon: '🎚️')','
     options: presets,')',
             defaultValue: 'high',
     onChange: (value) => {   }
                 this._applyQualityPreset(value) }
 
             }'}');
-        ';
+        ';'
         // 詳細設定
         const advancedSection = document.createElement('div');
         advancedSection.className = 'settings-subsection';
@@ -212,8 +211,8 @@ export class AudioSettingsTabRenderers {
         // サンプルレート
         this.uiComponentFactory.createDropdown(advancedSection, { ''
             id: 'sample-rate',
-            label: 'audio.settings.quality.sampleRate',',
-            icon: '📊')',
+            label: 'audio.settings.quality.sampleRate',','
+            icon: '📊')','
     options: ['
             }'
 
@@ -231,7 +230,7 @@ export class AudioSettingsTabRenderers {
         // バッファサイズ
         this.uiComponentFactory.createDropdown(advancedSection, { ''
             id: 'buffer-size',
-            label: 'audio.settings.quality.bufferSize',',
+            label: 'audio.settings.quality.bufferSize',','
             icon: '💾',')',
             options: [')'
             }
@@ -264,10 +263,10 @@ export class AudioSettingsTabRenderers {
         
         // リバーブ効果
         this.uiComponentFactory.createToggleOption(effectsSection, {''
-            id: 'reverb-enabled',',
+            id: 'reverb-enabled',','
             label: 'audio.settings.effects.reverb',')',
             icon: '🌊',
-            defaultValue: this.configManager.get('audio.effects.reverb) as boolean,
+            defaultValue: this.configManager.get('audio.effects.reverb) as boolean,'
             onChange: (value) => { }'
 
                 (this.audioManager, as any').setAudioEffect?.('reverb', value'; }
@@ -276,13 +275,13 @@ export class AudioSettingsTabRenderers {
         
         // コンプレッサー
         this.uiComponentFactory.createToggleOption(effectsSection, { : undefined''
-            id: 'compression-enabled',',
+            id: 'compression-enabled',','
             label: 'audio.settings.effects.compression',')',
             icon: '🎛️',
-            defaultValue: this.configManager.get('audio.effects.compression) as boolean,
+            defaultValue: this.configManager.get('audio.effects.compression) as boolean,'
             onChange: (value) => { }'
 
-                (this.audioManager, as any').setAudioEffect?.('compression', value); }
+                (this.audioManager, as any').setAudioEffect?.('compression', value); }'
 });
         
         // イコライザー
@@ -291,10 +290,10 @@ export class AudioSettingsTabRenderers {
         
         // 環境音
         this.uiComponentFactory.createToggleOption(effectsSection, { : undefined''
-            id: 'environmental-audio',',
+            id: 'environmental-audio',','
             label: 'audio.settings.effects.environmental',')',
             icon: '🌿',
-            defaultValue: this.configManager.get('audio.effects.environmentalAudio) as boolean,
+            defaultValue: this.configManager.get('audio.effects.environmentalAudio) as boolean,'
     onChange: (value) => { 
                 if ((this.audioManager, as any).audioController) {  }
                     (this.audioManager, as any).audioController.enableEnvironmentalAudio?.(value) }
@@ -313,47 +312,47 @@ export class AudioSettingsTabRenderers {
         
         // 視覚的フィードバック
         this.uiComponentFactory.createToggleOption(accessibilitySection, {''
-            id: 'visual-feedback',',
+            id: 'visual-feedback',','
             label: 'audio.settings.accessibility.visualFeedback',')',
             icon: '👁️',
             defaultValue: this.configManager.get('audio.accessibility.visualFeedback' as boolean,
-            onChange: (value') => { }
+            onChange: (value') => { }'
 
-                this.configManager.set('audio.accessibility.visualFeedback', value'; }
+                this.configManager.set('audio.accessibility.visualFeedback', value'; }'
 
             }'}');
         
         // 触覚フィードバック
         this.uiComponentFactory.createToggleOption(accessibilitySection, { ''
-            id: 'haptic-feedback',',
+            id: 'haptic-feedback',','
             label: 'audio.settings.accessibility.hapticFeedback',')',
             icon: '📳',
             defaultValue: this.configManager.get('audio.accessibility.hapticFeedback' as boolean,
-            onChange: (value') => { }
+            onChange: (value') => { }'
 
-                this.configManager.set('audio.accessibility.hapticFeedback', value'; }
+                this.configManager.set('audio.accessibility.hapticFeedback', value'; }'
 
             }'}');
         
         // 字幕
         this.uiComponentFactory.createToggleOption(accessibilitySection, { ''
-            id: 'captioning',',
+            id: 'captioning',','
             label: 'audio.settings.accessibility.captioning',')',
             icon: '📝',
             defaultValue: this.configManager.get('audio.accessibility.captioning' as boolean,
-            onChange: (value') => { }
+            onChange: (value') => { }'
 
-                this.configManager.set('audio.accessibility.captioning', value'; }
+                this.configManager.set('audio.accessibility.captioning', value'; }'
 
             }'}');
         
         // 音響説明
         this.uiComponentFactory.createToggleOption(accessibilitySection, { ''
-            id: 'audio-descriptions',',
+            id: 'audio-descriptions',','
             label: 'audio.settings.accessibility.audioDescriptions',')',
             icon: '🗣️',
             defaultValue: this.configManager.get('audio.accessibility.audioDescriptions' as boolean,
-            onChange: (value') => { }
+            onChange: (value') => { }'
 
                 this.configManager.set('audio.accessibility.audioDescriptions', value); }
 });
@@ -366,12 +365,12 @@ export class AudioSettingsTabRenderers {
      */'
     renderTestTab(container: HTMLElement): void { // テストパネルを表示
         this.audioTestPanel.open(container),
-        ',
+        ','
         // テスト説明
         const description = document.createElement('div'),
         description.className = 'test-description',
 
-        description.style.cssText = `',
+        description.style.cssText = `','
             background-color: rgba(255, 255, 255, 0.05),
             border-left: 4px solid #00ffff,
             padding: 15px,
@@ -389,7 +388,7 @@ export class AudioSettingsTabRenderers {
         description.appendChild(descTitle),
 
         const descText = document.createElement('p'),
-        descText.textContent = this.localizationManager.getText('audio.test.description.text),
+        descText.textContent = this.localizationManager.getText('audio.test.description.text),'
         descText.style.cssText = `,
             color: #cccccc,
             font-size: 14px,
@@ -405,7 +404,7 @@ export class AudioSettingsTabRenderers {
      * イコライザーセクションを作成
      * @private
      */''
-    private _createEqualizerSection()';
+    private _createEqualizerSection()';'
         const eqSection = document.createElement('div');
         eqSection.className = 'settings-subsection';
         eqSection.style.marginTop = '30px';
@@ -420,7 +419,7 @@ export class AudioSettingsTabRenderers {
         eqSection.appendChild(eqTitle);
         
         // イコライザーバンド
-        const bands = [';
+        const bands = [';'
             { id: 'eq-low', label: '低音', frequency: 80, icon: '🔊'
             },''
             { id: 'eq-low-mid', label: '中低音', frequency: 250, icon: '🔉'
@@ -438,7 +437,7 @@ export class AudioSettingsTabRenderers {
                 label: band.label,
                 icon: band.icon,
                 min: -12),
-                max: 12)',
+                max: 12)','
     defaultValue: 0,')',
                 unit: 'dB',
     onChange: (value) => {
@@ -456,20 +455,20 @@ export class AudioSettingsTabRenderers {
      * @private
      */ : undefined
     private _applyQualityPreset(preset: QualityPreset): void {
-        const presets: Record<QualityPreset, { sampleRate: number,, bufferSize: number  }> = {
+        const presets: Record<QualityPreset, { sampleRate: number,, bufferSize: number,> = {
             low: { sampleRate: 22050, bufferSize: 1024  },
             medium: { sampleRate: 44100, bufferSize: 512  },
             high: { sampleRate: 44100, bufferSize: 256  },
             ultra: { sampleRate: 48000, bufferSize: 256  };
         
         const settings = presets[preset];
-        if(settings) {
+        if (settings) {
 
-            (this.audioManager, as any).updateQualitySettings?.(settings'),
-            ',
+            (this.audioManager, as any).updateQualitySettings?.(settings'),'
+            ','
             // UIを更新
             const sampleRateSelect = document.getElementById('sample-rate') as HTMLSelectElement | null,
-            const bufferSizeSelect = document.getElementById('buffer-size) as HTMLSelectElement | null,
+            const bufferSizeSelect = document.getElementById('buffer-size) as HTMLSelectElement | null,'
 
             if (sampleRateSelect) sampleRateSelect.value = settings.sampleRate.toString() }
 

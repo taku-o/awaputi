@@ -5,155 +5,152 @@
 
 // Interfaces for accessibility tutorial
 interface TutorialConfig { enableInteractiveTutorials: boolean,
-    enableFeatureDemos: boolean,
-    enablePracticeMode: boolean,
-    adaptiveTutorialContent: boolean,
-    tutorialSpeed: 'slow' | 'normal' | 'fast',
-    enableVoiceGuidance: boolean,
-    showVisualIndicators: boolean,
-    allowTutorialSkipping: boolean  }
+    enableFeatureDemos: boolean;
+    enablePracticeMode: boolean;
+    adaptiveTutorialContent: boolean;
+    tutorialSpeed: 'slow' | 'normal' | 'fast';
+    enableVoiceGuidance: boolean;
+    showVisualIndicators: boolean;
+    allowTutorialSkipping: boolean;
 
 interface TutorialStep { id: string,
-    title: string,
-    type: 'explanation' | 'practice' | 'configuration',
-    duration: number  }
+    title: string;
+    type: 'explanation' | 'practice' | 'configuration';
+    duration: number;
 
 interface TutorialDefinition { title: string,
-    description: string,
-    steps: TutorialStep[],
-    estimatedTime: number,
-    difficulty: 'beginner' | 'intermediate' | 'advanced',
-    prerequisites: string[]  }
+    description: string;
+    steps: TutorialStep[];
+    estimatedTime: number;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    prerequisites: string[];
 
 interface TutorialContent { keyboardNavigation: TutorialDefinition,
-    screenReader: TutorialDefinition,
-    visualAdjustments: TutorialDefinition,
-    audioSettings: TutorialDefinition
-    }
+    screenReader: TutorialDefinition;
+    visualAdjustments: TutorialDefinition;
+    audioSettings: TutorialDefinition;
 
 interface TutorialState { currentTutorial: string | null,
-    currentStep: number,
-    completedTutorials: Set<string>,
-    completedSteps: Map<string, Set<number>>,
-    practiceResults: Map<string, PracticeSessionResult>,
-    userProgress: Map<string, any>,
-    sessionStartTime: number | null,
-    interactionHistory: InteractionRecord[]
-     }
+    currentStep: number;
+    completedTutorials: Set<string>;
+    completedSteps: Map<string, Set<number>>;
+    practiceResults: Map<string, PracticeSessionResult>;
+    userProgress: Map<string, any>;
+    sessionStartTime: number | null;
+    interactionHistory: InteractionRecord[];
 
 interface InteractionRecord { type: string,
-    key?: string,
-    timestamp: number,
-    tutorial: string,
-    step: number }
+    key?: string;
+    timestamp: number;
+    tutorial: string;
+    step: number;
 
 interface PracticeSession { active: boolean,
-    currentExercise: Exercise | null,
-    attempts: number,
-    successRate: number,
-    feedback: PracticeFeedback[],
-    timeSpent: number }
+    currentExercise: Exercise | null;
+    attempts: number;
+    successRate: number;
+    feedback: PracticeFeedback[];
+    timeSpent: number;
 
 interface Exercise { name: string,
-    type?: string,
-    difficulty?: string }
+    type?: string;
+    difficulty?: string;
 
 interface ExerciseResult { name: string,
-    success: boolean,
-    attempts: number,
-    time: number,
-    score: number,
-    error?: string  }
-';
+    success: boolean;
+    attempts: number;
+    time: number;
+    score: number;
+    error?: string;
+';'
 
 interface PracticeFeedback { ''
-    type: 'success' | 'improvement',
-    message: string,
-    score: number,
-    suggestions: string[] }
+    type: 'success' | 'improvement';
+    message: string;
+    score: number;
+    suggestions: string[];
 
 interface PracticeSessionResult { sessionTime: number,
-    exercises: ExerciseResult[],
-    successRate: number,
-    feedback: PracticeFeedback[],
-    timestamp: number }
+    exercises: ExerciseResult[];
+    successRate: number;
+    feedback: PracticeFeedback[];
+    timestamp: number;
 
 interface DeliverySettings { highlightElements: boolean,
-    showTooltips: boolean,
-    enableAnimations: boolean,
-    pauseOnInteraction: boolean,
-    repeatInstructions: boolean }
+    showTooltips: boolean;
+    enableAnimations: boolean;
+    pauseOnInteraction: boolean;
+    repeatInstructions: boolean;
 
 interface PerformanceMetrics { tutorialStartTimes: Map<string, number>,
-    tutorialCompletionTimes: Map<string, number>,
-    stepTransitionTimes: number[],
-    practiceSessionTimes: number[],
+    tutorialCompletionTimes: Map<string, number>;
+    stepTransitionTimes: number[];
+    practiceSessionTimes: number[];
     userEngagementMetrics: Map<string, any> }
 
 interface TutorialProgress { tutorialId: string,
-    title: string,
-    currentStep: number,
-    totalSteps: number,
-    stepsCompleted: number,
-    progress: number,
-    isCompleted: boolean,
-    estimatedTimeRemaining: number,
+    title: string;
+    currentStep: number;
+    totalSteps: number;
+    stepsCompleted: number;
+    progress: number;
+    isCompleted: boolean;
+    estimatedTimeRemaining: number;
     lastAccessed: number | null  }
 
 interface AllTutorialProgress { tutorials: TutorialProgress[],
-    overallProgress: number,
-    completedTutorials: number,
-    totalTutorials: number }
+    overallProgress: number;
+    completedTutorials: number;
+    totalTutorials: number;
 
 interface TutorialDeliveryResult { success: boolean,
-    tutorialId?: string,
-    completionTime?: number,
-    stepsCompleted?: number,
-    deliveryResult?: any,
-    error?: string,
-    missingPrerequisites?: string[] }
+    tutorialId?: string;
+    completionTime?: number;
+    stepsCompleted?: number;
+    deliveryResult?: any;
+    error?: string;
+    missingPrerequisites?: string[];
 
 interface FeatureDemonstrationResult { success: boolean,
-    demonstrationTime?: number,
-    featuresShown: string[],
-    results?: any[],
+    demonstrationTime?: number;
+    featuresShown: string[];
+    results?: any[];
     error?: string,  }
 
 interface PracticeSessionResultResponse { success: boolean,
-    practiceType: string,
-    sessionTime?: number,
-    exercisesCompleted?: number,
-    successRate?: number,
-    feedback?: PracticeFeedback[],
-    detailedResults?: ExerciseResult[],
+    practiceType: string;
+    sessionTime?: number;
+    exercisesCompleted?: number;
+    successRate?: number;
+    feedback?: PracticeFeedback[];
+    detailedResults?: ExerciseResult[];
     error?: string,  }
-';
+';'
 
 interface UserProfile { ''
-    experience?: 'beginner' | 'intermediate' | 'expert',
-    disabilities?: string[],
+    experience?: 'beginner' | 'intermediate' | 'expert';
+    disabilities?: string[];
     preferences?: Record<string, any> }
 
 interface TutorialAnalytics { tutorialsCompleted: number,
-    totalTutorials: number,
-    averageCompletionTime: number,
-    practiceSessionsCompleted: number,
-    userEngagement: UserEngagement,
-    performance: PerformanceMetrics
-     }
+    totalTutorials: number;
+    averageCompletionTime: number;
+    practiceSessionsCompleted: number;
+    userEngagement: UserEngagement;
+    performance: PerformanceMetrics;
 
 interface UserEngagement { totalInteractions: number,
-    sessionTime: number,
-    interactionsPerMinute: number }
+    sessionTime: number;
+    interactionsPerMinute: number;
 
 export class AccessibilityTutorial {
-    private config: TutorialConfig,
-    private tutorialContent: TutorialContent,
-    private tutorialState: TutorialState,
-    private practiceSession: PracticeSession,
-    private deliverySettings: DeliverySettings,
-    private performance: PerformanceMetrics,
-    private, initialized: boolean',
+    private config: TutorialConfig;
+    private tutorialContent: TutorialContent;
+    private tutorialState: TutorialState;
+    private practiceSession: PracticeSession;
+    private deliverySettings: DeliverySettings;
+    private performance: PerformanceMetrics;
+    private, initialized: boolean','
 
     constructor(config: Partial<TutorialConfig> = {)) {
         this.config = {
@@ -181,7 +178,7 @@ export class AccessibilityTutorial {
     steps: [],
                 estimatedTime: 240,
                 difficulty: 'intermediate',
-                prerequisites: ['keyboardNavigation]  };
+                prerequisites: ['keyboardNavigation]  };'
             visualAdjustments: { ''
                 title: '視覚調整機能',
                 description: 'コントラスト、文字サイズ、色調整などの視覚機能',
@@ -218,7 +215,7 @@ export class AccessibilityTutorial {
             showTooltips: true,
             enableAnimations: true,
             pauseOnInteraction: true,
-    repeatInstructions: false  };
+    repeatInstructions: false,;
         // Performance metrics
         this.performance = { tutorialStartTimes: new Map(
             tutorialCompletionTimes: new Map(),
@@ -244,7 +241,7 @@ export class AccessibilityTutorial {
         // Initialize delivery settings based on user preferences
         this.initializeDeliverySettings(),
         // Setup event listeners for tutorial interactions
-        this.setupTutorialEventListeners()',
+        this.setupTutorialEventListeners()','
         console.log('AccessibilityTutorial: Initialized, successfully'),
         return true }
 
@@ -252,7 +249,7 @@ export class AccessibilityTutorial {
      * Deliver tutorial content for specific topic
      */'
     async deliverTutorialContent(tutorialId: string, userProfile: UserProfile | null = null): Promise<TutorialDeliveryResult> { ''
-        if(!this.initialized) {', ' }
+        if (!this.initialized) {', ' }
 
             throw new Error('AccessibilityTutorial, must be, initialized first'; }'
         }
@@ -269,8 +266,8 @@ export class AccessibilityTutorial {
 
             // Check prerequisites
             const prerequisitesMet = await this.checkPrerequisites(tutorial.prerequisites);
-            if(!prerequisitesMet) {
-                return { success: false }
+            if (!prerequisitesMet) {
+                return { success: false,
 
                     error: 'Prerequisites not met'
             };
@@ -302,10 +299,10 @@ export class AccessibilityTutorial {
     stepsCompleted: this.getTutorialProgress(tutorialId).stepsCompleted };
                 deliveryResult }
             } catch (error) {
-            console.error('AccessibilityTutorial: Tutorial delivery, error:', error',
+            console.error('AccessibilityTutorial: Tutorial delivery, error:', error','
 
             return { success: false,''
-                error: (error, as Error').message };
+                error: (error, as Error').message };'
                 tutorialId }
             }
     }
@@ -314,11 +311,11 @@ export class AccessibilityTutorial {
      * Demonstrate specific accessibility features'
      */''
     async demonstrateFeatures(featureList: string[], demonstrationMode: string = 'interactive': Promise<FeatureDemonstrationResult> { ''
-        if(!this.config.enableFeatureDemos) { }'
+        if (!this.config.enableFeatureDemos) { }'
 
-            return { success: false, error: 'Feature demonstrations are disabled', featuresShown: featureList  }
+            return { success: false, error: 'Feature demonstrations are disabled', featuresShown: featureList,
 
-        const startTime = performance.now()';
+        const startTime = performance.now()';'
         console.log(`Starting feature demonstration: ${featureList.join(', '})`);
 
         try { const demonstrationResults = [],
@@ -342,21 +339,19 @@ export class AccessibilityTutorial {
 
             return { success: true,
                 demonstrationTime,
-                featuresShown: featureList };
-                results: demonstrationResults 
-    } catch (error) {
+                featuresShown: featureList,;
+                results: demonstrationResults; catch (error) {
             console.error('AccessibilityTutorial: Feature demonstration, error:', error),
             return { success: false,
                 error: (error, as Error).message };
-                featuresShown: featureList 
-    }
+                featuresShown: featureList;
     }
 
     /**
      * Conduct hands-on practice session
      */'
     async conductPracticeSession(practiceType: string, exercises: Exercise[] = []): Promise<PracticeSessionResultResponse> { ''
-        if(!this.config.enablePracticeMode) { }'
+        if (!this.config.enablePracticeMode) { }'
 
             return { success: false, error: 'Practice mode is disabled', practiceType }
 
@@ -420,8 +415,7 @@ export class AccessibilityTutorial {
                 exercisesCompleted: exercises.length,
                 successRate: this.practiceSession.successRate,
     feedback: this.practiceSession.feedback };
-                detailedResults: practiceResults 
-    } catch (error) {
+                detailedResults: practiceResults; catch (error) {
             console.error('AccessibilityTutorial: Practice session, error:', error),
             this.practiceSession.active = false,
             
@@ -435,17 +429,16 @@ export class AccessibilityTutorial {
      * Get tutorial progress for specific tutorial
      */'
     getTutorialProgress(tutorialId: string): TutorialProgress { const tutorial = this.tutorialContent[tutorialId as keyof TutorialContent],
-        if(!tutorial) {
+        if (!tutorial) {
             return { tutorialId,''
-                title: ',
+                title: ','
                 currentStep: 0,
                 totalSteps: 0,
                 stepsCompleted: 0,
                 progress: 0,
-    isCompleted: false }
+    isCompleted: false,
                 estimatedTimeRemaining: 0 };
-                lastAccessed: null 
-    }
+                lastAccessed: null;
 
         const completedSteps = this.tutorialState.completedSteps.get(tutorialId) || new Set();
         const totalSteps = tutorial.steps.length;
@@ -485,15 +478,15 @@ export class AccessibilityTutorial {
     /**
      * Skip current tutorial step
      */'
-    async skipCurrentStep(): Promise<{ success: boolean, error?: string, skippedStep?: number, currentStep?: number, tutorialId?: string }> { ''
-        if(!this.config.allowTutorialSkipping) { }'
+    async skipCurrentStep(): Promise<{ success: boolean, error?: string, skippedStep?: number, currentStep?: number, tutorialId?: string;> { ''
+        if (!this.config.allowTutorialSkipping) { }'
 
             return { success: false, error: 'Tutorial step skipping is disabled'
             }
-';
+';'
 
         const currentTutorial = this.tutorialState.currentTutorial;
-        if(!currentTutorial) { }'
+        if (!currentTutorial) { }'
 
             return { success: false, error: 'No active tutorial'
             }
@@ -502,20 +495,19 @@ export class AccessibilityTutorial {
             const currentStepIndex = this.tutorialState.currentStep,
 
             // Move to next step
-            if(currentStepIndex < tutorial.steps.length - 1) {
+            if (currentStepIndex < tutorial.steps.length - 1) {
                 this.tutorialState.currentStep = currentStepIndex + 1 }
                 console.log(`Skipped, tutorial step ${currentStepIndex} in ${currentTutorial}`});
                 
                 return { success: true,
                     skippedStep: currentStepIndex,
     currentStep: this.tutorialState.currentStep };
-                    tutorialId: currentTutorial 
-    } else {  // Tutorial completed }
+                    tutorialId: currentTutorial; else {  // Tutorial completed }
                 return await this.completeTutorial(currentTutorial); }'
 
             } catch (error) {
             console.error('AccessibilityTutorial: Skip step, error:', error),
-            return { success: false };
+            return { success: false,;
                 error: (error, as Error).message }
             }
     }
@@ -523,8 +515,8 @@ export class AccessibilityTutorial {
     /**
      * Complete current tutorial
      */'
-    async completeTutorial(tutorialId: string): Promise<{ success: boolean, error?: string, tutorialId?: string, completionTime?: number, title?: string, stepsCompleted?: number }> { const tutorial = this.tutorialContent[tutorialId as keyof TutorialContent],
-        if(!tutorial) { }'
+    async completeTutorial(tutorialId: string): Promise<{ success: boolean, error?: string, tutorialId?: string, completionTime?: number, title?: string, stepsCompleted?: number;> { const tutorial = this.tutorialContent[tutorialId as keyof TutorialContent],
+        if (!tutorial) { }'
 
             return { success: false, error: 'Tutorial not found'
             }
@@ -537,7 +529,7 @@ export class AccessibilityTutorial {
             this.performance.tutorialCompletionTimes.set(tutorialId, completionTime),
 
             // Clear current tutorial state
-            if(this.tutorialState.currentTutorial === tutorialId) {
+            if (this.tutorialState.currentTutorial === tutorialId) {
                 this.tutorialState.currentTutorial = null }
                 this.tutorialState.currentStep = 0; }
             }
@@ -568,7 +560,7 @@ export class AccessibilityTutorial {
             this.performance.tutorialStartTimes.delete(tutorialId),
             this.performance.tutorialCompletionTimes.delete(tutorialId),
             
-            if(this.tutorialState.currentTutorial === tutorialId) {
+            if (this.tutorialState.currentTutorial === tutorialId) {
             
                 this.tutorialState.currentTutorial = null }
                 this.tutorialState.currentStep = 0; }
@@ -607,23 +599,23 @@ export class AccessibilityTutorial {
             { id: 'basic-navigation', title: '基本的なナビゲーション', type: 'practice', duration: 60  },]'
             { id: 'game-controls', title: 'ゲーム操作', type: 'practice', duration: 90  }]
         ];
-';
+';'
 
-        this.tutorialContent.screenReader.steps = [';
+        this.tutorialContent.screenReader.steps = [';'
             { id: 'setup', title: 'スクリーンリーダー設定', type: 'configuration', duration: 60  },''
             { id: 'navigation-modes', title: 'ナビゲーションモード', type: 'explanation', duration: 90  },]'
             { id: 'game-interaction', title: 'ゲームとの連携', type: 'practice', duration: 90  }]
         ];
-';
+';'
 
-        this.tutorialContent.visualAdjustments.steps = [';
+        this.tutorialContent.visualAdjustments.steps = [';'
             { id: 'contrast-settings', title: 'コントラスト調整', type: 'configuration', duration: 45  },''
             { id: 'text-scaling', title: '文字サイズ調整', type: 'configuration', duration: 30  },]'
             { id: 'color-customization', title: '色彩調整', type: 'configuration', duration: 75  }]
         ];
-';
+';'
 
-        this.tutorialContent.audioSettings.steps = [';
+        this.tutorialContent.audioSettings.steps = [';'
             { id: 'volume-control', title: '音量調整', type: 'configuration', duration: 30  },''
             { id: 'audio-cues', title: '音声ガイド', type: 'configuration', duration: 60  },]'
             { id: 'accessibility-sounds', title: 'アクセシビリティ音響', type: 'configuration', duration: 30  }]
@@ -633,8 +625,8 @@ export class AccessibilityTutorial {
     /**
      * Initialize delivery settings based on user preferences'
      */''
-    private initializeDeliverySettings()';
-        if(this.config.tutorialSpeed === 'slow') {
+    private initializeDeliverySettings()';'
+        if (this.config.tutorialSpeed === 'slow') {
             this.deliverySettings.pauseOnInteraction = true }
 
             this.deliverySettings.repeatInstructions = true;' }'
@@ -646,8 +638,8 @@ export class AccessibilityTutorial {
     /**
      * Setup event listeners for tutorial interactions'
      */''
-    private setupTutorialEventListeners()';
-        if(typeof, document !== 'undefined') {', ' }
+    private setupTutorialEventListeners()';'
+        if (typeof, document !== 'undefined') {', ' }
 
             document.addEventListener('keydown', (event) => {  }
                 this.handleTutorialKeyboardEvent(event); }
@@ -668,13 +660,13 @@ export class AccessibilityTutorial {
             timestamp: Date.now(),
             tutorial: this.tutorialState.currentTutorial,
     step: this.tutorialState.currentStep  });
-';
+';'
         // Handle tutorial-specific keyboard shortcuts
         switch(event.key) {
 
-            case 'F1':',
+            case 'F1':','
                 event.preventDefault(),
-                this.showTutorialHelp()',
+                this.showTutorialHelp()','
             case 'Escape':),
                 if (event.ctrlKey) {
                     event.preventDefault() }
@@ -725,11 +717,11 @@ export class AccessibilityTutorial {
             // Apply, step-specific, delivery method, let deliveryResult,
             switch(step.type) {
 
-                case 'explanation':',
+                case 'explanation':','
                     deliveryResult = await, this.deliverExplanationStep(step),
 
                     break,
-                case 'practice':',
+                case 'practice':','
                     deliveryResult = await, this.deliverPracticeStep(step};
 
                     break''
@@ -772,7 +764,7 @@ export class AccessibilityTutorial {
      */'
     private async adaptTutorialContent(tutorialId: string, userProfile: UserProfile): Promise<void> { const tutorial = this.tutorialContent[tutorialId as keyof TutorialContent],
         if(!tutorial || !userProfile) return,
-',
+','
         // Adjust tutorial complexity based on user experience
         const experience = userProfile.experience || 'beginner',
         if(experience === 'expert' {'
@@ -788,7 +780,7 @@ export class AccessibilityTutorial {
         }
 ;
         // Adapt based on accessibility needs
-        if(userProfile.disabilities) {
+        if (userProfile.disabilities) {
 
             if(userProfile.disabilities.includes('visual)' {'
                 this.deliverySettings.enableAnimations = false }
@@ -806,7 +798,7 @@ export class AccessibilityTutorial {
         
         return { feature,
             mode };
-            demonstrated: true }
+            demonstrated: true;
             duration: Math.random()) * 1000 + 500 // Simulated demonstration time
         }
 
@@ -826,7 +818,7 @@ export class AccessibilityTutorial {
             return { name: exercise.name,
                 success,
                 attempts,
-                time: exerciseTime };
+                time: exerciseTime,;
                 score: success ? Math.floor(Math.random() * 30) + 70 : Math.floor(Math.random() * 50) + 20 
             } catch (error) {
             console.error('Practice exercise error:', error),
@@ -843,7 +835,7 @@ export class AccessibilityTutorial {
      * Generate practice feedback
      */'
     private generatePracticeFeedback(exerciseResult: ExerciseResult): PracticeFeedback { ''
-        if(exerciseResult.success) {
+        if (exerciseResult.success) {
     
 }
 
@@ -860,9 +852,9 @@ export class AccessibilityTutorial {
             }
                 message: `「${exerciseResult.name}」をもう一度試してみましょう。`;
                 score: exerciseResult.score,
-                suggestions: [';
+                suggestions: [';'
                     'ゆっくりと操作してみてください',
-                    'キーボードショートカットを活用してください',]';
+                    'キーボードショートカットを活用してください',]';'
                     'ヘルプ機能を参照してください'];
                 ];
             }
@@ -878,7 +870,7 @@ export class AccessibilityTutorial {
         let remainingTime = 0,
 
         tutorial.steps.forEach((step, index) => { 
-            if(!completedSteps.has(index) { }
+            if (!completedSteps.has(index) { }
                 remainingTime += step.duration || 60; }
 });
 
@@ -898,10 +890,10 @@ export class AccessibilityTutorial {
      */'
     private async waitForUserInteraction(): Promise<void> { return new Promise((resolve) => { ''
             const handleInteraction = () => {''
-                document.removeEventListener('keydown', handleInteraction',
-                document.removeEventListener('click', handleInteraction',
-                resolve()',
-            document.addEventListener('keydown', handleInteraction',
+                document.removeEventListener('keydown', handleInteraction','
+                document.removeEventListener('click', handleInteraction','
+                resolve()','
+            document.addEventListener('keydown', handleInteraction','
             document.addEventListener('click', handleInteraction),
 
             // Auto-resolve after 5 seconds if no interaction }
@@ -912,24 +904,23 @@ export class AccessibilityTutorial {
     // Step delivery methods
     private async deliverExplanationStep(step: TutorialStep): Promise<any> { // Deliver explanation content' }'
 
-        return { type: 'explanation', delivered: true  }
+        return { type: 'explanation', delivered: true,
 
     private async deliverPracticeStep(step: TutorialStep): Promise<any> { // Deliver practice content' }'
 
-        return { type: 'practice', delivered: true  }
+        return { type: 'practice', delivered: true,
 
     private async deliverConfigurationStep(step: TutorialStep): Promise<any> { // Deliver configuration content' }'
 
-        return { type: 'configuration', delivered: true  }
+        return { type: 'configuration', delivered: true,
 
     private async deliverGenericStep(step: TutorialStep): Promise<any> { // Deliver generic content' }'
 
-        return { type: 'generic', delivered: true  }
-';
+        return { type: 'generic', delivered: true,
+','
     // Tutorial control methods
-    private showTutorialHelp()';
-        console.log('Tutorial, help requested);
-    }
+    private showTutorialHelp()','
+        console.log('Tutorial, help requested) }'
 
     private exitCurrentTutorial(): void { if (this.tutorialState.currentTutorial) { }
             console.log(`Exiting, tutorial: ${this.tutorialState.currentTutorial}`});
@@ -942,7 +933,7 @@ export class AccessibilityTutorial {
      * Update configuration
      */
     updateConfig(newConfig: Partial<TutorialConfig>): void { this.config = {
-            ...this.config,
+            ...this.config;
             ...newConfig,
 
         // Re-initialize delivery settings if needed
@@ -991,12 +982,12 @@ export class AccessibilityTutorial {
         this.performance.tutorialCompletionTimes.clear(),
         this.performance.stepTransitionTimes = [],
         this.performance.practiceSessionTimes = [],
-        this.performance.userEngagementMetrics.clear()',
-        if(typeof, document !== 'undefined') {', ' }
+        this.performance.userEngagementMetrics.clear()','
+        if (typeof, document !== 'undefined') {', ' }
 
-            document.removeEventListener('keydown', this.handleTutorialKeyboardEvent'; }
+            document.removeEventListener('keydown', this.handleTutorialKeyboardEvent'; }'
         }
-';
+';'
 
         this.initialized = false;
-        console.log('AccessibilityTutorial: Destroyed' }'}
+        console.log('AccessibilityTutorial: Destroyed' }'}'

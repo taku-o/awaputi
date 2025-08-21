@@ -3,22 +3,22 @@ import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
 interface SectionChangeData { oldSection: string,
-    newSection: string,
-    buttonIndex: number  }
+    newSection: string;
+    buttonIndex: number;
 
 /**
  * ヘルプセクション選択コンポーネント
  * ヘルプのセクション切り替えUI
  */
 export class HelpSectionSelector {
-    private gameEngine: GameEngine,
-    private eventBus: ComponentEventBus,
-    private state: SceneState,
-    ',
+    private gameEngine: GameEngine;
+    private eventBus: ComponentEventBus;
+    private state: SceneState;
+    ','
     // セクション設定
     private readonly, sections: string[] = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'],
     private readonly sectionLabels: string[] = ['概要', 'カテゴリ', '進捗', '報酬', 'ヒント', 'FAQ'],
-    private currentSection: string = 'overview',
+    private currentSection: string = 'overview';
     // UI設定
     private readonly, buttonHeight: number = 40,
     private readonly buttonSpacing: number = 10,
@@ -26,21 +26,19 @@ export class HelpSectionSelector {
     
     // アニメーション設定
     private readonly animationDuration: number = 200,
-    private animationStartTime: number = 0,
-    private animatingSection: string | null = null,
+    private animationStartTime: number = 0;
+    private animatingSection: string | null = null;
     // ホバー状態
-    private hoveredButton: number = -1,
-    private focusedButton: number = 0,
+    private hoveredButton: number = -1;
+    private focusedButton: number = 0;
     // アクセシビリティ設定
     private, accessibilitySettings: any,
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
     
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.state = state,
-        
-    
-     }
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.state = state
+}
         // アクセシビリティ設定 }
         this.accessibilitySettings = state.accessibilitySettings || {}
     
@@ -89,7 +87,7 @@ export class HelpSectionSelector {
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA',
         context.fillRect(x, y, width, height),
-        ',
+        ','
         // 下部の境界線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6',
         context.lineWidth = 1,
@@ -118,14 +116,14 @@ export class HelpSectionSelector {
         section: string );
         label: string,
     index: number;
-    ): void { const isActive = this.currentSection === section,
-        const isHovered = this.hoveredButton === index,
-        const isFocused = this.focusedButton === index,
-        const isAnimating = this.animatingSection === section,
+    ): void { const isActive = this.currentSection === section;
+        const isHovered = this.hoveredButton === index;
+        const isFocused = this.focusedButton === index;
+        const isAnimating = this.animatingSection === section;
         
         // アニメーション効果の計算
         let animationProgress = 1,
-        if(isAnimating && this.animationStartTime > 0) {
+        if (isAnimating && this.animationStartTime > 0) {
             const elapsed = performance.now() - this.animationStartTime,
             animationProgress = Math.min(elapsed / this.animationDuration, 1),
             
@@ -137,27 +135,27 @@ export class HelpSectionSelector {
         // ボタンの色を決定
         let backgroundColor: string, textColor: string, borderColor: string,
 
-        if(isActive) {
+        if (isActive) {
 
-            backgroundColor = this.interpolateColor('#E3F2FD', '#1976D2', animationProgress',
+            backgroundColor = this.interpolateColor('#E3F2FD', '#1976D2', animationProgress','
             textColor = '#FFFFFF' }
 
             borderColor = '#1565C0'; }
 
-        } else if(isHovered || isFocused) { ''
+        } else if (isHovered || isFocused) { ''
             backgroundColor = '#E9ECEF',
             textColor = '#495057',
             borderColor = '#ADB5BD' }
 
         } else {
             backgroundColor = '#FFFFFF',
-            textColor = '#6C757D',' }
+            textColor = '#6C757D',' }'
 
             borderColor = '#DEE2E6'; }
         }
-        ';
+        ';'
         // 高コントラストモードの調整
-        if(this.accessibilitySettings.highContrast) {
+        if (this.accessibilitySettings.highContrast) {
 
             backgroundColor = isActive ? '#000000' : '#FFFFFF',
             textColor = isActive ? '#FFFFFF' : '#000000' }
@@ -176,7 +174,7 @@ export class HelpSectionSelector {
         this.roundRect(context, x, y, width, height, this.cornerRadius);
         context.stroke();
         // フォーカス時の追加視覚効果
-        if(isFocused && !isActive) {
+        if (isFocused && !isActive) {
 
             context.strokeStyle = '#007BFF',
             context.lineWidth = 2,
@@ -193,9 +191,9 @@ export class HelpSectionSelector {
         context.font = this.accessibilitySettings.largeText ? '14px bold sans-serif' : '12px bold sans-serif';
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        ';
+        ';'
         // テキストのシャドウ効果（アクティブ時）
-        if(isActive && !this.accessibilitySettings.highContrast) {
+        if (isActive && !this.accessibilitySettings.highContrast) {
 
             context.shadowColor = 'rgba(0, 0, 0, 0.3)',
             context.shadowBlur = 2,
@@ -204,7 +202,7 @@ export class HelpSectionSelector {
         }
 
         context.fillText(label, x + width / 2, y + height / 2);
-        ';
+        ';'
         // シャドウをリセット
         context.shadowColor = 'transparent';
         context.shadowBlur = 0;
@@ -227,7 +225,7 @@ export class HelpSectionSelector {
         const gradient = context.createLinearGradient(x, y, x + width, y),
         gradient.addColorStop(0, '#1976D2'),
         gradient.addColorStop(0.5, '#2196F3'),
-        gradient.addColorStop(1, '#1976D2),
+        gradient.addColorStop(1, '#1976D2),'
         
         context.fillStyle = gradient,
         this.roundRect(context, x + 5, y, width - 10, height, height / 2),
@@ -247,14 +245,14 @@ export class HelpSectionSelector {
         
         // セレクター範囲内かチェック
         const selectorHeight = this.buttonHeight + 20,
-        if(relativeY < 10 || relativeY > 10 + this.buttonHeight) {
+        if (relativeY < 10 || relativeY > 10 + this.buttonHeight) {
     
 }
             return false;
         
         // クリックされたボタンを特定
         const buttonIndex = this.getButtonIndex(relativeX, containerWidth);
-        if(buttonIndex !== -1) {
+        if (buttonIndex !== -1) {
             this.selectSection(this.sections[buttonIndex], buttonIndex) }
             return true;
         
@@ -273,7 +271,7 @@ export class HelpSectionSelector {
         const relativeY = y - containerY,
         
         // セレクター範囲内かチェック
-        if(relativeY >= 10 && relativeY <= 10 + this.buttonHeight) {
+        if (relativeY >= 10 && relativeY <= 10 + this.buttonHeight) {
     
 }
             this.hoveredButton = this.getButtonIndex(relativeX, containerWidth); }
@@ -288,24 +286,24 @@ export class HelpSectionSelector {
     handleKeyboard(event: KeyboardEvent): boolean { ''
         switch(event.key) {
 
-            case 'ArrowLeft':',
+            case 'ArrowLeft':';'
                 event.preventDefault(),
-                this.focusedButton = Math.max(0, this.focusedButton - 1),
+                this.focusedButton = Math.max(0; this.focusedButton - 1),
                 return true,
 
-            case 'ArrowRight':',
+            case 'ArrowRight':','
                 event.preventDefault(),
-                this.focusedButton = Math.min(this.sections.length - 1, this.focusedButton + 1),
+                this.focusedButton = Math.min(this.sections.length - 1; this.focusedButton + 1),
                 return true,
 
-            case 'Enter':',
-            case ', ':',
+            case 'Enter':','
+            case ', ':','
                 event.preventDefault(),
                 this.selectSection(this.sections[this.focusedButton], this.focusedButton),
                 return true,
 
-            case 'Home':',
-                event.preventDefault()',
+            case 'Home':','
+                event.preventDefault()','
             case 'End':),
                 event.preventDefault(),
                 this.focusedButton = this.sections.length - 1 }
@@ -313,7 +311,7 @@ export class HelpSectionSelector {
         
         // 数字キーでのダイレクト選択
         const number = parseInt(event.key);
-        if(number >= 1 && number <= this.sections.length) {
+        if (number >= 1 && number <= this.sections.length) {
             event.preventDefault(),
             this.selectSection(this.sections[number - 1], number - 1) }
             return true;
@@ -350,8 +348,8 @@ export class HelpSectionSelector {
      */
     private selectSection(section: string, buttonIndex: number): void { if (this.currentSection !== section) {
             const oldSection = this.currentSection,
-            this.currentSection = section,
-            this.focusedButton = buttonIndex,
+            this.currentSection = section;
+            this.focusedButton = buttonIndex;
             // アニメーション開始
             this.startSectionAnimation(section),
             
@@ -371,7 +369,7 @@ export class HelpSectionSelector {
      * @param section - アニメーション対象セクション
      */
     private startSectionAnimation(section: string): void { if (!this.accessibilitySettings.reducedMotion) {
-            this.animatingSection = section,
+            this.animatingSection = section;
             this.animationStartTime = performance.now() }
     }
     
@@ -399,7 +397,7 @@ export class HelpSectionSelector {
      * @param hex - HEX色文字列
      * @returns RGB値オブジェクト
      */
-    private hexToRgb(hex: string): { r: number, g: number,, b: number } | null {
+    private hexToRgb(hex: string): { r: number, g: number,, b: number; | null {
         const result = /^#? ([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? { : undefined
             r: parseInt(result[1], 16),
@@ -432,7 +430,7 @@ export class HelpSectionSelector {
      * 現在のセクションを設定
      * @param section - セクションID
      */
-    setCurrentSection(section: string): void { if(this.sections.includes(section) {
+    setCurrentSection(section: string): void { if (this.sections.includes(section) {
             const buttonIndex = this.sections.indexOf(section),
             this.selectSection(section, buttonIndex) }
     }
@@ -447,7 +445,7 @@ export class HelpSectionSelector {
      * 利用可能なセクション一覧を取得
      * @returns セクション情報の配列
      */
-    getAvailableSections(): Array<{ id: string, label: string,, active: boolean }> { return this.sections.map((section, index) => ({
+    getAvailableSections(): Array<{ id: string, label: string,, active: boolean,> { return this.sections.map((section, index) => ({
             id: section,
             label: this.sectionLabels[index],
     active: section === this.currentSection  }

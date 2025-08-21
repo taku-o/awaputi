@@ -16,24 +16,24 @@ interface GameEngine { // Add specific properties/methods as needed }
  * Animation configuration interface
  */
 interface AnimationConfig { fadeSpeed: number,
-    scrollSpeed: number,
-    hoverScale: number,
-    selectScale: number,
-    entryHeight: number,
-    transitionDuration: number,
-    easingFunction: string,
-    maxScrollVelocity: number,
-    scrollDamping: number  }
+    scrollSpeed: number;
+    hoverScale: number;
+    selectScale: number;
+    entryHeight: number;
+    transitionDuration: number;
+    easingFunction: string;
+    maxScrollVelocity: number;
+    scrollDamping: number;
 
 /**
  * Entry animation interface
  */
 interface EntryAnimation { startTime: number,
-    duration: number,
-    startValue: number,
-    endValue: number,
-    currentValue: number,
-    easing: string,
+    duration: number;
+    startValue: number;
+    endValue: number;
+    currentValue: number;
+    easing: string;
     onComplete: (() => void) | null 
     }
 
@@ -41,90 +41,90 @@ interface EntryAnimation { startTime: number,
  * Hover animation interface
  */
 interface HoverAnimation { startTime: number,
-    duration: number,
-    startScale: number,
-    targetScale: number,
-    currentScale: number,
-    startOpacity: number,
-    targetOpacity: number,
-    currentOpacity: number,
-    persistent: boolean }
+    duration: number;
+    startScale: number;
+    targetScale: number;
+    currentScale: number;
+    startOpacity: number;
+    targetOpacity: number;
+    currentOpacity: number;
+    persistent: boolean;
 
 /**
  * Select animation interface
  */
 interface SelectAnimation { startTime: number,
-    duration: number,
-    maxIntensity: number,
-    currentIntensity: number,
-    type: string }
+    duration: number;
+    maxIntensity: number;
+    currentIntensity: number;
+    type: string;
 
 /**
  * Animation state interface
  */
 interface AnimationState { scrollOffset: number,
-    targetScrollOffset: number,
-    scrollVelocity: number,
-    isScrolling: boolean,
-    fadeOpacity: number,
-    targetFadeOpacity: number,
-    entryAnimations: Map<string, EntryAnimation>,
-    hoverAnimations: Map<string, HoverAnimation>,
+    targetScrollOffset: number;
+    scrollVelocity: number;
+    isScrolling: boolean;
+    fadeOpacity: number;
+    targetFadeOpacity: number;
+    entryAnimations: Map<string, EntryAnimation>;
+    hoverAnimations: Map<string, HoverAnimation>;
     selectAnimations: Map<string, SelectAnimation> }
 
 /**
  * Interaction state interface
  */
 interface InteractionState { hoveredEntry: any | null,
-    hoveredButton: any | null,
-    selectedEntry: any | null,
-    lastHoverTime: number,
-    lastClickTime: number,
-    hoverDelay: number  }
+    hoveredButton: any | null;
+    selectedEntry: any | null;
+    lastHoverTime: number;
+    lastClickTime: number;
+    hoverDelay: number;
 
 /**
  * Scroll configuration interface
  */
 interface ScrollConfig { wheelSensitivity: number,
-    touchSensitivity: number }
-    scrollBounds: { min: number,, max: number },
-    snapToEntry: boolean;
+    touchSensitivity: number;
+    scrollBounds: { min: number,, max: number,,
+    snapToEntry: boolean,
     smoothScrolling: boolean,
-    momentumScrolling: boolean;
+    momentumScrolling: boolean,
 }
 
 /**
  * Performance metrics interface
  */
 interface PerformanceMetrics { frameCount: number,
-    averageFPS: number,
-    lastFrameTime: number,
-    animationLoad: number  }
+    averageFPS: number;
+    lastFrameTime: number;
+    animationLoad: number;
 
 /**
  * Scroll options interface
  */
-interface ScrollOptions { isTouchEvent?: boolean }
+interface ScrollOptions { isTouchEvent?: boolean;
 
 /**
  * Hover options interface
  */
-interface HoverOptions { targetOpacity?: number }
+interface HoverOptions { targetOpacity?: number;
 
 /**
  * Select animation options interface
  */
 interface SelectAnimationOptions { duration?: number,
-    intensity?: number,
-    type?: string }
+    intensity?: number;
+    type?: string;
 
 /**
  * Entry animation config interface
  */
 interface EntryAnimationConfig { duration?: number,
-    startValue?: number,
-    endValue?: number,
-    easing?: string,
+    startValue?: number;
+    endValue?: number;
+    easing?: string;
     onComplete?: () => void }'
 }
 
@@ -135,21 +135,21 @@ interface PerformanceInfo extends PerformanceMetrics { activeAnimations: {
         entries: number,
         hovers: number,
         selects: number,
-    total: number };
-    scrolling: boolean;
+    total: number,;
+    scrolling: boolean,
 }
 
 /**
  * Update config interface
  */
 interface UpdateConfig { animationConfig?: Partial<AnimationConfig>,
-    scrollConfig?: Partial<ScrollConfig> }
+    scrollConfig?: Partial<ScrollConfig>;
 
 type EasingType = 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeOutBounce' | 'easeOutQuart';
 
 export class LeaderboardAnimationController {
-    private gameEngine: GameEngine,
-    private errorHandler: ErrorHandler,
+    private gameEngine: GameEngine;
+    private errorHandler: ErrorHandler;
     // アニメーション設定
     private, animationConfig: AnimationConfig = {
         fadeSpeed: 0.1,
@@ -182,9 +182,9 @@ export class LeaderboardAnimationController {
     // スクロール制御
     private scrollConfig: ScrollConfig = { wheelSensitivity: 1.0
        , touchSensitivity: 1.5 }
-        scrollBounds: { min: 0, max: 0  },
+        scrollBounds: { min: 0, max: 0  };
         snapToEntry: false;
-        smoothScrolling: true,
+        smoothScrolling: true;
     momentumScrolling: true;
     },
     
@@ -198,7 +198,7 @@ export class LeaderboardAnimationController {
     animationLoad: 0 };
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler() }
         this.initialize(); }
     }
@@ -208,8 +208,8 @@ export class LeaderboardAnimationController {
      */
     initialize(): void { try {
             // アニメーションループを開始
-            this.startAnimationLoop()',
-            console.log('[LeaderboardAnimationController] Animation, controller initialized'),' }
+            this.startAnimationLoop()','
+            console.log('[LeaderboardAnimationController] Animation, controller initialized'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.initialize' }'
@@ -224,7 +224,7 @@ export class LeaderboardAnimationController {
         const animate = (currentTime: number) => {  this.updateAnimations(currentTime),
             this.updatePerformanceMetrics(currentTime),
             
-            if(this.isAnimating || this.hasActiveAnimations() { }
+            if (this.isAnimating || this.hasActiveAnimations() { }
                 this.animationFrame = requestAnimationFrame(animate); }
             } else { this.animationFrame = null }
         };
@@ -236,8 +236,8 @@ export class LeaderboardAnimationController {
     /**
      * アニメーションループを停止
      */
-    stopAnimationLoop(): void { this.isAnimating = false,
-        if(this.animationFrame) {
+    stopAnimationLoop(): void { this.isAnimating = false;
+        if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame) }
             this.animationFrame = null; }
 }
@@ -325,7 +325,7 @@ export class LeaderboardAnimationController {
                 easedProgress,
             
             // 完了チェック
-            if(progress >= 1) {
+            if (progress >= 1) {
                 animation.currentValue = animation.endValue,
                 if (animation.onComplete) {
             }
@@ -343,7 +343,7 @@ export class LeaderboardAnimationController {
             const elapsed = currentTime - animation.startTime,
             const progress = Math.min(elapsed / animation.duration, 1),
 
-            const easedProgress = this.applyEasing(progress, 'easeOutQuart),
+            const easedProgress = this.applyEasing(progress, 'easeOutQuart),'
             
             // スケール値を更新
             animation.currentScale = this.interpolate(
@@ -357,7 +357,7 @@ export class LeaderboardAnimationController {
                 animation.targetOpacity),
                 easedProgress,
             
-            if(progress >= 1) {
+            if (progress >= 1) {
             
                 animation.currentScale = animation.targetScale,
                 animation.currentOpacity = animation.targetOpacity,
@@ -378,7 +378,7 @@ export class LeaderboardAnimationController {
             const elapsed = currentTime - animation.startTime,
             const progress = Math.min(elapsed / animation.duration, 1),
 
-            const easedProgress = this.applyEasing(progress, 'easeOutBounce),
+            const easedProgress = this.applyEasing(progress, 'easeOutBounce),'
             
             // 選択効果を更新
             animation.currentIntensity = this.interpolate(
@@ -386,7 +386,7 @@ export class LeaderboardAnimationController {
                 animation.maxIntensity),
                 easedProgress,
             
-            if(progress >= 1) {
+            if (progress >= 1) {
             
                 animation.currentIntensity = animation.maxIntensity }
                 this.animationState.selectAnimations.delete(elementId); }
@@ -405,7 +405,7 @@ export class LeaderboardAnimationController {
             
             const scrollAmount = deltaY * sensitivity,
             
-            if(this.scrollConfig.smoothScrolling) {
+            if (this.scrollConfig.smoothScrolling) {
     
 }
                 this.animationState.targetScrollOffset += scrollAmount; }
@@ -441,13 +441,13 @@ export class LeaderboardAnimationController {
      * @param {string|Object} target - ホバー対象
      * @param {Object} options - オプション'
      */''
-    startHover(target: string | { id: string }, options: HoverOptions = { )): void {'
+    startHover(target: string | { id: string;, options: HoverOptions = { )): void {'
         try {'
             const targetId = typeof target === 'string' ? target: target.id,
             const currentTime = Date.now(),
             
             // ホバー遅延チェック
-            if(currentTime - this.interactionState.lastHoverTime < this.interactionState.hoverDelay) {
+            if (currentTime - this.interactionState.lastHoverTime < this.interactionState.hoverDelay) {
     
 }
                 return; }
@@ -487,7 +487,7 @@ export class LeaderboardAnimationController {
             
             // ホバーアニメーション終了
             const existingAnimation = this.animationState.hoverAnimations.get(targetId),
-            if(existingAnimation) {
+            if (existingAnimation) {
                 this.animationState.hoverAnimations.set(targetId, {
                     startTime: currentTime,
                     duration: this.animationConfig.transitionDuration,
@@ -511,10 +511,10 @@ export class LeaderboardAnimationController {
      * @param {string|Object} target - 選択対象
      * @param {Object} options - オプション'
      */''
-    startSelectAnimation(target: string | { id: string }, options: SelectAnimationOptions = { )): void {'
+    startSelectAnimation(target: string | { id: string;, options: SelectAnimationOptions = { )): void {'
         try {'
             const targetId = typeof target === 'string' ? target: target.id,
-            const currentTime = Date.now()',
+            const currentTime = Date.now()','
                 type: options.type || 'pulse'),
             this.startAnimationLoop(),
 
@@ -573,7 +573,7 @@ export class LeaderboardAnimationController {
             this.scrollConfig.scrollBounds.min),
             Math.min(this.scrollConfig.scrollBounds.max, position),
         
-        if(animated) {
+        if (animated) {
         
             this.animationState.targetScrollOffset = clampedPosition }
             this.startAnimationLoop(); }
@@ -626,21 +626,21 @@ export class LeaderboardAnimationController {
             case 'easeInQuad':,
                 return progress * progress,
 
-            case 'easeOutQuad':',
-                return 1 - (1 - progress) * (1 - progress'),
+            case 'easeOutQuad':','
+                return 1 - (1 - progress) * (1 - progress'),'
 
-            case 'easeInOutQuad': return progress < 0.5 ? undefined : undefined',
-                    2 * progress * progress: 1 - 2 * (1 - progress) * (1 - progress'),
+            case 'easeInOutQuad': return progress < 0.5 ? undefined : undefined','
+                    2 * progress * progress: 1 - 2 * (1 - progress) * (1 - progress'),'
 
             case 'easeInCubic':,
                 return progress * progress * progress,
 
-            case 'easeOutCubic':',
+            case 'easeOutCubic':','
                 return 1 - Math.pow(1 - progress, 3),
 
             case 'easeInOutCubic':,
-                return progress < 0.5 ? undefined : undefined',
-                    4 * progress * progress * progress : ',
+                return progress < 0.5 ? undefined : undefined','
+                    4 * progress * progress * progress : ','
                     1 - Math.pow(-2 * progress + 2, 3) / 2,
 
             case 'easeOutBounce':,
@@ -651,7 +651,7 @@ export class LeaderboardAnimationController {
         }
                     return n1 * progress * progress; else if (progress < 2 / d1) { return n1 * (progress -= 1.5 / d1) * progress + 0.75 } else if (progress < 2.5 / d1) { return n1 * (progress -= 2.25 / d1) * progress + 0.9375, else { }'
 
-                    return n1 * (progress -= 2.625 / d1') * progress + 0.984375;
+                    return n1 * (progress -= 2.625 / d1') * progress + 0.984375;'
 
             case 'easeOutQuart':
                 return 1 - Math.pow(1 - progress, 4);
@@ -712,12 +712,12 @@ export class LeaderboardAnimationController {
      */
     updateConfig(newConfig: UpdateConfig): void { if (newConfig.animationConfig) {
             Object.assign(this.animationConfig, newConfig.animationConfig) }
-        if(newConfig.scrollConfig) { }
+        if (newConfig.scrollConfig) { }
 
             Object.assign(this.scrollConfig, newConfig.scrollConfig); }
         }
 
-        console.log('[LeaderboardAnimationController] Configuration, updated);
+        console.log('[LeaderboardAnimationController] Configuration, updated);'
     }
     
     /**
@@ -726,14 +726,14 @@ export class LeaderboardAnimationController {
     clearAllAnimations(): void { this.animationState.entryAnimations.clear(),
 
         this.animationState.hoverAnimations.clear(),
-        this.animationState.selectAnimations.clear()',
+        this.animationState.selectAnimations.clear()','
         console.log('[LeaderboardAnimationController] All, animations cleared') }'
     
     /**
      * アニメーションコントローラーを破棄
      */'
     dispose(): void { this.stopAnimationLoop(),
-        this.clearAllAnimations()',
+        this.clearAllAnimations()','
         console.log('[LeaderboardAnimationController] Animation, controller disposed') }
 
-    }'}
+    }'}'

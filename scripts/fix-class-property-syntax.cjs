@@ -1,164 +1,196 @@
-#!/usr/bin/env node
-
 const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
 
-console.log('🔧 Fixing class property syntax issues...');
-
-// クラスプロパティの構文エラーを修正する
+// TypeScriptクラスプロパティの構文を修正
 function fixClassPropertySyntax(content) {
-    let fixed = content;
-    let modifications = 0;
+  const lines = content.split('\n');
+  let inClass = false;
+  let braceDepth = 0;
+  let modified = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
     
-    // Pattern 1: Fix class property declarations with incorrect syntax
-    // private propertyName: type; -> private propertyName: type;
-    // private propertyName: type, -> private propertyName: type;
-    const pattern1 = /(private|public|protected)\s+(\w+):\s*([^;,\n]+),(\s*\n)/g;
-    fixed = fixed.replace(pattern1, (match, visibility, prop, type, newline) => {
-        modifications++;
-        return `${visibility} ${prop}: ${type};${newline}`;
-    });
+    // クラス定義の開始を検出
+    if (trimmed.match(/^(export\s+)?(abstract\s+)?class\s+\w+/)) {
+      inClass = true;
+      braceDepth = 0;
+    }
     
-    // Pattern 2: Fix constructor parameter syntax  
-    // constructor(param: type,) -> constructor(param: type)
-    const pattern2 = /(constructor\s*\([^)]*),(\s*\))/g;
-    fixed = fixed.replace(pattern2, (match, before, after) => {
-        modifications++;
-        return before + after;
-    });
-    
-    // Pattern 3: Fix method parameter syntax
-    // method(param: type,) -> method(param: type)
-    const pattern3 = /(\w+\s*\([^)]*),(\s*\))/g;
-    fixed = fixed.replace(pattern3, (match, before, after) => {
-        modifications++;
-        return before + after;
-    });
-    
-    // Pattern 4: Fix missing semicolons in object method calls
-    // someMethod() -> someMethod();
-    const pattern4 = /(\s+this\.\w+\([^)]*\))(\s*\n\s*[}\w])/g;
-    fixed = fixed.replace(pattern4, (match, method, after) => {
-        if (!method.endsWith(';')) {
-            modifications++;
-            return method + ';' + after;
+    // ブレースの深さを追跡
+    for (const char of line) {
+      if (char === '{') {
+        braceDepth++;
+      } else if (char === '}') {
+        braceDepth--;
+        if (braceDepth === 0) {
+          inClass = false;
         }
-        return match;
-    });
+      }
+    }
     
-    // Pattern 5: Fix object literal closing brackets
-    // {prop: value}} -> {prop: value}
-    const pattern5 = /(\{[^}]+)\}(\s*\})/g;
-    fixed = fixed.replace(pattern5, (match, before, after) => {
-        modifications++;
-        return before + after;
-    });
-    
-    // Pattern 6: Fix array/object access with semicolons
-    // array[index]; in return context should be array[index],
-    const pattern6 = /(return\s*\{[^}]*?\w+\[[^\]]+\]);(\s*[,\n}])/g;
-    fixed = fixed.replace(pattern6, (match, before, after) => {
-        modifications++;
-        return before.replace(');', ',') + after;
-    });
-    
-    return { content: fixed, modifications };
+    // クラス内のプロパティ宣言を修正
+    if (inClass && braceDepth > 0) {
+      // プロパティ宣言パターン: private/public/protected propertyName: type,
+      const propertyPattern = /^(\s*)(private|public|protected|readonly|static)*\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:\s*(.+),\s*$/;
+      const match = line.match(propertyPattern);
+      
+      if (match) {
+        // 最後のカンマをセミコロンに変更
+        lines[i] = line.replace(/,\s*$/, ';');
+        modified = true;
+      }
+    }
+  }
+  
+  return { content: lines.join('\n'), modified };
 }
 
-// ファイル処理関数
-function processFile(filePath) {
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        const result = fixClassPropertySyntax(content);
+// インターフェース内のプロパティを修正（セミコロンが正しい）
+function fixInterfaceProperties(content) {
+  const lines = content.split('\n');
+  let inInterface = false;
+  let braceDepth = 0;
+  let modified = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    
+    // インターフェース定義の開始を検出
+    if (trimmed.match(/^(export\s+)?interface\s+\w+/)) {
+      inInterface = true;
+      braceDepth = 0;
+    }
+    
+    // ブレースの深さを追跡
+    for (const char of line) {
+      if (char === '{') {
+        braceDepth++;
+      } else if (char === '}') {
+        braceDepth--;
+        if (braceDepth === 0) {
+          inInterface = false;
+        }
+      }
+    }
+    
+    // インターフェース内のプロパティ宣言を修正
+    if (inInterface && braceDepth > 0) {
+      // 最後がカンマで終わっている行
+      if (line.match(/,\s*$/)) {
+        // ただし、オブジェクトリテラルの中でない場合のみ
+        const beforeComma = line.substring(0, line.lastIndexOf(','));
+        const openBraces = (beforeComma.match(/\{/g) || []).length;
+        const closeBraces = (beforeComma.match(/\}/g) || []).length;
         
-        if (result.modifications > 0) {
-            fs.writeFileSync(filePath, result.content, 'utf8');
-            return result.modifications;
+        if (openBraces === closeBraces) {
+          lines[i] = line.replace(/,\s*$/, ';');
+          modified = true;
         }
-        
-        return 0;
-    } catch (error) {
-        console.error(`❌ Error processing ${filePath}:`, error.message);
-        return 0;
+      }
     }
+  }
+  
+  return { content: lines.join('\n'), modified };
 }
 
-// TypeScriptファイルを再帰的に検索
-function findTsFiles(dir) {
-    const files = [];
-    
-    function scanDir(currentDir) {
-        try {
-            const items = fs.readdirSync(currentDir);
-            
-            for (const item of items) {
-                const fullPath = path.join(currentDir, item);
-                const stat = fs.statSync(fullPath);
-                
-                if (stat.isDirectory()) {
-                    if (!item.startsWith('.') && item !== 'node_modules') {
-                        scanDir(fullPath);
-                    }
-                } else if (item.endsWith('.ts') && !item.endsWith('.d.ts')) {
-                    files.push(fullPath);
-                }
-            }
-        } catch (error) {
-            console.error(`Error scanning directory ${currentDir}:`, error.message);
-        }
-    }
-    
-    scanDir(dir);
-    return files;
+// オブジェクトリテラル内の不正な構文を修正
+function fixObjectLiterals(content) {
+  let modified = false;
+  
+  // パターン1: プロパティ宣言後の不正な閉じ括弧
+  // timestamp: number } → timestamp: number;
+  content = content.replace(/:\s*([a-zA-Z_$][a-zA-Z0-9_$<>\[\]]*)\s*\}/g, (match, type) => {
+    modified = true;
+    return `: ${type};`;
+  });
+  
+  // パターン2: 複数行にまたがるプロパティ宣言
+  // property: type,\n} → property: type\n}
+  content = content.replace(/,\s*\n\s*\}/g, (match) => {
+    modified = true;
+    return '\n}';
+  });
+  
+  return { content, modified };
 }
 
-// メイン実行
-const srcDir = './src';
-const testDir = './test';
-
-console.log('🔍 Scanning for TypeScript files...');
-
-const allFiles = [
-    ...findTsFiles(srcDir),
-    ...findTsFiles(testDir)
-];
-
-console.log(`📁 Found ${allFiles.length} TypeScript files`);
-
-let totalProcessed = 0;
-let totalModified = 0;
-let totalModifications = 0;
-
-console.log('🔧 Processing files...');
-
-for (const file of allFiles) {
-    const relativePath = path.relative('.', file);
-    const modifications = processFile(file);
+// ファイルを修正する関数
+function fixFile(filePath) {
+  try {
+    let content = fs.readFileSync(filePath, 'utf8');
+    let totalModified = false;
     
-    totalProcessed++;
-    
-    if (modifications > 0) {
-        totalModified++;
-        totalModifications += modifications;
-        console.log(`✅ ${relativePath}: ${modifications} class property syntax issues fixed`);
+    // クラスプロパティの修正
+    const classResult = fixClassPropertySyntax(content);
+    if (classResult.modified) {
+      content = classResult.content;
+      totalModified = true;
+      console.log(`  Fixed class properties`);
     }
     
-    // Progress indicator
-    if (totalProcessed % 100 === 0) {
-        console.log(`⏳ Progress: ${totalProcessed}/${allFiles.length} files processed`);
+    // インターフェースプロパティの修正
+    const interfaceResult = fixInterfaceProperties(content);
+    if (interfaceResult.modified) {
+      content = interfaceResult.content;
+      totalModified = true;
+      console.log(`  Fixed interface properties`);
     }
+    
+    // オブジェクトリテラルの修正
+    const objectResult = fixObjectLiterals(content);
+    if (objectResult.modified) {
+      content = objectResult.content;
+      totalModified = true;
+      console.log(`  Fixed object literals`);
+    }
+    
+    if (totalModified) {
+      fs.writeFileSync(filePath, content, 'utf8');
+      console.log(`✅ Fixed: ${filePath}`);
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error(`❌ Error processing ${filePath}:`, error.message);
+    return false;
+  }
 }
 
-console.log('\n📊 Summary:');
-console.log(`📝 Files processed: ${totalProcessed}`);
-console.log(`🔧 Files modified: ${totalModified}`);
-console.log(`🔄 Total modifications: ${totalModifications}`);
-console.log(`📈 Modification rate: ${(totalModified/totalProcessed*100).toFixed(1)}%`);
+// メイン処理
+async function main() {
+  console.log('🔧 Fixing TypeScript class and interface property syntax...\n');
 
-if (totalModifications > 0) {
-    console.log('\n✅ Class property syntax fixes completed!');
-    console.log('🔍 Run TypeScript compiler to check remaining errors:');
-    console.log('   npx tsc --noEmit');
-} else {
-    console.log('\n📝 No class property syntax issues were found.');
+  const targetPatterns = [
+    'src/**/*.ts',
+    'test/**/*.ts',
+    'tests/**/*.ts'
+  ];
+
+  let totalFixed = 0;
+  let totalFiles = 0;
+
+  for (const pattern of targetPatterns) {
+    const files = glob.sync(pattern, { nodir: true });
+    console.log(`\n📁 Processing ${pattern} (${files.length} files)...`);
+    
+    for (const file of files) {
+      totalFiles++;
+      if (fixFile(file)) {
+        totalFixed++;
+      }
+    }
+  }
+
+  console.log(`\n📊 Summary:`);
+  console.log(`Total files processed: ${totalFiles}`);
+  console.log(`Files fixed: ${totalFixed}`);
+  console.log(`\n✅ Done!`);
 }
+
+// 実行
+main().catch(console.error);

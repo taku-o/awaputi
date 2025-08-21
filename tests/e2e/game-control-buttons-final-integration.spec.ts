@@ -8,23 +8,23 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 import { test, expect  } from '@playwright/test';
 
 test.describe('Game Control Buttons Final Integration Tests', () => {
-  test.beforeEach(async ({ page }') => {
+  test.beforeEach(async ({ page }') => {'
     // Navigate to the game
     await page.goto('/'),
     
     // Wait for the game to initialize
     await page.waitForSelector('canvas', { timeout: 10000 });
-  }');
+  }');'
 
-  test.describe('Complete User Workflows', (') => {
-    test('should complete full Give Up workflow from game start to menu return', async ({ page }') => {
+  test.describe('Complete User Workflows', (') => {'
+    test('should complete full Give Up workflow from game start to menu return', async ({ page }') => {'
       // Start the game
       const startButton = page.locator('text=ゲーム開始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
       // Wait for game to load and buttons to appear
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
       await expect(canvas).toBeVisible();
@@ -43,20 +43,20 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         const confirmButtonY = boundingBox.y + boundingBox.height / 2 + 30,
         
         await page.mouse.click(confirmButtonX, confirmButtonY),
-        await page.waitForTimeout(2000'),
+        await page.waitForTimeout(2000'),'
         
-        // Verify we're back at main menu
+        // Verify we're back at main menu'
         const menuVisible = await page.locator('text=ゲーム開始').or(page.locator('text=Start Game').isVisible(),
         expect(menuVisible).toBe(true) }
-    }');
+    }');'
 
-    test('should complete full Restart workflow maintaining game state', async ({ page )') => {
+    test('should complete full Restart workflow maintaining game state', async ({ page )') => {'
       // Start the game
       const startButton = page.locator('text=ゲーム開始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
       await expect(canvas).toBeVisible();
@@ -83,15 +83,15 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         // Verify buttons are still available after restart
         await page.mouse.move(restartButtonX, restartButtonY),
         await page.waitForTimeout(500) }
-    }');
+    }');'
 
-    test('should handle multiple sequential button interactions', async ({ page )') => {
+    test('should handle multiple sequential button interactions', async ({ page )') => {'
       // Start the game
       const startButton = page.locator('text=ゲーム開始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
       const boundingBox = await canvas.boundingBox();
@@ -117,18 +117,18 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         
         // Verify game is still running
         await expect(canvas).toBeVisible() }
-    }');
+    }');'
 
-    test('should maintain button functionality during game state changes', async ({ page )') => {
+    test('should maintain button functionality during game state changes', async ({ page )') => {'
       // Start the game
       const startButton = page.locator('text=ゲーム開始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
-      await canvas.focus(');
+      await canvas.focus(');'
       
       // Test buttons during pause
       await page.keyboard.press('Space'); // Pause game
@@ -147,7 +147,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         const cancelButtonX = boundingBox.x + boundingBox.width / 2 + 50,
         const cancelButtonY = boundingBox.y + boundingBox.height / 2 + 30,
         await page.mouse.click(cancelButtonX, cancelButtonY),
-        await page.waitForTimeout(500') }
+        await page.waitForTimeout(500') }'
       
       // Resume game
       await page.keyboard.press('Space');
@@ -156,16 +156,16 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       // Verify buttons still work after resume
       await expect(canvas).toBeVisible();
     });
-  }');
+  }');'
 
-  test.describe('Regression Testing', (') => {
-    test('should not affect existing game functionality', async ({ page }') => {
+  test.describe('Regression Testing', (') => {'
+    test('should not affect existing game functionality', async ({ page }') => {'
       // Start the game
       const startButton = page.locator('text=ゲーム開始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
       await expect(canvas).toBeVisible();
@@ -188,60 +188,60 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         await page.waitForTimeout(500) }
       
       // Test that game controls still work
-      await canvas.focus(');
+      await canvas.focus(');'
       await page.keyboard.press('Space'); // Pause
-      await page.waitForTimeout(500');
+      await page.waitForTimeout(500');'
       await page.keyboard.press('Space'); // Resume
       await page.waitForTimeout(500);
       
       // Verify game is still responsive
       await expect(canvas).toBeVisible();
-    }');
+    }');'
 
-    test('should verify keyboard shortcuts are properly removed', async ({ page )') => {
+    test('should verify keyboard shortcuts are properly removed', async ({ page )') => {'
       // Start the game
       const startButton = page.locator('text=ゲーム开始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
-      await canvas.focus(');
+      await canvas.focus(');'
       
       // Test that G and R keys no longer trigger actions
       await page.keyboard.press('KeyG');
-      await page.waitForTimeout(1000');
+      await page.waitForTimeout(1000');'
       
       await page.keyboard.press('KeyR');
       await page.waitForTimeout(1000);
       
       // Verify no dialogs appeared and game is still running
-      await expect(canvas).toBeVisible(');
+      await expect(canvas).toBeVisible(');'
       
       // Test that other shortcuts still work
       await page.keyboard.press('Space'); // Should pause
-      await page.waitForTimeout(500');
+      await page.waitForTimeout(500');'
       await page.keyboard.press('Space'); // Should resume
-      await page.waitForTimeout(500');
+      await page.waitForTimeout(500');'
       
       await page.keyboard.press('KeyM'); // Should toggle mute
       await page.waitForTimeout(500);
-    }');
+    }');'
 
     test('should maintain performance after button addition', async ({ page ) => {
       // Measure performance before starting game
-      const initialPerformance = await page.evaluate((') => {
+      const initialPerformance = await page.evaluate((') => {'
         const navigation = performance.getEntriesByType('navigation')[0],
         return {
           loadTime: navigation.loadEventEnd - navigation.loadEventStart,
           domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart
         };
-      }');
+      }');'
       
       // Start the game
       const startButton = page.locator('text=ゲーム開始').or(page.locator('text=Start Game');
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
       await page.waitForTimeout(3000);
@@ -264,22 +264,22 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
           
           requestAnimationFrame(countFrames);
         });
-      }');
+      }');'
       
       console.log('Performance metrics:', { initialPerformance, gamePerformance ),
       
       // Verify acceptable performance
       expect(gamePerformance.fps).toBeGreaterThan(30), // At least 30 FPS
       expect(initialPerformance.loadTime).toBeLessThan(5000), // Load in under 5 seconds
-    }');
+    }');'
 
-    test('should handle edge cases and error conditions', async ({ page )') => {
+    test('should handle edge cases and error conditions', async ({ page )') => {'
       // Test rapid button clicking
       const startButton = page.locator('text=ゲーム开始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
       const boundingBox = await canvas.boundingBox();
@@ -294,7 +294,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
           await page.waitForTimeout(100) }
         
         // Should handle gracefully without crashing
-        await page.waitForTimeout(1000');
+        await page.waitForTimeout(1000');'
         
         // Cancel any open dialog
         await page.keyboard.press('Escape');
@@ -312,10 +312,10 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       // Verify game is still stable
       await expect(canvas).toBeVisible();
     });
-  }');
+  }');'
 
-  test.describe('Visual and Functional Verification', (') => {
-    test('should render buttons in correct positions across different screen sizes', async ({ page }') => {
+  test.describe('Visual and Functional Verification', (') => {'
+    test('should render buttons in correct positions across different screen sizes', async ({ page }') => {'
       const testSizes = [
         { width: 1920, height: 1080, name: 'desktop-fullhd' },
         { width: 1366, height: 768, name: 'laptop-standard' },
@@ -327,18 +327,18 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       
       for (const size of testSizes) {
         await page.setViewportSize({ width: size.width, height: size.height ,
-        await page.waitForTimeout(1000'), // Allow for responsive adjustments
+        await page.waitForTimeout(1000'), // Allow for responsive adjustments'
         
         // Start game
         const startButton = page.locator('text=ゲーム开始').or(page.locator('text=Start Game'),
-        if(await startButton.isVisible() {
+        if (await startButton.isVisible() {
           await startButton.click(),
           await page.waitForTimeout(2000) }
         
         // Take screenshot for visual verification
         await page.screenshot({ 
           path: `test-results/final-integration-${size.name}.png`;
-          fullPage: true )');
+          fullPage: true )'),'
         
         // Verify buttons are accessible
         const canvas = page.locator('canvas');
@@ -351,30 +351,30 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
           const buttonY = boundingBox.y + 30,
           
           await page.mouse.click(buttonX, buttonY),
-          await page.waitForTimeout(500'),
+          await page.waitForTimeout(500'),'
           
           // Cancel to continue testing
           await page.keyboard.press('Escape'),
-          await page.waitForTimeout(500') }
+          await page.waitForTimeout(500') }'
         
         // Return to menu for next test
         await page.keyboard.press('Escape');
         await page.waitForTimeout(1000);
       }
-    }');
+    }');'
 
-    test('should maintain visual consistency with game design', async ({ page )') => {
+    test('should maintain visual consistency with game design', async ({ page )') => {'
       // Start the game
       const startButton = page.locator('text=ゲーム开始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       // Capture baseline screenshot
       await page.screenshot({ 
         path: 'test-results/final-visual-baseline.png',
-        fullPage: true )'),
+        fullPage: true )'),'
       
       const canvas = page.locator('canvas'),
       const boundingBox = await canvas.boundingBox(),
@@ -386,51 +386,51 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         
         // Hover state
         await page.mouse.move(giveUpButtonX, giveUpButtonY),
-        await page.waitForTimeout(300'),
+        await page.waitForTimeout(300'),'
         await page.screenshot({ 
           path: 'test-results/final-visual-hover.png' ),
         
         // Click state
         await page.mouse.down(),
-        await page.waitForTimeout(100'),
+        await page.waitForTimeout(100'),'
         await page.screenshot({ 
           path: 'test-results/final-visual-active.png' ),
         
         await page.mouse.up(),
-        await page.waitForTimeout(500'),
+        await page.waitForTimeout(500'),'
         
         // Dialog state
         await page.screenshot({ 
-          path: 'test-results/final-visual-dialog.png' )'),
+          path: 'test-results/final-visual-dialog.png' )'),'
         
         // Cancel dialog
         await page.keyboard.press('Escape'),
         await page.waitForTimeout(500) }
-    }');
+    }');'
 
-    test('should provide consistent user experience across all features', async ({ page )') => {
+    test('should provide consistent user experience across all features', async ({ page )') => {'
       // Test complete user journey
       const startButton = page.locator('text=ゲーム开始').or(page.locator('text=Start Game'),
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
-      await canvas.focus(');
+      await canvas.focus(');'
       
       // Test keyboard navigation workflow
       await page.keyboard.press('Tab'); // Focus first button
-      await page.waitForTimeout(200');
+      await page.waitForTimeout(200');'
       
       await page.keyboard.press('Tab'); // Focus second button
-      await page.waitForTimeout(200');
+      await page.waitForTimeout(200');'
       
       await page.keyboard.press('Enter'); // Activate button
-      await page.waitForTimeout(500');
+      await page.waitForTimeout(500');'
       
       await page.keyboard.press('Tab'); // Navigate in dialog
-      await page.waitForTimeout(200');
+      await page.waitForTimeout(200');'
       
       await page.keyboard.press('Escape'); // Cancel
       await page.waitForTimeout(500);
@@ -453,10 +453,10 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       // Verify smooth experience throughout
       await expect(canvas).toBeVisible();
     });
-  }');
+  }');'
 
-  test.describe('Final Quality Assurance', (') => {
-    test('should pass all acceptance criteria', async ({ page }') => {
+  test.describe('Final Quality Assurance', (') => {'
+    test('should pass all acceptance criteria', async ({ page }') => {'
       const acceptanceCriteria = {
         buttonsVisible: false,
         buttonsClickable: false,
@@ -465,15 +465,14 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         touchSupport: false,
         noKeyboardShortcuts: false,
         performanceAcceptable: false,
-        visualConsistency: false
-      };
+        visualConsistency: false,;
       
       // Start the game
       const startButton = page.locator('text=ゲーム开始').or(page.locator('text=Start Game');
-      if(await startButton.isVisible() {
+      if (await startButton.isVisible() {
         await startButton.click() }
       
-      await page.waitForTimeout(3000');
+      await page.waitForTimeout(3000');'
       
       const canvas = page.locator('canvas');
       
@@ -487,7 +486,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         const buttonY = boundingBox.y + 30,
         
         await page.mouse.click(buttonX, buttonY),
-        await page.waitForTimeout(500'),
+        await page.waitForTimeout(500'),'
         acceptanceCriteria.buttonsClickable = true,
         
         // Test 3: Confirmation dialogs work
@@ -497,18 +496,18 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         await page.waitForTimeout(500) }
       
       // Test 4: Keyboard support
-      await canvas.focus(');
+      await canvas.focus(');'
       await page.keyboard.press('Tab');
-      await page.waitForTimeout(200');
+      await page.waitForTimeout(200');'
       await page.keyboard.press('Enter');
-      await page.waitForTimeout(500');
+      await page.waitForTimeout(500');'
       await page.keyboard.press('Escape');
       acceptanceCriteria.keyboardSupport = true;
       
       // Test, 5: Touch support (simulate);
       if (boundingBox) {
         await page.touchscreen.tap(boundingBox.x + boundingBox.width - 60, boundingBox.y + 80),
-        await page.waitForTimeout(500'),
+        await page.waitForTimeout(500'),'
         await page.keyboard.press('Escape'),
         acceptanceCriteria.touchSupport = true }
       
@@ -531,7 +530,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
           }
           requestAnimationFrame(count);
         });
-      }');
+      }');'
       acceptanceCriteria.performanceAcceptable = fps > 30;
       
       // Test 8: Visual consistency
@@ -542,7 +541,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       // Verify all criteria pass
       Object.values(acceptanceCriteria.forEach(criterion => {),
         expect(criterion).toBe(true) });
-    }');
+    }');'
 
     test('should generate final test report', async ({ page }) => {
       const testResults = {
@@ -551,7 +550,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
           userAgent: navigator.userAgent,
           platform: navigator.platform,
           language: navigator.language
-        })'),
+        })'),'
         testStatus: 'PASSED',
         features: {
           gameControlButtons: 'IMPLEMENTED',
@@ -574,13 +573,13 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       console.log('Final Test Report:', JSON.stringify(testResults, null, 2);
       
       // Save test report
-      await page.evaluate((results') => {
+      await page.evaluate((results') => {'
         const report = document.createElement('div'),
         report.id = 'test-results',
         report.textContent = JSON.stringify(results, null, 2),
         document.body.appendChild(report) }, testResults);
       
-      expect(testResults.testStatus').toBe('PASSED');
+      expect(testResults.testStatus').toBe('PASSED');'
     });
   });
-}');
+}');'

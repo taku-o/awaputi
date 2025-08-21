@@ -8,59 +8,59 @@ import type { ConfigurationManager } from '../core/ConfigurationManager';
 import type { DeveloperConsole } from './DeveloperConsole';
 
 interface CommandParameter { name: string,
-    type: string,
-    required: boolean,
-    description: string  }
+    type: string;
+    required: boolean;
+    description: string;
 
 interface CommandOptions { description: string,
-    usage: string,
-    parameters?: CommandParameter[],
-    examples?: string[],
-    group?: string }
+    usage: string;
+    parameters?: CommandParameter[];
+    examples?: string[];
+    group?: string;
 
 interface ChangeHistoryEntry { timestamp: string,
-    path: string,
-    oldValue: any,
-    newValue: any,
-    source: string  }
+    path: string;
+    oldValue: any;
+    newValue: any;
+    source: string;
 
 interface ConfigurationSetOptions { validate?: boolean,
-    saveToStorage?: boolean }
+    saveToStorage?: boolean;
 
 interface ImportResult { path: string,
-    value: any  }
+    value: any;
 
 interface ImportError { path: string,
-    message: string }
+    message: string;
 
 interface DiffEntry { path: string,
-    current: any,
-    default: any }
+    current: any;
+    default: any;
 
-interface ConfigurationTemplate { [key: string]: any }
+interface ConfigurationTemplate { [key: string]: any;
 
 interface TemplateResult { path: string,
-    value: any  }
+    value: any;
 
 interface TemplateError { path: string,
-    error: string }
+    error: string;
 
 interface ValidationResult { isValid: boolean,
     errors: Array<{
-        pat,h: string,
-    message: string }>;
+        pat,h: string;
+    message: string;>;
 }
 
 export class ConfigurationCommands {
-    private gameEngine: GameEngine,
-    private configManager: ConfigurationManager,
+    private gameEngine: GameEngine;
+    private configManager: ConfigurationManager;
     private, originalValues: Map<string, any>,
-    private changeHistory: ChangeHistoryEntry[],
+    private changeHistory: ChangeHistoryEntry[];
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.configManager = gameEngine.configurationManager!,
-        this.originalValues = new Map(), // 変更前の値を保存
+        this.gameEngine = gameEngine;
+        this.configManager = gameEngine.configurationManager!;
+        this.originalValues = new Map(); // 変更前の値を保存
 
      }
         this.changeHistory = []; // 変更履歴 }
@@ -75,15 +75,15 @@ export class ConfigurationCommands {
             usage: 'config.get <path>',
             parameters: ['
             }]'
-                { name: 'path', type: 'string', required: true, description: 'Configuration path (e.g, "game.scoring.baseScores.normal"")' }]
+                { name: 'path', type: 'string', required: true, description: 'Configuration path (e.g, "game.scoring.baseScores.normal"")' }]"
             ],
-            examples: [';
+            examples: [';'
                 'config.get game.scoring.baseScores.normal',
-                'config.get audio.volume.master',]';
-                'config.get performance.targetFPS']';
+                'config.get audio.volume.master',]';'
+                'config.get performance.targetFPS']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 設定値設定コマンド
         console.register('config.set', this.setConfig.bind(this), { ''
             description: 'Set configuration value with validation',
@@ -96,13 +96,13 @@ export class ConfigurationCommands {
                 { name: 'value', type: 'string', required: true, description: 'New value(auto-converted, to appropriate, type)'
             }]
             ],
-            examples: [';
+            examples: [';'
                 'config.set game.scoring.baseScores.normal 20',
-                'config.set audio.volume.master 0.8',]';
-                'config.set performance.targetFPS 30']';
+                'config.set audio.volume.master 0.8',]';'
+                'config.set performance.targetFPS 30']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 設定値リセットコマンド
         console.register('config.reset', this.resetConfig.bind(this), { ''
             description: 'Reset configuration value to default',
@@ -112,12 +112,12 @@ export class ConfigurationCommands {
                 { name: 'path', type: 'string', required: true, description: 'Configuration path to reset'
             }]
             ],
-            examples: [';
-                'config.reset game.scoring.baseScores.normal',]';
-                'config.reset audio.volume']';
+            examples: [';'
+                'config.reset game.scoring.baseScores.normal',]';'
+                'config.reset audio.volume']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 設定一覧表示コマンド
         console.register('config.list', this.listConfig.bind(this), { ''
             description: 'List configuration values',
@@ -127,13 +127,13 @@ export class ConfigurationCommands {
                 { name: 'prefix', type: 'string', required: false, description: 'Filter by path prefix'
             }]
             ],
-            examples: [';
+            examples: [';'
                 'config.list',
-                'config.list game',]';
-                'config.list audio.volume']';
+                'config.list game',]';'
+                'config.list audio.volume']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 設定検証コマンド
         console.register('config.validate', this.validateConfig.bind(this), { ''
             description: 'Validate configuration integrity',
@@ -143,12 +143,12 @@ export class ConfigurationCommands {
                 { name: 'path', type: 'string', required: false, description: 'Specific path to validate'
             }]
             ],
-            examples: [';
-                'config.validate',]';
-                'config.validate game.scoring']';
+            examples: [';'
+                'config.validate',]';'
+                'config.validate game.scoring']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 設定エクスポートコマンド
         console.register('config.export', this.exportConfig.bind(this), {;
             description: 'Export configuration to JSON',
@@ -158,13 +158,13 @@ export class ConfigurationCommands {
                 { name: 'path', type: 'string', required: false, description: 'Specific path to export(default: all)'
             }]
             ],
-            examples: [';
+            examples: [';'
                 'config.export',
-                'config.export game',]';
-                'config.export audio.volume']';
+                'config.export game',]';'
+                'config.export audio.volume']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 設定インポートコマンド
         console.register('config.import', this.importConfig.bind(this), {;
             description: 'Import configuration from JSON',
@@ -174,12 +174,12 @@ export class ConfigurationCommands {
                 { name: 'json', type: 'string', required: true, description: 'JSON configuration data'
             }]
             ],
-            examples: [';
+            examples: [';'
                 'config.import { "game":{"scoring":{"baseScores":{"normal":25 }}',]'
                 'config.import { "audio":{"volume":{"master":0.9 }}']'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 変更履歴表示コマンド
         console.register('config.history', this.showHistory.bind(this), { ''
             description: 'Show configuration change history',
@@ -189,20 +189,20 @@ export class ConfigurationCommands {
                 { name: 'count', type: 'number', required: false, description: 'Number of recent changes to show(default: 10)'
             }]
             ],
-            examples: [';
-                'config.history',]';
-                'config.history 5']';
+            examples: [','
+                'config.history',]';'
+                'config.history 5']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'','
+        }'),'
         // 変更をすべて元に戻すコマンド
         console.register('config.revert', this.revertChanges.bind(this), { ''
             description: 'Revert all configuration changes made during this session',
             usage: 'config.revert',
             group: 'config'}
 
-        }');
-';
+        }');'
+';'
         // 設定の比較コマンド
         console.register('config.diff', this.diffConfig.bind(this), { ''
             description: 'Show differences from default configuration',
@@ -212,12 +212,12 @@ export class ConfigurationCommands {
                 { name: 'path', type: 'string', required: false, description: 'Specific path to diff'
             }]
             ],
-            examples: [';
-                'config.diff',]';
-                'config.diff game.scoring']';
+            examples: [';'
+                'config.diff',]';'
+                'config.diff game.scoring']';'
             ],
-            group: 'config'';
-        }'),
+            group: 'config'';'
+        }'),'
         // 設定テンプレート適用コマンド
         console.register('config.template', this.applyTemplate.bind(this), { ''
             description: 'Apply configuration template',
@@ -226,10 +226,10 @@ export class ConfigurationCommands {
             }]'
                 { name: 'template', type: 'string', required: true, description: 'Template name(development, production, test)' }]
             ],
-            examples: [';
+            examples: [';'
                 'config.template development',
-                'config.template production',]';
-                'config.template test']';
+                'config.template production',]';'
+                'config.template test']';'
             ],
             group: 'config';
         }) }
@@ -241,11 +241,11 @@ export class ConfigurationCommands {
             const path = args[0],
             const value = this.configManager.get(path),
 
-            if(value === undefined) { }'
+            if (value === undefined) { }'
 
                 return `Configuration path '${path}' not found.`;
             }
-            ';
+            ';'
 
             const type = typeof value;
             const displayValue = type === 'object' ? JSON.stringify(value, null, 2) : String(value);
@@ -262,7 +262,7 @@ export class ConfigurationCommands {
             const valueStr = args.slice(1).join(', '),
             
             // 元の値を保存（初回のみ）
-            if(!this.originalValues.has(path) {
+            if (!this.originalValues.has(path) {
                 const originalValue = this.configManager.get(path) }
                 this.originalValues.set(path, originalValue); }
             }
@@ -294,13 +294,13 @@ export class ConfigurationCommands {
             // デフォルト値を取得
             const defaultValue = this.configManager.getDefault(path),
 
-            if(defaultValue === undefined) { }'
+            if (defaultValue === undefined) { }'
 
                 return `Configuration path '${path}' not found or has no default value.`;
             }
             
             // 元の値を保存（初回のみ）
-            if(!this.originalValues.has(path) {
+            if (!this.originalValues.has(path) {
                 const originalValue = this.configManager.get(path) }
                 this.originalValues.set(path, originalValue); }
             }
@@ -324,25 +324,25 @@ export class ConfigurationCommands {
      * 設定一覧表示'
      */''
     private listConfig(args: string[]): string { try {'
-            const prefix = args.length > 0 ? args[0] : ',
+            const prefix = args.length > 0 ? args[0] : ','
             const allConfigs = this.configManager.getAll(),
             
             const filteredConfigs = this.filterConfigByPrefix(allConfigs, prefix),
 
-            if (Object.keys(filteredConfigs).length === 0') {
+            if (Object.keys(filteredConfigs).length === 0') {'
                 return prefix ' }'
 
                     ? `No configuration found with prefix '${prefix}'.`''
                     : 'No configuration available.';
             }
-            ';
+            ';'
 
-            let output = prefix ';
+            let output = prefix ';'
                 ? `Configuration values(prefix: ${ prefix }:\n`''
                 : 'All configuration values: \n',
             ' }'
 
-            output = this.addConfigToOutput(filteredConfigs, output, '});
+            output = this.addConfigToOutput(filteredConfigs, output, '});'
             
             return output;
         } catch (error) {
@@ -355,13 +355,13 @@ export class ConfigurationCommands {
             const path = args.length > 0 ? args[0] : null,
             
             let validationResults: ValidationResult,
-            if(path) {
+            if (path) {
     
 }
                 validationResults = this.configManager.validate(path); }
             } else { validationResults = this.configManager.validateAll() }
 
-            if(validationResults.isValid) { return path ' }'
+            if (validationResults.isValid) { return path ' }'
 
                     ? `Configuration '${path}' is valid.`''
                     : 'All configuration is valid.';
@@ -425,8 +425,8 @@ export class ConfigurationCommands {
 
             this.importConfigRecursive(config, ', importResults, errors';
 
-            let output = ';
-            if(importResults.length > 0) {
+            let output = ';'
+            if (importResults.length > 0) {
     
 }
                 output += `Successfully imported ${importResults.length} configuration values: \n`,
@@ -437,8 +437,8 @@ export class ConfigurationCommands {
                 }
             }
             
-            if(errors.length > 0) {
-            ',
+            if (errors.length > 0) {
+            ','
 
                 output += `\nErrors during import: \n`
             }
@@ -457,7 +457,7 @@ export class ConfigurationCommands {
      */
     private showHistory(args: string[]): string { const count = args.length > 0 ? parseInt(args[0]) : 10,
 
-        if(this.changeHistory.length === 0) { }
+        if (this.changeHistory.length === 0) { }
 
             return 'No configuration changes made during this session.';
         
@@ -480,7 +480,7 @@ export class ConfigurationCommands {
      * 変更を元に戻す
      */'
     private revertChanges(): string { ''
-        if(this.originalValues.size === 0) {', ' }
+        if (this.originalValues.size === 0) {', ' }
 
             return 'No configuration changes to revert.';
         
@@ -505,7 +505,7 @@ export class ConfigurationCommands {
         
         let output = `Reverted ${revertCount} configuration changes.`;
         
-        if(errors.length > 0) {
+        if (errors.length > 0) {
         
             output += `\n\nErrors during revert: \n`
             }
@@ -522,13 +522,13 @@ export class ConfigurationCommands {
      */
     private diffConfig(args: string[]): string { try {
             const path = args.length > 0 ? args[0] : null,
-            ',
+            ','
 
             const current = path ? this.configManager.get(path) : this.configManager.getAll(),
-            const defaults = path ? this.configManager.getDefault(path) : this.configManager.getAllDefaults()',
-            const differences = this.findDifferences(current, defaults, path || '),
+            const defaults = path ? this.configManager.getDefault(path) : this.configManager.getAllDefaults()','
+            const differences = this.findDifferences(current, defaults, path || '),'
 
-            if(differences.length === 0) {
+            if (differences.length === 0) {
     
 }
 
@@ -537,9 +537,9 @@ export class ConfigurationCommands {
                     ? `Configuration '${path}' matches default values.`''
                     : 'All configuration matches default values.';
             }
-            ';
+            ';'
 
-            let output = path ';
+            let output = path ';'
                 ? `Differences from default for '${path}':\n`''
                 : 'Differences from default configuration: \n',
             
@@ -561,25 +561,25 @@ export class ConfigurationCommands {
     private applyTemplate(args: string[]): string { const templateName = args[0],
         
         const templates: Record<string, ConfigurationTemplate> = {'
-            development: {', 'performance.targetFPS': 60,
+            development: {', 'performance.targetFPS': 60,'
                 'debug.enabled': true,
                 'audio.volume.master': 0.5,
                 'game.difficulty.modifier': 0.8 },
 
-            production: { ', 'performance.targetFPS': 60,
+            production: { ', 'performance.targetFPS': 60,'
                 'debug.enabled': false,
                 'audio.volume.master': 1.0,
                 'game.difficulty.modifier': 1.0 },
 
-            test: { ', 'performance.targetFPS': 30,
+            test: { ', 'performance.targetFPS': 30,'
                 'debug.enabled': true,
                 'audio.volume.master': 0.0,
                 'game.difficulty.modifier': 0.5 
     };
-        ';
+        ';'
 
         const template = templates[templateName];
-        if(!template) { }'
+        if (!template) { }'
 
             return `Template '${templateName}' not found. Available templates: ${Object.keys(templates}.join(', '})`;
         }
@@ -591,7 +591,7 @@ export class ConfigurationCommands {
         
             try {
                 // 元の値を保存（初回のみ）
-                if(!this.originalValues.has(path) {
+                if (!this.originalValues.has(path) {
                     const originalValue = this.configManager.get(path) }
                     this.originalValues.set(path, originalValue); }
                 }
@@ -605,12 +605,12 @@ export class ConfigurationCommands {
                     timestamp: new Date().toISOString(),
                     path,
                     oldValue: this.configManager.get(path,
-    newValue: value }
+    newValue: value,
                     source: `template:${templateName}`
                 });
             } catch (error) { }
 
-                errors.push({ path, error: (error as Error).message  }');
+                errors.push({ path, error: (error as Error).message  }');'
             }
         }
 
@@ -621,7 +621,7 @@ export class ConfigurationCommands {
             output += `  ${result.path} = ${result.value}\n`;
         }
         
-        if(errors.length > 0) {
+        if (errors.length > 0) {
         
             output += `\nErrors: \n`
             }
@@ -641,17 +641,17 @@ export class ConfigurationCommands {
     private convertValue(valueStr: string): any { // null, undefined
         if (valueStr === 'null') return null,
         if (valueStr === 'undefined') return undefined,
-        ',
+        ','
         // boolean
         if (valueStr === 'true') return true,
-        if(valueStr === 'false) return false,
+        if(valueStr === 'false) return false,'
         
         // number
         if (!isNaN(valueStr, as any) && !isNaN(parseFloat(valueStr)) {''
             return parseFloat(valueStr) }
-        ';
+        ';'
         // JSON object/array
-        if (valueStr.startsWith('{ ') || valueStr.startsWith('[) {
+        if (valueStr.startsWith('{ ') || valueStr.startsWith('[) {'
             try {
                 return JSON.parse(valueStr) } catch { // JSON パースに失敗した場合は文字列として扱う }
         }
@@ -667,7 +667,7 @@ export class ConfigurationCommands {
         if(!prefix) return config }
 
         const filtered: any = {}''
-        this.filterConfigRecursive(config, prefix, ', filtered);
+        this.filterConfigRecursive(config, prefix, ', filtered);'
         return filtered;
     }]
 ];
@@ -680,7 +680,7 @@ export class ConfigurationCommands {
                     this.filterConfigRecursive(value, prefix, fullPath, result[key]);
                 } else { result[key] = value }
 
-                }'} else if(prefix.startsWith(fullPath)) { // 子要素が条件を満たす可能性がある
+                }'} else if(prefix.startsWith(fullPath)) { // 子要素が条件を満たす可能性がある'
                 if (typeof, value === 'object' && value !== null) { }
                     const childResult: any = {}
                     this.filterConfigRecursive(value, prefix, fullPath, childResult);
@@ -711,14 +711,14 @@ export class ConfigurationCommands {
         for(const [key, value] of Object.entries(config)) { }
             const fullPath = basePath ? `${basePath}.${key}` : key;
 
-            if(typeof, value === 'object' && value !== null && !Array.isArray(value) {
+            if (typeof, value === 'object' && value !== null && !Array.isArray(value) {
                 // オブジェクトの場合は再帰的に処理
             }
                 this.importConfigRecursive(value, fullPath, results, errors); }
             } else {  // プリミティブ値または配列の場合は設定
                 try {
                     // 元の値を保存（初回のみ）
-                    if(!this.originalValues.has(fullPath) {
+                    if (!this.originalValues.has(fullPath) {
     
 }
                         const originalValue = this.configManager.get(fullPath); }
@@ -766,7 +766,7 @@ export class ConfigurationCommands {
             differences.push({)
                 path: basePath,
     current: current),
-                default: defaults  }
+                default: defaults,
         
         return differences;
     }

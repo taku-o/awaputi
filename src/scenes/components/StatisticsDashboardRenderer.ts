@@ -4,110 +4,107 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void  };
-    statisticsDashboard?: { render(context: CanvasRenderingContext2D, options: RenderOptions): Promise<void>
-     };
-    chartRenderer?: { render(context: CanvasRenderingContext2D, type: string, data: any, options: any): Promise<void>
-     };
+        handleError(error: Error, context: any): void,;
+    statisticsDashboard?: { render(context: CanvasRenderingContext2D, options: RenderOptions): Promise<void>,;
+    chartRenderer?: { render(context: CanvasRenderingContext2D, type: string, data: any, options: any): Promise<void>,;
     debugMode?: boolean;
 }
 
 interface EventBus { on(event: string, callback: Function): void,
-    off(event: string): void,
-    emit(event: string, data?: any): void }
+    off(event: string): void;
+    emit(event: string, data?: any): void;
 
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean,
-    reducedMotion: boolean  }
+    largeText: boolean;
+    reducedMotion: boolean;
 
 interface ComponentState {
-    accessibilitySettings: AccessibilitySettings }
+    accessibilitySettings: AccessibilitySettings;
 
 interface StatisticsDisplaySettings { showDashboard: boolean,
-    showCharts: boolean,
-    showDetailedStats: boolean,
-    enableAnimations: boolean,
-    compactMode: boolean }
+    showCharts: boolean;
+    showDetailedStats: boolean;
+    enableAnimations: boolean;
+    compactMode: boolean;
 
 interface RenderOptions { data: any,
-    animated: boolean,
-    backgroundColor: string,
-    textColor: string,
-    accentColor: string,
-    compactMode: boolean,
-    largeText: boolean,
-    width: number,
-    height: number }
+    animated: boolean;
+    backgroundColor: string;
+    textColor: string;
+    accentColor: string;
+    compactMode: boolean;
+    largeText: boolean;
+    width: number;
+    height: number;
 
 interface StatisticsData { basic?: {
-        totalGamesPlaye,d?: number,
-        highestScore?: number,
-        totalScore?: number,
-        averageScore?: number,
-        totalPlayTime?: string,
-        completionRate?: number };
+        totalGamesPlaye,d?: number;
+        highestScore?: number;
+        totalScore?: number;
+        averageScore?: number;
+        totalPlayTime?: string;
+        completionRate?: number;;
     bubbles?: { totalPopped?: number,
-        totalMissed?: number,
-        accuracy?: string,
-        averageReactionTime?: string,
+        totalMissed?: number;
+        accuracy?: string;
+        averageReactionTime?: string;
         favoriteType?: {
-            type: string  };
-        typeBreakdown?: Record<string, { count: number }>;
+            type: string,;
+        typeBreakdown?: Record<string, { count: number,>;
     };
     combos?: { maxCombo?: number,
-        averageCombo?: number,
-        totalCombos?: number,
-        comboRate?: number,
-        perfectRounds?: number };
+        averageCombo?: number;
+        totalCombos?: number;
+        comboRate?: number;
+        perfectRounds?: number;;
     stages?: { unlockedStages?: number,
-        favoriteStage?: string,
-        bestClearRate?: number,
-        averageClearTime?: string,
-        totalClears?: number }
+        favoriteStage?: string;
+        bestClearRate?: number;
+        averageClearTime?: string;
+        totalClears?: number;
 
 interface StatCard { title: string,
-    value: number,
-    unit: string  }
+    value: number;
+    unit: string;
 
 export class StatisticsDashboardRenderer {
-    private gameEngine: GameEngine,
-    private eventBus: EventBus,
-    private state: ComponentState,
+    private gameEngine: GameEngine;
+    private eventBus: EventBus;
+    private state: ComponentState;
     // エラーハンドリング
     private errorHandler?: GameEngine['errorHandler'],
     
     // アクセシビリティ設定
-    private accessibilitySettings: AccessibilitySettings,
+    private accessibilitySettings: AccessibilitySettings;
     // レイアウト設定
-    private contentPadding: number = 20,
+    private contentPadding: number = 20;
     // 統計データ
-    private statisticsData: StatisticsData | null = null,
+    private statisticsData: StatisticsData | null = null;
     // ダッシュボード設定
-    private statisticsDisplaySettings: StatisticsDisplaySettings,
+    private statisticsDisplaySettings: StatisticsDisplaySettings;
     // 統計システム参照
-    private statisticsDashboard: GameEngine['statisticsDashboard] | null = null',
-    private, chartRenderer: GameEngine['chartRenderer] | null = null,
+    private statisticsDashboard: GameEngine['statisticsDashboard] | null = null';
+    private, chartRenderer: GameEngine['chartRenderer] | null = null,'
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: ComponentState) {
 
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.state = state,
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.state = state;
         
         // エラーハンドリング
-        this.errorHandler = gameEngine.errorHandler,
+        this.errorHandler = gameEngine.errorHandler;
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
             highContrast: false,
-    largeText: false }
-            reducedMotion: false 
-    };
+    largeText: false;
+            reducedMotion: false;;
         // ダッシュボード設定
         this.statisticsDisplaySettings = { showDashboard: true,
             showCharts: true,
             showDetailedStats: true,
             enableAnimations: !this.accessibilitySettings.reducedMotion,
-    compactMode: false  };
+    compactMode: false,;
         this.setupEventListeners();
         this.initializeStatisticsSystems();
     }
@@ -115,10 +112,10 @@ export class StatisticsDashboardRenderer {
     /**
      * イベントリスナーの設定
      */''
-    private setupEventListeners()';
+    private setupEventListeners()';'
         this.eventBus.on('statistics-data-updated', (data: StatisticsData) => { this.statisticsData = data,' 
-    }');
-        ';
+    }');'
+        ';'
         // 設定変更イベント
         this.eventBus.on('statistics-display-settings-changed', (settings: Partial<StatisticsDisplaySettings>) => {  }
             this.statisticsDisplaySettings = { ...this.statisticsDisplaySettings, ...settings });
@@ -129,7 +126,7 @@ export class StatisticsDashboardRenderer {
      */
     private initializeStatisticsSystems(): void { try {
             // StatisticsDashboard の初期化
-            if(this.gameEngine.statisticsDashboard) {
+            if (this.gameEngine.statisticsDashboard) {
     
 }
                 this.statisticsDashboard = this.gameEngine.statisticsDashboard; }
@@ -177,12 +174,12 @@ export class StatisticsDashboardRenderer {
      * @param height - 描画高さ
      */'
     private async renderStatisticsDashboard(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): Promise<void>,
-        if(!this.statisticsDashboard) {
+        if (!this.statisticsDashboard) {
 
             this.renderNoDataMessage(context, x, y, width, height, 'ダッシュボードを初期化できませんでした') }
             return; }
         }
-        ';
+        ';'
         try { // ダッシュボード用のサブキャンバス作成
             const dashboardCanvas = document.createElement('canvas'),
             dashboardCanvas.width = width,
@@ -206,7 +203,7 @@ export class StatisticsDashboardRenderer {
             ' }'
 
         } catch (error) {
-            console.error('Dashboard rendering failed:', error',
+            console.error('Dashboard rendering failed:', error','
             this.renderNoDataMessage(context, x, y, width, height, 'ダッシュボードの描画に失敗しました' }'
     }
     
@@ -215,28 +212,28 @@ export class StatisticsDashboardRenderer {
      * @param context - Canvas描画コンテキスト
      * @param options - レンダリングオプション'
      */''
-    private async renderFallbackDashboard(context: CanvasRenderingContext2D, options: RenderOptions = { ) as RenderOptions'): Promise<void> }'
+    private async renderFallbackDashboard(context: CanvasRenderingContext2D, options: RenderOptions = { ) as RenderOptions'): Promise<void>,'
         const { width, height, backgroundColor, textColor, accentColor } = options;
-        ';
+        ';'
         // 背景
         context.fillStyle = backgroundColor || (this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC');
         context.fillRect(0, 0, width, height);
-        ';
+        ';'
         // 枠線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB';
         context.lineWidth = this.accessibilitySettings.highContrast ? 2 : 1;
         context.strokeRect(0, 0, width, height);
 
-        if(!this.statisticsData) {
+        if (!this.statisticsData) {
             // データなしメッセージ
             context.fillStyle = textColor || (this.accessibilitySettings.highContrast ? '#FFFFFF' : '#666666'),
             context.font = this.accessibilitySettings.largeText ? '18px Arial' : '16px Arial',
             context.textAlign = 'center',
             context.textBaseline = 'middle',
-            context.fillText('統計データを読み込み中...', width / 2, height / 2' }
+            context.fillText('統計データを読み込み中...', width / 2, height / 2' }'
             return; }
         }
-        ';
+        ';'
         // ダッシュボードタイトル
         context.fillStyle = accentColor || (this.accessibilitySettings.highContrast ? '#FFFF00' : '#4a90e2');
         context.font = this.accessibilitySettings.largeText ? 'bold 20px Arial' : 'bold 18px Arial';
@@ -263,21 +260,21 @@ export class StatisticsDashboardRenderer {
         // 統計データの準備
         const stats: StatCard[] = [{ ''
                 title: 'プレイ回数',
-                value: this.statisticsData?.basic?.totalGamesPlayed || 0, : undefined',
+                value: this.statisticsData?.basic?.totalGamesPlayed || 0, : undefined','
                 unit: '回'
             };
             { ''
                 title: '最高スコア',
-                value: this.statisticsData?.basic?.highestScore || 0, : undefined',
-                unit: '};
+                value: this.statisticsData?.basic?.highestScore || 0, : undefined','
+                unit: '};'
             { ''
                 title: '総破壊数',
-                value: this.statisticsData?.bubbles?.totalPopped || 0, : undefined',
+                value: this.statisticsData?.bubbles?.totalPopped || 0, : undefined','
                 unit: '個'
             };
             { ''
                 title: '最大コンボ',
-                value: this.statisticsData?.combos?.maxCombo || 0, : undefined',
+                value: this.statisticsData?.combos?.maxCombo || 0, : undefined','
                 unit: '連続'
             }]
             }]
@@ -306,26 +303,26 @@ export class StatisticsDashboardRenderer {
      * @param height - 描画高さ
      * @param options - レンダリングオプション
      */''
-    private renderStatsCard(context: CanvasRenderingContext2D, stat: StatCard, x: number, y: number, width: number, height: number, options: { textColor?: string, accentColor?: string } = { )): void { }
+    private renderStatsCard(context: CanvasRenderingContext2D, stat: StatCard, x: number, y: number, width: number, height: number, options: { textColor?: string, accentColor?: string; = { )): void { }
         const { textColor, accentColor } = options;
-        ';
+        ';'
         // カード背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#222222' : '#FFFFFF';
         context.fillRect(x, y, width, height);
-        ';
+        ';'
         // カード枠線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB';
 
         context.lineWidth = this.accessibilitySettings.highContrast ? 2 : 1;
         context.strokeRect(x, y, width, height);
-        ';
+        ';'
         // タイトル
         context.fillStyle = textColor || (this.accessibilitySettings.highContrast ? '#CCCCCC' : '#666666');
         context.font = this.accessibilitySettings.largeText ? '14px Arial' : '12px Arial';
         context.textAlign = 'center';
         context.textBaseline = 'top';
         context.fillText(stat.title, x + width / 2, y + 10);
-        ';
+        ';'
         // 値
         context.fillStyle = accentColor || (this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333');
         context.font = this.accessibilitySettings.largeText ? 'bold 24px Arial' : 'bold 20px Arial';
@@ -343,13 +340,13 @@ export class StatisticsDashboardRenderer {
      * @param data - データ
      * @param options - オプション'
      */''
-    private async renderFallbackChart(context: CanvasRenderingContext2D, type: string, data: any, options: { width?: number, height?: number, lineColor?: string, showAxes?: boolean, showGrid?: boolean } = { )): Promise<void> }
+    private async renderFallbackChart(context: CanvasRenderingContext2D, type: string, data: any, options: { width?: number, height?: number, lineColor?: string, showAxes?: boolean, showGrid?: boolean; = { )): Promise<void>;
         const { width, height } = options;
-        ';
+        ';'
         // 背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#FFFFFF';
         context.fillRect(0, 0, width || 400, height || 300);
-        ';
+        ';'
         // プレースホルダーメッセージ
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#666666';
         context.font = this.accessibilitySettings.largeText ? '16px Arial' : '14px Arial';
@@ -394,9 +391,9 @@ export class StatisticsDashboardRenderer {
 
         const errorText = 'ダッシュボード表示でエラーが発生しました',
         context.fillText(errorText, x + width / 2, y + height / 2),
-        ',
+        ','
         // デバッグ情報（開発時のみ）
-        if(this.gameEngine.debugMode) {
+        if (this.gameEngine.debugMode) {
 
             context.font = '12px monospace' }
             context.fillText(error.message, x + width / 2, y + height / 2 + 30); }
@@ -434,7 +431,7 @@ export class StatisticsDashboardRenderer {
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsDashboardRenderer.update',')',
                 details: 'ダッシュボード更新処理でエラーが発生しました'
-            }';
+            }';'
         }
     }
     
@@ -444,12 +441,12 @@ export class StatisticsDashboardRenderer {
      */''
     updateDisplaySettings(settings: Partial<StatisticsDisplaySettings>): void {'
         this.statisticsDisplaySettings = { ...this.statisticsDisplaySettings, ...settings,
-        this.eventBus.emit('statistics-display-settings-changed', this.statisticsDisplaySettings' }
+        this.eventBus.emit('statistics-display-settings-changed', this.statisticsDisplaySettings' }'
     
     /**
      * コンポーネントのクリーンアップ'
      */''
-    cleanup()';
+    cleanup()';'
         this.eventBus.off('statistics-data-updated');
         this.eventBus.off('statistics-display-settings-changed');
         
@@ -457,4 +454,4 @@ export class StatisticsDashboardRenderer {
         this.statisticsData = null;
         this.statisticsDashboard = null;
         this.chartRenderer = null;
-    }'}
+    }'}'

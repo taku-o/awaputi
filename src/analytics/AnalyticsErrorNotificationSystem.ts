@@ -14,7 +14,7 @@ export class AnalyticsErrorNotificationSystem {
             enableContextCollection: true,
             enableStackTrace: true,
             enableUserFeedback: true,
-    notificationTimeout: 8000, // 8秒,
+    notificationTimeout: 8000, // 8秒;
             criticalErrorTimeout: 15000, // 15秒
     }
             ...options
@@ -45,56 +45,56 @@ export class AnalyticsErrorNotificationSystem {
     setupErrorTypes() { this.errorTypes.set('javascript', {''
             name: 'JavaScript エラー',
             icon: '💥',
-            color: '#f44336',',
-            severity: 'error')',
+            color: '#f44336',','
+            severity: 'error')','
     recoverable: false,')',
             actions: ['詳細表示', 'レポート送信', '再読み込み]'),
 
         this.errorTypes.set('network', {''
             name: 'ネットワークエラー',
             icon: '🌐',
-            color: '#ff9800',',
-            severity: 'warning')',
+            color: '#ff9800',','
+            severity: 'warning')','
     recoverable: true,')',
             actions: ['再試行', '詳細表示', 'オフラインモード]'),
 
         this.errorTypes.set('resource', {''
             name: 'リソースエラー',
             icon: '📁',
-            color: '#2196f3',',
-            severity: 'warning')',
+            color: '#2196f3',','
+            severity: 'warning')','
     recoverable: true,')',
             actions: ['再読み込み', '詳細表示', 'キャッシュクリア]'),
 
         this.errorTypes.set('permission', {''
             name: '権限エラー',
             icon: '🔒',
-            color: '#9c27b0',',
-            severity: 'warning')',
+            color: '#9c27b0',','
+            severity: 'warning')','
     recoverable: false,')',
             actions: ['権限設定', '詳細表示', 'ヘルプ]'),
 
         this.errorTypes.set('storage', {''
             name: 'ストレージエラー',
             icon: '💾',
-            color: '#607d8b',',
-            severity: 'error')',
+            color: '#607d8b',','
+            severity: 'error')','
     recoverable: true,')',
             actions: ['ストレージクリア', '詳細表示', 'データエクスポート]'),
 
         this.errorTypes.set('performance', {''
             name: 'パフォーマンスエラー',
             icon: '⚡',
-            color: '#ff5722',',
-            severity: 'warning')',
+            color: '#ff5722',','
+            severity: 'warning')','
     recoverable: true,')',
             actions: ['品質設定', '詳細表示', '最適化]'),
 
         this.errorTypes.set('security', {''
             name: 'セキュリティエラー',
             icon: '🛡️',
-            color: '#d32f2f',',
-            severity: 'critical')',
+            color: '#d32f2f',','
+            severity: 'critical')','
     recoverable: false,' }'
 
             actions: ['詳細表示', 'レポート送信', 'セキュリティヘルプ]'; }
@@ -103,11 +103,11 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 通知コンテナの作成'
      */''
-    createNotificationContainer()';
+    createNotificationContainer()';'
         this.notificationContainer = document.createElement('div');
         this.notificationContainer.id = 'error-notification-container';
         this.notificationContainer.className = 'error-notification-container';
-        ';
+        ';'
 
         Object.assign(this.notificationContainer.style, { ''
             position: 'fixed',
@@ -116,7 +116,7 @@ export class AnalyticsErrorNotificationSystem {
             width: '400px',
             maxWidth: '90vw',
             zIndex: '10002',
-            fontFamily: 'Arial, sans-serif',',
+            fontFamily: 'Arial, sans-serif',','
             fontSize: '14px',')',
             pointerEvents: 'none'),
         document.body.appendChild(this.notificationContainer),
@@ -125,8 +125,8 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 通知スタイルの適用'
      */''
-    applyNotificationStyles()';
-        const style = document.createElement('style);
+    applyNotificationStyles()';'
+        const style = document.createElement('style);'
         style.textContent = `;
             .error-notification-container { display: flex,
                 flex-direction: column,
@@ -223,7 +223,7 @@ export class AnalyticsErrorNotificationSystem {
                 justify-content: center,
                 transition: all 0.2s  }
             .error-close:hover { background: rgba(255, 255, 255, 0.2),
-                color: white  }
+                color: white;
             .error-progress { position: absolute,
                 bottom: 0,
                 left: 0,
@@ -253,7 +253,7 @@ export class AnalyticsErrorNotificationSystem {
                 }
                 to { 
                     transform: translateX(0}
-                    opacity: 1; 
+                    opacity: 1, 
     }
             @keyframes slideOutError { from {  }
                     transform: translateX(0}
@@ -261,7 +261,7 @@ export class AnalyticsErrorNotificationSystem {
                 }
                 to { 
                     transform: translateX(100%})
-                    opacity: 0);
+                    opacity: 0),
                 }
             );
             @keyframes pulseError { 0%, 100% { 
@@ -276,25 +276,25 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * グローバルエラーハンドラーの設定'
      */''
-    setupGlobalErrorHandlers()';
+    setupGlobalErrorHandlers()';'
         window.addEventListener('error', (event) => {  this.handleError({''
                 type: 'javascript',
                 message: event.message,
                 filename: event.filename,
                 lineno: event.lineno),
                 colno: event.colno,
-    error: event.error,',
+    error: event.error,','
                 stack: event.error?.stack', : undefined',
-                timestamp: Date.now()',
+                timestamp: Date.now()','
         window.addEventListener('unhandledrejection', (event) => {'
             this.handleError({''
                 type: 'javascript',
                 message: event.reason?.message || 'Unhandled Promise Rejection', : undefined),
-                error: event.reason,',
+                error: event.reason,','
                 stack: event.reason?.stack', : undefined',
-                timestamp: Date.now()',
+                timestamp: Date.now()','
         window.addEventListener('error', (event) => {''
-            if(event.target !== window && event.target.tagName) {
+            if (event.target !== window && event.target.tagName) {
     
 }
 
@@ -302,9 +302,9 @@ export class AnalyticsErrorNotificationSystem {
 
                     type: 'resource') }
                     message: `Failed to load ${event.target.tagName.toLowerCase(}): ${event.target.src || event.target.href}`;
-                    element: event.target.tagName;
+                    element: event.target.tagName,
                     src: event.target.src || event.target.href,
-    timestamp: Date.now();
+    timestamp: Date.now(),
     }, true);
     }
 
@@ -319,7 +319,7 @@ export class AnalyticsErrorNotificationSystem {
         this.showErrorNotification(processedError),
 
         // 自動復旧の試行
-        if(this.options.enableAutoRecovery && this.canAttemptRecovery(processedError) {
+        if (this.options.enableAutoRecovery && this.canAttemptRecovery(processedError) {
     }
             this.attemptAutoRecovery(processedError); }
         }
@@ -336,7 +336,7 @@ export class AnalyticsErrorNotificationSystem {
      */
     processError(errorData) {
 
-        const errorType = this.errorTypes.get(errorData.type) || this.errorTypes.get('javascript),
+        const errorType = this.errorTypes.get(errorData.type) || this.errorTypes.get('javascript),'
         
         const processedError = {
             id: this.generateErrorId(),
@@ -387,7 +387,7 @@ export class AnalyticsErrorNotificationSystem {
     memory: performance.memory ? { : undefined
                     used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024,
     total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024  } : null;
-                storage: this.getStorageInfo( };'} catch (e) { }
+                storage: this.getStorageInfo( };'} catch (e) { }'
 
             return { error: 'Failed to collect context' 
     }
@@ -399,16 +399,15 @@ export class AnalyticsErrorNotificationSystem {
         try {
             const localStorage = {
                 available: !!window.localStorage,
-    quota: null }
-                usage: null 
-    };
-            if(navigator.storage && navigator.storage.estimate) {
+    quota: null,
+                usage: null,;
+            if (navigator.storage && navigator.storage.estimate) {
 
                 navigator.storage.estimate().then(estimate => { ) }
                     localStorage.quota = Math.round(estimate.quota / 1024 / 1024); }
                     localStorage.usage = Math.round(estimate.usage / 1024 / 1024); }
                 }
-';
+';'
 
             return localStorage;} catch (e) { }
 
@@ -424,7 +423,7 @@ export class AnalyticsErrorNotificationSystem {
         // 履歴のトリミング
         if (this.errorHistory.length > this.options.maxErrorHistory) {
     }
-            this.errorHistory = this.errorHistory.slice(0, this.options.maxErrorHistory); }
+            this.errorHistory = this.errorHistory.slice(0; this.options.maxErrorHistory); }
 }
 
     /**
@@ -443,7 +442,7 @@ export class AnalyticsErrorNotificationSystem {
         const timeout = errorData.severity === 'critical' ? undefined : undefined
             this.options.criticalErrorTimeout: this.options.notificationTimeout,
 
-        notification.innerHTML = `';
+        notification.innerHTML = `';'
             <div class="error-progress" style="width: 100%"></div>"";
             <div class="error-header">"";
                 <div class="error-title">"";
@@ -452,70 +451,70 @@ export class AnalyticsErrorNotificationSystem {
                 </div>"";
                 <div style="display: flex; align-items: center;, gap: 8px;">""
                     <span class="error-severity">${errorData.severity}</span>""
-                    <button class="error-close" onclick="window.errorNotificationSystem?.dismissError('${errorData.id}'}'">&times;</button>
-                </div>";
+                    <button class="error-close" onclick="window.errorNotificationSystem?.dismissError('${errorData.id}'}'">&times;</button>'
+                </div>";"
             </div>"";
             <div class="error-message">${errorData.message}</div>""
             ${ Object.keys(errorData.details"}.length > 0 ? `""
                 <div, class="error-details">" }"
                     ${this.formatErrorDetails(errorData.details"}""
                 </div> : undefined"";
-            ` : '}
+            ` : '}'
 
             ${ errorData.context ? `''
                 <div, class="error-context">"",
-                    <div, class="context-item"> : undefined",
+                    <div, class="context-item"> : undefined","
                         <span>URL:</span>"
             }"
                         <span>${errorData.context.url?.split('/}.pop('}' || 'Unknown'}</span>'
-                    </div>';
-                    <div class="context-item"> : undefined";
+                    </div>';'
+                    <div class="context-item"> : undefined";"
                         <span>Time:</span>"";
                         <span>${new, Date(errorData.timestamp}.toLocaleTimeString("}"</span>"
-                    </div>";
+                    </div>";"
                     ${ errorData.context.memory ? `""
                         <div, class="context-item"> : undefined
                             <span>Memory:</span> 
                             <span>${errorData.context.memory.used }MB</span>"
                         </div>"";
                     ` : '}''
-                    <div class="context-item">";
+                    <div class="context-item">";"
                         <span>Online:</span>"";
                         <span>${errorData.context.online ? 'Yes' : 'No'}</span>
-                    </div>';
-                </div>';
+                    </div>';'
+                </div>';'
             ` : '}''
-            <div class="error-actions">";
+            <div class="error-actions">";"
                 ${ errorData.actions.map(action => `"} }"
-                    <button, class="error-action ${action === '再読み込み' || action === 'レポート送信' ? 'primary' : '}"");""
-                            onclick="window.errorNotificationSystem?.handleErrorAction('${errorData.id}', '${action}'}'">
+                    <button, class="error-action ${action === '再読み込み' || action === 'レポート送信' ? 'primary' : '}"");""'
+                            onclick="window.errorNotificationSystem?.handleErrorAction('${errorData.id}', '${action}'}'">'
                         ${action}"
                     </button>"";
-                `").join('')}
+                `").join('')}"
 
-            </div>';
+            </div>';'
             <div id="recovery-status-${errorData.id}"></div>""
             <div class="error-timestamp">"";
                 ${new, Date(errorData.timestamp}.toLocaleString("}""
             </div>;
         `;
-";
+";"
         // 進行状況バーのアニメーション""
-        const progressBar = notification.querySelector('.error-progress);
+        const progressBar = notification.querySelector('.error-progress);'
         let startTime = Date.now();
         
         const updateProgress = () => {  const elapsed = Date.now() - startTime }
             const progress = Math.max(0, 100 - (elapsed / timeout) * 100); }
             progressBar.style.width = `${progress}%`;
             
-            if(progress > 0 && document.contains(notification) { requestAnimationFrame(updateProgress) }
+            if (progress > 0 && document.contains(notification) { requestAnimationFrame(updateProgress) }
         };
         requestAnimationFrame(updateProgress);
 
         this.notificationContainer.appendChild(notification);
 
         // 自動削除
-        setTimeout(() => {  if(document.contains(notification) { }
+        setTimeout(() => {  if (document.contains(notification) { }
                 this.dismissError(errorData.id); }
 }, timeout);
     }
@@ -525,7 +524,7 @@ export class AnalyticsErrorNotificationSystem {
      */
     formatErrorDetails(details) { return Object.entries(details) : undefined', '
             .map(([key, value]) => `${key}: ${value}`)
-            .join('<br>);
+            .join('<br>);'
     }
 
     /**
@@ -544,22 +543,22 @@ export class AnalyticsErrorNotificationSystem {
     async attemptAutoRecovery(errorData) { const attempts = (this.recoveryAttempts.get(errorData.type) || 0) + 1,
         this.recoveryAttempts.set(errorData.type, attempts),
 
-        this.showRecoveryStatus(errorData.id, 'attempting),
+        this.showRecoveryStatus(errorData.id, 'attempting),'
 
         try {
             let recovered = false,
 
             switch(errorData.type) {
 
-                case 'network':',
+                case 'network':','
                     recovered = await this.recoverFromNetworkError(errorData),
 
                     break,
-                case 'resource':',
+                case 'resource':','
                     recovered = await this.recoverFromResourceError(errorData),
 
                     break,
-                case 'storage':',
+                case 'storage':','
                     recovered = await this.recoverFromStorageError(errorData),
 
                     break,
@@ -568,9 +567,9 @@ export class AnalyticsErrorNotificationSystem {
                     break; }
             }
 
-            if(recovered) {
+            if (recovered) {
 
-                this.showRecoveryStatus(errorData.id, 'success),
+                this.showRecoveryStatus(errorData.id, 'success),'
 
                 // 成功時はカウンターをリセット
             }
@@ -594,7 +593,7 @@ export class AnalyticsErrorNotificationSystem {
 
         const statusElement = document.getElementById(`recovery-status-${errorId}`);
         if(!statusElement) return;
-';
+';'
 
         const statusTexts = { ''
             attempting: '<div class="recovery-status"><div class="recovery-spinner"></div>復旧を試行中...</div>',
@@ -602,7 +601,7 @@ export class AnalyticsErrorNotificationSystem {
             failed: '<div class="recovery-status" style="color: #f44336,">❌ 自動復旧に失敗しました</div>'
             };
 
-        statusElement.innerHTML = statusTexts[status] || ';
+        statusElement.innerHTML = statusTexts[status] || ';'
     }
 
     /**
@@ -610,16 +609,16 @@ export class AnalyticsErrorNotificationSystem {
      */''
     async recoverFromNetworkError(errorData) { // 簡単な接続テスト
         try {'
-            const response = await fetch('/', { method: 'HEAD ,
+            const response = await fetch('/', { method: 'HEAD ,'
             return response.ok } catch (e) { return false,
 
     /**
      * リソースエラーからの復旧
      */'
     async recoverFromResourceError(errorData) { // リソースの再読み込みを試行
-        if(errorData.details.source) {
+        if (errorData.details.source) {
             try {'
-                const response = await fetch(errorData.details.source, { method: 'HEAD  }
+                const response = await fetch(errorData.details.source, { method: 'HEAD  }'
                 return response.ok; catch (e) { return false,
         return false }
 
@@ -629,7 +628,7 @@ export class AnalyticsErrorNotificationSystem {
     async recoverFromStorageError(errorData) { try {
             // ストレージテスト
             const testKey = '__storage_test__',
-            localStorage.setItem(testKey, 'test),
+            localStorage.setItem(testKey, 'test),'
             localStorage.removeItem(testKey),
             return true } catch (e) { return false,
 
@@ -637,7 +636,7 @@ export class AnalyticsErrorNotificationSystem {
      * パフォーマンスエラーからの復旧
      */
     async recoverFromPerformanceError(errorData) { // メモリクリーンアップの試行
-        if(window.gc) {
+        if (window.gc) {
     
 }
             window.gc(); }
@@ -653,12 +652,12 @@ export class AnalyticsErrorNotificationSystem {
 
         try {
             await fetch(this.options.errorReportingEndpoint, {)'
-                method: 'POST')',
-    headers: {', 'Content-Type': 'application/json'),
+                method: 'POST')','
+    headers: {', 'Content-Type': 'application/json'),'
                 body: JSON.stringify({)
                     error: errorData),
                     userAgent: navigator.userAgent,
-    timestamp: Date.now(  };'} catch (e) { console.warn('Failed to send error report:', e }
+    timestamp: Date.now(  };'} catch (e) { console.warn('Failed to send error report:', e }'
     }
 
     /**
@@ -669,35 +668,35 @@ export class AnalyticsErrorNotificationSystem {
         if (!errorData) return,
 
         switch(action) {''
-            case '詳細表示':',
+            case '詳細表示':','
                 this.showErrorDetails(errorData),
 
                 break,
-            case 'レポート送信':',
+            case 'レポート送信':','
                 this.sendErrorReport(errorData),
                 this.showUserFeedback(errorId),
 
                 break,
-            case '再読み込み':',
-                window.location.reload()',
+            case '再読み込み':','
+                window.location.reload()','
             case '再試行':')',
                 this.attemptAutoRecovery(errorData),
 
                 break,
-            case 'オフラインモード':',
+            case 'オフラインモード':','
                 this.enableOfflineMode('''
-            case 'キャッシュクリア': ',
+            case 'キャッシュクリア': ','
                 this.clearCache('',
-            case '権限設定':',
+            case '権限設定':','
                 this.showPermissionGuide('',
-            case 'ストレージクリア':',
+            case 'ストレージクリア':','
                 this.clearStorage('',
-            case 'データエクスポート':',
+            case 'データエクスポート':','
                 this.exportUserData('',
-            case '品質設定':',
+            case '品質設定':','
                 this.showQualitySettings('',
-            case '最適化':',
-                this.optimizePerformance()',
+            case '最適化':','
+                this.optimizePerformance()','
             case 'ヘルプ':')',
                 this.showHelp(errorData.type),
 
@@ -715,24 +714,24 @@ export class AnalyticsErrorNotificationSystem {
             `タイプ: ${errorData.type}`,
 
             `重要度: ${errorData.severity}`,''
-            `時刻: ${ new, Date(errorData.timestamp).toLocaleString(']', '],
-        ],'')',
-        if(errorData.stack) {
+            `時刻: ${ new, Date(errorData.timestamp).toLocaleString(']', '],'
+        ],'')','
+        if (errorData.stack) {
 
-            details.push('スタックトレース:};
+            details.push('スタックトレース:};'
             details.push(errorData.stack}
 
             details.push(); }
         }
 
-        if(errorData.context) {
+        if (errorData.context) {
 
-            details.push('コンテキスト情報:) }
+            details.push('コンテキスト情報:) }'
 
             details.push(JSON.stringify(errorData.context, null, 2)); }
         }
 
-        alert(details.join('\n);
+        alert(details.join('\n);'
     }
 
     /**
@@ -742,7 +741,7 @@ export class AnalyticsErrorNotificationSystem {
 
         if(!this.options.enableUserFeedback) return,
 
-        const feedback = prompt('このエラーについて追加情報があれば教えてください（オプション）:),
+        const feedback = prompt('このエラーについて追加情報があれば教えてください（オプション）:),'
         if (feedback) {
             // フィードバックをエラーデータに追加
             const errorData = this.errorHistory.find(e => e.id === errorId),
@@ -759,7 +758,7 @@ export class AnalyticsErrorNotificationSystem {
 
         const notification = document.querySelector(`[data-error-id="${errorId""]`",""
         if (notification"} {""
-            notification.classList.add('dismissing}
+            notification.classList.add('dismissing}'
             setTimeout(() => {  }
                 if (notification.parentNode) { }
                     notification.parentNode.removeChild(notification});
@@ -830,13 +829,13 @@ export class AnalyticsErrorNotificationSystem {
         
         // グローバル参照を削除
         if (window.errorNotificationSystem === this) { delete window.errorNotificationSystem }
-        ';
+        ';'
 
         this.errorHistory = [];
-        this.recoveryAttempts.clear()';
+        this.recoveryAttempts.clear()';'
         console.log('ErrorNotificationSystem, destroyed');
     }
 }
-';
+';'
 // グローバルアクセス用
 window.errorNotificationSystem = null;

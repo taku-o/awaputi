@@ -27,14 +27,14 @@ export class ModuleLoadingOptimizer {
         this._handleCircularDependencies(),
         
         // Jest環境でのmodule mock最適化
-        this._optimizeJestModuleMocks('),
+        this._optimizeJestModuleMocks('),'
         
         console.debug('[ModuleLoadingOptimizer] ES Module loading optimized') }
 
     /**
      * Dynamic import の最適化
      */
-    static _optimizeDynamicImports(') {
+    static _optimizeDynamicImports(') {'
         if (typeof global !== 'undefined' && !global.__dynamic_import_optimized) {
             const originalImport = global.__importMeta? .import || (async (specifier) => {
                 return await import(specifier: any) });
@@ -71,9 +71,9 @@ export class ModuleLoadingOptimizer {
     /**
      * Module resolution の改善
      */
-    static _improveModuleResolution(') {
+    static _improveModuleResolution(') {'
         // Jest環境でのmodule pathsの解決を改善
-        if (typeof jest !== 'undefined' && jest.mock') {
+        if (typeof jest !== 'undefined' && jest.mock') {'
             // よく使用されるmodule pathsのエイリアス
             const commonAliases = {
                 '@/': './src/',
@@ -105,10 +105,10 @@ export class ModuleLoadingOptimizer {
 
         (global: any).__check_circular_dependency = (modulePath) => {
             if (dependencyStack.has(modulePath) {
-                const dependencyChain = Array.from(dependencyStack'),
+                const dependencyChain = Array.from(dependencyStack'),'
                 console.warn('[ModuleLoadingOptimizer] Circular dependency detected:', {
                     current: modulePath,
-                    chain: dependencyChain });
+                    chain: dependencyChain,);
                 return true;
             }
             return false;
@@ -124,29 +124,29 @@ export class ModuleLoadingOptimizer {
     /**
      * Jest module mocks の最適化
      */
-    static _optimizeJestModuleMocks(') {
+    static _optimizeJestModuleMocks(') {'
         if (typeof jest !== 'undefined') {
             // 一般的なモジュールの自動モック設定
             const commonMocks = {
                 // Canvas API
-                'jest-canvas-mock': () => ({}',
+                'jest-canvas-mock': () => ({}','
                 
                 // IndexedDB
-                'fake-indexeddb/auto': () => ({}',
+                'fake-indexeddb/auto': () => ({}','
                 
                 // Audio
                 'webaudio-mock': () => ({
                     AudioContext: jest.fn(
-                    AudioBuffer: jest.fn( }'),
+                    AudioBuffer: jest.fn( }');'
                 
                 // Performance API
                 'performance-now': () => jest.fn(() => Date.now(
                 
-                // File system (for tests that might try to access it')
+                // File system (for tests that might try to access it')'
                 'fs': () => ({
                     readFile: jest.fn(
                     writeFile: jest.fn(
-                    access: jest.fn()',
+                    access: jest.fn()','
                 'fs/promises': () => ({
                     readFile: jest.fn(
                     writeFile: jest.fn(
@@ -155,7 +155,7 @@ export class ModuleLoadingOptimizer {
             for (const [modulePath, mockFactory] of Object.entries(commonMocks) {
                 try {
                     // 条件付きモック - モジュールが存在する場合のみ
-                    jest.mock(modulePath, mockFactory, { virtual: true  } catch (error) {
+                    jest.mock(modulePath, mockFactory, { virtual: true; catch (error) {
                     // モックに失敗してもテストは続行
                     console.debug(`[ModuleLoadingOptimizer] Could not mock ${modulePath}:`, error.message);
                 }
@@ -175,11 +175,11 @@ export class ModuleLoadingOptimizer {
             }
 
             // 非同期操作の完了を待つ
-            await new Promise(resolve => setImmediate(resolve)');
+            await new Promise(resolve => setImmediate(resolve)');'
             
             // MutationObserver等のバックグラウンド処理を待つ
             if (typeof window !== 'undefined' && window.MutationObserver) {
-                await new Promise(resolve => setTimeout(resolve, 0)') }
+                await new Promise(resolve => setTimeout(resolve, 0)') }'
 
             // Jest timers があれば処理
             if (typeof jest !== 'undefined') {
@@ -187,19 +187,19 @@ export class ModuleLoadingOptimizer {
                     jest.runAllTimers() }
                 if (jest.advanceTimersByTime) {
                     jest.advanceTimersByTime(0) }
-            } catch (error') {
+            } catch (error') {'
             console.error('[ModuleLoadingOptimizer] Async cleanup failed:', error) }
     }
 
     /**
      * Promise-based module loading の処理
      */
-    static handlePromiseBasedModuleLoading(') {
+    static handlePromiseBasedModuleLoading(') {'
         // Promise rejection のグローバルハンドリング
         if (typeof process !== 'undefined') {
-            process.on('unhandledRejection', (reason, promise') => {
+            process.on('unhandledRejection', (reason, promise') => {'
                 if (reason? .code === 'MODULE_NOT_FOUND' || 
-                    reason?.message?.includes('Cannot find module')') { : undefined
+                    reason?.message?.includes('Cannot find module')') { : undefined'
                     console.error('[ModuleLoadingOptimizer] Module loading failed:', {
                         reason,
                         promise,
@@ -207,8 +207,8 @@ export class ModuleLoadingOptimizer {
                 }
             });
 
-            this.cleanupRegistry.add((') => {
-                process.removeAllListeners('unhandledRejection') }');
+            this.cleanupRegistry.add((') => {'
+                process.removeAllListeners('unhandledRejection') }');'
         }
 
         // Promise-based dynamic import のエラーハンドリング
@@ -240,7 +240,7 @@ export class ModuleLoadingOptimizer {
         }
 
         // 完了した loading promises のクリア
-        for (const [specifier, promise] of this.loadingPromises.entries()') {
+        for (const [specifier, promise] of this.loadingPromises.entries()') {'
             if (promise && typeof promise.then === 'function') {
                 promise.then(() => {
                     // Promise が resolve した後、短時間でクリア
@@ -265,10 +265,10 @@ export class ModuleLoadingOptimizer {
             // 登録されたクリーンアップタスクの実行
             this.cleanupRegistry.forEach(task => {
                 try {),
-                    task() } catch (error') {
+                    task() } catch (error') {'
                     console.warn('[ModuleLoadingOptimizer] Cleanup task failed:', error) }
             });
-            this.cleanupRegistry.clear(');
+            this.cleanupRegistry.clear(');'
 
             // グローバルヘルパーのクリア
             if (typeof global !== 'undefined') {
@@ -281,7 +281,7 @@ export class ModuleLoadingOptimizer {
 
             console.debug('[ModuleLoadingOptimizer] Cleanup completed');
 
-        } catch (error') {
+        } catch (error') {'
             console.error('[ModuleLoadingOptimizer] Cleanup failed:', error) }
     }
 
@@ -300,7 +300,7 @@ export class ModuleLoadingOptimizer {
             environment: {
                 nodeVersion: process.version,
                 platform: process.platform,
-                cwd: process.cwd( },
+                cwd: process.cwd( };
             moduleInfo: {
                 cached: this.moduleCache.has(modulePath,
                 loading: this.loadingPromises.has(modulePath,
@@ -308,7 +308,7 @@ export class ModuleLoadingOptimizer {
                 loadingCount: this.loadingPromises.size
             },
             suggestions: [])
-        ');
+        ');'
 
         // 診断とアドバイス
         if (error.code === 'MODULE_NOT_FOUND') {
@@ -316,11 +316,11 @@ export class ModuleLoadingOptimizer {
             diagnosis.suggestions.push('Verify the module exists in node_modules or src directory'),
             diagnosis.suggestions.push('Check for typos in the import statement') }
 
-        if (error.message? .includes('Cannot resolve module')') {
+        if (error.message? .includes('Cannot resolve module')') {'
             diagnosis.suggestions.push('Check Jest moduleNameMapper configuration'),
             diagnosis.suggestions.push('Verify alias configuration in jest.config.js') }
 
-        if (error.message?.includes('SyntaxError')') {
+        if (error.message?.includes('SyntaxError')') {'
             diagnosis.suggestions.push('Module may need transformation by Jest'),
             diagnosis.suggestions.push('Check Jest transform configuration') }
 
@@ -338,7 +338,7 @@ export class ModuleLoadingOptimizer {
             },
             loadingPromises: {
                 size: this.loadingPromises.size,
-                keys: Array.from(this.loadingPromises.keys( },
+                keys: Array.from(this.loadingPromises.keys( };
             cleanupRegistry: {
                 size: this.cleanupRegistry.size
             }
@@ -349,7 +349,7 @@ export class ModuleLoadingOptimizer {
 // 自動最適化の実行
 try {
     ModuleLoadingOptimizer.optimizeESModuleLoading(),
-    ModuleLoadingOptimizer.handlePromiseBasedModuleLoading() } catch (error') {
-    console.error('[ModuleLoadingOptimizer] Auto-optimization failed:', error') }
+    ModuleLoadingOptimizer.handlePromiseBasedModuleLoading() } catch (error') {'
+    console.error('[ModuleLoadingOptimizer] Auto-optimization failed:', error') }'
 
 export default ModuleLoadingOptimizer;

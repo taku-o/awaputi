@@ -8,61 +8,59 @@ import path from 'path';
 
 // Type definitions
 interface ClassDefinition { name: string,
-    file: string,
-    line: number,
-    type: 'export class' | 'class',
-    relativeFile: string  }
+    file: string;
+    line: number;
+    type: 'export class' | 'class';
+    relativeFile: string;
 
 interface DuplicateFile { fileName: string,
-    count: number,
-    paths: string[] }
+    count: number;
+    paths: string[];
 
 interface DuplicateClass { className: string,
-    count: number,
-    locations: ClassDefinition[]
-    }
+    count: number;
+    locations: ClassDefinition[];
 
 interface ImpactAnalysis { scope: string,
-    potential_conflicts: string,
-    maintenance_difficulty: 'low' | 'medium' | 'high',
+    potential_conflicts: string;
+    maintenance_difficulty: 'low' | 'medium' | 'high';
     testing_complexity?: 'low' | 'medium' | 'high' }
-';
+';'
 
 interface Conflict { ''
-    type: 'class' | 'file',
-    name: string,
-    count: number,
-    locations?: ClassDefinition[],
+    type: 'class' | 'file';
+    name: string;
+    count: number;
+    locations?: ClassDefinition[];
 
-    paths?: string[],', priority: 'low' | 'medium' | 'high',
-    riskLevel: 'low' | 'medium' | 'high',
-    impactAnalysis: ImpactAnalysis
-     }
+    paths?: string[],', priority: 'low' | 'medium' | 'high';'
+    riskLevel: 'low' | 'medium' | 'high';
+    impactAnalysis: ImpactAnalysis;
 
 interface ConflictReport { analysis_date: string,
-    project: string,
-    total_files_analyzed: number,
-    total_classes_found: number,
+    project: string;
+    total_files_analyzed: number;
+    total_classes_found: number;
     duplications: {
         class_name_duplication,s: number,
         file_name_duplications: number,
         high_priority_conflicts: number,
-    medium_priority_conflicts: number };
+    medium_priority_conflicts: number,;
     conflicts: Conflict[],
     summary: { most_critical: string[],
-    recommendations: string[] }
+    recommendations: string[],
 
 export class DuplicationAnalyzer {
-    private sourceDir: string,
-    private files: string[],
-    private classes: ClassDefinition[],
-    private duplicateFiles: DuplicateFile[],
-    private, duplicateClasses: DuplicateClass[]',
+    private sourceDir: string;
+    private files: string[];
+    private classes: ClassDefinition[];
+    private duplicateFiles: DuplicateFile[];
+    private, duplicateClasses: DuplicateClass[]';'
 
     constructor(sourceDir: string = 'src' {'
-        this.sourceDir = sourceDir,
-        this.files = [],
-        this.classes = [],
+        this.sourceDir = sourceDir;
+        this.files = [];
+        this.classes = [];
         this.duplicateFiles = [] }
         this.duplicateClasses = []; }
     }
@@ -70,11 +68,11 @@ export class DuplicationAnalyzer {
     /**
      * ファイルシステムを走査して.jsファイルを収集
      */
-    async analyzeFiles(): Promise<void> { this.files = await this.scanDirectory(this.sourceDir),
+    async analyzeFiles(): Promise<void> { this.files = await this.scanDirectory(this.sourceDir);
 
         for (const filePath of this.files) {
             try {'
-                const content = await fs.readFile(filePath, 'utf8),
+                const content = await fs.readFile(filePath, 'utf8),'
                 const classes = this.extractClassDefinitions(filePath, content) }
                 this.classes.push(...classes);
             } catch (error) {
@@ -93,7 +91,7 @@ export class DuplicationAnalyzer {
             ,
             const fullPath = path.join(dir, entry.name),
             
-            if(entry.isDirectory() {
+            if (entry.isDirectory() {
     
 }
 
@@ -117,9 +115,9 @@ export class DuplicationAnalyzer {
             const lineNumber = this.getLineNumber(content, match.index),
             
             classes.push({)
-                name: className)',
+                name: className)','
     file: filePath,')',
-                line: lineNumber',
+                line: lineNumber','
                 type: match[0].includes('export') ? 'export class' : 'class',
     relativeFile: path.relative(process.cwd(), filePath });
         }
@@ -141,7 +139,7 @@ export class DuplicationAnalyzer {
         for (const filePath of this.files) {
         
             const fileName = path.basename(filePath),
-            if(!fileNames.has(fileName) {
+            if (!fileNames.has(fileName) {
     
 }
                 fileNames.set(fileName, []); }
@@ -153,7 +151,7 @@ export class DuplicationAnalyzer {
             .filter(([name, paths]) => paths.length > 1);
             .map(([name, paths]) => ({ fileName: name,
                 count: paths.length,
-    paths: paths  });
+    paths: paths,);
         return this.duplicateFiles;
     }
 
@@ -165,7 +163,7 @@ export class DuplicationAnalyzer {
         for (const classInfo of this.classes) {
         
             const className = classInfo.name,
-            if(!classNames.has(className) {
+            if (!classNames.has(className) {
     
 }
                 classNames.set(className, []); }
@@ -177,7 +175,7 @@ export class DuplicationAnalyzer {
             .filter(([name, classes]) => classes.length > 1);
             .map(([name, classes]) => ({ className: name,
                 count: classes.length,
-    locations: classes  });
+    locations: classes,);
         return this.duplicateClasses;
     }
 
@@ -198,7 +196,7 @@ export class DuplicationAnalyzer {
     };
             conflicts.push(conflict);
         }
-';
+';'
         // ファイル名重複の競合分析
         for (const duplicate of this.duplicateFiles) {
             const conflict: Conflict = {''
@@ -235,7 +233,7 @@ export class DuplicationAnalyzer {
         const criticalClasses = ['DialogManager', 'PerformanceMonitor', 'ErrorReporter'],
         if(criticalClasses.includes(duplicate.className)) {''
             return 'high' }
-        ';
+        ';'
         // UIコンポーネントは中リスク
         const uiClasses = ['BaseDialog', 'ChartRenderer'];
         if(uiClasses.includes(duplicate.className)) { ''
@@ -250,12 +248,12 @@ export class DuplicationAnalyzer {
     private analyzeImpact(duplicate: DuplicateClass): ImpactAnalysis { const locations = duplicate.locations,
         const directories = locations.map(loc => path.dirname(loc.file),
         const uniqueDirs = [...new Set(directories)],
-',
+','
 
         return { ''
             scope: this.determineScope(uniqueDirs,
             potential_conflicts: 'namespace_collision',
-            maintenance_difficulty: duplicate.count >= 3 ? 'high' : 'medium',' };
+            maintenance_difficulty: duplicate.count >= 3 ? 'high' : 'medium',' };'
 
             testing_complexity: duplicate.count >= 3 ? 'high' : 'medium' 
         }
@@ -266,7 +264,7 @@ export class DuplicationAnalyzer {
     private determineScope(directories: string[]): string { ''
         const hasCore = directories.some(dir => dir.includes('/core/)',
         const hasUI = directories.some(dir => dir.includes('/ui/') || dir.includes('/scenes/)',
-        const hasDebug = directories.some(dir => dir.includes('/debug/),
+        const hasDebug = directories.some(dir => dir.includes('/debug/),'
 
         if(hasCore && hasUI) return 'core_ui_components',
         if(hasCore) return 'core_system',
@@ -278,7 +276,7 @@ export class DuplicationAnalyzer {
      * 競合レポートを生成
      */
     generateConflictReport(): ConflictReport { const conflicts = this.identifyConflicts(),
-        ',
+        ','
 
         return { ''
             analysis_date: new Date().toISOString().split('T')[0],
@@ -288,18 +286,18 @@ export class DuplicationAnalyzer {
             duplications: {''
                 class_name_duplications: conflicts.filter(c => c.type === 'class').length,
                 file_name_duplications: conflicts.filter(c => c.type === 'file').length,
-                high_priority_conflicts: conflicts.filter(c => c.priority === 'high').length,' };
+                high_priority_conflicts: conflicts.filter(c => c.priority === 'high').length,' };'
 
                 medium_priority_conflicts: conflicts.filter(c => c.priority === 'medium').length 
     };
             conflicts: conflicts,
             summary: { most_critical: conflicts''
-                    .filter(c => c.priority === 'high'',
+                    .filter(c => c.priority === 'high'','
                     .map(c => c.name),
-                recommendations: [',
+                recommendations: [','
                     'DialogManager系クラスの即座の名前解決',
                     'PerformanceMonitor系クラスの特化名称への変更',
-                    'BaseDialog統一実装への統合検討',]',
+                    'BaseDialog統一実装への統合検討',]','
                     '命名規則とアーキテクチャガイドラインの策定'],
                 ] }
-}'}
+}'}'

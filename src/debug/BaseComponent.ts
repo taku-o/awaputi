@@ -6,18 +6,17 @@
 type ErrorHandler = (error: Error, componentName: string, context: string) => void;
 
 export class BaseComponent {
-    protected mainController: any,
-    protected name: string,
-    protected initialized: boolean,
-    protected errorHandler: ErrorHandler | null,
+    protected mainController: any;
+    protected name: string;
+    protected initialized: boolean;
+    protected errorHandler: ErrorHandler | null;
 
     constructor(mainController: any, name: string = 'BaseComponent' {'
 
-        this.mainController = mainController,
-        this.name = name,
-        this.initialized = false,
-
-     }
+        this.mainController = mainController;
+        this.name = name;
+        this.initialized = false
+}
         this.errorHandler = null; }
     }
 

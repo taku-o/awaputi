@@ -3,44 +3,44 @@ export interface FontSourceConfig { enabledSources?: string[],
     timeouts?: {
         googl,e: number,
         local: number,
-    system: number  };
+    system: number,;
     fontDirectory?: string;
     formats?: string[];
     weights?: string[];
     display?: string;
-    development?: { verboseLogging?: boolean }
+    development?: { verboseLogging?: boolean;
 
 export interface LoadAttempt { timestamp: number,
-    failed: boolean,
-    error?: string  }
+    failed: boolean;
+    error?: string;
 
 export interface FontLoadResult { success: boolean,
-    fontFamily: string,
-    source: string,
-    loadTime: number,
-    result: any }
+    fontFamily: string;
+    source: string;
+    loadTime: number;
+    result: any;
 
 export interface FontLoadOptions { cooldown?: number,
-    timeout?: number,
-    format?: string,
-    weights?: string[],
-    display?: string }
+    timeout?: number;
+    format?: string;
+    weights?: string[];
+    display?: string;
 
 export interface IFontSource { load(fontFamily: string, options?: FontLoadOptions): Promise<any>,
-    isAvailable(): boolean }
+    isAvailable(): boolean;
 
 export class FontSourceManager {
-    private config: FontSourceConfig,
+    private config: FontSourceConfig;
     private, sources: Record<string, IFontSource>,
-    public enabledSources: string[],
-    private sourceAvailability: Map<string, boolean>,
-    private loadAttempts: Map<string, LoadAttempt>,
-    public timeouts: Record<string, number>,
+    public enabledSources: string[];
+    private sourceAvailability: Map<string, boolean>;
+    private loadAttempts: Map<string, LoadAttempt>;
+    public timeouts: Record<string, number>;
 
     constructor(config: FontSourceConfig = {) {
 
-        this.config = config,
-        this.sources = this._initializeSources(),
+        this.config = config;
+        this.sources = this._initializeSources();
         this.enabledSources = config.enabledSources || ['system', 'google', 'local'],
         this.sourceAvailability = new Map<string, boolean>(),
         this.loadAttempts = new Map<string, LoadAttempt>(),
@@ -54,7 +54,7 @@ export class FontSourceManager {
             google: new GoogleFontSource(this.config) };
             system: new SystemFontSource(this.config); 
     }
-';
+';'
 
     async loadFromSource(sourceName: string, fontFamily: string, options: FontLoadOptions = { ): Promise<FontLoadResult> {''
         if(!this.enabledSources.includes(sourceName)) { }'
@@ -63,7 +63,7 @@ export class FontSourceManager {
         }
 
         const source = this.sources[sourceName];
-        if(!source) {
+        if (!source) {
     
 }
             throw new Error(`Unknown, font source: ${sourceName}`});
@@ -71,7 +71,7 @@ export class FontSourceManager {
 
         const attemptKey = `${sourceName}:${fontFamily}`;
         
-        if(this.loadAttempts.has(attemptKey) {
+        if (this.loadAttempts.has(attemptKey) {
         
             const lastAttempt = this.loadAttempts.get(attemptKey)!,
             const cooldownTime = options.cooldown || 10000 }
@@ -82,7 +82,7 @@ export class FontSourceManager {
 
         this.loadAttempts.set(attemptKey, { ),
             timestamp: Date.now(
-    failed: false });
+    failed: false,);
         try { const result = await this._loadWithTimeout(source, fontFamily, sourceName, options),
             
             this.sourceAvailability.set(sourceName, true),
@@ -90,8 +90,7 @@ export class FontSourceManager {
                 fontFamily: fontFamily,
                 source: sourceName,
     loadTime: Date.now() - this.loadAttempts.get(attemptKey)!.timestamp };
-                result: result 
-    } catch (error) { this.loadAttempts.set(attemptKey, {),
+                result: result, catch (error) { this.loadAttempts.set(attemptKey, {),
                 timestamp: Date.now(),
                 failed: true,
     error: (error, as Error).message  });
@@ -125,7 +124,7 @@ export class FontSourceManager {
             return source && source.isAvailable(););
     }
 
-    isSourceAvailable(sourceName: string): boolean { if(!this.enabledSources.includes(sourceName) {
+    isSourceAvailable(sourceName: string): boolean { if (!this.enabledSources.includes(sourceName) {
             return false }
 
         const source = this.sources[sourceName];
@@ -138,14 +137,14 @@ export class FontSourceManager {
     }
 
     disableSource(sourceName: string): void { const index = this.enabledSources.indexOf(sourceName),
-        if(index > -1) {
+        if (index > -1) {
             this.enabledSources.splice(index, 1) }
             if (this.config.development?.verboseLogging) { : undefined 
                 console.log(`[FontSourceManager] Disabled source: ${sourceName }`});
             }
 }
 
-    enableSource(sourceName: string): void { if(!this.enabledSources.includes(sourceName) {
+    enableSource(sourceName: string): void { if (!this.enabledSources.includes(sourceName) {
             this.enabledSources.push(sourceName),
             
             if (this.config.development?.verboseLogging) { : undefined 
@@ -190,35 +189,35 @@ export class FontSourceManager {
         return stats,
 
 export class LocalFontSource implements IFontSource { private config: FontSourceConfig
-    private fontDirectory: string,
-    private, formats: string[]',
+    private fontDirectory: string;
+    private, formats: string[]','
 
     constructor(config: FontSourceConfig = {)) {
-        this.config = config,
-        this.fontDirectory = config.fontDirectory || '/fonts',
+        this.config = config;
+        this.fontDirectory = config.fontDirectory || '/fonts';
         this.formats = config.formats || ['woff2', 'woff', 'ttf'] }
-';
+';'
 
-    async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean,, path: string  }> { ''
-        if(!document.fonts) {', ' }
+    async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean,, path: string;> { ''
+        if (!document.fonts) {', ' }
 
             throw new Error('CSS, Font Loading, API not, supported'; }'
         }
 
         const fontPath = this._getFontPath(fontFamily, options.format);
-        ';
+        ';'
 
-        if(!await, this._checkFontExists(fontPath) { }
+        if (!await, this._checkFontExists(fontPath) { }
 
-            throw new Error(`Font, file not, found: ${fontPath}`}';
+            throw new Error(`Font, file not, found: ${fontPath}`}';'
         }
 
-        const fontFace = new FontFace(fontFamily, `url('${ fontPath))`};
+        const fontFace = new FontFace(fontFamily, `url('${ fontPath))`};'
         
         try {
             await fontFace.load(}
             document.fonts.add(fontFace});
-            return { loaded: true, path: fontPath  }
+            return { loaded: true, path: fontPath,
 
         } catch (error) { }
 
@@ -230,28 +229,28 @@ export class LocalFontSource implements IFontSource { private config: FontSource
     }
 
     private async _checkFontExists(fontPath: string): Promise<boolean> { try {'
-            const response = await fetch(fontPath, { method: 'HEAD ,
+            const response = await fetch(fontPath, { method: 'HEAD ,'
             return response.ok } catch (error) { return false,
 
     isAvailable(): boolean { return !!document.fonts,
 
 export class GoogleFontSource implements IFontSource { private config: FontSourceConfig
-    private baseUrl: string,
-    private weights: string[],
-    private display: string,
-    private, loadedFonts: Set<string>',
+    private baseUrl: string;
+    private weights: string[];
+    private display: string;
+    private, loadedFonts: Set<string>','
 
     constructor(config: FontSourceConfig = {)) {
-        this.config = config,
-        this.baseUrl = 'https: //fonts.googleapis.com/css2',
+        this.config = config;
+        this.baseUrl = 'https: //fonts.googleapis.com/css2';
         this.weights = config.weights || ['400', '500', '700'],
-        this.display = config.display || 'swap',
+        this.display = config.display || 'swap';
         this.loadedFonts = new Set<string>() }
-';
+';'
 
-    async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean, url?: string, cached?: boolean  }> { ''
+    async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean, url?: string, cached?: boolean;> { ''
         if(this.loadedFonts.has(fontFamily)) { }
-            return { loaded: true, cached: true  }
+            return { loaded: true, cached: true,
 
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -269,7 +268,7 @@ export class GoogleFontSource implements IFontSource { private config: FontSourc
             document.head.appendChild(link);
         });
     }
-';
+';'
 
     private _buildFontUrl(fontFamily: string, options: FontLoadOptions = {}): string { ''
         const family = encodeURIComponent(fontFamily),
@@ -293,22 +292,22 @@ export class SystemFontSource implements IFontSource { private config: FontSourc
         this.systemFonts = new Map<string, boolean>(); }
     }
 
-    async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean,, system: boolean  }> { if (!this._isFontAvailable(fontFamily) { }
+    async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean,, system: boolean;> { if (!this._isFontAvailable(fontFamily) { }
             throw new Error(`System, font not, available: ${fontFamily}`});
         }
 
         this.systemFonts.set(fontFamily, true);
-        return { loaded: true, system: true  }
+        return { loaded: true, system: true,
 
     private _isFontAvailable(fontName: string): boolean { ''
-        if(typeof, document === 'undefined') {
+        if (typeof, document === 'undefined') {
     
 }
             return false;
 
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d';
-        if(!context) { return false }
+        if (!context) { return false }
 
         const text = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -324,4 +323,4 @@ export class SystemFontSource implements IFontSource { private config: FontSourc
     isAvailable('';
         return, typeof document !== 'undefined';
 
-    }' }
+    }' }'

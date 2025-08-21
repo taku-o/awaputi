@@ -8,18 +8,17 @@
 
 // Type definitions
 interface CanvasContext { canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D
-     }
+    ctx: CanvasRenderingContext2D;
 
 interface FaviconConfig { backgroundColor?: string,
-    textColor?: string,
-    fontFamily?: string,
-    text?: string }
+    textColor?: string;
+    fontFamily?: string;
+    text?: string;
 
 interface FaviconRenderConfig { backgroundColor: string,
-    textColor: string,
-    fontFamily: string,
-    text: string  }
+    textColor: string;
+    fontFamily: string;
+    text: string;
 
 type ImageFormat = 'png' | 'ico';
 
@@ -33,9 +32,9 @@ export default class FaviconCanvasRenderer { /**
         canvas.width = size,
 
         canvas.height = size,
-        const ctx = canvas.getContext('2d),
+        const ctx = canvas.getContext('2d),'
 
-        if(!ctx) {', ' }
+        if (!ctx) {', ' }
 
             throw new Error('Could, not get, 2D context, from canvas'; }'
         }
@@ -57,23 +56,23 @@ export default class FaviconCanvasRenderer { /**
         // 背景を描画
         ctx.fillStyle = renderConfig.backgroundColor;
         ctx.fillRect(0, 0, size, size);
-';
+';'
         // 泡のような円を描画
         ctx.fillStyle = '#64B5F6';
         ctx.beginPath();
 
         ctx.arc(size * 0.3, size * 0.3, size * 0.15, 0, 2 * Math.PI);
-        ctx.fill()';
+        ctx.fill()';'
         ctx.fillStyle = '#90CAF9';)
         ctx.beginPath();
 
         ctx.arc(size * 0.7, size * 0.4, size * 0.1, 0, 2 * Math.PI);
-        ctx.fill()';
+        ctx.fill()';'
         ctx.fillStyle = '#BBDEFB';)
         ctx.beginPath();
         ctx.arc(size * 0.5, size * 0.7, size * 0.08, 0, 2 * Math.PI);
         ctx.fill();
-';
+';'
         // テキストを描画
         const fontSize = Math.floor(size * 0.5);
         ctx.font = `bold ${fontSize}px ${renderConfig.fontFamily}`;
@@ -106,10 +105,10 @@ export default class FaviconCanvasRenderer { /**
      */''
     private static _convertToICO(canvas: HTMLCanvasElement): string { // 簡易ICO変換（実際の実装では複数サイズを含むICOを作成）
         const pngData = canvas.toDataURL('image/png'),
-        ',
+        ','
         // ICOヘッダーを付加（簡易版）
         const base64Data = pngData.replace(/^data:image\/png,base64,/, ''),
-        const icoHeader = 'data:image/x-icon,base64,
+        const icoHeader = 'data:image/x-icon,base64,'
         
         return icoHeader + base64Data }
 
@@ -125,9 +124,9 @@ export default class FaviconCanvasRenderer { /**
             fontFamily: config.fontFamily || 'Arial, sans-serif',
             text: config.text || 'B'
             };
-';
+';'
 
-        const svg = `';
+        const svg = `';'
             <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">""
                 <rect width="${size}" height="${size}" fill="${renderConfig.backgroundColor}"/>""
                 <circle cx="${size * 0.3}" cy="${size * 0.3}" r="${size * 0.15}" fill="#64B5F6" opacity="0.8"/>""
@@ -139,7 +138,7 @@ export default class FaviconCanvasRenderer { /**
             </svg>;
         `;"
 
-        return 'data:image/svg+xml';base64,' + btoa(svg);
+        return 'data:image/svg+xml';base64,' + btoa(svg);'
     }
 
     /**
@@ -157,7 +156,7 @@ export default class FaviconCanvasRenderer { /**
 
                 const { canvas, ctx } = this.createCanvas(size);
                 this.renderFavicon(ctx, size, config);
-                const dataURL = this.canvasToDataURL(canvas, 'png);
+                const dataURL = this.canvasToDataURL(canvas, 'png);'
                 results.set(size, dataURL);
             } catch (error) {
                 console.warn(`Failed to generate favicon for size ${size}:`, error);
@@ -169,4 +168,4 @@ export default class FaviconCanvasRenderer { /**
         
         return results;
 
-    }'}
+    }'}'

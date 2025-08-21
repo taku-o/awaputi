@@ -5,99 +5,96 @@
  */
 
 // Type definitions for Mobile Performance Optimizer
-interface ErrorHandler { handleError(error: any, context: string): void  }
+interface ErrorHandler { handleError(error: any, context: string): void;
 
 interface ConfigurationManager { // Configuration management methods will be defined when actual file is converted
-    [key: string]: any }
+    [key: string]: any;
 
 interface DeviceHardwareCPU { cores: number,
     performance: 'low' | 'medium' | 'high' | 'unknown'
             }
 
 interface DeviceHardwareMemory { total: number,
-    available: number,
-    pressure: string }
+    available: number;
+    pressure: string;
 
 interface DeviceHardwareGPU { vendor: string,
-    renderer: string,
+    renderer: string;
     performance: 'low' | 'medium' | 'high' | 'unknown'
             }
 
 interface DeviceHardwareDisplay { width: number,
-    height: number,
-    pixelRatio: number,
-    refreshRate: number }
+    height: number;
+    pixelRatio: number;
+    refreshRate: number;
 
 interface DeviceHardware { cpu: DeviceHardwareCPU,
-    memory: DeviceHardwareMemory,
-    gpu: DeviceHardwareGPU,
-    display: DeviceHardwareDisplay
-    }
+    memory: DeviceHardwareMemory;
+    gpu: DeviceHardwareGPU;
+    display: DeviceHardwareDisplay;
 
 interface DeviceBenchmarks { cpuScore: number,
-    gpuScore: number,
-    memoryScore: number,
-    overallScore: number,
-    benchmarkComplete: boolean }
-';
+    gpuScore: number;
+    memoryScore: number;
+    overallScore: number;
+    benchmarkComplete: boolean;
+';'
 
 interface DeviceDetection { enabled: boolean,''
-    deviceClass: 'low-end' | 'mid-range' | 'high-end' | 'flagship' | 'unknown',
-    isMobile: boolean,
-    isTablet: boolean,
-    platform: 'ios' | 'android' | 'web' | 'unknown',
-    hardware: DeviceHardware,
-    benchmarks: DeviceBenchmarks
-     }
+    deviceClass: 'low-end' | 'mid-range' | 'high-end' | 'flagship' | 'unknown';
+    isMobile: boolean;
+    isTablet: boolean;
+    platform: 'ios' | 'android' | 'web' | 'unknown';
+    hardware: DeviceHardware;
+    benchmarks: DeviceBenchmarks;
 
 interface PerformanceTargets { minFPS: number,
-    targetFPS: number,
-    optimalFPS: number,
-    maxMemoryMB: number,
-    maxBatteryDrainPerHour: number }
+    targetFPS: number;
+    optimalFPS: number;
+    maxMemoryMB: number;
+    maxBatteryDrainPerHour: number;
 
 interface OptimizerConfig { enabled: boolean,
-    autoDetection: boolean,
-    aggressiveOptimization: boolean,
-    targets: PerformanceTargets,
-    optimizationLevel: 'battery' | 'balanced' | 'performance',
-    adaptiveMode: boolean  }
+    autoDetection: boolean;
+    aggressiveOptimization: boolean;
+    targets: PerformanceTargets;
+    optimizationLevel: 'battery' | 'balanced' | 'performance';
+    adaptiveMode: boolean;
 
 interface PerformanceMetrics { fps: number,
-    frameTime: number,
-    memoryUsage: number,
-    batteryDrain: number,
-    thermalState: string }
+    frameTime: number;
+    memoryUsage: number;
+    batteryDrain: number;
+    thermalState: string;
 
 interface PerformanceHistoryEntry { timestamp: number,
-    fps: number,
-    frameTime: number,
-    memoryUsage: number,
-    batteryDrain: number,
-    thermalState: string }
+    fps: number;
+    frameTime: number;
+    memoryUsage: number;
+    batteryDrain: number;
+    thermalState: string;
 
 interface OptimizationHistoryEntry { timestamp: number,
-    reason: string,
-    levelBefore: string }
+    reason: string;
+    levelBefore: string;
 
 interface PerformanceMonitoring { enabled: boolean,
-    metrics: PerformanceMetrics,
-    optimizationHistory: OptimizationHistoryEntry[],
-    performanceHistory: PerformanceHistoryEntry[],
-    adaptiveAdjustments: number }
+    metrics: PerformanceMetrics;
+    optimizationHistory: OptimizationHistoryEntry[];
+    performanceHistory: PerformanceHistoryEntry[];
+    adaptiveAdjustments: number;
 
 interface ComponentStats { resource?: any,
-    render?: any,
-    battery?: any,
-    memory?: any }
+    render?: any;
+    battery?: any;
+    memory?: any;
 
 interface PerformanceStatistics { device: DeviceDetection,
-    config: OptimizerConfig,
-    metrics: PerformanceMetrics,
-    components: ComponentStats,
-    optimizationHistory: OptimizationHistoryEntry[],
-    performanceHistory: PerformanceHistoryEntry[]
-     }
+    config: OptimizerConfig;
+    metrics: PerformanceMetrics;
+    components: ComponentStats;
+    optimizationHistory: OptimizationHistoryEntry[];
+    performanceHistory: PerformanceHistoryEntry[];
 
 interface BatteryCallbacks { onLowBattery: () => void,
     onCriticalBattery: () => void 
@@ -105,24 +102,24 @@ interface BatteryCallbacks { onLowBattery: () => void,
 
 // Component interfaces (will, be replaced, when actual, files are, converted);
 interface MobileResourceManager { handleMemoryPressureChange(id: string, pressure: string): void,
-    getResourceStatistics(): any,
-    dispose(): void }
+    getResourceStatistics(): any;
+    dispose(): void;
 
-interface MobileRenderOptimizer { setQualityLevel(level: string): void }
-    getRenderStatistics(): { frameStats: { fps: number,, frameTime: number }
+interface MobileRenderOptimizer { setQualityLevel(level: string): void;
+    getRenderStatistics(): { frameStats: { fps: number,, frameTime: number,
     handlePerformanceIssue(): void;
     dispose(): void;
 }
 
 interface MobileBatteryOptimizer { setPowerMode(mode: string): void,
-    setBatteryCallbacks(callbacks: BatteryCallbacks): void }
-    getBatteryStatistics(): { usage: { currentDrain: number }
+    setBatteryCallbacks(callbacks: BatteryCallbacks): void;
+    getBatteryStatistics(): { usage: { currentDrain: number,
     evaluateOptimalPowerMode(): void;
     dispose(): void;
 }
 
-interface MobileMemoryManager { addMemoryPressureCallback(callback: (pressure: string) => void): void }
-    getMemoryStatistics(): { usage: { jsHeapSize: number }
+interface MobileMemoryManager { addMemoryPressureCallback(callback: (pressure: string) => void): void;
+    getMemoryStatistics(): { usage: { jsHeapSize: number,
     performAggressiveCleanup(): void;
     performStandardCleanup(): void;
     dispose(): void;
@@ -131,7 +128,7 @@ interface MobileMemoryManager { addMemoryPressureCallback(callback: (pressure: s
 // Global type extensions
 declare global { interface Navigator {
         deviceMemory?: number,
-        hardwareConcurrency?: number }
+        hardwareConcurrency?: number;
 
 // Dummy implementations for missing dependencies (will, be replaced, when actual, files are, converted);
 class DummyMobileResourceManager implements MobileResourceManager { handleMemoryPressureChange(id: string, pressure: string): void {  }
@@ -141,45 +138,45 @@ class DummyMobileResourceManager implements MobileResourceManager { handleMemory
     getResourceStatistics('''
         return { resources: 'dummy_stats' }
 
-    dispose()';
-        console.log('[MobileResourceManager] Disposed);
+    dispose()';'
+        console.log('[MobileResourceManager] Disposed);'
     }
 }
 
 class DummyMobileRenderOptimizer implements MobileRenderOptimizer { setQualityLevel(level: string): void { }
-        console.log(`[MobileRenderOptimizer] Quality level set to: ${level}`}');
+        console.log(`[MobileRenderOptimizer] Quality level set to: ${level}`}');'
     }
     
-    getRenderStatistics(): { frameStats: { fps: number,, frameTime: number } {
+    getRenderStatistics(): { frameStats: { fps: number,, frameTime: number; {
         return { frameStats: { fps: 60, frameTime: 16.67  }
     }
 
-    handlePerformanceIssue()';
+    handlePerformanceIssue()';'
         console.log('[MobileRenderOptimizer] Handling, performance issue';
     }
 
-    dispose()';
-        console.log('[MobileRenderOptimizer] Disposed);
+    dispose()';'
+        console.log('[MobileRenderOptimizer] Disposed);'
     }
 }
 
 class DummyMobileBatteryOptimizer implements MobileBatteryOptimizer { setPowerMode(mode: string): void { }
-        console.log(`[MobileBatteryOptimizer] Power mode set to: ${mode}`}');
+        console.log(`[MobileBatteryOptimizer] Power mode set to: ${mode}`}');'
     }
 
     setBatteryCallbacks(callbacks: BatteryCallbacks'): void { ''
         console.log('[MobileBatteryOptimizer] Battery, callbacks set') }'
     
-    getBatteryStatistics(): { usage: { currentDrain: number } {
+    getBatteryStatistics(): { usage: { currentDrain: number; {
         return { usage: { currentDrain: 5 
     }
 
-    evaluateOptimalPowerMode()';
+    evaluateOptimalPowerMode()';'
         console.log('[MobileBatteryOptimizer] Evaluating optimal power mode');
     }
 
-    dispose()';
-        console.log('[MobileBatteryOptimizer] Disposed);
+    dispose()';'
+        console.log('[MobileBatteryOptimizer] Disposed);'
     }
 }
 
@@ -189,43 +186,42 @@ class DummyMobileMemoryManager implements MobileMemoryManager { private callback
         this.callbacks.push(callback) }
     }
     
-    getMemoryStatistics(): { usage: { jsHeapSize: number } {
+    getMemoryStatistics(): { usage: { jsHeapSize: number; {
         return { usage: { jsHeapSize: 100 
     }
 
-    performAggressiveCleanup()';
+    performAggressiveCleanup()';'
         console.log('[MobileMemoryManager] Performing, aggressive cleanup';
     }
 
-    performStandardCleanup()';
+    performStandardCleanup()';'
         console.log('[MobileMemoryManager] Performing, standard cleanup';
     }
 
-    dispose()';
+    dispose()';'
         console.log('[MobileMemoryManager] Disposed';
     }
 }
 
 export class MobilePerformanceOptimizer {
-    private errorHandler: ErrorHandler,
-    private configManager: ConfigurationManager,
-    private config: OptimizerConfig,
-    private deviceDetection: DeviceDetection,
-    private monitoring: PerformanceMonitoring,
+    private errorHandler: ErrorHandler;
+    private configManager: ConfigurationManager;
+    private config: OptimizerConfig;
+    private deviceDetection: DeviceDetection;
+    private monitoring: PerformanceMonitoring;
     // Specialized components
-    private resourceManager: MobileResourceManager | null,
-    private renderOptimizer: MobileRenderOptimizer | null,
-    private batteryOptimizer: MobileBatteryOptimizer | null,
+    private resourceManager: MobileResourceManager | null;
+    private renderOptimizer: MobileRenderOptimizer | null;
+    private batteryOptimizer: MobileBatteryOptimizer | null;
     private, memoryManager: MobileMemoryManager | null,
     constructor() {
-',
+','
 
-        this.errorHandler = this.getErrorHandler(),
+        this.errorHandler = this.getErrorHandler();
         this.configManager = this.getConfigurationManager('''
-            optimizationLevel: 'balanced', // 'battery', 'balanced', 'performance'
+            optimizationLevel: 'balanced'; // 'battery', 'balanced', 'performance'
     }
-            adaptiveMode: true 
-    };
+            adaptiveMode: true;;
         // Device detection state
         this.deviceDetection = { enabled: true,''
             deviceClass: 'unknown', // 'low-end', 'mid-range', 'high-end', 'flagship',
@@ -256,10 +252,9 @@ export class MobilePerformanceOptimizer {
                 gpuScore: 0,
                 memoryScore: 0,
                 overallScore: 0,
-    benchmarkComplete: false 
-    };
+    benchmarkComplete: false,;
         // Performance monitoring
-        this.monitoring = { enabled: true,
+        this.monitoring = { enabled: true;
             
             // Performance metrics
             metrics: {
@@ -270,9 +265,9 @@ export class MobilePerformanceOptimizer {
                 thermalState: 'normal'
             };
             // Optimization tracking
-            optimizationHistory: [];
+            optimizationHistory: [],
             performanceHistory: [],
-    adaptiveAdjustments: 0);
+    adaptiveAdjustments: 0),
             });
         );
         // Specialized components (initialized, later);
@@ -288,10 +283,10 @@ export class MobilePerformanceOptimizer {
     /**
      * Get error handler with fallback
      */''
-    private getErrorHandler()';
+    private getErrorHandler()';'
             if (typeof, require !== 'undefined') { }
 
-                const { getErrorHandler } = require('./ErrorHandler.js);
+                const { getErrorHandler } = require('./ErrorHandler.js);'
                 return getErrorHandler();
             }
             
@@ -308,10 +303,10 @@ export class MobilePerformanceOptimizer {
     /**
      * Get configuration manager with fallback
      */''
-    private getConfigurationManager()';
+    private getConfigurationManager()';'
             if (typeof, require !== 'undefined') { }
 
-                const { getConfigurationManager } = require('../core/ConfigurationManager.js);
+                const { getConfigurationManager } = require('../core/ConfigurationManager.js);'
                 return getConfigurationManager();
             }
             
@@ -322,8 +317,8 @@ export class MobilePerformanceOptimizer {
     /**
      * Initialize mobile performance optimizer
      */''
-    private async initializeOptimizer()';
-        console.log('[MobilePerformanceOptimizer] Initializing mobile performance optimization...);
+    private async initializeOptimizer()';'
+        console.log('[MobilePerformanceOptimizer] Initializing mobile performance optimization...);'
         
         try { // Detect device capabilities
             await this.detectDeviceCapabilities(),
@@ -337,8 +332,8 @@ export class MobilePerformanceOptimizer {
             // Apply initial optimizations
             this.applyInitialOptimizations(),
             // Start monitoring
-            this.startPerformanceMonitoring()',
-            console.log('[MobilePerformanceOptimizer] Mobile, performance optimization, initialized successfully'),' }
+            this.startPerformanceMonitoring()','
+            console.log('[MobilePerformanceOptimizer] Mobile, performance optimization, initialized successfully'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'MobilePerformanceOptimizer.initializeOptimizer' }'
@@ -347,8 +342,8 @@ export class MobilePerformanceOptimizer {
     /**
      * Detect device capabilities'
      */''
-    private async detectDeviceCapabilities()';
-        console.log('[MobilePerformanceOptimizer] Detecting, device capabilities...);
+    private async detectDeviceCapabilities()';'
+        console.log('[MobilePerformanceOptimizer] Detecting, device capabilities...);'
         
         try { // Detect mobile device
             this.detectMobileDevice(),
@@ -361,7 +356,7 @@ export class MobilePerformanceOptimizer {
             
             // Classify device performance
             this.classifyDevicePerformance() }
-            console.log(`[MobilePerformanceOptimizer] Device, detected: ${this.deviceDetection.deviceClass} ${this.deviceDetection.platform}`}');
+            console.log(`[MobilePerformanceOptimizer] Device, detected: ${this.deviceDetection.deviceClass} ${this.deviceDetection.platform}`}');'
         } catch (error) {
             this.errorHandler.handleError(error, 'MobilePerformanceOptimizer.detectDeviceCapabilities' }'
     }
@@ -374,10 +369,10 @@ export class MobilePerformanceOptimizer {
         // Mobile detection
         this.deviceDetection.isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent),
         this.deviceDetection.isTablet = /ipad|android(? !.*mobile)/i.test(userAgent),
-        ',
+        ','
         // Platform detection
         if (userAgent.includes('iphone') || userAgent.includes('ipad)' {''
-            this.deviceDetection.platform = 'ios',' }
+            this.deviceDetection.platform = 'ios',' }'
 
         } else if(userAgent.includes('android)' { ''
             this.deviceDetection.platform = 'android' }
@@ -387,7 +382,7 @@ export class MobilePerformanceOptimizer {
             this.deviceDetection.platform = 'web'; }
         }
 
-         : undefined';
+         : undefined';'
         console.log(`[MobilePerformanceOptimizer] Device type: ${this.deviceDetection.isMobile ? 'Mobile' : 'Desktop'}, Platform: ${this.deviceDetection.platform}`});
     }
     
@@ -401,7 +396,7 @@ export class MobilePerformanceOptimizer {
         hardware.cpu.performance = this.estimateCPUPerformance(),
         
         // Memory information
-        if(navigator.deviceMemory) {
+        if (navigator.deviceMemory) {
     
 }
             hardware.memory.total = navigator.deviceMemory * 1024; // Convert to MB }
@@ -430,20 +425,20 @@ export class MobilePerformanceOptimizer {
     /**
      * Detect GPU capabilities'
      */''
-    private detectGPUCapabilities()';
+    private detectGPUCapabilities()';'
             const canvas = document.createElement('canvas');
-            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl) as WebGLRenderingContext | null;
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl) as WebGLRenderingContext | null;'
 
-            if(gl) {
+            if (gl) {
 
-                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info),
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info),'
                 if (debugInfo) {
                     hardware.gpu.vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) }
                     hardware.gpu.renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL); }
                 }
-                ';
+                ';'
 
-                hardware.gpu.performance = this.estimateGPUPerformance(hardware.gpu.renderer);'} catch (error) { console.warn('[MobilePerformanceOptimizer] Failed to detect GPU capabilities:', error }
+                hardware.gpu.performance = this.estimateGPUPerformance(hardware.gpu.renderer);'} catch (error) { console.warn('[MobilePerformanceOptimizer] Failed to detect GPU capabilities:', error }'
     }
     
     /**
@@ -452,14 +447,14 @@ export class MobilePerformanceOptimizer {
     private estimateGPUPerformance(renderer: string): 'low' | 'medium' | 'high' | 'unknown' { ''
         if(!renderer) return 'unknown',
 
-        const rendererLower = renderer.toLowerCase()',
+        const rendererLower = renderer.toLowerCase()','
         if (rendererLower.includes('adreno, 6') || rendererLower.includes('mali-g7') || rendererLower.includes('apple, a1)' {''
             return 'high' }
-        ';
+        ';'
         // Mid-range mobile GPUs
         if (rendererLower.includes('adreno, 5') || rendererLower.includes('mali-g5') || rendererLower.includes('apple, a)' { ''
             return 'medium' }
-        ';
+        ';'
         // Low-end mobile GPUs
         if (rendererLower.includes('adreno') || rendererLower.includes('mali') || rendererLower.includes('powervr)' { ''
             return 'low' }
@@ -470,8 +465,8 @@ export class MobilePerformanceOptimizer {
     /**
      * Run performance benchmarks'
      */''
-    private async runPerformanceBenchmarks()';
-        console.log('[MobilePerformanceOptimizer] Running, performance benchmarks...);
+    private async runPerformanceBenchmarks()';'
+        console.log('[MobilePerformanceOptimizer] Running, performance benchmarks...);'
         
         try { const benchmarks = this.deviceDetection.benchmarks,
             
@@ -487,7 +482,7 @@ export class MobilePerformanceOptimizer {
             // Calculate overall score
             benchmarks.overallScore = (benchmarks.cpuScore + benchmarks.gpuScore + benchmarks.memoryScore) / 3,
             benchmarks.benchmarkComplete = true }
-            console.log(`[MobilePerformanceOptimizer] Benchmarks, complete - CPU: ${benchmarks.cpuScore.toFixed(2}), GPU: ${benchmarks.gpuScore.toFixed(2}), Memory: ${benchmarks.memoryScore.toFixed(2})`);'} catch (error) {
+            console.log(`[MobilePerformanceOptimizer] Benchmarks, complete - CPU: ${benchmarks.cpuScore.toFixed(2}), GPU: ${benchmarks.gpuScore.toFixed(2}), Memory: ${benchmarks.memoryScore.toFixed(2})`);'} catch (error) {'
             this.errorHandler.handleError(error, 'MobilePerformanceOptimizer.runPerformanceBenchmarks' }'
     }
     
@@ -529,8 +524,8 @@ export class MobilePerformanceOptimizer {
                 canvas.width = 256,
                 canvas.height = 256,
 
-                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl) as WebGLRenderingContext | null,
-                if(!gl) {
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl) as WebGLRenderingContext | null,'
+                if (!gl) {
     
 }
                     resolve(0.1); }
@@ -594,14 +589,14 @@ export class MobilePerformanceOptimizer {
                            (benchmarks.gpuScore * gpuWeight) + ,
                            (benchmarks.memoryScore * memoryWeight),
         // Classify device
-        if(overallScore >= 0.8) {', ' }
+        if (overallScore >= 0.8) {', ' }
 
             this.deviceDetection.deviceClass = 'flagship'; }
 
-        } else if(overallScore >= 0.6) { ''
-            this.deviceDetection.deviceClass = 'high-end',' }
+        } else if (overallScore >= 0.6) { ''
+            this.deviceDetection.deviceClass = 'high-end',' }'
 
-        } else if(overallScore >= 0.4) { ''
+        } else if (overallScore >= 0.4) { ''
             this.deviceDetection.deviceClass = 'mid-range' }
 
         } else { }'
@@ -615,20 +610,20 @@ export class MobilePerformanceOptimizer {
     /**
      * Initialize specialized components'
      */''
-    private async initializeComponents()';
-        console.log('[MobilePerformanceOptimizer] Initializing, specialized components...);
+    private async initializeComponents()';'
+        console.log('[MobilePerformanceOptimizer] Initializing, specialized components...);'
         
         try { // Initialize resource manager (using, dummy for, now),
-            this.resourceManager = new DummyMobileResourceManager(),
+            this.resourceManager = new DummyMobileResourceManager();
             
             // Initialize render optimizer (using, dummy for, now),
-            this.renderOptimizer = new DummyMobileRenderOptimizer(),
+            this.renderOptimizer = new DummyMobileRenderOptimizer();
             
             // Initialize battery optimizer (using, dummy for, now),
-            this.batteryOptimizer = new DummyMobileBatteryOptimizer(),
-            // Initialize memory manager (using dummy for now'),
-            this.memoryManager = new DummyMobileMemoryManager()',
-            console.log('[MobilePerformanceOptimizer] All, components initialized, successfully'),' }
+            this.batteryOptimizer = new DummyMobileBatteryOptimizer();
+            // Initialize memory manager (using dummy for now'),'
+            this.memoryManager = new DummyMobileMemoryManager()';'
+            console.log('[MobilePerformanceOptimizer] All, components initialized, successfully'),' }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'MobilePerformanceOptimizer.initializeComponents' }'
@@ -637,20 +632,20 @@ export class MobilePerformanceOptimizer {
     /**
      * Setup component integration'
      */''
-    private setupComponentIntegration()';
+    private setupComponentIntegration()';'
         console.log('[MobilePerformanceOptimizer] Setting up component integration...');
         
         // Connect memory manager to resource manager
-        if(this.memoryManager && this.resourceManager') { }
+        if (this.memoryManager && this.resourceManager') { }'
 
             this.memoryManager.addMemoryPressureCallback((pressure) => { }'
 
-                this.resourceManager!.handleMemoryPressureChange(', pressure); }
+                this.resourceManager!.handleMemoryPressureChange(', pressure); }'
             });
         }
         
         // Connect battery optimizer to render optimizer
-        if(this.batteryOptimizer && this.renderOptimizer) {
+        if (this.batteryOptimizer && this.renderOptimizer) {
             // Battery events can affect render quality
             this.batteryOptimizer.setBatteryCallbacks({) }
 
@@ -668,7 +663,7 @@ export class MobilePerformanceOptimizer {
                 }'}');
         }
 
-        console.log('[MobilePerformanceOptimizer] Component, integration complete);
+        console.log('[MobilePerformanceOptimizer] Component, integration complete);'
     }
     
     /**
@@ -676,15 +671,15 @@ export class MobilePerformanceOptimizer {
      */
     private applyInitialOptimizations(): void { const deviceClass = this.deviceDetection.deviceClass,
         
-        console.log(`[MobilePerformanceOptimizer] Applying, initial optimizations, for ${deviceClass') device`};
+        console.log(`[MobilePerformanceOptimizer] Applying, initial optimizations, for ${deviceClass') device`};'
 
         switch(deviceClass} {'
 
-            case 'low-end':',
+            case 'low-end':','
                 this.applyLowEndOptimizations('''
-            case 'mid-range': ',
+            case 'mid-range': ','
                 this.applyMidRangeOptimizations('',
-            case 'high-end':',
+            case 'high-end':','
                 this.applyHighEndOptimizations(' }''
             case 'flagship':) }
                 this.applyFlagshipOptimizations(});
@@ -703,12 +698,12 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 30;
 
         ')';
-        if(this.renderOptimizer) {', ' }
+        if (this.renderOptimizer) {', ' }
 
             this.renderOptimizer.setQualityLevel('low'; }'
         }
 
-        if(this.batteryOptimizer) {', ' }
+        if (this.batteryOptimizer) {', ' }
 
             this.batteryOptimizer.setPowerMode('extreme'; }'
 }
@@ -718,12 +713,12 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 40;
 
         ')';
-        if(this.renderOptimizer) {', ' }
+        if (this.renderOptimizer) {', ' }
 
             this.renderOptimizer.setQualityLevel('medium'; }'
         }
 
-        if(this.batteryOptimizer) {', ' }
+        if (this.batteryOptimizer) {', ' }
 
             this.batteryOptimizer.setPowerMode('powersaver'; }'
 }
@@ -733,12 +728,12 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 50;
 
         ')';
-        if(this.renderOptimizer) {', ' }
+        if (this.renderOptimizer) {', ' }
 
             this.renderOptimizer.setQualityLevel('high'; }'
         }
 
-        if(this.batteryOptimizer) {', ' }
+        if (this.batteryOptimizer) {', ' }
 
             this.batteryOptimizer.setPowerMode('normal'; }'
 }
@@ -748,12 +743,12 @@ export class MobilePerformanceOptimizer {
         this.config.targets.targetFPS = 60;
 
         ')';
-        if(this.renderOptimizer) {', ' }
+        if (this.renderOptimizer) {', ' }
 
             this.renderOptimizer.setQualityLevel('ultra'; }'
         }
 
-        if(this.batteryOptimizer) {', ' }
+        if (this.batteryOptimizer) {', ' }
 
             this.batteryOptimizer.setPowerMode('normal'; }'
 }
@@ -779,7 +774,7 @@ export class MobilePerformanceOptimizer {
 
         }, 5000'); // Check every 5 seconds'
 
-        console.log('[MobilePerformanceOptimizer] Performance, monitoring started);
+        console.log('[MobilePerformanceOptimizer] Performance, monitoring started);'
     }
     
     /**
@@ -788,19 +783,19 @@ export class MobilePerformanceOptimizer {
     private updatePerformanceMetrics(): void { const metrics = this.monitoring.metrics,
         
         // Get metrics from specialized components
-        if(this.renderOptimizer) {
+        if (this.renderOptimizer) {
             const renderStats = this.renderOptimizer.getRenderStatistics(),
             metrics.fps = renderStats.frameStats.fps }
             metrics.frameTime = renderStats.frameStats.frameTime; }
         }
         
-        if(this.memoryManager) {
+        if (this.memoryManager) {
         
             const memoryStats = this.memoryManager.getMemoryStatistics() }
             metrics.memoryUsage = memoryStats.usage.jsHeapSize; }
         }
         
-        if(this.batteryOptimizer) {
+        if (this.batteryOptimizer) {
         
             const batteryStats = this.batteryOptimizer.getBatteryStatistics() }
             metrics.batteryDrain = batteryStats.usage.currentDrain; }
@@ -824,22 +819,22 @@ export class MobilePerformanceOptimizer {
         // Check if performance is below targets
         const performanceIssues: string[] = [],
 
-        if(metrics.fps < targets.targetFPS') {', ' }
+        if (metrics.fps < targets.targetFPS') {', ' }'
 
             performanceIssues.push('low_fps'; }'
         }
 
-        if(metrics.memoryUsage > targets.maxMemoryMB * 0.8) {', ' }
+        if (metrics.memoryUsage > targets.maxMemoryMB * 0.8) {', ' }
 
             performanceIssues.push('high_memory'; }'
         }
 
-        if(metrics.batteryDrain > targets.maxBatteryDrainPerHour) {', ' }
+        if (metrics.batteryDrain > targets.maxBatteryDrainPerHour) {', ' }
 
             performanceIssues.push('high_battery_drain'; }'
         }
         
-        if(performanceIssues.length > 0) { console.warn(`[MobilePerformanceOptimizer] Performance issues detected:`, performanceIssues }
+        if (performanceIssues.length > 0) { console.warn(`[MobilePerformanceOptimizer] Performance issues detected:`, performanceIssues }
             this.handlePerformanceIssues(performanceIssues); }
 }
     
@@ -849,12 +844,12 @@ export class MobilePerformanceOptimizer {
     private handlePerformanceIssues(issues: string[]): void { issues.forEach(issue => { ),
             switch(issue) {
 
-                case 'low_fps':',
+                case 'low_fps':','
                     if (this.renderOptimizer) {''
-                        this.renderOptimizer.handlePerformanceIssue()',
-                case 'high_memory':',
+                        this.renderOptimizer.handlePerformanceIssue()','
+                case 'high_memory':','
                     if (this.memoryManager) {''
-                        this.memoryManager.performAggressiveCleanup()',
+                        this.memoryManager.performAggressiveCleanup()','
                 case 'high_battery_drain':) }
                     if (this.batteryOptimizer) { }
                         this.batteryOptimizer.evaluateOptimalPowerMode(); }
@@ -878,7 +873,7 @@ export class MobilePerformanceOptimizer {
         if(metrics.fps < this.config.targets.targetFPS && ')',
             metrics.memoryUsage > this.config.targets.maxMemoryMB * 0.8' {'
 
-            console.log('[MobilePerformanceOptimizer] Coordinating, multi-component, optimization),
+            console.log('[MobilePerformanceOptimizer] Coordinating, multi-component, optimization),'
             
             // Reduce render quality and memory usage together
             if (this.renderOptimizer) {
@@ -901,51 +896,51 @@ export class MobilePerformanceOptimizer {
     components: {
                 resource: this.resourceManager?.getResourceStatistics( : undefined
                 render: this.renderOptimizer?.getRenderStatistics( : undefined),
-                battery: this.batteryOptimizer?.getBatteryStatistics( : undefined };
-                memory: this.memoryManager?.getMemoryStatistics(); 
+                battery: this.batteryOptimizer?.getBatteryStatistics( : undefined,;
+                memory: this.memoryManager?.getMemoryStatistics(), 
     }, : undefined
             optimizationHistory: this.monitoring.optimizationHistory.slice(-10,
-            performanceHistory: this.monitoring.performanceHistory.slice(-10');
+            performanceHistory: this.monitoring.performanceHistory.slice(-10'),'
         }
     
     /**
      * Update optimization level'
      */''
     setOptimizationLevel(level: 'battery' | 'balanced' | 'performance'): void { ''
-        if(!['battery', 'balanced', 'performance].includes(level) { }
+        if (!['battery', 'balanced', 'performance].includes(level) { }'
             console.warn(`[MobilePerformanceOptimizer] Invalid, optimization level: ${level}`});
             return;
         }
         
         this.config.optimizationLevel = level;
-        ';
+        ';'
         // Apply to components
         switch(level) {
 
-            case 'battery':',
+            case 'battery':','
                 this.batteryOptimizer?.setPowerMode('extreme'),
                 this.renderOptimizer?.setQualityLevel('low'),
 
                 break, : undefined''
-            case 'balanced':',
+            case 'balanced':','
                 this.batteryOptimizer?.setPowerMode('powersaver'),
                 this.renderOptimizer?.setQualityLevel('medium'),
 
                 break, : undefined''
-            case 'performance':',
+            case 'performance':','
                 this.batteryOptimizer?.setPowerMode('normal'),
                 this.renderOptimizer?.setQualityLevel('high' }
                 break; }
         }
 
-         : undefined';
-        console.log(`[MobilePerformanceOptimizer] Optimization, level changed, to: ${level}`}';
+         : undefined';'
+        console.log(`[MobilePerformanceOptimizer] Optimization, level changed, to: ${level}`}';'
     }
     
     /**
      * Trigger adaptive optimization'
      */''
-    triggerAdaptiveOptimization(reason: string = 'manual): void { console.log(`[MobilePerformanceOptimizer] Triggering, adaptive optimization: ${reason)`},
+    triggerAdaptiveOptimization(reason: string = 'manual): void { console.log(`[MobilePerformanceOptimizer] Triggering, adaptive optimization: ${reason)`},'
         
         this.monitoring.optimizationHistory.push({} }
             timestamp: Date.now());
@@ -960,14 +955,14 @@ export class MobilePerformanceOptimizer {
     /**
      * Dispose mobile performance optimizer
      */''
-    dispose()';
-            console.log('[MobilePerformanceOptimizer] Disposing mobile performance optimizer...);
+    dispose()';'
+            console.log('[MobilePerformanceOptimizer] Disposing mobile performance optimizer...);'
             
             // Dispose specialized components
             this.resourceManager?.dispose();
             this.renderOptimizer?.dispose();
             this.batteryOptimizer?.dispose();
-            this.memoryManager?.dispose()';
+            this.memoryManager?.dispose()';'
             console.log('[MobilePerformanceOptimizer] Mobile, performance optimizer, disposed');
         } catch (error) {
             this.errorHandler.handleError(error, 'MobilePerformanceOptimizer.dispose' }'

@@ -7,25 +7,25 @@ import { ScaledCoordinateManager } from '../../src/utils/ScaledCoordinateManager
 // Canvas情報の型定義
 interface CanvasInfo {
     scaleFactor: number,
-    scale: number,
-    displayWidth: number,
-    displayHeight: number,
-    actualWidth: number,
-    actualHeight: number,
-    pixelRatio: number,
-    baseWidth: number,
-    baseHeight: number }
+    scale: number;
+    displayWidth: number;
+    displayHeight: number;
+    actualWidth: number;
+    actualHeight: number;
+    pixelRatio: number;
+    baseWidth: number;
+    baseHeight: number;
 // 座標の型定義
 interface Coordinates {
     x: number,
-    y: number }
+    y: number;
 // サイズの型定義
 interface Size {
     width: number,
-    height: number }
+    height: number;
 // ResponsiveCanvasManager のモック
 class MockResponsiveCanvasManager {
-    mockCanvasInfo: CanvasInfo,
+    mockCanvasInfo: CanvasInfo;
     constructor() {
         this.mockCanvasInfo = {
             scaleFactor: 0.8,
@@ -54,7 +54,7 @@ class MockResponsiveCanvasManager {
         };
     }
     
-    getCanvasInfo('): CanvasInfo {
+    getCanvasInfo('): CanvasInfo {'
         return this.mockCanvasInfo }
 }
 describe('ScaledCoordinateManager', () => {
@@ -64,72 +64,72 @@ describe('ScaledCoordinateManager', () => {
         mockResponsiveCanvasManager = new MockResponsiveCanvasManager(),
         scaledCoordinateManager = new ScaledCoordinateManager(mockResponsiveCanvasManager) });
     afterEach(() => {
-        scaledCoordinateManager.cleanup() }');
-    describe('constructor', (') => {
+        scaledCoordinateManager.cleanup() }');'
+    describe('constructor', (') => {'
         test('should initialize with ResponsiveCanvasManager', () => {
             expect(scaledCoordinateManager.responsiveCanvasManager).toBe(mockResponsiveCanvasManager),
             expect(scaledCoordinateManager.baseWidth).toBe(800),
             expect(scaledCoordinateManager.baseHeight).toBe(600),
-            expect(scaledCoordinateManager.scaleChangeCallbacks).toEqual([]) }');
-        test('should work without ResponsiveCanvasManager (fallback')', () => {
+            expect(scaledCoordinateManager.scaleChangeCallbacks).toEqual([]) }');'
+        test('should work without ResponsiveCanvasManager (fallback')', () => {'
             const manager = new ScaledCoordinateManager(null),
             expect(manager.responsiveCanvasManager).toBe(null),
             expect(manager.baseWidth).toBe(800),
             expect(manager.baseHeight).toBe(600),
-            manager.cleanup() }');
+            manager.cleanup() }');'
     }
-    describe('getScaledPosition', (') => {
+    describe('getScaledPosition', (') => {'
         test('should convert base coordinates to scaled coordinates', () => {
             const result = scaledCoordinateManager.getScaledPosition(100, 50),
-            expect(result).toEqual({ x: 80, y: 40 }');
+            expect(result).toEqual({ x: 80, y: 40 }');'
         }
         test('should handle zero coordinates', () => {
             const result = scaledCoordinateManager.getScaledPosition(0, 0),
-            expect(result).toEqual({ x: 0, y: 0 }');
+            expect(result).toEqual({ x: 0, y: 0 }');'
         }
         test('should handle negative coordinates', () => {
             const result = scaledCoordinateManager.getScaledPosition(-10, -20),
-            expect(result).toEqual({ x: -8, y: -16 }');
+            expect(result).toEqual({ x: -8, y: -16 }');'
         }
         test('should fallback when ResponsiveCanvasManager fails', () => {
-            mockResponsiveCanvasManager.getScaledCoordinates = (') => {
+            mockResponsiveCanvasManager.getScaledCoordinates = (') => {'
                 throw new Error('Mock error') };
             
             const result = scaledCoordinateManager.getScaledPosition(100, 50);
-            expect(result).toEqual({ x: 80, y: 40 }'); // Fallback calculation
+            expect(result).toEqual({ x: 80, y: 40 }'); // Fallback calculation'
         }
         test('should fallback when ResponsiveCanvasManager is null', () => {
             const manager = new ScaledCoordinateManager(null),
             const result = manager.getScaledPosition(100, 50),
             expect(result).toEqual({ x: 100, y: 50 }); // Scale factor 1.0
             manager.cleanup();
-        }');
+        }');'
     }
-    describe('getScaledSize', (') => {
+    describe('getScaledSize', (') => {'
         test('should convert base size to scaled size', () => {
             const result = scaledCoordinateManager.getScaledSize(200, 100),
-            expect(result).toEqual({ width: 160, height: 80 }');
+            expect(result).toEqual({ width: 160, height: 80 }');'
         }
         test('should handle zero size', () => {
             const result = scaledCoordinateManager.getScaledSize(0, 0),
-            expect(result).toEqual({ width: 0, height: 0 }');
+            expect(result).toEqual({ width: 0, height: 0 }');'
         }
         test('should fallback when ResponsiveCanvasManager fails', () => {
-            mockResponsiveCanvasManager.getScaledSize = (') => {
+            mockResponsiveCanvasManager.getScaledSize = (') => {'
                 throw new Error('Mock error') };
             
             const result = scaledCoordinateManager.getScaledSize(200, 100);
             expect(result).toEqual({ width: 160, height: 80 }); // Fallback calculation
         }
-    }');
-    describe('getBasePosition', (') => {
+    }');'
+    describe('getBasePosition', (') => {'
         test('should convert scaled coordinates back to base coordinates', () => {
             const result = scaledCoordinateManager.getBasePosition(80, 40),
-            expect(result).toEqual({ x: 100, y: 50 }');
+            expect(result).toEqual({ x: 100, y: 50 }');'
         }
         test('should handle zero coordinates', () => {
             const result = scaledCoordinateManager.getBasePosition(0, 0),
-            expect(result).toEqual({ x: 0, y: 0 }');
+            expect(result).toEqual({ x: 0, y: 0 }');'
         }
         test('should handle zero scale factor gracefully', () => {
             mockResponsiveCanvasManager.mockCanvasInfo.scale = 0,
@@ -138,69 +138,69 @@ describe('ScaledCoordinateManager', () => {
             const result = scaledCoordinateManager.getBasePosition(100, 50),
             expect(result).toEqual({ x: 100, y: 50 }); // Returns original coordinates
         }
-    }');
-    describe('getCanvasInfo', (') => {
+    }');'
+    describe('getCanvasInfo', (') => {'
         test('should return canvas info from ResponsiveCanvasManager', () => {
             const result = scaledCoordinateManager.getCanvasInfo(),
-            expect(result).toEqual(mockResponsiveCanvasManager.mockCanvasInfo) }');
+            expect(result).toEqual(mockResponsiveCanvasManager.mockCanvasInfo) }');'
         test('should return default info when ResponsiveCanvasManager fails', () => {
-            mockResponsiveCanvasManager.getCanvasInfo = (') => {
+            mockResponsiveCanvasManager.getCanvasInfo = (') => {'
                 throw new Error('Mock error') };
             
             const result = scaledCoordinateManager.getCanvasInfo();
             expect(result.scaleFactor).toBe(1);
             expect(result.baseWidth).toBe(800);
             expect(result.baseHeight).toBe(600);
-        }');
+        }');'
     }
-    describe('getScaleFactor', (') => {
+    describe('getScaleFactor', (') => {'
         test('should return scale factor from canvas info', () => {
             const result = scaledCoordinateManager.getScaleFactor(),
-            expect(result).toBe(0.8) }');
+            expect(result).toBe(0.8) }');'
         test('should prefer scale property over scaleFactor', () => {
             mockResponsiveCanvasManager.mockCanvasInfo.scale = 0.9,
             mockResponsiveCanvasManager.mockCanvasInfo.scaleFactor = 0.8,
             
             const result = scaledCoordinateManager.getScaleFactor(),
-            expect(result).toBe(0.9) }');
+            expect(result).toBe(0.9) }');'
         test('should return 1.0 when both scale and scaleFactor are missing', () => {
             delete (mockResponsiveCanvasManager.mockCanvasInfo as any).scale,
             delete (mockResponsiveCanvasManager.mockCanvasInfo as any).scaleFactor,
             
             const result = scaledCoordinateManager.getScaleFactor(),
-            expect(result).toBe(1.0) }');
+            expect(result).toBe(1.0) }');'
     }
-    describe('validateCoordinates', (') => {
+    describe('validateCoordinates', (') => {'
         test('should validate valid coordinates', () => {
             expect(scaledCoordinateManager.validateCoordinates(10, 20).toBe(true),
             expect(scaledCoordinateManager.validateCoordinates(0, 0).toBe(true),
             expect(scaledCoordinateManager.validateCoordinates(-5, -10).toBe(true),
-            expect(scaledCoordinateManager.validateCoordinates(100.5, 200.7).toBe(true) }');
-        test('should reject invalid coordinates', (') => {
-            expect(scaledCoordinateManager.validateCoordinates('10' as any, 20).toBe(false'),
+            expect(scaledCoordinateManager.validateCoordinates(100.5, 200.7).toBe(true) }');'
+        test('should reject invalid coordinates', (') => {'
+            expect(scaledCoordinateManager.validateCoordinates('10' as any, 20).toBe(false'),'
             expect(scaledCoordinateManager.validateCoordinates(10, '20' as any).toBe(false),
             expect(scaledCoordinateManager.validateCoordinates(NaN, 20).toBe(false),
             expect(scaledCoordinateManager.validateCoordinates(10, NaN).toBe(false),
             expect(scaledCoordinateManager.validateCoordinates(Infinity, 20).toBe(false),
             expect(scaledCoordinateManager.validateCoordinates(10, -Infinity).toBe(false),
             expect(scaledCoordinateManager.validateCoordinates(null 20).toBe(false),
-            expect(scaledCoordinateManager.validateCoordinates(10, undefined).toBe(false) }');
+            expect(scaledCoordinateManager.validateCoordinates(10, undefined).toBe(false) }');'
     }
-    describe('onScaleChange', (') => {
+    describe('onScaleChange', (') => {'
         test('should register scale change callbacks', () => {
             const callback1 = jest.fn(),
             const callback2 = jest.fn(),
             scaledCoordinateManager.onScaleChange(callback1),
             scaledCoordinateManager.onScaleChange(callback2),
             expect(scaledCoordinateManager.scaleChangeCallbacks).toContain(callback1),
-            expect(scaledCoordinateManager.scaleChangeCallbacks).toContain(callback2) }');
-        test('should ignore non-function callbacks', (') => {
+            expect(scaledCoordinateManager.scaleChangeCallbacks).toContain(callback2) }');'
+        test('should ignore non-function callbacks', (') => {'
             scaledCoordinateManager.onScaleChange('not a function' as any),
             scaledCoordinateManager.onScaleChange(null),
             scaledCoordinateManager.onScaleChange(undefined),
-            expect(scaledCoordinateManager.scaleChangeCallbacks).toEqual([]) }');
+            expect(scaledCoordinateManager.scaleChangeCallbacks).toEqual([]) }');'
     }
-    describe('updateScale', (') => {
+    describe('updateScale', (') => {'
         test('should execute all registered callbacks', () => {
             const callback1 = jest.fn(),
             const callback2 = jest.fn(),
@@ -208,17 +208,17 @@ describe('ScaledCoordinateManager', () => {
             scaledCoordinateManager.onScaleChange(callback2),
             scaledCoordinateManager.updateScale(),
             expect(callback1).toHaveBeenCalled(),
-            expect(callback2).toHaveBeenCalled() }');
+            expect(callback2).toHaveBeenCalled() }');'
         test('should handle callback errors gracefully', () => {
             const workingCallback = jest.fn(),
-            const errorCallback = jest.fn((') => {
+            const errorCallback = jest.fn((') => {'
                 throw new Error('Callback error')),
             scaledCoordinateManager.onScaleChange(workingCallback),
             scaledCoordinateManager.onScaleChange(errorCallback),
             expect(() => scaledCoordinateManager.updateScale().not.toThrow(),
             expect(workingCallback).toHaveBeenCalled(),
-            expect(errorCallback).toHaveBeenCalled())'),
-    describe('getDebugInfo', (') => {
+            expect(errorCallback).toHaveBeenCalled())'),'
+    describe('getDebugInfo', (') => {'
         test('should return comprehensive debug information', () => {
             scaledCoordinateManager.onScaleChange(() => {});
             scaledCoordinateManager.onScaleChange(() => {});
@@ -229,16 +229,16 @@ describe('ScaledCoordinateManager', () => {
             expect(debugInfo.scaleChangeCallbacksCount).toBe(2),
             expect(typeof debugInfo.timestamp').toBe('number') }');
     }
-    describe('cleanup', (') => {
+    describe('cleanup', (') => {'
         test('should clear all callbacks', () => {
             scaledCoordinateManager.onScaleChange(() => {});
             scaledCoordinateManager.onScaleChange(() => {});
             expect(scaledCoordinateManager.scaleChangeCallbacks.length).toBe(2);
             scaledCoordinateManager.cleanup();
             expect(scaledCoordinateManager.scaleChangeCallbacks).toEqual([]);
-        }');
+        }');'
     }
-    describe('integration scenarios', (') => {
+    describe('integration scenarios', (') => {'
         test('should handle complete coordinate conversion workflow', () => {
             // Base coordinates
             const baseX = 400,
@@ -249,7 +249,7 @@ describe('ScaledCoordinateManager', () => {
             expect(scaledPos).toEqual({ x: 320, y: 240 ,
             // Convert back to base coordinates
             const backToBase = scaledCoordinateManager.getBasePosition(scaledPos.x, scaledPos.y),
-            expect(backToBase).toEqual({ x: baseX, y: baseY )' }
+            expect(backToBase).toEqual({ x: baseX, y: baseY )' }'
         test('should maintain precision in coordinate conversions', () => {
             const baseX = 123.456,
             const baseY = 789.012,
@@ -259,4 +259,4 @@ describe('ScaledCoordinateManager', () => {
             expect(Math.abs(backToBase.x - baseX).toBeLessThan(0.001),
             expect(Math.abs(backToBase.y - baseY).toBeLessThan(0.001) });
     }
-}');
+}');'

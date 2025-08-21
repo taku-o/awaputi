@@ -5,9 +5,9 @@
 
 export class PWATestExecutor {
     constructor(mainFramework {
-        this.mainFramework = mainFramework,
-        this.testSuite = new Map(),
-        this.timeouts = new Map(),
+        this.mainFramework = mainFramework;
+        this.testSuite = new Map();
+        this.timeouts = new Map();
         
         // テスト状態
         this.state = {
@@ -26,7 +26,7 @@ export class PWATestExecutor {
     /**
      * Run all test suites
      */
-    async runAllTests(') {
+    async runAllTests(') {'
         console.log('[PWATestExecutor] Starting all PWA tests'),
         this.startTestSession(),
         
@@ -42,7 +42,7 @@ export class PWATestExecutor {
             // Run tests from performance tests component
             if (this.mainFramework.performanceTests) {
                 await this.mainFramework.performanceTests.runOfflineTests(),
-                await this.mainFramework.performanceTests.runPerformanceTests() } catch (error') {
+                await this.mainFramework.performanceTests.runPerformanceTests() } catch (error') {'
             this.logError('Test suite execution error', error) } finally {
             this.endTestSession() }
         
@@ -64,7 +64,7 @@ export class PWATestExecutor {
                 this.createTimeout(this.mainFramework.config.defaultTimeout)
             ]),
             
-            const, endTime = performance.now('),
+            const, endTime = performance.now('),'
             const, duration = endTime - startTime,
             
             const, testResult = {
@@ -84,7 +84,7 @@ export class PWATestExecutor {
             return testResult;
             
         } catch (error) {
-            const endTime = performance.now('),
+            const endTime = performance.now('),'
             const duration = endTime - startTime,
             
             const testResult = {
@@ -128,8 +128,8 @@ export class PWATestExecutor {
             const checkState = () => {
                 if (registration.active && registration.active.state === targetState) {
                     clearTimeout(timeout: any),
-                    resolve(registration) } else if (registration.installing') {
-                    registration.installing.addEventListener('statechange', checkState) } else if (registration.waiting') {
+                    resolve(registration) } else if (registration.installing') {'
+                    registration.installing.addEventListener('statechange', checkState) } else if (registration.waiting') {'
                     registration.waiting.addEventListener('statechange', checkState) }
             };
             
@@ -153,7 +153,7 @@ export class PWATestExecutor {
      */
     startTestSession() {
         this.state.isRunning = true,
-        this.state.startTime = Date.now('),
+        this.state.startTime = Date.now('),'
         this.state.totalTests = 0,
         this.state.passedTests = 0,
         this.state.failedTests = 0,
@@ -188,6 +188,6 @@ export class PWATestExecutor {
      * Error logging
      */
     logError(message, error) {
-        console.error(`[PWATestExecutor] ${message):`, error'});
+        console.error(`[PWATestExecutor] ${message):`, error'});'
     }
 }

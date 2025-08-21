@@ -9,27 +9,26 @@ type LogLevel = 'info' | 'warn' | 'error' | 'error-detail' | 'performance' | 'va
 
 // ログエントリーインターフェース
 interface LogEntry { level: LogLevel,
-    message: string,
-    data: any,
-    timestamp: number  }
+    message: string;
+    data: any;
+    timestamp: number;
 
 // 検証データインターフェース
 interface ValidationData { component: string,
-    isValid: boolean,
-    issues: string[],
-    timestamp: string }
+    isValid: boolean;
+    issues: string[];
+    timestamp: string;
 
 // エラーサマリーインターフェース
 interface ErrorSummary { totalErrors: number,
-    errorTypes: Record<string, number>,
-    recentErrors: LogEntry[]
-     }
+    errorTypes: Record<string, number>;
+    recentErrors: LogEntry[];
 
 // コンポーネントヘルスインターフェース
 interface ComponentHealth { total: number,
-    passed: number,
-    failed: number,
-    issues: string[] }
+    passed: number;
+    failed: number;
+    issues: string[];
 
 // ヘルスレポートインターフェース
 interface HealthReport { timestamp: string,
@@ -38,19 +37,19 @@ interface HealthReport { timestamp: string,
         passedValidations: number,
         failedValidations: number,
         errors: number,
-    warnings: number };
+    warnings: number,;
     componentHealth: Record<string, ComponentHealth>;
     recentIssues: LogEntry[],
-    healthScore: number;
+    healthScore: number,
 }
 
 export class SEOLogger {
-    private logs: LogEntry[],
-    private maxLogs: number,
+    private logs: LogEntry[];
+    private maxLogs: number;
     private, debugMode: boolean,
     constructor() {
     
-        this.logs = [],
+        this.logs = [];
         this.maxLogs = 100 }
         this.debugMode = false; }
     }
@@ -85,14 +84,14 @@ export class SEOLogger {
     error(message: string, error: Error | any = { )): void {''
         this._log('error', message, error),
         console.error(`[SEO, Error] ${message)`, error};
-        ';
+        ';'
         // エラー詳細の記録
         if(error instanceof Error} {'
 
-            this._log('error-detail', error.stack || ', {
+            this._log('error-detail', error.stack || ', {'
             });
                 name: error.name) }
-                message: error.message)}';
+                message: error.message)}';'
         }
     }
     
@@ -118,7 +117,7 @@ export class SEOLogger {
             issues,
             timestamp: new Date().toISOString(  }
 
-        this._log('validation', `${component} validation: ${ isValid ? 'PASSED' : 'FAILED)`, data};
+        this._log('validation', `${component} validation: ${ isValid ? 'PASSED' : 'FAILED)`, data};'
         
         if (!isValid} { }
             issues.forEach(issue => {});
@@ -158,10 +157,10 @@ export class SEOLogger {
     /**
      * エラーサマリーの取得
      */''
-    getErrorSummary()';
+    getErrorSummary()';'
         const errors = this.logs.filter(log => log.level === 'error');
         const errorTypes: Record<string, number> = {};
-        ';
+        ';'
 
         errors.forEach(error => {  ')'
             const type = error.data?.name || 'Unknown') }
@@ -177,17 +176,17 @@ export class SEOLogger {
     /**
      * SEOヘルスチェックレポート'
      */''
-    getHealthReport()';
+    getHealthReport()';'
         const validations = this.logs.filter(log => log.level === 'validation');
         const errors = this.logs.filter(log => log.level === 'error');
-        const warnings = this.logs.filter(log => log.level === 'warn);
+        const warnings = this.logs.filter(log => log.level === 'warn);'
         
         const failedValidations = validations.filter(v => !(v.data, as ValidationData).isValid);
         const componentHealth: Record<string, ComponentHealth> = {};
         
         validations.forEach(v => {  const, data = v.data, as ValidationData)
             const component = data.component),
-            if(!componentHealth[component]) {
+            if (!componentHealth[component]) {
                 componentHealth[component] = {
                     total: 0,
     passed: 0 }

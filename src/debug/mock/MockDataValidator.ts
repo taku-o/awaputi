@@ -4,14 +4,14 @@
  */
 
 interface ValidationResult { isValid: boolean,
-    errors: string[],
-    warnings: string[]  }
+    errors: string[];
+    warnings: string[];
 
 interface ValidationRule { field: string,
-    type: 'required' | 'type' | 'range' | 'format' | 'custom',
-    constraint: any,
-    message: string }
-';
+    type: 'required' | 'type' | 'range' | 'format' | 'custom';
+    constraint: any;
+    message: string;
+';'
 
 export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 
@@ -25,9 +25,9 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         { field: 'color', type: 'required', constraint: null, message: 'Color is required'
             }]
     ];
-';
+';'
 
-    private gameStateRules: ValidationRule[] = [';
+    private gameStateRules: ValidationRule[] = [';'
         { field: 'id', type: 'required', constraint: null, message: 'ID is required'
             },''
         { field: 'level', type: 'range', constraint: { min: 1, max: 100  }, message: 'Level must be between 1 and 100' },''
@@ -35,9 +35,9 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
             },]'
         { field: 'lives', type: 'range', constraint: { min: 0, max: 10  }, message: 'Lives must be between 0 and 10' }]
     ];
-';
+';'
 
-    private userRules: ValidationRule[] = [';
+    private userRules: ValidationRule[] = [';'
         { field: 'id', type: 'required', constraint: null, message: 'ID is required'
             },''
         { field: 'username', type: 'required', constraint: null, message: 'Username is required'
@@ -59,7 +59,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
     public validateDataStructure(data: any, expectedStructure: any): ValidationResult { const errors: string[] = [],
         const warnings: string[] = [],
 
-        this.validateStructureRecursive(data, expectedStructure, ', errors, warnings),
+        this.validateStructureRecursive(data, expectedStructure, ', errors, warnings),'
 
         return { isValid: errors.length === 0,
             errors };
@@ -74,7 +74,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
             const value = data[rule.field],
 
             switch(rule.type) {''
-                case 'required':',
+                case 'required':','
                     if (value === undefined || value === null) {
     
 }
@@ -84,31 +84,31 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     break;
 
                 case 'type':
-                    if(value !== undefined && typeof, value !== rule.constraint) {', ' }
+                    if (value !== undefined && typeof, value !== rule.constraint) {', ' }
 
                         errors.push(rule.message); }
                     }
                     break;
 
-                case 'range':';
-                    if(typeof, value === 'number' { }
-                        const { min, max } = rule.constraint;
+                case 'range':';'
+                    if (typeof, value === 'number' }
+                        const min, max } = rule.constraint;
                         if(value < min || value > max) {', ' }
 
                             errors.push(rule.message); }
 }
                     break;
 
-                case 'format':';
-                    if(typeof, value === 'string' && !rule.constraint.test(value) {', ' }
+                case 'format':';'
+                    if (typeof, value === 'string' && !rule.constraint.test(value) {', ' }
 
                         errors.push(rule.message); }
                     }
                     break;
 
-                case 'custom':';
+                case 'custom':';'
                     const customResult = rule.constraint(value, data);
-                    if(!customResult.valid) {
+                    if (!customResult.valid) {
 
                         if(customResult.severity === 'error' { }
                             errors.push(customResult.message); }
@@ -127,26 +127,25 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         const allWarnings = results.flatMap(r => r.warnings),
 
         return { isValid: allErrors.length === 0,
-            errors: allErrors };
-            warnings: allWarnings 
-    }
+            errors: allErrors,;
+            warnings: allWarnings,
 
     private validateStructureRecursive(;
-        data: any;
-        structure: any;
-        path: string);
+        data: any,
+        structure: any,
+        path: string),
         errors: string[],
-    warnings: string[]';
+    warnings: string[]','
     ': void { ''
         if(structure === null || structure === undefined) return,
 
-        if(typeof, structure === 'object' && !Array.isArray(structure) {
+        if (typeof, structure === 'object' && !Array.isArray(structure) {
     
 }
             for (const, key in, structure) { }
                 const currentPath = path ? `${path}.${key}` : key;
                 
-                if(!(key, in data) {
+                if (!(key, in data) {
     
 }
                     warnings.push(`Missing, property: ${currentPath}`});
@@ -161,11 +160,11 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     warnings }
 
             // Check for extra properties
-            for (const, key in, data) { if(!(key, in structure) { }
+            for (const, key in, data) { if (!(key, in structure) { }
                     const currentPath = path ? `${path}.${key}` : key;
                     warnings.push(`Extra, property: ${currentPath}`});
                 }
-} else if (Array.isArray(structure) && structure.length > 0) { if(!Array.isArray(data) { }
+} else if (Array.isArray(structure) && structure.length > 0) { if (!Array.isArray(data) { }
                 errors.push(`Expected, array at ${path}`});
                 return;
             }
@@ -182,18 +181,18 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
             const actualType = typeof data }
             if (actualType !== expectedType) { }'
 
-                errors.push(`Type mismatch at ${path}: expected ${expectedType}, got ${actualType}`}';
+                errors.push(`Type mismatch at ${path}: expected ${expectedType}, got ${actualType}`}';'
             }
 }
 
     public addCustomRule(dataType: 'bubble' | 'gameState' | 'user', rule: ValidationRule': void { ''
         switch(dataType) {
 
-            case 'bubble':',
+            case 'bubble':','
                 this.bubbleRules.push(rule),
 
                 break,
-            case 'gameState':',
+            case 'gameState':','
                 this.gameStateRules.push(rule),
 
                 break,
@@ -206,10 +205,10 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         validCount: number,
         invalidCount: number,
         totalErrors: number,
-    totalWarnings: number  } { return { totalValidated: results.length,
+    totalWarnings: number, { return { totalValidated: results.length,
             validCount: results.filter(r => r.isValid).length,
             invalidCount: results.filter(r => !r.isValid).length,
-            totalErrors: results.reduce((sum, r) => sum + r.errors.length, 0),' };
+            totalErrors: results.reduce((sum, r) => sum + r.errors.length, 0),' };'
 
             totalWarnings: results.reduce((sum, r) => sum + r.warnings.length, 0'); }'
-        }'}
+        }'}'

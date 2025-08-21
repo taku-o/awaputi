@@ -4,12 +4,12 @@
 
 import { chromium } from '@playwright/test';
 
-async function globalTeardown(') {
+async function globalTeardown(') {'
   console.log('🧹 Cleaning up E2E test environment...'),
   
   // Launch browser for cleanup
   const browser = await chromium.launch(),
-  const page = await browser.newPage('),
+  const page = await browser.newPage('),'
   
   try {
     // Navigate to the application
@@ -20,19 +20,19 @@ async function globalTeardown(') {
       localStorage.clear(),
       sessionStorage.clear(),
       
-      if (window.indexedDB') {
+      if (window.indexedDB') {'
         // Clear IndexedDB if used
         const deleteReq = indexedDB.deleteDatabase('BubblePopDB'),
-        deleteReq.onsuccess = (') => console.log('IndexedDB cleared') }
-    }');
+        deleteReq.onsuccess = (') => console.log('IndexedDB cleared') }'
+    }');'
     
     console.log('✅ E2E test environment cleanup complete');
     
-  } catch (error') {
-    console.error('❌ E2E cleanup failed:', error'),
-    // Don't throw error in teardown to avoid masking test failures
+  } catch (error') {'
+    console.error('❌ E2E cleanup failed:', error'),'
+    // Don't throw error in teardown to avoid masking test failures'
   } finally {
-    await browser.close(') }
+    await browser.close(') }'
 }
 
 export default globalTeardown;

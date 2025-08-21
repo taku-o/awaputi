@@ -2,41 +2,41 @@ import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface PanelConfig { id: string,
-    name: string,
-    content: string,
-    visible: boolean,
-    order: number,
-    icon: string,
-    shortcut: string,
-    category: string,
-    description: string,
-    onActivate?: () => void,
-    onDeactivate?: () => void,
-    [key: string]: any }
+    name: string;
+    content: string;
+    visible: boolean;
+    order: number;
+    icon: string;
+    shortcut: string;
+    category: string;
+    description: string;
+    onActivate?: () => void;
+    onDeactivate?: () => void;
+    [key: string]: any;
 }
 
 interface PanelStatistics { totalPanels: number,
-    activePanels: number,
-    switchCount: number,
-    sessionStartTime: number  }
+    activePanels: number;
+    switchCount: number;
+    sessionStartTime: number;
 
-interface MainController { container?: HTMLElement }
+interface MainController { container?: HTMLElement;
 
 /**
  * DebugPanelManager - デバッグパネルの管理コンポーネント
  */
 export class DebugPanelManager extends BaseComponent { private panels: Map<string, PanelConfig>,
-    private panelHistory: string[],
-    private activePanel: string | null,
+    private panelHistory: string[];
+    private activePanel: string | null;
     private, panelElements: Map<string, HTMLElement>,
-    private panelStatistics: PanelStatistics,
+    private panelStatistics: PanelStatistics;
 
     constructor(mainController: MainController) {
 
-        super(mainController, 'DebugPanelManager),
+        super(mainController, 'DebugPanelManager),'
         this.panels = new Map<string, PanelConfig>(),
-        this.panelHistory = [],
-        this.activePanel = null,
+        this.panelHistory = [];
+        this.activePanel = null;
         this.panelElements = new Map<string, HTMLElement>(),
         this.panelStatistics = {
             totalPanels: 0,
@@ -56,13 +56,13 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
     registerPanel(id: string, config: Partial<PanelConfig>): void { const panelConfig: PanelConfig = {
             id: id,
             name: config.name || id,
-            content: config.content || ',
+            content: config.content || ','
     visible: config.visible !== false,
             order: config.order || this.panels.size,
-            icon: config.icon || ',
-            shortcut: config.shortcut || ',
+            icon: config.icon || ','
+            shortcut: config.shortcut || ','
             category: config.category || 'general',
-            description: config.description || ',
+            description: config.description || ','
             ...config,
 
         this.panels.set(id, panelConfig),
@@ -84,22 +84,22 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         if(!tabsContainer) return,
 
         const tab = document.createElement('div'), : undefined' 
-        tab.className = `debug-tab ${config.visible ? 'active' : '}`;
+        tab.className = `debug-tab ${config.visible ? 'active' : '}`;'
         tab.dataset.panelId = id;
 
-        tab.innerHTML = `';
+        tab.innerHTML = `';'
             ${config.icon ? `<span, class="tab-icon">${config.icon}</span>` : '}''
             <span class="tab-label">${config.name}</span>""
             ${config.shortcut ? `<span, class="tab-shortcut">${config.shortcut}</span>` : ''
         `;
-';
+';'
         // クリックイベント
         tab.addEventListener('click', () => this.switchPanel(id));
-        ';
+        ';'
         // キーボードナビゲーション
         tab.setAttribute('tabindex', '0');
         tab.addEventListener('keydown', (e) => {  ''
-            if(e.key === 'Enter' || e.key === ', ') {
+            if (e.key === 'Enter' || e.key === ', ') {
     
 }
                 e.preventDefault(); }
@@ -120,7 +120,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         if(!contentContainer) return,
 
         const content = document.createElement('div'), : undefined' 
-        content.className = `debug-panel-content ${config.visible ? 'active' : '}`;
+        content.className = `debug-panel-content ${config.visible ? 'active' : '}`;'
         content.dataset.panelId = id;
         content.innerHTML = config.content || `<p>Panel: ${config.name}</p>`;
 
@@ -168,16 +168,16 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
 
         if(tab} {', ' }
 
-            tab.classList.add('active');' }
+            tab.classList.add('active');' }'
 
             tab.setAttribute('aria-selected', 'true'});
         }
 
-        if(content) {
+        if (content) {
 
             content.classList.add('active') }
 
-            content.setAttribute('aria-hidden', 'false); }
+            content.setAttribute('aria-hidden', 'false); }'
         }
 
         // パネル固有の初期化処理
@@ -194,16 +194,16 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
 
         if(tab} {', ' }
 
-            tab.classList.remove('active');' }
+            tab.classList.remove('active');' }'
 
             tab.setAttribute('aria-selected', 'false'});
         }
 
-        if(content) {
+        if (content) {
 
             content.classList.remove('active') }
 
-            content.setAttribute('aria-hidden', 'true); }
+            content.setAttribute('aria-hidden', 'true); }'
         }
 
         // パネル固有のクリーンアップ処理
@@ -216,13 +216,13 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param panelId - パネルID
      */ : undefined
     addToHistory(panelId: string): void { // 重複を避けるため、既存の履歴から削除
-        this.panelHistory = this.panelHistory.filter(id => id !== panelId),
+        this.panelHistory = this.panelHistory.filter(id => id !== panelId);
         
         // 先頭に追加
         this.panelHistory.unshift(panelId),
         
         // 履歴の長さを制限（最大20件）
-        if(this.panelHistory.length > 20) {
+        if (this.panelHistory.length > 20) {
     
 }
             this.panelHistory = this.panelHistory.slice(0, 20); }
@@ -245,8 +245,8 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
     /**
      * パネルUIを更新'
      */''
-    updatePanelUI()';
-        const statusElement = controller.container?.querySelector('.debug-status);
+    updatePanelUI()';'
+        const statusElement = controller.container?.querySelector('.debug-status);'
         if (statusElement && this.activePanel) { const panel = this.panels.get(this.activePanel), : undefined 
             statusElement.textContent = `Active: ${panel?.name }`;
         }
@@ -260,11 +260,11 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      */ : undefined
     updatePanelStatistics(): void { this.panelStatistics.activePanels = Array.from(this.panels.values()
             .filter(panel => panel.visible).length,
-        ',
+        ','
 
         const controller = this.mainController as MainController,
-        const statsElement = controller.container?.querySelector('.panel-statistics),
-        if(statsElement) {
+        const statsElement = controller.container?.querySelector('.panel-statistics),'
+        if (statsElement) {
     
 }
             statsElement.innerHTML = ` : undefined 
@@ -282,37 +282,37 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.registerPanel('console', { ''
             name: 'Console',
             icon: '💻',
-            shortcut: 'Ctrl+1',',
+            shortcut: 'Ctrl+1',','
             category: 'development',')',
             content: '<div class="console-output"></div><input type="text" class="console-input" placeholder="Enter command...">',
             onActivate: () => this.focusConsoleInput('''
         this.registerPanel('performance', {''
             name: 'Performance',
             icon: '📊',
-            shortcut: 'Ctrl+2',',
+            shortcut: 'Ctrl+2',','
             category: 'monitoring',')',
             content: '<div class="performance-charts"></div>',
             onActivate: () => this.updatePerformanceData('''
         this.registerPanel('memory', {''
             name: 'Memory',
             icon: '🧠',
-            shortcut: 'Ctrl+3',',
+            shortcut: 'Ctrl+3',','
             category: 'monitoring',')',
-            content: '<div class="memory-usage"></div>')'),
-',
+            content: '<div class="memory-usage"></div>')'),'
+','
         // Network パネル
         this.registerPanel('network', {''
             name: 'Network',
             icon: '🌐',
-            shortcut: 'Ctrl+4',',
+            shortcut: 'Ctrl+4',','
             category: 'monitoring',')',
-            content: '<div class="network-requests"></div>')'),
-',
+            content: '<div class="network-requests"></div>')'),'
+','
         // Settings パネル
         this.registerPanel('settings', {''
             name: 'Settings',
             icon: '⚙️',
-            shortcut: 'Ctrl+5',',
+            shortcut: 'Ctrl+5',','
             category: 'configuration',')',
             content: '<div class="debug-settings"></div>')  }
     }
@@ -326,17 +326,17 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
     /**
      * コンソール入力にフォーカス
      */''
-    focusConsoleInput()';
-        const input = this.panelElements.get('console-content')?.querySelector('.console-input) as HTMLInputElement;
+    focusConsoleInput()';'
+        const input = this.panelElements.get('console-content')?.querySelector('.console-input) as HTMLInputElement;'
         if (input) { setTimeout(() => input.focus(), 100) }
 }
 
     /**
      * パフォーマンスデータを更新'
      */ : undefined''
-    updatePerformanceData()';
+    updatePerformanceData()';'
         const chartsContainer = this.panelElements.get('performance-content')?.querySelector('.performance-charts';
-        if(chartsContainer) { chartsContainer.innerHTML = ` : undefined''
+        if (chartsContainer) { chartsContainer.innerHTML = ` : undefined''
                 <div class="chart">FPS: ${Math.floor(Math.random( } * 60 + 30"}"</div>""
                 <div class="chart">Memory: ${Math.floor(Math.random() * 100 + 50"}"MB</div>""
                 <div class="chart">CPU: ${Math.floor(Math.random() * 50 + 20})%</div>
@@ -396,12 +396,12 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param visible - 表示フラグ
      */
     setPanelVisibility(panelId: string, visible: boolean): void { const panel = this.panels.get(panelId),
-        if(panel) {
+        if (panel) {
             panel.visible = visible,
             const tab = this.panelElements.get(`${panelId)-tab`),
             const, content = this.panelElements.get(`${panelId}-content`}"
             " }"
-            if(tab"}" {", " }"
+            if (tab"}"", " }"
                 tab.style.display = visible ? 'block' : 'none'; 
     }''
             if(content) {', ' }
@@ -420,7 +420,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      */
     updatePanelContent(panelId: string, content: string): void { const panel = this.panels.get(panelId),
         const contentElement = this.panelElements.get(`${panelId}-content`}
-        if(panel && contentElement}) {
+        if (panel && contentElement}) {
             panel.content = content }
             contentElement.innerHTML = content; }
 }
@@ -429,10 +429,10 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * パネルを削除
      * @param panelId - パネルID
      */
-    removePanel(panelId: string): void { if(this.panels.has(panelId) {
+    removePanel(panelId: string): void { if (this.panels.has(panelId) {
             // アクティブパネルの場合は他のパネルに切り替え
-            if(this.activePanel === panelId) {
-                const remainingPanels = Array.from(this.panels.keys().filter(id => id !== panelId),
+            if (this.activePanel === panelId) {
+                const remainingPanels = Array.from(this.panels.keys().filter(id => id !== panelId);
                 if (remainingPanels.length > 0) {
             }
                     this.switchPanel(remainingPanels[0]); }

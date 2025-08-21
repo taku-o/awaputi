@@ -6,64 +6,61 @@
 
 // ユーザーデータのインターフェース
 interface UserData { username: string,
-    totalAP: number,
-    currentAP: number,
-    gamesPlayed: number,
-    totalPlayTime: number,
-    highestScore: number,
-    level: number,
-    totalScore?: number,
+    totalAP: number;
+    currentAP: number;
+    gamesPlayed: number;
+    totalPlayTime: number;
+    highestScore: number;
+    level: number;
+    totalScore?: number;
     gamesWon?: number,  }
 
 // プロフィール統計のインターフェース
 interface ProfileStatistics { username: string,
-    level: number,
-    totalAP: number,
-    currentAP: number,
-    gamesPlayed: number,
-    totalPlayTime: number,
-    highestScore: number,
-    averageScore: number,
-    winRate: number  }
+    level: number;
+    totalAP: number;
+    currentAP: number;
+    gamesPlayed: number;
+    totalPlayTime: number;
+    highestScore: number;
+    averageScore: number;
+    winRate: number;
 
 // プレイヤーデータのインターフェース
 interface PlayerData { username?: string,
-    totalAP?: number,
-    currentAP?: number,
-    gamesPlayed?: number,
-    totalPlayTime?: number,
-    highestScore?: number,
-    level?: number,
-    setUsername(username: string): void }
+    totalAP?: number;
+    currentAP?: number;
+    gamesPlayed?: number;
+    totalPlayTime?: number;
+    highestScore?: number;
+    level?: number;
+    setUsername(username: string): void;
 
 // ゲームエンジンのインターフェース
-interface GameEngine { playerData?: PlayerData }
+interface GameEngine { playerData?: PlayerData;
 
 // イベントバスのインターフェース
 interface EventBus { on(event: string, callback: (data?: any) => void): void,
-    off(event: string, callback?: (data?: any) => void): void,
-    emit(event: string, data?: any): void 
-    }
+    off(event: string, callback?: (data?: any) => void): void;
+    emit(event: string, data?: any): void;
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any,
-    set(key: string, value: any): void  }
+    set(key: string, value: any): void;
 
 export class UserProfileManager {
-    private gameEngine: GameEngine,
-    private eventBus: EventBus,
-    private sceneState: SceneState,
+    private gameEngine: GameEngine;
+    private eventBus: EventBus;
+    private sceneState: SceneState;
     // プロフィール関連の状態
-    private userData: UserData | null = null,
+    private userData: UserData | null = null;
     private, lastDataUpdate: number = 0,
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.sceneState = sceneState,
-        
-
-     }
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.sceneState = sceneState
+}
         this.setupEventListeners(); }
     }
     
@@ -75,7 +72,7 @@ export class UserProfileManager {
 
                 this.handleUsernameChange(newUsername);' }'
 
-            }');
+            }');'
 
             this.eventBus.on('userDataReload', () => { this.loadUserData() });
         }
@@ -94,11 +91,11 @@ export class UserProfileManager {
                 level: this.gameEngine.playerData?.level || 1);
             });
             this.lastDataUpdate = Date.now();
-            ';
+            ';'
             // イベントバスに通知
-            if(this.eventBus) {', ' }
+            if (this.eventBus) {', ' }
 
-                this.eventBus.emit('profileDataLoaded', this.userData'; }
+                this.eventBus.emit('profileDataLoaded', this.userData'; }'
 
             } catch (error) { : undefined''
             console.error('UserProfileManager: loadUserData, error:', error),
@@ -111,24 +108,24 @@ export class UserProfileManager {
     public renderCurrentUserInfo(;
         context: CanvasRenderingContext2D;
         x: number );
-        y: number)',
-    width: number';
+        y: number)','
+    width: number';'
     '): number { // セクション背景'
         context.fillStyle = '#1a1a2e',
         context.fillRect(x, y, width, 80),
-        ',
+        ','
         // セクション枠線
         context.strokeStyle = '#4a4a6a',
 
         context.lineWidth = 1,
         context.strokeRect(x, y, width, 80),
-        ',
+        ','
         // セクション見出し
         context.fillStyle = '#ffffff',
         context.font = 'bold 18px Arial',
         context.textAlign = 'left',
-        context.fillText('現在のユーザー情報', x + 15, y + 25',
-        ',
+        context.fillText('現在のユーザー情報', x + 15, y + 25','
+        ','
         // ユーザー名表示
         context.font = '16px Arial',
         const currentUsername = this.userData?.username || this.gameEngine.playerData?.username || '未設定',
@@ -157,22 +154,22 @@ export class UserProfileManager {
         y: number, ;
         width: number );
         focusedElement: number,
-    tabsLength: number';
-    '): number { const buttonWidth = 200,
+    tabsLength: number';'
+    '): number { const buttonWidth = 200,'
         const buttonHeight = 40,
         const isFocused = focusedElement === tabsLength + 1,
 
-        ',
+        ','
         // ボタン背景
         context.fillStyle = isFocused ? '#4a4a6a' : '#2a2a4a',
         context.fillRect(x, y, buttonWidth, buttonHeight),
-        ',
+        ','
         // ボタン枠線
         context.strokeStyle = isFocused ? '#6a6a8a' : '#4a4a6a',
 
         context.lineWidth = 2,
         context.strokeRect(x, y, buttonWidth, buttonHeight),
-        ',
+        ','
         // ボタンテキスト
         context.fillStyle = '#ffffff',
         context.font = '16px Arial',
@@ -188,27 +185,27 @@ export class UserProfileManager {
         context: CanvasRenderingContext2D,
     x: number, ;
         y: number );
-        width: number)',
-    height: number';
+        width: number)','
+    height: number';'
     '): void { // タイトル'
         context.fillStyle = '#ffffff',
         context.font = 'bold 20px Arial',
         context.textAlign = 'center',
-        context.fillText('ユーザー名変更', x + width / 2, y + 30',
-        ',
+        context.fillText('ユーザー名変更', x + width / 2, y + 30','
+        ','
         // 現在のユーザー名
         context.font = '16px Arial',
         context.textAlign = 'left',
-        context.fillText('現在のユーザー名:', x + 20, y + 70',
+        context.fillText('現在のユーザー名:', x + 20, y + 70','
 
         const currentUsername = this.userData?.username || this.gameEngine.playerData?.username || '未設定',
         context.fillStyle = '#88ccff',
         context.fillText(currentUsername, x + 20, y + 95),
-        ',
+        ','
         // 新しいユーザー名入力
         context.fillStyle = '#ffffff', : undefined''
-        context.fillText('新しいユーザー名:', x + 20, y + 130',
-        ',
+        context.fillText('新しいユーザー名:', x + 20, y + 130','
+        ','
         // 入力フィールド（仮想的な表現）
         context.fillStyle = '#333333',
         context.fillRect(x + 20, y + 140, width - 40, 30),
@@ -216,11 +213,11 @@ export class UserProfileManager {
 
         context.lineWidth = 1,
         context.strokeRect(x + 20, y + 140, width - 40, 30),
-        ',
+        ','
         // プレースホルダーテキスト
         context.fillStyle = '#888888',
         context.font = '14px Arial',
-        context.fillText('新しいユーザー名を入力してください', x + 25, y + 158' }
+        context.fillText('新しいユーザー名を入力してください', x + 25, y + 158' }'
     
     /**
      * ユーザー名変更処理
@@ -229,17 +226,17 @@ export class UserProfileManager {
             if(!newUsername || newUsername.trim() === '') {''
                 throw new Error('ユーザー名が入力されていません' }', ';
             // ユーザー名の検証
-            if(newUsername.length > 20) { }
+            if (newUsername.length > 20) { }
 
                 throw new Error('ユーザー名は20文字以内で入力してください'; }'
             }
-            ';
+            ';'
             // 特殊文字のチェック
             if(!/^[a-zA-Z0-9あ-んア-ヶー\s]+$/.test(newUsername)) { ''
                 throw new Error('使用できない文字が含まれています' }'
             
             // プレイヤーデータを更新
-            if(this.gameEngine.playerData) {
+            if (this.gameEngine.playerData) {
                 this.gameEngine.playerData.setUsername(newUsername.trim(),
                 
                 // ローカルデータも更新
@@ -249,17 +246,17 @@ export class UserProfileManager {
                 }
                 ;
                 // イベントバスに通知
-                if(this.eventBus) {', ' }
+                if (this.eventBus) {', ' }
 
                     this.eventBus.emit('usernameUpdated', newUsername.trim()); }
                 }
 
                 console.log('Username changed to:', newUsername.trim();
             } catch (error) {
-            console.error('UserProfileManager: handleUsernameChange, error:', error',
-            ',
+            console.error('UserProfileManager: handleUsernameChange, error:', error','
+            ','
             // エラーをイベントバスに通知
-            if(this.eventBus) {', ' }
+            if (this.eventBus) {', ' }
 
                 this.eventBus.emit('profileError', (error as Error).message); }
             }
@@ -272,7 +269,7 @@ export class UserProfileManager {
      * ユーザー名変更ボタンのクリック処理
      */'
     public handleUsernameButtonClick(): void { ''
-        if(this.eventBus) {', ' }
+        if (this.eventBus) {', ' }
 
             this.eventBus.emit('openDialog', 'username'; }
 }
@@ -309,9 +306,9 @@ export class UserProfileManager {
      * コンポーネントのクリーンアップ
      */
     public cleanup(): void { ''
-        if(this.eventBus) {
+        if (this.eventBus) {
 
             this.eventBus.off('usernameChanged') }
 
             this.eventBus.off('userDataReload'); }
-}'}
+}'}'

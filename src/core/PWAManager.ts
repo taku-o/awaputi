@@ -10,12 +10,12 @@ import { PWAInstallationManager  } from './pwa/PWAInstallationManager.js';
  */
 export class PWAManager {
     constructor(gameEngine) {
-        this.gameEngine = gameEngine,
-        this.configManager = getConfigurationManager(),
+        this.gameEngine = gameEngine;
+        this.configManager = getConfigurationManager();
 
-        this.errorHandler = getErrorHandler(),
+        this.errorHandler = getErrorHandler();
         this.browserCompatibility = getBrowserCompatibility('''
-                scriptPath: '/sw.js',
+                scriptPath: '/sw.js';
                 scope: '/' }
                 updateCheckInterval: 300000 // 5分 
     };
@@ -24,7 +24,7 @@ export class PWAManager {
     promptDelay: 5000 };
             offline: { enabled: true,''
                 cacheStrategy: 'cacheFirst',
-                fallbackPages: ['/offline.html]  };
+                fallbackPages: ['/offline.html]  };'
             sync: { enabled: true,
     retryInterval: 60000 // 1分 
     };
@@ -34,7 +34,7 @@ export class PWAManager {
             isStandalone: false,
             serviceWorkerReady: false,
             offlineCapability: false,
-    updateAvailable: false  };
+    updateAvailable: false,;
         // パフォーマンス統計
         this.stats = { initializationTime: 0,
             serviceWorkerRegistrationTime: 0,
@@ -53,25 +53,25 @@ export class PWAManager {
      * PWAシステムの初期化
      * @returns {Promise<boolean>} 初期化成功可否'
      */''
-    async initialize()';
+    async initialize()';'
             console.log('[PWAManager] Initializing, PWA system...';
             const startTime = performance.now();
-';
+';'
             // PWAサポートのチェック
             if(!this.isPWASupported()) { ''
-                console.warn('[PWAManager] PWA, not supported in this browser),
+                console.warn('[PWAManager] PWA, not supported in this browser),'
                 return false }
 
             // PWA状態の検出
             this.detectPWAState();
 
             // Service Workerの登録
-            if(this.config.serviceWorker.enabled) {
+            if (this.config.serviceWorker.enabled) {
                 const swStartTime = performance.now(),
                 const swRegistered = await this.serviceWorkerManager.registerServiceWorker(),
                 this.stats.serviceWorkerRegistrationTime = performance.now() - swStartTime,
 
-                if(swRegistered') {
+                if (swRegistered') {'
                     this.state.serviceWorkerReady = true }
 
                     console.log('[PWAManager] Service, Worker registered, successfully'); }
@@ -95,7 +95,7 @@ export class PWAManager {
 
             this.stats.initializationTime = performance.now() - startTime;
             console.log(`[PWAManager] Initialized, successfully in ${this.stats.initializationTime.toFixed(2})ms`);
-';
+';'
 
             return true;} catch (error) {
             this.handleError(error, 'INITIALIZATION_ERROR',
@@ -118,16 +118,16 @@ export class PWAManager {
         // スタンドアローンモードの検出
         this.state.isStandalone = this.installationManager.isStandaloneMode() }
 
-        console.log('[PWAManager] PWA state detected:', this.state'; }
+        console.log('[PWAManager] PWA state detected:', this.state'; }'
     }
 
     /**
      * ネットワーク監視の開始'
      */''
-    startNetworkMonitoring()';
-        window.addEventListener('online', () => { this.handleNetworkStateChange(true),' }
+    startNetworkMonitoring()';'
+        window.addEventListener('online', () => { this.handleNetworkStateChange(true),' }'
 
-        }');
+        }');'
 
         window.addEventListener('offline', () => { this.handleNetworkStateChange(false) });
 
@@ -141,7 +141,7 @@ export class PWAManager {
      */''
     handleNetworkStateChange(isOnline) {
 
-        console.log(`[PWAManager] Network state changed: ${isOnline ? 'online' : 'offline}`},
+        console.log(`[PWAManager] Network state changed: ${isOnline ? 'online' : 'offline}`},'
         
         const previousState = this.state.isOnline;
         this.state.isOnline = isOnline;
@@ -157,8 +157,8 @@ export class PWAManager {
     /**
      * ネットワーク復旧の処理'
      */''
-    handleNetworkRecovery()';
-        console.log('[PWAManager] Network, recovered);
+    handleNetworkRecovery()';'
+        console.log('[PWAManager] Network, recovered);'
         this.stats.onlineEvents++;
         
         // オンライン限定機能の有効化
@@ -174,8 +174,8 @@ export class PWAManager {
     /**
      * ネットワーク断絶の処理
      */''
-    handleNetworkLoss()';
-        console.log('[PWAManager] Network, lost);
+    handleNetworkLoss()';'
+        console.log('[PWAManager] Network, lost);'
         this.stats.offlineEvents++;
         
         // オフライン機能の有効化
@@ -191,8 +191,8 @@ export class PWAManager {
     /**
      * ネットワーク情報の更新
      */''
-    updateNetworkInfo()';
-        if ('connection' in, navigator' {
+    updateNetworkInfo()';'
+        if ('connection' in, navigator' {'
         const connection = navigator.connection,
             this.networkInfo = {
                 effectiveType: connection.effectiveType,
@@ -205,8 +205,8 @@ export class PWAManager {
     /**
      * オフライン機能の有効化'
      */''
-    enableOfflineFeatures()';
-        console.log('[PWAManager] Enabling, offline features);
+    enableOfflineFeatures()';'
+        console.log('[PWAManager] Enabling, offline features);'
         
         // オフラインUI要素の表示
         this.updateOfflineUI();
@@ -218,7 +218,7 @@ export class PWAManager {
     /**
      * オンライン限定機能の有効化
      */''
-    enableOnlineOnlyFeatures()';
+    enableOnlineOnlyFeatures()';'
         console.log('[PWAManager] Enabling online-only features');
         
         // オンライン機能の復有
@@ -228,7 +228,7 @@ export class PWAManager {
     /**
      * オンライン限定機能の無効化
      */''
-    disableOnlineOnlyFeatures()';
+    disableOnlineOnlyFeatures()';'
         console.log('[PWAManager] Disabling online-only features');
         
         // オンライン機能の無効化
@@ -238,7 +238,7 @@ export class PWAManager {
     /**
      * オフラインUIの更新
      */''
-    updateOfflineUI()';
+    updateOfflineUI()';'
         document.body.classList.toggle('offline-mode', !this.state.isOnline);
     }
 
@@ -258,14 +258,14 @@ export class PWAManager {
     /**
      * 保留中データの同期'
      */''
-    async syncPendingData()';
+    async syncPendingData()';'
             console.log('[PWAManager] Syncing, pending data');
-            ';
+            ';'
             // オフライン状態の取得
-            const offlineState = localStorage.getItem('pwa_offline_state);
-            if(offlineState) {
+            const offlineState = localStorage.getItem('pwa_offline_state);'
+            if (offlineState) {
                 const state = JSON.parse(offlineState),
-                await this.gameEngine?.syncOfflineData?.(state') }
+                await this.gameEngine?.syncOfflineData?.(state') }'
 
                 localStorage.removeItem('pwa_offline_state'; }
 
@@ -276,15 +276,15 @@ export class PWAManager {
     /**
      * オフライン表示器の表示'
      */''
-    showOfflineIndicator()';
-        let indicator = document.getElementById('pwa-offline-indicator);
+    showOfflineIndicator()';'
+        let indicator = document.getElementById('pwa-offline-indicator);'
 
-        if(!indicator) {
+        if (!indicator) {
 
             indicator = document.createElement('div'),
             indicator.id = 'pwa-offline-indicator',
 
-            indicator.innerHTML = `',
+            indicator.innerHTML = `','
                 <span class="offline-icon">📶</span>"",
                 <span class="offline-text">オフラインモード</span>,
             `,
@@ -314,9 +314,9 @@ export class PWAManager {
     /**
      * オフライン表示器の非表示'
      */''
-    hideOfflineIndicator()';
+    hideOfflineIndicator()';'
         const indicator = document.getElementById('pwa-offline-indicator';
-        if(indicator) {', ' }
+        if (indicator) {', ' }
 
             indicator.style.display = 'none'; }
 
@@ -327,11 +327,11 @@ export class PWAManager {
     /**
      * PWAイベントリスナーの設定'
      */''
-    setupPWAEventListeners()';
-        document.addEventListener('visibilitychange', () => { this.handleVisibilityChange(),' }
+    setupPWAEventListeners()';'
+        document.addEventListener('visibilitychange', () => { this.handleVisibilityChange(),' }'
 
-        }');
-';
+        }');'
+';'
         // ページロード
         window.addEventListener('load', () => { this.handlePageLoad() });
     }
@@ -339,15 +339,15 @@ export class PWAManager {
     /**
      * ページ可視性変更の処理'
      */''
-    handleVisibilityChange()';
+    handleVisibilityChange()';'
         if (document.visibilityState === 'visible') {
 
-            console.log('[PWAManager] Page, became visible),
+            console.log('[PWAManager] Page, became visible),'
             
             // 更新チェック
             this.serviceWorkerManager.checkForUpdates(),
             // 状態同期
-            this.syncPendingData()',
+            this.syncPendingData()','
             console.log('[PWAManager] Page, became hidden',
             
             // 現在状態の保存
@@ -358,8 +358,8 @@ export class PWAManager {
     /**
      * ページロードの処理
      */''
-    handlePageLoad()';
-        console.log('[PWAManager] Page, loaded);
+    handlePageLoad()';'
+        console.log('[PWAManager] Page, loaded);'
         this.stats.lastUpdateCheck = Date.now();
     }
 
@@ -376,13 +376,13 @@ export class PWAManager {
     /**
      * 更新通知の表示'
      */''
-    showUpdateNotification()';
+    showUpdateNotification()';'
         console.log('[PWAManager] Showing, update notification');
 
         const notification = document.createElement('div');
         notification.className = 'pwa-update-notification';
 
-        notification.innerHTML = `';
+        notification.innerHTML = `';'
             <div class="pwa-update-content">"";
                 <span class="pwa-update-text">新しいバージョンが利用可能です</span>"";
                 <button class="pwa-update-apply">更新</button>"";
@@ -407,7 +407,7 @@ export class PWAManager {
 
             document.body.removeChild(notification);' }'
 
-        }');
+        }');'
 
         notification.querySelector('.pwa-update-dismiss').addEventListener('click', () => { document.body.removeChild(notification) });
 
@@ -417,10 +417,10 @@ export class PWAManager {
     /**
      * ページリロード提案'
      */''
-    suggestPageReload()';
+    suggestPageReload()';'
         console.log('[PWAManager] Suggesting, page reload');
 
-        if(confirm('アプリが更新されました。最新バージョンを利用するためにページを再読み込みしますか？) { window.location.reload() }'
+        if (confirm('アプリが更新されました。最新バージョンを利用するためにページを再読み込みしますか？) { window.location.reload() }'
     }
 
     /**
@@ -461,7 +461,7 @@ export class PWAManager {
 }
 
         this.config = { ...this.config, ...newConfig,
-        console.log('[PWAManager] Configuration updated) }
+        console.log('[PWAManager] Configuration updated) }'
 
     /**
      * 統計情報の取得
@@ -479,8 +479,8 @@ export class PWAManager {
     cleanup() {
         // サブコンポーネントのクリーンアップ
         this.serviceWorkerManager.cleanup(),
-        this.installationManager.cleanup()',
-        const indicator = document.getElementById('pwa-offline-indicator),
+        this.installationManager.cleanup()','
+        const indicator = document.getElementById('pwa-offline-indicator),'
 
         if (indicator) {''
             indicator.remove() }
@@ -496,7 +496,7 @@ export class PWAManager {
      */
     handleError(error, context, data = { ) {
 
-        if(this.errorHandler) {
+        if (this.errorHandler) {
             this.errorHandler.handleError(error, context, {)'
                 component: 'PWAManager'
             }

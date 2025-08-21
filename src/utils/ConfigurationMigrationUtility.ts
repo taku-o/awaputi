@@ -12,58 +12,58 @@ import type { ErrorHandler } from './ErrorHandler.js';
 
 // 型定義インターフェース
 interface BubbleConfig { health: number,
-    size: number,
-    maxAge: number,
-    color: string,
-    score: number,
+    size: number;
+    maxAge: number;
+    color: string;
+    score: number;
     [key: string]: any, // 特殊効果プロパティ  }
 
 interface MigrationResults { migrationId: string,
-    startTime: number,
-    endTime?: number,
-    duration?: number,
-    migratedTypes: string[],
-    errors: MigrationError[],
-    totalMigrated: number,
-    success?: boolean,
+    startTime: number;
+    endTime?: number;
+    duration?: number;
+    migratedTypes: string[];
+    errors: MigrationError[];
+    totalMigrated: number;
+    success?: boolean;
     error?: string,  }
 
 interface MigrationError { bubbleType: string,
-    error: string  }
+    error: string;
 
 interface ValidationResults { timestamp: number,
-    validated: string[],
-    missing: MissingProperty[],
-    inconsistent: any[],
-    error?: string }
+    validated: string[];
+    missing: MissingProperty[];
+    inconsistent: any[];
+    error?: string;
 
 interface MissingProperty { bubbleType: string,
     missingProperties: {
         healt,h: boolean,
         size: boolean,
-    score: boolean }
+    score: boolean,
 
 interface RollbackResults { success: boolean,
-    migrationId: string,
-    rolledBackCount?: number,
-    timestamp: number,
-    error?: string  }
+    migrationId: string;
+    rolledBackCount?: number;
+    timestamp: number;
+    error?: string;
 
 interface MigrationStats { totalMigrations: number,
-    successfulMigrations: number,
-    failedMigrations: number,
-    successRate: string,
-    totalMigratedTypes: number,
+    successfulMigrations: number;
+    failedMigrations: number;
+    successRate: string;
+    totalMigratedTypes: number;
     lastMigration: MigrationResults | null }
 
 export class ConfigurationMigrationUtility {
-    private configManager: ConfigurationManager,
-    private errorHandler: ErrorHandler,
+    private configManager: ConfigurationManager;
+    private errorHandler: ErrorHandler;
     private, migrationHistory: MigrationResults[],
     constructor() {
-',
+','
 
-        this.configManager = getConfigurationManager(),
+        this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler(' }''
         console.log('[ConfigurationMigrationUtility] 初期化完了'); }'
     }
@@ -74,7 +74,7 @@ export class ConfigurationMigrationUtility {
      */
     async migrateBubbleConfigurations(): Promise<MigrationResults> {'
         const migrationId = `bubble_migration_${Date.now())`,
-        const startTime = Date.now()',
+        const startTime = Date.now()','
             console.log('[ConfigurationMigrationUtility] 泡設定の移行開始'),
             
             const migrationResults: MigrationResults = { migrationId,
@@ -83,8 +83,8 @@ export class ConfigurationMigrationUtility {
                 errors: [],
     totalMigrated: 0  };
             // 基本泡タイプの設定
-            const basicBubbleTypes = [';
-                'normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison', ]';
+            const basicBubbleTypes = [';'
+                'normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison', ]';'
                 'spiky', 'rainbow', 'clock', 'score', 'electric', 'escaping', 'cracked'];
             ];
             
@@ -100,12 +100,12 @@ export class ConfigurationMigrationUtility {
 
                         error: (error, as Error).message' }'
 
-                    }');
+                    }');'
                     this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', { ')'
-                        context: 'ConfigurationMigrationUtility.migrateBubbleConfigurations',',
+                        context: 'ConfigurationMigrationUtility.migrateBubbleConfigurations',','
                         bubbleType',' }'
 
-                    }');
+                    }');'
                 }
             }
             
@@ -126,7 +126,7 @@ export class ConfigurationMigrationUtility {
 
                         error: (error, as Error).message' }'
 
-                    }');
+                    }');'
                     this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', { ')'
                         context: 'ConfigurationMigrationUtility.migrateBubbleConfigurations'),
                         bubbleType });
@@ -172,33 +172,33 @@ export class ConfigurationMigrationUtility {
         }
         
         let migrated = false;
-        ';
+        ';'
         // 基本設定の移行
-        if(bubbleConfig.health !== undefined) { }'
+        if (bubbleConfig.health !== undefined) { }'
 
             this.configManager.set('game', `bubbles.${bubbleType}.health`, bubbleConfig.health});
             migrated = true;
         }
 
-        if(bubbleConfig.size !== undefined) { }'
+        if (bubbleConfig.size !== undefined) { }'
 
             this.configManager.set('game', `bubbles.${bubbleType}.size`, bubbleConfig.size});
             migrated = true;
         }
 
-        if(bubbleConfig.maxAge !== undefined) { }'
+        if (bubbleConfig.maxAge !== undefined) { }'
 
             this.configManager.set('game', `bubbles.${bubbleType}.maxAge`, bubbleConfig.maxAge});
             migrated = true;
         }
 
-        if(bubbleConfig.score !== undefined) { }'
+        if (bubbleConfig.score !== undefined) { }'
 
             this.configManager.set('game', `bubbles.${bubbleType}.score`, bubbleConfig.score});
             migrated = true;
         }
 
-        if(bubbleConfig.color !== undefined) { }'
+        if (bubbleConfig.color !== undefined) { }'
 
             this.configManager.set('game', `bubbles.${bubbleType}.color`, bubbleConfig.color});
             migrated = true;
@@ -212,7 +212,7 @@ export class ConfigurationMigrationUtility {
             migrated = true;
         }
         
-        if(migrated) {
+        if (migrated) {
     
 }
             console.log(`[ConfigurationMigrationUtility] 移行完了: ${bubbleType}`});
@@ -359,13 +359,13 @@ export class ConfigurationMigrationUtility {
      */''
     private _extractSpecialEffects(bubbleType: string, config: BubbleConfig): Record<string, any> {
         const effects: Record<string, any> = {};
-        ';
+        ';'
         // 基本設定以外のプロパティを特殊効果として扱う
-        const basicProperties = new Set(['health', 'size', 'maxAge', 'score', 'color]);
+        const basicProperties = new Set(['health', 'size', 'maxAge', 'score', 'color]);'
         
         for(const [key, value] of Object.entries(config) {
         
-            if(!basicProperties.has(key) {
+            if (!basicProperties.has(key) {
     
 }
                 effects[key] = value; }
@@ -384,11 +384,11 @@ export class ConfigurationMigrationUtility {
                 'normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison',
                 'spiky', 'rainbow', 'clock', 'score', 'electric', 'escaping', 'cracked',
                 'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier',
-            ],', ')',
+            ],', ')','
             for (const bubbleType of bubbleTypes) {
 
-                const healthConfig = this.configManager.get('game', `bubbles.${bubbleType'.health`),
-                const, sizeConfig = this.configManager.get('game', `bubbles.${bubbleType'.size`),
+                const healthConfig = this.configManager.get('game', `bubbles.${bubbleType'.health`),'
+                const, sizeConfig = this.configManager.get('game', `bubbles.${bubbleType'.size`),'
                 const, scoreConfig = this.configManager.get('game', `bubbles.${bubbleType}.score`}
                 if (healthConfig !== null && sizeConfig !== null && scoreConfig !== null) { }
                     validationResults.validated.push(bubbleType});
@@ -442,7 +442,7 @@ export class ConfigurationMigrationUtility {
             
             return { success: true,
                 migrationId };
-                rolledBackCount: rolledBack }
+                rolledBackCount: rolledBack;
                 timestamp: Date.now());
             } catch (error) {
             this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', {''
@@ -498,4 +498,4 @@ export function getConfigurationMigrationUtility(): ConfigurationMigrationUtilit
  * @returns {Promise<MigrationResults>} 移行結果
  */
 export async function migrateBubbleConfigurations(): Promise<MigrationResults> { const utility = getConfigurationMigrationUtility(),
-    return await utility.migrateBubbleConfigurations(' };
+    return await utility.migrateBubbleConfigurations(' };'

@@ -11,13 +11,13 @@ import { VestibularSafetyManager  } from './motion/VestibularSafetyManager.js';
 export class MotionManager {'
 
     constructor(visualAccessibilityManager) {
-        this.visualAccessibilityManager = visualAccessibilityManager,
-        this.accessibilityManager = visualAccessibilityManager.accessibilityManager,
-        this.gameEngine = this.accessibilityManager?.gameEngine,
+        this.visualAccessibilityManager = visualAccessibilityManager;
+        this.accessibilityManager = visualAccessibilityManager.accessibilityManager;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // モーション設定
         this.config = { : undefined
-            enabled: true,
+            enabled: true;
             globalReducedMotion: false,
             respectSystemPreference: true,
             vestibularSafety: true,
@@ -30,18 +30,18 @@ export class MotionManager {'
                 enhanced: '強化されたアニメーション' 
     };
             motionCategories: {
-                transitions: { enabled: true, intensity: 1.0, duration: 1.0  },
-                transforms: { enabled: true, intensity: 1.0, duration: 1.0  },
-                parallax: { enabled: true, intensity: 0.5, duration: 1.0  },
-                particles: { enabled: true, intensity: 0.8, duration: 1.0  },
-                camera: { enabled: true, intensity: 0.3, duration: 1.0  },
-                ui: { enabled: true, intensity: 1.0, duration: 1.0  },
-                game: { enabled: true, intensity: 0.9, duration: 1.0  },
-                background: { enabled: true, intensity: 0.6, duration: 1.0  },
+                transitions: { enabled: true, intensity: 1.0, duration: 1.0  };
+                transforms: { enabled: true, intensity: 1.0, duration: 1.0  };
+                parallax: { enabled: true, intensity: 0.5, duration: 1.0  };
+                particles: { enabled: true, intensity: 0.8, duration: 1.0  };
+                camera: { enabled: true, intensity: 0.3, duration: 1.0  };
+                ui: { enabled: true, intensity: 1.0, duration: 1.0  };
+                game: { enabled: true, intensity: 0.9, duration: 1.0  };
+                background: { enabled: true, intensity: 0.6, duration: 1.0  };
             vestibularGuidelines: { maxRotationSpeed: 360, // 度/秒
                 maxScaleChange: 2.0,
-    maxParallaxDistance: 100, // ピクセル,
-                flashingThreshold: 3, // 回/秒,
+    maxParallaxDistance: 100, // ピクセル;
+                flashingThreshold: 3, // 回/秒;
                 autoplayPause: 5000 // 5秒で自動停止  }
         };
         ;
@@ -81,21 +81,20 @@ export class MotionManager {'
                 disableParallax: false,
                 disableParticles: false,
                 disableCameraShake: false,
-    disableBackgroundAnimation: false 
-    };
+    disableBackgroundAnimation: false,;
         // 危険なモーションパターンの検出
         this.hazardPatterns = {
-            rapidFlashing: { threshold: 3, detected: false  },
-            rapidRotation: { threshold: 720, detected: false  })
-            extremeZoom: { threshold: 3.0, detected: false  })
-            violentShaking: { threshold: 20, detected: false  };
+            rapidFlashing: { threshold: 3, detected: false,;
+            rapidRotation: { threshold: 720, detected: false,)
+            extremeZoom: { threshold: 3.0, detected: false,)
+            violentShaking: { threshold: 20, detected: false,;
         
         // サブコンポーネントの初期化（依存注入）)
         this.configManager = new MotionConfigManager(this);
         this.animationController = new AnimationController(this);
         this.vestibularSafetyManager = new VestibularSafetyManager(this);
 
-        console.log('[MotionManager] Main Controller initialized with sub-components);
+        console.log('[MotionManager] Main Controller initialized with sub-components);'
         this.initialize();
     }
     
@@ -128,21 +127,21 @@ export class MotionManager {'
 
         } catch (error) { getErrorHandler().handleError(error, 'MOTION_MANAGER_ERROR', {''
                 operation: 'initialize'
-            }';
+            }';'
         }
     }
     
     /**
      * 既存アニメーションの分析'
      */''
-    analyzeExistingAnimations()';
-                '[style*="animation"], [style*="transition"], .animated, .animate);
+    analyzeExistingAnimations()';'
+                '[style*="animation"], [style*="transition"], .animated, .animate);'
             
             animatedElements.forEach(element => {  ),
                 const category = this.detectAnimationCategory(element) }
                 this.animationController.registerAnimation(element, category); }
             });
-            ';
+            ';'
 
             console.log(`Analyzed ${animatedElements.length} existing, animations`);
         } catch (error) { console.warn('Failed to analyze existing animations:', error }
@@ -153,7 +152,7 @@ export class MotionManager {'
      */
     detectAnimationCategory(element) {
         // クラス名からカテゴリを推定
-        const classNames = element.className.toLowerCase()',
+        const classNames = element.className.toLowerCase()','
         if(classNames.includes('particle)' return 'particles',
         if(classNames.includes('parallax)' return 'parallax',
         if(classNames.includes('camera)' return 'camera',
@@ -163,7 +162,7 @@ export class MotionManager {'
         if(classNames.includes('transition)' return 'transitions',
         if(classNames.includes('transform)' return 'transforms',
 
-        ' }
+        ' }'
 
         return 'general';
     
@@ -258,12 +257,12 @@ export class MotionManager {'
 
         document.body.classList.toggle('performance-mode', enabled),
 
-        if(enabled) {
+        if (enabled) {
     }
 
             document.querySelectorAll('.complex-animation').forEach(element => { }
 
-                element.style.animationPlayState = 'paused')'; }
+                element.style.animationPlayState = 'paused')'; }'
         }
 
         console.log(`Performance, mode ${enabled ? 'enabled' : 'disabled'}`;
@@ -280,7 +279,7 @@ export class MotionManager {'
             element = document.getElementById(element); }
         }
 
-        if(element) {
+        if (element) {
 
             element.style.animationPlayState = 'paused',
             this.pausedAnimations.add(element) }
@@ -296,7 +295,7 @@ export class MotionManager {'
             element = document.getElementById(element); }
         }
 
-        if(element) {
+        if (element) {
 
             element.style.animationPlayState = 'running' }
             this.pausedAnimations.delete(element); }
@@ -311,11 +310,11 @@ export class MotionManager {'
             element = document.getElementById(element); }
         }
 
-        if(element) {
+        if (element) {
 
             element.style.animationDuration = '0.5s',
             element.style.animationIterationCount = '1',
-            element.classList.add('motion-reduced) }
+            element.classList.add('motion-reduced) }'
             this.stats.animationsReduced++; }
 }
     
@@ -370,13 +369,13 @@ export class MotionManager {'
             
             if (this.animationController) { this.animationController.destroy() }
             
-            if(this.configManager) {
-            ',
+            if (this.configManager) {
+            ','
 
                 this.configManager.destroy() }
 
-            console.log('MotionManager, cleaned up, successfully');' }
+            console.log('MotionManager, cleaned up, successfully');' }'
 
         } catch (error) { console.error('Failed to cleanup MotionManager:', error }
 
-    }'}
+    }'}'

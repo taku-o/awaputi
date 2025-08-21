@@ -7,140 +7,138 @@ interface PerformanceMonitor { gameEngine?: GameEngine,
     historyManager: {
         data: {
             memory: Array<{
-                use,d: number,
-                total: number,
-    timestamp: number  }>;
+                use,d: number;
+                total: number;
+    timestamp: number;>;
         };
 }
 
 interface GameEngine { canvas?: HTMLCanvasElement,
-    bubbleManager?: BubbleManager,
-    enhancedParticleManager?: ParticleManager,
-    enhancedEffectManager?: EffectManager,
-    audioManager?: AudioManager }
+    bubbleManager?: BubbleManager;
+    enhancedParticleManager?: ParticleManager;
+    enhancedEffectManager?: EffectManager;
+    audioManager?: AudioManager;
 
-interface BubbleManager { getActiveBubbleCount?(): number }
+interface BubbleManager { getActiveBubbleCount?(): number;
 
-interface ParticleManager { getActiveParticleCount?(): number }
+interface ParticleManager { getActiveParticleCount?(): number;
 
-interface EffectManager { getActiveEffectCount?(): number }
+interface EffectManager { getActiveEffectCount?(): number;
 
 interface AudioManager { // Audio manager interface }
 
 interface MetricTimestamp {
-    timestamp: number }
+    timestamp: number;
 
 interface HeapMetrics { used: number,
-    total: number,
-    limit: number,
-    utilization: number  }
+    total: number;
+    limit: number;
+    utilization: number;
 
 interface AllocationPattern { frequency: number,
-    averageSize: number,
-    peakSize: number,
-    averageRate: number,
-    trend: string }
+    averageSize: number;
+    peakSize: number;
+    averageRate: number;
+    trend: string;
 
 interface GarbageCollectionMetrics { eventCount: number,
-    totalFreed: number,
-    averageFreed: number,
-    frequency: number,
-    efficiency: number }
+    totalFreed: number;
+    averageFreed: number;
+    frequency: number;
+    efficiency: number;
 
 interface BubbleEntityMetrics { total: number,
-    byType: Record<string, number>,
-    spawned: number,
-    destroyed: number,
-    averageLifetime: number  }
+    byType: Record<string, number>;
+    spawned: number;
+    destroyed: number;
+    averageLifetime: number;
 
 interface ParticleEntityMetrics { total: number,
-    bySystem: Record<string, number>,
-    spawned: number,
-    destroyed: number,
-    poolUtilization: number  }
+    bySystem: Record<string, number>;
+    spawned: number;
+    destroyed: number;
+    poolUtilization: number;
 
 interface EffectEntityMetrics { total: number,
-    byType: Record<string, number>,
-    active: number,
-    queued: number  }
+    byType: Record<string, number>;
+    active: number;
+    queued: number;
 
 interface EntityMetrics { bubbles: BubbleEntityMetrics,
-    particles: ParticleEntityMetrics,
-    effects: EffectEntityMetrics
-    }
+    particles: ParticleEntityMetrics;
+    effects: EffectEntityMetrics;
 
 interface PhysicsMetrics { collisionChecks: number,
-    collisionHits: number,
-    bounces: number,
-    physicsSteps: number,
-    averageStepTime: number,
+    collisionHits: number;
+    bounces: number;
+    physicsSteps: number;
+    averageStepTime: number;
     spatialOptimization: Record<string, any> }
 
 interface Canvas2DMetrics { operations: number,
-    imageDraws: number,
-    pathOperations: number,
-    textOperations: number,
-    transformations: number,
-    compositeOperations: number  }
+    imageDraws: number;
+    pathOperations: number;
+    textOperations: number;
+    transformations: number;
+    compositeOperations: number;
 
 interface ConnectionMetrics { effectiveType: string,
-    downlink: number,
-    rtt: number,
-    saveData: boolean }
+    downlink: number;
+    rtt: number;
+    saveData: boolean;
 
 interface DeviceMetrics { userAgent: string,
-    platform: string,
-    language: string,
-    languages: readonly string[],
-    hardwareConcurrency: number,
-    deviceMemory: string | number,
-    maxTouchPoints: number }
+    platform: string;
+    language: string;
+    languages: readonly string[];
+    hardwareConcurrency: number;
+    deviceMemory: string | number;
+    maxTouchPoints: number;
 
 interface CapabilitiesMetrics { webgl: boolean,
-    webgl2: boolean,
-    webassembly: boolean,
-    serviceWorker: boolean,
-    webWorker: boolean,
-    indexedDB: boolean,
-    localStorage: boolean,
-    sessionStorage: boolean,
-    gamepad: boolean }
+    webgl2: boolean;
+    webassembly: boolean;
+    serviceWorker: boolean;
+    webWorker: boolean;
+    indexedDB: boolean;
+    localStorage: boolean;
+    sessionStorage: boolean;
+    gamepad: boolean;
 
 interface PerformanceAPIMetrics { timing: boolean,
-    navigation: boolean,
-    memory: boolean,
-    observer: boolean }
+    navigation: boolean;
+    memory: boolean;
+    observer: boolean;
 
 interface ExtendedMetrics { rendering: RenderingMetrics,
-    memory: MemoryMetrics,
-    game: GameMetrics,
-    audio: AudioMetrics,
-    network: NetworkMetrics,
-    system: SystemMetrics
-    }
+    memory: MemoryMetrics;
+    game: GameMetrics;
+    audio: AudioMetrics;
+    network: NetworkMetrics;
+    system: SystemMetrics;
 
 interface ProfilingData { renderPipeline: Map<string, any>,
-    memoryAllocations: any[],
-    gameLoopBreakdown: Map<string, any>,
-    webGLCalls: any[],
+    memoryAllocations: any[];
+    gameLoopBreakdown: Map<string, any>;
+    webGLCalls: any[];
     audioProcessing: Map<string, any> }
 
 interface StatisticsTracking { sampleCount: number,
-    lastSampleTime: number,
-    averageCollectionTime: number,
-    peakCollectionTime: number,
-    errorCount: number  }
+    lastSampleTime: number;
+    averageCollectionTime: number;
+    peakCollectionTime: number;
+    errorCount: number;
 
 export class DetailedMetricsCollector {
-    private monitor: PerformanceMonitor,
+    private monitor: PerformanceMonitor;
     private gameEngine?: GameEngine,
-    private extendedMetrics: ExtendedMetrics,
-    private profilingData: ProfilingData,
+    private extendedMetrics: ExtendedMetrics;
+    private profilingData: ProfilingData;
     private, statisticsTracking: StatisticsTracking,
     constructor(monitor: PerformanceMonitor) {
 
-        this.monitor = monitor,
-        this.gameEngine = monitor.gameEngine,
+        this.monitor = monitor;
+        this.gameEngine = monitor.gameEngine;
         
         // 拡張メトリクス
         this.extendedMetrics = {
@@ -205,16 +203,16 @@ export class DetailedMetricsCollector {
         const canvas = this.gameEngine?.canvas,
 
         if(!canvas) return,
-',
+','
         // WebGL統計の詳細収集
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl),
-        if(gl) {', ' }
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl),'
+        if (gl) {', ' }
 
             this.collectWebGLMetrics(gl, renderMetrics); }
         }
-';
+';'
         // Canvas 2D統計
-        const ctx2d = canvas.getContext('2d);
+        const ctx2d = canvas.getContext('2d);'
         if (ctx2d) { this.collectCanvas2DMetrics(ctx2d, renderMetrics) }
 
         // レンダリングパイプライン分析
@@ -273,7 +271,7 @@ export class DetailedMetricsCollector {
     private, collectMemoryDetails(): void { const memoryMetrics = this.extendedMetrics.memory,
         
         // JavaScript ヒープメモリ
-        if(performance.memory) {
+        if (performance.memory) {
             memoryMetrics.heap = {
                 used: performance.memory.usedJSHeapSize,
                 total: performance.memory.totalJSHeapSize,
@@ -306,7 +304,7 @@ export class DetailedMetricsCollector {
         const history = this.monitor.historyManager.data.memory.slice(-10),
         
         if (history.length >= 3) { : undefined 
-            const allocations: Array<{size: number, timestamp: number, rate: number }> = [];
+            const allocations: Array<{size: number, timestamp: number, rate: number;> = [];
             for(let, i = 1; i < history.length; i++) {
                 const diff = history[i].used - history[i - 1].used,
                 if (diff > 0) {
@@ -335,7 +333,7 @@ export class DetailedMetricsCollector {
             freedMemory: number,
             duration: number,
             beforeGC: number,
-    afterGC: number }> = [];
+    afterGC: number;> = [];
         
         for(let, i = 1; i < history.length; i++) { const currentUsed = history[i].used,
             const previousUsed = history[i - 1].used,
@@ -347,8 +345,8 @@ export class DetailedMetricsCollector {
                     timestamp: history[i].timestamp,
                     freedMemory: previousUsed - currentUsed),
                     duration: timeDiff,
-    beforeGC: previousUsed }
-                    afterGC: currentUsed); 
+    beforeGC: previousUsed,
+                    afterGC: currentUsed), 
     }
 
         memoryMetrics.garbageCollection = { eventCount: gcEvents.length,
@@ -441,7 +439,7 @@ export class DetailedMetricsCollector {
     private collectNetworkDetails(): void { const networkMetrics = this.extendedMetrics.network,
         
         // 接続情報
-        if(navigator.connection) {
+        if (navigator.connection) {
             networkMetrics.connection = {
                 effectiveType: navigator.connection.effectiveType,
                 downlink: navigator.connection.downlink,
@@ -471,7 +469,7 @@ export class DetailedMetricsCollector {
             language: navigator.language,
             languages: navigator.languages,
     hardwareConcurrency: navigator.hardwareConcurrency || 1,
-            deviceMemory: (navigator, as any').deviceMemory || 'unknown',
+            deviceMemory: (navigator, as any').deviceMemory || 'unknown','
             maxTouchPoints: navigator.maxTouchPoints || 0  } as DeviceMetrics;
         // ブラウザ機能検出
         systemMetrics.capabilities = { webgl: this.detectWebGLSupport(
@@ -499,15 +497,15 @@ export class DetailedMetricsCollector {
 
         const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl',
         if(!gl) return,
-',
+','
         // WebGL呼び出しのプロキシを設定（開発モードのみ）
         if(process.env.NODE_ENV === 'development' { }
             this.proxyWebGLCalls(gl); }
 }
-';
+';'
     // メモリ追跡設定 : undefined
-    private setupMemoryTracker()';
-        if(process.env.NODE_ENV === 'development) { this.setupMemoryAllocationTracking() }'
+    private setupMemoryTracker()';'
+        if (process.env.NODE_ENV === 'development) { this.setupMemoryAllocationTracking() }'
     }
 
     // ゲームループプロファイラー設定
@@ -524,7 +522,7 @@ export class DetailedMetricsCollector {
         this.profileAudioProcessing(audioManager) }
 ;
     // ネットワーク監視設定 : undefined
-    private setupNetworkMonitor()';
+    private setupNetworkMonitor()';'
         if(typeof, PerformanceObserver !== 'undefined' {'
             try {
                 const observer = new PerformanceObserver((list) => { '
@@ -552,7 +550,7 @@ export class DetailedMetricsCollector {
         return bubbleCount * 16 + particleCount * 2 }
  : undefined
     private estimateVertexCount(): number { return this.estimateTriangleCount() * 3, // 1三角形 = 3頂点 }
-';
+';'
 
     private calculateMemoryTrend(history: Array<{ used: number, timestamp: number)>): string {''
         if(history.length < 2) return 'stable',
@@ -570,15 +568,15 @@ export class DetailedMetricsCollector {
         if(change > 0.1) return 'increasing',
         if(change < -0.1) return 'decreasing',
         return 'stable',
-',
+','
     // プラットフォーム検出メソッド
-    private detectWebGLSupport()',
+    private detectWebGLSupport()','
             const canvas = document.createElement('canvas'),
-            return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl) } catch (e) { return false,
+            return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl) } catch (e) { return false,'
 
-    private detectWebGL2Support()',
+    private detectWebGL2Support()','
             const canvas = document.createElement('canvas'),
-            return !!canvas.getContext('webgl2) } catch (e) { return false,
+            return !!canvas.getContext('webgl2) } catch (e) { return false,'
 
     private detectWebAssemblySupport('',
         return, typeof WebAssembly === 'object' && typeof, WebAssembly.instantiate === 'function' }
@@ -622,7 +620,7 @@ export class DetailedMetricsCollector {
         this.profilingData.memoryAllocations = [],
         this.profilingData.gameLoopBreakdown.clear(),
         this.profilingData.webGLCalls = [],
-        this.profilingData.audioProcessing.clear()',
+        this.profilingData.audioProcessing.clear()','
         console.log('[DetailedMetricsCollector] Destroyed') }'
 
     // プレースホルダーメソッド（実装は各ゲーム固有システムに依存）
@@ -683,18 +681,18 @@ export class DetailedMetricsCollector {
  * 拡張レンダリングメトリクス
  */
 class RenderingMetrics implements MetricTimestamp { public drawCalls: number = 0,
-    public triangles: number = 0,
-    public vertices: number = 0,
-    public textureBindings: number = 0,
-    public textureMemory: number = 0,
-    public textureUploads: number = 0,
-    public shaderSwitches: number = 0,
-    public uniformUpdates: number = 0,
-    public stateChanges: number = 0,
-    public blendModeChanges: number = 0,
-    public bufferUploads: number = 0,
-    public bufferMemory: number = 0,
-    public gpuUtilization: number = 0,
+    public triangles: number = 0;
+    public vertices: number = 0;
+    public textureBindings: number = 0;
+    public textureMemory: number = 0;
+    public textureUploads: number = 0;
+    public shaderSwitches: number = 0;
+    public uniformUpdates: number = 0;
+    public stateChanges: number = 0;
+    public blendModeChanges: number = 0;
+    public bufferUploads: number = 0;
+    public bufferMemory: number = 0;
+    public gpuUtilization: number = 0;
     public fillRateUtilization: number = 0  }
     public canvas2D: Canvas2DMetrics = {} as Canvas2DMetrics;
     public timestamp: number = Date.now(

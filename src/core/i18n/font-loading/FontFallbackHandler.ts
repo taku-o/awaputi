@@ -1,59 +1,58 @@
 // 型定義
 export interface FontFallbackConfig { development?: {
-        verboseLoggin,g?: boolean }
+        verboseLoggin,g?: boolean;
 
 export interface FallbackInfo { language: string,
-    originalFont: string | null,
-    fallbackChain: string[],
-    appliedAt: number  }
+    originalFont: string | null;
+    fallbackChain: string[];
+    appliedAt: number;
 
 export interface FallbackStats { totalApplied: number,
-    byLanguage: Record<string, number>,
-    systemFontsCount: number,
-    availableSystemFonts: string[]  }
+    byLanguage: Record<string, number>;
+    systemFontsCount: number;
+    availableSystemFonts: string[];
 
 export class FontFallbackHandler {
-    private config: FontFallbackConfig,
+    private config: FontFallbackConfig;
     private, fallbackChains: Record<string, string[]>,
-    private systemFonts: Set<string>,
-    private appliedFallbacks: Map<HTMLElement, FallbackInfo>,
+    private systemFonts: Set<string>;
+    private appliedFallbacks: Map<HTMLElement, FallbackInfo>;
 
     constructor(config: FontFallbackConfig = {) {
 
-        this.config = config,
-        this.fallbackChains = this._initializeFallbackChains(),
-        this.systemFonts = this._detectSystemFonts(),
-
-     }
+        this.config = config;
+        this.fallbackChains = this._initializeFallbackChains();
+        this.systemFonts = this._detectSystemFonts()
+}
         this.appliedFallbacks = new Map<HTMLElement, FallbackInfo>(); }
     }
 
-    private _initializeFallbackChains(): Record<string, string[]> { return { 'ja': ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'MS Gothic', 'sans-serif],', 'zh-CN': ['Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'SimHei', 'sans-serif],
-            'zh-TW': ['Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'PMingLiU', 'sans-serif],
-            'ko': ['Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Dotum', 'sans-serif],
-            'ar': ['Noto Sans Arabic', 'Tahoma', 'Arial Unicode MS', 'sans-serif],
-            'hi': ['Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'sans-serif],
-            'th': ['Noto Sans Thai', 'Tahoma', 'Arial Unicode MS', 'sans-serif],
+    private _initializeFallbackChains(): Record<string, string[]> { return { 'ja': ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'MS Gothic', 'sans-serif],', 'zh-CN': ['Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'SimHei', 'sans-serif],'
+            'zh-TW': ['Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'PMingLiU', 'sans-serif],'
+            'ko': ['Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Dotum', 'sans-serif],'
+            'ar': ['Noto Sans Arabic', 'Tahoma', 'Arial Unicode MS', 'sans-serif],'
+            'hi': ['Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'sans-serif],'
+            'th': ['Noto Sans Thai', 'Tahoma', 'Arial Unicode MS', 'sans-serif],'
             'vi': ['Noto Sans Vietnamese', 'Tahoma', 'Arial Unicode MS', 'sans-serif],' };
 
-            'default': ['Arial', 'Helvetica', 'sans-serif] }
+            'default': ['Arial', 'Helvetica', 'sans-serif] }'
         }
-';
+';'
 
     private _detectSystemFonts(): Set<string> { ''
         const systemFonts = new Set<string>(),
 
-        const testFonts = [',
+        const testFonts = [','
             'Arial', 'Helvetica', 'Times New Roman', 'Georgia', 'Verdana',
             'Trebuchet MS', 'Courier New', 'Impact', 'Comic Sans MS',
             'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'MS Gothic',
             'PingFang SC', 'Microsoft YaHei', 'SimHei',
-            'PingFang TC', 'Microsoft JhengHei', 'PMingLiU',]',
+            'PingFang TC', 'Microsoft JhengHei', 'PMingLiU',]','
             'Apple SD Gothic Neo', 'Malgun Gothic', 'Dotum'],
         ],
 
         testFonts.forEach(font => { ),
-            if(this._isFontAvailable(font) { }
+            if (this._isFontAvailable(font) { }
                 systemFonts.add(font); }
 });
 
@@ -63,7 +62,7 @@ export class FontFallbackHandler {
     private _isFontAvailable(fontName: string): boolean { ''
         const canvas = document.createElement('canvas'),
         const context = canvas.getContext('2d',
-        if(!context) {
+        if (!context) {
     
 }
             return false;
@@ -82,8 +81,8 @@ export class FontFallbackHandler {
     getFallbackChain(language: string): string[] { ''
         const chain = this.fallbackChains[language] || this.fallbackChains['default'],
 
-        return chain.filter(font => { '),
-            if(font === 'sans-serif' || font === 'serif' || font === 'monospace) { }
+        return chain.filter(font => { '),'
+            if (font === 'sans-serif' || font === 'serif' || font === 'monospace) { }'
                 return true;
             return this.systemFonts.has(font);
         });
@@ -115,7 +114,7 @@ export class FontFallbackHandler {
         let appliedCount = 0,
 
         elements.forEach(element => { ),
-            if(this.applyFallback(element as HTMLElement, language, originalFont) { }
+            if (this.applyFallback(element as HTMLElement, language, originalFont) { }
                 appliedCount++; }
 });
 
@@ -134,7 +133,7 @@ export class FontFallbackHandler {
         return 'sans-serif' }
 
     getBestFontForLanguage(language: string, preferredFonts: string[] = []): string { const availablePreferred = preferredFonts.filter(font => this.systemFonts.has(font),
-        if(availablePreferred.length > 0) {
+        if (availablePreferred.length > 0) {
     
 }
             return availablePreferred[0];
@@ -143,17 +142,17 @@ export class FontFallbackHandler {
     }
 
     validateFontStack(fontStack: string, language: string): string { ''
-        const fonts = fontStack.split(').map(f => f.trim().replace(/['"]/g, '),
+        const fonts = fontStack.split(').map(f => f.trim().replace(/['"]/g, '),'
         const validFonts: string[] = [],
 
-        fonts.forEach(font => { '),
-            if(font === 'sans-serif' || font === 'serif' || font === 'monospace) { }
+        fonts.forEach(font => { '),'
+            if (font === 'sans-serif' || font === 'serif' || font === 'monospace) { }'
                 validFonts.push(font); }
-            } else if(this.systemFonts.has(font) { validFonts.push(font) }
+            } else if (this.systemFonts.has(font) { validFonts.push(font) }
         });
 
-        if(validFonts.length === 0) {
-',
+        if (validFonts.length === 0) {
+','
 
             const fallback = this.getSystemFontForLanguage(language) }
 
@@ -188,14 +187,14 @@ export class FontFallbackHandler {
         return stats;
     }
 
-    refreshSystemFonts(): number { this.systemFonts = this._detectSystemFonts(),
+    refreshSystemFonts(): number { this.systemFonts = this._detectSystemFonts();
 
-        if(this.config.development?.verboseLogging) {
-            : undefined' }
+        if (this.config.development?.verboseLogging) {
+            : undefined' }'
 
             console.log('[FontFallbackHandler] Refreshed system fonts:', Array.from(this.systemFonts)); }
         }
         
         return this.systemFonts.size;
 
-    }'}
+    }'}'

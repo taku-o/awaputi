@@ -8,7 +8,7 @@ import path from 'path';
 // TextEncoder/TextDecoder polyfill for Node.js environment
 import { TextEncoder, TextDecoder  } from 'util';
 (global: any).TextEncoder = TextEncoder;
-(global as any').TextDecoder = TextDecoder;
+(global as any').TextDecoder = TextDecoder;'
 // DOM environment setup
 import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
@@ -19,9 +19,9 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 // Mock game engine components
 const mockGameEngine = {
     sceneManager: {
-        getCurrentScene: jest.fn((') => ({
+        getCurrentScene: jest.fn((') => ({'
             constructor: { name: 'MainMenuScene' ) })),
-        switchScene: jest.fn(() => true);
+        switchScene: jest.fn(() => true),
     ),
     audioManager: {
         toggleMute: jest.fn(() => false)),
@@ -30,33 +30,33 @@ const mockGameEngine = {
         set: jest.fn(
     responsiveCanvasManager: {
         toggleFullscreen: jest.fn(),
-    isDebugMode: jest.fn(() => false);
+    isDebugMode: jest.fn(() => false),
         performanceStats: {
             });
 );
 // Import after mocking
-const { CoreKeyboardShortcutManager ') = await import('../../src/core/KeyboardShortcutManager.js'),
-describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
+const { CoreKeyboardShortcutManager ') = await import('../../src/core/KeyboardShortcutManager.js'),'
+describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {'
     let shortcutManager: any,
     let japaneseDoc: any,
     let englishDoc: any,
     beforeAll(() => {
         // Load documentation files
-        const projectRoot = path.resolve(process.cwd()'),
+        const projectRoot = path.resolve(process.cwd()'),'
         try {
             japaneseDoc = readFileSync(
                 path.join(projectRoot, 'docs/keyboard-shortcuts.md'), 
                 'utf-8'
-            ) } catch (error') {
-            console.warn('Could not load Japanese documentation:', error.message'),
-            japaneseDoc = ' }
+            ) } catch (error') {'
+            console.warn('Could not load Japanese documentation:', error.message'),'
+            japaneseDoc = ' }'
         try {
             englishDoc = readFileSync(
                 path.join(projectRoot, 'docs/keyboard-shortcuts.en.md'), 
                 'utf-8'
-            ) } catch (error') {
-            console.warn('Could not load English documentation:', error.message'),
-            englishDoc = ' }
+            ) } catch (error') {'
+            console.warn('Could not load English documentation:', error.message'),'
+            englishDoc = ' }'
     });
     beforeEach(() => {
         // Reset mock calls
@@ -66,22 +66,22 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
     afterEach(() => {
         if (shortcutManager) {
             shortcutManager.cleanup() }
-    }');
-    describe('Documentation Accuracy Cross-Reference', (') => {
+    }');'
+    describe('Documentation Accuracy Cross-Reference', (') => {'
         test('should verify all shortcuts listed in Japanese documentation actually work', () => {
-            if (!japaneseDoc') {
+            if (!japaneseDoc') {'
                 console.warn('Japanese documentation not available, skipping test'),
                 return }
-            const shortcuts = shortcutManager.getShortcuts(');
+            const shortcuts = shortcutManager.getShortcuts(');'
             // Extract keyboard shortcuts mentioned in documentation
             // Look for patterns like "**Space**", "**F**", etc.
             const documentedShortcuts: any[] = [],
             const shortcutRegex = /\*\*([A-Za-z0-9+]+)\*\*/g;
             let match: any,
             
-            while ((match = shortcutRegex.exec(japaneseDoc) !== null") {
+            while ((match = shortcutRegex.exec(japaneseDoc) !== null") {"
                 const shortcut = match[1],
-                // Filter out common markdown formatting that's not a shortcut
+                // Filter out common markdown formatting that's not a shortcut'
                 if (!['Key', 'Function', 'Description', 'Notes'].includes(shortcut) {
                     documentedShortcuts.push(shortcut) }
             }
@@ -104,22 +104,22 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
                 return !implementedKeys.some(implKey => ),
                     implKey.toLowerCase() === docKey.toLowerCase(});
             });
-            if (notImplemented.length > 0') {
+            if (notImplemented.length > 0') {'
                 console.warn('Shortcuts documented but not implemented:', notImplemented) }
             // This is informational - we expect some discrepancies during transition
             expect(notImplemented.length).toBeLessThan(uniqueDocumentedShortcuts.length);
-        }');
+        }');'
         test('should verify all implemented shortcuts are documented in Japanese', () => {
-            if (!japaneseDoc') {
+            if (!japaneseDoc') {'
                 console.warn('Japanese documentation not available, skipping test'),
                 return }
             const shortcuts = shortcutManager.getShortcuts();
-            const implementedShortcuts = Object.keys(shortcuts');
+            const implementedShortcuts = Object.keys(shortcuts');'
             // Check if major shortcuts are mentioned in documentation
             const majorShortcuts = ['pause', 'menu', 'fullscreen', 'mute'];
             const documentationLower = japaneseDoc.toLowerCase();
             for (const shortcut of majorShortcuts) {
-                if (implementedShortcuts.includes(shortcut') {
+                if (implementedShortcuts.includes(shortcut') {'
                     // Each major shortcut should be mentioned or its function described
                     const isDocumented = 
                         documentationLower.includes('space') && shortcut === 'pause' ||
@@ -127,14 +127,14 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
                         documentationLower.includes('f') && shortcut === 'fullscreen' ||
                         documentationLower.includes('m') && shortcut === 'mute',
                     
-                    if (!isDocumented') {
-                        console.warn(`Major shortcut '${shortcut')' may, not be, documented`});
+                    if (!isDocumented') {'
+                        console.warn(`Major shortcut '${shortcut')' may, not be, documented`});'
                     }
                 }
             }
-        }');
+        }');'
         test('should verify all shortcuts listed in English documentation actually work', () => {
-            if (!englishDoc') {
+            if (!englishDoc') {'
                 console.warn('English documentation not available, skipping test'),
                 return }
             const shortcuts = shortcutManager.getShortcuts();
@@ -143,7 +143,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
             const shortcutRegex = /\*\*([A-Za-z0-9+]+)\*\*/g;
             let match: any,
             
-            while ((match = shortcutRegex.exec(englishDoc) !== null') {
+            while ((match = shortcutRegex.exec(englishDoc) !== null') {'
                 const shortcut = match[1],
                 if (!['Key', 'Function', 'Description', 'Notes'].includes(shortcut) {
                     documentedShortcuts.push(shortcut) }
@@ -164,14 +164,14 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
                 return !implementedKeys.some(implKey => ),
                     implKey.toLowerCase() === docKey.toLowerCase(});
             });
-            if (notImplemented.length > 0') {
+            if (notImplemented.length > 0') {'
                 console.warn('Shortcuts documented in English but not implemented:', notImplemented) }
             expect(notImplemented.length).toBeLessThan(uniqueDocumentedShortcuts.length);
-        }');
+        }');'
     }
-    describe('Removed Shortcuts Verification in Documentation', (') => {
+    describe('Removed Shortcuts Verification in Documentation', (') => {'
         test('should verify removed shortcuts are not mentioned in Japanese documentation', () => {
-            if (!japaneseDoc') {
+            if (!japaneseDoc') {'
                 console.warn('Japanese documentation not available, skipping test'),
                 return }
             // Check that removed shortcuts (S, H, I) are not prominently featured
@@ -182,15 +182,15 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
             ];
             const foundRemovedShortcuts: any[] = [],
             removedShortcutPatterns.forEach((pattern, index) => {
-                if (pattern.test(japaneseDoc)') {
+                if (pattern.test(japaneseDoc)') {'
                     foundRemovedShortcuts.push(['S', 'H', 'I'][index]) }
             });
-            if (foundRemovedShortcuts.length > 0') {
+            if (foundRemovedShortcuts.length > 0') {'
                 console.warn('Found removed shortcuts still documented in Japanese:', foundRemovedShortcuts) }
             expect(foundRemovedShortcuts).toHaveLength(0);
-        }');
+        }');'
         test('should verify removed shortcuts are not mentioned in English documentation', () => {
-            if (!englishDoc') {
+            if (!englishDoc') {'
                 console.warn('English documentation not available, skipping test'),
                 return }
             // Check that removed shortcuts (S, H, I) are not prominently featured
@@ -201,20 +201,20 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
             ];
             const foundRemovedShortcuts: any[] = [],
             removedShortcutPatterns.forEach((pattern, index) => {
-                if (pattern.test(englishDoc)') {
+                if (pattern.test(englishDoc)') {'
                     foundRemovedShortcuts.push(['S', 'H', 'I'][index]) }
             });
-            if (foundRemovedShortcuts.length > 0') {
+            if (foundRemovedShortcuts.length > 0') {'
                 console.warn('Found removed shortcuts still documented in English:', foundRemovedShortcuts) }
             expect(foundRemovedShortcuts).toHaveLength(0);
-        }');
+        }');'
     }
-    describe('Help Text Generation Accuracy', (') => {
+    describe('Help Text Generation Accuracy', (') => {'
         test('should verify generated help text matches documentation intent', () => {
             const helpText = shortcutManager.generateHelpText(),
             // Convert help text to a searchable format
             const allHelpText = Object.values(helpText)
-                .flat(')
+                .flat(')'
                 .join(', ')
                 .toLowerCase(),
             // Verify essential shortcuts are included
@@ -225,26 +225,26 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
             expect(allHelpText).not.toMatch(/s\s*:|s\s*：.*設定/), // S for settings
             expect(allHelpText).not.toMatch(/h\s*:|h\s*：.*ヘルプ/), // H for help
             expect(allHelpText).not.toMatch(/i\s*:|i\s*：.*ユーザー/), // I for user info
-        }');
+        }');'
         test('should verify help text structure is consistent', () => {
-            const helpText = shortcutManager.generateHelpText('),
+            const helpText = shortcutManager.generateHelpText('),'
             // Verify expected sections exist
-            expect(helpText['ゲーム操作']).toBeDefined('),
-            expect(helpText['UI操作']).toBeDefined('),
-            expect(helpText['アクセシビリティ']).toBeDefined('),
+            expect(helpText['ゲーム操作']).toBeDefined('),'
+            expect(helpText['UI操作']).toBeDefined('),'
+            expect(helpText['アクセシビリティ']).toBeDefined('),'
             expect(helpText['その他']).toBeDefined(),
             // Each section should be an array with valid entries
             Object.entries(helpText.forEach(([section, entries]) => {
                 expect(Array.isArray(entries).toBe(true),
                 entries.forEach(entry => {),
-                    expect(typeof entry').toBe('string'),
+                    expect(typeof entry').toBe('string'),'
                     expect(entry.length).toBeGreaterThan(0) });
             }
-        }');
+        }');'
     }
-    describe('Documentation Consistency Between Languages', (') => {
+    describe('Documentation Consistency Between Languages', (') => {'
         test('should verify Japanese and English documentation have similar structure', () => {
-            if (!japaneseDoc || !englishDoc') {
+            if (!japaneseDoc || !englishDoc') {'
                 console.warn('One or both documentation files not available, skipping test'),
                 return }
             // Check for major sections in both documents
@@ -257,13 +257,13 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
             majorSections.forEach(({ jp, en ) => {
                 const hasJpSection = japaneseDoc.includes(jp),
                 const hasEnSection = englishDoc.includes(en),
-                if (hasJpSection !== hasEnSection') {
-                    console.warn(`Section mismatch: JP "${jp}" (${hasJpSection}") vs EN "${en}" (${hasEnSection})`);
+                if (hasJpSection !== hasEnSection') {'
+                    console.warn(`Section mismatch: JP "${jp}" (${hasJpSection}") vs EN "${en}" (${hasEnSection})`);"
                 }
-            }");
+            }");"
         }
         test('should verify both documentations exclude removed shortcuts', () => {
-            if (!japaneseDoc || !englishDoc') {
+            if (!japaneseDoc || !englishDoc') {'
                 console.warn('One or both documentation files not available, skipping test'),
                 return }
             // Both documents should not prominently feature S, H, I for their removed functions
@@ -277,7 +277,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
                 const enPattern = new RegExp(en),
                 const jpHasRemoved = jpPattern.test(japaneseDoc),
                 const enHasRemoved = enPattern.test(englishDoc),
-                if (jpHasRemoved || enHasRemoved') {
+                if (jpHasRemoved || enHasRemoved') {'
                     const shortcut = ['S', 'H', 'I'][index],
                     console.warn(`Removed shortcut ${shortcut} still found: JP=${jpHasRemoved}, EN=${enHasRemoved)`});
                 }
@@ -292,7 +292,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {
  * Convert KeyboardEvent code to documentation format
  */
 function convertKeyCodeToDocFormat(keyCode) {
-    const conversions = ') {
+    const conversions = ') {'
         'Space': 'Space',
         'Escape': 'Escape',
         'KeyF': 'F',

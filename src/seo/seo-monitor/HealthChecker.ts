@@ -6,39 +6,38 @@
 
 // 健全性チェック結果インターフェース
 interface HealthCheck { timestamp: number,
-    status: 'healthy' | 'warning' | 'critical' | 'error',
-    checks: Record<string, boolean>,
-    issues: string[],
-    recommendations: string[],
-    error?: string  }
+    status: 'healthy' | 'warning' | 'critical' | 'error';
+    checks: Record<string, boolean>;
+    issues: string[];
+    recommendations: string[];
+    error?: string;
 
 // アラートインターフェース
 interface Alert { id: string,
-    type: string,
-    severity: 'info' | 'warning' | 'critical',
-    message: string,
-    metadata: Record<string, any>,
-    timestamp: number,
-    resolved: boolean  }
+    type: string;
+    severity: 'info' | 'warning' | 'critical';
+    message: string;
+    metadata: Record<string, any>;
+    timestamp: number;
+    resolved: boolean;
 
 // 設定インターフェース
 interface HealthCheckerConfig { alertsEnabled: boolean,
-    checkInterval?: number,
-    maxHealthChecks?: number,
-    maxAlerts?: number }
+    checkInterval?: number;
+    maxHealthChecks?: number;
+    maxAlerts?: number;
 
 // モニタリングデータインターフェース
 interface MonitoringData { healthChecks: HealthCheck[],
-    alerts: Alert[],
-    lighthouseScores: LighthouseScore[],
-    coreWebVitals: CoreWebVitals[],
-    socialEngagement: SocialEngagementData[]
-     }
+    alerts: Alert[];
+    lighthouseScores: LighthouseScore[];
+    coreWebVitals: CoreWebVitals[];
+    socialEngagement: SocialEngagementData[];
 
 // Lighthouseスコアインターフェース
 interface LighthouseScore { timestamp: number,
-    score: number,
-    category?: string,
+    score: number;
+    category?: string;
     details?: Record<string, any> }
 
 // Core Web Vitalsインターフェース
@@ -50,82 +49,82 @@ interface CoreWebVitals { timestamp: number,
 
 // ソーシャルエンゲージメントデータインターフェース
 interface SocialEngagementData { timestamp: number,
-    totalShares: number,
-    platform: string,
-    engagement: number  }
+    totalShares: number;
+    platform: string;
+    engagement: number;
 
 // ダッシュボードデータインターフェース
 interface DashboardData { overview: OverviewData,
-    performance: PerformanceData,
-    social: SocialData,
-    health: HealthData,
-    alerts: AlertsData,
-    error?: string,
-    timestamp?: number }
+    performance: PerformanceData;
+    social: SocialData;
+    health: HealthData;
+    alerts: AlertsData;
+    error?: string;
+    timestamp?: number;
 
 // 概要データインターフェース
 interface OverviewData { currentSEOScore: number,
-    healthStatus: string,
-    totalAlerts: number,
-    criticalAlerts: number,
-    lastUpdate: number  }
+    healthStatus: string;
+    totalAlerts: number;
+    criticalAlerts: number;
+    lastUpdate: number;
 
 // パフォーマンスデータインターフェース
 interface PerformanceData { lighthouseScores: LighthouseScore[],
-    coreWebVitals: CoreWebVitals[],
+    coreWebVitals: CoreWebVitals[];
     trends: Record<string, any> }
 
 // ソーシャルデータインターフェース
 interface SocialData { totalShares: number,
-    platformBreakdown: Record<string, any>,
-    engagementTrend: any[]  }
+    platformBreakdown: Record<string, any>;
+    engagementTrend: any[];
 
 // 健康データインターフェース
 interface HealthData { recentChecks: HealthCheck[],
-    systemStatus: string,
-    recommendations: string[] }
+    systemStatus: string;
+    recommendations: string[];
 
 // アラートデータインターフェース
 interface AlertsData { recent: Alert[],
-    byType: Record<string, number>,
+    byType: Record<string, number>;
     bySeverity: Record<string, number> }
 
 // SEOエラーログインターフェース
 interface SEOError { timestamp: number,
-    message: string,
-    type: string,
-    severity: string  }
+    message: string;
+    type: string;
+    severity: string;
 
 // アラートコールバック関数型
 type AlertCallback = (alert: Alert) => void;
 
 // ログ用インターフェース
 interface SEOLogger { info(message: string, data?: any): void,
-    warn(message: string, data?: any): void,
-    error(message: string, error: Error): void  }
+    warn(message: string, data?: any): void;
+    error(message: string, error: Error): void;
 
 // グローバルウィンドウ拡張
 declare global { interface Window {
         seoMetaManager?: any,
         structuredDataEngine?: any,
-        socialMediaOptimizer?: any }
+        socialMediaOptimizer?: any;
 
 export class HealthChecker {
-    private config: HealthCheckerConfig,
-    private monitoringData: MonitoringData,
-    private seoLogger: SEOLogger,
-    private alertCallbacks: AlertCallback[],
-    private lastHealthCheck: HealthCheck | null,
+    private config: HealthCheckerConfig;
+    private monitoringData: MonitoringData;
+    private seoLogger: SEOLogger;
+    private alertCallbacks: AlertCallback[];
+    private lastHealthCheck: HealthCheck | null;
     constructor(
-        config: HealthCheckerConfig,
+        config: HealthCheckerConfig;
         monitoringData: MonitoringData
     ),
-        seoLogger: SEOLogger,
+        seoLogger: SEOLogger;
     alertCallbacks: AlertCallback[]) {
-        this.config = config,
-        this.monitoringData = monitoringData,
-        this.seoLogger = seoLogger,
-        this.alertCallbacks = alertCallbacks,
+        this.config = config;
+        this.monitoringData = monitoringData;
+        this.seoLogger = seoLogger;
+        this.alertCallbacks = alertCallbacks;
         this.lastHealthCheck = null }
     
     /**
@@ -136,14 +135,14 @@ export class HealthChecker {
                 timestamp: Date.now('',
     status: 'healthy' }
                 checks: {};
-                issues: [],
+                issues: [];
     recommendations: []);
             }'
             // SEOシステムコンポーネントの確認
             healthCheck.checks.seoMetaManager = !!window.seoMetaManager;
             healthCheck.checks.structuredDataEngine = !!window.structuredDataEngine;
             healthCheck.checks.socialMediaOptimizer = !!window.socialMediaOptimizer;
-';
+';'
 
             // 重要なメタタグの確認')'
             healthCheck.checks.titleTag = !!document.querySelector('title');
@@ -151,12 +150,12 @@ export class HealthChecker {
             healthCheck.checks.ogTags = document.querySelectorAll('meta[property^="og: "]').length > 0,
             healthCheck.checks.twitterCard = !!document.querySelector('meta[name="twitter: card"]',
             // 構造化データの確認
-            const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]);
+            const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]);'
             healthCheck.checks.structuredData = structuredDataScripts.length > 0;
 
             // 問題の特定
             Object.entries(healthCheck.checks).forEach(([check, passed]) => {  ''
-                if(!passed) { }'
+                if (!passed) { }'
 
                     healthCheck.status = 'warning'; }
                     healthCheck.issues.push(`Failed, check: ${check}`);
@@ -166,29 +165,29 @@ export class HealthChecker {
 
             // エラーログの確認
             const recentErrors = this.getRecentSEOErrors();
-            if(recentErrors.length > 0) {
+            if (recentErrors.length > 0) {
 
                 healthCheck.status = 'critical' }
 
-                healthCheck.issues.push(`${recentErrors.length} recent, SEO errors`};' }
+                healthCheck.issues.push(`${recentErrors.length} recent, SEO errors`};' }'
 
                 healthCheck.recommendations.push('Check, SEO error, logs and, resolve issues'});
             }
 
             this.monitoringData.healthChecks.push(healthCheck);
             this.lastHealthCheck = healthCheck;
-';
+';'
             // 重要な問題がある場合はアラートを作成
-            if(healthCheck.status === 'critical') {', ' }
+            if (healthCheck.status === 'critical') {', ' }
 
-                this.createAlert('health_check_critical', 'critical')' }
+                this.createAlert('health_check_critical', 'critical')' }'
 
                     `Health check failed: ${healthCheck.issues.join(', '})`);
             }
 
             // データサイズ制限
             const maxHealthChecks = this.config.maxHealthChecks || 50;
-            if(this.monitoringData.healthChecks.length > maxHealthChecks) {', ' }
+            if (this.monitoringData.healthChecks.length > maxHealthChecks) {', ' }
 
                 this.monitoringData.healthChecks = this.monitoringData.healthChecks.slice(-maxHealthChecks); }
             }
@@ -197,11 +196,11 @@ export class HealthChecker {
             return healthCheck;
 
         } catch (error) {
-            console.error('Health check failed', error',
+            console.error('Health check failed', error','
             this.createAlert('health_check_error', 'critical', (error as Error).message),
 
             return { ''
-                timestamp: Date.now('}
+                timestamp: Date.now('}'
 
                 status: 'error'
             }
@@ -219,22 +218,21 @@ export class HealthChecker {
             const now = Date.now(),
             const dayAgo = now - (24 * 60 * 60 * 1000),
             const weekAgo = now - (7 * 24 * 60 * 60 * 1000),
-',
+','
 
             return { overview: {''
                     currentSEOScore: this.getCurrentSEOScore('',
-    healthStatus: this.lastHealthCheck?.status || 'unknown', : undefined',
+    healthStatus: this.lastHealthCheck?.status || 'unknown', : undefined','
                     totalAlerts: this.monitoringData.alerts.length,')',
                     criticalAlerts: this.monitoringData.alerts.filter(a = > a.severity === 'critical').length  };
-                    lastUpdate: now 
-    };
+                    lastUpdate: now,;
                 performance: { ''
-                    lighthouseScores: this.getRecentData('lighthouseScores', weekAgo' as LighthouseScore[],
+                    lighthouseScores: this.getRecentData('lighthouseScores', weekAgo' as LighthouseScore[],'
                     coreWebVitals: this.getRecentData('coreWebVitals', dayAgo) as CoreWebVitals[],
                     trends: this.calculateTrends(  }
                 social: { totalShares: this.getTotalSocialShares(
     platformBreakdown: this.getSocialPlatformBreakdown(
-                    engagementTrend: this.getSocialEngagementTrend()',
+                    engagementTrend: this.getSocialEngagementTrend()','
     recentChecks: this.getRecentData('healthChecks', dayAgo) as HealthCheck[],
                     systemStatus: this.getSystemStatus(
     recommendations: this.getActiveRecommendations(  }
@@ -242,7 +240,7 @@ export class HealthChecker {
                     byType: this.getAlertsByType(
     bySeverity: this.getAlertsBySeverity( 
     } catch (error) {
-            console.error('Failed to generate dashboard data', error',
+            console.error('Failed to generate dashboard data', error','
             return { overview: {'
                     currentSEOScore: 0,
                     healthStatus: 'error',
@@ -257,7 +255,7 @@ export class HealthChecker {
                     byType: {})
                     bySeverity: {},''
                 error: (error, as Error).message,
-                timestamp: Date.now()';
+                timestamp: Date.now()';'
     createAlert(type: string, severity: 'info' | 'warning' | 'critical', message: string, metadata: Record<string, any> = { ): Alert {
         const alert: Alert = {  }
             id: `alert_${Date.now())_${Math.random().toString(36).substr(2, 9})`,
@@ -272,7 +270,7 @@ export class HealthChecker {
         this.monitoringData.alerts.push(alert);
 
         // アラートコールバックの実行
-        if(this.config.alertsEnabled) {
+        if (this.config.alertsEnabled) {
             this.alertCallbacks.forEach(callback => { )
         }
                 try {) }
@@ -294,10 +292,10 @@ export class HealthChecker {
     /**
      * 最近のSEOエラーの取得
      */''
-    getRecentSEOErrors()';
+    getRecentSEOErrors()';'
             const errorLog = JSON.parse(localStorage.getItem('seo_error_log') || '[]');
             const dayAgo = Date.now() - (24 * 60 * 60 * 1000);
-            return errorLog.filter((error: SEOError) => error.timestamp >= dayAgo);
+            return errorLog.filter((error: SEOError) => error.timestamp >= dayAgo),
         } catch (error) { return [],
     
     /**
@@ -341,7 +339,7 @@ export class HealthChecker {
     
     getSocialEngagementTrend(): any[] { // 実装予定：エンゲージメントトレンド
         return this.monitoringData.socialEngagement.slice(-30), // 直近30件 }
-    ';
+    ';'
 
     getSystemStatus(): string { if (this.lastHealthCheck) {''
             switch(this.lastHealthCheck.status) {
@@ -380,7 +378,7 @@ export class HealthChecker {
      * アラートの解決
      */
     resolveAlert(alertId: string): boolean { const alert = this.monitoringData.alerts.find(a => a.id === alertId),
-        if(alert) {
+        if (alert) {
             alert.resolved = true }
             return true;
         return false;
@@ -409,14 +407,14 @@ export class HealthChecker {
         
         if (totalChecks === 0) return 0,
 
-        const baseScore = (passedChecks / totalChecks') * 100,
-        ',
+        const baseScore = (passedChecks / totalChecks') * 100,'
+        ','
         // 重要な問題がある場合はスコアを調整
         if(this.lastHealthCheck.status === 'critical' {', ' }
 
             return Math.min(baseScore * 0.5, 50); }'
 
-        } else if(this.lastHealthCheck.status === 'warning) { return Math.min(baseScore * 0.8, 80) }'
+        } else if (this.lastHealthCheck.status === 'warning) { return Math.min(baseScore * 0.8, 80) }'
         
         return Math.round(baseScore);
     }

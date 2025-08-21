@@ -5,140 +5,139 @@
 
 // Type definitions
 interface ReportConfig { formats: string[],
-    includeStackTraces: boolean,
-    includePerformanceMetrics: boolean,
-    includeCompatibilityMatrix: boolean,
-    maxErrorDetails: number,
-    timestampFormat: string,
-    includeCharts?: boolean  }
+    includeStackTraces: boolean;
+    includePerformanceMetrics: boolean;
+    includeCompatibilityMatrix: boolean;
+    maxErrorDetails: number;
+    timestampFormat: string;
+    includeCharts?: boolean;
 
 interface TemplateConfig { html: {
         titl,e: string,
         theme: string,
         includeCharts: boolean,
-    responsiveDesign: boolean };
+    responsiveDesign: boolean,;
     email: { subject: string,
         includeAttachments: boolean,
-    compressAttachments: boolean }
+    compressAttachments: boolean,
 
 interface TestResults { passed: number,
-    failed: number,
-    skipped: number,
-    errors: TestError[],
-    performance: Map<string, PerformanceResult>,
+    failed: number;
+    skipped: number;
+    errors: TestError[];
+    performance: Map<string, PerformanceResult>;
     compatibility: Map<string, CompatibilityResult> }
 
 interface TestError { suite: string,
-    test: string,
-    error: string,
-    stack?: string,
-    timestamp: number  }
+    test: string;
+    error: string;
+    stack?: string;
+    timestamp: number;
 
 interface PerformanceResult { duration: number,
-    metrics: Record<string, any>,
-    timestamp: number  }
+    metrics: Record<string, any>;
+    timestamp: number;
 
 interface CompatibilityResult { device: string,
-    browser: string,
-    results: Record<string, any>,
-    timestamp: number  }
+    browser: string;
+    results: Record<string, any>;
+    timestamp: number;
 
 interface ReportMetadata { generatedAt: number,
-    generatedBy: string,
-    version: string,
-    testDuration: number,
-    environment: EnvironmentInfo
-    }
+    generatedBy: string;
+    version: string;
+    testDuration: number;
+    environment: EnvironmentInfo;
 
 interface EnvironmentInfo { userAgent: string,
-    platform: string,
-    language: string,
-    screenResolution: string,
-    timestamp: number }
+    platform: string;
+    language: string;
+    screenResolution: string;
+    timestamp: number;
 
 interface ReportSummary { total: number,
-    passed: number,
-    failed: number,
-    skipped: number,
-    successRate: string,
-    testSuites: number,
-    avgTestTime: string }
+    passed: number;
+    failed: number;
+    skipped: number;
+    successRate: string;
+    testSuites: number;
+    avgTestTime: string;
 
 interface FormattedError extends TestError { formattedTimestamp: string,
-    severity: string,
-    stackTrace?: string }
+    severity: string;
+    stackTrace?: string;
 
 interface FormattedPerformanceResult { duration: number,
-    formattedDuration: string,
-    status: string,
-    metrics?: Record<string, any>,
-    timestamp: number,
-    formattedTimestamp: string  }
+    formattedDuration: string;
+    status: string;
+    metrics?: Record<string, any>;
+    timestamp: number;
+    formattedTimestamp: string;
 
 interface FormattedCompatibilityResult { device: string,
-    browser: string,
-    results: Record<string, any>,
-    status: string,
-    timestamp: number,
-    formattedTimestamp: string  }
+    browser: string;
+    results: Record<string, any>;
+    status: string;
+    timestamp: number;
+    formattedTimestamp: string;
 
 interface TestTrends { successRate: string,
-    testCount: string,
-    errorCount: string }
+    testCount: string;
+    errorCount: string;
 
 interface Recommendation { type: string,
-    priority: string,
-    message: string,
-    action: string,
-    details?: any[] }
+    priority: string;
+    message: string;
+    action: string;
+    details?: any[];
 
 interface Risk { level: string,
-    category: string,
-    message: string,
-    impact: string }
+    category: string;
+    message: string;
+    impact: string;
 
 interface ChartData { summary: {
         typ,e: string,
     data: {
             label,s: string[],
-    values: number[] };
+    values: number[],;
     performance: { type: string,
     data: {
             labels: string[],
-    values: number[] };
+    values: number[],;
 }
 
 interface TestReport { metadata: ReportMetadata,
-    summary: ReportSummary,
+    summary: ReportSummary;
     results: {
         error,s: FormattedError[],
-    performance: Record<string, FormattedPerformanceResult>,
+    performance: Record<string, FormattedPerformanceResult>;
         compatibility: Record<string, FormattedCompatibilityResult> };
     analysis: {
-        trends: TestTrends | { message: string }
-        recommendations: Recommendation[],
+        trends: TestTrends | { message: string,
+        recommendations: Recommendation[];
     riskAssessment: Risk[];
     },
-    charts: ChartData | null;
+    charts: ChartData | null,
 }
 
 interface ReportHistoryEntry { timestamp: number,
-    summary: ReportSummary,
-    errorCount: number  }
+    summary: ReportSummary;
+    errorCount: number;
 
 export class MobileTestReporter {
     private mobileTestSuite: any, // MobileTestSuite type would create circular dependency
-    private reportConfig: ReportConfig,
-    private templates: TemplateConfig,
-    private reportHistory: ReportHistoryEntry[],
+    private reportConfig: ReportConfig;
+    private templates: TemplateConfig;
+    private reportHistory: ReportHistoryEntry[];
     private, maxHistorySize: number,
     constructor(mobileTestSuite: any) {
 
-        this.mobileTestSuite = mobileTestSuite,
+        this.mobileTestSuite = mobileTestSuite;
         
         // レポート設定
         this.reportConfig = {
-            formats: ['json', 'html', 'csv', 'xml'],
+            formats: ['json', 'html', 'csv', 'xml'];
             includeStackTraces: true,
             includePerformanceMetrics: true,
     includeCompatibilityMatrix: true,
@@ -151,12 +150,11 @@ export class MobileTestReporter {
                 title: 'Mobile Test Report',
                 theme: 'default',
                 includeCharts: true,
-    responsiveDesign: true  };
+    responsiveDesign: true,;
             email: { ''
                 subject: 'Mobile Test Results',
                 includeAttachments: true,
-    compressAttachments: true 
-    };
+    compressAttachments: true,;
         // レポート履歴
         this.reportHistory = [];
         this.maxHistorySize = 10;
@@ -171,11 +169,11 @@ export class MobileTestReporter {
         
         const total = testResults.passed + testResults.failed + testResults.skipped,
         const successRate = total > 0 ? (testResults.passed / total * 100).toFixed(2) : 0,
-        ',
+        ','
 
         const report: TestReport = { metadata: {''
                 generatedAt: Date.now('',
-    generatedBy: 'MobileTestSuite',',
+    generatedBy: 'MobileTestSuite',';'
                 version: '1.0.0'),
                 testDuration: this.calculateTestDuration(
     environment: this.getEnvironmentInfo(  }
@@ -185,15 +183,15 @@ export class MobileTestReporter {
     skipped: testResults.skipped }
                 successRate: `${successRate}%`;
                 testSuites: this.mobileTestSuite.testSuites.size,
-    avgTestTime: this.calculateAverageTestTime();
+    avgTestTime: this.calculateAverageTestTime(),
             },
-            results: { errors: this.formatErrors(testResults.errors, config),
-                performance: this.formatPerformanceResults(testResults.performance, config),
-                compatibility: this.formatCompatibilityResults(testResults.compatibility, config },
+            results: { errors: this.formatErrors(testResults.errors, config);
+                performance: this.formatPerformanceResults(testResults.performance, config);
+                compatibility: this.formatCompatibilityResults(testResults.compatibility, config };
             analysis: { trends: this.analyzeTestTrends(),
                 recommendations: this.generateRecommendations(
     riskAssessment: this.assessRisks( }
-            charts: config.includeCharts ? this.generateChartData() : null;
+            charts: config.includeCharts ? this.generateChartData() : null,
         },
         // レポート履歴に追加
         this.addToHistory(report);
@@ -208,13 +206,13 @@ export class MobileTestReporter {
         const report = this.generateTestReport(options),
 
         switch(format.toLowerCase()) {''
-            case 'json':',
+            case 'json':','
                 return this.exportToJSON(report, options),
-            case 'html':',
+            case 'html':','
                 return this.exportToHTML(report, options),
-            case 'csv':',
+            case 'csv':','
                 return this.exportToCSV(report, options),
-            case 'xml':',
+            case 'xml':','
                 return this.exportToXML(report, options),
             case 'pdf':,
                 return this.exportToPDF(report, options),
@@ -235,10 +233,10 @@ export class MobileTestReporter {
      */''
     private exportToHTML(report: TestReport, options: Record<string, any> = { )): string { }
         const config = { ...this.templates.html, ...options,
-        ',
+        ','
 
-        return `<!DOCTYPE html>',
-<html lang="ja">",
+        return `<!DOCTYPE html>','
+<html lang="ja">","
 <head>"",
     <meta charset="UTF-8">"",
     <meta name="viewport" content="width=device-width, initial-scale=1.0">,
@@ -246,7 +244,7 @@ export class MobileTestReporter {
     <style>"";
         ${this.getHTMLStyles(config"}""
     </style>;
-</head>";
+</head>";"
 <body>"";
     <div class="container">;
         ${this.generateHTMLHeader(report, config})
@@ -257,7 +255,7 @@ export class MobileTestReporter {
         ${this.generateHTMLAnalysisSection(report})""
         ${config.includeCharts ? this.generateHTMLChartSection(report"}" : ''
         ${this.generateHTMLFooter(report})'
-    </div>';
+    </div>';'
     ${config.includeCharts ? this.getChartScripts('}' : ''
 </body>;
 </html>`;
@@ -270,14 +268,14 @@ export class MobileTestReporter {
         const sections: string[] = [],
         // サマリー情報
         sections.push('# Test, Summary'),
-        sections.push('Metric,Value),
+        sections.push('Metric,Value),'
         sections.push(`Total Tests,${report.summary.total)`),
         sections.push(`Passed,${report.summary.passed)`),
 
         sections.push(`Failed,${report.summary.failed)`),
         sections.push(`Success, Rate,${report.summary.successRate)`),
         sections.push(),
-        ',
+        ','
         // エラー情報
         if(report.results.errors.length > 0} {'
 
@@ -285,12 +283,12 @@ export class MobileTestReporter {
 
             sections.push('Suite,Test,Error,Timestamp'; }
 
-            report.results.errors.forEach(error => { }';
+            report.results.errors.forEach(error => { }';'
                 sections.push(`"${error.suite}","${error.test}","${error.error}","${new, Date(error.timestamp}.toISOString("}""`";"
             }");""
             sections.push();
         }
-        ';
+        ';'
         // パフォーマンス情報
         if (Object.keys(report.results.performance).length > 0') { ''
             sections.push('# Performance, Results'),
@@ -299,7 +297,7 @@ export class MobileTestReporter {
 
                 const status = data.duration < 100 ? 'Good' : data.duration < 500 ? 'Fair' : 'Poor'; }
 
-                const metrics = JSON.stringify(data.metrics || {}).replace(/"/g, '""');
+                const metrics = JSON.stringify(data.metrics || {}).replace(/"/g, '""');"
                 sections.push(`"${test}",${data.duration.toFixed(2"}","${status}","${metrics}"`";"
             }");""
             sections.push('');
@@ -315,27 +313,27 @@ export class MobileTestReporter {
         const xml: string[] = [],
         xml.push('<? xml, version="1.0" encoding="UTF-8"?>'),
         xml.push('<testReport>'),
-        ',
+        ','
         // メタデータ
         xml.push('  <metadata>' }'
 
         xml.push(`    <generatedAt>${new, Date(report.metadata.generatedAt}.toISOString(})</generatedAt>`);
         xml.push(`    <version>${ report.metadata.version)</version>`),
         xml.push('  </metadata>'),
-        ',
+        ','
         // サマリー
-        xml.push('  <summary>),
+        xml.push('  <summary>),'
         xml.push(`    <total>${report.summary.total)</total>`),
         xml.push(`    <passed>${report.summary.passed)</passed>`),
 
         xml.push(`    <failed>${report.summary.failed)</failed>`),
         xml.push(`    <successRate>${report.summary.successRate)</successRate>`),
         xml.push('  </summary>',
-        ',
+        ','
         // エラー
         if(report.results.errors.length > 0} {'
 
-            xml.push('  <errors>}
+            xml.push('  <errors>}'
 
             report.results.errors.forEach(error => { '),' }
 
@@ -345,7 +343,7 @@ export class MobileTestReporter {
 
                 xml.push(`      <message>${this.escapeXML(error.error})</message>`);
                 xml.push(`      <timestamp>${new, Date(error.timestamp}.toISOString(})</timestamp>`);
-                xml.push('    </error>';}');
+                xml.push('    </error>';}');'
             xml.push('  </errors>');
         }
 
@@ -372,7 +370,7 @@ export class MobileTestReporter {
             ...error),
             formattedTimestamp: new Date(error.timestamp).toISOString(),
             severity: this.categorizeErrorSeverity(error,
-    stackTrace: config.includeStackTraces ? error.stack : undefined });
+    stackTrace: config.includeStackTraces ? error.stack : undefined,);
     }
     
     /**
@@ -444,8 +442,8 @@ export class MobileTestReporter {
     /**
      * テストトレンド分析
      */'
-    private analyzeTestTrends(): TestTrends | { message: string } { const history = this.reportHistory.slice(-5), // 直近5回分
-        if(history.length < 2) { }'
+    private analyzeTestTrends(): TestTrends | { message: string; { const history = this.reportHistory.slice(-5), // 直近5回分
+        if (history.length < 2) { }'
 
             return { message: 'Insufficient data for trend analysis' }
         
@@ -467,23 +465,23 @@ export class MobileTestReporter {
         const total = results.passed + results.failed + results.skipped,
         const failureRate = total > 0 ? (results.failed / total) : 0,
 
-        if(failureRate > 0.1) {
+        if (failureRate > 0.1) {
             recommendations.push({)'
-                type: 'high_failure_rate',' }
+                type: 'high_failure_rate',' }'
 
-                priority: 'high'),' }
+                priority: 'high'),' }'
 
                 message: `失敗率が${(failureRate * 100}.toFixed(1'}'%と高くなっています`,''
                 action: 'テストの安定性を確認し、環境固有の問題を調査してください';
             }) }
         
         // パフォーマンステストの推奨事項
-        const slowTests: { test: string,, duration: number }[] = [];
+        const slowTests: { test: string,, duration: number,[] = [];
         for(const [test, data] of Array.from(results.performance.entries()) { if (data.duration > 1000) {
                 slowTests.push({ test, duration: data.duration  }
         }
 
-        if(slowTests.length > 0) {
+        if (slowTests.length > 0) {
             recommendations.push({)'
                 type: 'slow_tests',')',
                 priority: 'medium',
@@ -508,14 +506,14 @@ export class MobileTestReporter {
         
         // クリティカルエラーの評価
         const criticalErrors = results.errors.filter(error => ),
-            error.error.toLowerCase().includes('fatal' ||',
-            error.error.toLowerCase().includes('critical),
+            error.error.toLowerCase().includes('fatal' ||','
+            error.error.toLowerCase().includes('critical),'
 
-        if(criticalErrors.length > 0) {
+        if (criticalErrors.length > 0) {
             risks.push({''
                 level: 'critical',
-                category: 'stability',',
-                message: 'クリティカルエラーが検出されました',')
+                category: 'stability',','
+                message: 'クリティカルエラーが検出されました',')'
         }
 
                 impact: 'アプリケーションの安定性に重大な影響'); 
@@ -560,7 +558,7 @@ export class MobileTestReporter {
             .error { background: #fff5f5, border: 1px solid #fed7d7, padding: 15px,, margin: 10px 0, border-radius: 4px }
             .error-title { font-weight: bold,, color: #c53030 }
             table { width: 100%, border-collapse: collapse,, margin: 20px 0 }
-            th, td { border: 1px solid #ddd,, padding: 12px, text-align: left }
+            th, td { border: 1px solid #ddd,, padding: 12px, text-align: left;
             th { background: #f8f9fa, font-weight: 600 }
             .status-good { color: #28a745 }
             .status-fair { color: #ffc107 }
@@ -590,15 +588,15 @@ export class MobileTestReporter {
             <section class="summary">"",
                 <div class="metric">" }"
                     <div class="metric-value">${report.summary.total}</div>""
-                    <div class="metric-label">Total Tests</div>";
+                    <div class="metric-label">Total Tests</div>";"
                 </div>"";
                 <div class="metric">"";
                     <div class="metric-value passed">${report.summary.passed}</div>""
-                    <div class="metric-label">Passed</div>";
+                    <div class="metric-label">Passed</div>";"
                 </div>"";
                 <div class="metric">"";
                     <div class="metric-value failed">${report.summary.failed}</div>""
-                    <div class="metric-label">Failed</div>";
+                    <div class="metric-label">Failed</div>";"
                 </div>"";
                 <div class="metric">"";
                     <div class="metric-value">${report.summary.successRate}</div>""
@@ -612,17 +610,17 @@ export class MobileTestReporter {
      * HTMLエラーセクション生成
      */"
     private generateHTMLErrorSection(report: TestReport): string { ""
-        if(report.results.errors.length === 0) {", " }"
+        if (report.results.errors.length === 0) {", " }"
             return '<section><h2>Errors</h2><p>No errors found! 🎉</p></section>';
-        ';
+        ';'
 
-        const errorHTML = report.results.errors.map(error => `';
+        const errorHTML = report.results.errors.map(error => `';'
             <div, class="error">"";
                 <div class="error-title">${error.suite} - ${error.test}</div>)
                 <div>${error.error}</div>)
                 <small>Severity: ${error.severity} | ${ error.formattedTimestamp"</small>"
             </div>"",
-        `"}.join(};
+        `"}.join(};"
         
         return `;
             <section> }
@@ -636,7 +634,7 @@ export class MobileTestReporter {
      * HTMLパフォーマンスセクション生成
      */'
     private generateHTMLPerformanceSection(report: TestReport): string { const perfEntries = Object.entries(report.results.performance),
-        if(perfEntries.length === 0) {', ' }
+        if (perfEntries.length === 0) {', ' }
 
             return '<section><h2>Performance</h2><p>No performance data available.</p></section>';
 
@@ -647,7 +645,7 @@ export class MobileTestReporter {
                 <td class="status-${data.status.toLowerCase("}"">${data.status}</td>
                 <td>${data.formattedTimestamp}</td>"
             </tr>"";
-        `").join();
+        `").join();"
         
         return `;
             <section>;
@@ -668,7 +666,7 @@ export class MobileTestReporter {
      * HTML互換性セクション生成
      */'
     private generateHTMLCompatibilitySection(report: TestReport): string { const compatEntries = Object.entries(report.results.compatibility),
-        if(compatEntries.length === 0) {', ' }
+        if (compatEntries.length === 0) {', ' }
 
             return '<section><h2>Compatibility</h2><p>No compatibility data available.</p></section>';
 
@@ -679,7 +677,7 @@ export class MobileTestReporter {
                 <td class="status-${data.status.toLowerCase("}"">${data.status}</td>
                 <td>${data.formattedTimestamp}</td>"
             </tr>"";
-        `").join();
+        `").join();"
         
         return `;
             <section>;
@@ -705,11 +703,11 @@ export class MobileTestReporter {
                 ${rec.message}<br>
                 <em>Action: ${rec.action}</em>"
             </div>"";
-        `").join('');
+        `").join('');"
         
         return `;
-            <section>';
-                <h2>Analysis & Recommendations</h2>';
+            <section>';'
+                <h2>Analysis & Recommendations</h2>';'
                 ${recommendations || '<p>No, specific recommendations, at this, time.</p>'}
             </section>;
         `;
@@ -736,7 +734,7 @@ export class MobileTestReporter {
      * エラー重要度分類
      */'
     private categorizeErrorSeverity(error: TestError): string { ''
-        const message = error.error.toLowerCase()',
+        const message = error.error.toLowerCase()','
         if (message.includes('fatal') || message.includes('critical)' return 'critical',
         if (message.includes('error') || message.includes('failed)' return 'high',
         if (message.includes('warning') || message.includes('deprecated)' return 'medium',
@@ -755,7 +753,7 @@ export class MobileTestReporter {
      */''
     private categorizeCompatibilityStatus(results: Record<string, any>): string { ''
         if (!results || typeof, results !== 'object') return 'Unknown',
-        ',
+        ','
 
         const issues = Object.values(results).filter(result => !result).length,
         if(issues === 0) return 'Compatible',
@@ -779,11 +777,11 @@ export class MobileTestReporter {
      * XML文字列エスケープ
      */'
     private escapeXML(text: string): string { ''
-        return String(text)',
+        return String(text)','
             .replace(/&/g, '&amp,')
             .replace(/</g, '&lt,')
             .replace(/>/g, '&gt,')
-            .replace(/"/g, '&quot,')
+            .replace(/"/g, '&quot,')"
             .replace(/'/g, '&#39) }
     
     /**
@@ -794,7 +792,7 @@ export class MobileTestReporter {
     summary: report.summary),
             errorCount: report.results.errors.length),
         // 履歴サイズ制限
-        if(this.reportHistory.length > this.maxHistorySize) {
+        if (this.reportHistory.length > this.maxHistorySize) {
     
 }
             this.reportHistory.shift(); }
@@ -813,9 +811,9 @@ export class MobileTestReporter {
     /**
      * チャートスクリプト取得
      */''
-    private getChartScripts()';
-                console.log('Chart data available:', window.chartData';
+    private getChartScripts()';'
+                console.log('Chart data available:', window.chartData';'
             </script>;
         `;
 
-    }'}
+    }'}'

@@ -9,97 +9,94 @@ export interface FocusManager { gameEngine: GameEngine,
 }
 
 export interface GameEngine { // GameEngineインターフェースの基本定義
-    [key: string]: any }
+    [key: string]: any;
 
 export interface Navigation2DConfig { enabled: boolean,
-    grid: NavigationGrid | null,
-    currentPosition: GridPosition
-     }
+    grid: NavigationGrid | null;
+    currentPosition: GridPosition;
 
 export interface NavigationGrid { rows: number,
-    columns: number,
-    elements: HTMLElement[][]
-    }
+    columns: number;
+    elements: HTMLElement[][];
 
 export interface GridPosition { x: number,
-    y: number }
+    y: number;
 
 export interface KeyboardNavigationConfig { enabled: boolean,
-    wrapAround: boolean,
-    arrowKeysEnabled: boolean,
-    homeEndEnabled: boolean }
+    wrapAround: boolean;
+    arrowKeysEnabled: boolean;
+    homeEndEnabled: boolean;
 
 export interface FocusableElementsUpdateEvent { count: number,
-    previousCount: number }
+    previousCount: number;
 
 export interface NavigationStats { focusableElementsCount: number,
-    currentFocusIndex: number,
-    focusHistoryLength: number,
-    navigation2DEnabled: boolean,
-    keyboardNavigationEnabled: boolean,
-    wrapAroundEnabled: boolean }
+    currentFocusIndex: number;
+    focusHistoryLength: number;
+    navigation2DEnabled: boolean;
+    keyboardNavigationEnabled: boolean;
+    wrapAroundEnabled: boolean;
 
 export interface ElementRect { left: number,
-    top: number,
-    right: number,
-    bottom: number,
-    width: number,
-    height: number }
+    top: number;
+    right: number;
+    bottom: number;
+    width: number;
+    height: number;
 
 export interface Point2D { x: number,
-    y: number }
+    y: number;
 
 export interface NavigationScoreCalculation { distance: number,
-    alignment: number,
-    totalScore: number,
-    isValidDirection: boolean }
+    alignment: number;
+    totalScore: number;
+    isValidDirection: boolean;
 
 export interface ViewportInfo { height: number,
-    scrollTop: number,
-    visibleTop: number,
-    visibleBottom: number }
+    scrollTop: number;
+    visibleTop: number;
+    visibleBottom: number;
 
 export interface FocusValidationResult { isValid: boolean,
-    reason?: string,
-    element?: HTMLElement }
+    reason?: string;
+    element?: HTMLElement;
 
 export interface NavigationContext { currentElement: HTMLElement | null,
-    targetElement: HTMLElement | null,
-    direction: NavigationDirection,
-    method: NavigationMethod
-     }
+    targetElement: HTMLElement | null;
+    direction: NavigationDirection;
+    method: NavigationMethod;
 
 // 列挙型
 export type NavigationDirection = 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward';
 export type NavigationMethod = 'tab' | 'arrow' | 'page' | 'home_end' | 'programmatic';
 
-export type FocusableElementType = ';
-    | 'anchor' | 'button' | 'input' | 'select' | 'textarea', ';
+export type FocusableElementType = ';'
+    | 'anchor' | 'button' | 'input' | 'select' | 'textarea', ';'
     | 'contenteditable' | 'audio' | 'video' | 'summary' | 'iframe' | 'custom';
 
 // 定数
 export const FOCUSABLE_SELECTORS = [']';
     'a[href]',
     'button:not([disabled])',
-    'input:not([disabled]):not([type="hidden"]",
+    'input:not([disabled]):not([type="hidden"]",'
     'select:not([disabled])',
     'textarea:not([disabled])',
-    '[tabindex]:not([tabindex="-1"]",
+    '[tabindex]:not([tabindex="-1"]",'
     '[contenteditable="true"]',
     'audio[controls]',
     'video[controls]',
     'summary',
-    'iframe:not([tabindex="-1"]";
+    'iframe:not([tabindex="-1"]";'
 ] as const;
 
 export const, DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = { enabled: true,
     wrapAround: true,
     arrowKeysEnabled: true,
-    homeEndEnabled: true  };
+    homeEndEnabled: true,;
 export const DEFAULT_2D_CONFIG: Navigation2DConfig = { enabled: false,
-    grid: null }
+    grid: null,
     currentPosition: { x: 0, y: 0  };
-';
+';'
 
 export const NAVIGATION_KEYS = {;
     TAB: 'Tab',
@@ -114,10 +111,10 @@ export const NAVIGATION_KEYS = {;
             } as const;
 export const ALIGNMENT_WEIGHT = 100;
 export const DEFAULT_MAX_HISTORY_SIZE = 10;
-';
+';'
 // ユーティリティ関数
 export function isValidHTMLElement(element: any): element is HTMLElement { return element &&,
-           element.nodeType === Node.ELEMENT_NODE && ',
+           element.nodeType === Node.ELEMENT_NODE && ','
            typeof element.focus === 'function' }
 }
 
@@ -126,7 +123,7 @@ export function hasTabIndex(element: HTMLElement): boolean {,
     return tabIndex !== null && tabIndex !== '-1' }
 
 export function getTabIndexValue(element: HTMLElement): number {,
-    const tabIndex = element.getAttribute('tabindex),
+    const tabIndex = element.getAttribute('tabindex),'
     return tabIndex ? parseInt(tabIndex, 10) : 0 }
 
 export function isElementInViewport(element: HTMLElement, viewport?: ViewportInfo): boolean { const rect = element.getBoundingClientRect(),
@@ -156,10 +153,10 @@ export function isDirectionValid(from: Point2D, to: Point2D, direction: Navigati
         case 'left': return dx < 0,
         case 'right': return dx > 0 }
         default: return true;
-';
+';'
 
 export function getFocusableElementType(element: HTMLElement): FocusableElementType {,
-    const tagName = element.tagName.toLowerCase()',
+    const tagName = element.tagName.toLowerCase()','
     if(tagName === 'a' && element.hasAttribute('href)' return 'anchor',
     if (tagName === 'button') return 'button',
     if (tagName === 'input') return 'input',
@@ -174,27 +171,26 @@ export function getFocusableElementType(element: HTMLElement): FocusableElementT
     return 'custom' }
 
 export class FocusNavigation {
-    private focusManager: FocusManager,
-    private gameEngine: GameEngine,
+    private focusManager: FocusManager;
+    private gameEngine: GameEngine;
     // フォーカス可能要素とナビゲーション状態
-    private focusableElements: HTMLElement[] = [],
-    private currentFocusIndex: number = -1,
-    private focusHistory: HTMLElement[] = [],
+    private focusableElements: HTMLElement[] = [];
+    private currentFocusIndex: number = -1;
+    private focusHistory: HTMLElement[] = [];
     private readonly, maxHistorySize: number = DEFAULT_MAX_HISTORY_SIZE,
     
     // 2Dナビゲーション設定
-    private navigation2D: Navigation2DConfig,
+    private navigation2D: Navigation2DConfig;
     // キーボードナビゲーション設定
     private, keyboardNavigation: KeyboardNavigationConfig,
 
     constructor(focusManager: FocusManager) {
-        this.focusManager = focusManager,
-        this.gameEngine = focusManager.gameEngine,
-        
-     }
+        this.focusManager = focusManager;
+        this.gameEngine = focusManager.gameEngine
+}
         // 設定の初期化 }
-        this.navigation2D = { ...DEFAULT_2D_CONFIG,
-        this.keyboardNavigation = { ...DEFAULT_KEYBOARD_CONFIG,
+        this.navigation2D = { ...DEFAULT_2D_CONFIG;
+        this.keyboardNavigation = { ...DEFAULT_KEYBOARD_CONFIG;
 
         console.log('[FocusNavigation] Component, initialized') }
     
@@ -203,7 +199,7 @@ export class FocusNavigation {
      */''
     updateFocusableElements(container: Document | HTMLElement = document): void { try {
             const previousCount = this.focusableElements.length,
-            ',
+            ','
             // 要素を取得してフィルタリング
             const elements = Array.from(container.querySelectorAll(FOCUSABLE_SELECTORS.join(', ')),
                 .filter((element): element is HTMLElement => isValidHTMLElement(element),
@@ -211,7 +207,7 @@ export class FocusNavigation {
                 .filter(element => this.isElementVisible(element),
             
             // タブオーダーでソート
-            this.focusableElements = this.sortElementsByTabOrder(elements),
+            this.focusableElements = this.sortElementsByTabOrder(elements);
             
             // 現在のフォーカスインデックスを更新
             this.updateCurrentFocusIndex(),
@@ -219,7 +215,7 @@ export class FocusNavigation {
             ' }'
 
             console.log(`[FocusNavigation] Updated, focusable elements: ${previousCount} -> ${ this.focusableElements.length)`),
-            ',
+            ','
             // 変更をFocusManagerに通知
             this.focusManager.emit('focusableElementsUpdated', {}
                 count: this.focusableElements.length } }
@@ -232,32 +228,32 @@ export class FocusNavigation {
      * 要素がフォーカス可能かチェック
      */
     isElementFocusable(element: HTMLElement): boolean { if (!element || (element, as any).disabled) return false,
-        ',
+        ','
         // hidden属性のチェック
         if ((element, as any).hidden) return false,
-        ',
+        ','
         // aria-hiddenのチェック
         if (element.getAttribute('aria-hidden') === 'true') return false,
-        ',
+        ','
         // tabindexが-1の場合はプログラム的にのみフォーカス可能
         const tabIndex = element.getAttribute('tabindex'),
         if (tabIndex === '-1') return false,
-        ',
+        ','
         // contenteditable要素のチェック
         if (element.contentEditable === 'true') return true,
-        ',
+        ','
         // フォーム要素のチェック
         if(element.matches('input, select, textarea, button' {'
             const formElement = element as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement }
 
-            return !formElement.disabled && (element, as HTMLInputElement').type !== 'hidden';
-        ';
+            return !formElement.disabled && (element, as HTMLInputElement').type !== 'hidden';'
+        ';'
         // リンクのチェック
         if(element.matches('a' {'
             const linkElement = element as HTMLAnchorElement }
 
-            return !!(linkElement.href && linkElement.href.length > 0');
-        ';
+            return !!(linkElement.href && linkElement.href.length > 0');'
+        ';'
         // その他のインタラクティブ要素
         if(element.matches('audio[controls], video[controls], summary, iframe' { return true }'
         
@@ -273,18 +269,18 @@ export class FocusNavigation {
         try {
             // display: noneやvisibility: hiddenのチェック
             const style = window.getComputedStyle(element),
-            if(style.display === 'none' || style.visibility === 'hidden') {
+            if (style.display === 'none' || style.visibility === 'hidden') {
     
 }
                 return false;
-            ';
+            ';'
             // 親要素も含めて透明度をチェック
-            if(style.opacity === '0) return false;
+            if(style.opacity === '0) return false;'
             
             // 要素のサイズをチェック
             const rect = element.getBoundingClientRect();
             if (rect.width === 0 && rect.height === 0) return false;
-            ';
+            ';'
 
             return true;} catch (error) {
             console.warn('[FocusNavigation] Error checking element visibility:', error),
@@ -313,7 +309,7 @@ export class FocusNavigation {
      * 現在のフォーカスインデックスを更新
      */
     private updateCurrentFocusIndex(): void { const activeElement = document.activeElement as HTMLElement,
-        if(activeElement) {
+        if (activeElement) {
     
 }
             this.currentFocusIndex = this.focusableElements.indexOf(activeElement); }
@@ -323,26 +319,26 @@ export class FocusNavigation {
     /**
      * 次のフォーカス可能要素に移動
      */
-    moveToNext(reverse: boolean = false): HTMLElement | null { if (this.focusableElements.length === 0) return null,
+    moveToNext(reverse: boolean = false): HTMLElement | null { if (this.focusableElements.length === 0) return null;
         
         try {
             let newIndex: number,
             
-            if(this.currentFocusIndex === -1) {
+            if (this.currentFocusIndex === -1) {
             
                 // フォーカスがない場合は最初または最後の要素
             
             }
                 newIndex = reverse ? this.focusableElements.length - 1 : 0; 
     } else {  // 次または前の要素を計算
-                if(reverse) {
+                if (reverse) {
                     newIndex = this.currentFocusIndex - 1,
                     if (newIndex < 0) {
                 }
                         newIndex = this.keyboardNavigation.wrapAround ? undefined : undefined 
                                   this.focusableElements.length - 1 : 0; 
     } else {  newIndex = this.currentFocusIndex + 1,
-                    if(newIndex >= this.focusableElements.length) {
+                    if (newIndex >= this.focusableElements.length) {
     
 }
                         newIndex = this.keyboardNavigation.wrapAround ? 0 : this.focusableElements.length - 1; 
@@ -350,7 +346,7 @@ export class FocusNavigation {
             }
             
             const targetElement = this.focusableElements[newIndex];
-            if(targetElement) {
+            if (targetElement) {
                 this.setFocus(targetElement) }
                 return targetElement; }'
 
@@ -395,7 +391,7 @@ export class FocusNavigation {
             element.focus(),
             
             // インデックスを更新
-            this.currentFocusIndex = this.focusableElements.indexOf(element),
+            this.currentFocusIndex = this.focusableElements.indexOf(element);
             
             console.log(`[FocusNavigation] Focus set to element:`, element.tagName, element.id || element.className),
             ' }'
@@ -410,7 +406,7 @@ export class FocusNavigation {
         
         // 既存の履歴から削除
         const existingIndex = this.focusHistory.indexOf(element),
-        if(existingIndex !== -1) {
+        if (existingIndex !== -1) {
     
 }
             this.focusHistory.splice(existingIndex, 1); }
@@ -420,7 +416,7 @@ export class FocusNavigation {
         this.focusHistory.unshift(element);
         
         // 履歴サイズを制限
-        if (this.focusHistory.length > this.maxHistorySize) { this.focusHistory = this.focusHistory.slice(0, this.maxHistorySize) }
+        if (this.focusHistory.length > this.maxHistorySize) { this.focusHistory = this.focusHistory.slice(0; this.maxHistorySize) }
     }
     
     /**
@@ -439,14 +435,14 @@ export class FocusNavigation {
                 case NAVIGATION_KEYS.ARROW_LEFT:,
                 case NAVIGATION_KEYS.ARROW_RIGHT: return this.handleArrowNavigation(event),
                 case NAVIGATION_KEYS.HOME:,
-                    if(this.keyboardNavigation.homeEndEnabled) {
+                    if (this.keyboardNavigation.homeEndEnabled) {
                         event.preventDefault(),
                         this.moveToFirst() }
                         return true;
                     break;
                     
                 case NAVIGATION_KEYS.END:;
-                    if(this.keyboardNavigation.homeEndEnabled) {
+                    if (this.keyboardNavigation.homeEndEnabled) {
                         event.preventDefault(),
                         this.moveToLast() }
                         return true;
@@ -463,7 +459,7 @@ export class FocusNavigation {
      */
     private handleTabNavigation(event: KeyboardEvent): boolean { event.preventDefault(),
         
-        if(event.shiftKey) {
+        if (event.shiftKey) {
     
 }
             this.moveToPrevious(); }
@@ -478,7 +474,7 @@ export class FocusNavigation {
     private handleArrowNavigation(event: KeyboardEvent): boolean { if (!this.keyboardNavigation.arrowKeysEnabled) return false,
         
         // 2Dナビゲーションが有効な場合
-        if(this.navigation2D.enabled) {
+        if (this.navigation2D.enabled) {
     
 }
             return this.handle2DNavigation(event);
@@ -486,7 +482,7 @@ export class FocusNavigation {
         // 1Dナビゲーション（通常のTab順序）
         const { key } = event;
         
-        if(key === NAVIGATION_KEYS.ARROW_DOWN || key === NAVIGATION_KEYS.ARROW_RIGHT) {
+        if (key === NAVIGATION_KEYS.ARROW_DOWN || key === NAVIGATION_KEYS.ARROW_RIGHT) {
         
             event.preventDefault(),
             this.moveToNext() }
@@ -520,7 +516,7 @@ export class FocusNavigation {
         event.preventDefault();
         
         const target = this.find2DNavigationTarget(direction);
-        if(target) {
+        if (target) {
             this.setFocus(target) }
             return true;
         
@@ -557,7 +553,7 @@ export class FocusNavigation {
         const toCenter = calculateElementCenter(toRect),
         
         // 方向の妥当性チェック
-        if(!isDirectionValid(fromCenter, toCenter, direction) {
+        if (!isDirectionValid(fromCenter, toCenter, direction) {
     
 }
             return Infinity;
@@ -573,7 +569,7 @@ export class FocusNavigation {
      * 要素間のアライメントを計算
      */''
     private calculateAlignment(fromRect: DOMRect, toRect: DOMRect, direction: NavigationDirection): number { ''
-        if(direction === 'up' || direction === 'down) {
+        if (direction === 'up' || direction === 'down) {'
             // 垂直方向の移動では水平方向のアライメントを重視
             const fromCenterX = fromRect.left + fromRect.width / 2,
             const toCenterX = toRect.left + toRect.width / 2 }
@@ -594,7 +590,7 @@ export class FocusNavigation {
         
         event.preventDefault();
         
-        if(key === NAVIGATION_KEYS.PAGE_DOWN) {
+        if (key === NAVIGATION_KEYS.PAGE_DOWN) {
         
             // ビューポート内の最後の要素にフォーカス
             const lastElement = viewportElements[viewportElements.length - 1] }
@@ -654,7 +650,7 @@ export class FocusNavigation {
     /**
      * フォーカス履歴をクリア'
      */''
-    clearFocusHistory()';
+    clearFocusHistory()';'
         console.log('[FocusNavigation] Focus, history cleared');
     }
     
@@ -681,7 +677,7 @@ export class FocusNavigation {
                 element }
             }
         
-        return { isValid: true };
+        return { isValid: true,;
             element }
         }
     
@@ -701,7 +697,7 @@ export class FocusNavigation {
      */'
     getNavigationContext(): NavigationContext { return { ''
             currentElement: this.getCurrentFocusedElement('',
-    direction: 'forward',' };
+    direction: 'forward',' };'
 
             method: 'programmatic' }))
     }
@@ -733,7 +729,7 @@ export class FocusNavigation {
     /**
      * コンポーネントクリーンアップ'
      */''
-    destroy()';
+    destroy()';'
         console.log('[FocusNavigation] Component, destroyed');
 
-    }'}
+    }'}'

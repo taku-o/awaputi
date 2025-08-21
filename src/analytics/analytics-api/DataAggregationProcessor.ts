@@ -5,10 +5,10 @@
  */
 export class DataAggregationProcessor {
     constructor(storageManager) {
-        this.storageManager = storageManager,
+        this.storageManager = storageManager;
         
         // 集計キャッシュ（LRUキャッシュ）
-        this.aggregationCache = new Map(),
+        this.aggregationCache = new Map();
         this.maxCacheSize = 100 }
     
     /**
@@ -72,11 +72,11 @@ export class DataAggregationProcessor {
             } = aggregationRules;
             
             // キャッシュチェック)
-            if(cacheKey && this.aggregationCache && this.aggregationCache.has(cacheKey) {
+            if (cacheKey && this.aggregationCache && this.aggregationCache.has(cacheKey) {
                 const cachedResult = this.aggregationCache.get(cacheKey),
                 if (Date.now() - cachedResult.timestamp < 300000) { // 5分間有効
                     return this.createSuccessResponse(cachedResult.data, {
-                        cached: true });
+                        cached: true,);
                         requestId }
                         responseTime: performance.now() - startTime 
     });
@@ -107,7 +107,7 @@ export class DataAggregationProcessor {
                 sortBy: aggregationRules.sortBy,')',
                 sortOrder: aggregationRules.sortOrder || 'desc'),
             // キャッシュに保存
-            if(cacheKey && this.aggregationCache) {
+            if (cacheKey && this.aggregationCache) {
                 this.aggregationCache.set(cacheKey, {
                 data: finalResult) })
                     timestamp: Date.now(); 
@@ -122,7 +122,7 @@ export class DataAggregationProcessor {
                 aggregationRules),
                 dataTypes,
                 totalGroups: this.countTotalGroups(finalResult,
-    cached: false  });
+    cached: false,);
         } catch (error) {
             console.error('Advanced aggregation error:', error','
             return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR' }'
@@ -182,7 +182,7 @@ export class DataAggregationProcessor {
         } catch (error) {
             console.error('Time series aggregation error:', error','
             return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR' }'
-                error.message, 500, { requestId }';
+                error.message, 500, { requestId }';'
         }
     }
     
@@ -210,10 +210,10 @@ export class DataAggregationProcessor {
     totalPerformanceRecords: performance.length,
                     period  }
                 },
-                sessionStats: this.calculateSessionStats(sessions);
-                interactionStats: this.calculateInteractionStats(interactions);
+                sessionStats: this.calculateSessionStats(sessions),
+                interactionStats: this.calculateInteractionStats(interactions),
                 performanceStats: this.calculatePerformanceStats(performance,
-    generatedAt: new Date().toISOString();
+    generatedAt: new Date().toISOString(),
             };
             
             return summary;
@@ -255,9 +255,9 @@ export class DataAggregationProcessor {
 
     }
 
-        if(groupBy.length === 0) { }'
+        if (groupBy.length === 0) { }'
 
-            return { 'all': data }
+            return { 'all': data;
         
         const groups = {};
         
@@ -265,7 +265,7 @@ export class DataAggregationProcessor {
         ','
 
             const groupKey = groupBy.map(key => { '),'
-                if (key === 'date' && item.timestamp' { }
+                if (key === 'date' && item.timestamp' { }'
 
                     // 日付でのグループ化（YYYY-MM-DD形式）' }'
 
@@ -319,7 +319,7 @@ export class DataAggregationProcessor {
 
                 result[`${field}_max`] = Math.max(...values.map(Number));
 
-            if(operations.includes('count' { }
+            if (operations.includes('count' }
                 result[`${field}_count`] = values.length;
             }
         }
@@ -329,9 +329,9 @@ export class DataAggregationProcessor {
     
     /**
      * 集計用クエリの構築
-     * @param {Object} filters - フィルター条件
-     * @param {string} period - 期間設定
-     * @returns {Object} クエリオブジェクト
+     * @paramObject} filters - フィルター条件
+     * @paramstring} period - 期間設定
+     * @returnsObject} クエリオブジェクト
      */
     buildAggregationQuery(filters, period) {
     
@@ -339,7 +339,7 @@ export class DataAggregationProcessor {
         const query = { ...filters,
         
         // 期間設定の処理
-        if(period) {
+        if (period) {
             const now = Date.now(),
             switch(period) {''
                 case 'last24h': ,
@@ -364,7 +364,7 @@ export class DataAggregationProcessor {
      * @returns {Object} セッション統計
      */
     calculateSessionStats(sessions) { if (sessions.length === 0) { }
-            return { noData: true }
+            return { noData: true,
         
         const completedSessions = sessions.filter(s => s.completed);
         const durations = sessions.map(s => s.duration).filter(d => d > 0);
@@ -384,7 +384,7 @@ export class DataAggregationProcessor {
      * @returns {Object} インタラクション統計
      */
     calculateInteractionStats(interactions) { if (interactions.length === 0) { }
-            return { noData: true }
+            return { noData: true,
         
         const bubbleTypes = {};
         const reactionTimes = [];
@@ -409,8 +409,7 @@ export class DataAggregationProcessor {
         return { totalInteractions: interactions.length,
             totalScore,
             averageReactionTime: reactionTimes.reduce((sum, rt) => sum + rt, 0) / reactionTimes.length || 0 };
-            bubbleTypeStats: bubbleTypes 
-    }
+            bubbleTypeStats: bubbleTypes;
     
     /**
      * パフォーマンス統計の計算
@@ -418,7 +417,7 @@ export class DataAggregationProcessor {
      * @returns {Object} パフォーマンス統計
      */
     calculatePerformanceStats(performanceData) { if (performanceData.length === 0) { }
-            return { noData: true }
+            return { noData: true,
         
         const fpsValues = performanceData.map(p => p.fps).filter(fps => fps > 0);
         const memoryValues = performanceData.map(p => p.memoryUsage?.used).filter(mem => mem > 0);
@@ -494,7 +493,7 @@ export class DataAggregationProcessor {
     
 }
         const query = { ...filters,
-        if(startDate || endDate) {
+        if (startDate || endDate) {
     
 }
             query.timestamp = {};
@@ -519,8 +518,7 @@ export class DataAggregationProcessor {
     
 }
         return { summary: this.createAggregationSummary(aggregatedResults) };
-            details: aggregatedResults 
-    }
+            details: aggregatedResults;
     
     createAggregationSummary(aggregatedResults) {
     
@@ -571,7 +569,7 @@ export class DataAggregationProcessor {
     
 }
         return {  };
-            success: false }
+            success: false,
             error: { code, message, status },
             metadata: { timestamp: new Date().toISOString(),
                 ...metadata
@@ -586,4 +584,4 @@ export class DataAggregationProcessor {
 
         console.log('Data, Aggregation Processor, destroyed'); }
 
-    }' }
+    }' }'

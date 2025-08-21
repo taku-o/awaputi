@@ -3,33 +3,33 @@
  */
 
 interface PerformanceStats { fps?: number,
-    memoryUsage?: number,
-    renderTime?: number,
-    updateTime?: number }
+    memoryUsage?: number;
+    renderTime?: number;
+    updateTime?: number;
 
-interface ParticleManager { getActiveParticleCount(): number }
+interface ParticleManager { getActiveParticleCount(): number;
 
-interface EffectManager { getActiveEffectCount(): number }
+interface EffectManager { getActiveEffectCount(): number;
 
-interface BubbleManager { getActiveBubbleCount(): number }
+interface BubbleManager { getActiveBubbleCount(): number;
 
 interface Achievement {
-    unlocked: boolean }
+    unlocked: boolean;
 
-interface AchievementManager { getAchievements(): Achievement[] }
+interface AchievementManager { getAchievements(): Achievement[];
 
 interface GameEngine { performanceStats?: PerformanceStats,
-    enhancedParticleManager?: ParticleManager,
-    enhancedEffectManager?: EffectManager,
-    bubbleManager?: BubbleManager,
-    achievementManager?: AchievementManager }
+    enhancedParticleManager?: ParticleManager;
+    enhancedEffectManager?: EffectManager;
+    bubbleManager?: BubbleManager;
+    achievementManager?: AchievementManager;
 
-interface DebugInterface { switchPanel(panelName: string): void }
+interface DebugInterface { switchPanel(panelName: string): void;
 
 export class OverviewPanel {
-    private gameEngine: GameEngine,
-    private debugInterface: DebugInterface,
-    private element: HTMLElement | null = null,
+    private gameEngine: GameEngine;
+    private debugInterface: DebugInterface;
+    private element: HTMLElement | null = null;
     private, updateInterval: NodeJS.Timeout | null = null,
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
 
@@ -42,11 +42,11 @@ export class OverviewPanel {
     /**
      * パネルを作成
      */
-    create(): HTMLElement { this.element = document.createElement('div'),
+    create(): HTMLElement { this.element = document.createElement('div');
         this.element.className = 'debug-overview-panel',
 
-        this.element.innerHTML = `',
-            <div class="overview-section">",
+        this.element.innerHTML = `','
+            <div class="overview-section">","
                 <h4>システム概要</h4>"",
                 <div id="system-status">"",
                     <div>FPS: <span id="overview-fps">--</span></div>"",
@@ -54,9 +54,9 @@ export class OverviewPanel {
                     <div>描画時間: <span id="overview-render">-- ms</span></div>"",
                     <div>更新時間: <span id="overview-update">-- ms</span></div>,
                 </div>,
-            </div>",
+            </div>","
 
-            <div class="overview-section">",
+            <div class="overview-section">","
                 <h4>アクティブシステム</h4>"",
                 <div id="active-systems">"",
                     <div>パーティクル: <span id="active-particles">--</span></div>"",
@@ -64,9 +64,9 @@ export class OverviewPanel {
                     <div>バブル: <span id="active-bubbles">--</span></div>"",
                     <div>実績: <span id="active-achievements">--</span></div>,
                 </div>,
-            </div>",
+            </div>","
 
-            <div class="overview-section">",
+            <div class="overview-section">","
                 <h4>デバッグパネル</h4>"",
                 <div id="debug-panels">"",
                     <button id="switch-performance">パフォーマンス</button>"",
@@ -95,7 +95,7 @@ export class OverviewPanel {
         Object.entries(buttons).forEach(([buttonId, panelName]) => {  }
 
             const button = this.element!.querySelector(`#${buttonId}`) as HTMLButtonElement;
-            if(button) {', ' }
+            if (button) {', ' }
 
                 button.addEventListener('click', () => {  }
                     this.debugInterface.switchPanel(panelName); }
@@ -108,7 +108,7 @@ export class OverviewPanel {
      * パネルを表示
      */'
     show(): void { ''
-        if(this.element) {
+        if (this.element) {
 
             this.element.style.display = 'block' }
             this.startUpdate(); }
@@ -118,7 +118,7 @@ export class OverviewPanel {
      * パネルを非表示
      */'
     hide(): void { ''
-        if(this.element) {
+        if (this.element) {
 
             this.element.style.display = 'none' }
             this.stopUpdate(); }
@@ -143,7 +143,7 @@ export class OverviewPanel {
     /**
      * データ更新
      */
-    private update(): void { if (!this.element) return,
+    private update(): void { if (!this.element) return;
 
         try {
             // システム概要の更新
@@ -159,7 +159,7 @@ export class OverviewPanel {
     /**
      * システム状況を更新'
      */''
-    private updateSystemStatus()';
+    private updateSystemStatus()';'
         this.setElementText('overview-fps', (stats.fps || 0).toFixed(1));
         this.setElementText('overview-memory', ((stats.memoryUsage || 0) / 1024 / 1024).toFixed(1) + ' MB');
         this.setElementText('overview-render', (stats.renderTime || 0).toFixed(2) + ' ms');
@@ -170,15 +170,15 @@ export class OverviewPanel {
      * アクティブシステムを更新
      */'
     private updateActiveSystems(): void { // パーティクル数
-        const particleCount = this.gameEngine.enhancedParticleManager?.getActiveParticleCount()',
+        const particleCount = this.gameEngine.enhancedParticleManager?.getActiveParticleCount()','
         this.setElementText('active-particles', particleCount.toString(),
-',
+','
         // エフェクト数
-        const effectCount = this.gameEngine.enhancedEffectManager?.getActiveEffectCount()',
+        const effectCount = this.gameEngine.enhancedEffectManager?.getActiveEffectCount()','
         this.setElementText('active-effects', effectCount.toString(),
-',
+','
         // バブル数
-        const bubbleCount = this.gameEngine.bubbleManager?.getActiveBubbleCount()',
+        const bubbleCount = this.gameEngine.bubbleManager?.getActiveBubbleCount()','
         this.setElementText('active-bubbles', bubbleCount.toString(),
 
         // 実績数
@@ -201,7 +201,7 @@ export class OverviewPanel {
      * パネルサイズを更新（レスポンシブレイアウト用）
      */
     updateSize(): void { // パネルサイズ変更時の処理
-        if(this.element) {
+        if (this.element) {
             // 必要に応じてレイアウトを再計算
         }
             this.update(); }
@@ -211,10 +211,10 @@ export class OverviewPanel {
      * パネルを破棄
      */
     destroy(): void { this.stopUpdate(),
-        if(this.element && this.element.parentNode) { }
+        if (this.element && this.element.parentNode) { }
 
             this.element.parentNode.removeChild(this.element); }
         }
         this.element = null;
 
-    }'}
+    }'}'

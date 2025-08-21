@@ -18,66 +18,65 @@
 
 // Types for visual notifications
 interface VisualNotificationOptions { type: string,
-    title: string,
-    message?: string,
-    icon?: string,
+    title: string;
+    message?: string;
+    icon?: string;
     color?: string,  }
-    position?: { x: number,, y: number } | null;
+    position?: { x: number,, y: number, | null;
     duration?: number;
 }
 
 // Types for announcements
 interface AnnounceOptions { priority?: 'polite' | 'assertive',
-    visualNotification?: boolean,
-    caption?: boolean,
-    icon?: string,
-    color?: string,
-    duration?: number }
+    visualNotification?: boolean;
+    caption?: boolean;
+    icon?: string;
+    color?: string;
+    duration?: number;
 
 // Types for audio descriptions
 interface AudioDescription { category: string,
-    type: string,
-    params: Record<string, any>,
-    priority: number,
-    timestamp: number  }
+    type: string;
+    params: Record<string, any>;
+    priority: number;
+    timestamp: number;
 ;
 // Bubble types
-type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' | ';
-                  'clock' | 'electric' | 'poison' | 'spiky' | 'boss' | 'golden' | ';
+type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' | ';'
+                  'clock' | 'electric' | 'poison' | 'spiky' | 'boss' | 'golden' | ';'
                   'frozen' | 'magnetic' | 'explosive';
-';
+';'
 // Rarity types
 type RarityType = 'common' | 'rare' | 'epic' | 'legendary';
 
 // Main controller interface
 interface MainController { errorHandler: any,
     settings: {
-        visualFeedbac,k?: boolean,
-        captioning?: boolean,
+        visualFeedbac,k?: boolean;
+        captioning?: boolean;
         audioDescriptions?: boolean,  }
 
 export class AudioDescriptionManager {
-    private mainController: MainController,
-    private errorHandler: any,
-    private visualNotifications: HTMLElement[],
-    private notificationContainer: HTMLElement | null,
-    private maxNotifications: number,
-    private captionContainer: HTMLElement | null,
-    private captionQueue: string[],
-    private captionDuration: number,
-    private, enabled: boolean,
+    private mainController: MainController;
+    private errorHandler: any;
+    private visualNotifications: HTMLElement[];
+    private notificationContainer: HTMLElement | null;
+    private maxNotifications: number;
+    private captionContainer: HTMLElement | null;
+    private captionQueue: string[];
+    private captionDuration: number;
+    private, enabled: boolean;
     constructor(mainController: MainController) {
 
-        this.mainController = mainController,
-        this.errorHandler = mainController.errorHandler,
+        this.mainController = mainController;
+        this.errorHandler = mainController.errorHandler;
         
         // デフォルト設定を初期化
         if (!this.mainController.settings) {
             this.mainController.settings = {
                 visualFeedback: true,
-    captioning: true }
-                audioDescriptions: true 
-    }
+    captioning: true,
+                audioDescriptions: true,
         
         // 視覚的通知システム
         this.visualNotifications = [];
@@ -95,18 +94,18 @@ export class AudioDescriptionManager {
     /**
      * 通知コンテナを作成
      */''
-    public createNotificationContainer()';
+    public createNotificationContainer()';'
         this.notificationContainer = document.createElement('div');
         this.notificationContainer.className = 'audio-accessibility-notifications';
         this.notificationContainer.style.cssText = `;
             position: fixed;
-            top: 10px,
+            top: 10px;
     left: 10px;
-            z-index: 10000,
-            pointer-events: none,
+            z-index: 10000;
+            pointer-events: none;
         `;
         this.notificationContainer.setAttribute('aria-live', 'polite');
-        this.notificationContainer.setAttribute('aria-label', '音響通知エリア);
+        this.notificationContainer.setAttribute('aria-label', '音響通知エリア);'
         
         document.body.appendChild(this.notificationContainer);
     }
@@ -114,28 +113,28 @@ export class AudioDescriptionManager {
     /**
      * 字幕コンテナを作成'
      */''
-    public createCaptionContainer()';
+    public createCaptionContainer()';'
         this.captionContainer = document.createElement('div');
         this.captionContainer.className = 'audio-accessibility-captions';
         this.captionContainer.style.cssText = `;
             position: fixed;
-            bottom: 80px,
-    left: 50%,
-            transform: translateX(-50%,
+            bottom: 80px;
+    left: 50%;
+            transform: translateX(-50%;
             background-color: rgba(0, 0, 0, 0.8);
-            color: #ffffff,
+            color: #ffffff;
     padding: 10px 20px;
-            border-radius: 5px,
-            font-size: 16px,
+            border-radius: 5px;
+            font-size: 16px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center,
-            z-index: 10000,
+            text-align: center;
+            z-index: 10000;
             display: none;
-            max-width: 80%,
-            word-wrap: break-word,
+            max-width: 80%;
+            word-wrap: break-word;
         `;
         this.captionContainer.setAttribute('role', 'status');
-        this.captionContainer.setAttribute('aria-live', 'assertive);
+        this.captionContainer.setAttribute('aria-live', 'assertive);'
         
         document.body.appendChild(this.captionContainer);
     }
@@ -154,12 +153,12 @@ export class AudioDescriptionManager {
             color = '#00ffff',
             position = null,
             duration = 3000 } = options;
-        ';
+        ';'
         // 通知要素を作成
         const notification = document.createElement('div';
         notification.className = `notification notification-${type}`;
 
-        notification.style.cssText = `';
+        notification.style.cssText = `';'
             background-color: rgba(0, 0, 0, 0.9);
             border: 2px solid ${color}
             border-radius: 8px,
@@ -176,26 +175,26 @@ export class AudioDescriptionManager {
 
         const content = document.createElement('div');
 
-        content.innerHTML = `';
+        content.innerHTML = `';'
             <div style="display: flex; align-items: center;, gap: 10px;">""
                 <span style="font-size: 20px;">${icon}</span>"
                 <div>"";
                     <div style="font-weight: bold;">${title}</div>""
-                    ${message ? `<div, style="font-size: 12px,, opacity: 0.8,">${message}</div>` : '}
+                    ${message ? `<div, style="font-size: 12px,, opacity: 0.8,">${message}</div>` : '}'
                 </div>;
-            </div>';
+            </div>';'
         `;
         notification.appendChild(content);
-        ';
+        ';'
         // アクセシビリティ属性
         notification.setAttribute('role', 'status');
-        notification.setAttribute('aria-live', 'polite);
+        notification.setAttribute('aria-live', 'polite);'
         
         // アニメーションスタイルを追加
         this.ensureAnimationStyles();
         
         // コンテナに追加
-        if(this.notificationContainer) {
+        if (this.notificationContainer) {
             this.notificationContainer.appendChild(notification),
             this.visualNotifications.push(notification),
             
@@ -218,7 +217,7 @@ export class AudioDescriptionManager {
      * アニメーションスタイルを確保
      * @private
      */''
-    private ensureAnimationStyles()';
+    private ensureAnimationStyles()';'
         if(!document.querySelector('#audio-accessibility-animations)' { ''
             const style = document.createElement('style'),
             style.id = 'audio-accessibility-animations',
@@ -267,10 +266,10 @@ export class AudioDescriptionManager {
      * @param text - 字幕テキスト
      */
     public showCaption(text: string): void { if (!this.mainController.settings.captioning) return,
-        ',
+        ','
         // 字幕をキューに追加
         this.captionQueue.push(text),
-        ',
+        ','
         // 現在表示中でなければ表示開始
         if(this.captionContainer && this.captionContainer.style.display === 'none' { }
             this.displayNextCaption(); }
@@ -281,7 +280,7 @@ export class AudioDescriptionManager {
      */
     private displayNextCaption(): void { if (!this.captionContainer) return,
 
-        if(this.captionQueue.length === 0) {
+        if (this.captionQueue.length === 0) {
 
             this.captionContainer.style.display = 'none' }
             return; }
@@ -289,7 +288,7 @@ export class AudioDescriptionManager {
 
         const text = this.captionQueue.shift('';
         this.captionContainer.style.display = 'block';
-        ';
+        ';'
         // アクセシビリティ属性を更新')'
         this.captionContainer.setAttribute('aria-label', `字幕: ${ text)`};
         
@@ -357,11 +356,11 @@ export class AudioDescriptionManager {
             priority = 'polite',
             visualNotification = true,
             caption = false } = options;
-        ';
+        ';'
         // ARIAライブリージョンでのアナウンス
-        if(this.notificationContainer) {
+        if (this.notificationContainer) {
 
-            this.notificationContainer.setAttribute('aria-live', priority',
+            this.notificationContainer.setAttribute('aria-live', priority','
             const announceElement = document.createElement('div'),
             announceElement.className = 'sr-only',
             announceElement.style.cssText = 'position: absolute, left: -10000px, width: 1px, height: 1px,, overflow: hidden,',
@@ -377,10 +376,10 @@ export class AudioDescriptionManager {
         }
         ;
         // 視覚的通知も表示する場合
-        if(visualNotification) {
+        if (visualNotification) {
             this.showVisualNotification({''
-                type: 'announcement',',
-                title: 'アナウンス')',
+                type: 'announcement',','
+                title: 'アナウンス')','
     message: text,
                 icon: '📢'
             }
@@ -388,7 +387,7 @@ export class AudioDescriptionManager {
         }
         
         // 字幕表示する場合
-        if(caption) { }
+        if (caption) { }
 
             this.showCaption(text); }
         }
@@ -411,11 +410,11 @@ export class AudioDescriptionManager {
             type,
             params,
             priority,
-            timestamp: Date.now()',
-        console.log('AudioDescriptionManager: Added, description:', description',
-        ',
+            timestamp: Date.now()','
+        console.log('AudioDescriptionManager: Added, description:', description','
+        ','
         // 視覚的な説明を表示
-        if(description.category === 'game' && description.type === 'bubblePop') {
+        if (description.category === 'game' && description.type === 'bubblePop') {
             this.showVisualNotification({''
                 type: 'info' }''
                 title: '泡破壊') }
@@ -427,25 +426,24 @@ export class AudioDescriptionManager {
      * ステータス取得
      * @returns ステータス情報
      */
-    public getStatus(): { enabled: boolean, activeDescriptions: number,, initialized: boolean } { return { enabled: this.enabled || false,
+    public getStatus(): { enabled: boolean, activeDescriptions: number,, initialized: boolean, { return { enabled: this.enabled || false,
             activeDescriptions: 0 };
-            initialized: true 
-    }
+            initialized: true;
 
     /**
      * リソースの解放
      */
     public dispose(): void { // DOM要素を削除
-        if(this.notificationContainer && this.notificationContainer.parentNode) {
+        if (this.notificationContainer && this.notificationContainer.parentNode) {
     
 }
             this.notificationContainer.parentNode.removeChild(this.notificationContainer); }
         }
         
-        if(this.captionContainer && this.captionContainer.parentNode) {
-        ',
+        if (this.captionContainer && this.captionContainer.parentNode) {
+        ','
 
-            ' }
+            ' }'
 
             this.captionContainer.parentNode.removeChild(this.captionContainer); }
         }
@@ -453,4 +451,4 @@ export class AudioDescriptionManager {
         // データをクリア
         this.visualNotifications = [];
         this.captionQueue = [];
-    }'}
+    }'}'

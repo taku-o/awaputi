@@ -30,29 +30,29 @@ import { FeedbackTriggerHandler  } from './visual/feedback/FeedbackTriggerHandle
  * @example'
  * const manager = new VisualFeedbackManager(audioAccessibilityManager);
  * await manager.initialize()'
- * manager.showFeedback('bubble_pop', { intensity: 0.8 ',
+ * manager.showFeedback('bubble_pop', { intensity: 0.8 ','
  */
 export class VisualFeedbackManager {'
 
     constructor(audioAccessibilityManager) {
         ,
-        this.audioAccessibilityManager = audioAccessibilityManager,
-        this.accessibilityManager = audioAccessibilityManager.accessibilityManager,
-        this.gameEngine = this.accessibilityManager?.gameEngine,
+        this.audioAccessibilityManager = audioAccessibilityManager;
+        this.accessibilityManager = audioAccessibilityManager.accessibilityManager;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // 視覚フィードバック設定
         this.config = { : undefined
-            enabled: false,
+            enabled: false;
     globalIntensity: 1.0 }
             feedbackTypes: { }
-                flash: { enabled: true, intensity: 1.0, duration: 300  },
-                glow: { enabled: true, intensity: 0.8, duration: 500  },
-                pulse: { enabled: true, intensity: 0.9, duration: 800  },
-                ripple: { enabled: true, intensity: 0.7, duration: 1000  },
-                shake: { enabled: true, intensity: 0.6, duration: 200  },
-                color: { enabled: true, intensity: 1.0, duration: 400  },
-                border: { enabled: true, intensity: 0.8, duration: 350  },
-                scale: { enabled: true, intensity: 0.5, duration: 600  },
+                flash: { enabled: true, intensity: 1.0, duration: 300  };
+                glow: { enabled: true, intensity: 0.8, duration: 500  };
+                pulse: { enabled: true, intensity: 0.9, duration: 800  };
+                ripple: { enabled: true, intensity: 0.7, duration: 1000  };
+                shake: { enabled: true, intensity: 0.6, duration: 200  };
+                color: { enabled: true, intensity: 1.0, duration: 400  };
+                border: { enabled: true, intensity: 0.8, duration: 350  };
+                scale: { enabled: true, intensity: 0.5, duration: 600  };
             audioMapping: { frequency: { }'
 
                     low: { range: [20, 250], color: '#ff6b6b', pattern: 'pulse'
@@ -68,9 +68,9 @@ export class VisualFeedbackManager {'
                     veryHigh: { range: [8000, 20000], color: '#dda0dd', pattern: 'scale'
             },
                 volume: {
-                    quiet: { range: [0, 0.3], intensity: 0.3  },
-                    normal: { range: [0.3, 0.7], intensity: 0.7  },
-                    loud: { range: [0.7, 1.0], intensity: 1.0  },
+                    quiet: { range: [0, 0.3], intensity: 0.3  };
+                    normal: { range: [0.3, 0.7], intensity: 0.7  };
+                    loud: { range: [0.7, 1.0], intensity: 1.0  };
 
                 gameEvents: new Map([']'
                     ['bubblePop', { color: '#4ecdc4', pattern: 'flash', intensity: 0.8  }],''
@@ -85,11 +85,10 @@ export class VisualFeedbackManager {'
             positioning: { screenEdges: true,
                 gameArea: true,
                 uiElements: true,
-    fullScreen: false };
+    fullScreen: false,;
             performance: { maxConcurrentEffects: 10,
                 reducedMotion: false,
-    gpuAcceleration: true 
-    };
+    gpuAcceleration: true,;
         // 視覚効果管理
         this.activeEffects = new Map();
         this.effectQueue = [];
@@ -109,8 +108,8 @@ export class VisualFeedbackManager {'
             effectsByEvent: new Map(),
             averageIntensity: 0,
     totalDuration: 0,
-            sessionStart: Date.now()',
-    preferredPatterns: ['flash', 'glow', 'pulse']),
+            sessionStart: Date.now()','
+    preferredPatterns: ['flash', 'glow', 'pulse']);
             colorPreferences: new Map(),
             reducedMotion: false,
             audioVisualization: true,
@@ -132,10 +131,10 @@ export class VisualFeedbackManager {'
             ['shake', (options) => this.animationManager.createShakeEffect(options)],
             ['color', (options) => this.effectRenderer.createColorEffect(options)],
             ['border', (options) => this.effectRenderer.createBorderEffect(options)],
-            ['scale', (options) => this.effectRenderer.createScaleEffect(options)]';
-        ]');
+            ['scale', (options) => this.effectRenderer.createScaleEffect(options)]';'
+        ]');'
 
-        console.log('VisualFeedbackManager initialized with sub-components);
+        console.log('VisualFeedbackManager initialized with sub-components);'
         this.initialize();
     }
     
@@ -187,14 +186,14 @@ export class VisualFeedbackManager {'
         } = options;
         
         // 同時エフェクト数の制限
-        if(this.activeEffects.size >= this.config.performance.maxConcurrentEffects) {
+        if (this.activeEffects.size >= this.config.performance.maxConcurrentEffects) {
             this.effectQueue.push(options) }
             return; }
         }
         
         // エフェクトパターンの実行
         const patternFunction = this.effectPatterns.get(type);
-        if(!patternFunction) {
+        if (!patternFunction) {
     
 }
             console.warn(`Unknown, effect pattern: ${type}`});
@@ -209,7 +208,7 @@ export class VisualFeedbackManager {'
             duration,
             eventData),
         
-        if(effect) {
+        if (effect) {
         
             this.activeEffects.set(effectId, effect),
             
@@ -270,7 +269,7 @@ export class VisualFeedbackManager {'
      */
     cleanupEffect(effectId) {
         const effect = this.activeEffects.get(effectId),
-        if(effect) {''
+        if (effect) {''
             if(effect.cleanup && typeof, effect.cleanup === 'function' { }
                 effect.cleanup(); }
             }
@@ -307,8 +306,8 @@ export class VisualFeedbackManager {'
             this.startAudioVisualization(); }
         }
 
-        this.configManager.saveUserPreferences()';
-        console.log('Visual, feedback enabled);
+        this.configManager.saveUserPreferences()';'
+        console.log('Visual, feedback enabled);'
     }
     
     /**
@@ -325,13 +324,13 @@ export class VisualFeedbackManager {'
         }
         
         // 視覚化の停止
-        if(this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId') }
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId') }'
             this.animationFrameId = null; }
         }
 
-        this.configManager.saveUserPreferences()';
-        console.log('Visual, feedback disabled);
+        this.configManager.saveUserPreferences()';'
+        console.log('Visual, feedback disabled);'
     }
     
     /**
@@ -372,13 +371,13 @@ export class VisualFeedbackManager {'
      * 設定の適用
      */
     applyConfig(config) {
-        if (config.visual?.feedback') {
+        if (config.visual?.feedback') {'
     }
 
             Object.assign(this.config, config.visual.feedback); }
         }
 
-        console.log('VisualFeedbackManager, configuration applied);
+        console.log('VisualFeedbackManager, configuration applied);'
     }
     
     /**
@@ -422,8 +421,8 @@ export class VisualFeedbackManager {'
     /**
      * クリーンアップ（サブコンポーネントのクリーンアップを含む）'
      */''
-    destroy()';
-        console.log('Destroying, VisualFeedbackManager...);
+    destroy()';'
+        console.log('Destroying, VisualFeedbackManager...);'
         
         // 視覚フィードバックを無効化
         this.disable();
@@ -446,7 +445,7 @@ export class VisualFeedbackManager {'
         this.activeEffects.clear();
         this.feedbackElements.clear();
         this.effectQueue.length = 0;
-        this.effectPatterns.clear()';
+        this.effectPatterns.clear()';'
         console.log('VisualFeedbackManager, destroyed');
 
-    }'}
+    }'}'

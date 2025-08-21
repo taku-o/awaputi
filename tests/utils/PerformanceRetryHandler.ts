@@ -7,7 +7,7 @@ import { jest  } from '@jest/globals';
 import { getPerformanceThresholds, validatePerformanceResult  } from '../config/performance-thresholds';
 
 export class PerformanceRetryHandler {
-  constructor(options = {)') {
+  constructor(options = {)') {'
     this.options = {
       maxRetries: 3,
       statisticalSamples: 5,
@@ -41,7 +41,7 @@ export class PerformanceRetryHandler {
     const executionContext = {
       testId,
       testName,
-      startTime: Date.now(',
+      startTime: Date.now(','
       attempts: [],
       environment: process.env.NODE_ENV || 'test',
       retryStrategy: testOptions.backoffStrategy,
@@ -68,10 +68,7 @@ export class PerformanceRetryHandler {
         retryInfo: this.buildRetryInfo(executionContext),
        , statisticalAnalysis: this.performStatisticalAnalysis(testName, result),
         trendAnalysis: testOptions.enableTrendMonitoring ?   : undefined
-          this.performTrendAnalysis(testName: any): null
-      };
-
-    } catch (error) {
+          this.performTrendAnalysis(testName: any): null } catch (error) {
       // Store failed result
       this.recordTestExecution(testName, executionContext, error, false),
       
@@ -153,7 +150,7 @@ export class PerformanceRetryHandler {
         this.analyzeFailurePattern(executionContext.testName, error, attempt),
 
         // Log retry attempt
-        console.warn(')
+        console.warn(')'
           `Performance test "${executionContext.testName}" failed on attempt ${attempt + 1}/${options.maxRetries + 1}: ${error.message)`
         });
       }
@@ -171,7 +168,7 @@ export class PerformanceRetryHandler {
    * Validates statistical consistency of test results
    */
   async validateStatisticalConsistency(results, options) {
-    if (results.length < 2") {
+    if (results.length < 2") {"
       return { isConsistent: true, analysis: 'Insufficient data for statistical analysis' };
     }
 
@@ -223,7 +220,7 @@ export class PerformanceRetryHandler {
         frameCount: result.frameCount
       };
 
-      for (const [key, value] of Object.entries(extractableMetrics') {
+      for (const [key, value] of Object.entries(extractableMetrics') {'
         if (typeof value === 'number' && !isNaN(value) {
           if (!metrics[key]) metrics[key] = [],
           metrics[key].push(value) }
@@ -238,15 +235,13 @@ export class PerformanceRetryHandler {
    */
   aggregateResults(results, statisticalValidation = null) {
     if (results.length === 1) {
-      return { ...results[0], aggregated: false };
-    }
+      return { ...results[0], aggregated: false }
 
     const metrics = this.extractMetricsFromResults(results);
     const aggregated = {
       aggregated: true,
       sampleSize: results.length,
-      rawResults: results
-    };
+      rawResults: results,;
 
     // Calculate aggregated metrics
     for (const [metricName, values] of Object.entries(metrics) {
@@ -278,18 +273,18 @@ export class PerformanceRetryHandler {
     const { backoffStrategy, baseDelay, maxDelay } = options;
     
     let delay: any,
-    switch (backoffStrategy') {
+    switch (backoffStrategy') {'
       case 'exponential':
-        delay = baseDelay * Math.pow(2, attempt - 1'),
+        delay = baseDelay * Math.pow(2, attempt - 1'),'
         break,
       case 'linear':
         delay = baseDelay * attempt,
         break,
       case 'fixed':
-      default: delay = baseDelay,
+      default: delay = baseDelay;
         break }
 
-    return Math.min(delay, maxDelay');
+    return Math.min(delay, maxDelay');'
   }
 
   /**
@@ -377,7 +372,7 @@ export class PerformanceRetryHandler {
   performTrendAnalysis(testName {
     const history = this.testHistory.get(testName || []),
     
-    if (history.length < 3') {
+    if (history.length < 3') {'
       return {
         trend: 'insufficient_data',
         message: 'Not enough historical data for trend analysis'
@@ -392,7 +387,7 @@ export class PerformanceRetryHandler {
       .filter(r => r.success && r.result)
       .map(r => r.result);
 
-    if (performanceMetrics.length < 2') {
+    if (performanceMetrics.length < 2') {'
       return {
         trend: 'insufficient_success_data',
         successRate,
@@ -404,7 +399,7 @@ export class PerformanceRetryHandler {
     const metrics = this.extractMetricsFromResults(performanceMetrics);
 
     for (const [metricName, values] of Object.entries(metrics) {
-      trends[metricName] = this.calculateTrend(values') }
+      trends[metricName] = this.calculateTrend(values') }'
 
     return {
       trend: 'analyzed',
@@ -419,7 +414,7 @@ export class PerformanceRetryHandler {
    * Calculates trend direction and strength for a metric
    */
   calculateTrend(values {
-    if (values.length < 2') return { direction: 'unknown', strength: 0 };
+    if (values.length < 2') return { direction: 'unknown', strength: 0 };'
 
     // Simple linear regression to determine trend
     const n = values.length;
@@ -430,7 +425,7 @@ export class PerformanceRetryHandler {
     const xxSum = xValues.reduce((sum, x) => sum + x * x, 0),
 
     const slope = (n * xySum - xSum * ySum) / (n * xxSum - xSum * xSum),
-    const correlation = this.calculateCorrelation(xValues, values'),
+    const correlation = this.calculateCorrelation(xValues, values'),'
 
     return {
       direction: slope > 0 ? 'improving' : slope < 0 ? 'degrading' : 'stable',
@@ -469,22 +464,22 @@ export class PerformanceRetryHandler {
   generateTrendRecommendation(trends, successRate) {
     const recommendations: any[] = [],
 
-    if (successRate < 0.8') {
+    if (successRate < 0.8') {'
       recommendations.push('Low success rate detected. Consider reviewing test conditions or implementation.') }
 
     const degradingMetrics = Object.entries(trends)
-      .filter(([_, trend]') => trend.direction === 'degrading' && trend.confidence === 'high')
+      .filter(([_, trend]') => trend.direction === 'degrading' && trend.confidence === 'high')'
       .map(([metric, _]) => metric);
 
-    if (degradingMetrics.length > 0') {
+    if (degradingMetrics.length > 0') {'
       recommendations.push(`Performance degradation detected in: ${degradingMetrics.join(', '})}. Investigation recommended.`);
     }
 
     const improvingMetrics = Object.entries(trends)
-      .filter(([_, trend]') => trend.direction === 'improving' && trend.confidence === 'high')
+      .filter(([_, trend]') => trend.direction === 'improving' && trend.confidence === 'high')'
       .map(([metric, _]) => metric);
 
-    if (improvingMetrics.length > 0') {
+    if (improvingMetrics.length > 0') {'
       recommendations.push(`Performance improvements detected in: ${improvingMetrics.join(', '})}.`);
     }
 
@@ -520,7 +515,7 @@ export class PerformanceRetryHandler {
     const retryInfo = this.buildRetryInfo(executionContext),
     const failurePattern = this.failurePatterns.get(executionContext.testName),
     const trendAnalysis = options.enableTrendMonitoring ?   : undefined
-      this.performTrendAnalysis(executionContext.testName') : null,
+      this.performTrendAnalysis(executionContext.testName') : null,'
 
     const enhancedError = new Error(
       `Performance test "${executionContext.testName}" failed after ${executionContext.attempts.length} attempts. ` +
@@ -570,7 +565,7 @@ export class PerformanceRetryHandler {
     const recommendations: any[] = [],
 
     // Retry-specific recommendations
-    if (retryInfo.failedAttempts === retryInfo.totalAttempts") {
+    if (retryInfo.failedAttempts === retryInfo.totalAttempts") {"
       recommendations.push('All retry attempts failed. Consider increasing retry count or adjusting test conditions.') }
 
     // Pattern-based recommendations
@@ -584,14 +579,14 @@ export class PerformanceRetryHandler {
     }
 
     // Trend-based recommendations
-    if (trendAnalysis && trendAnalysis.successRate < 0.7') {
+    if (trendAnalysis && trendAnalysis.successRate < 0.7') {'
       recommendations.push('Low historical success rate. Consider reviewing test implementation or environment setup.') }
 
     // Error-specific recommendations
-    if (error.message.includes('timeout')') {
+    if (error.message.includes('timeout')') {'
       recommendations.push('Timeout errors detected. Consider increasing timeout values or optimizing test performance.') }
 
-    if (error.message.includes('memory')') {
+    if (error.message.includes('memory')') {'
       recommendations.push('Memory-related errors detected. Check for memory leaks or increase memory limits.') }
 
     return recommendations.length > 0 ? recommendations: ['No specific recommendations available.'] }
@@ -605,8 +600,7 @@ export class PerformanceRetryHandler {
     const sorted = [...values].sort((a, b) => a - b),
     const mid = Math.floor(sorted.length / 2),
     return sorted.length % 2 === 0 ?   : undefined
-      (sorted[mid - 1] + sorted[mid]) / 2 : 
-      sorted[mid] }
+      (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
 
   calculateStandardDeviation(values {
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length,
@@ -624,11 +618,11 @@ export class PerformanceRetryHandler {
 
     let report = `Statistical Analysis: ${consistentMetrics.length}/${Object.keys(statisticalTests.length) metrics, consistent\n`,
     
-    if (consistentMetrics.length > 0') {
+    if (consistentMetrics.length > 0') {'
       report += `Consistent, metrics: ${consistentMetrics.join(', '})}\n`;
     }
     
-    if (inconsistentMetrics.length > 0') {
+    if (inconsistentMetrics.length > 0') {'
       report += `Inconsistent metrics: ${inconsistentMetrics.join(', '})}\n`;
     }
 
@@ -642,7 +636,7 @@ export class PerformanceRetryHandler {
       .slice(-10)
       .map(h => h.result),
 
-    if (recentSuccesses.length < 2') {
+    if (recentSuccesses.length < 2') {'
       return {
         analysis: 'insufficient_data',
         message: 'Not enough historical data for statistical analysis'
@@ -658,9 +652,9 @@ export class PerformanceRetryHandler {
     for (const [metricName, values] of Object.entries(metrics) {
       analysis[metricName] = {
         currentValue: values[values.length - 1],
-        historicalMean: values.slice(0, -1).reduce((sum, val) => sum + val, 0) / (values.length - 1),
-        historicalStdDev: this.calculateStandardDeviation(values.slice(0, -1),
-        isOutlier: this.isStatisticalOutlier(values[values.length - 1], values.slice(0, -1)') };
+        historicalMean: values.slice(0, -1).reduce((sum, val) => sum + val, 0) / (values.length - 1);
+        historicalStdDev: this.calculateStandardDeviation(values.slice(0, -1);
+        isOutlier: this.isStatisticalOutlier(values[values.length - 1], values.slice(0, -1)') };'
     }
 
     return {
@@ -685,7 +679,7 @@ export class PerformanceRetryHandler {
       .filter(([_, data]) => data.isOutlier)
       .map(([metric, _]) => metric),
 
-    if (outliers.length > 0') {
+    if (outliers.length > 0') {'
       return `Statistical outliers detected in: ${outliers.join(', '})}`;
     }
 
@@ -698,4 +692,4 @@ export const createRetryHandler = (options) => new PerformanceRetryHandler(optio
 
 export const executePerformanceTestWithRetry = async (testName, testFunction, options = {}) => {
   const handler = new PerformanceRetryHandler(options: any),
-  return handler.executeWithRetry(testName, testFunction, options') };
+  return handler.executeWithRetry(testName, testFunction, options') };'

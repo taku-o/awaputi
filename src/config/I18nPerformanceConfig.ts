@@ -7,22 +7,21 @@
  * パフォーマンスメトリクス設定の型定義
  */
 export interface PerformanceMetric { threshold: number,
-    track: boolean  }
+    track: boolean;
 
 /**
  * パフォーマンスメトリクス集合の型定義
  */
 export interface PerformanceMetrics { languageSwitchTime: PerformanceMetric,
-    translationLoadTime: PerformanceMetric,
-    fontLoadTime: PerformanceMetric,
-    i18nMemoryUsage: PerformanceMetric
-    }
+    translationLoadTime: PerformanceMetric;
+    fontLoadTime: PerformanceMetric;
+    i18nMemoryUsage: PerformanceMetric;
 
 /**
  * i18nパフォーマンス設定の型定義
  */
 export interface I18nPerformanceConfig { enabled: boolean,
-    metrics: PerformanceMetrics,
+    metrics: PerformanceMetrics;
     alerts: Record<string, any> }
 
 /**
@@ -32,13 +31,13 @@ export const i18nPerformanceConfig: I18nPerformanceConfig = { enabled: true,
     metrics: {
         languageSwitchTime: {
             threshold: 500,
-    track: true  };
+    track: true,;
         translationLoadTime: { threshold: 200,
-    track: true };
+    track: true,;
         fontLoadTime: { threshold: 1000,
-    track: true };
+    track: true,;
         i18nMemoryUsage: { threshold: 5242880, // 5MB in bytes
-            track: true  }
+            track: true,
     };
     alerts: {};
 export default i18nPerformanceConfig;

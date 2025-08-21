@@ -4,8 +4,8 @@
  */
 export class TimeSeriesVisualizer {
     constructor(chartRenderer, trendAnalyzer) {
-        this.chartRenderer = chartRenderer,
-        this.trendAnalyzer = trendAnalyzer,
+        this.chartRenderer = chartRenderer;
+        this.trendAnalyzer = trendAnalyzer;
         
         // チャート設定
         this.chartConfigs = {
@@ -14,7 +14,7 @@ export class TimeSeriesVisualizer {
                 maintainAspectRatio: false,
     interaction: {
                     mode: 'index' }
-                    intersect: false; 
+                    intersect: false, 
     },
                 plugins: { title: {'
                         display: true,
@@ -30,10 +30,9 @@ export class TimeSeriesVisualizer {
                                 return `期間: ${context[0].label}`;,
                     zoom: { zoom: {
                             wheel: {
-                                enabled: true };
-                            pinch: { enabled: true 
-    },''
-                            mode: 'x';
+                                enabled: true,;
+                            pinch: { enabled: true,,''
+                            mode: 'x',
                         },
 
                         pan: { enabled: true,''
@@ -90,56 +89,55 @@ export class TimeSeriesVisualizer {
         // データ準備
         const labels = timeSeriesData.map(d => d.period);
         const values = timeSeriesData.map(d => this.getMetricValue(d, metric);
-        ';
+        ';'
 
         const datasets = [{ ''
-            label: this.getMetricDisplayName(metric)],
-    data: values,]',
-            borderColor: this.colors[metric] || this.colors.score,
-            backgroundColor: this.colors[metric] + '20' || this.colors.score + '20',
-            fill: false,
+            label: this.getMetricDisplayName(metric)];
+    data: values,]';'
+            borderColor: this.colors[metric] || this.colors.score;
+            backgroundColor: this.colors[metric] + '20' || this.colors.score + '20';
+            fill: false;
     tension: 0.4  }];
         // トレンドライン追加
-        if(showTrend && values.length > 2) { const trendData = this.calculateTrendLine(values),
+        if (showTrend && values.length > 2) { const trendData = this.calculateTrendLine(values),
 
             datasets.push({''
                 label: 'トレンド',
     data: trendData,
                 borderColor: this.colors.trend,
                 backgroundColor: 'transparent',
-    borderDash: [5, 5]),
+    borderDash: [5, 5]);
                 fill: false,
     pointRadius: 0 }
                 tension: 0); 
     }
 
         // 季節調整済みデータ追加
-        if(showSeasonalAdjusted && timeSeriesData[0].seasonallyAdjusted !== undefined) {
+        if (showSeasonalAdjusted && timeSeriesData[0].seasonallyAdjusted !== undefined) {
             const adjustedValues = timeSeriesData.map(d => d.seasonallyAdjusted) }
             datasets.push({),' }'
 
-                label: `${this.getMetricDisplayName(metric}) (季節調整済み')`;
+                label: `${this.getMetricDisplayName(metric}) (季節調整済み')`;'
                 data: adjustedValues,
                 borderColor: this.colors[metric] + 'AA' || this.colors.score + 'AA',
                 backgroundColor: 'transparent',
-    borderDash: [3, 3],
+    borderDash: [3, 3];
                 fill: false,
-                tension: 0.4';
-            }') }
-';
+                tension: 0.4','
+            }') }'
+';'
 
         const config = { ''
             type: 'line',
     data: {
                 labels: labels,
-    datasets: datasets };
+    datasets: datasets,;
             options: { ...this.chartConfigs.default,
                 plugins: {
                     ...this.chartConfigs.default.plugins,
                     title: {
                         display: true,
-    text: title 
-    }
+    text: title,
         };
         const chart = this.chartRenderer.createChart(canvas, config);
         this.activeCharts.set(canvas.id, chart);
@@ -179,20 +177,19 @@ export class TimeSeriesVisualizer {
     tension: 0.4  }
 
             }';}');
-';
+';'
 
         const config = { ''
             type: 'line',
     data: {
                 labels: labels,
-    datasets: datasets };
+    datasets: datasets,;
             options: { ...this.chartConfigs.default,
                 plugins: {
                     ...this.chartConfigs.default.plugins,
                     title: {
                         display: true,
-    text: title 
-    };
+    text: title,;
                 scales: { ...this.chartConfigs.default.scales,
                     y: {
                         ...this.chartConfigs.default.scales.y,
@@ -225,17 +222,17 @@ export class TimeSeriesVisualizer {
 
         const labels = timeSeriesData.map(d => d.period);
         const values = timeSeriesData.map(d => d.averageScore);
-';
+';'
 
         const datasets = [{ ''
-            label: 'スコア',
-    data: values,
-            borderColor: this.colors.score,
-            backgroundColor: this.colors.score + '20',
-            fill: false],
+            label: 'スコア';
+    data: values;
+            borderColor: this.colors.score;
+            backgroundColor: this.colors.score + '20';
+            fill: false];
     tension: 0.4  }]
         }];
-';
+';'
         // トレンドライン
         if(trend && trend.direction !== 'stable' {'
             const trendData = this.calculateTrendLine(values) }
@@ -249,23 +246,23 @@ export class TimeSeriesVisualizer {
     borderDash: [5, 5],
                 fill: false,
     pointRadius: 0,
-                tension: 0';
-            }') }
-';
+                tension: 0','
+            }') }'
+';'
         // 信頼区間（安定トレンドの場合は表示しない）
         if(showConfidenceInterval && trend && trend.direction !== 'stable' {'
             const confidenceData = this.calculateConfidenceInterval(values),
             datasets.push({),
-                label: '信頼区間 (上限')',
+                label: '信頼区間 (上限')','
                 data: confidenceData.upper,
                 borderColor: this.colors.trend + '60',
                 backgroundColor: 'transparent',
     borderDash: [2, 2],
-                fill: false }
+                fill: false,
                 pointRadius: 0 
-    }';
-            datasets.push({ '),
-                label: '信頼区間 (下限')',
+    }';'
+            datasets.push({ '),'
+                label: '信頼区間 (下限')','
                 data: confidenceData.lower,
                 borderColor: this.colors.trend + '60',
                 backgroundColor: this.colors.trend + '10',
@@ -275,48 +272,47 @@ export class TimeSeriesVisualizer {
         }
 
         // 異常値のハイライト
-        if(showAnomalies && this.trendAnalyzer) {
+        if (showAnomalies && this.trendAnalyzer) {
             const anomalies = this.trendAnalyzer.detectAnomalies(timeSeriesData),
             if (anomalies.length > 0) {
                 const anomalyData = new Array(values.length).fill(null),
                 anomalies.forEach(anomaly => { ')'
-                    anomalyData[anomaly.index] = anomaly.value'),
+                    anomalyData[anomaly.index] = anomaly.value'),'
 
                 datasets.push({''
                     label: '異常値',
                     data: anomalyData,
                     borderColor: '#EF4444',
-                    backgroundColor: '#EF4444',',
+                    backgroundColor: '#EF4444',','
                     type: 'scatter')
          }
                     pointRadius: 8) }
                     pointHoverRadius: 10); 
-    }';
+    }';'
             }
         }
-';
+';'
 
         let titleText = `トレンド分析結果`;
-        if(trend) {', ' }
+        if (trend) {', ' }
 
             titleText += ` - ${trend.direction === 'increasing' ? '上昇' : ' 
                            trend.direction === 'decreasing' ? '下降' : '安定'}傾向`;
-            titleText += ` (信頼度: ${(trend.confidence * 100}.toFixed(1})%')`;
+            titleText += ` (信頼度: ${(trend.confidence * 100}.toFixed(1})%')`;'
         }
-';
+';'
 
         const config = { ''
             type: 'line',
     data: {
                 labels: labels,
-    datasets: datasets };
+    datasets: datasets,;
             options: { ...this.chartConfigs.default,
                 plugins: {
                     ...this.chartConfigs.default.plugins,
                     title: {
                         display: true,
-    text: titleText 
-    }
+    text: titleText,
         };
         const chart = this.chartRenderer.createChart(canvas, config);
         this.activeCharts.set(canvas.id, chart);
@@ -336,14 +332,14 @@ export class TimeSeriesVisualizer {
             showControls = true,
             enableZoom = true,
             enableAnnotations = true } = options;
-';
+';'
 
         const chart = this.createSingleMetricChart(canvas, timeSeriesData, defaultMetric, { ')'
             title: 'パフォーマンス ダッシュボード',
     showTrend: true),
             showSeasonalAdjusted: true),
         // インタラクティブ機能の設定
-        if(enableZoom) {
+        if (enableZoom) {
     
 }
             this.enableZoomPan(chart); }
@@ -444,7 +440,7 @@ export class TimeSeriesVisualizer {
      * @returns {string} HEX色コード
      */''
     generateRandomColor('';
-        const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4];)
+        const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4];)'
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
@@ -473,7 +469,7 @@ export class TimeSeriesVisualizer {
         const maxIndex = values.indexOf(Math.max(...values),
         const minIndex = values.indexOf(Math.min(...values),
 
-        if(maxIndex !== -1) {
+        if (maxIndex !== -1) {
             annotations.push({''
                 type: 'point',
     xValue: maxIndex,
@@ -487,7 +483,7 @@ export class TimeSeriesVisualizer {
     });
         }
 
-        if(minIndex !== -1) {
+        if (minIndex !== -1) {
             annotations.push({''
                 type: 'point',
     xValue: minIndex,
@@ -502,11 +498,10 @@ export class TimeSeriesVisualizer {
         }
         
         // チャートにアノテーションを追加（Chart.jsのannotationプラグインが必要）
-        if(chart.options.plugins) {
+        if (chart.options.plugins) {
             chart.options.plugins.annotation = {
         }
-                annotations: annotations 
-    };
+                annotations: annotations;;
             chart.update();
         }
     }
@@ -561,7 +556,7 @@ export class TimeSeriesVisualizer {
      */
     exportChartConfig(chartId) {
         const chart = this.activeCharts.get(chartId),
-        if(chart) {
+        if (chart) {
             return { type: chart.config.type }
                 data: chart.data };
                 options: chart.options 
@@ -578,7 +573,7 @@ export class TimeSeriesVisualizer {
     exportToCSV(timeSeriesData, metrics = ['averageScore', 'averageAccuracy', 'averagePlayTime]' {'
 
         // メトリック名を正規化（'averageScore' -> 'score'）''
-        const normalizedMetrics = metrics.map(m => { '),
+        const normalizedMetrics = metrics.map(m => { '),'
             if (m === 'averageScore') return 'score',
             if (m === 'averageAccuracy') return 'accuracy' }
 
@@ -586,19 +581,19 @@ export class TimeSeriesVisualizer {
 
             return m; }'
 
-        }');
+        }');'
 
         const headers = ['期間', ...normalizedMetrics.map(m => this.getMetricDisplayName(m)];
         const rows = timeSeriesData.map(d => [);
-            d.period)]';
+            d.period)]';'
             ...normalizedMetrics.map(m => this.getMetricValue(d, m)']';
-        ]');
-        ';
+        ]');'
+        ';'
 
-        const csvContent = [headers, ...rows]';
-            .map(row => row.join(')'';
+        const csvContent = [headers, ...rows]';'
+            .map(row => row.join(')'';'
             .join('\n');
             
         return csvContent;
 
-    }'}
+    }'}'

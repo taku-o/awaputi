@@ -4,53 +4,53 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  * Combo tier configuration interface
  */
 interface ComboTier { minCombo: number,
-    maxCombo: number,
-    name: string,
-    particleCount: number,
-    colors: string[],
-    effects: string[],
-    screenEffects: string[],
-    priority: number  }
+    maxCombo: number;
+    name: string;
+    particleCount: number;
+    colors: string[];
+    effects: string[];
+    screenEffects: string[];
+    priority: number;
 
 /**
  * Combo tiers interface
  */
-interface ComboTiers { [key: string]: ComboTier }
+interface ComboTiers { [key: string]: ComboTier;
 
 /**
  * Combo tier with key interface
  */
-interface ComboTierWithKey extends ComboTier { key: string }
+interface ComboTierWithKey extends ComboTier { key: string;
 
 /**
  * Combo break effect configuration
  */
 interface ComboBreakEffect { fadeParticleCount: number,
-    fadeColor: string,
-    fadeDuration: number  }
+    fadeColor: string;
+    fadeDuration: number;
 
 /**
  * Particle interface
  */
 interface Particle { x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    size: number,
-    color: string,
-    life: number,
-    maxLife: number,
-    alpha: number,
-    gravity: number,
-    friction: number,
-    bounce?: number,
-    type: string,
-    rotation?: number,
-    rotationSpeed?: number,
-    scale?: number,
-    scaleSpeed?: number,
-    maxTrailLength?: number }
-    trail?: Array<{ x: number,, y: number }>;
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    color: string;
+    life: number;
+    maxLife: number;
+    alpha: number;
+    gravity: number;
+    friction: number;
+    bounce?: number;
+    type: string;
+    rotation?: number;
+    rotationSpeed?: number;
+    scale?: number;
+    scaleSpeed?: number;
+    maxTrailLength?: number;
+    trail?: Array<{ x: number,, y: number;>;
     pulseSpeed?: number;
 }
 
@@ -58,31 +58,31 @@ interface Particle { x: number,
  * Quality settings interface
  */
 interface QualitySettings {
-    complexityLevel: number }
+    complexityLevel: number;
 
 /**
  * Particle manager interface
  */
 interface ParticleManager { particles: Particle[],
-    getParticleFromPool(): Particle,
-    shouldRenderEffect(effectType: string, priority: number): boolean,
-    adjustParticleCount(count: number): number,
-    getEffectIntensityMultiplier(): number,
-    getCurrentQualitySettings(): QualitySettings }
+    getParticleFromPool(): Particle;
+    shouldRenderEffect(effectType: string, priority: number): boolean;
+    adjustParticleCount(count: number): number;
+    getEffectIntensityMultiplier(): number;
+    getCurrentQualitySettings(): QualitySettings;
 
 /**
  * コンボ効果専用レンダラー
  * コンボ数に応じて段階的に強化される視覚効果を管理
  */
 export class ComboEffectRenderer {
-    private particleManager: ParticleManager,
-    private comboTiers: ComboTiers,
-    private effectQueue: any[],
-    private isProcessingQueue: boolean,
-    private, comboBreakEffect: ComboBreakEffect',
+    private particleManager: ParticleManager;
+    private comboTiers: ComboTiers;
+    private effectQueue: any[];
+    private isProcessingQueue: boolean;
+    private, comboBreakEffect: ComboBreakEffect','
 
     constructor(particleManager: ParticleManager) {
-        this.particleManager = particleManager,
+        this.particleManager = particleManager;
         
         // コンボ段階の定義
         this.comboTiers = {
@@ -91,8 +91,8 @@ export class ComboEffectRenderer {
     maxCombo: 5,
                 name: '基本',
                 particleCount: 8,
-                colors: ['#FFD700', '#FFA500],
-                effects: ['golden_particles', 'sparkle'],
+                colors: ['#FFD700', '#FFA500];'
+                effects: ['golden_particles', 'sparkle'];
                 screenEffects: [] }
                 priority: 5 
     };
@@ -101,8 +101,8 @@ export class ComboEffectRenderer {
     maxCombo: 10,
                 name: '強化',
                 particleCount: 15,
-                colors: ['#FFD700', '#FFA500', '#FF8C00', '#FF4500],
-                effects: ['golden_particles', 'enhanced_sparkle', 'screen_flash'],
+                colors: ['#FFD700', '#FFA500', '#FF8C00', '#FF4500];'
+                effects: ['golden_particles', 'enhanced_sparkle', 'screen_flash'];
                 screenEffects: ['flash'],
     priority: 7  };
             spectacular: { // 11+コンボ
@@ -110,9 +110,9 @@ export class ComboEffectRenderer {
     maxCombo: Infinity,
                 name: '絶大',
                 particleCount: 25,
-                colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],
-                effects: ['rainbow_burst', 'screen_shake', 'screen_zoom', 'magical_explosion'],
-                screenEffects: ['shake', 'zoom', 'rainbow_flash'],
+                colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3];'
+                effects: ['rainbow_burst', 'screen_shake', 'screen_zoom', 'magical_explosion'];
+                screenEffects: ['shake', 'zoom', 'rainbow_flash'];
                 priority: 10  }
         };
         // コンボ演出のキューイング
@@ -136,9 +136,9 @@ export class ComboEffectRenderer {
     createEnhancedComboEffect(x: number, y: number, comboCount: number, comboType: string = 'normal': void { try {'
             const tier = this.getComboTier(comboCount),
             if(!tier) return,
-            ',
+            ','
             // 品質チェック
-            if(!this.particleManager.shouldRenderEffect('combo', tier.priority) {
+            if (!this.particleManager.shouldRenderEffect('combo', tier.priority) {
                 this.createSimplifiedComboEffect(x, y, comboCount) }
                 return; }
             }
@@ -156,7 +156,7 @@ export class ComboEffectRenderer {
             
             // コンボマルチプライヤー表示
             this.createComboMultiplierIndicator(x, y, comboCount, tier);
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'COMBO_EFFECT_ERROR', {''
                 context: 'ComboEffectRenderer.createEnhancedComboEffect'
@@ -217,7 +217,7 @@ export class ComboEffectRenderer {
             const baseLifetime = 1000 + tier.priority * 200;
             particle.life = baseLifetime + Math.random() * baseLifetime * 0.5;
             particle.maxLife = particle.life;
-            particle.alpha = 0.9 + Math.random()';
+            particle.alpha = 0.9 + Math.random()';'
             particle.gravity = tier.key === 'spectacular' ? -10 : 15; // 絶大コンボは浮遊)
             particle.friction = 0.96 + Math.random() * 0.02;
             particle.bounce = 0.1 + Math.random() * 0.3;
@@ -230,7 +230,7 @@ export class ComboEffectRenderer {
             // パーティクルタイプ（段階に応じて高級化）
             particle.type = this.selectComboParticleType(tier, i, adjustedCount);
             particle.pulseSpeed = 4 + tier.priority;
-            ';
+            ';'
             // トレイル効果（高段階のみ）
             if(tier.key === 'spectacular' {'
                 particle.maxTrailLength = 6 }
@@ -253,15 +253,15 @@ export class ComboEffectRenderer {
 
         switch(tier.key) {
 
-            case 'basic':',
-                if(qualitySettings.complexityLevel >= 2) {
+            case 'basic':','
+                if (qualitySettings.complexityLevel >= 2) {
         }
 
                     return ratio < 0.7 ? 'star' : 'advanced_circle';
                 return 'star';
 
             case 'enhanced':
-                if(qualitySettings.complexityLevel >= 3) {
+                if (qualitySettings.complexityLevel >= 3) {
 
                     if(ratio < 0.4) return 'glow_circle',
                     if(ratio < 0.8) return 'star' }
@@ -270,7 +270,7 @@ export class ComboEffectRenderer {
                 return ratio < 0.6 ? 'star' : 'advanced_circle';
 
             case 'spectacular':
-                if(qualitySettings.complexityLevel >= 3) {
+                if (qualitySettings.complexityLevel >= 3) {
 
                     if(ratio < 0.3) return 'energy_orb',
                     if(ratio < 0.6) return 'magic_sparkle',
@@ -292,19 +292,19 @@ export class ComboEffectRenderer {
     createComboSpecialEffect(x: number, y: number, effectType: string, comboCount: number, tier: ComboTierWithKey): void { ''
         switch(effectType) {
 
-            case 'golden_particles':',
+            case 'golden_particles':','
                 this.createGoldenParticles(x, y, comboCount),
 
                 break,
-            case 'sparkle':',
+            case 'sparkle':','
                 this.createComboSparkle(x, y, comboCount),
 
                 break,
-            case 'enhanced_sparkle':',
+            case 'enhanced_sparkle':','
                 this.createEnhancedSparkle(x, y, comboCount),
 
                 break,
-            case 'rainbow_burst':',
+            case 'rainbow_burst':','
                 this.createRainbowBurst(x, y, comboCount),
 
                 break,
@@ -365,7 +365,7 @@ export class ComboEffectRenderer {
      */
     createRainbowBurst(x: number, y: number, comboCount: number): void { ''
         const rainbowCount = this.particleManager.adjustParticleCount(20),
-        const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],
+        const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],'
         
         for(let, i = 0, i < rainbowCount, i++) {
         
@@ -411,7 +411,7 @@ export class ComboEffectRenderer {
                     particle.y = y,
                     particle.vx = Math.cos(angle) * speed,
                     particle.vy = Math.sin(angle) * speed,
-                    particle.size = 4 + Math.random()',
+                    particle.size = 4 + Math.random()','
                     particle.color = wave === 0 ? '#FFFFFF' : (wave === 1 ? '#FFD700' : '#FF69B4'),
                     particle.life = 1800 - wave * 200,
                     particle.maxLife = particle.life,
@@ -452,9 +452,9 @@ export class ComboEffectRenderer {
 
             this.particleManager.particles.push(particle); }
         }
-        ';
+        ';'
         // マルチプライヤー強調リング
-        if(tier.key === 'spectacular' {'
+        if (tier.key === 'spectacular''
             for (let, i = 0, i < 8, i++) {
                 const particle = this.particleManager.getParticleFromPool(),
                 
@@ -523,11 +523,11 @@ export class ComboEffectRenderer {
             }
             
             console.log(`[ComboEffectRenderer] コンボブレイク演出: ${lastComboCount}コンボ終了`});
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'COMBO_BREAK_ERROR', {''
                 context: 'ComboEffectRenderer.createComboBreakEffect'
-            }';
+            }';'
         }
     }
     
@@ -581,7 +581,7 @@ export class ComboEffectRenderer {
             
             const angle = (Math.PI * 2 * i) / 8,
             const radius = 25,
-            ',
+            ','
 
             particle.x = x + Math.cos(angle) * radius,
             particle.y = y + Math.sin(angle) * radius,
@@ -609,8 +609,8 @@ export class ComboEffectRenderer {
             comboTiers: Object.keys(this.comboTiers).length,
             effectQueueLength: this.effectQueue.length,
     isProcessingQueue: this.isProcessingQueue,
-            availableEffects: [',
-                'golden_particles', 'sparkle', 'enhanced_sparkle', ]',
+            availableEffects: [','
+                'golden_particles', 'sparkle', 'enhanced_sparkle', ]','
                 'rainbow_burst', 'magical_explosion', 'combo_break'] };
             ].length }
-        }'}
+        }'}'

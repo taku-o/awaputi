@@ -6,59 +6,55 @@
 
 // 型定義
 export interface CulturalAdaptationConfig { enabled: boolean,
-    rtlLanguages: string[],
-    numeralSystems: Record<string, NumeralSystem>,
-    dateFormats: Record<string, string>,
-    colorMeanings: Record<string, ColorMeanings>,
+    rtlLanguages: string[];
+    numeralSystems: Record<string, NumeralSystem>;
+    dateFormats: Record<string, string>;
+    colorMeanings: Record<string, ColorMeanings>;
     gestureConventions: Record<string, GestureConventions> }
 
-export interface ColorMeanings { [color: string]: string }
+export interface ColorMeanings { [color: string]: string;
 
-export interface GestureConventions { [gesture: string]: GestureAppropriateness }
+export interface GestureConventions { [gesture: string]: GestureAppropriateness;
 
 export interface RegionalUISettings { textDirection: TextDirection,
-    fontFamily: string,
-    fontSize: string,
-    lineHeight: number,
-    spacing: SpacingMode,
-    preferredInputMethod: InputMethod
-     }
+    fontFamily: string;
+    fontSize: string;
+    lineHeight: number;
+    spacing: SpacingMode;
+    preferredInputMethod: InputMethod;
 
 export interface TimeFormatSettings { time12: boolean,
-    dateFormat: string,
-    timeFormat: string,
-    weekStart: number,
-    era: CalendarEra
-    }
+    dateFormat: string;
+    timeFormat: string;
+    weekStart: number;
+    era: CalendarEra;
 
 export interface NumberFormatSettings { decimal: string,
-    thousands: string,
-    currency: string,
-    currencyPosition: CurrencyPosition
-    }
+    thousands: string;
+    currency: string;
+    currencyPosition: CurrencyPosition;
 
 export interface CulturalAdaptationStats { supportedRTLLanguages: number,
-    supportedNumeralSystems: number,
-    supportedDateFormats: number,
-    supportedColorMeanings: number,
-    supportedGestureConventions: number,
-    regionalUILanguages: number,
-    timeFormatLanguages: number,
-    numberFormatLanguages: number }
+    supportedNumeralSystems: number;
+    supportedDateFormats: number;
+    supportedColorMeanings: number;
+    supportedGestureConventions: number;
+    regionalUILanguages: number;
+    timeFormatLanguages: number;
+    numberFormatLanguages: number;
 
 export interface CulturalDebugInfo { language: string,
-    isRTL: boolean,
-    textDirection: TextDirection,
-    numeralSystem: NumeralSystem,
-    dateFormat: string,
-    uiSettings: RegionalUISettings,
-    timeFormat: TimeFormatSettings,
-    numberFormat: NumberFormatSettings,
-    stats: CulturalAdaptationStats
-    }
+    isRTL: boolean;
+    textDirection: TextDirection;
+    numeralSystem: NumeralSystem;
+    dateFormat: string;
+    uiSettings: RegionalUISettings;
+    timeFormat: TimeFormatSettings;
+    numberFormat: NumberFormatSettings;
+    stats: CulturalAdaptationStats;
 
 export interface NumberFormatOptions { style: NumberFormatType,
-    currency?: string }
+    currency?: string;
 
 // 列挙型
 export type NumeralSystem = 'latin' | 'arab' | 'persian' | 'thai' | 'devanagari';
@@ -71,19 +67,19 @@ export type CurrencyPosition = 'before' | 'after';
 export type NumberFormatType = 'decimal' | 'currency' | 'percent';
 
 export class CulturalAdaptationHandler {
-    private culturalAdaptation: CulturalAdaptationConfig,
+    private culturalAdaptation: CulturalAdaptationConfig;
     private, regionalUISettings: Record<string, RegionalUISettings>,
-    private timeFormats: Record<string, TimeFormatSettings>,
-    private numberFormats: Record<string, NumberFormatSettings>,
+    private timeFormats: Record<string, TimeFormatSettings>;
+    private numberFormats: Record<string, NumberFormatSettings>;
 
     constructor('''
-            rtlLanguages: ['ar', 'he', 'fa', 'ur'],
-            numeralSystems: {', 'ar': 'arab',
+            rtlLanguages: ['ar', 'he', 'fa', 'ur'];
+            numeralSystems: {', 'ar': 'arab';'
                 'fa': 'persian',
                 'th': 'thai',
                 'hi': 'devanagari' },
 
-            dateFormats: { ', 'ja': 'YYYY年MM月DD日',
+            dateFormats: { ', 'ja': 'YYYY年MM月DD日';'
                 'en': 'MM/DD/YYYY',
                 'en-GB': 'DD/MM/YYYY',
                 'de': 'DD.MM.YYYY',
@@ -128,7 +124,7 @@ export class CulturalAdaptationHandler {
                 preferredInputMethod: 'keyboard'
             }
 
-            },', 'zh': {;
+            },', 'zh': {;'
                 textDirection: 'ltr',
                 fontFamily: 'Noto Sans SC, "Microsoft YaHei", sans-serif',
                 fontSize: '14px',
@@ -138,7 +134,7 @@ export class CulturalAdaptationHandler {
             }
         };
         // 時刻・日付フォーマット
-        this.timeFormats = {,
+        this.timeFormats = {;
             'ja': {'
                 time12: false,
                 dateFormat: 'YYYY/MM/DD',
@@ -230,7 +226,7 @@ export class CulturalAdaptationHandler {
      * @returns 色の意味
      */
     getColorMeaning(language: string, color: string): string | null { const colorMeanings = this.culturalAdaptation.colorMeanings[language],
-        return colorMeanings ? colorMeanings[color] : null }
+        return colorMeanings ? colorMeanings[color] : null;
     
     /**
      * 言語に応じたジェスチャー慣習を取得
@@ -276,18 +272,18 @@ export class CulturalAdaptationHandler {
         try {
             return new Intl.DateTimeFormat(language, {''
                 year: 'numeric',
-                month: '2-digit',',
+                month: '2-digit',','
                 day: '2-digit',')',
                 calendar: timeSettings.era === 'hijri' ? 'islamic' : 'gregory')).format(date  } catch (error) { // フォールバック
             const year = date.getFullYear(),
-            const month = String(date.getMonth() + 1').padStart(2, '0',
+            const month = String(date.getMonth() + 1').padStart(2, '0','
             const day = String(date.getDate()).padStart(2, '0'),
-            ',
+            ','
 
-            return format',
-                .replace('YYYY', year.toString())',
+            return format','
+                .replace('YYYY', year.toString())','
                 .replace('MM', month'',
-                .replace('DD', day' }
+                .replace('DD', day' }'
     }
     
     /**
@@ -301,7 +297,7 @@ export class CulturalAdaptationHandler {
         
         try {
             return new Intl.DateTimeFormat(language, {''
-                hour: '2-digit',',
+                hour: '2-digit',','
                 minute: '2-digit'),
                 hour12: timeSettings.time12)).format(date  } catch (error) { // フォールバック
             const hours = timeSettings.time12 ,
@@ -309,9 +305,9 @@ export class CulturalAdaptationHandler {
                 : date.getHours(),
             const minutes = String(date.getMinutes()).padStart(2, '0',
 
-            const ampm = timeSettings.time12 ',
-                ? (date.getHours() >= 12 ? 'PM' : 'AM')',
-                : ',
+            const ampm = timeSettings.time12 ','
+                ? (date.getHours() >= 12 ? 'PM' : 'AM')','
+                : ','
 
             ' }'
 
@@ -324,15 +320,15 @@ export class CulturalAdaptationHandler {
         
         try { }
 
-            const options: NumberFormatOptions = { style: type }''
-            if(type === 'currency) { options.currency = this.getCurrencyCode(language) }', ';
+            const options: NumberFormatOptions = { style: type,''
+            if (type === 'currency) { options.currency = this.getCurrencyCode(language) }', ';'
 
             return new Intl.NumberFormat(language, options).format(number);} catch (error) { // フォールバック
             const formatted = number.toLocaleString('en', {''
                 style: type === 'currency' ? 'decimal' : type',' 
-            }');
+            }');'
 
-            if(type === 'currency') {
+            if (type === 'currency') {
                 const currency = numberSettings.currency }
 
                 return numberSettings.currencyPosition === 'before'  }
@@ -347,7 +343,7 @@ export class CulturalAdaptationHandler {
      * @param language 言語コード
      * @returns 通貨コード'
      */''
-    getCurrencyCode(language: string): string { const currencyMap: Record<string, string> = {', 'ja': 'JPY',
+    getCurrencyCode(language: string): string { const currencyMap: Record<string, string> = {', 'ja': 'JPY','
             'en': 'USD',
             'en-GB': 'GBP',
             'de': 'EUR',
@@ -483,26 +479,26 @@ export class CulturalAdaptationHandler {
             
             if (settings.culturalAdaptation) { }
                 this.culturalAdaptation = { ...this.culturalAdaptation, ...settings.culturalAdaptation }
-            if(settings.regionalUISettings) {
+            if (settings.regionalUISettings) {
     
 }
                 this.regionalUISettings = { ...this.regionalUISettings, ...settings.regionalUISettings }
-            if(settings.timeFormats) {
+            if (settings.timeFormats) {
     
 }
                 this.timeFormats = { ...this.timeFormats, ...settings.timeFormats }
-            if(settings.numberFormats) {
+            if (settings.numberFormats) {
     
 }
-                this.numberFormats = { ...this.numberFormats, ...settings.numberFormats,'} catch (error) {
-            console.error('Failed to import cultural adaptation settings:', error',
+                this.numberFormats = { ...this.numberFormats, ...settings.numberFormats,'} catch (error) {'
+            console.error('Failed to import cultural adaptation settings:', error','
             throw new Error('Invalid, JSON format, for cultural, adaptation settings' }'
     }
     
     /**
      * リソースの解放'
      */''
-    destroy()';
+    destroy()';'
         console.log('Cultural, Adaptation Handler, destroyed');
 
-    }'}
+    }'}'

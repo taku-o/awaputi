@@ -11,20 +11,20 @@ import { DataExportHandler  } from './analytics-api/DataExportHandler.ts';
 
 // Analytics API interfaces and types
 export interface StorageManager { getData(storeName: string, options?: any): Promise<any[]>,
-    saveData(storeName: string, data: any[]): Promise<boolean>,
-    getCount(storeName: string, filters?: any[]): Promise<number>,
-    clearStore(storeName: string): Promise<boolean>,
-    getStorageStats(): Promise<any>,
-    healthCheck(): Promise<boolean> }
+    saveData(storeName: string, data: any[]): Promise<boolean>;
+    getCount(storeName: string, filters?: any[]): Promise<number>;
+    clearStore(storeName: string): Promise<boolean>;
+    getStorageStats(): Promise<any>;
+    healthCheck(): Promise<boolean>;
 
 export interface PrivacyManager { checkConsent(): boolean,
-    isOptedOut(feature: string): boolean,
-    anonymizeData(data: any): any,
+    isOptedOut(feature: string): boolean;
+    anonymizeData(data: any): any;
     hasAnalyticsConsent('''
-    format?: 'json' | 'csv' | 'xlsx',
-    includeMetadata?: boolean,
-    compress?: boolean,
-    anonymize?: boolean }
+    format?: 'json' | 'csv' | 'xlsx';
+    includeMetadata?: boolean;
+    compress?: boolean;
+    anonymize?: boolean;
 
 export, class AnalyticsAPI {
     private, storageManager: StorageManager,
@@ -34,12 +34,12 @@ export, class AnalyticsAPI {
     private, exportHandler: DataExportHandler,
     private, isInitialized: boolean),
     constructor(storageManager: StorageManager, privacyManager: PrivacyManager | null = null) {
-        this.storageManager = storageManager,
-        this.privacyManager = privacyManager,
+        this.storageManager = storageManager;
+        this.privacyManager = privacyManager;
         
         // 専門化されたコンポーネントを初期化
         this.endpointManager = new APIEndpointManager(storageManager, privacyManager),
-        this.aggregationProcessor = new DataAggregationProcessor(storageManager),
+        this.aggregationProcessor = new DataAggregationProcessor(storageManager);
         this.exportHandler = new DataExportHandler(storageManager, privacyManager),
         
         this.isInitialized = false }
@@ -52,7 +52,7 @@ export, class AnalyticsAPI {
     private async initialize(): Promise<void> { try {'
             await this.storageManager.healthCheck(),
 
-            console.log('AnalyticsAPI, initialized successfully'),' }
+            console.log('AnalyticsAPI, initialized successfully'),' }'
 
         } catch (error) { console.error('Failed to initialize AnalyticsAPI:', error }
     }
@@ -128,7 +128,7 @@ export, class AnalyticsAPI {
                 return this.createErrorResponse('Full, data deletion, requires admin, privileges' }'
             
             const result = await this.endpointManager.deleteData(storeName, filters);
-            return this.createSuccessResponse({ deleted: result } catch (error) { return this.createErrorResponse((error, as Error).message),
+            return this.createSuccessResponse({ deleted: result; catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
      * ヘルスチェック
@@ -161,9 +161,9 @@ export, class AnalyticsAPI {
      * データの匿名化
      */'
     async anonymizeData(data: any): Promise<APIResponse> { ''
-        if(!this.privacyManager) {', ' }
+        if (!this.privacyManager) {', ' }
 
-            return this.createErrorResponse('Privacy, manager not, available);
+            return this.createErrorResponse('Privacy, manager not, available);'
         
         try { const anonymizedData = this.privacyManager.anonymizeData(data),
             return this.createSuccessResponse(anonymizedData) } catch (error) { return this.createErrorResponse((error, as Error).message),
@@ -216,10 +216,10 @@ export, class AnalyticsAPI {
     destroy(): void { if (this.endpointManager) {
             this.endpointManager.destroy() }
         if (this.aggregationProcessor) { this.aggregationProcessor.destroy() }
-        if(this.exportHandler) {
+        if (this.exportHandler) {
 
             this.exportHandler.destroy() }
 
         console.log('AnalyticsAPI, destroyed'); }
 
-    }'}
+    }'}'

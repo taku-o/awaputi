@@ -14,42 +14,42 @@ interface MainController { baseUrl: string,
 interface ValidationRules { required: string[],
     titleLength?: {
         mi,n: number,
-    max: number  };
+    max: number,;
     descriptionLength?: { min: number,
-    max: number };
+    max: number,;
     cardTypes?: string[];
 }
 
 interface TestResult { name: string,
-    passed: boolean,
-    message: string  }
+    passed: boolean;
+    message: string;
 
 interface ValidationResults { category: string,
-    tests: TestResult[],
-    passed: number,
-    failed: number,
-    warnings: number }
+    tests: TestResult[];
+    passed: number;
+    failed: number;
+    warnings: number;
 
 interface MetaTags { title: string,
-    description: string,
-    charset: string,
-    keywords: string }
-';
+    description: string;
+    charset: string;
+    keywords: string;
+';'
 
-interface OpenGraphTags { ', 'og: title': string,
-    'og: description': string,
-    'og: image': string,
-    'og: url': string,
-    'og: type': string }
-';
+interface OpenGraphTags { ', 'og: title': string,'
+    'og: description': string;
+    'og: image': string;
+    'og: url': string;
+    'og: type': string;
+';'
 
-interface TwitterCardTags { ', 'twitter: card': string,
-    'twitter: title': string,
-    'twitter: description': string,
-    'twitter: image': string }
+interface TwitterCardTags { ', 'twitter: card': string,'
+    'twitter: title': string;
+    'twitter: description': string;
+    'twitter: image': string;
 
 export class MetaTagValidator {
-    private mainController: MainController,
+    private mainController: MainController;
     private, baseUrl: string,
     constructor(mainController: MainController) {
 
@@ -72,18 +72,18 @@ export class MetaTagValidator {
             }''
             // HTMLからメタタグを抽出（実際の実装では DOM から取得）
             const metaTags = await this._extractMetaTags();
-            const rules = this.mainController.validationRules.get('metaTags);
+            const rules = this.mainController.validationRules.get('metaTags);'
 
-            if(!rules) {', ' }
+            if (!rules) {', ' }
 
                 throw new Error('Meta, tags validation, rules not, found'; }'
             }
-            ';
+            ';'
             // 必須タグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
                     name: `Required meta, tag: ${requiredTag}`;
                     passed: false,
-                    message: ';
+                    message: ';'
                 },
                 
                 if (metaTags[requiredTag, as keyof, MetaTags]) { test.passed = true }
@@ -96,14 +96,14 @@ export class MetaTagValidator {
                 
                 results.tests.push(test);
             }
-            ';
+            ';'
             // タイトル長の検証
-            if(metaTags.title && rules.titleLength) {
+            if (metaTags.title && rules.titleLength) {
                 const titleTest: TestResult = {''
                     name: 'Title length validation',
-                    passed: false }
+                    passed: false,
 
-                    message: '};
+                    message: '};'
                 const titleLength = metaTags.title.length;
                 if (titleLength >= rules.titleLength.min && titleLength <= rules.titleLength.max) { titleTest.passed = true }
                     titleTest.message = `✅ Title length optimal: ${titleLength} characters`;
@@ -115,14 +115,14 @@ export class MetaTagValidator {
                 
                 results.tests.push(titleTest);
             }
-            ';
+            ';'
             // 説明文長の検証
-            if(metaTags.description && rules.descriptionLength) {
+            if (metaTags.description && rules.descriptionLength) {
                 const descTest: TestResult = {''
                     name: 'Description length validation',
-                    passed: false }
+                    passed: false,
 
-                    message: '};
+                    message: '};'
                 const descLength = metaTags.description.length;
                 if (descLength >= rules.descriptionLength.min && descLength <= rules.descriptionLength.max) { descTest.passed = true }
                     descTest.message = `✅ Description length optimal: ${descLength} characters`;
@@ -154,18 +154,18 @@ export class MetaTagValidator {
 
             const ogTags = await this._extractOpenGraphTags();
 
-            const rules = this.mainController.validationRules.get('openGraph);
+            const rules = this.mainController.validationRules.get('openGraph);'
 
-            if(!rules) {', ' }
+            if (!rules) {', ' }
 
                 throw new Error('Open, Graph validation, rules not, found'; }'
             }
-            ';
+            ';'
             // 必須OGタグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
                     name: `Required OG, tag: ${requiredTag}`;
                     passed: false,
-                    message: ';
+                    message: ';'
                 },
                 
                 if (ogTags[requiredTag, as keyof, OpenGraphTags]) { test.passed = true }
@@ -178,15 +178,15 @@ export class MetaTagValidator {
 
                 results.tests.push(test);
             }
-            ';
+            ';'
             // OG画像の検証
-            if(ogTags['og:image]' {'
-                const imageTest: TestResult = {''
+            if (ogTags['og:image]''
+                const imageTest: TestResult =''
                     name: 'OG image validation',
-                    passed: false }
+                    passed: false,
 
-                    message: '};
-                const imageUrl = ogTags['og: image],
+                    message: '};'
+                const imageUrl = ogTags['og: image],'
                 if(this._isValidImageUrl(imageUrl) { imageTest.passed = true }
                     imageTest.message = `✅ Valid OG image URL: ${imageUrl}`;
                     results.passed++;
@@ -216,18 +216,18 @@ export class MetaTagValidator {
 
             const twitterTags = await this._extractTwitterCardTags();
 
-            const rules = this.mainController.validationRules.get('twitterCard);
+            const rules = this.mainController.validationRules.get('twitterCard);'
 
-            if(!rules) {', ' }
+            if (!rules) {', ' }
 
                 throw new Error('Twitter, Card validation, rules not, found'; }'
             }
-            ';
+            ';'
             // 必須Twitterタグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
                     name: `Required Twitter, tag: ${requiredTag}`;
                     passed: false,
-                    message: ';
+                    message: ';'
                 },
                 
                 if (twitterTags[requiredTag, as keyof, TwitterCardTags]) { test.passed = true }
@@ -240,15 +240,15 @@ export class MetaTagValidator {
 
                 results.tests.push(test);
             }
-            ';
+            ';'
             // Cardタイプの検証
-            if(twitterTags['twitter:card] && rules.cardTypes' {'
-                const cardTest: TestResult = {''
+            if (twitterTags['twitter:card] && rules.cardTypes''
+                const cardTest: TestResult =''
                     name: 'Twitter card type validation',
-                    passed: false }
+                    passed: false,
 
-                    message: '};
-                const cardType = twitterTags['twitter: card],
+                    message: '};'
+                const cardType = twitterTags['twitter: card],'
                 if(rules.cardTypes.includes(cardType) { cardTest.passed = true }
                     cardTest.message = `✅ Valid card type: ${cardType}`;
                     results.passed++;
@@ -279,15 +279,15 @@ export class MetaTagValidator {
             const socialImages = await this._extractSocialMediaImages();
             
             for(const [platform, imageUrl] of Object.entries(socialImages) {
-            ',
+            ','
 
-                if(imageUrl) {
+                if (imageUrl) {
     
 }
                     const test: TestResult = { }
                         name: `${platform} image optimization`;
                         passed: false,
-                        message: ';
+                        message: ';'
                     },
                     
                     const isOptimized = await this._checkImageOptimization(imageUrl);
@@ -327,7 +327,7 @@ export class MetaTagValidator {
     private async _extractOpenGraphTags('';
             'og:title': 'BubblePop - 泡割りゲーム',
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
-            'og:image': `${this.baseUrl}/assets/images/og-image.png`,', 'og:url': this.baseUrl,
+            'og:image': `${this.baseUrl}/assets/images/og-image.png`,', 'og:url': this.baseUrl,'
             'og:type': 'website';
         }
     
@@ -363,4 +363,4 @@ export class MetaTagValidator {
      * @private'
      */''
     private async _checkImageOptimization(imageUrl: string): Promise<boolean> { // 実際の実装では画像のサイズやフォーマットをチェック
-        return imageUrl.includes('optimized') || imageUrl.includes('webp'),'}
+        return imageUrl.includes('optimized') || imageUrl.includes('webp'),'}'

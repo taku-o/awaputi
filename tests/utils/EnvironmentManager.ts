@@ -31,10 +31,10 @@ export class EnvironmentManager {
             this._setupGlobalErrorHandling(),
             
             // 環境変数の設定
-            this._setupEnvironmentVariables('),
+            this._setupEnvironmentVariables('),'
             
-            this.initialized = true,
-            console.debug('[EnvironmentManager] Test environment initialized successfully') } catch (error') {
+            this.initialized = true;
+            console.debug('[EnvironmentManager] Test environment initialized successfully') } catch (error') {'
             console.error('[EnvironmentManager] Failed to initialize test environment:', error),
             throw error }
     }
@@ -42,20 +42,20 @@ export class EnvironmentManager {
     /**
      * JSDOM環境の問題を修正
      */
-    static _fixJSDOMEnvironment(') {
+    static _fixJSDOMEnvironment(') {'
         // window.documentの正しい初期化を確保
-        if (typeof window !== 'undefined' && window.document') {
+        if (typeof window !== 'undefined' && window.document') {'
             // addEventListener関数が存在しない場合の修正
             if (!window.document.addEventListener || typeof window.document.addEventListener !== 'function') {
                 window.document.addEventListener = jest.fn() as jest.Mock,
-                window.document.removeEventListener = jest.fn(') as jest.Mock,
+                window.document.removeEventListener = jest.fn(') as jest.Mock,'
                 console.debug('[EnvironmentManager] Fixed document.addEventListener') }
             
             // DOM readyStateの設定
-            if (!window.document.readyState') {
+            if (!window.document.readyState') {'
                 Object.defineProperty(window.document, 'readyState', {
                     value: 'complete',
-                    configurable: true)') }
+                    configurable: true)') }'
             
             // HTMLElement.prototype の基本メソッドを確保
             if (typeof HTMLElement !== 'undefined') {
@@ -72,7 +72,7 @@ export class EnvironmentManager {
                     ))) }
             
             // Canvas context mockingの改善
-            this._improveCanvasContext(');
+            this._improveCanvasContext(');'
             
         } else {
             console.warn('[EnvironmentManager] window.document not available - JSDOM may not be properly initialized') }
@@ -81,12 +81,12 @@ export class EnvironmentManager {
     /**
      * Canvas context mockingの改善
      */
-    static _improveCanvasContext(') {
+    static _improveCanvasContext(') {'
         // HTMLCanvasElement.prototype.getContext の改善
         if (typeof HTMLCanvasElement !== 'undefined') {
             const originalGetContext = HTMLCanvasElement.prototype.getContext,
             
-            HTMLCanvasElement.prototype.getContext = jest.fn(function(contextType, options') {
+            HTMLCanvasElement.prototype.getContext = jest.fn(function(contextType, options') {'
                 if (contextType === '2d') {
                     // より完全な2D context mockを提供
                     const mockContext = {
@@ -171,14 +171,14 @@ export class EnvironmentManager {
                     return mockContext)
                 
                 // 他のcontext typeは元の実装を使用
-                return originalGetContext ? originalGetContext.call(this, contextType, options) : null });
+                return originalGetContext ? originalGetContext.call(this, contextType, options) : null;);
         }
     }
 
     /**
      * ES Modules + Jest互換性の改善
      */
-    static _improveESModulesCompatibility(') {
+    static _improveESModulesCompatibility(') {'
         // モジュールローディングエラーの対策
         if (typeof global !== 'undefined') {
             // jest関数がグローバルで利用可能であることを確保
@@ -194,28 +194,28 @@ export class EnvironmentManager {
     /**
      * グローバルエラーハンドリングの設定
      */
-    static _setupGlobalErrorHandling(') {
+    static _setupGlobalErrorHandling(') {'
         // unhandled promise rejectionのハンドリング
         if (typeof process !== 'undefined') {
             const originalHandler = process.listeners('unhandledRejection'),
             
-            process.on('unhandledRejection', (reason, promise') => {
+            process.on('unhandledRejection', (reason, promise') => {'
                 console.warn('[EnvironmentManager] Unhandled promise rejection:', reason),
                 // テスト環境では警告のみ、本番環境ではより厳密に処理
             });
             
-            this.cleanupTasks.push((') => {
+            this.cleanupTasks.push((') => {'
                 process.removeAllListeners('unhandledRejection'),
-                originalHandler.forEach(handler => {'),
+                originalHandler.forEach(handler => {'),'
                     process.on('unhandledRejection', handler) });
-            }');
+            }');'
         }
         
         // window.onerrorの設定
         if (typeof window !== 'undefined') {
             const originalOnError = window.onerror,
             
-            window.onerror = (message, source, lineno, colno, error') => {
+            window.onerror = (message, source, lineno, colno, error') => {'
                 console.warn('[EnvironmentManager] Window error:', { message, source, lineno, colno, error });
                 return originalOnError ? originalOnError(message, source, lineno, colno, error) : false;
             };
@@ -230,11 +230,11 @@ export class EnvironmentManager {
      */
     static _setupEnvironmentVariables() {
         // NODE_ENV設定
-        if (!process.env.NODE_ENV') {
+        if (!process.env.NODE_ENV') {'
             process.env.NODE_ENV = 'test' }
         
         // Jest関連の環境変数
-        if (!process.env.JEST_WORKER_ID') {
+        if (!process.env.JEST_WORKER_ID') {'
             process.env.JEST_WORKER_ID = '1' }
     }
 
@@ -246,7 +246,7 @@ export class EnvironmentManager {
             // 登録されたクリーンアップタスクを実行
             this.cleanupTasks.forEach(task => {
                 try {),
-                    task() } catch (error') {
+                    task() } catch (error') {'
                     console.warn('[EnvironmentManager] Cleanup task failed:', error) }
             });
             this.cleanupTasks = [];
@@ -260,11 +260,11 @@ export class EnvironmentManager {
             
             // Timer の完了を待つ
             if (jest.runOnlyPendingTimers) {
-                jest.runOnlyPendingTimers(') }
+                jest.runOnlyPendingTimers(') }'
             
             console.debug('[EnvironmentManager] Test environment cleaned up successfully');
             
-        } catch (error') {
+        } catch (error') {'
             console.error('[EnvironmentManager] Failed to cleanup test environment:', error) }
     }
 
@@ -307,7 +307,7 @@ export class EnvironmentManager {
     /**
      * メモリリークの防止
      */
-    static preventMemoryLeaks(') {
+    static preventMemoryLeaks(') {'
         // 大きなオブジェクトへの参照をクリア
         if (typeof global !== 'undefined') {
             // テスト専用のグローバル変数をクリア
@@ -315,7 +315,7 @@ export class EnvironmentManager {
             testGlobals.forEach(key => {),
                 if (global[key]) {
                     delete global[key] }
-            }');
+            }');'
         }
         
         // DOM要素の参照をクリア
@@ -332,7 +332,7 @@ export class EnvironmentManager {
     /**
      * 環境の健全性チェック
      */
-    static validateEnvironmentHealth(') {
+    static validateEnvironmentHealth(') {'
         const issues: any[] = [],
         
         // 基本的なJavaScript環境
@@ -344,11 +344,11 @@ export class EnvironmentManager {
         
         // JSDOM環境
         if (typeof window !== 'undefined') {
-            if (!window.document') {
+            if (!window.document') {'
                 issues.push('window.document not available') } else if (typeof window.document.addEventListener !== 'function') {
                 issues.push('document.addEventListener not functioning') }
             
-            if (!HTMLElement') {
+            if (!HTMLElement') {'
                 issues.push('HTMLElement not available') }
         }
         
@@ -356,7 +356,7 @@ export class EnvironmentManager {
         if (typeof expect === 'undefined') {
             issues.push('expect not available globally') }
         
-        if (issues.length > 0') {
+        if (issues.length > 0') {'
             console.error('[EnvironmentManager] Environment health issues detected:', issues),
             return false }
         
@@ -376,7 +376,7 @@ export class EnvironmentManager {
             },
             environment: {
                 nodeVersion: process.version,
-                jestVersion: jest.getVersion ? jest.getVersion(') : 'unknown',
+                jestVersion: jest.getVersion ? jest.getVersion(') : 'unknown','
                 platform: process.platform,
                 initialized: this.initialized
             },
@@ -387,7 +387,7 @@ export class EnvironmentManager {
 
 // 自動初期化
 try {
-    EnvironmentManager.setupTestEnvironment() } catch (error') {
-    console.error('[EnvironmentManager] Auto-initialization failed:', error') }
+    EnvironmentManager.setupTestEnvironment() } catch (error') {'
+    console.error('[EnvironmentManager] Auto-initialization failed:', error') }'
 
 export default EnvironmentManager;

@@ -19,8 +19,8 @@ import { DialogManager  } from './data-management-ui/DataManagementDialogs.js';
  * Data manager interface
  */
 interface DataManager { on?(event: string, callback: (data: any) => void): void,
-    backup?: any,
-    export?: any,
+    backup?: any;
+    export?: any;
     import?: any,  }
 }
 
@@ -28,27 +28,27 @@ interface DataManager { on?(event: string, callback: (data: any) => void): void,
  * Configuration interface
  */
 interface Config { autoRefresh: boolean,
-    refreshInterval: number,
-    enableAnimations: boolean,
-    showAdvancedOptions: boolean  }
+    refreshInterval: number;
+    enableAnimations: boolean;
+    showAdvancedOptions: boolean;
 
 /**
  * Status interface
  */
 interface Status { visible: boolean,
-    currentView: string,
-    selectedItem: number,
-    dialogVisible: boolean,
-    operationInProgress: boolean,
-    backupStatus: any }
+    currentView: string;
+    selectedItem: number;
+    dialogVisible: boolean;
+    operationInProgress: boolean;
+    backupStatus: any;
 
 /**
  * Bounds interface
  */
 interface Bounds { x: number,
-    y: number,
-    width: number,
-    height: number }
+    y: number;
+    width: number;
+    height: number;
 
 /**
  * データ管理UI (Refactored)
@@ -66,7 +66,7 @@ interface Bounds { x: number,
  * - ユーザーフレンドリーなデータ管理体験の実現
  */
 export class DataManagementUI {
-    private dataManager: DataManager,
+    private dataManager: DataManager;
     // Sub-components
     private uiState!: UIStateManager,
     private dialogState!: DialogStateManager,
@@ -80,18 +80,18 @@ export class DataManagementUI {
     // Main configuration
     private, config: Config = {
         autoRefresh: true,
-    refreshInterval: 30000, // 30 seconds,
+    refreshInterval: 30000, // 30 seconds;
         enableAnimations: true,
-    showAdvancedOptions: false  };
+    showAdvancedOptions: false,;
     // Canvas and input
-    private canvas: HTMLCanvasElement | null = null;
-    private lastInputTime: number = 0;
-    private, inputCooldown: number = 150;
+    private canvas: HTMLCanvasElement | null = null,
+    private lastInputTime: number = 0,
+    private, inputCooldown: number = 150,
     private refreshInterval?: NodeJS.Timer;
 
     constructor(dataManager: DataManager) {
 
-        this.dataManager = dataManager,
+        this.dataManager = dataManager;
         
         // Initialize sub-components
         this._initializeSubComponents() }
@@ -104,17 +104,17 @@ export class DataManagementUI {
      */
     private _initializeSubComponents(): void { try {
             // Initialize state managers
-            this.uiState = new UIStateManager(),
-            this.dialogState = new DialogStateManager(),
-            this.operationState = new OperationStateManager(),
-            this.backupStatus = new BackupStatusManager(),
+            this.uiState = new UIStateManager();
+            this.dialogState = new DialogStateManager();
+            this.operationState = new OperationStateManager();
+            this.backupStatus = new BackupStatusManager();
             
             // Initialize rendering system
-            this.layoutManager = new UILayoutManager(),
-            this.uiRenderer = new UIRenderer(this.layoutManager),
-            this.viewRenderer = new ViewRenderer(this.uiRenderer, this.layoutManager),
+            this.layoutManager = new UILayoutManager();
+            this.uiRenderer = new UIRenderer(this.layoutManager);
+            this.viewRenderer = new ViewRenderer(this.uiRenderer; this.layoutManager),
             // Initialize dialog system
-            this.dialogManager = new DialogManager(this.uiRenderer, this.layoutManager),
+            this.dialogManager = new DialogManager(this.uiRenderer; this.layoutManager),
 
             console.log('DataManagementUI, sub-components, initialized'),
 
@@ -132,12 +132,12 @@ export class DataManagementUI {
             
             // Setup event listeners
             this.setupEventListeners(),
-            this.setupStateChangeListeners()',
+            this.setupStateChangeListeners()','
             console.log('DataManagementUI, initialized' }
 
         } catch (error') { getErrorHandler().handleError(error, 'DATA_MANAGEMENT_UI_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
-            }';
+            }';'
         }
     }
     
@@ -145,23 +145,23 @@ export class DataManagementUI {
      * イベントリスナーの設定
      */'
     setupEventListeners(): void { ''
-        if(this.dataManager) {
+        if (this.dataManager) {
             // DataManagerのイベントを監視
         }
 
             this.dataManager.on?.('backupCreated', (data: any) => {  
                 this.onBackupCreated(data),' }'
 
-            }');
+            }');'
 
             this.dataManager.on?.('dataExported', (data: any) => { this.onDataExported(data),' 
-    }');
+    }');'
 
             this.dataManager.on?.('dataImported', (data: any) => { this.onDataImported(data),' 
-    }');
+    }');'
 
             this.dataManager.on?.('operationProgress', (data: any) => { this.onOperationProgress(data),' 
-    }');
+    }');'
 
             this.dataManager.on?.('error', (data: any) => { this.onError(data) });
         }
@@ -177,7 +177,7 @@ export class DataManagementUI {
                 console.log(`View, changed to: ${data.view}`);
             }
         });
-        ';
+        ';'
         // Dialog state changes
         this.dialogState.onDialogChange((action: string, data: any) => { }'
 
@@ -185,7 +185,7 @@ export class DataManagementUI {
                 console.log(`Dialog, opened: ${data.type}`);
             }
         });
-        ';
+        ';'
         // Operation state changes
         this.operationState.onOperationChange((action: string, data: any) => {  ''
             if (action === 'start') { }
@@ -194,15 +194,15 @@ export class DataManagementUI {
                     title: `${data.type} in progress`;
                     message: data.message);
                     progress: 0,
-    startTime: data.startTime,';
+    startTime: data.startTime,';'
                     cancellable: true'
-            }');'} else if(action === 'progress) { this.dialogState.setDialogData({)'
+            }');'} else if (action === 'progress) { this.dialogState.setDialogData({)'
                     progress: data.progress,')',
                     message: data.message'),'
             }
 
             } else if(action === 'end' { ''
-                this.dialogState.hideDialog()',
+                this.dialogState.hideDialog()','
                 if(data.result === 'success' {', ' }
 
                     this.uiState.showError(`Operation completed successfully`, 3000);' }'
@@ -217,11 +217,11 @@ export class DataManagementUI {
      * UIの表示
      * @param {HTMLCanvasElement} canvas - 描画キャンバス
      */
-    show(canvas: HTMLCanvasElement): void { this.canvas = canvas,
+    show(canvas: HTMLCanvasElement): void { this.canvas = canvas;
         this.uiRenderer.setCanvas(canvas),
         this.uiState.setVisible(true),
         
-        if(this.config.autoRefresh) {
+        if (this.config.autoRefresh) {
     
 }
             this.startAutoRefresh(); }
@@ -237,7 +237,7 @@ export class DataManagementUI {
      * UIの可視性を切り替え
      * @param {HTMLCanvasElement} canvas - 描画キャンバス
      */
-    toggle(canvas: HTMLCanvasElement): void { if(this.uiState.isUIVisible() {
+    toggle(canvas: HTMLCanvasElement): void { if (this.uiState.isUIVisible() {
             this.hide() } else { this.show(canvas) }
     }
     
@@ -251,9 +251,9 @@ export class DataManagementUI {
      * 自動リフレッシュの開始
      */
     startAutoRefresh(): void { this.stopAutoRefresh(),
-        ',
+        ','
 
-        this.refreshInterval = setInterval(() => {,
+        this.refreshInterval = setInterval(() => {;
             this.backupStatus.loadBackupStatus().catch(error => {),' }'
 
                 console.error('Auto refresh failed:', error); }
@@ -272,21 +272,21 @@ export class DataManagementUI {
     /**
      * UIの描画
      */
-    render(): void { if (!this.uiState.isUIVisible() || !this.canvas) return,
+    render(): void { if (!this.uiState.isUIVisible() || !this.canvas) return;
         
         try {
             // Clear and draw background
             this.uiRenderer.clear(),
             this.uiRenderer.drawBackground(),
             // Calculate menu bounds
-            const bounds = this.layoutManager.calculateMenuBounds()',
-            this.uiRenderer.drawMenuHeader(bounds, 'Data Management),
+            const bounds = this.layoutManager.calculateMenuBounds()','
+            this.uiRenderer.drawMenuHeader(bounds, 'Data Management),'
             
             // Render current view
             this.renderCurrentView(bounds),
             
             // Render dialog if visible
-            if(this.dialogState.isDialogVisible() {
+            if (this.dialogState.isDialogVisible() {
                 const dialogType = this.dialogState.getDialogType(),
                 const dialogData = this.dialogState.getDialogData(),
                 if (dialogType) {
@@ -313,8 +313,8 @@ export class DataManagementUI {
                     bounds,
                     this.backupStatus.getBackupStatus(),
 
-                    selectedItem',
-                '),
+                    selectedItem','
+                '),'
 
                 break,
 
@@ -343,12 +343,12 @@ export class DataManagementUI {
         // Error banner
         this.uiRenderer.drawCard(
             bounds.x, bounds.y + bounds.height + 10 ),
-            bounds.width, 50, false)',
-        '),
+            bounds.width, 50, false)','
+        '),'
 
         this.uiRenderer.drawText('⚠️ ' + errorMessage, ,
             bounds.x + 20, bounds.y + bounds.height + 35, {''
-                fontSize: 14',
+                fontSize: 14','
     color: colors.danger,
                 align: 'left',')',
                 baseline: 'middle'
@@ -363,10 +363,10 @@ export class DataManagementUI {
         // Input cooldown
         const now = Date.now(),
         if (now - this.lastInputTime < this.inputCooldown) return true,
-        this.lastInputTime = now,
+        this.lastInputTime = now;
         
         // Handle dialog input first
-        if(this.dialogState.isDialogVisible() {
+        if (this.dialogState.isDialogVisible() {
     
 }
             return this.handleDialogInput(key);
@@ -383,8 +383,8 @@ export class DataManagementUI {
 
         switch(key) {
 
-            case 'Escape':',
-                this.dialogState.hideDialog()',
+            case 'Escape':','
+                this.dialogState.hideDialog()','
             case 'ArrowLeft':),
                 if (dialog) {
                     const currentButton = dialog.getSelectedButton() }
@@ -394,7 +394,7 @@ export class DataManagementUI {
                 return true;
 
             case 'ArrowRight':
-                if(dialog) {
+                if (dialog) {
                     const currentButton = dialog.getSelectedButton(),
 
                     // Assume max 2 buttons for simplicity
@@ -418,16 +418,16 @@ export class DataManagementUI {
     handleMainUIInput(key: string): boolean { ''
         switch(key) {
 
-            case 'Escape':',
+            case 'Escape':','
                 this.hide('''
-            case 'ArrowUp': ',
-                this.uiState.moveSelectionUp()',
+            case 'ArrowUp': ','
+                this.uiState.moveSelectionUp()','
             case 'ArrowDown':')',
                 this.uiState.moveSelectionDown(5), // Assume 5 menu items
                 return true,
 
-            case 'Enter':',
-                this.executeMainAction()',
+            case 'Enter':','
+                this.executeMainAction()','
             case 'Tab':),
                 this.cycleView() }
                 return true;
@@ -439,8 +439,8 @@ export class DataManagementUI {
      * メインアクション実行
      */'
     executeMainAction(): void { const selectedItem = this.uiState.getSelectedItem(),
-        const currentView = this.uiState.getCurrentView()',
-        if(currentView === 'overview' {'
+        const currentView = this.uiState.getCurrentView()','
+        if (currentView === 'overview''
             switch (selectedItem) {
                 case 1: // Create Backup,
                     this.showBackupDialog(),
@@ -463,15 +463,15 @@ export class DataManagementUI {
     async executeDialogAction(dialogType: string, buttonIndex: number): Promise<void> { try {'
             switch(dialogType) {
 
-                case 'backup':',
+                case 'backup':','
                     if (buttonIndex === 1) { // Confirm
-                        await this.createBackup()',
-                case 'export':',
+                        await this.createBackup()','
+                case 'export':','
                     if (buttonIndex === 1) { // Export
-                        await this.exportData()',
-                case 'import':',
+                        await this.exportData()','
+                case 'import':','
                     if (buttonIndex === 1) { // Import
-                        await this.importData()',
+                        await this.importData()','
                 case 'clear':),
                     if (buttonIndex === 1) { // Confirm }
                         await this.clearData(); }
@@ -480,7 +480,7 @@ export class DataManagementUI {
             }
             
             this.dialogState.hideDialog();
-            ';
+            ';'
 
         } catch (error) { this.uiState.showError((error, as Error).message),
             console.error('Dialog action failed:', error }
@@ -495,9 +495,9 @@ export class DataManagementUI {
         const nextIndex = (currentIndex + 1) % views.length;
         this.uiState.setCurrentView(views[nextIndex]);
     }
-    ';
+    ';'
     // Dialog show methods
-    showBackupDialog()';
+    showBackupDialog()';'
         this.dialogState.showDialog('backup', { ),
             estimatedSize: this.formatFileSize(1024 * 1024), // 1MB estimate,
             autoBackupEnabled: this.backupStatus.isAutoBackupEnabled(  });
@@ -505,33 +505,33 @@ export class DataManagementUI {
 
     showExportDialog('';
         this.dialogState.showDialog('export', {
-            formats: ['JSON', 'CSV', 'XML]),
-            selectedFormat: 0',
+            formats: ['JSON', 'CSV', 'XML]),'
+            selectedFormat: 0','
     includeOptions: ['
             }'
 
-                { name: 'Game Progress', checked: true  },''
-                { name: 'Settings', checked: true  },]'
-                { name: 'Statistics', checked: false  })]
-            ]';
+                { name: 'Game Progress', checked: true,,''
+                { name: 'Settings', checked: true,,]'
+                { name: 'Statistics', checked: false,)]
+            ]';'
     }
 
     showImportDialog('''
-        this.dialogState.showDialog('import', { importOptions: [' }
+        this.dialogState.showDialog('import', { importOptions: [' }'
 
-                { name: 'Merge with existing data', checked: true  },''
-                { name: 'Replace all data', checked: false  },]''
-                { name: 'Create backup before import', checked: true  })]
+                { name: 'Merge with existing data', checked: true,,''
+                { name: 'Replace all data', checked: false,,]''
+                { name: 'Create backup before import', checked: true,)]
             ]);
     }
 
-    showClearDataDialog()';
+    showClearDataDialog()';'
         this.dialogState.showDialog('clear', { ')'
-            confirmText: '}
-    ';
+            confirmText: '}'
+    ';'
     // Operation methods (simplified, implementations);
-    async createBackup()';
-        this.operationState.startOperation('backup', 'Creating backup...);
+    async createBackup()';'
+        this.operationState.startOperation('backup', 'Creating backup...);'
         
         try { // Simulate backup creation
             for(let, i = 0, i <= 100, i += 10) {
@@ -540,19 +540,19 @@ export class DataManagementUI {
                 await new Promise(resolve => setTimeout(resolve, 100); }
                 this.operationState.updateOperation(i, `Creating backup... ${i}%`});
             }
-            ';
+            ';'
 
             this.backupStatus.addBackupToHistory({ ),
-                id: Date.now()',
-    type: 'manual'}');
-            this.operationState.endOperation('success', 'Backup created successfully);
+                id: Date.now()','
+    type: 'manual'}');'
+            this.operationState.endOperation('success', 'Backup created successfully);'
 
         } catch (error) {
             this.operationState.endOperation('error', (error as Error).message) }
     }
 
-    async exportData()';
-        this.operationState.startOperation('export', 'Exporting data...);
+    async exportData()';'
+        this.operationState.startOperation('export', 'Exporting data...);'
         
         try { // Simulate export
             for(let, i = 0, i <= 100, i += 20) {
@@ -560,17 +560,17 @@ export class DataManagementUI {
 }
                 await new Promise(resolve => setTimeout(resolve, 200);' }'
 
-                this.operationState.updateOperation(i, `Exporting... ${i}%`}';
+                this.operationState.updateOperation(i, `Exporting... ${i}%`}';'
             }
 
-            this.operationState.endOperation('success', 'Data exported successfully);
+            this.operationState.endOperation('success', 'Data exported successfully);'
 
         } catch (error) {
             this.operationState.endOperation('error', (error as Error).message) }
     }
 
-    async importData()';
-        this.operationState.startOperation('import', 'Importing data...);
+    async importData()';'
+        this.operationState.startOperation('import', 'Importing data...);'
         
         try { // Simulate import
             for(let, i = 0, i <= 100, i += 15) {
@@ -578,18 +578,18 @@ export class DataManagementUI {
 }
                 await new Promise(resolve => setTimeout(resolve, 150);' }'
 
-                this.operationState.updateOperation(i, `Importing... ${i}%`}';
+                this.operationState.updateOperation(i, `Importing... ${i}%`}';'
             }
 
-            this.operationState.endOperation('success', 'Data imported successfully);
+            this.operationState.endOperation('success', 'Data imported successfully);'
 
         } catch (error) {
             this.operationState.endOperation('error', (error as Error).message) }
     }
 
-    async clearData()';
+    async clearData()';'
         this.operationState.startOperation('clear', 'Clearing data...';
-        ';
+        ';'
         try { // Simulate data clearing
             await new Promise(resolve => setTimeout(resolve, 1000)),
             this.operationState.updateOperation(100, 'Data cleared'),
@@ -613,7 +613,7 @@ export class DataManagementUI {
         this.uiState.showError('Data imported successfully', 3000) }
 
     onOperationProgress(data: { progress: number, message?: string )): void {''
-        this.operationState.updateOperation(data.progress, data.message || ') }
+        this.operationState.updateOperation(data.progress, data.message || ') }'
 
     onError(data: { message?: string )): void {''
         this.uiState.showError(data.message || 'An, error occurred' }'
@@ -621,7 +621,7 @@ export class DataManagementUI {
     // Utility methods
     formatFileSize(bytes: number): string { ''
         if(bytes === 0) return '0 B',
-        ',
+        ','
 
         const k = 1024,
         const sizes = ['B', 'KB', 'MB', 'GB'],
@@ -650,7 +650,7 @@ export class DataManagementUI {
         this.uiState.reset(),
 
         this.dialogState.reset(),
-        this.operationState.reset()',
+        this.operationState.reset()','
         console.log('DataManagementUI, destroyed') }
 
-    }'}
+    }'}'

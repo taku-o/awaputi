@@ -5,55 +5,54 @@
 
 // Interfaces for WCAG rule engine
 interface RuleEngineConfig { enabled: boolean,
-    level: 'A' | 'AA' | 'AAA',
-    includeWarnings: boolean,
-    autoFixEnabled: boolean  }
-';
+    level: 'A' | 'AA' | 'AAA';
+    includeWarnings: boolean;
+    autoFixEnabled: boolean;
+';'
 
 interface GuidelineInfo { name: string,''
-    level: 'A' | 'AA' | 'AAA',
+    level: 'A' | 'AA' | 'AAA';
     category: 'perceivable' | 'operable' | 'understandable' | 'robust'
             }
 
 interface ExecutionState { running: boolean,
-    currentTest: string | null,
+    currentTest: string | null;
     results: Map<string, TestResult> }
 
 interface TestResult { passed: boolean,
-    issues: TestIssue[],
-    warnings?: TestWarning[]
-     }
+    issues: TestIssue[];
+    warnings?: TestWarning[];
 
 interface TestIssue { element?: Element,
 
-    issue: string,
-    severity: 'error' | 'warning',
-    guideline: string,
-    suggestion: string,
-    details?: any  }
+    issue: string;
+    severity: 'error' | 'warning';
+    guideline: string;
+    suggestion: string;
+    details?: any;
 
 interface TestWarning { element?: Element,
 
-    issue: string,
-    severity: 'warning',
-    guideline: string,
-    suggestion: string  }
+    issue: string;
+    severity: 'warning';
+    guideline: string;
+    suggestion: string;
 
 interface RGB { r: number,
-    g: number,
-    b: number }
+    g: number;
+    b: number;
 
 type TestMethod = (options?: any) => TestResult | Promise<TestResult>;
 
 export class WCAGRuleEngine {
-    private config: RuleEngineConfig,
+    private config: RuleEngineConfig;
     private, guidelines: Record<string, GuidelineInfo>,
-    private testRegistry: Map<string, TestMethod>,
-    private executionState: ExecutionState',
+    private testRegistry: Map<string, TestMethod>;
+    private executionState: ExecutionState';'
 
     constructor(config: Partial<RuleEngineConfig> = {)) {
         this.config = {'
-            enabled: true,
+            enabled: true;
             level: 'AA',
             includeWarnings: true,
     autoFixEnabled: false,
@@ -109,43 +108,43 @@ export class WCAGRuleEngine {
     /**
      * Set up test method registry
      */''
-    private setupTestRegistry()';
+    private setupTestRegistry()';'
         this.testRegistry.set('altText', this.testAltText.bind(this));
         this.testRegistry.set('imageLabels', this.testImageLabels.bind(this));
         this.testRegistry.set('decorativeImages', this.testDecorativeImages.bind(this));
-        ';
+        ';'
         // 1.3 Adaptable tests
         this.testRegistry.set('headingStructure', this.testHeadingStructure.bind(this));
         this.testRegistry.set('meaningfulSequence', this.testMeaningfulSequence.bind(this));
         this.testRegistry.set('sensoryCues', this.testSensoryCues.bind(this));
-        ';
+        ';'
         // 1.4 Distinguishable tests
         this.testRegistry.set('colorContrast', this.testColorContrast.bind(this));
         this.testRegistry.set('audioControl', this.testAudioControl.bind(this));
         this.testRegistry.set('textResize', this.testTextResize.bind(this));
-        ';
+        ';'
         // 2.1 Keyboard accessible tests
         this.testRegistry.set('keyboardNavigation', this.testKeyboardNavigation.bind(this));
         this.testRegistry.set('noKeyboardTrap', this.testNoKeyboardTrap.bind(this));
-        ';
+        ';'
         // 2.4 Navigable tests
         this.testRegistry.set('bypassBlocks', this.testBypassBlocks.bind(this));
         this.testRegistry.set('pageTitle', this.testPageTitle.bind(this));
         this.testRegistry.set('focusOrder', this.testFocusOrder.bind(this));
         this.testRegistry.set('linkPurpose', this.testLinkPurpose.bind(this));
-        ';
+        ';'
         // 3.1 Readable tests
         this.testRegistry.set('languageOfPage', this.testLanguageOfPage.bind(this));
-        ';
+        ';'
         // 3.2 Predictable tests
         this.testRegistry.set('onFocus', this.testOnFocus.bind(this));
         this.testRegistry.set('onInput', this.testOnInput.bind(this));
         this.testRegistry.set('consistentNavigation', this.testConsistentNavigation.bind(this));
-        ';
+        ';'
         // 3.3 Input assistance tests
         this.testRegistry.set('errorIdentification', this.testErrorIdentification.bind(this));
         this.testRegistry.set('labelsInstructions', this.testLabelsInstructions.bind(this));
-        ';
+        ';'
         // 4.1 Compatible tests
         this.testRegistry.set('parsing', this.testParsing.bind(this));
         this.testRegistry.set('nameRoleValue', this.testNameRoleValue.bind(this));
@@ -156,7 +155,7 @@ export class WCAGRuleEngine {
      * Run a specific test
      */'
     async runTest(testName: string, options: any = {}): Promise<TestResult | null> { ''
-        if(this.executionState.running) {
+        if (this.executionState.running) {
 
             console.warn('WCAGRuleEngine: Test, already running }'
             return, null;
@@ -165,14 +164,14 @@ export class WCAGRuleEngine {
 
         if (!testMethod) { }'
 
-            console.warn(`WCAGRuleEngine: Unknown, test: ${testName}`}';
-            return { passed: false };
+            console.warn(`WCAGRuleEngine: Unknown, test: ${testName}`}';'
+            return { passed: false,;
                 issues: [{ }
 
                     issue: `Test ${testName} not implemented`;
                     severity: 'error',
                     guideline: ',]';
-                    suggestion: '];
+                    suggestion: '],'
                 }]
             } }
 
@@ -183,14 +182,14 @@ export class WCAGRuleEngine {
             this.executionState.results.set(testName, result),
             return result } catch (error) {
             console.error(`WCAGRuleEngine: Error in test ${testName}:`, error);
-            return { passed: false };
+            return { passed: false,;
 
                 issues: [{ }'
 
                     issue: `Test, error: ${(error, as, Error'}'.message}`;
                     severity: 'error',
                     guideline: ',]';
-                    suggestion: '];
+                    suggestion: '];'
                 }]
             } } finally { this.executionState.running = false,
             this.executionState.currentTest = null }
@@ -199,20 +198,20 @@ export class WCAGRuleEngine {
     /**
      * Test: Alt text for images'
      */''
-    private testAltText()';
-        const images = document.querySelectorAll('img);
+    private testAltText()';'
+        const images = document.querySelectorAll('img);'
 
         images.forEach((img) => {  ''
             const alt = img.getAttribute('alt'),
             const src = img.getAttribute('src',
-            ',
+            ','
             // Check for missing alt attribute
-            if(alt === null) {
+            if (alt === null) {
                 issues.push({'
                     element: img,
                     issue: 'Image missing alt attribute',
                     severity: 'error' }''
-                    guideline: '1.1.1',') }
+                    guideline: '1.1.1',') }'
 
                     suggestion: 'Add meaningful alt text or empty alt="" for decorative images'); 
     }
@@ -221,13 +220,13 @@ export class WCAGRuleEngine {
             else if(alt && (alt.toLowerCase().includes('image' || alt.toLowerCase().includes('picture)' { warnings.push({'
                     element: img,
                     issue: 'Alt text may not be descriptive enough',
-                    severity: 'warning',',
+                    severity: 'warning',','
                     guideline: '1.1.1',')',
                     suggestion: 'Use more descriptive alt text that conveys the image content'
             }
 
             // Check for overly long alt text
-            else if(alt && alt.length > 125) { warnings.push({'
+            else if (alt && alt.length > 125) { warnings.push({'
                     element: img,
                     issue: 'Alt text is very long',
                     severity: 'warning', ')',
@@ -235,20 +234,20 @@ export class WCAGRuleEngine {
                     suggestion: 'Consider using shorter alt text or longdesc attribute')'
             }
         };
-        ';
+        ';'
         // Check canvas elements
         const canvases = document.querySelectorAll('canvas';
-        canvases.forEach(canvas => {  '),
-            const hasLabel = canvas.getAttribute('aria-label') || ',
-                           canvas.getAttribute('aria-labelledby) ||,
+        canvases.forEach(canvas => {  '),'
+            const hasLabel = canvas.getAttribute('aria-label') || ','
+                           canvas.getAttribute('aria-labelledby) ||,'
                            canvas.textContent?.trim(),
 
-            if(!hasLabel) {
+            if (!hasLabel) {
                 issues.push({ : undefined'
                     element: canvas,
                     issue: 'Canvas element missing accessible name',
                     severity: 'error' }''
-                    guideline: '1.1.1',') }
+                    guideline: '1.1.1',') }'
 
                     suggestion: 'Add aria-label or provide alternative content'); 
     };
@@ -261,8 +260,8 @@ export class WCAGRuleEngine {
     /**
      * Test: Color contrast ratios'
      */''
-    private testColorContrast()';
-        const textElements = document.querySelectorAll('*);
+    private testColorContrast()';'
+        const textElements = document.querySelectorAll('*);'
         
         textElements.forEach(element => {  ),
             const styles = window.getComputedStyle(element),
@@ -282,7 +281,7 @@ export class WCAGRuleEngine {
                  : undefined
                 const requiredContrast = isLargeText ? 3.0 : 4.5, // AA level
                 
-                if(contrast < requiredContrast) {
+                if (contrast < requiredContrast) {
     
 }
                     issues.push({) }
@@ -318,49 +317,49 @@ export class WCAGRuleEngine {
     private testKeyboardNavigation(): TestResult { const issues: TestIssue[] = [],
         const warnings: TestWarning[] = [],
         // Check focusable elements
-        const focusableElements = document.querySelectorAll()',
-            'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"]",
-        ',
-        ',
+        const focusableElements = document.querySelectorAll()','
+            'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"]",'
+        ','
+        ','
 
         focusableElements.forEach(element => { ')'
-            // Check tabindex values'),
+            // Check tabindex values'),'
             const tabIndex = element.getAttribute('tabindex',
-            if (tabIndex && parseInt(tabIndex) > 0') {
+            if (tabIndex && parseInt(tabIndex) > 0') {'
                 warnings.push({'
                     element,
                     issue: 'Positive tabindex found',
-                    severity: 'warning',',
-                    guideline: '2.1.1',') }
+                    severity: 'warning',','
+                    guideline: '2.1.1',') }'
 
                     suggestion: 'Use tabindex="0" or rely on natural tab order'); 
     }
-            ';
+            ';'
             // Check for click handlers without keyboard handlers
             const hasClickHandler = (element, as HTMLElement').onclick || ';
                                   element.hasAttribute('onclick';
             const hasKeyHandler = (element, as HTMLElement).onkeydown || (element, as HTMLElement').onkeyup ||';
-                                element.hasAttribute('onkeydown') || ';
+                                element.hasAttribute('onkeydown') || ';'
                                 element.hasAttribute('onkeyup');
 
             if(hasClickHandler && !hasKeyHandler && !['button', 'a', 'input].includes(element.tagName.toLowerCase()) { issues.push({'
                     element,
-                    issue: 'Interactive element missing keyboard event handler',',
+                    issue: 'Interactive element missing keyboard event handler',','
                     severity: 'error',')',
                     guideline: '2.1.1',
                     suggestion: 'Add keyboard event handlers(keydown/keyup) for interactive elements'
             }
         };
-        ';
+        ';'
         // Check custom controls for keyboard support
-        const customControls = document.querySelectorAll('[role="button"], [role="tab"], [role="menuitem"]";
-        customControls.forEach(control => { '),
+        const customControls = document.querySelectorAll('[role="button"], [role="tab"], [role="menuitem"]";'
+        customControls.forEach(control => { '),'
             if(!control.hasAttribute('tabindex)' {'
                 issues.push({'
                     element: control,
                     issue: 'Custom control missing tabindex',
-                    severity: 'error',',
-                    guideline: '2.1.1',' }
+                    severity: 'error',','
+                    guideline: '2.1.1',' }'
 
                     suggestion: 'Add appropriate tabindex for keyboard navigation'); 
     }
@@ -374,16 +373,16 @@ export class WCAGRuleEngine {
     /**
      * Test: Name, Role, Value for custom components'
      */''
-    private testNameRoleValue()';
+    private testNameRoleValue()';'
             '[role], [aria-label], [aria-labelledby], [aria-describedby]');
 
-        interactiveElements.forEach(element => {  '),
+        interactiveElements.forEach(element => {  '),'
             const role = element.getAttribute('role'),
             const ariaLabel = element.getAttribute('aria-label'),
-            const ariaLabelledBy = element.getAttribute('aria-labelledby),
+            const ariaLabelledBy = element.getAttribute('aria-labelledby),'
             
             // Check if role has required properties
-            if(role) {
+            if (role) {
                 const requiredProps = this.getRequiredAriaProperties(role),
                 requiredProps.forEach(prop => {),
                     if(!element.hasAttribute(prop)) {
@@ -393,19 +392,19 @@ export class WCAGRuleEngine {
                             element,' }'
 
                             issue: `Missing required ARIA, property: ${prop} for role="${role}"`;""
-                            severity: 'error',';
+                            severity: 'error',';'
                             guideline: '4.1.2');
                             suggestion: `Add ${prop} attribute for proper accessibility`);
                         }
-                }';
-                ';
+                }';'
+                ';'
                 // Check for accessible name
                 if(!ariaLabel && !ariaLabelledBy && !element.textContent?.trim()) { issues.push({'
                         element, : undefined''
                         issue: `Element with role="${role }" missing accessible name`;""
-                        severity: 'error',';
+                        severity: 'error',';'
                         guideline: '4.1.2',')';
-                        suggestion: 'Add aria-label or aria-labelledby for accessible name');
+                        suggestion: 'Add aria-label or aria-labelledby for accessible name'),
     };
         
         return { passed: issues.length === 0,
@@ -495,7 +494,7 @@ export class WCAGRuleEngine {
      */
     private parseColor(color: string): RGB | null { // Handle rgb/rgba format
         const rgbMatch = color.match(/rgba? \((\d+),\s*(\d+),\s*(\d+)/),
-        if(rgbMatch) {
+        if (rgbMatch) {
             return { : undefined
                 r: parseInt(rgbMatch[1] 
                , g: parseInt(rgbMatch[2] };)
@@ -504,7 +503,7 @@ export class WCAGRuleEngine {
         
         // Handle hex format
         const hexMatch = color.match(/^#([0-9a-f]{ 6)$/i),
-        if(hexMatch) {
+        if (hexMatch) {
             const hex = hexMatch[1],
             return { r: parseInt(hex.substr(0, 2), 16) }
                 g: parseInt(hex.substr(2, 2), 16) };
@@ -531,12 +530,12 @@ export class WCAGRuleEngine {
      * Get required ARIA properties for a role
      */''
     private getRequiredAriaProperties(role: string): string[] { const requiredProps: Record<string, string[]> = {', 'checkbox': ['aria-checked],
-            'radio': ['aria-checked],
-            'combobox': ['aria-expanded],
-            'slider': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax],
-            'spinbutton': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax],
-            'progressbar': ['aria-valuenow],
-            'scrollbar': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax', 'aria-orientation] };
+            'radio': ['aria-checked],'
+            'combobox': ['aria-expanded],'
+            'slider': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax],'
+            'spinbutton': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax],'
+            'progressbar': ['aria-valuenow],'
+            'scrollbar': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax', 'aria-orientation] };'
         
         return requiredProps[role] || [];
     }
@@ -546,19 +545,19 @@ export class WCAGRuleEngine {
      */'
     shouldRunGuideline(guidelineId: string): boolean { const guideline = this.guidelines[guidelineId],
         if(!guideline) return false,
-        ',
+        ','
 
         const level = this.config.level,
         if (level === 'A') return guideline.level === 'A',
         if (level === 'AA') return guideline.level === 'A' || guideline.level === 'AA',
-        if(level === 'AAA) return true,
+        if(level === 'AAA) return true,'
         
         return false }
 
     /**
      * Get test results
      */
-    getTestResults(): Array<{test: string} & TestResult> { return Array.from(this.executionState.results.entries().map(([test, result]) => ({
+    getTestResults(): Array<{test: string, & TestResult> { return Array.from(this.executionState.results.entries().map(([test, result]) => ({
             test,
             ...result
         });
@@ -573,7 +572,7 @@ export class WCAGRuleEngine {
      * Update configuration
      */
     updateConfig(newConfig: Partial<RuleEngineConfig>): void { this.config = {
-            ...this.config,
+            ...this.config;
             ...newConfig }
 
     /**

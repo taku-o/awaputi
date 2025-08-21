@@ -10,7 +10,7 @@
 import { getErrorHandler  } from '../../utils/ErrorHandler';
 import { getConfigurationManager  } from '../../core/ConfigurationManager';
 import { getLocalizationManager  } from '../../core/LocalizationManager';
-';
+';'
 // Import sub-components
 import { AudioDescriptionManager  } from './AudioDescriptionManager';
 import { AudioCueManager  } from './AudioCueManager';
@@ -28,72 +28,72 @@ type NotificationType = 'info' | 'warning' | 'error' | 'success';
  * 通知オプションインターフェース
  */
 interface NotificationOptions { duration?: number,
-    position?: string,
-    priority?: number,
-    style?: any }
+    position?: string;
+    priority?: number;
+    style?: any;
 
 /**
  * キャプションオプションインターフェース
  */
 interface CaptionOptions { duration?: number,
-    position?: string,
-    style?: any }
+    position?: string;
+    style?: any;
 
 /**
  * 音響キューオプションインターフェース
  */
 interface AudioCueOptions { volume?: number,
-    delay?: number,
-    priority?: number }
+    delay?: number;
+    priority?: number;
 
 /**
  * アナウンスオプションインターフェース
  */
 interface AnnounceOptions { priority?: number,
-    interrupt?: boolean,
-    language?: string }
+    interrupt?: boolean;
+    language?: string;
 
 /**
  * 色彩インジケーターオプションインターフェース
  */
 interface ColorIndicatorOptions { color?: string,
-    intensity?: number,
-    duration?: number }
+    intensity?: number;
+    duration?: number;
 
 /**
  * コンポーネント状態インターフェース
  */
 interface ComponentStatus { descriptionManager: any,
-    cueManager: any,
-    feedbackManager: any,
-    settingsManager: any,
-    eventManager: any,
-    legacyAdapter: any  }
+    cueManager: any;
+    feedbackManager: any;
+    settingsManager: any;
+    eventManager: any;
+    legacyAdapter: any;
 
 /**
  * システム状態インターフェース
  */
 interface SystemStatus { initialized: boolean,
-    components: ComponentStatus,
-    eventHistorySize: number,
-    capabilities: any,
-    settings: any }
+    components: ComponentStatus;
+    eventHistorySize: number;
+    capabilities: any;
+    settings: any;
 
 /**
  * デバイス機能インターフェース
  */
 interface DeviceCapabilities { vibration: boolean,
-    screenReader: boolean,
-    reduceMotion: boolean,
-    prefersContrast: boolean,
-    [key: string]: any }
+    screenReader: boolean;
+    reduceMotion: boolean;
+    prefersContrast: boolean;
+    [key: string]: any;
 
 /**
  * 統計情報インターフェース
  */
 interface Statistics { componentsActive: number,
-    settingsConfigured: number,
-    [key: string]: any }
+    settingsConfigured: number;
+    [key: string]: any;
 
 /**
  * AudioManager インターフェース（型定義用）
@@ -104,64 +104,64 @@ interface AudioManager { // AudioManager specific methods }
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager { get(category: string): any,
-    set(category: string, key: string, value: any): void  }
+    set(category: string, key: string, value: any): void;
 
 /**
  * LocalizationManager インターフェース（型定義用）
  */
-interface LocalizationManager { get(key: string): string }
+interface LocalizationManager { get(key: string): string;
 
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler { handleError(error: any, context: any): void  }
+interface ErrorHandler { handleError(error: any, context: any): void;
 
 /**
  * VibrationManager インターフェース（型定義用）
  */
-interface VibrationManager { vibrate(pattern: number[] | number): void }
+interface VibrationManager { vibrate(pattern: number[] | number): void;
 
 /**
  * 設定変更イベントインターフェース
  */
 interface SettingsChangeEvent { key?: string,
-    value?: any,
-    oldValue?: any,
-    type?: string }
+    value?: any;
+    oldValue?: any;
+    type?: string;
 
 /**
  * 音響アクセシビリティ支援クラス - Main Controller
  * Main Controller Patternを採用し、各専門コンポーネントを統制
  */
 export class ComponentAudioAccessibilitySupport {
-    private audioManager: AudioManager,
-    private configManager: ConfigurationManager,
-    private localizationManager: LocalizationManager,
-    private errorHandler: ErrorHandler,
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
     // Sub-components
-    private descriptionManager: AudioDescriptionManager,
-    private cueManager: AudioCueManager,
-    private feedbackManager: AudioFeedbackManager,
-    private settingsManager: AudioSettingsManager,
-    private eventManager: AudioEventManager,
-    private legacyAdapter: AudioLegacyAdapter,
+    private descriptionManager: AudioDescriptionManager;
+    private cueManager: AudioCueManager;
+    private feedbackManager: AudioFeedbackManager;
+    private settingsManager: AudioSettingsManager;
+    private eventManager: AudioEventManager;
+    private legacyAdapter: AudioLegacyAdapter;
     // Legacy compatibility properties
-    private vibrationManager: VibrationManager,
+    private vibrationManager: VibrationManager;
     private, visualNotifications: any[],
     constructor(audioManager: AudioManager) {
 
-        this.audioManager = audioManager,
-        this.configManager = getConfigurationManager(),
-        this.localizationManager = getLocalizationManager(),
-        this.errorHandler = getErrorHandler(),
+        this.audioManager = audioManager;
+        this.configManager = getConfigurationManager();
+        this.localizationManager = getLocalizationManager();
+        this.errorHandler = getErrorHandler();
         
         // Initialize sub-components (dependency, injection),
-        this.descriptionManager = new AudioDescriptionManager(this),
-        this.cueManager = new AudioCueManager(this),
-        this.feedbackManager = new AudioFeedbackManager(this),
-        this.settingsManager = new AudioSettingsManager(this),
-        this.eventManager = new AudioEventManager(this),
-        this.legacyAdapter = new AudioLegacyAdapter(this),
+        this.descriptionManager = new AudioDescriptionManager(this);
+        this.cueManager = new AudioCueManager(this);
+        this.feedbackManager = new AudioFeedbackManager(this);
+        this.settingsManager = new AudioSettingsManager(this);
+        this.eventManager = new AudioEventManager(this);
+        this.legacyAdapter = new AudioLegacyAdapter(this);
         // Legacy compatibility properties
         this.vibrationManager = this.legacyAdapter.getVibrationManager() }
 
@@ -177,7 +177,7 @@ export class ComponentAudioAccessibilitySupport {
             // Settings initialization
             await this.settingsManager.initializeSettings(),
             // Setup event listeners
-            this.setupEventListeners()',
+            this.setupEventListeners()','
             console.log('Audio, accessibility support, fully initialized'),
             
             return true,
@@ -211,9 +211,9 @@ export class ComponentAudioAccessibilitySupport {
      */''
     showVisualNotification(message: string, type: NotificationType = 'info', options: NotificationOptions = { ': void {''
         this.feedbackManager.showVisualNotification(message, type, options),
-        ',
+        ','
         // イベント履歴に記録
-        this.eventManager.recordEvent('visual_notification', { message, type, options ' }
+        this.eventManager.recordEvent('visual_notification', { message, type, options ' }'
 
     /**
      * 字幕の表示（FeedbackManagerに委譲）
@@ -222,7 +222,7 @@ export class ComponentAudioAccessibilitySupport {
      */'
     showCaption(text: string, options: CaptionOptions = { ): void {''
         this.feedbackManager.showCaption(text, options),
-        this.eventManager.recordEvent('caption', { text, options ' }
+        this.eventManager.recordEvent('caption', { text, options ' }'
 
     /**
      * 音声説明の追加（DescriptionManagerに委譲）
@@ -233,7 +233,7 @@ export class ComponentAudioAccessibilitySupport {
      */'
     addAudioDescription(category: string, type: string, params: any = { ), priority: number = 3): void {''
         this.descriptionManager.addDescription(category, type, params, priority),
-        this.eventManager.recordEvent('audio_description', { category, type, params, priority ' }
+        this.eventManager.recordEvent('audio_description', { category, type, params, priority ' }'
 
     /**
      * 音響イベントの処理（CueManagerに委譲）
@@ -243,7 +243,7 @@ export class ComponentAudioAccessibilitySupport {
      */'
     processAudioEvent(eventType: string, eventData: any = {}, audioData: any = { ): void {''
         this.cueManager.processAudioEvent(eventType, eventData, audioData),
-        this.eventManager.recordEvent('audio_event', { eventType, eventData, audioData ' }
+        this.eventManager.recordEvent('audio_event', { eventType, eventData, audioData ' }'
 
     /**
      * 色彩インジケーターの更新（FeedbackManagerに委譲）
@@ -252,7 +252,7 @@ export class ComponentAudioAccessibilitySupport {
      */'
     updateColorIndicator(level: string, options: ColorIndicatorOptions = { ): void {''
         this.feedbackManager.updateColorIndicator(level, options),
-        this.eventManager.recordEvent('color_indicator', { level, options ' }
+        this.eventManager.recordEvent('color_indicator', { level, options ' }'
 
     /**
      * 触覚フィードバックのトリガー（FeedbackManagerに委譲）
@@ -325,7 +325,7 @@ export class ComponentAudioAccessibilitySupport {
      */
     enableAudioDescriptions(enabled: boolean = true): void { ''
         this.descriptionManager.setEnabled(enabled),
-        this.eventManager.recordEvent('audio_descriptions_enabled', { enabled ' }
+        this.eventManager.recordEvent('audio_descriptions_enabled', { enabled ' }'
 
     /**
      * 音響キューの再生
@@ -334,7 +334,7 @@ export class ComponentAudioAccessibilitySupport {
      */'
     playAudioCue(cueType: string, options: AudioCueOptions = { ): void {''
         this.cueManager.playCue(cueType, options),
-        this.eventManager.recordEvent('audio_cue_played', { cueType, options ' }
+        this.eventManager.recordEvent('audio_cue_played', { cueType, options ' }'
 
     /**
      * テキストのアナウンス（スクリーンリーダー向け）
@@ -376,7 +376,7 @@ export class ComponentAudioAccessibilitySupport {
                 feedbackManager: this.feedbackManager.getStatus(),
                 settingsManager: this.settingsManager.getStatus(
     eventManager: this.eventManager.getStatus() };
-                legacyAdapter: this.legacyAdapter.getStatus(); 
+                legacyAdapter: this.legacyAdapter.getStatus(), 
     },
             eventHistorySize: this.eventManager.getEventHistory().length;
             capabilities: this.getCapabilities(
@@ -409,7 +409,7 @@ export class ComponentAudioAccessibilitySupport {
      * クリーンアップ
      */
     destroy(): void { // Sub-components cleanup
-        if(this.descriptionManager) {
+        if (this.descriptionManager) {
     
 }
             this.descriptionManager.destroy(); }
@@ -423,8 +423,8 @@ export class ComponentAudioAccessibilitySupport {
         
         if (this.eventManager) { this.eventManager.destroy() }
         
-        if(this.legacyAdapter) {
-        ',
+        if (this.legacyAdapter) {
+        ','
 
             this.legacyAdapter.destroy() }
 

@@ -29,35 +29,35 @@ const mockGameEngine = {
         setEnabled: jest.fn(
         clearAllEffects: jest.fn(
         screenFlash: jest.fn(
-        screenShake: jest.fn(),',
+        screenShake: jest.fn(),','
     effectQualityController: {''
-        getCurrentQualityLevel: jest.fn((') => 'high',
+        getCurrentQualityLevel: jest.fn((') => 'high','
         setQualityLevel: jest.fn()),
     animationManager: {
         setEnabled: jest.fn(
-        clearAllAnimations: jest.fn(),',
+        clearAllAnimations: jest.fn(),','
     seasonalEffectManager: {''
-        setEnabled: jest.fn()') }
+        setEnabled: jest.fn()') }'
     }
 };'
 // Import after mocking''
 const { EnhancedDebugInterface } = await import('../../src/debug/EnhancedDebugInterface.js');
 describe('EnhancedDebugInterface', () => {  let debugInterface: any,
     let consoleWarnSpy: any,
-    let consoleLogSpy: any,',
-    let consoleErrorSpy: any,',
+    let consoleLogSpy: any,','
+    let consoleErrorSpy: any,','
     beforeEach((') => { }'
         // Console spies' }'
-        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');
+        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');'
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');'
         consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {}');'
         // Clear DOM''
-        document.body.innerHTML = ';
+        document.body.innerHTML = ';'
         
         // Clear localStorage
         localStorage.clear();
         // Create instance
-        debugInterface = new EnhancedDebugInterface(mockGameEngine: any);
+        debugInterface = new EnhancedDebugInterface(mockGameEngine: any),
     });
     afterEach(() => {  if (debugInterface) { }
             debugInterface.destroy(); }
@@ -69,31 +69,31 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
         consoleErrorSpy.mockRestore('';
         document.body.innerHTML = ';)'
         document.head.innerHTML = ';)'
-    }');
+    }');'
     describe('Initialization', (') => {  ''
         test('should initialize with default values', () => {'
             expect(debugInterface.panels).toBeInstanceOf(Map: any),
             expect(debugInterface.activePanel').toBe('overview'),'
             expect(debugInterface.panelHistory).toEqual([]),
-            expect(debugInterface.layout').toBe('docked'),
+            expect(debugInterface.layout').toBe('docked'),'
             expect(debugInterface.shortcuts).toBeInstanceOf(Map: any),
             expect(debugInterface.sessionId).toBeDefined() }'
             expect(debugInterface.sessionStartTime).toBeDefined();' }'
-        }');
+        }');'
         test('should create enhanced debug panel in DOM', (') => {  ''
             const panel = document.getElementById('enhanced-debug-panel'),'
             expect(panel.toBeTruthy(),' }'
             expect(panel.className').toBe('enhanced-debug-panel'););' }'
-        }');
+        }');'
         test('should add debug styles to head', (') => {  ''
             const styles = document.getElementById('enhanced-debug-styles'),'
             expect(styles.toBeTruthy(),' }'
             expect(styles.tagName').toBe('STYLE'););' }'
-        }');
+        }');'
         test('should generate unique session ID', () => {  const debugInterface2 = new EnhancedDebugInterface(mockGameEngine: any),
             expect(debugInterface.sessionId).not.toBe(debugInterface2.sessionId) }'
             debugInterface2.destroy();' }'
-        }');
+        }');'
         test('should setup default shortcuts', () => {  ''
             expect(debugInterface.shortcuts.size).toBeGreaterThan(0'),' }'
             expect(debugInterface.shortcuts.has('ctrl+shift+d').toBe(true);');' }'
@@ -121,7 +121,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(debugInterface.panels.get('mock'}).toBeInstanceOf(MockPanel as any');'
         }''
         test('should not register duplicate panel', (') => {  ''
-            debugInterface.registerPanel('mock', MockPanel'),
+            debugInterface.registerPanel('mock', MockPanel'),'
             const result = debugInterface.registerPanel('mock', MockPanel),
             expect(result).toBe(false'),' }'
             expect(consoleWarnSpy.toHaveBeenCalledWith("Panel 'mock' is already registered");" }"
@@ -135,15 +135,15 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(result).toBe(false: any);'
             expect(consoleErrorSpy.toHaveBeenCalled();'}');
         test('should switch panel correctly', (') => {  ''
-            debugInterface.registerPanel('mock', MockPanel'),
+            debugInterface.registerPanel('mock', MockPanel'),'
             debugInterface.switchPanel('mock'),
-            expect(debugInterface.activePanel').toBe('mock'),
+            expect(debugInterface.activePanel').toBe('mock'),'
             expect(debugInterface.panelHistory').toContain('overview'),' }'
             expect(debugInterface.panels.get('mock').activated).toBe(true););' }'
-        }');
+        }');'
         test('should track panel history', (') => {  ''
-            debugInterface.registerPanel('mock1', MockPanel'),
-            debugInterface.registerPanel('mock2', MockPanel'),
+            debugInterface.registerPanel('mock1', MockPanel'),'
+            debugInterface.registerPanel('mock2', MockPanel'),'
             debugInterface.switchPanel('mock1'),
             debugInterface.switchPanel('mock2'),' }'
             debugInterface.switchPanel('overview');' }'
@@ -172,29 +172,29 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             const callback2 = jest.fn(')',
             debugInterface.registerShortcut('ctrl+shift+x', callback1, 'First shortcut'),
             const result = debugInterface.registerShortcut('ctrl+shift+x', callback2, 'Second shortcut'),
-            expect(result).toBe(false),'),
+            expect(result).toBe(false),'),'
             expect(debugInterface.shortcutConflicts.has('ctrl+shift+x').toBe(true) }'
             expect(consoleWarnSpy.toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should normalize shortcuts correctly', (') => { }'
             expect(debugInterface.normalizeShortcut('Ctrl+Shift+X')').toBe('ctrl+shift+x');');' }'
             expect(debugInterface.normalizeShortcut('CTRL + SHIFT + X'}').toBe('ctrl+shift+x');'
         }''
-        test('should build shortcut string from keyboard event', (') => {  const event = {
+        test('should build shortcut string from keyboard event', (') => {  const event = {'
                 ctrlKey: true,
                 shiftKey: true,
-                altKey: false,',
+                altKey: false,','
                 metaKey: false,' }'
                 key: 'X' }
             },', ';
-            expect(debugInterface.buildShortcutString(event)').toBe('ctrl+shift+x');'}');
+            expect(debugInterface.buildShortcutString(event)').toBe('ctrl+shift+x');'}');'
         test('should handle keyboard events correctly', () => { }'
-            const callback = jest.fn(' }
+            const callback = jest.fn(' }'
             debugInterface.registerShortcut('ctrl+shift+x', callback};
             
             const event = { ctrlKey: true,
                 shiftKey: true),
-                altKey: false)',
+                altKey: false)','
                , metaKey: false,')',
                 key: 'X',
         preventDefault: jest.fn() }
@@ -204,11 +204,11 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(result).toBe(true);
             expect(callback.toHaveBeenCalled();'
             expect(event.preventDefault).toHaveBeenCalled();'}');
-        test('should return false for unregistered shortcuts', (') => {  const event = {
+        test('should return false for unregistered shortcuts', (') => {  const event = {'
                 ctrlKey: true,
                 shiftKey: true,
-                altKey: false,',
-                metaKey: false,',
+                altKey: false,','
+                metaKey: false,','
                 key: 'Z'
             }
         preventDefault: jest.fn(); }
@@ -229,7 +229,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(sessionData.errors).toEqual([]),
             expect(sessionData.metrics).toEqual([]) }'
             expect(sessionData.panels).toEqual([]);' }'
-        }');
+        }');'
         test('should update session data on panel switch', (') => {  ''
             debugInterface.switchPanel('performance'),
             const sessionData = debugInterface.getSessionData(),'
@@ -247,10 +247,10 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(saved.position).toEqual({ x: 100, y: 200 ),''
             expect(saved.size).toEqual({ width: 500, height: 700 )') }'
         }''
-        test('should load settings from localStorage', (') => { const settings = { }
+        test('should load settings from localStorage', (') => { const settings = { }'
                 position: { x: 150, y: 250 },'
                 size: { width: 600, height: 800 },''
-                theme: 'light',';
+                theme: 'light',';'
                 activePanel: 'console';
             },', ';
             localStorage.setItem('enhanced-debug-settings', JSON.stringify(settings);
@@ -259,15 +259,15 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(newDebugInterface.size).toEqual({ width: 600, height: 800 ),''
             expect(newDebugInterface.settings.theme').toBe('light'),'
             newDebugInterface.destroy(),' }'
-        }');
+        }');'
         test('should handle corrupted settings gracefully', (') => {  ''
             localStorage.setItem('enhanced-debug-settings', 'invalid json'),
-            const newDebugInterface = new EnhancedDebugInterface(mockGameEngine as any'),
+            const newDebugInterface = new EnhancedDebugInterface(mockGameEngine as any'),'
             expect(consoleWarnSpy.toHaveBeenCalledWith('Failed to load debug settings:', expect.any(Error) }'
             newDebugInterface.destroy();' }'
-        }');
+        }');'
         test('should not save settings when autoSave is disabled', () => { debugInterface.settings.autoSave = false }'
-            debugInterface.saveSettings(}')', ');
+            debugInterface.saveSettings(}')', ');'
             expect(localStorage.getItem('enhanced-debug-settings'}).toBeNull();'
         }'}');
     describe('UI Interaction', (') => {  ''
@@ -275,15 +275,15 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(debugInterface.isVisible).toBe(false),
             debugInterface.show(),'
             expect(debugInterface.isVisible).toBe(true),
-            expect(debugInterface.debugPanel.style.display').toBe('block'),
+            expect(debugInterface.debugPanel.style.display').toBe('block'),'
             debugInterface.hide(),'
             expect(debugInterface.isVisible).toBe(false),' }'
             expect(debugInterface.debugPanel.style.display').toBe('none'););' }'
-        }');
+        }');'
         test('should minimize and restore correctly', () => {  debugInterface.show(),
             debugInterface.minimize(')',
             expect(debugInterface.debugPanel.classList.contains('minimized').toBe(true),
-            expect(debugInterface.debugPanel.style.height').toBe('40px'),
+            expect(debugInterface.debugPanel.style.height').toBe('40px'),'
             debugInterface.restore(') }'
             expect(debugInterface.debugPanel.classList.contains('minimized').toBe(false); }'
             expect(debugInterface.debugPanel.style.height).toBe(`${debugInterface.size.height)px`});'}');
@@ -304,11 +304,11 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             debugInterface.switchPanel('performance'),
             debugInterface.switchPanel('console') }'
             const history = debugInterface.getPanelHistory(); }'
-            expect(history').toEqual(['overview', 'performance']});'}');
+            expect(history').toEqual(['overview', 'performance']});'}');'
         test('should return registered panels', () => { class MockPanel { }'
-                getDisplayName(') { return 'Mock' }
+                getDisplayName(') { return 'Mock' }'
             }', ';
-            debugInterface.registerPanel('mock1', MockPanel');
+            debugInterface.registerPanel('mock1', MockPanel');'
             debugInterface.registerPanel('mock2', MockPanel);
             const panels = debugInterface.getRegisteredPanels(')';
             expect(panels.toContain('mock1');
@@ -316,12 +316,12 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
         test('should return shortcuts', () => {  const shortcuts = debugInterface.getShortcuts(),
             expect(shortcuts.toBeInstanceOf(Map: any) }'
             expect(shortcuts.size).toBeGreaterThan(0); }'
-        }');
+        }');'
         test('should return shortcut conflicts', () => {  const callback1 = jest.fn() as jest.Mock,
             const callback2 = jest.fn(')',
             debugInterface.registerShortcut('ctrl+x', callback1'),' }'
             debugInterface.registerShortcut('ctrl+x', callback2); }'
-            const conflicts = debugInterface.getShortcutConflicts(}');
+            const conflicts = debugInterface.getShortcutConflicts(}');'
             expect(conflicts.has('ctrl+x').toBe(true);'
         }'}');
     describe('Cleanup', (') => {  ''
@@ -332,10 +332,10 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
                 }''
                 getDisplayName(') { return 'Mock' }''
                 destroy(')';
-            debugInterface.registerPanel('mock', MockPanel');
+            debugInterface.registerPanel('mock', MockPanel');'
             const panel = debugInterface.panels.get('mock');'
             debugInterface.destroy();
-            expect(panel.destroyed).toBe(true');
+            expect(panel.destroyed).toBe(true');'
             expect(document.getElementById('enhanced-debug-panel').toBeNull(')';
             expect(document.getElementById('enhanced-debug-styles').toBeNull();'}');
         test('should save session data on destroy', () => {  debugInterface.settings.autoSave = true,' }'

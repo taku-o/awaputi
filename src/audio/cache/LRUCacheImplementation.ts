@@ -11,51 +11,50 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * Cache statistics interface
  */
 export interface CacheStats { hits: number,
-    misses: number,
-    evictions: number,
-    totalAccesses: number,
-    hitRate?: number,
-    currentSize?: number,
-    maxSize?: number,
-    entryCount?: number,
+    misses: number;
+    evictions: number;
+    totalAccesses: number;
+    hitRate?: number;
+    currentSize?: number;
+    maxSize?: number;
+    entryCount?: number;
     memoryUsageRatio?: number,  }
 
 /**
  * Cache entry info for frequency-based removal
  */
 export interface CacheEntryInfo { key: string,
-    hitCount: number,
-    accessTime: number,
-    size: number,
-    score: number  }
+    hitCount: number;
+    accessTime: number;
+    size: number;
+    score: number;
 
 /**
  * Result of cache removal operations
  */
 export interface RemovalResult { removedCount: number,
-    removedSize: number,
-    removedKeys: string[] }
+    removedSize: number;
+    removedKeys: string[];
 
 /**
  * LRUキャッシュノード
  */
 class CacheNode<T = any> { key: string,
-    value: T,
-    size: number,
-    accessTime: number,
-    hitCount: number,
-    prev: CacheNode<T> | null,
-    next: CacheNode<T> | null,
+    value: T;
+    size: number;
+    accessTime: number;
+    hitCount: number;
+    prev: CacheNode<T> | null;
+    next: CacheNode<T> | null;
     constructor(key: string, value: T, size: number) {
 
-        this.key = key,
-        this.value = value,
-        this.size = size, // バイト単位のサイズ
-        this.accessTime = Date.now(),
-        this.hitCount = 1,
-        this.prev = null,
-
-     }
+        this.key = key;
+        this.value = value;
+        this.size = size; // バイト単位のサイズ
+        this.accessTime = Date.now();
+        this.hitCount = 1;
+        this.prev = null
+}
         this.next = null; }
 }
 
@@ -63,19 +62,19 @@ class CacheNode<T = any> { key: string,
  * LRUキャッシュ実装
  */
 export class LRUCache<T = any> { private readonly maxSize: number,
-    private currentSize: number,
+    private currentSize: number;
     private readonly, cache: Map<string, CacheNode<T>>,
     private readonly head: CacheNode<T>,
     private readonly tail: CacheNode<T>,
-    private stats: CacheStats,
+    private stats: CacheStats;
     constructor(maxSize: number = 50 * 1024 * 1024) {
 
         // デフォルト50MB
-        this.maxSize = maxSize,
-        this.currentSize = 0,
-        this.cache = new Map()',
+        this.maxSize = maxSize;
+        this.currentSize = 0;
+        this.cache = new Map()';'
         this.head = new CacheNode(', null as any, 0',
-        this.tail = new CacheNode(', null as any, 0),
+        this.tail = new CacheNode(', null as any, 0),'
         this.head.next = this.tail,
         this.tail.prev = this.head,
         
@@ -94,7 +93,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      */
     get(key: string): T | null { this.stats.totalAccesses++,
         
-        if(this.cache.has(key) {
+        if (this.cache.has(key) {
         
             const node = this.cache.get(key)!,
             
@@ -118,7 +117,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @param value - 値
      * @param size - サイズ（バイト）
      */
-    set(key: string, value: T, size: number): void { if(this.cache.has(key) {
+    set(key: string, value: T, size: number): void { if (this.cache.has(key) {
             // 既存エントリを更新
             const node = this.cache.get(key)!,
             const oldSize = node.size,
@@ -146,7 +145,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @param key - キー
      * @returns 削除成功
      */
-    delete(key: string): boolean { if(this.cache.has(key) {
+    delete(key: string): boolean { if (this.cache.has(key) {
             const node = this.cache.get(key)!,
             this._removeNode(node),
             this.cache.delete(key),
@@ -159,7 +158,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * キャッシュをクリア
      */
     clear(): void { this.cache.clear(),
-        this.currentSize = 0,
+        this.currentSize = 0;
         this.head.next = this.tail,
         this.tail.prev = this.head,
         
@@ -201,7 +200,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @private
      */
     private _evictLRU(): void { const lru = this.tail.prev,
-        if(lru !== this.head) {
+        if (lru !== this.head) {
             this._removeNode(lru!),
             this.cache.delete(lru!.key),
             this.currentSize -= lru!.size }
@@ -291,7 +290,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
 }
                 break; }
             }
-            ';
+            ';'
 
             this.delete(entry.key);
             removedKeys.push(entry.key);
@@ -302,4 +301,4 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         return { removedCount,
             removedSize };
             removedKeys }
-        }'}
+        }'}'

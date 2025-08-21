@@ -11,18 +11,18 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
     let mockEventStageManager: any,
     let mockInputManager: any,
     let mockCanvas: any,
-    let mockContext: any,',
-    let mockPlayerData: any,',
-    beforeEach((') => {
+    let mockContext: any,','
+    let mockPlayerData: any,','
+    beforeEach((') => {'
         // Mock Canvas and Context'
         mockContext = {''
             fillStyle: ',',
             strokeStyle: ',',
-            lineWidth: 1,',
+            lineWidth: 1,','
             font: ',',
             textAlign: ',',
             textBaseline: ',',
-            shadowColor: ',
+            shadowColor: ','
             shadowBlur: 0,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
@@ -47,22 +47,22 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                 addColorStop: jest.fn()} }
         };
         mockCanvas = { width: 1024,'
-            height: 768,',
+            height: 768,','
             getContext: jest.fn('',
-           , clearedStages: ['tutorial', 'stage1', 'stage2'],',
-            eventParticipationHistory: {', 'spring-cherry-blossom': {)
+           , clearedStages: ['tutorial', 'stage1', 'stage2'],','
+            eventParticipationHistory: {', 'spring-cherry-blossom': {)'
                     participationCount: 2),
                    , bestScore: 18000) }'
                 }),''
-            getPlayerName: jest.fn(').mockReturnValue('TestPlayer' };
+            getPlayerName: jest.fn(').mockReturnValue('TestPlayer' };'
         // Mock EventStageManager'
         mockEventStageManager = { ''
             getAvailableEvents: jest.fn('',
-                   , id: 'spring-cherry-blossom',',
-                    name: '桜の舞うステージ',',
+                   , id: 'spring-cherry-blossom',','
+                    name: '桜の舞うステージ',','
                     type: 'seasonal',')',
-                    season: 'spring')',
-                    isActive: true),',
+                    season: 'spring')','
+                    isActive: true),','
                     endTime: Date.now('',
                        , requiredStages: ['tutorial'] }
                     },
@@ -72,8 +72,8 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                     }
                 },'
                 { ''
-                    id: 'summer-fireworks',',
-                    name: '夏の花火ステージ',',
+                    id: 'summer-fireworks',','
+                    name: '夏の花火ステージ',','
                     type: 'seasonal',')',
                     season: 'summer'),
                    , isActive: false),
@@ -84,7 +84,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                         requiredAP: 100 }
                     }
                 }'
-            ]),';
+            ]),';'
             isEventAvailable: jest.fn(')';
                 return eventId === 'spring-cherry-blossom'),
             getEventById: jest.fn().mockImplementation(eventId = > {  ) }
@@ -93,8 +93,8 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             }),
             startEventStage: jest.fn().mockReturnValue(true,
             validateEventStageAccess: jest.fn().mockReturnValue({ canAccess: true ,
-            getEventParticipationCount: jest.fn().mockReturnValue(2),',
-            hasEventNotifications: jest.fn().mockReturnValue(true),',
+            getEventParticipationCount: jest.fn().mockReturnValue(2),','
+            hasEventNotifications: jest.fn().mockReturnValue(true),','
             getEventNotifications: jest.fn('',
                    , eventId: 'spring-cherry-blossom',')',
                     type: 'EVENT_STARTED',')',
@@ -131,12 +131,12 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             expect(stageSelectScene.eventNotifications).toBeDefined(),
             expect(stageSelectScene.lastEventListUpdate).toBeDefined() }'
             expect(stageSelectScene.notificationUpdateTimer).toBeDefined();' }'
-        }');
+        }');'
         test('should update event list on initialization', () => {  stageSelectScene.initialize(),'
             expect(stageSelectScene.eventList).toHaveLength(2),
             expect(stageSelectScene.eventList[0].id').toBe('spring-cherry-blossom'),' }'
             expect(stageSelectScene.eventList[1].id').toBe('summer-fireworks'););' }'
-        }');
+        }');'
         test('should render event section when events are available', () => {  stageSelectScene.initialize(),
             stageSelectScene.render(mockContext),'
             // Check if event-related rendering methods were called''
@@ -144,19 +144,19 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                 expect.stringContaining('イベント'),
                 expect.any(Number) }'
                 expect.any(Number);' }'
-        }');
+        }');'
         test('should render event stage items with correct information', () => {  stageSelectScene.initialize() }
             const mockEvent = stageSelectScene.eventList[0]; }
             stageSelectScene.renderEventStageItem(mockContext, mockEvent, 100, 200, 300, 80};)'
             // Check if event name was rendered);
-            expect(mockContext.fillText').toHaveBeenCalledWith(')';
+            expect(mockContext.fillText').toHaveBeenCalledWith(')';'
                 '桜の舞うステージ');
                 expect.any(Number);
                 expect.any(Number);'
             // Check if participation count was rendered''
             expect(mockContext.fillText).toHaveBeenCalledWith(')';
                 expect.stringContaining('参加'),
-                expect.any(Number)';
+                expect.any(Number)';'
                 expect.any(Number);'}');
         test('should render event timer correctly', () => {  stageSelectScene.initialize(),
             const timeRemaining = 3600000, // 1 hour'
@@ -165,7 +165,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                 expect.stringContaining('時間'),
                 expect.any(Number) }'
                 expect.any(Number);' }'
-        }');
+        }');'
         test('should show different visual states for active and inactive events', () => {  stageSelectScene.initialize(),
             const activeEvent = stageSelectScene.eventList.find(event => event.isActive),
             const inactiveEvent = stageSelectScene.eventList.find(event => !event.isActive),
@@ -175,7 +175,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             // Should have different fill styles for active vs inactive
             const fillStyleCalls = mockContext.fillRect.mock.calls }'
             expect(fillStyleCalls.length).toBeGreaterThan(0);' }'
-        }');
+        }');'
         test('should update event list periodically', (done) => {  stageSelectScene.initialize(),
             const initialUpdateTime = stageSelectScene.lastEventListUpdate,
             // Mock time passage
@@ -194,7 +194,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             // Check if notification badge was rendered
             expect(mockContext.arc).toHaveBeenCalled(), // For circular badge }'
             expect(mockContext.fill).toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should handle notification badge blinking effect', () => {  stageSelectScene.initialize(),
             stageSelectScene.updateEventNotifications(),
             // Test blinking animation'
@@ -204,12 +204,12 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             jest.spyOn(Date, 'now').mockReturnValue(initialTime + 1000),
             stageSelectScene.renderEventNotificationBadge(mockContext) }'
             expect(mockContext.globalAlpha).toHaveBeenCalledWith(expect.any(Number);' }'
-        }');
+        }');'
         test('should start and stop notification updates correctly', () => {  stageSelectScene.initialize(),
             stageSelectScene.startNotificationUpdates(),
             expect(stageSelectScene.notificationUpdateTimer).toBeDefined() }'
             stageSelectScene.stopNotificationUpdates();' }'
-            expect(stageSelectScene.notificationUpdateTimer).toBeNull(})');
+            expect(stageSelectScene.notificationUpdateTimer).toBeNull(})');'
         test('should update notification list from event manager', () => {  stageSelectScene.initialize(),
             stageSelectScene.updateEventNotifications(),
             expect(mockEventStageManager.getEventNotifications).toHaveBeenCalled() }'
@@ -225,7 +225,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             expect(mockEventStageManager.validateEventStageAccess).toHaveBeenCalledWith(),
                 mockEvent.id, mockPlayerData) }'
             );' }'
-        }');
+        }');'
         test('should validate event stage access before selection', () => {  ''
             stageSelectScene.initialize(')',
             const eventId = 'spring-cherry-blossom')
@@ -234,7 +234,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             expect(mockEventStageManager.validateEventStageAccess).toHaveBeenCalledWith(),
                 eventId, mockPlayerData) }'
             );' }'
-        }');
+        }');'
         test('should prevent access when conditions are not met', (') => {  mockEventStageManager.validateEventStageAccess.mockReturnValue({'
                 canAccess: false,')',
                 reason: 'insufficient_level'),
@@ -245,21 +245,21 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             const eventId = 'summer-fireworks';)
             const result = stageSelectScene.validateEventStageAccess(eventId);'
             expect(result.canAccess).toBe(false);
-            expect(result.reason').toBe('insufficient_level');'}');
+            expect(result.reason').toBe('insufficient_level');'}');'
         test('should select event stage when conditions are met', () => {  ''
             stageSelectScene.initialize(')',
             const eventId = 'spring-cherry-blossom')
             const result = stageSelectScene.selectEventStage(eventId),
             expect(result).toBe(true) }'
             expect(mockEventStageManager.startEventStage).toHaveBeenCalledWith(eventId);' }'
-        }');
+        }');'
         test('should start event stage from selection correctly', () => {  ''
             stageSelectScene.initialize(')',
             const eventId = 'spring-cherry-blossom')
             const result = stageSelectScene.startEventStageFromSelection(eventId),'
             expect(result).toBe(true),' }'
             expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('GameScene');' }'
-        }');
+        }');'
         test('should handle event stage selection errors gracefully', () => {  mockEventStageManager.startEventStage.mockReturnValue(false),
             stageSelectScene.initialize(')',
             const eventId = 'spring-cherry-blossom')
@@ -275,11 +275,11 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             const result = stageSelectScene.handleEventNotificationClick(),
             expect(result).toBe(true) }'
             expect(mockEventStageManager.markNotificationAsRead).toHaveBeenCalled();' }'
-        }');
+        }');'
         test('should mark notifications as read when clicked', () => {  stageSelectScene.initialize() }
             stageSelectScene.updateEventNotifications(); }'
             stageSelectScene.handleEventNotificationClick(});
-            expect(mockEventStageManager.markNotificationAsRead').toHaveBeenCalledWith(')';
+            expect(mockEventStageManager.markNotificationAsRead').toHaveBeenCalledWith(')';'
                 'spring-cherry-blossom'});'}');
         test('should handle click when no notifications exist', () => {  mockEventStageManager.getEventNotifications.mockReturnValue([]),
             stageSelectScene.initialize(),
@@ -293,21 +293,21 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             stageSelectScene.initialize(};)
             // Mock mouse position over event area);'
             mockInputManager.getMousePosition.mockReturnValue({ x: 200, y: 250 });
-            mockInputManager.wasClicked.mockReturnValue(true');
+            mockInputManager.wasClicked.mockReturnValue(true');'
             const handleEventStageSpy = jest.spyOn(stageSelectScene, 'handleEventStageClick');
             stageSelectScene.handleClick({ x: 200, y: 250 ,
             // Should have called event stage handling'
             expect(handleEventStageSpy.toHaveBeenCalled(),' }'
-        }');
+        }');'
         test('should handle notification badge clicks', () => { stageSelectScene.initialize() }
             stageSelectScene.updateEventNotifications(};)
             // Mock mouse position over notification badge);'
             mockInputManager.getMousePosition.mockReturnValue({ x: 950, y: 50 });
-            mockInputManager.wasClicked.mockReturnValue(true');
+            mockInputManager.wasClicked.mockReturnValue(true');'
             const handleNotificationSpy = jest.spyOn(stageSelectScene, 'handleEventNotificationClick');
             stageSelectScene.handleClick({ x: 950, y: 50 ),'
             expect(handleNotificationSpy.toHaveBeenCalled(),' }'
-        }');
+        }');'
         test('should handle mouse movement over event areas', () => {  }
             stageSelectScene.initialize(};)
             // Mock mouse over event area);
@@ -322,15 +322,15 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             stageSelectScene.startNotificationUpdates(),
             expect(stageSelectScene.notificationUpdateTimer).not.toBeNull() }'
             stageSelectScene.exit();' }'
-            expect(stageSelectScene.notificationUpdateTimer).toBeNull(})');
+            expect(stageSelectScene.notificationUpdateTimer).toBeNull(})');'
         test('should not create excessive timer instances', () => {  stageSelectScene.initialize(),
             // Start multiple times
             stageSelectScene.startNotificationUpdates(),
             const firstTimer = stageSelectScene.notificationUpdateTimer,
             stageSelectScene.startNotificationUpdates(),
             const secondTimer = stageSelectScene.notificationUpdateTimer,'
-            expect(firstTimer).not.toBe(secondTimer) // Should clear old timer',
-        '),
+            expect(firstTimer).not.toBe(secondTimer) // Should clear old timer','
+        '),'
         test('should handle rapid event list updates efficiently', () => {
             stageSelectScene.initialize(),
             const updateCount = mockEventStageManager.getAvailableEvents.mock.calls.length,
@@ -382,24 +382,24 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
             const eventSectionY = 400, // Expected Y position for events
             const hasCorrectPositioning = fillRectCalls.some(call => call[1] >= eventSectionY) }'
             expect(hasCorrectPositioning).toBe(true););' }'
-        }');
+        }');'
         test('should adapt layout based on number of available events', () => { // Test with many events' }'
-            const manyEvents = Array.from({ length: 10 }, (_, i') => ({
+            const manyEvents = Array.from({ length: 10 }, (_, i') => ({'
                 id: `event-${i}`,'
                 name: `Event ${i}`,''
-                type: 'special');
-               , isActive: true;
+                type: 'special'),
+               , isActive: true,
             }),
             mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents);
             stageSelectScene.initialize();
             stageSelectScene.render(mockContext);'
             expect(stageSelectScene.eventList).toHaveLength(10);'}');
         test('should show appropriate scroll indicators for many events', () => { // Test with more events than can fit on screen' }'
-            const manyEvents = Array.from({ length: 20 }, (_, i') => ({
+            const manyEvents = Array.from({ length: 20 }, (_, i') => ({'
                 id: `event-${i}`,'
                 name: `Event ${i}`,''
-                type: 'special');
-               , isActive: true;
+                type: 'special'),
+               , isActive: true,
             }),
             mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents);
             stageSelectScene.initialize();

@@ -39,7 +39,7 @@ import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
     }
     update() {}
     destroy() {}
-    resize(') {}
+    resize(') {}'
 };
 // DOM要素のモック
 document.body.innerHTML = '<div id="test-container"></div>';
@@ -67,24 +67,23 @@ describe('Analytics System Integration Tests', () => {
             if (exportManager) exportManager.destroy(),
             if (analyticsAPI) analyticsAPI.destroy(),
             if (storageManager) storageManager.destroy(),
-            if (privacyManager) privacyManager.destroy() } catch (error') {
+            if (privacyManager) privacyManager.destroy() } catch (error') {'
             // クリーンアップエラーは無視
             console.warn('Cleanup error:', error.message) }
-    }');
-    describe('データ収集・保存フロー統合テスト', (') => {
-        test('データ収集からストレージまでの基本フロー', async (') => {
+    }');'
+    describe('データ収集・保存フロー統合テスト', (') => {'
+        test('データ収集からストレージまでの基本フロー', async (') => {'
             // 1. テストデータの準備
             const testData = {
                 type: 'player_behavior',
                 sessionId: 'test-session-123',
-                timestamp: Date.now(',
+                timestamp: Date.now(','
                 action: 'bubble_click',
                 bubbleType: 'normal',
-                success: true
-            };
+                success: true,;
             
             // 2. データコレクターでの収集
-            await dataCollector.collectPlayerBehavior(testData');
+            await dataCollector.collectPlayerBehavior(testData');'
             // 3. ストレージからのデータ取得確認
             const storedData = await storageManager.getData('sessionData');
             expect(storedData).toBeDefined();
@@ -92,14 +91,14 @@ describe('Analytics System Integration Tests', () => {
             const anonymizedData = await privacyManager.anonymizeData([testData]);
             expect(anonymizedData).toBeDefined();
             expect(Array.isArray(anonymizedData).toBe(true);
-        }');
+        }');'
         test('バッチデータ処理の統合フロー', async () => {
             // 1. 複数のテストデータ準備
             const batchData: any[] = [],
-            for (let i = 0, i < 5, i++') {
+            for (let i = 0, i < 5, i++') {'
                 batchData.push({
                     type: 'bubble_interaction'),
-                   , timestamp: Date.now(') + i * 1000,
+                   , timestamp: Date.now(') + i * 1000,'
                     bubbleType: i % 2 === 0 ? 'normal' : 'stone',
                     success: i % 3 !== 0,
                     score: 100 + i * 50
@@ -107,26 +106,26 @@ describe('Analytics System Integration Tests', () => {
             }
             
             // 2. バッチ処理での収集
-            await dataCollector.batchCollect(batchData');
+            await dataCollector.batchCollect(batchData');'
             // 3. データが正しく保存されていることを確認
             const storedData = await storageManager.getData('bubbleInteractions');
             expect(storedData).toBeDefined();
             expect(Array.isArray(storedData).toBe(true);
-        }');
+        }');'
     }
-    describe('エクスポート・API統合テスト', (') => {
-        test('データ収集からエクスポートまでの統合フロー', async (') => {
+    describe('エクスポート・API統合テスト', (') => {'
+        test('データ収集からエクスポートまでの統合フロー', async (') => {'
             // 1. テストデータの収集
             const testData = {
                 sessionId: 'integration-test-session',
-                timestamp: Date.now(',
+                timestamp: Date.now(','
                 score: 1250,
                 playTime: 380,
                 bubbleType: 'normal'
             };
             
             // 2. データコレクターでの収集
-            await dataCollector.collectPlayerBehavior(testData');
+            await dataCollector.collectPlayerBehavior(testData');'
             // 3. ExportManagerでのエクスポート
             const exportResult = await exportManager.exportData({
                 dataTypes: ['sessionData'],
@@ -135,28 +134,28 @@ describe('Analytics System Integration Tests', () => {
             expect(exportResult.success).toBe(true),
             expect(exportResult.data).toBeDefined(),
             expect(exportResult.format').toBe('json') }');
-        test('API経由でのデータアクセス統合', async (') => {
+        test('API経由でのデータアクセス統合', async (') => {'
             // 1. テストデータの準備と保存
             const testData = {
                 sessionId: 'api-test-session',
-                timestamp: Date.now(',
+                timestamp: Date.now(','
                 score: 1800,
                 bubbleType: 'stone'
             };
             
-            await storageManager.storeData('sessionData', testData');
+            await storageManager.storeData('sessionData', testData');'
             // 2. API経由でのデータ取得
             const apiResponse = await analyticsAPI.getData('/sessionData');
             expect(apiResponse.success).toBe(true);
-            expect(apiResponse.data).toBeDefined(');
+            expect(apiResponse.data).toBeDefined(');'
             // 3. API経由でのエクスポート
             const exportResponse = await analyticsAPI.getData('/export', {
                 format: 'json',
                 dataTypes: 'sessionData'),
             expect(exportResponse.success).toBe(true),
-            expect(exportResponse.data).toBeDefined() }');
+            expect(exportResponse.data).toBeDefined() }');'
     }
-    describe('エラーハンドリング統合テスト', (') => {
+    describe('エラーハンドリング統合テスト', (') => {'
         test('基本的なエラーハンドリング', async () => {
             // 1. 無効なデータでのエラーハンドリング
             try {
@@ -165,10 +164,10 @@ describe('Analytics System Integration Tests', () => {
             
             // 2. API制限のテスト
             const promises: any[] = [],
-            for (let i = 0; i < 65; i++') { // レート制限を超える
+            for (let i = 0; i < 65; i++') { // レート制限を超える'
                 promises.push(analyticsAPI.getData('/sessionData') }
             
-            const results = await Promise.allSettled(promises');
+            const results = await Promise.allSettled(promises');'
             const rateLimitedRequests = results.filter(r => 
                 r.status === 'fulfilled' && 
                 r.value.error && 
@@ -176,4 +175,4 @@ describe('Analytics System Integration Tests', () => {
             expect(rateLimitedRequests.length).toBeGreaterThan(0);
         });
     }
-}');
+}');'

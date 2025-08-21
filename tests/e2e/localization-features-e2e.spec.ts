@@ -7,16 +7,16 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 import { test, expect } from '@playwright/test';
 
 test.describe('Localization Features E2E Tests', () => {
-  test.beforeEach(async ({ page }') => {
+  test.beforeEach(async ({ page }') => {'
     await page.goto('/'),
     await page.waitForSelector('#gameCanvas'),
     await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
       return window.gameEngine.localizationManager !== undefined });
-  }');
+  }');'
 
   test('should handle RTL language detection and setup', async ({ page }) => {
-    const rtlTest = await page.evaluate((') => {
+    const rtlTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test RTL language detection
@@ -45,17 +45,17 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     expect(rtlTest.arabic.isRTL).toBe(true);
-    expect(rtlTest.arabic.textDirection').toBe('rtl');
+    expect(rtlTest.arabic.textDirection').toBe('rtl');'
     expect(rtlTest.hebrew.isRTL).toBe(true);
-    expect(rtlTest.hebrew.textDirection').toBe('rtl');
+    expect(rtlTest.hebrew.textDirection').toBe('rtl');'
     expect(rtlTest.japanese.isRTL).toBe(false);
-    expect(rtlTest.japanese.textDirection').toBe('ltr');
+    expect(rtlTest.japanese.textDirection').toBe('ltr');'
     expect(rtlTest.english.isRTL).toBe(false);
-    expect(rtlTest.english.textDirection').toBe('ltr');
-  }');
+    expect(rtlTest.english.textDirection').toBe('ltr');'
+  }');'
 
   test('should provide cultural color meanings', async ({ page ) => {
-    const colorMeaningsTest = await page.evaluate((') => {
+    const colorMeaningsTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -66,27 +66,27 @@ test.describe('Localization Features E2E Tests', () => {
       };);
     
     // Test Japanese color meanings
-    expect(colorMeaningsTest.japanese.red').toBe('danger');
-    expect(colorMeaningsTest.japanese.green').toBe('safety');
-    expect(colorMeaningsTest.japanese.blue').toBe('trust');
+    expect(colorMeaningsTest.japanese.red').toBe('danger');'
+    expect(colorMeaningsTest.japanese.green').toBe('safety');'
+    expect(colorMeaningsTest.japanese.blue').toBe('trust');'
     
     // Test English color meanings
-    expect(colorMeaningsTest.english.red').toBe('danger');
-    expect(colorMeaningsTest.english.green').toBe('success');
-    expect(colorMeaningsTest.english.blue').toBe('information');
+    expect(colorMeaningsTest.english.red').toBe('danger');'
+    expect(colorMeaningsTest.english.green').toBe('success');'
+    expect(colorMeaningsTest.english.blue').toBe('information');'
     
     // Test Chinese color meanings
-    expect(colorMeaningsTest.chinese.red').toBe('luck');
-    expect(colorMeaningsTest.chinese.gold').toBe('prosperity');
-    expect(colorMeaningsTest.chinese.white').toBe('purity');
+    expect(colorMeaningsTest.chinese.red').toBe('luck');'
+    expect(colorMeaningsTest.chinese.gold').toBe('prosperity');'
+    expect(colorMeaningsTest.chinese.white').toBe('purity');'
     
     // Test fallback to English
-    expect(colorMeaningsTest.fallback.red').toBe('danger');
-    expect(colorMeaningsTest.fallback.green').toBe('success');
-  }');
+    expect(colorMeaningsTest.fallback.red').toBe('danger');'
+    expect(colorMeaningsTest.fallback.green').toBe('success');'
+  }');'
 
   test('should provide cultural gesture conventions', async ({ page ) => {
-    const gestureTest = await page.evaluate((') => {
+    const gestureTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -97,24 +97,24 @@ test.describe('Localization Features E2E Tests', () => {
       };);
     
     // Test Japanese gesture conventions
-    expect(gestureTest.japanese.pointing').toBe('avoid');
-    expect(gestureTest.japanese.thumbUp').toBe('ok');
+    expect(gestureTest.japanese.pointing').toBe('avoid');'
+    expect(gestureTest.japanese.thumbUp').toBe('ok');'
     
     // Test English gesture conventions
-    expect(gestureTest.english.pointing').toBe('acceptable');
-    expect(gestureTest.english.thumbUp').toBe('approval');
+    expect(gestureTest.english.pointing').toBe('acceptable');'
+    expect(gestureTest.english.thumbUp').toBe('approval');'
     
     // Test Arabic gesture conventions
-    expect(gestureTest.arabic.leftHand').toBe('avoid');
-    expect(gestureTest.arabic.thumbUp').toBe('acceptable');
+    expect(gestureTest.arabic.leftHand').toBe('avoid');'
+    expect(gestureTest.arabic.thumbUp').toBe('acceptable');'
     
     // Test fallback to English
-    expect(gestureTest.fallback.pointing').toBe('acceptable');
-    expect(gestureTest.fallback.thumbUp').toBe('approval');
-  }');
+    expect(gestureTest.fallback.pointing').toBe('acceptable');'
+    expect(gestureTest.fallback.thumbUp').toBe('approval');'
+  }');'
 
   test('should handle numeral system formatting', async ({ page ) => {
-    const numeralSystemTest = await page.evaluate((') => {
+    const numeralSystemTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -126,16 +126,16 @@ test.describe('Localization Features E2E Tests', () => {
         japanese: lm.getNumeralSystem('ja'})
       };);
     
-    expect(numeralSystemTest.arabic').toBe('arab');
-    expect(numeralSystemTest.persian').toBe('persian');
-    expect(numeralSystemTest.thai').toBe('thai');
-    expect(numeralSystemTest.hindi').toBe('devanagari');
-    expect(numeralSystemTest.english').toBe('default');
-    expect(numeralSystemTest.japanese').toBe('default');
-  }');
+    expect(numeralSystemTest.arabic').toBe('arab');'
+    expect(numeralSystemTest.persian').toBe('persian');'
+    expect(numeralSystemTest.thai').toBe('thai');'
+    expect(numeralSystemTest.hindi').toBe('devanagari');'
+    expect(numeralSystemTest.english').toBe('default');'
+    expect(numeralSystemTest.japanese').toBe('default');'
+  }');'
 
   test('should provide correct date format patterns', async ({ page ) => {
-    const dateFormatTest = await page.evaluate((') => {
+    const dateFormatTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -147,16 +147,16 @@ test.describe('Localization Features E2E Tests', () => {
         unknown: lm.getDateFormat('unknown'})
       };);
     
-    expect(dateFormatTest.japanese').toBe('YYYY年MM月DD日');
-    expect(dateFormatTest.english').toBe('MM/DD/YYYY');
-    expect(dateFormatTest.englishGB').toBe('DD/MM/YYYY');
-    expect(dateFormatTest.german').toBe('DD.MM.YYYY');
-    expect(dateFormatTest.french').toBe('DD/MM/YYYY');
-    expect(dateFormatTest.unknown').toBe('MM/DD/YYYY'); // fallback
-  }');
+    expect(dateFormatTest.japanese').toBe('YYYY年MM月DD日');'
+    expect(dateFormatTest.english').toBe('MM/DD/YYYY');'
+    expect(dateFormatTest.englishGB').toBe('DD/MM/YYYY');'
+    expect(dateFormatTest.german').toBe('DD.MM.YYYY');'
+    expect(dateFormatTest.french').toBe('DD/MM/YYYY');'
+    expect(dateFormatTest.unknown').toBe('MM/DD/YYYY'); // fallback'
+  }');'
 
   test('should handle calendar system detection', async ({ page ) => {
-    const calendarSystemTest = await page.evaluate((') => {
+    const calendarSystemTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -168,16 +168,16 @@ test.describe('Localization Features E2E Tests', () => {
         german: lm.getCalendarSystem('de'})
       };);
     
-    expect(calendarSystemTest.japanese').toBe('japanese');
-    expect(calendarSystemTest.arabic').toBe('islamic');
-    expect(calendarSystemTest.hebrew').toBe('hebrew');
-    expect(calendarSystemTest.thai').toBe('buddhist');
-    expect(calendarSystemTest.english').toBe('gregorian');
-    expect(calendarSystemTest.german').toBe('gregorian');
-  }');
+    expect(calendarSystemTest.japanese').toBe('japanese');'
+    expect(calendarSystemTest.arabic').toBe('islamic');'
+    expect(calendarSystemTest.hebrew').toBe('hebrew');'
+    expect(calendarSystemTest.thai').toBe('buddhist');'
+    expect(calendarSystemTest.english').toBe('gregorian');'
+    expect(calendarSystemTest.german').toBe('gregorian');'
+  }');'
 
   test('should provide correct timezone mapping', async ({ page ) => {
-    const timezoneTest = await page.evaluate((') => {
+    const timezoneTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -189,16 +189,16 @@ test.describe('Localization Features E2E Tests', () => {
         unknown: lm.getTimeZone('unknown'})
       };);
     
-    expect(timezoneTest.japanese').toBe('Asia/Tokyo');
-    expect(timezoneTest.english').toBe('America/New_York');
-    expect(timezoneTest.englishGB').toBe('Europe/London');
-    expect(timezoneTest.german').toBe('Europe/Berlin');
-    expect(timezoneTest.french').toBe('Europe/Paris');
-    expect(timezoneTest.unknown').toBe('UTC'); // fallback
-  }');
+    expect(timezoneTest.japanese').toBe('Asia/Tokyo');'
+    expect(timezoneTest.english').toBe('America/New_York');'
+    expect(timezoneTest.englishGB').toBe('Europe/London');'
+    expect(timezoneTest.german').toBe('Europe/Berlin');'
+    expect(timezoneTest.french').toBe('Europe/Paris');'
+    expect(timezoneTest.unknown').toBe('UTC'); // fallback'
+  }');'
 
   test('should provide correct week start day', async ({ page ) => {
-    const weekStartTest = await page.evaluate((') => {
+    const weekStartTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -216,10 +216,10 @@ test.describe('Localization Features E2E Tests', () => {
     expect(weekStartTest.french).toBe(1); // Monday
     expect(weekStartTest.japanese).toBe(0); // Sunday
     expect(weekStartTest.unknown).toBe(1); // Monday (fallback);
-  }');
+  }');'
 
   test('should handle cultural text formatting', async ({ page ) => {
-    const culturalFormattingTest = await page.evaluate((') => {
+    const culturalFormattingTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       const testNumber = 1234.56,
@@ -230,7 +230,7 @@ test.describe('Localization Features E2E Tests', () => {
           number: lm.formatCulturalText(testNumber, 'number', 'ja'),
           date: lm.formatCulturalText(testDate, 'date', 'ja'),
           currency: lm.formatCulturalText(testCurrency, 'currency', 'ja'})
-        '),
+        '),'
         english: {
           number: lm.formatCulturalText(testNumber, 'number', 'en'),
           date: lm.formatCulturalText(testDate, 'date', 'en'),
@@ -241,19 +241,19 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     // Verify formatting functions are called
-    expect(typeof culturalFormattingTest.japanese.number').toBe('string');
-    expect(typeof culturalFormattingTest.japanese.date').toBe('string');
-    expect(typeof culturalFormattingTest.japanese.currency').toBe('string');
-    expect(typeof culturalFormattingTest.english.number').toBe('string');
-    expect(typeof culturalFormattingTest.english.date').toBe('string');
-    expect(typeof culturalFormattingTest.english.currency').toBe('string');
+    expect(typeof culturalFormattingTest.japanese.number').toBe('string');'
+    expect(typeof culturalFormattingTest.japanese.date').toBe('string');'
+    expect(typeof culturalFormattingTest.japanese.currency').toBe('string');'
+    expect(typeof culturalFormattingTest.english.number').toBe('string');'
+    expect(typeof culturalFormattingTest.english.date').toBe('string');'
+    expect(typeof culturalFormattingTest.english.currency').toBe('string');'
     
     // Unknown format type should return original text
-    expect(culturalFormattingTest.unknown.text').toBe('unchanged');
-  }');
+    expect(culturalFormattingTest.unknown.text').toBe('unchanged');'
+  }');'
 
   test('should provide complete regional settings', async ({ page ) => {
-    const completeRegionalTest = await page.evaluate((') => {
+    const completeRegionalTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
@@ -264,38 +264,38 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     // Test Japanese regional settings
-    expect(completeRegionalTest.japanese.language').toBe('ja');
-    expect(completeRegionalTest.japanese.locale').toBe('ja-JP');
-    expect(completeRegionalTest.japanese.direction').toBe('ltr');
-    expect(completeRegionalTest.japanese.calendar').toBe('japanese');
-    expect(completeRegionalTest.japanese.timeZone').toBe('Asia/Tokyo');
+    expect(completeRegionalTest.japanese.language').toBe('ja');'
+    expect(completeRegionalTest.japanese.locale').toBe('ja-JP');'
+    expect(completeRegionalTest.japanese.direction').toBe('ltr');'
+    expect(completeRegionalTest.japanese.calendar').toBe('japanese');'
+    expect(completeRegionalTest.japanese.timeZone').toBe('Asia/Tokyo');'
     expect(completeRegionalTest.japanese.weekStart).toBe(0);
     
     // Test English regional settings
-    expect(completeRegionalTest.english.language').toBe('en');
-    expect(completeRegionalTest.english.locale').toBe('en-US');
-    expect(completeRegionalTest.english.direction').toBe('ltr');
-    expect(completeRegionalTest.english.calendar').toBe('gregorian');
-    expect(completeRegionalTest.english.timeZone').toBe('America/New_York');
+    expect(completeRegionalTest.english.language').toBe('en');'
+    expect(completeRegionalTest.english.locale').toBe('en-US');'
+    expect(completeRegionalTest.english.direction').toBe('ltr');'
+    expect(completeRegionalTest.english.calendar').toBe('gregorian');'
+    expect(completeRegionalTest.english.timeZone').toBe('America/New_York');'
     expect(completeRegionalTest.english.weekStart).toBe(0);
     
     // Test German regional settings
-    expect(completeRegionalTest.german.language').toBe('de');
-    expect(completeRegionalTest.german.locale').toBe('de-DE');
-    expect(completeRegionalTest.german.direction').toBe('ltr');
-    expect(completeRegionalTest.german.calendar').toBe('gregorian');
-    expect(completeRegionalTest.german.timeZone').toBe('Europe/Berlin');
+    expect(completeRegionalTest.german.language').toBe('de');'
+    expect(completeRegionalTest.german.locale').toBe('de-DE');'
+    expect(completeRegionalTest.german.direction').toBe('ltr');'
+    expect(completeRegionalTest.german.calendar').toBe('gregorian');'
+    expect(completeRegionalTest.german.timeZone').toBe('Europe/Berlin');'
     expect(completeRegionalTest.german.weekStart).toBe(1);
-  }');
+  }');'
 
   test('should handle accessibility translations correctly', async ({ page ) => {
-    const accessibilityTest = await page.evaluate((') => {
+    const accessibilityTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test adding accessibility translations
       const addResult = lm.addAccessibilityTranslations('test-lang', {
         'test.accessibility.key': 'Test accessibility value'),
-        'test.nested.key': 'Nested value') }');
+        'test.nested.key': 'Nested value') }');'
       
       // Test retrieving accessibility translations
       const retrievedTranslation = lm.getAccessibilityTranslation('test.accessibility.key', 'test-lang');
@@ -303,7 +303,7 @@ test.describe('Localization Features E2E Tests', () => {
       const nonExistentTranslation = lm.getAccessibilityTranslation('non.existent', 'test-lang');
       
       // Test accessibility stats
-      const stats = lm.getAccessibilityStats(');
+      const stats = lm.getAccessibilityStats(');'
       
       return {
         addResult,
@@ -316,15 +316,15 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     expect(accessibilityTest.addResult).toBe(true);
-    expect(accessibilityTest.retrievedTranslation').toBe('Test accessibility value');
-    expect(accessibilityTest.nestedTranslation').toBe('Nested value');
+    expect(accessibilityTest.retrievedTranslation').toBe('Test accessibility value');'
+    expect(accessibilityTest.nestedTranslation').toBe('Nested value');'
     expect(accessibilityTest.nonExistentTranslation).toBe(null);
     expect(accessibilityTest.hasAccessibilityStats).toBe(true);
     expect(accessibilityTest.hasCulturalSupport).toBe(true);
-  }');
+  }');'
 
   test('should handle accessibility-specific translation method', async ({ page ) => {
-    const a11yTranslationTest = await page.evaluate((') => {
+    const a11yTranslationTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test existing accessibility translations in Japanese
@@ -333,7 +333,7 @@ test.describe('Localization Features E2E Tests', () => {
         keyboardTitle: lm.ta11y('accessibility.keyboard.title',
         screenReaderTitle: lm.ta11y('accessibility.screenReader.title',
         visualTitle: lm.ta11y('accessibility.visual.title'});
-      ');
+      ');'
       
       // Switch to English and test
       lm.setLanguage('en');
@@ -355,23 +355,23 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     // Test Japanese accessibility translations
-    expect(a11yTranslationTest.japaneseA11y.managerTitle').toBe('アクセシビリティ設定');
-    expect(a11yTranslationTest.japaneseA11y.keyboardTitle').toBe('キーボード操作');
-    expect(a11yTranslationTest.japaneseA11y.screenReaderTitle').toBe('スクリーンリーダー');
-    expect(a11yTranslationTest.japaneseA11y.visualTitle').toBe('視覚的支援');
+    expect(a11yTranslationTest.japaneseA11y.managerTitle').toBe('アクセシビリティ設定');'
+    expect(a11yTranslationTest.japaneseA11y.keyboardTitle').toBe('キーボード操作');'
+    expect(a11yTranslationTest.japaneseA11y.screenReaderTitle').toBe('スクリーンリーダー');'
+    expect(a11yTranslationTest.japaneseA11y.visualTitle').toBe('視覚的支援');'
     
     // Test English accessibility translations
-    expect(a11yTranslationTest.englishA11y.managerTitle').toBe('Accessibility Settings');
-    expect(a11yTranslationTest.englishA11y.keyboardTitle').toBe('Keyboard Navigation');
-    expect(a11yTranslationTest.englishA11y.screenReaderTitle').toBe('Screen Reader');
-    expect(a11yTranslationTest.englishA11y.visualTitle').toBe('Visual Assistance');
+    expect(a11yTranslationTest.englishA11y.managerTitle').toBe('Accessibility Settings');'
+    expect(a11yTranslationTest.englishA11y.keyboardTitle').toBe('Keyboard Navigation');'
+    expect(a11yTranslationTest.englishA11y.screenReaderTitle').toBe('Screen Reader');'
+    expect(a11yTranslationTest.englishA11y.visualTitle').toBe('Visual Assistance');'
     
     // Test parameter interpolation
-    expect(a11yTranslationTest.withParams').toContain('Test Profile');
-  }');
+    expect(a11yTranslationTest.withParams').toContain('Test Profile');'
+  }');'
 
   test('should provide comprehensive localization statistics', async ({ page ) => {
-    const statsTest = await page.evaluate((') => {
+    const statsTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Add some test accessibility translations
@@ -381,7 +381,7 @@ test.describe('Localization Features E2E Tests', () => {
         'test3': 'value3') });
       
       const regularStats = lm.getStats();
-      const accessibilityStats = lm.getAccessibilityStats(');
+      const accessibilityStats = lm.getAccessibilityStats(');'
       
       return {
         regularStats,
@@ -392,9 +392,9 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     // Test regular stats
-    expect(typeof statsTest.regularStats.currentLanguage').toBe('string');
+    expect(typeof statsTest.regularStats.currentLanguage').toBe('string');'
     expect(Array.isArray(statsTest.regularStats.availableLanguages).toBe(true);
-    expect(typeof statsTest.regularStats.translationCounts').toBe('object');
+    expect(typeof statsTest.regularStats.translationCounts').toBe('object');'
     
     // Test accessibility stats structure
     expect(statsTest.hasAccessibilityTranslations).toBe(true);
@@ -402,17 +402,17 @@ test.describe('Localization Features E2E Tests', () => {
     
     // Test cultural support metrics
     const culturalSupport = statsTest.accessibilityStats.culturalSupport;
-    expect(typeof culturalSupport.rtlLanguages').toBe('number');
-    expect(typeof culturalSupport.numeralSystems').toBe('number');
-    expect(typeof culturalSupport.dateFormats').toBe('number');
-    expect(typeof culturalSupport.colorMeanings').toBe('number');
+    expect(typeof culturalSupport.rtlLanguages').toBe('number');'
+    expect(typeof culturalSupport.numeralSystems').toBe('number');'
+    expect(typeof culturalSupport.dateFormats').toBe('number');'
+    expect(typeof culturalSupport.colorMeanings').toBe('number');'
     
     // Verify we have some RTL languages configured
     expect(culturalSupport.rtlLanguages).toBeGreaterThan(0);
-  }');
+  }');'
 
   test('should handle font loading and management', async ({ page ) => {
-    const fontTest = await page.evaluate(async (') => {
+    const fontTest = await page.evaluate(async (') => {'
       const lm = window.gameEngine.localizationManager,
       
       try {
@@ -424,10 +424,10 @@ test.describe('Localization Features E2E Tests', () => {
         const secondaryFontStack = lm.getFontStack('secondary'),
         
         // Test font loading status
-        const fontStatus = lm.getFontLoadingStatus('),
+        const fontStatus = lm.getFontLoadingStatus('),'
         
         // Test preloading fonts
-        const preloadResult = await lm.preloadFonts(['ja', 'en']'),
+        const preloadResult = await lm.preloadFonts(['ja', 'en']'),'
         
         return {
           success: true,
@@ -446,14 +446,14 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     if (fontTest.success) {
-      expect(typeof fontTest.loadResult').toBe('boolean'),
-      expect(typeof fontTest.primaryFontStack').toBe('string'),
-      expect(typeof fontTest.secondaryFontStack').toBe('string'),
+      expect(typeof fontTest.loadResult').toBe('boolean'),'
+      expect(typeof fontTest.primaryFontStack').toBe('string'),'
+      expect(typeof fontTest.secondaryFontStack').toBe('string'),'
       expect(fontTest.fontStatus).toBe(true),
       expect(fontTest.preloadResult).toBe(true) } else {
       // Font loading may fail in test environment, which is acceptable
-      expect(typeof fontTest.error').toBe('string') }
-  }');
+      expect(typeof fontTest.error').toBe('string') }'
+  }');'
 
   test('should handle language change listeners properly', async ({ page ) => {
     const listenerTest = await page.evaluate(() => {
@@ -471,14 +471,14 @@ test.describe('Localization Features E2E Tests', () => {
       };
       
       const addResult1 = lm.addLanguageChangeListener(listener1);
-      const addResult2 = lm.addLanguageChangeListener(listener2');
+      const addResult2 = lm.addLanguageChangeListener(listener2');'
       const addResult3 = lm.addLanguageChangeListener('invalid'); // Should fail
       
       // Trigger language change
       lm.notifyLanguageChange('en', 'ja');
       
       // Remove one listener
-      const removeResult1 = lm.removeLanguageChangeListener(listener1');
+      const removeResult1 = lm.removeLanguageChangeListener(listener1');'
       const removeResult2 = lm.removeLanguageChangeListener('invalid'); // Should fail
       
       // Trigger another change
@@ -504,15 +504,15 @@ test.describe('Localization Features E2E Tests', () => {
     expect(listenerTest.totalEvents).toBe(3);
     
     // Check event details
-    expect(listenerTest.eventsFired[0].newLang').toBe('en');
-    expect(listenerTest.eventsFired[0].oldLang').toBe('ja');
-    expect(listenerTest.eventsFired[1].newLang').toBe('en');
-    expect(listenerTest.eventsFired[1].oldLang').toBe('ja');
+    expect(listenerTest.eventsFired[0].newLang').toBe('en');'
+    expect(listenerTest.eventsFired[0].oldLang').toBe('ja');'
+    expect(listenerTest.eventsFired[1].newLang').toBe('en');'
+    expect(listenerTest.eventsFired[1].oldLang').toBe('ja');'
     expect(listenerTest.eventsFired[2].listener).toBe(2); // Only listener 2 should fire
-  }');
+  }');'
 
   test('should clean up resources properly', async ({ page ) => {
-    const cleanupTest = await page.evaluate((') => {
+    const cleanupTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Add some test data
@@ -520,7 +520,7 @@ test.describe('Localization Features E2E Tests', () => {
                 'test.key': 'test value') }));
       
       const listener = () => {};
-      lm.addLanguageChangeListener(listener');
+      lm.addLanguageChangeListener(listener');'
       
       // Verify data exists
       const beforeCleanup = {
@@ -528,7 +528,7 @@ test.describe('Localization Features E2E Tests', () => {
         fontStats: lm.getFontLoadingStatus( };
       
       // Perform cleanup
-      lm.cleanup(');
+      lm.cleanup(');'
       
       // Verify cleanup
       const afterCleanup = {
@@ -543,8 +543,8 @@ test.describe('Localization Features E2E Tests', () => {
     
     expect(cleanupTest.beforeCleanup.hasAccessibilityTranslations).toBe(true);
     expect(cleanupTest.afterCleanup.hasAccessibilityTranslations).toBe(false);
-    expect(typeof cleanupTest.beforeCleanup.fontStats').toBe('object');
-    expect(typeof cleanupTest.afterCleanup.fontStatsAfterCleanup').toBe('object');
+    expect(typeof cleanupTest.beforeCleanup.fontStats').toBe('object');'
+    expect(typeof cleanupTest.afterCleanup.fontStatsAfterCleanup').toBe('object');'
   });
-}');
+}');'
 }}}}}}}}

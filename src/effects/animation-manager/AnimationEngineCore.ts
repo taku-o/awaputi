@@ -8,103 +8,101 @@ export type AnimationQuality = 'low' | 'medium' | 'high' | 'ultra';
 /**
  * Easing function types
  */'
-export type EasingType = ';
-    | 'linear'';
-    | 'easeInQuad'';
-    | 'easeOutQuad'';
-    | 'easeInOutQuad'';
-    | 'easeInCubic'';
-    | 'easeOutCubic'';
-    | 'easeInOutCubic'';
-    | 'easeInQuart'';
-    | 'easeOutQuart'';
-    | 'easeInOutQuart'';
-    | 'easeInBack'';
-    | 'easeOutBack'';
-    | 'easeOutBounce'';
-    | 'easeInElastic'';
+export type EasingType = ';'
+    | 'linear'';'
+    | 'easeInQuad'';'
+    | 'easeOutQuad'';'
+    | 'easeInOutQuad'';'
+    | 'easeInCubic'';'
+    | 'easeOutCubic'';'
+    | 'easeInOutCubic'';'
+    | 'easeInQuart'';'
+    | 'easeOutQuart'';'
+    | 'easeInOutQuart'';'
+    | 'easeInBack'';'
+    | 'easeOutBack'';'
+    | 'easeOutBounce'';'
+    | 'easeInElastic'';'
     | 'easeOutElastic';
 
 /**
  * Animation engine settings interface
  */
 export interface AnimationEngineSettings { enabled: boolean,
-    globalSpeed: number,
-    quality: AnimationQuality,
-    enableEasing: boolean,
-    enableParallax: boolean  }
+    globalSpeed: number;
+    quality: AnimationQuality;
+    enableEasing: boolean;
+    enableParallax: boolean;
 
 /**
  * Performance metrics interface
  */
 export interface PerformanceMetrics { activeAnimations: number,
-    frameTime: number,
-    droppedFrames: number }
+    frameTime: number;
+    droppedFrames: number;
 
 /**
  * Animation progress result interface
  */
 export interface AnimationProgress { progress: number,
-    easedProgress: number }
+    easedProgress: number;
 
 /**
  * Animation target interface
  */
-export interface AnimationTarget { [key: string]: any }
+export interface AnimationTarget { [key: string]: any;
 
 /**
  * Animation options interface
  */
 export interface AnimationOptions { onComplete?: (animation: Animation) => void,
-    [key: string]: any }
+    [key: string]: any;
 }
 
 /**
  * Base animation interface
  */
 export interface Animation { type?: string,
-    target?: AnimationTarget,
-    duration: number,
-    elapsed: number,
-    easing?: EasingType,
-    endValues?: Record<string, any>,
-    options?: AnimationOptions,
-    [key: string]: any }
+    target?: AnimationTarget;
+    duration: number;
+    elapsed: number;
+    easing?: EasingType;
+    endValues?: Record<string, any>;
+    options?: AnimationOptions;
+    [key: string]: any;
 
 /**
  * Quality level settings interface
  */
 export interface QualityLevelSettings { particleCount: number,
-    effectIntensity: number,
-    complexAnimations: boolean  }
+    effectIntensity: number;
+    complexAnimations: boolean;
 
 /**
  * Quality levels configuration interface
  */
 export interface QualityLevels { low: QualityLevelSettings,
-    medium: QualityLevelSettings,
-    high: QualityLevelSettings,
-    ultra: QualityLevelSettings
-    }
+    medium: QualityLevelSettings;
+    high: QualityLevelSettings;
+    ultra: QualityLevelSettings;
 
 /**
  * Quality settings with level interface
  */
-export interface QualitySettings extends QualityLevelSettings { level: AnimationQuality
-    }
+export interface QualitySettings extends QualityLevelSettings { level: AnimationQuality;
 
 /**
  * Animation Engine Core
  * アニメーションエンジンの中核機能 - イージング、更新ループ、品質制御
  */
 export class AnimationEngineCore {
-    private settings: AnimationEngineSettings,
-    private performanceMetrics: PerformanceMetrics',
+    private settings: AnimationEngineSettings;
+    private performanceMetrics: PerformanceMetrics';'
 
     constructor('''
-            quality: 'high',
-            enableEasing: true,
-    enableParallax: true };
+            quality: 'high';
+            enableEasing: true;
+    enableParallax: true;;
         // パフォーマンス監視
         this.performanceMetrics = { activeAnimations: 0,
             frameTime: 0,
@@ -117,25 +115,25 @@ export class AnimationEngineCore {
     ease(t: number, type: EasingType): number { ''
         switch(type) {
 
-            case 'linear':',
+            case 'linear':','
                 return t,
-            case 'easeInQuad':',
+            case 'easeInQuad':','
                 return t * t,
-            case 'easeOutQuad':',
-                return 1 - (1 - t) * (1 - t'),
-            case 'easeInOutQuad':',
+            case 'easeOutQuad':','
+                return 1 - (1 - t) * (1 - t'),'
+            case 'easeInOutQuad':','
                 return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
-            case 'easeInCubic':',
+            case 'easeInCubic':','
                 return t * t * t,
-            case 'easeOutCubic':',
+            case 'easeOutCubic':','
                 return 1 - Math.pow(1 - t, 3),
-            case 'easeInOutCubic':',
+            case 'easeInOutCubic':','
                 return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
-            case 'easeInQuart':',
+            case 'easeInQuart':','
                 return t * t * t * t,
-            case 'easeOutQuart':',
+            case 'easeOutQuart':','
                 return 1 - Math.pow(1 - t, 4),
-            case 'easeInOutQuart':',
+            case 'easeInOutQuart':','
                 return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2,
             case 'easeInBack':,
                 const c1 = 1.70158,
@@ -154,10 +152,10 @@ export class AnimationEngineCore {
         }
                     return n1 * t * t; else if (t < 2 / d1) { return n1 * (t -= 1.5 / d1) * t + 0.75 } else if (t < 2.5 / d1) { return n1 * (t -= 2.25 / d1) * t + 0.9375, else { }'
 
-                    return n1 * (t -= 2.625 / d1') * t + 0.984375;
-            case 'easeInElastic':';
+                    return n1 * (t -= 2.625 / d1') * t + 0.984375;'
+            case 'easeInElastic':';'
                 const c4 = (2 * Math.PI) / 3;
-                return t === 0 ? 0 : t === 1 ? 1 : -Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * c4');
+                return t === 0 ? 0 : t === 1 ? 1 : -Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * c4');'
             case 'easeOutElastic':
                 const c4_2 = (2 * Math.PI) / 3;
                 return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4_2) + 1;
@@ -175,7 +173,7 @@ export class AnimationEngineCore {
         // アクティブなアニメーションを更新
         const activeAnimations = animations.filter(animation => {  )
             animation.elapsed += adjustedDeltaTime),
-            if(animation.elapsed >= animation.duration && animation.duration !== Number.MAX_SAFE_INTEGER) {
+            if (animation.elapsed >= animation.duration && animation.duration !== Number.MAX_SAFE_INTEGER) {
     
 }
                 this.completeAnimation(animation); }
@@ -199,24 +197,24 @@ export class AnimationEngineCore {
      * アニメーション完了処理
      */
     completeAnimation(animation: Animation): void { // 最終値を確実に設定
-        if(animation.endValues && animation.target) {
+        if (animation.endValues && animation.target) {
     
 }
             Object.assign(animation.target, animation.endValues); }
         }
         
         // コールバック実行
-        if(animation.options?.onComplete) {
+        if (animation.options?.onComplete) {
             try {
         }
                 animation.options.onComplete(animation); }
             } catch (error) {
-                getErrorHandler()',
+                getErrorHandler()','
                     context: 'AnimationEngineCore.completeAnimation',' 
-                }');
+                }');'
             }
         }
-        ';
+        ';'
         // イベント発火
         this.dispatchAnimationEvent('complete', animation);
     }
@@ -226,9 +224,9 @@ export class AnimationEngineCore {
      */
     private autoAdjustQuality(): void { const frameTime = this.performanceMetrics.frameTime,
         const activeCount = this.performanceMetrics.activeAnimations,
-        ',
+        ','
         // フレーム時間が長すぎる場合は品質を下げる
-        if(frameTime > 16.67 && activeCount > 20) {
+        if (frameTime > 16.67 && activeCount > 20) {
             // 60FPS基準
             if (this.settings.quality === 'ultra') {
         }
@@ -236,14 +234,14 @@ export class AnimationEngineCore {
                 this.settings.quality = 'high'; }
 
             } else if (this.settings.quality === 'high') { ''
-                this.settings.quality = 'medium',' }
+                this.settings.quality = 'medium',' }'
 
             } else if (this.settings.quality === 'medium') { ''
                 this.settings.quality = 'low' }
         }
-        ';
+        ';'
         // パフォーマンスが良い場合は品質を上げる
-        if(frameTime < 8 && activeCount < 10) {
+        if (frameTime < 8 && activeCount < 10) {
 
             if (this.settings.quality === 'low') {
         }
@@ -251,7 +249,7 @@ export class AnimationEngineCore {
                 this.settings.quality = 'medium'; }
 
             } else if (this.settings.quality === 'medium') { ''
-                this.settings.quality = 'high',' }
+                this.settings.quality = 'high',' }'
 
             } else if (this.settings.quality === 'high') { ''
                 this.settings.quality = 'ultra' }
@@ -276,8 +274,8 @@ export class AnimationEngineCore {
     calculateAnimationProgress(animation: Animation): AnimationProgress { ''
         const progress = Math.min(animation.elapsed / animation.duration, 1),
 
-        const easedProgress = this.settings.enableEasing ? undefined : undefined',
-            this.ease(progress, animation.easing || 'linear' : progress }'
+        const easedProgress = this.settings.enableEasing ? undefined : undefined','
+            this.ease(progress, animation.easing || 'linear' : progress;'
         return { progress, easedProgress }
     
     /**
@@ -311,22 +309,22 @@ export class AnimationEngineCore {
  * アニメーション品質制御 - パフォーマンスに基づく動的品質調整
  */
 export class AnimationQualityController {
-    private qualityLevels: QualityLevels,
-    private currentQuality: AnimationQuality,
-    private frameTimeHistory: number[]),
-    private readonly, maxHistorySize: number',
+    private qualityLevels: QualityLevels;
+    private currentQuality: AnimationQuality;
+    private frameTimeHistory: number[]);
+    private readonly, maxHistorySize: number','
 
     constructor('',
-        this.currentQuality = 'high',
-        this.frameTimeHistory = [],
-        this.maxHistorySize = 60, // 1秒分のフレーム履歴 }
+        this.currentQuality = 'high';
+        this.frameTimeHistory = [];
+        this.maxHistorySize = 60; // 1秒分のフレーム履歴 }
     
     /**
      * フレーム時間を記録して品質を動的調整
      */)
     recordFrameTime(frameTime: number): void { this.frameTimeHistory.push(frameTime),
         
-        if(this.frameTimeHistory.length > this.maxHistorySize) {
+        if (this.frameTimeHistory.length > this.maxHistorySize) {
     
 }
             this.frameTimeHistory.shift(); }
@@ -342,7 +340,7 @@ export class AnimationQualityController {
     private evaluateQuality(): void { const avgFrameTime = this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length,
         const targetFrameTime = 16.67, // 60FPS
         
-        if(avgFrameTime > targetFrameTime * 1.5) {
+        if (avgFrameTime > targetFrameTime * 1.5) {
         
             // パフォーマンスが悪い - 品質を下げる
         
@@ -387,8 +385,8 @@ export class AnimationQualityController {
      * 品質を手動設定
      */'
     setQuality(quality: AnimationQuality): void { ''
-        if(this.qualityLevels[quality]) {
+        if (this.qualityLevels[quality]) {
     
 }
             this.currentQuality = quality; }
-}'}
+}'}'

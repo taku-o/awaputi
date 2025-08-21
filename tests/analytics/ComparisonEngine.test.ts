@@ -29,7 +29,7 @@ class MockStorageManager {
         this.data = new Map() }
     async getData(storeName, query) {
         const storeData = this.data.get(storeName || []),
-        if (!query') return storeData,
+        if (!query') return storeData,'
         if (query.range && query.index === 'startTime') {
             return storeData.filter(item => {
                 const timestamp = item.startTime,
@@ -41,7 +41,7 @@ class MockStorageManager {
 }
 // Test data factory for creating consistent test scenarios
 class TestDataFactory {
-    static createSessionData(options = {)') {
+    static createSessionData(options = {)') {'
         const defaults = {
             sessionId: 'test_session',
             startTime: Date.now() - 300000,
@@ -50,8 +50,7 @@ class TestDataFactory {
             bubblesPopped: 80,
             bubblesMissed: 20,
             maxCombo: 15,
-            completed: true
-        };
+            completed: true,;
         
         return { ...defaults, ...options };
     }
@@ -61,10 +60,10 @@ class TestDataFactory {
             for (let j = 1, j <= 3, j++) {
                 sessions.push(this.createSessionData({
                     sessionId: `player${i}_session${j}`;);
-                    playerId: `player${i)`,
-                    startTime: Date.now() - (i * 7 + j) * 24 * 60 * 60 * 1000,
-                    finalScore: 800 + i * 200 + Math.random() * 100,
-                    bubblesPopped: 70 + i * 10 + Math.random() * 20,
+                    playerId: `player${i)`;
+                    startTime: Date.now() - (i * 7 + j) * 24 * 60 * 60 * 1000;
+                    finalScore: 800 + i * 200 + Math.random() * 100;
+                    bubblesPopped: 70 + i * 10 + Math.random() * 20;
                     bubblesMissed: 30 - i * 5 + Math.random(}) * 10
                 });
             }
@@ -75,12 +74,12 @@ class TestDataFactory {
         const sessions: any[] = [],
         for (let i = 0, i < sessionCount, i++) {
             sessions.push(this.createSessionData({),
-                sessionId: `${stageId}_session_${i)`,
-                stageId: stageId,
-                startTime: Date.now() - (i + 1) * 24 * 60 * 60 * 1000,
-                finalScore: 900 + Math.random() * 200,
+                sessionId: `${stageId}_session_${i)`;
+                stageId: stageId;
+                startTime: Date.now() - (i + 1) * 24 * 60 * 60 * 1000;
+                finalScore: 900 + Math.random() * 200;
                 completed: Math.random(}) > 0.3
-            })');
+            })');'
         }
         return sessions;
     }
@@ -98,35 +97,35 @@ describe('ComparisonEngine - Main Test Suite', () => {
         // Clean up any shared state
         if (comparisonEngine && comparisonEngine.clearCache) {
             comparisonEngine.clearCache() }
-    }');
-    describe('Test Suite Integration', (') => {
+    }');'
+    describe('Test Suite Integration', (') => {'
         test('分割テストコンポーネントが正しく読み込まれている', () => {
             // Verify that all test components are properly loaded
             expect(ComparisonEngine).toBeDefined(),
             expect(CoreComparisonEngine).toBeDefined(),
             expect(MockStorageManager).toBeDefined(),
-            expect(TestDataFactory).toBeDefined() }');
+            expect(TestDataFactory).toBeDefined() }');'
         test('共有ユーティリティが正常に動作する', () => {
             // Test MockStorageManager
-            const mockStorage = new MockStorageManager('),
-            mockStorage.setTestData('test', [{ id: 1 }]');
+            const mockStorage = new MockStorageManager('),'
+            mockStorage.setTestData('test', [{ id: 1 }]');'
             expect(mockStorage.data.get('test').toEqual([{ id: 1 }]);
             // Test TestDataFactory
             const sessionData = TestDataFactory.createSessionData();
-            expect(sessionData').toHaveProperty('sessionId');
-            expect(sessionData').toHaveProperty('finalScore');
+            expect(sessionData').toHaveProperty('sessionId');'
+            expect(sessionData').toHaveProperty('finalScore');'
             const benchmarkData = TestDataFactory.createBenchmarkData(2);
-            expect(benchmarkData).toHaveLength(6'); // 2 players * 3 sessions each
+            expect(benchmarkData).toHaveLength(6'); // 2 players * 3 sessions each'
             const stageData = TestDataFactory.createStageData('stage1', 2);
             expect(stageData).toHaveLength(2);
-            expect(stageData[0].stageId').toBe('stage1');
-        }');
+            expect(stageData[0].stageId').toBe('stage1');'
+        }');'
         test('ComparisonEngineインスタンスが正常に作成される', () => {
             expect(comparisonEngine).toBeInstanceOf(ComparisonEngine),
-            expect(comparisonEngine.storageManager).toBe(mockStorageManager) }');
+            expect(comparisonEngine.storageManager).toBe(mockStorageManager) }');'
         test('CoreComparisonEngineインスタンスが正常に作成される', () => {
             expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine) });
     }
-}');
+}');'
 // Export shared utilities for use in split test components
 export { MockStorageManager, TestDataFactory  };

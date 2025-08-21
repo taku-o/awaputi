@@ -5,21 +5,21 @@
 
 // Type definitions for error reporter system
 interface ErrorInfo { id: string,
-    context: string,
-    message: string,
-    timestamp: string,
-    name?: string,
-    stack?: string,
-    metadata?: Record<string, any>,
-    recovered?: boolean }
+    context: string;
+    message: string;
+    timestamp: string;
+    name?: string;
+    stack?: string;
+    metadata?: Record<string, any>;
+    recovered?: boolean;
 
 interface NotificationConfig { autoHide: boolean,
-    hideDelay: number,
-    maxConcurrentNotifications: number,
-    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center',
-    showReloadButton: boolean,
-    showCloseButton: boolean  }
-';
+    hideDelay: number;
+    maxConcurrentNotifications: number;
+    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+    showReloadButton: boolean;
+    showCloseButton: boolean;
+';'
 
 interface MainController { ''
     determineSeverity?: (errorInfo: ErrorInfo') => string  }'
@@ -28,32 +28,31 @@ interface MainController { ''
 type NotificationAction = 'dismiss' | 'reload' | 'report';
 type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
-interface SeverityConfig { [key: string]: string }
+interface SeverityConfig { [key: string]: string;
 
-interface PositionStyles { [key: string]: string }
+interface PositionStyles { [key: string]: string;
 
 export class UtilsErrorReporter {
-    private mainController: MainController,
-    private notificationConfig: NotificationConfig,
-    private activeNotifications: Set<HTMLElement>,
-    private notificationQueue: ErrorInfo[],
-    private notificationId: number',
+    private mainController: MainController;
+    private notificationConfig: NotificationConfig;
+    private activeNotifications: Set<HTMLElement>;
+    private notificationQueue: ErrorInfo[];
+    private notificationId: number';'
 
     constructor(mainController: MainController) {
-        this.mainController = mainController,
+        this.mainController = mainController;
         
         // Notification configuration
         this.notificationConfig = {
             autoHide: true,
-    hideDelay: 10000, // 10 seconds,
+    hideDelay: 10000, // 10 seconds;
             maxConcurrentNotifications: 3,
             position: 'top-right',
-    showReloadButton: true }
-            showCloseButton: true 
-    };
-        ';
+    showReloadButton: true,
+            showCloseButton: true,;
+        ';'
         // Active notifications tracking
-        this.activeNotifications = new Set()';
+        this.activeNotifications = new Set()';'
         console.log('[ErrorReporter] Error reporting component initialized');
     }
     
@@ -62,10 +61,10 @@ export class UtilsErrorReporter {
      * @param errorInfo - Error information
      */
     notifyUser(errorInfo: ErrorInfo): void { // Only notify for important errors
-        if(this.shouldNotifyUser(errorInfo) {
+        if (this.shouldNotifyUser(errorInfo) {
     
 }
-            this.showErrorNotification(errorInfo'); }
+            this.showErrorNotification(errorInfo'); }'
 }
     
     /**
@@ -75,21 +74,21 @@ export class UtilsErrorReporter {
      */''
     private shouldNotifyUser(errorInfo: ErrorInfo): boolean {
         const { context, message } = errorInfo;
-        ';
+        ';'
         // Canvas-related critical errors
         if(context === 'CANVAS_ERROR' && message.includes('Canvas)' { return true }
-        ';
+        ';'
         // Browser compatibility issues
         if (message.includes('not, supported') || message.includes('not, available)' { return true }
-        ';
+        ';'
         // Network-related issues
         if (message.includes('network') || message.includes('fetch)' { return true }
-        ';
+        ';'
         // Memory issues
         if(context === 'MEMORY_WARNING' && message.includes('memory)' { return true }
-        ';
+        ';'
         // Performance issues
-        if(context === 'PERFORMANCE_WARNING' && message.includes('FPS) { return true }
+        if (context === 'PERFORMANCE_WARNING' && message.includes('FPS) { return true }'
         
         return false;
     }
@@ -99,7 +98,7 @@ export class UtilsErrorReporter {
      * @param errorInfo - Error information
      */
     private showErrorNotification(errorInfo: ErrorInfo): void { // Check notification limits
-        if(this.activeNotifications.size >= this.notificationConfig.maxConcurrentNotifications) {
+        if (this.activeNotifications.size >= this.notificationConfig.maxConcurrentNotifications) {
             this.queueNotification(errorInfo) }
             return; }
         }
@@ -115,7 +114,7 @@ export class UtilsErrorReporter {
     private queueNotification(errorInfo: ErrorInfo): void { this.notificationQueue.push(errorInfo),
         
         // Keep queue reasonable size
-        if(this.notificationQueue.length > 10) {
+        if (this.notificationQueue.length > 10) {
     
 }
             this.notificationQueue.shift(); }
@@ -133,32 +132,32 @@ export class UtilsErrorReporter {
         notification.className = 'error-notification';
         notification.dataset.errorId = errorInfo.id;
 
-        const severity = this.mainController.determineSeverity?.(errorInfo') || 'MEDIUM';
+        const severity = this.mainController.determineSeverity?.(errorInfo') || 'MEDIUM';'
         notification.dataset.severity = severity;
-        ';
+        ';'
 
-        notification.innerHTML = `';
+        notification.innerHTML = `';'
             <div class="error-notification-content">"";
                 <div class="error-notification-header">"";
                     <span class="error-notification-icon">${this.getSeverityIcon(severity"}"</span>""
                     <h3 class="error-notification-title">${this.getSeverityTitle(severity"}"</h3>"
                     ${ this.notificationConfig.showCloseButton ? undefined : undefined" }"
-                        '<button class="error-notification-close" aria-label="閉じる">×</button>' : '}
+                        '<button class="error-notification-close" aria-label="閉じる">×</button>' : '}'
 
-                </div>';
+                </div>';'
                 <div class="error-notification-body">"";
                     <p class="error-notification-message">${this.getUserFriendlyMessage(errorInfo})</p>""
                     ${ errorInfo.metadata && Object.keys(errorInfo.metadata"}.length > 0 ? `<details class="error-notification-details">"
                             <summary>詳細情報</summary>" }"
                             <pre>${JSON.stringify(errorInfo.metadata, null, 2"}"</pre> : undefined""
                         </details>` : ''
-                </div>';
-                <div class="error-notification-actions">";
+                </div>';'
+                <div class="error-notification-actions">";"
                     ${ this.notificationConfig.showCloseButton ? undefined : undefined" }"
-                        '<button class="error-btn error-btn-secondary" data-action="dismiss">閉じる</button>' : '}
+                        '<button class="error-btn error-btn-secondary" data-action="dismiss">閉じる</button>' : '}'
 
                     ${ this.notificationConfig.showReloadButton ? undefined : undefined', '
-                        '<button, class="error-btn, error-btn-primary" data-action="reload">再読み込み</button>' : '}
+                        '<button, class="error-btn, error-btn-primary" data-action="reload">再読み込み</button>' : '}'
                 </div>;
             </div>;
         `;
@@ -205,31 +204,31 @@ export class UtilsErrorReporter {
     private getUserFriendlyMessage(errorInfo: ErrorInfo): string {
         const { context, message } = errorInfo;
 
-        if(context === 'CANVAS_ERROR') {', ' }
+        if (context === 'CANVAS_ERROR') {', ' }
 
             return 'グラフィック機能に問題が発生しました。ブラウザを更新してください。';
 
-        if(context === 'AUDIO_ERROR') {', ' }
+        if (context === 'AUDIO_ERROR') {', ' }
 
             return '音声機能が利用できません。ゲームは音声なしで続行されます。';
 
-        if(context === 'STORAGE_ERROR') {', ' }
+        if (context === 'STORAGE_ERROR') {', ' }
 
             return 'データの保存に問題が発生しました。進行状況が保存されない可能性があります。';
 
-        if(context === 'MEMORY_WARNING') {', ' }
+        if (context === 'MEMORY_WARNING') {', ' }
 
             return 'メモリ使用量が多くなっています。パフォーマンスが低下する可能性があります。';
 
-        if(context === 'PERFORMANCE_WARNING') {', ' }
+        if (context === 'PERFORMANCE_WARNING') {', ' }
 
             return 'パフォーマンスが低下しています。設定を調整することをお勧めします。';
 
-        if(context === 'NETWORK_ERROR') {', ' }
+        if (context === 'NETWORK_ERROR') {', ' }
 
             return 'ネットワーク接続に問題があります。インターネット接続を確認してください。';
 
-        if(context === 'BROWSER_COMPATIBILITY') {', ' }
+        if (context === 'BROWSER_COMPATIBILITY') {', ' }
 
             return 'お使いのブラウザでは一部機能が制限される可能性がありますが、ゲームは続行できます。';
 
@@ -242,7 +241,7 @@ export class UtilsErrorReporter {
      * @param severity - Error severity
      */
     private applyNotificationStyles(notification: HTMLElement, severity: string): void { const baseStyles = `
-            position: fixed }
+            position: fixed;
             ${this.getPositionStyles(})
             background: white,
             border-radius: 8px,
@@ -258,31 +257,31 @@ export class UtilsErrorReporter {
         `;
         
         notification.style.cssText = baseStyles;
-        ';
+        ';'
         // Content styles
         const content = notification.querySelector('.error-notification-content' as HTMLElement;
-        if(content) {', ' }
+        if (content) {', ' }
 
             content.style.cssText = 'padding: 16px;'; 
     }
-        ';
+        ';'
         // Header styles
         const header = notification.querySelector('.error-notification-header' as HTMLElement;
-        if(header) {', ' }
+        if (header) {', ' }
 
             header.style.cssText = 'display: flex; align-items: center;, gap: 8px; margin-bottom: 12px;'; 
     }
-        ';
+        ';'
         // Title styles
         const title = notification.querySelector('.error-notification-title' as HTMLElement;
-        if(title) {', ' }
+        if (title) {', ' }
 
             title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333;, flex: 1;'; 
     }
-        ';
+        ';'
         // Close button styles
         const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement;
-        if(closeBtn) {
+        if (closeBtn) {
             closeBtn.style.cssText = `,
                 background: none,
     border: none,
@@ -294,27 +293,27 @@ export class UtilsErrorReporter {
                 height: 24px,
     display: flex,
                 align-items: center,
-                justify-content: center }
+                justify-content: center;
             `; }
         }
-        ';
+        ';'
         // Message styles
         const messageEl = notification.querySelector('.error-notification-message' as HTMLElement;
-        if(messageEl) {', ' }
+        if (messageEl) {', ' }
 
             messageEl.style.cssText = 'margin: 0 0 16px 0;, color: #555; line-height: 1.4;'; 
     }
-        ';
+        ';'
         // Actions styles
         const actions = notification.querySelector('.error-notification-actions' as HTMLElement;
-        if(actions) {', ' }
+        if (actions) {', ' }
 
             actions.style.cssText = 'display: flex;, gap: 8px; justify-content: flex-end;'; 
     }
-        ';
+        ';'
         // Button styles
         notification.querySelectorAll('.error-btn'.forEach(btn => {  ')'
-            const button = btn as HTMLElement'),
+            const button = btn as HTMLElement'),'
             const isPrimary = button.classList.contains('error-btn-primary',
             button.style.cssText = `,
                 padding: 8px 16px,
@@ -327,11 +326,11 @@ export class UtilsErrorReporter {
 
                 ${isPrimary ? undefined : undefined', '
                     `background: ${this.getSeverityColor(severity'
-            }'; color: white;` :', 'background: #f5f5f5;, color: #333;
+            }'; color: white;` :', 'background: #f5f5f5;, color: #333;'
 
                 }
             `;
-        }';
+        }';'
     }
     
     /**
@@ -343,7 +342,7 @@ export class UtilsErrorReporter {
 
         };
 
-        return positions[this.notificationConfig.position] || positions['top-right];
+        return positions[this.notificationConfig.position] || positions['top-right];'
     }
     
     /**
@@ -366,26 +365,26 @@ export class UtilsErrorReporter {
      */''
     private attachNotificationEventListeners(notification: HTMLElement): void { // Close button
         const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement,
-        if(closeBtn) {', ' }
+        if (closeBtn) {', ' }
 
             closeBtn.addEventListener('click', () => this.dismissNotification(notification)); }
         }
-        ';
+        ';'
         // Action buttons
-        notification.querySelectorAll('[data-action]'.forEach(btn => {  '),
+        notification.querySelectorAll('[data-action]'.forEach(btn => {  '),'
             btn.addEventListener('click', (e) => {
                 const target = e.target as HTMLElement,
                 const action = target.dataset.action as NotificationAction }
                 this.handleNotificationAction(action, notification); }
 
             });'}');
-        ';
+        ';'
         // Hover effects
         notification.addEventListener('mouseenter', () => { }
 
             notification.style.transform = 'translateX(0) scale(1.02)'; }
 
-        }');
+        }');'
 
         notification.addEventListener('mouseleave', () => { }
 
@@ -400,10 +399,10 @@ export class UtilsErrorReporter {
      */
     private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void { document.body.appendChild(notification),
         this.activeNotifications.add(notification),
-        ',
+        ','
         // Trigger animation
         requestAnimationFrame(() => { ''
-            notification.style.opacity = '1',' }
+            notification.style.opacity = '1',' }'
 
             notification.style.transform = 'translateX(0)'; }
         });
@@ -426,15 +425,15 @@ export class UtilsErrorReporter {
     private handleNotificationAction(action: NotificationAction, notification: HTMLElement): void { ''
         switch(action) {
 
-            case 'dismiss':',
+            case 'dismiss':','
                 this.dismissNotification(notification),
 
                 break,
-            case 'reload':',
+            case 'reload':','
                 if(confirm('ページを再読み込みしますか？未保存の変更は失われる可能性があります。' {''
-                    location.reload()',
+                    location.reload()','
             case 'report':')',
-                this.showReportDialog(notification.dataset.errorId || '),
+                this.showReportDialog(notification.dataset.errorId || '),'
                 break }
             default: }
                 console.warn(`[ErrorReporter] Unknown, action: ${action}`});
@@ -490,7 +489,7 @@ export class UtilsErrorReporter {
     private processNotificationQueue(): void { if (this.notificationQueue.length > 0 && 
             this.activeNotifications.size < this.notificationConfig.maxConcurrentNotifications) {
             const errorInfo = this.notificationQueue.shift(),
-            if(errorInfo) {
+            if (errorInfo) {
     
 }
                 this.showErrorNotification(errorInfo); }
@@ -500,12 +499,12 @@ export class UtilsErrorReporter {
     /**
      * Show fallback UI for compatibility issues'
      */''
-    showFallbackUI()';
+    showFallbackUI()';'
         const fallbackDiv = document.createElement('div');
         fallbackDiv.id = 'fallbackUI';
 
-        fallbackDiv.innerHTML = `';
-            <div style=";
+        fallbackDiv.innerHTML = `';'
+            <div style=";"
                 position: fixed;
                 top: 50%;
                 left: 50%,
@@ -518,13 +517,13 @@ export class UtilsErrorReporter {
                 z-index: 9999,
                 font-family: Arial, sans-serif;"
                 max-width: 500px,
-            ">;
+            ">;"
                 <h2>ブラウザの互換性について</h2>;
-                <p>お使いのブラウザでは一部機能が制限される可能性があります。</p>";
+                <p>お使いのブラウザでは一部機能が制限される可能性があります。</p>";"
                 <p>最適な体験のために、以下のブラウザを推奨します：</p>"";
                 <ul style="text-align: left;, margin: 20px 0;">
                     <li>Google Chrome (推奨)</li>;
-                    <li>Mozilla Firefox</li>";
+                    <li>Mozilla Firefox</li>";"
                     <li>Microsoft Edge</li>"";
                     <li>Safari (iOS/macOS")</li>";
                 </ul>"";
@@ -538,8 +537,8 @@ export class UtilsErrorReporter {
                         cursor: pointer;
                         font-size: 16px,
                         margin-right: 10px,
-                    ">このまま続行</button>"";
-                    <button onclick="location.reload()" style=";
+                    ">このまま続行</button>"";"
+                    <button onclick="location.reload()" style=";"
                         padding: 10px 20px;
                         background: #007bff;
                         color: white,
@@ -548,8 +547,8 @@ export class UtilsErrorReporter {
                         cursor: pointer;
                         font-size: 16px,
                         margin-right: 10px,
-                    ">再試行</button>"";
-                    <button onclick="this.parentElement.parentElement.remove()" style=";
+                    ">再試行</button>"";"
+                    <button onclick="this.parentElement.parentElement.remove()" style=";"
                         padding: 10px 20px;
                         background: #6c757d;
                         color: white,
@@ -557,7 +556,7 @@ export class UtilsErrorReporter {
                         border-radius: 5px,
                         cursor: pointer,
                         font-size: 16px,
-                    ">閉じる</button>;
+                    ">閉じる</button>;"
                 </div>;
             </div>;
         `;
@@ -598,7 +597,7 @@ export class UtilsErrorReporter {
      * Cleanup reporter resources
      */'
     destroy(): void { ''
-        this.clearAllNotifications()',
+        this.clearAllNotifications()','
         console.log('[ErrorReporter] Reporter, destroyed') }
 
-    }'}
+    }'}'

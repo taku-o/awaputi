@@ -6,73 +6,71 @@
 
 // 型定義
 export interface SwitchInputConfig { enabled: boolean,
-    scanSpeed: number,
-    scanMode: ScanMode,
-    activationTime: number,
-    dwellTime: number,
-    numberOfSwitches: number,
+    scanSpeed: number;
+    scanMode: ScanMode;
+    activationTime: number;
+    dwellTime: number;
+    numberOfSwitches: number;
     switchMapping: Map<string, SwitchAction> }
 
 export interface ScanningConfig { enabled: boolean,
-    scanPattern: ScanPattern,
-    highlightStyle: HighlightStyle,
-    highlightColor: string,
-    audioFeedback: boolean,
-    autoStart: boolean,
-    groupScanLevels: number  }
+    scanPattern: ScanPattern;
+    highlightStyle: HighlightStyle;
+    highlightColor: string;
+    audioFeedback: boolean;
+    autoStart: boolean;
+    groupScanLevels: number;
 
 export interface SwitchState { isPressed: boolean,
-    lastPressTime: number,
-    scanningActive: boolean,
-    currentIndex: number,
-    scanDirection: number }
+    lastPressTime: number;
+    scanningActive: boolean;
+    currentIndex: number;
+    scanDirection: number;
 
 export interface ScanningState { isScanning: boolean,
-    currentElement: HTMLElement | null,
-    scanTimer: number | null,
-    elementGroups: HTMLElement[][],
-    currentGroup: number }
+    currentElement: HTMLElement | null;
+    scanTimer: number | null;
+    elementGroups: HTMLElement[][];
+    currentGroup: number;
 
 export interface SwitchStats { switchActivations: number,
-    scanningCycles: number,
-    averageScanTime: number,
-    successfulSelections: number }
+    scanningCycles: number;
+    averageScanTime: number;
+    successfulSelections: number;
 
 export interface DetailedSwitchStats extends SwitchStats { scanningActive: boolean,
-    totalElements: number,
-    currentElement: number,
-    successRate: number }
+    totalElements: number;
+    currentElement: number;
+    successRate: number;
 
 export interface SwitchInputControllerConfig { switchInput?: Partial<SwitchInputConfig>,
-    scanning?: Partial<ScanningConfig> }
+    scanning?: Partial<ScanningConfig>;
 
 export interface BubbleData { x: number,
-    y: number,
-    type: string  }
+    y: number;
+    type: string;
 
 export interface GameEngine { handleBubbleClick: (bubbleData: BubbleData) => void 
     }
 
 export interface HIDDevice { vendorId: number,
-    productId: number,
-    productName: string,
-    open: () => Promise<void>,
+    productId: number;
+    productName: string;
+    open: () => Promise<void>;
     addEventListener: (type: string, listener: EventListener) => void  }
 }
 
-export interface HIDInputReportEvent extends Event { data: DataView
-    }
+export interface HIDInputReportEvent extends Event { data: DataView;
 
-export interface FeedbackData { [key: string]: any }
+export interface FeedbackData { [key: string]: any;
 
 export interface ElementPosition { top: number,
-    left: number,
-    width: number,
-    height: number  }
+    left: number;
+    width: number;
+    height: number;
 
 export interface ScanHighlightElement extends HTMLElement { className: string,
-    style: CSSStyleDeclaration
-    }
+    style: CSSStyleDeclaration;
 
 // 列挙型
 export type ScanMode = 'auto' | 'manual' | 'step';
@@ -80,8 +78,8 @@ export type SwitchAction = 'primary' | 'secondary' | 'cancel';
 export type ScanPattern = 'linear' | 'group' | 'custom';
 export type HighlightStyle = 'border' | 'background' | 'shadow';
 
-export type FeedbackType = ';
-    | 'switch_activated' | 'scanning_started' | 'scanning_stopped', ';
+export type FeedbackType = ';'
+    | 'switch_activated' | 'scanning_started' | 'scanning_stopped', ';'
     | 'element_activated' | 'scan_highlight' | 'group_changed';
 
 // 定数
@@ -98,58 +96,58 @@ export const HAPTIC_PATTERNS: Record<FeedbackType, number[]> = {;
     'element_activated': [200],
     'scan_highlight': [25],
     'group_changed': [50, 25, 50] };
-';
+';'
 // 型ガード
 export function isHIDDevice(device: any): device is HIDDevice { return device &&,
-           typeof device.vendorId === 'number' &&',
-           typeof device.productId === 'number' &&',
-           typeof device.productName === 'string' &&',
+           typeof device.vendorId === 'number' &&','
+           typeof device.productId === 'number' &&','
+           typeof device.productName === 'string' &&','
            typeof device.open === 'function' }
 }
 
 export function isGameElement(element: HTMLElement): boolean {,
-    return element.classList.contains('bubble') || ',
+    return element.classList.contains('bubble') || ','
            element.classList.contains('game-element' }'
 
 export function isInteractiveElement(element: HTMLElement): boolean {,
     const interactiveTags = ['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'],
-    return interactiveTags.includes(element.tagName) ||',
-           element.hasAttribute('tabindex') ||',
-           element.classList.contains('bubble') ||',
+    return interactiveTags.includes(element.tagName) ||','
+           element.hasAttribute('tabindex') ||','
+           element.classList.contains('bubble') ||','
            element.classList.contains('ui-element' }'
 
-export function hasGameEngine(controller: SwitchInputController): controller is SwitchInputController & { gameEngine: GameEngine } { return controller.gameEngine !== undefined &&,
+export function hasGameEngine(controller: SwitchInputController): controller is SwitchInputController & { gameEngine: GameEngine; { return controller.gameEngine !== undefined &&,
            typeof controller.gameEngine.handleBubbleClick === 'function',
 
 export class SwitchInputController {
-    private switchConfig: SwitchInputConfig,
-    private scanningConfig: ScanningConfig,
-    private switchState: SwitchState,
-    private scanningState: ScanningState,
+    private switchConfig: SwitchInputConfig;
+    private scanningConfig: ScanningConfig;
+    private switchState: SwitchState;
+    private scanningState: ScanningState;
     // 要素管理
     private, interactiveElements: Map<string, HTMLElement>,
-    private focusableElements: HTMLElement[],
-    private scanningGroups: HTMLElement[][],
-    private currentFocusIndex: number,
+    private focusableElements: HTMLElement[];
+    private scanningGroups: HTMLElement[][];
+    private currentFocusIndex: number;
     // 視覚フィードバック
-    private scanHighlight: ScanHighlightElement | null,
+    private scanHighlight: ScanHighlightElement | null;
     private, feedbackElements: Map<string, HTMLElement>,
     
     // 統計とゲームエンジン
-    private stats: SwitchStats,
+    private stats: SwitchStats;
     public gameEngine?: GameEngine,
 
     constructor('''
-            scanMode: 'auto',
-            activationTime: DEFAULT_ACTIVATION_TIME,
+            scanMode: 'auto';
+            activationTime: DEFAULT_ACTIVATION_TIME;
             dwellTime: DEFAULT_DWELL_TIME
     ),
-            numberOfSwitches: 1',
-    switchMapping: new Map<string, SwitchAction>([']',
+            numberOfSwitches: 1';'
+    switchMapping: new Map<string, SwitchAction>([']';
                 ['space', 'primary'],
                 ['enter', 'secondary'],
                 ['escape', 'cancel]',
-            ]') };
+            ]') };'
         
         // スキャニング設定
         this.scanningConfig = { enabled: false,''
@@ -185,7 +183,7 @@ export class SwitchInputController {
             scanningCycles: 0,
             averageScanTime: 0,
     successfulSelections: 0  };
-        console.log('[SwitchInputController] Initialized);
+        console.log('[SwitchInputController] Initialized);'
     }
     
     /**
@@ -193,10 +191,10 @@ export class SwitchInputController {
      */
     initializeSwitchInput(config: SwitchInputControllerConfig = { ): void {
         Object.assign(this.switchConfig config.switchInput || {),
-        Object.assign(this.scanningConfig config.scanning || {'),
+        Object.assign(this.scanningConfig config.scanning || {'),'
         
-        if(this.switchConfig.enabled') {
-        ',
+        if (this.switchConfig.enabled') {'
+        ','
 
             this.setupSwitchListeners(),
             this.initializeScanning() }
@@ -207,21 +205,21 @@ export class SwitchInputController {
     /**
      * スイッチリスナーを設定'
      */''
-    private setupSwitchListeners()';
+    private setupSwitchListeners()';'
         document.addEventListener('keydown', (event: KeyboardEvent) => { }
 
-            this.handleSwitchInput(event.code.toLowerCase(), 'down');' }
+            this.handleSwitchInput(event.code.toLowerCase(), 'down');' }'
 
-        }');
+        }');'
 
         document.addEventListener('keyup', (event: KeyboardEvent) => { }
 
-            this.handleSwitchInput(event.code.toLowerCase(), 'up');' }
+            this.handleSwitchInput(event.code.toLowerCase(), 'up');' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 外部スイッチデバイスサポート
-        if('navigator' in, window && 'hid' in (navigator, as any) { this.setupHIDSwitchSupport() }
+        if ('navigator' in, window && 'hid' in (navigator, as any) { this.setupHIDSwitchSupport() }
     }
     
     /**
@@ -232,10 +230,10 @@ export class SwitchInputController {
             // HIDデバイスの検出とセットアップ
             const devices = await nav.hid.getDevices() as HIDDevice[],
             for (const device of devices) {
-                if(this.isSwitchDevice(device) {
+                if (this.isSwitchDevice(device) {
             }
                     await this.connectSwitchDevice(device); }
-                }'} catch (error) { console.warn('[SwitchInputController] HID setup failed:', error }
+                }'} catch (error) { console.warn('[SwitchInputController] HID setup failed:', error }'
     }
     
     /**
@@ -249,14 +247,14 @@ export class SwitchInputController {
      * スイッチデバイスに接続
      */
     private async connectSwitchDevice(device: HIDDevice): Promise<void> { try {'
-            await device.open()',
+            await device.open()','
             device.addEventListener('inputreport', (event: Event) => { ,
                 const hidEvent = event as HIDInputReportEvent,  }
 
                 this.handleHIDSwitchInput(hidEvent.data); }'
 
-            }');
-            console.log('[SwitchInputController] Connected to switch device:', device.productName';} catch (error) { console.error('[SwitchInputController] Failed to connect switch device:', error }
+            }');'
+            console.log('[SwitchInputController] Connected to switch device:', device.productName';} catch (error) { console.error('[SwitchInputController] Failed to connect switch device:', error }'
     }
     
     /**
@@ -280,12 +278,12 @@ export class SwitchInputController {
     /**
      * スイッチ入力を処理'
      */''
-    private handleSwitchInput(keyCode: string, action: 'down' | 'up): void { if (!this.switchConfig.enabled) return,
+    private handleSwitchInput(keyCode: string, action: 'down' | 'up): void { if (!this.switchConfig.enabled) return,'
         
         const switchAction = this.switchConfig.switchMapping.get(keyCode),
         if (!switchAction) return,
 
-        const now = Date.now()',
+        const now = Date.now()','
         if(action === 'down' {'
             this.switchState.isPressed = true,
             this.switchState.lastPressTime = now,
@@ -297,10 +295,10 @@ export class SwitchInputController {
                     this.handleSwitchHold(switchAction); }
                 }'}, this.switchConfig.dwellTime';
 
-        } else if(action === 'up) { const pressDuration = now - this.switchState.lastPressTime,
+        } else if (action === 'up) { const pressDuration = now - this.switchState.lastPressTime,'
             this.switchState.isPressed = false,
             
-            if(pressDuration >= this.switchConfig.activationTime) {
+            if (pressDuration >= this.switchConfig.activationTime) {
     
 }
                 this.handleSwitchActivation(switchAction); }
@@ -314,17 +312,17 @@ export class SwitchInputController {
 
         switch(switchAction) {
 
-            case 'primary':',
+            case 'primary':','
                 this.performPrimaryAction('''
-            case 'secondary': ',
+            case 'secondary': ','
                 this.performSecondaryAction('',
-            case 'cancel':',
+            case 'cancel':','
                 this.performCancelAction() }
 
-                console.log('[SwitchInputController] Unknown switch action:', switchAction'; }
+                console.log('[SwitchInputController] Unknown switch action:', switchAction'; }'
         }
 
-        this.provideFeedback('switch_activated', { action: switchAction }
+        this.provideFeedback('switch_activated', { action: switchAction,
     
     /**
      * スイッチ長押しを処理'
@@ -334,7 +332,7 @@ export class SwitchInputController {
 
             this.toggleScanning() }
 
-        } else if(switchAction === 'secondary) { this.showContextMenu() }'
+        } else if (switchAction === 'secondary) { this.showContextMenu() }'
     }
     
     /**
@@ -367,7 +365,7 @@ export class SwitchInputController {
         this.createScanningGroups(),
         this.createScanHighlight(),
         
-        if(this.scanningConfig.autoStart) {
+        if (this.scanningConfig.autoStart) {
     
 }
             this.startScanning(); }
@@ -376,14 +374,14 @@ export class SwitchInputController {
     /**
      * インタラクティブ要素を更新
      */'
-    private updateInteractiveElements(): void { this.focusableElements = [],
-        this.interactiveElements.clear()',
+    private updateInteractiveElements(): void { this.focusableElements = [];
+        this.interactiveElements.clear()','
             'button:not([disabled])',
             'a[href]',
             'input:not([disabled])',
             'select:not([disabled])',
             'textarea:not([disabled])',
-            '[tabindex]:not([tabindex="-1"]",
+            '[tabindex]:not([tabindex="-1"]",'
             '.bubble:not(.disabled)',
             '.ui-element:not(.disabled)',
         ],
@@ -405,8 +403,8 @@ export class SwitchInputController {
     /**
      * スキャニンググループを作成'
      */''
-    private createScanningGroups()';
-        if(this.scanningConfig.scanPattern === 'linear') {
+    private createScanningGroups()';'
+        if (this.scanningConfig.scanPattern === 'linear') {
             // 線形スキャニング：すべて一つのグループ
             this.scanningGroups = [this.focusableElements] }
             ' }'
@@ -450,7 +448,7 @@ export class SwitchInputController {
         const gameGroup: HTMLElement[] = [],
         const navigationGroup: HTMLElement[] = [],
 
-        this.focusableElements.forEach(element => { '),
+        this.focusableElements.forEach(element => { '),'
             if(element.tagName === 'BUTTON' || element.classList.contains('btn' { }
 
                 buttonGroup.push(element);' }'
@@ -458,7 +456,7 @@ export class SwitchInputController {
             } else if(element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA' { ''
                 inputGroup.push(element),' }'
 
-            } else if (element.classList.contains('bubble') || element.classList.contains('game-element) { gameGroup.push(element) } else { navigationGroup.push(element) }
+            } else if (element.classList.contains('bubble') || element.classList.contains('game-element) { gameGroup.push(element) } else { navigationGroup.push(element) }'
         });
         
         return [gameGroup, buttonGroup, inputGroup, navigationGroup].filter(group => group.length > 0);
@@ -468,12 +466,12 @@ export class SwitchInputController {
      * スキャンハイライトを作成
      */'
     private createScanHighlight(): void { if (this.scanHighlight) {''
-            this.scanHighlight.remove()',
-        this.scanHighlight = document.createElement('div') as ScanHighlightElement,
+            this.scanHighlight.remove()','
+        this.scanHighlight = document.createElement('div') as ScanHighlightElement;
         this.scanHighlight.className = 'scan-highlight',
         this.scanHighlight.style.cssText = `,
             position: fixed,
-            pointer-events: none }
+            pointer-events: none;
             border: 3px solid ${this.scanningConfig.highlightColor}
             border-radius: 4px,
     background: rgba(0, 255, 0, 0.1),
@@ -492,12 +490,12 @@ export class SwitchInputController {
         
         this.scanningState.isScanning = true,
         this.scanningState.currentGroup = 0,
-        this.currentFocusIndex = 0,
+        this.currentFocusIndex = 0;
         this.stats.scanningCycles++,
-        ',
+        ','
 
         this.highlightCurrentElement(),
-        this.scheduleScanAdvance()',
+        this.scheduleScanAdvance()','
         this.provideFeedback('scanning_started'),
         console.log('[SwitchInputController] Scanning, started') }'
     
@@ -506,15 +504,15 @@ export class SwitchInputController {
      */
     private stopScanning(): void { this.scanningState.isScanning = false,
         
-        if(this.scanningState.scanTimer) {
+        if (this.scanningState.scanTimer) {
         
             clearTimeout(this.scanningState.scanTimer) }
             this.scanningState.scanTimer = null; }
         }
 
-        this.hideScanHighlight()';
+        this.hideScanHighlight()';'
         this.provideFeedback('scanning_stopped');
-        console.log('[SwitchInputController] Scanning stopped);
+        console.log('[SwitchInputController] Scanning stopped);'
     }
     
     /**
@@ -541,10 +539,10 @@ export class SwitchInputController {
     private advanceScan(): void { const currentGroup = this.scanningGroups[this.scanningState.currentGroup],
         if (!currentGroup || currentGroup.length === 0) return,
         
-        this.currentFocusIndex = (this.currentFocusIndex + 1) % currentGroup.length,
+        this.currentFocusIndex = (this.currentFocusIndex + 1) % currentGroup.length;
         
         // グループの最後まで到達した場合
-        if(this.currentFocusIndex === 0 && this.scanningGroups.length > 1) {
+        if (this.currentFocusIndex === 0 && this.scanningGroups.length > 1) {
     
 }
             this.scanningState.currentGroup = (this.scanningState.currentGroup + 1) % this.scanningGroups.length; }
@@ -557,7 +555,7 @@ export class SwitchInputController {
      * 現在の要素をハイライト
      */
     private highlightCurrentElement(): void { const currentGroup = this.scanningGroups[this.scanningState.currentGroup],
-        if(!currentGroup || !currentGroup[this.currentFocusIndex]) {
+        if (!currentGroup || !currentGroup[this.currentFocusIndex]) {
             this.hideScanHighlight() }
             return; }
         }
@@ -565,16 +563,16 @@ export class SwitchInputController {
         const element = currentGroup[this.currentFocusIndex];
         const rect = element.getBoundingClientRect();
 
-        if(!this.scanHighlight') return;
+        if(!this.scanHighlight') return;'
 
         this.scanHighlight.style.display = 'block';
         this.scanHighlight.style.left = `${rect.left - 5}px`;
         this.scanHighlight.style.top = `${rect.top - 5}px`;
         this.scanHighlight.style.width = `${rect.width + 10}px`;
         this.scanHighlight.style.height = `${rect.height + 10}px`;
-        ';
+        ';'
         // オーディオフィードバック
-        if(this.scanningConfig.audioFeedback) {', ' }
+        if (this.scanningConfig.audioFeedback) {', ' }
 
             this.playAudioFeedback('scan_highlight'; }'
 }
@@ -583,7 +581,7 @@ export class SwitchInputController {
      * スキャンハイライトを隠す
      */'
     private hideScanHighlight(): void { ''
-        if(this.scanHighlight) {', ' }
+        if (this.scanHighlight) {', ' }
 
             this.scanHighlight.style.display = 'none'; }
 }
@@ -632,7 +630,7 @@ export class SwitchInputController {
             type: element.dataset.bubbleType || 'normal'
             };
         // ゲームエンジンに泡クリックイベントを送信
-        if(hasGameEngine(this) { this.gameEngine.handleBubbleClick(bubbleData) }
+        if (hasGameEngine(this) { this.gameEngine.handleBubbleClick(bubbleData) }
     }
     
     /**
@@ -641,29 +639,29 @@ export class SwitchInputController {
     private moveToNextGroup(): void { if (this.scanningGroups.length <= 1) return,
         
         this.scanningState.currentGroup = (this.scanningState.currentGroup + 1) % this.scanningGroups.length,
-        this.currentFocusIndex = 0,
-        this.highlightCurrentElement()',
+        this.currentFocusIndex = 0;
+        this.highlightCurrentElement()','
         this.provideFeedback('group_changed' }'
     
     /**
      * コンテキストメニューを表示'
      */''
-    private showContextMenu()';
+    private showContextMenu()';'
         console.log('[SwitchInputController] Show, context menu');
     }
     
     /**
      * 代替メニューを表示'
      */''
-    private showAlternativeMenu()';
+    private showAlternativeMenu()';'
         console.log('[SwitchInputController] Show, alternative menu');
     }
     
     /**
      * 前のレベルに戻る'
      */''
-    private returnToPreviousLevel()';
-        console.log('[SwitchInputController] Return, to previous, level);
+    private returnToPreviousLevel()';'
+        console.log('[SwitchInputController] Return, to previous, level);'
     }
     
     /**
@@ -671,14 +669,14 @@ export class SwitchInputController {
      */
     private provideFeedback(type: FeedbackType data: FeedbackData = { ): void {
         // 視覚フィードバック
-        this.provideVisualFeedback(type data'),
+        this.provideVisualFeedback(type data'),'
         
         // オーディオフィードバック
-        if(this.scanningConfig.audioFeedback') { }
+        if (this.scanningConfig.audioFeedback') { }'
 
             this.playAudioFeedback(type); }
         }
-        ';
+        ';'
         // ハプティックフィードバック（対応デバイス）
         if ('navigator' in, window && 'vibrate' in, navigator) { this.provideHapticFeedback(type) }
     }
@@ -701,7 +699,7 @@ export class SwitchInputController {
      * ハプティックフィードバックを提供
      */''
     private provideHapticFeedback(type: FeedbackType): void { const patterns = HAPTIC_PATTERNS[type],
-        if(patterns && 'vibrate' in, navigator) {
+        if (patterns && 'vibrate' in, navigator) {
     
 }
             navigator.vibrate(patterns); }
@@ -714,7 +712,7 @@ export class SwitchInputController {
             scanningActive: this.scanningState.isScanning,
             totalElements: this.focusableElements.length,
             currentElement: this.currentFocusIndex,
-    successRate: this.stats.switchActivations > 0 ? undefined : undefined };
+    successRate: this.stats.switchActivations > 0 ? undefined : undefined,;
                 (this.stats.successfulSelections / this.stats.switchActivations) * 100 : 0 
     } }
     
@@ -723,12 +721,12 @@ export class SwitchInputController {
      */
     updateConfig(newConfig: SwitchInputControllerConfig): void { if (newConfig.switchInput) {
             Object.assign(this.switchConfig, newConfig.switchInput) }
-        if(newConfig.scanning) {', ' }
+        if (newConfig.scanning) {', ' }
 
             Object.assign(this.scanningConfig, newConfig.scanning); }
         }
 
-        console.log('[SwitchInputController] Configuration, updated);
+        console.log('[SwitchInputController] Configuration, updated);'
     }
     
     /**
@@ -763,7 +761,7 @@ export class SwitchInputController {
     /**
      * スキャニンググループ情報を取得
      */ : undefined
-    getScanningGroupsInfo(): { groupCount: number, elementsInGroups: number[] } { return { groupCount: this.scanningGroups.length };
+    getScanningGroupsInfo(): { groupCount: number, elementsInGroups: number[]; { return { groupCount: this.scanningGroups.length };
             elementsInGroups: this.scanningGroups.map(group => group.length); 
     }
     
@@ -772,7 +770,7 @@ export class SwitchInputController {
      */
     cleanup(): void { this.stopScanning(),
         
-        if(this.scanHighlight) {
+        if (this.scanHighlight) {
         
             this.scanHighlight.remove() }
             this.scanHighlight = null; }
@@ -782,7 +780,7 @@ export class SwitchInputController {
         this.focusableElements = [];
 
         this.scanningGroups = [];
-        this.feedbackElements.clear()';
+        this.feedbackElements.clear()';'
         console.log('[SwitchInputController] Cleaned, up');
 
-    }'}
+    }'}'

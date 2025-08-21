@@ -6,9 +6,9 @@ import { DashboardWidgetRenderer  } from './statistics/DashboardWidgetRenderer.j
  */
 export class StatisticsDashboard {
     constructor(statisticsManager, chartRenderer, widgetRenderer) {
-        this.statisticsManager = statisticsManager,
-        this.chartRenderer = chartRenderer,
-        this.widgetRenderer = widgetRenderer || new DashboardWidgetRenderer(),
+        this.statisticsManager = statisticsManager;
+        this.chartRenderer = chartRenderer;
+        this.widgetRenderer = widgetRenderer || new DashboardWidgetRenderer();
         
         // ダッシュボード設定
         this.config = {
@@ -19,60 +19,59 @@ export class StatisticsDashboard {
                 padding: 20 
     };
             widgets: { keyMetrics: {
-                    enabled: true }
-                    span: { rows: 1, cols: 2  },
-                    position: { row: 0, col: 0  },
-                recentAchievements: { enabled: true }
-                    span: { rows: 1, cols: 2  },
-                    position: { row: 0, col: 2  },
-                growthTrends: { enabled: true }
-                    span: { rows: 1, cols: 3  },
-                    position: { row: 1, col: 0  },
-                playStyle: { enabled: true }
-                    span: { rows: 1, cols: 1  },
-                    position: { row: 1, col: 3  },
-                performanceChart: { enabled: true }
-                    span: { rows: 1, cols: 2  },
-                    position: { row: 2, col: 0  },
-                statisticsBreakdown: { enabled: true }
-                    span: { rows: 1, cols: 2  },
+                    enabled: true,
+                    span: { rows: 1, cols: 2  };
+                    position: { row: 0, col: 0  };
+                recentAchievements: { enabled: true,
+                    span: { rows: 1, cols: 2  };
+                    position: { row: 0, col: 2  };
+                growthTrends: { enabled: true,
+                    span: { rows: 1, cols: 3  };
+                    position: { row: 1, col: 0  };
+                playStyle: { enabled: true,
+                    span: { rows: 1, cols: 1  };
+                    position: { row: 1, col: 3  };
+                performanceChart: { enabled: true,
+                    span: { rows: 1, cols: 2  };
+                    position: { row: 2, col: 0  };
+                statisticsBreakdown: { enabled: true,
+                    span: { rows: 1, cols: 2  };
                     position: { row: 2, col: 2  }
             },
             responsive: { small: { }
-                    layout: { rows: 6, columns: 1  },
+                    layout: { rows: 6, columns: 1  };
                     widgets: {
-                        keyMetrics: { span: { rows: 1, cols: 1  }, position: { row: 0, col: 0  },
-                        recentAchievements: { span: { rows: 1, cols: 1  }, position: { row: 1, col: 0  },
-                        growthTrends: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 0  },
-                        playStyle: { span: { rows: 1, cols: 1  }, position: { row: 3, col: 0  },
-                        performanceChart: { span: { rows: 1, cols: 1  }, position: { row: 4, col: 0  },
+                        keyMetrics: { span: { rows: 1, cols: 1  }, position: { row: 0, col: 0  };
+                        recentAchievements: { span: { rows: 1, cols: 1  }, position: { row: 1, col: 0  };
+                        growthTrends: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 0  };
+                        playStyle: { span: { rows: 1, cols: 1  }, position: { row: 3, col: 0  };
+                        performanceChart: { span: { rows: 1, cols: 1  }, position: { row: 4, col: 0  };
                         statisticsBreakdown: { span: { rows: 1, cols: 1  }, position: { row: 5, col: 0  }
 },
                 medium: {
-                    layout: { rows: 3, columns: 2  },
+                    layout: { rows: 3, columns: 2  };
                     widgets: {
-                        keyMetrics: { span: { rows: 1, cols: 2  }, position: { row: 0, col: 0  },
-                        recentAchievements: { span: { rows: 1, cols: 2  }, position: { row: 1, col: 0  },
-                        growthTrends: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 0  },
-                        playStyle: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 1  },
-                        performanceChart: { enabled: false };
-                        statisticsBreakdown: { enabled: false 
-    }
+                        keyMetrics: { span: { rows: 1, cols: 2  }, position: { row: 0, col: 0  };
+                        recentAchievements: { span: { rows: 1, cols: 2  }, position: { row: 1, col: 0  };
+                        growthTrends: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 0  };
+                        playStyle: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 1  };
+                        performanceChart: { enabled: false,;
+                        statisticsBreakdown: { enabled: false,
         };
         // ウィジェット管理
         this.widgets = new Map();
         this.layoutCache = new Map();
         // イベントハンドラ
         this.eventHandlers = new Map('''
-            easing: 'ease-in-out',
-    stagger: 50;
+            easing: 'ease-in-out';
+    stagger: 50,
         },
         
         // 更新状態管理
         this.updateState = { isUpdating: false,
             lastUpdateTime: 0,
-    updateInterval: 5000, // 5秒間隔,
-            autoUpdate: false  }))
+    updateInterval: 5000, // 5秒間隔;
+            autoUpdate: false,))
         this.initialize();
     }
     
@@ -144,7 +143,7 @@ export class StatisticsDashboard {
     
 }
         const cacheKey = `${canvas.width}x${canvas.height}`;
-        if(this.layoutCache.has(cacheKey) { return this.layoutCache.get(cacheKey) }
+        if (this.layoutCache.has(cacheKey) { return this.layoutCache.get(cacheKey) }
         
         const { layout, widgets } = config;
         const { rows, columns, gridGap, padding } = layout;
@@ -167,9 +166,9 @@ export class StatisticsDashboard {
             widgetAreas[name] = { x, y, width, height });
         
         const layoutResult = {
-            canvas: { width: canvas.width, height: canvas.height  },
-            grid: { rows, columns, cellWidth, cellHeight, gridGap, padding },
-            widgets: widgetAreas;
+            canvas: { width: canvas.width, height: canvas.height  };
+            grid: { rows, columns, cellWidth, cellHeight, gridGap, padding };
+            widgets: widgetAreas,
         },
         
         this.layoutCache.set(cacheKey, layoutResult);
@@ -181,7 +180,7 @@ export class StatisticsDashboard {
      */''
     renderBackground(context, layout, options) {
         const canvas = context.canvas,
-        ',
+        ','
         // 背景色
         context.fillStyle = options.backgroundColor || '#F8FAFC',
         context.fillRect(0, 0, canvas.width, canvas.height),
@@ -237,13 +236,13 @@ export class StatisticsDashboard {
             const widget = this.widgets.get(name),
             const area = layout.widgets[name],
 
-            if(widget && area) {
+            if (widget && area) {
                 // サブコンテキストの作成
                 const subCanvas = document.createElement('canvas'),
                 subCanvas.width = area.width,
 
                 subCanvas.height = area.height,
-                const subContext = subCanvas.getContext('2d),
+                const subContext = subCanvas.getContext('2d),'
                 
                 // ウィジェットのレンダリング
                 const renderPromise = widget.render(subContext, {
@@ -272,13 +271,13 @@ export class StatisticsDashboard {
         // エラー背景
         context.fillStyle = '#FEE2E2',
         context.fillRect(area.x, area.y, area.width, area.height),
-        ',
+        ','
         // エラー枠線
         context.strokeStyle = '#DC2626',
 
         context.lineWidth = 2,
         context.strokeRect(area.x, area.y, area.width, area.height),
-        ',
+        ','
         // エラーメッセージ
         context.fillStyle = '#DC2626',
         context.font = '14px system-ui, -apple-system, sans-serif',
@@ -305,12 +304,12 @@ export class StatisticsDashboard {
                 setTimeout(() => {
                     promise.then(result => {)
                         results[index] = result)
-                        completedCount++',
-                        ',
-                        if(completedCount === renderPromises.length) {
+                        completedCount++','
+                        ','
+                        if (completedCount === renderPromises.length) {
                             resolve({''
                                 type: 'dashboard',
-    widgets: results })
+    widgets: results,)
                                 animated: true) }
                                 timestamp: Date.now(); 
     });
@@ -328,23 +327,23 @@ export class StatisticsDashboard {
         const canvas = context.canvas,
         const centerX = canvas.width / 2,
         const centerY = canvas.height / 2,
-        ',
+        ','
         // 背景
         context.fillStyle = '#F8FAFC',
         context.fillRect(0, 0, canvas.width, canvas.height),
-        ',
+        ','
         // エラーアイコン
         context.fillStyle = '#EF4444',
         context.font = '48px system-ui, -apple-system, sans-serif',
         context.textAlign = 'center',
-        context.fillText('⚠', centerX, centerY - 30',
-        ',
+        context.fillText('⚠', centerX, centerY - 30','
+        ','
         // エラーメッセージ
         context.fillStyle = '#374151',
         context.font = '16px system-ui, -apple-system, sans-serif',
-        context.fillText('ダッシュボードの読み込みに失敗しました', centerX, centerY + 20',
+        context.fillText('ダッシュボードの読み込みに失敗しました', centerX, centerY + 20','
         context.fillText(error.message, centerX, centerY + 40),
-        ',
+        ','
 
         return Promise.resolve({)'
             type: 'dashboard'),
@@ -398,28 +397,28 @@ export class StatisticsDashboard {
         
         try {
             // 各ウィジェットのデータ更新
-            const updatePromises = Array.from(this.widgets.values().map(widget => { '),
+            const updatePromises = Array.from(this.widgets.values().map(widget => { '),'
                 if(typeof, widget.refreshData === 'function' { }'
                     return widget.refreshData();
                 return Promise.resolve();
             });
-            ';
+            ';'
 
             await Promise.all(updatePromises);
-            this.updateState.lastUpdateTime = Date.now()';
+            this.updateState.lastUpdateTime = Date.now()';'
             this.emit('dataUpdated', {
-                timestamp: this.updateState.lastUpdateTime',
+                timestamp: this.updateState.lastUpdateTime','
             ' }'
 
         } catch (error) {
-            console.error('Dashboard data refresh failed:', error',
-            this.emit('updateError', error' } finally { this.updateState.isUpdating = false }
+            console.error('Dashboard data refresh failed:', error','
+            this.emit('updateError', error' } finally { this.updateState.isUpdating = false }'
     }
     
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners()';
+    setupEventListeners()';'
         if (typeof, window !== 'undefined') {', ' }
 
             window.addEventListener('resize', () => {  }
@@ -447,7 +446,7 @@ export class StatisticsDashboard {
      * イベントリスナーの追加
      */
     on(eventName, handler) {
-        if(!this.eventHandlers.has(eventName) {
+        if (!this.eventHandlers.has(eventName) {
     }
             this.eventHandlers.set(eventName, []); }
         }

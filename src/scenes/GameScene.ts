@@ -15,58 +15,56 @@ import { GamePerformanceMonitor  } from './game-scene/GamePerformanceMonitor.js'
 
 // Game Scene specific types
 export interface GameSceneState { isPaused: boolean,
-    isGameOver: boolean,
-    lastUpdateDebugTime?: number,
-    lastBubbleErrorTime?: number,
-    canvas?: HTMLCanvasElement,
+    isGameOver: boolean;
+    lastUpdateDebugTime?: number;
+    lastBubbleErrorTime?: number;
+    canvas?: HTMLCanvasElement;
      }
 export interface GameSceneComponents { inputManager: GameInputManager,
-    floatingTextManager: FloatingTextManager,
-    stateManager: GameStateManager,
-    uiManager: GameUIManager,
-    visualizationManager: GameVisualizationManager,
-    performanceMonitor: GamePerformanceMonitor
-     }
+    floatingTextManager: FloatingTextManager;
+    stateManager: GameStateManager;
+    uiManager: GameUIManager;
+    visualizationManager: GameVisualizationManager;
+    performanceMonitor: GamePerformanceMonitor;
 export interface GameSceneStats { state: any,
-    ui: any,
-    visualization: any,
-    performance: any  }
+    ui: any;
+    visualization: any;
+    performance: any;
 export interface GameSceneDebugInfo { scene: string,
-    isPaused: boolean,
-    isGameOver: boolean,
+    isPaused: boolean;
+    isGameOver: boolean;
     components: {
         stateManage,r: any,
         uiManager: any,
         visualizationManager: any,
-    performanceMonitor: any 
- };
-    gameStats: GameSceneStats;
+    performanceMonitor: any,;
+    gameStats: GameSceneStats,
 }
 export interface TimeWarnings { timeWarning: boolean,
-    urgentWarning: boolean  }
-export interface PerformanceSettings { [key: string]: any }
+    urgentWarning: boolean;
+export interface PerformanceSettings { [key: string]: any;
 export class GameScene extends Scene implements GameSceneState { // State properties
-    public isPaused: boolean,
-    public isGameOver: boolean,
+    public isPaused: boolean;
+    public isGameOver: boolean;
     public lastUpdateDebugTime?: number,
     public lastBubbleErrorTime?: number,
     public canvas?: HTMLCanvasElement,
 
     // Component properties
-    public inputManager: GameInputManager,
-    public floatingTextManager: FloatingTextManager,
-    public stateManager: GameStateManager,
-    public uiManager: GameUIManager,
-    public visualizationManager: GameVisualizationManager,
-    public performanceMonitor: GamePerformanceMonitor,
+    public inputManager: GameInputManager;
+    public floatingTextManager: FloatingTextManager;
+    public stateManager: GameStateManager;
+    public uiManager: GameUIManager;
+    public visualizationManager: GameVisualizationManager;
+    public performanceMonitor: GamePerformanceMonitor;
     // Event handler references (bound, methods),
-    private boundHandleMouseClick: (event: MouseEvent) => void,
-    private boundHandleMouseMove: (event: MouseEvent) => void,
-    private boundHandleTouchStart: (event: TouchEvent) => void,
-    private boundHandleTouchMove: (event: TouchEvent) => void,
-    private boundHandleTouchEnd: (event: TouchEvent) => void,
-    private boundHandleTouchCancel: (event: TouchEvent) => void,
-    private boundHandleKeyDown: (event: KeyboardEvent) => void,
+    private boundHandleMouseClick: (event: MouseEvent) => void;
+    private boundHandleMouseMove: (event: MouseEvent) => void;
+    private boundHandleTouchStart: (event: TouchEvent) => void;
+    private boundHandleTouchMove: (event: TouchEvent) => void;
+    private boundHandleTouchEnd: (event: TouchEvent) => void;
+    private boundHandleTouchCancel: (event: TouchEvent) => void;
+    private boundHandleKeyDown: (event: KeyboardEvent) => void;
 
     constructor(gameEngine: any) {
 
@@ -74,24 +72,24 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         
         // 基本コンポーネント
         this.inputManager = new GameInputManager(gameEngine.canvas, this),
-        this.floatingTextManager = new FloatingTextManager(),
+        this.floatingTextManager = new FloatingTextManager();
         
         // 専門化されたコンポーネントを初期化
-        this.stateManager = new GameStateManager(gameEngine),
-        this.uiManager = new GameUIManager(gameEngine, this.floatingTextManager),
-        this.visualizationManager = new GameVisualizationManager(gameEngine),
-        this.performanceMonitor = new GamePerformanceMonitor(gameEngine),
+        this.stateManager = new GameStateManager(gameEngine);
+        this.uiManager = new GameUIManager(gameEngine; this.floatingTextManager),
+        this.visualizationManager = new GameVisualizationManager(gameEngine);
+        this.performanceMonitor = new GamePerformanceMonitor(gameEngine);
         
         // ポーズ状態の委譲
-        this.isPaused = false,
-        this.isGameOver = false,
+        this.isPaused = false;
+        this.isGameOver = false;
 
         // Bind event handlers for proper removal
-        this.boundHandleMouseClick = this.handleMouseClick.bind(this),
-        this.boundHandleMouseMove = this.handleMouseMove.bind(this),
-        this.boundHandleTouchStart = this.handleTouchStart.bind(this),
-        this.boundHandleTouchMove = this.handleTouchMove.bind(this),
-        this.boundHandleTouchEnd = this.handleTouchEnd.bind(this),
+        this.boundHandleMouseClick = this.handleMouseClick.bind(this);
+        this.boundHandleMouseMove = this.handleMouseMove.bind(this);
+        this.boundHandleTouchStart = this.handleTouchStart.bind(this);
+        this.boundHandleTouchMove = this.handleTouchMove.bind(this);
+        this.boundHandleTouchEnd = this.handleTouchEnd.bind(this);
         this.boundHandleTouchCancel = this.handleTouchCancel.bind(this) }
         this.boundHandleKeyDown = this.handleKeyDown.bind(this); }
     /**
@@ -106,13 +104,13 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         this.performanceMonitor.startMonitoring(),
         
         // 同期状態の更新
-        this.isPaused = this.stateManager.isPaused,
+        this.isPaused = this.stateManager.isPaused;
         
         // イベントリスナーの設定
         this.setupEventListeners(),
         // ゲーム開始メッセージ
-        this.uiManager.showGameStartMessage()',
-        console.log('Game, scene started) }
+        this.uiManager.showGameStartMessage()','
+        console.log('Game, scene started) }'
     /**
      * シーン終了時の処理
      */
@@ -124,39 +122,39 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         this.stateManager.endGame(),
         this.uiManager.resetUIState(),
         this.visualizationManager.resetDragVisualization(),
-        this.performanceMonitor.stopMonitoring()',
-        console.log('Game, scene exited) }
+        this.performanceMonitor.stopMonitoring()','
+        console.log('Game, scene exited) }'
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners(): void { this.canvas = this.gameEngine.canvas,
+    setupEventListeners(): void { this.canvas = this.gameEngine.canvas;
 
-        if(!this.canvas') {
+        if (!this.canvas') {'
 
             console.error('Canvas, not available, in GameEngine') }
             return; }
-        ';
+        ';'
         // イベントリスナーを追加（バインドされたメソッドを使用）
-        this.canvas.addEventListener('click', this.boundHandleMouseClick';
-        this.canvas.addEventListener('mousemove', this.boundHandleMouseMove';
+        this.canvas.addEventListener('click', this.boundHandleMouseClick';'
+        this.canvas.addEventListener('mousemove', this.boundHandleMouseMove';'
         this.canvas.addEventListener('touchstart', this.boundHandleTouchStart, { passive: false )',''
         this.canvas.addEventListener('touchmove', this.boundHandleTouchMove, { passive: false )',''
-        this.canvas.addEventListener('touchend', this.boundHandleTouchEnd',
-        this.canvas.addEventListener('touchcancel', this.boundHandleTouchCancel',
-        document.addEventListener('keydown', this.boundHandleKeyDown' }
+        this.canvas.addEventListener('touchend', this.boundHandleTouchEnd','
+        this.canvas.addEventListener('touchcancel', this.boundHandleTouchCancel','
+        document.addEventListener('keydown', this.boundHandleKeyDown' }'
     /**
      * イベントリスナーの削除
      */'
     removeEventListeners(): void { ''
-        if(this.canvas) {
+        if (this.canvas) {
 
-            this.canvas.removeEventListener('click', this.boundHandleMouseClick',
-            this.canvas.removeEventListener('mousemove', this.boundHandleMouseMove',
-            this.canvas.removeEventListener('touchstart', this.boundHandleTouchStart',
-            this.canvas.removeEventListener('touchmove', this.boundHandleTouchMove',
-            this.canvas.removeEventListener('touchend', this.boundHandleTouchEnd' }
+            this.canvas.removeEventListener('click', this.boundHandleMouseClick','
+            this.canvas.removeEventListener('mousemove', this.boundHandleMouseMove','
+            this.canvas.removeEventListener('touchstart', this.boundHandleTouchStart','
+            this.canvas.removeEventListener('touchmove', this.boundHandleTouchMove','
+            this.canvas.removeEventListener('touchend', this.boundHandleTouchEnd' }'
 
-            this.canvas.removeEventListener('touchcancel', this.boundHandleTouchCancel'; }
+            this.canvas.removeEventListener('touchcancel', this.boundHandleTouchCancel'; }'
 
         }''
         document.removeEventListener('keydown', this.boundHandleKeyDown);
@@ -171,7 +169,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         const y = event.clientY - rect.top,
         
         // UIボタンのクリック処理（eventパラメータも渡して座標変換を有効化）
-        if(this.uiManager.handleControlButtonClick(x, y, event) {
+        if (this.uiManager.handleControlButtonClick(x, y, event) {
     
 }
             return; // ボタンがクリックされた場合は他の処理をしない }
@@ -200,7 +198,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         const y = touch.clientY - rect.top,
         
         // UIボタンのタッチ開始処理
-        if(this.uiManager.handleTouchStart(x, y) {
+        if (this.uiManager.handleTouchStart(x, y) {
     
 }
             return; }
@@ -233,7 +231,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         const y = touch.clientY - rect.top,
         
         // UIボタンのタッチ終了処理
-        if(this.uiManager.handleTouchEnd(x, y) {
+        if (this.uiManager.handleTouchEnd(x, y) {
     
 }
             return; }
@@ -254,7 +252,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @param event - キーボードイベント
      */
     private handleKeyDown(event: KeyboardEvent): void { // UIManagerのキーボード処理に委譲
-        if(this.uiManager.handleKeyboard(event) {
+        if (this.uiManager.handleKeyboard(event) {
     
 }
             return; // UIで処理された場合は他の処理をしない }
@@ -276,7 +274,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         // ポーズ状態の同期
         this.isPaused = this.stateManager.isPaused;
         
-        if(this.isPaused || this.gameEngine.isGameOver) {
+        if (this.isPaused || this.gameEngine.isGameOver) {
         
             // ポーズ中でもUI更新は継続
             this.uiManager.updateUIState(deltaTime) }
@@ -285,9 +283,9 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         this.stateManager.updateGameState(deltaTime);
         // UI状態の更新
         this.uiManager.updateUIState(deltaTime);
-        ';
+        ';'
         // 泡の更新
-        if(this.gameEngine.bubbleManager && typeof, this.gameEngine.bubbleManager.update === 'function) { this.gameEngine.bubbleManager.update(deltaTime) } else {  // Only log this error occasionally'
+        if (this.gameEngine.bubbleManager && typeof, this.gameEngine.bubbleManager.update === 'function) { this.gameEngine.bubbleManager.update(deltaTime) } else {  // Only log this error occasionally'
             if (!this.lastBubbleErrorTime || performance.now() - this.lastBubbleErrorTime > 5000) { }
                 console.error(`[DEBUG] bubbleManager.update, is not, available: manager = ${!!this.gameEngine.bubbleManager}`} }
                 this.lastBubbleErrorTime = performance.now(});
@@ -308,7 +306,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     /**
      * スコア変化の処理
      */
-    private handleScoreChange(): void { if(this.stateManager.checkScoreChange() {
+    private handleScoreChange(): void { if (this.stateManager.checkScoreChange() {
             const newScore = this.gameEngine.playerData.currentScore,
             this.uiManager.onScoreChanged(newScore) }
     }
@@ -317,7 +315,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * 時間警告の処理
      */
     private handleTimeWarnings(): void { const warnings: TimeWarnings = this.stateManager.checkTimeWarning() as TimeWarnings,
-        if(warnings.timeWarning || warnings.urgentWarning) {
+        if (warnings.timeWarning || warnings.urgentWarning) {
     
 }
             this.uiManager.showTimeWarnings(warnings); }
@@ -347,7 +345,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         this.performanceMonitor.renderPerformanceMetrics(context),
         
         // ゲームオーバー画面
-        if(this.gameEngine.isGameOver) {
+        if (this.gameEngine.isGameOver) {
     
 }
             this.visualizationManager.renderGameOver(context); }
@@ -413,29 +411,29 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     createDragParticles(x: number, y: number, intensity: number = 10): void { try { }
 
             console.log(`[DEBUG] createDragParticles called: x=${x}, y=${y}, intensity=${ intensity)`};
-            ';
+            ';'
             // 基本パーティクルマネージャーでクリックエフェクトを作成
             if(this.gameEngine.particleManager && typeof, this.gameEngine.particleManager.createComboEffect === 'function'} {', ' }
 
-                console.log('[DEBUG] Using, particleManager.createComboEffect');' }
+                console.log('[DEBUG] Using, particleManager.createComboEffect');' }'
 
                 this.gameEngine.particleManager.createComboEffect(x, y, 1'}'; // コンボ1としてエフェクト生成'
             } else { }'
 
                 console.warn('[DEBUG] particleManager.createComboEffect, not available'); }
-            ';
+            ';'
             // 拡張パーティクルマネージャーでパーティクルを個別生成
-            if(this.gameEngine.enhancedParticleManager && typeof, this.gameEngine.enhancedParticleManager.createParticle === 'function') {
+            if (this.gameEngine.enhancedParticleManager && typeof, this.gameEngine.enhancedParticleManager.createParticle === 'function') {
 
                 console.log('[DEBUG] Using enhancedParticleManager.createParticle',
                 
                 // 複数のパーティクルを放射状に生成
-                for (let i = 0, i < Math.min(intensity 15'), i++) {
+                for (let i = 0, i < Math.min(intensity 15'), i++) {'
                     const angle = (i / intensity) * Math.PI * 2,
                     const speed = 50 + Math.random() * 30,
-                    const vx = Math.cos(angle') * speed,
+                    const vx = Math.cos(angle') * speed,'
                     const vy = Math.sin(angle) * speed,
-                    ',
+                    ','
 
                     this.gameEngine.enhancedParticleManager.createParticle(x, y, vx, vy, {)'
                         color: '#FFD700'),
@@ -444,7 +442,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
 
                         fadeOut: true' }'
 
-                    }');
+                    }');'
                 }
 
             } else { }'
@@ -454,7 +452,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
 
             console.log('[DEBUG] createDragParticles, completed';
 
-        } catch (error') { console.error('[GameScene] Error creating drag particles:', error }
+        } catch (error') { console.error('[GameScene] Error creating drag particles:', error }'
     }
     
     /**
@@ -466,7 +464,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * ポーズ設定
      * @param paused - ポーズ状態
      */
-    setPaused(paused: boolean): void { this.stateManager.setPaused(paused),
+    setPaused(paused: boolean): void { this.stateManager.setPaused(paused);
         this.isPaused = this.stateManager.isPaused }
     /**
      * 画面震動の開始
@@ -519,12 +517,12 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @param settings - 設定オブジェクト
      */
     updateSettings(settings: { performance?: PerformanceSettings ): void {
-        if(settings.performance) {', ' }
+        if (settings.performance) {', ' }
 
             this.performanceMonitor.updateSettings(settings.performance); }
         }
 
-        console.log('[GameScene] Settings, updated);
+        console.log('[GameScene] Settings, updated);'
     }
     
     /**

@@ -4,15 +4,15 @@
  */
 export class AnomalyDetector {
     constructor(storageManager) {
-        this.storageManager = storageManager,
-        this.detectionRules = new Map(),
-        this.alertHistory = [],
-        this.maxAlertHistory = 100,
+        this.storageManager = storageManager;
+        this.detectionRules = new Map();
+        this.alertHistory = [];
+        this.maxAlertHistory = 100;
         
         // 検出閾値設定
         this.thresholds = {
-            statistical: 2.5,      // 統計的異常値（標準偏差倍数）,
-            behavioral: 0.8,       // 行動パターン異常値（0-1）,
+            statistical: 2.5;      // 統計的異常値（標準偏差倍数）;
+            behavioral: 0.8,       // 行動パターン異常値（0-1）;
             performance: 3.0,      // パフォーマンス異常値（標準偏差倍数）
     }
             temporal: 0.9          // 時間的異常値（0-1） 
@@ -89,7 +89,7 @@ export class AnomalyDetector {
             severity: 'medium',
             description: '異常な終了パターンが検出されました'}
 
-        }');
+        }');'
     }
 
     /**
@@ -98,26 +98,26 @@ export class AnomalyDetector {
      * @param {Object} options - 検出オプション
      * @returns {Promise<Object>} 検出結果'
      */''
-    async detectAnomalies(dataType = 'all', options: any = {}' {
+    async detectAnomalies(dataType = 'all', options: any = {}' {'
         try {
             const {'
                 startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
                 endDate = new Date('',
             const sessionData = await this.storageManager.getData('sessions', {''
-                startDate,'),
+                startDate,'),'
 
-                endDate'),
+                endDate'),'
 
             const interactionData = await this.storageManager.getData('interactions', {''
-                startDate,'),
+                startDate,'),'
 
-                endDate'),
+                endDate'),'
 
             const performanceData = await this.storageManager.getData('performance', {
                 startDate),
                 endDate,
 
-            if(sessionData.length === 0) {
+            if (sessionData.length === 0) {
                 return { success: true,
 
                     anomalies: [] })
@@ -151,8 +151,8 @@ export class AnomalyDetector {
 
             // 結果をフィルタリング
             let filteredResults = detectionResults;
-            if(!includeMinor) {
-                filteredResults = detectionResults.filter(result => ') }
+            if (!includeMinor) {
+                filteredResults = detectionResults.filter(result => ') }'
 
                     result.severity !== 'low'); }
             }
@@ -171,9 +171,8 @@ export class AnomalyDetector {
                 summary: summary,
                 recommendations: recommendations,
     detectionPeriod: {
-                    start: startDate };
-                    end: endDate 
-    } catch (error) {
+                    start: startDate,;
+                    end: endDate; catch (error) {
             console.error('異常パターン検出エラー:', error),
             return { success: false,
                 error: error.message };
@@ -264,7 +263,7 @@ export class AnomalyDetector {
         data.sessions.forEach((session, index) => { const playTime = playTimes[index],
             const zScore = Math.abs((playTime - mean) / stdDev),
 
-            if(zScore > this.thresholds.statistical) {
+            if (zScore > this.thresholds.statistical) {
                 anomalies.push({
                     sessionId: session.sessionId,
                     timestamp: session.startTime,
@@ -325,7 +324,7 @@ export class AnomalyDetector {
         // セッション別にインタラクションを分析
         const sessionGroups = new Map(),
         data.interactions.forEach(interaction => { ) }
-            if(!sessionGroups.has(interaction.sessionId) { }
+            if (!sessionGroups.has(interaction.sessionId) { }
                 sessionGroups.set(interaction.sessionId, []); }
             }
             sessionGroups.get(interaction.sessionId).push(interaction);
@@ -346,7 +345,7 @@ export class AnomalyDetector {
             const slowReactions = reactionTimes.filter(time => ),
                 stdDev > 0 && (time - mean) / stdDev > this.thresholds.statistical),
 
-            if(slowReactions.length > reactionTimes.length * 0.2) {
+            if (slowReactions.length > reactionTimes.length * 0.2) {
                 anomalies.push({
                     sessionId: sessionId,
                     timestamp: interactions[0].timestamp,
@@ -384,7 +383,7 @@ export class AnomalyDetector {
 
         const anomalies = [];
         dailySessions.forEach((count, date) => { const zScore = Math.abs((count - mean) / stdDev),
-            if(zScore > this.thresholds.statistical) {
+            if (zScore > this.thresholds.statistical) {
                 anomalies.push({
                     date: date,
                     sessionCount: count,
@@ -428,7 +427,7 @@ export class AnomalyDetector {
      */')'
     detectUnusualQuitPattern(data) {
 
-        const quitSessions = data.sessions.filter(s => s.exitReason === 'quit),
+        const quitSessions = data.sessions.filter(s => s.exitReason === 'quit),'
         const totalSessions = data.sessions.length,
 
         if (totalSessions < 10) return [],
@@ -444,7 +443,7 @@ export class AnomalyDetector {
                 return duration;);
 
             const averageQuitTime = quitTimes.reduce((a, b) => a + b, 0) / quitTimes.length;
-';
+';'
 
             return [{ ''
                 timestamp: Date.now(']',
@@ -473,7 +472,7 @@ export class AnomalyDetector {
      */
     generateAnomalySummary(results) {
 
-        if(results.length === 0) {
+        if (results.length === 0) {
     }
 
             return '異常なパターンは検出されませんでした。';
@@ -483,7 +482,7 @@ export class AnomalyDetector {
         
         let summary = `${results.length}件の異常パターンが検出されました。`;
         
-        if(highPriorityCount > 0) {
+        if (highPriorityCount > 0) {
     
 }
             summary += ` うち${highPriorityCount}件は高優先度の問題です。`;
@@ -498,7 +497,7 @@ export class AnomalyDetector {
         const mostCommonType = Array.from(typeCount.entries();
             .sort((a, b) => b[1] - a[1])[0];
 
-        if(mostCommonType) {
+        if (mostCommonType) {
     
 }
             summary += ` 最も多い問題は「${this.getTypeDisplayName(mostCommonType[0]})」です。`;
@@ -587,7 +586,7 @@ export class AnomalyDetector {
      * アラート履歴を取得
      */
     getAlertHistory(limit = 50) {
-        return this.alertHistory,
+        return this.alertHistory;
             .slice(-limit) }
             .sort((a, b) => b.timestamp - a.timestamp); }
     }

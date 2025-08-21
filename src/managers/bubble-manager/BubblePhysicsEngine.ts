@@ -8,7 +8,7 @@ import type { BubblePhysicsEngine as IBubblePhysicsEngine,
  * 
  * 泡の物理計算、力学、特殊効果、境界処理を専門的に管理します
  */
-export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEngine: any }
+export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEngine: any;
     public mousePosition: Position = { x: 0, y: 0  }
     private dragPhysics = { friction: 0.98,    // 空気抵抗
         bounce: 0.7,       // 跳ね返り係数,
@@ -26,7 +26,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
      * 個別泡の更新処理（物理計算を含む）
      */''
     updateBubble(bubble: Bubble, deltaTime: number): void { const deltaSeconds = deltaTime / 1000,
-        ',
+        ','
         // 逃げる泡の特殊処理
         if(bubble.type === 'escaping' { }
             this.updateEscapingBubble(bubble, deltaSeconds); }
@@ -43,7 +43,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
      * 物理計算を適用
      */
     applyPhysics(bubble: Bubble, deltaSeconds: number): void { // 重力の適用（上向きの速度がある場合のみ）
-        if(bubble.velocity.y < 0) {
+        if (bubble.velocity.y < 0) {
     
 }
             bubble.velocity.y += this.dragPhysics.gravity * deltaSeconds; }
@@ -55,7 +55,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         // 最小速度未満で停止
         const speed = Math.sqrt(bubble.velocity.x * bubble.velocity.x + bubble.velocity.y * bubble.velocity.y);
-        if(speed < this.dragPhysics.minVelocity) {
+        if (speed < this.dragPhysics.minVelocity) {
             bubble.velocity.x = 0 }
             bubble.velocity.y = 0; }
         }
@@ -75,14 +75,14 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         const radius = bubble.size / 2,
         
         // 左右の境界
-        if(bubble.position.x - radius < 0) {
+        if (bubble.position.x - radius < 0) {
             bubble.position.x = radius }
             bubble.velocity.x *= -this.dragPhysics.bounce; }
         } else if (bubble.position.x + radius > canvas.width) { bubble.position.x = canvas.width - radius,
             bubble.velocity.x *= -this.dragPhysics.bounce }
         
         // 上下の境界
-        if(bubble.position.y - radius < 0) {
+        if (bubble.position.y - radius < 0) {
             bubble.position.y = radius }
             bubble.velocity.y *= -this.dragPhysics.bounce; }
         } else if (bubble.position.y + radius > canvas.height) { bubble.position.y = canvas.height - radius,
@@ -102,7 +102,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         // 一定距離内でマウスから逃げる
         const escapeDistance = 100,
-        if(distance < escapeDistance && distance > 0) {
+        if (distance < escapeDistance && distance > 0) {
             const escapeForce = 200 * (1 - distance / escapeDistance),
             const escapeDirection = {
                 x: dx / distance }
@@ -114,7 +114,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             // 最大逃げ速度を制限
             const maxEscapeSpeed = 300;
             const currentSpeed = Math.sqrt(bubble.velocity.x * bubble.velocity.x + bubble.velocity.y * bubble.velocity.y);
-            if(currentSpeed > maxEscapeSpeed) {
+            if (currentSpeed > maxEscapeSpeed) {
                 bubble.velocity.x = (bubble.velocity.x / currentSpeed) * maxEscapeSpeed }
                 bubble.velocity.y = (bubble.velocity.y / currentSpeed) * maxEscapeSpeed; }
 }
@@ -124,7 +124,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
      * スロー効果の適用
      */
     applySlowEffect(bubble: Bubble): void { const slowEffect = (bubble, as any).slowEffect,
-        if(slowEffect && slowEffect.endTime > Date.now() {
+        if (slowEffect && slowEffect.endTime > Date.now() {
             // スロー効果が有効
             bubble.velocity.x *= slowEffect.factor }
             bubble.velocity.y *= slowEffect.factor; }
@@ -176,7 +176,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         // 最大速度制限
         const maxSpeed = 15;
         const currentSpeed = Math.sqrt(bubble.velocity.x ** 2 + bubble.velocity.y ** 2);
-        if(currentSpeed > maxSpeed) {
+        if (currentSpeed > maxSpeed) {
             const scale = maxSpeed / currentSpeed,
             bubble.velocity.x *= scale }
             bubble.velocity.y *= scale; }
@@ -204,10 +204,10 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             bubble.position.y < -margin ||,
             bubble.position.y > canvas.height + margin),
         
-        if(isOffscreen) {
+        if (isOffscreen) {
         
             // 特定の泡タイプは即座に消滅
-            if(this.shouldDisappearOffscreen(bubble.type) {
+            if (this.shouldDisappearOffscreen(bubble.type) {
     
 }
                 bubble.isAlive = false; }
@@ -216,7 +216,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             }
             
             // その他の泡は時間経過で消滅
-            if(!offscreenBubbles.has(bubble) {
+            if (!offscreenBubbles.has(bubble) {
                 offscreenBubbles.add(bubble) }
                 offscreenTimer.set(bubble, 0); }
             }
@@ -224,7 +224,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             const timer = (offscreenTimer.get(bubble) || 0) + deltaTime;
             offscreenTimer.set(bubble, timer);
             
-            if(timer >= 3000) {
+            if (timer >= 3000) {
             
                 // 3秒で消滅
             
@@ -234,7 +234,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
                 return true; // 消滅した
             }
         } else {  // 画面内に戻った場合はタイマーをリセット
-            if(offscreenBubbles.has(bubble) {
+            if (offscreenBubbles.has(bubble) {
     
 }
                 offscreenBubbles.delete(bubble); }
@@ -312,7 +312,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         const lenSq = C * C + D * D,
         let param = -1,
         
-        if(lenSq !== 0) {
+        if (lenSq !== 0) {
     
 }
             param = dot / lenSq; }
@@ -320,7 +320,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         let xx: number, yy: number,
         
-        if(param < 0) {
+        if (param < 0) {
         
             xx = lineStart.x }
             yy = lineStart.y; }
@@ -334,4 +334,4 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
 
         return Math.sqrt(dx * dx + dy * dy);
 
-    }'}
+    }'}'

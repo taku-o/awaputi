@@ -11,10 +11,10 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 // Mock Notification API''
 (global as any').Notification = class MockNotification { ''
     static permission = 'granted',
-    static requestPermission = jest.fn((') => Promise.resolve('granted'),
+    static requestPermission = jest.fn((') => Promise.resolve('granted'),'
     constructor(title, options) {
-        this.title = title,
-        this.options = options,
+        this.title = title;
+        this.options = options;
         MockNotification.instances.push(this: any),
     ,'
     static instances = [],
@@ -29,7 +29,7 @@ jest.mock('../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() =
 const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
         frame: { }
             currentFPS: 60,
-            frameTime: 16.67);
+            frameTime: 16.67),
            , fpsVariance: 2.0 }
     }),
         memory: { usedMemory: 80.5,
@@ -43,12 +43,12 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
 const { PerformanceThresholdMonitor } = await import('../../src/debug/PerformanceThresholdMonitor.js');
 describe('PerformanceThresholdMonitor', () => {  let monitor: any,
     let consoleLogSpy: any,
-    let consoleWarnSpy: any,',
-    let consoleErrorSpy: any,',
+    let consoleWarnSpy: any,','
+    let consoleErrorSpy: any,','
     beforeEach((') => { }'
         // Console spies' }'
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation((') => {};
-        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((') => {};
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation((') => {};'
+        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((') => {};'
         consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {};
         // Reset mocks
         jest.clearAllMocks();
@@ -73,17 +73,17 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.monitoring.enabled).toBe(true),
             expect(monitor.monitoring.intervalId).toBeDefined(')',
         test('should setup default thresholds', (') => {''
-            expect(monitor.thresholds.has('fps').toBe(true'),
-            expect(monitor.thresholds.has('frameTime').toBe(true'),
-            expect(monitor.thresholds.has('memory').toBe(true'),
-            expect(monitor.thresholds.has('memoryPressure').toBe(true'),
-            expect(monitor.thresholds.has('drawCalls').toBe(true'),
+            expect(monitor.thresholds.has('fps').toBe(true'),'
+            expect(monitor.thresholds.has('frameTime').toBe(true'),'
+            expect(monitor.thresholds.has('memory').toBe(true'),'
+            expect(monitor.thresholds.has('memoryPressure').toBe(true'),'
+            expect(monitor.thresholds.has('drawCalls').toBe(true'),'
             expect(monitor.thresholds.has('entityCount').toBe(true),'),' }'
             expect(monitor.thresholds.has('frameVariance').toBe(true'); }'
         }''
         test('should have correct FPS threshold configuration', (') => {  ''
             const fpsThreshold = monitor.thresholds.get('fps'),
-            expect(fpsThreshold.metric').toBe('frame.currentFPS'),
+            expect(fpsThreshold.metric').toBe('frame.currentFPS'),'
             expect(fpsThreshold.warning).toBe(45),
             expect(fpsThreshold.critical).toBe(30),'
             expect(fpsThreshold.evaluateBelow).toBe(true),' }'
@@ -91,14 +91,14 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
         };
         test('should have correct memory threshold configuration', (') => {  ''
             const memoryThreshold = monitor.thresholds.get('memory'),
-            expect(memoryThreshold.metric').toBe('memory.usedMemory'),
+            expect(memoryThreshold.metric').toBe('memory.usedMemory'),'
             expect(memoryThreshold.warning).toBe(150),
             expect(memoryThreshold.critical).toBe(200),'
             expect(memoryThreshold.evaluateBelow).toBe(false),' }'
             expect(memoryThreshold.unit').toBe('MB');'); }'
         };
         test('should start monitoring automatically', () => {  expect(monitor.monitoring.intervalId).toBeDefined(),' }'
-            expect(monitor.monitoring.enabled).toBe(true);'); }
+            expect(monitor.monitoring.enabled).toBe(true);'); }'
         };'
     }''
     describe('Threshold Management', (') => {  ''
@@ -106,28 +106,28 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             const customThreshold = {''
                 metric: 'custom.metric',
                 warning: 75,
-                critical: 90,',
-                evaluateBelow: false,',
-                unit: '%',',
+                critical: 90,','
+                evaluateBelow: false,','
+                unit: '%',','
                 description: 'Custom metric',' }'
                 suggestions: ['Optimize custom metric'] }'
             };
-            monitor.setThreshold('customMetric', customThreshold');
-            expect(monitor.thresholds.has('customMetric').toBe(true');
+            monitor.setThreshold('customMetric', customThreshold');'
+            expect(monitor.thresholds.has('customMetric').toBe(true');'
             const stored = monitor.thresholds.get('customMetric');
             expect(stored.metric').toBe('custom.metric');'
             expect(stored.warning).toBe(75);
             expect(stored.critical).toBe(90');'
         };
-        test('should get metric value correctly', (') => { const metrics = { }
+        test('should get metric value correctly', (') => { const metrics = { }'
                 frame: { currentFPS: 45.5 },
                 memory: { usedMemory: 120.3 }'
             };
-            expect(monitor.getMetricValue(metrics, 'frame.currentFPS').toBe(45.5');
-            expect(monitor.getMetricValue(metrics, 'memory.usedMemory').toBe(120.3');
+            expect(monitor.getMetricValue(metrics, 'frame.currentFPS').toBe(45.5');'
+            expect(monitor.getMetricValue(metrics, 'memory.usedMemory').toBe(120.3');'
             expect(monitor.getMetricValue(metrics, 'nonexistent.path').toBeNull(')';
         test('should handle invalid metric paths', (') => {  }'
-            const metrics = { frame: { currentFPS: 60 } }';
+            const metrics = { frame: { currentFPS: 60 } }';'
             expect(monitor.getMetricValue(metrics, 'invalid.path').toBeNull(')';
             expect(monitor.getMetricValue(metrics, 'frame.invalid').toBeNull(')';
             expect(monitor.getMetricValue(metrics, ').toBe(metrics');
@@ -144,7 +144,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             monitor.checkThresholds();
             expect(monitor.statistics.warningsTriggered).toBe(1);'
             expect(monitor.warningSystem.alertHistory.length).toBe(1);
-            expect(monitor.warningSystem.alertHistory[0].name').toBe('fps');
+            expect(monitor.warningSystem.alertHistory[0].name').toBe('fps');'
             expect(monitor.warningSystem.alertHistory[0].severity').toBe('warning');'
         };
         test('should detect FPS critical alert', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({) }
@@ -167,8 +167,8 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             monitor.checkThresholds();
             expect(monitor.statistics.warningsTriggered).toBe(1);'
             const alert = monitor.warningSystem.alertHistory[0];
-            expect(alert.name').toBe('memory');
-            expect(alert.severity').toBe('warning');
+            expect(alert.name').toBe('memory');'
+            expect(alert.severity').toBe('warning');'
             expect(alert.value).toBe(160');'
         };
         test('should detect multiple threshold violations', () => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }
@@ -191,7 +191,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             monitor.checkThresholds();
             expect(monitor.statistics.warningsTriggered).toBe(0);'
             expect(monitor.statistics.criticalAlertsTriggered).toBe(0);
-            expect(monitor.warningSystem.alertHistory.length).toBe(0');
+            expect(monitor.warningSystem.alertHistory.length).toBe(0');'
         };'
     }''
     describe('Alert Suppression', (') => {  ''
@@ -227,7 +227,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.warningSystem.alertHistory.length).toBe(2');'
         };
         test('should handle different suppression times for warning vs critical', () => { }'
-            expect(monitor.monitoring.suppressionTimeout).toBeLessThan(monitor.monitoring.criticalAlertTimeout'); }
+            expect(monitor.monitoring.suppressionTimeout).toBeLessThan(monitor.monitoring.criticalAlertTimeout'); }'
         };'
     }''
     describe('Notification System', (') => {  ''
@@ -242,8 +242,8 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             monitor.checkThresholds();
             expect(monitor.warningSystem.notifications.length).toBe(1);'
             const notification = monitor.warningSystem.notifications[0];
-            expect(notification.title').toBe('Performance WARNING');
-            expect(notification.severity').toBe('warning');
+            expect(notification.title').toBe('Performance WARNING');'
+            expect(notification.severity').toBe('warning');'
             expect(notification.actions).toHaveLength(2');'
         };
         test('should create browser notification when permission granted', (') => {  ''
@@ -285,7 +285,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
                 monitor.checkThresholds();
                 jest.advanceTimersByTime(monitor.monitoring.criticalAlertTimeout + 1000);'
             }''
-            expect(monitor.warningSystem.notifications.length).toBe(2');
+            expect(monitor.warningSystem.notifications.length).toBe(2');'
         };'
     }''
     describe('Suggestion Engine', (') => {  ''
@@ -307,13 +307,13 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
         test('should categorize suggestions correctly', (') => { const categories = [ ' }'
                 { suggestion: 'Reduce particle effects quality', expected: 'effects' },''
                 { suggestion: 'Optimize rendering pipeline', expected: 'rendering' },''
-                { suggestion: 'Clear unused object references', expected: 'memory' },']
+                { suggestion: 'Clear unused object references', expected: 'memory' },']'
                 { suggestion: 'Implement entity culling', expected: 'entities' },']'
                 { suggestion: 'Improve overall performance', expected: 'performance' }]
             ];
             categories.forEach(({ suggestion, expected ) => { '
                 const category = monitor.categorizeSuggestion(suggestion),' }'
-                expect(category).toBe(expected);'); }
+                expect(category).toBe(expected);'); }'
             };'
         }''
         test('should handle suggestion cooldown', () => { mockMonitor.getCurrentMetrics.mockReturnValue({
@@ -347,7 +347,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
                 monitor.checkThresholds();
                 jest.advanceTimersByTime(monitor.monitoring.criticalAlertTimeout + monitor.suggestionEngine.cooldownPeriod + 1000);'
             }''
-            expect(monitor.suggestionEngine.suggestions.size).toBeLessThanOrEqual(3');
+            expect(monitor.suggestionEngine.suggestions.size).toBeLessThanOrEqual(3');'
         };'
     }''
     describe('Auto Recovery', (') => { }'
@@ -420,26 +420,26 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
                 '[PerformanceThresholdMonitor] Alert Details:')
                 expect.objectContaining({ name: alert.name)
                     description: alert.description),
-                   , value: alert.value)',
+                   , value: alert.value)','
                     severity: alert.severity),', ') }'
         };
         test('should cleanup old notifications', () => {  ''
             const oldTime = Date.now(')',
-                id: 'old1')',
+                id: 'old1')','
                , timestamp: oldTime,') }'
-                persistent: false'); }
+                persistent: false'); }'
             };'
             monitor.warningSystem.notifications.push({ ')'
-                id: 'old2')',
+                id: 'old2')','
                , timestamp: oldTime,')',
                 persistent: true // Should not be cleaned up)'),',
             monitor.warningSystem.notifications.push({')'
                 id: 'recent',
                 timestamp: Date.now(
-                persistent: false }
+                persistent: false,
             },'
             monitor.cleanupOldNotifications(Date.now();
-            expect(monitor.warningSystem.notifications.length).toBe(2');
+            expect(monitor.warningSystem.notifications.length).toBe(2');'
             expect(monitor.warningSystem.notifications.find(n => n.id === 'old1').toBeUndefined(')';
             expect(monitor.warningSystem.notifications.find(n => n.id === 'old2').toBeDefined(')';
             expect(monitor.warningSystem.notifications.find(n => n.id === 'recent').toBeDefined(')';
@@ -484,7 +484,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
 }
                 const currentPriority = { high: 3, medium: 2, low: 1 }[suggestions[i].priority];'
                 const nextPriority = { high: 3, medium: 2, low: 1 }[suggestions[i + 1].priority];
-                expect(currentPriority.toBeGreaterThanOrEqual(nextPriority');
+                expect(currentPriority.toBeGreaterThanOrEqual(nextPriority');'
             }'
         };
         test('should get threshold configuration', () => {  const config = monitor.getThresholdConfiguration(),
@@ -500,7 +500,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(stats.criticalAlertsTriggered).toBeDefined(),
             expect(stats.suggestionsGenerated).toBeDefined(),'
             expect(stats.monitoring).toBeDefined(),' }'
-            expect(stats.monitoring.enabled).toBe(true);'); }
+            expect(stats.monitoring.enabled).toBe(true);'); }'
         };'
     }''
     describe('Settings and Control', (') => {  ''
@@ -536,7 +536,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.warningSystem.notifications.length).toBe(0);
             expect(monitor.warningSystem.alertHistory.length).toBe(0);'
             expect(monitor.statistics.totalChecks).toBe(0);
-            expect(monitor.statistics.warningsTriggered).toBe(0');
+            expect(monitor.statistics.warningsTriggered).toBe(0');'
         };'
     }''
     describe('Error Handling', (') => {  ''
@@ -549,7 +549,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             }).not.toThrow();'
             expect(monitor.errorHandler.handleError).toHaveBeenCalledWith();
                 expect.any(Error'),';
-                'PerformanceThresholdMonitor.checkThresholds'';
+                'PerformanceThresholdMonitor.checkThresholds'';'
             ');'
         };
         test('should handle missing metrics gracefully', () => {  }
@@ -560,11 +560,11 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             expect(monitor.statistics.totalChecks).toBe(1');'
         };
         test('should handle invalid metric values', (') => { mockMonitor.getCurrentMetrics.mockReturnValueOnce({ }')
-                frame: { currentFPS: null },')'
+                frame: { currentFPS: null,,')'
                 memory: { usedMemory: 'invalid'
             });
-                render: { drawCalls: undefined })
-        game: { entityCount: NaN } });
+                render: { drawCalls: undefined,)
+        game: { entityCount: NaN, });
             }
             expect(() => {  }'
                 monitor.checkThresholds(});'}).not.toThrow(')'
@@ -579,4 +579,4 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
             monitor.destroy(') }'
             expect(consoleLogSpy.toHaveBeenCalledWith('[PerformanceThresholdMonitor] Destroyed'); }
         };'
-    }'};
+    }'};'

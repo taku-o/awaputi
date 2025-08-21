@@ -6,84 +6,84 @@
  */
 
 export interface ValidationRule { required: boolean,
-    type: string,
-    min?: number,
+    type: string;
+    min?: number;
     max?: number,  }
 
-export interface ValidationRules { [key: string]: ValidationRule }
+export interface ValidationRules { [key: string]: ValidationRule;
 
 export interface ValidationResult { valid: boolean,
-    error?: string }
+    error?: string;
 
 export interface DataIntegrityResult { valid: boolean,
-    issues: string[] }
+    issues: string[];
 
 export interface VersionCompatibilityResult { compatible: boolean,
-    error?: string }
+    error?: string;
 
 export interface PlayerData { username?: string | null,
-    ap: number,
-    tap: number,
-    highScore: number,
-    unlockedStages: string[],
-    ownedItems: string[]  }
+    ap: number;
+    tap: number;
+    highScore: number;
+    unlockedStages: string[];
+    ownedItems: string[];
 
 export interface StatisticsData { totalPlayTime?: number,
-    bubblesPopped?: number,
-    gamesPlayed?: number,
+    bubblesPopped?: number;
+    gamesPlayed?: number;
     [key: string]: number | undefined }
 
 export interface AchievementData { id: string,
-    unlocked: boolean,
-    unlockedAt?: string  }
+    unlocked: boolean;
+    unlockedAt?: string;
 
 export interface ImportData { version: string,
-    playerData: PlayerData,
-    statistics?: StatisticsData,
-    achievements?: AchievementData[],
-    timestamp?: string,
+    playerData: PlayerData;
+    statistics?: StatisticsData;
+    achievements?: AchievementData[];
+    timestamp?: string;
     settings?: Record<string, any> }
 
 export interface DataSizeValidationResult { valid: boolean,
-    error?: string,
-    size?: number }
+    error?: string;
+    size?: number;
 
 export interface Layout { contentX: number,
-    contentY: number,
-    contentWidth: number,
-    buttonY: number,
-    x: number,
-    width: number  }
+    contentY: number;
+    contentWidth: number;
+    buttonY: number;
+    x: number;
+    width: number;
 
 export interface MainController { data: {
-        parsedDat,a?: ImportData,
-        error?: string,
+        parsedDat,a?: ImportData;
+        error?: string;
         importData: string,
         importMethod: string,
     step: string,
-        importProgress?: number,
-        processingText?: string,
-        success?: boolean };
+        importProgress?: number;
+        processingText?: string;
+        success?: boolean;;
     textSettings: { contentFont: string,
         contentColor: string,
-    errorColor: string };
+    errorColor: string,;
     gameEngine: { playerData: any,
-        statisticsManager?: any,
-        achievementManager?: any };
+        statisticsManager?: any;
+        achievementManager?: any;;
     setupButtons(): void;
-    roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void }
+    roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void,
 
 export interface PlayerDataInterface { setUsername(username: string): void,
-    getAP(): number,
-    addAP(amount: number): void,
-    getTotalAP(): number,
-    addTotalAP(amount: number): void,
-    setHighScore(score: number): void,
-    unlockStage(stage: string): void,
-    addItem(item: string): void }
+    getAP(): number;
+    addAP(amount: number): void;
+    getTotalAP(): number;
+    addTotalAP(amount: number): void;
+    setHighScore(score: number): void;
+    unlockStage(stage: string): void;
+    addItem(item: string): void;
 
 export class ImportDataProcessor {
-    private mainController: MainController,
+    private mainController: MainController;
     private, validationRules: ValidationRules,
     constructor(mainController: MainController) {
 
@@ -108,7 +108,7 @@ export class ImportDataProcessor {
         context.textAlign = 'left',
         context.textBaseline = 'top',
 
-        if(this.mainController.data.parsedData) {
+        if (this.mainController.data.parsedData) {
 
             context.fillText('インポートするデータの確認:', layout.contentX, y) }
 
@@ -117,7 +117,7 @@ export class ImportDataProcessor {
         } else {  context.fillStyle = this.mainController.textSettings.errorColor,
             context.fillText('データの解析に失敗しました。', layout.contentX, y),
 
-            if(this.mainController.data.error) { }'
+            if (this.mainController.data.error) { }'
 
                 context.font = '12px sans-serif'; }
                 context.fillText(`エラー: ${this.mainController.data.error}`, layout.contentX, y + 30});
@@ -142,16 +142,16 @@ export class ImportDataProcessor {
         
         let currentY = y,
 
-        if(preview.playerData) {
+        if (preview.playerData) {
 
-            context.fillText('プレイヤーデータ:', layout.contentX, currentY',
+            context.fillText('プレイヤーデータ:', layout.contentX, currentY','
             currentY += 20,
 
             context.font = '11px sans-serif' }
 
             context.fillStyle = '#6C757D'; }
 
-            context.fillText(`• ユーザー名: ${preview.playerData.username || '(未設定'}'}`, layout.contentX + 10, currentY);
+            context.fillText(`• ユーザー名: ${preview.playerData.username || '(未設定'}'}`, layout.contentX + 10, currentY);'
             currentY += 15;
             context.fillText(`• AP: ${ preview.playerData.ap || 0}`, layout.contentX + 10, currentY};
             currentY += 15; }
@@ -159,7 +159,7 @@ export class ImportDataProcessor {
             currentY += 20;
         }
 
-        if(preview.statistics && currentY < y + previewHeight) {
+        if (preview.statistics && currentY < y + previewHeight) {
 
             context.font = '12px sans-serif',
 
@@ -206,17 +206,17 @@ export class ImportDataProcessor {
 
             return { valid: false, error: 'データが正しい形式ではありません'
             }
-        ';
+        ';'
         // バージョンチェック
-        if(!data.version) { }'
+        if (!data.version) { }'
 
             return { valid: false, error: 'バージョン情報が見つかりません'
             }
         
         // プレイヤーデータのチェック
-        if(data.playerData) {
+        if (data.playerData) {
             const validation = this.validatePlayerData(data.playerData),
-            if(!validation.valid) {
+            if (!validation.valid) {
         }
                 return validation; else { }'
 
@@ -224,28 +224,28 @@ export class ImportDataProcessor {
             }
         
         // 統計データのチェック（オプション）
-        if(data.statistics) {
+        if (data.statistics) {
             const validation = this.validateStatisticsData(data.statistics),
             if (!validation.valid) {
         }
                 return validation;
         
         // 実績データのチェック（オプション）
-        if(data.achievements) {
+        if (data.achievements) {
             const validation = this.validateAchievementsData(data.achievements),
             if (!validation.valid) {
         }
                 return validation;
         
-        return { valid: true }
+        return { valid: true,
 
     /**
      * プレイヤーデータの検証
      */''
     validatePlayerData(playerData: any): ValidationResult { ''
-        if(typeof, playerData.username !== 'string' && playerData.username !== null' { }
+        if (typeof, playerData.username !== 'string' && playerData.username !== null' }'
 
-            return { valid: false, error: 'ユーザー名のデータ型が正しくありません'
+            return valid: false, error: 'ユーザー名のデータ型が正しくありません'
             }
 
         if (typeof, playerData.ap !== 'number') { }
@@ -253,7 +253,7 @@ export class ImportDataProcessor {
             return { valid: false, error: 'APのデータ型が正しくありません'
             }
 
-        if(playerData.ap < 0) { }'
+        if (playerData.ap < 0) { }'
 
             return { valid: false, error: 'APは0以上である必要があります'
             }
@@ -263,7 +263,7 @@ export class ImportDataProcessor {
             return { valid: false, error: 'TAPのデータ型が正しくありません'
             }
 
-        if(playerData.tap < 0) { }'
+        if (playerData.tap < 0) { }'
 
             return { valid: false, error: 'TAPは0以上である必要があります'
             }
@@ -273,7 +273,7 @@ export class ImportDataProcessor {
             return { valid: false, error: 'ハイスコアのデータ型が正しくありません'
             }
 
-        if(playerData.highScore < 0) { }'
+        if (playerData.highScore < 0) { }'
 
             return { valid: false, error: 'ハイスコアは0以上である必要があります'
             }
@@ -287,30 +287,30 @@ export class ImportDataProcessor {
 
             return { valid: false, error: '所有アイテムのデータ型が正しくありません'
             }
-        ';
+        ';'
         // ユーザー名の長さチェック
-        if(playerData.username && playerData.username.length > 20) { }'
+        if (playerData.username && playerData.username.length > 20) { }'
 
             return { valid: false, error: 'ユーザー名は20文字以下である必要があります'
             }
-        ';
+        ';'
         // APとTAPの関係チェック
-        if(playerData.ap > playerData.tap) { }'
+        if (playerData.ap > playerData.tap) { }'
 
             return { valid: false, error: 'APは総獲得AP以下である必要があります'
             }
         
-        return { valid: true }
+        return { valid: true,
 
     /**
      * 統計データの検証'
      */''
     validateStatisticsData(statistics: any): ValidationResult { ''
-        if(typeof, statistics !== 'object' || statistics === null' { }
+        if (typeof, statistics !== 'object' || statistics === null' }'
 
-            return { valid: false, error: '統計データが正しい形式ではありません'
+            return valid: false, error: '統計データが正しい形式ではありません'
             }
-        ';
+        ';'
         // 基本的な統計項目のチェック
         const requiredStats = ['totalPlayTime', 'bubblesPopped', 'gamesPlayed'];
         for (const stat of requiredStats) {', ' }
@@ -319,7 +319,7 @@ export class ImportDataProcessor {
                 return { valid: false, error: `統計データ「${stat }」の型が正しくありません` }
 }
         
-        return { valid: true }
+        return { valid: true,
 
     /**
      * 実績データの検証
@@ -329,13 +329,13 @@ export class ImportDataProcessor {
 
             return { valid: false, error: '実績データが正しい形式ではありません'
             }
-        ';
+        ';'
         // 各実績の構造をチェック
         for(let, i = 0; i < achievements.length; i++) {
             const achievement = achievements[i] }
 
-            if(typeof, achievement !== 'object' || achievement === null' { }
-                return { valid: false, error: `実績データ[${i }]が正しい形式ではありません` }
+            if (typeof, achievement !== 'object' || achievement === null' }'
+                return valid: false, error: `実績データ[${i }]が正しい形式ではありません` }
             }
 
             if(typeof, achievement.id !== 'string') {
@@ -344,8 +344,8 @@ export class ImportDataProcessor {
                 return { valid: false, error: `実績データ[${i }]のIDが正しくありません` }
             }
 
-            if(typeof, achievement.unlocked !== 'boolean' { }
-                return { valid: false, error: `実績データ[${i }]のunlocked状態が正しくありません` }
+            if (typeof, achievement.unlocked !== 'boolean' }
+                return valid: false, error: `実績データ[${i }]のunlocked状態が正しくありません` }
             }
             
             if(achievement.unlocked && !achievement.unlockedAt) {
@@ -354,14 +354,14 @@ export class ImportDataProcessor {
                 return { valid: false, error: `実績データ[${i }]の解除日時が設定されていません` }
 }
         
-        return { valid: true }
+        return { valid: true,
 
     /**
      * データを復元
      */
     async restoreData(importData: ImportData): Promise<void> { const playerData = this.mainController.gameEngine.playerData,
         
-        if(importData.playerData) {
+        if (importData.playerData) {
     
 }
             await this.restorePlayerData(playerData, importData.playerData); }
@@ -400,9 +400,9 @@ export class ImportDataProcessor {
                 playerData.addTotalAP(difference); }
 }
 
-        if(typeof, importedData.highScore === 'number) { playerData.setHighScore(importedData.highScore) }'
+        if (typeof, importedData.highScore === 'number) { playerData.setHighScore(importedData.highScore) }'
         
-        if(Array.isArray(importedData.unlockedStages) {
+        if (Array.isArray(importedData.unlockedStages) {
         
             for (const stage of importedData.unlockedStages) {
     
@@ -410,7 +410,7 @@ export class ImportDataProcessor {
                 playerData.unlockStage(stage); }
 }
         
-        if(Array.isArray(importedData.ownedItems) {
+        if (Array.isArray(importedData.ownedItems) {
         
             for (const item of importedData.ownedItems) {
     
@@ -433,7 +433,7 @@ export class ImportDataProcessor {
         const dataString = JSON.stringify(data),
         const sizeInBytes = new Blob([dataString]).size,
         
-        if(sizeInBytes > maxSize) {
+        if (sizeInBytes > maxSize) {
     
 }
             return {  };
@@ -441,30 +441,30 @@ export class ImportDataProcessor {
 
                 error: `データサイズが大きすぎます（${Math.round(sizeInBytes / 1024'}'KB > ${maxSize / 1024}KB）`}
         
-        return { valid: true, size: sizeInBytes  }
+        return { valid: true, size: sizeInBytes,
 
     /**
      * バージョン互換性の確認'
      */''
     checkVersionCompatibility(dataVersion: string, currentVersion: string = '1.0.0': VersionCompatibilityResult { // 簡易バージョン比較'
-        const parseVersion = (version: string'): number[] => { }
+        const parseVersion = (version: string'): number[] => { }'
 
-            return version.split('.).map(num => parseInt(num, 10);
+            return version.split('.).map(num => parseInt(num, 10);'
         
         try { const data = parseVersion(dataVersion),
             const current = parseVersion(currentVersion),
             
             // メジャーバージョンが異なる場合は互換性なし
-            if(data[0] !== current[0]) {
+            if (data[0] !== current[0]) {
     
 }
                 return {  };
-                    compatible: false }
+                    compatible: false;
                     error: `互換性のないバージョンです（データ: v${dataVersion}, 現在: v${currentVersion}）`
                 }
-            ';
+            ';'
 
-            return { compatible: true }'} catch (error) { return { compatible: false,' };
+            return { compatible: true;'} catch (error) { return { compatible: false,' };
 
                 error: 'バージョン形式が正しくありません' 
     }
@@ -473,8 +473,8 @@ export class ImportDataProcessor {
     /**
      * 選択ステップから進めるかチェック'
      */''
-    canProceedFromSelect()';
-        if(this.mainController.data.importMethod === 'file' && this.mainController.data.importData' { return true,
+    canProceedFromSelect()';'
+        if(this.mainController.data.importMethod === 'file' && this.mainController.data.importData' { return true,'
         if (this.mainController.data.importMethod === 'text' && this.mainController.data.importData.trim().length > 0) { return true }
         return false;
     }
@@ -486,32 +486,31 @@ export class ImportDataProcessor {
         // 必須フィールドの存在確認
         if(!data.version) issues.push('バージョン情報が不足',
         if(!data.playerData) issues.push('プレイヤーデータが不足',
-        if(!data.timestamp) issues.push('タイムスタンプが不足),
+        if(!data.timestamp) issues.push('タイムスタンプが不足),'
         
         // データの一貫性チェック
-        if(data.playerData) {
+        if (data.playerData) {
 
-            if(data.playerData.ap > data.playerData.tap) {
+            if (data.playerData.ap > data.playerData.tap) {
         }
 
                 issues.push('APが総獲得APを上回っています'; }'
             }
 
-            if(data.playerData.highScore < 0) {', ' }
+            if (data.playerData.highScore < 0) {', ' }
 
                 issues.push('ハイスコアが負の値です'; }'
 }
         
         return { valid: issues.length = == 0 };
-            issues: issues 
-    }
+            issues: issues;
 
     /**
      * ステータス取得'
      */''
     getStatus('''
-            componentType: 'ImportDataProcessor',';
+            componentType: 'ImportDataProcessor',';'
             validationRules: Object.keys(this.validationRules,
             supportedFormats: ['json'],
     maxDataSize: 1024 * 1024 // 1MB;
-        } }'}
+        } }'}'

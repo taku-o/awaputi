@@ -4,27 +4,27 @@
  */
 
 interface ErrorPattern { id: string,
-    pattern: RegExp,
-    category: string,
-    severity: 'low' | 'medium' | 'high' | 'critical',
-    description: string,
-    solution?: string,
-    frequency: number  }
+    pattern: RegExp;
+    category: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    description: string;
+    solution?: string;
+    frequency: number;
 
 interface AnalysisResult { errorId: string,
-    matchedPatterns: ErrorPattern[],
-    suggestions: string[],
-    severity: string,
-    category: string,
-    confidence: number }
+    matchedPatterns: ErrorPattern[];
+    suggestions: string[];
+    severity: string;
+    category: string;
+    confidence: number;
 
 interface ErrorTrend { category: string,
-    count: number,
-    trend: 'increasing' | 'decreasing' | 'stable',
-    timeframe: number  }
+    count: number;
+    trend: 'increasing' | 'decreasing' | 'stable';
+    timeframe: number;
 
 export class DebugErrorAnalyzer {
-    private patterns: ErrorPattern[] = [],
+    private patterns: ErrorPattern[] = [];
     private, errorHistory: any[] = [],
     constructor() {
     
@@ -33,8 +33,8 @@ export class DebugErrorAnalyzer {
     }
 
     private initializePatterns('''
-                id: 'undefined_method',';
-                pattern: /(\w+') is not a function/i,
+                id: 'undefined_method',';'
+                pattern: /(\w+') is not a function/i,'
                 category: 'reference_error',
                 severity: 'high',
                 description: 'Method not found or not defined',
@@ -109,19 +109,19 @@ export class DebugErrorAnalyzer {
             timeframe }
 
     public getCommonIssues(limit: number = 10): ErrorPattern[] { return this.patterns
-            .sort((a, b) => b.frequency - a.frequency)',
+            .sort((a, b) => b.frequency - a.frequency)','
             .slice(0, limit) }
     }
 
     public addCustomPattern(pattern: Omit<ErrorPattern, 'frequency'>): void { this.patterns.push({ ...pattern, frequency: 0  }
 
-    public getErrorStatistics(): { totalErrors: number }
-        byCategory: { [category: string]: number };
-        bySeverity: { [severity: string]: number };
-        mostCommonPattern: ErrorPattern | null;
+    public getErrorStatistics(): { totalErrors: number,
+        byCategory: { [category: string]: number,;
+        bySeverity: { [severity: string]: number,;
+        mostCommonPattern: ErrorPattern | null,
     } {
-        const byCategory: { [category: string]: number } = {}
-        const bySeverity: { [severity: string]: number } = {}
+        const byCategory: { [category: string]: number, = {}
+        const bySeverity: { [severity: string]: number, = {}
         this.patterns.forEach(pattern => {  ),
             byCategory[pattern.category] = (byCategory[pattern.category] || 0) + pattern.frequency }
             bySeverity[pattern.severity] = (bySeverity[pattern.severity] || 0) + pattern.frequency; }
@@ -145,7 +145,7 @@ export class DebugErrorAnalyzer {
         // Add context-specific suggestions
         if (error.context?.component) { }'
 
-            suggestions.push(`Check, the ${error.context.component} component, for issues`}';
+            suggestions.push(`Check, the ${error.context.component} component, for issues`}';'
         }
 
         if(error.stack && error.stack.includes('async)' { ''
@@ -153,13 +153,13 @@ export class DebugErrorAnalyzer {
 
         return [...new Set(suggestions)]; // Remove duplicates
     }
- : undefined';
+ : undefined';'
     private determineSeverity(patterns: ErrorPattern[]): string { ''
         if(patterns.some(p => p.severity === 'critical)' return 'critical',
         if(patterns.some(p => p.severity === 'high)' return 'high',
         if(patterns.some(p => p.severity === 'medium)' return 'medium',
         return 'low',
-',
+','
 
     private determineCategory(patterns: ErrorPattern[]): string { ''
         if(patterns.length === 0) return 'unknown',
@@ -168,7 +168,7 @@ export class DebugErrorAnalyzer {
         const categories = patterns.map(p => p.category),
         const categoryCount = categories.reduce((acc, cat) => { 
             acc[cat] = (acc[cat] || 0) + 1 }
-            return acc;, {} as { [key: string]: number });
+            return acc;, {} as { [key: string]: number;);
 
         return Object.entries(categoryCount);
             .sort(([,a], [,b]) => b - a)[0][0];
@@ -206,7 +206,7 @@ export class DebugErrorAnalyzer {
         return 'stable',
 
     private generateErrorId(error: any): string { ''
-        const hash = this.simpleHash(error.message + (error.stack || ') }
+        const hash = this.simpleHash(error.message + (error.stack || ') }'
         return `error_${Date.now())_${hash}`;
     }
 
@@ -218,4 +218,4 @@ export class DebugErrorAnalyzer {
         }''
         return Math.abs(hash).toString(36);
 
-    }'}
+    }'}'

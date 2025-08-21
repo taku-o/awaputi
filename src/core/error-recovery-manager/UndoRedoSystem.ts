@@ -16,188 +16,184 @@
 
 // 型定義
 export interface UndoRedoConfig { enabled: boolean,
-    maxHistory: number,
-    maxRedoSteps: number,
-    ignoredActions: Set<string>,
-    criticalActions: Set<string>
-     }
+    maxHistory: number;
+    maxRedoSteps: number;
+    ignoredActions: Set<string>;
+    criticalActions: Set<string>;
 
 export interface ActionRecord { id: string,
-    type: string,
-    subtype: string,
-    timestamp: number,
-    stateBefore: GameStateSnapshot,
-    stateAfter: GameStateSnapshot | null,
-    data: Record<string, any>,
-    metadata: ActionMetadata
-     }
+    type: string;
+    subtype: string;
+    timestamp: number;
+    stateBefore: GameStateSnapshot;
+    stateAfter: GameStateSnapshot | null;
+    data: Record<string, any>;
+    metadata: ActionMetadata;
 
 export interface ActionMetadata { isCritical: boolean,
-    canUndo: boolean,
-    description: string,
-    priority?: ActionPriority,
-    category?: ActionCategory,
-    estimatedImpact?: ImpactLevel }
+    canUndo: boolean;
+    description: string;
+    priority?: ActionPriority;
+    category?: ActionCategory;
+    estimatedImpact?: ImpactLevel;
 
 export interface GameStateSnapshot { game?: any,
-    player?: PlayerState,
-    scene?: SceneState,
-    bubbles?: BubbleState,
-    score?: ScoreState,
-    timestamp: number  }
+    player?: PlayerState;
+    scene?: SceneState;
+    bubbles?: BubbleState;
+    score?: ScoreState;
+    timestamp: number;
 
 export interface PlayerState { id?: string,
-    name?: string,
-    level?: number,
-    experience?: number,
-    settings?: Record<string, any>,
-    statistics?: PlayerStatistics }
+    name?: string;
+    level?: number;
+    experience?: number;
+    settings?: Record<string, any>;
+    statistics?: PlayerStatistics;
 
 export interface PlayerStatistics { gamesPlayed: number,
-    totalScore: number,
-    bestScore: number,
-    averageScore: number,
-    playtime: number,
-    achievements: string[]  }
+    totalScore: number;
+    bestScore: number;
+    averageScore: number;
+    playtime: number;
+    achievements: string[];
 
 export interface SceneState { current: string,
-    data: Record<string, any>,
-    history?: string[],
-    transition?: TransitionState }
+    data: Record<string, any>;
+    history?: string[];
+    transition?: TransitionState;
 
 export interface TransitionState { from: string,
-    to: string,
-    progress: number,
-    startTime: number  }
+    to: string;
+    progress: number;
+    startTime: number;
 
 export interface BubbleState { bubbles: BubbleData[],
-    grid: GridData,
-    physics: PhysicsData,
-    effects: EffectData[]
-    }
+    grid: GridData;
+    physics: PhysicsData;
+    effects: EffectData[];
 
 export interface BubbleData { id: string,
-    type: BubbleType,
-    position: Position,
-    velocity?: Velocity,
-    color: BubbleColor,
-    size: number,
-    state: BubbleElementState
-    }
+    type: BubbleType;
+    position: Position;
+    velocity?: Velocity;
+    color: BubbleColor;
+    size: number;
+    state: BubbleElementState;
 
 export interface GridData { width: number,
-    height: number,
-    cellSize: number,
-    occupied: boolean[][] }
+    height: number;
+    cellSize: number;
+    occupied: boolean[][];
 
 export interface PhysicsData { gravity: number,
-    friction: number,
-    bounce: number,
-    timeStep: number }
+    friction: number;
+    bounce: number;
+    timeStep: number;
 
 export interface EffectData { id: string,
-    type: EffectType,
-    position: Position,
-    duration: number,
-    progress: number }
+    type: EffectType;
+    position: Position;
+    duration: number;
+    progress: number;
 
 export interface ScoreState { current: number,
-    best: number,
-    combo: number,
-    multiplier: number,
-    level: number,
-    progress: number }
+    best: number;
+    combo: number;
+    multiplier: number;
+    level: number;
+    progress: number;
 
 export interface Position { x: number,
-    y: number }
+    y: number;
 
 export interface Velocity { x: number,
-    y: number }
+    y: number;
 
 export interface UndoRedoSystemState { isRecording: boolean,
-    lastAction: ActionRecord | null,
-    actionCount: number,
-    undoCount: number,
-    redoCount: number,
-    operationInProgress: boolean }
+    lastAction: ActionRecord | null;
+    actionCount: number;
+    undoCount: number;
+    redoCount: number;
+    operationInProgress: boolean;
 
 export interface UIElements { undoButton: HTMLButtonElement | null,
-    redoButton: HTMLButtonElement | null,
+    redoButton: HTMLButtonElement | null;
     statusIndicator?: HTMLElement | null }
 
 export interface GameEngineInterface { gameState?: any,
-    playerData?: PlayerDataInterface,
-    sceneManager?: SceneManagerInterface,
-    bubbleManager?: BubbleManagerInterface,
-    scoreManager?: ScoreManagerInterface,
-    eventEmitter?: EventEmitterInterface,
+    playerData?: PlayerDataInterface;
+    sceneManager?: SceneManagerInterface;
+    bubbleManager?: BubbleManagerInterface;
+    scoreManager?: ScoreManagerInterface;
+    eventEmitter?: EventEmitterInterface;
     render?: () => void }
 
 export interface PlayerDataInterface { exportData(): PlayerState,
-    importData(data: PlayerState): void }
+    importData(data: PlayerState): void;
 
 export interface SceneManagerInterface { getCurrentScene(): string,
-    getSceneData(): Record<string, any>,
-    restoreScene(sceneState: SceneState): void }
+    getSceneData(): Record<string, any>;
+    restoreScene(sceneState: SceneState): void;
 
 export interface BubbleManagerInterface { exportState(): BubbleState,
-    importState(state: BubbleState): void }
+    importState(state: BubbleState): void;
 
 export interface ScoreManagerInterface { getState(): ScoreState,
-    setState(state: ScoreState): void }
+    setState(state: ScoreState): void;
 
 export interface EventEmitterInterface { on(event: string, callback: Function): void,
-    emit(event: string, data?: any): void }
+    emit(event: string, data?: any): void;
 
 export interface ActionData { type: string,
-    subtype?: string,
-    data?: Record<string, any>,
-    canUndo?: boolean,
-    description?: string,
-    priority?: ActionPriority }
+    subtype?: string;
+    data?: Record<string, any>;
+    canUndo?: boolean;
+    description?: string;
+    priority?: ActionPriority;
 
 export interface StateChangeData { type: string,
-    significant?: boolean,
+    significant?: boolean;
     data?: Record<string, any> }
 
 export interface UndoRedoStatistics { enabled: boolean,
-    totalActions: number,
-    undoCount: number,
-    redoCount: number,
-    historyLength: number,
-    currentIndex: number,
-    canUndo: boolean,
-    canRedo: boolean,
-    lastAction: string | null,
-    averageStateSize?: number,
+    totalActions: number;
+    undoCount: number;
+    redoCount: number;
+    historyLength: number;
+    currentIndex: number;
+    canUndo: boolean;
+    canRedo: boolean;
+    lastAction: string | null;
+    averageStateSize?: number;
     memoryUsage?: number,  }
 
 export interface KeyboardShortcut { key: string,
-    ctrlKey?: boolean,
-    shiftKey?: boolean,
-    altKey?: boolean,
-    description: string  }
+    ctrlKey?: boolean;
+    shiftKey?: boolean;
+    altKey?: boolean;
+    description: string;
 
 export interface FeedbackOptions { message: string,
-    duration?: number,
-    type?: FeedbackType,
-    position?: FeedbackPosition }
+    duration?: number;
+    type?: FeedbackType;
+    position?: FeedbackPosition;
 
 export interface ButtonStyle { position: string,
-    width: string,
-    height: string,
-    borderRadius: string,
-    border: string,
-    background: string,
-    color: string,
-    fontSize: string,
-    cursor: string,
-    zIndex: string,
-    transition: string,
-    boxShadow: string,
-    bottom?: string,
-    right?: string,
-    top?: string,
+    width: string;
+    height: string;
+    borderRadius: string;
+    border: string;
+    background: string;
+    color: string;
+    fontSize: string;
+    cursor: string;
+    zIndex: string;
+    transition: string;
+    boxShadow: string;
+    bottom?: string;
+    right?: string;
+    top?: string;
     left?: string,  }
 
 // 列挙型
@@ -216,7 +212,7 @@ export const DEFAULT_UNDO_REDO_CONFIG: UndoRedoConfig = { enabled: true,
     maxHistory: 10,
     maxRedoSteps: 10,
     ignoredActions: new Set(['move', 'hover', 'focus', 'scroll', 'mouseover', 'mouseout]',
-    criticalActions: new Set(['reset', 'newGame', 'delete', 'clear', 'restart', 'quit] } as const;
+    criticalActions: new Set(['reset', 'newGame', 'delete', 'clear', 'restart', 'quit] } as const;'
 '
 
 export const KEYBOARD_SHORTCUTS: Record<string, KeyboardShortcut> = { UNDO: {''
@@ -236,7 +232,7 @@ export const KEYBOARD_SHORTCUTS: Record<string, KeyboardShortcut> = { UNDO: {''
         description: 'やり直し (Ctrl+Shift+Z')'
             }
 } as const;
-';
+';'
 
 export const BUTTON_STYLES: Record<string, ButtonStyle> = { base: {''
         position: 'fixed',
@@ -252,7 +248,7 @@ export const BUTTON_STYLES: Record<string, ButtonStyle> = { base: {''
         transition: 'all 0.2s',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)' },
 
-    undo: {;
+    undo: {,
         position: 'fixed',
         width: '45px',
         height: '45px',
@@ -285,13 +281,13 @@ export const BUTTON_STYLES: Record<string, ButtonStyle> = { base: {''
         right: '20px'
             }
 } as const;
-';
+';'
 
 export const BUTTON_SYMBOLS = {;
     UNDO: '↶',
     REDO: '↷'
             } as const;
-';
+';'
 
 export const FEEDBACK_MESSAGES = {;
     UNDO_SUCCESS: '元に戻しました',
@@ -301,7 +297,7 @@ export const FEEDBACK_MESSAGES = {;
     REDO_FAILED: 'やり直せません',
     REDO_ERROR: 'Redo操作に失敗しました'
             } as const;
-';
+';'
 
 export const CSS_CLASSES = {;
     UNDO_REDO_BTN: 'undo-redo-btn',
@@ -316,13 +312,13 @@ export function generateActionId(): string {
     return `action_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
 }
 
-export function deepClone<T>(obj: T'): T {,
-    if(obj === null || typeof, obj !== 'object) return obj,
+export function deepClone<T>(obj: T'): T {,'
+    if(obj === null || typeof, obj !== 'object) return obj,'
     if (obj, instanceof Date) return new Date(obj) as unknown as T,
     if (obj, instanceof Array) return obj.map(item => deepClone(item) as unknown as T }
     const cloned = {} as T;
     for(const, key in, obj) {
-        if(Object.prototype.hasOwnProperty.call(obj, key) {
+        if (Object.prototype.hasOwnProperty.call(obj, key) {
     }
             cloned[key] = deepClone(obj[key]); }
 }
@@ -342,7 +338,7 @@ export function formatActionDescription(action: ActionRecord): string { const ti
 }
 
 export function validateGameState(state: GameStateSnapshot): boolean { return state !== null &&,
-           typeof state === 'object' && ',
+           typeof state === 'object' && ','
            typeof state.timestamp === 'number' &&,
            state.timestamp > 0 }
 
@@ -362,14 +358,14 @@ export function createFeedbackElement(options: FeedbackOptions): HTMLElement {,
 
     switch(position) {
 
-        case 'topRight':',
+        case 'topRight':','
             transform = 'none',
             top = '20px',
             left = 'auto',
             right = '20px',
 
             break,
-        case 'bottomRight':',
+        case 'bottomRight':','
             transform = 'none',
             top = 'auto',
             left = 'auto',
@@ -377,13 +373,13 @@ export function createFeedbackElement(options: FeedbackOptions): HTMLElement {,
             bottom = '20px',
 
             break,
-        case 'top':',
+        case 'top':','
             transform = 'translateX(-50%)',
             top = '20px',
             left = '50%',
 
             break,
-        case 'bottom':',
+        case 'bottom':','
             transform = 'translateX(-50%)',
             top = 'auto',
             left = '50%',
@@ -414,24 +410,24 @@ export function createFeedbackElement(options: FeedbackOptions): HTMLElement {,
 }
 
 export class UndoRedoSystem {
-    private config: UndoRedoConfig,
-    private gameEngine: GameEngineInterface,
-    private actionHistory: ActionRecord[],
-    private currentIndex: number,
-    private state: UndoRedoSystemState,
-    private ui: UIElements,
+    private config: UndoRedoConfig;
+    private gameEngine: GameEngineInterface;
+    private actionHistory: ActionRecord[];
+    private currentIndex: number;
+    private state: UndoRedoSystemState;
+    private ui: UIElements;
     // イベントハンドラーの参照保持
-    private keydownHandler: (event: KeyboardEvent) => void,
-    private gameActionHandler: (action: ActionData) => void,
-    private stateChangeHandler: (stateChange: StateChangeData) => void,
+    private keydownHandler: (event: KeyboardEvent) => void;
+    private gameActionHandler: (action: ActionData) => void;
+    private stateChangeHandler: (stateChange: StateChangeData) => void;
 
     constructor(config: Partial<UndoRedoConfig>, gameEngine: GameEngineInterface) {
         this.config = { ...DEFAULT_UNDO_REDO_CONFIG, ...config,
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // アクション履歴
-        this.actionHistory = [],
-        this.currentIndex = -1,
+        this.actionHistory = [];
+        this.currentIndex = -1;
         
         // 状態管理
         this.state = { isRecording: true,
@@ -439,10 +435,10 @@ export class UndoRedoSystem {
             actionCount: 0,
             undoCount: 0,
             redoCount: 0,
-    operationInProgress: false  };
+    operationInProgress: false,;
         // UI要素
         this.ui = { undoButton: null,
-            redoButton: null  };
+            redoButton: null,;
         // イベントハンドラーをバインド
         this.keydownHandler = this.handleKeydown.bind(this);
         this.gameActionHandler = this.handleGameAction.bind(this);
@@ -455,13 +451,13 @@ export class UndoRedoSystem {
      * システムを初期化
      */
     private initialize(): void { this.createUndoRedoButtons(),
-        this.setupEventListeners()',
+        this.setupEventListeners()','
         console.log('[UndoRedoSystem] Component, initialized') }'
 
     /**
      * Undo/Redoボタンを作成'
      */''
-    private createUndoRedoButtons()';
+    private createUndoRedoButtons()';'
         const undoBtn = document.createElement('button');
         undoBtn.id = 'undo-btn';
         undoBtn.className = `${CSS_CLASSES.UNDO_REDO_BTN} ${CSS_CLASSES.UNDO_BTN}`;
@@ -470,7 +466,7 @@ export class UndoRedoSystem {
         undoBtn.title = KEYBOARD_SHORTCUTS.UNDO.description;
         undoBtn.setAttribute('aria-label', '元に戻す');
         undoBtn.disabled = true;
-        ';
+        ';'
         // Redoボタン
         const redoBtn = document.createElement('button');
         redoBtn.id = 'redo-btn';
@@ -480,9 +476,9 @@ export class UndoRedoSystem {
         redoBtn.title = KEYBOARD_SHORTCUTS.REDO.description;
         redoBtn.setAttribute('aria-label', 'やり直し';
         redoBtn.disabled = true;
-        ';
+        ';'
         // スタイルを適用
-        this.applyUndoRedoStyles()';
+        this.applyUndoRedoStyles()';'
         undoBtn.addEventListener('click', () => this.undo());
         redoBtn.addEventListener('click', () => this.redo();
         
@@ -496,23 +492,23 @@ export class UndoRedoSystem {
     /**
      * Undo/Redoボタンのスタイルを適用'
      */''
-    private applyUndoRedoStyles()';
-        if(document.getElementById('undo-redo-styles) return;
+    private applyUndoRedoStyles()';'
+        if(document.getElementById('undo-redo-styles) return;'
         
         const styles = `;
             .${CSS_CLASSES.UNDO_REDO_BTN} { position: fixed,
-                width: 45px,
-    height: 45px,
+                width: 45px;
+    height: 45px;
                 border-radius: 50%,
-                border: 2px solid #6c757d,
-                background: white,
-    color: #6c757d,
+                border: 2px solid #6c757d;
+                background: white;
+    color: #6c757d;
                 font-size: 20px,
-                cursor: pointer,
+                cursor: pointer;
                 z-index: 9997,
-                transition: all 0.2s,
+                transition: all 0.2s;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15),
-                font-family: inherit }
+                font-family: inherit;
             
             .${CSS_CLASSES.UNDO_BTN} { bottom: 80px,
                 right: 20px  }
@@ -521,7 +517,7 @@ export class UndoRedoSystem {
     right: 20px }
             
             .${CSS_CLASSES.UNDO_REDO_BTN}: not(:disabled):hover { background: #6c757d,
-    color: white,
+    color: white;
                 transform: scale(1.1  }
             
             .${CSS_CLASSES.UNDO_REDO_BTN}: disabled { opacity: 0.3,
@@ -540,15 +536,15 @@ export class UndoRedoSystem {
     /**
      * イベントリスナーを設定'
      */''
-    private setupEventListeners()';
-        document.addEventListener('keydown', this.keydownHandler';
-        ';
+    private setupEventListeners()';'
+        document.addEventListener('keydown', this.keydownHandler';'
+        ';'
         // ゲームエンジンイベント
-        if(this.gameEngine.eventEmitter) {
+        if (this.gameEngine.eventEmitter) {
 
-            this.gameEngine.eventEmitter.on('gameAction', this.gameActionHandler' }
+            this.gameEngine.eventEmitter.on('gameAction', this.gameActionHandler' }'
 
-            this.gameEngine.eventEmitter.on('stateChange', this.stateChangeHandler'; }
+            this.gameEngine.eventEmitter.on('stateChange', this.stateChangeHandler'; }'
 }
 
     /**
@@ -556,12 +552,12 @@ export class UndoRedoSystem {
      */'
     private handleKeydown(event: KeyboardEvent): void { ''
         if(this.state.operationInProgress) return,
-        ',
+        ','
         // Ctrl+Z で Undo
         if(event.ctrlKey && event.key === 'z' && !event.shiftKey' {'
             event.preventDefault(),
-            this.undo()',
-        else if ((event.ctrlKey && event.key === 'y') || ',
+            this.undo()','
+        else if ((event.ctrlKey && event.key === 'y') || ','
                  (event.ctrlKey && event.shiftKey && event.key === 'z') {
             event.preventDefault() }
             this.redo(); }
@@ -582,7 +578,7 @@ export class UndoRedoSystem {
      * 状態変更を処理
      */
     private handleStateChange(stateChange: StateChangeData): void { // 状態変更に基づくアクション記録
-        if(stateChange.significant && this.state.isRecording) {
+        if (stateChange.significant && this.state.isRecording) {
             this.recordAction({)'
                 type: 'stateChange' }
                 subtype: stateChange.type) }
@@ -596,10 +592,10 @@ export class UndoRedoSystem {
      */
     recordAction(action: ActionData): void { try {
             // 現在位置以降の履歴を削除（新しいブランチの開始）
-            if(this.currentIndex < this.actionHistory.length - 1) {
+            if (this.currentIndex < this.actionHistory.length - 1) {
     
 }
-                this.actionHistory = this.actionHistory.slice(0, this.currentIndex + 1); }
+                this.actionHistory = this.actionHistory.slice(0; this.currentIndex + 1); }
             }
             
             // アクション前の状態をキャプチャ
@@ -607,7 +603,7 @@ export class UndoRedoSystem {
             
             // アクションオブジェクトを作成
             const actionRecord: ActionRecord = { ''
-                id: generateActionId()',
+                id: generateActionId()','
                 subtype: action.subtype || 'default'),
                 timestamp: Date.now(),
                 stateBefore: stateBefore,
@@ -618,9 +614,9 @@ export class UndoRedoSystem {
                     canUndo: action.canUndo !== false }
 
                     description: action.description || `${action.type} action`,''
-                    priority: action.priority || 'normal';
+                    priority: action.priority || 'normal',
                     category: this.categorizeAction(action.type,
-    estimatedImpact: this.estimateImpact(action);
+    estimatedImpact: this.estimateImpact(action),
     };
             
             // 履歴に追加
@@ -628,7 +624,7 @@ export class UndoRedoSystem {
             this.currentIndex++;
             
             // 最大履歴数を制限
-            if(this.actionHistory.length > this.config.maxHistory) {
+            if (this.actionHistory.length > this.config.maxHistory) {
                 this.actionHistory.shift() }
                 this.currentIndex--; }
             }
@@ -681,7 +677,7 @@ export class UndoRedoSystem {
             timestamp: Date.now(  };
         
         try { // ゲームエンジンから状態を取得
-            if(this.gameEngine.gameState) {
+            if (this.gameEngine.gameState) {
     
 }
                 gameState.game = deepClone(this.gameEngine.gameState); }
@@ -691,7 +687,7 @@ export class UndoRedoSystem {
             if (this.gameEngine.playerData) { gameState.player = this.gameEngine.playerData.exportData() }
             
             // シーン状態
-            if(this.gameEngine.sceneManager) { gameState.scene = {
+            if (this.gameEngine.sceneManager) { gameState.scene = {
                     current: this.gameEngine.sceneManager.getCurrentScene( }
                     data: this.gameEngine.sceneManager.getSceneData(); 
     }
@@ -727,7 +723,7 @@ export class UndoRedoSystem {
             this.currentIndex--,
             this.state.undoCount++,
             // UI更新
-            this.updateButtons()',
+            this.updateButtons()','
             this.emitEvent('actionUndone', action),
             
             this.showUndoFeedback({ )'
@@ -761,7 +757,7 @@ export class UndoRedoSystem {
             this.state.isRecording = false,
             
             // 状態を復元
-            if(action.stateAfter) {
+            if (action.stateAfter) {
     
 }
                 this.restoreGameState(action.stateAfter); }
@@ -769,9 +765,9 @@ export class UndoRedoSystem {
             
             this.state.redoCount++;
             // UI更新
-            this.updateButtons()';
-            this.emitEvent('actionRedone', action';
-            ';
+            this.updateButtons()';'
+            this.emitEvent('actionRedone', action';'
+            ';'
 
             this.showUndoFeedback({ message: FEEDBACK_MESSAGES.REDO_SUCCESS)'
                 type: 'success') }
@@ -810,7 +806,7 @@ export class UndoRedoSystem {
             throw new Error('Invalid, game state, for restoration' }'
         
         try { // ゲーム状態の復元
-            if(state.game && this.gameEngine.gameState) {
+            if (state.game && this.gameEngine.gameState) {
     
 }
                 Object.assign(this.gameEngine.gameState, state.game); }
@@ -845,9 +841,9 @@ export class UndoRedoSystem {
                 KEYBOARD_SHORTCUTS.UNDO.description: '元に戻せません'
             });
         );
-        if(this.ui.redoButton) {
+        if (this.ui.redoButton) {
             this.ui.redoButton.disabled = !this.canRedo(),
-            this.ui.redoButton.title = this.canRedo('}
+            this.ui.redoButton.title = this.canRedo('}'
 
                 KEYBOARD_SHORTCUTS.REDO.description: 'やり直せません'
             }
@@ -878,14 +874,14 @@ export class UndoRedoSystem {
     /**
      * 履歴をクリア
      */
-    clearHistory(): void { this.actionHistory = [],
-        this.currentIndex = -1,
+    clearHistory(): void { this.actionHistory = [];
+        this.currentIndex = -1;
         this.state.actionCount = 0,
         this.state.undoCount = 0,
         this.state.redoCount = 0,
         this.state.lastAction = null,
 
-        this.updateButtons()',
+        this.updateButtons()','
         console.log('[UndoRedoSystem] History, cleared') }'
 
     /**
@@ -906,8 +902,7 @@ export class UndoRedoSystem {
     lastAction: this.state.lastAction?.type || null, : undefined
             averageStateSize: this.actionHistory.length > 0 ? undefined : undefined
                 Math.round(totalStateSize / this.actionHistory.length / 2) : 0 };
-            memoryUsage: totalStateSize 
-    }
+            memoryUsage: totalStateSize;
 
     /**
      * アクション履歴を取得
@@ -929,8 +924,8 @@ export class UndoRedoSystem {
      */
     updateSettings(newSettings: Partial<UndoRedoConfig>): void {'
         this.config = { ...this.config, ...newSettings,
-        this.updateButtons()',
-        console.log('[UndoRedoSystem] Settings updated:', newSettings' }
+        this.updateButtons()','
+        console.log('[UndoRedoSystem] Settings updated:', newSettings' }'
 
     /**
      * 記録の有効/無効を切り替え'
@@ -946,38 +941,38 @@ export class UndoRedoSystem {
     setEnabled(enabled: boolean): void { this.config.enabled = enabled,
         this.updateButtons( }
 
-        console.log(`[UndoRedoSystem] System ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`[UndoRedoSystem] System ${enabled ? 'enabled' : 'disabled}`});'
     }
 
     /**
      * リソースの解放
      */
     destroy(): void { // UI要素を削除
-        if(this.ui.undoButton && this.ui.undoButton.parentNode) {
+        if (this.ui.undoButton && this.ui.undoButton.parentNode) {
     
 }
             this.ui.undoButton.parentNode.removeChild(this.ui.undoButton); }
         }
         
-        if(this.ui.redoButton && this.ui.redoButton.parentNode) {
-        ',
+        if (this.ui.redoButton && this.ui.redoButton.parentNode) {
+        ','
 
-            ' }
+            ' }'
 
             this.ui.redoButton.parentNode.removeChild(this.ui.redoButton); }
         }
-        ';
+        ';'
         // スタイルシートを削除
-        const styleSheet = document.getElementById('undo-redo-styles);
-        if(styleSheet && styleSheet.parentNode) {', ' }
+        const styleSheet = document.getElementById('undo-redo-styles);'
+        if (styleSheet && styleSheet.parentNode) {', ' }
 
             styleSheet.parentNode.removeChild(styleSheet); }
         }
-        ';
+        ';'
         // イベントリスナーを削除
         document.removeEventListener('keydown', this.keydownHandler);
         
-        if(this.gameEngine.eventEmitter) {
+        if (this.gameEngine.eventEmitter) {
         
             // Note: eventEmitterにremoveListenerメソッドがあると仮定
             try {'
@@ -988,9 +983,9 @@ export class UndoRedoSystem {
             } catch (error) { : undefined''
                 console.warn('[UndoRedoSystem] Failed to remove event listeners:', error 
         }
-        ';
+        ';'
         // 履歴をクリア
-        this.clearHistory()';
+        this.clearHistory()';'
         console.log('[UndoRedoSystem] Component, destroyed');
 
-    }'}
+    }'}'

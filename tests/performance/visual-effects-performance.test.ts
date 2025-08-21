@@ -54,8 +54,8 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     clearMarks: jest.fn(
         clearMeasures: jest.fn()
 );
-import { EnhancedParticleManager ') from '../../src/effects/EnhancedParticleManager',
-import { EnhancedEffectManager ') from '../../src/effects/EnhancedEffectManager',
+import { EnhancedParticleManager ') from '../../src/effects/EnhancedParticleManager','
+import { EnhancedEffectManager ') from '../../src/effects/EnhancedEffectManager','
 import { AnimationManager } from '../../src/effects/AnimationManager';
 import { EffectQualityController } from '../../src/effects/EffectQualityController';
 describe('Visual Effects Performance Tests', () => {
@@ -65,7 +65,7 @@ describe('Visual Effects Performance Tests', () => {
     let effectManager: any,
     let animationManager: any,
     let qualityController: any,
-    beforeEach((') => {
+    beforeEach((') => {'
         // Reset performance counters
         renderCallCount = 0,
         renderTime = 0,
@@ -85,8 +85,8 @@ describe('Visual Effects Performance Tests', () => {
         particleManager? .destroy?.(),
         effectManager?.destroy?.(),
         animationManager?.destroy?.(),
-        qualityController?.destroy?.() }');
-    describe('Particle System Performance', (') => {
+        qualityController?.destroy?.() }');'
+    describe('Particle System Performance', (') => {'
         test('should handle 1000 particles at 60 FPS', async () => {
             const targetFPS = 60,
             const frameTime = 1000 / targetFPS, // 16.67ms
@@ -97,7 +97,7 @@ describe('Visual Effects Performance Tests', () => {
             for (let i = 0, i < particleCount / 20, i++) { // 20 particles per effect
                 particleManager.createAdvancedBubbleEffect?.(
                     Math.random() * 800,
-                    Math.random(') * 600,
+                    Math.random(') * 600,'
                     'normal',
                     15, : undefined
                     { particleCount: 20 }
@@ -114,7 +114,7 @@ describe('Visual Effects Performance Tests', () => {
             // Should maintain frame rate
             expect(averageFrameTime.toBeLessThan(frameTime * 2); // 100% tolerance for CI
             expect(particleManager.particles?.length || 0).toBeGreaterThan(0);
-        }, PERFORMANCE_TIMEOUT');
+        }, PERFORMANCE_TIMEOUT');'
         test('should efficiently manage particle lifecycle', async () => {
             const iterations = 100,
             const particlesPerIteration = 50,
@@ -124,10 +124,10 @@ describe('Visual Effects Performance Tests', () => {
                 // Create particles
                 particleManager.createAdvancedBubbleEffect?.(
                     Math.random() * 800,
-                    Math.random(') * 600,
+                    Math.random(') * 600,'
                     'normal',
                     10, : undefined
-                    { particleCount: particlesPerIteration }
+                    { particleCount: particlesPerIteration,
                 );
                 // Update and cleanup
                 particleManager.update? .(100); // Fast time to expire particles
@@ -143,8 +143,8 @@ describe('Visual Effects Performance Tests', () => {
             // Memory should not grow excessively (object pooling should help);
             const maxMemoryGrowth = 50 * 1024 * 1024; // 50MB tolerance
             expect(memoryGrowth.toBeLessThan(maxMemoryGrowth);
-        }, PERFORMANCE_TIMEOUT');
-        test('should scale particle count based on performance', async (') => {
+        }, PERFORMANCE_TIMEOUT');'
+        test('should scale particle count based on performance', async (') => {'
             // Test quality scaling
             const qualityLevels = ['low', 'medium', 'high', 'ultra'],
             const baseParticleCount = 100,
@@ -152,7 +152,7 @@ describe('Visual Effects Performance Tests', () => {
                 particleManager.setParticleQuality?.(quality),
                 const startTime = performance.now(),
                 // Create effects
-                for (let i = 0, i < 10, i++') {
+                for (let i = 0, i < 10, i++') {'
                     particleManager.createAdvancedBubbleEffect?.(
                         i * 80,
                         i * 60,
@@ -164,11 +164,11 @@ describe('Visual Effects Performance Tests', () => {
                 // Update particles
                 for (let frame = 0; frame < 30; frame++) {
                     particleManager.update? .(16) }
-                const endTime = performance.now(');
+                const endTime = performance.now(');'
                 const updateTime = endTime - startTime;
                 // Lower quality should be faster
                 if (quality === 'low') {
-                    expect(updateTime.toBeLessThan(100'), // Very fast
+                    expect(updateTime.toBeLessThan(100'), // Very fast'
                 } else if (quality === 'ultra') {
                     expect(updateTime.toBeLessThan(500), // Acceptable
                 }
@@ -176,15 +176,15 @@ describe('Visual Effects Performance Tests', () => {
                 particleManager.clearAllParticles?.();
             }
         }, PERFORMANCE_TIMEOUT);
-    }');
-    describe('Effect Manager Performance', (') => {
+    }');'
+    describe('Effect Manager Performance', (') => {'
         test('should handle multiple concurrent screen effects', async () => {
             const effectCount = 50,
             const testDuration = 2000, // 2 seconds
             const frameTime = 16,
             const frames = testDuration / frameTime,
             // Create various effects
-            for (let i = 0, i < effectCount, i++') {
+            for (let i = 0, i < effectCount, i++') {'
                 const effectType = ['fade', 'slide', 'zoom', 'pulse'][i % 4],
                 effectManager.addTransitionEffect(effectType, 1000 + (i * 20), { : undefined
                     intensity: 0.5 + (i % 5) * 0.1
@@ -199,7 +199,7 @@ describe('Visual Effects Performance Tests', () => {
             // Should maintain reasonable performance
             expect(averageFrameTime.toBeLessThan(frameTime * 3); // 200% tolerance
             expect(effectManager.effects? .length || 0).toBeGreaterThan(0);
-        }, PERFORMANCE_TIMEOUT');
+        }, PERFORMANCE_TIMEOUT');'
         test('should efficiently manage lighting calculations', async () => {
             const lightCount = 20,
             const testFrames = 100,
@@ -223,15 +223,15 @@ describe('Visual Effects Performance Tests', () => {
             // Lighting calculations should be efficient
             expect(timePerFrame.toBeLessThan(5); // Less than 5ms per frame
             expect(effectManager.lightSources?.length).toBe(lightCount);
-        }, PERFORMANCE_TIMEOUT');
-        test('should optimize rendering based on quality settings', async (') => {
+        }, PERFORMANCE_TIMEOUT');'
+        test('should optimize rendering based on quality settings', async (') => {'
             const qualityLevels = ['low', 'medium', 'high', 'ultra'], : undefined
             const renderTimes: Record<string, any> = {};
             for (const quality of qualityLevels) {
-                effectManager.setQualityLevel(quality'),
+                effectManager.setQualityLevel(quality'),'
                 // Create standard set of effects
-                effectManager.addTransitionEffect('fade', 1000'),
-                effectManager.addLightSource(200, 200, 1.0, '#FFFFFF', 100'),
+                effectManager.addTransitionEffect('fade', 1000'),'
+                effectManager.addLightSource(200, 200, 1.0, '#FFFFFF', 100'),'
                 effectManager.addBackgroundEffect('floating_particles', 0.5, 5000),
                 const startTime = performance.now(),
                 // Render multiple frames
@@ -247,14 +247,14 @@ describe('Visual Effects Performance Tests', () => {
             expect(renderTimes.low).toBeLessThan(renderTimes.high);
             expect(renderTimes.medium).toBeLessThan(renderTimes.ultra);
         }, PERFORMANCE_TIMEOUT);
-    }');
-    describe('Animation Performance', (') => {
+    }');'
+    describe('Animation Performance', (') => {'
         test('should handle multiple UI element animations', async () => {
             const elementCount = 30,
             const animationDuration = 1000, : undefined
             const elements: any[] = [],
             // Create UI elements
-            for (let i = 0, i < elementCount, i++') {
+            for (let i = 0, i < elementCount, i++') {'
                 const element = document.createElement('div'),
                 element.style.position = 'absolute',
                 element.style.left = `${i * 20}px`;
@@ -263,7 +263,7 @@ describe('Visual Effects Performance Tests', () => {
             }
             const startTime = performance.now();
             // Start animations
-            elements.forEach((element, index') => {
+            elements.forEach((element, index') => {'
                 const animationType = ['slide', 'fade', 'bounce', 'scale'][index % 4],
                 animationManager.animateUIElement? .(element, animationType, animationDuration) });
             // Update animations
@@ -275,7 +275,7 @@ describe('Visual Effects Performance Tests', () => {
             const timePerFrame = totalTime / frames;
             // Should handle animations efficiently
             expect(timePerFrame.toBeLessThan(10); // Less than 10ms per frame
-        }, PERFORMANCE_TIMEOUT');
+        }, PERFORMANCE_TIMEOUT');'
         test('should optimize bubble spawn animations', async () => {
             const bubbleCount = 100, : undefined
             const bubbles: any[] = [],
@@ -284,13 +284,13 @@ describe('Visual Effects Performance Tests', () => {
                 bubbles.push({),
                     x: Math.random() * 800,
                     y: Math.random() * 600,
-                    size: 15 + Math.random(') * 20,
+                    size: 15 + Math.random(') * 20,'
                     type: ['normal', 'stone', 'rainbow'][i % 3]
                 });
             }
             const startTime = performance.now();
             // Animate all bubbles spawning
-            bubbles.forEach(bubble => {'),
+            bubbles.forEach(bubble => {'),'
                 animationManager.animateBubbleSpawn? .(bubble, 'scale') });
             // Update spawn animations
             for (let frame = 0; frame < 30; frame++) { // 0.5 seconds
@@ -300,8 +300,8 @@ describe('Visual Effects Performance Tests', () => {
             // Should handle many spawn animations efficiently
             expect(totalTime.toBeLessThan(500); // Less than 0.5 seconds total
         }, PERFORMANCE_TIMEOUT);
-    }');
-    describe('Memory Performance', (') => {
+    }');'
+    describe('Memory Performance', (') => {'
         test('should maintain stable memory usage with object pooling', async () => {
             const iterations = 50, : undefined
             const memorySnapshots: any[] = [],
@@ -309,10 +309,10 @@ describe('Visual Effects Performance Tests', () => {
                 // Create effects
                 particleManager.createAdvancedBubbleEffect? .(
                     Math.random() * 800,
-                    Math.random(') * 600,
+                    Math.random(') * 600,'
                     'normal',
                     10
-                '),
+                '),'
                 effectManager.addTransitionEffect('pulse', 200),
                 // Update and cleanup
                 particleManager.update?.(250), // Long enough to expire
@@ -334,21 +334,21 @@ describe('Visual Effects Performance Tests', () => {
                 
                 // Memory growth should be minimal (less than 50%),
                 expect(memoryGrowthRate.toBeLessThan(0.5) }
-        }, PERFORMANCE_TIMEOUT');
+        }, PERFORMANCE_TIMEOUT');'
         test('should handle memory pressure gracefully', async () => {
             // Simulate memory pressure by creating many effects
             const heavyEffectCount = 200,
             for (let i = 0, i < heavyEffectCount, i++) {
                 particleManager.createAdvancedBubbleEffect?.(
                     Math.random() * 800,
-                    Math.random(') * 600,
+                    Math.random(') * 600,'
                     'boss', // Heavy particle type
                     25, : undefined
                     { particleCount: 30 }
                 );
                 effectManager.addLightSource();
                     Math.random() * 800,
-                    Math.random(') * 600,
+                    Math.random(') * 600,'
                     1.0,
                     '#FFFFFF',
                     80 }
@@ -374,12 +374,12 @@ describe('Visual Effects Performance Tests', () => {
             // Cleanup should be fast
             expect(cleanupTime.toBeLessThan(100); // Less than 100ms
         }, PERFORMANCE_TIMEOUT);
-    }');
-    describe('Rendering Performance', (') => {
+    }');'
+    describe('Rendering Performance', (') => {'
         test('should maintain efficient render call patterns', async () => {
             // Create moderate effect load
-            for (let i = 0, i < 20, i++') {
-                particleManager.createAdvancedBubbleEffect?.(i * 40, i * 30, 'normal', 12'),
+            for (let i = 0, i < 20, i++') {'
+                particleManager.createAdvancedBubbleEffect?.(i * 40, i * 30, 'normal', 12'),'
                 effectManager.addTransitionEffect('fade', 1000) }
             // Reset render counter
             renderCallCount = 0;
@@ -399,11 +399,11 @@ describe('Visual Effects Performance Tests', () => {
             // Should maintain efficient rendering
             expect(avgFrameRenderTime.toBeLessThan(10); // Less than 10ms per frame
             expect(avgRenderCallsPerFrame.toBeLessThan(1000); // Reasonable call count
-        }, PERFORMANCE_TIMEOUT');
+        }, PERFORMANCE_TIMEOUT');'
         test('should optimize draw calls with batching', async () => {
             // Create many similar effects that could be batched
             const similarEffectCount = 50,
-            for (let i = 0, i < similarEffectCount, i++') {
+            for (let i = 0, i < similarEffectCount, i++') {'
                 particleManager.createAdvancedBubbleEffect?.(
                     100 + i * 10,
                     100 + i * 8,
@@ -424,17 +424,17 @@ describe('Visual Effects Performance Tests', () => {
                 expect(renderCallCount.toBeLessThan(expectedMaxCalls * 0.5), // At least 50% reduction
             }
         }, PERFORMANCE_TIMEOUT);
-    }');
-    describe('Quality Adaptation Performance', (') => {
+    }');'
+    describe('Quality Adaptation Performance', (') => {'
         test('should quickly adapt quality based on performance metrics', async () => {
-            await qualityController.initialize?.('),
+            await qualityController.initialize?.('),'
             // Start with high quality
             qualityController.setQualityLevel?.('high'),
             // Create heavy load
             for (let i = 0, i < 100, i++) {
                 particleManager.createAdvancedBubbleEffect?.(
                     Math.random() * 800,
-                    Math.random(') * 600,
+                    Math.random(') * 600,'
                     'boss',
                     20 }
             // Simulate performance drop
@@ -455,10 +455,10 @@ describe('Visual Effects Performance Tests', () => {
             expect(adaptationTime.toBeLessThan(50); // Less than 50ms
             // Quality should have been reduced
             const newQuality = qualityController.getQualityLevel?.();
-            if (newQuality') {
+            if (newQuality') {'
                 expect(['low', 'medium'].includes(newQuality).toBe(true) }
-        }, PERFORMANCE_TIMEOUT');
-        test('should handle rapid quality changes efficiently', async (') => {
+        }, PERFORMANCE_TIMEOUT');'
+        test('should handle rapid quality changes efficiently', async (') => {'
             const qualityChanges = 100,
             const qualities = ['low', 'medium', 'high', 'ultra'],
             const startTime = performance.now(),
@@ -474,8 +474,8 @@ describe('Visual Effects Performance Tests', () => {
             // Quality changes should be very fast
             expect(timePerChange.toBeLessThan(1); // Less than 1ms per change
         }, PERFORMANCE_TIMEOUT);
-    }');
-    describe('Stress Testing', (') => {
+    }');'
+    describe('Stress Testing', (') => {'
         test('should survive extreme particle load', async () => {
             const extremeParticleCount = 5000,
             const batchSize = 100,
@@ -484,7 +484,7 @@ describe('Visual Effects Performance Tests', () => {
                 for (let i = 0, i < batchSize, i++) {
                     particleManager.createAdvancedBubbleEffect?.(
                         Math.random() * 800,
-                        Math.random(') * 600,
+                        Math.random(') * 600,'
                         'normal',
                         8, : undefined
                         { particleCount: 1 }
@@ -503,7 +503,7 @@ describe('Visual Effects Performance Tests', () => {
             // Should handle extreme load without crashing
             expect(updateTime.toBeLessThan(100); // Less than 100ms
             expect(particleManager.particles?.length || 0).toBeGreaterThan(0);
-        }, PERFORMANCE_TIMEOUT');
+        }, PERFORMANCE_TIMEOUT');'
         test('should handle continuous effect creation and destruction', async () => {
             const duration = 5000, // 5 seconds
             const startTime = performance.now(),
@@ -512,10 +512,10 @@ describe('Visual Effects Performance Tests', () => {
                 // Create effects
                 particleManager.createAdvancedBubbleEffect?.(
                     Math.random() * 800,
-                    Math.random(') * 600,
+                    Math.random(') * 600,'
                     'normal',
                     10
-                '),
+                '),'
                 effectManager.addTransitionEffect('pulse', 100),
                 // Update and cleanup
                 particleManager.update?.(50),
@@ -533,5 +533,5 @@ describe('Visual Effects Performance Tests', () => {
             expect(iterationsPerSecond.toBeGreaterThan(50); // At least 50 iterations per second
             expect(iterations.toBeGreaterThan(100); // Should have completed many iterations
         }, PERFORMANCE_TIMEOUT);
-    }');
+    }');'
 } : undefined

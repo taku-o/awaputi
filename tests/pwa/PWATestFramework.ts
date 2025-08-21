@@ -18,10 +18,10 @@ import { PWAReportGenerator } from './pwa-test-framework/PWAReportGenerator';
 
 export class PWATestFramework {
     constructor() {
-        this.testResults = [],
-        this.testSuite = new Map(),
-        this.timeouts = new Map(),
-        this.mockData = new Map('),
+        this.testResults = [];
+        this.testSuite = new Map();
+        this.timeouts = new Map();
+        this.mockData = new Map(');'
         
         // テスト設定
         this.config = {
@@ -48,7 +48,7 @@ export class PWATestFramework {
         this.executor = new PWATestExecutor(this: any);
         this.featureTests = new PWAFeatureTests(this: any);
         this.performanceTests = new PWAPerformanceTests(this: any);
-        this.reportGenerator = new PWAReportGenerator(this as any');
+        this.reportGenerator = new PWAReportGenerator(this as any');'
         
         // Legacy state reference for backward compatibility
         this.state = this.executor.state;
@@ -188,7 +188,7 @@ export class PWATestFramework {
             this.config.verbose = config.verbose }
         
         if (config.expectedConfig) {
-            Object.assign(this.config.expectedConfig, config.expectedConfig') }
+            Object.assign(this.config.expectedConfig, config.expectedConfig') }'
         
         console.log('[PWATestFramework] Configuration updated');
     }
@@ -210,10 +210,10 @@ export class PWATestFramework {
      * Reset framework
      */
     reset() {
-        this.testResults = [],
+        this.testResults = [];
         this.testSuite.clear(),
         this.timeouts.clear(),
-        this.mockData.clear('),
+        this.mockData.clear('),'
         
         // Reset executor state
         this.executor.state.isRunning = false,
@@ -233,9 +233,9 @@ window.PWATestFramework = PWATestFramework;
 // 簡単にテストを実行するためのヘルパー関数
 window.runPWATests = async function() {
     const framework = new PWATestFramework(),
-    const report = await framework.runAllTests('),
+    const report = await framework.runAllTests('),'
     
-    console.log('PWAテスト完了:', report'),
+    console.log('PWAテスト完了:', report'),'
     
     return report };
 

@@ -4,47 +4,47 @@ import { GameEngine  } from '../../core/GameEngine';
 import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
-interface LocalizationManager { translate(key: string): string }
+interface LocalizationManager { translate(key: string): string;
 
 interface ChallengeData { challengeId: string,
     challenge?: {
-        titl,e?: string }
+        titl,e?: string;
 
 interface BoundHandlers { challengeClick: (data: any) => void,
-    challengeCompleted: (data: ChallengeData) => void,
-    challengeProgress: (data: any) => void,
+    challengeCompleted: (data: ChallengeData) => void;
+    challengeProgress: (data: any) => void;
     refreshData: () => void  }
 }
 
 interface ChallengeConfig { refreshInterval: number,
-    animationEnabled: boolean }
+    animationEnabled: boolean;
 
 /**
  * チャレンジタブコンポーネント
  * UserInfoSceneでのチャレンジ表示・管理を担当
  */
 export class ChallengesTab {
-    private gameEngine: GameEngine,
-    private eventBus: ComponentEventBus,
-    private sceneState: SceneState,
+    private gameEngine: GameEngine;
+    private eventBus: ComponentEventBus;
+    private sceneState: SceneState;
     // UI コンポーネント
-    private challengeUI: ChallengeUI | null = null,
-    private detailModal: ChallengeDetailModal | null = null,
+    private challengeUI: ChallengeUI | null = null;
+    private detailModal: ChallengeDetailModal | null = null;
     // 状態管理
-    private isInitialized: boolean = false,
-    private isVisible: boolean = false,
-    private currentChallengeId: string | null = null,
+    private isInitialized: boolean = false;
+    private isVisible: boolean = false;
+    private currentChallengeId: string | null = null;
     // 設定
     private, config: ChallengeConfig = {
-        refreshInterval: 30000, // 30秒,
-        animationEnabled: true  };
+        refreshInterval: 30000, // 30秒;
+        animationEnabled: true,;
     // イベントハンドラー
-    private boundHandlers: BoundHandlers;
+    private boundHandlers: BoundHandlers,
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, sceneState: SceneState) {
     
-        this.gameEngine = gameEngine,
-        this.eventBus = eventBus,
-        this.sceneState = sceneState,
+        this.gameEngine = gameEngine;
+        this.eventBus = eventBus;
+        this.sceneState = sceneState;
         
         // イベントハンドラー
         this.boundHandlers = {
@@ -55,7 +55,7 @@ export class ChallengesTab {
             refreshData: this.refreshData.bind(this); 
     };
 
-        console.log('[ChallengesTab] インスタンス作成);
+        console.log('[ChallengesTab] インスタンス作成);'
     }
     
     /**
@@ -66,7 +66,7 @@ export class ChallengesTab {
         try {
             // チャレンジシステムの確認
             if (!(this.gameEngine, as any).challengeSystem') {''
-                console.warn('[ChallengesTab] ChallengeSystem が見つかりません),
+                console.warn('[ChallengesTab] ChallengeSystem が見つかりません),'
                 return }
             
             // チャレンジUIコンポーネントを作成
@@ -78,10 +78,10 @@ export class ChallengesTab {
             this.detailModal = new ChallengeDetailModal(;
                 (this.gameEngine, as any).challengeSystem (this.gameEngine as any).localizationManager || this.createMockLocalizationManager();
             // イベントリスナー設定
-            this.setupEventListeners()';
+            this.setupEventListeners()';'
             console.log('[ChallengesTab] 初期化完了';
 
-        } catch (error') {
+        } catch (error') {'
             console.error('[ChallengesTab] 初期化エラー:', error),
             this.handleInitializationError(error, as Error) }
     }
@@ -91,7 +91,7 @@ export class ChallengesTab {
      */'
     private createMockLocalizationManager(): LocalizationManager { return { ''
             translate: (key: string'): string => { '
-                const translations: Record<string, string> = {', 'challenge.ui.title': 'チャレンジ',
+                const translations: Record<string, string> = {', 'challenge.ui.title': 'チャレンジ','
                     'challenge.ui.refresh': '更新',
                     'challenge.ui.noChallenges': 'チャレンジがありません',
                     'challenge.filter.active': 'アクティブ',
@@ -128,9 +128,9 @@ export class ChallengesTab {
                     'challenge.tips.combo': 'コンボを繋げることが重要です',
                     'challenge.tips.bubblePop': 'より多くの泡を割りましょう',
                     'challenge.tips.timePlayed': '継続してプレイしましょう',
-                    'challenge.tips.daily': '毎日ログインしてチャレンジしましょう',' }
+                    'challenge.tips.daily': '毎日ログインしてチャレンジしましょう',' }'
 
-                    'challenge.tips.weekly': '週間目標に向けて計画的に進めましょう',' };
+                    'challenge.tips.weekly': '週間目標に向けて計画的に進めましょう',' };'
 
                     'challenge.expired': '期限切れ' 
     };
@@ -142,17 +142,17 @@ export class ChallengesTab {
      */
     private setupEventListeners(): void { // チャレンジシステムのイベント
         const challengeSystem = (this.gameEngine, as any).challengeSystem,
-        if(challengeSystem && challengeSystem.gameEngine) {
+        if (challengeSystem && challengeSystem.gameEngine) {
 
-            challengeSystem.gameEngine.on('challengeCompleted', this.boundHandlers.challengeCompleted' }
+            challengeSystem.gameEngine.on('challengeCompleted', this.boundHandlers.challengeCompleted' }'
 
-            challengeSystem.gameEngine.on('challengeProgress', this.boundHandlers.challengeProgress'; }
+            challengeSystem.gameEngine.on('challengeProgress', this.boundHandlers.challengeProgress'; }'
         }
-        ';
+        ';'
         // イベントバス経由のイベント
-        if(this.eventBus) {
+        if (this.eventBus) {
 
-            this.eventBus.on('challenge:clicked', this.boundHandlers.challengeClick' }
+            this.eventBus.on('challenge:clicked', this.boundHandlers.challengeClick' }'
 
             this.eventBus.on('challenge:refresh', this.boundHandlers.refreshData); }
 }
@@ -161,7 +161,7 @@ export class ChallengesTab {
      * チャレンジクリック処理
      */
     private onChallengeClick(data: { challengeId?: string ): void {
-        if(data && data.challengeId) {
+        if (data && data.challengeId) {
     
 }
             this.showChallengeDetail(data.challengeId); }
@@ -189,7 +189,7 @@ export class ChallengesTab {
      * チャレンジ詳細表示
      */
     private showChallengeDetail(challengeId: string): void { if (this.detailModal) {
-            this.currentChallengeId = challengeId,
+            this.currentChallengeId = challengeId;
             this.detailModal.show(challengeId) }
     }
     
@@ -202,9 +202,8 @@ export class ChallengesTab {
         // 実際のゲームでは、よりリッチな通知システムを使用する
         const floatingTextManager = (this.gameEngine, as any}.floatingTextManager;' }'
 
-        if(floatingTextManager'}' {'
-            floatingTextManager.show(' }', 'チャレンジ完了!', : undefined') 
-                { x: 400, y: 200  }')
+        if (floatingTextManager'}''
+            floatingTextManager.show(' }', 'チャレンジ完了!', : undefined') { x: 400, y: 200  }')
                 { color: '#2ecc71', fontSize: 24, duration: 3000 )  }
     }
     
@@ -218,8 +217,8 @@ export class ChallengesTab {
     /**
      * タブ表示時の処理
      */
-    onShow(): void { this.isVisible = true,
-        if(this.challengeUI) {
+    onShow(): void { this.isVisible = true;
+        if (this.challengeUI) {
     
 }
             this.challengeUI.show(); }
@@ -228,8 +227,8 @@ export class ChallengesTab {
     /**
      * タブ非表示時の処理
      */
-    onHide(): void { this.isVisible = false,
-        if(this.challengeUI) {
+    onHide(): void { this.isVisible = false;
+        if (this.challengeUI) {
     
 }
             this.challengeUI.hide(); }
@@ -249,10 +248,10 @@ export class ChallengesTab {
         try { // Canvas上での描画は、実際のDOM要素として表示される ChallengeUI に委譲
             // ここでは、ChallengeUI の DOM 要素を Canvas に統合するための情報を描画
 
-            ctx.save()',
+            ctx.save()','
             ctx.fillStyle = '#f8f9fa',')'
             ctx.fillRect(x, y, width, height),
-            ',
+            ','
             // タイトル描画
             ctx.fillStyle = '#2c3e50',
             ctx.font = 'bold 24px Arial, sans-serif',
@@ -263,7 +262,7 @@ export class ChallengesTab {
             const contentY = y + 60,
             const contentHeight = height - 60,
             // ChallengeUI のDOM要素の位置を調整
-            if(this.challengeUI && this.challengeUI.container) {
+            if (this.challengeUI && this.challengeUI.container) {
                 const container = this.challengeUI.container }
 
                 container.style.position = 'absolute'; }
@@ -289,7 +288,7 @@ export class ChallengesTab {
      * ローディング状態の描画
      */'
     private renderLoadingState(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        ctx.save()',
+        ctx.save()','
         ctx.fillStyle = '#f8f9fa',')'
         ctx.fillRect(x, y, width, height),
 
@@ -304,14 +303,14 @@ export class ChallengesTab {
      * エラー状態の描画
      */'
     private renderErrorState(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, error: Error): void { ''
-        ctx.save()',
+        ctx.save()','
         ctx.fillStyle = '#ffebee',')'
         ctx.fillRect(x, y, width, height),
 
         ctx.fillStyle = '#e74c3c',
         ctx.font = '18px Arial, sans-serif',
         ctx.textAlign = 'center',
-        ctx.fillText('チャレンジの読み込みに失敗しました', x + width / 2, y + height / 2 - 20',
+        ctx.fillText('チャレンジの読み込みに失敗しました', x + width / 2, y + height / 2 - 20','
 
         ctx.fillStyle = '#7f8c8d',
         ctx.font = '14px Arial, sans-serif',
@@ -323,10 +322,10 @@ export class ChallengesTab {
      * 初期化エラーの処理'
      */''
     private handleInitializationError(error: Error): void { ''
-        console.error('[ChallengesTab] 初期化に失敗しました:', error',
-        ',
+        console.error('[ChallengesTab] 初期化に失敗しました:', error','
+        ','
         // エラー状態をシーンステートに設定
-        if(this.sceneState) {', ' }
+        if (this.sceneState) {', ' }
 
             this.sceneState.setError('チャレンジタブの初期化に失敗しました: ' + error.message); 
     }
@@ -342,15 +341,15 @@ export class ChallengesTab {
      * キーボード処理
      */
     handleKeyboard(event: KeyboardEvent): boolean { if (!this.isVisible) return false,
-        ',
+        ','
         // チャレンジ関連のキーボードショートカット
         switch(event.key) {
 
-            case 'r':',
+            case 'r':','
             case 'R':,
                 if (event.ctrlKey || event.metaKey) {
                     event.preventDefault(),
-                    this.refreshData()',
+                    this.refreshData()','
             case 'Escape':),
                 if (this.detailModal && this.detailModal.isVisible) {
                     event.preventDefault(),
@@ -384,31 +383,31 @@ export class ChallengesTab {
      */
     cleanup(): void { // イベントリスナー削除
         const challengeSystem = (this.gameEngine, as any).challengeSystem,
-        if(challengeSystem && challengeSystem.gameEngine) {
+        if (challengeSystem && challengeSystem.gameEngine) {
 
-            challengeSystem.gameEngine.off('challengeCompleted', this.boundHandlers.challengeCompleted' }
+            challengeSystem.gameEngine.off('challengeCompleted', this.boundHandlers.challengeCompleted' }'
 
             challengeSystem.gameEngine.off('challengeProgress', this.boundHandlers.challengeProgress); }
         }
 
-        if(this.eventBus) {
+        if (this.eventBus) {
 
-            this.eventBus.off('challenge:clicked', this.boundHandlers.challengeClick' }
+            this.eventBus.off('challenge:clicked', this.boundHandlers.challengeClick' }'
 
             this.eventBus.off('challenge:refresh', this.boundHandlers.refreshData); }
         }
         
         // UIコンポーネントのクリーンアップ
-        if(this.challengeUI) {
+        if (this.challengeUI) {
             this.challengeUI.cleanup() }
             this.challengeUI = null; }
         }
         
-        if(this.detailModal) {
-        ',
+        if (this.detailModal) {
+        ','
 
             this.detailModal.cleanup() }
 
         console.log('[ChallengesTab] クリーンアップ完了'); }
 
-    }'}
+    }'}'

@@ -6,104 +6,103 @@
 
 // 型定義
 export interface VoiceConfig { enabled: boolean,
-    language: string,
-    confidence: number,
-    continuousListening: boolean,
-    pushToTalk: boolean,
+    language: string;
+    confidence: number;
+    continuousListening: boolean;
+    pushToTalk: boolean;
     commands: Map<string, string> }
 
 export interface VoiceState { isListening: boolean,
-    recognition: SpeechRecognition | null,
-    lastCommand: string | null,
-    commandQueue: string[],
-    confidence: number,
-    isInitialized: boolean  }
+    recognition: SpeechRecognition | null;
+    lastCommand: string | null;
+    commandQueue: string[];
+    confidence: number;
+    isInitialized: boolean;
 
 export interface VoiceStats { commandsRecognized: number,
-    commandsExecuted: number,
-    averageConfidence: number,
-    listeningTime: number,
-    sessionStart: number }
+    commandsExecuted: number;
+    averageConfidence: number;
+    listeningTime: number;
+    sessionStart: number;
 
 export interface DetailedVoiceStats extends VoiceStats { isListening: boolean,
-    isInitialized: boolean,
-    currentContext: string,
-    lastCommand: string | null,
-    confidence: number }
+    isInitialized: boolean;
+    currentContext: string;
+    lastCommand: string | null;
+    confidence: number;
 
 export interface CommandExecutionData { command: string,
-    originalTranscript?: string,
-    confidence?: number }
+    originalTranscript?: string;
+    confidence?: number;
 
-export interface FeedbackData { [key: string]: any }
+export interface FeedbackData { [key: string]: any;
 
-export interface VoiceControllerConfig { voiceControl?: Partial<VoiceConfig> }
+export interface VoiceControllerConfig { voiceControl?: Partial<VoiceConfig>;
 
 export interface SimilarityResult { command: string | null,
-    similarity: number  }
+    similarity: number;
 
 export interface VoiceUIElement extends HTMLElement { className: string,
-    style: CSSStyleDeclaration
-    }
+    style: CSSStyleDeclaration;
 
 // Web Speech API関連型定義
 export interface SpeechRecognitionEvent { results: SpeechRecognitionResultList,
-    resultIndex: number }
+    resultIndex: number;
 
 export interface SpeechRecognitionErrorEvent { error: SpeechRecognitionErrorCode,
-    message?: string }
+    message?: string;
 
 export interface SpeechRecognitionResult { 0: SpeechRecognitionAlternative,
-    isFinal: boolean,
-    length: number }
+    isFinal: boolean;
+    length: number;
 
 export interface SpeechRecognitionAlternative { transcript: string,
-    confidence: number }
+    confidence: number;
 
 export interface SpeechRecognitionResultList { [index: number]: SpeechRecognitionResult,
-    length: number }
+    length: number;
 
 export interface ExtendedSpeechRecognition extends SpeechRecognition { continuous: boolean,
-    interimResults: boolean,
-    lang: string,
-    maxAlternatives: number,
-    onstart: ((event: Event) => void) | null,
-    onend: ((event: Event) => void) | null,
-    onresult: ((event: SpeechRecognitionEvent) => void) | null,
-    onerror: ((event: SpeechRecognitionErrorEvent) => void) | null,
+    interimResults: boolean;
+    lang: string;
+    maxAlternatives: number;
+    onstart: ((event: Event) => void) | null;
+    onend: ((event: Event) => void) | null;
+    onresult: ((event: SpeechRecognitionEvent) => void) | null;
+    onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
     onnomatch: ((event: Event) => void) | null 
     }
 
 // 列挙型
 export type SpeechRecognitionErrorCode = ;
-    | 'no-speech' | 'aborted' | 'audio-capture', ';
-    | 'network' | 'not-allowed' | 'service-not-allowed', ';
+    | 'no-speech' | 'aborted' | 'audio-capture', ';'
+    | 'network' | 'not-allowed' | 'service-not-allowed', ';'
     | 'bad-grammar' | 'language-not-supported';
 
 export type VoiceContext = 'default' | 'game' | 'menu' | 'settings';
-';
+';'
 
-export type FeedbackType = ';
-    | 'listening_started' | 'listening_stopped' | 'no_match', ';
-    | 'low_confidence' | 'unknown_command' | 'command_executed', ';
-    | 'command_failed' | 'no_handler' | 'no_speech', ';
-    | 'microphone_error' | 'permission_denied' | 'network_error', ';
+export type FeedbackType = ';'
+    | 'listening_started' | 'listening_stopped' | 'no_match', ';'
+    | 'low_confidence' | 'unknown_command' | 'command_executed', ';'
+    | 'command_failed' | 'no_handler' | 'no_speech', ';'
+    | 'microphone_error' | 'permission_denied' | 'network_error', ';'
     | 'recognition_error';
-';
+';'
 
-export type CommandAction = ';
-    | 'click' | 'pop' | 'select' | 'back' | 'next', ';
-    | 'menu' | 'pause' | 'resume' | 'up' | 'down', ';
-    | 'left' | 'right' | 'start' | 'stop' | 'yes', ';
-    | 'no' | 'cancel' | 'help' | 'use_item' | 'show_score', ';
-    | 'show_time' | 'show_settings' | 'new_game' | 'continue_game', ';
-    | 'settings' | 'exit' | 'volume' | 'voice_settings', ';
+export type CommandAction = ';'
+    | 'click' | 'pop' | 'select' | 'back' | 'next', ';'
+    | 'menu' | 'pause' | 'resume' | 'up' | 'down', ';'
+    | 'left' | 'right' | 'start' | 'stop' | 'yes', ';'
+    | 'no' | 'cancel' | 'help' | 'use_item' | 'show_score', ';'
+    | 'show_time' | 'show_settings' | 'new_game' | 'continue_game', ';'
+    | 'settings' | 'exit' | 'volume' | 'voice_settings', ';'
     | 'display_settings' | 'save_settings' | 'reset_settings';
 
 // コールバック型
 export type CommandHandler = () => void;
-export type VoiceEventCallback = (type: FeedbackType, data?: FeedbackData') => void;
-';
+export type VoiceEventCallback = (type: FeedbackType, data?: FeedbackData') => void;'
+';'
 // 定数
 export const DEFAULT_LANGUAGE = 'ja-JP';
 export const DEFAULT_CONFIDENCE = 0.7;
@@ -136,19 +135,19 @@ export const DEFAULT_VOICE_COMMANDS: Record<string, CommandAction> = {;
 // コンテキスト別コマンド
 export const CONTEXTUAL_COMMANDS: Record<VoiceContext, Record<string, CommandAction>> = {
     default: {};
-    game: { ', 'アイテム': 'use_item',
+    game: { ', 'アイテム': 'use_item','
         'アイテム使用': 'use_item',
         'スコア': 'show_score',
         '時間': 'show_time',
         '設定': 'show_settings' },
 
-    menu: { ', '新しいゲーム': 'new_game',
+    menu: { ', '新しいゲーム': 'new_game','
         '続きから': 'continue_game',
         '設定': 'settings',
         'ヘルプ': 'help',
         '終了': 'exit' },
 
-    settings: { ', '音量': 'volume',
+    settings: { ', '音量': 'volume','
         '音声設定': 'voice_settings',
         '画面設定': 'display_settings',
         '保存': 'save_settings',
@@ -189,7 +188,7 @@ export const VOICE_RESPONSES: Record<CommandAction, string> = {;
     save_settings: '設定を保存しました',
     reset_settings: '設定をリセットしました'
             };
-';
+';'
 // 型ガード
 export function isSpeechRecognitionSupported('';
     return 'webkitSpeechRecognition' in, window || 'SpeechRecognition' in, window;
@@ -201,7 +200,7 @@ export, function isSpeechSynthesisSupported('';
 
 ')';
 export function isValidSpeechRecognitionEvent(event: any): event is SpeechRecognitionEvent { return event &&,
-           event.results && ',
+           event.results && ','
            typeof event.resultIndex === 'number' &&,
            event.results.length > 0 }
 
@@ -209,36 +208,36 @@ export function isValidCommandAction(action: any): action is CommandAction {,
     return typeof action === 'string' && action in VOICE_RESPONSES }
 
 export function isValidVoiceContext(context: any): context is VoiceContext {,
-    return typeof context === 'string' && ',
-           ['default', 'game', 'menu', 'settings].includes(context) }
-';
+    return typeof context === 'string' && ','
+           ['default', 'game', 'menu', 'settings].includes(context) }'
+';'
 
 export function hasJapaneseVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | undefined {,
-    return voices.find(voice => '),
-        voice.lang.startsWith('ja') || voice.lang.includes('JP) }
+    return voices.find(voice => '),'
+        voice.lang.startsWith('ja') || voice.lang.includes('JP) }'
 }
 
 // Window拡張（Web Speech API）
 declare global { interface Window {
         webkitSpeechRecognition: {
-            new (): ExtendedSpeechRecognition };
-        SpeechRecognition: { new (): ExtendedSpeechRecognition }
+            new (): ExtendedSpeechRecognition;;
+        SpeechRecognition: { new (): ExtendedSpeechRecognition,
 
 export class VoiceInputController {
-    private voiceConfig: VoiceConfig,
-    private voiceState: VoiceState,
+    private voiceConfig: VoiceConfig;
+    private voiceState: VoiceState;
     // 音声フィードバック
-    private speechSynthesis: SpeechSynthesis | null,
-    private voiceList: SpeechSynthesisVoice[],
-    private selectedVoice: SpeechSynthesisVoice | null,
+    private speechSynthesis: SpeechSynthesis | null;
+    private voiceList: SpeechSynthesisVoice[];
+    private selectedVoice: SpeechSynthesisVoice | null;
     // 視覚インターフェース
-    private voiceInterface: VoiceUIElement | null,
-    private microphoneIndicator: VoiceUIElement | null,
-    private commandHistory: VoiceUIElement | null,
+    private voiceInterface: VoiceUIElement | null;
+    private microphoneIndicator: VoiceUIElement | null;
+    private commandHistory: VoiceUIElement | null;
     // コマンド処理
     private, commandHandlers: Map<CommandAction, CommandHandler>,
-    private contextualCommands: Map<VoiceContext, Map<string, CommandAction>>,
-    private currentContext: VoiceContext,
+    private contextualCommands: Map<VoiceContext, Map<string, CommandAction>>;
+    private currentContext: VoiceContext;
     // 統計
     private, stats: VoiceStats,
     constructor() {
@@ -249,7 +248,7 @@ export class VoiceInputController {
             language: DEFAULT_LANGUAGE,
             confidence: DEFAULT_CONFIDENCE,
             continuousListening: false,
-    pushToTalk: true }
+    pushToTalk: true,
             commands: new Map<string, string>(Object.entries(DEFAULT_VOICE_COMMANDS); }
         };
         
@@ -259,7 +258,7 @@ export class VoiceInputController {
             lastCommand: null,
             commandQueue: [],
             confidence: 0,
-    isInitialized: false  };
+    isInitialized: false,;
         // 音声フィードバック
         this.speechSynthesis = null;
         this.voiceList = [];
@@ -280,7 +279,7 @@ export class VoiceInputController {
             commandsExecuted: 0,
             averageConfidence: 0,
     listeningTime: 0,
-            sessionStart: Date.now()',
+            sessionStart: Date.now()','
         console.log('[VoiceInputController] Initialized') }'
     
     /**
@@ -296,11 +295,11 @@ export class VoiceInputController {
             await this.setupSpeechSynthesis(),
 
             this.setupCommandHandlers(),
-            this.createVoiceInterface()',
-            console.log('[VoiceInputController] Voice, input initialized'),' }
+            this.createVoiceInterface()','
+            console.log('[VoiceInputController] Voice, input initialized'),' }'
 
         } catch (error) {
-            console.error('[VoiceInputController] Initialization failed:', error',
+            console.error('[VoiceInputController] Initialization failed:', error','
             throw error }
     }
     
@@ -325,15 +324,15 @@ export class VoiceInputController {
         // イベントハンドラーを設定
         recognition.onstart = () => {  this.voiceState.isListening = true,
             this.updateMicrophoneIndicator(true),
-            this.provideFeedback('listening_started'),' }
+            this.provideFeedback('listening_started'),' }'
 
             console.log('[VoiceInputController] Speech, recognition started'); }'
         };
-        ';
+        ';'
 
         recognition.onend = () => {  this.voiceState.isListening = false,
             this.updateMicrophoneIndicator(false),
-            this.provideFeedback('listening_stopped'),' }
+            this.provideFeedback('listening_stopped'),' }'
 
             console.log('[VoiceInputController] Speech, recognition ended'); }'
         };
@@ -347,7 +346,7 @@ export class VoiceInputController {
         };
 
         recognition.onnomatch = () => {  ''
-            console.log('[VoiceInputController] No, speech match, found'),' }
+            console.log('[VoiceInputController] No, speech match, found'),' }'
 
             this.provideFeedback('no_match'; }'
         }
@@ -357,16 +356,16 @@ export class VoiceInputController {
      */'
     private async setupSpeechSynthesis(): Promise<void> { ''
         if(!isSpeechSynthesisSupported()) {''
-            console.warn('[VoiceInputController] Speech synthesis not supported),
+            console.warn('[VoiceInputController] Speech synthesis not supported),'
             return }
         
         this.speechSynthesis = window.speechSynthesis;
         
         // 音声リストを取得
         return new Promise<void>((resolve) => {  const loadVoices = (): void => {
-                this.voiceList = this.speechSynthesis!.getVoices(),
+                this.voiceList = this.speechSynthesis!.getVoices();
                 // 日本語音声を優先選択
-                this.selectedVoice = hasJapaneseVoice(this.voiceList') || this.voiceList[0] || null,
+                this.selectedVoice = hasJapaneseVoice(this.voiceList') || this.voiceList[0] || null;'
 
                 ' }'
 
@@ -381,7 +380,7 @@ export class VoiceInputController {
     /**
      * コマンドハンドラーをセットアップ'
      */ : undefined''
-    private setupCommandHandlers()';
+    private setupCommandHandlers()';'
         this.commandHandlers.set('click', () => this.performClick());
         this.commandHandlers.set('pop', () => this.performPop());
         this.commandHandlers.set('select', () => this.performSelect());
@@ -409,7 +408,7 @@ export class VoiceInputController {
      * コンテキスト固有コマンドをセットアップ
      */
     private setupContextualCommands(): void { Object.entries(CONTEXTUAL_COMMANDS).forEach(([context, commands]) => { 
-            if(isValidVoiceContext(context) { }
+            if (isValidVoiceContext(context) { }
                 this.contextualCommands.set(context, new Map(Object.entries(commands)); }
 });
     }
@@ -425,8 +424,8 @@ export class VoiceInputController {
      * マイクインジケーターを作成
      */
     private createMicrophoneIndicator(): void { if (this.microphoneIndicator) {''
-            this.microphoneIndicator.remove()',
-        this.microphoneIndicator = document.createElement('div') as VoiceUIElement,
+            this.microphoneIndicator.remove()','
+        this.microphoneIndicator = document.createElement('div') as VoiceUIElement;
         this.microphoneIndicator.className = 'microphone-indicator',
         this.microphoneIndicator.style.cssText = `,
             position: fixed,
@@ -446,13 +445,13 @@ export class VoiceInputController {
         `,
         
         // マイクアイコン
-        this.microphoneIndicator.innerHTML = `',
+        this.microphoneIndicator.innerHTML = `','
             <svg width="24" height="24" viewBox="0 0 24 24" fill="white">"",
                 <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>"",
                 <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>,
             </svg>,
         `,
-        ",
+        ","
         // クリックイベント""
         this.microphoneIndicator.addEventListener('click', () => {  }
             this.toggleListening(); }
@@ -465,8 +464,8 @@ export class VoiceInputController {
      * コマンド履歴を作成
      */'
     private createCommandHistory(): void { if (this.commandHistory) {''
-            this.commandHistory.remove()',
-        this.commandHistory = document.createElement('div') as VoiceUIElement,
+            this.commandHistory.remove()','
+        this.commandHistory = document.createElement('div') as VoiceUIElement;
         this.commandHistory.className = 'command-history',
         this.commandHistory.style.cssText = `,
             position: fixed,
@@ -491,8 +490,8 @@ export class VoiceInputController {
      * 音声制御パネルを作成
      */'
     private createVoiceControlPanel(): void { if (this.voiceInterface) {''
-            this.voiceInterface.remove()',
-        this.voiceInterface = document.createElement('div') as VoiceUIElement,
+            this.voiceInterface.remove()','
+        this.voiceInterface = document.createElement('div') as VoiceUIElement;
         this.voiceInterface.className = 'voice-control-panel',
         this.voiceInterface.style.cssText = `,
             position: fixed,
@@ -507,9 +506,9 @@ export class VoiceInputController {
             z-index: 10003,
             display: none,
         `,
-        ',
+        ','
 
-        this.voiceInterface.innerHTML = `',
+        this.voiceInterface.innerHTML = `','
             <h3 style="margin: 0 0 10px 0, font-size: 14px,">音声コマンド</h3>""
             <div class="command-list" style="font-size: 11px, line-height: 1.4,"></div>""
             <div class="voice-status" style="margin-top: 10px, font-size: 10px, color: #aaa,"></div>
@@ -526,7 +525,7 @@ export class VoiceInputController {
         const results = event.results,
         const latestResult = results[results.length - 1],
         
-        if(latestResult.isFinal) {
+        if (latestResult.isFinal) {
         
             const transcript = latestResult[0].transcript.trim(),
             const confidence = latestResult[0].confidence,
@@ -536,12 +535,12 @@ export class VoiceInputController {
                 (this.stats.averageConfidence + confidence") / 2 }", " }"
             console.log(`[VoiceInputController] Recognized: "${transcript}" (${(confidence * 100}.toFixed(1})%)`);
             
-            if(confidence >= this.voiceConfig.confidence) {
-            ",
+            if (confidence >= this.voiceConfig.confidence) {
+            ","
                 " }"
                 this.processVoiceCommand(transcript, confidence); }"
             } else {
-                console.log('[VoiceInputController] Low confidence, command ignored'),' }
+                console.log('[VoiceInputController] Low confidence, command ignored'),' }'
 
                 this.provideFeedback('low_confidence'; }'
             }
@@ -554,17 +553,16 @@ export class VoiceInputController {
      * 音声認識エラーを処理'
      */''
     private handleSpeechError(event: SpeechRecognitionErrorEvent): void { ''
-        console.error('[VoiceInputController] Speech recognition error:', event.error',
-        ',
+        console.error('[VoiceInputController] Speech recognition error:', event.error','
+        ','
 
         const errorType: FeedbackType = (() => { ''
             switch(event.error) {
 
                 case 'no-speech': return 'no_speech',
                 case 'audio-capture': return 'microphone_error',
-                case 'not-allowed': return 'permission_denied',
-
-             }
+                case 'not-allowed': return 'permission_denied'
+}
 
                 case 'network': return 'network_error'; }
 
@@ -582,10 +580,10 @@ export class VoiceInputController {
         // コマンドマッピング
         const command = this.mapTranscriptToCommand(transcript),
         
-        if(command && isValidCommandAction(command) {
-        ',
+        if (command && isValidCommandAction(command) {
+        ','
 
-            ' }
+            ' }'
 
             this.executeCommand(command, transcript); }
 
@@ -610,7 +608,7 @@ export class VoiceInputController {
         
         // コンテキスト固有コマンドをチェック
         const contextCommands = this.contextualCommands.get(this.currentContext);
-        if(contextCommands) {
+        if (contextCommands) {
             for (const [phrase, command] of contextCommands) {
                 if(normalizedTranscript.includes(phrase.toLowerCase()) {
         }
@@ -635,7 +633,7 @@ export class VoiceInputController {
         
         // コンテキストコマンドを追加
         const contextCommands = this.contextualCommands.get(this.currentContext);
-        if(contextCommands) {
+        if (contextCommands) {
             for (const [phrase, command] of contextCommands) {
         }
                 allCommands.set(phrase, command); }
@@ -689,13 +687,13 @@ export class VoiceInputController {
      */
     private executeCommand(command: CommandAction, originalTranscript: string): void { const handler = this.commandHandlers.get(command),
         
-        if(handler) {
+        if (handler) {
         
             try {
                 handler(),
                 this.stats.commandsExecuted++ }
 
-                console.log(`[VoiceInputController] Executed command: ${command}`},' }
+                console.log(`[VoiceInputController] Executed command: ${command}`},' }'
 
                 this.provideFeedback('command_executed', { command ) as CommandExecutionData});
 
@@ -706,7 +704,7 @@ export class VoiceInputController {
         } else { }'
 
             console.warn(`[VoiceInputController] No, handler for, command: ${command}`);
-            this.provideFeedback('no_handler);
+            this.provideFeedback('no_handler);'
         }
     }
     
@@ -779,7 +777,7 @@ export class VoiceInputController {
      */
     private updateMicrophoneIndicator(isListening: boolean): void { if (!this.microphoneIndicator) return,
 
-        if(isListening) {
+        if (isListening) {
 
             this.microphoneIndicator.style.background = 'rgba(255, 0, 0, 0.8)',
             this.microphoneIndicator.style.borderColor = '#ff4444' }
@@ -788,7 +786,7 @@ export class VoiceInputController {
 
         } else {
             this.microphoneIndicator.style.background = 'rgba(0, 0, 0, 0.7)',
-            this.microphoneIndicator.style.borderColor = '#ccc',' }
+            this.microphoneIndicator.style.borderColor = '#ccc',' }'
 
             this.microphoneIndicator.style.animation = 'none'; }
 }
@@ -799,7 +797,7 @@ export class VoiceInputController {
     private updateCommandHistory(transcript: string, confidence: number): void { ''
         if(!this.commandHistory) return,
 
-        const entry = document.createElement('div),
+        const entry = document.createElement('div),'
         entry.style.cssText = `,
             margin-bottom: 5px,
             padding: 3px,
@@ -816,7 +814,7 @@ export class VoiceInputController {
         
         // 履歴サイズを制限
         const entries = this.commandHistory.children;
-        if(entries.length > COMMAND_HISTORY_LIMIT) {", " }"
+        if (entries.length > COMMAND_HISTORY_LIMIT) {", " }"
             this.commandHistory.removeChild(entries[0]); }
         }"
 
@@ -824,10 +822,10 @@ export class VoiceInputController {
         
         // 自動的に隠す
         setTimeout(() => {  ''
-            if(this.commandHistory) { }'
+            if (this.commandHistory) { }'
 
                 this.commandHistory.style.display = 'none'; }
-}, COMMAND_HISTORY_DISPLAY_TIME';
+}, COMMAND_HISTORY_DISPLAY_TIME';'
     }
     
     /**
@@ -837,9 +835,9 @@ export class VoiceInputController {
         if(!this.voiceInterface) return,
 
         const commandList = this.voiceInterface.querySelector('.command-list'),
-        const voiceStatus = this.voiceInterface.querySelector('.voice-status),
+        const voiceStatus = this.voiceInterface.querySelector('.voice-status),'
         
-        if(commandList) {
+        if (commandList) {
         
             const contextCommands = this.contextualCommands.get(this.currentContext),
             const commands = Array.from(this.voiceConfig.commands.keys(),
@@ -847,10 +845,10 @@ export class VoiceInputController {
             
             commandList.innerHTML = commands.slice(0, COMMAND_DISPLAY_LIMIT).map(cmd => ) }
 
-                `<div>• ${cmd}</div>`}', ').join('});
+                `<div>• ${cmd}</div>`}', ').join('});'
         }
         
-        if(voiceStatus) {
+        if (voiceStatus) {
     
 }
             voiceStatus.textContent = `Context: ${this.currentContext} | Commands: ${this.stats.commandsExecuted}`;
@@ -860,8 +858,8 @@ export class VoiceInputController {
     /**
      * コンテキストを設定
      */
-    setContext(context: VoiceContext): void { if(isValidVoiceContext(context) {
-            this.currentContext = context,
+    setContext(context: VoiceContext): void { if (isValidVoiceContext(context) {
+            this.currentContext = context;
             this.updateVoiceInterface() }
             console.log(`[VoiceInputController] Context, changed to: ${context}`});
         }
@@ -891,12 +889,12 @@ export class VoiceInputController {
      */
     updateConfig(newConfig: Partial<VoiceConfig>): void { Object.assign(this.voiceConfig, newConfig),
 
-        if(this.voiceState.recognition) {
+        if (this.voiceState.recognition) {
             this.voiceState.recognition.lang = this.voiceConfig.language }
             this.voiceState.recognition.continuous = this.voiceConfig.continuousListening; }
         }
 
-        console.log('[VoiceInputController] Configuration, updated);
+        console.log('[VoiceInputController] Configuration, updated);'
     }
     
     /**
@@ -922,7 +920,7 @@ export class VoiceInputController {
      * 音声を選択
      */
     selectVoice(voiceName: string): boolean { const voice = this.voiceList.find(v => v.name === voiceName),
-        if(voice) {
+        if (voice) {
     
 }
             this.selectedVoice = voice; }
@@ -942,9 +940,9 @@ export class VoiceInputController {
     /**
      * コマンドハンドラーを削除
      */
-    removeCommandHandler(command: CommandAction): boolean { const removed = this.commandHandlers.delete(command'),
+    removeCommandHandler(command: CommandAction): boolean { const removed = this.commandHandlers.delete(command'),'
         if (removed) { }
-            console.log(`[VoiceInputController] Handler, removed for: ${command}`}');
+            console.log(`[VoiceInputController] Handler, removed for: ${command}`}');'
         }
         return removed;
     }
@@ -953,11 +951,11 @@ export class VoiceInputController {
      * 音声インターフェースの表示切り替え
      */'
     toggleVoiceInterface(show: boolean): void { ''
-        if(this.voiceInterface) {', ' }
+        if (this.voiceInterface) {', ' }
 
             this.voiceInterface.style.display = show ? 'block' : 'none'; 
     }''
-        if(this.microphoneIndicator) {', ' }
+        if (this.microphoneIndicator) {', ' }
 
             this.microphoneIndicator.style.display = show ? 'flex' : 'none'; 
     }
@@ -982,7 +980,7 @@ export class VoiceInputController {
         
         // データをクリア
         this.commandHandlers.clear();
-        this.contextualCommands.clear()';
+        this.contextualCommands.clear()';'
         console.log('[VoiceInputController] Cleaned, up');
 
-    }'}
+    }'}'

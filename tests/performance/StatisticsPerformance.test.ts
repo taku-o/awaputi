@@ -24,7 +24,7 @@ const performanceConfig = PerformanceTestUtils.createPerformanceTestConfig();
 const environmentThresholds = PerformanceTestUtils.getEnvironmentThresholds();
 // MockFactoryからの標準化されたモック
 const mockCanvas = MockFactory.createCanvasMock();
-const mockGameEngine = MockFactory.createGameEngineMock(');
+const mockGameEngine = MockFactory.createGameEngineMock(');'
 describe('統計システムパフォーマンステスト', () => {
     let statisticsManager: any,
     let statisticsCollector: any,
@@ -41,11 +41,11 @@ describe('統計システムパフォーマンステスト', () => {
     beforeAll(async () => {
         // MockFactoryからの標準化されたモック適用
         const performanceMock = MockFactory.createPerformanceMock(),
-        const storageMock = MockFactory.createStorageMock('),
+        const storageMock = MockFactory.createStorageMock('),'
         // グローバルAPIのモック設定
         if (typeof global !== 'undefined') {
             (global: any).performance = performanceMock,
-            (global as any').localStorage = storageMock }
+            (global as any').localStorage = storageMock }'
         if (typeof window !== 'undefined') {
             window.performance = performanceMock,
             window.localStorage = storageMock }
@@ -64,7 +64,7 @@ describe('統計システムパフォーマンステスト', () => {
             statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager),
             chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas),
             statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager),
-            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager) } catch (error') {
+            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager) } catch (error') {'
             console.error('Failed to import modules:', error) }
         
         // Create main test suite object for dependency injection
@@ -83,13 +83,13 @@ describe('統計システムパフォーマンステスト', () => {
         // Initialize sub-components with dependency injection
         dataCollectionTests = new DataCollectionPerformanceTests(mainTestSuite);
         analysisRenderingTests = new AnalysisRenderingPerformanceTests(mainTestSuite);
-        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite');
+        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite');'
         console.log('[StatisticsPerformance] Main test controller initialized successfully');
     });
     beforeEach(async () => {
         jest.clearAllMocks(),
         // 環境に応じたパフォーマンステスト準備
-        await PerformanceTestUtils.waitForStableEnvironment(performanceConfig.stabilizationDelay'),
+        await PerformanceTestUtils.waitForStableEnvironment(performanceConfig.stabilizationDelay'),'
         // Performance mock のリセット
         if (performance && typeof performance.now === 'function' && performance.now.mockReturnValue) {
             performance.now.mockReturnValue(Date.now() }
@@ -106,14 +106,14 @@ describe('統計システムパフォーマンステスト', () => {
         statisticsAnalyzer?.destroy(),
         chartRenderer?.destroy(),
         statisticsExporter?.destroy(),
-        statisticsPerformanceOptimizer?.destroy('),
-        console.log('[StatisticsPerformance] Main test controller destroyed') }');
+        statisticsPerformanceOptimizer?.destroy('),'
+        console.log('[StatisticsPerformance] Main test controller destroyed') }');'
     // Register all test suites using sub-components
     if (typeof dataCollectionTests !== 'undefined') {
-        dataCollectionTests.registerTests(') }
+        dataCollectionTests.registerTests(') }'
     
     if (typeof analysisRenderingTests !== 'undefined') {
-        analysisRenderingTests.registerTests(') }
+        analysisRenderingTests.registerTests(') }'
     
     if (typeof exportMemoryOptimizationTests !== 'undefined') {
         exportMemoryOptimizationTests.registerTests() }
@@ -148,7 +148,7 @@ describe('統計システムパフォーマンステスト', () => {
             Object.assign(performanceConfig, config.performanceConfig) }
         
         if (config.environmentThresholds) {
-            Object.assign(environmentThresholds, config.environmentThresholds') }
+            Object.assign(environmentThresholds, config.environmentThresholds') }'
         
         console.log('[StatisticsPerformance] Test configuration updated');
     }
@@ -175,5 +175,5 @@ describe('統計システムパフォーマンステスト', () => {
     (global: any).getStatisticsPerformanceTestComponents = getTestComponents;
     (global: any).configureStatisticsPerformanceTestSuite = configureTestSuite;
     (global: any).getStatisticsPerformanceTestSuiteStatus = getTestSuiteStatus;
-}');
+}');'
 console.log('[StatisticsPerformance] Performance test suite loaded successfully');

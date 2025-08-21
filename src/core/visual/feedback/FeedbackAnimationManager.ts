@@ -18,153 +18,144 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface VisualFeedbackManager { config: FeedbackManagerConfig,
-    elements: FeedbackElements,
-    state: FeedbackManagerState
-     }
+    elements: FeedbackElements;
+    state: FeedbackManagerState;
 
 export interface FeedbackManagerConfig { animations: AnimationGlobalConfig,
-    performance: PerformanceConfig,
-    accessibility: AccessibilityConfig
-    }
+    performance: PerformanceConfig;
+    accessibility: AccessibilityConfig;
 
 export interface AnimationGlobalConfig { maxConcurrent: number,
-    reducedMotion: boolean,
-    hardwareAcceleration: boolean,
-    respectUserPreferences: boolean }
+    reducedMotion: boolean;
+    hardwareAcceleration: boolean;
+    respectUserPreferences: boolean;
 
 export interface PerformanceConfig { maxAnimationDuration: number,
-    maxFrameRate: number,
-    lowPowerMode: boolean }
+    maxFrameRate: number;
+    lowPowerMode: boolean;
 
 export interface AccessibilityConfig { respectReducedMotion: boolean,
-    highContrast: boolean,
-    alternativeText: boolean }
+    highContrast: boolean;
+    alternativeText: boolean;
 
 export interface FeedbackElements { container: HTMLElement,
-    overlay: HTMLElement,
-    statusDisplay: HTMLElement
-    }
+    overlay: HTMLElement;
+    statusDisplay: HTMLElement;
 
 export interface FeedbackManagerState { activeAnimations: Map<string, AnimationEffect>,
-    animationQueue: AnimationQueueItem[],
-    performance: PerformanceMetrics
-     }
+    animationQueue: AnimationQueueItem[];
+    performance: PerformanceMetrics;
 
 export interface AnimationConfig { flash: FlashAnimationConfig,
-    glow: GlowAnimationConfig,
-    pulse: PulseAnimationConfig,
-    ripple: RippleAnimationConfig,
-    shake: ShakeAnimationConfig
-    }
+    glow: GlowAnimationConfig;
+    pulse: PulseAnimationConfig;
+    ripple: RippleAnimationConfig;
+    shake: ShakeAnimationConfig;
 
 export interface FlashAnimationConfig { defaultDuration: number,
-    easingFunction: string,
-    maxIntensity: number,
-    fadeOutRatio: number }
+    easingFunction: string;
+    maxIntensity: number;
+    fadeOutRatio: number;
 
 export interface GlowAnimationConfig { defaultDuration: number,
-    easingFunction: string,
-    maxGlowSize: number,
-    opacityRange: OpacityRange
-    }
+    easingFunction: string;
+    maxGlowSize: number;
+    opacityRange: OpacityRange;
 
 export interface PulseAnimationConfig { defaultDuration: number,
-    easingFunction: string,
-    iterationsPerSecond: number,
-    scaleRange: ScaleRange,
-    intensityRange: IntensityRange
-    }
+    easingFunction: string;
+    iterationsPerSecond: number;
+    scaleRange: ScaleRange;
+    intensityRange: IntensityRange;
 
 export interface RippleAnimationConfig { defaultDuration: number,
-    easingFunction: string,
-    minSize: number,
-    maxSize: number,
-    borderWidth: number }
+    easingFunction: string;
+    minSize: number;
+    maxSize: number;
+    borderWidth: number;
 
 export interface ShakeAnimationConfig { defaultDuration: number,
-    easingFunction: string,
-    stepInterval: number,
-    maxDistance: number }
+    easingFunction: string;
+    stepInterval: number;
+    maxDistance: number;
 
 export interface OpacityRange { min: number,
-    max: number }
+    max: number;
 
 export interface ScaleRange { min: number,
-    max: number }
+    max: number;
 
 export interface IntensityRange { min: number,
-    max: number }
+    max: number;
 
 export interface EffectOptions { id: string,
-    target: HTMLElement,
-    color: string,
-    intensity: number,
-    duration?: number,
-    delay?: number,
-    easing?: string }
+    target: HTMLElement;
+    color: string;
+    intensity: number;
+    duration?: number;
+    delay?: number;
+    easing?: string;
 
 export interface FlashEffectOptions extends EffectOptions { backgroundOverride?: string,
-    fadeOutDelay?: number }
+    fadeOutDelay?: number;
 
 export interface GlowEffectOptions extends EffectOptions { glowSize?: number,
-    spread?: number,
-    blur?: number }
+    spread?: number;
+    blur?: number;
 
 export interface PulseEffectOptions extends EffectOptions { iterations?: number,
-    scaleMin?: number,
-    scaleMax?: number }
+    scaleMin?: number;
+    scaleMax?: number;
 
 export interface RippleEffectOptions extends EffectOptions { startSize?: number,
-    endSize?: number,
-    borderStyle?: string,
-    originX?: number,
-    originY?: number }
+    endSize?: number;
+    borderStyle?: string;
+    originX?: number;
+    originY?: number;
 
 export interface ShakeEffectOptions extends EffectOptions { maxDistance?: number,
-    steps?: number,
-    direction?: ShakeDirection }
+    steps?: number;
+    direction?: ShakeDirection;
 
 export interface AnimationEffect { id: string,
-    target: HTMLElement,
-    type: EffectType,
-    animation: Animation,
-    cleanup: () => void,
-    startTime: number,
-    duration: number,
-    options: EffectOptions
-     }
+    target: HTMLElement;
+    type: EffectType;
+    animation: Animation;
+    cleanup: () => void;
+    startTime: number;
+    duration: number;
+    options: EffectOptions;
 }
 
 export interface AnimationQueueItem { effect: EffectOptions,
-    priority: number,
-    timestamp: number }
+    priority: number;
+    timestamp: number;
 
 export interface PerformanceMetrics { totalAnimations: number,
-    activeCount: number,
-    averageDuration: number,
-    droppedFrames: number,
-    memoryUsage: number }
+    activeCount: number;
+    averageDuration: number;
+    droppedFrames: number;
+    memoryUsage: number;
 
 export interface AnimationStatistics { activeAnimations: number,
-    supportedTypes: EffectType[],
-    config: AnimationConfig,
-    performance: PerformanceMetrics,
+    supportedTypes: EffectType[];
+    config: AnimationConfig;
+    performance: PerformanceMetrics;
     byType: Record<EffectType, AnimationTypeStats> }
 
 export interface AnimationTypeStats { count: number,
-    totalDuration: number,
-    averageIntensity: number,
-    successRate: number  }
+    totalDuration: number;
+    averageIntensity: number;
+    successRate: number;
 
 export interface CleanupResult { cleaned: number,
-    failed: number,
-    errors: Error[]
-    }
+    failed: number;
+    errors: Error[];
 
 export interface AnimationValidationResult { isValid: boolean,
-    reason?: string,
-    suggestion?: string }
-';
+    reason?: string;
+    suggestion?: string;
+';'
 // 列挙型
 export type EffectType = 'flash' | 'glow' | 'pulse' | 'ripple' | 'shake';
 export type AnimationState = 'idle' | 'running' | 'paused' | 'finished' | 'cancelled';
@@ -207,7 +198,7 @@ export const ANIMATION_PRIORITIES: Record<Priority, number> = { low: 1,
     normal: 2,
     high: 3,
     critical: 4  } as const;
-';
+';'
 
 export const CSS_PROPERTIES = {;
     TRANSFORM: 'transform',
@@ -218,52 +209,52 @@ export const CSS_PROPERTIES = {;
             } as const;
 // ユーティリティ関数
 export function validateEffectOptions(options: Partial<EffectOptions>): AnimationValidationResult {;
-    if(!options.target) {
-        return { isValid: false }
+    if (!options.target) {
+        return { isValid: false,
 
-            reason: 'Target element is required',' };
+            reason: 'Target element is required',' };'
 
             suggestion: 'Provide a valid HTMLElement as target' 
     }
 
-    if(!options.color) {
-        return { isValid: false }
+    if (!options.color) {
+        return { isValid: false,
 
-            reason: 'Color is required',' };
+            reason: 'Color is required',' };'
 
             suggestion: 'Provide a valid CSS color value' 
     }
 
     if(typeof, options.intensity !== 'number' || options.intensity < 0 || options.intensity > 1' {'
-        return { isValid: false }
+        return { isValid: false,
 
-            reason: 'Intensity must be a number between 0 and 1',' };
+            reason: 'Intensity must be a number between 0 and 1',' };'
 
             suggestion: 'Set intensity to a value between 0.0 and 1.0' 
     }
     
-    return { isValid: true }
+    return { isValid: true,
 
 export function normalizeIntensity(intensity: number): number { return Math.max(0, Math.min(1, intensity) }
-';
+';'
 
 export function createAnimationKeyframes(type: EffectType, options: EffectOptions): Keyframe[] {,
     switch(type) {', ' }
 
-        case 'flash': return [' }
+        case 'flash': return [' }'
 
                 { opacity: normalizeIntensity(options.intensity }]
                 { opacity: 0 }]'
             ];
-        case 'glow':';
+        case 'glow':';'
             const, glowSize = 10 * normalizeIntensity(options.intensity);
             return [{ boxShadow: `0 0 ${glowSize}px ${options.color}`, opacity: 0.8 }]
                 { boxShadow: `0 0 0px ${options.color}`, opacity: 0 }]'
             ];
-        case 'pulse':';
+        case 'pulse':';'
             const intensity = 0.3 + (normalizeIntensity(options.intensity) * 0.7);
 
-            return [';
+            return [';'
                 { opacity: 0, transform: 'scale(0.8)'
             },''
                 { opacity: intensity, transform: 'scale(1.1)'
@@ -279,10 +270,10 @@ export function createAnimationKeyframes(type: EffectType, options: EffectOption
                 { 
                     width: `${DEFAULT_ANIMATION_CONFIG.ripple.maxSize}px`;
                     height: `${DEFAULT_ANIMATION_CONFIG.ripple.maxSize}px`;
-                    opacity: 0 ];
+                    opacity: 0 ],
                 }]
             ],
-        default: return [];
+        default: return [],
 
 export function generateShakeKeyframes(distance: number, steps: number): Keyframe[] { const keyframes: Keyframe[] = [],
     
@@ -300,29 +291,29 @@ export function generateShakeKeyframes(distance: number, steps: number): Keyfram
     
     return keyframes;
 }
-';
+';'
 
 export function calculateAnimationTiming(duration: number, easing: string): KeyframeAnimationOptions { return {,
         duration: Math.min(duration, PERFORMANCE_LIMITS.MAX_ANIMATION_DURATION),
-        easing,' };
+        easing,' };'
 
         fill: 'forwards' 
     }
 
-export function shouldUseReducedMotion()';
-           window.matchMedia('(prefers-reduced-motion: reduce)).matches }
+export function shouldUseReducedMotion()';'
+           window.matchMedia('(prefers-reduced-motion: reduce)).matches }'
 
 export class FeedbackAnimationManager {
-    private mainController: VisualFeedbackManager,
+    private mainController: VisualFeedbackManager;
     private, activeAnimations: Map<string, AnimationEffect>,
-    private animationConfig: AnimationConfig,
+    private animationConfig: AnimationConfig;
     private, performanceMetrics: PerformanceMetrics,
     constructor(mainController: VisualFeedbackManager) {
-',
+','
 
-        this.mainController = mainController,
-        this.activeAnimations = new Map(',
-     }''
+        this.mainController = mainController;
+        this.activeAnimations = new Map('
+}''
         console.log('FeedbackAnimationManager, initialized'); }'
     }
 
@@ -337,10 +328,10 @@ export class FeedbackAnimationManager {
             
             const originalBackground = options.target.style.background;
             const flashIntensity = normalizeIntensity(options.intensity);
-            ';
+            ';'
 
             options.target.style.background = options.color;
-            options.target.style.opacity = flashIntensity.toString()';
+            options.target.style.opacity = flashIntensity.toString()';'
             const keyframes = createAnimationKeyframes('flash', options);
             const timing = calculateAnimationTiming(;
                 options.duration || this.animationConfig.flash.defaultDuration);
@@ -358,7 +349,7 @@ export class FeedbackAnimationManager {
                 } catch (error) { console.warn('Flash effect cleanup error:', error }
             };
 
-            animation.addEventListener('finish', cleanup';
+            animation.addEventListener('finish', cleanup';'
             
             const effect: AnimationEffect = { id: options.id,
 
@@ -374,7 +365,7 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'ANIMATION_ERROR', {''
                 operation: 'createFlashEffect'),
@@ -392,7 +383,7 @@ export class FeedbackAnimationManager {
 
             const glowSize = (options.glowSize || 10) * normalizeIntensity(options.intensity);
             const originalBoxShadow = options.target.style.boxShadow;
-            ';
+            ';'
 
             options.target.style.boxShadow = `0 0 ${glowSize}px ${options.color}`;
             options.target.style.opacity = '0.8';
@@ -414,7 +405,7 @@ export class FeedbackAnimationManager {
                 } catch (error) { console.warn('Glow effect cleanup error:', error }
             };
 
-            animation.addEventListener('finish', cleanup';
+            animation.addEventListener('finish', cleanup';'
             
             const effect: AnimationEffect = { id: options.id,
 
@@ -430,7 +421,7 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'ANIMATION_ERROR', {''
                 operation: 'createGlowEffect'),
@@ -451,7 +442,7 @@ export class FeedbackAnimationManager {
             const pulseIntensity = 0.3 + (normalizeIntensity(options.intensity) * 0.7);
             
             options.target.style.background = `radial-gradient(circle, ${ options.color) 0%, transparent, 70%)`,
-            ',
+            ','
 
             const, duration = options.duration || this.animationConfig.pulse.defaultDuration,
             const, iterations = options.iterations || Math.ceil(duration / 400};
@@ -474,7 +465,7 @@ export class FeedbackAnimationManager {
                 } catch (error) { console.warn('Pulse effect cleanup error:', error }
             };
 
-            animation.addEventListener('finish', cleanup';
+            animation.addEventListener('finish', cleanup';'
             
             const effect: AnimationEffect = { id: options.id,
 
@@ -490,7 +481,7 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'ANIMATION_ERROR', {''
                 operation: 'createPulseEffect'),
@@ -505,12 +496,12 @@ export class FeedbackAnimationManager {
 
             if (!validation.isValid) { }'
 
-                throw new Error(`Ripple, effect validation, failed: ${validation.reason}`}';
+                throw new Error(`Ripple, effect validation, failed: ${validation.reason}`}';'
             }
-            ';
+            ';'
 
             const config = this.animationConfig.ripple;
-            const ripple = document.createElement('div);
+            const ripple = document.createElement('div);'
             const startSize = options.startSize || config.minSize;
             const endSize = options.endSize || config.maxSize;
             
@@ -537,7 +528,7 @@ export class FeedbackAnimationManager {
                 { 
                     width: `${endSize}px`;
                     height: `${endSize}px`;
-                    opacity: 0 ];
+                    opacity: 0 ],
                 }]
             ],
             
@@ -553,10 +544,10 @@ export class FeedbackAnimationManager {
                         ripple.parentNode.removeChild(ripple); }
                     }
 
-                    this.activeAnimations.delete(options.id);'} catch (error) { console.warn('Ripple effect cleanup error:', error }
+                    this.activeAnimations.delete(options.id);'} catch (error) { console.warn('Ripple effect cleanup error:', error }'
             };
 
-            animation.addEventListener('finish', cleanup';
+            animation.addEventListener('finish', cleanup';'
             
             const effect: AnimationEffect = { id: options.id,
 
@@ -572,7 +563,7 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'ANIMATION_ERROR', {''
                 operation: 'createRippleEffect'),
@@ -587,13 +578,13 @@ export class FeedbackAnimationManager {
             if (!validation.isValid) { }
                 throw new Error(`Shake, effect validation, failed: ${validation.reason}`});
             }
-            ';
+            ';'
 
             const config = this.animationConfig.shake;
             const shakeDistance = (options.maxDistance || 5) * normalizeIntensity(options.intensity);
             const originalTransform = options.target.style.transform;
             const originalBackground = options.target.style.background;
-            ';
+            ';'
 
             options.target.style.background = options.color;
             options.target.style.opacity = '0.6';
@@ -620,7 +611,7 @@ export class FeedbackAnimationManager {
                 } catch (error) { console.warn('Shake effect cleanup error:', error }
             };
 
-            animation.addEventListener('finish', cleanup';
+            animation.addEventListener('finish', cleanup';'
             
             const effect: AnimationEffect = { id: options.id,
 
@@ -636,7 +627,7 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'ANIMATION_ERROR', {''
                 operation: 'createShakeEffect'),
@@ -650,7 +641,7 @@ export class FeedbackAnimationManager {
             cleaned: 0,
             failed: 0,
     errors: [] };
-        ';
+        ';'
 
         try {'
             for(const [id, effect] of this.activeAnimations) {
@@ -671,7 +662,7 @@ export class FeedbackAnimationManager {
             
             console.log(`Animation cleanup completed: ${result.cleaned} cleaned, ${result.failed} failed`});
             return result;
-            ';
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'ANIMATION_ERROR', {''
                 operation: 'stopAllAnimations'
@@ -698,7 +689,7 @@ export class FeedbackAnimationManager {
         
         // 平均実行時間の計算
         const activeDurations = Array.from(this.activeAnimations.values().map(effect => effect.duration),
-        if(activeDurations.length > 0) {
+        if (activeDurations.length > 0) {
             this.performanceMetrics.averageDuration =  }
                 activeDurations.reduce((sum, duration) => sum + duration, 0) / activeDurations.length; }
 }
@@ -728,7 +719,7 @@ export class FeedbackAnimationManager {
         
         // 平均値の計算
         for (const type of Object.keys(byType) as EffectType[]) { const stats = byType[type],
-            if(stats.count > 0) {
+            if (stats.count > 0) {
                 stats.averageIntensity /= stats.count }
                 stats.successRate = 1.0; // 現在実行中のものは成功率100% }
 }
@@ -743,11 +734,11 @@ export class FeedbackAnimationManager {
     /**
      * リソースの解放
      */''
-    destroy()';
+    destroy()';'
         console.log('Destroying, FeedbackAnimationManager...');
-        ';
+        ';'
         // 全アニメーションの停止
-        this.stopAllAnimations()';
+        this.stopAllAnimations()';'
         console.log('FeedbackAnimationManager, destroyed');
 
-    }'}
+    }'}'

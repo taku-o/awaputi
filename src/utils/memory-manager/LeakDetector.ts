@@ -5,124 +5,123 @@
 
 // 型定義
 interface LeakDetectorConfig { enabled?: boolean,
-    sensitivity?: string,
-    suspiciousGrowth?: number,
-    criticalGrowth?: number,
-    memoryPressure?: number,
-    leakConfidence?: number,
-    analysisWindow?: number }
+    sensitivity?: string;
+    suspiciousGrowth?: number;
+    criticalGrowth?: number;
+    memoryPressure?: number;
+    leakConfidence?: number;
+    analysisWindow?: number;
 
 interface DetectionThresholds { suspiciousGrowth: number,
-    criticalGrowth: number,
-    memoryPressure: number,
-    leakConfidence: number  }
+    criticalGrowth: number;
+    memoryPressure: number;
+    leakConfidence: number;
 
 interface LeakDetectorStats { leaksDetected: number,
-    leaksSuspected: number,
-    pressureEvents: number,
-    falsePositives: number,
-    truePositives: number,
-    averageConfidence: number,
-    suspectedLeaks?: number,
-    trackedPatterns?: number,
-    memorySnapshots?: number }
+    leaksSuspected: number;
+    pressureEvents: number;
+    falsePositives: number;
+    truePositives: number;
+    averageConfidence: number;
+    suspectedLeaks?: number;
+    trackedPatterns?: number;
+    memorySnapshots?: number;
 
 interface ObjectCreationPattern { count: number,
-    totalSize: number,
-    averageSize: number,
-    creationRate: number,
-    lastCreation: number,
+    totalSize: number;
+    averageSize: number;
+    creationRate: number;
+    lastCreation: number;
     history: Array<{
-        timestam,p: number,
-        size: number,
-    metadata: any  }>;
+        timestam,p: number;
+        size: number;
+    metadata: any;>;
 }
 
 interface MemorySnapshot { timestamp: number,
-    totalMemory: number,
-    usedMemory: number,
-    freeMemory: number,
-    pressure: number  }
+    totalMemory: number;
+    usedMemory: number;
+    freeMemory: number;
+    pressure: number;
 
 interface LeakSuspect { source: string,
-    description: string,
-    confidence: number,
-    evidence: any,
-    reportedAt: number,
-    verified: boolean,
-    falsePositive: boolean }
+    description: string;
+    confidence: number;
+    evidence: any;
+    reportedAt: number;
+    verified: boolean;
+    falsePositive: boolean;
 
 interface MemoryPressureEvent { pressure: number,
-    source: string,
-    context: any,
-    timestamp: number }
+    source: string;
+    context: any;
+    timestamp: number;
 
 interface PatternRecognition { growthRates: number[],
-    cycleDetection: Map<string, any>,
-    anomalies: any[],
+    cycleDetection: Map<string, any>;
+    anomalies: any[];
     correlations: Map<string, any> }
 
 interface GrowthAnalysis { analysis: string,
-    growthRate: number,
-    rates?: number[]  }
+    growthRate: number;
+    rates?: number[];
 
 interface PatternAnalysisResult { patterns: Array<{
-        typ,e: string,
-        objectType: string,
-        rate?: number,
-        count?: number,
-    severity: string }>;
+        typ,e: string;
+        objectType: string;
+        rate?: number;
+        count?: number;
+    severity: string;>;
     anomalies: number;
 }
 
 interface PressureAnalysis { frequency: number,
-    avgPressure: number,
-    severity: string,
-    recentEvents: MemoryPressureEvent[]
-     }
+    avgPressure: number;
+    severity: string;
+    recentEvents: MemoryPressureEvent[];
 
 interface SuspectAnalysis { total: number,
-    verified: number,
-    highConfidence: number,
-    avgConfidence: number }
+    verified: number;
+    highConfidence: number;
+    avgConfidence: number;
 
 interface DetectionResults { timestamp: number,
-    growthAnalysis: GrowthAnalysis,
-    patternAnalysis: PatternAnalysisResult,
-    pressureAnalysis: PressureAnalysis,
-    suspectAnalysis: SuspectAnalysis,
-    overallRisk: string,
-    confidence: number,
-    recommendations: string[],
-    detected?: boolean,
-    reason?: string,
-    error?: string }
+    growthAnalysis: GrowthAnalysis;
+    patternAnalysis: PatternAnalysisResult;
+    pressureAnalysis: PressureAnalysis;
+    suspectAnalysis: SuspectAnalysis;
+    overallRisk: string;
+    confidence: number;
+    recommendations: string[];
+    detected?: boolean;
+    reason?: string;
+    error?: string;
 
 interface RiskAssessment { risk: string,
-    reason?: string,
-    growthRate?: number,
-    currentUsage?: number,
-    suspectedLeaks?: number,
-    confidence?: number }
+    reason?: string;
+    growthRate?: number;
+    currentUsage?: number;
+    suspectedLeaks?: number;
+    confidence?: number;
 
 export class LeakDetector {
-    private enabled: boolean,
-    private sensitivity: string,
-    private thresholds: DetectionThresholds,
-    private analysisWindow: number,
-    private lastAnalysis: number,
-    private memoryUsageHistory: any[],
+    private enabled: boolean;
+    private sensitivity: string;
+    private thresholds: DetectionThresholds;
+    private analysisWindow: number;
+    private lastAnalysis: number;
+    private memoryUsageHistory: any[];
     private, leakSuspects: Map<string, LeakSuspect>,
-    private memoryPressureEvents: MemoryPressureEvent[],
+    private memoryPressureEvents: MemoryPressureEvent[];
     private, objectCreationPatterns: Map<string, ObjectCreationPattern>,
-    private memorySnapshots: MemorySnapshot[],
-    private stats: LeakDetectorStats,
+    private memorySnapshots: MemorySnapshot[];
+    private stats: LeakDetectorStats;
     private, patterns: PatternRecognition,
     constructor(config: LeakDetectorConfig = {) {
 
         // Configuration
-        this.enabled = config.enabled !== undefined ? config.enabled: true,
-        this.sensitivity = config.sensitivity || 'medium',
+        this.enabled = config.enabled !== undefined ? config.enabled: true;
+        this.sensitivity = config.sensitivity || 'medium';
         
         // Detection thresholds
         this.thresholds = {
@@ -160,15 +159,15 @@ export class LeakDetector {
      * @returns {object} Analysis results
      */
     performLeakDetection(): DetectionResults { ''
-        if(!this.enabled) { }'
+        if (!this.enabled) { }'
 
             return { detected: false, reason: 'Detection disabled'
             } as DetectionResults;
         }
-        ';
+        ';'
 
         const now = Date.now();
-        if(now - this.lastAnalysis < this.analysisWindow) { }'
+        if (now - this.lastAnalysis < this.analysisWindow) { }'
 
             return { detected: false, reason: 'Analysis too frequent'
             } as DetectionResults;
@@ -181,7 +180,7 @@ export class LeakDetector {
             this.memorySnapshots.push(snapshot),
             
             // Limit history size
-            if(this.memorySnapshots.length > 100) {
+            if (this.memorySnapshots.length > 100) {
     
 }
                 this.memorySnapshots.shift(); }
@@ -240,7 +239,7 @@ export class LeakDetector {
         pattern.history.push({ timestamp, size, metadata ),
         
         // Limit history size
-        if(pattern.history.length > 50) {
+        if (pattern.history.length > 50) {
     
 }
             pattern.history.shift(); }
@@ -267,7 +266,7 @@ export class LeakDetector {
             evidence,
             reportedAt: Date.now(),
             verified: false,
-    falsePositive: false  };
+    falsePositive: false,;
         const key = `${source}_${Date.now())`,
         this.leakSuspects.set(key, suspect),
         
@@ -311,7 +310,7 @@ export class LeakDetector {
      * @returns {object} Risk assessment
      */
     getRiskAssessment(): RiskAssessment { const recentSnapshots = this.memorySnapshots.slice(-10),
-        if(recentSnapshots.length < 2) { }'
+        if (recentSnapshots.length < 2) { }'
 
             return { risk: 'unknown', reason: 'Insufficient data'
             }
@@ -322,21 +321,21 @@ export class LeakDetector {
         const growthRate = (currentUsage.totalMemory - previousUsage.totalMemory) / previousUsage.totalMemory;
 
         const timeSpan = currentUsage.timestamp - previousUsage.timestamp;
-        const growthPerMinute = (growthRate / timeSpan') * 60000;
+        const growthPerMinute = (growthRate / timeSpan') * 60000;'
 
         let risk = 'low';
-        if(growthPerMinute > this.thresholds.criticalGrowth) {', ' }
+        if (growthPerMinute > this.thresholds.criticalGrowth) {', ' }
 
             risk = 'critical'; }
 
-        } else if(growthPerMinute > this.thresholds.suspiciousGrowth) { ''
+        } else if (growthPerMinute > this.thresholds.suspiciousGrowth) { ''
             risk = 'medium' }
         
         return { risk,
             growthRate: growthPerMinute,
             currentUsage: currentUsage.totalMemory,
     suspectedLeaks: this.leakSuspects.size };
-            confidence: this._calculateCurrentConfidence(); 
+            confidence: this._calculateCurrentConfidence(), 
     }
     
     /**
@@ -353,11 +352,11 @@ export class LeakDetector {
     /**
      * Reset leak detection state
      */
-    reset(): void { this.memoryUsageHistory = [],
+    reset(): void { this.memoryUsageHistory = [];
         this.leakSuspects.clear(),
-        this.memoryPressureEvents = [],
+        this.memoryPressureEvents = [];
         this.objectCreationPatterns.clear(),
-        this.memorySnapshots = [],
+        this.memorySnapshots = [];
         
         this.stats = {
             leaksDetected: 0,
@@ -391,7 +390,7 @@ export class LeakDetector {
      * @private
      */
     private _analyzeMemoryGrowth(): GrowthAnalysis { ''
-        if(this.memorySnapshots.length < 3) { }'
+        if (this.memorySnapshots.length < 3) { }'
 
             return { analysis: 'insufficient_data', growthRate: 0  }
         
@@ -410,21 +409,21 @@ export class LeakDetector {
                 growthRates.push(rate); }
 }
 
-        if(growthRates.length === 0) { }'
+        if (growthRates.length === 0) { }'
 
             return { analysis: 'no_growth_data', growthRate: 0  }
 
-        const avgGrowthRate = growthRates.reduce((sum, rate) => sum + rate, 0') / growthRates.length;
+        const avgGrowthRate = growthRates.reduce((sum, rate) => sum + rate, 0') / growthRates.length;'
 
         let analysis = 'normal';
-        if(avgGrowthRate > this.thresholds.criticalGrowth) {', ' }
+        if (avgGrowthRate > this.thresholds.criticalGrowth) {', ' }
 
             analysis = 'critical_growth'; }
 
-        } else if(avgGrowthRate > this.thresholds.suspiciousGrowth) { ''
+        } else if (avgGrowthRate > this.thresholds.suspiciousGrowth) { ''
             analysis = 'suspicious_growth' }
         
-        return { analysis, growthRate: avgGrowthRate, rates: growthRates  }
+        return { analysis, growthRate: avgGrowthRate, rates: growthRates,
     
     /**
      * Analyze usage patterns for anomalies
@@ -435,22 +434,22 @@ export class LeakDetector {
             objectType: string,
             rate?: number,
             count?: number,
-    severity: string }> = [];
+    severity: string;> = [];
         
         // Analyze object creation patterns
-        for(const [type, pattern] of this.objectCreationPatterns) { if(pattern.creationRate > 10) { // More than 10 objects per second
+        for(const [type, pattern] of this.objectCreationPatterns) { if (pattern.creationRate > 10) { // More than 10 objects per second
                 patterns.push({''
-                    type: 'high_creation_rate),
-                    objectType: type',
+                    type: 'high_creation_rate),'
+                    objectType: type','
     rate: pattern.creationRate,' }'
 
                     severity: pattern.creationRate > 50 ? 'high' : 'medium'); 
     }
 
-            if(pattern.count > 1000) { // Large number of objects
+            if (pattern.count > 1000) { // Large number of objects
                 patterns.push({''
-                    type: 'object_accumulation),
-                    objectType: type',
+                    type: 'object_accumulation),'
+                    objectType: type','
     count: pattern.count,' }'
 
                     severity: pattern.count > 5000 ? 'high' : 'medium'); 
@@ -465,21 +464,21 @@ export class LeakDetector {
     private _analyzePressureEvents(): PressureAnalysis { const recent = this.memoryPressureEvents.slice(-10),
         const frequency = recent.length,
 
-        const avgPressure = recent.length > 0 ? undefined : undefined',
-            recent.reduce((sum, event) => sum + event.pressure, 0') / recent.length: 0,
+        const avgPressure = recent.length > 0 ? undefined : undefined','
+            recent.reduce((sum, event) => sum + event.pressure, 0') / recent.length: 0,'
 
         let severity = 'low',
-        if(frequency > 5 && avgPressure > 0.9) {', ' }
+        if (frequency > 5 && avgPressure > 0.9) {', ' }
 
             severity = 'critical'; }
 
-        } else if(frequency > 3 && avgPressure > 0.8) { ''
-            severity = 'high',' }
+        } else if (frequency > 3 && avgPressure > 0.8) { ''
+            severity = 'high',' }'
 
-        } else if(frequency > 1 && avgPressure > 0.7) { ''
+        } else if (frequency > 1 && avgPressure > 0.7) { ''
             severity = 'medium' }
         
-        return { frequency, avgPressure, severity, recentEvents: recent  }
+        return { frequency, avgPressure, severity, recentEvents: recent,
     
     /**
      * Analyze suspected leak objects
@@ -492,7 +491,7 @@ export class LeakDetector {
         return { total: suspects.length,
             verified,
             highConfidence,
-            avgConfidence: suspects.length > 0 ? undefined : undefined };
+            avgConfidence: suspects.length > 0 ? undefined : undefined,;
                 suspects.reduce((sum, s) => sum + s.confidence, 0) / suspects.length : 0 
     }
     
@@ -501,18 +500,18 @@ export class LeakDetector {
      * @private'
      */''
     private _calculateOverallRisk(results: DetectionResults): string { let riskScore = 0,
-        ',
+        ','
         // Growth analysis contribution
         if (results.growthAnalysis.analysis === 'critical_growth') riskScore += 0.4,
         else if(results.growthAnalysis.analysis === 'suspicious_growth' riskScore += 0.2,
-        ',
+        ','
         // Pattern analysis contribution
         riskScore += Math.min(0.3, results.patternAnalysis.anomalies * 0.1),
-        ',
+        ','
         // Pressure analysis contribution
         if (results.pressureAnalysis.severity === 'critical') riskScore += 0.3,
         else if (results.pressureAnalysis.severity === 'high') riskScore += 0.2,
-        else if(results.pressureAnalysis.severity === 'medium) riskScore += 0.1,
+        else if(results.pressureAnalysis.severity === 'medium) riskScore += 0.1,'
         
         // Suspect analysis contribution
         riskScore += Math.min(0.2, results.suspectAnalysis.verified * 0.1),
@@ -528,10 +527,10 @@ export class LeakDetector {
      */'
     private _calculateConfidence(results: DetectionResults): number { const dataPoints = this.memorySnapshots.length,
         const baseConfidence = Math.min(1.0, dataPoints / 10),
-        ',
+        ','
 
         let adjustments = 0,
-        if(results.growthAnalysis.analysis !== 'insufficient_data) adjustments += 0.2,
+        if(results.growthAnalysis.analysis !== 'insufficient_data) adjustments += 0.2,'
         if (results.patternAnalysis.anomalies > 0) adjustments += 0.1,
         if (results.pressureAnalysis.frequency > 0) adjustments += 0.1,
         if (results.suspectAnalysis.verified > 0) adjustments += 0.2,
@@ -544,22 +543,22 @@ export class LeakDetector {
      */''
     private _generateRecommendations(results: DetectionResults): string[] { const recommendations: string[] = [],
 
-        if(results.growthAnalysis.analysis === 'critical_growth') {', ' }
+        if (results.growthAnalysis.analysis === 'critical_growth') {', ' }
 
             recommendations.push('Immediate, investigation required: Critical, memory growth, detected'; }'
         }
 
-        if(results.patternAnalysis.anomalies > 3) {', ' }
+        if (results.patternAnalysis.anomalies > 3) {', ' }
 
             recommendations.push('Multiple, object creation, anomalies detected - review, object lifecycle'); }
         }
 
-        if(results.pressureAnalysis.severity === 'critical') {', ' }
+        if (results.pressureAnalysis.severity === 'critical') {', ' }
 
             recommendations.push('High, memory pressure, detected - consider, increasing cleanup, frequency'; }'
         }
 
-        if(results.suspectAnalysis.highConfidence > 0) {', ' }
+        if (results.suspectAnalysis.highConfidence > 0) {', ' }
 
             recommendations.push('High-confidence, leak suspects, found - investigate, immediately'; }'
         }
@@ -572,7 +571,7 @@ export class LeakDetector {
      * @private'
      */''
     private _updateDetectionStats(results: DetectionResults): void { ''
-        if(results.overallRisk === 'critical' || results.overallRisk === 'high) {
+        if (results.overallRisk === 'critical' || results.overallRisk === 'high) {'
     
 }
             this.stats.leaksDetected++; }
@@ -587,24 +586,24 @@ export class LeakDetector {
      * @private
      */
     private _checkCreationPattern(type: string, pattern: ObjectCreationPattern): void { // Check for rapid creation
-        if(pattern.creationRate > 50) {
+        if (pattern.creationRate > 50) {
             // More than 50 per second
         }
             this.reportSuspectedLeak() }
                 `object_creation_${type}`)
-                `Rapid creation of ${type} objects (${pattern.creationRate.toFixed(2})/sec')`,
+                `Rapid creation of ${type} objects (${pattern.creationRate.toFixed(2})/sec')`,'
 
                 0.6,
                 { pattern, type: 'rapid_creation'
             }
         
         // Check for memory accumulation
-        if(pattern.totalSize > 10 * 1024 * 1024) {
+        if (pattern.totalSize > 10 * 1024 * 1024) {
             // More than 10MB
         }
             this.reportSuspectedLeak() }
                 `memory_accumulation_${type}`)
-                `Large memory accumulation in ${type} objects (${(pattern.totalSize / 1024 / 1024}.toFixed(2})MB')`,
+                `Large memory accumulation in ${type} objects (${(pattern.totalSize / 1024 / 1024}.toFixed(2})MB')`,'
 
                 0.7,
                 { pattern, type: 'memory_accumulation'
@@ -616,7 +615,7 @@ export class LeakDetector {
      * @private
      */
     private _verifySuspect(key: string, suspect: LeakSuspect): void { // Simple verification based on confidence and evidence
-        if(suspect.confidence >= this.thresholds.leakConfidence) {
+        if (suspect.confidence >= this.thresholds.leakConfidence) {
             suspect.verified = true }
             this.stats.truePositives++; }
             console.warn(`[LeakDetector] Leak, verified: ${suspect.source}`});
@@ -638,8 +637,8 @@ export class LeakDetector {
                 break; }
 }
 
-        if(increasing) {
-            this.reportSuspectedLeak()',
+        if (increasing) {
+            this.reportSuspectedLeak()','
                 'memory_pressure_trend',
                 'Increasing memory pressure trend detected',')',
                 0.6'',

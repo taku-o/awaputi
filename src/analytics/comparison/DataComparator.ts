@@ -8,7 +8,7 @@ export class DataComparator {
     constructor() {
         // 比較期間設定
         this.comparisonPeriods = {
-            week: 7 * 24 * 60 * 60 * 1000,      // 1週間,
+            week: 7 * 24 * 60 * 60 * 1000;      // 1週間;
             month: 30 * 24 * 60 * 60 * 1000,    // 1ヶ月
     }
             quarter: 90 * 24 * 60 * 60 * 1000   // 3ヶ月 
@@ -41,7 +41,7 @@ export class DataComparator {
             maxCombo: { ''
                 key: 'maxCombo',
                 displayName: '最大コンボ',
-                unit: ',
+                unit: ','
     format: (value) => Math.round(value)  }
 }
     
@@ -68,7 +68,7 @@ export class DataComparator {
             const pastValue = past[metric.key],
 
             const change = currentValue - pastValue,
-            const changePercent = pastValue !== 0 ? (change / pastValue') * 100 : 0,
+            const changePercent = pastValue !== 0 ? (change / pastValue') * 100 : 0,'
 
             let trend = 'unchanged',
             if (Math.abs(changePercent) > 5') { // 5%以上の変化で傾向判定'
@@ -87,7 +87,7 @@ export class DataComparator {
                 displayName: metric.displayName,
     unit: metric.unit  };
             if (trend === 'improved') comparison.improvements++;
-            else if(trend === 'declined) comparison.declines++;
+            else if(trend === 'declined) comparison.declines++;'
             else comparison.unchanged++;
         }
 
@@ -110,10 +110,10 @@ export class DataComparator {
     declines: 0 }
             unchanged: 0 }
             metrics: {};
-';
+';'
 
         const relevantMetrics = [...metrics];
-        if(current.completionRate !== undefined && past.completionRate !== undefined) {', ' }
+        if (current.completionRate !== undefined && past.completionRate !== undefined) {', ' }
 
             relevantMetrics.push('completionRate'; }'
         }
@@ -127,10 +127,10 @@ export class DataComparator {
             const pastValue = past[metric.key],
 
             const change = currentValue - pastValue,
-            const changePercent = pastValue !== 0 ? (change / pastValue') * 100 : 0,
+            const changePercent = pastValue !== 0 ? (change / pastValue') * 100 : 0,'
 
             let trend = 'unchanged',
-            if (Math.abs(changePercent) > 5') {
+            if (Math.abs(changePercent) > 5') {'
     
 }
 
@@ -146,7 +146,7 @@ export class DataComparator {
                 displayName: metric.displayName,
     unit: metric.unit  };
             if (trend === 'improved') comparison.improvements++;
-            else if(trend === 'declined) comparison.declines++;
+            else if(trend === 'declined) comparison.declines++;'
             else comparison.unchanged++;
         }
 
@@ -195,7 +195,7 @@ export class DataComparator {
                     percentile25: metric.format(benchmarkStats.percentile25),
                     percentile75: metric.format(benchmarkStats.percentile75,
     min: metric.format(benchmarkStats.min) }
-                    max: metric.format(benchmarkStats.max); 
+                    max: metric.format(benchmarkStats.max), 
     },
                 percentileRank: percentileRank,
                 performance: performance,
@@ -206,7 +206,7 @@ export class DataComparator {
             },
 
             if (performance === 'above_average') comparison.above_average++;
-            else if(performance === 'average) comparison.average++;
+            else if(performance === 'average) comparison.average++;'
             else comparison.below_average++;
         }
 
@@ -244,15 +244,15 @@ export class DataComparator {
     calculateStageDifficulty(stageData) {
         const difficulty = 10 - (stageData.completionRate * 5) - ,
                           (stageData.averageAccuracy * 3),
-        ' }
+        ' }'
 
-        if(difficulty <= 2) { }'
+        if (difficulty <= 2) { }'
 
             return { level: difficulty, label: '簡単'
-            }'} else if(difficulty <= 5) { }'
+            }'} else if (difficulty <= 5) { }'
 
             return { level: difficulty, label: '普通'
-            }'} else if(difficulty <= 8) { }'
+            }'} else if (difficulty <= 8) { }'
 
             return { level: difficulty, label: '難しい'
             }
@@ -300,12 +300,12 @@ export class DataComparator {
      */
     determineOverallTrend(comparison) {
 
-        if(comparison.improvements > comparison.declines) {
+        if (comparison.improvements > comparison.declines) {
     }
 
             return 'improving'; }
 
-        } else if(comparison.improvements < comparison.declines) { ''
+        } else if (comparison.improvements < comparison.declines) { ''
             return 'declining', else { }
 
             return 'stable';
@@ -317,12 +317,12 @@ export class DataComparator {
      */
     determineOverallPerformance(comparison) {
 
-        if(comparison.above_average > comparison.below_average) {
+        if (comparison.above_average > comparison.below_average) {
     }
 
             return 'excellent'; }
 
-        } else if(comparison.above_average < comparison.below_average) { ''
+        } else if (comparison.above_average < comparison.below_average) { ''
             return 'needs_improvement', else { }
 
             return 'average';
@@ -361,7 +361,7 @@ export class DataComparator {
             
             if (session.completed) { completedSessions++ }
 
-            if(session.maxCombo > maxCombo) { maxCombo = session.maxCombo }
+            if (session.maxCombo > maxCombo) { maxCombo = session.maxCombo }
         }
 
         return { sessionCount: sessionData.length,
@@ -369,5 +369,4 @@ export class DataComparator {
             averageAccuracy: totalAccuracy / sessionData.length,
             averagePlayTime: totalPlayTime / sessionData.length,
     completionRate: completedSessions / sessionData.length };
-            maxCombo: maxCombo 
-    }'}
+            maxCombo: maxCombo;'}'

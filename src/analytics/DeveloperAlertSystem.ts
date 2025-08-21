@@ -5,14 +5,14 @@
 
 export class DeveloperAlertSystem {
     constructor(dataCollector, trendAnalyzer, options: any = { }) {
-        this.dataCollector = dataCollector,
-        this.trendAnalyzer = trendAnalyzer,
+        this.dataCollector = dataCollector;
+        this.trendAnalyzer = trendAnalyzer;
         this.options = {
             enableDeveloperAlerts: true,
             enableConsoleLogging: true,
             enableEmailNotifications: false,
             enableWebhookNotifications: false,
-    minSeverityLevel: 'warning', // info, warning, error, critical,
+    minSeverityLevel: 'warning', // info, warning, error, critical;
             alertRetentionDays: 30,
             webhookUrl: null,
             emailEndpoint: null,
@@ -48,78 +48,78 @@ export class DeveloperAlertSystem {
             name: '異常なゲームプレイ',
             description: 'プレイヤーの異常なゲームプレイパターン',
             icon: '🎮',
-            color: '#2196f3',',
-            defaultSeverity: 'warning')',
-    checks: [',
+            color: '#2196f3',','
+            defaultSeverity: 'warning')','
+    checks: [','
                 'unusualScoreProgression',
                 'abnormalSessionLength',
-                'repetitiveActions',]',
-                'impossibleAchievements')]',
-            ]'),
+                'repetitiveActions',]','
+                'impossibleAchievements')]','
+            ]'),'
 
         this.alertCategories.set('performance', {''
             name: 'パフォーマンス問題',
             description: 'ゲームパフォーマンスの問題',
             icon: '⚡',
             color: '#ff9800', ')',
-            defaultSeverity: 'error')',
-    checks: [',
+            defaultSeverity: 'error')','
+    checks: [','
                 'lowFrameRate',
                 'highMemoryUsage',
-                'longLoadTimes',]',
-                'frequentErrors')]',
-            ]'),
+                'longLoadTimes',]','
+                'frequentErrors')]','
+            ]'),'
 
         this.alertCategories.set('security', {''
             name: 'セキュリティ問題',
             description: 'セキュリティに関する問題',
             icon: '🛡️',
-            color: '#f44336',',
-            defaultSeverity: 'critical')',
-    checks: [',
+            color: '#f44336',','
+            defaultSeverity: 'critical')','
+    checks: [','
                 'suspiciousActivity',
                 'dataManipulation',
-                'unauthorizedAccess',]',
-                'injectionAttempts')]',
-            ]'),
+                'unauthorizedAccess',]','
+                'injectionAttempts')]','
+            ]'),'
 
         this.alertCategories.set('data', {''
             name: 'データ異常',
             description: 'データ収集・処理の異常',
             icon: '📊',
-            color: '#9c27b0',',
-            defaultSeverity: 'warning')',
-    checks: [',
+            color: '#9c27b0',','
+            defaultSeverity: 'warning')','
+    checks: [','
                 'dataInconsistency',
                 'missingData',
-                'corruptedData',]',
-                'unexpectedDataPatterns')]',
-            ]'),
+                'corruptedData',]','
+                'unexpectedDataPatterns')]','
+            ]'),'
 
         this.alertCategories.set('business', {''
             name: 'ビジネス指標',
             description: 'ビジネス上重要な指標の変化',
             icon: '💼',
-            color: '#607d8b',',
-            defaultSeverity: 'info')',
-    checks: [',
+            color: '#607d8b',','
+            defaultSeverity: 'info')','
+    checks: [','
                 'userEngagementDrop',
                 'retentionRateChange',
-                'conversionRateChange',]',
+                'conversionRateChange',]','
                 'abnormalChurnRate')],
-            ]' }
+            ]' }'
 
     /**
      * アラートフィルターの設定'
      */''
-    setupAlertFilters()';
+    setupAlertFilters()';'
         this.alertFilters.set('severity', (alert) => {  const minLevel = this.severityLevels.indexOf(this.options.minSeverityLevel),
             const alertLevel = this.severityLevels.indexOf(alert.severity) }
 
             return alertLevel >= minLevel; }'
 
-        }');
-';
+        }');'
+';'
         // レート制限フィルター
         this.alertFilters.set('rateLimit', (alert) => {  const now = Date.now() }
             const hourStart = Math.floor(now / (60 * 60 * 1000) * (60 * 60 * 1000); }
@@ -130,8 +130,8 @@ export class DeveloperAlertSystem {
             
             this.rateLimitCounter.set(key, count + 1);
 
-            return true;}');
-';
+            return true;}');'
+';'
         // 重複アラートフィルター
         this.alertFilters.set('duplicate', (alert) => {  const recentAlerts = this.alertHistory.filter(a => )
                 a.category === alert.category &&),
@@ -143,16 +143,16 @@ export class DeveloperAlertSystem {
     /**
      * イベントリスナーの設定 
      */''
-    setupEventListeners()';
-        window.addEventListener('analytics-data-updated', (event) => { this.analyzeData(event.detail),' }
+    setupEventListeners()';'
+        window.addEventListener('analytics-data-updated', (event) => { this.analyzeData(event.detail),' }'
 
-        }');
-';
+        }');'
+';'
         // パフォーマンス警告イベント
-        window.addEventListener('performance-warning', (event) => { this.handlePerformanceWarning(event.detail),' }
+        window.addEventListener('performance-warning', (event) => { this.handlePerformanceWarning(event.detail),' }'
 
-        }');
-';
+        }');'
+';'
         // エラーイベント
         window.addEventListener('error-notification-displayed', (event) => { this.handleErrorEvent(event.detail) });
     }
@@ -183,37 +183,36 @@ export class DeveloperAlertSystem {
     runCheck(category, checkType, data) { }'
 
         switch (`${category}.${ checkType)`) {''
-            case 'gameplay.unusualScoreProgression':',
+            case 'gameplay.unusualScoreProgression':','
                 return, this.checkUnusualScoreProgression(data),
-            case 'gameplay.abnormalSessionLength':',
+            case 'gameplay.abnormalSessionLength':','
                 return, this.checkAbnormalSessionLength(data),
-            case 'gameplay.repetitiveActions':',
+            case 'gameplay.repetitiveActions':','
                 return, this.checkRepetitiveActions(data),
-            case 'gameplay.impossibleAchievements':',
+            case 'gameplay.impossibleAchievements':','
                 return, this.checkImpossibleAchievements(data),
-            case 'performance.lowFrameRate':',
+            case 'performance.lowFrameRate':','
                 return, this.checkLowFrameRate(data),
-            case 'performance.highMemoryUsage':',
+            case 'performance.highMemoryUsage':','
                 return, this.checkHighMemoryUsage(data),
-            case 'performance.longLoadTimes':',
+            case 'performance.longLoadTimes':','
                 return, this.checkLongLoadTimes(data),
-            case 'performance.frequentErrors':',
+            case 'performance.frequentErrors':','
                 return, this.checkFrequentErrors(data),
-            case 'security.suspiciousActivity':',
+            case 'security.suspiciousActivity':','
                 return, this.checkSuspiciousActivity(data),
-            case 'security.dataManipulation':',
+            case 'security.dataManipulation':','
                 return, this.checkDataManipulation(data),
-            case 'data.dataInconsistency':',
+            case 'data.dataInconsistency':','
                 return, this.checkDataInconsistency(data),
-            case 'data.missingData':',
+            case 'data.missingData':','
                 return, this.checkMissingData(data}''
-            case 'business.userEngagementDrop': ';
+            case 'business.userEngagementDrop': ';'
                 return, this.checkUserEngagementDrop(data};
             case 'business.retentionRateChange': }
                 return, this.checkRetentionRateChange(data});
             default:;
-                return { shouldAlert: false 
-    }
+                return { shouldAlert: false,
 
     /**
      * 異常なスコア進行のチェック
@@ -223,14 +222,14 @@ export class DeveloperAlertSystem {
 }
         if (!data.playerBehavior?.sessionData) return { shouldAlert: false 
         const sessions = data.playerBehavior.sessionData.slice(-10), // 最新10セッション
-        if (sessions.length < 3) return { shouldAlert: false }
+        if (sessions.length < 3) return { shouldAlert: false,
         const scoreProgression = sessions.map(s => s.totalScore || 0);
         const avgIncrease = this.calculateAverageIncrease(scoreProgression);
         // 異常に急激なスコア上昇を検出
-        if(avgIncrease > 10000) {
+        if (avgIncrease > 10000) {
             // 通常の10倍以上のスコア上昇
         }
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
                 severity: 'warning'
             }
@@ -238,14 +237,14 @@ export class DeveloperAlertSystem {
                 message: `異常に急激なスコア上昇が検出されました (平均上昇: ${avgIncrease.toFixed(0}))`,''
                 alertData: { avgIncrease, recentScores: scoreProgression.slice(-5  },
 
-                recommendations: [';
+                recommendations: [','
                     'プレイヤーのゲームプレイログを確認してください',
-                    'チート検出システムの見直しを検討してください',]';
+                    'チート検出システムの見直しを検討してください',]';'
                     'スコア計算ロジックに問題がないか確認してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 異常なセッション長のチェック
@@ -256,22 +255,22 @@ export class DeveloperAlertSystem {
         if (!data.playerBehavior?.sessionData) return { shouldAlert: false 
         const recentSessions = data.playerBehavior.sessionData.slice(-5),
         const avgDuration = recentSessions.reduce((sum, s) => sum + (s.duration || 0), 0) / recentSessions.length,
-        ',
+        ','
         // 24時間以上の連続プレイ
-        if(avgDuration > 24 * 60 * 60 * 1000) { return { shouldAlert: true,' };
+        if (avgDuration > 24 * 60 * 60 * 1000) { return { shouldAlert: true,' };'
 
-                severity: 'warning',' }
+                severity: 'warning',' }'
 
-                message: `異常に長いセッション時間が検出されました (平均: ${ (avgDuration / (60 * 60 * 1000 }.toFixed(1})時間')`;
+                message: `異常に長いセッション時間が検出されました (平均: ${ (avgDuration / (60 * 60 * 1000 }.toFixed(1})時間')`;'
                 alertData: { avgDuration, sessionCount: recentSessions.length  },
 
-                recommendations: [';
-                    'プレイヤーの健康を考慮した休憩提案システムの実装を検討してください',]';
+                recommendations: [','
+                    'プレイヤーの健康を考慮した休憩提案システムの実装を検討してください',]';'
                     'セッション時間の制限機能の追加を検討してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 繰り返し動作のチェック
@@ -283,23 +282,23 @@ export class DeveloperAlertSystem {
         const interactions = data.gameBalance.bubbleInteractions,
         const actionPatterns = this.analyzeActionPatterns(interactions.slice(-100), // 最新100アクション
 
-        if(actionPatterns.repetitiveScore > 0.8) {
+        if (actionPatterns.repetitiveScore > 0.8) {
             // 80%以上が繰り返しパターン
         }
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
-                severity: 'info',' }
+                severity: 'info',' }'
 
                 message: `繰り返し動作パターンが検出されました (スコア: ${actionPatterns.repetitiveScore.toFixed(2}))`;
                 alertData: { patterns: actionPatterns.patterns, score: actionPatterns.repetitiveScore  },
 
-                recommendations: [';
-                    'ボット行動の可能性があります',]';
+                recommendations: [','
+                    'ボット行動の可能性があります',]';'
                     'ゲームプレイの多様性を高める施策を検討してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 不可能な実績のチェック
@@ -311,20 +310,20 @@ export class DeveloperAlertSystem {
         const achievements = data.playerBehavior.achievementData,
         const impossibleAchievements = this.detectImpossibleAchievements(achievements),
 
-        if(impossibleAchievements.length > 0) { return { shouldAlert: true,' };
+        if (impossibleAchievements.length > 0) { return { shouldAlert: true,' };'
 
-                severity: 'critical',' }
+                severity: 'critical',' }'
 
-                message: `不可能な実績取得が検出されました (${impossibleAchievements.length}件')`;
+                message: `不可能な実績取得が検出されました (${impossibleAchievements.length}件')`;'
                 alertData: { impossibleAchievements };
-                recommendations: [';
+                recommendations: [','
                     '実績システムの検証ロジックを確認してください',
-                    'データ整合性チェックを強化してください',]';
+                    'データ整合性チェックを強化してください',]';'
                     'チート対策の見直しが必要です'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 低フレームレートのチェック
@@ -334,24 +333,24 @@ export class DeveloperAlertSystem {
 }
         if (!data.performance?.frameRate) return { shouldAlert: false 
         const avgFPS = data.performance.frameRate.average,
-        if(avgFPS < 20) {
+        if (avgFPS < 20) {
             // 20FPS未満
         }
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
-                severity: 'error',' }
+                severity: 'error',' }'
 
                 message: `深刻なパフォーマンス問題: 平均FPS ${avgFPS.toFixed(1'}'`;
                 alertData: { avgFPS, minFPS: data.performance.frameRate.min  },
 
-                recommendations: [';
+                recommendations: [','
                     'パフォーマンス最適化が必要です',
-                    'エフェクト品質の自動調整を検討してください',]';
+                    'エフェクト品質の自動調整を検討してください',]';'
                     'ハードウェア要件の見直しが必要かもしれません'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 高メモリ使用量のチェック
@@ -361,24 +360,24 @@ export class DeveloperAlertSystem {
 }
         if (!data.performance?.memoryUsage) return { shouldAlert: false 
         const memoryUsage = data.performance.memoryUsage.current,
-        if(memoryUsage > 500 * 1024 * 1024) {
+        if (memoryUsage > 500 * 1024 * 1024) {
             // 500MB以上
         }
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
-                severity: 'warning',' }
+                severity: 'warning',' }'
 
                 message: `高メモリ使用量: ${ (memoryUsage / (1024 * 1024 }.toFixed(1'}'MB`;
                 alertData: { memoryUsage, trend: data.performance.memoryUsage.trend  },
 
-                recommendations: [';
+                recommendations: [','
                     'メモリリークの可能性があります',
-                    'オブジェクトプールの効率性を確認してください',]';
+                    'オブジェクトプールの効率性を確認してください',]';'
                     'ガベージコレクションの最適化を検討してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 長いロード時間のチェック
@@ -388,24 +387,24 @@ export class DeveloperAlertSystem {
 }
         if (!data.performance?.loadTimes) return { shouldAlert: false 
         const avgLoadTime = data.performance.loadTimes.average,
-        if(avgLoadTime > 5000) {
+        if (avgLoadTime > 5000) {
             // 5秒以上
         }
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
-                severity: 'warning',' }
+                severity: 'warning',' }'
 
                 message: `長いロード時間: ${(avgLoadTime / 1000}.toFixed(1'}'秒`;
                 alertData: { avgLoadTime, maxLoadTime: data.performance.loadTimes.max  },
 
-                recommendations: [';
+                recommendations: [','
                     'アセットの最適化が必要です',
-                    '遅延読み込みの実装を検討してください',]';
+                    '遅延読み込みの実装を検討してください',]';'
                     'CDN使用の検討をしてください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 頻繁なエラーのチェック
@@ -415,25 +414,25 @@ export class DeveloperAlertSystem {
 }
         if (!data.errors?.errorRate) return { shouldAlert: false 
         const errorRate = data.errors.errorRate, // エラー/分
-        if(errorRate > 1) {
+        if (errorRate > 1) {
             // 1分間に1エラー以上
         }
 
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
-                severity: 'error',' }
+                severity: 'error',' }'
 
                 message: `高いエラー発生率: ${errorRate.toFixed(2'}' エラー/分`;
                 alertData: { errorRate, commonErrors: data.errors.mostCommon || []  },
 
-                recommendations: [';
+                recommendations: [','
                     'エラーログの詳細調査が必要です',
-                    'エラーハンドリングの改善を検討してください',]';
+                    'エラーハンドリングの改善を検討してください',]';'
                     '品質保証プロセスの見直しが必要です'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * 疑わしい活動のチェック
@@ -444,21 +443,21 @@ export class DeveloperAlertSystem {
         if (!data.security?.activityLog) return { shouldAlert: false 
         const suspiciousPatterns = this.analyzeSuspiciousPatterns(data.security.activityLog),
 
-        if(suspiciousPatterns.riskScore > 0.7) { return { shouldAlert: true,' };
+        if (suspiciousPatterns.riskScore > 0.7) { return { shouldAlert: true,' };'
 
-                severity: 'critical',' }
+                severity: 'critical',' }'
 
                 message: `疑わしい活動が検出されました (リスクスコア: ${suspiciousPatterns.riskScore.toFixed(2}))`;
                 alertData: { patterns: suspiciousPatterns.patterns, riskScore: suspiciousPatterns.riskScore  },
 
-                recommendations: [';
+                recommendations: [','
                     'セキュリティチームに即座に報告してください',
-                    'アクセスログの詳細調査が必要です',]';
+                    'アクセスログの詳細調査が必要です',]';'
                     'セキュリティ対策の強化を検討してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * データ操作のチェック
@@ -469,20 +468,20 @@ export class DeveloperAlertSystem {
         if (!data.security?.dataIntegrity) return { shouldAlert: false 
         const integrityIssues = data.security.dataIntegrity.issues || [],
 
-        if(integrityIssues.length > 0) { return { shouldAlert: true,' };
+        if (integrityIssues.length > 0) { return { shouldAlert: true,' };'
 
-                severity: 'critical',' }
+                severity: 'critical',' }'
 
-                message: `データ整合性の問題が検出されました (${integrityIssues.length}件')`;
-                alertData: { issues: integrityIssues };
-                recommendations: [';
+                message: `データ整合性の問題が検出されました (${integrityIssues.length}件')`;'
+                alertData: { issues: integrityIssues,;
+                recommendations: [','
                     'データベースの整合性チェックを実行してください',
-                    'バックアップからの復旧を検討してください',]';
+                    'バックアップからの復旧を検討してください',]';'
                     'セキュリティインシデントとして調査してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * データ不整合のチェック
@@ -493,24 +492,24 @@ export class DeveloperAlertSystem {
         if (!data.validation?.inconsistencies) return { shouldAlert: false 
         const inconsistencies = data.validation.inconsistencies,
 
-        if(inconsistencies.length > 5) {
+        if (inconsistencies.length > 5) {
             // 5つ以上の不整合
         }
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
                 severity: 'warning'
             }
 
                 message: `データ不整合が多数検出されました (${inconsistencies.length}件)`,''
                 alertData: { inconsistencies: inconsistencies.slice(0, 10 }, // 最初の10件のみ
-                recommendations: [';
+                recommendations: [','
                     'データ検証ロジックの見直しが必要です',
-                    'データクリーニング処理を実行してください',]';
+                    'データクリーニング処理を実行してください',]';'
                     'データ収集プロセスの改善を検討してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * データ欠損のチェック'
@@ -520,24 +519,24 @@ export class DeveloperAlertSystem {
         const requiredFields = ['playerBehavior', 'gameBalance', 'performance'],
         const missingFields = requiredFields.filter(field => !data[field]),
 
-        if(missingFields.length > 0) {
+        if (missingFields.length > 0) {
     }
 
-            return { shouldAlert: true,' };
+            return { shouldAlert: true,' };'
 
-                severity: 'error',' }
+                severity: 'error',' }'
 
                 message: `必須データが欠損しています: ${missingFields.join(', '}'`,''
                 alertData: { missingFields, dataKeys: Object.keys(data  },
 
-                recommendations: [';
+                recommendations: [','
                     'データ収集システムの状態を確認してください',
-                    'データパイプラインのエラーログを調査してください',]';
+                    'データパイプラインのエラーログを調査してください',]';'
                     'バックアップデータからの復旧を検討してください'];
                 ];
             }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * ユーザーエンゲージメント低下のチェック
@@ -549,29 +548,29 @@ export class DeveloperAlertSystem {
         const currentEngagement = data.business.engagement.current,
         const previousEngagement = data.business.engagement.previous,
         
-        if(previousEngagement > 0) {
+        if (previousEngagement > 0) {
         
             const changePercent = ((currentEngagement - previousEngagement) / previousEngagement) * 100,
 
-            if(changePercent < -20) { // 20%以上の低下
+            if (changePercent < -20) { // 20%以上の低下
         
         }
-                return { shouldAlert: true,' };
+                return { shouldAlert: true,' };'
 
-                    severity: 'warning',' }
+                    severity: 'warning',' }'
 
-                    message: `ユーザーエンゲージメントが大幅に低下しました (${changePercent.toFixed(1})%')`;
-                    alertData: { changePercent, current: currentEngagement, previous: previousEngagement  },
+                    message: `ユーザーエンゲージメントが大幅に低下しました (${changePercent.toFixed(1})%')`;'
+                    alertData: { changePercent, current: currentEngagement, previous: previousEngagement,,
 
-                    recommendations: [';
+                    recommendations: [','
                         'ユーザーフィードバックの分析が必要です',
-                        '新機能の効果測定を行ってください',]';
+                        '新機能の効果測定を行ってください',]';'
                         'ユーザー体験の改善施策を検討してください'];
                     ];
                 }
         }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * リテンション率変化のチェック
@@ -583,29 +582,29 @@ export class DeveloperAlertSystem {
         const currentRetention = data.business.retention.current,
         const previousRetention = data.business.retention.previous,
         
-        if(previousRetention > 0) {
+        if (previousRetention > 0) {
         
             const changePercent = ((currentRetention - previousRetention) / previousRetention) * 100,
 
-            if(changePercent < -15) { // 15%以上の低下
+            if (changePercent < -15) { // 15%以上の低下
         
         }
-                return { shouldAlert: true,' };
+                return { shouldAlert: true,' };'
 
-                    severity: 'error',' }
+                    severity: 'error',' }'
 
-                    message: `ユーザーリテンション率が大幅に低下しました (${changePercent.toFixed(1})%')`;
-                    alertData: { changePercent, current: currentRetention, previous: previousRetention  },
+                    message: `ユーザーリテンション率が大幅に低下しました (${changePercent.toFixed(1})%')`;'
+                    alertData: { changePercent, current: currentRetention, previous: previousRetention,,
 
-                    recommendations: [';
+                    recommendations: [','
                         'チャーン分析を実施してください',
-                        'ユーザーオンボーディングプロセスの見直しが必要です',]';
+                        'ユーザーオンボーディングプロセスの見直しが必要です',]';'
                         'プロダクトマーケットフィットの再検証を検討してください'];
                     ];
                 }
         }
 
-        return { shouldAlert: false }
+        return { shouldAlert: false,
 
     /**
      * アラートの生成
@@ -615,9 +614,9 @@ export class DeveloperAlertSystem {
             id: this.generateAlertId(
             timestamp: Date.now('',
     status: 'new' }
-            acknowledged: false }))
+            acknowledged: false;))
         // フィルターチェック)
-        if(!this.passesFilters(alert) { return null }
+        if (!this.passesFilters(alert) { return null }
 
         // アラート履歴に追加
         this.alertHistory.unshift(alert);
@@ -637,7 +636,7 @@ export class DeveloperAlertSystem {
      */
     passesFilters(alert) {
         for(const [name, filter] of this.alertFilters.entries() {
-            if(!filter(alert) {
+            if (!filter(alert) {
     }
                 return false;
         return true;
@@ -673,14 +672,14 @@ export class DeveloperAlertSystem {
         console.log(`%cチェック: ${alert.checkType}`, `color: ${ color}`} }
         console.log(`%c時刻: ${new, Date(alert.timestamp}.toLocaleString(})`, `color: ${color}`);
 
-        if(alert.data) {', ' }
+        if (alert.data) {', ' }
 
             console.log('データ:', alert.data); }
         }
 
-        if(alert.recommendations.length > 0) {
+        if (alert.recommendations.length > 0) {
 
-            console.log('推奨アクション:) }
+            console.log('推奨アクション:) }'
             alert.recommendations.forEach((rec, i) => { }
                 console.log(`  ${i + 1}. ${rec}`);
             });
@@ -694,15 +693,15 @@ export class DeveloperAlertSystem {
      */''
     async sendWebhookNotification(alert) { try {
             await fetch(this.options.webhookUrl, {)'
-                method: 'POST')',
-    headers: {', 'Content-Type': 'application/json'),
+                method: 'POST')','
+    headers: {', 'Content-Type': 'application/json'),'
                 body: JSON.stringify({),
 
                     alert,''
-                    timestamp: Date.now()',
+                    timestamp: Date.now()','
     source: 'BubblePop Analytics'
             });
-            }';} catch (error) { console.warn('Failed to send webhook notification:', error }
+            }';} catch (error) { console.warn('Failed to send webhook notification:', error }'
     }
 
     /**
@@ -717,10 +716,10 @@ export class DeveloperAlertSystem {
                     to: 'developer@example.com'
             }'
                     subject: `[${alert.severity.toUpperCase(})] ${alert.message}`;
-                    body: this.formatEmailBody(alert);
+                    body: this.formatEmailBody(alert),
                 });
 
-            });'} catch (error) { console.warn('Failed to send email notification:', error }
+            });'} catch (error) { console.warn('Failed to send email notification:', error }'
     }
 
     /**
@@ -734,13 +733,13 @@ export class DeveloperAlertSystem {
         body += `メッセージ: ${alert.message}\n`;
         body += `時刻: ${new, Date(alert.timestamp}.toLocaleString(})\n\n`;
         
-        if(alert.data) {
+        if (alert.data) {
     
 }
             body += `詳細データ:\n${JSON.stringify(alert.data, null, 2})\n\n`;
         }
         
-        if(alert.recommendations.length > 0) {
+        if (alert.recommendations.length > 0) {
         
             body += `推奨アクション:\n` }
             alert.recommendations.forEach((rec, i) => { }
@@ -816,14 +815,14 @@ export class DeveloperAlertSystem {
         const recentActions = activityLog.filter(log => ),
             Date.now() - log.timestamp < 60000 // 1分以内),
 
-        if(recentActions.length > 100) {
+        if (recentActions.length > 100) {
             riskScore += 0.5 }
 
             patterns.push('high_frequency_actions'; }'
         }
-        ';
+        ';'
         // 非常に多数のアクション（150以上）
-        if(recentActions.length > 150) {
+        if (recentActions.length > 150) {
             riskScore += 0.3 }
 
             patterns.push('extremely_high_frequency'; }'
@@ -853,11 +852,11 @@ export class DeveloperAlertSystem {
             severity: warningData.severity || 'warning'
             }
             message: `パフォーマンス警告: ${warningData.message}`)
-            data: warningData',
-    recommendations: [';
-                'パフォーマンス最適化の実行を検討してください',]';
+            data: warningData','
+    recommendations: [';'
+                'パフォーマンス最適化の実行を検討してください',]';'
                 'リソース使用量の監視を強化してください')];
-            ]';
+            ]';'
     }
 
     /**
@@ -870,9 +869,9 @@ export class DeveloperAlertSystem {
 
             severity: errorData.severity = == 'critical' ? 'critical' : 'error' 
            , message: `エラー発生: ${errorData.message}`)
-            data: errorData',
-    recommendations: [';
-                'エラーログの詳細調査が必要です',]';
+            data: errorData','
+    recommendations: [';'
+                'エラーログの詳細調査が必要です',]';'
                 'エラー原因の特定と修正を行ってください')];
             ]);
     }
@@ -904,7 +903,7 @@ export class DeveloperAlertSystem {
         const retentionTime = this.options.alertRetentionDays * 24 * 60 * 60 * 1000,
         const cutoffTime = Date.now() - retentionTime,
         
-        this.alertHistory = this.alertHistory.filter(alert => alert.timestamp > cutoffTime),
+        this.alertHistory = this.alertHistory.filter(alert => alert.timestamp > cutoffTime);
         
         // 最大10000件まで
         if (this.alertHistory.length > 10000) {
@@ -932,8 +931,8 @@ export class DeveloperAlertSystem {
         const currentHour = Math.floor(now / (60 * 60 * 1000) * (60 * 60 * 1000),
 
         for(const [key] of, this.rateLimitCounter.entries()) {''
-            const keyHour = parseInt(key.split('_).pop(),
-            if(keyHour < currentHour - (60 * 60 * 1000) { // 1時間以上古い
+            const keyHour = parseInt(key.split('_).pop(),'
+            if (keyHour < currentHour - (60 * 60 * 1000) { // 1時間以上古い
     }
                 this.rateLimitCounter.delete(key); }
 }
@@ -955,7 +954,7 @@ export class DeveloperAlertSystem {
         const now = Date.now(),
         const oneDayAgo = now - (24 * 60 * 60 * 1000),
         const oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000),
-        ',
+        ','
 
         const todayAlerts = this.alertHistory.filter(a => a.timestamp > oneDayAgo),
         const weekAlerts = this.alertHistory.filter(a => a.timestamp > oneWeekAgo),
@@ -965,7 +964,7 @@ export class DeveloperAlertSystem {
             thisWeek: weekAlerts.length,
             byCategory: this.groupBy(todayAlerts, 'category') }
 
-            bySeverity: this.groupBy(todayAlerts, 'severity) };
+            bySeverity: this.groupBy(todayAlerts, 'severity) };'
             acknowledged: this.alertHistory.filter(a => a.acknowledged).length 
     }
 
@@ -990,15 +989,15 @@ export class DeveloperAlertSystem {
     /**
      * リソースの解放'
      */''
-    destroy()';
-        window.removeEventListener('analytics-data-updated', this.analyzeData';
-        window.removeEventListener('performance-warning', this.handlePerformanceWarning';
+    destroy()';'
+        window.removeEventListener('analytics-data-updated', this.analyzeData';'
+        window.removeEventListener('performance-warning', this.handlePerformanceWarning';'
         window.removeEventListener('error-notification-displayed', this.handleErrorEvent);
         
         // データクリア
         this.alertHistory = [];
         this.alertCallbacks.clear();
-        this.rateLimitCounter.clear()';
+        this.rateLimitCounter.clear()';'
         console.log('DeveloperAlertSystem, destroyed');
 
-    }'}
+    }'}'

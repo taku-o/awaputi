@@ -5,45 +5,43 @@
 
 // Interfaces for color blindness simulation
 interface SimulatorConfig { enableSimulation: boolean,
-    includePartialColorBlindness: boolean,
-    generateSuggestions: boolean,
-    accurateSimulation: boolean  }
+    includePartialColorBlindness: boolean;
+    generateSuggestions: boolean;
+    accurateSimulation: boolean;
 
 interface RGB { r: number,
-    g: number,
-    b: number }
+    g: number;
+    b: number;
 
-interface RGBA extends RGB { a: number }
+interface RGBA extends RGB { a: number;
 
 interface ColorBlindnessType { name: string,
-    description: string,
-    prevalence: string,
-    matrix: number[][] }
+    description: string;
+    prevalence: string;
+    matrix: number[][];
 
 interface ColorBlindnessTypes { protanopia: ColorBlindnessType,
-    deuteranopia: ColorBlindnessType,
-    tritanopia: ColorBlindnessType,
-    protanomaly: ColorBlindnessType,
-    deuteranomaly: ColorBlindnessType,
-    tritanomaly: ColorBlindnessType
-    }
+    deuteranopia: ColorBlindnessType;
+    tritanopia: ColorBlindnessType;
+    protanomaly: ColorBlindnessType;
+    deuteranomaly: ColorBlindnessType;
+    tritanomaly: ColorBlindnessType;
 
 interface SimulationPerformanceMetrics { simulationTimes: number[],
-    cacheHitRate: number,
-    totalSimulations: number }
+    cacheHitRate: number;
+    totalSimulations: number;
 
 interface ColorDifference { foregroundDifference: number,
-    backgroundDifference: number,
-    maxDifference: number,
-    averageDifference: number }
+    backgroundDifference: number;
+    maxDifference: number;
+    averageDifference: number;
 
 interface ImpactAssessment { originalColors: {
         foregroun,d: RGB | RGBA | string,
     background: RGB | RGBA | string };
     simulations: Record<string, { foreground: RGBA,
         background: RGBA,
-    type: ColorBlindnessType
-     }>;
+    type: ColorBlindnessType,>;
     impact: Record<string, { colorDifference: ColorDifference,
         significantChange: boolean,
     visibilityImpact: 'low' | 'medium' | 'high',
@@ -51,50 +49,50 @@ interface ImpactAssessment { originalColors: {
             }>;
 
     recommendations: any[],
-    overallRisk: 'low' | 'medium' | 'high';
+    overallRisk: 'low' | 'medium' | 'high',
 }
 
 interface AlternativeColorSuggestions { alternatives: any[],
-    reasoning: any[],
-    confidence: number  }
+    reasoning: any[];
+    confidence: number;
 
 interface AssessmentOptions { includeAllTypes?: boolean,
-    calculateDifferences?: boolean,
-    generateRecommendations?: boolean }
+    calculateDifferences?: boolean;
+    generateRecommendations?: boolean;
 
 interface SuggestionOptions { maintainBranding?: boolean,
-    targetContrast?: number,
-    minimizeChange?: boolean,
-    includeMultipleOptions?: boolean }
+    targetContrast?: number;
+    minimizeChange?: boolean;
+    includeMultipleOptions?: boolean;
 
 interface PerformanceReport { totalSimulations: number,
-    averageSimulationTime: number,
-    cacheHitRate: number,
-    cacheSize: number  }
-';
+    averageSimulationTime: number;
+    cacheHitRate: number;
+    cacheSize: number;
+';'
 
 interface ColorBlindnessRecommendation { category: string,''
-    priority: 'low' | 'medium' | 'high',
-    title: string,
-    description: string,
-    actions: string[]  }
+    priority: 'low' | 'medium' | 'high';
+    title: string;
+    description: string;
+    actions: string[];
 
 interface ColorBlindnessIssue { hasIssues: boolean,
-    affectedTypes: string[],
-    severity: 'low' | 'medium' | 'high' | 'critical',
-    description: string,
+    affectedTypes: string[];
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    description: string;
     colorPair: {
         foregroun,d: string,
-    background: string  }
+    background: string,
 
 export class ColorBlindnessSimulator {
-    private config: SimulatorConfig,
-    private colorBlindnessTypes: ColorBlindnessTypes,
-    private, simulationCache: Map<string, RGBA>,
-    private cacheHits: number,
-    private cacheMisses: number,
-    private performanceMetrics: SimulationPerformanceMetrics,
-    private, initialized: boolean',
+    private config: SimulatorConfig;
+    private colorBlindnessTypes: ColorBlindnessTypes;
+    private, simulationCache: Map<string, RGBA>;
+    private cacheHits: number;
+    private cacheMisses: number;
+    private performanceMetrics: SimulationPerformanceMetrics;
+    private, initialized: boolean';'
 
     constructor(config: Partial<SimulatorConfig> = {)) {
         this.config = {
@@ -102,7 +100,7 @@ export class ColorBlindnessSimulator {
             includePartialColorBlindness: true,
             generateSuggestions: true,
     accurateSimulation: true,
-            ...config,
+            ...config;
 
         // 色覚異常の種類定義
         this.colorBlindnessTypes = { protanopia: {''
@@ -110,9 +108,9 @@ export class ColorBlindnessSimulator {
                 description: '赤色の識別が困難',
                 prevalence: '男性1.3%、女性0.02%',
     matrix: [,
-                    [0.567, 0.433, 0],
-                    [0.558, 0.442, 0],
-                    [0, 0.242, 0.758],
+                    [0.567, 0.433, 0];
+                    [0.558, 0.442, 0];
+                    [0, 0.242, 0.758];
                 ] },
 
             deuteranopia: { ''
@@ -120,9 +118,9 @@ export class ColorBlindnessSimulator {
                 description: '緑色の識別が困難',
                 prevalence: '男性1.2%、女性0.01%',
     matrix: [,
-                    [0.625, 0.375, 0],
-                    [0.7, 0.3, 0],
-                    [0, 0.3, 0.7],
+                    [0.625, 0.375, 0];
+                    [0.7, 0.3, 0];
+                    [0, 0.3, 0.7];
                 ] },
 
             tritanopia: { ''
@@ -130,9 +128,9 @@ export class ColorBlindnessSimulator {
                 description: '青色の識別が困難',
                 prevalence: '男女0.002%',
     matrix: [,
-                    [0.95, 0.05, 0],
-                    [0, 0.433, 0.567],
-                    [0, 0.475, 0.525],
+                    [0.95, 0.05, 0];
+                    [0, 0.433, 0.567];
+                    [0, 0.475, 0.525];
                 ] },
 
             protanomaly: { ''
@@ -140,9 +138,9 @@ export class ColorBlindnessSimulator {
                 description: '赤色の識別が軽度困難',
                 prevalence: '男性1.0%、女性0.03%',
     matrix: [,
-                    [0.817, 0.183, 0],
-                    [0.333, 0.667, 0],
-                    [0, 0.125, 0.875],
+                    [0.817, 0.183, 0];
+                    [0.333, 0.667, 0];
+                    [0, 0.125, 0.875];
                 ] },
 
             deuteranomaly: { ''
@@ -150,9 +148,9 @@ export class ColorBlindnessSimulator {
                 description: '緑色の識別が軽度困難',
                 prevalence: '男性4.9%、女性0.38%',
     matrix: [,
-                    [0.8, 0.2, 0],
-                    [0.258, 0.742, 0],
-                    [0, 0.142, 0.858],
+                    [0.8, 0.2, 0];
+                    [0.258, 0.742, 0];
+                    [0, 0.142, 0.858];
                 ] },
 
             tritanomaly: { ''
@@ -160,9 +158,9 @@ export class ColorBlindnessSimulator {
                 description: '青色の識別が軽度困難',
                 prevalence: '男女0.01%',
     matrix: [,
-                    [0.967, 0.033, 0],
-                    [0, 0.733, 0.267],
-                    [0, 0.183, 0.817],
+                    [0.967, 0.033, 0];
+                    [0, 0.733, 0.267];
+                    [0, 0.183, 0.817];
                 ] }
         };
 
@@ -182,27 +180,26 @@ export class ColorBlindnessSimulator {
      * Initialize simulator
      */
     initialize(): boolean { ''
-        if(this.initialized) return true,
+        if(this.initialized) return true;
 
-        console.log('ColorBlindnessSimulator: Initializing...',
+        console.log('ColorBlindnessSimulator: Initializing...';
         
         try {
-            this.simulationCache.clear(),
-            this.resetPerformanceMetrics()',
-            console.log('ColorBlindnessSimulator: Initialized, successfully'),
+            this.simulationCache.clear();
+            this.resetPerformanceMetrics()';'
+            console.log('ColorBlindnessSimulator: Initialized, successfully');
             return true,' }'
 
         } catch (error) {
-            console.error('ColorBlindnessSimulator: Initialization, error:', error',
-            return false,
+            console.error('ColorBlindnessSimulator: Initialization, error:', error';'
+            return false;
 
     /**
      * Simulate color blindness for a given color'
      */''
     simulateColorBlindness(color: RGB | RGBA | string, type: keyof ColorBlindnessTypes = 'deuteranopia': RGBA { ''
-        if(!this.initialized) {', ',
-
-         }
+        if (!this.initialized) {', '
+}
 
             throw new Error('ColorBlindnessSimulator, must be, initialized first'; }'
         }
@@ -210,17 +207,17 @@ export class ColorBlindnessSimulator {
         const startTime = performance.now();
 
         try { // キャッシュチェック
-            const cacheKey = this.generateCacheKey(color, type),
-            const cachedResult = this.simulationCache.get(cacheKey),
-            if(cachedResult) {
-                this.cacheHits++,
+            const cacheKey = this.generateCacheKey(color, type);
+            const cachedResult = this.simulationCache.get(cacheKey);
+            if (cachedResult) {
+                this.cacheHits++;
                 this.updatePerformanceMetrics(performance.now() - startTime, true) }
                 return cachedResult;
             this.cacheMisses++;
 
             // 色覚異常タイプの取得
             const colorBlindnessType = this.colorBlindnessTypes[type];
-            if(!colorBlindnessType) {
+            if (!colorBlindnessType) {
     
 }
                 throw new Error(`Unknown, color blindness, type: ${type}`});
@@ -237,7 +234,7 @@ export class ColorBlindnessSimulator {
             return simulatedColor;
 
         } catch (error) {
-            console.error('ColorBlindnessSimulator: Simulation, error:', error',
+            console.error('ColorBlindnessSimulator: Simulation, error:', error';'
             throw error }
     }
 
@@ -250,49 +247,49 @@ export class ColorBlindnessSimulator {
      * Assess accessibility impact of color blindness
      */
     assessAccessibilityImpact(
-        foregroundColor: RGB | RGBA | string),
-        backgroundColor: RGB | RGBA | string)',
+        foregroundColor: RGB | RGBA | string);
+        backgroundColor: RGB | RGBA | string)';'
     options: AssessmentOptions = { '', '): ImpactAssessment {'
         const assessmentOptions: Required<AssessmentOptions> = {
             includeAllTypes: true,
             calculateDifferences: true,
             generateRecommendations: true,
-            ...options,
+            ...options;
 
         const, assessment: ImpactAssessment = {
-            originalColors: { foreground: foregroundColor, background: backgroundColor  },
+            originalColors: { foreground: foregroundColor, background: backgroundColor,;
             simulations: {};
             impact: {};
             recommendations: [],
-            overallRisk: 'low';
+            overallRisk: 'low',
         },
 
         try { const typesToTest: (keyof, ColorBlindnessTypes)[] = assessmentOptions.includeAllTypes ''
-                ? Object.keys(this.colorBlindnessTypes) as(keyof, ColorBlindnessTypes)[]',
+                ? Object.keys(this.colorBlindnessTypes) as(keyof, ColorBlindnessTypes)[]';'
                 : ['deuteranopia', 'protanopia'], // 最も一般的な色覚異常
 
-            let totalImpact = 0,
-            let significantIssues = 0,
+            let totalImpact = 0;
+            let significantIssues = 0;
 
             typesToTest.forEach(type => { ),
-                const simulatedForeground = this.simulateColorBlindness(foregroundColor, type),
-                const simulatedBackground = this.simulateColorBlindness(backgroundColor, type),
+                const simulatedForeground = this.simulateColorBlindness(foregroundColor, type);
+                const simulatedBackground = this.simulateColorBlindness(backgroundColor, type);
 
                 assessment.simulations[type] = {
                     foreground: simulatedForeground,
-    background: simulatedBackground }
+    background: simulatedBackground,
                     type: this.colorBlindnessTypes[type] 
     };
-                if(assessmentOptions.calculateDifferences) {
+                if (assessmentOptions.calculateDifferences) {
 
-                    const colorDifference = this.calculateColorDifference(),
-                        this.normalizeColor(foregroundColor),
-                        simulatedForeground,
-                        this.normalizeColor(backgroundColor),
-                        simulatedBackground),
+                    const colorDifference = this.calculateColorDifference();
+                        this.normalizeColor(foregroundColor);
+                        simulatedForeground;
+                        this.normalizeColor(backgroundColor);
+                        simulatedBackground);
 
                     assessment.impact[type] = {
-                        colorDifference,
+                        colorDifference;
                         significantChange: colorDifference.maxDifference > 20,
                         visibilityImpact: this.calculateVisibilityImpact(colorDifference) }
                         riskLevel: this.determineRiskLevel(colorDifference); 
@@ -311,7 +308,7 @@ export class ColorBlindnessSimulator {
             return assessment;
 
         } catch (error) {
-            console.error('ColorBlindnessSimulator: Impact assessment, error:', error',
+            console.error('ColorBlindnessSimulator: Impact assessment, error:', error';'
             throw error }
     }
 
@@ -319,14 +316,14 @@ export class ColorBlindnessSimulator {
      * Analyze color pair for color blindness issues
      */'
     analyze(foreground: string, background: string): ColorBlindnessIssue | null { try {'
-            const assessment = this.assessAccessibilityImpact(foreground, background),
-            ',
+            const assessment = this.assessAccessibilityImpact(foreground, background);
+            ';'
 
-            const affectedTypes: string[] = [],
-            let maxSeverity: ColorBlindnessIssue['severity] = 'low',
+            const affectedTypes: string[] = [];
+            let maxSeverity: ColorBlindnessIssue['severity] = 'low';'
             
             Object.entries(assessment.impact).forEach(([type, impact]) => { 
-                if(impact.significantChange) {
+                if (impact.significantChange) {
 
                     affectedTypes.push(type) }
 
@@ -335,23 +332,23 @@ export class ColorBlindnessSimulator {
                         maxSeverity = 'critical'; }
 
                     } else if (impact.riskLevel === 'high' && maxSeverity === 'low') { ''
-                        maxSeverity = 'high',' }
+                        maxSeverity = 'high',' }'
 
                     } else if (impact.riskLevel === 'medium' && maxSeverity === 'low') { ''
                         maxSeverity = 'medium' }
 });
 
-            if(affectedTypes.length === 0) { return null }
+            if (affectedTypes.length === 0) { return null }
             
             return { hasIssues: true,
                 affectedTypes };
 
                 severity: maxSeverity,' }'
 
-                description: `Color combination may be difficult to distinguish for users with ${affectedTypes.join(', '}'`,
+                description: `Color combination may be difficult to distinguish for users with ${affectedTypes.join(', '}'`;'
                 colorPair: { foreground,
                     background }
-};'} catch (error) {
+};'} catch (error) {'
             console.error('ColorBlindnessSimulator: Analysis, error:', error),
             return null,
 
@@ -417,12 +414,11 @@ export class ColorBlindnessSimulator {
      * Normalize color input
      */''
     private normalizeColor(color: RGB | RGBA | string): RGBA { ''
-        if(typeof, color === 'object' && 'r' in, color' { }
+        if(typeof, color === 'object' && 'r' in, color' { }'
 
             return { r: color.r, g: color.g, b: color.b, a: 'a' in color ? color.a : 255 
-        if(typeof, color === 'string' {', ',
-
-         }
+        if(typeof, color === 'string' {', '
+}
 
             return this.parseColorString(color);
 
@@ -433,8 +429,8 @@ export class ColorBlindnessSimulator {
      * Parse color string to RGB'
      */''
     private parseColorString(colorStr: string): RGBA { // 簡略化された色文字列パーサー
-        const hex = colorStr.replace('#', '),
-        if(hex.length === 6) {
+        const hex = colorStr.replace('#', '),'
+        if (hex.length === 6) {
             return { r: parseInt(hex.substr(0, 2), 16),
                 g: parseInt(hex.substr(2, 2), 16) }
                 b: parseInt(hex.substr(4, 2), 16) };
@@ -442,7 +438,7 @@ export class ColorBlindnessSimulator {
     }
         
         const rgbMatch = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))? \)/);
-        if(rgbMatch) {
+        if (rgbMatch) {
             return { : undefined
                 r: parseInt(rgbMatch[1],
     g: parseInt(rgbMatch[2]) }
@@ -513,7 +509,7 @@ export class ColorBlindnessSimulator {
      */
     private updatePerformanceMetrics(simulationTime: number, fromCache: boolean): void { this.performanceMetrics.totalSimulations++,
         
-        if(!fromCache) {
+        if (!fromCache) {
     
 }
             this.performanceMetrics.simulationTimes.push(simulationTime); }
@@ -544,15 +540,15 @@ export class ColorBlindnessSimulator {
 
     private generateColorBlindnessRecommendations(assessment: ImpactAssessment): ColorBlindnessRecommendation[] { const recommendations: ColorBlindnessRecommendation[] = [],
 
-        if(assessment.overallRisk === 'high') {
+        if (assessment.overallRisk === 'high') {
             recommendations.push({''
                 category: 'Critical',
                 priority: 'high',
-                title: 'Address color blindness accessibility issues',',
-                description: 'High impact on color blind users detected')',
-    actions: [',
+                title: 'Address color blindness accessibility issues',','
+                description: 'High impact on color blind users detected')','
+    actions: [','
                     'Use patterns or shapes in addition to color',
-                    'Increase contrast between colors',]',
+                    'Increase contrast between colors',]','
                     'Test with color blindness simulation tools')] }
                 ]); }
         }
@@ -563,7 +559,7 @@ export class ColorBlindnessSimulator {
     /**
      * Get supported color blindness types
      */
-    getSupportedTypes(): Array<{ key: string } & ColorBlindnessType> { return Object.entries(this.colorBlindnessTypes).map(([key, type]) => ({
+    getSupportedTypes(): Array<{ key: string, & ColorBlindnessType> { return Object.entries(this.colorBlindnessTypes).map(([key, type]) => ({
             key,
             ...type
         });
@@ -586,14 +582,14 @@ export class ColorBlindnessSimulator {
      * Clear simulation cache
      */'
     clearCache(): void { ''
-        this.simulationCache.clear()',
+        this.simulationCache.clear()','
         console.log('ColorBlindnessSimulator: Cache, cleared') }'
 
     /**
      * Update configuration'
      */''
     updateConfig(newConfig: Partial<SimulatorConfig>): void { this.config = {
-            ...this.config,
+            ...this.config;
             ...newConfig
 
         };
@@ -603,7 +599,7 @@ export class ColorBlindnessSimulator {
      * Destroy and cleanup
      */'
     destroy(): void { this.clearCache(),
-        this.resetPerformanceMetrics()',
+        this.resetPerformanceMetrics()','
         console.log('ColorBlindnessSimulator: Destroyed') }
 
-    }'}
+    }'}'

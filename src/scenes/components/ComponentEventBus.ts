@@ -1,27 +1,27 @@
 // インターフェース定義
 interface ListenerOptions { once?: boolean,
-    priority?: number }
+    priority?: number;
 
 interface ListenerInfo { callback: EventCallback,
-    once: boolean,
-    priority: number,
-    id: string  }
+    once: boolean;
+    priority: number;
+    id: string;
 
 interface EventHistoryEntry { event: string,
-    data: any,
-    timestamp: number }
+    data: any;
+    timestamp: number;
 
 interface ErrorInfo { type: 'listener_error' | 'emit_error',
-    error: Error,
-    event: string,
-    listenerId?: string,
-    data?: any,
-    timestamp: number }
+    error: Error;
+    event: string;
+    listenerId?: string;
+    data?: any;
+    timestamp: number;
 
 interface DebugInfo { eventNames: string[],
-    listenerCounts: Record<string, number>,
-    recentEvents: EventHistoryEntry[],
-    totalEvents: number  }
+    listenerCounts: Record<string, number>;
+    recentEvents: EventHistoryEntry[];
+    totalEvents: number;
 
 type EventCallback = (data: any, event: string) => boolean | void;
 type ErrorHandler = (errorInfo: ErrorInfo) => void;
@@ -33,21 +33,21 @@ type UnsubscribeFunction = () => void;
  */
 export class ComponentEventBus {
     // イベントリスナーの管理
-    private listeners: Map<string, ListenerInfo[]>,
+    private listeners: Map<string, ListenerInfo[]>;
     
     // デバッグ用のイベント履歴
-    private eventHistory: EventHistoryEntry[],
-    private maxHistorySize: number,
+    private eventHistory: EventHistoryEntry[];
+    private maxHistorySize: number;
     // エラーハンドリング
     private, errorHandlers: ErrorHandler[],
     constructor() {
 
         // イベントリスナーの管理
-        this.listeners = new Map(),
+        this.listeners = new Map();
         
         // デバッグ用のイベント履歴
-        this.eventHistory = [],
-        this.maxHistorySize = 100,
+        this.eventHistory = [];
+        this.maxHistorySize = 100;
         
         // エラーハンドリング
 
@@ -63,12 +63,12 @@ export class ComponentEventBus {
      * @returns リスナー削除用の関数
      */''
     on(event: string, callback: EventCallback, options: ListenerOptions = { )): UnsubscribeFunction {''
-        if(typeof, event !== 'string' || typeof, callback !== 'function') {', ' }
+        if (typeof, event !== 'string' || typeof, callback !== 'function') {', ' }
 
             throw new Error('Invalid, event or, callback'; }'
         }
         
-        if(!this.listeners.has(event) { this.listeners.set(event, []) }
+        if (!this.listeners.has(event) { this.listeners.set(event, []) }
         
         const listenerInfo: ListenerInfo = { callback,
             once: options.once || false,
@@ -90,21 +90,21 @@ export class ComponentEventBus {
      * @param callback - コールバック関数
      * @returns リスナー削除用の関数
      */
-    once(event: string, callback: EventCallback): UnsubscribeFunction { return this.on(event, callback, { once: true  }
+    once(event: string, callback: EventCallback): UnsubscribeFunction { return this.on(event, callback, { once: true,
     
     /**
      * イベントリスナーを削除
      * @param event - イベント名
      * @param callbackOrId - コールバック関数またはリスナーID
      */
-    off(event: string, callbackOrId: EventCallback | string): void { if(!this.listeners.has(event) {
+    off(event: string, callbackOrId: EventCallback | string): void { if (!this.listeners.has(event) {
             return }
         
         const listeners = this.listeners.get(event)!;
         const index = listeners.findIndex(listener => );
             listener.callback === callbackOrId || listener.id === callbackOrId);
         
-        if(index !== -1) {
+        if (index !== -1) {
         
             listeners.splice(index, 1),
             
@@ -126,7 +126,7 @@ export class ComponentEventBus {
             // イベント履歴に記録
             this.addToHistory(event, data),
             
-            if(!this.listeners.has(event) {
+            if (!this.listeners.has(event) {
     
 }
                 return false;
@@ -199,7 +199,7 @@ export class ComponentEventBus {
      * リスナーIDを生成
      * @returns ユニークなリスナーID'
      */''
-    private generateListenerId()';
+    private generateListenerId()';'
         return 'listener_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
     
@@ -239,7 +239,7 @@ export class ComponentEventBus {
             } catch (handlerError) { console.error('Error in error handler:', handlerError }
         }
 
-        console.error(`EventBus listener error in event '${event}':`, error';
+        console.error(`EventBus listener error in event '${event}':`, error';'
     }
     
     /**
@@ -264,7 +264,7 @@ export class ComponentEventBus {
             } catch (handlerError) { console.error('Error in error handler:', handlerError }
         }
 
-        console.error(`EventBus emit error for event '${event}':`, error';
+        console.error(`EventBus emit error for event '${event}':`, error';'
     }
     
     /**

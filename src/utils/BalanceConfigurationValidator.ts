@@ -9,86 +9,84 @@ import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface ValidationRule { type: string,
-    min?: number,
-    max?: number,
-    description: string,
-    category: string  }
+    min?: number;
+    max?: number;
+    description: string;
+    category: string;
 
 interface ValidationError { property: string,
-    value: any,
-    error: string,
-    rule: string,
-    details?: string }
+    value: any;
+    error: string;
+    rule: string;
+    details?: string;
 
 interface ValidationWarning { property: string,
-    message: string }
+    message: string;
 
 interface ValidationResult { validationId: string,
-    bubbleType?: string,
-    isValid: boolean,
-    errors: ValidationError[],
-    warnings: ValidationWarning[],
-    executionTime: number,
-    timestamp: number }
+    bubbleType?: string;
+    isValid: boolean;
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    executionTime: number;
+    timestamp: number;
 
 interface PropertyValidationResult { isValid: boolean,
     error: string | null }
 
 interface LogicalValidationResult { errors: ValidationError[],
-    warnings: ValidationWarning[]
-    }
+    warnings: ValidationWarning[];
 
 interface ErrorStatistics { totalValidations: number,
-    failedValidations: number,
-    errorsByType: Map<string, number>,
+    failedValidations: number;
+    errorsByType: Map<string, number>;
     errorsByBubbleType: Map<string, number> }
 
 interface ValidationStatistics { totalValidations: number,
-    failedValidations: number,
-    successRate: string,
-    errorsByType: Record<string, number>,
-    errorsByBubbleType: Record<string, number>,
-    recentValidations: ValidationResult[]
-     }
+    failedValidations: number;
+    successRate: string;
+    errorsByType: Record<string, number>;
+    errorsByBubbleType: Record<string, number>;
+    recentValidations: ValidationResult[];
 
 interface BubbleConfig { health?: number,
-    size?: number,
-    maxAge?: number,
-    score?: number,
-    healAmount?: number,
-    damageAmount?: number,
-    shakeIntensity?: number,
-    disableDuration?: number,
-    bonusTimeMs?: number }
+    size?: number;
+    maxAge?: number;
+    score?: number;
+    healAmount?: number;
+    damageAmount?: number;
+    shakeIntensity?: number;
+    disableDuration?: number;
+    bonusTimeMs?: number;
 
-interface ComboConfig { maxMultiplier?: number }
+interface ComboConfig { maxMultiplier?: number;
 
 interface ScoreConfig { baseScores?: Record<string, number>,
-    combo?: ComboConfig,
+    combo?: ComboConfig;
     ageBonus?: Record<string, number> }
 
 interface StageConfig { spawnRate?: number,
-    maxBubbles?: number,
-    unlockRequirement?: number }
+    maxBubbles?: number;
+    unlockRequirement?: number;
 
 interface ItemConfig { baseCost?: number,
-    costMultiplier?: number,
-    maxLevel?: number }
+    costMultiplier?: number;
+    maxLevel?: number;
 
 export class BalanceConfigurationValidator {
-    private errorHandler: ErrorHandler,
+    private errorHandler: ErrorHandler;
     private, validationRules: Map<string, ValidationRule>,
-    private validationHistory: ValidationResult[],
+    private validationHistory: ValidationResult[];
     private, errorStats: ErrorStatistics,
     constructor() {
     
-        this.errorHandler = getErrorHandler(),
+        this.errorHandler = getErrorHandler();
         
         // 検証ルール定義
-        this.validationRules = new Map(),
+        this.validationRules = new Map();
         
         // 検証履歴
-        this.validationHistory = [],
+        this.validationHistory = [];
         
         // エラー統計
         this.errorStats = {
@@ -98,8 +96,8 @@ export class BalanceConfigurationValidator {
             errorsByBubbleType: new Map(); 
     };
         // 検証ルールを初期化
-        this._initializeValidationRules()';
-        console.log('[BalanceConfigurationValidator] 初期化完了);
+        this._initializeValidationRules()';'
+        console.log('[BalanceConfigurationValidator] 初期化完了);'
     }
     
     /**
@@ -122,65 +120,65 @@ export class BalanceConfigurationValidator {
      */''
     private _initializeBubbleValidationRules('''
         this.validationRules.set('bubble.health', { ''
-            type: 'number),
-            min: 1',
+            type: 'number),'
+            min: 1','
     max: 20,
             description: 'Bubble health must be between 1 and 20',')',
-            category: 'bubble')',
+            category: 'bubble')','
 
         this.validationRules.set('bubble.size', {''
-            type: 'number),
-            min: 20',
+            type: 'number),'
+            min: 20','
     max: 150,
             description: 'Bubble size must be between 20 and 150 pixels',')',
-            category: 'bubble')',
+            category: 'bubble')','
 
         this.validationRules.set('bubble.maxAge', {''
-            type: 'number),
-            min: 3000',
+            type: 'number),'
+            min: 3000','
     max: 60000,
             description: 'Bubble max age must be between 3 and 60 seconds',')',
-            category: 'bubble')',
+            category: 'bubble')','
 
         this.validationRules.set('bubble.score', {''
-            type: 'number),
-            min: 1',
+            type: 'number),'
+            min: 1','
     max: 2000,
             description: 'Bubble score must be between 1 and 2000',')',
-            category: 'bubble')'),
-        ',
+            category: 'bubble')'),'
+        ','
         // 特殊効果の検証ルール
         this.validationRules.set('bubble.healAmount', {''
-            type: 'number),
-            min: 5',
+            type: 'number),'
+            min: 5','
     max: 100,
             description: 'Heal amount must be between 5 and 100',')',
-            category: 'bubble')',
+            category: 'bubble')','
 
         this.validationRules.set('bubble.damageAmount', {''
-            type: 'number),
-            min: 1',
+            type: 'number),'
+            min: 1','
     max: 50,
             description: 'Damage amount must be between 1 and 50',')',
-            category: 'bubble')',
+            category: 'bubble')','
 
         this.validationRules.set('bubble.shakeIntensity', {''
-            type: 'number),
-            min: 5',
+            type: 'number),'
+            min: 5','
     max: 50,
             description: 'Shake intensity must be between 5 and 50',')',
-            category: 'bubble')',
+            category: 'bubble')','
 
         this.validationRules.set('bubble.disableDuration', {''
-            type: 'number),
-            min: 500',
+            type: 'number),'
+            min: 500','
     max: 5000,
             description: 'Disable duration must be between 0.5 and 5 seconds',')',
-            category: 'bubble')',
+            category: 'bubble')','
 
         this.validationRules.set('bubble.bonusTimeMs', {''
-            type: 'number),
-            min: 2000',
+            type: 'number),'
+            min: 2000','
     max: 15000,
             description: 'Bonus time must be between 2 and 15 seconds',')',
             category: 'bubble'
@@ -191,22 +189,22 @@ export class BalanceConfigurationValidator {
      */''
     private _initializeScoreValidationRules('''
         this.validationRules.set('score.baseScore', { ''
-            type: 'number),
-            min: 1',
+            type: 'number),'
+            min: 1','
     max: 2000,
             description: 'Base score must be between 1 and 2000',')',
-            category: 'score')',
+            category: 'score')','
 
         this.validationRules.set('score.comboMultiplier', {''
-            type: 'number),
-            min: 1.0',
+            type: 'number),'
+            min: 1.0','
     max: 10.0,
             description: 'Combo multiplier must be between 1.0 and 10.0',')',
-            category: 'score')',
+            category: 'score')','
 
         this.validationRules.set('score.ageBonus', {''
-            type: 'number),
-            min: 1.0',
+            type: 'number),'
+            min: 1.0','
     max: 5.0,
             description: 'Age bonus must be between 1.0 and 5.0',')',
             category: 'score'
@@ -217,22 +215,22 @@ export class BalanceConfigurationValidator {
      */''
     private _initializeStageValidationRules('''
         this.validationRules.set('stage.spawnRate', { ''
-            type: 'number),
-            min: 0.1',
+            type: 'number),'
+            min: 0.1','
     max: 10.0,
             description: 'Spawn rate must be between 0.1 and 10.0',')',
-            category: 'stage')',
+            category: 'stage')','
 
         this.validationRules.set('stage.maxBubbles', {''
-            type: 'number),
-            min: 5',
+            type: 'number),'
+            min: 5','
     max: 100,
             description: 'Max bubbles must be between 5 and 100',')',
-            category: 'stage')',
+            category: 'stage')','
 
         this.validationRules.set('stage.unlockRequirement', {''
-            type: 'number),
-            min: 0',
+            type: 'number),'
+            min: 0','
     max: 100000,
             description: 'Unlock requirement must be between 0 and 100000',')',
             category: 'stage'
@@ -243,22 +241,22 @@ export class BalanceConfigurationValidator {
      */''
     private _initializeItemValidationRules('''
         this.validationRules.set('item.baseCost', { ''
-            type: 'number),
-            min: 10',
+            type: 'number),'
+            min: 10','
     max: 1000,
             description: 'Item base cost must be between 10 and 1000',')',
-            category: 'item')',
+            category: 'item')','
 
         this.validationRules.set('item.costMultiplier', {''
-            type: 'number),
-            min: 1.0',
+            type: 'number),'
+            min: 1.0','
     max: 3.0,
             description: 'Cost multiplier must be between 1.0 and 3.0',')',
-            category: 'item')',
+            category: 'item')','
 
         this.validationRules.set('item.maxLevel', {''
-            type: 'number),
-            min: 1',
+            type: 'number),'
+            min: 1','
     max: 10,
             description: 'Max level must be between 1 and 10',')',
             category: 'item'
@@ -276,49 +274,49 @@ export class BalanceConfigurationValidator {
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
             // 基本プロパティの検証
-            if(config.health !== undefined) {
+            if (config.health !== undefined) {
 
-                const healthValidation = this._validateProperty('bubble.health', config.health',
-                if(!healthValidation.isValid) {
+                const healthValidation = this._validateProperty('bubble.health', config.health','
+                if (!healthValidation.isValid) {
                     errors.push({''
-                        property: 'health),
-                        value: config.health',
+                        property: 'health),'
+                        value: config.health','
     error: healthValidation.error!,' }'
 
                         rule: 'bubble.health'; }'
 }
 
-            if(config.size !== undefined) {
+            if (config.size !== undefined) {
 
-                const sizeValidation = this._validateProperty('bubble.size', config.size',
-                if(!sizeValidation.isValid) {
+                const sizeValidation = this._validateProperty('bubble.size', config.size','
+                if (!sizeValidation.isValid) {
                     errors.push({''
-                        property: 'size),
-                        value: config.size',
+                        property: 'size),'
+                        value: config.size','
     error: sizeValidation.error!,' }'
 
                         rule: 'bubble.size'; }'
 }
 
-            if(config.maxAge !== undefined) {
+            if (config.maxAge !== undefined) {
 
-                const maxAgeValidation = this._validateProperty('bubble.maxAge', config.maxAge',
-                if(!maxAgeValidation.isValid) {
+                const maxAgeValidation = this._validateProperty('bubble.maxAge', config.maxAge','
+                if (!maxAgeValidation.isValid) {
                     errors.push({''
-                        property: 'maxAge),
-                        value: config.maxAge',
+                        property: 'maxAge),'
+                        value: config.maxAge','
     error: maxAgeValidation.error!,' }'
 
                         rule: 'bubble.maxAge'; }'
 }
 
-            if(config.score !== undefined) {
+            if (config.score !== undefined) {
 
-                const scoreValidation = this._validateProperty('bubble.score', config.score',
-                if(!scoreValidation.isValid) {
+                const scoreValidation = this._validateProperty('bubble.score', config.score','
+                if (!scoreValidation.isValid) {
                     errors.push({''
-                        property: 'score),
-                        value: config.score',
+                        property: 'score),'
+                        value: config.score','
     error: scoreValidation.error!,' }'
 
                         rule: 'bubble.score'; }'
@@ -343,7 +341,7 @@ export class BalanceConfigurationValidator {
     timestamp: Date.now(  };
             
             // 統計を更新
-            if(!result.isValid) {
+            if (!result.isValid) {
                 this.errorStats.failedValidations++ }
                 this._updateErrorStats(bubbleType, errors); }
             }
@@ -356,11 +354,11 @@ export class BalanceConfigurationValidator {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {''
-                context: 'BalanceConfigurationValidator.validateBubbleConfig),
-                bubbleType,',
+                context: 'BalanceConfigurationValidator.validateBubbleConfig),'
+                bubbleType,','
                 config',' }'
 
-            }');
+            }');'
             
             return { validationId,
                 bubbleType,
@@ -373,9 +371,9 @@ export class BalanceConfigurationValidator {
             };]
                     details: error instanceof Error ? error.message : String(error) }]
                 }],
-                warnings: [];
+                warnings: [],
                 executionTime: Date.now() - startTime,
-    timestamp: Date.now();
+    timestamp: Date.now(),
     }
     
     /**
@@ -391,26 +389,26 @@ export class BalanceConfigurationValidator {
             const warnings: ValidationWarning[] = [],
             
             // 基本スコアの検証
-            if(scoreConfig.baseScores) {
+            if (scoreConfig.baseScores) {
 
                 for(const [bubbleType, baseScore] of Object.entries(scoreConfig.baseScores)) {''
-                    const validation = this._validateProperty('score.baseScore', baseScore',
-                    if(!validation.isValid) {
+                    const validation = this._validateProperty('score.baseScore', baseScore','
+                    if (!validation.isValid) {
             }
                         errors.push({ }
                             property: `baseScores.${bubbleType}`)
-                            value: baseScore)',
+                            value: baseScore)','
     error: validation.error!,')';
-                            rule: 'score.baseScore);
+                            rule: 'score.baseScore);'
     }
             
             // コンボ設定の検証
-            if(scoreConfig.combo) { if(scoreConfig.combo.maxMultiplier !== undefined) {''
-                    const validation = this._validateProperty('score.comboMultiplier', scoreConfig.combo.maxMultiplier',
-                    if(!validation.isValid) {
+            if (scoreConfig.combo) { if (scoreConfig.combo.maxMultiplier !== undefined) {''
+                    const validation = this._validateProperty('score.comboMultiplier', scoreConfig.combo.maxMultiplier','
+                    if (!validation.isValid) {
                         errors.push({''
-                            property: 'combo.maxMultiplier),
-                            value: scoreConfig.combo.maxMultiplier',
+                            property: 'combo.maxMultiplier),'
+                            value: scoreConfig.combo.maxMultiplier','
     error: validation.error!,' }'
 
                             rule: 'score.comboMultiplier'; }'
@@ -418,17 +416,17 @@ export class BalanceConfigurationValidator {
             }
             
             // 年齢ボーナスの検証
-            if(scoreConfig.ageBonus) {
+            if (scoreConfig.ageBonus) {
 
                 for(const [bonusType, bonusValue] of Object.entries(scoreConfig.ageBonus)) {''
-                    const validation = this._validateProperty('score.ageBonus', bonusValue',
-                    if(!validation.isValid) {
+                    const validation = this._validateProperty('score.ageBonus', bonusValue','
+                    if (!validation.isValid) {
             }
                         errors.push({ }
                             property: `ageBonus.${bonusType}`)
-                            value: bonusValue)',
+                            value: bonusValue)','
     error: validation.error!,')';
-                            rule: 'score.ageBonus);
+                            rule: 'score.ageBonus);'
     }
             
             // 論理的整合性の検証
@@ -452,10 +450,10 @@ export class BalanceConfigurationValidator {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {''
-                context: 'BalanceConfigurationValidator.validateScoreConfig',',
+                context: 'BalanceConfigurationValidator.validateScoreConfig',','
                 scoreConfig',' }'
 
-            }');
+            }');'
             
             return { validationId,
                 isValid: false,
@@ -482,39 +480,39 @@ export class BalanceConfigurationValidator {
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
             // スポーン率の検証
-            if(stageConfig.spawnRate !== undefined) {
+            if (stageConfig.spawnRate !== undefined) {
 
-                const validation = this._validateProperty('stage.spawnRate', stageConfig.spawnRate',
-                if(!validation.isValid) {
+                const validation = this._validateProperty('stage.spawnRate', stageConfig.spawnRate','
+                if (!validation.isValid) {
                     errors.push({''
-                        property: 'spawnRate),
-                        value: stageConfig.spawnRate',
+                        property: 'spawnRate),'
+                        value: stageConfig.spawnRate','
     error: validation.error!,' }'
 
                         rule: 'stage.spawnRate'; }'
 }
-            ';
+            ';'
             // 最大泡数の検証
-            if(stageConfig.maxBubbles !== undefined) {
+            if (stageConfig.maxBubbles !== undefined) {
 
-                const validation = this._validateProperty('stage.maxBubbles', stageConfig.maxBubbles',
-                if(!validation.isValid) {
+                const validation = this._validateProperty('stage.maxBubbles', stageConfig.maxBubbles','
+                if (!validation.isValid) {
                     errors.push({''
-                        property: 'maxBubbles),
-                        value: stageConfig.maxBubbles',
+                        property: 'maxBubbles),'
+                        value: stageConfig.maxBubbles','
     error: validation.error!,' }'
 
                         rule: 'stage.maxBubbles'; }'
 }
-            ';
+            ';'
             // 開放条件の検証
-            if(stageConfig.unlockRequirement !== undefined) {
+            if (stageConfig.unlockRequirement !== undefined) {
 
-                const validation = this._validateProperty('stage.unlockRequirement', stageConfig.unlockRequirement',
-                if(!validation.isValid) {
+                const validation = this._validateProperty('stage.unlockRequirement', stageConfig.unlockRequirement','
+                if (!validation.isValid) {
                     errors.push({''
-                        property: 'unlockRequirement),
-                        value: stageConfig.unlockRequirement',
+                        property: 'unlockRequirement),'
+                        value: stageConfig.unlockRequirement','
     error: validation.error!,' }'
 
                         rule: 'stage.unlockRequirement'; }'
@@ -536,10 +534,10 @@ export class BalanceConfigurationValidator {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {''
-                context: 'BalanceConfigurationValidator.validateStageConfig',',
+                context: 'BalanceConfigurationValidator.validateStageConfig',','
                 stageConfig',' }'
 
-            }');
+            }');'
             
             return { validationId,
                 isValid: false,
@@ -566,39 +564,39 @@ export class BalanceConfigurationValidator {
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
             // 基本コストの検証
-            if(itemConfig.baseCost !== undefined) {
+            if (itemConfig.baseCost !== undefined) {
 
-                const validation = this._validateProperty('item.baseCost', itemConfig.baseCost',
-                if(!validation.isValid) {
+                const validation = this._validateProperty('item.baseCost', itemConfig.baseCost','
+                if (!validation.isValid) {
                     errors.push({''
-                        property: 'baseCost),
-                        value: itemConfig.baseCost',
+                        property: 'baseCost),'
+                        value: itemConfig.baseCost','
     error: validation.error!,' }'
 
                         rule: 'item.baseCost'; }'
 }
-            ';
+            ';'
             // コスト倍率の検証
-            if(itemConfig.costMultiplier !== undefined) {
+            if (itemConfig.costMultiplier !== undefined) {
 
-                const validation = this._validateProperty('item.costMultiplier', itemConfig.costMultiplier',
-                if(!validation.isValid) {
+                const validation = this._validateProperty('item.costMultiplier', itemConfig.costMultiplier','
+                if (!validation.isValid) {
                     errors.push({''
-                        property: 'costMultiplier),
-                        value: itemConfig.costMultiplier',
+                        property: 'costMultiplier),'
+                        value: itemConfig.costMultiplier','
     error: validation.error!,' }'
 
                         rule: 'item.costMultiplier'; }'
 }
-            ';
+            ';'
             // 最大レベルの検証
-            if(itemConfig.maxLevel !== undefined) {
+            if (itemConfig.maxLevel !== undefined) {
 
-                const validation = this._validateProperty('item.maxLevel', itemConfig.maxLevel',
-                if(!validation.isValid) {
+                const validation = this._validateProperty('item.maxLevel', itemConfig.maxLevel','
+                if (!validation.isValid) {
                     errors.push({''
-                        property: 'maxLevel),
-                        value: itemConfig.maxLevel',
+                        property: 'maxLevel),'
+                        value: itemConfig.maxLevel','
     error: validation.error!,' }'
 
                         rule: 'item.maxLevel'; }'
@@ -620,10 +618,10 @@ export class BalanceConfigurationValidator {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {''
-                context: 'BalanceConfigurationValidator.validateItemConfig',',
+                context: 'BalanceConfigurationValidator.validateItemConfig',','
                 itemConfig',' }'
 
-            }');
+            }');'
             
             return { validationId,
                 isValid: false,
@@ -643,29 +641,29 @@ export class BalanceConfigurationValidator {
      */
     private _validateProperty(ruleKey: string, value: any): PropertyValidationResult { const rule = this.validationRules.get(ruleKey),
         if (!rule) { }
-            return { isValid: true, error: null  }
-        ';
+            return { isValid: true, error: null,
+        ';'
         // 型チェック
-        if(rule.type && typeof, value !== rule.type) { return {  };
-                isValid: false }
+        if (rule.type && typeof, value !== rule.type) { return {  };
+                isValid: false;
                 error: `Expected ${rule.type}, got ${typeof, value}`
             }
-        ';
+        ';'
         // 数値範囲チェック
-        if(rule.type === 'number' {'
+        if (rule.type === 'number''
             if (rule.min !== undefined && value < rule.min) {
         }
                 return {  };
-                    isValid: false }
+                    isValid: false;
                     error: `Value ${value} is below minimum ${rule.min}`
                 }
             if (rule.max !== undefined && value > rule.max) { return {  };
-                    isValid: false }
+                    isValid: false;
                     error: `Value ${value} is above maximum ${rule.max}`
                 }
         }
         
-        return { isValid: true, error: null  }
+        return { isValid: true, error: null,
     
     /**
      * 特殊効果を検証
@@ -674,66 +672,66 @@ export class BalanceConfigurationValidator {
 
         switch(bubbleType) {
 
-            case 'pink':',
-                if(config.healAmount !== undefined) {''
-                    const validation = this._validateProperty('bubble.healAmount', config.healAmount',
-                    if(!validation.isValid) {
+            case 'pink':','
+                if (config.healAmount !== undefined) {''
+                    const validation = this._validateProperty('bubble.healAmount', config.healAmount','
+                    if (!validation.isValid) {
                         errors.push({''
-                            property: 'healAmount),
-                            value: config.healAmount',
+                            property: 'healAmount),'
+                            value: config.healAmount','
     error: validation.error!,' }'
 
                             rule: 'bubble.healAmount'); 
     }
                 break;
 
-            case 'poison':';
-                if(config.damageAmount !== undefined) {
+            case 'poison':';'
+                if (config.damageAmount !== undefined) {
 
-                    const validation = this._validateProperty('bubble.damageAmount', config.damageAmount',
-                    if(!validation.isValid) {
+                    const validation = this._validateProperty('bubble.damageAmount', config.damageAmount','
+                    if (!validation.isValid) {
                         errors.push({''
-                            property: 'damageAmount),
-                            value: config.damageAmount',
+                            property: 'damageAmount),'
+                            value: config.damageAmount','
     error: validation.error!,' }'
 
                             rule: 'bubble.damageAmount'); 
     }
                 break;
 
-            case 'electric':';
-                if(config.shakeIntensity !== undefined) {
+            case 'electric':';'
+                if (config.shakeIntensity !== undefined) {
 
-                    const validation = this._validateProperty('bubble.shakeIntensity', config.shakeIntensity',
-                    if(!validation.isValid) {
+                    const validation = this._validateProperty('bubble.shakeIntensity', config.shakeIntensity','
+                    if (!validation.isValid) {
                         errors.push({''
-                            property: 'shakeIntensity),
-                            value: config.shakeIntensity',
+                            property: 'shakeIntensity),'
+                            value: config.shakeIntensity','
     error: validation.error!,' }'
 
                             rule: 'bubble.shakeIntensity'; }'
 }''
-                if(config.disableDuration !== undefined) {
+                if (config.disableDuration !== undefined) {
 
-                    const validation = this._validateProperty('bubble.disableDuration', config.disableDuration',
-                    if(!validation.isValid) {
+                    const validation = this._validateProperty('bubble.disableDuration', config.disableDuration','
+                    if (!validation.isValid) {
                         errors.push({''
-                            property: 'disableDuration),
-                            value: config.disableDuration',
+                            property: 'disableDuration),'
+                            value: config.disableDuration','
     error: validation.error!,' }'
 
                             rule: 'bubble.disableDuration'); 
     }
                 break;
 
-            case 'rainbow':';
-                if(config.bonusTimeMs !== undefined) {
+            case 'rainbow':';'
+                if (config.bonusTimeMs !== undefined) {
 
-                    const validation = this._validateProperty('bubble.bonusTimeMs', config.bonusTimeMs',
-                    if(!validation.isValid) {
+                    const validation = this._validateProperty('bubble.bonusTimeMs', config.bonusTimeMs','
+                    if (!validation.isValid) {
                         errors.push({''
-                            property: 'bonusTimeMs),
-                            value: config.bonusTimeMs',
+                            property: 'bonusTimeMs),'
+                            value: config.bonusTimeMs','
     error: validation.error!,' }'
 
                             rule: 'bubble.bonusTimeMs'; }'
@@ -750,16 +748,16 @@ export class BalanceConfigurationValidator {
     private _validateBubbleLogicalConsistency(bubbleType: string, config: BubbleConfig): LogicalValidationResult { const errors: ValidationError[] = [],
         const warnings: ValidationWarning[] = [],
         // ボス泡は通常の泡より強くあるべき
-        if(bubbleType === 'boss' {'
+        if (bubbleType === 'boss''
 
             if(config.health !== undefined && config.health <= 1) {
                 warnings.push({)'
                     property: 'health') }
 
                     message: 'Boss bubble health should be greater than normal bubble health(1)' 
-    }';
+    }';'
             }''
-            if(config.score !== undefined && config.score <= 15) {
+            if (config.score !== undefined && config.score <= 15) {
                 warnings.push({)'
                     property: 'score') }
 
@@ -770,31 +768,31 @@ export class BalanceConfigurationValidator {
         
         // 硬い泡（stone, iron, diamond）は健康値が段階的に増加すべき
         const hardBubbleHealthOrder: Record<string, number> = { stone: 2, iron: 3, diamond: 4  }
-        if(bubbleType, in hardBubbleHealthOrder) {
+        if (bubbleType, in hardBubbleHealthOrder) {
             const expectedMinHealth = hardBubbleHealthOrder[bubbleType],
-            if(config.health !== undefined && config.health < expectedMinHealth) {
+            if (config.health !== undefined && config.health < expectedMinHealth) {
                 warnings.push({ }''
-                    property: 'health',') }
+                    property: 'health',') }'
 
-                    message: `${bubbleType} bubble health should be at least ${expectedMinHealth}`');
+                    message: `${bubbleType} bubble health should be at least ${expectedMinHealth}`');'
             }
         }
-        ';
+        ';'
         // 特殊効果泡の効果値が適切な範囲内か
-        if(bubbleType === 'pink' && config.healAmount !== undefined' { '
+        if (bubbleType === 'pink' && config.healAmount !== undefined' '
 
             if(config.healAmount > 50) {
                 warnings.push({)'
-                    property: 'healAmount',' }
+                    property: 'healAmount',' }'
 
-                    message: 'High heal amount may make the game too easy')'); 
+                    message: 'High heal amount may make the game too easy')'); '
     }
 
-        if(bubbleType === 'poison' && config.damageAmount !== undefined' { '
+        if (bubbleType === 'poison' && config.damageAmount !== undefined' '
 
             if(config.damageAmount > 25) {
                 warnings.push({)'
-                    property: 'damageAmount',' }
+                    property: 'damageAmount',' }'
 
                     message: 'High damage amount may make the game too difficult'); 
     }
@@ -808,39 +806,39 @@ export class BalanceConfigurationValidator {
         const warnings: ValidationWarning[] = [],
         
         // 基本スコアの順序性チェック
-        if(scoreConfig.baseScores) {
+        if (scoreConfig.baseScores) {
             const scores = scoreConfig.baseScores,
             // 硬い泡は通常の泡よりスコアが高いべき
-            if(scores.normal && scores.stone && scores.stone <= scores.normal) {
+            if (scores.normal && scores.stone && scores.stone <= scores.normal) {
                 warnings.push({)'
-                    property: 'baseScores.stone',' }
+                    property: 'baseScores.stone',' }'
 
                     message: 'Stone bubble score should be higher than normal bubble score'); 
     }
 
-            if(scores.stone && scores.iron && scores.iron <= scores.stone) {
+            if (scores.stone && scores.iron && scores.iron <= scores.stone) {
                 warnings.push({)'
-                    property: 'baseScores.iron',' }
+                    property: 'baseScores.iron',' }'
 
                     message: 'Iron bubble score should be higher than stone bubble score'); 
     }
 
-            if(scores.iron && scores.diamond && scores.diamond <= scores.iron) {
+            if (scores.iron && scores.diamond && scores.diamond <= scores.iron) {
                 warnings.push({)'
-                    property: 'baseScores.diamond',' }
+                    property: 'baseScores.diamond',' }'
 
                     message: 'Diamond bubble score should be higher than iron bubble score'); 
     }
             
             // ボス泡は最高スコアであるべき
-            if(scores.boss) { const maxRegularScore = Math.max(
+            if (scores.boss) { const maxRegularScore = Math.max(
                     scores.normal || 0),
                     scores.stone || 0),
                     scores.iron || 0),
                     scores.diamond || 0),
-                if(scores.boss <= maxRegularScore * 5) {
+                if (scores.boss <= maxRegularScore * 5) {
                     warnings.push({)'
-                        property: 'baseScores.boss',' }
+                        property: 'baseScores.boss',' }'
 
                         message: 'Boss bubble score should be significantly higher than regular bubbles'); 
     }

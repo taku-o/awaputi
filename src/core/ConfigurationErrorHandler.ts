@@ -8,7 +8,7 @@
 import { getErrorHandler  } from '../utils/ErrorHandler';
 import { getLoggingSystem  } from './LoggingSystem';
 import { getValidationSystem  } from './ValidationSystem';
-';
+';'
 
 export enum ConfigErrorType {;
     CONFIGURATION_ACCESS = 'CONFIGURATION_ACCESS',
@@ -24,31 +24,31 @@ interface RecoveryStrategy { maxAttempts: number,
 }
 
 interface RecoveryResult { success: boolean,
-    value?: any,
-    message: string  }
+    value?: any;
+    message: string;
 
 interface ErrorStats { total: number,
-    byType: Map<string, number>,
-    recovered: number,
-    failed: number,
-    lastReset: number  }
+    byType: Map<string, number>;
+    recovered: number;
+    failed: number;
+    lastReset: number;
 
 interface FallbackState { useDefaultValues: boolean,
-    disableValidation: boolean,
-    disableCache: boolean,
-    safeMode: boolean }
+    disableValidation: boolean;
+    disableCache: boolean;
+    safeMode: boolean;
 
 export class ConfigurationErrorHandler {
     private errorTypes = ConfigErrorType,
-    private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>,
-    private errorStats: ErrorStats,
+    private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>;
+    private errorStats: ErrorStats;
     private, recoveryAttempts: Map<string, number>,
-    private maxRecoveryAttempts: number = 3,
-    private fallbackState: FallbackState,
+    private maxRecoveryAttempts: number = 3;
+    private fallbackState: FallbackState;
     private, logger: any,
     constructor() {
 
-        this.recoveryStrategies = new Map(),
+        this.recoveryStrategies = new Map();
         this.errorStats = {
             total: 0,
             byType: new Map(),
@@ -60,15 +60,15 @@ export class ConfigurationErrorHandler {
         this.fallbackState = { useDefaultValues: false,
             disableValidation: false,
             disableCache: false,
-    safeMode: false  };
+    safeMode: false,;
         this.logger = getLoggingSystem();
         this._initialize();
     }
-';
+';'
 
     private _initialize(): void { this._setupRecoveryStrategies(),
-        this._setupErrorMonitoring()',
-        this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler) }
+        this._setupErrorMonitoring()','
+        this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler) }'
 
     private _setupRecoveryStrategies(): void { // 設定アクセスエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {
@@ -76,7 +76,7 @@ export class ConfigurationErrorHandler {
     strategy: (error: Error, context: any) => {  })
                 const { category, key, defaultValue } = context;
                 
-                if(defaultValue !== undefined && defaultValue !== null) {
+                if (defaultValue !== undefined && defaultValue !== null) {
     
 }
                     this.logger.warn(`設定アクセスエラー、デフォルト値を使用: ${category}.${key}`, { error: error.message)'
@@ -86,7 +86,7 @@ export class ConfigurationErrorHandler {
                     
                     return { success: true,
 
-                        value: defaultValue,' };
+                        value: defaultValue,' };'
 
                         message: 'デフォルト値を使用' 
     }
@@ -95,11 +95,11 @@ export class ConfigurationErrorHandler {
                 
                 this.logger.warn(`設定アクセスエラー、フォールバック値を生成: ${category}.${key}`, { error: error.message)'
                     fallbackValue'',
-                '), 'ConfigurationErrorHandler'),
+                '), 'ConfigurationErrorHandler'),'
                 
                 return { success: true,
 
-                    value: fallbackValue,' };
+                    value: fallbackValue,' };'
 
                     message: 'フォールバック値を生成' 
     }
@@ -123,7 +123,7 @@ export class ConfigurationErrorHandler {
         this.errorStats.byType.set(errorType, typeCount + 1),
 
         const strategy = this.recoveryStrategies.get(errorType),
-        if(strategy) {
+        if (strategy) {
             try {
                 const result = strategy.strategy(error, context),
                 if (result.success) {
@@ -133,7 +133,7 @@ export class ConfigurationErrorHandler {
 
                 return result;} catch (recoveryError) { this.errorStats.failed++,
 
-                return { success: false,' };
+                return { success: false,' };'
 
                     message: '復旧に失敗' 
     }
@@ -141,7 +141,7 @@ export class ConfigurationErrorHandler {
 
         this.errorStats.failed++;
 
-        return { success: false,' };
+        return { success: false,' };'
 
             message: '復旧戦略なし' 
     }

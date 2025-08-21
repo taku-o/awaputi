@@ -2,11 +2,11 @@
  * ComponentErrorHandler - 分割コンポーネント用のエラーハンドリングシステム
  */
 
-interface RecoverableError extends Error { recoverable?: boolean }
+interface RecoverableError extends Error { recoverable?: boolean;
 
 type FallbackFunction = () => any;
 
-interface FallbackMap { [key: string]: FallbackFunction }
+interface FallbackMap { [key: string]: FallbackFunction;
 
 export class ComponentErrorHandler {
     /**
@@ -37,8 +37,8 @@ export class ComponentErrorHandler {
     static canRecover(error: Error | RecoverableError, component: string): boolean { // ネットワークエラーや一時的な問題は回復可能
         const recoverableError = error as RecoverableError,
         if(recoverableError.recoverable !== false &&,
-            (error.name === 'NetworkError' || ',
-             error.name === 'TimeoutError' ||',
+            (error.name === 'NetworkError' || ','
+             error.name === 'TimeoutError' ||','
              error.message.includes('temporary)' {'
             return true }
         
@@ -51,16 +51,16 @@ export class ComponentErrorHandler {
      * @param {string} component - コンポーネント名
      * @returns {*} 回復処理の結果
      */'
-    static attemptRecovery(error: Error, component: string): { status: string,, message: string } | null { }'
+    static attemptRecovery(error: Error, component: string): { status: string,, message: string, | null { }'
 
         console.warn(`[${component}] Attempting, recovery from ${ error.name}`};
-        ';
+        ';'
 
         // 基本的な回復処理' }'
 
-        if (error.name === 'NetworkError'}' { }
+        if (error.name === 'NetworkError'}' }'
 
-            return { status: 'offline', message: 'Operating in offline mode'
+            return status: 'offline', message: 'Operating in offline mode'
             }
 
         if (error.name === 'TimeoutError') { }
@@ -80,13 +80,13 @@ export class ComponentErrorHandler {
         console.warn(`[${component}] Providing, fallback functionality`}
         
         // コンポーネントタイプに応じたフォールバック処理
-        const, fallbacks: FallbackMap = { }', 'MockDataGenerator': (}) => ({}'),', 'DebugInterface': () => ({ render: () => {}'),', 'TestSupport': () => ({ execute: () => true }'),', 'default': () => null;
+        const, fallbacks: FallbackMap = { }', 'MockDataGenerator': (}) => ({}'),', 'DebugInterface': () => ({ render: () => {}'),', 'TestSupport': () => ({ execute: () => true }'),', 'default': () => null;'
         };
-        ';
+        ';'
 
         const fallbackKey = Object.keys(fallbacks).find(key => );
             component.includes(key)) || 'default';
 
         return fallbacks[fallbackKey]();
 
-    }'}
+    }'}'

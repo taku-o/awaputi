@@ -11,87 +11,86 @@
 
 // Type definitions
 interface BoundingBox { x: number,
-    y: number,
-    width: number,
-    height: number  }
+    y: number;
+    width: number;
+    height: number;
 
 interface Layer { name: string,
-    order: number,
-    enabled: boolean,
-    visible: boolean,
-    opacity: number,
-    blendMode: string,
-    canvas: HTMLCanvasElement | null,
-    context: CanvasRenderingContext2D | null,
-    static: boolean,
-    cacheable: boolean,
-    dirty: boolean,
-    objects: Set<string>,
-    boundingBox: BoundingBox,
-    renderTime: number,
-    complexity: number }
+    order: number;
+    enabled: boolean;
+    visible: boolean;
+    opacity: number;
+    blendMode: string;
+    canvas: HTMLCanvasElement | null;
+    context: CanvasRenderingContext2D | null;
+    static: boolean;
+    cacheable: boolean;
+    dirty: boolean;
+    objects: Set<string>;
+    boundingBox: BoundingBox;
+    renderTime: number;
+    complexity: number;
 
 interface LayerProperties { static?: boolean,
-    cacheable?: boolean }
+    cacheable?: boolean;
 
 interface LayerStats { totalLayers: number,
-    cachedLayers: number,
-    compositedLayers: number,
-    cacheHitRate: number,
-    compositionTime: number  }
+    cachedLayers: number;
+    compositedLayers: number;
+    cacheHitRate: number;
+    compositionTime: number;
 
 interface LayerManagerConfig { enabled: boolean,
-    layers: Map<string, Layer>,
-    layerOrder: string[],
-    staticLayers: Set<string>,
-    dynamicLayers: Set<string>,
-    layerCache: Map<string, any>,
-    cacheEnabled: boolean,
-    maxCacheSize: number,
-    currentCacheSize: number,
-    compositionMode: 'simple' | 'smart' | 'advanced',
-    blendOptimization: boolean,
-    layerFusion: boolean,
-    layerProperties: Map<string, LayerProperties>,
-    stats: LayerStats
-     }
+    layers: Map<string, Layer>;
+    layerOrder: string[];
+    staticLayers: Set<string>;
+    dynamicLayers: Set<string>;
+    layerCache: Map<string, any>;
+    cacheEnabled: boolean;
+    maxCacheSize: number;
+    currentCacheSize: number;
+    compositionMode: 'simple' | 'smart' | 'advanced';
+    blendOptimization: boolean;
+    layerFusion: boolean;
+    layerProperties: Map<string, LayerProperties>;
+    stats: LayerStats;
 
 interface RenderObject { type?: string,
-    layer?: string,
-    material?: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    rotation?: number,
-    scale?: number,
-    alpha?: number,
-    image?: HTMLImageElement,
-    text?: string,
-    font?: string,
-    color?: string,
-    align?: string,
+    layer?: string;
+    material?: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    rotation?: number;
+    scale?: number;
+    alpha?: number;
+    image?: HTMLImageElement;
+    text?: string;
+    font?: string;
+    color?: string;
+    align?: string;
     shape?: string,  }
 
 interface DirtyRegion { x: number,
-    y: number,
-    width: number,
-    height: number  }
+    y: number;
+    width: number;
+    height: number;
 
 interface ConfigurationOptions { enabled?: boolean,
-    cacheEnabled?: boolean,
+    cacheEnabled?: boolean;
 
-    maxCacheSize?: number,
-    compositionMode?: 'simple' | 'smart' | 'advanced',
-    blendOptimization?: boolean,
-    layerFusion?: boolean }
+    maxCacheSize?: number;
+    compositionMode?: 'simple' | 'smart' | 'advanced';
+    blendOptimization?: boolean;
+    layerFusion?: boolean;
 
 export class BasicLayerManager {
-    private canvas: HTMLCanvasElement,
+    private canvas: HTMLCanvasElement;
     private, config: LayerManagerConfig,
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas,
+        this.canvas = canvas;
         
         // Layer management system
         this.config = {
@@ -103,9 +102,9 @@ export class BasicLayerManager {
             ,
             // Layer caching
             layerCache: new Map('',
-    compositionMode: 'smart', // 'simple', 'smart', 'advanced),
+    compositionMode: 'smart', // 'simple', 'smart', 'advanced);'
             blendOptimization: true,
-    layerFusion: true, // Merge compatible layers,
+    layerFusion: true, // Merge compatible layers;
             // Layer properties
             layerProperties: new Map(),
             // Statistics
@@ -122,11 +121,11 @@ export class BasicLayerManager {
     /**
      * Initialize default layers
      */''
-    private initializeDefaultLayers()';
+    private initializeDefaultLayers()';'
         this.createLayer('background', 0, { static: true, cacheable: true )',''
         this.createLayer('game', 1, { static: false, cacheable: false )',''
         this.createLayer('ui', 2, { static: true, cacheable: true )',''
-        this.createLayer('overlay', 3, { static: false, cacheable: false  }
+        this.createLayer('overlay', 3, { static: false, cacheable: false,
 
     /**
      * Create a rendering layer
@@ -152,15 +151,15 @@ export class BasicLayerManager {
             dirty: true,
             // Content tracking
            , objects: new Set() }
-            boundingBox: { x: 0, y: 0, width: 0, height: 0  },
+            boundingBox: { x: 0, y: 0, width: 0, height: 0  };
             
             // Performance tracking
-            renderTime: 0,
+            renderTime: 0;
     complexity: 0;
         },
         ;
         // Create layer canvas if cacheable
-        if(layer.cacheable) {
+        if (layer.cacheable) {
 
             layer.canvas = document.createElement('canvas'),
             layer.canvas.width = this.canvas.width,
@@ -192,7 +191,7 @@ export class BasicLayerManager {
         if (!layer) return,
 
         // Clean up layer canvas
-        if(layer.canvas) {
+        if (layer.canvas) {
             layer.canvas = null }
             layer.context = null; }
         }
@@ -225,7 +224,7 @@ export class BasicLayerManager {
      * @param visible - Visibility state
      */
     setLayerVisibility(name: string, visible: boolean): void { const layer = this.config.layers.get(name),
-        if(layer) {
+        if (layer) {
     
 }
             layer.visible = visible; }
@@ -237,7 +236,7 @@ export class BasicLayerManager {
      * @param opacity - Opacity (0-1)
      */
     setLayerOpacity(name: string, opacity: number): void { const layer = this.config.layers.get(name),
-        if(layer) {
+        if (layer) {
     
 }
             layer.opacity = Math.max(0, Math.min(1, opacity); }
@@ -248,7 +247,7 @@ export class BasicLayerManager {
      * @param name - Layer name
      */
     markLayerDirty(name: string): void { const layer = this.config.layers.get(name),
-        if(layer) {
+        if (layer) {
     
 }
             layer.dirty = true; }
@@ -264,7 +263,7 @@ export class BasicLayerManager {
         for (const obj of objects) {
 
             const layerName = obj.layer || 'game',
-            if(!layerBatches.has(layerName) {
+            if (!layerBatches.has(layerName) {
         }
                 layerBatches.set(layerName, []); }
             }
@@ -288,13 +287,13 @@ export class BasicLayerManager {
      * @param objects - Objects in layer
      */
     private optimizeLayerBatch(layer: Layer, objects: RenderObject[]): void { // Update layer cache if needed
-        if(layer.cacheable && (layer.dirty || !layer.canvas) { }
+        if (layer.cacheable && (layer.dirty || !layer.canvas) { }
 
             this.updateLayerCache(layer, objects); }
         }
-        ';
+        ';'
         // Batch objects for efficient rendering
-        if(this.config.compositionMode !== 'simple) { this.batchDrawCalls(objects) }'
+        if (this.config.compositionMode !== 'simple) { this.batchDrawCalls(objects) }'
     }
 
     /**
@@ -326,7 +325,7 @@ export class BasicLayerManager {
     private renderObjectToLayerContext(obj: RenderObject, ctx: CanvasRenderingContext2D): void { ctx.save(),
         
         // Apply object transformations
-        if(obj.rotation) {
+        if (obj.rotation) {
             const centerX = obj.x + obj.width / 2,
             const centerY = obj.y + obj.height / 2,
             ctx.translate(centerX, centerY),
@@ -341,11 +340,11 @@ export class BasicLayerManager {
         // Render based on object type
         switch(obj.type) {
 
-            case 'sprite':',
+            case 'sprite':','
                 this.renderSprite(obj, ctx),
 
                 break,
-            case 'text':',
+            case 'text':','
                 this.renderText(obj, ctx),
 
                 break,
@@ -378,7 +377,7 @@ export class BasicLayerManager {
         ctx.font = obj.font || '16px Arial',
         ctx.fillStyle = obj.color || '#000000',
         ctx.textAlign = (obj.align || 'left') as CanvasTextAlign,
-        if(obj.text) {
+        if (obj.text) {
     
 }
             ctx.fillText(obj.text, obj.x, obj.y); }
@@ -394,7 +393,7 @@ export class BasicLayerManager {
 
         switch(obj.shape) {
 
-            case 'rect':',
+            case 'rect':','
                 ctx.fillRect(obj.x, obj.y, obj.width, obj.height),
 
                 break,
@@ -424,7 +423,7 @@ export class BasicLayerManager {
         for (const obj of objects) {
         
             const batchKey = this.getBatchKey(obj),
-            if(!batches.has(batchKey) {
+            if (!batches.has(batchKey) {
     
 }
                 batches.set(batchKey, []); }
@@ -455,15 +454,15 @@ export class BasicLayerManager {
         if (!layer || !layer.enabled || !layer.visible) return,
 
         mainCtx.save(),
-        ',
+        ','
         // Apply layer properties
-        if(layer.opacity !== 1) {
+        if (layer.opacity !== 1) {
     
 }
             mainCtx.globalAlpha = layer.opacity; }
         }
 
-        if(layer.blendMode !== 'source-over' { mainCtx.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation }'
+        if (layer.blendMode !== 'source-over' mainCtx.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation }'
         
         // Render layer content
         if(layer.cacheable && layer.canvas && !layer.dirty) {
@@ -517,7 +516,7 @@ export class BasicLayerManager {
      * Clear all layers
      */
     clearAllLayers(): void { for (const layer of this.config.layers.values() {
-            if(layer.canvas && layer.context) {
+            if (layer.canvas && layer.context) {
     
 }
                 layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height); }

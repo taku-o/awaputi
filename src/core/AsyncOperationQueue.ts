@@ -1,20 +1,20 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 interface QueueOptions { maxConcurrent?: number,
-    queueTimeout?: number,
-    retryAttempts?: number }
+    queueTimeout?: number;
+    retryAttempts?: number;
 
 interface QueueStats { totalQueued: number,
-    totalCompleted: number,
-    totalFailed: number,
-    averageExecutionTime: number,
-    [key: string]: number }
+    totalCompleted: number;
+    totalFailed: number;
+    averageExecutionTime: number;
+    [key: string]: number;
 
 interface QueueOperation { id: string,
-    priority: number,
-    operation: () => Promise<unknown>,
-    metadata?: unknown,
-    [key: string]: unknown }
+    priority: number;
+    operation: () => Promise<unknown>;
+    metadata?: unknown;
+    [key: string]: unknown;
 }
 
 /**
@@ -27,26 +27,26 @@ interface QueueOperation { id: string,
  * - 同時実行数の制限
  */
 export class AsyncOperationQueue {
-    private maxConcurrent: number,
-    private queueTimeout: number,
-    private retryAttempts: number,
-    private queue: QueueOperation[],
+    private maxConcurrent: number;
+    private queueTimeout: number;
+    private retryAttempts: number;
+    private queue: QueueOperation[];
     private, activeOperations: Map<string, unknown>,
-    private completedOperations: Map<string, unknown>,
-    private failedOperations: Map<string, unknown>,
-    private stats: QueueStats,
+    private completedOperations: Map<string, unknown>;
+    private failedOperations: Map<string, unknown>;
+    private stats: QueueStats;
     constructor(options: QueueOptions = {) {
 
         // 設定
-        this.maxConcurrent = options.maxConcurrent || 3,
-        this.queueTimeout = options.queueTimeout || 30000, // 30秒
-        this.retryAttempts = options.retryAttempts || 2,
+        this.maxConcurrent = options.maxConcurrent || 3;
+        this.queueTimeout = options.queueTimeout || 30000; // 30秒
+        this.retryAttempts = options.retryAttempts || 2;
         
         // キューとステータス管理
-        this.queue = [],
-        this.activeOperations = new Map(),
-        this.completedOperations = new Map(),
-        this.failedOperations = new Map(),
+        this.queue = [];
+        this.activeOperations = new Map();
+        this.completedOperations = new Map();
+        this.failedOperations = new Map();
         
         // 統計情報
         this.stats = {
@@ -92,7 +92,7 @@ export class AsyncOperationQueue {
     maxRetries: options.maxRetries || this.retryAttempts) }
                 timestamp: Date.now() }
                 metadata: options.metadata || {};
-            ';
+            ';'
             // 優先度順にキューに挿入
             this.insertByPriority(queueItem);
             this.stats.totalQueued++;
@@ -133,12 +133,12 @@ export class AsyncOperationQueue {
      * @returns {Promise<Array>} - 全操作の結果
      */
     async executeBatch(operations, options = { ) {''
-        const batchId = this.generateOperationId()',
+        const batchId = this.generateOperationId()','
             this.emit('batchStarted', { batchId, size: operations.length ,
             
             // 並列実行か順次実行かを選択
             let results,
-            if(options.parallel !== false) {
+            if (options.parallel !== false) {
                 // 並列実行（デフォルト）
                 const promises = operations.map(op => this.enqueue(op, batchOptions) }
                 results = await Promise.allSettled(promises); }
@@ -154,7 +154,7 @@ export class AsyncOperationQueue {
 
                     } catch (error) { }
 
-                        results.push({ status: 'rejected', reason: error  }';
+                        results.push({ status: 'rejected', reason: error,';'
                     }
 }
 
@@ -232,7 +232,7 @@ export class AsyncOperationQueue {
      * 操作エラーの処理
      */
     async handleOperationError(item, error, startTime) { const executionTime = Date.now() - startTime,
-        ',
+        ','
         // リトライ可能かチェック
         if(item.retryCount < item.maxRetries && this.isRetryableError(error)) {
             item.retryCount++,
@@ -265,12 +265,12 @@ export class AsyncOperationQueue {
             error,
             executionTime,
             retryCount: item.retryCount),
-            activeCount: this.activeOperations.size',
+            activeCount: this.activeOperations.size','
 
         getErrorHandler().handleError(error, 'ASYNC_OPERATION_ERROR', {)
             operationId: item.id,
     retryCount: item.retryCount),
-            metadata: item.metadata',
+            metadata: item.metadata','
         item.reject(error  }
     
     /**
@@ -278,9 +278,9 @@ export class AsyncOperationQueue {
      */''
     isRetryableError(error) {
         // ネットワークエラー、一時的なエラーなどはリトライ可能
-        return error.message.includes('timeout') ||',
-               error.message.includes('network') ||',
-               error.message.includes('temporary') ||' }
+        return error.message.includes('timeout') ||','
+               error.message.includes('network') ||','
+               error.message.includes('temporary') ||' }'
 
                error.name === 'QuotaExceededError'; }
     }
@@ -378,7 +378,7 @@ export class AsyncOperationQueue {
         const queueIndex = this.queue.findIndex(item => item.id === operationId),
         if (queueIndex !== -1) {''
             const item = this.queue.splice(queueIndex, 1)[0],
-            item.reject(new, Error('Operation, cancelled),
+            item.reject(new, Error('Operation, cancelled),'
             this.stats.currentQueueSize = this.queue.length }
             return true;
         
@@ -396,17 +396,17 @@ export class AsyncOperationQueue {
 
             item.reject(new, Error('Queue, cleared)'; }'
         }
-        ';
+        ';'
 
         this.stats.currentQueueSize = 0;
-        this.emit('queueCleared);
+        this.emit('queueCleared);'
     }
     
     /**
      * イベントリスナーの追加
      */
     on(event, callback) {
-        if(!this.listeners.has(event) {
+        if (!this.listeners.has(event) {
     }
             this.listeners.set(event, []); }
         }
@@ -417,7 +417,7 @@ export class AsyncOperationQueue {
      * イベントリスナーの削除
      */
     off(event, callback) {
-        if(this.listeners.has(event) {
+        if (this.listeners.has(event) {
             const callbacks = this.listeners.get(event),
             const index = callbacks.indexOf(callback),
             if (index > -1) {
@@ -430,7 +430,7 @@ export class AsyncOperationQueue {
      * イベントの発火
      */
     emit(event, data) {
-        if(this.listeners.has(event) {
+        if (this.listeners.has(event) {
             this.listeners.get(event).forEach(callback => { )
     }
                 try {) }

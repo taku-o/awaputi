@@ -3,15 +3,15 @@
  */
 
 interface EventListener {
-    (event: void }
+    (event: void;
 
 export class GameEngine {
     isRunning: boolean,
-    config: Record<string, any>,
-    eventListeners: Map<string, EventListener[]>,
+    config: Record<string, any>;
+    eventListeners: Map<string, EventListener[]>;
 
     constructor() {
-        this.isRunning = false,
+        this.isRunning = false;
         this.config = {};
         this.eventListeners = new Map();
     }
@@ -27,13 +27,13 @@ export class GameEngine {
     }
 
     addEventListener(event: string, listener: EventListener): void {
-        if(!this.eventListeners.has(event) {
+        if (!this.eventListeners.has(event) {
             this.eventListeners.set(event, []) }
         this.eventListeners.get(event)!.push(listener);
     }
 
     removeEventListener(event: string, listener: EventListener): void {
-        if(this.eventListeners.has(event) {
+        if (this.eventListeners.has(event) {
             const listeners = this.eventListeners.get(event)!,
             const index = listeners.indexOf(listener),
             if (index > -1) {

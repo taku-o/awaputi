@@ -6,66 +6,65 @@
  */
 
 // Type definitions
-interface Calculator { [methodName: string]: any }
+interface Calculator { [methodName: string]: any;
     _memoized?: { [method: string]: Map<string, any> }
 
 interface CacheStats { hits: number,
-    misses: number,
-    totalRequests: number,
-    heavyCalculations: number,
-    optimizedCalculations: number,
-    averageCalculationTime: number,
-    totalCalculationTime: number  }
+    misses: number;
+    totalRequests: number;
+    heavyCalculations: number;
+    optimizedCalculations: number;
+    averageCalculationTime: number;
+    totalCalculationTime: number;
 
 interface PerformanceStats { count: number,
-    totalTime: number,
-    avgTime: number,
-    minTime: number,
-    maxTime: number }
+    totalTime: number;
+    avgTime: number;
+    minTime: number;
+    maxTime: number;
 
 interface CacheConfig { maxSize: number,
-    ttl: number,
-    heavyCalculationTtl: number,
-    cleanupInterval: number,
-    intelligentCaching: boolean,
-    preloadThreshold: number,
-    heavyCalculationThreshold: number }
+    ttl: number;
+    heavyCalculationTtl: number;
+    cleanupInterval: number;
+    intelligentCaching: boolean;
+    preloadThreshold: number;
+    heavyCalculationThreshold: number;
 
 interface OptimizationConfig { batchProcessing: boolean,
-    memoization: boolean,
-    parallelProcessing: boolean,
-    adaptiveCaching: boolean }
+    memoization: boolean;
+    parallelProcessing: boolean;
+    adaptiveCaching: boolean;
 
 interface BatchRequest { params: any[],
-    resolve: (value: any) => void,
-    reject: (reason?: any) => void,
-    options: CalculationOptions
-    }
+    resolve: (value: any) => void;
+    reject: (reason?: any) => void;
+    options: CalculationOptions;
 
 interface BatchQueue { requests: BatchRequest[],
     timeout: NodeJS.Timeout | null }
 
 interface CalculationOptions { batchable?: boolean,
-    priority?: 'high' | 'medium' | 'low',
-    noCache?: boolean,
-    heavyCalculation?: boolean }
+    priority?: 'high' | 'medium' | 'low';
+    noCache?: boolean;
+    heavyCalculation?: boolean;
 
 interface CacheEntry { value: any,
-    expiry: number,
-    timestamp: number,
-    calculationTime?: number,
-    accessCount?: number,
-    lastAccess?: number,
+    expiry: number;
+    timestamp: number;
+    calculationTime?: number;
+    accessCount?: number;
+    lastAccess?: number;
     priority?: number,  }
 
 export class CalculationEngine {
-    private calculators: Map<string, Calculator>,
-    private cache: Map<string, CacheEntry>,
-    private cacheStats: CacheStats,
+    private calculators: Map<string, Calculator>;
+    private cache: Map<string, CacheEntry>;
+    private cacheStats: CacheStats;
     private, performanceStats: Map<string, PerformanceStats>,
-    private frequentCalculations: Map<string, number>,
-    private cacheConfig: CacheConfig,
-    private optimizationConfig: OptimizationConfig,
+    private frequentCalculations: Map<string, number>;
+    private cacheConfig: CacheConfig;
+    private optimizationConfig: OptimizationConfig;
     private, batchQueue: Map<string, BatchQueue>,
     private cleanupInterval?: NodeJS.Timeout,
     private optimizationInterval?: NodeJS.Timeout,
@@ -93,17 +92,17 @@ export class CalculationEngine {
         this.frequentCalculations = new Map<string, number>();
         
         // キャッシュ設定（最適化版）
-        this.cacheConfig = { maxSize: 2000,           // 最大キャッシュサイズ（増加）
+        this.cacheConfig = { maxSize: 2000;           // 最大キャッシュサイズ（増加）
             ttl: 300000,            // TTL: 5分（延長）,
     heavyCalculationTtl: 600000, // 重い計算のTTL: 10分,
-    cleanupInterval: 60000,  // クリーンアップ間隔: 1分,
-            intelligentCaching: true, // インテリジェントキャッシュ有効,
-            preloadThreshold: 5,     // プリロード閾値（アクセス回数）,
+    cleanupInterval: 60000,  // クリーンアップ間隔: 1分;
+            intelligentCaching: true, // インテリジェントキャッシュ有効;
+            preloadThreshold: 5,     // プリロード閾値（アクセス回数）;
             heavyCalculationThreshold: 10 // 重い計算の閾値（ミリ秒）  };
         // 計算最適化設定
-        this.optimizationConfig = { batchProcessing: true,    // バッチ処理有効
-            memoization: true,        // メモ化有効,
-            parallelProcessing: false, // 並列処理（将来の拡張用）,
+        this.optimizationConfig = { batchProcessing: true;    // バッチ処理有効
+            memoization: true,        // メモ化有効;
+            parallelProcessing: false, // 並列処理（将来の拡張用）;
             adaptiveCaching: true     // 適応的キャッシュ有効  };
         // バッチ処理キュー
         this.batchQueue = new Map<string, BatchQueue>();
@@ -111,7 +110,7 @@ export class CalculationEngine {
         // 定期的なキャッシュクリーンアップを開始
         this.startCacheCleanup();
         // パフォーマンス最適化タイマー
-        this.startPerformanceOptimization()';
+        this.startPerformanceOptimization()';'
         console.log('CalculationEngine, initialized with, optimizations');
     }
     
@@ -121,7 +120,7 @@ export class CalculationEngine {
      * @param calculator - 計算処理クラスのインスタンス
      */'
     registerCalculator(type: string, calculator: Calculator): void { ''
-        if(!type || !calculator) {', ' }
+        if (!type || !calculator) {', ' }
 
             throw new Error('計算タイプと計算処理クラスは必須です'; }'
         }
@@ -148,13 +147,13 @@ export class CalculationEngine {
         this._trackCalculationFrequency(cacheKey),
         
         // バッチ処理が有効で、バッチ可能な計算の場合
-        if(this.optimizationConfig.batchProcessing && options.batchable) {
+        if (this.optimizationConfig.batchProcessing && options.batchable) {
     
 }
             return this._processBatch(type, method, params, options);
         
         // インテリジェントキャッシュから結果を取得
-        if(!options.noCache) {
+        if (!options.noCache) {
             const cachedResult = this._getIntelligentCachedResult(cacheKey),
             if (cachedResult !== null) {
                 this.cacheStats.hits++ }
@@ -162,11 +161,11 @@ export class CalculationEngine {
         
         // 計算処理クラスを取得
         const calculator = this.calculators.get(type);
-        if(!calculator) { }'
+        if (!calculator) { }'
 
-            throw new Error(`計算タイプ '${type}' が登録されていません`}';
+            throw new Error(`計算タイプ '${type}' が登録されていません`}';'
         }
-        ';
+        ';'
         // メソッドの存在確認
         if (typeof, calculator[method] !== 'function') { }
 
@@ -186,7 +185,7 @@ export class CalculationEngine {
             this._updatePerformanceStats(type, method, calculationTime),
             
             // 結果をインテリジェントキャッシュに保存
-            if(!options.noCache) {
+            if (!options.noCache) {
     
 }
                 this._setIntelligentCachedResult(cacheKey, result, calculationTime); }
@@ -219,7 +218,7 @@ export class CalculationEngine {
             }
             
             const memoKey = JSON.stringify(params);
-            if(calculator._memoized[method].has(memoKey) {
+            if (calculator._memoized[method].has(memoKey) {
                 this.cacheStats.optimizedCalculations++ }
                 return calculator._memoized[method].get(memoKey);
             
@@ -229,7 +228,7 @@ export class CalculationEngine {
         }
         
         // 通常の計算実行
-        if(Array.isArray(params) { return calculator[method](...params), else { return calculator[method](params),
+        if (Array.isArray(params) { return calculator[method](...params), else { return calculator[method](params),
     
     /**
      * バッチ処理を実行
@@ -246,7 +245,7 @@ export class CalculationEngine {
         const batchKey = `${type}:${method}`;
         
         return new Promise((resolve, reject) => {  // バッチキューに追加
-            if(!this.batchQueue.has(batchKey) {
+            if (!this.batchQueue.has(batchKey) {
                 this.batchQueue.set(batchKey, {
             });
                     requests: []) }
@@ -257,7 +256,7 @@ export class CalculationEngine {
             batch.requests.push({ params, resolve, reject, options ),
             
             // バッチ処理のタイマーを設定（まだ設定されていない場合）
-            if(!batch.timeout) {
+            if (!batch.timeout) {
     
 }
                 batch.timeout = setTimeout(() => {  }
@@ -384,7 +383,7 @@ export class CalculationEngine {
         
         keysToDelete.forEach(key => this.cache.delete(key);
         
-        if(keysToDelete.length > 0) {
+        if (keysToDelete.length > 0) {
     
 }
             console.log(`Cleaned, up ${keysToDelete.length} expired, cache entries`});
@@ -482,7 +481,7 @@ export class CalculationEngine {
         
         // 適応的TTLチェック
         const now = Date.now();
-        if(now > cached.expiry) {
+        if (now > cached.expiry) {
             this.cache.delete(key) }
             return null;
         
@@ -619,12 +618,12 @@ export class CalculationEngine {
 }
         const key = `${type}.${method}`;
         
-        if(!this.performanceStats.has(key) { this.performanceStats.set(key, {
+        if (!this.performanceStats.has(key) { this.performanceStats.set(key, {
                 count: 0,
                 totalTime: 0),
                 avgTime: 0,
-    minTime: Infinity }
-                maxTime: 0); 
+    minTime: Infinity,
+                maxTime: 0), 
     }
         
         const stats = this.performanceStats.get(key);
@@ -663,7 +662,7 @@ export class CalculationEngine {
             // キャッシュ効率の最適化
             this._optimizeCacheEfficiency() }
 
-            console.log('Performance, optimization completed');' }
+            console.log('Performance, optimization completed');' }'
 
         } catch (error) { console.error('Performance optimization error:', error }
     }
@@ -679,7 +678,7 @@ export class CalculationEngine {
             .slice(0, 50), // 上位50エントリ
         
         for (const [cacheKey] of, frequentEntries) {
-            if(!this.cache.has(cacheKey) {
+            if (!this.cache.has(cacheKey) {
                 // キャッシュにない場合は、可能であれば事前計算
                 // 実装は具体的な計算内容に依存するため、ここでは統計のみ更新
     }
@@ -700,7 +699,7 @@ export class CalculationEngine {
         // 重い計算のキャッシュ期間を延長
         for(const [methodKey] of heavyCalculations.slice(0, 10) {''
             for(const [cacheKey, cached] of this.cache.entries()) {''
-                if(cacheKey.includes(methodKey.replace('.', ':)) {
+                if(cacheKey.includes(methodKey.replace('.', ':)) {'
                     // TTLを延長
                     const extensionTime = this.cacheConfig.heavyCalculationTtl - this.cacheConfig.ttl }
                     cached.expiry += extensionTime; }
@@ -737,20 +736,20 @@ export class CalculationEngine {
     enableMemoization(type, methods = []) {
         const calculator = this.calculators.get(type) }
 
-        if(!calculator) { }'
+        if (!calculator) { }'
 
             throw new Error(`計算タイプ '${type}' が登録されていません`});
         }
         
-        if(!calculator._memoized) {
+        if (!calculator._memoized) {
     
 }
             calculator._memoized = {}
         
         // 指定されたメソッドまたは全メソッドにメモ化を適用
-        const targetMethods = methods.length > 0 ? methods : ';
-            Object.getOwnPropertyNames(Object.getPrototypeOf(calculator))';
-                .filter(name => typeof, calculator[name] === 'function' && name !== 'constructor);
+        const targetMethods = methods.length > 0 ? methods : ';'
+            Object.getOwnPropertyNames(Object.getPrototypeOf(calculator))';'
+                .filter(name => typeof, calculator[name] === 'function' && name !== 'constructor);'
 
         for (const method of targetMethods) {
 
@@ -784,7 +783,7 @@ export class CalculationEngine {
         const frequentCalculations = Array.from(this.frequentCalculations.entries();
             .sort((a, b) => b[1] - a[1]);
             .slice(0, 10);
-            .map(([key, count]) => ({ calculation: key, accessCount: count  });
+            .map(([key, count]) => ({ calculation: key, accessCount: count,);
         
         return { ...basicStats };
             ...this.cacheStats }
@@ -812,8 +811,8 @@ export class CalculationEngine {
         this.calculators.clear();
 
         this.performanceStats.clear();
-        this.frequentCalculations.clear()';
-        console.log('CalculationEngine, destroyed);
+        this.frequentCalculations.clear()';'
+        console.log('CalculationEngine, destroyed);'
     }
 }
 
@@ -826,36 +825,36 @@ let calculationEngineInstance = null;
  */
 export function getCalculationEngine() { if (!calculationEngineInstance') {''
         calculationEngineInstance = new CalculationEngine('}''
-        import('./ScoreCalculator.js).then(({ getScoreCalculator ) => { }
+        import('./ScoreCalculator.js).then(({ getScoreCalculator ) => { }'
 
-            calculationEngineInstance.registerCalculator('score', getScoreCalculator();' }
+            calculationEngineInstance.registerCalculator('score', getScoreCalculator();' }'
 
-        }'.catch(error => {  '),' }
+        }'.catch(error => {  '),' }'
 
-            console.warn('ScoreCalculator registration failed:', error'; }
+            console.warn('ScoreCalculator registration failed:', error'; }'
 
-        }');
+        }');'
 
-        import('./BalanceCalculator.js).then(({ getBalanceCalculator ) => { }
+        import('./BalanceCalculator.js).then(({ getBalanceCalculator ) => { }'
 
-            calculationEngineInstance.registerCalculator('balance', getBalanceCalculator();' }
+            calculationEngineInstance.registerCalculator('balance', getBalanceCalculator();' }'
 
-        }'.catch(error => {  '),' }
+        }'.catch(error => {  '),' }'
 
-            console.warn('BalanceCalculator registration failed:', error'; }
+            console.warn('BalanceCalculator registration failed:', error'; }'
 
-        }');
+        }');'
 
-        import('./EffectsCalculator.js).then(({ getEffectsCalculator ) => { }
+        import('./EffectsCalculator.js).then(({ getEffectsCalculator ) => { }'
 
-            calculationEngineInstance.registerCalculator('effects', getEffectsCalculator();' }
+            calculationEngineInstance.registerCalculator('effects', getEffectsCalculator();' }'
 
-        }'.catch(error => {  '),' }
+        }'.catch(error => {  '),' }'
 
-            console.warn('EffectsCalculator registration failed:', error'; }
+            console.warn('EffectsCalculator registration failed:', error'; }'
 
-        }');
+        }');'
     }
-    ';
+    ';'
 
     return calculationEngineInstance;}

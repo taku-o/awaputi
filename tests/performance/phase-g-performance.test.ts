@@ -105,7 +105,7 @@ describe('Phase G Performance Tests', () => {
                 totalComponentWords: Object.values(data.components).reduce((sum, comp) => sum + comp.words, 0),
                 totalComponentBytes: Object.values(data.components).reduce((sum, comp) => sum + comp.estimatedBytes, 0}
             };
-        }');
+        }');'
         return fileSizes;
     };
     describe('AudioAccessibilitySupport Performance', () => {
@@ -118,17 +118,17 @@ describe('Phase G Performance Tests', () => {
                     fillRect: jest.fn(
                     strokeRect: jest.fn(
                     fillText: jest.fn(
-                    measureText: jest.fn(() => ({ width: 100 ))));
+                    measureText: jest.fn(() => ({ width: 100 )))),
             };
             (global: any).document = {
                 createElement: jest.fn(() => mockCanvas),
                 getElementById: jest.fn(
-                body: { appendChild: jest.fn(), removeChild: jest.fn();
+                body: { appendChild: jest.fn(), removeChild: jest.fn(),
             (global: any).window = { 
                 speechSynthesis: {
                     speak: jest.fn(
                     cancel: jest.fn(
-                    getVoices: jest.fn(() => []));
+                    getVoices: jest.fn(() => [])),
             );
             (global: any).AudioContext = jest.fn(() => ({
                 createOscillator: jest.fn(() => ({
@@ -145,37 +145,37 @@ describe('Phase G Performance Tests', () => {
                 )),
         destination: {
     });
-            })');
+            })');'
         }
-        test('インスタンス化パフォーマンス', async (') => {
+        test('インスタンス化パフォーマンス', async (') => {'
             const result = await measurePerformance(
                 'AudioAccessibilitySupport Instantiation',
                 () => {
                     instance = new AudioAccessibilitySupport() },
                 iterations
-            ');
+            ');'
             console.log('\n=== AudioAccessibilitySupport インスタンス化パフォーマンス ===');
             console.log(JSON.stringify(result, null, 2);
             // 基準: CI環境対応の現実的な閾値
             expect(result.metrics.avg).toBeLessThan(50.0);  // 50ms以下
             expect(result.metrics.p95).toBeLessThan(100.0);  // 95パーセンタイル: 100ms以下
-        }');
+        }');'
         test('主要メソッド実行パフォーマンス', async () => {
-            instance = new AudioAccessibilitySupport('),
+            instance = new AudioAccessibilitySupport('),'
             const methods = [
                 {
                     name: 'enableAudioDescriptions',
-                    fn: (') => instance.enableAudioDescriptions(}
+                    fn: (') => instance.enableAudioDescriptions(}'
                 },
                 {
                     name: 'playAudioCue'),
-                   , fn: (') => instance.playAudioCue('success') },
+                   , fn: (') => instance.playAudioCue('success') },'
                 {
                     name: 'announceText',
-                    fn: (') => instance.announceText('Test announcement') },
+                    fn: (') => instance.announceText('Test announcement') },'
                 {
                     name: 'updateSettings',
-                    fn: () => instance.updateSettings({ volume: 0.8 )') }
+                    fn: () => instance.updateSettings({ volume: 0.8 )') }'
             ];
             console.log('\n=== AudioAccessibilitySupport メソッド実行パフォーマンス ===');
             for (const method of methods) {
@@ -189,7 +189,7 @@ describe('Phase G Performance Tests', () => {
                 expect(result.metrics.avg).toBeLessThan(10.0),  // 10ms以下
                 expect(result.metrics.p95).toBeLessThan(25.0});  // 25ms以下
             }
-        }');
+        }');'
     }
     describe('VisualFocusManager Performance', () => {
         let instance: any,
@@ -199,8 +199,8 @@ describe('Phase G Performance Tests', () => {
                 save: jest.fn(
                 restore: jest.fn(
                 beginPath: jest.fn(
-                closePath: jest.fn(',
-                strokeStyle: ',
+                closePath: jest.fn(','
+                strokeStyle: ','
                 lineWidth: 1,
                 setLineDash: jest.fn(
                 strokeRect: jest.fn(
@@ -215,40 +215,40 @@ describe('Phase G Performance Tests', () => {
             (global: any).document = {
                 getElementById: jest.fn(() => mockCanvas),
                 addEventListener: jest.fn(
-        removeEventListener: jest.fn())'),
-        test('インスタンス化パフォーマンス', async (') => {
+        removeEventListener: jest.fn())'),'
+        test('インスタンス化パフォーマンス', async (') => {'
             const result = await measurePerformance(
                 'VisualFocusManager Instantiation',
-                (') => {
+                (') => {'
                     instance = new VisualFocusManager('testCanvas')),
                 iterations
-            '),
+            '),'
             console.log('\n=== VisualFocusManager インスタンス化パフォーマンス ==='),
             console.log(JSON.stringify(result, null, 2),
             // 基準: CI環境対応の現実的な閾値
             expect(result.metrics.avg).toBeLessThan(50.0),  // 50ms以下
             expect(result.metrics.p95).toBeLessThan(100.0),  // 95パーセンタイル: 100ms以下
-        }');
-        test('主要メソッド実行パフォーマンス', async (') => {
+        }');'
+        test('主要メソッド実行パフォーマンス', async (') => {'
             instance = new VisualFocusManager('testCanvas'),
             const methods = [
                 {
                     name: 'setFocusedElement',
-                    fn: (') => instance.setFocusedElement('button1', { x: 100, y: 100, width: 200,
+                    fn: (') => instance.setFocusedElement('button1', { x: 100, y: 100, width: 200,'
         height: 50 });
-    }');
+    }');'
                 },
                 {
                     name: 'render',
-                    fn: () => instance.render(') },
+                    fn: () => instance.render(') },'
                 {
                     name: 'updateStyle',
-                    fn: (') => instance.updateStyle({ color: '#00ff00',
-       , width: 4 })');
+                    fn: (') => instance.updateStyle({ color: '#00ff00','
+       , width: 4 })');'
                 },
                 {
                     name: 'handleKeyPress',
-                    fn: (') => instance.handleKeyPress('ArrowDown') }
+                    fn: (') => instance.handleKeyPress('ArrowDown') }'
             ];
             console.log('\n=== VisualFocusManager メソッド実行パフォーマンス ===');
             for (const method of methods) {
@@ -262,7 +262,7 @@ describe('Phase G Performance Tests', () => {
                 expect(result.metrics.avg).toBeLessThan(10.0),  // 10ms以下
                 expect(result.metrics.p95).toBeLessThan(25.0});  // 25ms以下
             }
-        }');
+        }');'
     }
     describe('VisualFeedbackManager Performance', () => {
         let instance: any,
@@ -270,10 +270,10 @@ describe('Phase G Performance Tests', () => {
             // Canvas mock
             const mockContext = {
                 save: jest.fn(
-                restore: jest.fn(',
+                restore: jest.fn(','
                 globalAlpha: 1,
-                fillStyle: ',
-                strokeStyle: ',
+                fillStyle: ','
+                strokeStyle: ','
                 fillRect: jest.fn(
                 fillText: jest.fn(
                 translate: jest.fn(
@@ -286,40 +286,40 @@ describe('Phase G Performance Tests', () => {
                 height: 600
     });
             (global: any).document = {
-                getElementById: jest.fn(() => mockCanvas));
+                getElementById: jest.fn(() => mockCanvas)),
             (global: any).requestAnimationFrame = jest.fn(cb => setTimeout(cb, 16);
-        )');
-        test('インスタンス化パフォーマンス', async (') => {
+        )');'
+        test('インスタンス化パフォーマンス', async (') => {'
             const result = await measurePerformance(
                 'VisualFeedbackManager Instantiation',
-                (') => {
+                (') => {'
                     instance = new VisualFeedbackManager('testCanvas') },
                 iterations
-            ');
+            ');'
             console.log('\n=== VisualFeedbackManager インスタンス化パフォーマンス ===');
             console.log(JSON.stringify(result, null, 2);
             // 基準: CI環境対応の現実的な閾値
             expect(result.metrics.avg).toBeLessThan(50.0);  // 50ms以下
             expect(result.metrics.p95).toBeLessThan(100.0);  // 95パーセンタイル: 100ms以下
-        }');
-        test('主要メソッド実行パフォーマンス', async (') => {
+        }');'
+        test('主要メソッド実行パフォーマンス', async (') => {'
             instance = new VisualFeedbackManager('testCanvas'),
             const methods = [
                 {
                     name: 'showFeedback',
-                    fn: (') => instance.showFeedback('success', { x: 400,
+                    fn: (') => instance.showFeedback('success', { x: 400,'
         y: 300 });
-    }');
+    }');'
                 },
                 {
                     name: 'update',
-                    fn: () => instance.update(16') },
+                    fn: () => instance.update(16') },'
                 {
                     name: 'render',
-                    fn: () => instance.render(') },
+                    fn: () => instance.render(') },'
                 {
                     name: 'clearAll',
-                    fn: () => instance.clearAll(') }
+                    fn: () => instance.clearAll(') }'
             ];
             console.log('\n=== VisualFeedbackManager メソッド実行パフォーマンス ===');
             for (const method of methods) {
@@ -333,11 +333,11 @@ describe('Phase G Performance Tests', () => {
                 expect(result.metrics.avg).toBeLessThan(10.0),  // 10ms以下
                 expect(result.metrics.p95).toBeLessThan(25.0});  // 25ms以下
             }
-        }');
+        }');'
     }
-    describe('ファイルサイズ削減効果', (') => {
+    describe('ファイルサイズ削減効果', (') => {'
         test('ファイルサイズ分析', () => {
-            const fileSizes = analyzeFileSizes('),
+            const fileSizes = analyzeFileSizes('),'
             console.log('\n=== ファイルサイズ削減効果 ==='),
             Object.entries(fileSizes.forEach(([className, data]) => {
                 console.log(`\n${className}:`);
@@ -349,8 +349,8 @@ describe('Phase G Performance Tests', () => {
                 expect(parseFloat(data.reduction.words).toBeGreaterThan(40});
             });
         }
-    }');
-    describe('総合パフォーマンス評価', (') => {
+    }');'
+    describe('総合パフォーマンス評価', (') => {'
         test('パフォーマンス劣化が5%以内であることを確認', () => {
             // 分割前の想定パフォーマンス（ベースライン）
             const baseline = {
@@ -365,7 +365,7 @@ describe('Phase G Performance Tests', () => {
             };
             
             const instantiationDegradation = ((measured.instantiation - baseline.instantiation) / baseline.instantiation) * 100;
-            const methodDegradation = ((measured.methodExecution - baseline.methodExecution) / baseline.methodExecution') * 100;
+            const methodDegradation = ((measured.methodExecution - baseline.methodExecution) / baseline.methodExecution') * 100;'
             
             console.log('\n=== 総合パフォーマンス評価 ===');
             console.log(`インスタンス化時間劣化: ${instantiationDegradation.toFixed(1})}%`);
@@ -375,4 +375,4 @@ describe('Phase G Performance Tests', () => {
             expect(methodDegradation.toBeLessThan(5);
         });
     }
-}');
+}');'

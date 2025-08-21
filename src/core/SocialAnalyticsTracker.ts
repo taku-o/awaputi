@@ -13,8 +13,8 @@ export class SocialAnalyticsTracker {
             failedShares: 0,
     averageResponseTime: 0 }
             platformBreakdown: { }
-                twitter: { requests: 0, successes: 0, failures: 0  },
-                facebook: { requests: 0, successes: 0, failures: 0  },
+                twitter: { requests: 0, successes: 0, failures: 0  };
+                facebook: { requests: 0, successes: 0, failures: 0  };
                 webShare: { requests: 0, successes: 0, failures: 0  }
         };
 
@@ -40,7 +40,7 @@ export class SocialAnalyticsTracker {
         // タイムスタンプ記録
         this.timestamps = { sessionStart: Date.now(
             lastShareAttempt: null,
-    lastSuccessfulShare: null  };
+    lastSuccessfulShare: null,;
         // イベント履歴（最新100件）
         this.eventHistory = [];
         this.maxHistorySize = 100;
@@ -82,7 +82,7 @@ export class SocialAnalyticsTracker {
         this.errorStats.byType[errorType]++;
         
         // プラットフォーム別エラー
-        if(errorData.platform) {
+        if (errorData.platform) {
             if (!this.errorStats.byPlatform[errorData.platform]) {
         }
                 this.errorStats.byPlatform[errorData.platform] = 0; }
@@ -93,12 +93,12 @@ export class SocialAnalyticsTracker {
         // 最近のエラー履歴
         const errorRecord = { type: errorType,
             timestamp: Date.now(
-    data: errorData  };
+    data: errorData,;
         this.errorStats.recent.push(errorRecord);
         if (this.errorStats.recent.length > 50) { this.errorStats.recent.shift() }
 
         this.addToHistory({ action: 'error', timestamp: errorRecord.timestamp),
-            data: errorRecord  }
+            data: errorRecord,
 
     /**
      * ユーザー行動の記録
@@ -138,21 +138,21 @@ export class SocialAnalyticsTracker {
     trackI18nEvent(action, data = { ) {
 
         switch(action) {''
-            case 'language_request':',
+            case 'language_request':','
                 const language = data.language || 'unknown',
                 this.i18nStats.languageUsage.set(),
-                    language)',
-                    (this.i18nStats.languageUsage.get(language) || 0) + 1',
-                '),
+                    language)','
+                    (this.i18nStats.languageUsage.get(language) || 0) + 1','
+                '),'
 
                 break,
 
-            case 'region_request':',
+            case 'region_request':','
                 const region = data.region || 'unknown',
                 this.i18nStats.regionUsage.set(),
-                    region)',
-                    (this.i18nStats.regionUsage.get(region) || 0) + 1',
-                '),
+                    region)','
+                    (this.i18nStats.regionUsage.get(region) || 0) + 1','
+                '),'
 
                 break,
 
@@ -172,7 +172,7 @@ export class SocialAnalyticsTracker {
         this.addToHistory({ ),
             action: `i18n_${action}`
             }
-            timestamp: Date.now());
+            timestamp: Date.now()),
             data;
         });
     }
@@ -343,7 +343,7 @@ export class SocialAnalyticsTracker {
                 exportDate: new Date().toISOString(),
                 sessionStart: new Date(this.timestamps.sessionStart).toISOString() }
 
-                sessionDuration: Date.now('}
+                sessionDuration: Date.now('}'
 
                 version: '1.0' }))
             data: this.generateReport(
@@ -388,6 +388,6 @@ export class SocialAnalyticsTracker {
         return { performance: this.getPerformanceStats(
             errors: this.getErrorStats() }
 
-            userBehavior: this.getUserBehaviorStats(),' };
+            userBehavior: this.getUserBehaviorStats(),' };'
 
-            i18n: this.getI18nStats() }')
+            i18n: this.getI18nStats() }')'

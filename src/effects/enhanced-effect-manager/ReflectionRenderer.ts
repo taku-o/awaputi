@@ -4,47 +4,47 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * RGBカラーインターフェース
  */
 interface RGBColor { r: number,
-    g: number,
-    b: number  }
+    g: number;
+    b: number;
 
 /**
  * 反射面インターフェース
  */'
 interface ReflectionSurface { ''
-    type: 'water' | 'mirror' | 'bubble' | 'generic',
-    x?: number,
-    y?: number,
-    width?: number,
-    height?: number,
-    angle?: number,
-    size?: number }
+    type: 'water' | 'mirror' | 'bubble' | 'generic';
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    angle?: number;
+    size?: number;
 
 /**
  * 反射オブジェクトインターフェース
  */
 interface ReflectionObject { surface: ReflectionSurface,
-    reflectivity: number,
-    blur: number,
-    enabled: boolean  }
+    reflectivity: number;
+    blur: number;
+    enabled: boolean;
 
 /**
  * 光源インターフェース
  */
 interface LightSource { x: number,
-    y: number,
-    radius: number,
-    intensity: number,
-    currentIntensity?: number,
-    color: RGBColor,
-    enabled: boolean }
+    y: number;
+    radius: number;
+    intensity: number;
+    currentIntensity?: number;
+    color: RGBColor;
+    enabled: boolean;
 
 /**
  * バブルオブジェクトインターフェース
  */
 interface BubbleObject { x: number,
-    y: number,
-    size?: number,
-    type?: string }
+    y: number;
+    size?: number;
+    type?: string;
 
 /**
  * レンダリング設定インターフェース
@@ -58,7 +58,7 @@ interface RenderSettings { enableReflections: boolean,''
  * 反射効果レンダラー - 水面、鏡面、バブル反射処理
  */
 export class ReflectionRenderer {
-    private canvas: HTMLCanvasElement,
+    private canvas: HTMLCanvasElement;
     private, errorHandler: any,
     constructor(canvas: HTMLCanvasElement) {
 
@@ -73,7 +73,7 @@ export class ReflectionRenderer {
      */'
     renderReflections(context: CanvasRenderingContext2D, reflectionSurfaces: ReflectionObject[], renderSettings: RenderSettings): void { try {'
             if(reflectionSurfaces.length === 0) return,
-            ',
+            ','
             // 品質に基づいて反射レンダリングを調整
             if(renderSettings.qualityLevel === 'low' { }
                 return; // 低品質では反射を描画しない }
@@ -84,19 +84,19 @@ export class ReflectionRenderer {
                 // 反射面のタイプに基づいて処理
                 switch(surface.surface.type) {
 
-                    case 'water':',
+                    case 'water':','
                         this.renderWaterReflection(context, surface),
 
                         break,
-                    case 'mirror':',
+                    case 'mirror':','
                         this.renderMirrorReflection(context, surface),
 
                         break,
                     case 'bubble':,
                         this.renderBubbleReflection(context, surface, renderSettings),
                         break,
-                    default:,
-                 }
+                    default:
+}
                         this.renderGenericReflection(context, surface); }
                         break; }
 });'} catch (error) { this.errorHandler.handleError(error, {)'
@@ -127,7 +127,7 @@ export class ReflectionRenderer {
             const time = Date.now() * 0.001,
             const waveOffset = Math.sin(time * 2) * 2,
             context.translate(waveOffset, 0),
-            ',
+            ','
 
             context.restore(),' }'
 
@@ -162,7 +162,7 @@ export class ReflectionRenderer {
             context.beginPath(),
             context.rect(mirror.x || 0, mirror.y || 0, mirror.width || 0, mirror.height || 0),
             context.clip(),
-            ',
+            ','
 
             context.restore(),' }'
 
@@ -182,17 +182,17 @@ export class ReflectionRenderer {
             if (!bubble.x || !bubble.y || !bubble.size) return,
             
             context.save(),
-            ',
+            ','
             // バブルの光沢効果
             this.renderBubbleGloss(context, bubble as BubbleObject, reflectivity),
-            ',
+            ','
             // 環境反射
-            if(renderSettings.qualityLevel === 'ultra' || renderSettings.qualityLevel === 'high) {
+            if (renderSettings.qualityLevel === 'ultra' || renderSettings.qualityLevel === 'high) {'
     
 }
                 this.renderBubbleEnvironmentReflection(context, bubble as BubbleObject, reflectivity, []); }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ReflectionRenderer.renderBubbleReflection'
@@ -216,7 +216,7 @@ export class ReflectionRenderer {
             gradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity * 0.8)`),
             gradient.addColorStop(0.5, `rgba(255, 255, 255, ${reflectivity * 0.4)`),
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0)'),
-            ',
+            ','
 
             context.fillStyle = gradient,
             context.globalCompositeOperation = 'screen',
@@ -233,7 +233,7 @@ export class ReflectionRenderer {
                 secondaryGlossX, secondaryGlossY, 0),
                 secondaryGlossX, secondaryGlossY, secondaryGlossSize),
             secondaryGradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity * 0.4)`),
-            secondaryGradient.addColorStop(1, 'rgba(255, 255, 255, 0)),
+            secondaryGradient.addColorStop(1, 'rgba(255, 255, 255, 0)),'
             
             context.fillStyle = secondaryGradient,
             context.beginPath(};
@@ -276,7 +276,7 @@ export class ReflectionRenderer {
                 const alpha = intensity * lightInfluence * 0.3; }
                 reflectionGradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha}`});
                 reflectionGradient.addColorStop(1, `rgba(${light.color.r}, ${light.color.g}, ${ light.color.b), 0)`),
-                ',
+                ','
 
                 context.fillStyle = reflectionGradient,
                 context.globalCompositeOperation = 'screen',
@@ -286,7 +286,7 @@ export class ReflectionRenderer {
 
             });'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ReflectionRenderer.renderBubbleEnvironmentReflection'
-            }';
+            }';'
         }
     }
     
@@ -303,24 +303,24 @@ export class ReflectionRenderer {
             
             // 簡単な反射効果
             const obj = surface.surface;
-            if(obj.x !== undefined && obj.y !== undefined) {
+            if (obj.x !== undefined && obj.y !== undefined) {
                 const gradient = context.createRadialGradient(
                     obj.x, obj.y, 0),
-                    obj.x, obj.y, 50)',
-                '),
+                    obj.x, obj.y, 50)','
+                '),'
                 gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)'),
-                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)),
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)),'
                 
                 context.fillStyle = gradient,
                 context.beginPath(),
                 context.arc(obj.x, obj.y, 50, 0, Math.PI * 2) }
                 context.fill(); }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ReflectionRenderer.renderGenericReflection'
-            }';
+            }';'
         }
     }
     
@@ -328,7 +328,7 @@ export class ReflectionRenderer {
      * バブル表面の光沢とリフレクションを統合描画'
      */''
     renderBubbleCompleteReflectionSystem(context: CanvasRenderingContext2D, bubble: BubbleObject, renderSettings: RenderSettings): void { try {'
-            if(!renderSettings.enableReflections || renderSettings.qualityLevel === 'low') {
+            if (!renderSettings.enableReflections || renderSettings.qualityLevel === 'low') {
     
 }
                 return; }
@@ -345,9 +345,9 @@ export class ReflectionRenderer {
             },
 
             this.renderBubbleReflection(context, reflectionSurface, renderSettings);'} catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'ReflectionRenderer.renderBubbleCompleteReflectionSystem',' }
+                context: 'ReflectionRenderer.renderBubbleCompleteReflectionSystem',' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

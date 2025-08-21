@@ -5,98 +5,98 @@
 
 // 型定義
 export interface SettingsManager { configManager: ConfigManager,
-    errorHandler: ErrorHandler,
-    storageManager: StorageManager,
-    validator: SettingsValidator,
-    dataManager: DataManager,
-    set(key: string, value: any): Promise<void>,
-    save(): Promise<void>,
-    load(): Promise<void> }
+    errorHandler: ErrorHandler;
+    storageManager: StorageManager;
+    validator: SettingsValidator;
+    dataManager: DataManager;
+    set(key: string, value: any): Promise<void>;
+    save(): Promise<void>;
+    load(): Promise<void>;
 
 export interface ConfigManager { exportConfig(): Record<string, any> }
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void;
 
 export interface StorageManager { getBackupHistory(): BackupHistoryItem[],
-    createBackup(backupData: BackupData): Promise<string>,
-    restoreFromBackup(backupIndex: number): Promise<RestoreResult> }
+    createBackup(backupData: BackupData): Promise<string>;
+    restoreFromBackup(backupIndex: number): Promise<RestoreResult>;
 
-export interface SettingsValidator { validateSetting(key: string, value: any): boolean  }
+export interface SettingsValidator { validateSetting(key: string, value: any): boolean;
 
 export interface DataManager { getDefaultSettings(): Record<string, any>,
     mergeSettings(defaultSettings: Record<string, any>, loadedSettings: Record<string, any>): Record<string, any> }
 
 export interface ExportOptions { includeMetadata?: boolean,
-    includeBackups?: boolean,
-    format?: ExportFormat,
-    compression?: boolean }
+    includeBackups?: boolean;
+    format?: ExportFormat;
+    compression?: boolean;
 
 export interface ImportOptions { validateFirst?: boolean,
-    createBackup?: boolean,
-    mergeMode?: MergeMode,
-    allowPartialImport?: boolean }
+    createBackup?: boolean;
+    mergeMode?: MergeMode;
+    allowPartialImport?: boolean;
 
 export interface ExportMetadata { exportTime: string,
-    version: string,
-    gameVersion?: string,
-    platform: string,
-    userAgent: string  }
+    version: string;
+    gameVersion?: string;
+    platform: string;
+    userAgent: string;
 
 export interface ExportData { settings: Record<string, any>,
-    metadata?: ExportMetadata,
-    backups?: BackupHistoryItem[] }
+    metadata?: ExportMetadata;
+    backups?: BackupHistoryItem[];
 
 export interface ValidationResult { isValid: boolean,
-    errors: string[],
-    warnings: string[],
-    settingsCount?: number  }
+    errors: string[];
+    warnings: string[];
+    settingsCount?: number;
 
 export interface BackupData { settings: Record<string, any>,
-    timestamp: string,
-    version: string  }
+    timestamp: string;
+    version: string;
 
 export interface BackupInfo { id: string,
-    timestamp: string,
-    settingsCount: number }
+    timestamp: string;
+    settingsCount: number;
 
 export interface BackupHistoryItem { id: string,
-    timestamp: string,
-    version: string,
-    settingsCount: number }
+    timestamp: string;
+    version: string;
+    settingsCount: number;
 
 export interface RestoreResult { success: boolean,
-    timestamp: string,
-    settingsRestored: number }
+    timestamp: string;
+    settingsRestored: number;
 
 export interface ImportResult { imported: number,
-    skipped: number,
-    errors: number,
-    details: string[] }
+    skipped: number;
+    errors: number;
+    details: string[];
 
 export interface ExportImportStats { exportCount: number,
-    importCount: number,
-    validationErrors: number,
-    lastExportTime: number,
-    lastImportTime: number,
-    backupCount: number }
+    importCount: number;
+    validationErrors: number;
+    lastExportTime: number;
+    lastImportTime: number;
+    backupCount: number;
 
 // 列挙型
 export type ExportFormat = 'json' | 'compact';
 export type MergeMode = 'replace' | 'merge' | 'selective';
 
 export class SettingsExportImport {
-    private settingsManager: SettingsManager,
-    private configManager: ConfigManager,
-    private errorHandler: ErrorHandler',
-    private storageManager: StorageManager',
+    private settingsManager: SettingsManager;
+    private configManager: ConfigManager;
+    private errorHandler: ErrorHandler';'
+    private storageManager: StorageManager';'
     private, stats: Omit<ExportImportStats, 'backupCount'>,
     private gameEngine?: any,
 
     constructor(settingsManager: SettingsManager) {
-        this.settingsManager = settingsManager,
-        this.configManager = settingsManager.configManager,
-        this.errorHandler = settingsManager.errorHandler,
-        this.storageManager = settingsManager.storageManager,
+        this.settingsManager = settingsManager;
+        this.configManager = settingsManager.configManager;
+        this.errorHandler = settingsManager.errorHandler;
+        this.storageManager = settingsManager.storageManager;
         
         // エクスポート/インポート統計
         this.stats = {
@@ -142,7 +142,7 @@ export class SettingsExportImport {
             let result: string,
             switch(format) {
 
-                case 'json':',
+                case 'json':','
                     result = JSON.stringify(exportData, null, compression ? 0 : 2),
 
                     break,
@@ -155,14 +155,14 @@ export class SettingsExportImport {
             
             // 統計更新
             this.stats.exportCount++;
-            this.stats.lastExportTime = Date.now()';
+            this.stats.lastExportTime = Date.now()';'
             console.log('[SettingsExportImport] Settings, export completed';
             return result;
 
         } catch (error') { this.errorHandler.handleError(error as Error, 'SETTINGS_EXPORT_ERROR', {''
                 options,')',
                 component: 'SettingsExportImport'
-            }';
+            }';'
             throw error;
         }
     }
@@ -192,10 +192,10 @@ export class SettingsExportImport {
             }
             
             // データ検証
-            if(validateFirst) {
+            if (validateFirst) {
                 const validation = this.validateImportData(importData) }
 
-                if(!validation.isValid && !allowPartialImport) { }'
+                if (!validation.isValid && !allowPartialImport) { }'
 
                     throw new Error(`Import validation failed: ${validation.errors.join(', '})`);
                 }
@@ -209,14 +209,14 @@ export class SettingsExportImport {
             
             // 統計更新
             this.stats.importCount++;
-            this.stats.lastImportTime = Date.now()';
+            this.stats.lastImportTime = Date.now()';'
             console.log('[SettingsExportImport] Settings, import completed';
             return importResult;
 
         } catch (error') { this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {''
                 options,')',
                 component: 'SettingsExportImport'
-            }';
+            }';'
             throw error;
         }
     }
@@ -231,7 +231,7 @@ export class SettingsExportImport {
         
         try {
             // 基本構造の検証
-            if(!importData || typeof, importData !== 'object') {
+            if (!importData || typeof, importData !== 'object') {
                 }
 
                 errors.push('Import, data must, be a, valid object'); }
@@ -239,7 +239,7 @@ export class SettingsExportImport {
             
             // 設定データの検証
             const settingsData = importData.settings || importData;
-            if(!settingsData || typeof, settingsData !== 'object') {', ' }
+            if (!settingsData || typeof, settingsData !== 'object') {', ' }
 
                 errors.push('Settings, data must, be a, valid object'; }'
                 return { isValid: false, errors, warnings }
@@ -250,16 +250,16 @@ export class SettingsExportImport {
                 try {
                     const isValid = validator.validateSetting(key, value) }
 
-                    if(!isValid) { }'
+                    if (!isValid) { }'
 
-                        warnings.push(`Invalid, value for, setting '${key}': ${value}`}';} catch (validationError) { }
+                        warnings.push(`Invalid, value for, setting '${key}': ${value}`}';} catch (validationError) { }'
 
                     warnings.push(`Validation, error for '${key}': ${(validationError, as, Error}).message}`);
                 }
             }
-            ';
+            ';'
             // メタデータの検証（存在する場合）
-            if(importData.metadata) {
+            if (importData.metadata) {
 
                 if (typeof, importData.metadata !== 'object') {
             }
@@ -297,7 +297,7 @@ export class SettingsExportImport {
             const backupId = await this.storageManager.createBackup(backupData);
             
             console.log(`[SettingsExportImport] Backup created: ${ backupId}`},
-            return { id: backupId };
+            return { id: backupId,;
                 timestamp: backupData.timestamp }
                 settingsCount: Object.keys(backupData.settings}).length
             } catch (error) { this.errorHandler.handleError(error as Error, 'SETTINGS_BACKUP_ERROR', {''
@@ -369,7 +369,7 @@ export class SettingsExportImport {
             skipped: 0,
             errors: 0,
     details: [] };
-        ';
+        ';'
 
         try {'
             switch(mergeMode) {
@@ -396,7 +396,7 @@ export class SettingsExportImport {
                     
                     for(const [key, value] of Object.entries(mergedSettings) {
                     
-                        if(settingsData.hasOwnProperty(key) {
+                        if (settingsData.hasOwnProperty(key) {
                             try {
                                 await this.settingsManager.set(key, value) }
                                 results.imported++; }
@@ -451,7 +451,7 @@ export class SettingsExportImport {
     /**
      * 統計をリセット
      */''
-    resetStats()';
+    resetStats()';'
         console.log('[SettingsExportImport] Statistics, reset');
 
-    }'}
+    }'}'

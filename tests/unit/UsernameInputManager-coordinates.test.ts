@@ -6,14 +6,14 @@ import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
 // モック用の型定義
 interface CanvasInfo {
     scale: number,
-    displayWidth: number,
-    displayHeight: number,
-    actualWidth: number,
-    actualHeight: number,
-    pixelRatio: number }
+    displayWidth: number;
+    displayHeight: number;
+    actualWidth: number;
+    actualHeight: number;
+    pixelRatio: number;
 interface Coordinates {
     x: number,
-    y: number }
+    y: number;
 interface CoordinateDebugInfo {
     canvasInfo: {
         scal,e: number | undefined,
@@ -21,33 +21,33 @@ interface CoordinateDebugInfo {
         actualSize: string,
         pixelRatio: number | undefined
     },
-    transformedCoordinates: Coordinates,
-    fallbackMode: boolean }
+    transformedCoordinates: Coordinates;
+    fallbackMode: boolean;
 interface MockResponsiveCanvasManager {
     getCanvasInfo: jest.Mock<() => CanvasInfo | null> }
 interface MockGameEngine {
     responsiveCanvasManager: MockResponsiveCanvasManager | null,
-    debug: boolean }
+    debug: boolean;
 interface MockErrorHandler {
     handleError: jest.Mock }
 // Mock UsernameInputManager for isolated testing
 class MockUsernameInputManager {
     gameEngine: MockGameEngine,
-    errorHandler: MockErrorHandler,
+    errorHandler: MockErrorHandler;
     constructor(gameEngine: MockGameEngine) {
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         this.errorHandler = { handleError: jest.fn() };
     }
     // Copy coordinate transformation methods from UsernameInputManager
-    getCanvasInfo('): CanvasInfo | null {
+    getCanvasInfo('): CanvasInfo | null {'
         try {
             const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager,
             if (responsiveCanvasManager && typeof responsiveCanvasManager.getCanvasInfo === 'function') {
-                const canvasInfo = responsiveCanvasManager.getCanvasInfo('),
+                const canvasInfo = responsiveCanvasManager.getCanvasInfo('),'
                 if (canvasInfo && typeof canvasInfo.scale === 'number' && canvasInfo.scale > 0) {
                     return canvasInfo }
             } catch (error) {
-            if (this.gameEngine.debug') {
+            if (this.gameEngine.debug') {'
                 console.warn('ResponsiveCanvasManager access failed:', error) }
         }
         return null;
@@ -66,7 +66,7 @@ class MockUsernameInputManager {
         return x >= 0 && x <= actualWidth && y >= 0 && y <= actualHeight;
     }
     logCoordinateDebug(context: any, canvasInfo: CanvasInfo | null, transformedCoords: Coordinates): void {
-        if (this.gameEngine.debug') {
+        if (this.gameEngine.debug') {'
             console.log('Username input coordinate debug:', {
                 canvasInfo: {
                     scale: canvasInfo? .scale, : undefined
@@ -75,7 +75,7 @@ class MockUsernameInputManager {
                     pixelRatio: canvasInfo? .pixelRatio
                 }, : undefined
                 transformedCoordinates: transformedCoords,
-                fallbackMode: !canvasInfo)');
+                fallbackMode: !canvasInfo)'),'
         }
     }
 }
@@ -89,11 +89,10 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             getCanvasInfo: jest.fn( };
         mockGameEngine = {
             responsiveCanvasManager: mockResponsiveCanvasManager,
-            debug: false
-        };
+            debug: false,;
         manager = new MockUsernameInputManager(mockGameEngine);
-    }');
-    describe('getCanvasInfo', (') => {
+    }');'
+    describe('getCanvasInfo', (') => {'
         test('should return canvas info when ResponsiveCanvasManager is available', () => {
             const mockCanvasInfo: CanvasInfo = {
                 scale: 1.5,
@@ -108,17 +107,17 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             const result = manager.getCanvasInfo();
             expect(result).toEqual(mockCanvasInfo);
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
-        }');
+        }');'
         test('should return null when ResponsiveCanvasManager is not available', () => {
             mockGameEngine.responsiveCanvasManager = null,
             const result = manager.getCanvasInfo(),
-            expect(result).toBeNull() }');
+            expect(result).toBeNull() }');'
         test('should return null when getCanvasInfo method throws error', () => {
-            mockResponsiveCanvasManager.getCanvasInfo.mockImplementation((') => {
+            mockResponsiveCanvasManager.getCanvasInfo.mockImplementation((') => {'
                 throw new Error('Canvas info access failed') });
             const result = manager.getCanvasInfo();
             expect(result).toBeNull();
-        }');
+        }');'
         test('should return null when canvas info has invalid scale', () => {
             mockResponsiveCanvasManager.getCanvasInfo.mockReturnValue({
                 scale: 0,
@@ -129,9 +128,9 @@ describe('UsernameInputManager Coordinate Transformation', () => {
                 pixelRatio: 1 });
             const result = manager.getCanvasInfo();
             expect(result).toBeNull();
-        }');
+        }');'
     }
-    describe('transformCoordinates', (') => {
+    describe('transformCoordinates', (') => {'
         test('should transform base coordinates correctly with scale factor 1', () => {
             const canvasInfo: CanvasInfo = { 
                 scale: 1,
@@ -142,7 +141,7 @@ describe('UsernameInputManager Coordinate Transformation', () => {
                 pixelRatio: 1
             };
             const result = manager.transformCoordinates(400, 300, canvasInfo);
-            expect(result).toEqual({ x: 400, y: 300 )' }
+            expect(result).toEqual({ x: 400, y: 300 )' }'
         test('should transform base coordinates correctly with scale factor 1.5', () => {
             const canvasInfo: CanvasInfo = { 
                 scale: 1.5,
@@ -153,7 +152,7 @@ describe('UsernameInputManager Coordinate Transformation', () => {
                 pixelRatio: 1
             };
             const result = manager.transformCoordinates(400, 300, canvasInfo);
-            expect(result).toEqual({ x: 600, y: 450 )' }
+            expect(result).toEqual({ x: 600, y: 450 )' }'
         test('should transform base coordinates correctly with scale factor 2', () => {
             const canvasInfo: CanvasInfo = { 
                 scale: 2,
@@ -164,7 +163,7 @@ describe('UsernameInputManager Coordinate Transformation', () => {
                 pixelRatio: 1
             };
             const result = manager.transformCoordinates(200, 150, canvasInfo);
-            expect(result).toEqual({ x: 400, y: 300 )' }
+            expect(result).toEqual({ x: 400, y: 300 )' }'
         test('should transform base coordinates correctly with scale factor 0.5', () => {
             const canvasInfo: CanvasInfo = { 
                 scale: 0.5,
@@ -175,10 +174,10 @@ describe('UsernameInputManager Coordinate Transformation', () => {
                 pixelRatio: 1
             };
             const result = manager.transformCoordinates(800, 600, canvasInfo);
-            expect(result).toEqual({ x: 400, y: 300 )' }
+            expect(result).toEqual({ x: 400, y: 300 )' }'
         test('should return null when canvasInfo is null', () => {
             const result = manager.transformCoordinates(400, 300, null),
-            expect(result).toBeNull() }');
+            expect(result).toBeNull() }');'
         test('should handle zero coordinates correctly', () => {
             const canvasInfo: CanvasInfo = { 
                 scale: 1.5,
@@ -190,8 +189,8 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             };
             const result = manager.transformCoordinates(0, 0, canvasInfo);
             expect(result).toEqual({ x: 0, y: 0  }
-    }');
-    describe('validateCoordinates', (') => {
+    }');'
+    describe('validateCoordinates', (') => {'
         const canvasInfo: CanvasInfo = {
             scale: 1,
             displayWidth: 1200,
@@ -203,16 +202,16 @@ describe('UsernameInputManager Coordinate Transformation', () => {
         test('should validate coordinates within bounds', () => {
             expect(manager.validateCoordinates(600, 450, canvasInfo).toBe(true),
             expect(manager.validateCoordinates(0, 0, canvasInfo).toBe(true),
-            expect(manager.validateCoordinates(1200, 900, canvasInfo).toBe(true) }');
+            expect(manager.validateCoordinates(1200, 900, canvasInfo).toBe(true) }');'
         test('should reject coordinates outside bounds', () => {
             expect(manager.validateCoordinates(-1, 450, canvasInfo).toBe(false),
             expect(manager.validateCoordinates(600, -1, canvasInfo).toBe(false),
             expect(manager.validateCoordinates(1201, 450, canvasInfo).toBe(false),
-            expect(manager.validateCoordinates(600, 901, canvasInfo).toBe(false) }');
+            expect(manager.validateCoordinates(600, 901, canvasInfo).toBe(false) }');'
         test('should return false when canvasInfo is null', () => {
-            expect(manager.validateCoordinates(600, 450, null).toBe(false) }');
+            expect(manager.validateCoordinates(600, 450, null).toBe(false) }');'
     }
-    describe('coordinate transformation with different pixel ratios', (') => {
+    describe('coordinate transformation with different pixel ratios', (') => {'
         test('should handle 1x pixel ratio correctly', () => {
             const canvasInfo: CanvasInfo = {
                 scale: 1,
@@ -225,7 +224,7 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             
             const result = manager.transformCoordinates(400, 300, canvasInfo);
             expect(result).toEqual({ x: 400, y: 300 ,
-            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');
+            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');'
         test('should handle 2x pixel ratio correctly', () => {
             const canvasInfo: CanvasInfo = {
                 scale: 1,
@@ -238,7 +237,7 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             
             const result = manager.transformCoordinates(400, 300, canvasInfo);
             expect(result).toEqual({ x: 400, y: 300 ,
-            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');
+            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');'
         test('should handle 3x pixel ratio correctly', () => {
             const canvasInfo: CanvasInfo = {
                 scale: 1.5,
@@ -251,9 +250,9 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             
             const result = manager.transformCoordinates(400, 300, canvasInfo);
             expect(result).toEqual({ x: 600, y: 450 ,
-            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');
+            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');'
     }
-    describe('fallback coordinate calculations', (') => {
+    describe('fallback coordinate calculations', (') => {'
         test('should handle missing ResponsiveCanvasManager gracefully', () => {
             mockGameEngine.responsiveCanvasManager = undefined as any,
             
@@ -268,10 +267,10 @@ describe('UsernameInputManager Coordinate Transformation', () => {
                 actualHeight: 600,
                 pixelRatio: 1),
             expect(fallbackResult).toEqual({ x: 400, y: 300  }
-    }');
+    }');'
     describe('logCoordinateDebug', () => {
         beforeEach(() => {
-            console.log = jest.fn() }');
+            console.log = jest.fn() }');'
         test('should log debug information when debug mode is enabled', () => {
             mockGameEngine.debug = true,
             const canvasInfo: CanvasInfo = {
@@ -286,7 +285,7 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             const transformedCoords: Coordinates = { x: 600, y: 450 };
             
             manager.logCoordinateDebug(null, canvasInfo, transformedCoords);
-            expect(console.log').toHaveBeenCalledWith('Username input coordinate debug:', {
+            expect(console.log').toHaveBeenCalledWith('Username input coordinate debug:', {'
                 canvasInfo: {
                     scale: 1.5,
                     displaySize: '800x600',
@@ -294,17 +293,17 @@ describe('UsernameInputManager Coordinate Transformation', () => {
                     pixelRatio: 2
                 },
                 transformedCoordinates: transformedCoords,
-                fallbackMode: false) as CoordinateDebugInfo);
-        }');
+                fallbackMode: false) as CoordinateDebugInfo),
+        }');'
         test('should not log when debug mode is disabled', () => {
             mockGameEngine.debug = false,
             
             manager.logCoordinateDebug(null, {} as CanvasInfo, {} as Coordinates);
             expect(console.log).not.toHaveBeenCalled();
-        }');
+        }');'
     }
-    describe('integration scenarios', (') => {
-        test('should handle typical desktop scenario (1920x1080')', () => {
+    describe('integration scenarios', (') => {'
+        test('should handle typical desktop scenario (1920x1080')', () => {'
             const canvasInfo: CanvasInfo = {
                 scale: 2.4,
                 displayWidth: 1920,
@@ -318,8 +317,8 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             // Test center coordinates (400, 300 in base 800x600 system);
             const result = manager.transformCoordinates(400, 300, canvasInfo);
             expect(result).toEqual({ x: 960, y: 720 ,
-            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');
-        test('should handle typical mobile scenario (375x667')', () => {
+            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');'
+        test('should handle typical mobile scenario (375x667')', () => {'
             const canvasInfo: CanvasInfo = {
                 scale: 0.46875,
                 displayWidth: 375,
@@ -332,7 +331,7 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             mockResponsiveCanvasManager.getCanvasInfo.mockReturnValue(canvasInfo);
             const result = manager.transformCoordinates(400, 300, canvasInfo);
             expect(result).toEqual({ x: 187.5, y: 140.625 ,
-            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');
+            expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) }');'
         test('should handle high DPI retina display scenario', () => {
             const canvasInfo: CanvasInfo = {
                 scale: 1.5,
@@ -348,4 +347,4 @@ describe('UsernameInputManager Coordinate Transformation', () => {
             expect(result).toEqual({ x: 600, y: 450 ,
             expect(manager.validateCoordinates(result!.x, result!.y, canvasInfo).toBe(true) });
     }
-}');
+}');'

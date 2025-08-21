@@ -12,17 +12,17 @@ import { SocialAnalyticsTracker  } from './SocialAnalyticsTracker.js';
 
 export class SocialSharingManager {
     constructor(gameEngine) {
-        this.gameEngine = gameEngine,
-        this.statisticsManager = null,
-        this.achievementManager = null,
-        this.localizationManager = null,
+        this.gameEngine = gameEngine;
+        this.statisticsManager = null;
+        this.achievementManager = null;
+        this.localizationManager = null;
         
         // エラーハンドラーの設定
-        this.errorHandler = socialErrorHandler,
+        this.errorHandler = socialErrorHandler;
         
         // 分割されたコンポーネントを初期化
-        this.platformAdapters = new SocialPlatformAdapters(),
-        this.analyticsTracker = new SocialAnalyticsTracker('}
+        this.platformAdapters = new SocialPlatformAdapters();
+        this.analyticsTracker = new SocialAnalyticsTracker('}'
 
             defaultPlatform: 'web-share' }))
         // 初期化
@@ -34,7 +34,7 @@ export class SocialSharingManager {
      */
     async init() { try {
             // ShareContentGeneratorの初期化
-            this.shareContentGenerator = new ShareContentGenerator(),
+            this.shareContentGenerator = new ShareContentGenerator();
             
             // 設定の読み込み
             await this.loadSettings(),
@@ -42,7 +42,7 @@ export class SocialSharingManager {
             // エラーハンドラーの設定
             this.setupErrorHandler(),
             // イベントリスナーの設定
-            this.setupEventListeners()',
+            this.setupEventListeners()','
             this.analyticsTracker.trackShareEvent('system_init', {),
                 platform: this.platformAdapters.detectPlatform(
     webShareSupported: this.platformAdapters.isWebShareSupported(  });
@@ -54,8 +54,8 @@ export class SocialSharingManager {
     /**
      * エラーハンドラーの設定'
      */''
-    setupErrorHandler()';
-        if(typeof, this.errorHandler.setRetryHandler === 'function) { this.errorHandler.setRetryHandler((errorInfo) => {  }'
+    setupErrorHandler()';'
+        if (typeof, this.errorHandler.setRetryHandler === 'function) { this.errorHandler.setRetryHandler((errorInfo) => {  }'
                 this.handleRetryAction(errorInfo); }
             });
         }
@@ -96,53 +96,53 @@ export class SocialSharingManager {
     /**
      * 設定の読み込み
      */''
-    async loadSettings()';
-            const saved = localStorage.getItem('socialSharingSettings);
-            if(saved) {
+    async loadSettings()';'
+            const saved = localStorage.getItem('socialSharingSettings);'
+            if (saved) {
     
 }
 
-                this.settings = { ...this.settings, ...JSON.parse(saved),'} catch (error) { }
+                this.settings = { ...this.settings, ...JSON.parse(saved),'} catch (error) { }'
 
-            this.analyticsTracker.trackError('settings_load_failed', { error: error.message }';
+            this.analyticsTracker.trackError('settings_load_failed', { error: error.message }';'
         }
     }
 
     /**
      * 設定の保存'
      */''
-    async saveSettings()';
-            localStorage.setItem('socialSharingSettings', JSON.stringify(this.settings);'} catch (error) { }
+    async saveSettings()';'
+            localStorage.setItem('socialSharingSettings', JSON.stringify(this.settings);'} catch (error) { }'
 
-            this.analyticsTracker.trackError('settings_save_failed', { error: error.message }';
+            this.analyticsTracker.trackError('settings_save_failed', { error: error.message }';'
         }
     }
 
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners()';
-        this.gameEngine.on('gameEnd', (gameData) => { this.handleGameEnd(gameData),' }
+    setupEventListeners()';'
+        this.gameEngine.on('gameEnd', (gameData) => { this.handleGameEnd(gameData),' }'
 
-        }');
-';
+        }');'
+';'
         // ハイスコア達成時の処理
         this.gameEngine.on('highScore', (scoreData) => { this.handleHighScore(scoreData) });
-';
+';'
         // 実績解除時の処理
-        if(this.achievementManager) {', ' }
+        if (this.achievementManager) {', ' }
 
             this.achievementManager.on('achievementUnlocked', (achievement) => {  }
 
                 this.handleAchievementUnlock(achievement);' }'
 
-            }');
+            }');'
         }
-';
+';'
         // オンライン状態の変化
         window.addEventListener('online', () => this.onOnlineStatusChange());
         window.addEventListener('offline', () => this.onOnlineStatusChange());
-        ';
+        ';'
         // ページ離脱時の処理
         window.addEventListener('beforeunload', (event) => this.onBeforeUnload(event);
     }
@@ -191,7 +191,7 @@ export class SocialSharingManager {
      * スコア共有プロンプトの表示'
      */''
     async showScoreSharePrompt(gameData) { ''
-        this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'score ,
+        this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'score ,'
         
         const shareData = await this.shareContentGenerator.generateScoreShareContent(gameData),
         this.showShareDialog(shareData) }
@@ -200,7 +200,7 @@ export class SocialSharingManager {
      * ハイスコア共有プロンプトの表示'
      */''
     async showHighScoreSharePrompt(scoreData) { ''
-        this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'highScore ,
+        this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'highScore ,'
         
         const shareData = await this.shareContentGenerator.generateHighScoreShareContent(scoreData),
         this.showShareDialog(shareData) }
@@ -209,7 +209,7 @@ export class SocialSharingManager {
      * 実績共有プロンプトの表示'
      */''
     async showAchievementSharePrompt(achievement) { ''
-        this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'achievement ,
+        this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'achievement ,'
         
         const shareData = await this.shareContentGenerator.generateAchievementShareContent(achievement),
         this.showShareDialog(shareData) }
@@ -226,19 +226,19 @@ export class SocialSharingManager {
 
             // データ検証
             const validation = this.platformAdapters.validateShareData(shareData),
-            if(!validation.valid) { }'
+            if (!validation.valid) { }'
 
-                throw new Error(`Share data validation failed: ${validation.errors.join(', '}'`);
+                throw new Error(`Share data validation failed: ${validation.errors.join(', '}'`);'
             }
 
             let result;
-';
+';'
             // プラットフォーム別共有処理
             if(shareData.platform === 'twitter' {', ' }
 
                 result = await this.shareViaTwitter(shareData);' }'
 
-            } else if(shareData.platform === 'facebook) { result = await this.shareViaFacebook(shareData) } else if(this.platformAdapters.isWebShareSupported() { result = await this.platformAdapters.shareViaWebAPI(shareData) }'
+            } else if (shareData.platform === 'facebook) { result = await this.shareViaFacebook(shareData) } else if (this.platformAdapters.isWebShareSupported() { result = await this.platformAdapters.shareViaWebAPI(shareData) }'
 
             } else { }'
 
@@ -257,7 +257,7 @@ export class SocialSharingManager {
     endTime: Date.now(
                 startTime' }'
 
-            }');
+            }');'
 
             this.analyticsTracker.trackError('share_failed', { platform: shareData.platform)
                , error: error.message),
@@ -267,7 +267,7 @@ export class SocialSharingManager {
     /**
      * Twitter向け共有
      */
-    async shareViaTwitter(shareData) { if(this.platformAdapters.isWebShareSupported() {
+    async shareViaTwitter(shareData) { if (this.platformAdapters.isWebShareSupported() {
             return await this.platformAdapters.shareViaTwitterWebAPI(shareData), else {  ''
             const url = this.platformAdapters.generateTwitterShareUrl(shareData),' }'
 
@@ -280,7 +280,7 @@ export class SocialSharingManager {
     /**
      * Facebook向け共有
      */
-    async shareViaFacebook(shareData) { if(this.platformAdapters.isWebShareSupported() {
+    async shareViaFacebook(shareData) { if (this.platformAdapters.isWebShareSupported() {
             return await this.platformAdapters.shareViaFacebookWebAPI(shareData), else {  ''
             const url = this.platformAdapters.generateFacebookShareUrl(shareData),' }'
 
@@ -304,12 +304,12 @@ export class SocialSharingManager {
     showShareDialog(shareData) {
         // ダイアログ表示のロジック
         this.analyticsTracker.trackUserBehavior('shareDialogShow', { }
-            platform: shareData.platform';
+            platform: shareData.platform';'
 
     /**
      * オンライン状態変更時の処理'
      */''
-    onOnlineStatusChange()';
+    onOnlineStatusChange()';'
         this.analyticsTracker.trackShareEvent('online_status_change', {
                 isOnline: navigator.onLine 
             })
@@ -321,9 +321,9 @@ export class SocialSharingManager {
         // 未完了の共有処理があるかチェック
         const stats = this.analyticsTracker.getPerformanceStats(),
         if (stats.shareRequests > stats.successfulShares + stats.failedShares) {''
-            event.preventDefault(' }
+            event.preventDefault(' }'
 
-            event.returnValue = '; }
+            event.returnValue = '; }'
 }
 
     /**
@@ -366,13 +366,13 @@ export class SocialSharingManager {
     /**
      * システムのクリーンアップ'
      */''
-    cleanup()';
-        window.removeEventListener('online', this.onOnlineStatusChange';
-        window.removeEventListener('offline', this.onOnlineStatusChange';
-        window.removeEventListener('beforeunload', this.onBeforeUnload';
-        ';
+    cleanup()';'
+        window.removeEventListener('online', this.onOnlineStatusChange';'
+        window.removeEventListener('offline', this.onOnlineStatusChange';'
+        window.removeEventListener('beforeunload', this.onBeforeUnload';'
+        ';'
         // 分析データの最終保存
-        this.analyticsTracker.trackShareEvent('system_cleanup);
+        this.analyticsTracker.trackShareEvent('system_cleanup);'
     }
 
     /**

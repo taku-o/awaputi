@@ -4,27 +4,27 @@
  */
 
 interface StoredError { id: string,
-    timestamp: number,
-    severity: string,
-    category: string,
-    message: string,
-    stack?: string,
-    context?: any,
-    sessionId: string  }
+    timestamp: number;
+    severity: string;
+    category: string;
+    message: string;
+    stack?: string;
+    context?: any;
+    sessionId: string;
 
 interface StorageConfig { maxItems: number,
-    storageKey: string,
-    useIndexedDB: boolean,
-    compressionEnabled: boolean }
+    storageKey: string;
+    useIndexedDB: boolean;
+    compressionEnabled: boolean;
 
 interface StorageStatistics { totalStored: number,
-    totalSize: number,
-    oldestTimestamp?: number,
-    newestTimestamp?: number }
-    errorsByCategory: { [category: string]: number }
+    totalSize: number;
+    oldestTimestamp?: number;
+    newestTimestamp?: number;
+    errorsByCategory: { [category: string]: number,
 
 export class ErrorStorage {
-    private config: StorageConfig,
+    private config: StorageConfig;
     private, cache: StoredError[] = [],
     private initialized = false,
 
@@ -34,14 +34,14 @@ export class ErrorStorage {
             maxItems: 1000,
             storageKey: 'bubblePop_errors',
             useIndexedDB: true,
-    compressionEnabled: false }
+    compressionEnabled: false,
             ...config
         }
 
     public async initialize(): Promise<void> { if (this.initialized) return,
 
         try {
-            if(this.config.useIndexedDB && this.isIndexedDBAvailable() {
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable() {
     
 }
                 await this.initializeIndexedDB(); }
@@ -49,7 +49,7 @@ export class ErrorStorage {
             
             await this.loadFromStorage();
 
-            this.initialized = true;'} catch (error) {
+            this.initialized = true;'} catch (error) {'
             console.warn('[ErrorStorage] Failed to initialize, falling back to memory storage:', error),
             this.initialized = true }
     }
@@ -72,7 +72,7 @@ export class ErrorStorage {
         timeframe?: number,
         limit?: number)
     ): Promise<StoredError[]>,
-        if(!this.initialized) {
+        if (!this.initialized) {
     
 }
             await this.initialize(); }
@@ -80,7 +80,7 @@ export class ErrorStorage {
 
         let filtered = [...this.cache];
 
-        if(filter) {
+        if (filter) {
 
             if (filter.category) {
     
@@ -89,7 +89,7 @@ export class ErrorStorage {
             }
             if (filter.severity) { filtered = filtered.filter(e => e.severity === filter.severity) }
             }
-            if(filter.timeframe) {
+            if (filter.timeframe) {
                 const cutoff = Date.now() - filter.timeframe }
                 filtered = filtered.filter(e => e.timestamp > cutoff); }
             }
@@ -103,7 +103,7 @@ export class ErrorStorage {
         severity?: string,
         olderThan?: number)
     ): Promise<number>,
-        if(!this.initialized) {
+        if (!this.initialized) {
     
 }
             await this.initialize(); }
@@ -111,12 +111,12 @@ export class ErrorStorage {
 
         let toRemove = 0;
 
-        if(!filter) {
+        if (!filter) {
 
             toRemove = this.cache.length }
             this.cache = []; }
         } else {  const originalLength = this.cache.length,
-            this.cache = this.cache.filter(error => { ),
+            this.cache = this.cache.filter(error => { );
                 if (filter.category && error.category === filter.category) return false,
                 if (filter.severity && error.severity === filter.severity) return false }
                 if (filter.olderThan && error.timestamp < filter.olderThan) return false; }
@@ -131,7 +131,7 @@ export class ErrorStorage {
     public async getStatistics(): Promise<StorageStatistics> { if (!this.initialized) {
             await this.initialize() }
 
-        const errorsByCategory: { [category: string]: number } = {}
+        const errorsByCategory: { [category: string]: number, = {}
         let totalSize = 0;
         let oldestTimestamp: number | undefined,
         let newestTimestamp: number | undefined,
@@ -152,8 +152,8 @@ export class ErrorStorage {
             errorsByCategory }
         }
 
-    public async exportErrors(format: 'json' | 'csv' = 'json): Promise<string> {,
-        const errors = await this.getErrors()',
+    public async exportErrors(format: 'json' | 'csv' = 'json): Promise<string> {,'
+        const errors = await this.getErrors()','
         if(format === 'csv' { }
             return this.convertToCSV(errors);
         
@@ -172,7 +172,7 @@ export class ErrorStorage {
     }
 
     private async loadFromStorage(): Promise<void> { try {
-            if(this.config.useIndexedDB && this.isIndexedDBAvailable() {
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable() {
     
 }
                 await this.loadFromIndexedDB(); }
@@ -186,14 +186,14 @@ export class ErrorStorage {
 
     private loadFromLocalStorage(): void { try {
             const stored = localStorage.getItem(this.config.storageKey),
-            if(stored) {
+            if (stored) {
                 const parsed = JSON.parse(stored) }
-                this.cache = Array.isArray(parsed) ? parsed: [],';
+                this.cache = Array.isArray(parsed) ? parsed: [],';'
             } catch (error) { console.warn('[ErrorStorage] Failed to load from localStorage:', error }
     }
 
     private async persistToStorage(): Promise<void> { try {
-            if(this.config.useIndexedDB && this.isIndexedDBAvailable() {
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable() {
     
 }
                 await this.persistToIndexedDB(); }
@@ -214,18 +214,18 @@ export class ErrorStorage {
 
     private convertToCSV(errors: StoredError[]): string { ''
         const headers = ['id', 'timestamp', 'severity', 'category', 'message'],
-        const rows = errors.map(error => [)',
-            error.id',
-            new Date(error.timestamp).toISOString()]',
-            error.message.replace(/"/g, '"")']',
-        ]'),
-',
+        const rows = errors.map(error => [)','
+            error.id','
+            new Date(error.timestamp).toISOString()]','
+            error.message.replace(/"/g, '"")']','
+        ]'),'
+','
 
-        return [',
-            headers.join(','),]',
+        return [','
+            headers.join(','),]','
             ...rows.map(row => row.map(cell => `"${cell""`").join('
             }}' }]'
-        ].join('\n'}';
+        ].join('\n'}';'
     }
 
     private isIndexedDBAvailable('';
@@ -234,4 +234,4 @@ export class ErrorStorage {
 
     private, isLocalStorageAvailable('';
             return, typeof window !== 'undefined' && 'localStorage' in, window;
-        } catch { return, false,' }
+        } catch { return, false,' }'

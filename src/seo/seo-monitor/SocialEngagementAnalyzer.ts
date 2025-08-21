@@ -4,24 +4,23 @@
  * ソーシャルシェア追跡、エンゲージメント分析、OG・Twitterタグ解析を専門的に管理します
  */
 
-interface SEOConfig { [key: string]: any }
+interface SEOConfig { [key: string]: any;
 
 interface SocialEngagementData { timestamp: number,
-    platforms: Record<string, number>,
-    totalShares: number,
-    engagementRate: number,
-    ogTags?: Record<string, string>,
+    platforms: Record<string, number>;
+    totalShares: number;
+    engagementRate: number;
+    ogTags?: Record<string, string>;
     twitterCard?: Record<string, string> }
 
-interface MonitoringData { socialEngagement: SocialEngagementData[]
-    }
+interface MonitoringData { socialEngagement: SocialEngagementData[];
 
 interface SocialEngagementTrend { timestamp: number,
-    totalShares: number,
-    engagementRate: number  }
+    totalShares: number;
+    engagementRate: number;
 
 export class SocialEngagementAnalyzer {
-    private config: SEOConfig,
+    private config: SEOConfig;
     private, monitoringData: MonitoringData,
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
@@ -58,14 +57,14 @@ export class SocialEngagementAnalyzer {
 
             return socialData;
 
-        } catch (error) { console.error('Failed to analyze social engagement', error',
+        } catch (error) { console.error('Failed to analyze social engagement', error','
             return null,
     
     /**
      * ソーシャルシェアトラッキング'
      */''
     private trackSocialSharing(socialData: SocialEngagementData): void { ''
-        if(typeof, document === 'undefined') {
+        if (typeof, document === 'undefined') {
     
 }
             return; }
@@ -77,36 +76,36 @@ export class SocialEngagementAnalyzer {
 
             const buttons = document.querySelectorAll(`[data-share="${platform}"], .share-${ platform)`",""
             buttons.forEach(button => { "),""
-                if(!button.hasAttribute('data-tracked}} { }
+                if(!button.hasAttribute('data-tracked}} { }'
 
                     button.addEventListener('click', () => { }
                         socialData.platforms[platform] = (socialData.platforms[platform] || 0}) + 1;
                         socialData.totalShares++;
 
                         console.log(`Social, share tracked: ${platform}`);
-                    }');
-                    button.setAttribute('data-tracked', 'true);
+                    }');'
+                    button.setAttribute('data-tracked', 'true);'
                 }
             });
-        }';
+        }';'
     }
     
     /**
      * Open Graphタグの分析'
      */''
-    private analyzeOGTags()';
-        if(typeof, document !== 'undefined') {
+    private analyzeOGTags()';'
+        if (typeof, document !== 'undefined') {
 
-            const ogMetas = document.querySelectorAll('meta[property^="og: "]",
-            ogMetas.forEach(meta => { '),
+            const ogMetas = document.querySelectorAll('meta[property^="og: "]",'
+            ogMetas.forEach(meta => { '),'
                 const property = meta.getAttribute('property'),
-                const content = meta.getAttribute('content) }
+                const content = meta.getAttribute('content) }'
                 if (property && content) { }
                     ogTags[property] = content; }
 });
         }
 
-        return Object.keys(ogTags).length > 0 ? ogTags : { ', 'og:title': 'BubblePop',
+        return Object.keys(ogTags).length > 0 ? ogTags : { ', 'og:title': 'BubblePop','
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
             'og:type': 'website'
             }
@@ -114,19 +113,19 @@ export class SocialEngagementAnalyzer {
     /**
      * Twitter Cardの分析'
      */''
-    private analyzeTwitterCard()';
-        if(typeof, document !== 'undefined') {
+    private analyzeTwitterCard()';'
+        if (typeof, document !== 'undefined') {
 
-            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]",
-            twitterMetas.forEach(meta => { '),
+            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]",'
+            twitterMetas.forEach(meta => { '),'
                 const name = meta.getAttribute('name'),
-                const content = meta.getAttribute('content) }
+                const content = meta.getAttribute('content) }'
                 if (name && content) { }
                     twitterTags[name] = content; }
 });
         }
 
-        return Object.keys(twitterTags).length > 0 ? twitterTags : { ', 'twitter:card': 'summary_large_image',
+        return Object.keys(twitterTags).length > 0 ? twitterTags : { ', 'twitter:card': 'summary_large_image','
             'twitter:title': 'BubblePop',
             'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム'
             }
@@ -155,8 +154,8 @@ export class SocialEngagementAnalyzer {
      * エンゲージメントトレンドの取得
      */
     getSocialEngagementTrend(): SocialEngagementTrend[] { return this.monitoringData.socialEngagement.map(data => ({)
-            timestamp: data.timestamp)',
+            timestamp: data.timestamp)','
     totalShares: data.totalShares,')',
             engagementRate: data.engagementRate)')  }'
 
-    }'}
+    }'}'

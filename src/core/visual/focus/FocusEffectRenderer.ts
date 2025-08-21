@@ -16,80 +16,77 @@
 
 // 型定義
 export interface MainController { config: VisualFocusConfig,
-    state: VisualFocusState,
-    elements: VisualFocusElements,
-    cssClasses: CSSClasses
-     }
+    state: VisualFocusState;
+    elements: VisualFocusElements;
+    cssClasses: CSSClasses;
 
 export interface VisualFocusConfig { focusRing: FocusRingConfig,
-    navigationFeedback: NavigationFeedbackConfig,
-    highContrast: HighContrastConfig,
-    animations: AnimationConfig
-    }
+    navigationFeedback: NavigationFeedbackConfig;
+    highContrast: HighContrastConfig;
+    animations: AnimationConfig;
 
 export interface FocusRingConfig { color: string,
-    width: number,
-    offset: number,
-    borderRadius: number,
-    animationDuration: number,
-    enabled: boolean }
+    width: number;
+    offset: number;
+    borderRadius: number;
+    animationDuration: number;
+    enabled: boolean;
 
 export interface NavigationFeedbackConfig { fadeTimeout: number,
-    enabled: boolean }
+    enabled: boolean;
 
 export interface HighContrastConfig { color: string,
-    width: number,
-    enabled: boolean }
+    width: number;
+    enabled: boolean;
 
 export interface AnimationConfig { enabled: boolean,
-    duration: number,
-    easing: string,
-    reducedMotion: boolean }
+    duration: number;
+    easing: string;
+    reducedMotion: boolean;
 
 export interface VisualFocusState { animationTimers: Map<string, number>,
-    currentFocusElement: HTMLElement | null,
-    isHighContrastMode: boolean,
-    keyboardMode: boolean  }
+    currentFocusElement: HTMLElement | null;
+    isHighContrastMode: boolean;
+    keyboardMode: boolean;
 
 export interface VisualFocusElements { focusRing: HTMLElement,
-    focusOverlay: HTMLElement
-    }
+    focusOverlay: HTMLElement;
 
 export interface CSSClasses { keyboardMode: string,
-    mouseMode: string,
-    highContrast: string,
-    focusRing: string,
-    focusOverlay: string }
+    mouseMode: string;
+    highContrast: string;
+    focusRing: string;
+    focusOverlay: string;
 
 export interface ElementBounds { left: number,
-    top: number,
-    width: number,
-    height: number,
-    right: number,
-    bottom: number }
+    top: number;
+    width: number;
+    height: number;
+    right: number;
+    bottom: number;
 
 export interface ViewportBounds { top: number,
-    left: number,
-    bottom: number,
-    right: number }
+    left: number;
+    bottom: number;
+    right: number;
 
 export interface EffectOptions { duration?: number,
-    delay?: number,
-    easing?: string,
-    autoRemove?: boolean }
+    delay?: number;
+    easing?: string;
+    autoRemove?: boolean;
 
 export interface CustomEffectStyle { position: string,
-    left: string,
-    top: string,
-    width: string,
-    height: string,
-    pointerEvents: string,
-    zIndex: string  }
+    left: string;
+    top: string;
+    width: string;
+    height: string;
+    pointerEvents: string;
+    zIndex: string;
 
 export interface RenderingOptimizationResult { shouldRender: boolean,
-    reason?: string,
-    elementBounds?: ElementBounds,
-    viewportBounds?: ViewportBounds }
+    reason?: string;
+    elementBounds?: ElementBounds;
+    viewportBounds?: ViewportBounds;
 
 // 列挙型
 export type EffectType = 'pulse' | 'glow' | 'ripple' | 'flash' | 'slide' | 'zoom';
@@ -101,7 +98,7 @@ export type TimerType = 'focusRing' | 'overlay' | 'fadeOut' | 'customEffect';
 export const LANDMARK_SELECTORS: LandmarkType[] = [']';
     'main', 'nav', 'aside', 'header', 'footer', 'section', 'article'];
 ];
-';
+';'
 
 export const GROUP_SELECTORS: GroupType[] = [']';
     'form', 'fieldset', 'section', 'nav', 'aside'];
@@ -115,7 +112,7 @@ export const EFFECT_DURATIONS: Record<EffectType, number> = { pulse: 1000,
     flash: 500,
     slide: 600,
     zoom: 400  };
-';
+';'
 
 export const CSS_ANIMATIONS: Record<EffectType, string> = {;
     pulse: 'custom-pulse 1s ease-in-out',
@@ -129,13 +126,13 @@ export const DEFAULT_EFFECT_OPTIONS: Required<EffectOptions> = { duration: 2000,
 
     delay: 0,
     easing: 'ease-in-out',
-    autoRemove: true  };
+    autoRemove: true,;
 export const Z_INDEX = { FOCUS_RING: 9999,
     FOCUS_OVERLAY: 9998,
     CUSTOM_EFFECT: 9998,
     LANDMARK: 9997,
     GROUP: 9996  } as const;
-';
+';'
 
 export const CSS_CLASSES = {;
     ACTIVE: 'active',
@@ -170,7 +167,7 @@ export function createCustomEffectStyles(;
     bounds: ElementBounds
     );
     effectType: EffectType,
-    config: FocusRingConfig';
+    config: FocusRingConfig','
 '): CustomEffectStyle { const baseStyle: CustomEffectStyle = {''
         position: 'absolute' }
         left: `${bounds.left}px`;
@@ -224,26 +221,26 @@ export function getEffectCSS(effectType: EffectType, config: FocusRingConfig): s
                 animation: ${animation}
 
             `;
-        default: return ';
+        default: return ';'
 
 export function clearTimerIfExists(timers: Map<string, number>, timerType: TimerType): void { const timer = timers.get(timerType),
-    if(timer) {
+    if (timer) {
         clearTimeout(timer) }
         timers.delete(timerType); }
 }
 
-export function prefersReducedMotion()';
-           window.matchMedia('(prefers-reduced-motion: reduce)).matches }
+export function prefersReducedMotion()';'
+           window.matchMedia('(prefers-reduced-motion: reduce)).matches }'
 
 export class FocusEffectRenderer {
-    private mainController: MainController,
-    private config: VisualFocusConfig,
-    private state: VisualFocusState,
+    private mainController: MainController;
+    private config: VisualFocusConfig;
+    private state: VisualFocusState;
     private, elements: VisualFocusElements,
     constructor(mainController: MainController) {
 
-        this.mainController = mainController,
-        this.config = mainController.config,
+        this.mainController = mainController;
+        this.config = mainController.config;
         this.state = mainController.state }
         this.elements = mainController.elements; }
     }
@@ -265,14 +262,14 @@ export class FocusEffectRenderer {
         this.adjustRingForAccessibility(ring);
         // アニメーション付きで表示
         ring.classList.add(CSS_CLASSES.ACTIVE);
-        ';
+        ';'
         // 前のタイマーをクリア
-        clearTimerIfExists(this.state.animationTimers, 'focusRing);
+        clearTimerIfExists(this.state.animationTimers, 'focusRing);'
         
         // 自動非表示タイマー
         const timer = window.setTimeout(() => { ring.classList.remove(CSS_CLASSES.ACTIVE),' }'
 
-        }, this.config.navigationFeedback.fadeTimeout';
+        }, this.config.navigationFeedback.fadeTimeout';'
 
         this.state.animationTimers.set('focusRing', timer);
     }
@@ -305,7 +302,7 @@ export class FocusEffectRenderer {
         
         while(current && current !== document.body) {
         
-            if(this.isLandmarkElement(current) {
+            if (this.isLandmarkElement(current) {
                 current.classList.add(CSS_CLASSES.LANDMARK, CSS_CLASSES.HIGHLIGHTED }
                 break; }
             }
@@ -324,7 +321,7 @@ export class FocusEffectRenderer {
         
         while(current && current !== document.body) {
         
-            if(this.isGroupElement(current) {
+            if (this.isGroupElement(current) {
                 current.classList.add(CSS_CLASSES.GROUP, CSS_CLASSES.ACTIVE }
                 break; }
             }
@@ -356,13 +353,13 @@ export class FocusEffectRenderer {
     /**
      * エフェクトのフェードアウト
      */''
-    fadeOutEffects()';
+    fadeOutEffects()';'
         clearTimerIfExists(this.state.animationTimers, 'fadeOut';
-        ';
+        ';'
 
         const timer = window.setTimeout(() => { this.clearAllEffects(),' }'
 
-        }, fadeDelay');
+        }, fadeDelay');'
 
         this.state.animationTimers.set('fadeOut', timer);
     }
@@ -387,12 +384,12 @@ export class FocusEffectRenderer {
      */
     createCustomEffect('
         element: HTMLElement, ')';
-        effectType: EffectType = 'pulse')',
+        effectType: EffectType = 'pulse')','
     options: Partial<EffectOptions> = { ': HTMLElement {''
         const bounds = getElementBounds(element }
         const opts: Required<EffectOptions> = { ...DEFAULT_EFFECT_OPTIONS, ...options,
 
-        const effect = document.createElement('div),
+        const effect = document.createElement('div),'
         effect.className = `${CSS_CLASSES.CUSTOM_EFFECT} ${effectType}`;
         
         // 基本スタイルを適用
@@ -413,7 +410,7 @@ export class FocusEffectRenderer {
         } else { document.body.appendChild(effect) }
         
         // 自動削除
-        if(opts.autoRemove) {
+        if (opts.autoRemove) {
             const duration = opts.duration || EFFECT_DURATIONS[effectType],
             setTimeout(() => { 
         }
@@ -429,7 +426,7 @@ export class FocusEffectRenderer {
      * パフォーマンス最適化のための描画制御
      */
     optimizeRendering(): RenderingOptimizationResult { // 要素が画面外にある場合はスキップ
-        if(this.state.currentFocusElement) {
+        if (this.state.currentFocusElement) {
             const elementBounds = getElementBounds(this.state.currentFocusElement),
             const viewportBounds = getViewportBounds(),
             // 要素が画面外の場合
@@ -441,26 +438,26 @@ export class FocusEffectRenderer {
                 }
         }
         
-        return { shouldRender: true }
+        return { shouldRender: true,
 
     /**
      * アクセシビリティ対応の描画調整
      */
     adjustForAccessibility(): void { // 高コントラストモード対応
-        if(this.state.isHighContrastMode) {
+        if (this.state.isHighContrastMode) {
     
 }
             this.adjustRingForAccessibility(this.elements.focusRing);
         
         // 縮小モーション設定対応
-        if(prefersReducedMotion() { this.disableAnimations() }
+        if (prefersReducedMotion() { this.disableAnimations() }
     }
 
     /**
      * フォーカスリングのアクセシビリティ調整
      */
     private adjustRingForAccessibility(ring: HTMLElement): void { ''
-        if(this.state.isHighContrastMode) {
+        if (this.state.isHighContrastMode) {
 
             ring.style.borderWidth = this.config.highContrast.width + 'px' }
             ring.style.borderColor = this.config.highContrast.color; }
@@ -477,15 +474,15 @@ export class FocusEffectRenderer {
         document.querySelectorAll(`.${ CSS_CLASSES.CUSTOM_EFFECT)`}.forEach((element} => { }'
 
             (element, as HTMLElement'}'.style.animation = 'none';
-        }';
+        }';'
     }
 
     /**
      * ランドマーク要素かどうかの判定
      */'
     private isLandmarkElement(element: HTMLElement): boolean { ''
-        const tagName = element.tagName.toLowerCase()',
-        const role = element.getAttribute('role),
+        const tagName = element.tagName.toLowerCase()','
+        const role = element.getAttribute('role),'
         
         return LANDMARK_SELECTORS.includes(tagName) ||,
                (role !== null && LANDMARK_SELECTORS.includes(role, as LandmarkType) }
@@ -494,8 +491,8 @@ export class FocusEffectRenderer {
      * グループ要素かどうかの判定
      */'
     private isGroupElement(element: HTMLElement): boolean { ''
-        const tagName = element.tagName.toLowerCase()',
-        const role = element.getAttribute('role),
+        const tagName = element.tagName.toLowerCase()','
+        const role = element.getAttribute('role),'
         
         return GROUP_SELECTORS.includes(tagName) ||,
                (role !== null && GROUP_ROLES.includes(role) }
@@ -551,8 +548,8 @@ export class FocusEffectRenderer {
         document.querySelectorAll(`.${CSS_CLASSES.GROUP}`).forEach(el => {  ) }
             el.classList.remove(CSS_CLASSES.GROUP);' }'
 
-        }');
+        }');'
 
         console.log('FocusEffectRenderer, disposed');
 
-    }'}
+    }'}'

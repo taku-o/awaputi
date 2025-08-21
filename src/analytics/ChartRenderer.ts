@@ -5,55 +5,54 @@
 
 // Chart interfaces and types
 export interface ChartRendererOptions { enableResponsive?: boolean,
-    defaultWidth?: number,
-    defaultHeight?: number,
-    animationDuration?: number,
-    updateInterval?: number,
-    maxDataPoints?: number,
-    theme?: 'default' | 'dark' | 'light',
-    locale?: string }
+    defaultWidth?: number;
+    defaultHeight?: number;
+    animationDuration?: number;
+    updateInterval?: number;
+    maxDataPoints?: number;
+    theme?: 'default' | 'dark' | 'light';
+    locale?: string;
 
 export interface ThemeConfig { backgroundColor: string,
-    borderColor: string,
-    textColor: string,
-    gridColor: string  }
+    borderColor: string;
+    textColor: string;
+    gridColor: string;
 
 export interface ChartConfig { label?: string,
-    xAxisLabel?: string,
-    yAxisLabel?: string,
-    showLegend?: boolean,
+    xAxisLabel?: string;
+    yAxisLabel?: string;
+    showLegend?: boolean;
 
-    showTooltip?: boolean,
-    legendPosition?: 'top' | 'bottom' | 'left' | 'right',
-    dataCount?: number,
-    chartOptions?: any,
-    type?: string }
+    showTooltip?: boolean;
+    legendPosition?: 'top' | 'bottom' | 'left' | 'right';
+    dataCount?: number;
+    chartOptions?: any;
+    type?: string;
 
 export interface ChartDataUpdate { labels?: string[],
-    data?: number[],
-    datasets?: any[] }
+    data?: number[];
+    datasets?: any[];
 
 export interface ChartStatistics { totalCharts: number,
-    activeRealtimeCharts: number,
-    chartTypes: Record<string, number>,
-    memoryUsage: MemoryUsage
-     }
+    activeRealtimeCharts: number;
+    chartTypes: Record<string, number>;
+    memoryUsage: MemoryUsage;
 
 export interface MemoryUsage { estimatedDataPoints: number,
-    estimatedMemoryKB: number }
+    estimatedMemoryKB: number;
 
 export type DataSourceCallback = () => ChartDataUpdate | null;
 
 // Declare Chart.js global interface
 declare global { interface Window {
-    Chart: any }
+    Chart: any;
     var Chart: any;
 }
 
 export class AnalyticsChartRenderer {
-    private options: Required<ChartRendererOptions>,
+    private options: Required<ChartRendererOptions>;
     private charts: Map<string, any> }
-    private chartConfigs: Map<string, ChartConfig & { type: string }>;
+    private chartConfigs: Map<string, ChartConfig & { type: string;>;
     private updateTimers: Map<string, number>;
     private dataSourceCallbacks: Map<string, DataSourceCallback>;
     private Chart: any;
@@ -72,11 +71,11 @@ export class AnalyticsChartRenderer {
             locale: 'ja-JP',
             ...options,
 
-        this.charts = new Map(),
-        this.chartConfigs = new Map(),
+        this.charts = new Map();
+        this.chartConfigs = new Map();
 
-        this.updateTimers = new Map(),
-        this.dataSourceCallbacks = new Map()',
+        this.updateTimers = new Map();
+        this.dataSourceCallbacks = new Map()';'
            , backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             textColor: '#333333',
@@ -89,12 +88,12 @@ export class AnalyticsChartRenderer {
      * 初期化
      */
     private initialize(): void { // Chart.jsの動的読み込み
-        this.loadChartJS()',
+        this.loadChartJS()','
             .then(() => { ''
                 console.log('Chart.js, loaded successfully') }'
                 this.setupChartDefaults(); }
             });
-            .catch(error => { '),
+            .catch(error => { '),'
                 console.error('Failed to load Chart.js:', error }
                 this.fallbackToCanvasRenderer(); }
             });
@@ -106,10 +105,10 @@ export class AnalyticsChartRenderer {
     private async loadChartJS(): Promise<void> { // CDNからChart.jsを読み込み
         return new Promise((resolve, reject) => { ''
             if(typeof, Chart !== 'undefined' {'
-                this.Chart = Chart,
-                resolve()',
+                this.Chart = Chart;
+                resolve()','
             const script = document.createElement('script'),
-            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/chart.ts/4.4.1/chart.umd.ts,
+            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/chart.ts/4.4.1/chart.umd.ts,'
             script.onload = () => {
             }
                 this.Chart = window.Chart; }
@@ -125,7 +124,7 @@ export class AnalyticsChartRenderer {
      */'
     private setupChartDefaults(): void { ''
         if(!this.Chart) return,
-',
+','
         // デフォルトフォント設定
         this.Chart.defaults.font.family = '"Helvetica Neue", "Arial", sans-serif',
         this.Chart.defaults.font.size = 12,
@@ -177,7 +176,7 @@ export class AnalyticsChartRenderer {
     createLineChart(canvasId: string, config: ChartConfig = { ): any | null {
         const canvas = this.getCanvas(canvasId),
         if(!canvas || !this.Chart) return null,
-',
+','
 
         const defaultConfig = {''
             type: 'line',
@@ -218,7 +217,7 @@ export class AnalyticsChartRenderer {
 
         const chart = new this.Chart(canvas.getContext('2d), defaultConfig';
         this.charts.set(canvasId, chart);
-        this.chartConfigs.set(canvasId, { ...config, type: 'line ,
+        this.chartConfigs.set(canvasId, { ...config, type: 'line ,'
 
         return chart }
 
@@ -228,7 +227,7 @@ export class AnalyticsChartRenderer {
     createBarChart(canvasId: string, config: ChartConfig = { ): any | null {'
         const canvas = this.getCanvas(canvasId),
         if(!canvas || !this.Chart) return null,
-',
+','
 
         const defaultConfig = {''
             type: 'bar',
@@ -268,7 +267,7 @@ export class AnalyticsChartRenderer {
 
         const chart = new this.Chart(canvas.getContext('2d), defaultConfig';
         this.charts.set(canvasId, chart);
-        this.chartConfigs.set(canvasId, { ...config, type: 'bar ,
+        this.chartConfigs.set(canvasId, { ...config, type: 'bar ,'
 
         return chart }
 
@@ -278,7 +277,7 @@ export class AnalyticsChartRenderer {
     createPieChart(canvasId: string, config: ChartConfig = { ): any | null {'
         const canvas = this.getCanvas(canvasId),
         if(!canvas || !this.Chart) return null,
-',
+','
 
         const defaultConfig = {''
             type: 'pie',
@@ -300,13 +299,13 @@ export class AnalyticsChartRenderer {
                     tooltip: { enabled: config.showTooltip !== false,
     callbacks: {''
                             label(context: any) {''
-                                const label = context.label || ',
+                                const label = context.label || ','
                                 const value = context.parsed,
                                 const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0),
 
                                 const percentage = ((value / total) * 100).toFixed(1),' }'
 
-                                return `${label}: ${value} (${percentage}%')`;
+                                return `${label}: ${value} (${percentage}%')`;'
                 },
                 ...config.chartOptions;
         };
@@ -326,7 +325,7 @@ export class AnalyticsChartRenderer {
             }
         const chart = this.createPieChart(canvasId, pieConfig);
 
-        if(chart) {
+        if (chart) {
 
             chart.config.type = 'doughnut' }
 
@@ -342,13 +341,13 @@ export class AnalyticsChartRenderer {
         if (!chart) return false,
 
         try {
-            if(Array.isArray(newData.labels) {
+            if (Array.isArray(newData.labels) {
     
 }
                 chart.data.labels = newData.labels; }
             }
 
-            if(Array.isArray(newData.datasets) {
+            if (Array.isArray(newData.datasets) {
 
                 newData.datasets.forEach((newDataset, index) => {
     
@@ -358,7 +357,7 @@ export class AnalyticsChartRenderer {
                     } else { chart.data.datasets.push(newDataset) }
                 });
             } else if (Array.isArray(newData.data) { // 単一データセットの場合
-                if(chart.data.datasets[0]) {
+                if (chart.data.datasets[0]) {
     
 }
                     chart.data.datasets[0].data = newData.data; }
@@ -398,7 +397,7 @@ export class AnalyticsChartRenderer {
      * リアルタイム更新の停止
      */
     stopRealtimeUpdate(canvasId: string): void { const timer = this.updateTimers.get(canvasId),
-        if(timer) {
+        if (timer) {
             clearInterval(timer) }
             this.updateTimers.delete(canvasId); }
         }
@@ -410,7 +409,7 @@ export class AnalyticsChartRenderer {
      */
     private limitDataPoints(chart: any): void { const maxPoints = this.options.maxDataPoints,
         
-        if(chart.data.labels.length > maxPoints) {
+        if (chart.data.labels.length > maxPoints) {
     
 }
             chart.data.labels = chart.data.labels.slice(-maxPoints); }
@@ -445,9 +444,9 @@ export class AnalyticsChartRenderer {
      */
     private getCanvas(canvasId: string): HTMLCanvasElement | null { let canvas = document.getElementById(canvasId) as HTMLCanvasElement,
 
-        if(!canvas) {
+        if (!canvas) {
             // キャンバスが存在しない場合は作成
-            canvas = document.createElement('canvas),
+            canvas = document.createElement('canvas),'
             canvas.id = canvasId,
             canvas.width = this.options.defaultWidth,
             canvas.height = this.options.defaultHeight,
@@ -467,7 +466,7 @@ export class AnalyticsChartRenderer {
     destroyChart(canvasId: string): void { this.stopRealtimeUpdate(canvasId),
         
         const chart = this.charts.get(canvasId),
-        if(chart) {
+        if (chart) {
             chart.destroy() }
             this.charts.delete(canvasId); }
         }
@@ -478,8 +477,8 @@ export class AnalyticsChartRenderer {
     /**
      * Canvas APIによるフォールバック描画
      */''
-    private fallbackToCanvasRenderer()';
-        console.warn('Chart.js not available, using Canvas API fallback);
+    private fallbackToCanvasRenderer()';'
+        console.warn('Chart.js not available, using Canvas API fallback);'
         this.useCanvasFallback = true;
     }
 
@@ -487,13 +486,13 @@ export class AnalyticsChartRenderer {
      * Canvas APIを使用した簡単な線グラフの描画（フォールバック）
      */
     drawSimpleLineChart(canvasId: string, data: ChartDataUpdate, config: ChartConfig = { ): boolean {
-        if (!this.useCanvasFallback') return false,
-',
+        if (!this.useCanvasFallback') return false,'
+','
 
         const canvas = this.getCanvas(canvasId),
         if(!canvas) return false,
 
-        const ctx = canvas.getContext('2d),
+        const ctx = canvas.getContext('2d),'
         if (!ctx) return false,
         
         // キャンバスをクリア
@@ -553,7 +552,7 @@ export class AnalyticsChartRenderer {
     updateAllCharts(): void { for (const [canvasId, callback] of this.dataSourceCallbacks) {
             try {
                 const newData = callback(),
-                if(newData) {
+                if (newData) {
     
 }
                     this.updateChartData(canvasId, newData); }
@@ -579,7 +578,7 @@ export class AnalyticsChartRenderer {
     private estimateMemoryUsage(): MemoryUsage { let totalDataPoints = 0,
         
         this.charts.forEach(chart => { ),
-            if(chart.data && chart.data.datasets) {
+            if (chart.data && chart.data.datasets) {
     
 }
                 chart.data.datasets.forEach((dataset: any) => { }
@@ -588,7 +587,7 @@ export class AnalyticsChartRenderer {
             }
         });
 
-        return { estimatedDataPoints: totalDataPoints };
+        return { estimatedDataPoints: totalDataPoints,;
             estimatedMemoryKB: Math.round(totalDataPoints * 0.1) // 1データポイント約100バイトと仮定 
     }
 
@@ -608,7 +607,7 @@ export class AnalyticsChartRenderer {
         this.charts.clear();
         this.chartConfigs.clear();
         this.updateTimers.clear();
-        this.dataSourceCallbacks.clear()';
+        this.dataSourceCallbacks.clear()';'
         console.log('ChartRenderer, destroyed');
 
-    }'}
+    }'}'

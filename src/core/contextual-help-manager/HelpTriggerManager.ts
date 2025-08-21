@@ -16,120 +16,114 @@
 
 // 型定義
 export interface TriggerConfig { onHover: boolean,
-    onFocus: boolean,
-    onError: boolean,
-    onStuck: boolean,
-    onRequest: boolean,
-    onFirstVisit: boolean,
-    onInactivity: number,
-    onMultipleErrors: number  }
+    onFocus: boolean;
+    onError: boolean;
+    onStuck: boolean;
+    onRequest: boolean;
+    onFirstVisit: boolean;
+    onInactivity: number;
+    onMultipleErrors: number;
 
 export interface UserBehaviorTracking { errorCount: number,
-    inactivityTimer: number | null,
-    lastActivity: number,
-    visitCount: number,
-    stuckDetection: StuckDetectionData,
-    hoverTracking: HoverTrackingData
-    }
+    inactivityTimer: number | null;
+    lastActivity: number;
+    visitCount: number;
+    stuckDetection: StuckDetectionData;
+    hoverTracking: HoverTrackingData;
 
 export interface StuckDetectionData { sameElementClicks: number,
-    lastClickedElement: HTMLElement | null,
-    timeThreshold: number }
+    lastClickedElement: HTMLElement | null;
+    timeThreshold: number;
 
 export interface HoverTrackingData { currentElement: HTMLElement | null,
-    hoverStartTime: number | null,
-    hoverThreshold: number }
+    hoverStartTime: number | null;
+    hoverThreshold: number;
 
 export interface TriggerContext { targetElement?: HTMLElement,
-    duration?: number,
-    errorType?: string,
-    errorCount?: number,
-    immediate?: boolean,
-    priority?: TriggerPriority,
-    clickCount?: number,
-    inactivityDuration?: number,
-    persistent?: boolean,
-    userRequested?: boolean,
-    elementType?: string,
-    triggerSource?: TriggerSource,
-    sessionContext?: SessionContext }
+    duration?: number;
+    errorType?: string;
+    errorCount?: number;
+    immediate?: boolean;
+    priority?: TriggerPriority;
+    clickCount?: number;
+    inactivityDuration?: number;
+    persistent?: boolean;
+    userRequested?: boolean;
+    elementType?: string;
+    triggerSource?: TriggerSource;
+    sessionContext?: SessionContext;
 
 export interface SessionContext { sessionDuration: number,
-    pageViews: number,
-    interactionCount: number,
-    errorHistory: ErrorRecord[],
-    userAgent: string,
-    viewport: ViewportInfo
-     }
+    pageViews: number;
+    interactionCount: number;
+    errorHistory: ErrorRecord[];
+    userAgent: string;
+    viewport: ViewportInfo;
 
 export interface ErrorRecord { timestamp: number,
-    type: string,
-    message: string,
-    element?: HTMLElement,
-    resolved: boolean }
+    type: string;
+    message: string;
+    element?: HTMLElement;
+    resolved: boolean;
 
 export interface ViewportInfo { width: number,
-    height: number,
-    devicePixelRatio: number,
-    orientation?: string }
+    height: number;
+    devicePixelRatio: number;
+    orientation?: string;
 
-export interface TriggerCallback { (triggerType: TriggerType, context: TriggerContext): void  }
+export interface TriggerCallback { (triggerType: TriggerType, context: TriggerContext): void;
 
 export interface EventListenerRegistry { hoverHandler?: (event: MouseEvent) => void,
-    hoverLeaveHandler?: (event: MouseEvent) => void,
-    focusHandler?: (event: FocusEvent) => void,
-    errorHandler?: (event: ErrorEvent | PromiseRejectionEvent) => void,
-    clickHandler?: (event: MouseEvent) => void,
-    activityHandler?: (event: Event) => void,
-    keyHandler?: (event: KeyboardEvent) => void,
+    hoverLeaveHandler?: (event: MouseEvent) => void;
+    focusHandler?: (event: FocusEvent) => void;
+    errorHandler?: (event: ErrorEvent | PromiseRejectionEvent) => void;
+    clickHandler?: (event: MouseEvent) => void;
+    activityHandler?: (event: Event) => void;
+    keyHandler?: (event: KeyboardEvent) => void;
     events?: string[],  }
 }
 
 export interface TriggerStatistics { errorCount: number,
-    visitCount: number,
-    lastActivity: number,
-    inactivityDuration: number,
-    triggersActive: string[],
-    triggerHistory: TriggerHistoryEntry[],
-    sessionStats: SessionStatistics
-     }
+    visitCount: number;
+    lastActivity: number;
+    inactivityDuration: number;
+    triggersActive: string[];
+    triggerHistory: TriggerHistoryEntry[];
+    sessionStats: SessionStatistics;
 
 export interface TriggerHistoryEntry { timestamp: number,
-    type: TriggerType,
-    context: TriggerContext,
-    resolved: boolean }
+    type: TriggerType;
+    context: TriggerContext;
+    resolved: boolean;
 
 export interface SessionStatistics { startTime: number,
-    duration: number,
-    triggerCount: Record<TriggerType, number>,
-    averageResponseTime: number,
-    userEngagement: EngagementMetrics
-     }
+    duration: number;
+    triggerCount: Record<TriggerType, number>;
+    averageResponseTime: number;
+    userEngagement: EngagementMetrics;
 
 export interface EngagementMetrics { mouseMovements: number,
-    keystrokes: number,
-    clicks: number,
-    scrollEvents: number,
-    focusChanges: number }
+    keystrokes: number;
+    clicks: number;
+    scrollEvents: number;
+    focusChanges: number;
 
 export interface TriggerSensitivity { hover: SensitivityLevel,
-    focus: SensitivityLevel,
-    stuck: SensitivityLevel,
-    inactivity: SensitivityLevel,
-    error: SensitivityLevel
-    }
+    focus: SensitivityLevel;
+    stuck: SensitivityLevel;
+    inactivity: SensitivityLevel;
+    error: SensitivityLevel;
 
 export interface AdaptiveTriggerConfig { enabled: boolean,
-    learningRate: number,
-    adaptationThreshold: number,
-    sensitivityAdjustment: TriggerSensitivity
-    }
+    learningRate: number;
+    adaptationThreshold: number;
+    sensitivityAdjustment: TriggerSensitivity;
 
 export interface AnalyticsData { trigger_type: TriggerType,
-    context: string,
-    timestamp: number,
-    session_id: string,
-    user_id?: string }
+    context: string;
+    timestamp: number;
+    session_id: string;
+    user_id?: string;
 
 // 列挙型
 export type TriggerType = 'hover' | 'focus' | 'error' | 'stuck' | 'request' | 'firstVisit' | 'inactivity' | 'multipleErrors';
@@ -146,16 +140,16 @@ export const DEFAULT_TRIGGER_CONFIG: TriggerConfig = { onHover: true,
     onFirstVisit: true,
     onInactivity: 5000,
     onMultipleErrors: 3  } as const;
-';
+';'
 
 export const INTERACTIVE_ELEMENTS = {;
     tags: ['button', 'input', 'select', 'textarea', 'a', 'details', 'summary'],
     roles: ['button', 'link', 'tab', 'menuitem', 'option', 'checkbox', 'radio'],
-    attributes: ['tabindex', 'onclick', 'onkeydown', 'role] } as const;
-';
+    attributes: ['tabindex', 'onclick', 'onkeydown', 'role] } as const;'
+';'
 
-export const ACTIVITY_EVENTS = [';
-    'mousemove', 'keydown', 'click', 'scroll', 'touchstart', ]';
+export const ACTIVITY_EVENTS = [';'
+    'mousemove', 'keydown', 'click', 'scroll', 'touchstart', ]';'
     'touchmove', 'focusin', 'focusout', 'wheel'];
 ] as const;
 
@@ -173,14 +167,14 @@ export const TRIGGER_SENSITIVITY_THRESHOLDS = { hover: {
         high: 2000,
     adaptive: 5000 
     } as const;
-';
+';'
 
 export const KEYBOARD_SHORTCUTS = {;
     HELP_F1: 'F1',
     HELP_CTRL_H: 'h',
     ESC: 'Escape'
             } as const;
-';
+';'
 
 export const STORAGE_KEYS = {;
     visitCount: 'bubblePop_visitCount',
@@ -189,14 +183,14 @@ export const STORAGE_KEYS = {;
             } as const;
 // ユーティリティ関数
 export function isInteractiveElement(element: HTMLElement): boolean {,
-    const tagName = element.tagName.toLowerCase()',
+    const tagName = element.tagName.toLowerCase()','
     const role = element.getAttribute('role',
-    ',
+    ','
 
-    return INTERACTIVE_ELEMENTS.tags.includes(tagName, as any) ||',
-           (role && INTERACTIVE_ELEMENTS.roles.includes(role, as any)) ||',
-           element.hasAttribute('tabindex') ||',
-           element.hasAttribute('onclick') ||',
+    return INTERACTIVE_ELEMENTS.tags.includes(tagName, as any) ||','
+           (role && INTERACTIVE_ELEMENTS.roles.includes(role, as any)) ||','
+           element.hasAttribute('tabindex') ||','
+           element.hasAttribute('onclick') ||','
            element.hasAttribute('onkeydown' }'
 
 export function calculateEngagementScore(metrics: EngagementMetrics, sessionDuration: number): number { const weightedScore = 
@@ -222,31 +216,30 @@ export function serializeTriggerContext(context: TriggerContext): string { const
             tagName: context.targetElement.tagName,
             id: context.targetElement.id,
             className: context.targetElement.className,
-    textContent: context.targetElement.textContent?.slice(0, 100), : undefined } : null
-    };
+    textContent: context.targetElement.textContent?.slice(0, 100), : undefined; : null;;
     return JSON.stringify(serializable);
 }
 
 export class HelpTriggerManager {
-    private triggers: TriggerConfig,
-    private userBehavior: UserBehaviorTracking,
+    private triggers: TriggerConfig;
+    private userBehavior: UserBehaviorTracking;
     private, triggerCallbacks: Map<string, TriggerCallback>,
-    private activeListeners: Map<string, EventListenerRegistry>,
+    private activeListeners: Map<string, EventListenerRegistry>;
     
-    private sessionContext: SessionContext,
-    private triggerHistory: TriggerHistoryEntry[],
-    private engagementMetrics: EngagementMetrics,
-    private adaptiveConfig: AdaptiveTriggerConfig,
-    private sessionId: string,
+    private sessionContext: SessionContext;
+    private triggerHistory: TriggerHistoryEntry[];
+    private engagementMetrics: EngagementMetrics;
+    private adaptiveConfig: AdaptiveTriggerConfig;
+    private sessionId: string;
     private, sessionStartTime: number,
     constructor() {  }
-        this.triggers = { ...DEFAULT_TRIGGER_CONFIG,
-        this.triggerCallbacks = new Map(),
-        this.activeListeners = new Map(),
-        this.triggerHistory = [],
+        this.triggers = { ...DEFAULT_TRIGGER_CONFIG;
+        this.triggerCallbacks = new Map();
+        this.activeListeners = new Map();
+        this.triggerHistory = [];
         
-        this.sessionId = generateSessionId(),
-        this.sessionStartTime = Date.now(),
+        this.sessionId = generateSessionId();
+        this.sessionStartTime = Date.now();
         
         this.userBehavior = { errorCount: 0,
             inactivityTimer: null,
@@ -258,10 +251,10 @@ export class HelpTriggerManager {
                 inactivity: 'adaptive',
                 error: 'high'
             }))
-        ';
+        ';'
         this.initializeTriggers();
-        this.startSessionTracking()';
-        console.log('[HelpTriggerManager] Component, initialized);
+        this.startSessionTracking()';'
+        console.log('[HelpTriggerManager] Component, initialized);'
     }
 
     /**
@@ -282,8 +275,8 @@ export class HelpTriggerManager {
         setInterval(() => {  }
             this.sessionContext.sessionDuration = Date.now() - this.sessionStartTime;' }'
 
-        }, 1000');
-        ';
+        }, 1000');'
+        ';'
         // ビューポート変更の監視
         window.addEventListener('resize', () => {  this.sessionContext.viewport = {
                 width: window.innerWidth,
@@ -301,32 +294,32 @@ export class HelpTriggerManager {
         const hoverHandler = (e: MouseEvent): void => { 
             const target = e.target as HTMLElement,
             if(!isInteractiveElement(target) return,
-            ',
+            ','
 
             this.userBehavior.hoverTracking.currentElement = target,
-            this.userBehavior.hoverTracking.hoverStartTime = Date.now()',
-            const threshold = getSensitivityThreshold('hover', this.adaptiveConfig.sensitivityAdjustment.hover',
-            ',
+            this.userBehavior.hoverTracking.hoverStartTime = Date.now()','
+            const threshold = getSensitivityThreshold('hover', this.adaptiveConfig.sensitivityAdjustment.hover','
+            ','
 
             setTimeout(() => {''
-                if(this.userBehavior.hoverTracking.currentElement === target) {
+                if (this.userBehavior.hoverTracking.currentElement === target) {
 
                     this.triggerHelp('hover', {''
-                        targetElement: target',
-                        duration: Date.now('}
+                        targetElement: target','
+                        duration: Date.now('}'
 
-                        triggerSource: 'user',' }
+                        triggerSource: 'user',' }'
 
                         priority: 'low' }))
-                }), threshold';
+                }), threshold';'
         };
 
         const hoverLeaveHandler = (e: MouseEvent'): void => {  this.userBehavior.hoverTracking.currentElement = null }'
             this.userBehavior.hoverTracking.hoverStartTime = null; }
         };
 
-        document.addEventListener('mouseover', hoverHandler';
-        document.addEventListener('mouseleave', hoverLeaveHandler';
+        document.addEventListener('mouseover', hoverHandler';'
+        document.addEventListener('mouseleave', hoverLeaveHandler';'
 
         this.activeListeners.set('hover', { hoverHandler, hoverLeaveHandler ) }
 
@@ -338,25 +331,25 @@ export class HelpTriggerManager {
         const focusHandler = (e: FocusEvent): void => { 
             const target = e.target as HTMLElement,
             
-            if(isInteractiveElement(target) {
+            if (isInteractiveElement(target) {
             
                 this.engagementMetrics.focusChanges++,
-                ',
+                ','
 
                 setTimeout(() => {''
-                    if(document.activeElement === target) {''
+                    if (document.activeElement === target) {''
                         this.triggerHelp('focus', {''
-                            targetElement: target',
-                            elementType: target.tagName.toLowerCase('}
+                            targetElement: target','
+                            elementType: target.tagName.toLowerCase('}'
 
-                            triggerSource: 'user',' }
+                            triggerSource: 'user',' }'
 
                             priority: 'medium' })'}')'
-                }, 1000');
+                }, 1000');'
             }
         };
 
-        document.addEventListener('focusin', focusHandler';
+        document.addEventListener('focusin', focusHandler';'
         this.activeListeners.set('focus', { focusHandler ) }
 
     /**
@@ -366,34 +359,34 @@ export class HelpTriggerManager {
         
         const errorHandler = (error: ErrorEvent | PromiseRejectionEvent): void => { 
             this.userBehavior.errorCount++,
-            ',
+            ','
 
             const errorRecord: ErrorRecord = {''
-                timestamp: Date.now()',
+                timestamp: Date.now()','
     type: error.type || 'unhandledrejection',')',
                 message: 'message' in error ? error.message : String(error.reason), 
-                resolved: false  }
+                resolved: false,
             };
             this.sessionContext.errorHistory.push(errorRecord);
 
             this.triggerHelp('error', { errorType: errorRecord.type)
-                errorCount: this.userBehavior.errorCount',
+                errorCount: this.userBehavior.errorCount','
     immediate: true,
                 priority: 'high',')',
                 triggerSource: 'system'),
-            ',
+            ','
             // 複数エラーチェック
-            if(this.userBehavior.errorCount >= this.triggers.onMultipleErrors) {
+            if (this.userBehavior.errorCount >= this.triggers.onMultipleErrors) {
 
                 this.triggerHelp('multipleErrors', {'
-                    errorCount: this.userBehavior.errorCount,',
-                    priority: 'urgent',' }
+                    errorCount: this.userBehavior.errorCount,','
+                    priority: 'urgent',' }'
 
-                    triggerSource: 'system')'); 
+                    triggerSource: 'system')'); '
     };
 
-        window.addEventListener('error', errorHandler as EventListener';
-        window.addEventListener('unhandledrejection', errorHandler as EventListener';
+        window.addEventListener('error', errorHandler as EventListener';'
+        window.addEventListener('unhandledrejection', errorHandler as EventListener';'
 
         this.activeListeners.set('error', { errorHandler: errorHandler as any }
 
@@ -409,14 +402,14 @@ export class HelpTriggerManager {
             const target = e.target as HTMLElement,
             const stuckData = this.userBehavior.stuckDetection,
 
-            if(stuckData.lastClickedElement === target) {
+            if (stuckData.lastClickedElement === target) {
                 stuckData.sameElementClicks++,
 
                 const threshold = getSensitivityThreshold('stuck', this.adaptiveConfig.sensitivityAdjustment.stuck),
 
-                if(stuckData.sameElementClicks >= threshold) {''
+                if (stuckData.sameElementClicks >= threshold) {''
                     this.triggerHelp('stuck', {
-                targetElement: target',
+                targetElement: target','
     clickCount: stuckData.sameElementClicks,
                         priority: 'high',')',
                         triggerSource: 'adaptive') })
@@ -431,15 +424,15 @@ export class HelpTriggerManager {
                 }, stuckData.timeThreshold);
             }
 
-            this.updateLastActivity()';
-        document.addEventListener('click', clickHandler';
+            this.updateLastActivity()';'
+        document.addEventListener('click', clickHandler';'
         this.activeListeners.set('stuck', { clickHandler ) }
 
     /**
      * 非アクティブ検出を設定
      */
     private setupInactivityDetection(): void { if (!this.triggers.onInactivity || this.triggers.onInactivity <= 0) return,
-        ',
+        ','
 
         const activityHandler = (e: Event): void => { ''
             switch(e.type) {
@@ -462,7 +455,7 @@ export class HelpTriggerManager {
         
         const events = [...ACTIVITY_EVENTS];
         events.forEach(event => {  ) }
-            document.addEventListener(event, activityHandler, { passive: true });
+            document.addEventListener(event, activityHandler, { passive: true,);
 
         this.startInactivityTimer('';
         this.activeListeners.set('inactivity', { activityHandler, events }
@@ -472,8 +465,8 @@ export class HelpTriggerManager {
      */)
     private setupFirstVisitTrigger(): void { if (!this.triggers.onFirstVisit) return,
         
-        if(this.userBehavior.visitCount === 1) {
-        ',
+        if (this.userBehavior.visitCount === 1) {
+        ','
 
             setTimeout(() => { ''
                 this.triggerHelp('firstVisit', {''
@@ -494,11 +487,11 @@ export class HelpTriggerManager {
             this.engagementMetrics.keystrokes++,
             
             // F1キーでヘルプ要求
-            if(e.key === KEYBOARD_SHORTCUTS.HELP_F1) {
+            if (e.key === KEYBOARD_SHORTCUTS.HELP_F1) {
 
                 e.preventDefault('''
                 this.triggerHelp('request', {'
-                    targetElement: document.activeElement as HTMLElement,',
+                    targetElement: document.activeElement as HTMLElement,','
                     priority: 'high')
              }
 
@@ -508,17 +501,17 @@ export class HelpTriggerManager {
     }
             
             // Ctrl+H でヘルプ要求
-            if(e.ctrlKey && e.key === KEYBOARD_SHORTCUTS.HELP_CTRL_H) { e.preventDefault('''
+            if (e.ctrlKey && e.key === KEYBOARD_SHORTCUTS.HELP_CTRL_H) { e.preventDefault('''
                 this.triggerHelp('request', {'
-                    targetElement: document.activeElement as HTMLElement,',
-                    priority: 'high')',
+                    targetElement: document.activeElement as HTMLElement,','
+                    priority: 'high')','
     userRequested: true,' }'
 
                     triggerSource: 'user'); 
     }
 
-            this.updateLastActivity()';
-        document.addEventListener('keydown', keyHandler';
+            this.updateLastActivity()';'
+        document.addEventListener('keydown', keyHandler';'
         this.activeListeners.set('keyboard', { keyHandler ) }
 
     /**
@@ -538,14 +531,14 @@ export class HelpTriggerManager {
     private restartInactivityTimer(): void { if (this.userBehavior.inactivityTimer) {''
             clearTimeout(this.userBehavior.inactivityTimer) }
 
-        const threshold = getSensitivityThreshold('inactivity', this.adaptiveConfig.sensitivityAdjustment.inactivity';
-        ';
+        const threshold = getSensitivityThreshold('inactivity', this.adaptiveConfig.sensitivityAdjustment.inactivity';'
+        ';'
 
         this.userBehavior.inactivityTimer = window.setTimeout(() => { ''
             const inactivityDuration = Date.now('',
             this.triggerHelp('inactivity', {'
-                inactivityDuration,',
-                priority: 'medium',' }
+                inactivityDuration,','
+                priority: 'medium',' }'
 
                 triggerSource: 'system'); 
     }, threshold);
@@ -563,7 +556,7 @@ export class HelpTriggerManager {
         const historyEntry: TriggerHistoryEntry = { timestamp: Date.now(
             type: triggerType,
             context: enhancedContext,
-    resolved: false  };
+    resolved: false,;
         this.triggerHistory.push(historyEntry);
         
         // 履歴サイズを制限
@@ -571,13 +564,13 @@ export class HelpTriggerManager {
         
         // コールバック実行
         const callback = this.triggerCallbacks.get(triggerType);
-        if(callback) { }
+        if (callback) { }
 
             callback(triggerType, enhancedContext); }
         }
-        ';
+        ';'
         // デフォルトコールバック
-        const defaultCallback = this.triggerCallbacks.get('default);
+        const defaultCallback = this.triggerCallbacks.get('default);'
         if (defaultCallback && !callback) { defaultCallback(triggerType, enhancedContext) }
         
         this.logTrigger(triggerType, enhancedContext);
@@ -593,13 +586,13 @@ export class HelpTriggerManager {
             .filter(entry => entry.type === triggerType && Date.now() - entry.timestamp < 300000) // 5分以内,
             .length,
 
-        if(recentTriggers >= this.adaptiveConfig.adaptationThreshold) {
+        if (recentTriggers >= this.adaptiveConfig.adaptationThreshold) {
             // トリガーが頻繁すぎる場合、感度を下げる
         }
 
             this.adjustSensitivity(triggerType, 'decrease'; }
 
-        } else if(recentTriggers === 0 && context.userRequested) { // ユーザーが手動でヘルプを要求した場合、感度を上げる
+        } else if (recentTriggers === 0 && context.userRequested) { // ユーザーが手動でヘルプを要求した場合、感度を上げる
             this.adjustSensitivity(triggerType, 'increase') }
     }
 
@@ -611,22 +604,22 @@ export class HelpTriggerManager {
 
         switch(triggerType) {
 
-            case 'hover':',
+            case 'hover':','
                 this.userBehavior.hoverTracking.hoverThreshold = Math.max(500),
-                    this.userBehavior.hoverTracking.hoverThreshold * (1 - adjustment)'),
+                    this.userBehavior.hoverTracking.hoverThreshold * (1 - adjustment)'),'
 
                 break,
-            case 'stuck':',
+            case 'stuck':','
                 // スタック検出の閾値を調整（最小2, 最大10）
-                const currentThreshold = getSensitivityThreshold('stuck', this.adaptiveConfig.sensitivityAdjustment.stuck',
+                const currentThreshold = getSensitivityThreshold('stuck', this.adaptiveConfig.sensitivityAdjustment.stuck','
                 const newThreshold = Math.max(2, Math.min(10),
-                    currentThreshold + (direction === 'increase' ? -1 : 1)'),
+                    currentThreshold + (direction === 'increase' ? -1 : 1)'),'
                 this.triggers.onMultipleErrors = newThreshold,
 
                 break,
-            case 'inactivity':',
+            case 'inactivity':','
                 this.triggers.onInactivity = Math.max(1000),
-                    this.triggers.onInactivity * (1 - adjustment)') }
+                    this.triggers.onInactivity * (1 - adjustment)') }'
                 break; }
 }
 
@@ -662,7 +655,7 @@ export class HelpTriggerManager {
         
         // アナリティクスに送信
         this.sendAnalytics({)
-            trigger_type: triggerType };
+            trigger_type: triggerType,;
             context: serializeTriggerContext(context} }
             timestamp: Date.now());
             session_id: this.sessionId;
@@ -673,15 +666,15 @@ export class HelpTriggerManager {
      */
     private sendAnalytics(data: AnalyticsData): void { try {
             // GameAnalyticsが利用可能な場合
-            if(window.gameAnalytics && window.gameAnalytics.trackEvent) {', ' }
+            if (window.gameAnalytics && window.gameAnalytics.trackEvent) {', ' }
 
-                window.gameAnalytics.trackEvent('help_trigger', data'; }
+                window.gameAnalytics.trackEvent('help_trigger', data'; }'
             }
-            ';
+            ';'
             // カスタムアナリティクスエンドポイントが利用可能な場合
-            if(window.customAnalytics && window.customAnalytics.track) {', ' }
+            if (window.customAnalytics && window.customAnalytics.track) {', ' }
 
-                window.customAnalytics.track('help_trigger', data'; }
+                window.customAnalytics.track('help_trigger', data'; }'
 
             } catch (error) { console.warn('[HelpTriggerManager] Failed to send analytics:', error }
     }
@@ -705,9 +698,9 @@ export class HelpTriggerManager {
      */'
     updateTriggers(newTriggers: Partial<TriggerConfig>): void { ''
         Object.assign(this.triggers, newTriggers),
-        ',
+        ','
         // 非アクティブ検出の更新
-        if('onInactivity' in, newTriggers) {
+        if ('onInactivity' in, newTriggers) {
             if (this.triggers.onInactivity > 0) {
         }
                 this.restartInactivityTimer(); }
@@ -715,7 +708,7 @@ export class HelpTriggerManager {
             } else {
                 this.stopInactivityTimer( }
 
-        console.log('[HelpTriggerManager] Trigger configuration updated:', newTriggers'; }
+        console.log('[HelpTriggerManager] Trigger configuration updated:', newTriggers'; }'
     }
 
     /**
@@ -744,11 +737,11 @@ export class HelpTriggerManager {
             onFocus: () => this.setupFocusTriggers(),
             onError: () => this.setupErrorTriggers(),
             onStuck: () => this.setupStuckDetection(
-            onInactivity: () => this.setupInactivityDetection()',
-        const listenerType = triggerType.replace('on', ').toLowerCase(),
+            onInactivity: () => this.setupInactivityDetection()','
+        const listenerType = triggerType.replace('on', ').toLowerCase(),'
         
         this.removeListeners(listenerType),
-        if(enabled && setupMethods[triggerType]) {
+        if (enabled && setupMethods[triggerType]) {
     
 }
             setupMethods[triggerType](); }
@@ -762,39 +755,39 @@ export class HelpTriggerManager {
 
         switch(type) {
 
-            case 'hover':',
-                if(listeners.hoverHandler) {
+            case 'hover':','
+                if (listeners.hoverHandler) {
         }
 
-                    document.removeEventListener('mouseover', listeners.hoverHandler'; }
+                    document.removeEventListener('mouseover', listeners.hoverHandler'; }'
 
                 }''
-                if(listeners.hoverLeaveHandler) {', ' }
+                if (listeners.hoverLeaveHandler) {', ' }
 
-                    document.removeEventListener('mouseleave', listeners.hoverLeaveHandler'; }
+                    document.removeEventListener('mouseleave', listeners.hoverLeaveHandler'; }'
                 }
                 break;
 
-            case 'focus':';
-                if(listeners.focusHandler) {', ' }
+            case 'focus':';'
+                if (listeners.focusHandler) {', ' }
 
-                    document.removeEventListener('focusin', listeners.focusHandler'; }
+                    document.removeEventListener('focusin', listeners.focusHandler'; }'
                 }
                 break;
 
-            case 'error':';
-                if(listeners.errorHandler) {
+            case 'error':';'
+                if (listeners.errorHandler) {
 
-                    window.removeEventListener('error', listeners.errorHandler as EventListener' }
+                    window.removeEventListener('error', listeners.errorHandler as EventListener' }'
 
-                    window.removeEventListener('unhandledrejection', listeners.errorHandler as EventListener'; }
+                    window.removeEventListener('unhandledrejection', listeners.errorHandler as EventListener'; }'
                 }
                 break;
 
-            case 'stuck':';
-                if(listeners.clickHandler) {', ' }
+            case 'stuck':';'
+                if (listeners.clickHandler) {', ' }
 
-                    document.removeEventListener('click', listeners.clickHandler'; }
+                    document.removeEventListener('click', listeners.clickHandler'; }'
                 }
                 break;
 
@@ -802,9 +795,9 @@ export class HelpTriggerManager {
                 if (listeners.activityHandler && listeners.events) { listeners.events.forEach(event => { ) }
                         document.removeEventListener(event, listeners.activityHandler!); }
                     }''
-                this.stopInactivityTimer()';
+                this.stopInactivityTimer()';'
             case 'keyboard':')';
-                if(listeners.keyHandler) {', ' }
+                if (listeners.keyHandler) {', ' }
 
                     document.removeEventListener('keydown', listeners.keyHandler); }
                 }
@@ -852,7 +845,7 @@ export class HelpTriggerManager {
                 !entry.resolved &&),
                 (!timestamp || entry.timestamp === timestamp)),
         
-        if(entry) {
+        if (entry) {
     
 }
             entry.resolved = true; }
@@ -885,9 +878,9 @@ export class HelpTriggerManager {
                     context: serializeTriggerContext(entry.context)  }
                 });
             };
-            ';
+            ';'
 
-            localStorage.setItem(STORAGE_KEYS.triggerHistory, JSON.stringify(serializedStats);'} catch (error) { console.warn('[HelpTriggerManager] Failed to save statistics:', error }
+            localStorage.setItem(STORAGE_KEYS.triggerHistory, JSON.stringify(serializedStats);'} catch (error) { console.warn('[HelpTriggerManager] Failed to save statistics:', error }'
     }
 
     /**
@@ -904,7 +897,7 @@ export class HelpTriggerManager {
         // コールバックをクリア
         this.triggerCallbacks.clear();
         // 統計を保存
-        this.saveStatistics()';
+        this.saveStatistics()';'
         console.log('[HelpTriggerManager] Component, destroyed');
 
-    }'}
+    }'}'

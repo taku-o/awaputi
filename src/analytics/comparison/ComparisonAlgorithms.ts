@@ -9,7 +9,7 @@ export class ComparisonAlgorithms {
         // アルゴリズム設定
         this.algorithmConfig = {
             minSampleSize: 3,
-    trendThreshold: 0.05, // 5%,
+    trendThreshold: 0.05, // 5%;
             confidenceLevel: 0.95 }
             outlierThreshold: 3 // 標準偏差の3倍 
     }
@@ -72,7 +72,7 @@ export class ComparisonAlgorithms {
     
 }
         const benchmark = {};
-        const metricKeys = ['averageScore', 'averageAccuracy', 'averagePlayTime', ]';
+        const metricKeys = ['averageScore', 'averageAccuracy', 'averagePlayTime', ]';'
                            'completionRate', 'maxCombo'];
 
         for (const key of metricKeys) {
@@ -228,17 +228,17 @@ export class ComparisonAlgorithms {
         let quality = 'good',
         let confidence = 0.95,
 
-        if(sampleSize < 10) {''
+        if (sampleSize < 10) {''
             quality = 'poor' }
 
             confidence = 0.5;' }'
 
-        } else if(sampleSize < 30) { ''
+        } else if (sampleSize < 30) { ''
             quality = 'fair',
 
             confidence = 0.75,' }'
 
-        } else if(sampleSize < 100) { ''
+        } else if (sampleSize < 100) { ''
             quality = 'good',
             confidence = 0.9 }
 
@@ -259,7 +259,7 @@ export class ComparisonAlgorithms {
      * @returns {Object} 外れ値情報
      */
     detectOutliers(values) { if (values.length < 3) { }
-            return { outliers: [], cleanedValues: values  }
+            return { outliers: [], cleanedValues: values,
         
         const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
         const stdDev = this.calculateStandardDeviation(values);
@@ -337,5 +337,4 @@ export class ComparisonAlgorithms {
         
         return { lower: mean - marginOfError }
             upper: mean + marginOfError };
-            marginOfError: marginOfError 
-    }'}
+            marginOfError: marginOfError;'}'

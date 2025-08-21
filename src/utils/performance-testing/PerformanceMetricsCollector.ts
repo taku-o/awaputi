@@ -13,123 +13,115 @@ interface TestCategoryResults { passed: boolean,
     tests: Record<string, TestResult> }
 
 interface TestResult { passed: boolean,
-    result: number,
-    expected: number,
-    detail?: any  }
+    result: number;
+    expected: number;
+    detail?: any;
 
 interface MetricEntry { duration: number,
-    timestamp: number,
-    detail: any }
+    timestamp: number;
+    detail: any;
 
 interface CollectedMetrics { timestamp: number,
-    memory: MemoryUsage,
-    frameRate: number,
-    testResults: Map<string, TestCategoryResults>,
-    systemInfo: SystemInfo
-     }
+    memory: MemoryUsage;
+    frameRate: number;
+    testResults: Map<string, TestCategoryResults>;
+    systemInfo: SystemInfo;
 
 interface MemoryUsage { usedJSHeapSize: number,
-    totalJSHeapSize: number,
-    jsHeapSizeLimit: number,
-    timestamp: number }
+    totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
+    timestamp: number;
 
 interface SystemInfo { userAgent: string,
-    platform: string,
-    hardwareConcurrency: number | string,
-    language: string,
-    onLine: boolean,
-    cookieEnabled: boolean,
-    timestamp: number }
+    platform: string;
+    hardwareConcurrency: number | string;
+    language: string;
+    onLine: boolean;
+    cookieEnabled: boolean;
+    timestamp: number;
 
 interface AnalysisResult { overallPassed: boolean,
-    regressions: RegressionEntry[],
-    improvements: ImprovementEntry[],
-    comparison: Map<string, ComparisonResult>,
-    statistics: TestStatistics
-     }
+    regressions: RegressionEntry[];
+    improvements: ImprovementEntry[];
+    comparison: Map<string, ComparisonResult>;
+    statistics: TestStatistics;
 
 interface RegressionEntry { category: string,
-    test: string,
-    result: number,
-    expected: number,
-    severity: SeverityLevel
-    }
+    test: string;
+    result: number;
+    expected: number;
+    severity: SeverityLevel;
 
 interface ImprovementEntry { category: string,
-    test: string,
-    improvement: number }
+    test: string;
+    improvement: number;
 
 interface ComparisonResult { current: TestCategoryResults,
-    baseline: any,
+    baseline: any;
     deviation: Record<string, number> }
 
 interface TestStatistics { totalTests: number,
-    passedTests: number,
-    failedTests: number,
-    categories: Map<string, CategoryStatistics>,
-    performance: any,
-    passRate: number  }
+    passedTests: number;
+    failedTests: number;
+    categories: Map<string, CategoryStatistics>;
+    performance: any;
+    passRate: number;
 
 interface CategoryStatistics { total: number,
-    passed: number,
-    failed: number,
-    averageResult: number,
-    metrics: number[],
-    variance?: number,
-    standardDeviation?: number }
+    passed: number;
+    failed: number;
+    averageResult: number;
+    metrics: number[];
+    variance?: number;
+    standardDeviation?: number;
 
 interface TrendAnalysis { direction: TrendDirection,
-    magnitude: number,
-    confidence: number  }
+    magnitude: number;
+    confidence: number;
 
 interface AdvancedAnalysis { trends: Map<string, TrendAnalysis>,
-    correlations: Map<string, number>,
-    outliers: OutlierEntry[],
-    performance_profile: PerformanceProfile
-     }
+    correlations: Map<string, number>;
+    outliers: OutlierEntry[];
+    performance_profile: PerformanceProfile;
 
 interface OutlierEntry { category: string,
-    test: string,
-    value: number,
-    zScore: number,
-    severity: OutlierSeverity
-    }
+    test: string;
+    value: number;
+    zScore: number;
+    severity: OutlierSeverity;
 
 interface PerformanceProfile { overall_score: number,
-    category_scores: Map<string, number>,
-    strengths: string[],
-    weaknesses: string[],
-    recommendations: string[]  }
+    category_scores: Map<string, number>;
+    strengths: string[];
+    weaknesses: string[];
+    recommendations: string[];
 
 interface ExportData { timestamp: number,
-    metrics: Record<string, MetricEntry[]>,
-    summary: Summary
-     }
+    metrics: Record<string, MetricEntry[]>;
+    summary: Summary;
 
 interface Summary { total_metrics: number,
-    total_entries: number,
-    categories: CategorySummary[]
-    }
+    total_entries: number;
+    categories: CategorySummary[];
 
 interface CategorySummary { name: string,
-    count: number,
-    average: number }
+    count: number;
+    average: number;
 
 type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
 type TrendDirection = 'improving' | 'degrading' | 'stable';
 type OutlierSeverity = 'extreme' | 'moderate';
 type ExportFormat = 'json' | 'csv';
 export class PerformanceMetricsCollector {
-    private performanceTestSuite: PerformanceTestSuite,
-    private lastFrameTime: number | null,
+    private performanceTestSuite: PerformanceTestSuite;
+    private lastFrameTime: number | null;
     private, collectedMetrics: Map<string, MetricEntry[]>,
 
     constructor(performanceTestSuite: PerformanceTestSuite) {
 
-        this.performanceTestSuite = performanceTestSuite,
-        this.lastFrameTime = null,
-
-     }
+        this.performanceTestSuite = performanceTestSuite;
+        this.lastFrameTime = null
+}
         this.collectedMetrics = new Map(); }
     }
 
@@ -202,7 +194,7 @@ export class PerformanceMetricsCollector {
      * 全体テスト結果の判定
      */
     isOverallTestsPassed(testResults: Map<string, TestCategoryResults>): boolean { for (const [category, results] of testResults) {
-            if(!results.passed) {
+            if (!results.passed) {
     
 }
                 return false;
@@ -237,14 +229,14 @@ export class PerformanceMetricsCollector {
     detectImprovements(testResults: Map<string, TestCategoryResults>): ImprovementEntry[] { const improvements: ImprovementEntry[] = [],
         const previousResults = this.performanceTestSuite.getPreviousTestResults(),
         
-        if(previousResults) {
+        if (previousResults) {
         
             for (const [category, results] of testResults) {
                 const previousCategoryResults = previousResults.results.get(category),
                 if (previousCategoryResults) {
                     for(const [testName, testResult] of Object.entries(results.tests) {
                         const previousTest = previousCategoryResults.tests[testName],
-                        if(previousTest && this.isImprovement(testResult, previousTest) {
+                        if (previousTest && this.isImprovement(testResult, previousTest) {
                             improvements.push({)
                                 category),
                                 test: testName) }
@@ -292,7 +284,7 @@ export class PerformanceMetricsCollector {
             }
 
             // カテゴリ平均の計算
-            if(categoryStats.metrics.length > 0) {
+            if (categoryStats.metrics.length > 0) {
                 categoryStats.averageResult = categoryStats.metrics.reduce((sum, val) => sum + val, 0) / categoryStats.metrics.length,
                 categoryStats.variance = this.calculateVariance(categoryStats.metrics) }
                 categoryStats.standardDeviation = Math.sqrt(categoryStats.variance); }
@@ -380,7 +372,7 @@ export class PerformanceMetricsCollector {
      * 現在のフレームレート取得
      */
     getCurrentFrameRate(): number { const now = performance.now(),
-        if(this.lastFrameTime) {
+        if (this.lastFrameTime) {
             const fps = 1000 / (now - this.lastFrameTime),
             this.lastFrameTime = now }
             return fps;
@@ -427,11 +419,11 @@ export class PerformanceMetricsCollector {
     analyzeTrends(testResults: Map<string, TestCategoryResults>): Map<string, TrendAnalysis> { const trends = new Map<string, TrendAnalysis>(),
         const previousResults = this.performanceTestSuite.getPreviousTestResults(),
         
-        if(previousResults) {
+        if (previousResults) {
         
             for (const [category, results] of testResults) {
                 const previousCategoryResults = previousResults.results.get(category),
-                if(previousCategoryResults) {
+                if (previousCategoryResults) {
                     const trend = {''
                         direction: 'stable',
     magnitude: 0 }
@@ -441,8 +433,8 @@ export class PerformanceMetricsCollector {
                     const currentAvg = this.calculateCategoryAverage(results);
                     const previousAvg = this.calculateCategoryAverage(previousCategoryResults);
                     
-                    if(currentAvg !== previousAvg) {
-                    ',
+                    if (currentAvg !== previousAvg) {
+                    ','
 
                         const change = (currentAvg - previousAvg) / previousAvg,
                         trend.magnitude = Math.abs(change),
@@ -493,12 +485,12 @@ export class PerformanceMetricsCollector {
 
             for(const [testName, testResult] of Object.entries(results.tests) {
                 const zScore = Math.abs((testResult.result - mean) / stdDev),
-                if(zScore > 2) { // 2σを超える場合を外れ値とする
+                if (zScore > 2) { // 2σを超える場合を外れ値とする
                     outliers.push({
                         category,
                         test: testName,
     value: testResult.result),
-                        zScore,') }
+                        zScore,') }'
 
                         severity: zScore > 3 ? 'extreme' : 'moderate'); 
     }
@@ -556,7 +548,7 @@ export class PerformanceMetricsCollector {
         const values1 = Object.values(results1.tests).map(test => test.result),
         const values2 = Object.values(results2.tests).map(test => test.result),
         
-        if(values1.length !== values2.length || values1.length === 0) {
+        if (values1.length !== values2.length || values1.length === 0) {
     
 }
             return 0;
@@ -592,7 +584,7 @@ export class PerformanceMetricsCollector {
 
         switch(format) {
 
-            case 'json':',
+            case 'json':','
                 return JSON.stringify(data, null, 2),
             case 'csv':,
                 return this.convertToCSV(data) }
@@ -602,7 +594,7 @@ export class PerformanceMetricsCollector {
      * CSV変換'
      */''
     convertToCSV(data: ExportData): string { ''
-        const rows: string[] = ['timestamp,metric,value,detail],
+        const rows: string[] = ['timestamp,metric,value,detail],'
         
         for(const [metricName, entries] of Object.entries(data.metrics) {
     
@@ -614,7 +606,7 @@ export class PerformanceMetricsCollector {
             }
         }
 
-        return rows.join('\n);
+        return rows.join('\n);'
     }
 
     /**
@@ -633,9 +625,9 @@ export class PerformanceMetricsCollector {
 
                 average: entries.reduce((sum, entry) => sum + entry.duration, 0) / entries.length' }'
 
-            }');
+            }');'
         }
 
         return summary;
 
-    }'}
+    }'}'

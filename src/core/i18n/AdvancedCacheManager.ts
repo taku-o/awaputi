@@ -5,77 +5,75 @@
 
 // 型定義
 export interface CacheOptions { maxMemorySize?: number,
-    maxEntries?: number,
-    defaultTTL?: number,
-    cleanupInterval?: number }
+    maxEntries?: number;
+    defaultTTL?: number;
+    cleanupInterval?: number;
 
 export interface SetOptions { ttl?: number,
-    priority?: 'low' | 'normal' | 'high',
-    compress?: boolean | null,
+    priority?: 'low' | 'normal' | 'high';
+    compress?: boolean | null;
     layer?: CacheLayer | null }
 
 export interface CacheMetadata { key: string,
-    createdAt: number,
-    lastAccessed: number,
-    accessCount: number,
-    ttl: number,
-    priority: 'low' | 'normal' | 'high',
-    originalSize: number,
-    compressed: boolean,
-    compressedSize?: number,
-    layer: CacheLayer
-     }
+    createdAt: number;
+    lastAccessed: number;
+    accessCount: number;
+    ttl: number;
+    priority: 'low' | 'normal' | 'high';
+    originalSize: number;
+    compressed: boolean;
+    compressedSize?: number;
+    layer: CacheLayer;
 
 export interface AccessPattern { totalAccesses: number,
-    recentAccesses: number,
-    lastAccessTime: number,
-    accessIntervals: number[],
-    avgAccessInterval: number }
+    recentAccesses: number;
+    lastAccessTime: number;
+    accessIntervals: number[];
+    avgAccessInterval: number;
 
 export interface EvictionCandidate { key: string,
-    metadata: CacheMetadata,
-    size: number,
-    score: number }
+    metadata: CacheMetadata;
+    size: number;
+    score: number;
 
 export interface CacheStats { totalRequests: number,
-    hitsByLayer: Record<CacheLayer, number>,
-    misses: number,
-    evictions: number,
-    compressions: number,
-    decompressions: number,
-    currentMemoryUsage: number,
-    totalEntries: number,
-    averageAccessTime: number,
-    accessTimes: number[]  }
+    hitsByLayer: Record<CacheLayer, number>;
+    misses: number;
+    evictions: number;
+    compressions: number;
+    decompressions: number;
+    currentMemoryUsage: number;
+    totalEntries: number;
+    averageAccessTime: number;
+    accessTimes: number[];
 
 export interface LayerDetails { entries: number,
-    sizeKB: number,
-    hitRate: number }
+    sizeKB: number;
+    hitRate: number;
 
 export interface TopAccessPattern { key: string,
-    totalAccesses: number,
-    avgInterval: number }
+    totalAccesses: number;
+    avgInterval: number;
 
 export interface DetailedStats extends CacheStats { hitRate: number,
-    memoryUsagePercent: number,
-    memoryUsageKB: number,
-    maxMemoryKB: number,
-    layerDistribution: Record<CacheLayer, number>,
-    layerDetails: Record<CacheLayer, LayerDetails>,
-    topAccessPatterns: TopAccessPattern[],
-    performanceMode: PerformanceMode,
-    evictionStrategy: EvictionStrategy
-     }
+    memoryUsagePercent: number;
+    memoryUsageKB: number;
+    maxMemoryKB: number;
+    layerDistribution: Record<CacheLayer, number>;
+    layerDetails: Record<CacheLayer, LayerDetails>;
+    topAccessPatterns: TopAccessPattern[];
+    performanceMode: PerformanceMode;
+    evictionStrategy: EvictionStrategy;
 
 export interface AdaptiveWeights { frequency: number,
-    recency: number,
-    size: number,
-    ttl: number }
+    recency: number;
+    size: number;
+    ttl: number;
 
 export interface ConfigurationUpdate { maxMemorySize?: number,
-    performanceMode?: PerformanceMode,
-    evictionStrategy?: EvictionStrategy,
-    compressionEnabled?: boolean }
+    performanceMode?: PerformanceMode;
+    evictionStrategy?: EvictionStrategy;
+    compressionEnabled?: boolean;
 
 export type CacheLayer = 'hot' | 'warm' | 'cold';
 export type PerformanceMode = 'memory' | 'speed' | 'balanced';
@@ -83,30 +81,30 @@ export type EvictionStrategy = 'lru' | 'lfu' | 'adaptive' | 'ttl';
 export type SerializationFormat = 'json' | 'msgpack';
 
 export class AdvancedCacheManager {
-    private maxMemorySize: number,
-    private maxEntries: number,
-    private defaultTTL: number,
-    private cleanupInterval: number,
+    private maxMemorySize: number;
+    private maxEntries: number;
+    private defaultTTL: number;
+    private cleanupInterval: number;
     // 多層キャッシュ構造
     private, layers: Record<CacheLayer, Map<string, string>>,
     
     // メタデータ管理
-    private metadata: Map<string, CacheMetadata>,
-    private accessPatterns: Map<string, AccessPattern>,
-    private sizeTracker: Map<string, number>,
+    private metadata: Map<string, CacheMetadata>;
+    private accessPatterns: Map<string, AccessPattern>;
+    private sizeTracker: Map<string, number>;
     
     // パフォーマンス設定
-    private performanceMode: PerformanceMode,
-    private compressionThreshold: number,
-    private hotCacheRatio: number,
-    private warmCacheRatio: number,
+    private performanceMode: PerformanceMode;
+    private compressionThreshold: number;
+    private hotCacheRatio: number;
+    private warmCacheRatio: number;
     // 統計情報
-    private stats: CacheStats,
+    private stats: CacheStats;
     // 削除戦略設定
-    private evictionStrategy: EvictionStrategy,
-    private adaptiveWeights: AdaptiveWeights,
+    private evictionStrategy: EvictionStrategy;
+    private adaptiveWeights: AdaptiveWeights;
     // 圧縮とシリアライゼーション
-    private compressionEnabled: boolean,
+    private compressionEnabled: boolean;
     private, serializationFormat: SerializationFormat,
     // 定期クリーンアップ
     private cleanupIntervalId?: number,
@@ -114,14 +112,14 @@ export class AdvancedCacheManager {
     constructor(options: CacheOptions = {) {
 
         // 基本設定
-        this.maxMemorySize = options.maxMemorySize || 20 * 1024 * 1024, // 20MB
-        this.maxEntries = options.maxEntries || 1000,
-        this.defaultTTL = options.defaultTTL || 600000, // 10分
-        this.cleanupInterval = options.cleanupInterval || 60000, // 1分
+        this.maxMemorySize = options.maxMemorySize || 20 * 1024 * 1024; // 20MB
+        this.maxEntries = options.maxEntries || 1000;
+        this.defaultTTL = options.defaultTTL || 600000; // 10分
+        this.cleanupInterval = options.cleanupInterval || 60000; // 1分
         
         // 多層キャッシュ構造
         this.layers = {
-            hot: new Map<string, string>(),    // 頻繁にアクセスされるデータ（インメモリ）,
+            hot: new Map<string, string>(),    // 頻繁にアクセスされるデータ（インメモリ）;
             warm: new Map<string, string>(),   // 中程度のアクセス頻度（圧縮済み）
     }
             cold: new Map<string, string>()    // 低頻度アクセス（IndexedDB対応予定） }
@@ -140,14 +138,14 @@ export class AdvancedCacheManager {
         
         // 統計情報
         this.stats = { totalRequests: 0 }
-            hitsByLayer: { hot: 0, warm: 0, cold: 0  },
+            hitsByLayer: { hot: 0, warm: 0, cold: 0  };
             misses: 0;
             evictions: 0;
             compressions: 0;
             decompressions: 0;
             currentMemoryUsage: 0;
             totalEntries: 0;
-            averageAccessTime: 0,
+            averageAccessTime: 0;
     accessTimes: [];
         },
         ;
@@ -159,9 +157,9 @@ export class AdvancedCacheManager {
     ttl: 0.1  };
         // 圧縮とシリアライゼーション
         this.compressionEnabled = true;
-        this.serializationFormat = 'json'; // 'json', 'msgpack', ';
+        this.serializationFormat = 'json'; // 'json', 'msgpack', ';'
         // 定期クリーンアップの開始
-        this.startPeriodicCleanup()';
+        this.startPeriodicCleanup()';'
         console.log('AdvancedCacheManager initialized with', Object.keys(this.layers).length, 'cache layers');
     }
     
@@ -170,7 +168,7 @@ export class AdvancedCacheManager {
      */'
     async set(key: string, value: any, options: SetOptions = { ): Promise<boolean> {''
         const startTime = performance.now('',
-                priority = 'normal),
+                priority = 'normal),'
                 compress = null),
                 layer = null } = options;
             
@@ -184,9 +182,9 @@ export class AdvancedCacheManager {
                 lastAccessed: Date.now('',
     layer: 'hot' // 初期値、後で更新  }))
             // 圧縮判定)
-            const shouldCompress = compress !== null ? compress: (this.compressionEnabled && dataSize > this.compressionThreshold);
+            const shouldCompress = compress !== null ? compress: (this.compressionEnabled && dataSize > this.compressionThreshold),
             let finalValue = serializedValue;
-            if(shouldCompress) {
+            if (shouldCompress) {
                 finalValue = await this._compress(serializedValue),
                 metadata.compressed = true,
                 metadata.compressedSize = this._calculateSize(finalValue) }
@@ -210,7 +208,7 @@ export class AdvancedCacheManager {
             // アクセスパターンを初期化
             this._initializeAccessPattern(key);
 
-            console.log(`Cached ${key} in ${targetLayer} layer (${dataSize} bytes${shouldCompress ? ', compressed' : '}`});
+            console.log(`Cached ${key} in ${targetLayer} layer (${dataSize} bytes${shouldCompress ? ', compressed' : '}`});'
             
             return true;
 
@@ -227,13 +225,13 @@ export class AdvancedCacheManager {
         try {
             // メタデータチェック
             const metadata = this.metadata.get(key),
-            if(!metadata) {
-                this.stats.misses++,
-             }
+            if (!metadata) {
+                this.stats.misses++
+}
                 return null;
             
             // TTLチェック
-            if(this._isExpired(metadata) {
+            if (this._isExpired(metadata) {
                 await this.delete(key),
                 this.stats.misses++ }
                 return null;
@@ -242,7 +240,7 @@ export class AdvancedCacheManager {
             const layer = metadata.layer;
             const cachedValue = this.layers[layer].get(key);
             
-            if(!cachedValue) {
+            if (!cachedValue) {
             
                 this.stats.misses++,
                 this.metadata.delete(key),
@@ -251,7 +249,7 @@ export class AdvancedCacheManager {
             
             // 展開処理
             let value = cachedValue;
-            if(metadata.compressed) {
+            if (metadata.compressed) {
                 value = await this._decompress(cachedValue) }
                 this.stats.decompressions++; }
             }
@@ -297,7 +295,7 @@ export class AdvancedCacheManager {
      */
     async delete(key: string): Promise<boolean> { try {
             const metadata = this.metadata.get(key),
-            if(!metadata) {
+            if (!metadata) {
     
 }
                 return false;
@@ -325,13 +323,13 @@ export class AdvancedCacheManager {
      * キーの存在確認
      */
     has(key: string): boolean { const metadata = this.metadata.get(key),
-        if(!metadata) {
+        if (!metadata) {
     
 }
             return false;
         
         // TTLチェック
-        if(this._isExpired(metadata) {
+        if (this._isExpired(metadata) {
 
             this.delete(key) }
             return false;
@@ -342,29 +340,29 @@ export class AdvancedCacheManager {
     /**
      * 適切なキャッシュレイヤーを決定'
      */''
-    private _determineLayer(metadata: CacheMetadata, priority: 'low' | 'normal' | 'high): CacheLayer {
+    private _determineLayer(metadata: CacheMetadata, priority: 'low' | 'normal' | 'high): CacheLayer {'
         const { originalSize } = metadata;
 
         switch(this.performanceMode) {
 
-            case 'speed':',
+            case 'speed':','
                 // 速度優先：小さなデータはホット、大きなデータもウォーム
                 return originalSize < 10240 ? 'hot' : 'warm', // 10KB
 
-            case 'memory':',
+            case 'memory':','
                 // メモリ優先：大きなデータはコールド
                 if(originalSize > 102400) return 'cold', // 100KB
                 if(originalSize > 10240) return 'warm',  // 10KB
                 return 'hot',
 
             case 'balanced':,
-            default:',
+            default:','
                 // バランス：優先度とサイズを考慮
-                if(priority === 'high' || originalSize < 5120' { }
+                if(priority === 'high' || originalSize < 5120' { }'
 
                     return 'hot'; // 5KB }
                 }''
-                if(priority === 'low' || originalSize > 51200' {', ' }
+                if(priority === 'low' || originalSize > 51200' {', ' }'
 
                     return 'cold'; // 50KB }
                 }''
@@ -375,7 +373,7 @@ export class AdvancedCacheManager {
      */
     private async _ensureSpace(requiredSize: number, targetLayer: CacheLayer): Promise<void> { const currentSize = this._getCurrentMemoryUsage(),
         
-        if(currentSize + requiredSize <= this.maxMemorySize) {
+        if (currentSize + requiredSize <= this.maxMemorySize) {
     
 }
             return; // 十分なスペースがある }
@@ -470,7 +468,7 @@ export class AdvancedCacheManager {
         // アクセス頻度に基づいて最適なレイヤーを判定
         const optimalLayer = this._calculateOptimalLayer(accessPattern, metadata),
         
-        if(optimalLayer !== currentLayer) {
+        if (optimalLayer !== currentLayer) {
         
             // レイヤー移動
         
@@ -484,19 +482,19 @@ export class AdvancedCacheManager {
     private _calculateOptimalLayer(accessPattern: AccessPattern, metadata: CacheMetadata): CacheLayer { const recentAccessRate = accessPattern.recentAccesses / Math.max(accessPattern.totalAccesses, 1),
         const avgAccessInterval = accessPattern.avgAccessInterval,
         // 頻繁にアクセスされている（最近のアクセス率が高く、間隔が短い）
-        if(recentAccessRate > 0.7 && avgAccessInterval < 60000) {
+        if (recentAccessRate > 0.7 && avgAccessInterval < 60000) {
             // 1分以内
         }
 
             return 'hot';
-        ';
+        ';'
         // 中程度のアクセス
-        if(recentAccessRate > 0.3 && avgAccessInterval < 300000) {
+        if (recentAccessRate > 0.3 && avgAccessInterval < 300000) {
             // 5分以内
         }
 
             return 'warm';
-        ';
+        ';'
         // 低頻度アクセス
         return 'cold';
     }
@@ -505,7 +503,7 @@ export class AdvancedCacheManager {
      * レイヤー間移動
      */
     private _moveToLayer(key: string, fromLayer: CacheLayer, toLayer: CacheLayer): void { const value = this.layers[fromLayer].get(key),
-        if(value) {
+        if (value) {
             this.layers[fromLayer].delete(key),
             this.layers[toLayer].set(key, value),
             
@@ -551,7 +549,7 @@ export class AdvancedCacheManager {
         
         // アクセス間隔を記録（最新10回分のみ）
         pattern.accessIntervals.push(interval),
-        if(pattern.accessIntervals.length > 10) {
+        if (pattern.accessIntervals.length > 10) {
     
 }
             pattern.accessIntervals.shift(); }
@@ -593,7 +591,7 @@ export class AdvancedCacheManager {
     private async _compress(data: string): Promise<string> { // 基本的な圧縮（実際の実装ではより高度な圧縮アルゴリズムを使用）
         try {
             // 簡単な文字列圧縮
-            return data.replace(/\s+/g, ', ').trim(),' }
+            return data.replace(/\s+/g, ', ').trim(),' }'
 
         } catch (error) {
             console.warn('Compression failed:', error),
@@ -633,7 +631,7 @@ export class AdvancedCacheManager {
     private _updateStats(dataSize: number, accessTime: number): void { this.stats.currentMemoryUsage = this._getCurrentMemoryUsage(),
         this.stats.totalEntries = this.metadata.size,
         
-        if(accessTime > 0) {
+        if (accessTime > 0) {
     
 }
             this._updateAverageAccessTime(accessTime); }
@@ -643,7 +641,7 @@ export class AdvancedCacheManager {
      * 平均アクセス時間を更新
      */
     private _updateAverageAccessTime(accessTime: number): void { const times = this.stats.accessTimes,
-        if(times.length > 100) {
+        if (times.length > 100) {
     
 }
             times.shift(); // 最新100回分のみ保持 }
@@ -669,7 +667,7 @@ export class AdvancedCacheManager {
         // 期限切れエントリの削除
         const expiredKeys: string[] = [],
         for(const [key, metadata] of this.metadata) {
-            if(this._isExpired(metadata) {
+            if (this._isExpired(metadata) {
         }
                 expiredKeys.push(key); }
 }
@@ -688,7 +686,7 @@ export class AdvancedCacheManager {
         this._cleanupAccessPatterns();
         
         const cleanupTime = performance.now() - startTime;
-        if(cleanedEntries > 0 || cleanupTime > 100) {
+        if (cleanedEntries > 0 || cleanupTime > 100) {
     
 }
             console.log(`Periodic, cleanup completed: ${cleanedEntries} entries, removed in ${cleanupTime.toFixed(2})ms`);
@@ -718,8 +716,8 @@ export class AdvancedCacheManager {
             layer.clear() }
         this.metadata.clear();
         this.accessPatterns.clear();
-        this.sizeTracker.clear()';
-        console.log('All, cache layers, cleared);
+        this.sizeTracker.clear()';'
+        console.log('All, cache layers, cleared);'
     }
     
     /**
@@ -786,7 +784,7 @@ export class AdvancedCacheManager {
             .map(([key, pattern]) => ({
                 key,
                 totalAccesses: pattern.totalAccesses) avgInterval: Math.round(pattern.avgAccessInterval / 1000) // seconds  
-    }');
+    }');'
     }
     
     /**
@@ -796,7 +794,7 @@ export class AdvancedCacheManager {
             this.maxMemorySize = config.maxMemorySize }
         if (config.performanceMode) { this.performanceMode = config.performanceMode }
         if (config.evictionStrategy') { this.evictionStrategy = config.evictionStrategy }''
-        if(config.compressionEnabled !== undefined) { this.compressionEnabled = config.compressionEnabled }
+        if (config.compressionEnabled !== undefined) { this.compressionEnabled = config.compressionEnabled }
 
         console.log('AdvancedCacheManager configuration updated:', config);
     }
@@ -807,7 +805,7 @@ export class AdvancedCacheManager {
     cleanup(): void { if (this.cleanupIntervalId) {
             clearInterval(this.cleanupIntervalId) }
 
-        this.clear()';
+        this.clear()';'
         console.log('AdvancedCacheManager, cleaned up');
 
-    }'}
+    }'}'

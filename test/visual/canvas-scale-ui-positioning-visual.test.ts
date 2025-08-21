@@ -7,14 +7,14 @@ import { JSDOM  } from 'jsdom';
 describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
     let canvas: any,
     let context: any,
-    let responsiveCanvasManager: any,',
-    let gameUIManager: any,',
-    beforeAll((') => {
+    let responsiveCanvasManager: any,','
+    let gameUIManager: any,','
+    beforeAll((') => {'
         // JSDOM環境のセットアップ
         dom = new JSDOM(`,
             <!DOCTYPE html>,
-            <html>',
-                <body>',
+            <html>','
+                <body>','
                     <canvas id="gameCanvas" width="800" height="600"></canvas>,
                 </body>,
             </html>,
@@ -34,7 +34,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
     });
     beforeEach(async () => {  // Canvas contextのモックを各テスト前に再作成'
         const mockContext = createMockContext(),
-        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext'),
+        HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext'),'
         context = canvas.getContext('2d'),'
         // コンポーネントの初期化' }'
         const { ResponsiveCanvasManager ') = await import('../../src/ui/managers/ResponsiveCanvasManager.js')'),' }'
@@ -52,36 +52,36 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
             expect(renderSnapshot.fillTextCalls.length).toBeGreaterThan(0),
             expect(renderSnapshot.fillRectCalls.length).toBeGreaterThan(0),'
             // スコア表示の位置確認''
-            const scoreCall = renderSnapshot.fillTextCalls.find(call => '),
+            const scoreCall = renderSnapshot.fillTextCalls.find(call => '),'
                 call[0].includes('Score: ') || call[0].includes('スコア:',
             expect(scoreCall).toBeDefined(),
             expect(scoreCall[1]).toBeGreaterThan(0), // x座標
             expect(scoreCall[2]).toBeGreaterThan(0), // y座標
-            ',
+            ','
             // レンダリング呼び出しのスナップショットを作成''
             const snapshot = createRenderingSnapshot(renderSnapshot'),' }'
             expect(snapshot.toMatchSnapshot('ui-layout-800x600');' }'
-        }');
+        }');'
         test('should render UI layout consistently at 1920x1080 resolution', async () => {  // 高解像度でのレンダリングテスト
             simulateCanvasSize(1920, 1080),
             const renderSnapshot = renderUISnapshot(),'
             // 高解像度でのUI要素配置確認''
-            const snapshot = createRenderingSnapshot(renderSnapshot'),
+            const snapshot = createRenderingSnapshot(renderSnapshot'),'
             expect(snapshot.toMatchSnapshot('ui-layout-1920x1080'),
             // スケールファクターの確認
             const canvasInfo = responsiveCanvasManager.scaledCoordinateManager.getCanvasInfo() }'
             expect(canvasInfo.scaleFactor).toBeGreaterThan(1.0);' }'
-        }');
-        test('should render UI layout consistently at 375x812 resolution (mobile')', async () => {  // モバイル解像度でのレンダリングテスト
+        }');'
+        test('should render UI layout consistently at 375x812 resolution (mobile')', async () => {  // モバイル解像度でのレンダリングテスト'
             simulateCanvasSize(375, 812),
             const renderSnapshot = renderUISnapshot(),'
             // モバイルでのUI要素配置確認''
-            const snapshot = createRenderingSnapshot(renderSnapshot'),
+            const snapshot = createRenderingSnapshot(renderSnapshot'),'
             expect(snapshot.toMatchSnapshot('ui-layout-375x812-mobile'),
             // モバイルでのスケール調整確認
             const canvasInfo = responsiveCanvasManager.scaledCoordinateManager.getCanvasInfo() }'
             expect(canvasInfo.scaleFactor).toBeLessThan(1.0);' }'
-        }');
+        }');'
         test('should maintain UI element proportions across different scales', async (') => { const testResolutions = [' }'
                 { width: 800, height: 600, name: 'standard' },''
                 { width: 1200, height: 900, name: 'large' },']'
@@ -108,11 +108,11 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
             
             const mockGameState = { score: 12345 })'
             gameUIManager.renderAnimatedScore(context, mockGameState.score);
-            const scoreCall = context.fillText.mock.calls.find(call => ');
+            const scoreCall = context.fillText.mock.calls.find(call => ');'
                 call[0].includes('12345') || call[0].includes('Score');
             expect(scoreCall).toBeDefined(')';
             const { UIPositionCalculator } = await import('../../src/utils/UIPositionCalculator.js');
-            const positionCalculator = new UIPositionCalculator(responsiveCanvasManager.scaledCoordinateManager');
+            const positionCalculator = new UIPositionCalculator(responsiveCanvasManager.scaledCoordinateManager');'
             const expectedPosition = positionCalculator.getStatusPosition('score');
             const margins = positionCalculator.getResponsiveMargins();
             // 期待される位置の許容範囲内であることを確認
@@ -144,13 +144,13 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
             
             const mockGameState = { combo: 7 })'
             gameUIManager.renderComboDisplay(context, mockGameState.combo);
-            const comboCall = context.fillText.mock.calls.find(call => ');
+            const comboCall = context.fillText.mock.calls.find(call => ');'
                 call[0].includes('7') || call[0].includes('コンボ');
             expect(comboCall).toBeDefined();
             // 右側に配置されていることを確認
             const canvasInfo = responsiveCanvasManager.scaledCoordinateManager.getCanvasInfo();
             const rightSideThreshold = canvasInfo.actualWidth * 0.7; // キャンバス幅の70%以上
-            ';
+            ';'
             expect(comboCall[1]).toBeGreaterThan(rightSideThreshold);'}');'
     }''
     describe('Cross-Device Consistency Tests', (') => {  ''
@@ -193,7 +193,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
                 const isPortrait = size.height > size.width; }
                 validateTabletLayout(snapshot, isPortrait};'
             }')'
-        )');
+        )');'
         test('should optimize layout for mobile sizes', async () => { const mobileSizes = [}
                 { width: 375, height: 812 }, // iPhone X
                 { width: 414, height: 896 }, // iPhone 11 Pro Max
@@ -275,23 +275,23 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
             stroke: jest.fn(
             setTransform: jest.fn(
             transform: jest.fn(
-            translate: jest.fn(),',
-            rotate: jest.fn(),',
+            translate: jest.fn(),','
+            rotate: jest.fn(),','
             scale: jest.fn('',
-           , globalCompositeOperation: 'source-over',',
+           , globalCompositeOperation: 'source-over',','
             fillStyle: '#000',')',
-            strokeStyle: '#000')',
-           , lineWidth: 1,',
-            font: '10px sans-serif',',
-            textAlign: 'start',',
+            strokeStyle: '#000')','
+           , lineWidth: 1,','
+            font: '10px sans-serif',','
+            textAlign: 'start',','
             textBaseline: 'alphabetic'
             };
             canvas: canvas) }
     })'
     );
     function simulateCanvasSize(width, height') { }'
-        Object.defineProperty(canvas, 'clientWidth', { value: width, configurable: true }');
-        Object.defineProperty(canvas, 'clientHeight', { value: height, configurable: true });
+        Object.defineProperty(canvas, 'clientWidth', { value: width, configurable: true,');'
+        Object.defineProperty(canvas, 'clientHeight', { value: height, configurable: true,);
         responsiveCanvasManager.updateCanvasSize();
     }
     function renderUISnapshot() { const mockGameState = {
@@ -315,15 +315,15 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
     }
     function createRenderingSnapshot(renderSnapshot) { return { textElements: renderSnapshot.fillTextCalls.map((call) => ({
                 text: call[0]),
-               , x: call[1] };
-                y: call[2] }
+               , x: call[1],;
+                y: call[2],
             }),
             rectangles: renderSnapshot.fillRectCalls.map((call) => ({ x: call[0],
                 y: call[1],
                 width: call[2]),
-               , height: call[3] }
+               , height: call[3],
             }),
-            canvasInfo: renderSnapshot.canvasInfo;
+            canvasInfo: renderSnapshot.canvasInfo,
         } }
     function validateProportionalConsistency(snapshots) { const resolutionNames = Object.keys(snapshots),
         // 各解像度でのスコア表示位置の相対的一貫性を確認
@@ -345,7 +345,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
     function validateTabletLayout(snapshot, isPortrait) { // タブレットレイアウトの基本検証
         expect(snapshot.fillTextCalls.length).toBeGreaterThan(0),
         // ポートレート/ランドスケープに応じた適切な配置
-        if(isPortrait) {
+        if (isPortrait) {
             // ポートレートモードでの縦方向の適切な配置
             const textElements = snapshot.fillTextCalls }
             expect(textElements.some(call => call[2] > 50).toBe(true; // 上部からの適切な距離) else {) }

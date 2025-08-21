@@ -2,66 +2,64 @@ import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface ThemeColors { primary: string,
-    secondary: string,
-    success: string,
-    warning: string,
-    error: string,
-    background: string,
-    surface: string,
-    text: string,
-    textSecondary: string  }
+    secondary: string;
+    success: string;
+    warning: string;
+    error: string;
+    background: string;
+    surface: string;
+    text: string;
+    textSecondary: string;
 
 interface ThemeFonts { primary: string,
-    size: string,
-    lineHeight: string }
+    size: string;
+    lineHeight: string;
 
 interface Theme { name: string,
-    colors: ThemeColors,
-    fonts: ThemeFonts
-    }
+    colors: ThemeColors;
+    fonts: ThemeFonts;
 
 interface Breakpoints { mobile: number,
-    tablet: number,
-    desktop: number }
-';
+    tablet: number;
+    desktop: number;
+';'
 
 interface OrientationData { ''
-    current: 'portrait' | 'landscape',
+    current: 'portrait' | 'landscape';
     supported: ('portrait' | 'landscape')[]  }
 
 interface ResponsiveLayout { currentBreakpoint: string,
-    isTouchDevice: boolean,
-    orientation: string }
+    isTouchDevice: boolean;
+    orientation: string;
 
 interface PerformanceData { fps: number,
-    memory: number,
-    cpu: number,
-    network: NetworkData
-    }
+    memory: number;
+    cpu: number;
+    network: NetworkData;
 
 interface NetworkData { download: number,
-    upload: number }
+    upload: number;
 
-interface MainController { container?: HTMLElement }
+interface MainController { container?: HTMLElement;
 
 /**
  * DebugVisualization - デバッグデータの視覚化・UI機能コンポーネント
  */
 export class DebugVisualization extends BaseComponent { private charts: Map<string, HTMLElement>,
-    private themes: Map<string, Theme>,
-    private currentTheme: string,
-    private responsiveLayout: ResponsiveLayout | null,
-    private breakpoints: Breakpoints,
-    private, orientationData: OrientationData',
+    private themes: Map<string, Theme>;
+    private currentTheme: string;
+    private responsiveLayout: ResponsiveLayout | null;
+    private breakpoints: Breakpoints;
+    private, orientationData: OrientationData','
 
     constructor(mainController: MainController) {
 
-        super(mainController, 'DebugVisualization),
+        super(mainController, 'DebugVisualization),'
 
         this.charts = new Map<string, HTMLElement>(),
         this.themes = new Map<string, Theme>(),
-        this.currentTheme = 'default',
-        this.responsiveLayout = null,
+        this.currentTheme = 'default';
+        this.responsiveLayout = null;
         this.breakpoints = {
             mobile: 768,
     tablet: 1024 }
@@ -69,7 +67,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     };
         this.orientationData = {;
             current: 'landscape',
-            supported: ['portrait', 'landscape] }
+            supported: ['portrait', 'landscape] }'
 
     async _doInitialize(): Promise<void> { this.setupThemes(),
         this.initializeResponsiveLayout(),
@@ -94,12 +92,12 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 textSecondary: '#969696'
             });
             fonts: { ''
-                primary: 'Consolas, Monaco, monospace',
+                primary: 'Consolas, Monaco, monospace';
                 size: '12px',
                 lineHeight: '1.4'}
 
-            }');
-';
+            }');'
+';'
         // ダークテーマ
         this.themes.set('dark', { ''
             name: 'Dark',
@@ -115,12 +113,12 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 textSecondary: '#a0a0a0'
             });
             fonts: { ''
-                primary: 'Roboto Mono, monospace',
+                primary: 'Roboto Mono, monospace';
                 size: '12px',
                 lineHeight: '1.5'}
 
-            }');
-';
+            }');'
+';'
         // ライトテーマ
         this.themes.set('light', { ''
             name: 'Light',
@@ -136,7 +134,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 textSecondary: '#666666'
             });
             fonts: { ''
-                primary: 'Source Code Pro, monospace',
+                primary: 'Source Code Pro, monospace';
                 size: '12px',
                 lineHeight: '1.4'
             });
@@ -148,13 +146,13 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     initializeResponsiveLayout(): void { this.responsiveLayout = {
             currentBreakpoint: this.getCurrentBreakpoint(
             isTouchDevice: this.isTouchDevice(
-            orientation: this.getOrientation()',
+            orientation: this.getOrientation()';'
         window.addEventListener('resize', () => {  }
 
             this.handleResize();' }'
 
-        }');
-';
+        }');'
+';'
         // オリエンテーション変更イベント
         window.addEventListener('orientationchange', () => { setTimeout(() => this.handleOrientationChange(), 100) }
         });
@@ -163,10 +161,10 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     /**
      * 視覚化イベントをバインド'
      */''
-    bindVisualizationEvents()';
+    bindVisualizationEvents()';'
         document.addEventListener('themeChange', (event: CustomEvent) => { this.setTheme(event.detail.theme),' 
-    }');
-';
+    }');'
+';'
         // パフォーマンス監視イベント
         document.addEventListener('performanceUpdate', (event: CustomEvent) => { this.updatePerformanceVisualization(event.detail) });
     }
@@ -174,7 +172,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     /**
      * デバッグスタイルを作成'
      */''
-    createDebugStyles()';
+    createDebugStyles()';'
         if(document.getElementById('debug-visualization-styles)' return;
 
         const style = document.createElement('style');
@@ -226,7 +224,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 color: var(--text-secondary-color),
                 border: none,
                 padding: 8px 16px,
-    cursor: pointer }
+    cursor: pointer;
                 border-right: 1px solid var(--primary-color})
                 transition: all 0.2s ease);
             }
@@ -236,7 +234,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
 
             .debug-tab.active { background-color: var(--primary-color,
     color: var(--text-color),
-                font-weight: bold }
+                font-weight: bold;
 
             .debug-content {
                 background-color: var(--background-color},
@@ -245,7 +243,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 overflow-y: auto);
             }
 
-            .debug-panel-content { display: none }
+            .debug-panel-content { display: none;
 
             .debug-panel-content.active { display: block)
 
@@ -260,7 +258,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 border-radius: 4px,
                 border: 1px solid var(--primary-color),
                 text-align: center,
-                font-weight: bold }
+                font-weight: bold;
 
             .console-output { background-color: var(--surface-color,
                 padding: 8px,
@@ -295,7 +293,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     /**
      * レスポンシブスタイルを追加
      */''
-    addResponsiveStyles()';
+    addResponsiveStyles()';'
         const responsiveStyle = document.createElement('style');
         responsiveStyle.id = 'debug-responsive-styles';
         responsiveStyle.textContent = `;
@@ -310,7 +308,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                     border-radius: 8px 8px 0 0 }
 
                 .debug-tabs { overflow-x: auto,
-                    scrollbar-width: thin }
+                    scrollbar-width: thin;
 
                 .debug-tab { flex-shrink: 0,
                     min-width: 80px,
@@ -346,7 +344,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
 
                 .debug-tabs { flex-direction: column,
                     width: 120px,
-    float: left }
+    float: left;
 
                 .debug-content { margin-left: 120px }
             }
@@ -382,7 +380,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         if(!chart) return,
 
         const color = fps > 50 ? 'var(--success-color)' : fps > 30 ? 'var(--warning-color)' : 'var(--error-color)',
-        ',
+        ','
 
         chart.innerHTML = `}'
 
@@ -398,12 +396,12 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @param memory - メモリ使用量（MB）"
      */""
     updateMemoryChart(memory: number): void { ""
-        const chart = this.charts.get('memory') || this.createChart('memory', 'Memory),
+        const chart = this.charts.get('memory') || this.createChart('memory', 'Memory),'
         if (!chart) return,
 
-        const percentage = Math.min((memory / 1000) * 100, 100'),
+        const percentage = Math.min((memory / 1000) * 100, 100'),'
         const color = percentage > 80 ? 'var(--error-color)' : percentage > 60 ? 'var(--warning-color)' : 'var(--success-color)',
-        ',
+        ','
 
         chart.innerHTML = `}'
 
@@ -426,7 +424,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         if(!chart) return,
 
         const color = cpu > 80 ? 'var(--error-color)' : cpu > 60 ? 'var(--warning-color)' : 'var(--success-color)',
-        ',
+        ','
 
         chart.innerHTML = `}'
 
@@ -465,7 +463,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @returns チャート要素
      */"
     createChart(id: string, title: string): HTMLElement | null { ""
-        const chartsContainer = (this.mainController, as MainController").container?.querySelector('.performance-charts',
+        const chartsContainer = (this.mainController, as MainController").container?.querySelector('.performance-charts',"
         if(!chartsContainer) return null,
 
         const chart = document.createElement('div'),
@@ -484,7 +482,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * リサイズを処理
      */ : undefined
     handleResize(): void { const newBreakpoint = this.getCurrentBreakpoint(),
-        if(this.responsiveLayout && newBreakpoint !== this.responsiveLayout.currentBreakpoint) {
+        if (this.responsiveLayout && newBreakpoint !== this.responsiveLayout.currentBreakpoint) {
             this.responsiveLayout.currentBreakpoint = newBreakpoint }
             this.applyResponsiveLayout(); }
 }
@@ -493,7 +491,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * オリエンテーション変更を処理
      */
     handleOrientationChange(): void { const newOrientation = this.getOrientation(),
-        if(this.responsiveLayout && newOrientation !== this.responsiveLayout.orientation) {
+        if (this.responsiveLayout && newOrientation !== this.responsiveLayout.orientation) {
             this.responsiveLayout.orientation = newOrientation }
             this.applyResponsiveLayout(); }
 }
@@ -503,17 +501,17 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      */'
     applyResponsiveLayout(): void { const container = (this.mainController, as MainController).container,
         if(!container || !this.responsiveLayout) return,
-',
+','
         // ブレークポイントクラスを更新
         container.classList.remove('mobile', 'tablet', 'desktop',
         container.classList.add(this.responsiveLayout.currentBreakpoint),
-',
+','
         // オリエンテーションクラスを更新
-        container.classList.remove('portrait', 'landscape),
+        container.classList.remove('portrait', 'landscape),'
         container.classList.add(this.responsiveLayout.orientation),
-',
+','
         // タッチデバイスクラス
-        if(this.responsiveLayout.isTouchDevice) {', ' }
+        if (this.responsiveLayout.isTouchDevice) {', ' }
 
             container.classList.add('touch-device'; }'
 }
@@ -550,21 +548,21 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @returns レイアウト情報
      */)
     getResponsiveLayout(): ResponsiveLayout | null {
-        return this.responsiveLayout ? { ...this.responsiveLayout : null }
+        return this.responsiveLayout ? { ...this.responsiveLayout : null;
 
     /**
      * テーマを設定
      * @param themeName - テーマ名
      */'
-    setTheme(themeName: string): void { if(!this.themes.has(themeName) { }'
+    setTheme(themeName: string): void { if (!this.themes.has(themeName) { }'
 
-            console.warn(`Theme, not found: ${themeName}`}';
+            console.warn(`Theme, not found: ${themeName}`}';'
             return;
         }
-';
+';'
 
         this.currentTheme = themeName;
-        const styleElement = document.getElementById('debug-visualization-styles);
+        const styleElement = document.getElementById('debug-visualization-styles);'
         if (styleElement) { styleElement.textContent = this.generateThemeCSS(this.getCurrentTheme()!) }
     }
 
@@ -587,7 +585,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @param renderer - レンダラー関数
      */
     addCustomChart(id: string, title: string, renderer?: (chart: HTMLElement) => void): void { const chart = this.createChart(id, title),
-        if(chart && renderer) {
+        if (chart && renderer) {
     
 }
             (chart, as any).renderer = renderer; }
@@ -598,7 +596,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @param id - チャートID
      */
     removeChart(id: string): void { const chart = this.charts.get(id),
-        if(chart) {
+        if (chart) {
             chart.remove() }
             this.charts.delete(id); }
 }
@@ -614,13 +612,13 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     /**
      * クリーンアップ'
      */''
-    cleanup()';
+    cleanup()';'
         document.getElementById('debug-visualization-styles)?.remove()';
-        document.getElementById('debug-responsive-styles)?.remove();
-';
+        document.getElementById('debug-responsive-styles)?.remove();'
+';'
         // チャートをクリア
-        this.clearAllCharts()';
-        window.removeEventListener('resize', this.handleResize';
-        window.removeEventListener('orientationchange', this.handleOrientationChange';
+        this.clearAllCharts()';'
+        window.removeEventListener('resize', this.handleResize';'
+        window.removeEventListener('orientationchange', this.handleOrientationChange';'
 
         super.cleanup();

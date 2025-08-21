@@ -3,74 +3,74 @@ import path from 'path';
 
 // Type definitions
 interface TargetFile { filePath: string,
-    currentFilePath: string,
-    expectedWordCount: number,
-    description: string  }
+    currentFilePath: string;
+    expectedWordCount: number;
+    description: string;
 
 interface GitCommit { commit: string,
-    message: string }
+    message: string;
 
 interface GitHistoryError { error: string,
-    gitHistoryFailed: boolean }
+    gitHistoryFailed: boolean;
 
 interface SizeAnalysis { bytes: number,
-    wordCount: number,
-    lineCount: number,
-    characters: number,
-    lastModified: string }
+    wordCount: number;
+    lineCount: number;
+    characters: number;
+    lastModified: string;
 
 interface SizeAnalysisError { error: string,
-    analyzeFailed: boolean }
+    analyzeFailed: boolean;
 
 interface FileComparison { identical: boolean,
-    backupLines: number,
-    currentLines: number,
-    sizeDifference: number,
-    comparedAt: string }
+    backupLines: number;
+    currentLines: number;
+    sizeDifference: number;
+    comparedAt: string;
 
 interface ComparisonError { error: string,
-    comparisonFailed: boolean }
+    comparisonFailed: boolean;
 
 interface InvestigationResult extends TargetFile { exists: boolean,
-    sizeAnalysis?: SizeAnalysis | SizeAnalysisError,
-    gitHistory?: GitCommit[] | GitHistoryError[],
-    currentFileExists: boolean,
-    comparison?: FileComparison | ComparisonError,
-    investigatedAt: string,
-    error?: string,
-    investigationFailed?: boolean }
+    sizeAnalysis?: SizeAnalysis | SizeAnalysisError;
+    gitHistory?: GitCommit[] | GitHistoryError[];
+    currentFileExists: boolean;
+    comparison?: FileComparison | ComparisonError;
+    investigatedAt: string;
+    error?: string;
+    investigationFailed?: boolean;
 
 interface ReportSummary { totalFiles: number,
-    existingFiles: number,
-    missingFiles: number,
-    currentFilesExist: number,
-    investigationErrors: number  }
+    existingFiles: number;
+    missingFiles: number;
+    currentFilesExist: number;
+    investigationErrors: number;
 
 interface SizeEstimate { bytes: number,
-    words: number }
-';
+    words: number;
+';'
 
 interface Recommendation { ''
-    type: 'safe_deletion' | 'needs_attention',
-    message: string,
-    files: string[] }
+    type: 'safe_deletion' | 'needs_attention';
+    message: string;
+    files: string[];
 
 interface InvestigationReport { summary: ReportSummary,
-    files: InvestigationResult[],
-    totalSizeEstimate: SizeEstimate,
-    recommendations: Recommendation[],
-    generatedAt: string }
+    files: InvestigationResult[];
+    totalSizeEstimate: SizeEstimate;
+    recommendations: Recommendation[];
+    generatedAt: string;
 
 /**
  * BackupFileInvestigator - バックアップファイルの詳細調査を行うクラス
  * Issue #104 の対象ファイルの安全な削除のための調査機能を提供
  */
 export class BackupFileInvestigator {
-    private targetFiles: TargetFile[]',
+    private targetFiles: TargetFile[]';'
 
     constructor('', filePath: 'src/utils/TestConfigurationGenerator_old.js',
-                currentFilePath: 'src/utils/TestConfigurationGenerator.js',
-                expectedWordCount: 3288,
+                currentFilePath: 'src/utils/TestConfigurationGenerator.js';
+                expectedWordCount: 3288;
                 description: 'Task 4完了時のバックアップ'
             };
             { ''
@@ -116,7 +116,7 @@ export class BackupFileInvestigator {
                     currentFileExists: false),
                     investigatedAt: new Date().toISOString(),
     error: (error, as Error).message,
-                    investigationFailed: true  });
+                    investigationFailed: true,);
             }
         }
         
@@ -130,11 +130,11 @@ export class BackupFileInvestigator {
             ...targetFile,
             exists: false,
             currentFileExists: false,
-            investigatedAt: '};
+            investigatedAt: '};'
         // ファイル存在確認
         result.exists = await this.checkFileExists(targetFile.filePath);
         
-        if(result.exists) {
+        if (result.exists) {
         
             // ファイルサイズ分析
             result.sizeAnalysis = await this.analyzeFileSize(targetFile.filePath),
@@ -148,7 +148,7 @@ export class BackupFileInvestigator {
         // 対応する現在ファイルの確認
         result.currentFileExists = await this.checkCurrentFileExists(targetFile.currentFilePath);
         
-        if(result.currentFileExists) {
+        if (result.currentFileExists) {
         
             // 現在ファイルとの比較
         
@@ -178,10 +178,10 @@ export class BackupFileInvestigator {
      */
     async analyzeFileSize(filePath: string): Promise<SizeAnalysis | SizeAnalysisError> { try {'
             const stats = await fs.stat(filePath),
-            const content = await fs.readFile(filePath, 'utf8),
+            const content = await fs.readFile(filePath, 'utf8),'
 
             const wordCount = content.split(/\s+/).filter(word => word.length > 0).length,
-            const lineCount = content.split('\n).length,
+            const lineCount = content.split('\n).length,'
             
             return { bytes: stats.size,
                 wordCount,
@@ -189,8 +189,7 @@ export class BackupFileInvestigator {
                 characters: content.length };
                 lastModified: stats.mtime.toISOString(); 
     } catch (error) { return { error: (error, as Error).message };
-                analyzeFailed: true 
-    }
+                analyzeFailed: true;
     }
 
     /**
@@ -204,22 +203,22 @@ export class BackupFileInvestigator {
             
             // Git log for specific file
             const { stdout } = await execAsync()'
-                `git log --oneline -10 -- "${ filePath"}"`
+                `git log --oneline -10 -- "${ filePath"}"`"
             };
                 { cwd: process.cwd(});
             
-            if(!stdout.trim() { return [] }"
+            if (!stdout.trim() { return [] }"
 
-            return stdout.trim().split('\n'.map(line => {  '),
+            return stdout.trim().split('\n'.map(line => {  '),'
                 const [commit, ...messageParts] = line.split(', ') }
 
-                return { commit,' };
+                return { commit,' };'
 
                     message: messageParts.join(', '); }
                 });
         } catch (error) { return [{
                 error: (error, as Error).message],
-                gitHistoryFailed: true }]
+                gitHistoryFailed: true;]
             }];
         }
     }
@@ -232,7 +231,7 @@ export class BackupFileInvestigator {
             const currentContent = await fs.readFile(targetFile.currentFilePath, 'utf8'),
 
             const backupLines = backupContent.split('\n'),
-            const currentLines = currentContent.split('\n),
+            const currentLines = currentContent.split('\n),'
             
             return { identical: backupContent === currentContent,
                 backupLines: backupLines.length,
@@ -240,8 +239,7 @@ export class BackupFileInvestigator {
     sizeDifference: currentContent.length - backupContent.length };
                 comparedAt: new Date().toISOString(); 
     } catch (error) { return { error: (error, as Error).message };
-                comparisonFailed: true 
-    }
+                comparisonFailed: true;
     }
 
     /**
@@ -258,8 +256,8 @@ export class BackupFileInvestigator {
             files: investigationResults,
             totalSizeEstimate: { bytes: investigationResults''
                     .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis'',
-                    .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).bytes, 0'),
-                words: investigationResults',
+                    .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).bytes, 0'),'
+                words: investigationResults','
                     .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis),
                     .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).wordCount, 0) }
             },
@@ -281,7 +279,7 @@ export class BackupFileInvestigator {
         const needsAttention = results.filter(r => ),
             r.investigationFailed || !r.currentFileExists),
 
-        if(safeToDelete.length > 0) {
+        if (safeToDelete.length > 0) {
             recommendations.push({)'
                 type: 'safe_deletion')  }
                 message: `${safeToDelete.length}個のファイルは安全に削除できる可能性があります`
@@ -290,7 +288,7 @@ export class BackupFileInvestigator {
             });
         }
 
-        if(needsAttention.length > 0) {
+        if (needsAttention.length > 0) {
             recommendations.push({)'
                 type: 'needs_attention') }
                 message: `${needsAttention.length}個のファイルは追加の調査が必要です`

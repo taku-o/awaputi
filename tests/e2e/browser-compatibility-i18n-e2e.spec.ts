@@ -10,29 +10,29 @@ import { test, expect  } from '@playwright/test';
 const browsers = ['chromium', 'firefox', 'webkit'];
 
 test.describe('Browser Compatibility I18n E2E Tests', () => {
-  test.beforeEach(async ({ page }') => {
+  test.beforeEach(async ({ page }') => {'
     await page.goto('/'),
     await page.waitForSelector('#gameCanvas'),
     await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
       return window.gameEngine.localizationManager !== undefined });
-  }');
+  }');'
 
   test('should initialize LocalizationManager across browsers', async ({ page, browserName }) => {
-    const initTest = await page.evaluate((') => {
+    const initTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       return {
         exists: typeof lm !== 'undefined',
         currentLanguage: lm.getCurrentLanguage(
-        availableLanguages: lm.getAvailableLanguages(',
-        translationCount: Object.keys(lm.translations.get('ja') || {}').length;
+        availableLanguages: lm.getAvailableLanguages(','
+        translationCount: Object.keys(lm.translations.get('ja') || {}').length;'
         hasTranslationLoader: typeof lm.translationLoader !== 'undefined',
         hasFontManager: typeof lm.fontManager !== 'undefined'
       };
     });
     
-    expect(initTest.exists).toBe(true');
+    expect(initTest.exists).toBe(true');'
     expect(['ja', 'en'].includes(initTest.currentLanguage).toBe(true);
     expect(Array.isArray(initTest.availableLanguages).toBe(true);
     expect(initTest.translationCount).toBeGreaterThan(0);
@@ -40,10 +40,10 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(initTest.hasFontManager).toBe(true);
     
     console.log(`Browser: ${browserName}, Language: ${initTest.currentLanguage}, Languages: ${initTest.availableLanguages.length)`});
-  }');
+  }');'
 
   test('should handle basic translations across browsers', async ({ page, browserName ) => {
-    const translationTest = await page.evaluate((') => {
+    const translationTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       const japaneseTranslations = {
@@ -55,30 +55,30 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       
       return japaneseTranslations;);
     
-    expect(translationTest.menuTitle').toBe('BubblePop');
-    expect(translationTest.menuStart').toBe('ゲーム開始');
-    expect(translationTest.gameScore').toBe('スコア');
-    expect(translationTest.settingsTitle').toBe('設定');
+    expect(translationTest.menuTitle').toBe('BubblePop');'
+    expect(translationTest.menuStart').toBe('ゲーム開始');'
+    expect(translationTest.gameScore').toBe('スコア');'
+    expect(translationTest.settingsTitle').toBe('設定');'
     
     console.log(`Browser: ${browserName), Translations, working: ✓`});
-  }');
+  }');'
 
   test('should switch languages across browsers', async ({ page, browserName ) => {
     const languageSwitchTest = await page.evaluate(async () => {
       const lm = window.gameEngine.localizationManager,
       
       // Initial language
-      const initialLang = lm.getCurrentLanguage('),
+      const initialLang = lm.getCurrentLanguage('),'
       const initialTranslation = lm.t('menu.start'),
       
       // Switch to English
       const switchResult = await lm.setLanguage('en'),
-      const englishLang = lm.getCurrentLanguage('),
+      const englishLang = lm.getCurrentLanguage('),'
       const englishTranslation = lm.t('menu.start'),
       
       // Switch back to Japanese
       await lm.setLanguage('ja'),
-      const backToJapaneseLang = lm.getCurrentLanguage('),
+      const backToJapaneseLang = lm.getCurrentLanguage('),'
       const backToJapaneseTranslation = lm.t('menu.start'),
       
       return {
@@ -94,17 +94,17 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     });
     
     expect(languageSwitchTest.switchResult).toBe(true);
-    expect(languageSwitchTest.englishLang').toBe('en');
-    expect(languageSwitchTest.englishTranslation').toBe('Start Game');
-    expect(languageSwitchTest.backToJapaneseLang').toBe('ja');
-    expect(languageSwitchTest.backToJapaneseTranslation').toBe('ゲーム開始');
+    expect(languageSwitchTest.englishLang').toBe('en');'
+    expect(languageSwitchTest.englishTranslation').toBe('Start Game');'
+    expect(languageSwitchTest.backToJapaneseLang').toBe('ja');'
+    expect(languageSwitchTest.backToJapaneseTranslation').toBe('ゲーム開始');'
     expect(languageSwitchTest.switchWorked).toBe(true);
     
     console.log(`Browser: ${browserName), Language, switching: ✓`});
-  }');
+  }');'
 
   test('should handle Intl API across browsers', async ({ page, browserName ) => {
-    const intlTest = await page.evaluate((') => {
+    const intlTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test number formatting
@@ -112,7 +112,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         hasIntlNumber: typeof Intl.NumberFormat !== 'undefined',
         japaneseNumber: lm.formatNumber(12345.67, 'ja'),
         englishNumber: lm.formatNumber(12345.67, 'en'})
-      ');
+      ');'
       
       // Test date formatting
       const dateTests = {
@@ -131,59 +131,59 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(intlTest.intlSupported).toBe(true);
     expect(intlTest.numberTests.hasIntlNumber).toBe(true);
     expect(intlTest.dateTests.hasIntlDate).toBe(true);
-    expect(typeof intlTest.numberTests.japaneseNumber').toBe('string');
-    expect(typeof intlTest.numberTests.englishNumber').toBe('string');
-    expect(typeof intlTest.dateTests.japaneseDate').toBe('string');
-    expect(typeof intlTest.dateTests.englishDate').toBe('string');
+    expect(typeof intlTest.numberTests.japaneseNumber').toBe('string');'
+    expect(typeof intlTest.numberTests.englishNumber').toBe('string');'
+    expect(typeof intlTest.dateTests.japaneseDate').toBe('string');'
+    expect(typeof intlTest.dateTests.englishDate').toBe('string');'
     
     console.log(`Browser: ${browserName), Intl, API: ✓`});
-  }');
+  }');'
 
   test('should handle localStorage persistence across browsers', async ({ page, browserName ) => {
-    const persistenceTest = await page.evaluate(async (') => {
+    const persistenceTest = await page.evaluate(async (') => {'
       const gameEngine = window.gameEngine,
       const lm = gameEngine.localizationManager,
       
       // Set language to English
       await lm.setLanguage('en'),
       
-      // Check if it's saved in settings
+      // Check if it's saved in settings'
       const settingsManager = gameEngine.settingsManager,
       const savedLanguage = settingsManager.get('language'),
       
       return {
-        currentLanguage: lm.getCurrentLanguage(',
+        currentLanguage: lm.getCurrentLanguage(','
         savedLanguage: savedLanguage,
         hasLocalStorage: typeof localStorage !== 'undefined',
         hasSettingsManager: typeof settingsManager !== 'undefined'
       };
     });
     
-    expect(persistenceTest.currentLanguage').toBe('en');
-    expect(persistenceTest.savedLanguage').toBe('en');
+    expect(persistenceTest.currentLanguage').toBe('en');'
+    expect(persistenceTest.savedLanguage').toBe('en');'
     expect(persistenceTest.hasLocalStorage).toBe(true);
     expect(persistenceTest.hasSettingsManager).toBe(true);
     
     // Reload and check persistence
-    await page.reload(');
+    await page.reload(');'
     await page.waitForSelector('#gameCanvas');
     await page.waitForFunction(() => window.gameEngine !== undefined);
     
     const afterReloadTest = await page.evaluate(() => {
       return {
-        currentLanguage: window.gameEngine.localizationManager.getCurrentLanguage(',
+        currentLanguage: window.gameEngine.localizationManager.getCurrentLanguage(','
         translation: window.gameEngine.localizationManager.t('menu.start'}
       };);
     });
     
-    expect(afterReloadTest.currentLanguage').toBe('en');
-    expect(afterReloadTest.translation').toBe('Start Game');
+    expect(afterReloadTest.currentLanguage').toBe('en');'
+    expect(afterReloadTest.translation').toBe('Start Game');'
     
     console.log(`Browser: ${browserName), Persistence: ✓`});
-  }');
+  }');'
 
   test('should handle font loading across browsers', async ({ page, browserName ) => {
-    const fontTest = await page.evaluate(async (') => {
+    const fontTest = await page.evaluate(async (') => {'
       const lm = window.gameEngine.localizationManager,
       
       try {
@@ -204,7 +204,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
           fontStack,
           fontStatusType: typeof fontStatus
         };
-      } catch (error') {
+      } catch (error') {'
         return {
           success: false,
           error: error.message,
@@ -215,9 +215,9 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     });
     
     if (fontTest.success) {
-      expect(typeof fontTest.fontLoadResult').toBe('boolean'),
-      expect(typeof fontTest.fontStack').toBe('string'),
-      expect(fontTest.fontStatusType').toBe('object') } else {
+      expect(typeof fontTest.fontLoadResult').toBe('boolean'),'
+      expect(typeof fontTest.fontStack').toBe('string'),'
+      expect(fontTest.fontStatusType').toBe('object') } else {'
       // Font loading may fail in some test environments
       console.log(`Browser: ${browserName), Font, loading failed (expected, in test}): ${fontTest.error}`);
     }
@@ -227,9 +227,9 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(fontTest.hasFontLoad).toBe(true);
     
     console.log(`Browser: ${browserName), Font, APIs: ✓`});
-  }');
+  }');'
 
-  test('should handle URL parameter language detection across browsers', async ({ page, browserName )') => {
+  test('should handle URL parameter language detection across browsers', async ({ page, browserName )') => {'
     // Test with language parameter
     await page.goto('/? lang=en'),
     await page.waitForSelector('#gameCanvas'),
@@ -242,21 +242,21 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       const lm = window.gameEngine.localizationManager,
       
       return { : undefined
-        currentLanguage: lm.getCurrentLanguage(',
+        currentLanguage: lm.getCurrentLanguage(','
         translation: lm.t('menu.start',
         hasUrlSearchParams: typeof URLSearchParams !== 'undefined'
       };
     });
     
     expect(urlDetectionTest.hasUrlSearchParams).toBe(true);
-    expect(urlDetectionTest.currentLanguage').toBe('en');
-    expect(urlDetectionTest.translation').toBe('Start Game');
+    expect(urlDetectionTest.currentLanguage').toBe('en');'
+    expect(urlDetectionTest.translation').toBe('Start Game');'
     
     console.log(`Browser: ${browserName), URL, detection: ✓`});
-  }');
+  }');'
 
   test('should handle navigator.language detection across browsers', async ({ page, browserName ) => {
-    const navigatorTest = await page.evaluate((') => {
+    const navigatorTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test language detector directly
@@ -265,22 +265,22 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       return {
         hasNavigatorLanguage: typeof navigator.language !== 'undefined',
         navigatorLanguage: navigator.language,
-        normalizedLanguage: detector ? detector.normalizeLanguageCode(navigator.language') : null,
+        normalizedLanguage: detector ? detector.normalizeLanguageCode(navigator.language') : null,'
         detectorExists: typeof detector !== 'undefined'
       };
     });
     
     expect(navigatorTest.hasNavigatorLanguage).toBe(true);
-    expect(typeof navigatorTest.navigatorLanguage').toBe('string');
+    expect(typeof navigatorTest.navigatorLanguage').toBe('string');'
     
     if (navigatorTest.detectorExists) {
-      expect(typeof navigatorTest.normalizedLanguage').toBe('string') }
+      expect(typeof navigatorTest.normalizedLanguage').toBe('string') }'
     
     console.log(`Browser: ${browserName}, Navigator language: ${navigatorTest.navigatorLanguage)`});
-  }');
+  }');'
 
   test('should handle cultural adaptation across browsers', async ({ page, browserName ) => {
-    const culturalTest = await page.evaluate((') => {
+    const culturalTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test cultural adaptation features
@@ -296,17 +296,17 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     });
     
     expect(culturalTest.japaneseCultural.isRTL).toBe(false);
-    expect(culturalTest.japaneseCultural.textDirection').toBe('ltr');
+    expect(culturalTest.japaneseCultural.textDirection').toBe('ltr');'
     expect(culturalTest.arabicCultural.isRTL).toBe(true);
-    expect(culturalTest.arabicCultural.textDirection').toBe('rtl');
+    expect(culturalTest.arabicCultural.textDirection').toBe('rtl');'
     expect(culturalTest.hasIntl).toBe(true);
     expect(culturalTest.hasGetBoundingClientRect).toBe(true);
     
     console.log(`Browser: ${browserName), Cultural, adaptation: ✓`});
-  }');
+  }');'
 
   test('should handle error scenarios gracefully across browsers', async ({ page, browserName ) => {
-    const errorHandlingTest = await page.evaluate(async (') => {
+    const errorHandlingTest = await page.evaluate(async (') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test various error scenarios
@@ -315,23 +315,23 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         missingTranslation: lm.t('non.existent.key',
         invalidTranslationArray: lm.ta('non.existent.array',
         invalidAccessibilityTranslation: lm.ta11y('non.existent.a11y',
-        malformedParameterTranslation: lm.t('menu.title', { invalidParam: null  };
+        malformedParameterTranslation: lm.t('menu.title', { invalidParam: null,;
       
       return tests;
     });
     
     expect(errorHandlingTest.invalidLanguage).toBe(false);
-    expect(errorHandlingTest.missingTranslation').toBe('non.existent.key');
+    expect(errorHandlingTest.missingTranslation').toBe('non.existent.key');'
     expect(Array.isArray(errorHandlingTest.invalidTranslationArray).toBe(true);
     expect(errorHandlingTest.invalidTranslationArray.length).toBe(0);
-    expect(errorHandlingTest.invalidAccessibilityTranslation').toBe('non.existent.a11y');
-    expect(errorHandlingTest.malformedParameterTranslation').toBe('BubblePop');
+    expect(errorHandlingTest.invalidAccessibilityTranslation').toBe('non.existent.a11y');'
+    expect(errorHandlingTest.malformedParameterTranslation').toBe('BubblePop');'
     
     console.log(`Browser: ${browserName), Error, handling: ✓`});
-  }');
+  }');'
 
   test('should maintain performance standards across browsers', async ({ page, browserName ) => {
-    const performanceTest = await page.evaluate((') => {
+    const performanceTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Performance test for translation lookups
@@ -350,9 +350,9 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       const averageTime = totalTime / (iterations * testKeys.length);
       
       // Performance test for language switching
-      const switchStart = performance.now(');
+      const switchStart = performance.now(');'
       lm.setLanguage('en');
-      const switchEnd = performance.now(');
+      const switchEnd = performance.now(');'
       const switchTime = switchEnd - switchStart;
       
       return {
@@ -369,10 +369,10 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(performanceTest.switchTime).toBeLessThan(100); // Language switch should take less than 100ms
     
     console.log(`Browser: ${browserName), Avg, translation time: ${performanceTest.averageTime.toFixed(3})}ms, Switch time: ${performanceTest.switchTime.toFixed(1})}ms`);
-  }');
+  }');'
 
   test('should handle accessibility features across browsers', async ({ page, browserName ) => {
-    const accessibilityTest = await page.evaluate((') => {
+    const accessibilityTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test accessibility-specific features
@@ -380,12 +380,12 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       
       // Test adding accessibility translations
       const addResult = lm.addAccessibilityTranslations('test-browser', {
-        'test.key': 'Browser test value')'),
+        'test.key': 'Browser test value')'),'
       
       const retrieveResult = lm.getAccessibilityTranslation('test.key', 'test-browser'),
       
       // Test accessibility stats
-      const a11yStats = lm.getAccessibilityStats('),
+      const a11yStats = lm.getAccessibilityStats('),'
       
       return {
         a11yTranslation,
@@ -396,24 +396,24 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(typeof accessibilityTest.a11yTranslation').toBe('string');
+    expect(typeof accessibilityTest.a11yTranslation').toBe('string');'
     expect(accessibilityTest.addResult).toBe(true);
-    expect(accessibilityTest.retrieveResult').toBe('Browser test value');
+    expect(accessibilityTest.retrieveResult').toBe('Browser test value');'
     expect(accessibilityTest.hasA11yStats).toBe(true);
     expect(accessibilityTest.hasCulturalSupport).toBe(true);
     
     console.log(`Browser: ${browserName), Accessibility: ✓`});
   });
-}');
+}');'
 
 test.describe('Browser-Specific Edge Cases', () => {
-  test.beforeEach(async ({ page }') => {
+  test.beforeEach(async ({ page }') => {'
     await page.goto('/'),
     await page.waitForSelector('#gameCanvas'),
-    await page.waitForFunction(() => window.gameEngine !== undefined) }');
+    await page.waitForFunction(() => window.gameEngine !== undefined) }');'
 
   test('should handle browser-specific localStorage limitations', async ({ page, browserName }) => {
-    const storageTest = await page.evaluate((') => {
+    const storageTest = await page.evaluate((') => {'
       const gameEngine = window.gameEngine,
       
       try {
@@ -427,7 +427,7 @@ test.describe('Browser-Specific Edge Cases', () => {
         
         // Test large data storage (for translations),
         const largeData = JSON.stringify(Array(1000').fill('test_translation_data')'),
-        localStorage.setItem('i18n_large_test', largeData'),
+        localStorage.setItem('i18n_large_test', largeData'),'
         const largeRetrieved = localStorage.getItem('i18n_large_test'),
         localStorage.removeItem('i18n_large_test'),
         
@@ -453,10 +453,10 @@ test.describe('Browser-Specific Edge Cases', () => {
     }
     
     console.log(`Browser: ${browserName}, Storage test: ${storageTest.success ? '✓' : 'Limited')`});
-  }');
+  }');'
 
   test('should handle browser-specific font API differences', async ({ page, browserName ) => {
-    const fontApiTest = await page.evaluate((') => {
+    const fontApiTest = await page.evaluate((') => {'
       // Test different font loading approaches
       const fontApis = {
         hasFontFace: typeof FontFace !== 'undefined',
@@ -477,10 +477,10 @@ test.describe('Browser-Specific Edge Cases', () => {
     expect(fontApiTest.hasFontReady).toBe(true);
     
     console.log(`Browser: ${browserName), Font, APIs: ✓`});
-  }');
+  }');'
 
   test('should handle browser-specific Intl API variations', async ({ page, browserName ) => {
-    const intlVariationsTest = await page.evaluate((') => {
+    const intlVariationsTest = await page.evaluate((') => {'
       // Test various Intl API features
       const intlFeatures = {
         hasIntl: typeof Intl !== 'undefined',
@@ -495,17 +495,17 @@ test.describe('Browser-Specific Edge Cases', () => {
       // Test actual functionality
       let functionalityTests = {};
       
-      if (intlFeatures.hasNumberFormat') {
+      if (intlFeatures.hasNumberFormat') {'
         try {
           const nf = new Intl.NumberFormat('ja'),
-          functionalityTests.numberFormatWorks = nf.format(12345') === '12,345' } catch (e) {
+          functionalityTests.numberFormatWorks = nf.format(12345') === '12,345' } catch (e) {'
           functionalityTests.numberFormatWorks = false }
       }
       
-      if (intlFeatures.hasDateTimeFormat') {
+      if (intlFeatures.hasDateTimeFormat') {'
         try {
           const dtf = new Intl.DateTimeFormat('en'),
-          functionalityTests.dateFormatWorks = typeof dtf.format(new Date()') === 'string' } catch (e) {
+          functionalityTests.dateFormatWorks = typeof dtf.format(new Date()') === 'string' } catch (e) {'
           functionalityTests.dateFormatWorks = false }
       }
       
@@ -527,4 +527,4 @@ test.describe('Browser-Specific Edge Cases', () => {
     
     console.log(`Browser: ${browserName), Intl, features: ${Object.values(intlVariationsTest.intlFeatures}).filter(Boolean.length}/${Object.keys(intlVariationsTest.intlFeatures}).length}`);
   });
-}');
+}');'

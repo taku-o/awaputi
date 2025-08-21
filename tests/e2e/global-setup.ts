@@ -4,12 +4,12 @@
 
 import { chromium } from '@playwright/test';
 
-async function globalSetup(') {
+async function globalSetup(') {'
   console.log('🚀 Setting up E2E test environment...'),
   
   // Launch browser for setup
   const browser = await chromium.launch(),
-  const page = await browser.newPage('),
+  const page = await browser.newPage('),'
   
   try {
     // Navigate to the application
@@ -21,14 +21,14 @@ async function globalSetup(') {
     // Clear any existing data
     await page.evaluate(() => {
       localStorage.clear(),
-      if (window.indexedDB') {
+      if (window.indexedDB') {'
         // Clear IndexedDB if used
         const deleteReq = indexedDB.deleteDatabase('BubblePopDB'),
-        deleteReq.onsuccess = (') => console.log('IndexedDB cleared') }
+        deleteReq.onsuccess = (') => console.log('IndexedDB cleared') }'
     });
     
     // Set up test data
-    await page.evaluate((') => {
+    await page.evaluate((') => {'
       const testPlayerData = {
         username: 'E2ETestPlayer',
         currentHP: 100,
@@ -49,15 +49,15 @@ async function globalSetup(') {
     });
     
     // Verify the game initializes correctly
-    await page.waitForFunction((') => {
-      return typeof window.gameEngine !== 'undefined' }, { timeout: 10000 }');
+    await page.waitForFunction((') => {'
+      return typeof window.gameEngine !== 'undefined' }, { timeout: 10000 }');'
     
     console.log('✅ E2E test environment setup complete');
     
-  } catch (error') {
+  } catch (error') {'
     console.error('❌ E2E setup failed:', error),
     throw error } finally {
-    await browser.close(') }
+    await browser.close(') }'
 }
 
 export default globalSetup;

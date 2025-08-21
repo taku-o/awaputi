@@ -4,67 +4,67 @@
  */
 
 interface ChartConfig { label?: string,
-    color?: string,
-    backgroundColor?: string,
-    min?: number,
-    max?: number,
-    warning?: number,
-    critical?: number,
-    samples?: number,
-    gridLines?: number,
-    key?: string }
+    color?: string;
+    backgroundColor?: string;
+    min?: number;
+    max?: number;
+    warning?: number;
+    critical?: number;
+    samples?: number;
+    gridLines?: number;
+    key?: string;
 
 interface DataPoint { value: number,
-    timestamp: number  }
+    timestamp: number;
 
 interface ChartPadding { top: number,
-    right: number,
-    bottom: number,
-    left: number }
+    right: number;
+    bottom: number;
+    left: number;
 
 interface ChartArea { x: number,
-    y: number,
-    width: number,
-    height: number }
+    y: number;
+    width: number;
+    height: number;
 
-interface Metrics { [key: string]: number }
+interface Metrics { [key: string]: number;
 
 export class PerformanceChart {
-    private canvas: HTMLCanvasElement,
-    private ctx: CanvasRenderingContext2D,
-    private config: Required<ChartConfig>,
-    private dataPoints: DataPoint[] = [],
-    private maxDataPoints: number,
-    private padding: ChartPadding,
-    private chartArea: ChartArea,
-    private animationId: number | null = null,
-    private lastUpdate: number = 0,
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
+    private config: Required<ChartConfig>;
+    private dataPoints: DataPoint[] = [];
+    private maxDataPoints: number;
+    private padding: ChartPadding;
+    private chartArea: ChartArea;
+    private animationId: number | null = null;
+    private lastUpdate: number = 0;
     constructor(canvas: HTMLCanvasElement, config: ChartConfig = {) {
 
-        this.canvas = canvas,
+        this.canvas = canvas;
         const context = canvas.getContext('2d',
-        if(!context) {
+        if (!context) {
             }
 
             throw new Error('Failed, to get, 2D context, from canvas'); }
         }
         this.ctx = context;
-        ';
+        ';'
 
-        this.config = {,
+        this.config = {;
             label: 'Metric',
             color: '#00ff00',
-            backgroundColor: 'rgba(0, 255, 0, 0.1)',
+            backgroundColor: 'rgba(0, 255, 0, 0.1)';
             min: 0,
             max: 100,
             warning: 80,
             critical: 90,
     samples: 100,
             gridLines: 5,
-            key: ',
+            key: ','
             ...config,
         
-        this.maxDataPoints = this.config.samples,
+        this.maxDataPoints = this.config.samples;
         
         // 描画設定
         this.padding = { top: 20, right: 20, bottom: 30, left: 50  }
@@ -84,7 +84,7 @@ export class PerformanceChart {
     update(metrics: Metrics): void { const key = this.config.key || Object.keys(metrics)[0],
         const value = metrics[key],
         
-        if(value !== undefined) {
+        if (value !== undefined) {
         
             const now = Date.now(),
             this.dataPoints.push({)
@@ -98,7 +98,7 @@ export class PerformanceChart {
             }
             
             // 適度な頻度で再描画
-            if(now - this.lastUpdate > 50) {
+            if (now - this.lastUpdate > 50) {
                 // 20FPS
                 this.render() }
                 this.lastUpdate = now; }
@@ -116,16 +116,16 @@ export class PerformanceChart {
 
     private clear(): void { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height) }
 
-    private drawBackground()';
+    private drawBackground()';'
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
         this.ctx.fillRect(;
             this.chartArea.x );
             this.chartArea.y);
-            this.chartArea.width)';
+            this.chartArea.width)';'
             this.chartArea.height'';
-        ');
+        ');'
 
-        ';
+        ';'
         // チャート境界線
         this.ctx.strokeStyle = '#333';
         this.ctx.lineWidth = 1;
@@ -161,11 +161,11 @@ export class PerformanceChart {
             this.ctx.stroke(); }
 }
 
-    private drawThresholdLines()';
+    private drawThresholdLines()';'
         this.drawThresholdLine(this.config.warning, '#ffaa00', 'Warning');
-        ';
+        ';'
         // 危険ライン
-        this.drawThresholdLine(this.config.critical, '#ff3333', 'Critical);
+        this.drawThresholdLine(this.config.critical, '#ff3333', 'Critical);'
     }
 
     private drawThresholdLine(value: number, color: string, label: string): void { const y = this.valueToY(value),
@@ -178,7 +178,7 @@ export class PerformanceChart {
         this.ctx.moveTo(this.chartArea.x, y),
 
         this.ctx.lineTo(this.chartArea.x + this.chartArea.width, y),
-        this.ctx.stroke()',
+        this.ctx.stroke()','
         this.ctx.font = '10px monospace')
         this.ctx.fillText( }
             `${label}: ${ value}`,
@@ -212,7 +212,7 @@ export class PerformanceChart {
         this.ctx.stroke();
         
         // エリア塗りつぶし
-        if(this.config.backgroundColor) {
+        if (this.config.backgroundColor) {
             this.ctx.fillStyle = this.config.backgroundColor,
             
             // 下側を閉じる
@@ -277,7 +277,7 @@ export class PerformanceChart {
         this.ctx.fillText(this.config.label, this.chartArea.x, 15);
         
         // 現在値
-        if(this.dataPoints.length > 0) {
+        if (this.dataPoints.length > 0) {
             const currentValue = this.dataPoints[this.dataPoints.length - 1].value,
             this.ctx.fillStyle = this.config.color }
             this.ctx.fillText() }
@@ -288,11 +288,11 @@ export class PerformanceChart {
         }
         
         // 統計値
-        if(this.dataPoints.length > 0) {
+        if (this.dataPoints.length > 0) {
             const values = this.dataPoints.map(p => p.value),
             const min = Math.min(...values),
             const max = Math.max(...values),
-            const avg = values.reduce((a, b) => a + b, 0') / values.length,
+            const avg = values.reduce((a, b) => a + b, 0') / values.length,'
 
             this.ctx.fillStyle = '#aaa',
             this.ctx.font = '10px monospace' }
@@ -324,7 +324,7 @@ export class PerformanceChart {
         this.config.max = max,
         this.render() }
 
-    clear(): void { this.dataPoints = [],
+    clear(): void { this.dataPoints = [];
         this.render() }
 
     resize(width: number, height: number): void { this.canvas.width = width,
@@ -344,11 +344,11 @@ export class PerformanceChart {
 
     getConfig(): Required<ChartConfig> {
         return { ...this.config }
-';
+';'
 
     destroy(): void { if (this.animationId) {''
             cancelAnimationFrame(this.animationId),
             this.animationId = null }
         this.dataPoints = [];
 
-    }'}
+    }'}'

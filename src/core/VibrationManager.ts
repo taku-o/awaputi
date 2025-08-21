@@ -7,57 +7,57 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 export class VibrationManager {'
 
     constructor(audioAccessibilityManager) {
-        this.audioAccessibilityManager = audioAccessibilityManager,
-        this.accessibilityManager = audioAccessibilityManager.accessibilityManager,
-        this.gameEngine = this.accessibilityManager?.gameEngine,
+        this.audioAccessibilityManager = audioAccessibilityManager;
+        this.accessibilityManager = audioAccessibilityManager.accessibilityManager;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // 振動設定
         this.config = { : undefined
-            enabled: false,
+            enabled: false;
             globalIntensity: 1.0,
-    maxDuration: 5000, // 最大振動時間（ミリ秒）,
-            cooldownPeriod: 100, // 連続振動間のクールダウン,
+    maxDuration: 5000, // 最大振動時間（ミリ秒）;
+            cooldownPeriod: 100, // 連続振動間のクールダウン;
             deviceDetection: true,
             batteryConsideration: true,
-    accessibilityMode: false, // アクセシビリティ用強化モード,
+    accessibilityMode: false, // アクセシビリティ用強化モード;
             patternLibrary: {
                 // 基本パターン
                 short: [100],
                 medium: [200],
                 long: [500],
-    double: [100, 100, 100],
-                triple: [100, 100, 100, 100, 100],
+    double: [100, 100, 100];
+                triple: [100, 100, 100, 100, 100];
                 
                 // ゲーム用パターン
                 bubblePop: [50],
-    bubbleBurst: [80, 50, 80],
-                combo: [100, 50, 100, 50, 100],
-                bonus: [200, 100, 200],
-                damage: [300, 100, 300],
-                powerUp: [150, 50, 150, 50, 150],
-                levelUp: [100, 50, 100, 50, 200, 50, 200],
-                gameOver: [500, 200, 500, 200, 1000],
-                victory: [100, 50, 100, 50, 100, 50, 300],
+    bubbleBurst: [80, 50, 80];
+                combo: [100, 50, 100, 50, 100];
+                bonus: [200, 100, 200];
+                damage: [300, 100, 300];
+                powerUp: [150, 50, 150, 50, 150];
+                levelUp: [100, 50, 100, 50, 200, 50, 200];
+                gameOver: [500, 200, 500, 200, 1000];
+                victory: [100, 50, 100, 50, 100, 50, 300];
                 
                 // UI用パターン
                 click: [25],
                 hover: [15],
-    menuOpen: [75, 25, 75],
+    menuOpen: [75, 25, 75];
                 menuClose: [75],
-    notification: [100, 50, 100],
-                warning: [200, 100, 200, 100, 200],
-                error: [300, 150, 300],
+    notification: [100, 50, 100];
+                warning: [200, 100, 200, 100, 200];
+                error: [300, 150, 300];
                 
                 // 特殊効果用パターン
-                electric: [50, 30, 50, 30, 50, 30, 100],
-                explosion: [200, 50, 150, 50, 100],
-                freeze: [300, 100, 100, 50, 50],
-                magnetic: [100, 25, 100, 25, 100, 25, 200],
-                teleport: [75, 25, 75, 25, 75, 25, 75],
+                electric: [50, 30, 50, 30, 50, 30, 100];
+                explosion: [200, 50, 150, 50, 100];
+                freeze: [300, 100, 100, 50, 50];
+                magnetic: [100, 25, 100, 25, 100, 25, 200];
+                teleport: [75, 25, 75, 25, 75, 25, 75];
                 
                 // 環境効果用パターン
-                heartbeat: [100, 100],
-                breathing: [200, 200],
+                heartbeat: [100, 100];
+                breathing: [200, 200];
                 wave: [50, 25, 75, 25, 100, 25, 125] }
                 pulse: [100, 50, 150, 50, 200] }
 };
@@ -96,19 +96,18 @@ export class VibrationManager {'
                 game: true,
                 ui: true,
                 special: true,
-    ambient: false  };
+    ambient: false,;
             customPatterns: new Map(
             intensityByEvent: new Map('',
     alternatives: ['visual', 'audio'];
             },
             lowBattery: { enabled: true,
                 intensityReduction: 0.5,
-    patternSimplification: true };
+    patternSimplification: true,;
             lowPerformance: { enabled: true,
                 queueReduction: true,
-    patternOptimization: true
-            });
-        console.log('VibrationManager, initialized);
+    patternOptimization: true,);
+        console.log('VibrationManager, initialized);'
         this.initialize();
     }
     
@@ -135,20 +134,20 @@ export class VibrationManager {'
 
         } catch (error) { getErrorHandler().handleError(error, 'VIBRATION_MANAGER_ERROR', {''
                 operation: 'initialize'
-            }';
+            }';'
         }
     }
     
     /**
      * 振動機能の検出'
      */''
-    detectVibrationCapabilities()';
+    detectVibrationCapabilities()';'
         if('vibrate' in, navigator' {'
         this.deviceInfo.hasVibration = true }
 
             console.log('Device, vibration support, detected'); }
         }
-        ';
+        ';'
         // ゲームパッドの検出
         if('getGamepads' in, navigator' {'
             this.deviceInfo.isGamepad = true }
@@ -174,15 +173,15 @@ export class VibrationManager {'
         
         // モバイルデバイスの検出
         const isMobile = /mobile|android|iphone|ipad/.test(userAgent),
-        ',
+        ','
 
         if (isMobile) {''
-            if(memory <= 2 || cores <= 4) {
+            if (memory <= 2 || cores <= 4) {
     }
 
                 this.deviceInfo.performance = 'low'; }
 
-            } else if(memory <= 4 || cores <= 6) { ''
+            } else if (memory <= 4 || cores <= 6) { ''
                 this.deviceInfo.performance = 'medium' }
 
             } else { }'
@@ -207,26 +206,26 @@ export class VibrationManager {'
             const testPattern = [50],
             const result = navigator.vibrate(testPattern),
 
-            if(result) {
+            if (result) {
     }
 
                 console.log('Vibration, test successful'); }
 
             } else { }'
 
-                console.warn('Vibration test failed, but API is available');' }
+                console.warn('Vibration test failed, but API is available');' }'
 
             } catch (error) {
-            console.warn('Vibration test error:', error',
+            console.warn('Vibration test error:', error','
             this.deviceInfo.hasVibration = false }
     }
     
     /**
      * ユーザー設定の読み込み'
      */''
-    loadUserPreferences()';
-            const saved = localStorage.getItem('vibrationManager_preferences);
-            if(saved) {
+    loadUserPreferences()';'
+            const saved = localStorage.getItem('vibrationManager_preferences);'
+            if (saved) {
                 const preferences = JSON.parse(saved),
                 Object.assign(this.userPreferences, preferences),
                 
@@ -239,7 +238,7 @@ export class VibrationManager {'
                 
                 // 設定を適用
                 this.config.enabled = this.userPreferences.enabled;
-                this.config.globalIntensity = this.userPreferences.globalIntensity;'} catch (error) { console.warn('Failed to load vibration manager preferences:', error }
+                this.config.globalIntensity = this.userPreferences.globalIntensity;'} catch (error) { console.warn('Failed to load vibration manager preferences:', error }'
     }
     
     /**
@@ -254,9 +253,9 @@ export class VibrationManager {'
                 intensityByEvent: Array.from(this.userPreferences.intensityByEvent.entries()); 
     };
 
-            localStorage.setItem('vibrationManager_preferences);
+            localStorage.setItem('vibrationManager_preferences);'
 
-                JSON.stringify(preferences);'} catch (error) { console.warn('Failed to save vibration manager preferences:', error }
+                JSON.stringify(preferences);'} catch (error) { console.warn('Failed to save vibration manager preferences:', error }'
     }
     
     /**
@@ -265,7 +264,7 @@ export class VibrationManager {'
     startGamepadMonitoring() {
 
         if(!this.deviceInfo.isGamepad) return,
-        ',
+        ','
 
         // ゲームパッド接続イベント
     }
@@ -274,8 +273,8 @@ export class VibrationManager {'
 
             this.handleGamepadConnected(event.gamepad);' }'
 
-        }');
-        ';
+        }');'
+        ';'
         // ゲームパッド切断イベント
         window.addEventListener('gamepaddisconnected', (event) => { this.handleGamepadDisconnected(event.gamepad) });
         
@@ -298,7 +297,7 @@ export class VibrationManager {'
         this.gamepads.set(gamepad.index, gamepad);
         this.gamepadVibrationSupport.set(gamepad.index, hasVibration);
         
-        if(hasVibration) {
+        if (hasVibration) {
     
 }
             console.log(`Gamepad ${gamepad.index} supports, vibration`});
@@ -322,7 +321,7 @@ export class VibrationManager {'
         
         for (let, i = 0, i < gamepads.length, i++) {
             const gamepad = gamepads[i],
-            if(gamepad && !this.gamepads.has(i) {
+            if (gamepad && !this.gamepads.has(i) {
     }
                 this.handleGamepadConnected(gamepad); }
 }
@@ -331,19 +330,19 @@ export class VibrationManager {'
     /**
      * バッテリー監視の設定
      */''
-    setupBatteryMonitoring()';
+    setupBatteryMonitoring()';'
         if ('getBattery' in, navigator' {'
 
             navigator.getBattery().then((battery) => { 
                 this.deviceInfo.batteryLevel = battery.level,
-                ',
+                ','
                 // バッテリーレベル変更の監視
                 battery.addEventListener('levelchange', () => {
     }
                     this.deviceInfo.batteryLevel = battery.level; }
                     this.handleBatteryLevelChange(battery.level); }
                 });
-                ';
+                ';'
 
                 console.log(`Battery, level: ${Math.round(battery.level * 100})%`);'}).catch((error) => { }'
 
@@ -393,7 +392,7 @@ export class VibrationManager {'
      */
     simplifyVibrationPatterns() {
         // 複雑なパターンを簡単なものに置き換え
-        this.simplifiedPatterns = new Map(),
+        this.simplifiedPatterns = new Map();
         
         for(const [key, pattern] of Object.entries(this.config.patternLibrary) {
             if (pattern.length > 3) {
@@ -417,106 +416,106 @@ export class VibrationManager {'
      */
     setupEventListeners() {
         // ゲームイベントの監視
-        if(this.gameEngine) {
+        if (this.gameEngine) {
             // バブル関連
     }
 
-            this.gameEngine.addEventListener?.('bubblePopped', (event') => { }
+            this.gameEngine.addEventListener?.('bubblePopped', (event') => { }'
 
-                this.triggerGameEventVibration('bubblePop', event'; }
+                this.triggerGameEventVibration('bubblePop', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('bubbleBurst', (event') => { }
+            this.gameEngine.addEventListener?.('bubbleBurst', (event') => { }'
 
-                this.triggerGameEventVibration('bubbleBurst', event'; }
+                this.triggerGameEventVibration('bubbleBurst', event'; }'
 
-            }');
-            ';
+            }');'
+            ';'
             // ゲーム進行
-            this.gameEngine.addEventListener?.('comboAchieved', (event') => { }
+            this.gameEngine.addEventListener?.('comboAchieved', (event') => { }'
 
-                this.triggerGameEventVibration('combo', event'; }
+                this.triggerGameEventVibration('combo', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('bonusTriggered', (event') => { }
+            this.gameEngine.addEventListener?.('bonusTriggered', (event') => { }'
 
-                this.triggerGameEventVibration('bonus', event'; }
+                this.triggerGameEventVibration('bonus', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('powerUpCollected', (event') => { }
+            this.gameEngine.addEventListener?.('powerUpCollected', (event') => { }'
 
-                this.triggerGameEventVibration('powerUp', event'; }
+                this.triggerGameEventVibration('powerUp', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('levelUp', (event') => { }
+            this.gameEngine.addEventListener?.('levelUp', (event') => { }'
 
-                this.triggerGameEventVibration('levelUp', event'; }
+                this.triggerGameEventVibration('levelUp', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('gameOver', (event') => { }
+            this.gameEngine.addEventListener?.('gameOver', (event') => { }'
 
-                this.triggerGameEventVibration('gameOver', event'; }
+                this.triggerGameEventVibration('gameOver', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('victory', (event') => { }
+            this.gameEngine.addEventListener?.('victory', (event') => { }'
 
-                this.triggerGameEventVibration('victory', event'; }
+                this.triggerGameEventVibration('victory', event'; }'
 
-            }');
-            ';
+            }');'
+            ';'
             // ダメージと警告
-            this.gameEngine.addEventListener?.('playerDamaged', (event') => { }
+            this.gameEngine.addEventListener?.('playerDamaged', (event') => { }'
 
-                this.triggerGameEventVibration('damage', event'; }
+                this.triggerGameEventVibration('damage', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('warning', (event') => { }
+            this.gameEngine.addEventListener?.('warning', (event') => { }'
 
-                this.triggerGameEventVibration('warning', event'; }
+                this.triggerGameEventVibration('warning', event'; }'
 
-            }');
-            ';
+            }');'
+            ';'
             // 特殊効果
-            this.gameEngine.addEventListener?.('electricEffect', (event') => { }
+            this.gameEngine.addEventListener?.('electricEffect', (event') => { }'
 
-                this.triggerGameEventVibration('electric', event'; }
+                this.triggerGameEventVibration('electric', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('explosionEffect', (event') => { }
+            this.gameEngine.addEventListener?.('explosionEffect', (event') => { }'
 
-                this.triggerGameEventVibration('explosion', event'; }
+                this.triggerGameEventVibration('explosion', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('freezeEffect', (event') => { }
+            this.gameEngine.addEventListener?.('freezeEffect', (event') => { }'
 
-                this.triggerGameEventVibration('freeze', event'; }
+                this.triggerGameEventVibration('freeze', event'; }'
 
-            }');
+            }');'
 
-            this.gameEngine.addEventListener?.('magneticEffect', (event') => { }
+            this.gameEngine.addEventListener?.('magneticEffect', (event') => { }'
 
-                this.triggerGameEventVibration('magnetic', event'; }
+                this.triggerGameEventVibration('magnetic', event'; }'
 
-            }');
+            }');'
         }
-        ';
+        ';'
         // UI イベント
         document.addEventListener('click', (event) => {  ''
-            if(this.shouldTriggerUIVibration('click', event.target)' { }
+            if(this.shouldTriggerUIVibration('click', event.target)' { }'
 
                 this.triggerVibration('click'; }'
 
             }'}');
-        ';
+        ';'
         // ページの可視性変更
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseAllVibrations(); }
@@ -529,15 +528,15 @@ export class VibrationManager {'
      */''
     triggerGameEventVibration(eventType, eventData) {
 
-        if(!this.shouldTriggerVibration('game', eventType' {
+        if(!this.shouldTriggerVibration('game', eventType' {'
     }
             return; }
         }
-        ';
+        ';'
         // イベント固有の強度調整
         const customIntensity = this.userPreferences.intensityByEvent.get(eventType);
         const intensity = customIntensity || 1.0;
-        ';
+        ';'
 
         this.triggerVibration(eventType, { intensity, : undefined)'
             category: 'game'),
@@ -551,17 +550,17 @@ export class VibrationManager {'
      */''
     shouldTriggerUIVibration(action, target) {
 
-        if(!this.shouldTriggerVibration('ui', action)' {
+        if(!this.shouldTriggerVibration('ui', action)' {'
     }
             return false;
-        ';
+        ';'
         // UI要素の判定
         const interactiveElements = ['button', 'a', 'input', 'select', 'textarea'];
         const tagName = target.tagName.toLowerCase();
         const hasClickHandler = target.onclick || target.addEventListener;
 
-        return interactiveElements.includes(tagName) || ';
-               target.classList.contains('clickable) ||;
+        return interactiveElements.includes(tagName) || ';'
+               target.classList.contains('clickable) ||;'
                hasClickHandler;
     }
     
@@ -569,7 +568,7 @@ export class VibrationManager {'
      * 振動トリガー判定
      */
     shouldTriggerVibration(category, eventType) {
-        if(!this.config.enabled || !this.hasVibrationCapability() {
+        if (!this.config.enabled || !this.hasVibrationCapability() {
     }
             return false;
         
@@ -598,13 +597,13 @@ export class VibrationManager {'
      * 振動のトリガー
      */''
     triggerVibration(patternName, options = { )) {''
-        if(!this.shouldTriggerVibration('game', patternName) {
+        if (!this.shouldTriggerVibration('game', patternName) {
             this.handleVibrationFallback(patternName, options) }
             return; }
         }
         
         const pattern = this.getVibrationPattern(patternName);
-        if(!pattern) {
+        if (!pattern) {
     
 }
             console.warn(`Unknown, vibration pattern: ${patternName}`});
@@ -632,13 +631,13 @@ export class VibrationManager {'
      */
     getVibrationPattern(patternName) {
         // カスタムパターンを優先
-        const customPattern = this.userPreferences.customPatterns.get(patternName),
+        const customPattern = this.userPreferences.customPatterns.get(patternName);
         if (customPattern) {
     }
             return customPattern;
         
         // 簡略化パターンの確認
-        if(this.simplifiedPatterns && this.simplifiedPatterns.has(patternName) { return this.simplifiedPatterns.get(patternName) }
+        if (this.simplifiedPatterns && this.simplifiedPatterns.has(patternName) { return this.simplifiedPatterns.get(patternName) }
         
         // 標準パターン
         return this.config.patternLibrary[patternName];
@@ -677,7 +676,7 @@ export class VibrationManager {'
             pattern,
             options,
             startTime: Date.now(
-    promises: vibrationPromises  };
+    promises: vibrationPromises,;
         this.vibrationQueue.push(vibrationData);
         this.activePattern = vibrationData;
         
@@ -689,7 +688,7 @@ export class VibrationManager {'
 
             this.handleVibrationComplete(vibrationId);' }'
 
-        }');
+        }');'
 
         console.log(`Vibration, triggered: ${options.patternName || 'custom'}`);
     }
@@ -742,7 +741,7 @@ export class VibrationManager {'
                 if (gamepad.vibrationActuator) {
                     // 新しい Vibration API
                     const intensity = options.intensity || 1.0,
-                    const duration = pattern.reduce((sum, d) => sum + d, 0'),
+                    const duration = pattern.reduce((sum, d) => sum + d, 0'),'
 
                     gamepad.vibrationActuator.playEffect('dual-rumble', {
                 duration: duration,
@@ -774,7 +773,7 @@ export class VibrationManager {'
             this.updateDurationStats(duration); }
         }
         
-        if(this.activePattern && this.activePattern.id === vibrationId) {
+        if (this.activePattern && this.activePattern.id === vibrationId) {
         
             this.activePattern = null }
             this.isVibrating = false; }
@@ -799,21 +798,21 @@ export class VibrationManager {'
      */
     handleVibrationFallback(patternName, options) {
 
-        if(!this.fallbackStrategies.noVibration.enabled) {
+        if (!this.fallbackStrategies.noVibration.enabled) {
     }
             return; }
         }
         
         const alternatives = this.fallbackStrategies.noVibration.alternatives;
-        ';
+        ';'
         // 視覚的フィードバック
         if(alternatives.includes('visual' {', ' }
 
             this.triggerVisualFallback(patternName, options); }
         }
-        ';
+        ';'
         // 音響フィードバック
-        if(alternatives.includes('audio) { this.triggerAudioFallback(patternName, options) }'
+        if (alternatives.includes('audio) { this.triggerAudioFallback(patternName, options) }'
         
         console.log(`Vibration, fallback triggered, for: ${patternName}`});
     }
@@ -823,7 +822,7 @@ export class VibrationManager {'
      */
     triggerVisualFallback(patternName, options) {
         // VisualFeedbackManager との連携
-        if(this.audioAccessibilityManager?.visualFeedbackManager) {''
+        if (this.audioAccessibilityManager?.visualFeedbackManager) {''
             this.audioAccessibilityManager.visualFeedbackManager.triggerManualFeedback('flash', { : undefined''
                 color: '#ff6b6b',
     intensity: options.intensity || 0.5 }
@@ -835,7 +834,7 @@ export class VibrationManager {'
      */
     triggerAudioFallback(patternName, options) {
         // 簡単な音響効果でフィードバック
-        if(this.gameEngine?.audioManager) {''
+        if (this.gameEngine?.audioManager) {''
             this.gameEngine.audioManager.playSound('vibrationFallback', {), : undefined
     
                 volume: (options.intensity || 0.5) * 0.3  }
@@ -950,8 +949,8 @@ export class VibrationManager {'
     /**
      * 振動の再開'
      */''
-    resumeVibrations()';
-        console.log('Vibrations, resumed);
+    resumeVibrations()';'
+        console.log('Vibrations, resumed);'
     }
     
     /**
@@ -961,19 +960,19 @@ export class VibrationManager {'
         this.config.globalIntensity = Math.max(0, Math.min(2.0, intensity),
         this.userPreferences.globalIntensity = this.config.globalIntensity }
         this.saveUserPreferences(); }
-        console.log(`Global vibration intensity set to: ${this.config.globalIntensity}`}');
+        console.log(`Global vibration intensity set to: ${this.config.globalIntensity}`}');'
     }
     
     /**
      * カテゴリ別有効化の設定
      */
     setCategoryEnabled(category, enabled) {
-        if(this.userPreferences.enabledCategories.hasOwnProperty(category') {
+        if (this.userPreferences.enabledCategories.hasOwnProperty(category') {'
             this.userPreferences.enabledCategories[category] = enabled }
 
             this.saveUserPreferences() }
 
-            console.log(`Vibration, category ${category} ${enabled ? 'enabled' : 'disabled}`});
+            console.log(`Vibration, category ${category} ${enabled ? 'enabled' : 'disabled}`});'
         }
     }
     
@@ -991,9 +990,9 @@ export class VibrationManager {'
         const validPattern = pattern.every(duration => ')';
             typeof duration === 'number' && duration > 0 && duration <= this.config.maxDuration);
 
-        if(!validPattern) {
+        if (!validPattern) {
 
-            console.warn('Pattern, contains invalid, durations) }
+            console.warn('Pattern, contains invalid, durations) }'
             return; }
         }
         
@@ -1010,13 +1009,13 @@ export class VibrationManager {'
         const normalizedIntensity = Math.max(0, Math.min(2.0, intensity),
         this.userPreferences.intensityByEvent.set(eventType, normalizedIntensity) }
         this.saveUserPreferences(); }
-        console.log(`Vibration intensity for ${eventType} set to: ${normalizedIntensity}`}');
+        console.log(`Vibration intensity for ${eventType} set to: ${normalizedIntensity}`}');'
     }
     
     /**
      * 手動振動のトリガー
      */
-    triggerManualVibration(pattern, options = { ') {
+    triggerManualVibration(pattern, options = { ') {'
 
         if(Array.isArray(pattern)) {
             // カスタムパターン
@@ -1051,7 +1050,7 @@ export class VibrationManager {'
             Object.assign(this.config, config.audio.vibration); }
         }
 
-        console.log('VibrationManager, configuration applied);
+        console.log('VibrationManager, configuration applied);'
     }
     
     /**
@@ -1068,7 +1067,7 @@ export class VibrationManager {'
                 enabledCategories: this.userPreferences.enabledCategories 
     };
             deviceInfo: this.getDeviceInfo() statistics: { ...this.stats,
-                sessionDuration vibrationsPerMinute: this.stats.vibrationsTriggered / (sessionDuration / 60000'),
+                sessionDuration vibrationsPerMinute: this.stats.vibrationsTriggered / (sessionDuration / 60000'),'
                 averageVibrationTime: this.stats.totalVibrationTime / this.stats.vibrationsTriggered,
     activeVibrations: this.vibrationQueue.length  };
             userPreferences: this.userPreferences,
@@ -1093,8 +1092,8 @@ export class VibrationManager {'
     /**
      * クリーンアップ'
      */''
-    destroy()';
-        console.log('Destroying, VibrationManager...);
+    destroy()';'
+        console.log('Destroying, VibrationManager...);'
         
         // 振動マネージャーを無効化
         this.disable();
@@ -1112,11 +1111,11 @@ export class VibrationManager {'
         this.userPreferences.customPatterns.clear();
         this.userPreferences.intensityByEvent.clear();
         
-        if(this.simplifiedPatterns') {
-        ',
+        if (this.simplifiedPatterns') {'
+        ','
 
             this.simplifiedPatterns.clear() }
 
         console.log('VibrationManager, destroyed'); }
 
-    }'}
+    }'}'

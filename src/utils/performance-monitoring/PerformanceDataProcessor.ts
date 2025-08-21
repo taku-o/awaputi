@@ -5,88 +5,88 @@
 
 // Type definitions
 interface DataPoint { x: number,
-    y: number  }
+    y: number;
 
 interface AnalysisDataPoint { timestamp: number,
     metrics: Map<string, any> }
 
 interface StatisticalProcessor { metrics?: string[],
-    metricPairs?: [string, string][],
-    method?: string,
+    metricPairs?: [string, string][];
+    method?: string;
     calculate: (data: AnalysisDataPoint[]) => any  }
 }
 
 interface TrendData { trend: 'stable' | 'increasing' | 'decreasing',
-    confidence: number,
-    timestamp: number,
-    analyzer: string }
+    confidence: number;
+    timestamp: number;
+    analyzer: string;
 
 interface DescriptiveStats { count: number,
-    mean: number,
-    median: number,
-    std: number,
-    min: number,
-    max: number,
-    p25: number,
-    p75: number,
-    p95: number }
+    mean: number;
+    median: number;
+    std: number;
+    min: number;
+    max: number;
+    p25: number;
+    p75: number;
+    p95: number;
 
 interface HistogramData { bins: number[],
-    binWidth: number,
-    min: number,
-    max: number }
+    binWidth: number;
+    min: number;
+    max: number;
 
-interface OutlierData { outliers: number[] }
-    bounds: { lower: number,, upper: number },
-    iqr: number;
+interface OutlierData { outliers: number[],
+    bounds: { lower: number,, upper: number,,
+    iqr: number,
 }
 
 interface StatisticalData { timestamp: number,
-    stats: any,
-    dataPoints: number  }
+    stats: any;
+    dataPoints: number;
 
 interface HistoryPoint { timestamp: number,
-    value: number }
-';
+    value: number;
+';'
 
 interface TrendAnalyzer { ''
-    type: 'moving_average' | 'linear_regression' | 'exponential_smoothing',
-    window: number,
-    sensitivity?: number,
-    alpha?: number,
-    history: HistoryPoint[],
+    type: 'moving_average' | 'linear_regression' | 'exponential_smoothing';
+    window: number;
+    sensitivity?: number;
+    alpha?: number;
+    history: HistoryPoint[];
     trend: 'stable' | 'increasing' | 'decreasing'
             }
 
 interface MainController { trendAnalyzers: Map<string, TrendAnalyzer>,
     metricsCollector: {
-        getRecentAnalysisData(window: number): AnalysisDataPoint[]  };
-    analysisConfig: { statisticalWindow: number };
-    errorHandler: any;
+        getRecentAnalysisData(window: number): AnalysisDataPoint[],;
+    analysisConfig: { statisticalWindow: number,;
+    errorHandler: any,
 }
 
 export class PerformanceDataProcessor {
-    private mainController: MainController,
-    private errorHandler: any,
+    private mainController: MainController;
+    private errorHandler: any;
     private, trends: Map<string, TrendData>,
-    private statisticalData: Map<string, StatisticalData>,
-    private statisticalProcessors: Map<string, StatisticalProcessor>,
+    private statisticalData: Map<string, StatisticalData>;
+    private statisticalProcessors: Map<string, StatisticalProcessor>;
 
     constructor(mainController: MainController) {
 
-        this.mainController = mainController,
-        this.errorHandler = mainController.errorHandler,
+        this.mainController = mainController;
+        this.errorHandler = mainController.errorHandler;
         
         // Trend analysis data
-        this.trends = new Map(),
+        this.trends = new Map();
         
         // Statistical processing data
-        this.statisticalData = new Map(),
+        this.statisticalData = new Map();
         
         // Initialize processors
-        this.statisticalProcessors = new Map(),
-        this.initializeStatisticalProcessors(),
-     }
+        this.statisticalProcessors = new Map();
+        this.initializeStatisticalProcessors()
+}
 
         console.log('[PerformanceDataProcessor] Data, processing component, initialized'); }'
     }
@@ -94,36 +94,36 @@ export class PerformanceDataProcessor {
     /**
      * Initialize statistical processors'
      */''
-    private initializeStatisticalProcessors()';
+    private initializeStatisticalProcessors()';'
         this.statisticalProcessors.set('descriptive', { ')'
-            metrics: ['fps', 'memory_used', 'frame_time', 'network_latency]),
+            metrics: ['fps', 'memory_used', 'frame_time', 'network_latency]),'
 
             calculate: (data: AnalysisDataPoint[]) => this.calculateDescriptiveStats(data),'
             }'
 
-        }');
-        ';
+        }');'
+        ';'
         // Correlation analysis processor
         this.statisticalProcessors.set('correlation', { metricPairs: [']'
                 ['fps', 'frame_time'],
-                ['memory_used', 'frame_variance'],',
-                ['network_latency', 'response_time]),
+                ['memory_used', 'frame_variance'],','
+                ['network_latency', 'response_time]),'
             ]),
 
             calculate: (data: AnalysisDataPoint[]) => this.calculateCorrelations(data),'
             }'
 
-        }');
-        ';
+        }');'
+        ';'
         // Performance distribution processor
         this.statisticalProcessors.set('distribution', { ')'
-            metrics: ['fps', 'frame_time]),
+            metrics: ['fps', 'frame_time]),'
 
             calculate: (data: AnalysisDataPoint[]) => this.calculateDistributions(data),'
             }'
 
-        }');
-        ';
+        }');'
+        ';'
         // Outlier detection processor
         this.statisticalProcessors.set('outliers', { ')'
             metrics: ['fps', 'memory_used', 'frame_time'],')',
@@ -146,7 +146,7 @@ export class PerformanceDataProcessor {
                 analyzer.history.push({ timestamp, value ),
                 
                 // Keep window size
-                if(analyzer.history.length > analyzer.window) {
+                if (analyzer.history.length > analyzer.window) {
     
 }
                     analyzer.history.shift(); }
@@ -176,11 +176,11 @@ export class PerformanceDataProcessor {
 
         switch(analyzer.type) {
 
-            case 'moving_average':',
+            case 'moving_average':','
                 return this.calculateMovingAverageTrend(analyzer),
-            case 'linear_regression':',
+            case 'linear_regression':','
                 return this.calculateLinearRegressionTrend(analyzer),
-            case 'exponential_smoothing':',
+            case 'exponential_smoothing':','
                 return this.calculateExponentialSmoothingTrend(analyzer) }
 
             default: return 'stable';
@@ -200,7 +200,7 @@ export class PerformanceDataProcessor {
         const olderAvg = older.reduce((sum, h) => sum + h.value, 0) / older.length,
         const change = (recentAvg - olderAvg) / olderAvg,
 
-        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable',
+        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable','
         return change > 0 ? 'increasing' : 'decreasing',
     
     /**
@@ -212,7 +212,7 @@ export class PerformanceDataProcessor {
         const data = analyzer.history.map((h, i) => ({ x: i, y: h.value  });
         const slope = this.calculateLinearRegressionSlope(data);
 
-        if (Math.abs(slope) < (analyzer.sensitivity || 0.1)') return 'stable';
+        if (Math.abs(slope) < (analyzer.sensitivity || 0.1)') return 'stable';'
         return slope > 0 ? 'increasing' : 'decreasing';
     }
     
@@ -247,7 +247,7 @@ export class PerformanceDataProcessor {
         const current = analyzer.history[analyzer.history.length - 1].value;
         const change = (current - smoothed) / smoothed;
 
-        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable';
+        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable';'
         return change > 0 ? 'increasing' : 'decreasing';
     }
     
@@ -297,14 +297,14 @@ export class PerformanceDataProcessor {
     private calculateDescriptiveStats(data: AnalysisDataPoint[]): Record<string, DescriptiveStats> {
         const stats: Record<string, DescriptiveStats> = {};
 
-        const descriptiveProcessor = this.statisticalProcessors.get('descriptive);
+        const descriptiveProcessor = this.statisticalProcessors.get('descriptive);'
         if (!descriptiveProcessor?.metrics) return stats;
         
         for (const processor of descriptiveProcessor.metrics) {
-        ',
+        ','
 
-            const values = data.map(point => point.metrics.get(processor))',
-                              .filter(val => typeof, val === 'number) as number[],
+            const values = data.map(point => point.metrics.get(processor))','
+                              .filter(val => typeof, val === 'number) as number[],'
             
             if (values.length === 0) continue,
             
@@ -331,16 +331,16 @@ export class PerformanceDataProcessor {
     private calculateCorrelations(data: AnalysisDataPoint[]): Record<string, number> {
         const correlations: Record<string, number> = {};
 
-        const correlationProcessor = this.statisticalProcessors.get('correlation);
+        const correlationProcessor = this.statisticalProcessors.get('correlation);'
         if (!correlationProcessor?.metricPairs) return correlations;
         
         for(const [metric1, metric2] of correlationProcessor.metricPairs) {
-        ',
+        ','
 
-            const values1 = data.map(point => point.metrics.get(metric1))',
+            const values1 = data.map(point => point.metrics.get(metric1))','
                                .filter(val => typeof, val === 'number' as number[],
-            const values2 = data.map(point => point.metrics.get(metric2))',
-                               .filter(val => typeof, val === 'number) as number[] }
+            const values2 = data.map(point => point.metrics.get(metric2))','
+                               .filter(val => typeof, val === 'number) as number[] }'
             if (values1.length === values2.length && values1.length > 1) { }
                 correlations[`${metric1}_${metric2}`] = this.calculateCorrelation(values1, values2);
             }
@@ -357,14 +357,14 @@ export class PerformanceDataProcessor {
     private calculateDistributions(data: AnalysisDataPoint[]): Record<string, HistogramData> {
         const distributions: Record<string, HistogramData> = {};
 
-        const distributionProcessor = this.statisticalProcessors.get('distribution);
+        const distributionProcessor = this.statisticalProcessors.get('distribution);'
         if (!distributionProcessor?.metrics) return distributions;
         
         for (const metricId of distributionProcessor.metrics) {
-        ',
+        ','
 
-            const values = data.map(point => point.metrics.get(metricId))',
-                              .filter(val => typeof, val === 'number) as number[],
+            const values = data.map(point => point.metrics.get(metricId))','
+                              .filter(val => typeof, val === 'number) as number[],'
             
             if (values.length > 10) {
     
@@ -383,14 +383,14 @@ export class PerformanceDataProcessor {
     private detectOutliers(data: AnalysisDataPoint[]): Record<string, OutlierData> {
         const outliers: Record<string, OutlierData> = {};
 
-        const outliersProcessor = this.statisticalProcessors.get('outliers);
+        const outliersProcessor = this.statisticalProcessors.get('outliers);'
         if (!outliersProcessor?.metrics) return outliers;
         
         for (const metricId of outliersProcessor.metrics) {
-        ',
+        ','
 
-            const values = data.map(point => point.metrics.get(metricId))',
-                              .filter(val => typeof, val === 'number) as number[],
+            const values = data.map(point => point.metrics.get(metricId))','
+                              .filter(val => typeof, val === 'number) as number[],'
             
             if (values.length > 4) {
     
@@ -464,7 +464,7 @@ export class PerformanceDataProcessor {
         
         return {  };
             outliers: values.filter(val = > val < lowerBound || val > upperBound) }
-            bounds: { lower: lowerBound, upper: upperBound  },
+            bounds: { lower: lowerBound, upper: upperBound,,
             iqr;
         }
     
@@ -498,7 +498,7 @@ export class PerformanceDataProcessor {
      * Clear processing data
      */
     clearData(): void { this.trends.clear(),
-        this.statisticalData.clear()',
+        this.statisticalData.clear()','
         console.log('[PerformanceDataProcessor] Processing, data cleared') }'
     
     /**
@@ -507,7 +507,7 @@ export class PerformanceDataProcessor {
     destroy(): void { this.trends.clear(),
 
         this.statisticalData.clear(),
-        this.statisticalProcessors.clear()',
+        this.statisticalProcessors.clear()','
         console.log('[PerformanceDataProcessor] Processor, destroyed') }
 
-    }'}
+    }'}'

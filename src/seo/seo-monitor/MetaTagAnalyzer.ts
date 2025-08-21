@@ -7,28 +7,28 @@
 interface MetaTagThresholds { metaTags: {
         titleLength: {
             mi,n: number,
-    max: number };
+    max: number,;
         descriptionLength: { min: number,
-    max: number };
+    max: number,;
 }
 
 interface MetaTagAlert { type: string,
-    severity: 'info' | 'warning' | 'critical',
-    metric: string,
-    current?: number,
-    threshold?: string,
-    message: string,
-    timestamp: string  }
+    severity: 'info' | 'warning' | 'critical';
+    metric: string;
+    current?: number;
+    threshold?: string;
+    message: string;
+    timestamp: string;
 
 interface MetaTags { title: string | null,
-    description: string | null,
-    keywords: string | null,
-    ogTags: Record<string, string>,
-    twitterTags: Record<string, string>,
-    timestamp: string  }
+    description: string | null;
+    keywords: string | null;
+    ogTags: Record<string, string>;
+    twitterTags: Record<string, string>;
+    timestamp: string;
 
 export class MetaTagAnalyzer {
-    private thresholds: MetaTagThresholds,
+    private thresholds: MetaTagThresholds;
     constructor(thresholds: MetaTagThresholds) {
         this.thresholds = thresholds }
     
@@ -56,16 +56,16 @@ export class MetaTagAnalyzer {
     checkMetaTagAlerts(metaTags: MetaTags | null, alerts: MetaTagAlert[]): void { if (!metaTags) return,
         
         // タイトル長のチェック
-        if(metaTags.title) {
+        if (metaTags.title) {
     
 }
             const titleLength = metaTags.title.length; }
             const { min, max } = this.thresholds.metaTags.titleLength;
 
-            if(titleLength < min || titleLength > max) {
+            if (titleLength < min || titleLength > max) {
                 alerts.push({''
                     type: 'metaTags',
-                    severity: 'warning',',
+                    severity: 'warning',';'
                     metric: 'title_length'
             }
                     current: titleLength) }
@@ -78,7 +78,7 @@ export class MetaTagAnalyzer {
 
         } else {  alerts.push({''
                 type: 'metaTags',
-                severity: 'critical',',
+                severity: 'critical',','
                 metric: 'title_missing',')',
                 message: 'Title tag is missing') }
                 timestamp: new Date().toISOString(); 
@@ -89,10 +89,10 @@ export class MetaTagAnalyzer {
         if (metaTags.description) { const descLength = metaTags.description.length }
             const { min, max } = this.thresholds.metaTags.descriptionLength;
 
-            if(descLength < min || descLength > max) {
+            if (descLength < min || descLength > max) {
                 alerts.push({''
                     type: 'metaTags',
-                    severity: 'warning',',
+                    severity: 'warning',','
                     metric: 'description_length'
             }
                     current: descLength) }
@@ -105,7 +105,7 @@ export class MetaTagAnalyzer {
 
         } else {  alerts.push({''
                 type: 'metaTags',
-                severity: 'critical',',
+                severity: 'critical',','
                 metric: 'description_missing',')',
                 message: 'Description meta tag is missing') }
                 timestamp: new Date().toISOString(); 
@@ -116,7 +116,7 @@ export class MetaTagAnalyzer {
     /**
      * タイトルタグの抽出'
      */''
-    private extractTitleTag()';
+    private extractTitleTag()';'
         if (typeof, document !== 'undefined') { return document.title || null,
         return 'BubblePop - 泡割りゲーム', // モックデータ
     }
@@ -124,8 +124,8 @@ export class MetaTagAnalyzer {
     /**
      * 説明メタタグの抽出
      */''
-    private extractDescriptionTag()';
-        if(typeof, document !== 'undefined') {
+    private extractDescriptionTag()';'
+        if (typeof, document !== 'undefined') {
 
             const meta = document.querySelector('meta[name="description"]') }
 
@@ -136,8 +136,8 @@ export class MetaTagAnalyzer {
     /**
      * キーワードメタタグの抽出
      */''
-    private extractKeywordsTag()';
-        if(typeof, document !== 'undefined') {
+    private extractKeywordsTag()';'
+        if (typeof, document !== 'undefined') {
 
             const meta = document.querySelector('meta[name="keywords"]') }
 
@@ -148,19 +148,19 @@ export class MetaTagAnalyzer {
     /**
      * Open Graphタグの抽出
      */''
-    private extractOGTags()';
-        if(typeof, document !== 'undefined') {
+    private extractOGTags()';'
+        if (typeof, document !== 'undefined') {
 
-            const ogMetas = document.querySelectorAll('meta[property^="og: "]",
-            ogMetas.forEach(meta => { '),
+            const ogMetas = document.querySelectorAll('meta[property^="og: "]",'
+            ogMetas.forEach(meta => { '),'
                 const property = meta.getAttribute('property'),
-                const content = meta.getAttribute('content) }
+                const content = meta.getAttribute('content) }'
                 if (property && content) { }
                     ogTags[property] = content; }
 });
         }
 
-        return Object.keys(ogTags).length > 0 ? ogTags : { ', 'og:title': 'BubblePop',
+        return Object.keys(ogTags).length > 0 ? ogTags : { ', 'og:title': 'BubblePop','
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
             'og:type': 'website'
             }
@@ -168,19 +168,19 @@ export class MetaTagAnalyzer {
     /**
      * Twitterタグの抽出'
      */''
-    private extractTwitterTags()';
-        if(typeof, document !== 'undefined') {
+    private extractTwitterTags()';'
+        if (typeof, document !== 'undefined') {
 
-            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]",
-            twitterMetas.forEach(meta => { '),
+            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]",'
+            twitterMetas.forEach(meta => { '),'
                 const name = meta.getAttribute('name'),
-                const content = meta.getAttribute('content) }
+                const content = meta.getAttribute('content) }'
                 if (name && content) { }
                     twitterTags[name] = content; }
 });
         }
 
-        return Object.keys(twitterTags).length > 0 ? twitterTags : { ', 'twitter:card': 'summary_large_image',
+        return Object.keys(twitterTags).length > 0 ? twitterTags : { ', 'twitter:card': 'summary_large_image','
             'twitter:title': 'BubblePop',
             'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム'
-            }'}
+            }'}'

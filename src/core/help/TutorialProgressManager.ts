@@ -9,94 +9,91 @@ import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
 export interface UserProgress { completedTutorials: Set<string>,
-    currentTutorialId: string | null,
-    currentStepIndex: number,
-    startTime: number | null,
+    currentTutorialId: string | null;
+    currentStepIndex: number;
+    startTime: number | null;
     pausedTime: number | null  }
 
 export interface TourProgress { lastActiveStep: number,
-    stepStartTime: number,
-    stepAttempts: number,
-    tourType: string | null,
-    completedSteps: string[],
-    skippedSteps: string[] }
+    stepStartTime: number;
+    stepAttempts: number;
+    tourType: string | null;
+    completedSteps: string[];
+    skippedSteps: string[];
 
 export interface SavedProgress { completedTutorials: string[],
-    currentTutorialId: string | null,
-    currentStepIndex: number,
-    startTime: number | null,
-    pausedTime: number | null,
-    tourProgress: TourProgress
-    }
+    currentTutorialId: string | null;
+    currentStepIndex: number;
+    startTime: number | null;
+    pausedTime: number | null;
+    tourProgress: TourProgress;
 
 export interface TutorialStep { id: string,
-    title?: string,
-    content?: string,
-    [key: string]: any }
+    title?: string;
+    content?: string;
+    [key: string]: any;
 
 export interface Tutorial { id: string,
-    tourType?: string,
-    steps: TutorialStep[],
-    [key: string]: any }
+    tourType?: string;
+    steps: TutorialStep[];
+    [key: string]: any;
 
 export interface TourSpecificProgress { tourId: string,
-    lastAccessTime: number,
-    currentStep: number,
-    totalSteps: number,
-    completedSteps: string[],
-    stepDetails: StepDetail[]
-     }
+    lastAccessTime: number;
+    currentStep: number;
+    totalSteps: number;
+    completedSteps: string[];
+    stepDetails: StepDetail[];
 
 export interface StepDetail { id: string,
-    title?: string,
-    isCompleted: boolean,
-    isCurrent: boolean,
-    attempts: number,
+    title?: string;
+    isCompleted: boolean;
+    isCurrent: boolean;
+    attempts: number;
     lastAttemptTime: number | null }
 
 export interface ProgressInfo { completedTutorials: string[],
-    currentTutorialId: string | null,
-    currentStepIndex: number,
-    isRunning: boolean,
-    isPaused: boolean,
-    elapsedTime: number,
+    currentTutorialId: string | null;
+    currentStepIndex: number;
+    isRunning: boolean;
+    isPaused: boolean;
+    elapsedTime: number;
     startTime: number | null }
 
 export interface ProgressStatistics { totalCompletedTutorials: number,
-    totalStepsCompleted: number,
-    totalTimeSpent: number,
-    averageTimePerTutorial: number,
-    mostRecentCompletion: number | null,
-    completionRate: number }
+    totalStepsCompleted: number;
+    totalTimeSpent: number;
+    averageTimePerTutorial: number;
+    mostRecentCompletion: number | null;
+    completionRate: number;
 
 export interface StepAttemptData { stepKey: string,
-    attempts: number,
+    attempts: number;
     lastAttemptTime: number | null }
 
 /**
  * チュートリアル進捗管理クラス
  */
 export class TutorialProgressManager {
-    private loggingSystem: LoggingSystem,
+    private loggingSystem: LoggingSystem;
     // ユーザー進捗データ
-    private userProgress: UserProgress,
+    private userProgress: UserProgress;
     // ステップ試行回数
     private, stepAttempts: Map<string, number>,
     
     // スキップされたステップ
-    private skippedSteps: string[],
+    private skippedSteps: string[];
     constructor(loggingSystem?: LoggingSystem | null) {
 
-        this.loggingSystem = loggingSystem || (LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem(),
+        this.loggingSystem = loggingSystem || (LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // ユーザー進捗データ
         this.userProgress = {
             completedTutorials: new Set<string>(),
             currentTutorialId: null,
             currentStepIndex: 0,
-            startTime: null }
-            pausedTime: null 
-    };
+            startTime: null,
+            pausedTime: null,;
         // ステップ試行回数
         this.stepAttempts = new Map<string, number>();
         
@@ -110,8 +107,8 @@ export class TutorialProgressManager {
      * 進捗管理システムを初期化
      */
     private initialize(): void { try {'
-            this.loadUserProgress()',
-            this.loggingSystem.log('TutorialProgressManagerが初期化されました', 'info', 'TutorialProgressManager) }
+            this.loadUserProgress()','
+            this.loggingSystem.log('TutorialProgressManagerが初期化されました', 'info', 'TutorialProgressManager) }'
 
         } catch (error) { }
 
@@ -122,9 +119,9 @@ export class TutorialProgressManager {
     /**
      * ユーザー進捗を読み込み'
      */''
-    private loadUserProgress()';
-            const saved = localStorage.getItem('awaputi_tutorial_progress);
-            if(saved) {
+    private loadUserProgress()';'
+            const saved = localStorage.getItem('awaputi_tutorial_progress);'
+            if (saved) {
                 const progress: SavedProgress = JSON.parse(saved,
                 this.userProgress.completedTutorials = new Set(progress.completedTutorials || []),
                 this.userProgress.currentTutorialId = progress.currentTutorialId || null,
@@ -153,13 +150,13 @@ export class TutorialProgressManager {
                 // ガイドツアー専用の進捗情報
                , tourProgress: {
                     lastActiveStep: currentStep,
-                    stepStartTime: Date.now()',
-                    stepAttempts: this.stepAttempts.get(this.userProgress.currentTutorialId || ') || 0,
-    tourType: currentTutorial?.tourType || null, : undefined',
+                    stepStartTime: Date.now()','
+                    stepAttempts: this.stepAttempts.get(this.userProgress.currentTutorialId || ') || 0,'
+    tourType: currentTutorial?.tourType || null, : undefined','
                     completedSteps: this.getCompletedStepsForCurrentTour(currentTutorial, currentStep),
-                    skippedSteps: this.getSkippedStepsForCurrentTour()',
+                    skippedSteps: this.getSkippedStepsForCurrentTour()','
             localStorage.setItem('awaputi_tutorial_progress', JSON.stringify(progress)),
-            ',
+            ','
             // ガイドツアー専用の詳細進捗も保存
             if(currentTutorial?.tourType === 'guided_tour' { }
                 this.saveTourSpecificProgress(currentTutorial, currentStep); }
@@ -214,8 +211,8 @@ export class TutorialProgressManager {
      * チュートリアル一時停止
      */'
     pauseTutorial(): void { try {'
-            this.userProgress.pausedTime = Date.now()',
-            this.loggingSystem.log('チュートリアルが一時停止されました', 'info', 'TutorialProgressManager) }
+            this.userProgress.pausedTime = Date.now()','
+            this.loggingSystem.log('チュートリアルが一時停止されました', 'info', 'TutorialProgressManager) }'
 
         } catch (error) { }
 
@@ -226,8 +223,8 @@ export class TutorialProgressManager {
     /**
      * チュートリアル再開'
      */''
-    resumeTutorial()';
-            this.loggingSystem.log('チュートリアルが再開されました', 'info', 'TutorialProgressManager);
+    resumeTutorial()';'
+            this.loggingSystem.log('チュートリアルが再開されました', 'info', 'TutorialProgressManager);'
 
         } catch (error) { }
 
@@ -278,7 +275,7 @@ export class TutorialProgressManager {
      * @param stepId - ステップID
      */
     markStepAsSkipped(stepId: string): void { try {
-            if(!this.skippedSteps.includes(stepId) {
+            if (!this.skippedSteps.includes(stepId) {
     
 }
                 this.skippedSteps.push(stepId); }
@@ -336,7 +333,7 @@ export class TutorialProgressManager {
             const storageKey = `awaputi_tour_progress_${tourId}`;
             const saved = localStorage.getItem(storageKey);
             
-            if(saved) { const progress: TourSpecificProgress = JSON.parse(saved }
+            if (saved) { const progress: TourSpecificProgress = JSON.parse(saved }
                 return, progress;
             
             return, null;
@@ -366,7 +363,7 @@ export class TutorialProgressManager {
     getStepLastAttemptTime(tourId: string, stepId: string): number | null {
         const storageKey = `awaputi_step_attempt_${tourId}_${stepId}`;
         try { const saved = localStorage.getItem(storageKey),
-            return saved ? parseInt(saved, 10) : null } catch (error) { return null,
+            return saved ? parseInt(saved, 10) : null; catch (error) { return null,
     
     /**
      * ステップの試行を記録
@@ -381,7 +378,7 @@ export class TutorialProgressManager {
             // 最後の試行時間を保存
             const storageKey = `awaputi_step_attempt_${tourId}_${stepId}`;
             localStorage.setItem(storageKey, Date.now().toString();
-            ';
+            ';'
 
         } catch (error) { }
 
@@ -475,7 +472,7 @@ export class TutorialProgressManager {
         
         completedTutorials.forEach(tutorialId => { ),
             const tourProgress = this.loadTourSpecificProgress(tutorialId),
-            if(tourProgress) {
+            if (tourProgress) {
                 totalStepsCompleted += tourProgress.completedSteps.length }
                 if (!mostRecentCompletion || tourProgress.lastAccessTime > mostRecentCompletion) { }
                     mostRecentCompletion = tourProgress.lastAccessTime; }
@@ -483,7 +480,7 @@ export class TutorialProgressManager {
         });
         
         // 現在のチュートリアルの経過時間を追加
-        if(this.isRunning() { totalTimeSpent += this.getElapsedTime() }
+        if (this.isRunning() { totalTimeSpent += this.getElapsedTime() }
         
         return { totalCompletedTutorials: totalCompleted,
             totalStepsCompleted,
@@ -519,7 +516,7 @@ export class TutorialProgressManager {
     getTourStepAttempts(tourId: string): StepAttemptData[] { const attempts: StepAttemptData[] = [],
         
         this.stepAttempts.forEach((attemptCount, stepKey) => { }
-            if(stepKey.startsWith(`${tourId}_`) {
+            if (stepKey.startsWith(`${tourId}_`) {
                 const stepId = stepKey.substring(tourId.length + 1),
                 attempts.push({)
                     stepKey),
@@ -554,11 +551,11 @@ export class TutorialProgressManager {
                 currentTutorialId: null,
                 currentStepIndex: 0,
                 startTime: null,
-                pausedTime: null };
-            this.stepAttempts.clear()';
+                pausedTime: null,;
+            this.stepAttempts.clear()';'
             localStorage.removeItem('awaputi_tutorial_progress');
 
-            this.loggingSystem.log('進捗がリセットされました', 'info', 'TutorialProgressManager);
+            this.loggingSystem.log('進捗がリセットされました', 'info', 'TutorialProgressManager);'
 
         } catch (error) { }
 
@@ -575,7 +572,7 @@ export class TutorialProgressManager {
             this.userProgress.completedTutorials.delete(tutorialId),
             
             // 現在のチュートリアルの場合は停止
-            if(this.userProgress.currentTutorialId === tutorialId) {
+            if (this.userProgress.currentTutorialId === tutorialId) {
                 this.userProgress.currentTutorialId = null,
                 this.userProgress.currentStepIndex = 0,
                 this.userProgress.startTime = null }
@@ -585,7 +582,7 @@ export class TutorialProgressManager {
             // ステップ試行回数をクリア
             const keysToDelete: string[] = [],
             this.stepAttempts.forEach((_, key) => {  }
-                if(key.startsWith(`${tutorialId}_`) { keysToDelete.push(key) }
+                if (key.startsWith(`${tutorialId}_`) { keysToDelete.push(key) }
             });
             keysToDelete.forEach(key => this.stepAttempts.delete(key);
             
@@ -621,16 +618,16 @@ export class TutorialProgressManager {
 
                 const key = localStorage.key(i),
 
-                if (key && (',
-                    key.startsWith('awaputi_tutorial_') ||',
-                    key.startsWith('awaputi_tour_progress_') ||',
+                if (key && (','
+                    key.startsWith('awaputi_tutorial_') ||','
+                    key.startsWith('awaputi_tour_progress_') ||','
                     key.startsWith('awaputi_step_attempt_' { }
                     keysToRemove.push(key); }
 }
 
             keysToRemove.forEach(key => localStorage.removeItem(key));
 
-            this.loggingSystem.log('全チュートリアルデータがクリアされました', 'info', 'TutorialProgressManager);
+            this.loggingSystem.log('全チュートリアルデータがクリアされました', 'info', 'TutorialProgressManager);'
 
         } catch (error) { }
 
@@ -643,8 +640,8 @@ export class TutorialProgressManager {
      */
     destroy(): void { try {
             // 現在の進捗を保存
-            this.saveUserProgress()',
-            this.loggingSystem.log('TutorialProgressManagerがクリーンアップされました', 'info', 'TutorialProgressManager) }
+            this.saveUserProgress()','
+            this.loggingSystem.log('TutorialProgressManagerがクリーンアップされました', 'info', 'TutorialProgressManager) }'
 
         } catch (error) { }
 

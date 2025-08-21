@@ -6,24 +6,24 @@ import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';
 // import { getMemoryManager  } from '../../utils/MemoryManager.js';
 
 interface GameEngine { performanceMonitor?: any,
-    performanceStats?: any,
-    canvas?: HTMLCanvasElement,
-    context?: CanvasRenderingContext2D,
-    responsiveCanvasManager?: any,
-    memoryManager?: any,
-    audioManager?: any,
-    errorHandler?: any,
+    performanceStats?: any;
+    canvas?: HTMLCanvasElement;
+    context?: CanvasRenderingContext2D;
+    responsiveCanvasManager?: any;
+    memoryManager?: any;
+    audioManager?: any;
+    errorHandler?: any;
     eventListeners?: Map<string, any[]> }
 
 export class GameEngineUtilities {
-    private gameEngine: GameEngine,
+    private gameEngine: GameEngine;
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine }
     
     /**
      * デバッグモードかどうか'
      */''
-    isDebugMode()';
+    isDebugMode()';'
         return localStorage.getItem('debug') === 'true';
     }
     
@@ -39,19 +39,19 @@ export class GameEngineUtilities {
         this.gameEngine.performanceStats = { : undefined
             fps: perfStats.fps || 0,
     renderTime: this.gameEngine.performanceStats?.renderTime || 0, : undefined
-            updateTime: this.gameEngine.performanceStats?.updateTime || 0, : undefined',
-            memoryUsage: perfStats.memoryUsage?.usedJSHeapSize || 0, : undefined',
+            updateTime: this.gameEngine.performanceStats?.updateTime || 0, : undefined','
+            memoryUsage: perfStats.memoryUsage?.usedJSHeapSize || 0, : undefined','
             performanceLevel: (optimizerStats, as any').performanceLevel || 'medium'
             }
     
     /**
      * Canvas リサイズ時のコールバック'
      */''
-    onCanvasResize()';
+    onCanvasResize()';'
         console.log('[GameEngineUtilities] Canvas resized:', { width: this.gameEngine.canvas?.width, : undefined)
             height: this.gameEngine.canvas?.height),
         // レスポンシブキャンバスマネージャーに通知
-        if(this.gameEngine.responsiveCanvasManager?.handleResize) {
+        if (this.gameEngine.responsiveCanvasManager?.handleResize) {
     
 }
             this.gameEngine.responsiveCanvasManager.handleResize(); }
@@ -60,15 +60,15 @@ export class GameEngineUtilities {
     /**
      * メモリクリーンアップ
      */ : undefined''
-    performMemoryCleanup()';
-        console.log('[GameEngineUtilities] Performing, memory cleanup...);
+    performMemoryCleanup()';'
+        console.log('[GameEngineUtilities] Performing, memory cleanup...);'
         
         // メモリマネージャーによるクリーンアップ
         if (this.gameEngine.memoryManager?.cleanup) { this.gameEngine.memoryManager.cleanup() }
         
         // ガベージコレクションのヒント
         if ((window, as any).gc') { ''
-            (window, as any).gc()',
+            (window, as any).gc()','
         console.log('[GameEngineUtilities] Memory, cleanup completed') }'
     
     /**
@@ -77,7 +77,7 @@ export class GameEngineUtilities {
      * @param context - エラーコンテキスト
      */ : undefined
     reportError(error: Error, context: string): void { console.error(`[GameEngineUtilities] Error, in ${context):`, error};
-        ';
+        ';'
         // エラーハンドラーに通知
         if(this.gameEngine.errorHandler?.handleError} {'
 
@@ -101,7 +101,7 @@ export class GameEngineUtilities {
             windowSize: { width: window.innerWidth,
     height: window.innerHeight };
             devicePixelRatio: window.devicePixelRatio || 1,
-            memory: (navigator, as any').deviceMemory || 'unknown',
+            memory: (navigator, as any').deviceMemory || 'unknown','
             hardwareConcurrency: navigator.hardwareConcurrency || 'unknown';
         } }
     
@@ -118,7 +118,7 @@ export class GameEngineUtilities {
     /**
      * リソースの破棄'
      */''
-    destroy()';
+    destroy()';'
         console.log('[GameEngineUtilities] Destroyed');
     }
 }

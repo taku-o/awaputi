@@ -4,44 +4,44 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  * Bubble effect configuration interface
  */
 interface BubbleEffectConfig { baseParticleCount: number,
-    colors: string[],
-    specialEffects: string[],
-    priority: number  }
+    colors: string[];
+    specialEffects: string[];
+    priority: number;
 
 /**
  * Bubble effect configs map interface
  */
-interface BubbleEffectConfigs { [key: string]: BubbleEffectConfig }
+interface BubbleEffectConfigs { [key: string]: BubbleEffectConfig;
 
 /**
  * Bubble effect options interface
  */
 interface BubbleEffectOptions { intensity?: number,
-    multiplier?: number,
-    customColors?: string[] }
+    multiplier?: number;
+    customColors?: string[];
 
 /**
  * Particle interface
  */
 interface Particle { x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    size: number,
-    color: string,
-    life: number,
-    maxLife: number,
-    alpha: number,
-    gravity: number,
-    friction: number,
-    bounce?: number,
-    type: string,
-    rotation?: number,
-    rotationSpeed?: number,
-    scale?: number,
-    scaleSpeed?: number,
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    color: string;
+    life: number;
+    maxLife: number;
+    alpha: number;
+    gravity: number;
+    friction: number;
+    bounce?: number;
+    type: string;
+    rotation?: number;
+    rotationSpeed?: number;
+    scale?: number;
+    scaleSpeed?: number;
     maxTrailLength?: number,  }
-    trail?: Array<{ x: number,, y: number }>;
+    trail?: Array<{ x: number,, y: number;>;
     pulseSpeed?: number;
 }
 
@@ -49,63 +49,63 @@ interface Particle { x: number,
  * Quality settings interface
  */
 interface QualitySettings {
-    complexityLevel: number }
+    complexityLevel: number;
 
 /**
  * Particle manager interface
  */
 interface ParticleManager { particles: Particle[],
-    getParticleFromPool(): Particle,
-    shouldRenderEffect(effectType: string, priority: number): boolean,
-    adjustParticleCount(count: number): number,
-    getEffectIntensityMultiplier(): number,
-    getCurrentQualitySettings(): QualitySettings }
+    getParticleFromPool(): Particle;
+    shouldRenderEffect(effectType: string, priority: number): boolean;
+    adjustParticleCount(count: number): number;
+    getEffectIntensityMultiplier(): number;
+    getCurrentQualitySettings(): QualitySettings;
 
 /**
  * バブル破壊効果専用レンダラー
  * バブルタイプ別の特殊な破壊エフェクトを管理
  */
 export class BubbleEffectRenderer {
-    private particleManager: ParticleManager,
-    private, bubbleEffectConfigs: BubbleEffectConfigs',
+    private particleManager: ParticleManager;
+    private, bubbleEffectConfigs: BubbleEffectConfigs','
 
     constructor(particleManager: ParticleManager) {
-        this.particleManager = particleManager,
+        this.particleManager = particleManager;
         
         // バブルタイプ別の基本設定
         this.bubbleEffectConfigs = {
             normal: {
                 baseParticleCount: 15,
-                colors: ['#4A90E2', '#7ED321', '#50E3C2', '#A8E6CF', '#C7CEEA],
+                colors: ['#4A90E2', '#7ED321', '#50E3C2', '#A8E6CF', '#C7CEEA];'
                 specialEffects: ['sparkle', 'ripple'] }
                 priority: 5 
     };
             stone: { baseParticleCount: 20,''
-                colors: ['#8E8E93', '#C7C7CC', '#EFEFF4', '#D3D3D3],
-                specialEffects: ['debris', 'dust'],
+                colors: ['#8E8E93', '#C7C7CC', '#EFEFF4', '#D3D3D3];'
+                specialEffects: ['debris', 'dust'];
                 priority: 6  };
             iron: { baseParticleCount: 25,''
-                colors: ['#8B4513', '#A0522D', '#CD853F', '#D2691E],
-                specialEffects: ['sparks', 'metal_shards'],
+                colors: ['#8B4513', '#A0522D', '#CD853F', '#D2691E];'
+                specialEffects: ['sparks', 'metal_shards'];
                 priority: 7  };
             diamond: { baseParticleCount: 30,''
-                colors: ['#E6E6FA', '#F8F8FF', '#FFFFFF', '#E0E0E0', '#C0C0C0],
-                specialEffects: ['prismatic', 'brilliance', 'reflection'],
+                colors: ['#E6E6FA', '#F8F8FF', '#FFFFFF', '#E0E0E0', '#C0C0C0];'
+                specialEffects: ['prismatic', 'brilliance', 'reflection'];
                 priority: 8  };
             rainbow: { baseParticleCount: 40,''
-                colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],
-                specialEffects: ['color_burst', 'magical_sparkles', 'rainbow_trail'],
+                colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3];'
+                specialEffects: ['color_burst', 'magical_sparkles', 'rainbow_trail'];
                 priority: 9  };
             electric: { baseParticleCount: 35,''
-                colors: ['#FFFF00', '#00FFFF', '#FFFFFF', '#E6E6FA],
-                specialEffects: ['lightning', 'electric_arcs', 'static_discharge'],
+                colors: ['#FFFF00', '#00FFFF', '#FFFFFF', '#E6E6FA];'
+                specialEffects: ['lightning', 'electric_arcs', 'static_discharge'];
                 priority: 8  };
             boss: { baseParticleCount: 50,''
-                colors: ['#8B0000', '#DC143C', '#FF0000', '#FF4500],
-                specialEffects: ['massive_explosion', 'shockwave', 'fire_burst'],
+                colors: ['#8B0000', '#DC143C', '#FF0000', '#FF4500];'
+                specialEffects: ['massive_explosion', 'shockwave', 'fire_burst'];
                 priority: 10  }
         };
-        console.log('[BubbleEffectRenderer] 初期化完了);
+        console.log('[BubbleEffectRenderer] 初期化完了);'
     }
     
     /**
@@ -121,7 +121,7 @@ export class BubbleEffectRenderer {
             const config = this.bubbleEffectConfigs[bubbleType] || this.bubbleEffectConfigs.normal,
             
             // 品質に応じて効果を調整
-            if(!this.particleManager.shouldRenderEffect(bubbleType, config.priority) {
+            if (!this.particleManager.shouldRenderEffect(bubbleType, config.priority) {
                 // 低品質の場合は簡略化されたエフェクトのみ
                 this.createSimplifiedBubbleEffect(x, y, bubbleType, bubbleSize) }
                 return; }
@@ -133,11 +133,11 @@ export class BubbleEffectRenderer {
             // 特殊効果の追加
             config.specialEffects.forEach(effectType => {  ) }
                 this.createSpecialBubbleEffect(x, y, effectType bubbleSize config); }
-            }');
+            }');'
             
             // バブルタイプ別の個別処理
-            this.createTypeSpecificEffect(x, y, bubbleType, bubbleSize, options');
-            ';
+            this.createTypeSpecificEffect(x, y, bubbleType, bubbleSize, options');'
+            ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'BUBBLE_EFFECT_ERROR', {''
                 context: 'BubbleEffectRenderer.createAdvancedBubbleEffect'
@@ -210,7 +210,7 @@ export class BubbleEffectRenderer {
     selectParticleType(config: BubbleEffectConfig, index: number, totalCount: number): string { const ratio = index / totalCount,
         const qualitySettings = this.particleManager.getCurrentQualitySettings(),
         
-        if(qualitySettings.complexityLevel >= 3) {
+        if (qualitySettings.complexityLevel >= 3) {
         ,
             // 高品質: 多様なタイプを使用
             if(ratio < 0.3) return 'glow_circle',
@@ -219,7 +219,7 @@ export class BubbleEffectRenderer {
 
             return 'star'; else if (qualitySettings.complexityLevel >= 2) { // 中品質: 基本的な拡張タイプ
             if(ratio < 0.5) return 'advanced_circle',
-            return 'circle', else {  // 低品質: 基本タイプのみ' }
+            return 'circle', else {  // 低品質: 基本タイプのみ' }'
 
             return 'circle';
     
@@ -234,55 +234,55 @@ export class BubbleEffectRenderer {
     createSpecialBubbleEffect(x: number, y: number, effectType: string, bubbleSize: number, config: BubbleEffectConfig): void { ''
         switch(effectType) {
 
-            case 'sparkle':',
+            case 'sparkle':','
                 this.createSparkleEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'ripple':',
+            case 'ripple':','
                 this.createRippleEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'debris':',
+            case 'debris':','
                 this.createDebrisEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'dust':',
+            case 'dust':','
                 this.createDustEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'sparks':',
+            case 'sparks':','
                 this.createSparksEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'metal_shards':',
+            case 'metal_shards':','
                 this.createMetalShardsEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'prismatic':',
+            case 'prismatic':','
                 this.createPrismaticEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'brilliance':',
+            case 'brilliance':','
                 this.createBrillianceEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'color_burst':',
+            case 'color_burst':','
                 this.createColorBurstEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'magical_sparkles':',
+            case 'magical_sparkles':','
                 this.createMagicalSparklesEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'lightning':',
+            case 'lightning':','
                 this.createLightningEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'electric_arcs':',
+            case 'electric_arcs':','
                 this.createElectricArcsEffect(x, y, bubbleSize, config),
 
                 break,
-            case 'massive_explosion':',
+            case 'massive_explosion':','
                 this.createMassiveExplosionEffect(x, y, bubbleSize, config),
 
                 break,
@@ -312,12 +312,12 @@ export class BubbleEffectRenderer {
             particle.vx = (Math.random() - 0.5) * 40,
 
             particle.vy = (Math.random() - 0.5) * 40 - 20,
-            particle.size = 1 + Math.random()',
+            particle.size = 1 + Math.random()','
             particle.color = '#FFFFFF')
             particle.life = 1000 + Math.random() * 500,
 
             particle.maxLife = particle.life,
-            particle.alpha = 0.8 + Math.random()',
+            particle.alpha = 0.8 + Math.random()','
             particle.type = 'star')
             particle.pulseSpeed = 8 + Math.random() * 4 }
             this.particleManager.particles.push(particle); }
@@ -333,7 +333,7 @@ export class BubbleEffectRenderer {
     createRippleEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { const rippleCount = this.particleManager.adjustParticleCount(3),
         
         for(let, i = 0, i < rippleCount, i++) {
-        ',
+        ','
 
             const particle = this.particleManager.getParticleFromPool('',
             particle.type = 'ripple',
@@ -367,7 +367,7 @@ export class BubbleEffectRenderer {
             particle.gravity = 80,
 
             particle.friction = 0.95,
-            particle.bounce = 0.4 + Math.random()',
+            particle.bounce = 0.4 + Math.random()','
             particle.type = 'hexagon')
             particle.rotationSpeed = (Math.random() - 0.5) * 20 }
             this.particleManager.particles.push(particle); }
@@ -501,15 +501,15 @@ export class BubbleEffectRenderer {
     createTypeSpecificEffect(x: number, y: number, bubbleType: string, bubbleSize: number, options: BubbleEffectOptions): void { ''
         switch(bubbleType) {
 
-            case 'diamond':',
+            case 'diamond':','
                 this.createDiamondRefraction(x, y, bubbleSize),
 
                 break,
-            case 'rainbow':',
+            case 'rainbow':','
                 this.createRainbowSpiral(x, y, bubbleSize),
 
                 break,
-            case 'electric':',
+            case 'electric':','
                 this.createElectricPulse(x, y, bubbleSize),
 
                 break,
@@ -536,7 +536,7 @@ export class BubbleEffectRenderer {
             particle.vx = Math.cos(angle) * 80,
 
             particle.vy = Math.sin(angle) * 80,
-            particle.size = 1 + Math.random()',
+            particle.size = 1 + Math.random()','
             particle.color = ['#FFFFFF', '#E6E6FA', '#F0F8FF][Math.floor(Math.random() * 3')],
             particle.life = 1200,
             particle.maxLife = particle.life,
@@ -557,7 +557,7 @@ export class BubbleEffectRenderer {
      */'
     createRainbowSpiral(x: number, y: number, bubbleSize: number): void { ''
         const spiralCount = this.particleManager.adjustParticleCount(20),
-        const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],
+        const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],'
         
         for(let, i = 0, i < spiralCount, i++) {
         
@@ -616,4 +616,4 @@ export class BubbleEffectRenderer {
             particle.type = 'circle',', ') }
 
             this.particleManager.particles.push(particle); }
-}'}
+}'}'

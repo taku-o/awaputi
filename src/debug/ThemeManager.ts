@@ -3,42 +3,41 @@
  */
 
 interface DebugInterface {
-    debugPanel: HTMLElement }
+    debugPanel: HTMLElement;
 
 interface ThemeColors { background: string,
-    panel: string,
-    border: string,
-    text: string,
-    textSecondary: string,
-    textMuted: string,
-    accent: string,
-    success: string,
-    warning: string,
-    error: string,
-    info: string  }
+    panel: string;
+    border: string;
+    text: string;
+    textSecondary: string;
+    textMuted: string;
+    accent: string;
+    success: string;
+    warning: string;
+    error: string;
+    info: string;
 
 interface Theme { name: string,
-    colors: ThemeColors
-    }
+    colors: ThemeColors;
 
 interface AvailableTheme { key: string,
-    name: string }
+    name: string;
 
 type ThemeName = 'dark' | 'light' | 'highContrast';
 
 export class ThemeManager {
-    private debugInterface: DebugInterface,
-    private currentTheme: ThemeName,
+    private debugInterface: DebugInterface;
+    private currentTheme: ThemeName;
     private, themes: Record<string, Theme>,
 
     constructor(debugInterface: DebugInterface) {
-        this.debugInterface = debugInterface,
-        this.currentTheme = 'dark',
+        this.debugInterface = debugInterface;
+        this.currentTheme = 'dark';
         this.themes = {'
             dark: {''
-                name: 'Dark',
+                name: 'Dark';
                 colors: {''
-                    background: 'rgba(0, 0, 0, 0.9)',
+                    background: 'rgba(0, 0, 0, 0.9)';
                     panel: '#2d2d2d',
                     border: '#333',
                     text: '#ffffff',
@@ -54,7 +53,7 @@ export class ThemeManager {
             light: { ''
                 name: 'Light',
                 colors: {''
-                    background: 'rgba(255, 255, 255, 0.95)',
+                    background: 'rgba(255, 255, 255, 0.95)';
                     panel: '#f5f5f5',
                     border: '#cccccc',
                     text: '#000000',
@@ -91,7 +90,7 @@ export class ThemeManager {
      * テーマを設定
      */'
     public setTheme(themeName: string): boolean { ''
-        if(!this.themes[themeName]) { }'
+        if (!this.themes[themeName]) { }'
 
             console.warn(`Theme '${themeName}' not, found`});
             return false;
@@ -126,7 +125,7 @@ export class ThemeManager {
 
         // デバッグパネルのスタイルを更新
         const debugPanel = this.debugInterface.debugPanel,
-        if(debugPanel) {
+        if (debugPanel) {
     
 }
             this.applyThemeToElement(debugPanel, theme); }
@@ -150,31 +149,31 @@ export class ThemeManager {
         element.style.borderColor = colors.border,
         // ヘッダー
         const header = element.querySelector('.debug-header' as HTMLElement,
-        if(header) {
+        if (header) {
 
             if (this.currentTheme === 'light') {
         }
 
                 header.style.background = 'linear-gradient(90deg, #e0e0e0, #f5f5f5)'; }
 
-            } else if (this.currentTheme === 'highContrast') { header.style.background = colors.background,
+            } else if (this.currentTheme === 'highContrast') { header.style.background = colors.background;
                 header.style.borderColor = colors.border }
 
             } else { }'
 
                 header.style.background = 'linear-gradient(90deg, #1e3c72, #2a5298)'; }
 }
-';
+';'
         // タブエリア
         const tabsArea = element.querySelector('.debug-tabs' as HTMLElement;
-        if(tabsArea) {
+        if (tabsArea) {
             tabsArea.style.background = colors.panel }
             tabsArea.style.borderColor = colors.border; }
         }
-';
+';'
         // タブボタン
         element.querySelectorAll('.debug-tab).forEach(tab => {  const, tabElement = tab, as HTMLElement)'
-            tabElement.style.color = colors.textSecondary',
+            tabElement.style.color = colors.textSecondary','
             tabElement.style.background = this.currentTheme === 'highContrast' ? colors.background : 'rgba(255, 255, 255, 0.1)',
             tabElement.style.borderColor = colors.border,
 
@@ -183,17 +182,17 @@ export class ThemeManager {
 
                 tabElement.style.color = this.currentTheme === 'highContrast' ? colors.background: colors.text 
             }'}');
-';
+';'
         // コンテンツエリア
         const content = element.querySelector('.debug-content' as HTMLElement;
-        if(content) {
+        if (content) {
             content.style.background = colors.background }
             content.style.color = colors.text; }
         }
-';
+';'
         // ステータスバー
-        const status = element.querySelector('.debug-status) as HTMLElement;
-        if(status) {
+        const status = element.querySelector('.debug-status) as HTMLElement;'
+        if (status) {
             status.style.background = colors.panel,
             status.style.color = colors.textMuted }
             status.style.borderColor = colors.border; }
@@ -205,27 +204,27 @@ export class ThemeManager {
     private updateCSSVariables(theme: Theme): void { const root = document.documentElement,
         const colors = theme.colors,
 
-        root.style.setProperty('--debug-bg', colors.background',
-        root.style.setProperty('--debug-panel', colors.panel',
-        root.style.setProperty('--debug-border', colors.border',
-        root.style.setProperty('--debug-text', colors.text',
-        root.style.setProperty('--debug-text-secondary', colors.textSecondary',
-        root.style.setProperty('--debug-text-muted', colors.textMuted',
-        root.style.setProperty('--debug-accent', colors.accent',
-        root.style.setProperty('--debug-success', colors.success',
-        root.style.setProperty('--debug-warning', colors.warning',
-        root.style.setProperty('--debug-error', colors.error',
-        root.style.setProperty('--debug-info', colors.info' }
+        root.style.setProperty('--debug-bg', colors.background','
+        root.style.setProperty('--debug-panel', colors.panel','
+        root.style.setProperty('--debug-border', colors.border','
+        root.style.setProperty('--debug-text', colors.text','
+        root.style.setProperty('--debug-text-secondary', colors.textSecondary','
+        root.style.setProperty('--debug-text-muted', colors.textMuted','
+        root.style.setProperty('--debug-accent', colors.accent','
+        root.style.setProperty('--debug-success', colors.success','
+        root.style.setProperty('--debug-warning', colors.warning','
+        root.style.setProperty('--debug-error', colors.error','
+        root.style.setProperty('--debug-info', colors.info' }'
 
     /**
      * テーマクラスを更新
      */'
     private updateThemeClasses(): void { const debugPanel = this.debugInterface.debugPanel,
         if(!debugPanel) return,
-',
+','
         // 既存のテーマクラスを削除
         debugPanel.classList.remove('theme-dark', 'theme-light', 'theme-high-contrast',
-        ',
+        ','
 
         // 現在のテーマクラスを追加' }'
 
@@ -236,7 +235,7 @@ export class ThemeManager {
     /**
      * テーマスタイルを作成'
      */''
-    private createThemeStyles()';
+    private createThemeStyles()';'
         if(document.getElementById('debug-theme-styles)' return;
 
         const style = document.createElement('style');
@@ -310,24 +309,24 @@ export class ThemeManager {
     /**
      * テーマを保存'
      */''
-    private saveTheme()';
-        localStorage.setItem('debug-theme', this.currentTheme';
+    private saveTheme()';'
+        localStorage.setItem('debug-theme', this.currentTheme';'
     }
 
     /**
      * テーマを読み込み'
      */''
-    private loadTheme()';
-        const saved = localStorage.getItem('debug-theme);
+    private loadTheme()';'
+        const saved = localStorage.getItem('debug-theme);'
         if (saved && this.themes[saved]) { this.currentTheme = saved as ThemeName }
     }
 
     /**
      * システムのダークモード設定を検出'
      */''
-    public detectSystemTheme()';
+    public detectSystemTheme()';'
         if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)).matches) { ''
-            return 'dark',' }
+            return 'dark',' }'
 
         } else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)).matches) { ''
             return 'light',
@@ -345,13 +344,13 @@ export class ThemeManager {
      */
     public addCustomTheme(name: string, colors: ThemeColors): void { this.themes[name] = {
             name: name,
-    colors: colors }
+    colors: colors,
 
     /**
      * 破棄
      */''
-    public destroy()';
-        const style = document.getElementById('debug-theme-styles);
-        if(style) {', ' }
+    public destroy()';'
+        const style = document.getElementById('debug-theme-styles);'
+        if (style) {', ' }
 
             style.remove() }'

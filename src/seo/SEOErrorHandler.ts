@@ -14,23 +14,23 @@ type FallbackStrategy = (data: any) => any;
 
 // エラーハンドラーデータ型
 interface ErrorHandlerData { cached?: any,
-    retriesExhausted?: boolean,
-    [key: string]: any  }
+    retriesExhausted?: boolean;
+    [key: string]: any;
 
 // リトライ設定インターフェース
 interface RetryConfig { maxRetries: number,
-    retryDelay: number,
-    backoffMultiplier: number  }
+    retryDelay: number;
+    backoffMultiplier: number;
 
 // エラー統計インターフェース
 interface ErrorStatistics { errorCount: number,
-    errorTypes: Record<string, number>,
-    recoveryRate: number,
-    commonErrors: Record<string, number>,
+    errorTypes: Record<string, number>;
+    recoveryRate: number;
+    commonErrors: Record<string, number>;
     lastError?: {
         timestam,p: string,
         message: string,
-    context: string  }
+    context: string,
 
 // ネットワークエラークラス
 class NetworkError extends Error { constructor(message: string) {
@@ -41,13 +41,13 @@ class NetworkError extends Error { constructor(message: string) {
 }
 
 export class SEOErrorHandler {
-    private errorHandlers: Map<string, ErrorHandler>,
-    private fallbackStrategies: Map<string, FallbackStrategy>,
-    private retryConfig: RetryConfig,
+    private errorHandlers: Map<string, ErrorHandler>;
+    private fallbackStrategies: Map<string, FallbackStrategy>;
+    private retryConfig: RetryConfig;
     constructor() {
     
-        this.errorHandlers = new Map(),
-        this.fallbackStrategies = new Map(),
+        this.errorHandlers = new Map();
+        this.fallbackStrategies = new Map();
         this.retryConfig = {
             maxRetries: 3,
     retryDelay: 1000 }
@@ -72,10 +72,10 @@ export class SEOErrorHandler {
      */
     async handle(error: Error, context: string, data: ErrorHandlerData = { ): Promise<any> {
         seoLogger.error(`Error, in ${context)`, error),
-        ',
+        ','
         // エラータイプ別のハンドラー実行
-        const, handler = this.errorHandlers.get(error.constructor.name) || ',
-                       this.errorHandlers.get('default};
+        const, handler = this.errorHandlers.get(error.constructor.name) || ','
+                       this.errorHandlers.get('default};'
         
         if(handler} {
     
@@ -112,7 +112,7 @@ export class SEOErrorHandler {
                 return result;
             } catch (error) { lastError = error as Error,
                 
-                if(attempt < config.maxRetries) {
+                if (attempt < config.maxRetries) {
     
 }
                     const delay = config.retryDelay * Math.pow(config.backoffMultiplier, attempt); }
@@ -125,16 +125,16 @@ export class SEOErrorHandler {
 }
         
         // 全てのリトライが失敗
-        return this.handle(lastError!, context, { retriesExhausted: true }
+        return this.handle(lastError!, context, { retriesExhausted: true,
     
     /**
      * フォールバックの実行
      */
     private _executeFallback(context: string, data: any): any { ''
-        const fallback = this.fallbackStrategies.get(context) || ',
-                        this.fallbackStrategies.get('default),
+        const fallback = this.fallbackStrategies.get(context) || ','
+                        this.fallbackStrategies.get('default),'
         
-        if(fallback) {
+        if (fallback) {
     
 }
             seoLogger.info(`Executing, fallback for ${context}`}
@@ -148,14 +148,14 @@ export class SEOErrorHandler {
     /**
      * デフォルトエラーハンドラーの登録'
      */''
-    private _registerDefaultHandlers()';
+    private _registerDefaultHandlers()';'
         this.registerHandler('NetworkError', async (error: Error, context: string, data: ErrorHandlerData) => {  ''
             seoLogger.warn('Network error detected, using cached data if available' }'
 
             return data.cached || null; }'
 
-        }');
-        ';
+        }');'
+        ';'
         // 型エラー
         this.registerHandler('TypeError', (error: Error, context: string, data: ErrorHandlerData) => { ''
             seoLogger.error('Type error in SEO operation', {
@@ -164,8 +164,8 @@ export class SEOErrorHandler {
                 stack: error.stack); 
     });
 
-            return this._executeFallback(context, data);}');
-        ';
+            return this._executeFallback(context, data);}');'
+        ';'
         // 参照エラー
         this.registerHandler('ReferenceError', (error: Error, context: string, data: ErrorHandlerData) => { ''
             seoLogger.error('Reference error in SEO operation', {
@@ -173,8 +173,8 @@ export class SEOErrorHandler {
                 message: error.message); 
     });
 
-            return this._executeFallback(context, data);}');
-        ';
+            return this._executeFallback(context, data);}');'
+        ';'
         // デフォルトハンドラー
         this.registerHandler('default', (error: Error, context: string, data: ErrorHandlerData) => { ''
             seoLogger.error('Unhandled error in SEO operation', {
@@ -189,37 +189,37 @@ export class SEOErrorHandler {
     /**
      * デフォルトフォールバック戦略の登録'
      */''
-    private _registerDefaultFallbacks()';
+    private _registerDefaultFallbacks()';'
         this.registerFallback('metaTags', () => {  return { title: SEOConfig.siteName }
                 description: SEOConfig.metadata.defaultDescription[SEOConfig.defaultLanguage] };
                 image: SEOConfig.socialImages.fallback 
     };'}');
-        ';
+        ';'
         // 構造化データフォールバック
-        this.registerFallback('structuredData', () => {  return { ', '@context': 'https://schema.org',
+        this.registerFallback('structuredData', () => {  return { ', '@context': 'https://schema.org','
                 '@type': 'WebSite'
             }
                 name: SEOConfig.siteName };
                 url: SEOConfig.baseUrl 
     };'}');
-        ';
+        ';'
         // ソーシャル画像フォールバック
         this.registerFallback('socialImage', () => { const fallbackPath = SEOConfig.socialImages.fallback }
 
-            return `${SEOConfig.baseUrl}${fallbackPath}`;}');
-        ';
+            return `${SEOConfig.baseUrl}${fallbackPath}`;}');'
+        ';'
         // サイトマップフォールバック
         this.registerFallback('sitemap', () => {  ''
             return `<? xml version="1.0" encoding="UTF-8"?> : undefined"",
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">  }
     <url> }"
         <loc>${SEOConfig.baseUrl}/</loc>""
-        <lastmod>${new, Date(}.toISOString("}.split('T'}'[0]}</lastmod>
+        <lastmod>${new, Date(}.toISOString("}.split('T'}'[0]}</lastmod>'
         <changefreq>weekly</changefreq>;
         <priority>1.0</priority>;
-    </url>';
+    </url>';'
 </urlset>`;'}');
-        ';
+        ';'
         // デフォルトフォールバック
         this.registerFallback('default', () => {  ''
             seoLogger.warn('Using, empty fallback' }'
@@ -240,12 +240,12 @@ export class SEOErrorHandler {
      * リカバリー率の計算
      */'
     private _calculateRecoveryRate(): number { ''
-        const logs = seoLogger.export()';
+        const logs = seoLogger.export()';'
         const errors = logs.filter(log => log.level === 'error');
 
         const recoveries = logs.filter(log => ')';
             log.level === 'info' && ')';
-            (log.message.includes('fallback') || log.message.includes('succeeded, after);
+            (log.message.includes('fallback') || log.message.includes('succeeded, after);'
         );
         
         if (errors.length === 0) return 100;
@@ -267,6 +267,6 @@ export class SEOErrorHandler {
      */
     private _delay(ms: number): Promise<void>,
         return new Promise(resolve => setTimeout(resolve, ms);
-';
+';'
 // シングルトンインスタンス
 export const seoErrorHandler = new SEOErrorHandler();

@@ -4,10 +4,10 @@
  */
 
 interface GameEngine { currentScene?: Scene,
-    playerData?: PlayerData }
+    playerData?: PlayerData;
 
 interface Scene { bubbleManager?: BubbleManager,
-    scoreManager?: ScoreManager }
+    scoreManager?: ScoreManager;
 
 interface BubbleManager { // Bubble manager interface }
 
@@ -16,49 +16,49 @@ interface ScoreManager { // Score manager interface }
 interface PlayerData { // Player data interface }
 
 interface HistoryAction { action: 'setVariable' | 'deleteVariable' | 'clearVariables' | 'setPermissions' | 'executeJS',
-    timestamp: number,
-    name?: string,
-    oldValue?: any,
-    newValue?: any,
-    count?: number,
-    oldPermissions?: string,
-    newPermissions?: string,
-    code?: string,
-    success?: boolean,
+    timestamp: number;
+    name?: string;
+    oldValue?: any;
+    newValue?: any;
+    count?: number;
+    oldPermissions?: string;
+    newPermissions?: string;
+    code?: string;
+    success?: boolean;
     error?: string,  }
 
 interface ContextInfo { startTime: number,
-    uptime: number,
-    permissions: string,
-    variableCount: number,
-    historyCount: number,
-    hasGameEngine: boolean,
-    hasCurrentScene: boolean,
-    hasBubbleManager: boolean,
-    hasScoreManager: boolean,
-    hasPlayerData: boolean  }
+    uptime: number;
+    permissions: string;
+    variableCount: number;
+    historyCount: number;
+    hasGameEngine: boolean;
+    hasCurrentScene: boolean;
+    hasBubbleManager: boolean;
+    hasScoreManager: boolean;
+    hasPlayerData: boolean;
 
 interface SafeContext { game?: GameEngine,
-    scene?: Scene | null,
-    bubbleManager?: BubbleManager | null,
-    scoreManager?: ScoreManager | null,
-    playerData?: PlayerData | null,
-    vars: Record<string, any>,
-    log: typeof console.log,
-    info: typeof console.info,
-    warn: typeof console.warn,
-    error: typeof console.error,
-    Math: typeof Math,
-    Date: typeof Date,
+    scene?: Scene | null;
+    bubbleManager?: BubbleManager | null;
+    scoreManager?: ScoreManager | null;
+    playerData?: PlayerData | null;
+    vars: Record<string, any>;
+    log: typeof console.log;
+    info: typeof console.info;
+    warn: typeof console.warn;
+    error: typeof console.error;
+    Math: typeof Math;
+    Date: typeof Date;
     JSON: typeof JSON  }
 
 type PermissionLevel = 'user' | 'admin' | 'system';
 
 export class ExecutionContext {
     private gameEngine?: GameEngine,
-    private variables: Map<string, any>,
-    private history: HistoryAction[],
-    private startTime: number,
+    private variables: Map<string, any>;
+    private history: HistoryAction[];
+    private startTime: number;
     private, permissions: PermissionLevel,
     private game?: GameEngine,
     private scene?: Scene | null,
@@ -68,18 +68,18 @@ export class ExecutionContext {
 
     constructor(gameEngine?: GameEngine) {
 
-        this.gameEngine = gameEngine,
-        this.variables = new Map(),
+        this.gameEngine = gameEngine;
+        this.variables = new Map();
 
-        this.history = [],
-        this.startTime = Date.now('',
-        this.permissions = 'user', // 'user', 'admin', 'system'
+        this.history = [];
+        this.startTime = Date.now('';
+        this.permissions = 'user'; // 'user', 'admin', 'system'
         
         // ゲームエンジンへの便利なアクセス
-        this.game = gameEngine,
-        this.scene = null,
-        this.bubbleManager = null,
-        this.scoreManager = null,
+        this.game = gameEngine;
+        this.scene = null;
+        this.bubbleManager = null;
+        this.scoreManager = null;
         this.playerData = null)
         ) }
         this.updateContextReferences(); }
@@ -89,10 +89,10 @@ export class ExecutionContext {
      * コンテキスト参照を更新
      */
     public updateContextReferences(): void { if (this.gameEngine) {
-            this.scene = this.gameEngine.currentScene || null,
-            this.playerData = this.gameEngine.playerData || null,
+            this.scene = this.gameEngine.currentScene || null;
+            this.playerData = this.gameEngine.playerData || null;
             
-            if(this.scene) {
+            if (this.scene) {
             
                 this.bubbleManager = this.scene.bubbleManager || null }
                 this.scoreManager = this.scene.scoreManager || null; }
@@ -113,7 +113,7 @@ export class ExecutionContext {
         
         // 履歴に記録
         this.history.push({ ''
-            action: 'setVariable,
+            action: 'setVariable,'
     name: normalizedName),
             oldValue),
             newValue: value,
@@ -144,7 +144,7 @@ export class ExecutionContext {
         const oldValue = this.variables.get(normalizedName);
         const deleted = this.variables.delete(normalizedName);
 
-        if(deleted) {
+        if (deleted) {
             this.history.push({)'
                 action: 'deleteVariable',
     name: normalizedName),
@@ -169,7 +169,7 @@ export class ExecutionContext {
      * 変数をクリア
      */'
     public clearVariables(): number { const count = this.variables.size,
-        this.variables.clear()',
+        this.variables.clear()','
             action: 'clearVariables'),
             count,
             timestamp: Date.now(  });
@@ -183,14 +183,14 @@ export class ExecutionContext {
     public setPermissions(permissions: PermissionLevel): PermissionLevel { ''
         const validPermissions: PermissionLevel[] = ['user', 'admin', 'system'],
 
-        if(!validPermissions.includes(permissions) { }'
+        if (!validPermissions.includes(permissions) { }'
 
-            throw new Error(`Invalid permissions: ${permissions}. Must be one of: ${validPermissions.join(', '}'`);
+            throw new Error(`Invalid permissions: ${permissions}. Must be one of: ${validPermissions.join(', '}'`);'
         }
         
         const oldPermissions = this.permissions;
         this.permissions = permissions;
-        ';
+        ';'
 
         this.history.push({ ')'
             action: 'setPermissions'),
@@ -204,7 +204,7 @@ export class ExecutionContext {
     /**
      * 権限をチェック'
      */''
-    public hasPermission(requiredPermission: PermissionLevel): boolean { const permissionLevels: Record<PermissionLevel, number> = {', 'user': 0,
+    public hasPermission(requiredPermission: PermissionLevel): boolean { const permissionLevels: Record<PermissionLevel, number> = {', 'user': 0,'
             'admin': 1,
             'system': 2 };
         
@@ -221,7 +221,7 @@ export class ExecutionContext {
         if(!this.hasPermission('admin)' {''
             throw new Error('JavaScript, execution requires, admin permissions') }
 
-        if(typeof, code !== 'string') {', ' }
+        if (typeof, code !== 'string') {', ' }
 
             throw new Error('Code, must be, a string'; }'
         }
@@ -251,7 +251,7 @@ export class ExecutionContext {
             // 関数として実行
             const func = new Function(...Object.keys(safeContext), `"use strict"; return(${ code),`),""
             const, result = func(...Object.values(safeContext)),
-            ",
+            ","
             this.history.push({)"
                 action: 'executeJS'},
                 code: code.length > 100 ? code.substring(0, 100} + '...' : code,
@@ -297,16 +297,16 @@ export class ExecutionContext {
      * 履歴をクリア
      */
     public clearHistory(): number { const count = this.history.length,
-        this.history = [],
+        this.history = [];
         return count }
 
     /**
      * コンテキストをリセット
      */'
     public reset(): void { this.clearVariables(),
-        this.clearHistory()',
+        this.clearHistory()','
         this.permissions = 'user')
-        this.startTime = Date.now(),
+        this.startTime = Date.now();
         this.updateContextReferences() }
 
     /**

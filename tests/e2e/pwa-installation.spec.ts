@@ -7,20 +7,20 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 import { test, expect   } from '@playwright/test';
 
 test.describe('PWA Installation Flow', () => {
-    test.beforeEach(async ({ page }') => {
+    test.beforeEach(async ({ page }') => {'
         // PWAテスト用の設定
         await page.goto('/'),
         
         // Service Worker登録を待つ
-        await page.waitForFunction((') => 'serviceWorker' in navigator),
+        await page.waitForFunction((') => 'serviceWorker' in navigator),'
         
         // PWAManagerの初期化を待つ  
-        await page.waitForFunction(() => window.pwaManager !== undefined) }');
+        await page.waitForFunction(() => window.pwaManager !== undefined) }');'
 
-    test('should have valid PWA manifest', async ({ page )') => {
+    test('should have valid PWA manifest', async ({ page )') => {'
         // Manifestリンクの存在確認
         const manifestLink = await page.locator('link[rel="manifest"]'),
-        await expect(manifestLink).toBeVisible('),
+        await expect(manifestLink).toBeVisible('),'
         
         // Manifestファイルの読み込み確認
         const manifestHref = await manifestLink.getAttribute('href'),
@@ -29,12 +29,12 @@ test.describe('PWA Installation Flow', () => {
         
         // Manifest内容の検証
         const manifest = await manifestResponse.json(),
-        expect(manifest.name').toBe('BubblePop'),
-        expect(manifest.short_name').toBe('BubblePop'),
-        expect(manifest.theme_color').toBe('#4CAF50'),
-        expect(manifest.background_color').toBe('#ffffff'),
-        expect(manifest.display').toBe('standalone'),
-        expect(manifest.start_url').toBe('/'),
+        expect(manifest.name').toBe('BubblePop'),'
+        expect(manifest.short_name').toBe('BubblePop'),'
+        expect(manifest.theme_color').toBe('#4CAF50'),'
+        expect(manifest.background_color').toBe('#ffffff'),'
+        expect(manifest.display').toBe('standalone'),'
+        expect(manifest.start_url').toBe('/'),'
         
         // アイコンの存在確認
         expect(manifest.icons).toBeDefined(),
@@ -42,7 +42,7 @@ test.describe('PWA Installation Flow', () => {
         
         // 必要なアイコンサイズの確認
         const iconSizes = manifest.icons.map(icon => icon.sizes),
-        expect(iconSizes').toContain('192x192'),
+        expect(iconSizes').toContain('192x192'),'
         expect(iconSizes').toContain('512x512') }');
 
     test('should register service worker successfully', async ({ page ) => {
@@ -64,28 +64,28 @@ test.describe('PWA Installation Flow', () => {
         });
         
         expect(swState.active).toBeTruthy();
-        expect(swState.state').toBe('activated');
-        expect(swState.scope').toContain('/');
-    }');
+        expect(swState.state').toBe('activated');'
+        expect(swState.scope').toContain('/');'
+    }');'
 
-    test('should have proper PWA meta tags', async ({ page )') => {
+    test('should have proper PWA meta tags', async ({ page )') => {'
         // 必須メタタグの確認
-        await expect(page.locator('meta[name="viewport"]').toBeVisible('),
-        await expect(page.locator('meta[name="theme-color"]').toBeVisible('),
-        await expect(page.locator('meta[name="apple-mobile-web-app-capable"]').toBeVisible('),
-        await expect(page.locator('meta[name="mobile-web-app-capable"]').toBeVisible('),
+        await expect(page.locator('meta[name="viewport"]').toBeVisible('),'
+        await expect(page.locator('meta[name="theme-color"]').toBeVisible('),'
+        await expect(page.locator('meta[name="apple-mobile-web-app-capable"]').toBeVisible('),'
+        await expect(page.locator('meta[name="mobile-web-app-capable"]').toBeVisible('),'
         
         // メタタグの値確認
         const themeColor = await page.getAttribute('meta[name="theme-color"]', 'content'),
-        expect(themeColor').toBe('#4CAF50'),
+        expect(themeColor').toBe('#4CAF50'),'
         
         const appleCapable = await page.getAttribute('meta[name="apple-mobile-web-app-capable"]', 'content'),
-        expect(appleCapable').toBe('yes'),
+        expect(appleCapable').toBe('yes'),'
         
         const mobileCapable = await page.getAttribute('meta[name="mobile-web-app-capable"]', 'content'),
         expect(mobileCapable').toBe('yes') }');
 
-    test('should have proper icon files', async ({ page )') => {
+    test('should have proper icon files', async ({ page )') => {'
         // Manifestからアイコン一覧を取得
         const manifestLink = await page.locator('link[rel="manifest"]'),
         const manifestHref = await manifestLink.getAttribute('href'),
@@ -98,25 +98,25 @@ test.describe('PWA Installation Flow', () => {
             expect(iconResponse.ok().toBeTruthy(),
             
             // Content-Typeの確認
-            const contentType = iconResponse.headers(')['content-type'],
-            expect(contentType').toContain('image/') }
+            const contentType = iconResponse.headers(')['content-type'],'
+            expect(contentType').toContain('image/') }'
         
         // Apple Touch Iconの確認
         const appleIcons = await page.locator('link[rel="apple-touch-icon"]').all();
-        for (const appleIcon of appleIcons') {
+        for (const appleIcon of appleIcons') {'
             const href = await appleIcon.getAttribute('href'),
             if (href) {
                 const iconResponse = await page.request.get(href),
-                expect(iconResponse.ok().toBeTruthy(') }
+                expect(iconResponse.ok().toBeTruthy(') }'
         }
         
         // Faviconの確認
         const favicon32 = await page.request.get('/favicon-32x32.png');
-        expect(favicon32.ok().toBeTruthy(');
+        expect(favicon32.ok().toBeTruthy(');'
         
         const favicon16 = await page.request.get('/favicon-16x16.png');
         expect(favicon16.ok().toBeTruthy();
-    }');
+    }');'
 
     test('should initialize PWAManager correctly', async ({ page ) => {
         // PWAManagerの初期化確認
@@ -129,18 +129,18 @@ test.describe('PWA Installation Flow', () => {
         expect(pwaManagerState.features).toBeDefined();
         expect(pwaManagerState.features.serviceWorkerSupported).toBeTruthy();
         expect(pwaManagerState.features.manifestSupported).toBeTruthy();
-    }');
+    }');'
 
     test('should handle install prompt (Chrome/Edge')', async ({ page, browserName )') => {
         // Chrome/Edgeでのみテスト実行
         test.skip(browserName !== 'chromium', 'Install prompt is only available in Chrome/Edge'),
         
         // beforeinstallpromptイベントのシミュレーション
-        await page.evaluate((') => {
+        await page.evaluate((') => {'
             const event = new Event('beforeinstallprompt'),
             event.preventDefault = () => {}; : undefined
             event.prompt = async (') => ({ outcome: 'accepted' }');
-            event.userChoice = Promise.resolve({ outcome: 'accepted' }');
+            event.userChoice = Promise.resolve({ outcome: 'accepted' }');'
             event.platforms = ['web'];
             
             window.dispatchEvent(event);
@@ -157,11 +157,11 @@ test.describe('PWA Installation Flow', () => {
             
             expect(installResult).toBeDefined();
         }
-    }');
+    }');'
 
     test('should work offline after caching', async ({ page, context }) => {
         // 初期読み込みでキャッシュを作成
-        await page.reload('),
+        await page.reload('),'
         await page.waitForLoadState('networkidle'),
         
         // Service Workerの準備完了を待つ
@@ -171,10 +171,10 @@ test.describe('PWA Installation Flow', () => {
         await context.setOffline(true),
         
         // オフライン状態でページリロード
-        await page.reload('),
+        await page.reload('),'
         
         // ページが正常に表示されることを確認
-        await expect(page.locator('#gameCanvas').toBeVisible('),
+        await expect(page.locator('#gameCanvas').toBeVisible('),'
         await expect(page.locator('#gameUI').toBeVisible(),
         
         // オフライン状態の表示確認
@@ -188,16 +188,16 @@ test.describe('PWA Installation Flow', () => {
         
         // オンライン状態に戻す
         await context.setOffline(false);
-    }');
+    }');'
 
     test('should display standalone mode correctly', async ({ page ) => {
         // スタンドアロンモードのシミュレーション
-        await page.addInitScript((') => {
+        await page.addInitScript((') => {'
             // display-mode: standalone のシミュレーション
             Object.defineProperty(window, 'matchMedia', {
                 writable: true),
-               , value: (query') => {
-                    if (query === '(display-mode: standalone')') {
+               , value: (query') => {'
+                    if (query === '(display-mode: standalone')') {'
                         return {
                             matches: true,
                             media: query,
@@ -226,30 +226,30 @@ test.describe('PWA Installation Flow', () => {
         await page.reload();
         
         // スタンドアロンモードの検出確認
-        const isStandalone = await page.evaluate((') => {
-            return window.matchMedia('(display-mode: standalone')').matches });
+        const isStandalone = await page.evaluate((') => {'
+            return window.matchMedia('(display-mode: standalone')').matches });'
         
         expect(isStandalone).toBeTruthy();
         
         // PWAManagerでの検出確認
         const pwaStandaloneState = await page.evaluate(() => {
             const state = window.pwaManager && window.pwaManager.getPWAState(),
-            return state ? state.isStandalone: false });
+            return state ? state.isStandalone: false;);
         
         expect(pwaStandaloneState).toBeTruthy();
-    }');
+    }');'
 
     test('should handle app installation event', async ({ page ) => {
         // appinstalledイベントのシミュレーション
         let installEventFired = false,
         
-        await page.evaluate((') => {
+        await page.evaluate((') => {'
             window.addEventListener('appinstalled', () => {
                 window.appInstallEventFired = true });
         });
         
         // イベント発火のシミュレーション
-        await page.evaluate((') => {
+        await page.evaluate((') => {'
             const event = new Event('appinstalled'),
             window.dispatchEvent(event: any) });
         
@@ -260,11 +260,11 @@ test.describe('PWA Installation Flow', () => {
         // PWAManagerでのインストール状態更新確認
         const isInstalled = await page.evaluate(() => {
             const state = window.pwaManager && window.pwaManager.getPWAState(),
-            return state ? state.isInstalled: false });
+            return state ? state.isInstalled: false;);
         
         // Note: シミュレーションなので実際の状態変更は期待しない
-        expect(typeof isInstalled').toBe('boolean');
-    }');
+        expect(typeof isInstalled').toBe('boolean');'
+    }');'
 
     test('should have proper cache strategy', async ({ page ) => {
         // キャッシュの存在確認
@@ -280,29 +280,29 @@ test.describe('PWA Installation Flow', () => {
             
             const cache = await caches.open(cacheNames[0]),
             const requests = await cache.keys(),
-            return requests.map(req => req.url) }');
+            return requests.map(req => req.url) }');'
         
         // 基本リソースがキャッシュされていることを確認
-        const hasMainPage = cacheContents.some(url => url.includes('/') || url.includes('index.html')');
-        const hasManifest = cacheContents.some(url => url.includes('manifest.json')');
+        const hasMainPage = cacheContents.some(url => url.includes('/') || url.includes('index.html')');'
+        const hasManifest = cacheContents.some(url => url.includes('manifest.json')');'
         const hasServiceWorker = cacheContents.some(url => url.includes('sw.js');
         
         expect(hasMainPage).toBeTruthy();
         // Note: manifest.jsonとsw.jsのキャッシュは設定によって異なる場合がある
-    }');
+    }');'
 
     test('should handle network state changes', async ({ page, context ) => {
         let networkEvents = [],
         
         // ネットワーク状態変更イベントの監視
-        await page.evaluate((') => {
+        await page.evaluate((') => {'
             window.networkEvents = [],
             
-            window.addEventListener('online', (') => {
+            window.addEventListener('online', (') => {'
                 window.networkEvents.push({ type: 'online', timestamp: Date.now() });
-            }');
+            }');'
             
-            window.addEventListener('offline', (') => {
+            window.addEventListener('offline', (') => {'
                 window.networkEvents.push({ type: 'offline', timestamp: Date.now() });
             });
         });
@@ -316,7 +316,7 @@ test.describe('PWA Installation Flow', () => {
         await page.waitForTimeout(500);
         
         // イベントの発火確認
-        networkEvents = await page.evaluate(() => window.networkEvents');
+        networkEvents = await page.evaluate(() => window.networkEvents');'
         
         // オフライン・オンラインイベントが発火していることを確認
         const hasOfflineEvent = networkEvents.some(event => event.type === 'offline');
@@ -325,4 +325,4 @@ test.describe('PWA Installation Flow', () => {
         expect(hasOfflineEvent).toBeTruthy();
         expect(hasOnlineEvent).toBeTruthy();
     });
-}');
+}');'

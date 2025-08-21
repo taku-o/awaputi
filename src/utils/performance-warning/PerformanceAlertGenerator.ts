@@ -7,91 +7,91 @@ import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // 型定義
 interface AlertConfig { enabled: boolean,
-    priorityLevels: string[],
+    priorityLevels: string[];
     escalationThresholds: {
         frequenc,y: number,
         timeWindow: number,
-    severityIncrease: number  };
+    severityIncrease: number,;
     suppressionRules: { enabled: boolean,
         maxSimilarAlerts: number,
         similarityThreshold: number,
-    suppressionDuration: number }
+    suppressionDuration: number,
 
 interface AlertTemplate { title: string,
-    message: string,
-    details?: string  }
+    message: string;
+    details?: string;
 
 interface Violation { id: string,
-    severity: string,
+    severity: string;
     data: {
         metri,c: string,
-        value?: any,
-        threshold?: any,
+        value?: any;
+        threshold?: any;
         details?: Record<string, any> };
     count?: number;
 }
 
 interface Alert { id: string,
-    violationId: string,
-    type: string,
-    priority: string,
-    severity: string,
-    timestamp: number,
-    title: string,
-    message: string,
-    details: string,
-    suggestions: string[],
-    metrics: any,
-    escalated: boolean,
-    acknowledged: boolean,
-    originalPriority?: string  }
+    violationId: string;
+    type: string;
+    priority: string;
+    severity: string;
+    timestamp: number;
+    title: string;
+    message: string;
+    details: string;
+    suggestions: string[];
+    metrics: any;
+    escalated: boolean;
+    acknowledged: boolean;
+    originalPriority?: string;
 
 interface AlertFrequency { count: number,
-    firstSeen: number,
-    lastSeen?: number }
+    firstSeen: number;
+    lastSeen?: number;
 
 interface Suppression { startedAt: number,
-    expiresAt: number,
-    count: number }
+    expiresAt: number;
+    count: number;
 
 interface SuggestionData { title: string,
-    actionLabel: string }
+    actionLabel: string;
 
 interface SuggestionEngine { enabled: boolean,
-    suggestions: Map<string, SuggestionData>,
-    customSuggestions: Map<string, SuggestionData>,
-    lastSuggestionTime: number,
-    suggestionCooldown: number  }
+    suggestions: Map<string, SuggestionData>;
+    customSuggestions: Map<string, SuggestionData>;
+    lastSuggestionTime: number;
+    suggestionCooldown: number;
 
 interface AlertStats { totalAlerts: number,
-    suppressedAlerts: number,
-    alertFrequencies: Record<string, AlertFrequency>,
-    escalationRate: number,
+    suppressedAlerts: number;
+    alertFrequencies: Record<string, AlertFrequency>;
+    escalationRate: number;
     priorityDistribution: Record<string, number> }
 
 interface PriorityDistribution { critical: number,
-    high: number,
-    medium: number,
-    low: number  }
+    high: number;
+    medium: number;
+    low: number;
 
 type Priority = 'critical' | 'high' | 'medium' | 'low';
 
 export class PerformanceAlertGenerator { private performanceWarningSystem: any,
-    private errorHandler: any,
-    private alertConfig: AlertConfig,
+    private errorHandler: any;
+    private alertConfig: AlertConfig;
     private, alertTemplates: Map<string, AlertTemplate>,
-    private alertHistory: Alert[],
+    private alertHistory: Alert[];
     private, alertFrequency: Map<string, AlertFrequency>,
-    private suppressedAlerts: Map<string, Suppression>,
-    private suggestionEngine: SuggestionEngine,
+    private suppressedAlerts: Map<string, Suppression>;
+    private suggestionEngine: SuggestionEngine;
     constructor(performanceWarningSystem: any) {
-',
+','
 
-        this.performanceWarningSystem = performanceWarningSystem,
-        this.errorHandler = getErrorHandler()',
-            priorityLevels: ['low', 'medium', 'high', 'critical]),
+        this.performanceWarningSystem = performanceWarningSystem;
+        this.errorHandler = getErrorHandler()';'
+            priorityLevels: ['low', 'medium', 'high', 'critical]);'
             escalationThresholds: {
-                frequency: 5,    // Number of occurrences before escalation,
+                frequency: 5,    // Number of occurrences before escalation;
                 timeWindow: 30000, // Time window for frequency calculation (30, seconds }
                 severityIncrease: 1 // How, many levels, to increase, severity }
             };
@@ -116,8 +116,8 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
             lastSuggestionTime: 0,
     suggestionCooldown: 30000 // 30 seconds  }))
 
-        this.loadDefaultSuggestions()';
-        console.log('[PerformanceAlertGenerator] Alert, generation component, initialized);
+        this.loadDefaultSuggestions()';'
+        console.log('[PerformanceAlertGenerator] Alert, generation component, initialized);'
     }
     
     /**
@@ -127,14 +127,14 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
      */
     generateAlert(violation: Violation): Alert | null { try {
             // Check if alert generation is enabled
-            if(!this.alertConfig.enabled) {
+            if (!this.alertConfig.enabled) {
     
 }
                 return null;
             
             // Get alert template
             const template = this.getAlertTemplate(violation.id);
-            if(!template) {
+            if (!template) {
     
 }
                 console.warn(`[PerformanceAlertGenerator] No, template found, for violation: ${violation.id}`});
@@ -142,7 +142,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
             }
             
             // Check suppression rules
-            if(this.shouldSuppressAlert(violation) {
+            if (this.shouldSuppressAlert(violation) {
     
 }
                 console.log(`[PerformanceAlertGenerator] Alert, suppressed: ${violation.id}`});
@@ -166,19 +166,19 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
                 suggestions: this.generateAlertSuggestions(violation),
                 metrics: violation.data,
                 escalated: false,
-    acknowledged: false } // Update tracking
+    acknowledged: false; // Update tracking
             this.updateAlertTracking(alert);
             
             // Check for escalation
             this.checkAlertEscalation(alert);
             
-            console.log(`[PerformanceAlertGenerator] Alert generated: ${alert.id} (${priority}`}');
+            console.log(`[PerformanceAlertGenerator] Alert generated: ${alert.id} (${priority}`}');'
             
             return alert;
 
         } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'PerformanceAlertGenerator.generateAlert'
-            }';
+            }';'
             return null;
     
     /**
@@ -187,7 +187,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
      * @returns {object|null} Alert template'
      */''
     getAlertTemplate(violationId: string): AlertTemplate | null { // Map violation IDs to template IDs
-        const templateMap: Record<string, string> = {', 'fps_critical': 'fps_performance',
+        const templateMap: Record<string, string> = {', 'fps_critical': 'fps_performance','
             'fps_warning': 'fps_performance',
             'memory_critical': 'memory_usage',
             'memory_warning': 'memory_usage',
@@ -217,7 +217,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
         
         // Check if currently suppressed
         const suppression = this.suppressedAlerts.get(suppressionKey);
-        if(suppression && now < suppression.expiresAt) {
+        if (suppression && now < suppression.expiresAt) {
             // Update suppression count
             suppression.count++ }
             return true;
@@ -231,7 +231,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
             this.alertConfig.suppressionRules.similarityThreshold;
         );
         
-        if(similarAlerts.length >= this.alertConfig.suppressionRules.maxSimilarAlerts) {
+        if (similarAlerts.length >= this.alertConfig.suppressionRules.maxSimilarAlerts) {
         
             // Start suppression
             this.suppressedAlerts.set(suppressionKey, {
@@ -253,15 +253,15 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
 
         // Extract base types(remove _critical, _warning suffixes),
         const baseType1 = alertId1.replace(/_critical|_warning|_high|_medium|_low$/, ''),
-        const baseType2 = alertId2.replace(/_critical|_warning|_high|_medium|_low$/, '),
+        const baseType2 = alertId2.replace(/_critical|_warning|_high|_medium|_low$/, '),'
 
         if(baseType1 === baseType2) return 0.8,
         
         // Check category similarity
-        const categories: Record<string, string[]> = {', 'fps': ['fps'],
+        const categories: Record<string, string[]> = {', 'fps': ['fps'],'
             'memory': ['memory', 'leak'],
             'stability': ['stability', 'variance', 'jitter'],
-            'zone': ['zone] };
+            'zone': ['zone] };'
         
         for(const [category, types] of Object.entries(categories) {
         
@@ -282,7 +282,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
     calculateAlertPriority(violation: Violation): string { let basePriority = violation.severity,
         
         // Map severity to priority
-        const severityToPriority: Record<string, string> = {', 'critical': 'critical',
+        const severityToPriority: Record<string, string> = {', 'critical': 'critical','
             'high': 'high',
             'warning': 'medium',
             'medium': 'medium',
@@ -307,28 +307,28 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
         
         // Check frequency }
         const frequency = this.alertFrequency.get(violation.id) || { count: 0, firstSeen: Date.now(  }''
-        if(frequency.count >= this.alertConfig.escalationThresholds.frequency) {', ' }
+        if (frequency.count >= this.alertConfig.escalationThresholds.frequency) {', ' }
 
             factors.push('high_frequency'; }'
         }
-        ';
+        ';'
         // Check metric severity
-        if(violation.data) {
+        if (violation.data) {
     
 }
             const { metric, value, threshold } = violation.data;
 
-            if(metric === 'fps' && typeof, value === 'number' && typeof, threshold === 'number' && value < threshold * 0.5' {', ' }
+            if(metric === 'fps' && typeof, value === 'number' && typeof, threshold === 'number' && value < threshold * 0.5' {', ' }'
 
-                factors.push('severe_fps_drop');' }
+                factors.push('severe_fps_drop');' }'
 
             } else if(metric === 'memory_pressure' && typeof, value === 'number' && typeof, threshold === 'number' && value > threshold * 1.2' { ''
-                factors.push('severe_memory_pressure'),' }
+                factors.push('severe_memory_pressure'),' }'
 
-            } else if(metric === 'stability_score' && typeof, value === 'number' && typeof, threshold === 'number' && value < threshold * 0.5' { ''
+            } else if (metric === 'stability_score' && typeof, value === 'number' && typeof, threshold === 'number' && value < threshold * 0.5' ''
                 factors.push('severe_instability' }'
         }
-        ';
+        ';'
         // Check consecutive violations
         if(violation.count && violation.count > 5) {', ' }
 
@@ -362,17 +362,17 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
      * @returns {string} Alert title'
      */''
     generateAlertTitle(template: AlertTemplate, violation: Violation): string { let title = template.title,
-        ',
+        ','
         // Replace placeholders
         title = title.replace('{severity', violation.severity.toUpperCase()),
         title = title.replace('{metric', violation.data.metric),
         
-        if(violation.data.value !== undefined) {
-        ',
+        if (violation.data.value !== undefined) {
+        ','
 
             const formattedValue = this.formatMetricValue(violation.data.metric, violation.data.value) }
 
-            title = title.replace('{value', formattedValue' }
+            title = title.replace('{value', formattedValue' }'
         
         return title;
     }
@@ -384,23 +384,23 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
      * @returns {string} Alert message'
      */''
     generateAlertMessage(template: AlertTemplate, violation: Violation): string { let message = template.message,
-        ',
+        ','
         // Replace placeholders
         message = message.replace('{metric', violation.data.metric),
         
-        if(violation.data.value !== undefined) {
-        ',
+        if (violation.data.value !== undefined) {
+        ','
 
             const formattedValue = this.formatMetricValue(violation.data.metric, violation.data.value) }
 
             message = message.replace('{value', formattedValue) }
         
-        if(violation.data.threshold !== undefined) {
-        ',
+        if (violation.data.threshold !== undefined) {
+        ','
 
             const formattedThreshold = this.formatMetricValue(violation.data.metric, violation.data.threshold) }
 
-            message = message.replace('{threshold', formattedThreshold' }
+            message = message.replace('{threshold', formattedThreshold' }'
         
         return message;
     }
@@ -412,10 +412,10 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
      * @returns {string} Alert details'
      */''
     generateAlertDetails(template: AlertTemplate, violation: Violation): string { ''
-        let details = template.details || ',
+        let details = template.details || ','
         
         // Add metric-specific details
-        if(violation.data.details) {
+        if (violation.data.details) {
     
 }
             const detailsText = Object.entries(violation.data.details)' }'
@@ -436,7 +436,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
     generateAlertSuggestions(violation: Violation): string[] { const suggestions: string[] = [],
         
         // Base suggestions by violation type
-        const suggestionMap: Record<string, string[]> = {', 'fps_critical': ['reduce_quality', 'close_apps', 'restart_game'],
+        const suggestionMap: Record<string, string[]> = {', 'fps_critical': ['reduce_quality', 'close_apps', 'restart_game'],'
             'fps_warning': ['adjust_quality', 'check_background'],
             'memory_critical': ['force_cleanup', 'close_apps', 'reduce_quality'],
             'memory_warning': ['cleanup_memory', 'check_apps'],
@@ -449,14 +449,14 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
             'leak_critical': ['restart_game', 'report_issue'],
             'leak_high': ['monitor_memory', 'cleanup_memory'],
             'jitter_critical': ['reduce_effects', 'lower_quality'],
-            'jitter_warning': ['adjust_effects', 'check_background] };
-        ';
+            'jitter_warning': ['adjust_effects', 'check_background] };'
+        ';'
 
         const baseSuggestions = suggestionMap[violation.id] || [];
         suggestions.push(...baseSuggestions);
-        ';
+        ';'
         // Add severity-based suggestions
-        if(violation.severity === 'critical') {', ' }
+        if (violation.severity === 'critical') {', ' }
 
             suggestions.unshift('emergency_mode'; }'
         }
@@ -472,23 +472,23 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
      * @returns {string} Formatted value
      */''
     formatMetricValue(metric: string, value: any): string { ''
-        if(typeof, value !== 'number) return String(value),
+        if(typeof, value !== 'number) return String(value),'
 
         switch(metric) {', ' }
 
-            case 'fps':' }
+            case 'fps':' }'
 
                 return `${Math.round(value'}' FPS`;
-            case 'memory_pressure':';
+            case 'memory_pressure':';'
                 return `${Math.round(value * 100'}'%`;
-            case 'stability_score':';
+            case 'stability_score':';'
                 return `${Math.round(value * 100'}'%`;
-            case 'frame_variance':';
+            case 'frame_variance':';'
                 return `${value.toFixed(1'}'ms`;
-            case 'jitter_level':';
+            case 'jitter_level':';'
                 return `${value.toFixed(1'}'/10`;
-            case 'used':';
-            case 'total':';
+            case 'used':';'
+            case 'total':';'
             case 'limit':
                 return `${Math.round(value / 1024 / 1024})MB`;
             default: return value.toFixed(2);
@@ -501,7 +501,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
         this.alertHistory.push(alert),
         
         // Keep history manageable
-        if(this.alertHistory.length > 500) {
+        if (this.alertHistory.length > 500) {
     
 }
             this.alertHistory.shift(); }
@@ -544,7 +544,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
             a => a.violationId === alert.violationId && ),
                  Date.now() - a.timestamp < timeWindow).length,
         
-        if(recentCount >= this.alertConfig.escalationThresholds.frequency) {
+        if (recentCount >= this.alertConfig.escalationThresholds.frequency) {
         
             alert.escalated = true,
             alert.originalPriority = alert.priority,
@@ -585,32 +585,32 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
                 title: '{severity} FPS Drop';
                 message: 'Frame rate {value}, target: 60 FPS',''
                 details: 'Consider reducing graphics quality';
-            },', 'memory_usage': { }
+            },', 'memory_usage': { }'
 
                 title: '{severity} Memory Usage';
                 message: 'Memory usage {value}, threshold: {threshold}',''
                 details: 'High memory usage detected';
-            },', 'stability_issue': { }
+            },', 'stability_issue': { }'
 
                 title: '{severity} Performance Instability';
                 message: 'Frame timing, unstable: {value}';
                 details: 'Performance stability compromised';
-            },', 'frame_variance': { }
+            },', 'frame_variance': { }'
 
                 title: '{severity} Frame Jitter';
                 message: 'Frame timing, variance: {value}';
                 details: 'Inconsistent frame timing detected';
-            },', 'performance_zone': { }
+            },', 'performance_zone': { }'
 
                 title: '{severity} Performance Zone';
                 message: 'Performance, zone: {value}';
                 details: 'System performance degraded';
-            },', 'memory_leak': { }
+            },', 'memory_leak': { }'
 
                 title: '{severity} Memory Leak';
                 message: 'Memory leak, risk: {value}';
                 details: 'Suspicious memory growth patterns';
-            },', 'frame_jitter': { }
+            },', 'frame_jitter': { }'
 
                 title: '{severity} Frame Jitter';
                 message: 'Jitter, level: {value}';
@@ -686,7 +686,7 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
     calculatePriorityDistribution(): Record<string, number> {
         const distribution: PriorityDistribution = { critical: 0, high: 0, medium: 0, low: 0  }
         this.alertHistory.forEach(alert => {  ),
-            if(distribution.hasOwnProperty(alert.priority, as keyof, PriorityDistribution) { }
+            if (distribution.hasOwnProperty(alert.priority, as keyof, PriorityDistribution) { }
                 (distribution, as any)[alert.priority]++; }
 });
         
@@ -704,12 +704,12 @@ export class PerformanceAlertGenerator { private performanceWarningSystem: any,
     /**
      * Cleanup alert generator
      */
-    destroy(): void { this.alertHistory = [],
+    destroy(): void { this.alertHistory = [];
         this.alertFrequency.clear(),
         this.suppressedAlerts.clear(),
 
         this.alertTemplates.clear(),
-        this.suggestionEngine.suggestions.clear()',
+        this.suggestionEngine.suggestions.clear()','
         console.log('[PerformanceAlertGenerator] Alert, generator destroyed') }
 
-    }'}
+    }'}'

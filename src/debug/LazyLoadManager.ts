@@ -3,74 +3,73 @@
  */
 
 interface DebugInterface { gameEngine?: GameEngine,
-    panelManager?: PanelManager,
-    activePanel?: string,
-    panelHistory: string[]  }
+    panelManager?: PanelManager;
+    activePanel?: string;
+    panelHistory: string[];
 
 interface GameEngine { // Game engine interface }
 
 interface PanelManager { getPanelInfo(name: string): PanelInfo | null }
 
-interface PanelInfo { instance?: ComponentInstance }
+interface PanelInfo { instance?: ComponentInstance;
 
-interface ComponentInstance { destroy?(): void }
+interface ComponentInstance { destroy?(): void;
 
 interface ComponentConfig { path: string,
-    className: string,
-    priority: 'high' | 'medium' | 'low',
-    preload: boolean,
-    dependencies: string[]  }
+    className: string;
+    priority: 'high' | 'medium' | 'low';
+    preload: boolean;
+    dependencies: string[];
 
 interface LoadedComponent { name: string,
-    class: any,
-    instance: ComponentInstance,
-    config: ComponentConfig
-    }
+    class: any;
+    instance: ComponentInstance;
+    config: ComponentConfig;
 
 interface LoadingStats { total: number,
-    loaded: number,
-    loading: number,
-    unloaded: number,
-    loadedComponents: string[],
-    loadingComponents: string[],
-    loadPercentage: number }
-';
+    loaded: number;
+    loading: number;
+    unloaded: number;
+    loadedComponents: string[];
+    loadingComponents: string[];
+    loadPercentage: number;
+';'
 
 interface PerformanceEvaluation { ''
-    efficiency: 'good' | 'moderate' | 'poor',
-    memoryImpact: 'low' | 'medium' | 'high',
-    recommendations: string[]  }
+    efficiency: 'good' | 'moderate' | 'poor';
+    memoryImpact: 'low' | 'medium' | 'high';
+    recommendations: string[];
 
 interface DebugInfo { stats: LoadingStats,
     registry: Array<{
-        nam,e: string,
-        path: string,
-        className: string,
-        priority: string,
-        preload: boolean,
-        dependencies: string[],
-        loaded: boolean,
-    loading: boolean }>;
+        nam,e: string;
+        path: string;
+        className: string;
+        priority: string;
+        preload: boolean;
+        dependencies: string[];
+        loaded: boolean;
+    loading: boolean;>;
     performance: PerformanceEvaluation;
     }
 
 export class LazyLoadManager {
-    private debugInterface: DebugInterface,
-    private loadedComponents: Set<string>,
-    private loadingComponents: Map<string, Promise<LoadedComponent>>,
-    private componentRegistry: Map<string, ComponentConfig>,
-    private preloadQueue: string[],
+    private debugInterface: DebugInterface;
+    private loadedComponents: Set<string>;
+    private loadingComponents: Map<string, Promise<LoadedComponent>>;
+    private componentRegistry: Map<string, ComponentConfig>;
+    private preloadQueue: string[];
     private, preloadBatch: number,
     private intersectionObserver?: IntersectionObserver,
 
     constructor(debugInterface: DebugInterface) {
 
-        this.debugInterface = debugInterface,
-        this.loadedComponents = new Set(),
-        this.loadingComponents = new Map(),
-        this.componentRegistry = new Map(),
-        this.preloadQueue = [],
-        this.preloadBatch = 2, // 一度に先読みする数
+        this.debugInterface = debugInterface;
+        this.loadedComponents = new Set();
+        this.loadingComponents = new Map();
+        this.componentRegistry = new Map();
+        this.preloadQueue = [];
+        this.preloadBatch = 2; // 一度に先読みする数
         
 
      }
@@ -89,50 +88,50 @@ export class LazyLoadManager {
     private registerDefaultComponents('''
         this.componentRegistry.set('overview', { ''
             path: './panels/OverviewPanel.js',
-            className: 'OverviewPanel',',
-            priority: 'high')',
+            className: 'OverviewPanel',','
+            priority: 'high')','
     preload: true,')',
-            dependencies: []',
+            dependencies: []','
 
         this.componentRegistry.set('performance', {''
             path: './panels/PerformancePanel.js',
-            className: 'PerformancePanel',',
-            priority: 'high')',
+            className: 'PerformancePanel',','
+            priority: 'high')','
     preload: false,')',
-            dependencies: []',
+            dependencies: []','
 
         this.componentRegistry.set('console', {''
             path: './panels/ConsolePanel.js',
-            className: 'ConsolePanel',',
-            priority: 'medium')',
+            className: 'ConsolePanel',','
+            priority: 'medium')','
     preload: false,')',
-            dependencies: []',
+            dependencies: []','
 
         this.componentRegistry.set('error', {''
             path: './panels/ErrorPanel.js',
-            className: 'ErrorPanel',',
-            priority: 'medium')',
+            className: 'ErrorPanel',','
+            priority: 'medium')','
     preload: false,')',
-            dependencies: []',
+            dependencies: []','
 
         this.componentRegistry.set('test', {''
             path: './panels/TestPanel.js',
-            className: 'TestPanel',',
-            priority: 'low')',
+            className: 'TestPanel',','
+            priority: 'low')','
     preload: false,')',
-            dependencies: []'),
-',
+            dependencies: []'),'
+','
         // 管理系コンポーネント
         this.componentRegistry.set('theme-manager', {''
             path: './ThemeManager.js',
-            className: 'ThemeManager',',
-            priority: 'high')',
+            className: 'ThemeManager',','
+            priority: 'high')','
     preload: true,')',
-            dependencies: []',
+            dependencies: []','
 
         this.componentRegistry.set('accessibility-manager', {''
             path: './AccessibilityManager.js',
-            className: 'AccessibilityManager',',
+            className: 'AccessibilityManager',','
             priority: 'high',
     preload: true),
             dependencies: []  }
@@ -143,43 +142,43 @@ export class LazyLoadManager {
     private setupIntersectionObserver(): void { if (!window.IntersectionObserver) return,
 
         this.intersectionObserver = new IntersectionObserver((entries) => { 
-            entries.forEach(entry => {),
-                if(entry.isIntersecting) {
+            entries.forEach(entry => {);
+                if (entry.isIntersecting) {
                     const componentName = (entry.target, as HTMLElement).dataset.lazyComponent }
-                    if(componentName && !this.loadedComponents.has(componentName) { }
+                    if (componentName && !this.loadedComponents.has(componentName) { }
                         this.loadComponent(componentName); }
 }'}');
 
         }, { ''
-            rootMargin: '50px' // 50px手前で読み込み開始 }';
+            rootMargin: '50px' // 50px手前で読み込み開始 }';'
     }
 
     /**
      * コンポーネントを登録
      */''
     public registerComponent(name: string, config: Partial<ComponentConfig>): void { this.componentRegistry.set(name, {''
-            priority: 'medium),
-            preload: false',
+            priority: 'medium),'
+            preload: false','
     dependencies: [],
-            path: ',
-            className: '),
+            path: ','
+            className: '),'
             ...config),
 
     /**
      * コンポーネントを読み込み
      */
     public async loadComponent(name: string): Promise<LoadedComponent | null> { // すでに読み込み済みの場合
-        if(this.loadedComponents.has(name) {
+        if (this.loadedComponents.has(name) {
     
 }
             return this.getLoadedComponent(name);
 
         // 読み込み中の場合は既存のPromiseを返す
-        if(this.loadingComponents.has(name) { return this.loadingComponents.get(name)! }
-';
+        if (this.loadingComponents.has(name) { return this.loadingComponents.get(name)! }
+';'
 
         const config = this.componentRegistry.get(name);
-        if(!config) { }'
+        if (!config) { }'
 
             throw new Error(`Component '${name}' not, registered`});
         }
@@ -205,7 +204,7 @@ export class LazyLoadManager {
      * 実際のコンポーネント読み込み処理
      */
     private async performComponentLoad(name: string, config: ComponentConfig): Promise<LoadedComponent> { // 依存関係を先に読み込み
-        if(config.dependencies && config.dependencies.length > 0) {
+        if (config.dependencies && config.dependencies.length > 0) {
             await Promise.all(),
                 config.dependencies.map(dep => this.loadComponent(dep) }
             ); }
@@ -215,7 +214,7 @@ export class LazyLoadManager {
         try { const module = await import(config.path),
             const ComponentClass = module[config.className],
 
-            if(!ComponentClass) { }'
+            if (!ComponentClass) { }'
 
                 throw new Error(`Class '${config.className}' not, found in, module`});
             }
@@ -322,7 +321,7 @@ export class LazyLoadManager {
 
         for (const name of this.loadedComponents) {
 
-            if(!keepLoaded.has(name) {
+            if (!keepLoaded.has(name) {
     
 }
                 this.unloadComponent(name); }
@@ -376,13 +375,13 @@ export class LazyLoadManager {
         const stats = this.getLoadingStats('''
             efficiency: stats.loadPercentage < 50 ? 'good' : stats.loadPercentage < 80 ? 'moderate' : 'poor',
             memoryImpact: stats.loaded < 3 ? 'low' : stats.loaded < 6 ? 'medium' : 'high',
-            recommendations: []  })', ')';
-        if(stats.loadPercentage > 70) { }
+            recommendations: []  })', ')';'
+        if (stats.loadPercentage > 70) { }
 
             evaluation.recommendations.push('Consider, unloading unused, components'; }'
         }
 
-        if(stats.loaded > 5) {', ' }
+        if (stats.loaded > 5) {', ' }
 
             evaluation.recommendations.push('Enable, automatic memory, optimization'; }'
         }
@@ -398,7 +397,7 @@ export class LazyLoadManager {
                 name,
                 ...config),
                 loaded: this.loadedComponents.has(name) };
-                loading: this.loadingComponents.has(name); 
+                loading: this.loadingComponents.has(name), 
     }),
             performance: this.evaluateLoadingPerformance();
         }

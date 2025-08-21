@@ -4,7 +4,7 @@
  */
 
 import type { Config } from 'jest';
-';
+';'
 const config: Config = { // テスト環境
     testEnvironment: 'jsdom',
     // テストファイルのパターン
@@ -14,11 +14,11 @@ const config: Config = { // テスト環境
     
     // モジュール解決
     moduleNameMapping: {', '^@/(.*')$': '<rootDir>/src/$1',
-        '^@tests/(.*')$': '<rootDir>/src/tests/$1' },
+        '^@tests/(.*')$': '<rootDir>/src/tests/$1' },'
     // ES6モジュールサポート
-    extensionsToTreatAsEsm: ['.ts];
+    extensionsToTreatAsEsm: ['.ts],'
     // トランスフォーム設定
-   , transform: { ', '^.+\\.ts$': ['ts-jest', {
+   , transform: { ', '^.+\\.ts$': ['ts-jest', {'
             useESM: true,
             tsconfig: {''
                 target: 'esnext',
@@ -35,7 +35,7 @@ const config: Config = { // テスト環境
     
     // カバレッジ設定
     collectCoverage: true,
-    collectCoverageFrom: [';
+    collectCoverageFrom: [';'
         'src/core/SocialSharingManager.ts',
         'src/core/ShareContentGenerator.ts',
         'src/core/ShareButton.ts',
@@ -43,14 +43,14 @@ const config: Config = { // テスト環境
         'src/core/LeaderboardManager.ts',
         'src/core/ChallengeSystem.ts',
         'src/ui/components/LeaderboardUI.ts',
-        'src/scenes/components/ChallengesTab.ts',]';
+        'src/scenes/components/ChallengesTab.ts',]';'
         '!src/tests/**'];
     ],
 
-    coverageReporters: [';
+    coverageReporters: [';'
         'text',
         'html',
-        'lcov',]';
+        'lcov',]';'
         'json-summary'];
     ],
 
@@ -63,26 +63,26 @@ const config: Config = { // テスト環境
     statements: 85 
     };
     // テストタイムアウト
-    testTimeout: 30000;
+    testTimeout: 30000,
     ;
     // 並列実行設定
-    maxWorkers: '50%';
+    maxWorkers: '50%',
     // モック設定
-    clearMocks: true;
-    restoreMocks: true;
+    clearMocks: true,
+    restoreMocks: true,
     // グローバル設定
-   , globals: { ', 'process.env.NODE_ENV': 'test',
+   , globals: { ', 'process.env.NODE_ENV': 'test','
         'process.env.JEST_ENVIRONMENT': 'integration' },
     
     // 詳細な出力
-    verbose: true;
+    verbose: true,
     // エラー時の詳細表示
-    errorOnDeprecated: true;
+    errorOnDeprecated: true,
     // 非同期処理の検出
-    detectOpenHandles: true;
-    detectLeaks: true;
+    detectOpenHandles: true,
+    detectLeaks: true,
     // テスト結果のレポート
-   , reporters: [';
+   , reporters: [','
         'default',
         ['jest-html-reporters', { ''
             publicPath: './coverage/integration/html-report',
@@ -92,7 +92,7 @@ const config: Config = { // テスト環境
             logoImgPath: './assets/logo.png',
             hideIcon: false,
             expand: true,
-    customInfos: [',
+    customInfos: [','
                 {''
                     title: 'プロジェクト',
                     value: 'BubblePop ソーシャル機能'

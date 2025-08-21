@@ -9,31 +9,30 @@ type BackgroundEffectType = 'particles' | 'rain' | 'snow' | 'fog' | 'stars' | 'c
  * Background effect options interface
  */
 interface BackgroundEffectOptions { density: number,
-    speed: number,
-    color: string,
-    size: number,
-    opacity: number  }
+    speed: number;
+    color: string;
+    size: number;
+    opacity: number;
 
 /**
  * Background effect interface
  */
 interface BackgroundEffect { effectType: BackgroundEffectType,
-    enabled: boolean,
-    intensity: number,
-    options: BackgroundEffectOptions
-    }
+    enabled: boolean;
+    intensity: number;
+    options: BackgroundEffectOptions;
 
 /**
  * Error handler interface
  */
-interface ErrorHandler { handleError(error: any, details?: any): void }
+interface ErrorHandler { handleError(error: any, details?: any): void;
 
 /**
  * Background Effect Renderer
  * 背景効果レンダラー - パーティクル、天候、環境効果処理
  */
 export class BackgroundEffectRenderer {
-    private canvas: HTMLCanvasElement,
+    private canvas: HTMLCanvasElement;
     private, errorHandler: ErrorHandler,
     constructor(canvas: HTMLCanvasElement) {
 
@@ -52,19 +51,19 @@ export class BackgroundEffectRenderer {
 
                 switch(effect.effectType) {
 
-                    case 'particles':',
+                    case 'particles':','
                         this.renderParticleBackground(context, effect),
 
                         break,
-                    case 'rain':',
+                    case 'rain':','
                         this.renderRainEffect(context, effect),
 
                         break,
-                    case 'snow':',
+                    case 'snow':','
                         this.renderSnowEffect(context, effect),
 
                         break,
-                    case 'fog':',
+                    case 'fog':','
                         this.renderFogEffect(context, effect),
 
                         break,
@@ -98,7 +97,7 @@ export class BackgroundEffectRenderer {
                 context.arc(x, y, size, 0, Math.PI * 2) }
                 context.fill(); }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderParticleBackground'
@@ -129,7 +128,7 @@ export class BackgroundEffectRenderer {
                 context.lineTo(x - length * 0.3, y + length) }
                 context.stroke(); }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderRainEffect'
@@ -158,11 +157,11 @@ export class BackgroundEffectRenderer {
                 context.arc(x, y, size, 0, Math.PI * 2) }
                 context.fill(); }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderSnowEffect'
-            }';
+            }';'
         }
     }
     
@@ -208,11 +207,11 @@ export class BackgroundEffectRenderer {
                 context.arc(x, y, size, 0, Math.PI * 2) }
                 context.fill(); }
             }
-            ';
+            ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderStarsEffect'
-            }';
+            }';'
         }
     }
     
@@ -225,20 +224,20 @@ export class BackgroundEffectRenderer {
                 case 'particles':,
                     // パーティクル位置更新などの処理
                     break,
-                case 'rain':',
+                case 'rain':','
                 case 'snow':,
                     // 天候エフェクトの更新
                     break,
-                case 'fog':',
+                case 'fog':','
                 case 'clouds':,
                     // 雲・霧エフェクトの更新
             }
                     break;' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'BackgroundEffectRenderer.updateBackgroundEffect',' }
+                context: 'BackgroundEffectRenderer.updateBackgroundEffect',' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

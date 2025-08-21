@@ -4,37 +4,37 @@
  */
 
 interface UserData { id: string,
-    username: string,
-    level: number,
-    totalScore: number,
-    gamesPlayed: number,
-    gamesWon: number,
-    averageScore: number,
-    lastPlayed: number,
-    achievements: string[],
+    username: string;
+    level: number;
+    totalScore: number;
+    gamesPlayed: number;
+    gamesWon: number;
+    averageScore: number;
+    lastPlayed: number;
+    achievements: string[];
     settings: {
         soundEnable,d: boolean,
         difficulty: string,
-    theme: string  };
+    theme: string,;
     statistics: { totalPlayTime: number,
         bubblesPopped: number,
         perfectShots: number,
-    powerUpsUsed: number }
+    powerUpsUsed: number,
 
 interface UserGenerationOptions { level?: number,
-    minScore?: number,
-    maxScore?: number,
-    gamesPlayed?: number }
+    minScore?: number;
+    maxScore?: number;
+    gamesPlayed?: number;
 
 export class MockUserDataGenerator {
-    private usernameTemplates = ['Player', 'Gamer', 'BubbleMaster', 'PopKing', 'ArcadeHero',]',
+    private usernameTemplates = ['Player', 'Gamer', 'BubbleMaster', 'PopKing', 'ArcadeHero',]','
         'SkillShot', 'Champion', 'Pro', 'Expert', 'Legend'],
     ],
-    ',
+    ','
 
-    private achievements = [',
+    private achievements = [','
         'first_win', 'bubble_master', 'perfect_shot', 'speed_demon',
-        'combo_king', 'level_crusher', 'power_user', 'perfectionist',]',
+        'combo_king', 'level_crusher', 'power_user', 'perfectionist',]','
         'endurance_player', 'high_scorer'],
     ],
 
@@ -56,7 +56,7 @@ export class MockUserDataGenerator {
             gamesPlayed,
             gamesWon,
             averageScore: totalScore / gamesPlayed,
-    lastPlayed: Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000, // Within last week,
+    lastPlayed: Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000, // Within last week;
             achievements: this.generateAchievements(level,
     settings: {
                 soundEnabled: Math.random() > 0.2,
@@ -98,10 +98,10 @@ export class MockUserDataGenerator {
         const count = Math.floor(Math.random() * maxAchievements),
         const shuffled = [...this.achievements].sort(() => Math.random() - 0.5),
         return shuffled.slice(0, count),
-',
+','
 
     private generateId(): string { }'
 
         return `user_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`;
 
-    }'}
+    }'}'

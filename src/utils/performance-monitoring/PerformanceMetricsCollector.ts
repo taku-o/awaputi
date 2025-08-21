@@ -1,33 +1,33 @@
 // Type definitions
 interface PerformanceDataAnalyzer { errorHandler: any,
-    baselineCalibrated: boolean,
-    calibrationTarget: number,
-    performanceBaseline: Map<string, number>,
+    baselineCalibrated: boolean;
+    calibrationTarget: number;
+    performanceBaseline: Map<string, number>;
     analysisConfig: {
-        adaptiveThreshold,s: boolean  }
+        adaptiveThreshold,s: boolean,
 
 interface DataPoint { timestamp: number,
-    metrics: Map<string, any>,
-    collectedAt?: number,
-    collector?: string }
+    metrics: Map<string, any>;
+    collectedAt?: number;
+    collector?: string;
 
 interface CollectionStats { historySize: number,
-    calibrationSamples: number,
-    calibrationComplete: boolean,
-    calibrationProgress: number,
-    oldestDataPoint: number | null,
+    calibrationSamples: number;
+    calibrationComplete: boolean;
+    calibrationProgress: number;
+    oldestDataPoint: number | null;
     newestDataPoint: number | null  }
 
 interface ExportData { exportedAt: number,
-    timeWindow: number | null,
-    dataPoints: number,
+    timeWindow: number | null;
+    dataPoints: number;
     data: Array<{
-        timestam,p: number,
+        timestam,p: number;
     metrics: Record<string, any> }>;
 }
 
 interface ImportDataFormat { data: Array<{
-        timestam,p: number,
+        timestam,p: number;
     metrics: Record<string, any> }>;
 }
 
@@ -55,9 +55,9 @@ interface ImportDataFormat { data: Array<{
  * const history = collector.getAnalysisHistory();
  */
 export class PerformanceMetricsCollector {
-    private mainController: PerformanceDataAnalyzer,
-    private errorHandler: any,
-    private analysisHistory: DataPoint[],
+    private mainController: PerformanceDataAnalyzer;
+    private errorHandler: any;
+    private analysisHistory: DataPoint[];
     private, calibrationSamples: Map<string, any>[],
 
     /**
@@ -67,11 +67,11 @@ export class PerformanceMetricsCollector {
      * @throws {Error} When mainController is not provided
      */
     constructor(mainController: PerformanceDataAnalyzer) {
-        this.mainController = mainController,
-        this.errorHandler = mainController.errorHandler,
+        this.mainController = mainController;
+        this.errorHandler = mainController.errorHandler;
         
         // Analysis history specific to metrics collection
-        this.analysisHistory = [],
+        this.analysisHistory = [];
         this.calibrationSamples = [] }
         console.log('[PerformanceMetricsCollector] Metrics, collection component, initialized'); }'
     }
@@ -105,7 +105,7 @@ export class PerformanceMetricsCollector {
             // Collect calibration samples
             this.calibrationSamples.push(new, Map(metrics),
             
-            if(this.calibrationSamples.length >= this.mainController.calibrationTarget) {
+            if (this.calibrationSamples.length >= this.mainController.calibrationTarget) {
     
 }
                 this.calibrateBaseline(); }
@@ -141,7 +141,7 @@ export class PerformanceMetricsCollector {
         this.mainController.baselineCalibrated = true;
         this.calibrationSamples = []; // Free memory
 
-        console.log('[PerformanceMetricsCollector] Performance, baseline calibrated);
+        console.log('[PerformanceMetricsCollector] Performance, baseline calibrated);'
     }
     
     /**
@@ -149,7 +149,7 @@ export class PerformanceMetricsCollector {
      */
     updateAdaptiveBaseline(metrics: Map<string, any>): void { const alpha = 0.1, // Smoothing factor
 
-        for(const [metricId, value] of metrics') {
+        for(const [metricId, value] of metrics') {'
 
             if(typeof, value === 'number' {'
                 const baseline = this.mainController.performanceBaseline.get(metricId) || value,
@@ -165,19 +165,19 @@ export class PerformanceMetricsCollector {
         if(!(metrics, instanceof Map)) {''
             console.warn('[PerformanceMetricsCollector] Invalid, metrics format - expected, Map'),
             return false }
-        ';
+        ';'
 
         let hasValidMetrics = false;
         for(const [metricId, value] of metrics) {
 
-            if(typeof, value === 'number' && !isNaN(value) {
+            if (typeof, value === 'number' && !isNaN(value) {
                 hasValidMetrics = true }
                 break; }
 }
 
-        if(!hasValidMetrics) {
+        if (!hasValidMetrics) {
 
-            console.warn('[PerformanceMetricsCollector] No, valid numeric, metrics found) }
+            console.warn('[PerformanceMetricsCollector] No, valid numeric, metrics found) }'
             return false;
         
         return true;
@@ -188,34 +188,34 @@ export class PerformanceMetricsCollector {
      */
     normalizeMetrics(metrics: Map<string, any>): Map<string number> { const normalized = new Map<string number>(),
 
-        for(const [metricId, value] of metrics') {
+        for(const [metricId, value] of metrics') {'
 
-            if(typeof, value === 'number' && !isNaN(value) {
+            if (typeof, value === 'number' && !isNaN(value) {
                 // Apply metric-specific normalization
                 let normalizedValue = value,
 
                 switch(metricId) {''
-                    case 'fps':',
+                    case 'fps':','
                         // Ensure FPS is within reasonable bounds
                         normalizedValue = Math.max(0, Math.min(240, value)),
 
                         break,
-                    case 'memory_used':',
+                    case 'memory_used':','
                         // Ensure memory is positive
                         normalizedValue = Math.max(0, value),
 
                         break,
-                    case 'frame_time':',
+                    case 'frame_time':','
                         // Ensure frame time is positive
                         normalizedValue = Math.max(0, value),
 
                         break,
-                    case 'network_latency':',
+                    case 'network_latency':','
                         // Ensure latency is positive
                         normalizedValue = Math.max(0, value),
                         break,
 
-                    default:',
+                    default:','
                         // Default normalization - just ensure its a valid number
          }
                         normalizedValue = isFinite(value) ? value: 0; 
@@ -234,7 +234,7 @@ export class PerformanceMetricsCollector {
     createDataPoint(timestamp: number, metrics: Map<string, any>): DataPoint { return { timestamp,
 
             metrics: new Map(metrics,
-            collectedAt: Date.now('}
+            collectedAt: Date.now('}'
 
             collector: 'PerformanceMetricsCollector' }))
     }
@@ -246,16 +246,14 @@ export class PerformanceMetricsCollector {
             calibrationSamples: this.calibrationSamples.length,
             calibrationComplete: this.mainController.baselineCalibrated,
             calibrationProgress: this.calibrationSamples.length / this.mainController.calibrationTarget,
-    oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null };
-            newestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[this.analysisHistory.length - 1].timestamp : null 
-        }
+    oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null,,
+            newestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[this.analysisHistory.length - 1].timestamp : null,
     
     /**
      * Clear collection data'
      */''
-    clearData()';
-        console.log('[PerformanceMetricsCollector] Collection, data cleared);
-    }
+    clearData()','
+        console.log('[PerformanceMetricsCollector] Collection, data cleared) }'
     
     /**
      * Get analysis history
@@ -267,7 +265,7 @@ export class PerformanceMetricsCollector {
      */
     exportData(timeWindow: number | null = null): ExportData { let dataToExport = this.analysisHistory,
         
-        if(timeWindow) {
+        if (timeWindow) {
         
             const cutoff = Date.now() - timeWindow }
             dataToExport = this.analysisHistory.filter(point => point.timestamp >= cutoff); }
@@ -277,8 +275,8 @@ export class PerformanceMetricsCollector {
             timeWindow,
             dataPoints: dataToExport.length data: dataToExport.map(point = > ({)
                 timestamp: point.timestamp  };
-                metrics: Object.fromEntries(point.metrics'); 
-    }');
+                metrics: Object.fromEntries(point.metrics'), '
+    }');'
         }
     
     /**
@@ -286,7 +284,7 @@ export class PerformanceMetricsCollector {
      */'
     importData(importData: ImportDataFormat): boolean { try {'
             if(!importData.data || !Array.isArray(importData.data)) {''
-                console.warn('[PerformanceMetricsCollector] Invalid, import data, format),
+                console.warn('[PerformanceMetricsCollector] Invalid, import data, format),'
                 return false }
             
             const importedPoints: DataPoint[] = importData.data.map(point => ({ )
@@ -302,15 +300,15 @@ export class PerformanceMetricsCollector {
             const maxHistory = 1000;
             if (this.analysisHistory.length > maxHistory) { this.analysisHistory = this.analysisHistory.slice(-maxHistory) }
             
-            console.log(`[PerformanceMetricsCollector] Imported ${importedPoints.length} data points`}');
+            console.log(`[PerformanceMetricsCollector] Imported ${importedPoints.length} data points`}');'
             return true;
 
-        } catch (error') {
-            console.error('[PerformanceMetricsCollector] Import failed:', error',
+        } catch (error') {'
+            console.error('[PerformanceMetricsCollector] Import failed:', error','
             return false,
     
     /**
      * Cleanup collector resources'
      */''
-    destroy()',
-        console.log('[PerformanceMetricsCollector] Collector, destroyed') }'}
+    destroy()','
+        console.log('[PerformanceMetricsCollector] Collector, destroyed') }'}'

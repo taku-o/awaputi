@@ -3,17 +3,17 @@ import path from 'path';
 import { glob  } from 'glob';
 
 export interface FileInfo { filePath: string,
-    fileName: string,
-    fileSize: number,
-    lastModified: Date,
-    fileType: string  }
+    fileName: string;
+    fileSize: number;
+    lastModified: Date;
+    fileType: string;
 
 export class FileScanner {
-    private defaultPatterns: string[],
-    private, defaultExtensions: string[]',
+    private defaultPatterns: string[];
+    private, defaultExtensions: string[]','
 
     constructor('',
-        this.defaultPatterns = ['*_old*', '*_original*],
+        this.defaultPatterns = ['*_old*', '*_original*],'
         this.defaultExtensions = ['.js] }'
 );
     async scanForOldFiles(patterns: string[] = this.defaultPatterns, rootPath: string = process.cwd(): Promise<string[]> { const foundFiles: string[] = [],
@@ -25,7 +25,7 @@ export class FileScanner {
                 const globPattern = `**/${pattern}`;
 
                 const files = await glob(globPattern, { cwd: rootPath)'
-                    ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**]),
+                    ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**]),'
                     absolute: true),,
                 foundFiles.push(...files), catch (error) {
                 console.error(`Error scanning for pattern ${pattern}:`, error);
@@ -74,4 +74,4 @@ export class FileScanner {
 
         return fileInfos;
 
-    }'}
+    }'}'

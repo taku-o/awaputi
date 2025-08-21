@@ -20,7 +20,7 @@ import { jest, expect, describe, test, it, beforeEach, afterEach, beforeAll, aft
 
 // Mock utilities
 (global: any).spyOn = jest.spyOn;
-(global as any').fn = jest.fn;
+(global as any').fn = jest.fn;'
 
 // Export for modules that need explicit imports
 export { jest };

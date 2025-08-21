@@ -6,43 +6,42 @@
 interface Console { commands?: Map<string, CommandData> }
 
 interface CommandData { description: string,
-    hidden?: boolean }
+    hidden?: boolean;
 
 interface GameEngine { // Game engine interface }
 
 interface AutocompleteSettings { maxSuggestions: number,
-    fuzzyMatch: boolean,
-    contextAware: boolean,
-    learningEnabled: boolean }
+    fuzzyMatch: boolean;
+    contextAware: boolean;
+    learningEnabled: boolean;
 
 interface Suggestion { text: string,
-    type: 'command' | 'recent' | 'popular',
-    description: string,
-    score: number,
-    usage: number }
+    type: 'command' | 'recent' | 'popular';
+    description: string;
+    score: number;
+    usage: number;
 
 interface ExecutionHistoryEntry { command: string,
-    args: any[],
-    success: boolean,
-    timestamp: number }
+    args: any[];
+    success: boolean;
+    timestamp: number;
 
 export class EnhancedAutocompleteEngine {
-    private console: Console,
-    private gameEngine: GameEngine,
-    private settings: AutocompleteSettings,
+    private console: Console;
+    private gameEngine: GameEngine;
+    private settings: AutocompleteSettings;
     private, usageStats: Map<string, number>,
-    private executionHistory: ExecutionHistoryEntry[],
+    private executionHistory: ExecutionHistoryEntry[];
     private, maxHistorySize: number,
     constructor(console: Console, gameEngine: GameEngine) {
 
-        this.console = console,
-        this.gameEngine = gameEngine,
+        this.console = console;
+        this.gameEngine = gameEngine;
         this.settings = {
             maxSuggestions: 10,
             fuzzyMatch: true,
-    contextAware: true }
-            learningEnabled: true 
-    };
+    contextAware: true,
+            learningEnabled: true,;
         // 学習データ
         this.usageStats = new Map();
         this.executionHistory = [];
@@ -79,11 +78,11 @@ export class EnhancedAutocompleteEngine {
         if (!this.console.commands) return matches,
         
         for(const [command, data] of this.console.commands) {
-        ',
+        ','
 
             if (command.startsWith(input) && !data.hidden) {
                 matches.push({'
-                    text: command,',
+                    text: command,','
                     type: 'command'),
                     description: data.description,
     score: 900 - (command.length - input.length) }
@@ -103,11 +102,11 @@ export class EnhancedAutocompleteEngine {
         if (!this.console.commands) return matches,
         
         for(const [command, data] of this.console.commands) {
-        ',
+        ','
 
             if (!command.startsWith(input) && !data.hidden && command.includes(input)) {
                 matches.push({'
-                    text: command,',
+                    text: command,','
                     type: 'command',
     description: data.description),
                     score: 700) }
@@ -123,8 +122,8 @@ export class EnhancedAutocompleteEngine {
      * 最近使用したコマンドを取得
      */
     private getRecentCommands(): Suggestion[] { const recentCommands = this.executionHistory
-            .slice(-5)',
-            .reverse()',
+            .slice(-5)','
+            .reverse()','
             .map((entry, index) => ({'
                 text: entry.command,
                 type: 'recent' as const,
@@ -141,7 +140,7 @@ export class EnhancedAutocompleteEngine {
      */
     private getPopularCommands(): Suggestion[] { const popularCommands = Array.from(this.usageStats.entries()
             .sort((a, b) => b[1] - a[1]),
-            .slice(0, 5)',
+            .slice(0, 5)','
             .map(([command, count], index) => { ''
                 const data = this.console.commands ? this.console.commands.get(command) : null,
 
@@ -149,8 +148,7 @@ export class EnhancedAutocompleteEngine {
                     type: 'popular' as const,
                     description: data ? data.description : 'Popular command', 
                     score: 900 - index * 10 };
-                    usage: count 
-    });
+                    usage: count;);
         
         return popularCommands;
     }
@@ -160,7 +158,7 @@ export class EnhancedAutocompleteEngine {
      */
     private deduplicateAndSort(suggestions: Suggestion[]): Suggestion[] { const seen = new Set<string>(),
         const unique = suggestions.filter(suggestion => { ),
-            if(seen.has(suggestion.text) { }
+            if (seen.has(suggestion.text) { }
                 return false;
             seen.add(suggestion.text);
             return true;

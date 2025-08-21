@@ -86,8 +86,8 @@ export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = { scoreMultiplie
  * アイテムの購入、効果適用、進捗管理を専門的に処理します
  */
 export class ItemManager implements IItemManager { public gameEngine: any,
-    public ownedItems: Map<string, number> = new Map(),
-    public activeEffects: Map<string, number> = new Map(),
+    public ownedItems: Map<string, number> = new Map();
+    public activeEffects: Map<string, number> = new Map();
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine  }
@@ -95,7 +95,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
     /**
      * 初期化
      */
-    initialize(): void { this.loadOwnedItems(),
+    initialize(): void { this.loadOwnedItems();
         this.applyAllEffects() }
     
     /**
@@ -104,7 +104,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
     loadOwnedItems(): void { const playerData = this.gameEngine.playerData,
         this.ownedItems.clear(),
         
-        if(playerData.ownedItems) {
+        if (playerData.ownedItems) {
     
 }
             playerData.ownedItems.forEach((item: any) => {  }
@@ -136,7 +136,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
         const currentLevel = this.ownedItems.get(itemId) || 0;
         
         // 最大レベルチェック
-        if(currentLevel >= itemDef.maxLevel) {
+        if (currentLevel >= itemDef.maxLevel) {
     
 }
             console.log(`Item ${itemId} is, already at, max level`});
@@ -147,7 +147,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
         const cost = Math.floor(itemDef.cost * Math.pow(1.3, currentLevel);
         
         // AP不足チェック
-        if(this.gameEngine.playerData.ap < cost) {
+        if (this.gameEngine.playerData.ap < cost) {
     
 }
             console.log(`Not enough AP. Required: ${cost}, Have: ${this.gameEngine.playerData.ap}`});
@@ -169,13 +169,13 @@ export class ItemManager implements IItemManager { public gameEngine: any,
     /**
      * アイテム効果をリセット
      */''
-    resetAllItems()';
+    resetAllItems()';'
         if(!this.purchaseItem('reset' { return false }'
         
         // 全アイテムをクリア（リセットアイテム以外）
         this.ownedItems.clear();
         this.activeEffects.clear();
-        this.saveOwnedItems()';
+        this.saveOwnedItems()';'
         console.log('All, item effects have been reset');
         return true;
     }
@@ -190,30 +190,30 @@ export class ItemManager implements IItemManager { public gameEngine: any,
         
         const effect = itemDef.effect,
 
-        switch(effect.type') {
+        switch(effect.type') {'
 
-            case 'scoreMultiplier':',
+            case 'scoreMultiplier':','
                 // スコア倍率は累積
                 const currentMultiplier = this.activeEffects.get('scoreMultiplier' || 1,
-                const newMultiplier = currentMultiplier + (effect.value - 1') * level,
-                this.activeEffects.set('scoreMultiplier', newMultiplier',
+                const newMultiplier = currentMultiplier + (effect.value - 1') * level,'
+                this.activeEffects.set('scoreMultiplier', newMultiplier','
                 break,
 
-            case 'revival':',
-                this.activeEffects.set('revival', level',
+            case 'revival':','
+                this.activeEffects.set('revival', level','
                 break,
 
-            case 'rareRate':',
+            case 'rareRate':','
                 // レア率は累積
                 const currentRareRate = this.activeEffects.get('rareRate' || 1,
-                const newRareRate = currentRareRate + (effect.value - 1') * level,
-                this.activeEffects.set('rareRate', newRareRate',
+                const newRareRate = currentRareRate + (effect.value - 1') * level,'
+                this.activeEffects.set('rareRate', newRareRate','
                 break,
 
             case 'hpBoost':,
                 // HP増加は累積
                 const hpBoost = effect.value * level,
-                this.activeEffects.set('hpBoost', hpBoost',
+                this.activeEffects.set('hpBoost', hpBoost','
                 // 最大HPを更新
                 this.gameEngine.playerData.maxHP = 100 + hpBoost,
                 break,
@@ -221,14 +221,14 @@ export class ItemManager implements IItemManager { public gameEngine: any,
             case 'timeExtension':,
                 // 時間延長は累積
                 const timeExtension = effect.value * level,
-                this.activeEffects.set('timeExtension', timeExtension',
+                this.activeEffects.set('timeExtension', timeExtension','
                 break,
 
-            case 'comboBoost':',
+            case 'comboBoost':','
                 // コンボ強化は累積
                 const currentComboBoost = this.activeEffects.get('comboBoost' || 1,
-                const newComboBoost = currentComboBoost + (effect.value - 1') * level,
-                this.activeEffects.set('comboBoost', newComboBoost' }
+                const newComboBoost = currentComboBoost + (effect.value - 1') * level,'
+                this.activeEffects.set('comboBoost', newComboBoost' }'
                 break; }
 }
     
@@ -236,12 +236,12 @@ export class ItemManager implements IItemManager { public gameEngine: any,
      * 全アイテム効果を適用
      */'
     applyAllEffects(): void { ''
-        this.activeEffects.clear()',
-        this.activeEffects.set('scoreMultiplier', 1',
-        this.activeEffects.set('rareRate', 1',
-        this.activeEffects.set('hpBoost', 0',
-        this.activeEffects.set('timeExtension', 0',
-        this.activeEffects.set('revival', 0',
+        this.activeEffects.clear()','
+        this.activeEffects.set('scoreMultiplier', 1','
+        this.activeEffects.set('rareRate', 1','
+        this.activeEffects.set('hpBoost', 0','
+        this.activeEffects.set('timeExtension', 0','
+        this.activeEffects.set('revival', 0','
         this.activeEffects.set('comboBoost', 1),
         
         // 各アイテムの効果を適用
@@ -285,15 +285,15 @@ export class ItemManager implements IItemManager { public gameEngine: any,
     /**
      * 復活効果を使用
      */''
-    useRevival()';
+    useRevival()';'
         const revivalCount = this.getEffectValue('revival';
-        if(revivalCount > 0) {
+        if (revivalCount > 0) {
             // 復活効果を1回分消費
-            this.activeEffects.set('revival', revivalCount - 1',
+            this.activeEffects.set('revival', revivalCount - 1','
             
             // HPを満タンに回復
             this.gameEngine.playerData.currentHP = this.gameEngine.playerData.maxHP,
-            this.gameEngine.playerData.updateUI()',
+            this.gameEngine.playerData.updateUI()','
             console.log('Revival, effect used!') }
             return true;
         return false;
@@ -303,7 +303,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
      * 購入可能なアイテム一覧を取得
      */'
     getAvailableItems(): ItemDefinition[] { ''
-        return Object.values(ITEM_DEFINITIONS).filter(item => item.id !== 'reset),
+        return Object.values(ITEM_DEFINITIONS).filter(item => item.id !== 'reset),'
     
     /**
      * アイテム情報を取得
@@ -340,7 +340,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
             const currentLevel = this.getItemLevel(itemId);
             const newLevel = Math.min(currentLevel + level, itemDef.maxLevel);
             
-            if(newLevel === currentLevel) {
+            if (newLevel === currentLevel) {
     
 }
                 console.warn(`[ItemManager] アイテム ${itemId} は既に最大レベルです`});
@@ -355,5 +355,5 @@ export class ItemManager implements IItemManager { public gameEngine: any,
             
             console.log(`[ItemManager] アイテム付与: ${itemId} (レベル ${currentLevel} -> ${newLevel}`});
             return true;} catch (error) {
-            console.error('[ItemManager] grantItem error:', error',
-            return false,'}
+            console.error('[ItemManager] grantItem error:', error','
+            return false,'}'

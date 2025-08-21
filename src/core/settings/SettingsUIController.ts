@@ -5,64 +5,63 @@
 
 // 型定義
 export interface SettingsManager { configManager: ConfigManager,
-    gameEngine: GameEngine,
-    errorHandler: ErrorHandler,
-    addListener(setting: string, callback: SettingChangeCallback, options?: ListenerOptions): void,
-    removeListenerById(id: string): void }
+    gameEngine: GameEngine;
+    errorHandler: ErrorHandler;
+    addListener(setting: string, callback: SettingChangeCallback, options?: ListenerOptions): void;
+    removeListenerById(id: string): void;
 
-export interface ConfigManager { get(key: string): any }
+export interface ConfigManager { get(key: string): any;
 
 export interface GameEngine { performanceOptimizer?: PerformanceOptimizer,
-    configurationManager?: ConfigurationManager,
-    localizationManager?: LocalizationManager,
-    sceneManager?: SceneManager,
-    accessibilityManager?: AccessibilityManager,
-    animationManager?: AnimationManager,
-    particleManager?: ParticleManager,
-    version?: string,
-    refreshAllScenes?(): void }
+    configurationManager?: ConfigurationManager;
+    localizationManager?: LocalizationManager;
+    sceneManager?: SceneManager;
+    accessibilityManager?: AccessibilityManager;
+    animationManager?: AnimationManager;
+    particleManager?: ParticleManager;
+    version?: string;
+    refreshAllScenes?(): void;
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void;
 
-export interface PerformanceOptimizer { setQualityLevel(quality: QualityLevel): void }
+export interface PerformanceOptimizer { setQualityLevel(quality: QualityLevel): void;
 
-export interface ConfigurationManager { notifyUpdate(key: string, value: any): void  }
+export interface ConfigurationManager { notifyUpdate(key: string, value: any): void;
 
-export interface LocalizationManager { setLanguage(language: string): Promise<void> }
+export interface LocalizationManager { setLanguage(language: string): Promise<void>;
 
-export interface SceneManager { [key: string]: any }
+export interface SceneManager { [key: string]: any;
 
-export interface AccessibilityManager { setHighContrast(enabled: boolean): void }
+export interface AccessibilityManager { setHighContrast(enabled: boolean): void;
 
-export interface AnimationManager { updateSettings(settings: AnimationSettings): void }
+export interface AnimationManager { updateSettings(settings: AnimationSettings): void;
 
-export interface ParticleManager { updateConfiguration(config: ParticleConfiguration): void }
+export interface ParticleManager { updateConfiguration(config: ParticleConfiguration): void;
 
 export interface AnimationSettings { enabled: boolean,
-    globalSpeed: number  }
+    globalSpeed: number;
 
 export interface ParticleConfiguration {
-    quality: number }
+    quality: number;
 
 export interface UpdateStats { qualityChanges: number,
-    languageChanges: number,
-    scaleChanges: number,
-    lastUpdateTime: number }
+    languageChanges: number;
+    scaleChanges: number;
+    lastUpdateTime: number;
 
 export interface UICurrentSettings { quality: QualityLevel,
-    language: string,
-    uiScale: number,
-    highContrast: boolean,
-    reducedMotion: boolean,
-    largeText: boolean }
+    language: string;
+    uiScale: number;
+    highContrast: boolean;
+    reducedMotion: boolean;
+    largeText: boolean;
 
 export interface UIStatsResult { updateStats: UpdateStats,
-    currentSettings: UICurrentSettings
-    }
+    currentSettings: UICurrentSettings;
 
 export interface UIComponent { onSettingChange?(setting: string, newValue: any, oldValue: any): void 
 export interface ListenerOptions { i,d?: string,
-    priority?: ListenerPriority,
+    priority?: ListenerPriority;
      }
 
 // コールバック型
@@ -73,17 +72,17 @@ export type QualityLevel = 'low' | 'medium' | 'high' | 'auto';
 export type ListenerPriority = 'low' | 'medium' | 'high';
 
 export class SettingsUIController {
-    private settingsManager: SettingsManager,
-    private configManager: ConfigManager,
-    private gameEngine: GameEngine,
-    private errorHandler: ErrorHandler,
-    private, updateStats: UpdateStats',
+    private settingsManager: SettingsManager;
+    private configManager: ConfigManager;
+    private gameEngine: GameEngine;
+    private errorHandler: ErrorHandler;
+    private, updateStats: UpdateStats','
 
     constructor(settingsManager: SettingsManager) {
-        this.settingsManager = settingsManager,
-        this.configManager = settingsManager.configManager,
-        this.gameEngine = settingsManager.gameEngine,
-        this.errorHandler = settingsManager.errorHandler,
+        this.settingsManager = settingsManager;
+        this.configManager = settingsManager.configManager;
+        this.gameEngine = settingsManager.gameEngine;
+        this.errorHandler = settingsManager.errorHandler;
         
         // UI更新統計
         this.updateStats = {
@@ -108,7 +107,7 @@ export class SettingsUIController {
             }
             ;
             // パフォーマンス最適化システムに通知
-            if(this.gameEngine && this.gameEngine.configurationManager) {', ' }
+            if (this.gameEngine && this.gameEngine.configurationManager) {', ' }
 
                 this.gameEngine.configurationManager.notifyUpdate('performance.quality', quality); }
             }
@@ -116,15 +115,15 @@ export class SettingsUIController {
             // 統計更新
             this.updateStats.qualityChanges++;
             this.updateStats.lastUpdateTime = Date.now();
-            ';
+            ';'
 
             console.log(`[SettingsUIController] Quality, change applied, successfully: ${quality}`});
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'SETTINGS_QUALITY_CHANGE_ERROR', {''
                 quality,')',
-                component: 'SettingsUIController'),' }
+                component: 'SettingsUIController'),' }'
 
-            }');
+            }');'
             throw error;
         }
     }
@@ -147,7 +146,7 @@ export class SettingsUIController {
             // 統計更新
             this.updateStats.languageChanges++;
             this.updateStats.lastUpdateTime = Date.now();
-            ';
+            ';'
 
             console.log(`[SettingsUIController] Language, change handled, successfully: ${language}`});
         } catch (error) { this.errorHandler.handleError(error as Error, 'SETTINGS_LANGUAGE_CHANGE_ERROR', {''
@@ -165,24 +164,24 @@ export class SettingsUIController {
     applyHighContrastMode(enabled: boolean): void { try {
             console.log(`[SettingsUIController] Applying, high contrast, mode: ${enabled)`},
             // CSS クラスの追加/削除
-            if(enabled} { }'
+            if (enabled} }'
 
-                document.body.classList.add('high-contrast'}';
+                document.body.classList.add('high-contrast'}';'
 
-            } else { }'
+            } else }'
 
                 document.body.classList.remove('high-contrast'; }'
             }
             
             // ゲームエンジンに通知
             if (this.gameEngine && this.gameEngine.accessibilityManager) { this.gameEngine.accessibilityManager.setHighContrast(enabled) }
-            ';
+            ';'
 
             console.log(`[SettingsUIController] High, contrast mode, applied: ${enabled}`});
         } catch (error) { this.errorHandler.handleError(error as Error, 'SETTINGS_HIGH_CONTRAST_ERROR', {''
                 enabled,')',
                 component: 'SettingsUIController'
-            }';
+            }';'
         }
     }
     
@@ -194,7 +193,7 @@ export class SettingsUIController {
             console.log(`[SettingsUIController] Applying, reduced motion, mode: ${enabled)`,
             
             // CSS プロパティの設定
-            document.documentElement.style.setProperty()',
+            document.documentElement.style.setProperty()','
                 '--animation-duration'),
                 enabled ? '0ms' : 'var(--default-animation-duration)' };
             
@@ -207,14 +206,14 @@ export class SettingsUIController {
             }
             ;
             // パーティクルシステムに通知
-            if(this.gameEngine && this.gameEngine.particleManager) {
+            if (this.gameEngine && this.gameEngine.particleManager) {
                 this.gameEngine.particleManager.updateConfiguration({ }
 
-                    quality: enabled ? 0.3 : 1.0  // Reduce, quality when "reduced, effects" is, enabled"; }
+                    quality: enabled ? 0.3 : 1.0  // Reduce, quality when "reduced, effects" is, enabled"; }"
             }
-            ";
+            ";"
             console.log(`[SettingsUIController] Reduced, motion mode, applied: ${enabled}`});""
-        } catch (error") { this.errorHandler.handleError(error as Error, 'SETTINGS_REDUCED_MOTION_ERROR', {''
+        } catch (error") { this.errorHandler.handleError(error as Error, 'SETTINGS_REDUCED_MOTION_ERROR', {''"
                 enabled,')',
                 component: 'SettingsUIController'
             });
@@ -230,13 +229,13 @@ export class SettingsUIController {
             // CSS クラスの追加/削除
             if(enabled} { }'
 
-                document.body.classList.add('large-text'}';
+                document.body.classList.add('large-text'}';'
 
             } else { }'
 
                 document.body.classList.remove('large-text'; }'
             }
-            ';
+            ';'
 
             console.log(`[SettingsUIController] Large, text mode, applied: ${enabled}`});
         } catch (error) { this.errorHandler.handleError(error as Error, 'SETTINGS_LARGE_TEXT_ERROR', {''
@@ -277,29 +276,29 @@ export class SettingsUIController {
 
             switch(key) {
 
-                case 'quality':',
-                case 'ui.quality':',
+                case 'quality':','
+                case 'ui.quality':','
                     this.applyQualityChange(newValue, as, QualityLevel),
                     break,
 
-                case 'language':',
-                case 'ui.language':',
+                case 'language':','
+                case 'ui.language':','
                     this.handleLanguageChange(newValue, as, string),
                     break,
 
-                case 'accessibility.highContrast':',
+                case 'accessibility.highContrast':','
                     this.applyHighContrastMode(newValue, as, boolean),
                     break,
 
-                case 'accessibility.reducedMotion':',
+                case 'accessibility.reducedMotion':','
                     this.applyReducedMotionMode(newValue, as, boolean),
                     break,
 
-                case 'accessibility.largeText':',
+                case 'accessibility.largeText':','
                     this.applyLargeTextMode(newValue, as, boolean};
                     break
 
-                case 'ui.uiScale': ';
+                case 'ui.uiScale': ';'
                 case 'uiScale':
                     this.applyUIScale(newValue, as number};
                     break;
@@ -307,54 +306,54 @@ export class SettingsUIController {
             }
                 default: }
                     console.log(`[SettingsUIController] No, specific handler, for setting: ${key}`});
-                    break;'} catch (error) { this.errorHandler.handleError(error as Error, 'SETTINGS_APPLY_CHANGE_ERROR', {
+                    break;'} catch (error) { this.errorHandler.handleError(error as Error, 'SETTINGS_APPLY_CHANGE_ERROR', {'
                 key,
-                newValue',
+                newValue','
                 oldValue,')',
                 component: 'SettingsUIController'
-            }';
+            }';'
         }
     }
     
     /**
      * 全てのUI設定を適用'
      */''
-    applyAllUISettings()';
+    applyAllUISettings()';'
             console.log('[SettingsUIController] Applying, all UI, settings');
-            ';
+            ';'
             // 現在の設定値を取得して適用
-            const quality = this.configManager.get('ui.quality);
-            if(quality) {', ' }
+            const quality = this.configManager.get('ui.quality);'
+            if (quality) {', ' }
 
                 this.applyQualityChange(quality); }
             }
 
-            const language = this.configManager.get('ui.language);
-            if(language) { }
+            const language = this.configManager.get('ui.language);'
+            if (language) { }
 
                 this.handleLanguageChange(language); }
             }
 
-            const highContrast = this.configManager.get('accessibility.highContrast);
-            if(highContrast !== undefined) {', ' }
+            const highContrast = this.configManager.get('accessibility.highContrast);'
+            if (highContrast !== undefined) {', ' }
 
                 this.applyHighContrastMode(highContrast); }
             }
 
-            const reducedMotion = this.configManager.get('accessibility.reducedMotion);
-            if(reducedMotion !== undefined) { }
+            const reducedMotion = this.configManager.get('accessibility.reducedMotion);'
+            if (reducedMotion !== undefined) { }
 
                 this.applyReducedMotionMode(reducedMotion); }
             }
 
-            const largeText = this.configManager.get('accessibility.largeText);
-            if(largeText !== undefined) {', ' }
+            const largeText = this.configManager.get('accessibility.largeText);'
+            if (largeText !== undefined) {', ' }
 
                 this.applyLargeTextMode(largeText); }
             }
 
-            const uiScale = this.configManager.get('ui.uiScale);
-            if(uiScale !== undefined) { }
+            const uiScale = this.configManager.get('ui.uiScale);'
+            if (uiScale !== undefined) { }
 
                 this.applyUIScale(uiScale); }
             }
@@ -385,7 +384,7 @@ export class SettingsUIController {
                     component.onSettingChange(setting, newValue, oldValue); }
 }, {'
                 id: `${watcherId}_${setting}`,''
-                priority: 'high';
+                priority: 'high',
             }) }
         
         console.log(`[SettingsUIController] Component, watcher added: ${componentName} (${watcherId}`});
@@ -409,7 +408,7 @@ export class SettingsUIController {
      * UI統計情報を取得
      * @returns UI設定統計
      */''
-    getUIStats()';
+    getUIStats()';'
                 quality: this.configManager.get('ui.quality',
                 language: this.configManager.get('ui.language',
                 uiScale: this.configManager.get('ui.uiScale',
@@ -421,7 +420,7 @@ export class SettingsUIController {
     /**
      * リセット（統計情報をクリア）'
      */''
-    reset()';
+    reset()';'
         console.log('[SettingsUIController] Statistics, reset');
 
-    }'}
+    }'}'

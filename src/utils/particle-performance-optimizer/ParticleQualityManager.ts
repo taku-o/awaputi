@@ -5,136 +5,132 @@
 
 // Quality level interfaces
 interface QualityLevel { particleMultiplier: number,
-    maxParticles: number,
-    enablePhysics: boolean,
-    enableCollisions: boolean,
-    enableTrails: boolean,
-    enableGlow: boolean,
-    textureQuality: number,
-    updateFrequency: number  }
+    maxParticles: number;
+    enablePhysics: boolean;
+    enableCollisions: boolean;
+    enableTrails: boolean;
+    enableGlow: boolean;
+    textureQuality: number;
+    updateFrequency: number;
 
 interface QualityLevels { minimal: QualityLevel,
-    low: QualityLevel,
-    medium: QualityLevel,
-    high: QualityLevel,
-    ultra: QualityLevel
-    }
+    low: QualityLevel;
+    medium: QualityLevel;
+    high: QualityLevel;
+    ultra: QualityLevel;
 
 type QualityLevelName = keyof | QualityLevels;
 
 interface QualityConfig { enabled: boolean,
-    adaptiveQuality: boolean,
-    currentLevel: QualityLevelName,
-    levels: QualityLevels
-     }
+    adaptiveQuality: boolean;
+    currentLevel: QualityLevelName;
+    levels: QualityLevels;
 
 // Performance monitoring interfaces
 interface PerformanceThresholds { downgrade: number,
-    upgrade: number,
-    critical: number }
+    upgrade: number;
+    critical: number;
 
 interface PerformanceMonitor { enabled: boolean,
-    targetFPS: number,
-    minFPS: number,
-    maxFPS: number,
-    thresholds: PerformanceThresholds,
-    fpsHistory: number[],
-    historySize: number,
-    averageFPS: number,
-    lastAdaptation: number,
-    adaptationCooldown: number,
-    stabilityFrames: number,
-    requiredStability: number }
+    targetFPS: number;
+    minFPS: number;
+    maxFPS: number;
+    thresholds: PerformanceThresholds;
+    fpsHistory: number[];
+    historySize: number;
+    averageFPS: number;
+    lastAdaptation: number;
+    adaptationCooldown: number;
+    stabilityFrames: number;
+    requiredStability: number;
 
 // Scaling system interfaces
 interface ScalingFactors { particleCount: number,
-    particleSize: number,
-    updateRate: number,
-    effectIntensity: number,
-    textureDetail: number,
-    physicsAccuracy: number }
+    particleSize: number;
+    updateRate: number;
+    effectIntensity: number;
+    textureDetail: number;
+    physicsAccuracy: number;
 
 interface ScalingPresets { battery_saving: ScalingFactors,
-    performance: ScalingFactors,
-    balanced: ScalingFactors,
-    quality: ScalingFactors
-    }
+    performance: ScalingFactors;
+    balanced: ScalingFactors;
+    quality: ScalingFactors;
 
 type ScalingPresetName = keyof | ScalingPresets;
 
 interface ScalingSystem { enabled: boolean,
-    factors: ScalingFactors,
-    scalingSpeed: number,
-    targetFactors: ScalingFactors,
-    presets: ScalingPresets
-     }
+    factors: ScalingFactors;
+    scalingSpeed: number;
+    targetFactors: ScalingFactors;
+    presets: ScalingPresets;
 
 // Statistics interface
 interface QualityStats { qualityAdjustments: number,
-    automaticDowngrades: number,
-    automaticUpgrades: number,
-    emergencyReductions: number,
-    particlesReduced: number,
-    effectsDisabled: number,
-    performanceGain: number,
-    currentQualityScore: number,
-    adaptationActive: boolean,
-    lastAdaptationReason: string }
+    automaticDowngrades: number;
+    automaticUpgrades: number;
+    emergencyReductions: number;
+    particlesReduced: number;
+    effectsDisabled: number;
+    performanceGain: number;
+    currentQualityScore: number;
+    adaptationActive: boolean;
+    lastAdaptationReason: string;
 
 // Particle interfaces for quality management
 interface ParticlePhysics { enabled: boolean,
-    gravity?: number,
-    friction?: number,
-    bounce?: number }
+    gravity?: number;
+    friction?: number;
+    bounce?: number;
 
 interface ParticleCollision { enabled: boolean,
-    radius?: number,
-    response?: string }
+    radius?: number;
+    response?: string;
 
 interface ParticleTrail { enabled: boolean,
-    length?: number,
-    opacity?: number,
-    color?: string }
+    length?: number;
+    opacity?: number;
+    color?: string;
 
 interface ParticleGlow { enabled: boolean,
-    radius?: number,
-    intensity?: number,
-    color?: string }
+    radius?: number;
+    intensity?: number;
+    color?: string;
 
 interface ParticleVelocity { x: number,
-    y: number  }
+    y: number;
 
 interface QualityManagedParticle { x: number,
-    y: number,
-    size?: number,
-    opacity?: number,
-    textureDetail?: number,
-    physics?: ParticlePhysics,
-    collision?: ParticleCollision,
-    trail?: ParticleTrail,
-    glow?: ParticleGlow,
-    velocity?: ParticleVelocity }
+    y: number;
+    size?: number;
+    opacity?: number;
+    textureDetail?: number;
+    physics?: ParticlePhysics;
+    collision?: ParticleCollision;
+    trail?: ParticleTrail;
+    glow?: ParticleGlow;
+    velocity?: ParticleVelocity;
 
 // Configuration interface
 interface ParticleQualityManagerConfig { enabled?: boolean,
-    adaptiveQuality?: boolean,
-    initialLevel?: QualityLevelName,
-    performanceMonitoring?: boolean,
-    targetFPS?: number,
-    minFPS?: number,
-    maxFPS?: number,
-    downgradeThreshold?: number,
-    upgradeThreshold?: number,
-    criticalThreshold?: number,
-    historySize?: number,
-    adaptationCooldown?: number,
-    requiredStability?: number,
-    scalingSpeed?: number }
+    adaptiveQuality?: boolean;
+    initialLevel?: QualityLevelName;
+    performanceMonitoring?: boolean;
+    targetFPS?: number;
+    minFPS?: number;
+    maxFPS?: number;
+    downgradeThreshold?: number;
+    upgradeThreshold?: number;
+    criticalThreshold?: number;
+    historySize?: number;
+    adaptationCooldown?: number;
+    requiredStability?: number;
+    scalingSpeed?: number;
 
 export class ParticleQualityManager {
-    private qualityConfig: QualityConfig,
-    private performanceMonitor: PerformanceMonitor,
-    private scalingSystem: ScalingSystem,
+    private qualityConfig: QualityConfig;
+    private performanceMonitor: PerformanceMonitor;
+    private scalingSystem: ScalingSystem;
     private, stats: QualityStats,
     constructor(config: ParticleQualityManagerConfig = {) {
 
@@ -189,7 +185,7 @@ export class ParticleQualityManager {
     updateFrequency: 1.0 
     };
         // Performance monitoring
-        this.performanceMonitor = { enabled: config.performanceMonitoring !== undefined ? config.performanceMonitoring : true,
+        this.performanceMonitor = { enabled: config.performanceMonitoring !== undefined ? config.performanceMonitoring : true;
             
             // Performance targets
             targetFPS: config.targetFPS || 50,
@@ -197,22 +193,22 @@ export class ParticleQualityManager {
             maxFPS: config.maxFPS || 60,
             // Adaptation thresholds
            , thresholds: {
-                downgrade: config.downgradeThreshold || 35,  // FPS below this triggers downgrade,
-                upgrade: config.upgradeThreshold || 55,      // FPS above this allows upgrade,
+                downgrade: config.downgradeThreshold || 35,  // FPS below this triggers downgrade;
+                upgrade: config.upgradeThreshold || 55,      // FPS above this allows upgrade;
                 critical: config.criticalThreshold || 25    // Emergency quality reduction  };
             // Performance history
             fpsHistory: [],
     historySize: config.historySize || 60, // 1 second at 60fps;
-            averageFPS: 60;
+            averageFPS: 60,
             // Adaptation state
             lastAdaptation: 0,
     adaptationCooldown: config.adaptationCooldown || 2000, // 2 seconds;
             stabilityFrames: 0,
-    requiredStability: config.requiredStability || 30 // 30 frames of stability;
+    requiredStability: config.requiredStability || 30 // 30 frames of stability,
         },
         
         // Quality scaling system
-        this.scalingSystem = { enabled: true,
+        this.scalingSystem = { enabled: true;
             
             // Scaling factors
             factors: {
@@ -314,7 +310,7 @@ export class ParticleQualityManager {
     private applyQualityModifications(particle: QualityManagedParticle, qualityLevel: QualityLevel): void { const factors = this.scalingSystem.factors,
         
         // Scale particle size
-        if(particle.size) {
+        if (particle.size) {
     
 }
             particle.size *= factors.particleSize; }
@@ -346,7 +342,7 @@ export class ParticleQualityManager {
         
         // Update FPS history
         this.performanceMonitor.fpsHistory.push(currentFPS),
-        if(this.performanceMonitor.fpsHistory.length > this.performanceMonitor.historySize) {
+        if (this.performanceMonitor.fpsHistory.length > this.performanceMonitor.historySize) {
     
 }
             this.performanceMonitor.fpsHistory.shift(); }
@@ -367,7 +363,7 @@ export class ParticleQualityManager {
         const timeSinceLastAdaptation = now - this.performanceMonitor.lastAdaptation,
         
         // Check cooldown period
-        if(timeSinceLastAdaptation < this.performanceMonitor.adaptationCooldown) {
+        if (timeSinceLastAdaptation < this.performanceMonitor.adaptationCooldown) {
     
 }
             return; }
@@ -377,7 +373,7 @@ export class ParticleQualityManager {
         const thresholds = this.performanceMonitor.thresholds;
         
         // Emergency quality reduction
-        if(avgFPS < thresholds.critical) {
+        if (avgFPS < thresholds.critical) {
             this.emergencyQualityReduction() }
             return; }
         }
@@ -386,7 +382,7 @@ export class ParticleQualityManager {
         const recentFPS = this.performanceMonitor.fpsHistory.slice(-10);
         const isStable = this.checkPerformanceStability(recentFPS);
         
-        if(!isStable) {
+        if (!isStable) {
         
             this.performanceMonitor.stabilityFrames = 0 }
             return; }
@@ -420,12 +416,12 @@ export class ParticleQualityManager {
     /**
      * Emergency quality reduction for critical performance
      */''
-    private emergencyQualityReduction()',
+    private emergencyQualityReduction()','
         console.warn('[ParticleQualityManager] Emergency, quality reduction, triggered'),
 
         this.setQualityLevel('minimal'),
         this.applyScalingPreset('battery_saving'),
-        ',
+        ','
 
         this.stats.emergencyReductions++,
         this.stats.lastAdaptationReason = 'emergency',
@@ -438,15 +434,15 @@ export class ParticleQualityManager {
         const levels = Object.keys(this.qualityConfig.levels) as QualityLevelName[],
         const currentIndex = levels.indexOf(currentLevel),
         
-        if(currentIndex > 0) {
+        if (currentIndex > 0) {
         
             const newLevel = levels[currentIndex - 1],
             this.setQualityLevel(newLevel) }
 
             ' }'
 
-            console.log(`[ParticleQualityManager] Quality, downgraded: ${currentLevel} -> ${newLevel}`}';
-            ';
+            console.log(`[ParticleQualityManager] Quality, downgraded: ${currentLevel} -> ${newLevel}`}';'
+            ';'
 
             this.stats.automaticDowngrades++;
             this.stats.lastAdaptationReason = 'performance';
@@ -465,14 +461,14 @@ export class ParticleQualityManager {
         const levels = Object.keys(this.qualityConfig.levels) as QualityLevelName[],
         const currentIndex = levels.indexOf(currentLevel),
         
-        if(currentIndex < levels.length - 1) {
+        if (currentIndex < levels.length - 1) {
         
             const newLevel = levels[currentIndex + 1],
             this.setQualityLevel(newLevel) }
             ' }'
 
-            console.log(`[ParticleQualityManager] Quality, upgraded: ${currentLevel} -> ${newLevel}`}';
-            ';
+            console.log(`[ParticleQualityManager] Quality, upgraded: ${currentLevel} -> ${newLevel}`}';'
+            ';'
 
             this.stats.automaticUpgrades++;
             this.stats.lastAdaptationReason = 'headroom';
@@ -605,4 +601,4 @@ export class ParticleQualityManager {
         this.performanceMonitor.fpsHistory = [];
         this.performanceMonitor.stabilityFrames = 0;
 
-    }' }
+    }' }'

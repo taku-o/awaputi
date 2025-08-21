@@ -3,7 +3,7 @@
  * Tests for Issue #143 - Username input positioning fix
  */
 import { jest  } from '@jest/globals';
-describe('Username Input Positioning Visual Regression Tests', (') => {  let browser: any,
+describe('Username Input Positioning Visual Regression Tests', (') => {  let browser: any,'
     let page: any,
     let gameEngine: any,
     // Test configurations for different screen sizes and pixel ratios'
@@ -111,32 +111,32 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                 const mockEvaluationResult = { title: {
                         x: config.expected.centerX,
                         y: config.expected.centerY - 100,
-                        visible: true }
+                        visible: true,
                     },
                     inputBox: { x: config.expected.centerX - 200,
                         y: config.expected.centerY - 20,
                         width: 400,
                         height: 50,
                         visible: true,
-                        centered: true }
+                        centered: true,
                     },
                     buttons: { ok: {
                             x: config.expected.centerX - 110,
                             y: config.expected.centerY + 60,
                             width: 100,
                             height: 40,
-                            visible: true }
+                            visible: true,
                         },
                         cancel: { x: config.expected.centerX + 10,
                             y: config.expected.centerY + 60,
                             width: 100,
                             height: 40,
-                            visible: true }
+                            visible: true,
                         }
                     },
                     helpText: { x: config.expected.centerX,
                         y: config.expected.centerY + 150,
-                        visible: true }
+                        visible: true,
                     },
                     canvasInfo: { width: config.viewport.width,
                         height: config.viewport.height,
@@ -145,7 +145,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                 };
                 page.evaluate.mockResolvedValue(mockEvaluationResult);
                 // Check username input positioning
-                const result = await page.evaluate(() => {  if(!window.gameEngine || !window.gameEngine.sceneManager) { }
+                const result = await page.evaluate(() => {  if (!window.gameEngine || !window.gameEngine.sceneManager) { }
                         return null; }
                     }
                     const currentScene = window.gameEngine.sceneManager.currentScene;
@@ -231,7 +231,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                         y: 280 * zoom,
                         width: 400 * zoom,
                         height: 50 * zoom,
-                        centered: true }
+                        centered: true,
                     },
                     canvasInfo: { width: 1200 * zoom,
                         height: 800 * zoom,
@@ -245,7 +245,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                             y: 280 * arguments[0],
                             width: 400 * arguments[0] };
                             height: 50 * arguments[0] };
-                            centered: true }
+                            centered: true;
                         }
                     } }, zoom);
                 expect(result.inputBox.centered).toBe(true);
@@ -258,7 +258,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
             { name: '4:3', width: 1024, height: 768 },''
             { name: '21:9', width: 2560, height: 1080 },''
             { name: '9:16 (Portrait')', width: 375, height: 667 },']'
-            { name: '3:4 (Portrait')', width: 768, height: 1024 }]
+            { name: '3:4 (Portrait')', width: 768, height: 1024 }]'
         ];
         aspectRatios.forEach((aspect) => {  }
             it(`should maintain proper centering with ${aspect.name} aspect ratio`, async () => {  await page.setViewport({)
@@ -282,7 +282,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                         y: arguments[1] / 2 - 25,
                         width: 400,
                         height: 50),
-                       , centered: true }
+                       , centered: true,
                     };
                 }), aspect.width, aspect.height);
                 expect(result.inputBox.centered).toBe(true);
@@ -309,7 +309,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                    , height: config.viewport.height) }
                     deviceScaleFactor: config.deviceScaleFactor) };'
                 });
-                const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'})}.png`;
+                const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'})}.png`;'
                 page.screenshot.mockResolvedValue(screenshotPath);
                 const result = await page.screenshot({ path: screenshotPath)
                     fullPage: false,
@@ -340,7 +340,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     width: 200,
                     height: 25,
                     visible: true),
-                   , withinBounds: true }
+                   , withinBounds: true,
                 }
             });
             expect(result.inputBox.visible).toBe(true);
@@ -365,7 +365,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     y: 1440 - 50,
                     width: 800,
                     height: 100),
-                   , centered: true }
+                   , centered: true,
                 }
             });
             expect(result.inputBox.centered).toBe(true);

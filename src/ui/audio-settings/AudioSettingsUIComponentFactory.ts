@@ -9,19 +9,19 @@ import type { ErrorHandler } from '../../utils/ErrorHandler.js';
  * Volume Slider Options
  */
 interface VolumeSliderOptions { id: string,
-    label: string,
-    icon: string,
-    category: 'master' | 'bgm' | 'sfx',
-    defaultValue: number,
+    label: string;
+    icon: string;
+    category: 'master' | 'bgm' | 'sfx';
+    defaultValue: number;
     previewSound: string | null  }
 
 /**
  * Toggle Option Options
  */
 interface ToggleOptionOptions { id: string,
-    label: string,
-    icon: string,
-    defaultValue: boolean,
+    label: string;
+    icon: string;
+    defaultValue: boolean;
     onChange: (value: boolean) => void 
     }
 
@@ -29,9 +29,9 @@ interface ToggleOptionOptions { id: string,
  * Radio Group Options
  */
 interface RadioGroupOptions { id: string,
-    label: string,
-    icon: string }
-    options: Array<{ value: string,, label: string }>,
+    label: string;
+    icon: string;
+    options: Array<{ value: string,, label: string;>,
     defaultValue: string,
     onChange: (value: string) => void;
 }
@@ -40,9 +40,9 @@ interface RadioGroupOptions { id: string,
  * Dropdown Options
  */
 interface DropdownOptions { id: string,
-    label: string,
-    icon: string }
-    options: Array<{ value: number | string,, label: string }>,
+    label: string;
+    icon: string;
+    options: Array<{ value: number | string,, label: string;>,
     defaultValue: number | string,
     onChange: (value: string) => void;
 }
@@ -51,12 +51,12 @@ interface DropdownOptions { id: string,
  * Vertical Slider Options
  */
 interface VerticalSliderOptions { id: string,
-    label: string,
-    icon: string,
-    min: number,
-    max: number,
-    defaultValue: number,
-    unit: string,
+    label: string;
+    icon: string;
+    min: number;
+    max: number;
+    defaultValue: number;
+    unit: string;
     onChange: (value: number) => void  }
 }
 
@@ -70,25 +70,24 @@ type SettingsChangeCallback = () => void;
  * オーディオ設定UIコンポーネントファクトリー - UI要素作成、イベント処理
  */
 export class AudioSettingsUIComponentFactory {
-    private audioManager: AudioManager,
-    private configManager: ConfigurationManager,
-    private localizationManager: LocalizationManager,
-    private errorHandler: ErrorHandler,
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
     // スライダー管理
     private, sliders: Map<string, HTMLInputElement> = new Map(),
     
     // プレビュー音源
-    private previewTimeouts: Map<string, NodeJS.Timeout> = new Map(),
+    private previewTimeouts: Map<string, NodeJS.Timeout> = new Map();
     
     // 設定値保存コールバック
-    private onSettingsChange: SettingsChangeCallback | null = null,
+    private onSettingsChange: SettingsChangeCallback | null = null;
     constructor(audioManager: AudioManager, configManager: ConfigurationManager) {
 
-        this.audioManager = audioManager,
-        this.configManager = configManager,
-        this.localizationManager = getLocalizationManager(),
-
-     }
+        this.audioManager = audioManager;
+        this.configManager = configManager;
+        this.localizationManager = getLocalizationManager()
+}
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -109,7 +108,7 @@ export class AudioSettingsUIComponentFactory {
             background-color: rgba(255, 255, 255, 0.05),
             border-radius: 10px,
         `,
-        ',
+        ','
         // ラベル
         const labelContainer = document.createElement('div'),
         labelContainer.style.cssText = `,
@@ -119,7 +118,7 @@ export class AudioSettingsUIComponentFactory {
             margin-bottom: 10px,
         `,
 
-        const label = document.createElement('label),
+        const label = document.createElement('label),'
         label.htmlFor = options.id }
         label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
         label.style.cssText = `;
@@ -127,9 +126,9 @@ export class AudioSettingsUIComponentFactory {
             font-size: 16px,
         `;
         labelContainer.appendChild(label);
-        ';
+        ';'
         // 値表示
-        const valueDisplay = document.createElement('span);
+        const valueDisplay = document.createElement('span);'
         valueDisplay.id = `${options.id}-value`;
         valueDisplay.textContent = `${Math.round(options.defaultValue * 100})%`;
         valueDisplay.style.cssText = `;
@@ -140,7 +139,7 @@ export class AudioSettingsUIComponentFactory {
         labelContainer.appendChild(valueDisplay);
 
         sliderGroup.appendChild(labelContainer);
-        ';
+        ';'
         // スライダーコンテナ
         const sliderContainer = document.createElement('div');
         sliderContainer.style.cssText = `;
@@ -148,7 +147,7 @@ export class AudioSettingsUIComponentFactory {
             align-items: center,
             gap: 15px;
         `;
-        ';
+        ';'
         // スライダー
         const slider = document.createElement('input');
         slider.type = 'range';
@@ -161,18 +160,18 @@ export class AudioSettingsUIComponentFactory {
             flex: 1,
     height: 8px,
             -webkit-appearance: none,
-            background: linear-gradient(to right, #00ffff 0%, #00ffff ${slider.value}%, #333333 ${ slider.value)%, #333333, 100%'),
+            background: linear-gradient(to right, #00ffff 0%, #00ffff ${slider.value}%, #333333 ${ slider.value)%, #333333, 100%'),'
             border-radius: 4px,
             outline: none,
     cursor: pointer,
         `,
-        ',
+        ','
         // プレビューボタン
         const, previewButton = document.createElement('button'),
         previewButton.className = 'preview-button',
         previewButton.innerHTML = '🔊',
 
-        previewButton.style.cssText = `',
+        previewButton.style.cssText = `','
             background-color: rgba(0, 255, 255, 0.2}
             border: 2px solid #00ffff;
             color: #00ffff,
@@ -182,7 +181,7 @@ export class AudioSettingsUIComponentFactory {
             font-size: 18px,
             transition: all 0.3s ease;
         `;
-        ';
+        ';'
         // イベントハンドラー
         slider.addEventListener('input', (e} => {  }
             const target = e.target as HTMLInputElement; }
@@ -201,7 +200,7 @@ export class AudioSettingsUIComponentFactory {
 
         previewButton.addEventListener('click', () => {  ''
             this._playPreviewSound(options),
-            ',
+            ','
             // ボタンアニメーション
             previewButton.style.transform = 'scale(0.95)',
             setTimeout(() => { }'
@@ -237,9 +236,9 @@ export class AudioSettingsUIComponentFactory {
             cursor: pointer,
     transition: all 0.3s ease,
         `,
-        ',
+        ','
         // ラベル
-        const label = document.createElement('label),
+        const label = document.createElement('label),'
         label.htmlFor = options.id,  }
         label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
         label.style.cssText = `;
@@ -247,7 +246,7 @@ export class AudioSettingsUIComponentFactory {
             font-size: 16px,
             cursor: pointer;
         `;
-        ';
+        ';'
         // トグルスイッチ
         const switchContainer = this._createToggleSwitch(options);
 
@@ -255,7 +254,7 @@ export class AudioSettingsUIComponentFactory {
 
             toggleGroup.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'; }
 
-        }');
+        }');'
 
         toggleGroup.addEventListener('mouseleave', () => { }
 
@@ -280,7 +279,7 @@ export class AudioSettingsUIComponentFactory {
             background-color: rgba(255, 255, 255, 0.05),
             border-radius: 10px,
         `,
-        ',
+        ','
         // ラベル
         const groupLabel = document.createElement('h3' }'
         groupLabel.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
@@ -290,9 +289,9 @@ export class AudioSettingsUIComponentFactory {
             margin-bottom: 15px,
         `;
         radioGroup.appendChild(groupLabel);
-        ';
+        ';'
         // オプション
-        const optionsContainer = document.createElement('div);
+        const optionsContainer = document.createElement('div);'
         optionsContainer.style.cssText = `;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr);
@@ -320,9 +319,9 @@ export class AudioSettingsUIComponentFactory {
             background-color: rgba(255, 255, 255, 0.05),
             border-radius: 10px,
         `,
-        ',
+        ','
         // ラベル
-        const label = document.createElement('label),
+        const label = document.createElement('label),'
         label.htmlFor = options.id }
         label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
         label.style.cssText = `;
@@ -352,21 +351,21 @@ export class AudioSettingsUIComponentFactory {
             margin: 0 15px,
             vertical-align: top,
         `,
-        ',
+        ','
         // 値表示
         const valueDisplay = document.createElement('div') }
 
         valueDisplay.id = `${options.id}-value`;
-        valueDisplay.textContent = `${options.defaultValue >= 0 ? '+' : '}${options.defaultValue}${options.unit}`;
+        valueDisplay.textContent = `${options.defaultValue >= 0 ? '+' : '}${options.defaultValue}${options.unit}`;'
         valueDisplay.style.cssText = `;
             color: #00ffff;
             font-size: 14px,
             margin-bottom: 10px,
         `;
         sliderGroup.appendChild(valueDisplay);
-        ';
+        ';'
         // スライダーコンテナ
-        const sliderContainer = document.createElement('div);
+        const sliderContainer = document.createElement('div);'
         sliderContainer.style.cssText = `;
             position: relative;
             width: 40px;
@@ -376,13 +375,13 @@ export class AudioSettingsUIComponentFactory {
         
         // スライダー（垂直）
         const slider = this._createVerticalSliderElement(options, valueDisplay);
-        ';
+        ';'
 
         sliderContainer.appendChild(slider);
         sliderGroup.appendChild(sliderContainer);
-        ';
+        ';'
         // ラベル
-        const label = document.createElement('div);
+        const label = document.createElement('div);'
         label.innerHTML = `${options.icon}<br>${options.label}`;
         label.style.cssText = `;
             color: #ffffff;
@@ -399,14 +398,14 @@ export class AudioSettingsUIComponentFactory {
      */'
     updateVolumeSliders(enabled: boolean): void { ''
         this.sliders.forEach((slider, id) => { ''
-            if(id !== 'mute-all') {
+            if (id !== 'mute-all') {
     
 }
 
                 slider.disabled = !enabled;' }'
 
                 slider.style.opacity = enabled ? '1' : '0.5'; 
-    }';
+    }';'
     }
     
     /**
@@ -462,7 +461,7 @@ export class AudioSettingsUIComponentFactory {
 
         `;
         switchLabel.appendChild(switchKnob);
-        ';
+        ';'
         // イベントハンドラー
         checkbox.addEventListener('change', (e) => {  const target = e.target as HTMLInputElement,
 
@@ -473,9 +472,9 @@ export class AudioSettingsUIComponentFactory {
             if (options.onChange) { }
                 options.onChange(isChecked); }
             }
-            ';
+            ';'
             // UIサウンド
-            (this.audioManager, as any').playUISound?.('toggle', { volume: 0.3 });
+            (this.audioManager, as any').playUISound?.('toggle', { volume: 0.3 });'
             
             // 保存状態を表示
             this._showSaveStatus();
@@ -492,7 +491,7 @@ export class AudioSettingsUIComponentFactory {
      * @private
      */''
     private _createRadioOption(option: { value: string,  label: string ), parentOptions: RadioGroupOptions'): HTMLElement {''
-        const optionLabel = document.createElement('label),
+        const optionLabel = document.createElement('label),'
         optionLabel.style.cssText = `,
             display: flex,
             align-items: center,
@@ -526,7 +525,7 @@ export class AudioSettingsUIComponentFactory {
 
                 parentOptions.onChange(target.value);' }'
 
-                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 });
+                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 });'
                 this._showSaveStatus();
 
             }'}');
@@ -535,7 +534,7 @@ export class AudioSettingsUIComponentFactory {
 
             optionLabel.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'; }
 
-        }');
+        }');'
 
         optionLabel.addEventListener('mouseleave', () => { }
 
@@ -553,7 +552,7 @@ export class AudioSettingsUIComponentFactory {
      * @private'
      */''
     private _createSelectElement(options: DropdownOptions): HTMLSelectElement { ''
-        const select = document.createElement('select),
+        const select = document.createElement('select),'
         select.id = options.id,
         select.style.cssText = `,
             width: 100%,
@@ -567,22 +566,22 @@ export class AudioSettingsUIComponentFactory {
     transition: all 0.3s ease,
         `,
 
-        options.options.forEach(option => { '),
-            const optionElement = document.createElement('option),
+        options.options.forEach(option => { '),'
+            const optionElement = document.createElement('option),'
             optionElement.value = option.value.toString(),
             optionElement.textContent = option.label,
             optionElement.selected = option.value === options.defaultValue,  }
 
             select.appendChild(optionElement);' }'
 
-        }');
+        }');'
 
         select.addEventListener('change', (e) => {  const target = e.target as HTMLSelectElement,
             if (options.onChange) { }
 
                 options.onChange(target.value);' }'
 
-                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 });
+                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 });'
                 this._showSaveStatus();
 
             }'}');
@@ -591,12 +590,12 @@ export class AudioSettingsUIComponentFactory {
 
             select.style.borderColor = '#00ffff'; }
 
-        }');
+        }');'
 
         select.addEventListener('blur', () => { }
 
             select.style.borderColor = '#333333'; }
-        }';
+        }';'
         
         return select;
     }
@@ -625,7 +624,7 @@ export class AudioSettingsUIComponentFactory {
             outline: none,
     cursor: pointer,
         `,
-        ',
+        ','
         // スライダースタイル追加
         this._addVerticalSliderStyles(options.id),
 
@@ -634,7 +633,7 @@ export class AudioSettingsUIComponentFactory {
 
             const value = parseFloat(target.value);' }'
 
-            valueDisplay.textContent = `${value >= 0 ? '+' : '}${value}${options.unit}`;
+            valueDisplay.textContent = `${value >= 0 ? '+' : '}${value}${options.unit}`;'
             
             // グラデーションを更新
             const percentage = ((value - options.min) / (options.max - options.min)) * 100;
@@ -653,7 +652,7 @@ export class AudioSettingsUIComponentFactory {
      * @private
      */''
     private _addVerticalSliderStyles(sliderId: string): void { ''
-        const style = document.createElement('style),
+        const style = document.createElement('style),'
         style.textContent = ` }
             #${sliderId}::-webkit-slider-thumb { -webkit-appearance: none,
                 appearance: none,
@@ -678,7 +677,7 @@ export class AudioSettingsUIComponentFactory {
      * @private
      */
     private _schedulePreview(options: VolumeSliderOptions): void { // 既存のタイムアウトをクリア
-        if(this.previewTimeouts.has(options.id) {
+        if (this.previewTimeouts.has(options.id) {
     
 }
             clearTimeout(this.previewTimeouts.get(options.id)!); }
@@ -702,18 +701,18 @@ export class AudioSettingsUIComponentFactory {
         if(options.category === 'bgm' {'
             // BGMプレビュー（短いフレーズを再生）
             const currentBGM = (this.audioManager, as any).getCurrentBGMInfo?.(),
-            if(currentBGM && currentBGM.isPlaying) {
+            if (currentBGM && currentBGM.isPlaying) {
                 // 一時的に音量を上げる
-                const originalVolume = this.audioManager.getVolume('bgm),
+                const originalVolume = this.audioManager.getVolume('bgm),'
                 (this.audioManager, as any).setBGMVolume?.(1.0, 0.2) }
                 setTimeout(() => {  }
 
                     (this.audioManager, as any).setBGMVolume?.(originalVolume, 0.2);' }'
 
-                }, 1000');
+                }, 1000');'
 
             } else { // BGMが再生されていない場合は短いメロディを生成 : undefined', '
-                this.audioManager.playSound('success', { volume: 0.5  }';
+                this.audioManager.playSound('success', { volume: 0.5  }';'
             }
         } else { // 通常の効果音
             this.audioManager.playSound(options.previewSound, { }'

@@ -11,12 +11,12 @@ interface GameEngine { // Define game engine interface properties as needed }
  * 設定画面でのVolumeControlComponent使用例
  */
 export class VolumeControlIntegrationExample {
-    private gameEngine: GameEngine,
-    private volumeControl: VolumeControlComponent | null,
+    private gameEngine: GameEngine;
+    private volumeControl: VolumeControlComponent | null;
     private, container: HTMLElement | null,
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         this.volumeControl = null }
         this.container = null; }
     }
@@ -27,18 +27,18 @@ export class VolumeControlIntegrationExample {
     initializeSettingsScene(): boolean { // 設定画面のDOM構造を作成
         this.createSettingsUI(),
         // VolumeControlComponentを初期化
-        this.volumeControl = new VolumeControlComponent(this.gameEngine),
-        ',
+        this.volumeControl = new VolumeControlComponent(this.gameEngine);
+        ','
         // 音響設定セクションに追加
         const audioSection = document.getElementById('audio-settings-section',
-        if(!audioSection) {
+        if (!audioSection) {
 
             console.error('Audio settings section not found' }
             return false;
         
-        const success = this.volumeControl.initialize(audioSection');
+        const success = this.volumeControl.initialize(audioSection');'
 
-        if(!success') {
+        if (!success') {'
 
             console.error('Failed, to initialize, volume control') }
             return false;
@@ -50,28 +50,28 @@ export class VolumeControlIntegrationExample {
     /**
      * 設定画面のDOM構造作成例'
      */''
-    private createSettingsUI()';
+    private createSettingsUI()';'
         this.container = document.createElement('div');
         this.container.className = 'settings-container';
 
-        this.container.innerHTML = `';
+        this.container.innerHTML = `';'
             <div class="settings-header">;
-                <h2>ゲーム設定</h2>";
+                <h2>ゲーム設定</h2>";"
             </div>"";
             <div class="settings-sections">"";
-                <div class="settings-section" id="audio-settings-section">";
+                <div class="settings-section" id="audio-settings-section">";"
                     <h3>音響設定</h3>"";
                     <div class="setting-items">;
                         <!-- VolumeControlComponentがここに追加される -->;
-                    </div>";
+                    </div>";"
                 </div>"";
-                <div class="settings-section" id="graphics-settings-section">";
+                <div class="settings-section" id="graphics-settings-section">";"
                     <h3>グラフィック設定</h3>"";
                     <div class="setting-items">;
                         <!-- 他の設定項目 -->;
-                    </div>";
+                    </div>";"
                 </div>"";
-                <div class="settings-section" id="accessibility-settings-section">";
+                <div class="settings-section" id="accessibility-settings-section">";"
                     <h3>アクセシビリティ設定</h3>"";
                     <div class="setting-items">;
                         <!-- アクセシビリティ設定項目 -->;
@@ -153,13 +153,13 @@ export class VolumeControlIntegrationExample {
      */
     dispose(): void { try {
             // VolumeControlComponentを破棄
-            if(this.volumeControl) {
+            if (this.volumeControl) {
                 this.volumeControl.dispose() }
                 this.volumeControl = null; }
             }
             
             // DOM要素を削除
-            if(this.container && this.container.parentNode) {
+            if (this.container && this.container.parentNode) {
 
                 this.container.parentNode.removeChild(this.container) }
                 this.container = null; }
@@ -167,7 +167,7 @@ export class VolumeControlIntegrationExample {
 
             console.log('[VolumeControlIntegration] Integration, disposed';
 
-        } catch (error') { console.error('[VolumeControlIntegration] Disposal error:', error }
+        } catch (error') { console.error('[VolumeControlIntegration] Disposal error:', error }'
     }
     
     /**
@@ -191,9 +191,9 @@ export class VolumeControlIntegrationExample {
 ,
 // 1. コンポーネント初期化
 const volumeControl = new VolumeControlComponent(gameEngine),
-',
+','
 // 2. DOM要素への追加
-const audioSection = document.getElementById('audio-settings),
+const audioSection = document.getElementById('audio-settings),'
 const success = volumeControl.initialize(audioSection),
 
 // 3. 音量の設定

@@ -3,111 +3,111 @@ import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 import { getLocalizationManager  } from '../core/LocalizationManager.js';
 
 // エラーハンドラー型定義
-interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
+interface ErrorHandler { handleError(error: Error, type: string, context?: any): void;
 
 // 設定管理型定義
-interface ConfigurationManager { get(key: string): any }
+interface ConfigurationManager { get(key: string): any;
 
 // ローカライゼーション管理型定義
 interface LocalizationManager { // Localization manager methods }
 
 // オーディオマネージャー型定義
 interface AudioManager { audioContext?: AudioContext,
-    reinitialize?(): Promise<void>,
-    clearAudioCache?(): Promise<void>,
-    stopAllSounds?(): void,
-    garbageCollect?(): void,
-    setQualityMode?(mode: string): void,
-    setMaxConcurrentSounds?(count: number): void,
-    setAudioQuality?(quality: string): void,
-    disableAllEffects?(): void,
-    switchToHTMLAudio?(): Promise<void>,
-    setMuted?(muted: boolean): void,
-    useAlternativeSound?(soundId: string): void,
-    switchToPrerecordedBGM?(): void,
-    setMinimalMode?(enabled: boolean): void,
-    setFailsafeMode?(enabled: boolean): void,
-    emergencyShutdown?(): void,
-    loadAudioFile?(url: string, options?: any): Promise<any>,
-    decodeAudioData?(data: ArrayBuffer): Promise<AudioBuffer>,
-    recreateAndPlaySound?(soundId: string, options?: any): Promise<boolean>,
-    generateBGM?(config: any): Promise<any>,
-    getPerformanceMetrics?(): PerformanceMetrics | null,
+    reinitialize?(): Promise<void>;
+    clearAudioCache?(): Promise<void>;
+    stopAllSounds?(): void;
+    garbageCollect?(): void;
+    setQualityMode?(mode: string): void;
+    setMaxConcurrentSounds?(count: number): void;
+    setAudioQuality?(quality: string): void;
+    disableAllEffects?(): void;
+    switchToHTMLAudio?(): Promise<void>;
+    setMuted?(muted: boolean): void;
+    useAlternativeSound?(soundId: string): void;
+    switchToPrerecordedBGM?(): void;
+    setMinimalMode?(enabled: boolean): void;
+    setFailsafeMode?(enabled: boolean): void;
+    emergencyShutdown?(): void;
+    loadAudioFile?(url: string, options?: any): Promise<any>;
+    decodeAudioData?(data: ArrayBuffer): Promise<AudioBuffer>;
+    recreateAndPlaySound?(soundId: string, options?: any): Promise<boolean>;
+    generateBGM?(config: any): Promise<any>;
+    getPerformanceMetrics?(): PerformanceMetrics | null;
     vibrationManager?: {
-        disable(): void }
+        disable(): void;
 
 // パフォーマンスメトリクス型定義
 interface PerformanceMetrics { cpuUsage: number,
-    averageLatency: number  }
+    averageLatency: number;
 
 // エラー統計型定義
 interface ErrorStats { totalErrors: number,
-    errorsByType: Map<string, number>,
-    errorsBySource: Map<string, number>,
-    recoveryAttempts: number,
-    successfulRecoveries: number,
-    fallbacksTriggered: number,
-    sessionStart: number  }
+    errorsByType: Map<string, number>;
+    errorsBySource: Map<string, number>;
+    recoveryAttempts: number;
+    successfulRecoveries: number;
+    fallbacksTriggered: number;
+    sessionStart: number;
 
 // エラータイプ定義
 interface ErrorTypes { WEB_AUDIO_INIT: string,
-    WEB_AUDIO_CONTEXT: string,
-    AUDIO_DECODE: string,
-    AUDIO_LOAD: string,
-    AUDIO_PLAY: string,
-    AUDIO_STOP: string,
-    BGM_GENERATION: string,
-    AUDIO_EFFECT: string,
-    VIBRATION: string,
-    ACCESSIBILITY: string,
-    MEMORY: string,
-    PERFORMANCE: string,
-    NETWORK: string,
-    PERMISSION: string,
-    BROWSER_COMPAT: string }
+    WEB_AUDIO_CONTEXT: string;
+    AUDIO_DECODE: string;
+    AUDIO_LOAD: string;
+    AUDIO_PLAY: string;
+    AUDIO_STOP: string;
+    BGM_GENERATION: string;
+    AUDIO_EFFECT: string;
+    VIBRATION: string;
+    ACCESSIBILITY: string;
+    MEMORY: string;
+    PERFORMANCE: string;
+    NETWORK: string;
+    PERMISSION: string;
+    BROWSER_COMPAT: string;
 
 // 回復戦略型定義
 type RecoveryStrategy = (error: Error, context: any) => Promise<boolean>;
 
 // フォールバックオプション型定義
 interface FallbackOptions { useHTMLAudio: boolean,
-    useSilentMode: boolean,
-    useMinimalFeatures: boolean,
-    disableEffects: boolean,
-    reducedQuality: boolean,
-    noVibration: boolean  }
+    useSilentMode: boolean;
+    useMinimalFeatures: boolean;
+    disableEffects: boolean;
+    reducedQuality: boolean;
+    noVibration: boolean;
 
 // エラー閾値型定義
 interface ErrorThresholds { maxErrorsPerMinute: number,
-    maxConsecutiveErrors: number,
-    maxRecoveryAttempts: number,
-    performanceDegradationThreshold: number }
+    maxConsecutiveErrors: number;
+    maxRecoveryAttempts: number;
+    performanceDegradationThreshold: number;
 
 // エラー状態型定義
 interface ErrorState { consecutiveErrors: number,
-    lastErrorTime: number,
-    recoveryInProgress: boolean,
-    fallbackMode: boolean,
-    criticalErrorsDetected: boolean }
+    lastErrorTime: number;
+    recoveryInProgress: boolean;
+    fallbackMode: boolean;
+    criticalErrorsDetected: boolean;
 
 // ユーザー通知設定型定義
 interface UserNotificationSettings { showErrorMessages: boolean,
-    showRecoveryMessages: boolean,
-    showFallbackMessages: boolean,
-    notificationDuration: number }
+    showRecoveryMessages: boolean;
+    showFallbackMessages: boolean;
+    notificationDuration: number;
 
 // メモリ使用量型定義
 interface MemoryUsage { used: number,
-    total: number,
-    limit: number }
+    total: number;
+    limit: number;
 
 // エラーレポート型定義
 interface ErrorReport { timestamp: string,
-    sessionDuration: number,
+    sessionDuration: number;
     statistics: ErrorStats & {
-        errorRat,e: number,
-    recoveryRate: number };
-    currentState: ErrorState & { fallbackOptions: FallbackOptions };
+        errorRat,e: number;
+    recoveryRate: number;;
+    currentState: ErrorState & { fallbackOptions: FallbackOptions;;
     systemInfo: { userAgent: string,
         webAudioSupported: boolean,
     memoryInfo: MemoryUsage | null };
@@ -116,13 +116,13 @@ interface ErrorReport { timestamp: string,
 
 // エラーデータ型定義
 interface ErrorData { timestamp: string,
-    type: string,
-    severity: string,
-    message: string,
-    stack?: string,
-    context: any,
-    userAgent: string,
-    audioContextState?: AudioContextState,
+    type: string;
+    severity: string;
+    message: string;
+    stack?: string;
+    context: any;
+    userAgent: string;
+    audioContextState?: AudioContextState;
     memoryUsage: MemoryUsage | null  }
 
 /**
@@ -131,33 +131,33 @@ interface ErrorData { timestamp: string,
  * フォールバック処理などを包括的に処理します
  */
 export class AudioErrorHandler {
-    private audioManager: AudioManager,
-    private configManager: ConfigurationManager,
-    private localizationManager: LocalizationManager,
-    private globalErrorHandler: ErrorHandler,
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
+    private globalErrorHandler: ErrorHandler;
     // エラー統計
-    private errorStats: ErrorStats,
+    private errorStats: ErrorStats;
     // エラータイプ定義
     private readonly, errorTypes: ErrorTypes,
     // 回復戦略の定義
-    private recoveryStrategies: Map<string, RecoveryStrategy>,
+    private recoveryStrategies: Map<string, RecoveryStrategy>;
     
     // フォールバック設定
-    private fallbackOptions: FallbackOptions,
+    private fallbackOptions: FallbackOptions;
     // エラー閾値設定
-    private errorThresholds: ErrorThresholds,
+    private errorThresholds: ErrorThresholds;
     // エラー状態管理
-    private errorState: ErrorState,
+    private errorState: ErrorState;
     // ユーザー通知設定
-    private userNotificationSettings: UserNotificationSettings,
+    private userNotificationSettings: UserNotificationSettings;
     // 監視間隔ID
     private, monitoringIntervals: number[] = [],
     constructor(audioManager: AudioManager) {
 
-        this.audioManager = audioManager,
-        this.configManager = getConfigurationManager(),
-        this.localizationManager = getLocalizationManager(),
-        this.globalErrorHandler = getErrorHandler(),
+        this.audioManager = audioManager;
+        this.configManager = getConfigurationManager();
+        this.localizationManager = getLocalizationManager();
+        this.globalErrorHandler = getErrorHandler();
         
         // エラー統計
         this.errorStats = {
@@ -203,7 +203,7 @@ export class AudioErrorHandler {
             useMinimalFeatures: false,
             disableEffects: false,
             reducedQuality: false,
-    noVibration: false  };
+    noVibration: false,;
         // エラー閾値設定
         this.errorThresholds = { maxErrorsPerMinute: 10,
             maxConsecutiveErrors: 5,
@@ -214,7 +214,7 @@ export class AudioErrorHandler {
             lastErrorTime: 0,
             recoveryInProgress: false,
             fallbackMode: false,
-    criticalErrorsDetected: false  };
+    criticalErrorsDetected: false,;
         // ユーザー通知設定
         this.userNotificationSettings = { showErrorMessages: true,
             showRecoveryMessages: false,
@@ -236,8 +236,8 @@ export class AudioErrorHandler {
             // Web Audio API の状態監視
             this.monitorWebAudioState(),
             // パフォーマンス監視
-            this.setupPerformanceMonitoring()',
-            console.log('AudioErrorHandler, initialized'),' }
+            this.setupPerformanceMonitoring()','
+            console.log('AudioErrorHandler, initialized'),' }'
 
         } catch (error) {
             console.error('Failed to initialize AudioErrorHandler:', error),
@@ -247,8 +247,8 @@ export class AudioErrorHandler {
     /**
      * 設定を読み込み'
      */''
-    loadSettings()';
-        const settings = this.configManager.get('audio.errorHandling) || {};
+    loadSettings()';'
+        const settings = this.configManager.get('audio.errorHandling) || {};'
         
         Object.assign(this.errorThresholds, settings.thresholds || { ),
         Object.assign(this.fallbackOptions, settings.fallback || {),
@@ -258,7 +258,7 @@ export class AudioErrorHandler {
      * グローバルエラーハンドラーを設定
      */'
     setupGlobalErrorHandlers(): void { // Web Audio API 関連のエラーをキャッチ
-        if(this.audioManager.audioContext) {
+        if (this.audioManager.audioContext) {
 
             this.audioManager.audioContext.addEventListener('statechange', () => { ''
                 if (this.audioManager.audioContext?.state === 'interrupted') {
@@ -266,20 +266,20 @@ export class AudioErrorHandler {
 
                     this.handleError(new, Error('Audio, context interrupted'
             }'
-                        this.errorTypes.WEB_AUDIO_CONTEXT'; }
+                        this.errorTypes.WEB_AUDIO_CONTEXT'; }'
 
                 }'}');
         }
-        ';
+        ';'
         // Promise rejection のキャッチ
-        window.addEventListener('unhandledrejection', (event) => {  if(this.isAudioRelatedError(event.reason) {
+        window.addEventListener('unhandledrejection', (event) => {  if (this.isAudioRelatedError(event.reason) {
                 this.handleError(event.reason, this.determineErrorType(event.reason) }
                 event.preventDefault(); }
 
             }'}');
-        ';
+        ';'
         // 一般的なエラーのキャッチ
-        window.addEventListener('error', (event) => {  if(this.isAudioRelatedError(event.error) { }
+        window.addEventListener('error', (event) => {  if (this.isAudioRelatedError(event.error) { }
                 this.handleError(event.error, this.determineErrorType(event.error); }
 });
     }
@@ -288,11 +288,11 @@ export class AudioErrorHandler {
      * Web Audio API状態を監視
      */ : undefined'
     monitorWebAudioState(): void { const intervalId = window.setInterval(() => { ''
-            if(this.audioManager.audioContext) {
+            if (this.audioManager.audioContext) {
                 const context = this.audioManager.audioContext,
-                ',
+                ','
                 // AudioContext の状態チェック
-                if(context.state === 'suspended' && !this.errorState.recoveryInProgress' { }
+                if(context.state === 'suspended' && !this.errorState.recoveryInProgress' { }'
 
                     this.handleError(new, Error('AudioContext, suspended unexpectedly'
             }'
@@ -313,9 +313,9 @@ export class AudioErrorHandler {
     setupPerformanceMonitoring(): void { // パフォーマンス劣化の検出
         const intervalId = window.setInterval(() => { 
             const metrics = this.audioManager.getPerformanceMetrics?.(),
-            if(metrics) {
+            if (metrics) {
 
-                if(metrics.cpuUsage > 0.8) {
+                if (metrics.cpuUsage > 0.8) {
             }
 
                     this.handleError(new, Error('High, CPU usage, detected'
@@ -323,9 +323,9 @@ export class AudioErrorHandler {
                         this.errorTypes.PERFORMANCE); }
                 }
 
-                if(metrics.averageLatency > 100) {
+                if (metrics.averageLatency > 100) {
 
-                    this.handleError(new, Error('High, audio latency, detected),  }
+                    this.handleError(new, Error('High, audio latency, detected),  }'
                         this.errorTypes.PERFORMANCE); }
 }
         }, 10000); // 10秒間隔
@@ -346,7 +346,7 @@ export class AudioErrorHandler {
             const isRecoverable = this.isRecoverable(error, errorType),
             
             // 連続エラーチェック
-            if(this.checkConsecutiveErrors() {
+            if (this.checkConsecutiveErrors() {
                 this.handleCriticalError(error) }
                 return; }
             }
@@ -379,7 +379,7 @@ export class AudioErrorHandler {
         
         // 時間窓での集計（エラー頻度チェック用）
         const now = Date.now(),
-        if(now - this.errorState.lastErrorTime < 60000) {
+        if (now - this.errorState.lastErrorTime < 60000) {
             // 1分以内
         }
             this.errorState.consecutiveErrors++; }
@@ -448,15 +448,15 @@ export class AudioErrorHandler {
         
         try {
             const recoveryStrategy = this.recoveryStrategies.get(errorType),
-            if(recoveryStrategy) {
+            if (recoveryStrategy) {
                 console.log(`Attempting, recovery for ${errorType)...`),
                 
                 const, recoveryResult = await, recoveryStrategy(error, context};
                 
-                if (recoveryResult} {
+                if (recoveryResult}
                     this.errorStats.successfulRecoveries++,
                     this.errorState.consecutiveErrors = 0,
-                    ' }
+                    ' }'
 
                     if(this.userNotificationSettings.showRecoveryMessages) { }'
 
@@ -478,7 +478,7 @@ export class AudioErrorHandler {
      */
     async recoverWebAudioInit(error: Error, context: any): Promise<boolean> { try {
             // AudioContextの再作成を試行
-            if(this.audioManager.audioContext) {
+            if (this.audioManager.audioContext) {
     
 }
                 await this.audioManager.audioContext.close(); }
@@ -486,7 +486,7 @@ export class AudioErrorHandler {
             
             // 別のコンストラクタを試行
             const AudioContextClass = window.AudioContext || (window, as any).webkitAudioContext;
-            if(AudioContextClass) {
+            if (AudioContextClass) {
                 this.audioManager.audioContext = new AudioContextClass(),
                 await this.audioManager.audioContext.resume(),
                 
@@ -507,7 +507,7 @@ export class AudioErrorHandler {
 
             if(audioContext.state === 'suspended' {'
 
-                await audioContext.resume(' }
+                await audioContext.resume(' }'
 
                 return, audioContext.state === 'running';, ')';
             if(audioContext.state === 'interrupted' {'
@@ -517,9 +517,9 @@ export class AudioErrorHandler {
                         try {'
                             await audioContext.resume(),
 
-                            document.removeEventListener('click', resumeOnInteraction' }
+                            document.removeEventListener('click', resumeOnInteraction' }'
 
-                            document.removeEventListener('touchstart', resumeOnInteraction'; }
+                            document.removeEventListener('touchstart', resumeOnInteraction'; }'
 
                             resolve(audioContext.state === 'running'; }'
 
@@ -527,12 +527,12 @@ export class AudioErrorHandler {
                             resolve(false) }
                     };
 
-                    document.addEventListener('click', resumeOnInteraction';
+                    document.addEventListener('click', resumeOnInteraction';'
                     document.addEventListener('touchstart', resumeOnInteraction);
                     
                     // 30秒でタイムアウト
                     setTimeout(() => resolve(false), 30000);
-                });'} catch (recoveryError) { console.warn('AudioContext recovery failed:', recoveryError }
+                });'} catch (recoveryError) { console.warn('AudioContext recovery failed:', recoveryError }'
         
         return false;
     }
@@ -565,7 +565,7 @@ export class AudioErrorHandler {
     async recoverAudioLoad(error: Error, context: any): Promise<boolean> { try { }
             const { url, retryCount = 0 } = context;
             
-            if(retryCount < 3) {
+            if (retryCount < 3) {
             
                 // 指数バックオフで再試行
                 const delay = Math.pow(2, retryCount) * 1000,
@@ -581,7 +581,7 @@ export class AudioErrorHandler {
             
             // 代替URLを試行
             const fallbackUrl = this.getFallbackAudioUrl(url);
-            if(fallbackUrl) {
+            if (fallbackUrl) {
                 const result = await this.audioManager.loadAudioFile?.(fallbackUrl) }
                 return !!result; }'
 
@@ -652,7 +652,7 @@ export class AudioErrorHandler {
      */
     async recoverPerformanceError(error: Error, context: any): Promise<boolean> { try {
             // パフォーマンス設定を調整
-            this.audioManager.setMaxConcurrentSounds?.(10'),
+            this.audioManager.setMaxConcurrentSounds?.(10'),'
             this.audioManager.setAudioQuality?.('medium'),
             
             // 音響効果を無効化
@@ -714,7 +714,7 @@ export class AudioErrorHandler {
                 this.enableGeneralFallback(});
         }
 
-        if(this.userNotificationSettings.showFallbackMessages) {', ' }
+        if (this.userNotificationSettings.showFallbackMessages) {', ' }
 
             this.showUserNotification('音響システムが制限モードで動作しています', 'warning'; }
 }
@@ -723,7 +723,7 @@ export class AudioErrorHandler {
      * サイレントモードを有効化
      */'
     enableSilentMode(): void { this.fallbackOptions.useSilentMode = true,
-        this.audioManager.setMuted?.(true'),
+        this.audioManager.setMuted?.(true'),'
         console.log('Silent, mode enabled') }'
     
     /**
@@ -763,33 +763,33 @@ export class AudioErrorHandler {
      */ : undefined''
     handleCriticalError(error: Error): void { this.errorState.criticalErrorsDetected = true,
 
-        console.error('Critical audio error detected:', error',
-        ',
+        console.error('Critical audio error detected:', error','
+        ','
         // 全音響機能を停止
         this.audioManager.emergencyShutdown?.(),
-        ',
+        ','
         // ユーザーに通知
         this.showUserNotification('音響システムで重大なエラーが発生しました', 'error'),
-        ',
+        ','
         // エラーレポートを送信
         this.globalErrorHandler.handleError(error, 'AUDIO_CRITICAL_ERROR', { : undefined)
             errorStats: this.errorStats,
-    errorState: this.errorState,',
+    errorState: this.errorState,','
             fallbackOptions: this.fallbackOptions  }
     
     /**
      * ユーザーに通知
      */'
     notifyUser(error: Error, errorType: string, severity: string): void { ''
-        if(!this.userNotificationSettings.showErrorMessages) {
+        if (!this.userNotificationSettings.showErrorMessages) {
     
 }
             return; }
         }
 
-        if(severity === 'critical') {', ' }
+        if (severity === 'critical') {', ' }
 
-            this.showUserNotification('音響システムエラーが発生しました', 'error');' }
+            this.showUserNotification('音響システムエラーが発生しました', 'error');' }'
 
         } else if (severity === 'high') { ''
             this.showUserNotification('音響の一部機能に問題があります', 'warning') }
@@ -830,15 +830,15 @@ export class AudioErrorHandler {
      */
     isAudioRelatedError(error: any): boolean { ''
         if(!error) return false,
-        ',
+        ','
 
-        const audioKeywords = [',
-            'audio', 'sound', 'web audio', 'audiocontext', 'audiobuffer',]',
+        const audioKeywords = [','
+            'audio', 'sound', 'web audio', 'audiocontext', 'audiobuffer',]','
             'vibration', 'bgm', 'sfx', 'microphone', 'speaker'],
         ],
 
-        const errorMessage = error.message?.toLowerCase() || ',
-        const errorStack = error.stack?.toLowerCase() || ',
+        const errorMessage = error.message?.toLowerCase() || ','
+        const errorStack = error.stack?.toLowerCase() || ','
         
         return audioKeywords.some(keyword => ),
             errorMessage.includes(keyword) || errorStack.includes(keyword) }
@@ -848,7 +848,7 @@ export class AudioErrorHandler {
      * エラータイプを判定
      */ : undefined'
     determineErrorType(error: Error): string { ''
-        const message = error.message?.toLowerCase() || ',
+        const message = error.message?.toLowerCase() || ','
 
         if(message.includes('audiocontext)' {'
             return this.errorTypes.WEB_AUDIO_CONTEXT,
@@ -865,7 +865,7 @@ export class AudioErrorHandler {
      * エラーの発生源を判定
      */ : undefined''
     determineErrorSource(error: Error): string { ''
-        const stack = error.stack || ',
+        const stack = error.stack || ','
 
         if(stack.includes('AudioManager)' return 'AudioManager',
         if(stack.includes('BGM)' return 'BGMSystem',
@@ -883,7 +883,7 @@ export class AudioErrorHandler {
             const memoryUsage = memory.usedJSHeapSize,
             const memoryLimit = memory.jsHeapSizeLimit,
 
-            if(memoryUsage / memoryLimit > 0.9) {', ' }
+            if (memoryUsage / memoryLimit > 0.9) {', ' }
 
                 this.handleError(new, Error('High, memory usage, detected'
             }'
@@ -910,7 +910,7 @@ export class AudioErrorHandler {
         if(originalUrl.endsWith('.mp3)' {''
             return originalUrl.replace('.mp3', '.ogg'),
         if(originalUrl.endsWith('.ogg)' { ''
-            return originalUrl.replace('.ogg', '.wav) }
+            return originalUrl.replace('.ogg', '.wav) }'
         return null;
     }
     
@@ -951,12 +951,12 @@ export class AudioErrorHandler {
      */
     generateRecommendations(): string[] { const recommendations: string[] = [],
 
-        if(this.errorStats.totalErrors > 10) {', ' }
+        if (this.errorStats.totalErrors > 10) {', ' }
 
             recommendations.push('高頻度のエラーが検出されています。ブラウザの更新または別のブラウザの使用を検討してください。'; }'
         }
 
-        if(this.errorState.fallbackMode) {', ' }
+        if (this.errorState.fallbackMode) {', ' }
 
             recommendations.push('制限モードで動作中です。最適な体験のためにブラウザを再起動してください。'; }'
         }
@@ -983,14 +983,14 @@ export class AudioErrorHandler {
             lastErrorTime: 0,
             recoveryInProgress: false,
             fallbackMode: false,
-    criticalErrorsDetected: false  };
+    criticalErrorsDetected: false,;
         // フォールバック設定をリセット
         Object.keys(this.fallbackOptions).forEach(key => {  }
             (this.fallbackOptions, as any)[key] = false;' }'
 
-        }');
+        }');'
 
-        console.log('AudioErrorHandler, reset);
+        console.log('AudioErrorHandler, reset);'
     }
     
     /**
@@ -1000,11 +1000,11 @@ export class AudioErrorHandler {
         this.monitoringIntervals.forEach(intervalId => { ) }
             clearInterval(intervalId');' }'
 
-        }');
+        }');'
         this.monitoringIntervals = [];
-        ';
+        ';'
         // DOM要素のクリーンアップ
-        const notifications = document.querySelectorAll('.audio-error-notification);
+        const notifications = document.querySelectorAll('.audio-error-notification);'
         notifications.forEach(notification => {  ),
             if (notification.parentNode) { }
                 notification.parentNode.removeChild(notification); }
@@ -1013,4 +1013,4 @@ export class AudioErrorHandler {
 
         console.log('AudioErrorHandler, disposed');
 
-    }'}
+    }'}'

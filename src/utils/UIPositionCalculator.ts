@@ -5,55 +5,53 @@
 
 // 型定義
 interface Position { x: number,
-    y: number  }
+    y: number;
 
 interface Margins { top: number,
-    right: number,
-    bottom: number,
-    left: number }
+    right: number;
+    bottom: number;
+    left: number;
 
 interface Breakpoints { mobile: number,
-    tablet: number,
-    desktop: number }
+    tablet: number;
+    desktop: number;
 
 interface CanvasInfo { baseWidth: number,
-    baseHeight: number,
-    displayWidth: number,
-    displayHeight: number }
+    baseHeight: number;
+    displayWidth: number;
+    displayHeight: number;
 
-interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo }
+interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
 
 interface UIElement { type: string,
-    name: string,
-    offset?: Position
-     }
+    name: string;
+    offset?: Position;
 
 interface Container { x?: number,
-    y?: number,
-    width?: number,
-    height?: number }
+    y?: number;
+    width?: number;
+    height?: number;
 
 interface LayoutResult { element: UIElement,
-    position: Position
-     }
+    position: Position;
 
 type DeviceType = 'mobile' | 'tablet' | 'desktop';
 type StatusElement = 'score' | 'time' | 'hp';
 type Edge = 'top' | 'right' | 'bottom' | 'left';
 
 export class UIPositionCalculator {
-    private scaledCoordinateManager: ScaledCoordinateManager,
-    private defaultMargins: Margins,
-    private breakpoints: Breakpoints,
-    private, statusVerticalSpacing: number',
+    private scaledCoordinateManager: ScaledCoordinateManager;
+    private defaultMargins: Margins;
+    private breakpoints: Breakpoints;
+    private, statusVerticalSpacing: number','
 
     constructor(scaledCoordinateManager: ScaledCoordinateManager) {
-        this.scaledCoordinateManager = scaledCoordinateManager,
+        this.scaledCoordinateManager = scaledCoordinateManager;
         
         // デフォルトマージン（ベース座標系）
         this.defaultMargins = {
-            top: 5,  // ボタンを上端により近く,
-            right: 5, // ボタンを右端により近く,
+            top: 5;  // ボタンを上端により近く;
+            right: 5, // ボタンを右端により近く;
             bottom: 20 }
             left: 20 
     };
@@ -73,7 +71,7 @@ export class UIPositionCalculator {
     getStatusPosition(element: StatusElement): Position { try {
             const margins = this.getResponsiveMargins(),
             let baseY = margins.top,
-            ',
+            ','
             // 要素タイプに応じてY座標を調整
             switch(element) {
 
@@ -85,18 +83,18 @@ export class UIPositionCalculator {
                     baseY = margins.top + this.statusVerticalSpacing,
 
                     break,
-                case 'hp':',
-                    baseY = margins.top + (this.statusVerticalSpacing * 2'),
+                case 'hp':','
+                    baseY = margins.top + (this.statusVerticalSpacing * 2'),'
                     break }
 
                 default:' }'
 
-                    console.warn(`UIPositionCalculator: Unknown status element '${element}', using default position`}';
+                    console.warn(`UIPositionCalculator: Unknown status element '${element}', using default position`}';'
                     baseY = margins.top;
             }
             
             // ベース座標をそのまま返す（他のメソッドとの一貫性のため）
-            return { x: margins.left, y: baseY  }'} catch (error) { console.warn('UIPositionCalculator: Status position calculation failed, using fallback', error }
+            return { x: margins.left, y: baseY;'} catch (error) { console.warn('UIPositionCalculator: Status position calculation failed, using fallback', error }'
             return { x: 20, y: 20  }
     }
     
@@ -116,7 +114,7 @@ export class UIPositionCalculator {
             
             // ベース座標をそのまま返す（GameControlButtonsがスケーリングを行うため）
              }
-            return { x: baseX, y: baseY  }'} catch (error) { console.warn('UIPositionCalculator: Button position calculation failed, using fallback', error }
+            return { x: baseX, y: baseY;'} catch (error) { console.warn('UIPositionCalculator: Button position calculation failed, using fallback', error }'
             return { x: 600, y: 20 + (index * 50  }
     }
     
@@ -133,7 +131,7 @@ export class UIPositionCalculator {
             const baseY = canvasInfo.baseHeight / 2,
             
             // ベース座標をそのまま返す（他のメソッドとの一貫性のため） }
-            return { x: baseX, y: baseY  }'} catch (error) { console.warn('UIPositionCalculator: Dialog position calculation failed, using fallback', error }
+            return { x: baseX, y: baseY;'} catch (error) { console.warn('UIPositionCalculator: Dialog position calculation failed, using fallback', error }'
             return { x: 400, y: 300  }
     }
     
@@ -159,7 +157,7 @@ export class UIPositionCalculator {
     bottom: 18 };
                         left: 18 
     };
-                case 'desktop':';
+                case 'desktop':';'
                 default: return this.defaultMargins } catch (error) {
             console.warn('UIPositionCalculator: Responsive margins calculation failed, using defaults', error),
             return this.defaultMargins,
@@ -184,17 +182,17 @@ export class UIPositionCalculator {
                 } else if(element.type === 'button' { ''
                     position = this.getButtonPosition(element.name, index),' }'
 
-                } else if(element.type === 'dialog) { position = this.getDialogPosition(element.name) } else {  // カスタム配置ロジック（ベース座標）'
+                } else if (element.type === 'dialog) { position = this.getDialogPosition(element.name) } else {  // カスタム配置ロジック（ベース座標）'
                     const baseX = margins.left + (element.offset?.x || 0) }
                     const baseY = margins.top + (element.offset?.y || 0); : undefined 
-                    position = { x: baseX, y: baseY  }
+                    position = { x: baseX, y: baseY,
                 
                 positions.push({ element: element)
-                   , position: position });
-            ';
+                   , position: position,);
+            ';'
 
             return positions;} catch (error) {
-            console.warn('UIPositionCalculator: Layout calculation failed', error',
+            console.warn('UIPositionCalculator: Layout calculation failed', error','
             return [],
     
     /**
@@ -232,13 +230,13 @@ export class UIPositionCalculator {
 
                 default:' }'
 
-                    console.warn(`UIPositionCalculator: Unknown edge '${edge}', using center`}';
+                    console.warn(`UIPositionCalculator: Unknown edge '${edge}', using center`}';'
                     baseX = canvasInfo.baseWidth / 2;
                     baseY = canvasInfo.baseHeight / 2;
             }
             
             // ベース座標をそのまま返す（一貫性のため）
-            return { x: baseX, y: baseY  }'} catch (error) {
+            return { x: baseX, y: baseY;'} catch (error) {'
             console.warn('UIPositionCalculator: Edge alignment failed, using center', error),
             // フォールバック: ベース座標 }
             return { x: 400, y: 300  }
@@ -263,8 +261,8 @@ export class UIPositionCalculator {
             const baseY = containerY + (containerHeight / 2),
             
             // ベース座標をそのまま返す（一貫性のため） : undefined 
-            return { x: baseX, y: baseY  }'} catch (error) {
-            console.warn('UIPositionCalculator: Center alignment failed, using default center', error',
+            return { x: baseX, y: baseY;'} catch (error) {'
+            console.warn('UIPositionCalculator: Center alignment failed, using default center', error','
             // フォールバック: ベース座標 }
             return { x: 400, y: 300  }
     }
@@ -275,11 +273,11 @@ export class UIPositionCalculator {
      * @returns デバイスタイプ ('mobile', 'tablet', 'desktop')
      */'
     getDeviceType(width: number): DeviceType { ''
-        if(width < this.breakpoints.mobile) {', ' }
+        if (width < this.breakpoints.mobile) {', ' }
 
             return 'mobile'; }
 
-        } else if(width < this.breakpoints.tablet) { ''
+        } else if (width < this.breakpoints.tablet) { ''
             return 'tablet', else { }
 
             return 'desktop';

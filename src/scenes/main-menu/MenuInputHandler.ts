@@ -2,34 +2,34 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
-interface MenuItemWithLabel extends MenuItem { label: string }
+interface MenuItemWithLabel extends MenuItem { label: string;
 
 interface Coordinates { x: number,
-    y: number  }
+    y: number;
 
 interface ClickableSlider { x: number,
-    y: number,
-    width: number,
-    height: number,
-    settingKey: string }
+    y: number;
+    width: number;
+    height: number;
+    settingKey: string;
 
 interface ClickableButton { x: number,
-    y: number,
-    width: number,
-    height: number,
-    settingKey?: string,
-    isEnabled?: boolean,
-    langCode?: string,
-    qualityCode?: string }
+    y: number;
+    width: number;
+    height: number;
+    settingKey?: string;
+    isEnabled?: boolean;
+    langCode?: string;
+    qualityCode?: string;
 
 interface ClickableElements { volumeSliders?: ClickableSlider[],
-    toggleButtons?: ClickableButton[],
-    languageButtons?: ClickableButton[],
-    qualityButtons?: ClickableButton[] }
+    toggleButtons?: ClickableButton[];
+    languageButtons?: ClickableButton[];
+    qualityButtons?: ClickableButton[];
 
 interface SettingsCallbacks { onChangeUsername: () => void,
-    onShowDataClear: () => void,
-    onShowControlsHelp: () => void,
+    onShowDataClear: () => void;
+    onShowControlsHelp: () => void;
     onCloseSettings: () => void  }
 }
 
@@ -38,7 +38,7 @@ interface SettingsCallbacks { onChangeUsername: () => void,
  * メニュー全体の入力処理と統制を担当
  */
 export class MenuInputHandler {
-    public gameEngine: any,
+    public gameEngine: any;
     public, errorHandler: any,
 
     constructor(gameEngine: any) {
@@ -92,7 +92,7 @@ export class MenuInputHandler {
                     y >= itemY && y <= itemY + scaledItemHeight) {
                     onSelectCallback(index) }
                     return true;
-            ';
+            ';'
 
             return false;} catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleMainMenuClick'
@@ -144,7 +144,7 @@ export class MenuInputHandler {
                 y >= scaledButtonY && y <= scaledButtonY + scaledButtonHeight) {
                 onCancelCallback() }
                 return true;
-            ';
+            ';'
 
             return false;} catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleUsernameInputClick'
@@ -165,7 +165,7 @@ export class MenuInputHandler {
             const y = coords.y,
             
             // 音量スライダーのクリック処理
-            if(clickableElements.volumeSliders) {
+            if (clickableElements.volumeSliders) {
                 for (const slider of clickableElements.volumeSliders) {
                     if (x >= slider.x && x <= slider.x + slider.width && ,
                         y >= slider.y && y <= slider.y + slider.height) {
@@ -175,7 +175,7 @@ export class MenuInputHandler {
             }
             
             // トグルボタンのクリック処理
-            if(clickableElements.toggleButtons) {
+            if (clickableElements.toggleButtons) {
                 for (const button of clickableElements.toggleButtons) {
                     if (x >= button.x && x <= button.x + button.width && ,
                         y >= button.y && y <= button.y + button.height) {
@@ -184,18 +184,18 @@ export class MenuInputHandler {
             }
             
             // 言語ボタンのクリック処理
-            if(clickableElements.languageButtons) {
+            if (clickableElements.languageButtons) {
                 for (const button of clickableElements.languageButtons) {
-                    if(x >= button.x && x <= button.x + button.width && ',
+                    if(x >= button.x && x <= button.x + button.width && ','
                         y >= button.y && y <= button.y + button.height' {''
                         this.gameEngine.settingsManager.set('language', button.langCode!) }
                         return true;
             }
             
             // 品質ボタンのクリック処理
-            if(clickableElements.qualityButtons) {
+            if (clickableElements.qualityButtons) {
                 for (const button of clickableElements.qualityButtons) {
-                    if(x >= button.x && x <= button.x + button.width && ',
+                    if(x >= button.x && x <= button.x + button.width && ','
                         y >= button.y && y <= button.y + button.height' {''
                         this.gameEngine.settingsManager.set('quality', button.qualityCode!) }
                         return true;
@@ -217,26 +217,26 @@ export class MenuInputHandler {
             const buttonY = canvas.height - 120,
             
             // ユーザー名変更ボタン
-            if(x >= 50 && x <= 50 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+            if (x >= 50 && x <= 50 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onChangeUsername() }
                 return true;
             
             // データクリアボタン
-            if(x >= 180 && x <= 180 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+            if (x >= 180 && x <= 180 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onShowDataClear() }
                 return true;
             
             // 操作説明ボタン
-            if(x >= 310 && x <= 310 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+            if (x >= 310 && x <= 310 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onShowControlsHelp() }
                 return true;
             
             // 戻るボタン
             const backButtonX = canvas.width - buttonWidth - 50;
-            if(x >= backButtonX && x <= backButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+            if (x >= backButtonX && x <= backButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onCloseSettings() }
                 return true;
-            ';
+            ';'
 
             return false;} catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleSettingsActionButtons'
@@ -273,7 +273,7 @@ export class MenuInputHandler {
                 y >= buttonY && y <= buttonY + buttonHeight) {
                 onCancelCallback() }
                 return true;
-            ';
+            ';'
 
             return false;} catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleDataClearConfirmationClick'
@@ -303,7 +303,7 @@ export class MenuInputHandler {
                 y >= targetY && y <= targetY + buttonHeight) {
                 onBackCallback() }
                 return true;
-            ';
+            ';'
 
             return false;} catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleBackButtonClick'
@@ -317,18 +317,18 @@ export class MenuInputHandler {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
             
             // レスポンシブCanvasマネージャーの座標変換を使用
-            if(this.gameEngine.responsiveCanvasManager) {
+            if (this.gameEngine.responsiveCanvasManager) {
     
 }
                 return this.gameEngine.responsiveCanvasManager.screenToCanvas(event.clientX, event.clientY); else {  // フォールバック: 従来の方法
                 const rect = canvas.getBoundingClientRect() }
                 return { x: event.clientX - rect.left };
                     y: event.clientY - rect.top 
-    };'} catch (error) {
+    };'} catch (error) {'
             this.errorHandler.handleError(error, 'INPUT_ERROR', {''
-                context: 'MenuInputHandler.getClickCoordinates',' }
+                context: 'MenuInputHandler.getClickCoordinates',' }'
 
-            }');
+            }');'
             return { x: 0, y: 0  }
 
-    }'}
+    }'}'

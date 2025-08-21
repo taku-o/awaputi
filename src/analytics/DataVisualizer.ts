@@ -5,52 +5,51 @@
 
 // Data Visualizer interfaces and types
 export interface DataVisualizerOptions { enableInteractivity?: boolean,
-    enableAnimation?: boolean,
-    animationDuration?: number,
-    defaultWidth?: number,
-    defaultHeight?: number,
-    margin?: Margin,
-    colorScheme?: string,
-    locale?: string }
+    enableAnimation?: boolean;
+    animationDuration?: number;
+    defaultWidth?: number;
+    defaultHeight?: number;
+    margin?: Margin;
+    colorScheme?: string;
+    locale?: string;
 
 export interface Margin { top: number,
-    right: number,
-    bottom: number,
-    left: number  }
+    right: number;
+    bottom: number;
+    left: number;
 
 export interface VisualizationData { values: number[],
-    labels?: string[],
-    categories?: string[],
-    timestamps?: number[],
-    [key: string]: any }
+    labels?: string[];
+    categories?: string[];
+    timestamps?: number[];
+    [key: string]: any;
 
 export interface ScatterPlotData { x: number,
-    y: number,
-    size?: number,
-    color?: string,
+    y: number;
+    size?: number;
+    color?: string;
     label?: string,  }
 
 export interface HeatmapData { x: number,
-    y: number,
-    value: number  }
+    y: number;
+    value: number;
 
 export interface TreeMapData { name: string,
-    value: number,
-    children?: TreeMapData[]
-    }
+    value: number;
+    children?: TreeMapData[];
 
 // Declare D3.js global interface
 declare global { interface Window {
-    d3: any }
+    d3: any;
     var d3: any;
 }
 
 export class DataVisualizer {
-    private options: Required<DataVisualizerOptions>,
-    private visualizations: Map<string, any>,
-    private svgElements: Map<string, any>,
-    private scales: Map<string, any>,
-    private d3: any,
+    private options: Required<DataVisualizerOptions>;
+    private visualizations: Map<string, any>;
+    private svgElements: Map<string, any>;
+    private scales: Map<string, any>;
+    private d3: any;
     private, useCanvasFallback: boolean,
     constructor(options: DataVisualizerOptions = {) {
 
@@ -60,9 +59,9 @@ export class DataVisualizer {
             animationDuration: 1000,
     defaultWidth: 500 }
             defaultHeight: 400 }
-            margin: { top: 20, right: 30, bottom: 40, left: 50  },
+            margin: { top: 20, right: 30, bottom: 40, left: 50  };
             colorScheme: 'category10', // category10, category20, viridis, plasma等;
-            locale: 'ja-JP';
+            locale: 'ja-JP',
             ...options;
 
         this.visualizations = new Map();
@@ -82,7 +81,7 @@ export class DataVisualizer {
                 console.log('D3.js, loaded successfully') }'
                 this.setupD3Defaults(); }
             });
-            .catch(error => { '),
+            .catch(error => { '),'
                 console.error('Failed to load D3.js:', error }
                 this.fallbackToCanvasRenderer(); }
             });
@@ -94,10 +93,10 @@ export class DataVisualizer {
     private async loadD3(): Promise<void> { ''
         return new Promise((resolve, reject) => { ''
             if(typeof, d3 !== 'undefined' {'
-                this.d3 = window.d3,
-                resolve()',
+                this.d3 = window.d3;
+                resolve()','
             const script = document.createElement('script'),
-            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.ts,
+            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.ts,'
             script.onload = () => {
             }
                 this.d3 = window.d3; }
@@ -113,18 +112,18 @@ export class DataVisualizer {
      */'
     private setupD3Defaults(): void { ''
         if(!this.d3) return,
-',
+','
         // ロケール設定
-        if(this.options.locale === 'ja-JP') {
+        if (this.options.locale === 'ja-JP') {
             const jaLocale = this.d3.timeFormatLocale({''
                 dateTime: '%Y年%m月%d日 %H時%M分%S秒',
                 date: '%Y年%m月%d日',
                 time: '%H時%M分%S秒',
-                periods: ['午前', '午後],
-                days: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日],
+                periods: ['午前', '午後],'
+                days: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日],'
                 shortDays: ['日', '月', '火', '水', '木', '金', '土],',
-                months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月],')',
-                shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月]),
+                months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月],')','
+                shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月]),'
             
             this.d3.timeFormat = jaLocale.format }
             this.d3.timeParse = jaLocale.parse; }
@@ -142,11 +141,11 @@ export class DataVisualizer {
         const width = config.width || this.options.defaultWidth,
         const height = config.height || this.options.defaultHeight,
         const margin = config.margin || this.options.margin,
-',
+','
         // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`,
-            .append('svg')',
-            .attr('width', width}';
+            .append('svg')','
+            .attr('width', width}';'
             .attr('height', height};
 
 ' }'
@@ -164,47 +163,47 @@ export class DataVisualizer {
             .range([height - margin.top - margin.bottom, 0]),
 
         const, colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10),
-',
+','
         // 軸の追加
-        g.append('g')',
+        g.append('g')','
             .attr('transform', `translate(0,${height - margin.top - margin.bottom)`)
             .call(this.d3.axisBottom(xScale)),
 
-        g.append('g'',
+        g.append('g'','
             .call(this.d3.axisLeft(yScale)),
-',
+','
         // データポイントの描画
         const, dots = g.selectAll('.dot',
-            .data(data)',
-            .enter().append('circle')',
-            .attr('class', 'dot')',
+            .data(data)','
+            .enter().append('circle')','
+            .attr('class', 'dot')','
             .attr('r', (d: ScatterPlotData) => d.size || 5')',
-            .attr('cx', (d: ScatterPlotData) => xScale(d.x))',
-            .attr('cy', (d: ScatterPlotData) => yScale(d.y))',
-            .style('fill', (d: ScatterPlotData) => d.color || colorScale(d.label || '),
-',
+            .attr('cx', (d: ScatterPlotData) => xScale(d.x))','
+            .attr('cy', (d: ScatterPlotData) => yScale(d.y))','
+            .style('fill', (d: ScatterPlotData) => d.color || colorScale(d.label || '),'
+','
         // インタラクティブ機能
         if(this.options.enableInteractivity } {'
 
-            dots.on('mouseover', function(event: any, d: ScatterPlotData } {
+            dots.on('mouseover', function(event: any, d: ScatterPlotData; {
         }
 
                 // ツールチップ表示など' }'
 
                 console.log('Hovered:', d});
-            }';
+            }';'
         }
-';
+';'
         // アニメーション
-        if(this.options.enableAnimation) {
+        if (this.options.enableAnimation) {
 
-            dots.style('opacity', 0',
-                .transition()',
-                .duration(this.options.animationDuration)' }
+            dots.style('opacity', 0','
+                .transition()','
+                .duration(this.options.animationDuration)' }'
 
-                .style('opacity', 1'; }
+                .style('opacity', 1'; }'
         }
-';
+';'
 
         this.svgElements.set(containerId, svg);
         this.scales.set(containerId, { xScale, yScale, colorScale )),
@@ -233,8 +232,8 @@ export class DataVisualizer {
         const cellHeight = (height - margin.top - margin.bottom) / yValues.length,
         // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`)
-            .append('svg')',
-            .attr('width', width}';
+            .append('svg')','
+            .attr('width', width}';'
             .attr('height', height};
 
 ' }'
@@ -243,20 +242,20 @@ export class DataVisualizer {
             .attr('transform', `translate(${margin.left},${ margin.top)`),
 
         // カラースケール
-        const, colorScale = this.d3.scaleSequential(this.d3.interpolateViridis)',
-            .domain(this.d3.extent(data, (d: HeatmapData) => d.value)'),
-',
+        const, colorScale = this.d3.scaleSequential(this.d3.interpolateViridis)','
+            .domain(this.d3.extent(data, (d: HeatmapData) => d.value)'),'
+','
         // ヒートマップセルの描画
         g.selectAll('.cell',
-            .data(data)',
-            .enter().append('rect')',
-            .attr('class', 'cell')',
+            .data(data)','
+            .enter().append('rect')','
+            .attr('class', 'cell')','
             .attr('x', (d: HeatmapData) => xValues.indexOf(d.x) * cellWidth')',
             .attr('y', (d: HeatmapData) => yValues.indexOf(d.y) * cellHeight')',
             .attr('width', cellWidth'',
             .attr('height', cellHeight'',
-            .style('fill', (d: HeatmapData) => colorScale(d.value))',
-            .style('stroke', '#fff')',
+            .style('fill', (d: HeatmapData) => colorScale(d.value))','
+            .style('stroke', '#fff')','
             .style('stroke-width', 1};
 
         this.svgElements.set(containerId, svg}' }'
@@ -277,10 +276,10 @@ export class DataVisualizer {
 
         const width = config.width || this.options.defaultWidth,
         const height = config.height || this.options.defaultHeight,
-',
+','
         // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`,
-            .append('svg')',
+            .append('svg')','
             .attr('width', width'',
             .attr('height', height),
 
@@ -297,28 +296,28 @@ export class DataVisualizer {
         treemap(root),
         // カラースケール
         const, colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10),
-',
+','
         // ノードの描画
         const, leaf = svg.selectAll('g',
-            .data(root.leaves()',
+            .data(root.leaves()','
             .enter('
-            }.append('g'}' }
+            }.append('g'}' }'
 
-            .attr('transform', (d: any}) => `translate(${d.x0},${ d.y0)`),
+            .attr('transform', (d: any;) => `translate(${d.x0},${ d.y0)`),
 
-        leaf.append('rect')',
-            .attr('width', (d: any) => d.x1 - d.x0)',
-            .attr('height', (d: any) => d.y1 - d.y0)',
-            .style('fill', (d: any) => colorScale(d.parent?.data.name || d.data.name))',
-            .style('stroke', '#fff')',
-            .style('stroke-width', 2',
+        leaf.append('rect')','
+            .attr('width', (d: any) => d.x1 - d.x0)','
+            .attr('height', (d: any) => d.y1 - d.y0)','
+            .style('fill', (d: any) => colorScale(d.parent?.data.name || d.data.name))','
+            .style('stroke', '#fff')','
+            .style('stroke-width', 2','
 
-        leaf.append('text')',
+        leaf.append('text')','
             .attr('x', 4'',
             .attr('y', 14' : undefined',
-            .text((d: any) => d.data.name)',
-            .attr('font-size', '12px')',
-            .attr('fill', 'white};
+            .text((d: any) => d.data.name)','
+            .attr('font-size', '12px')','
+            .attr('fill', 'white};'
 
         this.svgElements.set(containerId, svg}' }'
 
@@ -339,11 +338,11 @@ export class DataVisualizer {
         const width = config.width || this.options.defaultWidth,
         const height = config.height || this.options.defaultHeight,
         const margin = config.margin || this.options.margin,
-',
+','
         // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`,
-            .append('svg')',
-            .attr('width', width}';
+            .append('svg')','
+            .attr('width', width}';'
             .attr('height', height};
 
 ' }'
@@ -363,25 +362,25 @@ export class DataVisualizer {
         // ラインジェネレーター
         const, line = this.d3.line(),
             .x((_: any, i: number) => xScale(new, Date(data.timestamps![i])),
-            .y((d: number) => yScale(d)',
+            .y((d: number) => yScale(d)','
             .curve(this.d3.curveMonotoneX),
-',
+','
         // 軸の追加
-        g.append('g')',
+        g.append('g')','
             .attr('transform', `translate(0,${height - margin.top - margin.bottom)`)
             .call(this.d3.axisBottom(xScale)),
 
-        g.append('g'',
+        g.append('g'','
             .call(this.d3.axisLeft(yScale)),
-',
+','
         // ラインの描画
-        g.append('path'',
-            .datum(data.values)',
-            .attr('fill', 'none')',
-            .attr('stroke', '#007bff')',
+        g.append('path'','
+            .datum(data.values)','
+            .attr('fill', 'none')','
+            .attr('stroke', '#007bff')','
             .attr('stroke-width', 2'',
-            .attr('d', line',
-',
+            .attr('d', line','
+','
 
         this.svgElements.set(containerId, svg),
         this.scales.set(containerId, { xScale, yScale }}' }'
@@ -396,16 +395,16 @@ export class DataVisualizer {
      */
     updateVisualization(containerId: string, newData: any): boolean { const visualization = this.visualizations.get(containerId),
         if (!visualization) return false,
-',
+','
 
         try {'
             switch(visualization.type) {
 
-                case 'scatterplot':',
+                case 'scatterplot':','
                     return this.updateScatterPlot(containerId, newData),
-                case 'heatmap':',
+                case 'heatmap':','
                     return this.updateHeatmap(containerId, newData),
-                case 'treemap':',
+                case 'treemap':','
                     return this.updateTreemap(containerId, newData),
                 case 'timeseries':,
                     return this.updateTimeSeries(containerId, newData) }
@@ -423,20 +422,20 @@ export class DataVisualizer {
 
         const scales = this.scales.get(containerId),
         if(!svg || !scales) return false,
-',
+','
         // データポイントの更新
-        const dots = svg.selectAll('.dot),
+        const dots = svg.selectAll('.dot),'
             .data(newData),
 
-        dots.enter().append('circle')',
-            .attr('class', 'dot),
-            .merge(dots)',
-            .transition()',
-            .duration(this.options.animationDuration)',
-            .attr('cx', (d: ScatterPlotData) => scales.xScale(d.x))',
-            .attr('cy', (d: ScatterPlotData) => scales.yScale(d.y))',
+        dots.enter().append('circle')','
+            .attr('class', 'dot),'
+            .merge(dots)','
+            .transition()','
+            .duration(this.options.animationDuration)','
+            .attr('cx', (d: ScatterPlotData) => scales.xScale(d.x))','
+            .attr('cy', (d: ScatterPlotData) => scales.yScale(d.y))','
             .attr('r', (d: ScatterPlotData) => d.size || 5')',
-            .style('fill', (d: ScatterPlotData) => d.color || scales.colorScale(d.label || '),
+            .style('fill', (d: ScatterPlotData) => d.color || scales.colorScale(d.label || '),'
 
         dots.exit().remove(),
 
@@ -463,8 +462,8 @@ export class DataVisualizer {
     /**
      * Canvas APIによるフォールバック描画
      */''
-    private fallbackToCanvasRenderer()';
-        console.warn('D3.js not available, using Canvas API fallback);
+    private fallbackToCanvasRenderer()';'
+        console.warn('D3.js not available, using Canvas API fallback);'
         this.useCanvasFallback = true;
     }
 
@@ -472,7 +471,7 @@ export class DataVisualizer {
      * 可視化の削除
      */
     removeVisualization(containerId: string): void { const svg = this.svgElements.get(containerId),
-        if(svg) {
+        if (svg) {
             svg.remove() }
             this.svgElements.delete(containerId); }
         }
@@ -493,7 +492,7 @@ export class DataVisualizer {
 
         this.visualizations.clear();
         this.svgElements.clear();
-        this.scales.clear()';
+        this.scales.clear()';'
         console.log('DataVisualizer, destroyed');
 
-    }'}
+    }'}'

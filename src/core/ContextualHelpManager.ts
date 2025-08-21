@@ -6,30 +6,30 @@
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
 export interface HelpContext { scene: string,
-    component: string,
-    action?: string,
-    element?: HTMLElement,
+    component: string;
+    action?: string;
+    element?: HTMLElement;
      }
 
 export interface HelpContent { title: string,
-    description: string,
-    tips?: string[]  }
-    links?: Array<{ text: string,, url: string }>;
+    description: string;
+    tips?: string[];
+    links?: Array<{ text: string,, url: string;>;
 }
 
 export interface HelpManagerConfig { enabled: boolean,
-    showTips: boolean,
-    autoShow: boolean,
-    delay: number,
+    showTips: boolean;
+    autoShow: boolean;
+    delay: number;
     position: 'top' | 'bottom' | 'left' | 'right'
             }
 
 export class ContextualHelpManager {
-    private config: HelpManagerConfig,
-    private currentContext: HelpContext | null = null,
+    private config: HelpManagerConfig;
+    private currentContext: HelpContext | null = null;
     private, helpContent: Map<string, HelpContent> = new Map(),
-    private helpElement: HTMLElement | null = null,
-    private, showTimer: NodeJS.Timeout | null = null',
+    private helpElement: HTMLElement | null = null;
+    private, showTimer: NodeJS.Timeout | null = null','
 
     constructor(config: Partial<HelpManagerConfig> = {)) {
         this.config = {
@@ -40,42 +40,42 @@ export class ContextualHelpManager {
             position: 'bottom',
             ...config,
 
-        this.initialize(),
-     }
-';
+        this.initialize()
+}
+';'
 
     private initialize(): void { this.loadHelpContent(),
-        this.setupEventListeners()',
+        this.setupEventListeners()','
         console.log('ContextualHelpManager, initialized') }'
 
     private loadHelpContent('''
         this.helpContent.set('game.bubble', { ''
-            title: 'バブル操作',',
-            description: 'バブルをクリックして割ります',')',
-            tips: ['同じ色のバブルを連続で割るとボーナス', 'スペシャルバブルは特別な効果があります]'),
+            title: 'バブル操作',';'
+            description: 'バブルをクリックして割ります',')';
+            tips: ['同じ色のバブルを連続で割るとボーナス', 'スペシャルバブルは特別な効果があります]');
 
         this.helpContent.set('game.settings', {''
-            title: '設定画面',',
-            description: 'ゲームの設定を変更できます',')',
-            tips: ['音量や画質を調整できます', 'アクセシビリティ設定も利用可能] }
+            title: '設定画面',';'
+            description: 'ゲームの設定を変更できます',')';
+            tips: ['音量や画質を調整できます', 'アクセシビリティ設定も利用可能] }'
 
-    private setupEventListeners()';
-        if(typeof, window !== 'undefined') {
+    private setupEventListeners()';'
+        if (typeof, window !== 'undefined') {
 
             document.addEventListener('mouseover', this.handleMouseOver.bind(this)) }
 
             document.addEventListener('mouseout', this.handleMouseOut.bind(this); }
 }
-';
+';'
 
     private handleMouseOver(event: MouseEvent): void { ''
         if(!this.config.enabled || !this.config.autoShow) return,
-',
+','
 
         const target = event.target as HTMLElement,
-        const helpKey = target.getAttribute('data-help),
+        const helpKey = target.getAttribute('data-help),'
         
-        if(helpKey) {
+        if (helpKey) {
     
 }
             this.showTimer = setTimeout(() => {  }
@@ -94,8 +94,8 @@ export class ContextualHelpManager {
     showHelp(contentKey: string, element?: HTMLElement): void { const content = this.helpContent.get(contentKey),
         if (!content) return,
 
-        this.hideHelp()',
-        this.helpElement = document.createElement('div'),
+        this.hideHelp()','
+        this.helpElement = document.createElement('div');
         this.helpElement.className = 'contextual-help-tooltip',
 
         this.helpElement.innerHTML = `}'
@@ -104,9 +104,9 @@ export class ContextualHelpManager {
             <div class="help-description">${content.description}</div>"
             ${ content.tips ? `""
                 <ul, class="help-tips">" }"
-                    ${content.tips.map(tip => `<li>${tip}</li>`"}.join(''}''
-                </ul> : undefined';
-            ` : '}
+                    ${content.tips.map(tip => `<li>${tip}</li>`"}.join(''}''"
+                </ul> : undefined';'
+            ` : '}'
         `;
 
         document.body.appendChild(this.helpElement);
@@ -124,22 +124,22 @@ export class ContextualHelpManager {
 
         switch(this.config.position) {
 
-            case 'top':',
+            case 'top':','
                 top = rect.top - helpRect.height - 10,
                 left = rect.left + (rect.width - helpRect.width) / 2,
 
                 break,
-            case 'bottom':',
+            case 'bottom':','
                 top = rect.bottom + 10,
                 left = rect.left + (rect.width - helpRect.width) / 2,
 
                 break,
-            case 'left':',
+            case 'left':','
                 top = rect.top + (rect.height - helpRect.height) / 2,
                 left = rect.left - helpRect.width - 10,
 
                 break,
-            case 'right':',
+            case 'right':','
                 top = rect.top + (rect.height - helpRect.height) / 2,
                 left = rect.right + 10 }
                 break; }
@@ -165,12 +165,12 @@ export class ContextualHelpManager {
         this.config = { ...this.config, ...newConfig }
 
     destroy(): void { this.hideHelp(),
-        if(this.showTimer) {', ' }
+        if (this.showTimer) {', ' }
 
             clearTimeout(this.showTimer); }
         }
 
-        if(typeof, window !== 'undefined') {
+        if (typeof, window !== 'undefined') {
 
             document.removeEventListener('mouseover', this.handleMouseOver.bind(this)) }
 

@@ -3,76 +3,76 @@ import { getEffectsConfig  } from '../config/EffectsConfig.js';
 
 // Animation Manager types
 export interface AnimationConfig { enabled: boolean,
-    globalSpeed: number,
+    globalSpeed: number;
     quality: 'high' | 'medium' | 'low'
             }
 export interface Position { x: number,
-    y: number  }
+    y: number;
 export interface AnimationTarget { x?: number,
-    y?: number,
-    width?: number,
-    height?: number,
-    alpha?: number,
-    scale?: number,
-    rotation?: number,
-    color?: string }
+    y?: number;
+    width?: number;
+    height?: number;
+    alpha?: number;
+    scale?: number;
+    rotation?: number;
+    color?: string;
 export interface AnimationOptions { delay?: number,
-    easing?: string,
+    easing?: string;
 
-    intensity?: number,
-    direction?: 'left' | 'right' | 'up' | 'down',
-    distance?: number,
-    color?: string,
-    animateScale?: boolean,
-    gap?: number,
-    duration?: number }
+    intensity?: number;
+    direction?: 'left' | 'right' | 'up' | 'down';
+    distance?: number;
+    color?: string;
+    animateScale?: boolean;
+    gap?: number;
+    duration?: number;
 export interface Animation { id: number,
-    type: AnimationType,
-    target: AnimationTarget,
-    startValues: AnimationTarget,
-    endValues: AnimationTarget,
-    duration: number,
-    elapsed: number,
-    easing: string,
-    options?: AnimationOptions,
+    type: AnimationType;
+    target: AnimationTarget;
+    startValues: AnimationTarget;
+    endValues: AnimationTarget;
+    duration: number;
+    elapsed: number;
+    easing: string;
+    options?: AnimationOptions;
     onComplete?: () => void }
-';
+';'
 
-export type AnimationType = ';
-    | 'bubbleSpawn', ';
-    | 'bubbleDestroy', ';
-    | 'bubbleMovement', ';
-    | 'uiElement', ';
-    | 'scoreChange'';
-    | 'menuExit'';
-    | 'menuEnter'';
+export type AnimationType = ';'
+    | 'bubbleSpawn', ';'
+    | 'bubbleDestroy', ';'
+    | 'bubbleMovement', ';'
+    | 'uiElement', ';'
+    | 'scoreChange'';'
+    | 'menuExit'';'
+    | 'menuEnter'';'
     | 'loading';
 
 export interface TypeSettings { enabled: boolean,
-    speedMultiplier: number  }
+    speedMultiplier: number;
 export interface PerformanceMetrics { frameTime: number,
-    activeAnimations: number,
-    totalAnimations: number,
-    averageFrameTime: number,
-    maxFrameTime: number,
-    memoryUsage?: number  }
-';
+    activeAnimations: number;
+    totalAnimations: number;
+    averageFrameTime: number;
+    maxFrameTime: number;
+    memoryUsage?: number;
+';'
 
 export interface AnimationChainConfig {,
-    type: 'bubble' | 'ui',
-    target: AnimationTarget,
-    spawnType?: string,
-    animationType?: string,
-    duration?: number,
-    options?: AnimationOptions,
-    gap?: number }
-';
+    type: 'bubble' | 'ui';
+    target: AnimationTarget;
+    spawnType?: string;
+    animationType?: string;
+    duration?: number;
+    options?: AnimationOptions;
+    gap?: number;
+';'
 
 export interface QualitySettings {,
-    quality: 'high' | 'medium' | 'low',
-    maxAnimations: number,
-    frameSkipping: boolean,
-    reducedEffects: boolean }
+    quality: 'high' | 'medium' | 'low';
+    maxAnimations: number;
+    frameSkipping: boolean;
+    reducedEffects: boolean;
 /**
  * アニメーション管理クラス (Refactored)
  * アニメーション統合管理システム - サブコンポーネント化により責任を分離し、保守性を向上
@@ -83,10 +83,10 @@ export interface QualitySettings {,
  * -, AnimationRenderers: レンダリング処理（ローディング、エフェクト等）
  */
 export class AnimationManager {
-    private canvas: HTMLCanvasElement,
-    private animations: Animation[],
-    private animationId: number,
-    private, effectsConfig: any }
+    private canvas: HTMLCanvasElement;
+    private animations: Animation[];
+    private animationId: number;
+    private, effectsConfig: any;
     private easingFunctions: { [key: string]: (t: number) => number 
     };
     private subtleAnimations: any;
@@ -98,16 +98,15 @@ export class AnimationManager {
     private menuHandler: any;
     private loadingHandler: any;
     // アニメーションタイプ別設定
-    private, typeSettings: { [key: string]: TypeSettings 
-    };
+    private, typeSettings: { [key: string]: TypeSettings,;
     // キューイングシステム
-    private animationQueue: Animation[];
-    private, maxConcurrentAnimations: number;
+    private animationQueue: Animation[],
+    private, maxConcurrentAnimations: number,
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas,
-        this.animations = [],
-        this.animationId = 0,
+        this.canvas = canvas;
+        this.animations = [];
+        this.animationId = 0;
         
         // 設定システムとの連携
         this.effectsConfig = getEffectsConfig() }
@@ -119,15 +118,15 @@ export class AnimationManager {
         };
 
         ')';
-        console.log('Animation configuration:', { queueSize: this.animationQueue.length', maxConcurrent: this.maxConcurrentAnimations,')',
-            subtleConfig: this.subtleAnimations ',
+        console.log('Animation configuration:', { queueSize: this.animationQueue.length', maxConcurrent: this.maxConcurrentAnimations,')','
+            subtleConfig: this.subtleAnimations ','
 
         console.log('[AnimationManager] アニメーション管理システムを初期化しました',
         this._initializeFromConfig() }
     /**
      * サブコンポーネント初期化（Stub実装）'
      */''
-    private _initializeSubComponents()';
+    private _initializeSubComponents()';'
                 settings: { enabled: true, globalSpeed: 1.0, quality: 'high'
             });
                 updateSettings: (settings: any) => { Object.assign(this.engineCore.settings, settings) },
@@ -158,53 +157,52 @@ export class AnimationManager {
                     quality: 'high',
                     maxAnimations: 50,
                     frameSkipping: false,
-    reducedEffects: false 
-}';
+    reducedEffects: false,';'
             };
-            ';
+            ';'
 
             this.bubbleHandler = {;
-                createBubbleSpawnAnimation: (bubble: any, spawnType: string, options: AnimationOptions'): Animation => { }
+                createBubbleSpawnAnimation: (bubble: any, spawnType: string, options: AnimationOptions'): Animation => { }'
 
                     return this._createBasicAnimation('bubbleSpawn', bubble, spawnType, options';,''
-                createBubbleDestroyAnimation: (bubble: any, destroyType: string, options: AnimationOptions'): Animation => { }
+                createBubbleDestroyAnimation: (bubble: any, destroyType: string, options: AnimationOptions'): Animation => { }'
 
                     return this._createBasicAnimation('bubbleDestroy', bubble, destroyType, options';,''
-                createBubbleMovementAnimation: (bubble: any, _targetPosition: Position, duration: number, options: AnimationOptions'): Animation => { }
+                createBubbleMovementAnimation: (bubble: any, _targetPosition: Position, duration: number, options: AnimationOptions'): Animation => { }'
 
                     return this._createBasicAnimation('bubbleMovement', bubble, 'move', { ...options, duration });
                 },
                 updateBubbleAnimation: (animation: Animation, progress: number) => { this._updateBasicAnimation(animation, progress) }
             };
-            ';
+            ';'
 
             this.uiHandler = {;
-                createUIElementAnimation: (element: any, animationType: string, duration: number, options: AnimationOptions'): Animation => { }
+                createUIElementAnimation: (element: any, animationType: string, duration: number, options: AnimationOptions'): Animation => { }'
 
-                    return this._createBasicAnimation('uiElement', element, animationType, { ...options, duration }';
+                    return this._createBasicAnimation('uiElement', element, animationType, { ...options, duration }';'
 
                 },''
-                createScoreChangeAnimation: (_oldScore: number, _newScore: number, element: any, duration: number, options: AnimationOptions'): Animation => { }
+                createScoreChangeAnimation: (_oldScore: number, _newScore: number, element: any, duration: number, options: AnimationOptions'): Animation => { }'
 
                     return this._createBasicAnimation('scoreChange', element, 'scoreChange', { ...options, duration });
                 },
                 updateUIAnimation: (animation: Animation, progress: number) => { this._updateBasicAnimation(animation, progress) }
             };
-            ';
+            ';'
 
             this.menuHandler = { ''
-                createMenuTransitionAnimations: (fromMenu: any, toMenu: any, transitionType: string, options: AnimationOptions'): Animation[] => {,
-                    return [',
+                createMenuTransitionAnimations: (fromMenu: any, toMenu: any, transitionType: string, options: AnimationOptions'): Animation[] => {,'
+                    return [','
                         this._createBasicAnimation('menuExit', fromMenu, transitionType, options',]',
                         this._createBasicAnimation('menuEnter', toMenu, transitionType, options)] }
                     ]; }
                 },
                 updateMenuAnimation: (animation: Animation, progress: number) => { this._updateBasicAnimation(animation, progress) }
             };
-            ';
+            ';'
 
             this.loadingHandler = { ''
-                createLoadingAnimation: (type: string, position: Position | null, size: number, options: AnimationOptions'): Animation => {,
+                createLoadingAnimation: (type: string, position: Position | null, size: number, options: AnimationOptions'): Animation => {,'
                     const target = {
                         x: position?.x || this.canvas.width / 2, : undefined
                         y: position?.y || this.canvas.height / 2, : undefined
@@ -214,10 +212,10 @@ export class AnimationManager {
  }
                         alpha: 1 
     };
-                    return this._createBasicAnimation('loading', target, type, options';
+                    return this._createBasicAnimation('loading', target, type, options';'
 
                 },''
-                createProgressLoadingAnimation: (position: Position, size: number, options: AnimationOptions'): Animation => { }
+                createProgressLoadingAnimation: (position: Position, size: number, options: AnimationOptions'): Animation => { }'
 
                     return this.loadingHandler.createLoadingAnimation('progress', position, size, options);,
                 updateLoadingAnimation: (animation: Animation, progress: number) => { this._updateBasicAnimation(animation, progress) }
@@ -231,7 +229,7 @@ export class AnimationManager {
         } catch (error') { console.error('AnimationManager サブコンポーネント初期化に失敗:', error',
             getErrorHandler().handleError(error, 'ANIMATION_INIT_ERROR', {''
                 context: 'AnimationManager._initializeSubComponents'
-            }';
+            }';'
         }
     /**
      * 基本アニメーション作成（Stub実装）'
@@ -250,8 +248,8 @@ export class AnimationManager {
             endValues: endValues,
             duration: duration,
             elapsed: 0,
-    easing: easing };
-            options: options ;
+    easing: easing,;
+            options: options ,
     } }
     
     /**
@@ -284,9 +282,9 @@ export class AnimationManager {
             case 'fadeIn': }
 
                 return { ...baseValues, alpha: 0  }''
-            case 'scale':';
+            case 'scale':';'
                 return { ...baseValues, scale: 0  }''
-            case 'slideIn':';
+            case 'slideIn':';'
                 const slideDistance = options.distance || 50;
                 switch(options.direction) { }'
 
@@ -313,9 +311,9 @@ export class AnimationManager {
             case 'fadeOut': }
 
                 return { ...baseValues, alpha: 0  }''
-            case 'scale':';
+            case 'scale':';'
                 return baseValues;
-            case 'slideIn':';
+            case 'slideIn':';'
                 return baseValues;
             case 'pulse':
                 return { ...baseValues, scale: (options.intensity || 1.1) * baseValues.scale  },
@@ -325,7 +323,7 @@ export class AnimationManager {
      */
     private _initializeFromConfig(): void { try {
             const animationConfig = this.effectsConfig.getAnimationConfig?.(),
-            if(animationConfig) {
+            if (animationConfig) {
                 : undefined
                 const settings: AnimationConfig = {
                     enabled: animationConfig.enabled || true,
@@ -346,7 +344,7 @@ export class AnimationManager {
         this.easingFunctions = { ...this.easingFunctions, ...easingFunctions,
         
         // エンジンコアにも反映
-        if(this.engineCore && this.engineCore.setEasingFunctions) { }
+        if (this.engineCore && this.engineCore.setEasingFunctions) { }
 
             this.engineCore.setEasingFunctions(easingFunctions); }
         }
@@ -357,7 +355,7 @@ export class AnimationManager {
     /**
      * Set subtle animations for enhanced visual polish'
      */''
-    public setSubtleAnimations(subtleAnimations: any): void { this.subtleAnimations = subtleAnimations,
+    public setSubtleAnimations(subtleAnimations: any): void { this.subtleAnimations = subtleAnimations;
         console.log('[AnimationManager] 繊細なアニメーション設定を適用しました:', Object.keys(subtleAnimations)) }
     // ========================================
     // バブルアニメーション（サブコンポーネント呼び出し）
@@ -367,12 +365,12 @@ export class AnimationManager {
      * バブルスポーンアニメーション
      */''
     public animateBubbleSpawn(bubble: any, spawnType: string = 'scale', options: AnimationOptions = { ): number {
-        if(!this.engineCore.settings.enabled || !this.typeSettings.bubble.enabled) {
+        if (!this.engineCore.settings.enabled || !this.typeSettings.bubble.enabled) {
     
 }
             return -1;
         const animation = this.bubbleHandler.createBubbleSpawnAnimation(bubble, spawnType, options);
-        if(animation) {
+        if (animation) {
             animation.id = this.animationId++,
             
             // 遅延がある場合は遅延付きで開始
@@ -393,12 +391,12 @@ export class AnimationManager {
      * バブル破壊アニメーション'
      */''
     public animateBubbleDestroy(bubble: any, destroyType: string = 'shrink', options: AnimationOptions = { ): number {
-        if(!this.engineCore.settings.enabled || !this.typeSettings.bubble.enabled) {
+        if (!this.engineCore.settings.enabled || !this.typeSettings.bubble.enabled) {
     
 }
             return -1;
         const animation = this.bubbleHandler.createBubbleDestroyAnimation(bubble, destroyType, options);
-        if(animation) {
+        if (animation) {
             animation.id = this.animationId++,
             this.animations.push(animation) }
             return animation.id;
@@ -409,12 +407,12 @@ export class AnimationManager {
      * バブル移動アニメーション
      */
     public animateBubbleMovement(bubble: any, _targetPosition: Position, duration: number = 1000, options: AnimationOptions = { ): number {
-        if(!this.engineCore.settings.enabled || !this.typeSettings.bubble.enabled) {
+        if (!this.engineCore.settings.enabled || !this.typeSettings.bubble.enabled) {
     
 }
             return -1;
         const animation = this.bubbleHandler.createBubbleMovementAnimation(bubble, _targetPosition, duration, options);
-        if(animation) {
+        if (animation) {
             animation.id = this.animationId++,
             this.animations.push(animation) }
             return animation.id;
@@ -429,12 +427,12 @@ export class AnimationManager {
      * UIエレメントアニメーション
      */
     public animateUIElement(element: AnimationTarget, animationType: string, duration: number = 500, options: AnimationOptions = { ): number {
-        if(!this.engineCore.settings.enabled || !this.typeSettings.ui.enabled) {
+        if (!this.engineCore.settings.enabled || !this.typeSettings.ui.enabled) {
     
 }
             return -1;
         const animation = this.uiHandler.createUIElementAnimation(element, animationType, duration, options);
-        if(animation) {
+        if (animation) {
             animation.id = this.animationId++,
             this.animations.push(animation) }
             return animation.id;
@@ -445,12 +443,12 @@ export class AnimationManager {
      * スコア変更アニメーション
      */
     public animateScoreChange(oldScore: number, newScore: number, element: AnimationTarget, duration: number = 1000, options: AnimationOptions = { ): number {
-        if(!this.engineCore.settings.enabled || !this.typeSettings.score.enabled) {
+        if (!this.engineCore.settings.enabled || !this.typeSettings.score.enabled) {
     
 }
             return -1;
         const animation = this.uiHandler.createScoreChangeAnimation(oldScore, newScore, element, duration, options);
-        if(animation) {
+        if (animation) {
             animation.id = this.animationId++,
             
             // スコア増加時のスケールアニメーション
@@ -478,7 +476,7 @@ export class AnimationManager {
      * メニュー遷移アニメーション
      */''
     public animateMenuTransition(fromMenu: any, toMenu: any, transitionType: string = 'slide', options: AnimationOptions = { ): number[] {
-        if(!this.engineCore.settings.enabled || !this.typeSettings.menu.enabled) {
+        if (!this.engineCore.settings.enabled || !this.typeSettings.menu.enabled) {
     
 }
             return [];
@@ -488,7 +486,7 @@ export class AnimationManager {
         animations.forEach((animation: any) => {  animation.id = this.animationId++,
             animationIds.push(animation.id),
             
-            if(animation.options && animation.options.delay && animation.options.delay > 0) {
+            if (animation.options && animation.options.delay && animation.options.delay > 0) {
     
 }
                 setTimeout(() => { }
@@ -509,12 +507,12 @@ export class AnimationManager {
      * ローディングアニメーション作成
      */''
     public createLoadingAnimation(type: string = 'spinner', position: Position | null = null, size: number = 50, options: AnimationOptions = { ): number {
-        if(!this.engineCore.settings.enabled || !this.typeSettings.loading.enabled) {
+        if (!this.engineCore.settings.enabled || !this.typeSettings.loading.enabled) {
     
 }
             return -1;
         const animation = this.loadingHandler.createLoadingAnimation(type, position, size, options);
-        if(animation) {
+        if (animation) {
             animation.id = this.animationId++,
             this.animations.push(animation) }
             return animation.id;
@@ -526,7 +524,7 @@ export class AnimationManager {
      */
     public createProgressLoadingAnimation(position: Position, size: number, options: AnimationOptions = { ): number {
         const animation = this.loadingHandler.createProgressLoadingAnimation(position, size, options),
-        if(animation) {
+        if (animation) {
             animation.id = this.animationId++,
             this.animations.push(animation) }
             return animation.id;
@@ -537,7 +535,7 @@ export class AnimationManager {
      * 進行状況を更新
      */
     public updateLoadingProgress(animationId: number, progress: number): void { const animation = this.animations.find(anim => anim.id === animationId),
-        if(animation) {
+        if (animation) {
             const isCompleted = this.loadingHandler.updateLoadingProgress(animation, progress),
             
             // 100%完了時の特別アニメーション
@@ -554,7 +552,7 @@ export class AnimationManager {
                 x: loadingAnimation.target.x || 0, ,
                 y: loadingAnimation.target.y || 0 ),
                 alpha: 0,
-    scale: 1   },', 'pulse',')';
+    scale: 1   },', 'pulse',')';'
             300')';
             { intensity: 2.0, color: '#00FF00' )
         ),
@@ -613,7 +611,7 @@ export class AnimationManager {
      * イージング関数（エンジンコアに委譲）
      */
     public ease(t: number, type: string): number { // Custom easing functions
-        if(this.easingFunctions[type]) {
+        if (this.easingFunctions[type]) {
     
 }
             return this.easingFunctions[type](t);
@@ -621,19 +619,19 @@ export class AnimationManager {
         // Built-in easing functions
         switch(type) {
 
-            case 'linear':',
+            case 'linear':','
                 return t,
-            case 'easeIn':',
+            case 'easeIn':','
                 return t * t,
-            case 'easeOut':',
-                return 1 - (1 - t) * (1 - t'),
-            case 'easeInOut':',
+            case 'easeOut':','
+                return 1 - (1 - t) * (1 - t'),'
+            case 'easeInOut':','
                 return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
-            case 'easeInQuad':',
+            case 'easeInQuad':','
                 return t * t,
-            case 'easeOutQuad':',
-                return 1 - (1 - t) * (1 - t'),
-            case 'easeInOutQuad':',
+            case 'easeOutQuad':','
+                return 1 - (1 - t) * (1 - t'),'
+            case 'easeInOutQuad':','
                 return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
             case 'easeOutBounce':,
                 if (t < 1 / 2.75) {
@@ -669,19 +667,19 @@ export class AnimationManager {
     private _updateAnimation(animation: Animation, easedProgress: number): void { // アニメーションタイプ別更新をハンドラーに委譲
         switch(animation.type) {
 
-            case 'bubbleSpawn':',
-            case 'bubbleDestroy':',
-            case 'bubbleMovement':',
+            case 'bubbleSpawn':','
+            case 'bubbleDestroy':','
+            case 'bubbleMovement':','
                 this.bubbleHandler.updateBubbleAnimation(animation, easedProgress),
 
                 break,
-            case 'uiElement':',
-            case 'scoreChange':',
+            case 'uiElement':','
+            case 'scoreChange':','
                 this.uiHandler.updateUIAnimation(animation, easedProgress),
 
                 break,
-            case 'menuExit':',
-            case 'menuEnter':',
+            case 'menuExit':','
+            case 'menuEnter':','
                 this.menuHandler.updateMenuAnimation(animation, easedProgress),
 
                 break,
@@ -697,13 +695,13 @@ export class AnimationManager {
         // 基本的なインタラクティブアニメーション
         switch(interactionType) {
 
-            case 'hover':',
-                return this.animateUIElement(element, 'pulse', 200, { intensity: 1.1, ...options )',
-            case 'click':',
-                return this.animateUIElement(element, 'bounce', 150, { intensity: 0.95, ...options )',
-            case 'focus':',
+            case 'hover':','
+                return this.animateUIElement(element, 'pulse', 200, { intensity: 1.1, ...options )','
+            case 'click':','
+                return this.animateUIElement(element, 'bounce', 150, { intensity: 0.95, ...options )','
+            case 'focus':','
                 return this.animateUIElement(element, 'pulse', 300, { intensity: 1.05, ...options }
-            default: return -1;
+            default: return -1,
     
     /**
      * アニメーションプリセット（簡略化版）
@@ -712,14 +710,14 @@ export class AnimationManager {
 
         const presets: { [key: string]: () => number } = { ''
             attention: () => this.animateUIElement(target, 'pulse', 400, { intensity: 1.2, ...options ',''
-            gentleEnter: () => this.animateUIElement(target, 'fadeIn', 300, options',
-            dynamicExit: () => this.animateUIElement(target, 'fadeOut', 200, options',
+            gentleEnter: () => this.animateUIElement(target, 'fadeIn', 300, options','
+            dynamicExit: () => this.animateUIElement(target, 'fadeOut', 200, options','
             error: () => this.animateUIElement(target, 'shake', 300, { intensity: 1.0, ...options ',''
             success: () => this.animateUIElement(target, 'bounce', 400, options) }
         };
         
         const preset = presets[presetName];
-        if(!preset) {
+        if (!preset) {
     
 }
             console.warn(`[AnimationManager] 未知のプリセット: ${presetName}`});
@@ -737,7 +735,7 @@ export class AnimationManager {
      * 特定のアニメーションを停止
      */
     public stopAnimation(animationId: number): boolean { const index = this.animations.findIndex(anim => anim.id === animationId),
-        if(index !== -1) {
+        if (index !== -1) {
             const animation = this.animations[index],
             this.engineCore.completeAnimation(animation),
             this.animations.splice(index, 1) }
@@ -798,13 +796,13 @@ export class AnimationManager {
      * リソースクリーンアップ
      */
     public dispose(): void { this.stopAllAnimations(),
-        this.animationQueue = [],
+        this.animationQueue = [];
         
         // サブコンポーネントのクリーンアップ
-        if(this.engineCore) {
+        if (this.engineCore) {
 
             this.engineCore.dispose() }
 
         console.log('[AnimationManager] リソースをクリーンアップしました'); }
 
-    }'}
+    }'}'

@@ -14,14 +14,14 @@ import { jest  } from '@jest/globals';
 // Mock Canvas and other browser APIs
 global.HTMLCanvasElement = class HTMLCanvasElement {
     constructor() {
-        this.width = 800,
+        this.width = 800;
         this.height = 600 }
     
     getContext() {
         return {
-            fillRect: jest.fn(',
-            fillStyle: ',
-            strokeStyle: ',
+            fillRect: jest.fn(','
+            fillStyle: ','
+            strokeStyle: ','
             lineWidth: 1,
             font: '12px Arial',
             textAlign: 'left',
@@ -45,16 +45,16 @@ global.HTMLCanvasElement = class HTMLCanvasElement {
 // Mock Audio APIs
 global.Audio = class Audio {
     constructor(src {
-        this.src = src,
-        this.volume = 1.0,
-        this.muted = false,
-        this.currentTime = 0,
-        this.duration = 100,
-        this.readyState = 4,
-        this.addEventListener = jest.fn() as jest.Mock,
-        this.removeEventListener = jest.fn() as jest.Mock,
-        this.play = jest.fn().mockResolvedValue(undefined as jest.Mock),
-        this.pause = jest.fn() as jest.Mock,
+        this.src = src;
+        this.volume = 1.0;
+        this.muted = false;
+        this.currentTime = 0;
+        this.duration = 100;
+        this.readyState = 4;
+        this.addEventListener = jest.fn() as jest.Mock;
+        this.removeEventListener = jest.fn() as jest.Mock;
+        this.play = jest.fn().mockResolvedValue(undefined as jest.Mock);
+        this.pause = jest.fn() as jest.Mock;
         this.load = jest.fn() as jest.Mock }
 };
 global.AudioContext = jest.fn() as jest.Mock.mockImplementation(() => ({
@@ -73,11 +73,11 @@ global.AudioContext = jest.fn() as jest.Mock.mockImplementation(() => ({
     destination: {},
     close: jest.fn().mockResolvedValue(undefined,
     resume: jest.fn().mockResolvedValue(undefined,
-    suspend: jest.fn().mockResolvedValue(undefined));
+    suspend: jest.fn().mockResolvedValue(undefined)),
 // Mock Vibration API
 global.navigator = {
     ...global.navigator,
-    vibrate: jest.fn(',
+    vibrate: jest.fn(','
     userAgent: 'jest-test-environment'
 };
 describe('Phase G統合テストスイート', () => {
@@ -88,7 +88,7 @@ describe('Phase G統合テストスイート', () => {
         // Reset all mocks
         jest.clearAllMocks(),
         // Setup canvas mocks
-        mockCanvas = new HTMLCanvasElement('),
+        mockCanvas = new HTMLCanvasElement('),'
         mockContext = mockCanvas.getContext('2d'),
         // Mock DOM elements
         global.document = {
@@ -114,8 +114,8 @@ describe('Phase G統合テストスイート', () => {
             warn: jest.fn(
             error: jest.fn(
         clear: jest.fn( };
-    }');
-    describe('Phase G.1: Balance Adjuster Tool統合テスト', (') => {
+    }');'
+    describe('Phase G.1: Balance Adjuster Tool統合テスト', (') => {'
         test('Balance Adjuster sub-components統合テスト（モック実装）', async () => {
             // Balance Adjuster ツールのモック統合テスト
             // CLI依存関係を避けて、コンポーネント統合のみをテスト
@@ -124,7 +124,7 @@ describe('Phase G統合テストスイート', () => {
                     loadCurrentConfiguration: jest.fn(() => ({ scoring: { normal: 10 ) )),
                    , reloadConfiguration: jest.fn(() => true)),
                 calculator: {
-                    previewBalanceImpact: jest.fn((') => ({ impact: 'moderate' )),
+                    previewBalanceImpact: jest.fn((') => ({ impact: 'moderate' )),'
                    , performDetailedImpactAnalysis: jest.fn(() => ({ detailed: true ))),
                 validator: {
                     runQuickTests: jest.fn().mockResolvedValue({ passed: 5, failed: 0 ,
@@ -141,7 +141,7 @@ describe('Phase G統合テストスイート', () => {
             expect(config.toBeDefined();
             expect(config.scoring.normal).toBe(10);
             const impact = mockBalanceSystem.calculator.previewBalanceImpact({),
-            expect(impact.impact').toBe('moderate'),
+            expect(impact.impact').toBe('moderate'),'
             const testResult = await mockBalanceSystem.validator.runQuickTests({),
             expect(testResult.passed).toBe(5),
             expect(testResult.failed).toBe(0),
@@ -151,9 +151,9 @@ describe('Phase G統合テストスイート', () => {
             expect(mockBalanceSystem.dataLoader.loadCurrentConfiguration).toHaveBeenCalled(),
             expect(mockBalanceSystem.calculator.previewBalanceImpact).toHaveBeenCalled(),
             expect(mockBalanceSystem.validator.runQuickTests).toHaveBeenCalled(),
-            expect(mockBalanceSystem.exporter.saveChanges).toHaveBeenCalled() }');
+            expect(mockBalanceSystem.exporter.saveChanges).toHaveBeenCalled() }');'
     }
-    describe('Phase G.2: AudioAccessibilitySupport統合テスト', (') => {
+    describe('Phase G.2: AudioAccessibilitySupport統合テスト', (') => {'
         test('AudioAccessibilitySupport統合テスト（モック実装）', () => {
             // AudioAccessibilitySupport システムのモック統合テスト
             // 複雑なモジュール依存関係を避けて、コンポーネント統合をテスト
@@ -166,15 +166,15 @@ describe('Phase G統合テストスイート', () => {
             const mockAudioAccessibilitySupport = {
                 audioManager: mockAudioManager,
                 descriptionManager: {
-                    getStatus: jest.fn((') => ({ active: true, name: 'AudioDescriptionManager' )),
+                    getStatus: jest.fn((') => ({ active: true, name: 'AudioDescriptionManager' )),'
                     addDescription: jest.fn(
         showCaption: jest.fn(
                 cueManager: {
-                    getStatus: jest.fn((') => ({ active: true, name: 'AudioCueManager' )),
+                    getStatus: jest.fn((') => ({ active: true, name: 'AudioCueManager' )),'
                     processAudioEvent: jest.fn(
         updateColorIndicator: jest.fn(
                 feedbackManager: {
-                    getStatus: jest.fn((') => ({ active: true, name: 'AudioFeedbackManager' )),
+                    getStatus: jest.fn((') => ({ active: true, name: 'AudioFeedbackManager' )),'
                     triggerVibration: jest.fn(
         showVisualNotification: jest.fn(
                 settingsManager: {
@@ -188,7 +188,7 @@ describe('Phase G統合テストスイート', () => {
                 legacyAdapter: {
                     enableAccessibilityFeatures: jest.fn().mockResolvedValue(true),
                    , getCapabilities: jest.fn(() => ({))),
-                initialize: jest.fn().mockResolvedValue(true;);
+                initialize: jest.fn().mockResolvedValue(true,);
                , getStatus: jest.fn(() => ({ 
                     initialized: true, 
                     components: {
@@ -197,8 +197,7 @@ describe('Phase G統合テストスイート', () => {
                         feedback: true,
                         settings: true,
                         event: true,
-        legacy: true
-            });
+        legacy: true,);
                 ));
             };
             
@@ -217,23 +216,23 @@ describe('Phase G統合テストスイート', () => {
             expect(Object.keys(status.components).toHaveLength(6);
             // Test settings management
             const settings = mockAudioAccessibilitySupport.settingsManager.getSettings();
-            expect(settings.toBeDefined()');
+            expect(settings.toBeDefined()');'
             // Test component delegation
             mockAudioAccessibilitySupport.descriptionManager.addDescription('test', 'category');
             mockAudioAccessibilitySupport.cueManager.processAudioEvent('test-event');
             mockAudioAccessibilitySupport.feedbackManager.showVisualNotification('message');
-            expect(mockAudioAccessibilitySupport.descriptionManager.addDescription').toHaveBeenCalledWith('test', 'category');
-            expect(mockAudioAccessibilitySupport.cueManager.processAudioEvent').toHaveBeenCalledWith('test-event');
-            expect(mockAudioAccessibilitySupport.feedbackManager.showVisualNotification').toHaveBeenCalledWith('message');
-        }');
+            expect(mockAudioAccessibilitySupport.descriptionManager.addDescription').toHaveBeenCalledWith('test', 'category');'
+            expect(mockAudioAccessibilitySupport.cueManager.processAudioEvent').toHaveBeenCalledWith('test-event');'
+            expect(mockAudioAccessibilitySupport.feedbackManager.showVisualNotification').toHaveBeenCalledWith('message');'
+        }');'
     }
-    describe('Phase G.3: VisualFocusManager統合テスト', (') => {
+    describe('Phase G.3: VisualFocusManager統合テスト', (') => {'
         test('VisualFocusManager統合テスト（モック実装）', () => {
             // VisualFocusManagerのモック統合テスト
             // 実際のファイルが存在しない場合のフォールバック
             const mockManager = {
                 initialize: jest.fn().mockResolvedValue(true),
-               , getStatus: jest.fn().mockReturnValue({ active: true );
+               , getStatus: jest.fn().mockReturnValue({ active: true ),
                 updateFocusState: jest.fn(
                 renderFocusEffects: jest.fn(
                 handleFocusEvents: jest.fn(
@@ -241,19 +240,19 @@ describe('Phase G統合テストスイート', () => {
             
             expect(mockManager.initialize().resolves.toBe(true);
             expect(mockManager.getStatus().active).toBe(true);
-            expect((') => mockManager.updateFocusState('element').not.toThrow();
+            expect((') => mockManager.updateFocusState('element').not.toThrow();'
             expect(() => mockManager.renderFocusEffects().not.toThrow();
-            expect((') => mockManager.handleFocusEvents('event').not.toThrow();
+            expect((') => mockManager.handleFocusEvents('event').not.toThrow();'
             expect(() => mockManager.destroy().not.toThrow();
-        }');
+        }');'
     }
-    describe('Phase G.4: VisualFeedbackManager統合テスト', (') => {
+    describe('Phase G.4: VisualFeedbackManager統合テスト', (') => {'
         test('VisualFeedbackManager統合テスト（モック実装）', () => {
             // VisualFeedbackManagerのモック統合テスト
             // 実際のファイルが存在しない場合のフォールバック
             const mockManager = {
                 initialize: jest.fn().mockResolvedValue(true),
-               , getStatus: jest.fn().mockReturnValue({ active: true );
+               , getStatus: jest.fn().mockReturnValue({ active: true ),
                 showFeedback: jest.fn(
                 triggerAnimation: jest.fn(
                 updateConfiguration: jest.fn(
@@ -261,23 +260,23 @@ describe('Phase G統合テストスイート', () => {
             
             expect(mockManager.initialize().resolves.toBe(true);
             expect(mockManager.getStatus().active).toBe(true);
-            expect((') => mockManager.showFeedback('success').not.toThrow();
-            expect((') => mockManager.triggerAnimation('bounce').not.toThrow();
+            expect((') => mockManager.showFeedback('success').not.toThrow();'
+            expect((') => mockManager.triggerAnimation('bounce').not.toThrow();'
             expect(() => mockManager.updateConfiguration({)).not.toThrow(),
-            expect(() => mockManager.destroy().not.toThrow() }');
+            expect(() => mockManager.destroy().not.toThrow() }');'
     }
-    describe('Phase G Cross-Component統合テスト', (') => {
+    describe('Phase G Cross-Component統合テスト', (') => {'
         test('コンポーネント間依存関係テスト', () => {
             // Mock components interaction test
             const balanceAdjuster = new (class MockBalanceAdjuster {
-                constructor(') {
-                    this.initialized = true,
+                constructor(') {'
+                    this.initialized = true;
                     this.components = ['dataLoader', 'calculator', 'validator', 'exporter'] }
                 getStatus() { return { initialized: this.initialized, components: this.components }; }
             })();
             const audioSupport = new (class MockAudioAccessibilitySupport {
-                constructor(') {
-                    this.initialized = true,
+                constructor(') {'
+                    this.initialized = true;
                     this.components = ['description', 'cue', 'feedback', 'settings', 'event', 'legacy'] }
                 getStatus() { return { initialized: this.initialized, components: this.components }; }
             })();
@@ -285,7 +284,7 @@ describe('Phase G統合テストスイート', () => {
             expect(audioSupport.getStatus().initialized).toBe(true);
             expect(balanceAdjuster.getStatus().components.length).toBe(4);
             expect(audioSupport.getStatus().components.length).toBe(6);
-        }');
+        }');'
         test('エラーハンドリング統合テスト', () => {
             const errorHandler = {
                 handleError: jest.fn(
@@ -294,7 +293,7 @@ describe('Phase G統合テストスイート', () => {
             };
             
             // Simulate error handling across components
-            try {'),
+            try {'),'
                 throw new Error('Test integration error') } catch (error) {
                 errorHandler.handleError(error),
                 const recovery = errorHandler.recover(),
@@ -302,12 +301,12 @@ describe('Phase G統合テストスイート', () => {
             
             expect(errorHandler.handleError).toHaveBeenCalled();
             expect(errorHandler.recover).toHaveBeenCalled();
-        }');
+        }');'
         test('設定管理統合テスト', () => {
             const configManager = {
-                getConfig: jest.fn().mockReturnValue({);
+                getConfig: jest.fn().mockReturnValue({),
                 updateConfig: jest.fn(
-                validateConfig: jest.fn().mockReturnValue(true;);
+                validateConfig: jest.fn().mockReturnValue(true,);
                , syncConfigs: jest.fn().mockReturnValue(true
             };
             
@@ -321,9 +320,9 @@ describe('Phase G統合テストスイート', () => {
             expect(configManager.getConfig).toHaveBeenCalled();
             expect(configManager.validateConfig).toHaveBeenCalled();
             expect(configManager.syncConfigs).toHaveBeenCalled();
-        }');
+        }');'
     }
-    describe('Phase Gパフォーマンス統合テスト', (') => {
+    describe('Phase Gパフォーマンス統合テスト', (') => {'
         test('メモリリーク検出テスト', () => {
             const components: any[] = [],
             
@@ -341,10 +340,10 @@ describe('Phase G統合テストスイート', () => {
             // Verify cleanup
             components.forEach(component => {),
                 expect(component.destroy).toHaveBeenCalled(),
-                expect(component.data).toBeNull() }');
+                expect(component.data).toBeNull() }');'
         }
         test('応答時間統合テスト', async () => {
-            const startTime = Date.now('),
+            const startTime = Date.now('),'
             // Simulate component operations
             const operations = [
                 Promise.resolve('operation1'),
@@ -361,4 +360,4 @@ describe('Phase G統合テストスイート', () => {
             expect(responseTime.toBeLessThan(100), // Should complete within 100ms
         });
     }
-}');
+}');'

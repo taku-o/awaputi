@@ -5,138 +5,135 @@
  */
 
 interface HistorySettings { maxHistoryEntries: number,
-    maxParticipationEntries: number,
-    retentionDays: number,
-    enableDetailedTracking: boolean  }
+    maxParticipationEntries: number;
+    retentionDays: number;
+    enableDetailedTracking: boolean;
 
 interface Statistics { totalEventsParticipated: number,
-    totalEventsCompleted: number,
-    favoriteEventType: string | null,
-    averageScore: number,
-    bestRank: number | null,
-    streakCount: number }
+    totalEventsCompleted: number;
+    favoriteEventType: string | null;
+    averageScore: number;
+    bestRank: number | null;
+    streakCount: number;
 
 interface HistoryEntry { id: string,
-    type: string,
-    eventId?: string,
-    eventName?: string,
-    eventType?: string,
-    achievementId?: string,
-    achievementName?: string,
-    timestamp: number,
-    playerLevel: number,
-    details?: any,
-    results?: EventResults,
-    context?: any,
-    ranking?: RankingData }
+    type: string;
+    eventId?: string;
+    eventName?: string;
+    eventType?: string;
+    achievementId?: string;
+    achievementName?: string;
+    timestamp: number;
+    playerLevel: number;
+    details?: any;
+    results?: EventResults;
+    context?: any;
+    ranking?: RankingData;
 
 interface ParticipationData { eventId: string,
-    firstParticipation: number,
-    participationCount: number,
-    completionCount: number,
-    bestScore: number,
-    bestRank: number | null,
-    lastParticipation: number,
-    averageScore: number,
-    totalScore: number  }
+    firstParticipation: number;
+    participationCount: number;
+    completionCount: number;
+    bestScore: number;
+    bestRank: number | null;
+    lastParticipation: number;
+    averageScore: number;
+    totalScore: number;
 
 interface EventResults { score: number,
-    rank: number,
-    completionTime: number,
-    achievements?: any[],
-    rewards?: any,
-    difficulty?: string,
-    participantCount?: number,
-    personalBest?: boolean }
+    rank: number;
+    completionTime: number;
+    achievements?: any[];
+    rewards?: any;
+    difficulty?: string;
+    participantCount?: number;
+    personalBest?: boolean;
 
 interface RankingData { currentRank: number,
-    previousRank: number,
-    improvement: number,
-    totalParticipants: number,
-    percentile: number  }
+    previousRank: number;
+    improvement: number;
+    totalParticipants: number;
+    percentile: number;
 
 interface Event { id: string,
-    name: string,
-    type: string,
-    duration?: number,
-    specialRules?: any,
-    rewards?: any }
+    name: string;
+    type: string;
+    duration?: number;
+    specialRules?: any;
+    rewards?: any;
 
 interface Achievement { id: string,
-    name: string,
-    category?: string,
-    rarity?: string,
+    name: string;
+    category?: string;
+    rarity?: string;
     points?: number,  }
 
 interface Filter { type?: string,
-    eventId?: string,
-    startDate?: number,
-    endDate?: number,
-    sortBy?: string,
-    sortOrder?: 'asc' | 'desc',
-    limit?: number }
+    eventId?: string;
+    startDate?: number;
+    endDate?: number;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+    limit?: number;
 
-interface EventTypeStats { [key: string]: number }
+interface EventTypeStats { [key: string]: number;
 
 interface MonthlyStats { [key: string]: {
         coun,t: number,
         totalScore: number,
-    averageScore: number }
+    averageScore: number,
 
 interface CategoryStats { [key: string]: {
         coun,t: number,
-    points: number }
+    points: number,
 
 interface AchievementStats { totalAchievements: number,
-    totalPoints: number,
-    categories: CategoryStats
-     }
+    totalPoints: number;
+    categories: CategoryStats;
 
 interface PersonalBests { [eventId: string]: {
         bestScor,e: number,
         bestRank: number | null,
-    completionCount: number }
+    completionCount: number,
 
 interface DetailedStatistics { general: Statistics,
-    eventTypes: EventTypeStats,
-    monthly: MonthlyStats,
-    achievements: AchievementStats,
-    recentActivity: HistoryEntry[],
-    personalBests: PersonalBests
-     }
+    eventTypes: EventTypeStats;
+    monthly: MonthlyStats;
+    achievements: AchievementStats;
+    recentActivity: HistoryEntry[];
+    personalBests: PersonalBests;
 
 interface ExportData { eventHistory: HistoryEntry[],
-    participationHistory: [string, ParticipationData][],
-    achievementHistory: HistoryEntry[],
-    rankingHistory: HistoryEntry[],
-    statistics: Statistics,
-    exportDate: number  }
+    participationHistory: [string, ParticipationData][];
+    achievementHistory: HistoryEntry[];
+    rankingHistory: HistoryEntry[];
+    statistics: Statistics;
+    exportDate: number;
 
 export class EventHistoryManager {
-    private gameEngine: any,
-    private eventHistory: HistoryEntry[] = [],
+    private gameEngine: any;
+    private eventHistory: HistoryEntry[] = [];
     private, participationHistory: Map<string, ParticipationData> = new Map(),
-    private achievementHistory: HistoryEntry[] = [],
-    private rankingHistory: HistoryEntry[] = [],
-    private settings: HistorySettings,
+    private achievementHistory: HistoryEntry[] = [];
+    private rankingHistory: HistoryEntry[] = [];
+    private settings: HistorySettings;
     private, statistics: Statistics,
     constructor(gameEngine: any) {
 
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // 履歴データ
-        this.eventHistory = [],
-        this.participationHistory = new Map(),
-        this.achievementHistory = [],
-        this.rankingHistory = [],
+        this.eventHistory = [];
+        this.participationHistory = new Map();
+        this.achievementHistory = [];
+        this.rankingHistory = [];
         
         // 履歴設定
         this.settings = {
             maxHistoryEntries: 1000,
             maxParticipationEntries: 500,
     retentionDays: 365 }
-            enableDetailedTracking: true 
-    };
+            enableDetailedTracking: true;;
         // 統計データ
         this.statistics = { totalEventsParticipated: 0,
             totalEventsCompleted: 0,
@@ -150,23 +147,23 @@ export class EventHistoryManager {
     /**
      * 履歴データを読み込み
      */''
-    loadHistoryData()';
+    loadHistoryData()';'
             const savedHistory = localStorage.getItem('gameEventHistory');
             const savedParticipation = localStorage.getItem('gameEventParticipation');
-            const savedStatistics = localStorage.getItem('gameEventStatistics);
+            const savedStatistics = localStorage.getItem('gameEventStatistics);'
             
             if (savedHistory) { this.eventHistory = JSON.parse(savedHistory) }
             
-            if(savedParticipation) {
+            if (savedParticipation) {
             
                 const participationData = JSON.parse(savedParticipation) as [string, ParticipationData][] }
                 this.participationHistory = new Map(participationData); }
             }
             
             if (savedStatistics) { Object.assign(this.statistics, JSON.parse(savedStatistics) }
-            ';
+            ';'
             // 古いデータをクリーンアップ
-            this.cleanupOldHistory()';
+            this.cleanupOldHistory()';'
             console.log('Event, history data, loaded');
         } catch (error) { console.error('Failed to load event history data:', error }
     }
@@ -174,10 +171,10 @@ export class EventHistoryManager {
     /**
      * 履歴データを保存'
      */''
-    saveHistoryData()';
+    saveHistoryData()';'
             localStorage.setItem('gameEventHistory', JSON.stringify(this.eventHistory));
             localStorage.setItem('gameEventParticipation';
-                JSON.stringify(Array.from(this.participationHistory.entries())');
+                JSON.stringify(Array.from(this.participationHistory.entries())');'
             localStorage.setItem('gameEventStatistics', JSON.stringify(this.statistics));
 
             console.log('Event, history data, saved');
@@ -201,7 +198,7 @@ export class EventHistoryManager {
     rewards: event.rewards  }
         };
         this.addHistoryEntry(historyEntry);
-        this.updateParticipationHistory(event.id, 'started);
+        this.updateParticipationHistory(event.id, 'started);'
         
         console.log(`Event, start recorded: ${event.name}`});
     }
@@ -239,7 +236,7 @@ export class EventHistoryManager {
      */'
     recordAchievementUnlock(achievement: Achievement, eventContext?: any): void { const historyEntry: HistoryEntry = {''
             id: this.generateHistoryId('''
-            type: 'achievement_unlock),
+            type: 'achievement_unlock),'
             achievementId: achievement.id,
     achievementName: achievement.name),
             timestamp: Date.now(),
@@ -260,7 +257,7 @@ export class EventHistoryManager {
      * ランキング更新を記録
      */'
     recordRankingUpdate(eventId: string, rankingData: RankingData): void { const historyEntry: HistoryEntry = {''
-            id: this.generateHistoryId()',
+            id: this.generateHistoryId()','
             type: 'ranking_update',
     eventId: eventId),
             timestamp: Date.now(),
@@ -287,7 +284,7 @@ export class EventHistoryManager {
     private addHistoryEntry(entry: HistoryEntry): void { this.eventHistory.push(entry),
         
         // 最大エントリ数を超えた場合は古いものを削除
-        if(this.eventHistory.length > this.settings.maxHistoryEntries) {
+        if (this.eventHistory.length > this.settings.maxHistoryEntries) {
     
 }
             this.eventHistory.shift(); }
@@ -299,7 +296,7 @@ export class EventHistoryManager {
     /**
      * 参加履歴を更新
      */
-    private updateParticipationHistory(eventId: string, status: string, results: EventResults | null = null): void { if(!this.participationHistory.has(eventId) {
+    private updateParticipationHistory(eventId: string, status: string, results: EventResults | null = null): void { if (!this.participationHistory.has(eventId) {
             this.participationHistory.set(eventId, {
                 eventId: eventId),
                 firstParticipation: Date.now(),
@@ -323,7 +320,7 @@ export class EventHistoryManager {
             participation.totalScore += results.score,
             participation.averageScore = participation.totalScore / participation.completionCount,
             
-            if(results.score > participation.bestScore) {
+            if (results.score > participation.bestScore) {
     
 }
                 participation.bestScore = results.score; }
@@ -335,7 +332,7 @@ export class EventHistoryManager {
         }
         
         // 最大エントリ数チェック
-        if(this.participationHistory.size > this.settings.maxParticipationEntries) {
+        if (this.participationHistory.size > this.settings.maxParticipationEntries) {
             const oldestEntry = Array.from(this.participationHistory.entries(),
                 .sort((a, b) => a[1].lastParticipation - b[1].lastParticipation)[0] }
             this.participationHistory.delete(oldestEntry[0]); }
@@ -362,8 +359,8 @@ export class EventHistoryManager {
      */
     private getEventTypeParticipationCount(): EventTypeStats {
         const counts: EventTypeStats = {}''
-        this.eventHistory.forEach(entry => {  '),
-            if(entry.type === 'event_completion') {', ' }
+        this.eventHistory.forEach(entry => {  '),'
+            if (entry.type === 'event_completion') {', ' }
 
                 const eventType = entry.eventType || 'unknown'; }
                 counts[eventType] = (counts[eventType] || 0) + 1; }
@@ -376,13 +373,13 @@ export class EventHistoryManager {
      * 連続参加記録を更新
      */'
     private updateStreakCount(): void { // 過去7日間の参加状況をチェック
-        const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000'),
+        const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000'),'
 
         const recentParticipations = this.eventHistory.filter(entry => ')',
             entry.type === 'event_start' && entry.timestamp > sevenDaysAgo),
         
         // 日別参加状況を計算 }
-        const dailyParticipation: { [key: string]: boolean } = {}
+        const dailyParticipation: { [key: string]: boolean, = {}
         recentParticipations.forEach(entry => {  ),
             const date = new Date(entry.timestamp).toDateString() }
             dailyParticipation[date] = true; }
@@ -414,7 +411,7 @@ export class EventHistoryManager {
         let history = [...this.eventHistory],
         
         // フィルタリング
-        if(filter.type) {
+        if (filter.type) {
     
 }
             history = history.filter(entry => entry.type === filter.type); }
@@ -426,14 +423,14 @@ export class EventHistoryManager {
         if (filter.startDate) { history = history.filter(entry => entry.timestamp >= filter.startDate) }
         }
         
-        if(filter.endDate) {
-        ',
+        if (filter.endDate) {
+        ','
 
-            ' }
+            ' }'
 
             history = history.filter(entry => entry.timestamp <= filter.endDate); }
         }
-        ';
+        ';'
         // ソート
         if(filter.sortBy === 'timestamp' {'
 
@@ -483,12 +480,12 @@ export class EventHistoryManager {
      */
     private getMonthlyParticipationStats(): MonthlyStats {
         const stats: MonthlyStats = {}''
-        this.eventHistory.forEach(entry => {  '),
+        this.eventHistory.forEach(entry => {  '),'
             if(entry.type === 'event_completion' { }'
                 const date = new Date(entry.timestamp); }
                 const monthKey = `${date.getFullYear(})-${date.getMonth(}) + 1}`;
                 
-                if(!stats[monthKey]) {
+                if (!stats[monthKey]) {
     
 }
                     stats[monthKey] = { count: 0, totalScore: 0, averageScore: 0  }
@@ -506,7 +503,7 @@ export class EventHistoryManager {
      * 実績統計を取得'
      */ : undefined''
     private getAchievementStatistics('';
-            const, category = entry.details?.category || 'unknown);
+            const, category = entry.details?.category || 'unknown);'
             );
             if (!categoryStats[category]) { : undefined 
                 categoryStats[category] = { count: 0, points: 0  }
@@ -518,9 +515,8 @@ export class EventHistoryManager {
         
         return { : undefined
             totalAchievements: this.achievementHistory.length,
-    totalPoints: totalPoints };
-            categories: categoryStats 
-    }
+    totalPoints: totalPoints,;
+            categories: categoryStats,
     
     /**
      * 最近のアクティビティを取得
@@ -551,10 +547,10 @@ export class EventHistoryManager {
      */
     private cleanupOldHistory(): void { const cutoffTime = Date.now() - (this.settings.retentionDays * 24 * 60 * 60 * 1000),
         
-        this.eventHistory = this.eventHistory.filter(entry => entry.timestamp > cutoffTime),
+        this.eventHistory = this.eventHistory.filter(entry => entry.timestamp > cutoffTime);
 
-        this.achievementHistory = this.achievementHistory.filter(entry => entry.timestamp > cutoffTime),
-        this.rankingHistory = this.rankingHistory.filter(entry => entry.timestamp > cutoffTime),
+        this.achievementHistory = this.achievementHistory.filter(entry => entry.timestamp > cutoffTime);
+        this.rankingHistory = this.rankingHistory.filter(entry => entry.timestamp > cutoffTime);
 
         console.log('Old, history data, cleaned up') }'
     }
@@ -586,7 +582,7 @@ export class EventHistoryManager {
      * 履歴データをインポート
      */
     importHistoryData(data: ExportData): boolean { try {
-            if(data.eventHistory) {
+            if (data.eventHistory) {
     
 }
                 this.eventHistory = data.eventHistory; }
@@ -600,20 +596,20 @@ export class EventHistoryManager {
             
             if (data.statistics) { this.statistics = data.statistics }
 
-            this.saveHistoryData()';
+            this.saveHistoryData()';'
             console.log('History, data imported, successfully');
-            ';
+            ';'
 
             return true;} catch (error) {
-            console.error('Failed to import history data:', error',
+            console.error('Failed to import history data:', error','
             return false,
     
     /**
      * 履歴データを読み込み（EventStageManager対応）'
      */''
-    load()',
-            const savedHistoryData = localStorage.getItem('eventHistoryData),
-            if(savedHistoryData) {
+    load()','
+            const savedHistoryData = localStorage.getItem('eventHistoryData),'
+            if (savedHistoryData) {
                 const data = JSON.parse(savedHistoryData),
                 
                 if (data.eventHistory) {
@@ -627,7 +623,7 @@ export class EventHistoryManager {
                 
                 if (data.rankingHistory) { this.rankingHistory = data.rankingHistory }
 
-                if(data.statistics) {
+                if (data.statistics) {
     
 }
                     this.statistics = { ...this.statistics, ...data.statistics }
@@ -636,14 +632,14 @@ export class EventHistoryManager {
 
             } else { }'
 
-                console.log('[EventHistoryManager] 保存されたデータがありません、デフォルト設定を使用');' }
+                console.log('[EventHistoryManager] 保存されたデータがありません、デフォルト設定を使用');' }'
 
             } catch (error) {
             console.error('[EventHistoryManager] データ読み込みエラー:', error),
             // エラーの場合は初期状態にリセット
-            this.eventHistory = [],
-            this.participationHistory = new Map(),
-            this.achievementHistory = [],
+            this.eventHistory = [];
+            this.participationHistory = new Map();
+            this.achievementHistory = [];
             this.rankingHistory = [] }
     }
 
@@ -651,7 +647,7 @@ export class EventHistoryManager {
      * リソースクリーンアップ
      */
     dispose(): void { ''
-        this.saveHistoryData()',
+        this.saveHistoryData()';'
         console.log('EventHistoryManager, disposed') }
 
-    }'}
+    }'}'

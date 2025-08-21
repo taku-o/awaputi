@@ -6,139 +6,130 @@
 
 // 型定義
 export interface TimingAdjustmentManager { gameEngine: any,
-    config: TimingConfiguration,
-    state: TimingState,
-    adaptiveLearning: AdaptiveLearningConfig,
-    suggestAdaptation: (adjustment: AdjustmentType, averageTime: number) => void,
-    applyProfile: (profileName: string) => void,
-    suggestProfileChange: (profileName: string) => void,
+    config: TimingConfiguration;
+    state: TimingState;
+    adaptiveLearning: AdaptiveLearningConfig;
+    suggestAdaptation: (adjustment: AdjustmentType, averageTime: number) => void;
+    applyProfile: (profileName: string) => void;
+    suggestProfileChange: (profileName: string) => void;
     getCurrentProfile: () => TimingProfile  }
 }
 
 export interface TimingConfiguration { profiles: Record<ProfileType, TimingProfile>,
-    autoAdjustment: boolean  }
+    autoAdjustment: boolean;
 
 export interface TimingProfile { adjustmentLevel: AdjustmentLevel,
-    preferences: TimingPreferences,
-    customTimeouts: CustomTimeouts
-    }
+    preferences: TimingPreferences;
+    customTimeouts: CustomTimeouts;
 
 export interface TimingPreferences { showTimeWarnings: boolean,
-    enableProgressIndicators?: boolean,
-    allowTimeExtension?: boolean,
-    preferVisualCues?: boolean }
+    enableProgressIndicators?: boolean;
+    allowTimeExtension?: boolean;
+    preferVisualCues?: boolean;
 
 export interface CustomTimeouts { animation: number,
-    transition: number,
-    response?: number,
+    transition: number;
+    response?: number;
     interaction?: number,  }
 
 export interface TimingState { currentProfile: ProfileType,
-    userInteractionData: UserInteractionData,
-    calibrationHistory: CalibrationRecord[],
-    systemPreferences: SystemPreferences
-     }
+    userInteractionData: UserInteractionData;
+    calibrationHistory: CalibrationRecord[];
+    systemPreferences: SystemPreferences;
 
 export interface UserInteractionData { recentResponses: ResponseRecord[],
-    averageResponseTime: number,
-    totalInteractions: number,
-    lastCalibration: number }
+    averageResponseTime: number;
+    totalInteractions: number;
+    lastCalibration: number;
 
 export interface ResponseRecord { time: number,
-    timestamp: number,
-    type: InteractionType,
-    accuracy?: number,
-    context?: string }
+    timestamp: number;
+    type: InteractionType;
+    accuracy?: number;
+    context?: string;
 
 export interface AdaptiveLearningConfig { enabled: boolean,
-    data: AdaptiveLearningData,
-    thresholds: LearningThresholds,
-    settings: AdaptiveLearningSettings
-     }
+    data: AdaptiveLearningData;
+    thresholds: LearningThresholds;
+    settings: AdaptiveLearningSettings;
 
 export interface AdaptiveLearningData { userResponseTimes: number[],
-    extensionRequests: number,
-    pauseFrequency: number,
-    preferredSpeed: number,
-    accuracyTrend: number[] }
+    extensionRequests: number;
+    pauseFrequency: number;
+    preferredSpeed: number;
+    accuracyTrend: number[];
 
 export interface LearningThresholds { adaptationTrigger: number,
-    slowResponse: number,
-    fastResponse: number,
-    accuracyThreshold: number,
-    confidenceLevel: number }
+    slowResponse: number;
+    fastResponse: number;
+    accuracyThreshold: number;
+    confidenceLevel: number;
 
 export interface AdaptiveLearningSettings { learningRate: number,
-    adaptationInterval: number,
-    maxAdjustmentPerSession: number,
-    conservativeMode: boolean }
+    adaptationInterval: number;
+    maxAdjustmentPerSession: number;
+    conservativeMode: boolean;
 
 export interface CalibrationRecord { timestamp: number,
-    profileUsed: ProfileType,
-    adjustments: ProfileAdjustment[],
-    results: CalibrationResult
-    }
+    profileUsed: ProfileType;
+    adjustments: ProfileAdjustment[];
+    results: CalibrationResult;
 
 export interface ProfileAdjustment { property: string,
-    oldValue: number | boolean | string,
-    newValue: number | boolean | string,
-    reason: AdjustmentReason
-    }
+    oldValue: number | boolean | string;
+    newValue: number | boolean | string;
+    reason: AdjustmentReason;
 
 export interface CalibrationResult { success: boolean,
-    improvementScore: number,
-    userSatisfaction?: number,
-    recommendedProfile?: ProfileType }
+    improvementScore: number;
+    userSatisfaction?: number;
+    recommendedProfile?: ProfileType;
 
 export interface SystemPreferences { reducedMotion: boolean,
-    highContrast: boolean,
-    largeText: boolean,
-    colorScheme: ColorScheme
-     }
+    highContrast: boolean;
+    largeText: boolean;
+    colorScheme: ColorScheme;
 
 export interface AccessibilitySettings { motorImpairment: boolean,
-    cognitiveImpairment: boolean,
-    reducedDexterity: boolean,
-    memoryIssues: boolean,
-    seniorFriendly: boolean,
-    visualImpairment?: boolean,
-    hearingImpairment?: boolean }
+    cognitiveImpairment: boolean;
+    reducedDexterity: boolean;
+    memoryIssues: boolean;
+    seniorFriendly: boolean;
+    visualImpairment?: boolean;
+    hearingImpairment?: boolean;
 
 export interface UserInteraction { type: InteractionType,
-    startTime: number,
-    responseTime?: number,
-    accuracy?: number,
+    startTime: number;
+    responseTime?: number;
+    accuracy?: number;
     context?: string,  }
 
 export interface ValidationResult { isValid: boolean,
-    issues: string[],
-    dataQuality: DataQuality
-     }
+    issues: string[];
+    dataQuality: DataQuality;
 
 export interface DataQuality { score: number,
-    description: QualityDescription,
-    details?: DataQualityDetails
-    }
+    description: QualityDescription;
+    details?: DataQualityDetails;
 
 export interface DataQualityDetails { dataSize: number,
-    sizeScore: number,
-    consistencyScore: number,
-    standardDeviation: number }
+    sizeScore: number;
+    consistencyScore: number;
+    standardDeviation: number;
 
 export interface CalibrationStatistics { validation: ValidationResult,
-    totalInteractions: number,
-    averageResponseTime: number,
-    adaptationHistory: number[],
-    currentThresholds: LearningThresholds,
-    responseTimeRange?: ResponseTimeRange
-    }
+    totalInteractions: number;
+    averageResponseTime: number;
+    adaptationHistory: number[];
+    currentThresholds: LearningThresholds;
+    responseTimeRange?: ResponseTimeRange;
 
 export interface ResponseTimeRange { min: number,
-    max: number,
-    median: number }
+    max: number;
+    median: number;
 
 export interface GameEngine {
-    accessibilityManager: AccessibilityManager }
+    accessibilityManager: AccessibilityManager;
 
 export interface AccessibilityManager { getCurrentSettings: () => AccessibilitySettings,
     on: (event: string, callback: (setting,s: AccessibilitySettings) => void) => void  }
@@ -171,53 +162,53 @@ export const SIZE_SCORE_WEIGHT = 0.3;
 export const CONSISTENCY_SCORE_WEIGHT = 0.7;
 // 型ガード
 export function isValidResponseRecord(record: any): record is ResponseRecord { return record &&,
-           typeof record.time === 'number' && ',
-           typeof record.timestamp === 'number' && ',
+           typeof record.time === 'number' && ','
+           typeof record.timestamp === 'number' && ','
            typeof record.type === 'string' &&,
            record.time >= 0 && ,
            record.timestamp > 0 }
 
 export function isValidTimingProfile(profile: any): profile is TimingProfile { return profile &&,
-           typeof profile.adjustmentLevel === 'string' &&',
-           typeof profile.preferences === 'object' &&',
+           typeof profile.adjustmentLevel === 'string' &&','
+           typeof profile.preferences === 'object' &&','
            typeof profile.customTimeouts === 'object' }
 
 export function isAccessibilitySettings(settings: any): settings is AccessibilitySettings { return settings &&,
-           typeof settings.motorImpairment === 'boolean' &&',
-           typeof settings.cognitiveImpairment === 'boolean' &&',
-           typeof settings.reducedDexterity === 'boolean' &&',
-           typeof settings.memoryIssues === 'boolean' &&',
+           typeof settings.motorImpairment === 'boolean' &&','
+           typeof settings.cognitiveImpairment === 'boolean' &&','
+           typeof settings.reducedDexterity === 'boolean' &&','
+           typeof settings.memoryIssues === 'boolean' &&','
            typeof settings.seniorFriendly === 'boolean' }
 
 export function isValidProfileType(type: string): type is ProfileType {,
-    return ['standard', 'motor', 'cognitive', 'senior', 'custom].includes(type) }
+    return ['standard', 'motor', 'cognitive', 'senior', 'custom].includes(type) }'
 
 export function isMediaQueryList(query: any): query is MediaQueryList { return query &&,
-           typeof query.matches === 'boolean' &&',
+           typeof query.matches === 'boolean' &&','
            typeof query.addEventListener === 'function' }
 }
 
 export function hasAccessibilityManager(engine: any): engine is GameEngine { return engine &&,
-           engine.accessibilityManager &&',
-           typeof engine.accessibilityManager.getCurrentSettings === 'function' &&',
+           engine.accessibilityManager &&','
+           typeof engine.accessibilityManager.getCurrentSettings === 'function' &&','
            typeof engine.accessibilityManager.on === 'function' }
 }
 
 export class TimingCalibrator {
-    private manager: TimingAdjustmentManager,
-    private gameEngine: any,
-    private config: TimingConfiguration,
-    private state: TimingState,
-    private, adaptiveLearning: AdaptiveLearningConfig',
+    private manager: TimingAdjustmentManager;
+    private gameEngine: any;
+    private config: TimingConfiguration;
+    private state: TimingState;
+    private, adaptiveLearning: AdaptiveLearningConfig','
 
     constructor(timingAdjustmentManager: TimingAdjustmentManager) {
-        this.manager = timingAdjustmentManager,
-        this.gameEngine = timingAdjustmentManager.gameEngine,
-        this.config = timingAdjustmentManager.config,
-        this.state = timingAdjustmentManager.state,
-        this.adaptiveLearning = timingAdjustmentManager.adaptiveLearning,
+        this.manager = timingAdjustmentManager;
+        this.gameEngine = timingAdjustmentManager.gameEngine;
+        this.config = timingAdjustmentManager.config;
+        this.state = timingAdjustmentManager.state;
+        this.adaptiveLearning = timingAdjustmentManager.adaptiveLearning;
 
-        ' }
+        ' }'
 
     }
 
@@ -227,24 +218,24 @@ export class TimingCalibrator {
     /**
      * システム設定を検出'
      */''
-    detectSystemPreferences()';
+    detectSystemPreferences()';'
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)',
         const prefersHighContrast = window.matchMedia('(prefers-contrast: high)',
         
         // 現在の状態を記録
         this.state.systemPreferences = { reducedMotion: prefersReducedMotion.matches,
             highContrast: prefersHighContrast.matches,
-            largeText: window.matchMedia('(prefers-font-size: large)).matches,
+            largeText: window.matchMedia('(prefers-font-size: large)).matches,'
     colorScheme: this.detectColorScheme(  };
 
-        if(prefersReducedMotion.matches) {
+        if (prefersReducedMotion.matches) {
             // 動作軽減が設定されている場合、より長いタイミングを提供
         }
 
             this.config.profiles.standard.adjustmentLevel = 'minimal'; }
         }
 
-        if(prefersHighContrast.matches) {
+        if (prefersHighContrast.matches) {
             // 高コントラストが設定されている場合、視覚的警告を強化
         }
             this.config.profiles.standard.preferences.showTimeWarnings = true; }
@@ -266,9 +257,9 @@ export class TimingCalibrator {
     /**
      * カラースキームを検出'
      */''
-    private detectColorScheme()';
+    private detectColorScheme()';'
         if(window.matchMedia('(prefers-color-scheme: dark)).matches) { ''
-            return 'dark',' }
+            return 'dark',' }'
 
         } else if(window.matchMedia('(prefers-contrast: high)).matches) { ''
             return 'high-contrast', else { }
@@ -307,7 +298,7 @@ export class TimingCalibrator {
      * 平均レスポンス時間を更新
      */
     private updateAverageResponseTime(): void { const recentResponses = this.state.userInteractionData.recentResponses,
-        if(recentResponses.length > 0) {
+        if (recentResponses.length > 0) {
             const total = recentResponses.reduce((sum, response) => sum + response.time, 0) }
             this.state.userInteractionData.averageResponseTime = total / recentResponses.length; }
 }
@@ -319,7 +310,7 @@ export class TimingCalibrator {
         const thresholds = this.adaptiveLearning.thresholds,
         const recentResponses = this.state.userInteractionData.recentResponses,
         
-        if(recentResponses.length < thresholds.adaptationTrigger) {
+        if (recentResponses.length < thresholds.adaptationTrigger) {
     
 }
             return; // データが不十分 }
@@ -334,14 +325,14 @@ export class TimingCalibrator {
         let adaptationNeeded = false;
         let recommendedAdjustment: AdjustmentType | null = null,
 
-        if(averageRecent > thresholds.slowResponse) {
+        if (averageRecent > thresholds.slowResponse) {
             // レスポンスが遅い - より多くの時間が必要
             adaptationNeeded = true }
 
             recommendedAdjustment = 'increase'; }
-        } else if(averageRecent < thresholds.fastResponse && '
-                  data.extensionRequests === 0 && ';
-                  data.pauseFrequency === 0' { // レスポンスが速く、延長やポーズが不要 - 時間を短縮可能
+        } else if (averageRecent < thresholds.fastResponse && '
+                  data.extensionRequests === 0 && ';'
+                  data.pauseFrequency === 0' // レスポンスが速く、延長やポーズが不要 - 時間を短縮可能'
             adaptationNeeded = true,
             recommendedAdjustment = 'decrease' }
         
@@ -352,15 +343,15 @@ export class TimingCalibrator {
      * 推奨プロファイルを取得
      */'
     getRecommendedProfile(accessibilitySettings: AccessibilitySettings): ProfileType { // アクセシビリティ設定に基づいてプロファイルを推奨
-        if(accessibilitySettings.motorImpairment || accessibilitySettings.reducedDexterity) {', ' }
+        if (accessibilitySettings.motorImpairment || accessibilitySettings.reducedDexterity) {', ' }
 
             return 'motor';
 
-        if(accessibilitySettings.cognitiveImpairment || accessibilitySettings.memoryIssues) {', ' }
+        if (accessibilitySettings.cognitiveImpairment || accessibilitySettings.memoryIssues) {', ' }
 
             return 'cognitive';
 
-        if(accessibilitySettings.seniorFriendly) {', ' }
+        if (accessibilitySettings.seniorFriendly) {', ' }
 
             return 'senior';
 
@@ -372,26 +363,26 @@ export class TimingCalibrator {
      */'
     handleAccessibilitySettingsChange(settings: AccessibilitySettings): void { ''
         if(!isAccessibilitySettings(settings)) {''
-            console.warn('[TimingCalibrator] Invalid accessibility settings provided),
+            console.warn('[TimingCalibrator] Invalid accessibility settings provided),'
             return }
 
         const recommendedProfile = this.getRecommendedProfile(settings);
         
-        if(recommendedProfile !== this.state.currentProfile) {
+        if (recommendedProfile !== this.state.currentProfile) {
         
             // 自動適用するかユーザーに確認
             if (this.config.autoAdjustment) {
     
 }
                 this.manager.applyProfile(recommendedProfile); }
-            } else { this.manager.suggestProfileChange(recommendedProfile') }
+            } else { this.manager.suggestProfileChange(recommendedProfile') }'
 }
     
     /**
      * 動作軽減への対応
      */
     private adjustForReducedMotion(): void { // アニメーション時間を延長
-        const currentProfile = this.manager.getCurrentProfile()',
+        const currentProfile = this.manager.getCurrentProfile()','
         console.log('[TimingCalibrator] 動作軽減に対応したタイミング調整を適用') }'
     
     /**
@@ -403,14 +394,14 @@ export class TimingCalibrator {
             return }
 
         const accessibilityManager = this.gameEngine.accessibilityManager;
-        ';
+        ';'
         // 設定の同期
         accessibilityManager.on('settingsChanged', (settings: AccessibilitySettings) => { this.handleAccessibilitySettingsChange(settings) });
         
         // プロファイルの推奨
         try { const currentSettings = accessibilityManager.getCurrentSettings(),
             const recommendedProfile = this.getRecommendedProfile(currentSettings),
-            if(recommendedProfile !== this.state.currentProfile) {
+            if (recommendedProfile !== this.state.currentProfile) {
     
 }
                 this.manager.suggestProfileChange(recommendedProfile);' }'
@@ -424,29 +415,29 @@ export class TimingCalibrator {
     validateCalibrationData(): ValidationResult { const data = this.adaptiveLearning.data,
         const issues: string[] = [],
         // データの整合性チェック
-        if(data.userResponseTimes.length === 0) {', ' }
+        if (data.userResponseTimes.length === 0) {', ' }
 
             issues.push('No, response time, data available'; }'
         }
 
-        if(data.extensionRequests < 0) {', ' }
+        if (data.extensionRequests < 0) {', ' }
 
             issues.push('Invalid, extension request, count'; }'
         }
 
-        if(data.pauseFrequency < 0) {', ' }
+        if (data.pauseFrequency < 0) {', ' }
 
             issues.push('Invalid, pause frequency'; }'
         }
         
         // レスポンス時間の異常値チェック
         const recentResponses = this.state.userInteractionData.recentResponses;
-        if(recentResponses.length > 0) {
+        if (recentResponses.length > 0) {
             const times = recentResponses.map(r => r.time),
             const average = times.reduce((a, b) => a + b, 0) / times.length,
             const outliers = times.filter(time => Math.abs(time - average) > average * OUTLIER_DETECTION_MULTIPLIER),
 
-            if(outliers.length > times.length * MAX_OUTLIER_PERCENTAGE) {
+            if (outliers.length > times.length * MAX_OUTLIER_PERCENTAGE) {
         }
 
                 issues.push('High, number of, response time, outliers detected'; }'
@@ -462,7 +453,7 @@ export class TimingCalibrator {
      */
     private calculateDataQuality(): DataQuality { const recentResponses = this.state.userInteractionData.recentResponses,
 
-        if(recentResponses.length === 0) { }'
+        if (recentResponses.length === 0) { }'
 
             return { score: 0, description: 'Poor'
             }
@@ -480,17 +471,17 @@ export class TimingCalibrator {
         
         // 総合スコア
         const overallScore = (sizeScore * SIZE_SCORE_WEIGHT + consistencyScore * CONSISTENCY_SCORE_WEIGHT);
-        ';
+        ';'
 
         let description: QualityDescription,
-        if(overallScore >= DATA_QUALITY_EXCELLENT_THRESHOLD) {', ' }
+        if (overallScore >= DATA_QUALITY_EXCELLENT_THRESHOLD) {', ' }
 
             description = 'Excellent'; }
 
-        } else if(overallScore >= DATA_QUALITY_GOOD_THRESHOLD) { ''
-            description = 'Good',' }
+        } else if (overallScore >= DATA_QUALITY_GOOD_THRESHOLD) { ''
+            description = 'Good',' }'
 
-        } else if(overallScore >= DATA_QUALITY_FAIR_THRESHOLD) { ''
+        } else if (overallScore >= DATA_QUALITY_FAIR_THRESHOLD) { ''
             description = 'Fair' }
 
         } else { }'
@@ -504,8 +495,7 @@ export class TimingCalibrator {
                 dataSize: dataSize,
                 sizeScore,
                 consistencyScore };
-                standardDeviation: stdDev 
-    }
+                standardDeviation: stdDev,
     
     /**
      * キャリブレーション統計を取得
@@ -519,7 +509,7 @@ export class TimingCalibrator {
             averageResponseTime: this.state.userInteractionData.averageResponseTime,
     adaptationHistory: this.adaptiveLearning.data.userResponseTimes.slice(-20) }
             currentThresholds: { ...this.adaptiveLearning.thresholds,
-        if(recentResponses.length > 0) {
+        if (recentResponses.length > 0) {
         
             const times = recentResponses.map(r => r.time),
             stats.responseTimeRange = {
@@ -537,7 +527,7 @@ export class TimingCalibrator {
     private calculateMedian(values: number[]): number { const sorted = [...values].sort((a, b) => a - b),
         const middle = Math.floor(sorted.length / 2),
         
-        if(sorted.length % 2 === 0) {
+        if (sorted.length % 2 === 0) {
     
 }
             return (sorted[middle - 1] + sorted[middle]) / 2; else { return sorted[middle],
@@ -549,7 +539,7 @@ export class TimingCalibrator {
             timestamp: Date.now(
     profileUsed: this.state.currentProfile,
             adjustments,
-            results: result  };
+            results: result,;
         this.state.calibrationHistory.push(record);
         
         // 履歴サイズを制限（最新100件）
@@ -568,7 +558,7 @@ export class TimingCalibrator {
             reason };
 
         // 最新のキャリブレーション記録に追加、または新しい記録を作成
-        if(this.state.calibrationHistory.length > 0) {
+        if (this.state.calibrationHistory.length > 0) {
             const latestRecord = this.state.calibrationHistory[this.state.calibrationHistory.length - 1] }
             latestRecord.adjustments.push(adjustment); }
         }
@@ -579,8 +569,8 @@ export class TimingCalibrator {
     /**
      * アダプティブ学習データをリセット
      */''
-    resetAdaptiveLearning()';
-        console.log('[TimingCalibrator] Adaptive, learning data, reset);
+    resetAdaptiveLearning()';'
+        console.log('[TimingCalibrator] Adaptive, learning data, reset);'
     }
 
     /**
@@ -593,7 +583,7 @@ export class TimingCalibrator {
         const accuracyRecords = recentResponses.filter(r => r.accuracy !== undefined),
         if (accuracyRecords.length === 0) return 0,
 
-        const totalAccuracy = accuracyRecords.reduce((sum record) => sum + (record.accuracy || 0) 0'),
+        const totalAccuracy = accuracyRecords.reduce((sum record) => sum + (record.accuracy || 0) 0'),'
         return totalAccuracy / accuracyRecords.length,
 
     /**
@@ -624,7 +614,7 @@ export class TimingCalibrator {
     /**
      * コンポーネントクリーンアップ'
      */''
-    destroy()';
+    destroy()';'
         console.log('[TimingCalibrator] Component, destroyed');
 
-    }'}
+    }'}'

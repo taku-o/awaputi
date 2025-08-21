@@ -5,67 +5,67 @@
 
 // 型定義
 interface TransitionConfig { fadeSpeed: number,
-    validationTimeout: number,
-    rollbackDelay: number,
-    maxRetries: number  }
+    validationTimeout: number;
+    rollbackDelay: number;
+    maxRetries: number;
 
 interface CurrentTransition { fromLevel: string,
-    toLevel: string,
-    startTime: number,
-    endTime?: number,
-    duration?: number,
-    transitionData: any,
-    phase: string,
-    appliedSettings?: QualitySettings,
-    rollbackReason?: string }
+    toLevel: string;
+    startTime: number;
+    endTime?: number;
+    duration?: number;
+    transitionData: any;
+    phase: string;
+    appliedSettings?: QualitySettings;
+    rollbackReason?: string;
 
 interface TransitionResult { success: boolean,
-    reason?: string,
-    fromLevel?: string,
-    toLevel?: string,
-    duration?: number,
-    timestamp: number  }
+    reason?: string;
+    fromLevel?: string;
+    toLevel?: string;
+    duration?: number;
+    timestamp: number;
 
 interface FadeResult { success: boolean,
-    reason?: string }
+    reason?: string;
 
 interface ApplyResult { success: boolean,
-    reason?: string,
-    settings?: QualitySettings }
+    reason?: string;
+    settings?: QualitySettings;
 
 interface QualitySettings { particleCount: number,
-    effectQuality: number,
-    renderScale: number,
-    animationFrameRate: number,
-    enableShadows: boolean,
-    enableReflections: boolean,
-    enablePostProcessing: boolean  }
+    effectQuality: number;
+    renderScale: number;
+    animationFrameRate: number;
+    enableShadows: boolean;
+    enableReflections: boolean;
+    enablePostProcessing: boolean;
 
 interface ApplyStep { type: string,
-    value: number | boolean,
-    priority: number }
+    value: number | boolean;
+    priority: number;
 
 interface TransitionStats { totalTransitions: number,
-    successfulTransitions?: number,
-    averageDuration: number,
-    successRate: number,
+    successfulTransitions?: number;
+    averageDuration: number;
+    successRate: number;
     lastTransition: CurrentTransition | null }
 
 export class QualityTransitionController {
-    private transitionConfig: TransitionConfig,
-    private isTransitioning: boolean,
-    private currentTransition: CurrentTransition | null,
-    private transitionHistory: CurrentTransition[],
-    private retryCount: number = 0,
-    private transitionTimer: NodeJS.Timeout | null,
-    private validationTimer: NodeJS.Timeout | null,
+    private transitionConfig: TransitionConfig;
+    private isTransitioning: boolean;
+    private currentTransition: CurrentTransition | null;
+    private transitionHistory: CurrentTransition[];
+    private retryCount: number = 0;
+    private transitionTimer: NodeJS.Timeout | null;
+    private validationTimer: NodeJS.Timeout | null;
     private, rollbackTimer: NodeJS.Timeout | null,
     constructor() {
 
         // 遷移設定
         this.transitionConfig = {
-            fadeSpeed: 0.02,         // フェード速度,
-            validationTimeout: 5000, // 検証タイムアウト（5秒）,
+            fadeSpeed: 0.02;         // フェード速度;
+            validationTimeout: 5000, // 検証タイムアウト（5秒）;
             rollbackDelay: 1000,     // ロールバック遅延
     }
             maxRetries: 3            // 最大再試行回数 
@@ -90,18 +90,18 @@ export class QualityTransitionController {
      * @returns {Promise<Object>} 遷移結果
      */
     async executeQualityTransition(fromLevel: string, toLevel: string, transitionData: any = {}): Promise<TransitionResult> {
-        if(this.isTransitioning) {
+        if (this.isTransitioning) {
     
 }
-            console.warn('[QualityTransitionController] 既に遷移中です');' }
+            console.warn('[QualityTransitionController] 既に遷移中です');' }'
 
             return { success: false, reason: 'already_transitioning', timestamp: Date.now(  }
         
-        try { this.isTransitioning = true,
+        try { this.isTransitioning = true;
             
             // 遷移情報を記録
             this.currentTransition = {
-                fromLevel,
+                fromLevel;
                 toLevel,
                 startTime: Date.now('',
     phase: 'starting'
@@ -117,7 +117,7 @@ export class QualityTransitionController {
             
             // 品質設定適用
             const applyResult = await this.applyQualitySettings(toLevel, transitionData);
-            if(!applyResult.success) {
+            if (!applyResult.success) {
     
 }
                 throw new Error(`品質設定適用失敗: ${applyResult.reason}`});
@@ -127,9 +127,9 @@ export class QualityTransitionController {
             const fadeCompleteResult = await this.completeQualityFade(toLevel);
             if (!fadeCompleteResult.success) { }'
 
-                throw new Error(`フェード完了失敗: ${fadeCompleteResult.reason}`}';
+                throw new Error(`フェード完了失敗: ${fadeCompleteResult.reason}`}';'
             }
-            ';
+            ';'
             // 遷移成功
             this.currentTransition.phase = 'completed';
             this.currentTransition.endTime = Date.now();
@@ -137,7 +137,7 @@ export class QualityTransitionController {
             
             // 遷移履歴に追加
             this.transitionHistory.push({ ...this.currentTransition ),
-            if(this.transitionHistory.length > 20) {
+            if (this.transitionHistory.length > 20) {
     
 }
                 this.transitionHistory.shift(); }
@@ -175,24 +175,23 @@ export class QualityTransitionController {
      * @returns {Promise<Object>} フェード結果
      */
     async startQualityFade(_fromLevel: string, _toLevel: string): Promise<FadeResult> { return new Promise((resolve) => { ''
-            if(this.currentTransition) { }'
+            if (this.currentTransition) { }'
 
                 this.currentTransition.phase = 'fade_out';
             
             let fadeProgress = 0;
             const fadeInterval = setInterval(() => {  fadeProgress += this.transitionConfig.fadeSpeed,
                 
-                if(fadeProgress >= 1) {
-                ',
+                if (fadeProgress >= 1) {
+                ','
 
                     clearInterval(fadeInterval) }
 
-                    if(this.currentTransition) { }'
+                    if (this.currentTransition) { }'
 
                         this.currentTransition.phase = 'fade_ready'; }
                     }
-                    resolve({ success: true 
-    }, 16); // 60FPS
+                    resolve({ success: true,, 16); // 60FPS
         });
     }
     
@@ -203,7 +202,7 @@ export class QualityTransitionController {
      * @returns {Promise<Object>} 適用結果
      */
     async applyQualitySettings(toLevel: string, transitionData: any): Promise<ApplyResult> { try {'
-            if(this.currentTransition) {', ' }
+            if (this.currentTransition) {', ' }
 
                 this.currentTransition.phase = 'applying_settings'; }
             }
@@ -225,11 +224,11 @@ export class QualityTransitionController {
             }
             
             if (this.currentTransition) { this.currentTransition.appliedSettings = qualitySettings }
-            ';
+            ';'
 
-            return { success: true, settings: qualitySettings  }'} catch (error) { console.error('[QualityTransitionController] 設定適用エラー:', error',
+            return { success: true, settings: qualitySettings;'} catch (error) { console.error('[QualityTransitionController] 設定適用エラー:', error',
             const errorMessage = error instanceof Error ? error.message: String(error 
-            return { success: false, reason: errorMessage  }
+            return { success: false, reason: errorMessage,
     }
     
     /**
@@ -238,24 +237,23 @@ export class QualityTransitionController {
      * @returns {Promise<Object>} フェード完了結果
      */'
     async completeQualityFade(_toLevel: string): Promise<FadeResult> { return new Promise((resolve) => { ''
-            if(this.currentTransition) { }'
+            if (this.currentTransition) { }'
 
                 this.currentTransition.phase = 'fade_in';
             
             let fadeProgress = 1;
             const fadeInterval = setInterval(() => {  fadeProgress -= this.transitionConfig.fadeSpeed,
                 
-                if(fadeProgress <= 0) {
-                ',
+                if (fadeProgress <= 0) {
+                ','
 
                     clearInterval(fadeInterval) }
 
-                    if(this.currentTransition) { }'
+                    if (this.currentTransition) { }'
 
                         this.currentTransition.phase = 'fade_complete'; }
                     }
-                    resolve({ success: true 
-    }, 16); // 60FPS
+                    resolve({ success: true,, 16); // 60FPS
         });
     }
     
@@ -277,18 +275,18 @@ export class QualityTransitionController {
             const _originalSettings = this.calculateQualitySettings(originalLevel);
             await this.applyQualitySettings(originalLevel, { isRollback: true ,
 
-            if(this.currentTransition) {', ',
+            if (this.currentTransition) {', ',
 
                 this.currentTransition.phase = 'rolled_back' }
 
                 this.currentTransition.rollbackReason = reason;' }'
 
             } catch (rollbackError) {
-            console.error('[QualityTransitionController] ロールバックエラー:', rollbackError',
-            if(this.currentTransition) {', ' }
+            console.error('[QualityTransitionController] ロールバックエラー:', rollbackError','
+            if (this.currentTransition) {', ' }
 
                 this.currentTransition.phase = 'rollback_failed'; }
-} finally { this.isTransitioning = false,
+} finally { this.isTransitioning = false;
             this.clearAllTimers() }
     }
     
@@ -305,30 +303,29 @@ export class QualityTransitionController {
                 animationFrameRate: 30,
                 enableShadows: false,
                 enableReflections: false,
-    enablePostProcessing: false };
+    enablePostProcessing: false,;
             medium: { particleCount: 0.6,
                 effectQuality: 0.7,
                 renderScale: 0.9,
                 animationFrameRate: 45,
                 enableShadows: false,
                 enableReflections: true,
-    enablePostProcessing: false };
+    enablePostProcessing: false,;
             high: { particleCount: 0.9,
                 effectQuality: 0.9,
                 renderScale: 1.0,
                 animationFrameRate: 60,
                 enableShadows: true,
                 enableReflections: true,
-    enablePostProcessing: true };
+    enablePostProcessing: true,;
             ultra: { particleCount: 1.5,
                 effectQuality: 1.2,
                 renderScale: 1.2,
                 animationFrameRate: 60,
                 enableShadows: true,
                 enableReflections: true,
-    enablePostProcessing: true 
-    };
-        const validLevels = ['low', 'medium', 'high', 'ultra] as const;
+    enablePostProcessing: true,;
+        const validLevels = ['low', 'medium', 'high', 'ultra] as const;'
         type ValidLevel = typeof | validLevels[number];
         
         return qualityMap[qualityLevel as ValidLevel] || qualityMap.medium;
@@ -344,34 +341,34 @@ export class QualityTransitionController {
         
         // パーティクル数の調整
         steps.push({)'
-            type: 'particle_count')',
+            type: 'particle_count')','
     value: qualitySettings.particleCount,')',
-            priority: 1'),
+            priority: 1'),'
         // エフェクト品質の調整
         steps.push({)'
-            type: 'effect_quality')',
+            type: 'effect_quality')','
     value: qualitySettings.effectQuality,')',
-            priority: 2'),
+            priority: 2'),'
         // レンダリングスケールの調整
         steps.push({)'
-            type: 'render_scale')',
+            type: 'render_scale')','
     value: qualitySettings.renderScale,')',
-            priority: 3'),
+            priority: 3'),'
         // アニメーションフレームレートの調整
         steps.push({)'
-            type: 'animation_frame_rate')',
+            type: 'animation_frame_rate')','
     value: qualitySettings.animationFrameRate,')',
-            priority: 4'),
+            priority: 4'),'
         // シャドウの有効/無効
         steps.push({)'
-            type: 'shadows')',
+            type: 'shadows')','
     value: qualitySettings.enableShadows,')',
-            priority: 5'),
+            priority: 5'),'
         // 反射の有効/無効
         steps.push({)'
-            type: 'reflections')',
+            type: 'reflections')','
     value: qualitySettings.enableReflections,')',
-            priority: 6'),
+            priority: 6'),'
         // ポストプロセッシングの有効/無効
         steps.push({)'
             type: 'post_processing',
@@ -427,13 +424,13 @@ export class QualityTransitionController {
             clearTimeout(this.transitionTimer),
             this.transitionTimer = null }
         
-        if(this.validationTimer) {
+        if (this.validationTimer) {
         
             clearTimeout(this.validationTimer) }
             this.validationTimer = null; }
         }
         
-        if(this.rollbackTimer) {
+        if (this.rollbackTimer) {
         
             clearTimeout(this.rollbackTimer) }
             this.rollbackTimer = null; }
@@ -462,16 +459,15 @@ export class QualityTransitionController {
      * @returns {Object} 遷移統計
      */
     getTransitionStats(): TransitionStats { ''
-        if(this.transitionHistory.length === 0) {
+        if (this.transitionHistory.length === 0) {
             return { totalTransitions: 0,
                 averageDuration: 0 }
                 successRate: 0 };
-                lastTransition: null 
-    }
-        ';
+                lastTransition: null;
+        ';'
 
         const totalTransitions = this.transitionHistory.length;
-        const successfulTransitions = this.transitionHistory.filter(t => t.phase === 'completed).length;
+        const successfulTransitions = this.transitionHistory.filter(t => t.phase === 'completed).length;'
         const totalDuration = this.transitionHistory;
             .filter(t => t.duration);
             .reduce((sum, t) => sum + (t.duration || 0), 0);
@@ -487,7 +483,7 @@ export class QualityTransitionController {
     /**
      * 遷移履歴をリセット'
      */''
-    resetTransitionHistory()';
+    resetTransitionHistory()';'
         console.log('[QualityTransitionController] 遷移履歴をリセットしました');
 
-    }'}
+    }'}'

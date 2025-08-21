@@ -7,90 +7,87 @@ interface ErrorHandler { handleError: (error: Error, context?: any) => void
     }
 
 interface ValidationConfig { projectRoot?: string,
-    validateSyntax?: boolean,
-    validateImports?: boolean,
-    validateExports?: boolean,
-    validateReferences?: boolean,
-    allowedFileExtensions?: string[],
-    excludePatterns?: RegExp[] }
+    validateSyntax?: boolean;
+    validateImports?: boolean;
+    validateExports?: boolean;
+    validateReferences?: boolean;
+    allowedFileExtensions?: string[];
+    excludePatterns?: RegExp[];
 
 interface ValidationStats { totalFiles: number,
-    validFiles: number,
-    errorFiles: number,
-    warningFiles: number,
-    startTime: number | null,
+    validFiles: number;
+    errorFiles: number;
+    warningFiles: number;
+    startTime: number | null;
     endTime: number | null  }
 
 interface SyntaxValidation { valid: boolean,
-    errors: string[] }
+    errors: string[];
 
 interface ImportValidation { valid: boolean,
-    errors: string[],
-    missing: string[] }
+    errors: string[];
+    missing: string[];
 
 interface ExportValidation { valid: boolean,
-    errors: string[] }
+    errors: string[];
 
 interface ReferenceValidation { valid: boolean,
-    errors: string[],
-    unreferenced: string[] }
+    errors: string[];
+    unreferenced: string[];
 
 interface FileValidationResult { filePath: string,
-    isValid: boolean,
-    errors: string[],
-    warnings: string[],
-    syntax: SyntaxValidation,
-    imports: ImportValidation,
-    exports: ExportValidation,
-    references: ReferenceValidation
-    }
+    isValid: boolean;
+    errors: string[];
+    warnings: string[];
+    syntax: SyntaxValidation;
+    imports: ImportValidation;
+    exports: ExportValidation;
+    references: ReferenceValidation;
 
 interface CheckResult { isValid: boolean,
-    error?: string }
+    error?: string;
 
 interface ImportInfo { path: string,
-    names: string[] }
+    names: string[];
 
 interface ValidationSummary { totalFiles: number,
-    validFiles: number,
-    errorFiles: number,
-    warningFiles: number,
-    successRate: number,
-    duration: string }
+    validFiles: number;
+    errorFiles: number;
+    warningFiles: number;
+    successRate: number;
+    duration: string;
 
 interface ErrorInfo { file: string,
-    error: string }
+    error: string;
 
 interface WarningInfo { file: string,
-    warning: string }
+    warning: string;
 
 interface ValidationReport { summary: ValidationSummary,
-    results: FileValidationResult[],
-    errors: ErrorInfo[],
-    warnings: WarningInfo[]
-    }
+    results: FileValidationResult[];
+    errors: ErrorInfo[];
+    warnings: WarningInfo[];
 
 interface SavedReport { timestamp: string,
-    validation: ValidationReport
-    }
+    validation: ValidationReport;
 
 /**
  * ValidationEngine - コード変更の検証システム
  * リネーム後のファイルとクラスの整合性を検証
  */
 export class ValidationEngine {
-    private errorHandler: ErrorHandler,
-    private projectRoot: string,
+    private errorHandler: ErrorHandler;
+    private projectRoot: string;
     private, validationResults: Map<string, FileValidationResult>,
-    private config: Required<ValidationConfig>,
-    private stats: ValidationStats,
+    private config: Required<ValidationConfig>;
+    private stats: ValidationStats;
     constructor(config: ValidationConfig = {) {
 
-        this.errorHandler = getErrorHandler(),
-        this.projectRoot = config.projectRoot || process.cwd(),
+        this.errorHandler = getErrorHandler();
+        this.projectRoot = config.projectRoot || process.cwd();
         this.validationResults = new Map('''
-            allowedFileExtensions: config.allowedFileExtensions || ['.js', '.mjs],
-            excludePatterns: config.excludePatterns || [/node_modules/,
+            allowedFileExtensions: config.allowedFileExtensions || ['.js', '.mjs];'
+            excludePatterns: config.excludePatterns || [/node_modules/;
                 /\.test\.js$/,
                 /\.spec\.js$/,
                 /test\//],
@@ -104,7 +101,7 @@ export class ValidationEngine {
             errorFiles: 0,
             warningFiles: 0,
             startTime: null,
-    endTime: null  }))
+    endTime: null,))
     }
     
     /**
@@ -149,16 +146,16 @@ export class ValidationEngine {
         try {
             const stats = fs.statSync(fullPath),
             
-            if(stats.isFile() {
+            if (stats.isFile() {
             
-                if(this.shouldValidateFile(fullPath) {
+                if (this.shouldValidateFile(fullPath) {
     
 }
                     fileSet.add(fullPath); }
-} else if(stats.isDirectory() { const entries = fs.readdirSync(fullPath),
+} else if (stats.isDirectory() { const entries = fs.readdirSync(fullPath),
                 for (const entry of entries) {
                     const entryPath = path.join(fullPath, entry),
-                    if(!this.isExcluded(entryPath) {
+                    if (!this.isExcluded(entryPath) {
                 }
                         await this.collectFiles(entryPath, fileSet); }
 }
@@ -192,12 +189,12 @@ export class ValidationEngine {
             references: { valid: true, errors: [], unreferenced: []  };
         
         try { this.stats.totalFiles++,
-            ',
+            ','
             // ファイル読み込み
-            const content = fs.readFileSync(filePath, 'utf8),
+            const content = fs.readFileSync(filePath, 'utf8),'
             
             // 構文検証
-            if(this.config.validateSyntax) {
+            if (this.config.validateSyntax) {
     
 }
                 await this.validateSyntax(filePath, content, result); }
@@ -257,7 +254,7 @@ export class ValidationEngine {
             
                 const resolvedPath = this.resolveImportPath(filePath, importInfo.path),
                 
-                if(!resolvedPath || !fs.existsSync(resolvedPath) {
+                if (!resolvedPath || !fs.existsSync(resolvedPath) {
                     result.imports.valid = false }
                     result.imports.missing.push(importInfo.path); }
                     result.errors.push(`Missing, import: ${importInfo.path}`});
@@ -285,12 +282,12 @@ export class ValidationEngine {
                                 content.includes(`let ${exportName}`) ||
                                 content.includes(`var ${exportName}`);
                 
-                if(!isDefined) {
-                ',
+                if (!isDefined) {
+                ','
 
                     result.exports.valid = false }
 
-                    result.exports.errors.push(`Undefined export: ${exportName}`},' }
+                    result.exports.errors.push(`Undefined export: ${exportName}`},' }'
 
                     result.warnings.push(`Export '${exportName}' is not defined in the file`});
                 }
@@ -331,7 +328,7 @@ export class ValidationEngine {
     private checkBracketBalance(content: string): CheckResult { }'
 
         const brackets: Record<string, number> = { '(': 0, '[': 0, '{': 0 };]'
-        const pairs: Record<string, string> = { '(': ')', '[': ]', '{': '}' };
+        const pairs: Record<string, string> = { '(': ')', '[': ]', '{': '}' };'
         
         for (const char of content) {
         
@@ -350,7 +347,7 @@ export class ValidationEngine {
                 return { isValid: false, error: `Unmatched opening, bracket: ${bracket } (${count} unmatched)` }
 }
         
-        return { isValid: true }
+        return { isValid: true,
     
     /**
      * クォートのバランスチェック
@@ -364,30 +361,30 @@ export class ValidationEngine {
         
             const char = content[i],
 
-            if(escaped) {
+            if (escaped) {
                 escaped = false }
                 continue; }
             }
 
-            if(char === '\\' {'
+            if (char === '\\''
                 escaped = true }
                 continue; }
             }
 
             switch(char) {
 
-                case "'": singleQuotes = (singleQuotes + 1") % 2, break,""
-                case '"': doubleQuotes = (doubleQuotes + 1') % 2, break }
+                case "'": singleQuotes = (singleQuotes + 1") % 2, break,""'
+                case '"': doubleQuotes = (doubleQuotes + 1') % 2, break }'
 
                 case '`': backQuotes = (backQuotes + 1) % 2; break; 
     }
 
-        if(singleQuotes !== 0 || doubleQuotes !== 0 || backQuotes !== 0) { }'
+        if (singleQuotes !== 0 || doubleQuotes !== 0 || backQuotes !== 0) { }'
 
             return { isValid: false, error: 'Unmatched quotes detected'
             }
         
-        return { isValid: true }
+        return { isValid: true,
     
     /**
      * 基本構文チェック
@@ -404,10 +401,10 @@ export class ValidationEngine {
         ];
         
         for (const { pattern, error ) of errorPatterns) {
-            if(pattern.test(content) { }
+            if (pattern.test(content) { }
                 return { isValid: false, error };
         
-        return { isValid: true }
+        return { isValid: true,
     
     /**
      * インポート文を抽出
@@ -420,7 +417,7 @@ export class ValidationEngine {
         while((match = importRegex.exec(content) !== null) { const [, namedImports, namespaceImport, defaultImport, path] = match, : undefined
             const names: string[] = [],
 
-            if(namedImports) {"
+            if (namedImports) {"
                 " }"
                 names.push(...namedImports.split(').map(name => name.trim()); }'
             }
@@ -443,7 +440,7 @@ export class ValidationEngine {
                 exports.push(match[1]) }
 
             }''
-            if(match[2]) {', ' }
+            if (match[2]) {', ' }
 
                 exports.push(...match[2].split(').map(name => name.trim()); }'
 }
@@ -492,7 +489,7 @@ export class ValidationEngine {
                     resolved += '.js'; }
                 }
                 
-                return fs.existsSync(resolved) ? resolved: null } else {  // 絶対パスまたはnode_modules }
+                return fs.existsSync(resolved) ? resolved: null; else {  // 絶対パスまたはnode_modules }
                 return null; // node_modulesは検証しない }
             } catch (error) { return null,
     
@@ -500,7 +497,7 @@ export class ValidationEngine {
      * インポートされた名前の存在を検証
      */''
     private async validateImportedNames(targetFile: string, importInfo: ImportInfo, result: FileValidationResult): Promise<void> { try {'
-            const targetContent = fs.readFileSync(targetFile, 'utf8),
+            const targetContent = fs.readFileSync(targetFile, 'utf8),'
             const exports = this.extractExports(targetContent),
             const classes = this.extractClasses(targetContent),
             const functions = this.extractFunctions(targetContent),
@@ -508,7 +505,7 @@ export class ValidationEngine {
             const availableNames = [...exports, ...classes, ...functions],
             
             for (const importedName of importInfo.names) {
-            ',
+            ','
 
                 if(!availableNames.includes(importedName)) {
     
@@ -539,9 +536,9 @@ export class ValidationEngine {
                     Math.round((this.stats.validFiles / this.stats.totalFiles) * 100) : 0, 
                 duration: `${duration }ms`
             };
-            results: Array.from(this.validationResults.values();
+            results: Array.from(this.validationResults.values(),
             errors: [],
-    warnings: [];
+    warnings: [],
         },
         
         // エラーと警告を集計
@@ -559,13 +556,13 @@ export class ValidationEngine {
     async saveReport(report: ValidationReport, outputPath: string): Promise<void> { try {
             const reportContent: SavedReport = {
                 timestamp: new Date().toISOString(),
-    validation: report };
+    validation: report,;
             await fs.promises.writeFile(outputPath, JSON.stringify(reportContent, null, 2);
             console.log(`[ValidationEngine] Report, saved to ${outputPath}`});
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ValidationEngine.saveReport',' }
+                context: 'ValidationEngine.saveReport',' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'

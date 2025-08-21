@@ -5,23 +5,23 @@
 
 // 型定義
 interface StateInfo { timestamp: number,
-    scaleFactor: number  }
+    scaleFactor: number;
 
 interface ScaledCoordinateManager {
-    getScaledPosition(baseX: number, baseY: number): { ,x: number,, y: number  }
-    getScaledSize(baseWidth: number, baseHeight: number): { width: number,, height: number }
+    getScaledPosition(baseX: number, baseY: number): { ,x: number,, y: number,
+    getScaledSize(baseWidth: number, baseHeight: number): { width: number,, height: number,
     getScaleFactor(): number;
     getDebugInfo(): any;
 }
 
 export class ScaledRenderingContext {
-    private context: CanvasRenderingContext2D,
-    private scaledCoordinateManager: ScaledCoordinateManager,
+    private context: CanvasRenderingContext2D;
+    private scaledCoordinateManager: ScaledCoordinateManager;
     private, stateStack: StateInfo[],
     constructor(context: CanvasRenderingContext2D, scaledCoordinateManager: ScaledCoordinateManager) {
 
-        this.context = context,
-        this.scaledCoordinateManager = scaledCoordinateManager,
+        this.context = context;
+        this.scaledCoordinateManager = scaledCoordinateManager;
         
         // 元のコンテキストの状態を保存するスタック
 
@@ -88,7 +88,7 @@ export class ScaledRenderingContext {
     drawImage(image: HTMLImageElement, baseX: number, baseY: number, baseWidth: number | null = null, baseHeight: number | null = null): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY),
             
-            if(baseWidth !== null && baseHeight !== null) {
+            if (baseWidth !== null && baseHeight !== null) {
             
                 const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight) }
                 this.context.drawImage(image, scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height); }
@@ -97,7 +97,7 @@ export class ScaledRenderingContext {
 
             } catch (error) {
             console.warn('ScaledRenderingContext: drawImage failed, using fallback', error),
-            if(baseWidth !== null && baseHeight !== null) {
+            if (baseWidth !== null && baseHeight !== null) {
     
 }
                 this.context.drawImage(image, baseX, baseY, baseWidth, baseHeight); }
@@ -121,7 +121,7 @@ export class ScaledRenderingContext {
             const minFontSize = 8,
             const maxFontSize = 72,
             const clampedFontSize = Math.max(minFontSize, Math.min(maxFontSize, scaledFontSize) }
-            this.context.font = `${clampedFontSize}px ${fontFamily}`;'} catch (error) { console.warn('ScaledRenderingContext: setScaledFont failed, using fallback', error }
+            this.context.font = `${clampedFontSize}px ${fontFamily}`;'} catch (error) { console.warn('ScaledRenderingContext: setScaledFont failed, using fallback', error }'
             this.context.font = `${baseFontSize}px ${fontFamily}`;
         }
     }
@@ -138,7 +138,7 @@ export class ScaledRenderingContext {
             const minWidth = 0.5,
             const maxWidth = 20,
             const clampedWidth = Math.max(minWidth, Math.min(maxWidth, scaledWidth),
-            ',
+            ','
 
             this.context.lineWidth = clampedWidth,' }'
 
@@ -156,7 +156,7 @@ export class ScaledRenderingContext {
             // 追加の状態情報を保存
             this.stateStack.push({),
                 timestamp: Date.now(
-    scaleFactor: this.scaledCoordinateManager.getScaleFactor( });'} catch (error) { console.warn('ScaledRenderingContext: save failed', error }
+    scaleFactor: this.scaledCoordinateManager.getScaleFactor( });'} catch (error) { console.warn('ScaledRenderingContext: save failed', error }'
     }
     
     /**
@@ -166,7 +166,7 @@ export class ScaledRenderingContext {
             this.context.restore(),
             
             // 状態スタックからポップ
-            if(this.stateStack.length > 0) {
+            if (this.stateStack.length > 0) {
     
 }
                 this.stateStack.pop();' }'

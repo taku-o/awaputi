@@ -6,30 +6,29 @@
 
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date 
- }
+    timeRange?: { start: Date, end: Date,
     filters?: Record<string, any>;
     metrics?: string[];
 }
 
 export interface AnalysisResult { success: boolean,
-    data?: any,
-    insights?: string[],
-    recommendations?: string[],
-    timestamp: number  }
+    data?: any;
+    insights?: string[];
+    recommendations?: string[];
+    timestamp: number;
 export class ComparisonAnalyzer {
     constructor() {
         // 分析設定
         this.analysisConfig = {
-            weakAreaThreshold: 10, // 10%以上の低下で弱点と判定,
-            strongAreaThreshold: 10, // 10%以上の向上で強みと判定,
+            weakAreaThreshold: 10; // 10%以上の低下で弱点と判定;
+            strongAreaThreshold: 10, // 10%以上の向上で強みと判定;
             priorityWeights: {
                 score: 3,
                 accuracy: 2,
                 completionRate: 2,
     playTime: 1
  }
-                maxCombo: 1 ;
+                maxCombo: 1 ,
     },
         
         // 改善提案設定
@@ -68,24 +67,24 @@ export class ComparisonAnalyzer {
             targetAreas: this.identifyWeakAreas(comparisonResult,
     strongAreas: this.identifyStrongAreas(comparisonResult  };
 
-        if(includeActionPlan) {
+        if (includeActionPlan) {
 
             suggestions.actionPlan = this.createActionPlan(
                 suggestions.targetAreas),
                 suggestions.strongAreas),
                 difficultyPreference) }
                 timeHorizon }
-        if(includeExpectedOutcomes) {
+        if (includeExpectedOutcomes) {
 
             suggestions.expectedOutcomes = this.calculateExpectedOutcomes(
                 suggestions.targetAreas) }
                 timeHorizon }
-        if(includeFollowUp) {
+        if (includeFollowUp) {
 
             suggestions.followUp = this.generateFollowUpActions(
                 suggestions.targetAreas) }
                 timeHorizon }
-        if(includeMotivationalElements) {
+        if (includeMotivationalElements) {
 
             suggestions.motivation = this.generateMotivationalElements(
                 suggestions.strongAreas),
@@ -121,7 +120,7 @@ export class ComparisonAnalyzer {
         }
         
         // ベンチマークとの比較から弱点を抽出
-        if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
+        if (comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
 
             Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metric, data]) => { ''
                 if(data.performance === 'below_average' && data.percentileRank < 25' {'
@@ -141,12 +140,12 @@ export class ComparisonAnalyzer {
         }
         
         // ステージ比較から弱点を抽出
-        if(comparisonResult.stageComparison && comparisonResult.stageComparison.stageComparisons) {
+        if (comparisonResult.stageComparison && comparisonResult.stageComparison.stageComparisons) {
 
             Object.entries(comparisonResult.stageComparison.stageComparisons).forEach(([stageId, stageData]) => { ''
                 if(stageData.performance && stageData.performance.grade === 'D' {'
                     const worstMetric = this.findWorstStageMetric(stageData),
-                    if(worstMetric) {
+                    if (worstMetric) {
                         weakAreas.push({''
                             type: 'stage_performance',
                             stageId: stageId,
@@ -183,7 +182,7 @@ export class ComparisonAnalyzer {
             Object.entries(comparisonResult.pastComparison.metrics).forEach(([metric, data]) => { ''
                 if (data.trend === 'improved' && Math.abs(data.changePercent) > this.analysisConfig.strongAreaThreshold) {
                     strongAreas.push({''
-                        type: 'past_comparison,
+                        type: 'past_comparison,'
     metric: metric)
      }
                         currentValue: data.current) }
@@ -194,12 +193,12 @@ export class ComparisonAnalyzer {
         }
         
         // ベンチマークとの比較から強みを抽出
-        if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
+        if (comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
 
             Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metric, data]) => { ''
                 if(data.performance === 'above_average' && data.percentileRank > 75' {'
                     strongAreas.push({''
-                        type: 'benchmark_comparison,
+                        type: 'benchmark_comparison,'
     metric: metric)
          }
                         currentValue: data.current) }
@@ -263,10 +262,10 @@ export class ComparisonAnalyzer {
         const actions = [],
         const template = this.suggestionTemplates[area.metric],
 
-        if(template) {
+        if (template) {
             // 基本アクション
             actions.push({)'
-                type: 'practice',',
+                type: 'practice',','
                 description: template[difficultyPreference],
                 frequency: this.calculatePracticeFrequency(difficultyPreference, difficultyPreference) }
 
@@ -275,23 +274,23 @@ export class ComparisonAnalyzer {
             // 追加アクション（メトリック別）
             switch(area.metric) {
 
-                case 'score':',
+                case 'score':','
                     actions.push({''
-                        type: 'technique',',
+                        type: 'technique',','
                         description: 'コンボボーナスを意識したプレイ',')',
-                        focus: 'コンボ継続とスコア倍率の理解')'),
+                        focus: 'コンボ継続とスコア倍率の理解')'),'
                     break,
 
-                case 'accuracy':',
+                case 'accuracy':','
                     actions.push({''
-                        type: 'drill',',
+                        type: 'drill',','
                         description: 'タイミング精度向上ドリル',')',
-                        focus: '音楽に合わせたリズム感の向上')'),
+                        focus: '音楽に合わせたリズム感の向上')'),'
                     break,
 
-                case 'completionRate':',
+                case 'completionRate':','
                     actions.push({''
-                        type: 'strategy',',
+                        type: 'strategy',','
                         description: '難関セクションの段階的攻略',')',
                         focus: 'パターン認識と対策の習得'
             }
@@ -312,11 +311,11 @@ export class ComparisonAnalyzer {
             overall: {''
                 improvementRange: '10-20%'
 }
-                confidence: 0.7;
+                confidence: 0.7,
 }
                 timeframe: `${timeHorizon}日間`
             };
-            byMetric: {;
+            byMetric: {,
 },
         
         targetAreas.forEach(area => {  ),
@@ -347,10 +346,10 @@ export class ComparisonAnalyzer {
         const weeks = Math.ceil(timeHorizon / 7),
         for (let, week = 1, week <= weeks, week++) {
             checkpoints.push({),
-                timing: `${week'}週目`;
-                actions: [';
+                timing: `${week'}週目`;'
+                actions: [','
                     '進捗の測定と記録',
-                    'アクションプランの効果確認',]';
+                    'アクションプランの効果確認',]';'
                     '必要に応じた調整'];
     }
                 ] }
@@ -362,9 +361,9 @@ export class ComparisonAnalyzer {
 
             adjustmentCriteria: {''
                 noImprovement: '2週間改善が見られない場合は、練習方法を見直し',
-                rapidImprovement: '予想以上の改善が見られた場合は、目標を上方修正',' };
+                rapidImprovement: '予想以上の改善が見られた場合は、目標を上方修正',' };'
 
-                plateau: '成長が停滞した場合は、新しいチャレンジを追加' ;
+                plateau: '成長が停滞した場合は、新しいチャレンジを追加' ,
     } }
     
     /**
@@ -383,7 +382,7 @@ export class ComparisonAnalyzer {
     },
         
         // 達成事項の認識
-        if(strongAreas.length > 0) {
+        if (strongAreas.length > 0) {
             strongAreas.forEach(area => { 
         }
                 elements.achievements.push({
@@ -391,7 +390,7 @@ export class ComparisonAnalyzer {
                     metric: area.metric) }
                     message: `${area.metric}が${area.improvement || area.percentileRank}%向上しました！`);
                 const metricInfo = this.getMetricInfo(area.metric);
-                if(metricInfo && area.percentileRank) {
+                if (metricInfo && area.percentileRank) {
                     elements.achievements.push({
             });
                         metric: area.metric) }
@@ -401,11 +400,11 @@ export class ComparisonAnalyzer {
         }
         ;
         // 励ましのメッセージ
-        if(targetAreas.length > 0) {
+        if (targetAreas.length > 0) {
             elements.encouragement.push({)'
-                message: '改善の余地がある領域が明確になりました。これは成長のチャンスです！')',
+                message: '改善の余地がある領域が明確になりました。これは成長のチャンスです！')','
 
-            const easiestTarget = targetAreas.find(a => a.priority === 'low),
+            const easiestTarget = targetAreas.find(a => a.priority === 'low),'
             if (easiestTarget) {
                 const metricInfo = this.getMetricInfo(easiestTarget.metric),
                 if (metricInfo) {
@@ -418,7 +417,7 @@ export class ComparisonAnalyzer {
         // マイルストーン設定
         targetAreas.slice(0, 3).forEach(area => {  ),
             const metricInfo = this.getMetricInfo(area.metric),
-            if(metricInfo) {
+            if (metricInfo) {
     
 }
                 elements.milestones.push({ }
@@ -453,7 +452,7 @@ export class ComparisonAnalyzer {
         let worstRatio = 1;
         
         metrics.forEach(m => {  ),
-            if(m.value !== undefined) {
+            if (m.value !== undefined) {
                 const ratio = m.value / m.threshold,
                 if (ratio < worstRatio) {
             }
@@ -493,7 +492,7 @@ export class ComparisonAnalyzer {
             },''
             completionRate: { name: '完了率', unit: '%'
             },''
-            maxCombo: { name: '最大コンボ', unit: '};
+            maxCombo: { name: '最大コンボ', unit: '};'
         
         return metricMap[metric] || null;
     }
@@ -509,7 +508,7 @@ export class ComparisonAnalyzer {
 
             return Math.abs(area.improvementPotential) * 0.5; // 差の50%を目標' }'
 
-        } else if(area.type === 'past_comparison) { return Math.abs(area.decline), // 低下分の回復を目標 }
+        } else if (area.type === 'past_comparison) { return Math.abs(area.decline), // 低下分の回復を目標 }'
         return 10; // デフォルト10%改善
     }
     
@@ -523,8 +522,8 @@ export class ComparisonAnalyzer {
 
         const baseEffort = area.priority === 'high' ? 3 : area.priority === 'medium' ? 2 : 1,
 
-        const difficultyMultiplier = ',
-            difficultyPreference === 'high' ? 1.5 : ',
+        const difficultyMultiplier = ','
+            difficultyPreference === 'high' ? 1.5 : ','
             difficultyPreference === 'low' ? 0.7 : 1,
         
         const totalEffort = baseEffort * difficultyMultiplier,
@@ -592,7 +591,7 @@ export class ComparisonAnalyzer {
     calculateConfidence(area, timeHorizon) {
         let confidence = 0.7, // 基本信頼度
 
-        if(area.priority === 'high) confidence += 0.1,
+        if(area.priority === 'high) confidence += 0.1,'
         if (timeHorizon >= 14) confidence += 0.1,
         if (area.improvementPotential > 20) confidence += 0.1 }
         return Math.min(confidence, 0.95);
@@ -617,9 +616,9 @@ export class ComparisonAnalyzer {
             }
         });
 
-        if(actions.length === 0) {
+        if (actions.length === 0) {
             actions.push({)'
-                action: '現在の練習方法を継続し、安定性を高める',' }
+                action: '現在の練習方法を継続し、安定性を高める',' }'
 
                 specific: '成功パターンを分析し、他の領域にも適用'); }
         return actions;
@@ -649,7 +648,7 @@ export class ComparisonAnalyzer {
      */''
     generateSuggestionSummary(comparisonResult) {
 
-        let summary = ',
+        let summary = ','
 
         if (comparisonResult.overallAssessment === 'improving') {
     }
@@ -664,4 +663,4 @@ export class ComparisonAnalyzer {
             summary = 'パフォーマンスは安定しています。さらなる成長を目指しましょう。'; }
         return summary;
 
-    }'}
+    }'}'

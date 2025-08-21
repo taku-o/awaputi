@@ -12,56 +12,56 @@ import { HelpTransitionRenderer  } from './HelpAnimationManager';
 
 // レイアウト情報インターフェース
 interface HelpLayout {
-    sidebar: { ,x: number, y: number, width: number,, height: number },
-    content: { x: number, y: number, width: number,, height: number },
-    searchBar: { x: number, y: number, width: number,, height: number },
-    backButton: { x: number, y: number, width: number,, height: number }
+    sidebar: { ,x: number, y: number, width: number,, height: number,;
+    content: { x: number, y: number, width: number,, height: number,;
+    searchBar: { x: number, y: number, width: number,, height: number,;
+    backButton: { x: number, y: number, width: number,, height: number,
 
 // 色設定インターフェース
 interface HelpColors { background: string,
-    cardBackground: string,
-    primary: string,
-    secondary: string,
-    text: string,
-    textSecondary: string,
-    border: string,
-    selected: string,
-    searchBackground: string,
-    buttonBackground: string,
-    buttonHover: string,
-    scrollbar: string,
-    scrollbarHover: string,
-    scrollbarTrack: string  }
+    cardBackground: string;
+    primary: string;
+    secondary: string;
+    text: string;
+    textSecondary: string;
+    border: string;
+    selected: string;
+    searchBackground: string;
+    buttonBackground: string;
+    buttonHover: string;
+    scrollbar: string;
+    scrollbarHover: string;
+    scrollbarTrack: string;
 
 // フォントサイズインターフェース
 interface HelpFontSizes { title: number,
-    header: number,
-    normal: number,
-    small: number,
-    tiny: number }
+    header: number;
+    normal: number;
+    small: number;
+    tiny: number;
 
 // スクロール状態インターフェース
 interface ScrollState { offset: number,
-    maxOffset: number,
-    contentHeight: number,
-    viewHeight: number,
-    scrollbarWidth: number,
-    isDragging: boolean,
-    dragStartY: number,
-    dragStartOffset: number }
+    maxOffset: number;
+    contentHeight: number;
+    viewHeight: number;
+    scrollbarWidth: number;
+    isDragging: boolean;
+    dragStartY: number;
+    dragStartOffset: number;
 
 // コンテンツデータインターフェース
 interface ContentData { title?: string,
-    description?: string,
-    steps?: string[] }
+    description?: string;
+    steps?: string[];
 
 // ヘルプ状態インターフェース
 interface HelpState { searchQuery: string,
-    categories: any[],
-    selectedCategory: string,
-    selectedTopicIndex: number,
-    isSearching: boolean,
-    searchResults: any[],
+    categories: any[];
+    selectedCategory: string;
+    selectedTopicIndex: number;
+    isSearching: boolean;
+    searchResults: any[];
     currentContent: ContentData | null  }
 
 /**
@@ -69,25 +69,25 @@ interface HelpState { searchQuery: string,
  * ヘルプレンダリング管理器 - UI描画の統合管理
  */
 export class HelpRenderer {
-    private gameEngine: GameEngine,
+    private gameEngine: GameEngine;
     // 基準サイズ（800x600を前提とした設計）
     private readonly, baseWidth: number = 800,
     private readonly baseHeight: number = 600,
     
     // 色設定
-    private colors: HelpColors,
-    private fontSizes: HelpFontSizes,
+    private colors: HelpColors;
+    private fontSizes: HelpFontSizes;
     // サイドバースクロール状態
-    private sidebarScroll: ScrollState,
+    private sidebarScroll: ScrollState;
     // レイアウト
     private, layout: HelpLayout,
 
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine,
+        this.gameEngine = gameEngine;
         
         // 色設定
         this.colors = {''
-            background: '#0f0f1a',
+            background: '#0f0f1a';
             cardBackground: '#1a1a2e',
             primary: '#4a90e2',
             secondary: '#6bb0ff',
@@ -138,7 +138,7 @@ export class HelpRenderer {
         let canvasWidth = this.baseWidth,
         let canvasHeight = this.baseHeight,
         
-        if(this.gameEngine && this.gameEngine.canvas) {
+        if (this.gameEngine && this.gameEngine.canvas) {
         
             canvasWidth = this.gameEngine.canvas.width }
             canvasHeight = this.gameEngine.canvas.height; }
@@ -146,7 +146,7 @@ export class HelpRenderer {
         
         // ResponsiveCanvasManagerのスケール情報も考慮
         let scale = 1;
-        if(this.gameEngine && this.gameEngine.responsiveCanvasManager) {
+        if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
             try {
                 const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo(),
                 if (canvasInfo && canvasInfo.scale) {
@@ -181,11 +181,11 @@ export class HelpRenderer {
                 x: margin,
                 y: 110,
                 width: sidebarWidth,
-    height: contentHeight };
+    height: contentHeight,;
             content: { x: margin + sidebarWidth + spacing,
                 y: 110,
                 width: contentWidth,
-    height: contentHeight };
+    height: contentHeight,;
             searchBar: { x: margin,
                 y: 60,
     width: sidebarWidth + spacing + contentWidth, // サイドバー左端からコンテンツ右端まで,
@@ -193,19 +193,18 @@ export class HelpRenderer {
             backButton: { x: margin,
                 y: backButtonY,
                 width: 100,
-    height: backButtonHeight 
-    }
+    height: backButtonHeight,
 
     /**
      * メイン描画処理
      */
     public render(;
-        ctx: CanvasRenderingContext2D;
-        state: HelpState;
+        ctx: CanvasRenderingContext2D,
+        state: HelpState,
         accessibilityManager: HelpAccessibilityManager
     );
         animationManager: HelpAnimationManager,
-    transitionRenderer: HelpTransitionRenderer;
+    transitionRenderer: HelpTransitionRenderer,
     ): void { ctx.save(
         
         // レイアウトを再計算（キャンバスサイズ変更に対応）
@@ -226,12 +225,12 @@ export class HelpRenderer {
             this.renderSidebar(ctx, state, accessibilityManager.getCurrentFocusIndex() === 1, animationManager),
 
             // メインコンテンツ描画
-            if(state.isSearching && state.searchResults.length > 0) {
+            if (state.isSearching && state.searchResults.length > 0) {
     
 }
                 this.renderSearchResults(ctx, state, accessibilityManager.getCurrentFocusIndex() === 2); }
             } else {  // アニメーション中の場合はtransitionRendererを使用
-                if(!transitionRenderer.renderContentTransition(ctx, this.layout.content, this) { }
+                if (!transitionRenderer.renderContentTransition(ctx, this.layout.content, this) { }
                     this.renderContent(ctx, state, accessibilityManager.getCurrentFocusIndex() === 3); }
 }
 
@@ -242,7 +241,7 @@ export class HelpRenderer {
             this.renderAccessibilityElements(ctx, accessibilityManager);
 
         } catch (error) {
-            console.error('Render error in HelpRenderer:', error',
+            console.error('Render error in HelpRenderer:', error','
             this.renderErrorMessage(ctx, 'レンダリングエラーが発生しました' }'
 
         ctx.restore();
@@ -258,7 +257,7 @@ export class HelpRenderer {
         ctx.textBaseline = 'top';
 
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
-        const title = t('help.title', 'ヘルプ);
+        const title = t('help.title', 'ヘルプ);'
         
         // Transform行列のスケールを考慮した中央位置
         const transform = ctx.getTransform();
@@ -282,7 +281,7 @@ export class HelpRenderer {
         this.roundRect(ctx, searchBar.x, searchBar.y, searchBar.width, searchBar.height, 8, false),
         
         // フォーカスインジケーター
-        if(focused) {
+        if (focused) {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 3,
             ctx.setLineDash([5, 5]),
@@ -297,7 +296,7 @@ export class HelpRenderer {
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
 
-        const displayText = searchQuery || 'ヘルプを検索... (/')';
+        const displayText = searchQuery || 'ヘルプを検索... (/')';'
         const textColor = searchQuery ? this.colors.text: this.colors.textSecondary,
         
         ctx.fillStyle = textColor;
@@ -306,7 +305,7 @@ export class HelpRenderer {
         ctx.fillText(displayText, textX, textY);
         
         // フォーカス時のカーソル描画
-        if(focused && searchQuery) { const textWidth = ctx.measureText(searchQuery).width,
+        if (focused && searchQuery) { const textWidth = ctx.measureText(searchQuery).width,
             const cursorX = textX + textWidth + 2,
             
             // 点滅カーソル（簡易実装）
@@ -315,8 +314,8 @@ export class HelpRenderer {
             ctx.beginPath(),
             ctx.moveTo(cursorX, textY - 8),
             ctx.lineTo(cursorX, textY + 8),
-            ctx.stroke()',
-        ctx.textAlign = 'right',' }
+            ctx.stroke()','
+        ctx.textAlign = 'right',' }'
 
         ctx.fillText('🔍', searchBar.x + searchBar.width - 15, searchBar.y + searchBar.height / 2); }
     }
@@ -335,7 +334,7 @@ export class HelpRenderer {
         this.roundRect(ctx, sidebar.x, sidebar.y, sidebar.width, sidebar.height, 8, false),
         
         // フォーカスインジケーター
-        if(focused) {
+        if (focused) {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 2,
             ctx.setLineDash([5, 5]),
@@ -354,8 +353,8 @@ export class HelpRenderer {
         ctx.save();
         ctx.beginPath();
         ctx.rect(contentArea.x, contentArea.y, contentArea.width, contentArea.height);
-        ctx.clip()';
-            animationManager.getAnimationState('categoryTransition)?.isActive;
+        ctx.clip()';'
+            animationManager.getAnimationState('categoryTransition)?.isActive;'
 
         let currentY = sidebar.y + 10 - this.sidebarScroll.offset;
         
@@ -375,14 +374,14 @@ export class HelpRenderer {
             let alpha = 1;
             let offsetX = 0;
 
-            if(hasCategoryTransition) {
+            if (hasCategoryTransition) {
 
                 const transition = animationManager.getAnimationState('categoryTransition',
-                if(transition) {
+                if (transition) {
                     const fromIndex = transition.fromIndex,
 
                     const toIndex = transition.toIndex,
-                    const progress = animationManager.applyEasing(transition.progress, 'easeOut),
+                    const progress = animationManager.applyEasing(transition.progress, 'easeOut),'
                     
                     if (catIndex === fromIndex) {
                         alpha = 1 - progress }
@@ -395,7 +394,7 @@ export class HelpRenderer {
             ctx.globalAlpha = alpha;
             
             // カテゴリ項目の背景
-            if(isSelected) {
+            if (isSelected) {
                 ctx.fillStyle = this.colors.selected }
 
                 this.roundRect(ctx, sidebar.x + 5 + offsetX, currentY - 2, contentArea.width - 5, 35, 4, true); }
@@ -403,7 +402,7 @@ export class HelpRenderer {
             
             // カテゴリ名
             ctx.fillStyle = isSelected ? this.colors.text: this.colors.textSecondary,
-            ctx.font = `${isSelected ? 'bold ' : '}${this.fontSizes.normal}px Arial, sans-serif`;
+            ctx.font = `${isSelected ? 'bold ' : '}${this.fontSizes.normal}px Arial, sans-serif`;'
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             
@@ -413,7 +412,7 @@ export class HelpRenderer {
             currentY += 40;
             
             // 選択されたカテゴリのトピック一覧
-            if(isSelected && category.topics.length > 0) {
+            if (isSelected && category.topics.length > 0) {
                 for (let, i = 0, i < category.topics.length, i++) {
                     const topic = category.topics[i],
                     const isTopicSelected = i === state.selectedTopicIndex,
@@ -482,7 +481,7 @@ export class HelpRenderer {
         this.roundRect(ctx, trackX, trackY, scrollbar.scrollbarWidth, trackHeight, 4, true),
         
         // スクロールバーハンドル
-        if(scrollbar.contentHeight > scrollbar.viewHeight) {
+        if (scrollbar.contentHeight > scrollbar.viewHeight) {
             const handleHeight = Math.max(20, (scrollbar.viewHeight / scrollbar.contentHeight) * trackHeight),
             const handleY = trackY + (scrollbar.offset / scrollbar.maxOffset) * (trackHeight - handleHeight),
             
@@ -504,7 +503,7 @@ export class HelpRenderer {
         this.roundRect(ctx, contentArea.x, contentArea.y, contentArea.width, contentArea.height, 8, false),
         
         // フォーカスインジケーター
-        if(focused) {
+        if (focused) {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 2,
             ctx.setLineDash([5, 5]),
@@ -523,7 +522,7 @@ export class HelpRenderer {
         let currentY = contentArea.y + 20,
         const maxWidth = contentArea.width - 40,
         // タイトル
-        if(contentData.title) {
+        if (contentData.title) {
     
 }
             ctx.fillStyle = this.colors.text; }
@@ -553,7 +552,7 @@ export class HelpRenderer {
         }
         
         // ステップまたは詳細情報
-        if(contentData.steps && contentData.steps.length > 0) {
+        if (contentData.steps && contentData.steps.length > 0) {
             for (let, i = 0, i < contentData.steps.length, i++) {
                 const step = contentData.steps[i],
                 
@@ -593,7 +592,7 @@ export class HelpRenderer {
         this.roundRect(ctx, contentArea.x, contentArea.y, contentArea.width, contentArea.height, 8, false),
         
         // フォーカスインジケーター
-        if(focused) {
+        if (focused) {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 2,
             ctx.setLineDash([5, 5]),
@@ -658,7 +657,7 @@ export class HelpRenderer {
         this.roundRect(ctx, backButton.x, backButton.y, backButton.width, backButton.height, 6, false),
         
         // フォーカスインジケーター
-        if(focused) {
+        if (focused) {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 3,
             ctx.setLineDash([5, 5]),
@@ -674,7 +673,7 @@ export class HelpRenderer {
         ctx.textBaseline = 'middle';
 
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
-        const backText = t('common.back', '戻る);
+        const backText = t('common.back', '戻る);'
         
         ctx.fillText(backText, backButton.x + backButton.width / 2, backButton.y + backButton.height / 2);
     }
@@ -688,12 +687,12 @@ export class HelpRenderer {
         ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ';
+        ';'
 
-        ctx.fillText()';
+        ctx.fillText()';'
             'カテゴリとトピックを選択してください');
             contentArea.x + contentArea.width / 2);
-            contentArea.y + contentArea.height / 2';
+            contentArea.y + contentArea.height / 2';'
     }
 
     /**
@@ -727,12 +726,12 @@ export class HelpRenderer {
         const focusIndex = accessibilityManager.getCurrentFocusIndex(),
         const elements = accessibilityManager.getFocusableElements(),
         
-        if(focusIndex >= 0 && focusIndex < elements.length) {
+        if (focusIndex >= 0 && focusIndex < elements.length) {
         
             const element = elements[focusIndex],
             const ariaInfo = accessibilityManager.getAriaLabel(element.id),
 
-            if(ariaInfo) {
+            if (ariaInfo) {
                 // アクセシビリティ情報のオーバーレイ
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.8)',
                 ctx.fillRect(10, ctx.canvas.height - 60, 400, 50) }
@@ -752,25 +751,25 @@ export class HelpRenderer {
      */'
     private wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] { ''
         if(!text) return [],
-        ',
+        ','
 
         const lines: string[] = [],
-        let currentLine = ',
+        let currentLine = ','
         
         // 日本語対応: 文字単位で処理
         for(let, i = 0, i < text.length, i++) {
             const char = text[i],
             const testLine = currentLine + char,
             const metrics = ctx.measureText(testLine),
-            ',
+            ','
 
             if (metrics.width > maxWidth && currentLine) {''
                 lines.push(currentLine) }
                 currentLine = char; }
             } else {  currentLine = testLine,
-                ',
+                ','
                 // 句読点や改行で自然に改行
-                if(char === '。' || char === '、' || char === '\n) {
+                if (char === '。' || char === '、' || char === '\n) {'
                     const nextChar = text[i + 1],
 
                     if (nextChar && ctx.measureText(currentLine + nextChar).width > maxWidth) {
@@ -778,7 +777,7 @@ export class HelpRenderer {
 
                         lines.push(currentLine);' }'
 
-                        currentLine = '; }
+                        currentLine = '; }'
 }
             }
         }
@@ -811,7 +810,7 @@ export class HelpRenderer {
         ctx.quadraticCurveTo(x, y, x + radius, y),
         ctx.closePath(),
         
-        if(fill) {
+        if (fill) {
     
 }
             ctx.fill(); }
@@ -874,7 +873,7 @@ export class HelpRenderer {
         }
         
         // 選択されたトピックまでの高さを追加
-        if(selectedCategoryIndex >= 0) {
+        if (selectedCategoryIndex >= 0) {
             targetY += 40, // 選択されたカテゴリの高さ
         }
             targetY += state.selectedTopicIndex * 30; // トピックの高さ }
@@ -964,4 +963,4 @@ export class HelpRenderer {
         return x >= rect.x && x <= rect.x + rect.width &&,
                y >= rect.y && y <= rect.y + rect.height }
 
-    }'}
+    }'}'

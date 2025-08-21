@@ -7,101 +7,100 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for onboarding structures
 interface OnboardingConfig { enabled: boolean,
-    showOnFirstVisit: boolean,
-    showOnAccessibilityRequest: boolean,
-    skipOption: boolean,
-    progressTracking: boolean,
-    adaptiveContent: boolean,
-    language: string  }
+    showOnFirstVisit: boolean;
+    showOnAccessibilityRequest: boolean;
+    skipOption: boolean;
+    progressTracking: boolean;
+    adaptiveContent: boolean;
+    language: string;
 
 interface OnboardingStep { id: string,
-    title: string,
-    description: string,
-    actionRequired: boolean,
-    completed: boolean,
-    skippable: boolean,
-    duration: number,
-    content: StepContent,
-    validation?: () => boolean,
+    title: string;
+    description: string;
+    actionRequired: boolean;
+    completed: boolean;
+    skippable: boolean;
+    duration: number;
+    content: StepContent;
+    validation?: () => boolean;
     action?: () => void }'
 }
-';
+';'
 
 interface StepContent { ''
-    type: 'intro' | 'feature' | 'configuration' | 'practice' | 'summary',
-    visual?: string,
-    audio?: string,
-    interactive?: boolean,
-    customContent?: any }
+    type: 'intro' | 'feature' | 'configuration' | 'practice' | 'summary';
+    visual?: string;
+    audio?: string;
+    interactive?: boolean;
+    customContent?: any;
 
 interface UserPreferences { needsScreenReader: boolean,
-    needsKeyboardNav: boolean,
-    needsHighContrast: boolean,
-    needsLargeText: boolean,
-    needsReducedMotion: boolean,
-    needsCaptions: boolean,
-    needsSimplifiedUI: boolean,
-    preferredLanguage: string  }
+    needsKeyboardNav: boolean;
+    needsHighContrast: boolean;
+    needsLargeText: boolean;
+    needsReducedMotion: boolean;
+    needsCaptions: boolean;
+    needsSimplifiedUI: boolean;
+    preferredLanguage: string;
 
 interface OnboardingProgress { currentStep: number,
-    completedSteps: string[],
-    skippedSteps: string[],
-    startTime: number,
-    lastActiveTime: number,
-    preferences: UserPreferences,
-    assessmentResults: AssessmentResults
-    }
-';
+    completedSteps: string[];
+    skippedSteps: string[];
+    startTime: number;
+    lastActiveTime: number;
+    preferences: UserPreferences;
+    assessmentResults: AssessmentResults;
+';'
 
 interface AssessmentResults { ''
-    visualAcuity: 'normal' | 'low' | 'very-low',
-    motorControl: 'normal' | 'limited' | 'very-limited',
-    cognitiveLoad: 'normal' | 'reduced' | 'minimal',
+    visualAcuity: 'normal' | 'low' | 'very-low';
+    motorControl: 'normal' | 'limited' | 'very-limited';
+    cognitiveLoad: 'normal' | 'reduced' | 'minimal';
     hearingAbility: 'normal' | 'impaired' | 'deaf'
             }
 
 interface AnimationState { currentAnimation: string | null,
-    isAnimating: boolean,
-    animationQueue: string[] }
+    isAnimating: boolean;
+    animationQueue: string[];
 
 // AccessibilityManager interface (minimal, definition);
 interface AccessibilityManager { applyProfile?: (profile: any) => void,
-    saveProfile?: (profile: any) => void,
+    saveProfile?: (profile: any) => void;
     gameEngine?: any,  }
 }
 
 export class AccessibilityOnboarding {
-    private accessibilityManager: AccessibilityManager | null,
-    private gameEngine: any,
-    private config: OnboardingConfig,
-    private onboardingSteps: OnboardingStep[],
-    private progress: OnboardingProgress,
-    private currentStepIndex: number,
-    private onboardingContainer: HTMLElement | null,
-    private isActive: boolean,
+    private accessibilityManager: AccessibilityManager | null;
+    private gameEngine: any;
+    private config: OnboardingConfig;
+    private onboardingSteps: OnboardingStep[];
+    private progress: OnboardingProgress;
+    private currentStepIndex: number;
+    private onboardingContainer: HTMLElement | null;
+    private isActive: boolean;
     private, animationState: AnimationState,
     private onCompleteCallback?: () => void,
     private onSkipCallback?: () => void,
 
     constructor(accessibilityManager: AccessibilityManager | null) {
-        this.accessibilityManager = accessibilityManager,
-        this.gameEngine = accessibilityManager?.gameEngine,
+        this.accessibilityManager = accessibilityManager;
+        this.gameEngine = accessibilityManager?.gameEngine;
         
         // オンボーディング設定
         this.config = { : undefined
-            enabled: true,
+            enabled: true;
             showOnFirstVisit: true,
             showOnAccessibilityRequest: true,
             skipOption: true,
             progressTracking: true,
-    adaptiveContent: true }
+    adaptiveContent: true,
 
             language: 'ja' 
     };
         // オンボーディングステップ
         this.onboardingSteps = this.createOnboardingSteps();
         // 進捗状況
-        this.progress = this.loadProgress() || this.createInitialProgress()';
+        this.progress = this.loadProgress() || this.createInitialProgress()';'
         console.log('AccessibilityOnboarding, initialized');
     }
     
@@ -133,24 +132,24 @@ export class AccessibilityOnboarding {
     duration: 60000,
                 content: {''
                     type: 'configuration',
-    interactive: true  }
+    interactive: true,
 
                 },''
                 action: () => this.runNeedsAssessment('''
                 id: 'visual-support',
                 title: '視覚サポート機能',
-                description: 'コントラスト調整、拡大表示、色覚サポートなど';
-                actionRequired: false;
-                completed: false;
+                description: 'コントラスト調整、拡大表示、色覚サポートなど',
+                actionRequired: false,
+                completed: false,
                 skippable: true,
     duration: 30000,
                 content: { ''
-                    type: 'feature',',
+                    type: 'feature',','
                     visual: 'visual-features-demo',
-    interactive: true  }
+    interactive: true,
 
                 },')'
-                validation: () => this.progress.preferences.needsHighContrast || ;
+                validation: () => this.progress.preferences.needsHighContrast || ,
                                  this.progress.preferences.needsLargeText;
             },
             
@@ -165,9 +164,9 @@ export class AccessibilityOnboarding {
     duration: 45000,
                 content: {''
                     type: 'practice',
-    interactive: true  };
+    interactive: true,;
                 action: () => this.practiceKeyboardNavigation(
-                validation: () => this.progress.preferences.needsKeyboardNav;
+                validation: () => this.progress.preferences.needsKeyboardNav,
             },
             
             // スクリーンリーダー
@@ -182,10 +181,10 @@ export class AccessibilityOnboarding {
                 content: {''
                     type: 'feature',
                     audio: 'screen-reader-guide',
-    interactive: true  }
+    interactive: true,
 
                 },''
-                validation: () => this.progress.preferences.needsScreenReader;
+                validation: () => this.progress.preferences.needsScreenReader,
             },
             
             // 音声・字幕設定
@@ -200,10 +199,10 @@ export class AccessibilityOnboarding {
                 content: {''
                     type: 'feature',
                     visual: 'caption-demo',
-    interactive: true  }
+    interactive: true,
 
                 },''
-                validation: () => this.progress.preferences.needsCaptions;
+                validation: () => this.progress.preferences.needsCaptions,
             },
             
             // 簡素化UI
@@ -218,10 +217,10 @@ export class AccessibilityOnboarding {
                 content: {''
                     type: 'feature',
                     visual: 'simplified-ui-demo',
-    interactive: true  }
+    interactive: true,
 
                 },''
-                validation: () => this.progress.preferences.needsSimplifiedUI;
+                validation: () => this.progress.preferences.needsSimplifiedUI,
             },
             
             // カスタマイズ
@@ -235,27 +234,26 @@ export class AccessibilityOnboarding {
     duration: 60000,
                 content: {''
                     type: 'configuration',
-    interactive: true  }
+    interactive: true,
 
                 },''
                 action: () => this.showCustomizationPanel('''
                 id: 'practice',
                 title: '練習してみましょう',
-                description: '設定した機能を使って実際にプレイしてみます';
-                actionRequired: true;
-                completed: false;
+                description: '設定した機能を使って実際にプレイしてみます',
+                actionRequired: true,
+                completed: false,
                 skippable: true,
     duration: 120000,
                 content: { ')'
                     type: 'practice',
-    interactive: true 
-    },')'
+    interactive: true,,')'
                 action: () => this.startPracticeSession('''
                 id: 'completion',
                 title: '設定完了！',
-                description: 'いつでも設定を変更できます';
-                actionRequired: false;
-                completed: false;
+                description: 'いつでも設定を変更できます',
+                actionRequired: false,
+                completed: false,
                 skippable: false,
     duration: 10000,
                 content: { ''
@@ -273,7 +271,7 @@ export class AccessibilityOnboarding {
             completedSteps: [],
     skippedSteps: [],
             startTime: Date.now(
-            lastActiveTime: Date.now('}
+            lastActiveTime: Date.now('}'
 
                 preferredLanguage: 'ja' 
     };
@@ -289,7 +287,7 @@ export class AccessibilityOnboarding {
      * オンボーディングの開始
      */''
     async start(options: { onComplete?: () => void, onSkip?: () => void } = {}): Promise<void> { ''
-        if(this.isActive) {
+        if (this.isActive) {
 
             console.warn('Onboarding, is already, active') }
             return; }
@@ -298,7 +296,7 @@ export class AccessibilityOnboarding {
         this.onCompleteCallback = options.onComplete;
         this.onSkipCallback = options.onSkip;
 
-        console.log('Starting, accessibility onboarding...);
+        console.log('Starting, accessibility onboarding...);'
         
         this.isActive = true;
         this.currentStepIndex = this.progress.currentStep;
@@ -307,41 +305,41 @@ export class AccessibilityOnboarding {
         this.createOnboardingUI();
         
         // 最初のステップを表示
-        await this.showStep(this.currentStepIndex');
+        await this.showStep(this.currentStepIndex');'
     }
     
     /**
      * オンボーディングUIの作成
      */''
-    private createOnboardingUI()';
+    private createOnboardingUI()';'
         this.onboardingContainer = document.createElement('div');
         this.onboardingContainer.className = 'accessibility-onboarding';
         this.onboardingContainer.setAttribute('role', 'dialog');
         this.onboardingContainer.setAttribute('aria-label', 'アクセシビリティ設定ガイド';
-        ';
+        ';'
         // スタイル設定
         this.applyOnboardingStyles();
-        ';
+        ';'
 
         // 基本構造')'
-        this.onboardingContainer.innerHTML = `';
+        this.onboardingContainer.innerHTML = `';'
             <div class="onboarding-overlay"></div>"";
             <div class="onboarding-content">"";
                 <div class="onboarding-header">"";
                     <h2 class="onboarding-title"></h2>"";
-                    <button class="onboarding-close" aria-label="閉じる">×</button>";
+                    <button class="onboarding-close" aria-label="閉じる">×</button>";"
                 </div>"";
                 <div class="onboarding-body">"";
                     <div class="onboarding-description"></div>"";
                     <div class="onboarding-interactive"></div>"";
-                    <div class="onboarding-visual"></div>";
+                    <div class="onboarding-visual"></div>";"
                 </div>"";
                 <div class="onboarding-footer">"";
                     <div class="onboarding-progress">"";
                         <div class="progress-bar">"";
-                            <div class="progress-fill"></div>";
+                            <div class="progress-fill"></div>";"
                         </div>"";
-                        <span class="progress-text"></span>";
+                        <span class="progress-text"></span>";"
                     </div>"";
                     <div class="onboarding-controls">"";
                         <button class="btn-secondary btn-skip">スキップ</button>"";
@@ -366,7 +364,7 @@ export class AccessibilityOnboarding {
      * スタイルの適用"
      */""
     private applyOnboardingStyles(): void { ""
-        const style = document.createElement('style),
+        const style = document.createElement('style),'
         style.textContent = `,
             .accessibility-onboarding {
                 position: fixed,
@@ -377,7 +375,7 @@ export class AccessibilityOnboarding {
                 z-index: 10000,
                 display: flex,
                 align-items: center,
-                justify-content: center }
+                justify-content: center;
             
             .onboarding-overlay { position: absolute,
                 top: 0,
@@ -464,7 +462,7 @@ export class AccessibilityOnboarding {
     transition: all 0.2s  }
             
             .btn-primary { background: #2196F3,
-    color: white }
+    color: white;
             
             .btn-primary:hover { background: #1976D2 }
             
@@ -473,7 +471,7 @@ export class AccessibilityOnboarding {
             
             .btn-secondary:hover { background: #e0e0e0 }
             
-            .btn-skip { margin-right: auto }
+            .btn-skip { margin-right: auto;
             
             /* アクセシビリティ向けスタイル */
             @media (prefers-reduced-motion: reduce) { * {
@@ -485,8 +483,7 @@ export class AccessibilityOnboarding {
                     border: 2px solid black }
                 
                 .btn-primary { background: black,
-    color: white 
-    }
+    color: white;
         `;
         document.head.appendChild(style);
     }
@@ -496,26 +493,26 @@ export class AccessibilityOnboarding {
      */'
     private setupEventListeners(): void { ''
         if(!this.onboardingContainer) return,
-        ',
+        ','
         // 閉じるボタン
         const closeBtn = this.onboardingContainer.querySelector('.onboarding-close'),
         closeBtn?.addEventListener('click', () => this.close()),
-        ',
+        ','
         // スキップボタン
         const skipBtn = this.onboardingContainer.querySelector('.btn-skip'),
         skipBtn?.addEventListener('click', () => this.skip()),
-        ',
+        ','
         // 戻るボタン
         const backBtn = this.onboardingContainer.querySelector('.btn-back'),
         backBtn?.addEventListener('click', () => this.previousStep()),
-        ',
+        ','
         // 次へボタン
         const nextBtn = this.onboardingContainer.querySelector('.btn-next'),
         nextBtn?.addEventListener('click', () => this.nextStep()),
-        ',
+        ','
         // キーボードショートカット
         document.addEventListener('keydown', this.handleKeydown.bind(this)),
-        ',
+        ','
         // オーバーレイクリック
         const overlay = this.onboardingContainer.querySelector('.onboarding-overlay'),
         overlay?.addEventListener('click', () => { 
@@ -530,11 +527,11 @@ export class AccessibilityOnboarding {
 
         switch(event.key) {
 
-            case 'Escape':',
+            case 'Escape':','
                 if (this.config.skipOption) {''
                     this.close('''
-            case 'ArrowLeft': ',
-                this.previousStep()',
+            case 'ArrowLeft': ','
+                this.previousStep()','
             case 'ArrowRight':),
                 this.nextStep() }
                 break; }
@@ -544,12 +541,12 @@ export class AccessibilityOnboarding {
      * フォーカス管理
      */
     private manageFocus(): void { if (!this.onboardingContainer) return,
-        ',
+        ','
         // フォーカストラップ
-        const focusableElements = this.onboardingContainer.querySelectorAll()',
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"),
+        const focusableElements = this.onboardingContainer.querySelectorAll()','
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"),'
         
-        if(focusableElements.length > 0) {
+        if (focusableElements.length > 0) {
     
 }
             (focusableElements[0] as, HTMLElement).focus(); }
@@ -577,7 +574,7 @@ export class AccessibilityOnboarding {
         await this.animateStepTransition(step);
         
         // 自動進行（必要に応じて）
-        if(!step.actionRequired && step.duration) {
+        if (!step.actionRequired && step.duration) {
             setTimeout(() => { 
         }
                 if (this.currentStepIndex === index && this.isActive) { }
@@ -591,32 +588,32 @@ export class AccessibilityOnboarding {
      */
     private updateStepUI(step: OnboardingStep): void { ''
         if(!this.onboardingContainer) return,
-        ',
+        ','
         // タイトル
         const title = this.onboardingContainer.querySelector('.onboarding-title',
         if(title) title.textContent = step.title,
-        ',
+        ','
         // 説明文
         const description = this.onboardingContainer.querySelector('.onboarding-description',
         if(description) description.textContent = step.description,
-        ',
+        ','
         // インタラクティブコンテンツ
         const interactive = this.onboardingContainer.querySelector('.onboarding-interactive' as HTMLElement,
-        if(interactive) {
+        if (interactive) {
 
-            interactive.innerHTML = ',
+            interactive.innerHTML = ','
 
             if (step.content.interactive) {
         }
 
                 this.createInteractiveContent(step, interactive); }
 }
-        ';
+        ';'
         // ビジュアルコンテンツ
         const visual = this.onboardingContainer.querySelector('.onboarding-visual' as HTMLElement;
-        if(visual) {
+        if (visual) {
 
-            visual.innerHTML = ',
+            visual.innerHTML = ','
             if (step.content.visual) {
         }
                 this.createVisualContent(step, visual); }
@@ -635,22 +632,22 @@ export class AccessibilityOnboarding {
     private createInteractiveContent(step: OnboardingStep, container: HTMLElement): void { ''
         switch(step.id) {
 
-            case 'assessment':',
+            case 'assessment':','
                 this.createAssessmentForm(container),
 
                 break,
-            case 'keyboard-navigation':',
+            case 'keyboard-navigation':','
                 this.createKeyboardPractice(container),
 
                 break,
-            case 'customization':',
+            case 'customization':','
                 this.createCustomizationPanel(container),
 
                 break,
-            case 'practice':',
+            case 'practice':','
                 this.createPracticeArea(container),
                 break,
-            default:',
+            default:','
                 // 汎用的なインタラクティブコンテンツ
          }
 
@@ -661,7 +658,7 @@ export class AccessibilityOnboarding {
      * ビジュアルコンテンツの作成'
      */''
     private createVisualContent(step: OnboardingStep, container: HTMLElement): void { // プレースホルダー実装
-        const visual = document.createElement('div),
+        const visual = document.createElement('div),'
         visual.style.cssText = `,
             width: 100%,
             height: 200px,
@@ -682,51 +679,51 @@ export class AccessibilityOnboarding {
      */''
     private createAssessmentForm(container: HTMLElement): void { container.innerHTML = `''
             <form class="assessment-form">,
-                <h3>あなたのニーズを教えてください</h3>",
+                <h3>あなたのニーズを教えてください</h3>","
 
-                <div class="form-group">",
+                <div class="form-group">","
                     <label>"",
                         <input type="checkbox" name="screenReader" value="true">,
                         スクリーンリーダーを使用している,
                     </label>,
-                </div>",
+                </div>","
 
-                <div class="form-group">",
+                <div class="form-group">","
                     <label>"",
                         <input type="checkbox" name="keyboardOnly" value="true">,
                         キーボードのみで操作したい,
                     </label>,
-                </div>",
+                </div>","
 
-                <div class="form-group">",
+                <div class="form-group">","
                     <label>"",
                         <input type="checkbox" name="highContrast" value="true">,
                         高コントラスト表示が必要,
                     </label>,
-                </div>",
+                </div>","
 
-                <div class="form-group">",
+                <div class="form-group">","
                     <label>"",
                         <input type="checkbox" name="largeText" value="true">,
                         文字を大きく表示したい,
                     </label>,
-                </div>",
+                </div>","
 
-                <div class="form-group">",
+                <div class="form-group">","
                     <label>"",
                         <input type="checkbox" name="reducedMotion" value="true">,
                         アニメーションを減らしたい,
                     </label>,
-                </div>",
+                </div>","
 
-                <div class="form-group">",
+                <div class="form-group">","
                     <label>"",
                         <input type="checkbox" name="captions" value="true">,
                         字幕表示が必要,
                     </label>,
-                </div>",
+                </div>","
 
-                <div class="form-group">",
+                <div class="form-group">","
                     <label>"",
                         <input type="checkbox" name="simplifiedUI" value="true">,
                         シンプルなインターフェースを使いたい,
@@ -734,7 +731,7 @@ export class AccessibilityOnboarding {
                 </div>,
             </form>,
         `,
-        ",
+        ","
         // フォーム変更の監視""
         const form = container.querySelector('form'),
         form?.addEventListener('change', (event) => { '
@@ -749,26 +746,26 @@ export class AccessibilityOnboarding {
     private createKeyboardPractice(container: HTMLElement): void { container.innerHTML = `''
             <div class="keyboard-practice">,
                 <h3>キーボード操作を練習しましょう</h3>,
-                <p>以下のボタンをTabキーで移動し、Enterキーで選択してください：</p>",
+                <p>以下のボタンをTabキーで移動し、Enterキーで選択してください：</p>","
 
                 <div class="practice-buttons">"",
                     <button class="practice-btn" data-target="1">ボタン 1</button>"",
                     <button class="practice-btn" data-target="2">ボタン 2</button>"",
                     <button class="practice-btn" data-target="3">ボタン 3</button>"",
                     <button class="practice-btn" data-target="4">ボタン 4</button>,
-                </div>",
+                </div>","
 
                 <div class="practice-result">"",
                     <p>選択したボタン: <span id="selected-button">なし</span></p>,
                 </div>,
             </div>,
         `,
-        ",
+        ","
         // ボタンイベントの設定""
         const buttons = container.querySelectorAll('.practice-btn',
-        buttons.forEach(button => { '),
+        buttons.forEach(button => { '),'
             button.addEventListener('click', (event) => {''
-                const target = (event.target, as HTMLElement').getAttribute('data-target'),
+                const target = (event.target, as HTMLElement').getAttribute('data-target'),'
                 const resultSpan = container.querySelector('#selected-button' }'
                 if (resultSpan) { }
                     resultSpan.textContent = `ボタン ${target}`;
@@ -780,7 +777,7 @@ export class AccessibilityOnboarding {
      * カスタマイズパネルの作成'
      */''
     private createCustomizationPanel(container: HTMLElement): void { // Stub implementation
-        container.innerHTML = `',
+        container.innerHTML = `','
             <div class="customization-panel">,
                 <h3>詳細設定</h3>,
                 <p>ここで詳細な設定を行えます。</p>,
@@ -846,18 +843,18 @@ export class AccessibilityOnboarding {
         const backBtn = this.onboardingContainer.querySelector('.btn-back') as HTMLButtonElement,
         const nextBtn = this.onboardingContainer.querySelector('.btn-next') as HTMLButtonElement,
         const skipBtn = this.onboardingContainer.querySelector('.btn-skip' as HTMLButtonElement,
-        ',
+        ','
         // 戻るボタン
-        if(backBtn) {
+        if (backBtn) {
             backBtn.disabled = this.currentStepIndex === 0 }
 
             backBtn.style.visibility = this.currentStepIndex === 0 ? 'hidden' : 'visible'; 
     }
         
         // 次へボタン
-        if(nextBtn) {
+        if (nextBtn) {
 
-            if(this.currentStepIndex === this.onboardingSteps.length - 1) {
+            if (this.currentStepIndex === this.onboardingSteps.length - 1) {
         }
 
                 nextBtn.textContent = '完了'; }
@@ -866,9 +863,9 @@ export class AccessibilityOnboarding {
 
                 nextBtn.textContent = '次へ'; }
 }
-        ';
+        ';'
         // スキップボタン
-        if(skipBtn) {
+        if (skipBtn) {
             const currentStep = this.onboardingSteps[this.currentStepIndex] }
 
             skipBtn.style.display = currentStep.skippable && this.config.skipOption ? 'block' : 'none'; 
@@ -881,7 +878,7 @@ export class AccessibilityOnboarding {
         if(!this.onboardingContainer) return,
 
         const progressFill = this.onboardingContainer.querySelector('.progress-fill') as HTMLElement,
-        const progressText = this.onboardingContainer.querySelector('.progress-text),
+        const progressText = this.onboardingContainer.querySelector('.progress-text),'
         
         const progress = ((this.currentStepIndex + 1) / this.onboardingSteps.length) * 100,
         
@@ -889,7 +886,7 @@ export class AccessibilityOnboarding {
             progressFill.style.width = `${progress}%`;
         }
         
-        if(progressText) {
+        if (progressText) {
     
 }
             progressText.textContent = `ステップ ${this.currentStepIndex + 1} / ${this.onboardingSteps.length}`;
@@ -908,14 +905,14 @@ export class AccessibilityOnboarding {
     private async nextStep(): Promise<void> { const currentStep = this.onboardingSteps[this.currentStepIndex],
         // バリデーション
         if(currentStep.validation && !currentStep.validation()) {''
-            console.log('Step validation failed, skipping step),
+            console.log('Step validation failed, skipping step),'
             currentStep.completed = false,
             this.progress.skippedSteps.push(currentStep.id) } else {  currentStep.completed = true }
             this.progress.completedSteps.push(currentStep.id); }
         }
         
         // 最後のステップの場合
-        if(this.currentStepIndex === this.onboardingSteps.length - 1) {
+        if (this.currentStepIndex === this.onboardingSteps.length - 1) {
             await this.complete() }
             return; }
         }
@@ -928,14 +925,14 @@ export class AccessibilityOnboarding {
      * 前のステップへ
      */
     private async previousStep(): Promise<void> { if (this.currentStepIndex > 0) {
-            await this.showStep(this.currentStepIndex - 1') }
+            await this.showStep(this.currentStepIndex - 1') }'
     }
     
     /**
      * スキップ
      */''
-    private skip()';
-        console.log('Skipping, current step);
+    private skip()';'
+        console.log('Skipping, current step);'
         
         const currentStep = this.onboardingSteps[this.currentStepIndex];
         this.progress.skippedSteps.push(currentStep.id);
@@ -946,8 +943,8 @@ export class AccessibilityOnboarding {
     /**
      * オンボーディングの完了'
      */''
-    private async complete()';
-        console.log('Completing accessibility onboarding);
+    private async complete()';'
+        console.log('Completing accessibility onboarding);'
         
         // 設定の適用
         await this.applySettings();
@@ -968,13 +965,13 @@ export class AccessibilityOnboarding {
      */
     private async applySettings(): Promise<void> { const profile = this.createAccessibilityProfile(),
         
-        if(this.accessibilityManager?.applyProfile) {
+        if (this.accessibilityManager?.applyProfile) {
     
 }
-            await this.accessibilityManager.applyProfile(profile'); }
+            await this.accessibilityManager.applyProfile(profile'); }'
         }
         
-        if (this.accessibilityManager?.saveProfile) { await this.accessibilityManager.saveProfile(profile') }
+        if (this.accessibilityManager?.saveProfile) { await this.accessibilityManager.saveProfile(profile') }'
     }
     
     /**
@@ -1000,10 +997,10 @@ export class AccessibilityOnboarding {
     /**
      * クリーンアップ
      */
-    private cleanup(): void { this.isActive = false,
+    private cleanup(): void { this.isActive = false;
         
-        if(this.onboardingContainer) {
-        ',
+        if (this.onboardingContainer) {
+        ','
 
             this.onboardingContainer.remove() }
 
@@ -1020,18 +1017,18 @@ export class AccessibilityOnboarding {
     /**
      * 進捗の保存'
      */''
-    private saveProgress()';
-            localStorage.setItem('accessibilityOnboardingProgress', JSON.stringify(this.progress);'} catch (error) { console.warn('Failed to save onboarding progress:', error }
+    private saveProgress()';'
+            localStorage.setItem('accessibilityOnboardingProgress', JSON.stringify(this.progress);'} catch (error) { console.warn('Failed to save onboarding progress:', error }'
     }
     
     /**
      * 進捗の読み込み'
      */''
-    private loadProgress()';
-            const saved = localStorage.getItem('accessibilityOnboardingProgress);
+    private loadProgress()';'
+            const saved = localStorage.getItem('accessibilityOnboardingProgress);'
 
             return saved ? JSON.parse(saved) : null;} catch (error) {
-            console.warn('Failed to load onboarding progress:', error',
+            console.warn('Failed to load onboarding progress:', error','
             return null,
     
     // ステップ固有のアクション実装
@@ -1039,7 +1036,7 @@ export class AccessibilityOnboarding {
     /**
      * ニーズ評価の実行
      */''
-    private async runNeedsAssessment()',
+    private async runNeedsAssessment()','
         console.log('Running, needs assessment'),
         // 評価ロジックの実装
     }
@@ -1047,7 +1044,7 @@ export class AccessibilityOnboarding {
     /**
      * キーボードナビゲーションの練習
      */''
-    private async practiceKeyboardNavigation()';
+    private async practiceKeyboardNavigation()';'
         console.log('Practicing, keyboard navigation');
         // 練習ロジックの実装
     }
@@ -1055,7 +1052,7 @@ export class AccessibilityOnboarding {
     /**
      * カスタマイズパネルの表示
      */''
-    private async showCustomizationPanel()';
+    private async showCustomizationPanel()';'
         console.log('Showing, customization panel');
         // カスタマイズUIの実装
     }
@@ -1063,7 +1060,7 @@ export class AccessibilityOnboarding {
     /**
      * 練習セッションの開始
      */''
-    private async startPracticeSession()';
+    private async startPracticeSession()';'
         console.log('Starting, practice session');
         // 練習モードの実装
     }
@@ -1073,13 +1070,13 @@ export class AccessibilityOnboarding {
     /**
      * オンボーディングが必要かどうかの確認
      */''
-    isOnboardingNeeded()';
-        const hasCompletedOnboarding = localStorage.getItem('accessibilityOnboardingCompleted);
+    isOnboardingNeeded()';'
+        const hasCompletedOnboarding = localStorage.getItem('accessibilityOnboardingCompleted);'
 
-        if(!hasCompletedOnboarding && this.config.showOnFirstVisit) { return true }
-        ';
+        if (!hasCompletedOnboarding && this.config.showOnFirstVisit) { return true }
+        ';'
         // アクセシビリティ機能のリクエスト
-        const hasRequestedAccessibility = localStorage.getItem('accessibilityRequested);
+        const hasRequestedAccessibility = localStorage.getItem('accessibilityRequested);'
         
         if (hasRequestedAccessibility && this.config.showOnAccessibilityRequest) { return true }
         
@@ -1089,16 +1086,16 @@ export class AccessibilityOnboarding {
     /**
      * オンボーディングのリセット'
      */''
-    reset()';
+    reset()';'
         localStorage.removeItem('accessibilityOnboardingProgress');
-        localStorage.removeItem('accessibilityOnboardingCompleted);
+        localStorage.removeItem('accessibilityOnboardingCompleted);'
         
         this.progress = this.createInitialProgress();
         this.currentStepIndex = 0;
         
         // ステップのリセット
         this.onboardingSteps.forEach(step => {  ')'
-            step.completed = false'),
+            step.completed = false'),'
 
         ' }'
 
@@ -1108,7 +1105,7 @@ export class AccessibilityOnboarding {
     /**
      * 設定の適用
      */'
-    applyConfig(config: { onboarding?: Partial<OnboardingConfig> }): void { if (config.onboarding) {''
+    applyConfig(config: { onboarding?: Partial<OnboardingConfig>;): void { if (config.onboarding) {''
             Object.assign(this.config, config.onboarding) }
 
         console.log('AccessibilityOnboarding, configuration applied');
@@ -1125,14 +1122,14 @@ export class AccessibilityOnboarding {
     /**
      * クリーンアップ'
      */''
-    destroy()';
+    destroy()';'
         console.log('Destroying, AccessibilityOnboarding...';
         
-        if(this.isActive') {
-        ',
+        if (this.isActive') {'
+        ','
 
             this.cleanup() }
 
         console.log('AccessibilityOnboarding, destroyed'); }
 
-    }'}
+    }'}'

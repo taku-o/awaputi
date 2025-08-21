@@ -8,9 +8,9 @@ import { VolumeControlComponent  } from '../components/VolumeControlComponent.js
 
 // Settings Scene specific types
 export interface SettingOption { value: string,
-    label: string  }
+    label: string;
 
-export interface SettingItem { key: string }
+export interface SettingItem { key: string,
     label: string,
     type: 'toggle' | 'select' | 'slider' | 'text' | 'custom';
     description?: string | undefined;
@@ -23,9 +23,9 @@ export interface SettingItem { key: string }
     validator?: string | undefined;  }
 
 export interface SettingsLayout { categoryWidth: number,
-    settingsPadding: number,
-    itemHeight: number,
-    titleHeight: number  }
+    settingsPadding: number;
+    itemHeight: number;
+    titleHeight: number;
 
 export interface ConfirmDialogData { message: string,
     onConfirm?: () => void }
@@ -33,51 +33,51 @@ export interface ConfirmDialogData { message: string,
     }
 
 export interface ProfileDialogData { profiles: any[],
-    selectedIndex: number  }
+    selectedIndex: number;
 
 export interface SettingsSceneState { currentCategory: string,
-    selectedCategoryIndex: number,
-    selectedSettingIndex: number,
-    isEditingValue: boolean,
-    tempValue: string | null,
-    showingConfirmDialog: boolean,
-    confirmDialogData: ConfirmDialogData | null,
-    showingProfileDialog?: boolean,
-    profileDialogData?: ProfileDialogData | null,
-    hasContextualHelp?: boolean,
-    contextualHelpTitle?: string,
-    contextualHelpContent?: string,
-    contextualHelpActions?: string[] }
+    selectedCategoryIndex: number;
+    selectedSettingIndex: number;
+    isEditingValue: boolean;
+    tempValue: string | null;
+    showingConfirmDialog: boolean;
+    confirmDialogData: ConfirmDialogData | null;
+    showingProfileDialog?: boolean;
+    profileDialogData?: ProfileDialogData | null;
+    hasContextualHelp?: boolean;
+    contextualHelpTitle?: string;
+    contextualHelpContent?: string;
+    contextualHelpActions?: string[];
     currentContext?: any; }
 
 export interface ContextData { accessMethod?: string,
-    fromHelp?: boolean,
-    quickAccess?: boolean,
-    targetSetting?: string,
-    sourceScene?: string,
-    preserveContext?: boolean,
-    returnScene?: string }
+    fromHelp?: boolean;
+    quickAccess?: boolean;
+    targetSetting?: string;
+    sourceScene?: string;
+    preserveContext?: boolean;
+    returnScene?: string;
 
 /**
  * 設定画面シーン
  * ソーシャル共有設定、プライバシー設定、通知設定を管理
  */
 export class SettingsScene extends Scene implements SettingsSceneState { // Component properties
-    public loggingSystem: any,
-    public navigationContext: NavigationContextManager,
-    public accessibilitySettingsManager: AccessibilitySettingsManager,
-    public volumeControlComponent: VolumeControlComponent,
+    public loggingSystem: any;
+    public navigationContext: NavigationContextManager;
+    public accessibilitySettingsManager: AccessibilitySettingsManager;
+    public volumeControlComponent: VolumeControlComponent;
     // Categories and UI state
-    public categories: string[],
-    public categoryLabels: string[],
-    public currentCategory: string,
-    public selectedCategoryIndex: number,
-    public selectedSettingIndex: number,
-    public settingItems: Record<string, SettingItem[]>,
-    public isEditingValue: boolean,
-    public tempValue: string | null,
-    public showingConfirmDialog: boolean,
-    public confirmDialogData: ConfirmDialogData | null,
+    public categories: string[];
+    public categoryLabels: string[];
+    public currentCategory: string;
+    public selectedCategoryIndex: number;
+    public selectedSettingIndex: number;
+    public settingItems: Record<string, SettingItem[]>;
+    public isEditingValue: boolean;
+    public tempValue: string | null;
+    public showingConfirmDialog: boolean;
+    public confirmDialogData: ConfirmDialogData | null;
     public showingProfileDialog?: boolean,
     public profileDialogData?: ProfileDialogData | null,
     public hasContextualHelp?: boolean,
@@ -85,36 +85,36 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     public contextualHelpContent?: string,
     public contextualHelpActions?: string[],
     public currentContext?: any,
-    public layout: SettingsLayout,
+    public layout: SettingsLayout;
     constructor(gameEngine: any) {
         super(gameEngine),
         
         // LoggingSystemとNavigationContextManagerの初期化
-        this.loggingSystem = getLoggingSystem(),
-        this.navigationContext = new NavigationContextManager(gameEngine),
+        this.loggingSystem = getLoggingSystem();
+        this.navigationContext = new NavigationContextManager(gameEngine);
         
         // AccessibilitySettingsManagerの初期化
-        this.accessibilitySettingsManager = new AccessibilitySettingsManager(gameEngine),
+        this.accessibilitySettingsManager = new AccessibilitySettingsManager(gameEngine);
         // VolumeControlComponentの初期化
-        this.volumeControlComponent = new VolumeControlComponent(gameEngine),
-        ',
+        this.volumeControlComponent = new VolumeControlComponent(gameEngine);
+        ','
         // 設定カテゴリと現在選択中のカテゴリ
         this.categories = ['general', 'social', 'privacy', 'notifications', 'accessibility'],
-        this.categoryLabels = ['一般', 'ソーシャル', 'プライバシー', '通知', 'アクセシビリティ],
-        this.currentCategory = 'social',
-        this.selectedCategoryIndex = 1, // ソーシャルから開始
+        this.categoryLabels = ['一般', 'ソーシャル', 'プライバシー', '通知', 'アクセシビリティ],'
+        this.currentCategory = 'social';
+        this.selectedCategoryIndex = 1; // ソーシャルから開始
         
         // 現在選択中の設定項目
-        this.selectedSettingIndex = 0,
+        this.selectedSettingIndex = 0;
         
         // 設定項目の定義
-        this.settingItems = this.initializeSettingItems(),
+        this.settingItems = this.initializeSettingItems();
         
         // UI状態
-        this.isEditingValue = false,
-        this.tempValue = null,
-        this.showingConfirmDialog = false,
-        this.confirmDialogData = null,
+        this.isEditingValue = false;
+        this.tempValue = null;
+        this.showingConfirmDialog = false;
+        this.confirmDialogData = null;
         
         // レイアウト設定
         this.layout = { categoryWidth: 200,
@@ -142,7 +142,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                     { value: 'low', label: '低'
             },''
                     { value: 'medium', label: '中'
-            },']
+            },']'
                     { value: 'high', label: '高'
             },]'
                     { value: 'auto', label: '自動'
@@ -155,7 +155,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 { key: 'audio.sfxVolume', label: '効果音音量', type: 'slider', min: 0, max: 1, step: 0.1  },''
                 { key: 'audio.bgmVolume', label: 'BGM音量', type: 'slider', min: 0, max: 1, step: 0.1  }
             ],
-            social: [ ';
+            social: [ ';'
                 { key: 'social.enableSharing', label: 'ソーシャル共有を有効化', type: 'toggle', description: 'スコアや実績の共有機能を有効にします'
             },''
                 { key: 'social.autoPromptHighScore', label: 'ハイスコア時の自動プロンプト', type: 'toggle', description: 'ハイスコアを達成した時に自動的に共有画面を表示します'
@@ -168,7 +168,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                     { value: 'auto', label: '自動選択'
             },''
                     { value: 'twitter', label: 'Twitter/X'
-            },']
+            },']'
                     { value: 'facebook', label: 'Facebook'
             },]'
                     { value: 'native', label: 'システム標準'
@@ -180,7 +180,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             }
 
                     { value: 'low', label: '低（軽量）'
-            },']
+            },']'
                     { value: 'medium', label: '中（標準）'
             },]'
                     { value: 'high', label: '高（高品質）'
@@ -191,12 +191,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 { key: 'social.customMessage', label: 'カスタムメッセージ', type: 'text', description: '共有時のデフォルトメッセージをカスタマイズできます'
             }
             ],
-            privacy: [ ';
+            privacy: [ ';'
                 { key: 'social.privacyLevel', label: '共有レベル', type: 'select', options: ['
             }
 
                     { value: 'public', label: '公開（すべてのユーザー）'
-            },']
+            },']'
                     { value: 'friends', label: 'フレンドのみ'
             },]'
                     { value: 'private', label: 'プライベート（共有しない）'
@@ -209,7 +209,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 { key: 'privacy.crashReports', label: 'クラッシュレポートの送信', type: 'toggle', description: 'エラー発生時の情報を開発者に送信します'
             }
             ],
-            notifications: [ ';
+            notifications: [ ';'
                 { key: 'notifications.challenges.enabled', label: 'チャレンジ通知', type: 'toggle', description: 'チャレンジ関連の通知を受け取ります'
             },''
                 { key: 'notifications.challenges.newChallenge', label: '新しいチャレンジ', type: 'toggle', description: '新しいチャレンジが追加された時に通知します'
@@ -223,9 +223,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 { key: 'notifications.achievements.unlocked', label: '実績解除通知', type: 'toggle', description: '実績を解除した時に通知します'
             },''
                 { key: 'notifications.achievements.progress', label: '進捗通知', type: 'toggle', description: '実績の進捗状況を定期的に通知します'
-            },']
+            },']'
                 { key: 'notifications.leaderboard.enabled', label: 'ランキング通知', type: 'toggle', description: 'ランキング関連の通知を受け取ります'
-            },]')
+            },]')'
                 { key: 'notifications.leaderboard.newRecord', label: '新記録通知', type: 'toggle', description: '自己ベストを更新した時に通知します'
             }])
             ]);
@@ -238,12 +238,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     getAccessibilitySettingsItems(): SettingItem[] { // 基本設定項目を取得
         let accessibilityItems = [],
         
-        if(this.accessibilitySettingsManager) {
-        ',
+        if (this.accessibilitySettingsManager) {
+        ','
 
-            ' }
+            ' }'
 
-            accessibilityItems = this.accessibilitySettingsManager.getExtendedAccessibilitySettings('}
+            accessibilityItems = this.accessibilitySettingsManager.getExtendedAccessibilitySettings('}'
 
                 { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします', validator: 'toggle'
             },''
@@ -259,9 +259,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         }
         
         // 不足している基本アクセシビリティ設定の確認・追加
-        const requiredBasicSettings: SettingItem[] = [ ';
+        const requiredBasicSettings: SettingItem[] = [ ';'
             { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします', validator: 'toggle'
-            },']
+            },']'
             { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします', validator: 'toggle'
             },]'
             { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します', validator: 'toggle'
@@ -283,28 +283,27 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             key: 'accessibility.profiles',
             label: 'アクセシビリティプロファイル',
             type: 'custom','
-            component: 'AccessibilityProfileComponent',',
+            component: 'AccessibilityProfileComponent',','
             description: 'プリセットされたアクセシビリティ設定プロファイルを適用します',')',
-            validator: 'profile')'),
+            validator: 'profile')'),'
         // SettingsImportExportComponentの追加
         // @ts-ignore exactOptionalPropertyTypes問題を回避
         accessibilityItems.push({''
             key: 'accessibility.importExport',
             label: '設定のインポート・エクスポート',
             type: 'custom','
-            component: 'SettingsImportExportComponent',',
+            component: 'SettingsImportExportComponent',','
             description: 'アクセシビリティ設定をファイルとして保存・読み込みします',')',
             validator: 'importExport'),
         // 項目の有効性を検証
         const validItems = accessibilityItems.filter(item => { ),
-            if(!item || !item.key || !item.label) {', ',
-
-             }
+            if (!item || !item.key || !item.label) {', '
+}
 
                 console.warn('[SettingsScene] Invalid accessibility item filtered out:', item); }
                 return false;
             return true;
-        }';
+        }';'
         
         return validItems as SettingItem[];
     }
@@ -313,18 +312,18 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      * シーン開始時の処理'
      */''
     enter(contextData: ContextData = { )): void {''
-        this.currentCategory = 'social',
-        this.selectedCategoryIndex = 1,
-        this.selectedSettingIndex = 0,
-        this.isEditingValue = false,
-        this.showingConfirmDialog = false,
-        ',
+        this.currentCategory = 'social';
+        this.selectedCategoryIndex = 1;
+        this.selectedSettingIndex = 0;
+        this.isEditingValue = false;
+        this.showingConfirmDialog = false;
+        ','
         // コンテキストデータの処理
         this.processEntryContext(contextData),
 
         console.log('[SettingsScene] 設定画面に入りました', {'''
             contextData,')',
-            accessMethod: contextData.accessMethod',
+            accessMethod: contextData.accessMethod','
 
         this.loggingSystem.info('SettingsScene', 'Settings scene entered', {)
             contextData),
@@ -336,7 +335,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */
     processEntryContext(contextData: ContextData): void { try {
             // アクセス方法に応じた初期設定
-            if(contextData.accessMethod) {
+            if (contextData.accessMethod) {
 
                 if(contextData.accessMethod.includes('help' {'
                     // ヘルプから設定に来た場合はアクセシビリティカテゴリを開く
@@ -348,13 +347,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             }
             
             // ソースシーンに基づくカテゴリ設定
-            if(contextData.sourceScene) { }
+            if (contextData.sourceScene) { }
 
                 this.adjustCategoryForSourceScene(contextData.sourceScene); }
             }
 
-            this.loggingSystem.debug('SettingsScene', 'Entry context processed', contextData';} catch (error) {
-            this.loggingSystem.error('SettingsScene', 'Error processing entry context', error' }
+            this.loggingSystem.debug('SettingsScene', 'Entry context processed', contextData';} catch (error) {'
+            this.loggingSystem.error('SettingsScene', 'Error processing entry context', error' }'
     }
     
     /**
@@ -375,7 +374,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         this.currentCategory = 'general';
 )
         this.selectedCategoryIndex = 0;
-        this.loggingSystem.info('SettingsScene', 'Help integrated mode activated);
+        this.loggingSystem.info('SettingsScene', 'Help integrated mode activated);'
     }
     
     /**
@@ -400,14 +399,14 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     adjustCategoryForSourceScene(sourceScene: any) {
 
         switch(sourceScene) {''
-            case 'game':',
-                this.currentCategory = 'general',
-                this.selectedCategoryIndex = 0,
+            case 'game':','
+                this.currentCategory = 'general';
+                this.selectedCategoryIndex = 0;
 
                 break,
-            case 'social':',
-                this.currentCategory = 'social',
-                this.selectedCategoryIndex = 1,
+            case 'social':','
+                this.currentCategory = 'social';
+                this.selectedCategoryIndex = 1;
                 break,
             default:,
                 // デフォルトはsocialのまま
@@ -424,8 +423,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         for(const [categoryName, items] of Object.entries(this.settingItems) {
             const itemIndex = items.findIndex(item => item.key === settingKey),
             if (itemIndex !== -1) {
-                this.currentCategory = categoryName,
-                this.selectedCategoryIndex = this.categories.indexOf(categoryName),
+                this.currentCategory = categoryName;
+                this.selectedCategoryIndex = this.categories.indexOf(categoryName);
                 this.selectedSettingIndex = itemIndex }
                 return true;
         return false;
@@ -436,10 +435,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */
     exit() {
         // 変更を保存
-        this.saveSettings()',
+        this.saveSettings()','
         console.log('[SettingsScene] 設定画面を終了します'),', ' }
 
-        this.loggingSystem.info('SettingsScene', 'Settings scene exited); }
+        this.loggingSystem.info('SettingsScene', 'Settings scene exited); }'
     }
     
     /**
@@ -453,7 +452,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     render(context: CanvasRenderingContext2D): void { const canvas = context.canvas,
         const width = canvas.width,
         const height = canvas.height,
-        ',
+        ','
         // 背景
         context.fillStyle = '#f8f9fa',
         context.fillRect(0, 0, width, height),
@@ -468,7 +467,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         this.renderSettings(context, width, height),
         
         // 確認ダイアログ
-        if(this.showingConfirmDialog) {
+        if (this.showingConfirmDialog) {
     
 }
             this.renderConfirmDialog(context, width, height); }
@@ -484,13 +483,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderTitle(context: any, width: number) {
         // Transform行列のスケールを考慮した中央位置
         const transform = context.getTransform(),
-        const centerX = (width / 2') / transform.a,
+        const centerX = (width / 2') / transform.a,'
 
         context.fillStyle = '#2c3e50',
         context.font = 'bold 24px Arial, sans-serif',
         context.textAlign = 'center',
-        context.fillText('設定', centerX, 40',
-        ',
+        context.fillText('設定', centerX, 40','
+        ','
         // 区切り線
         context.strokeStyle = '#bdc3c7',
         context.lineWidth = 1,
@@ -510,9 +509,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
             const y = startY + i * categoryHeight,
             const isSelected = i === this.selectedCategoryIndex,
-            ',
+            ','
             // 背景
-            if(isSelected) {
+            if (isSelected) {
     
 }
 
@@ -524,7 +523,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             }
 
             context.fillRect(10, y, this.layout.categoryWidth, categoryHeight - 5);
-            ';
+            ';'
             // テキスト
             context.fillStyle = isSelected ? '#ffffff' : '#2c3e50';
             context.font = '16px Arial, sans-serif';
@@ -542,7 +541,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
         
         const currentItems = this.settingItems[this.currentCategory] || [],
-        ',
+        ','
         // カテゴリタイトル
         context.fillStyle = '#2c3e50',
         context.font = 'bold 20px Arial, sans-serif',
@@ -571,30 +570,30 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */
     renderSettingItem(context: CanvasRenderingContext2D, item: SettingItem, x: number, y: number, width: number, isSelected: boolean): void { const itemHeight = this.layout.itemHeight - 10,
         // 背景
-        if(isSelected) {
+        if (isSelected) {
 
             context.fillStyle = '#e8f4fd' }
 
             context.fillRect(x, y, width, itemHeight); }
         }
-        ';
+        ';'
         // ラベル
         context.fillStyle = '#2c3e50';
         context.font = '16px Arial, sans-serif';
         context.textAlign = 'left';
         context.fillText(item.label, x + 10, y + 25);
-        ';
+        ';'
         // 説明（ある場合）
-        if(item.description) {
+        if (item.description) {
 
             context.fillStyle = '#7f8c8d',
             context.font = '12px Arial, sans-serif' }
             context.fillText(item.description, x + 10, y + 42); }
         }
-        ';
+        ';'
         // 現在の値を取得
-        if(!item || !item.key) { return }
-';
+        if (!item || !item.key) { return }
+';'
 
         let currentValue;
         if(item.key === 'audio.muted' {'
@@ -622,19 +621,19 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
         switch(item.type) {
 
-            case 'toggle':',
+            case 'toggle':','
                 this.renderToggle(context, value, x + width - 60, centerY, isSelected),
                 break,
 
-            case 'select':',
+            case 'select':','
                 this.renderSelect(context, item, value, x, centerY, width, isSelected),
                 break,
 
-            case 'slider':',
+            case 'slider':','
                 this.renderSlider(context, item, value, x, centerY, width, isSelected),
                 break,
 
-            case 'text':',
+            case 'text':','
                 this.renderTextInput(context, value, x, centerY, width, isSelected),
                 break,
 
@@ -650,7 +649,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const height = 24,
         const toggleX = x - width / 2,
         const toggleY = y - height / 2,
-        ',
+        ','
         // 背景
         context.fillStyle = value ? '#2ecc71' : '#bdc3c7',
         context.fillRect(toggleX, toggleY, width, height),
@@ -659,9 +658,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const knobX = value ? toggleX + width - 22 : toggleX + 2,
         context.fillStyle = '#ffffff',
         context.fillRect(knobX, toggleY + 2, 20, height - 4),
-        ',
+        ','
         // 選択時の枠線
-        if(isSelected) {
+        if (isSelected) {
 
             context.strokeStyle = '#3498db',
             context.lineWidth = 2 }
@@ -673,28 +672,28 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */''
     renderSelect(context: CanvasRenderingContext2D, item: SettingItem, value: string, x: number, y: number, width: number, isSelected: boolean): void { const height = 30,
         const selectY = y - height / 2,
-        ',
+        ','
         // 背景
         context.fillStyle = '#ffffff',
         context.fillRect(x, selectY, width, height),
-        ',
+        ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
         context.lineWidth = isSelected ? 2 : 1,
         context.strokeRect(x, selectY, width, height),
-        ',
+        ','
         // 現在の値のラベル
-        const selectedOption = item.options?.find((opt: SettingOption) => opt.value === value'),
+        const selectedOption = item.options?.find((opt: SettingOption) => opt.value === value'),'
         const displayText = selectedOption ? selectedOption.label: value,
 ,
         context.fillStyle = '#2c3e50',
         context.font = '14px Arial, sans-serif',
         context.textAlign = 'left',
         context.fillText(displayText, x + 10, y + 5),
-        ',
+        ','
         // ドロップダウン矢印
         context.fillStyle = '#7f8c8d',
-        context.fillText('▼', x + width - 20, y + 5' }
+        context.fillText('▼', x + width - 20, y + 5' }'
     }
     
     /**
@@ -703,13 +702,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderSlider(context: CanvasRenderingContext2D, item: SettingItem, value: number, x: number, y: number, width: number, isSelected: boolean): void { const sliderWidth = width - 60,
         const sliderHeight = 6,
         const sliderY = y - sliderHeight / 2,
-        ',
+        ','
         // スライダーの背景
         context.fillStyle = '#bdc3c7',
         context.fillRect(x, sliderY, sliderWidth, sliderHeight),
-        ',
+        ','
         // スライダーの進行部分
-        const progress = (value - (item.min || 0)) / ((item.max || 1) - (item.min || 0)'),
+        const progress = (value - (item.min || 0)) / ((item.max || 1) - (item.min || 0)'),'
         context.fillStyle = '#3498db',
         context.fillRect(x, sliderY, sliderWidth * progress, sliderHeight),
         
@@ -718,7 +717,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const knobY = y - 8,
         context.fillStyle = isSelected ? '#2980b9' : '#3498db',
         context.fillRect(knobX, knobY, 16, 16),
-        ',
+        ','
         // 値の表示
         context.fillStyle = '#2c3e50',
         context.font = '14px Arial, sans-serif',
@@ -731,24 +730,24 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderCustomControl(context: CanvasRenderingContext2D, item: SettingItem, value: any, x: number, y: number, width: number, isSelected: boolean): void { ''
         switch(item.component) {
 
-            case 'VolumeControlComponent':',
+            case 'VolumeControlComponent':','
                 this.renderVolumeControl(context, value, x, y, width, isSelected),
                 break,
 
-            case 'AccessibilityProfileComponent':',
+            case 'AccessibilityProfileComponent':','
                 this.renderAccessibilityProfileControl(context, value, x, y, width, isSelected),
                 break,
 
-            case 'SettingsImportExportComponent':',
+            case 'SettingsImportExportComponent':','
                 this.renderSettingsImportExportControl(context, value, x, y, width, isSelected),
                 break,
                 
-            default:',
+            default:','
                 // フォールバック：不明なカスタムコンポーネントの場合はテキスト表示
                 context.fillStyle = '#7f8c8d',
                 context.font = '14px Arial, sans-serif',
                 context.textAlign = 'center',
-                context.fillText('カスタムコンポーネント', x + width / 2, y + 5' }
+                context.fillText('カスタムコンポーネント', x + width / 2, y + 5' }'
                 break; }
 }
     
@@ -758,11 +757,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderVolumeControl(context: CanvasRenderingContext2D, value: number, x: number, y: number, width: number, isSelected: boolean): void { const controlWidth = width - 20,
         const controlHeight = 30,
         const controlY = y - controlHeight / 2,
-        ',
+        ','
         // 背景
         context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa',
         context.fillRect(x, controlY, controlWidth, controlHeight),
-        ',
+        ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
         context.lineWidth = isSelected ? 2 : 1,
@@ -777,13 +776,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const progressBarY = y - 4,
         const progressBarHeight = 8,
         // 音量ダウンボタン
-        context.fillStyle = (value > 0') ? '#3498db' : '#95a5a6',
+        context.fillStyle = (value > 0') ? '#3498db' : '#95a5a6','
         context.fillRect(x + 5, buttonY, buttonWidth, buttonHeight),
         context.fillStyle = '#ffffff',
         context.font = '14px Arial, sans-serif',
         context.textAlign = 'center',
-        context.fillText('🔉', x + 5 + buttonWidth / 2, buttonY + 16',
-        ',
+        context.fillText('🔉', x + 5 + buttonWidth / 2, buttonY + 16','
+        ','
         // プログレスバー背景
         context.fillStyle = '#bdc3c7',
         context.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight),
@@ -792,27 +791,27 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const progress = value || 0,
         context.fillStyle = '#3498db',
         context.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight),
-        ',
+        ','
         // 音量アップボタン
-        context.fillStyle = (value < 1') ? '#3498db' : '#95a5a6',
+        context.fillStyle = (value < 1') ? '#3498db' : '#95a5a6','
         context.fillRect(x + controlWidth - buttonWidth - 5, buttonY, buttonWidth, buttonHeight),
         context.fillStyle = '#ffffff',
-        context.fillText('🔊', x + controlWidth - buttonWidth / 2 - 5, buttonY + 16',
-        ',
+        context.fillText('🔊', x + controlWidth - buttonWidth / 2 - 5, buttonY + 16','
+        ','
         // 音量パーセンテージ表示
         context.fillStyle = '#2c3e50',
         context.font = '12px Arial, sans-serif',
         context.textAlign = 'right' }
         context.fillText(`${Math.round((value || 0} * 100})%`, x + controlWidth - 5, y + 15);
-        ';
+        ';'
         // 選択時の追加表示
-        if(isSelected) {
+        if (isSelected) {
 
             context.fillStyle = '#3498db',
             context.font = '10px Arial, sans-serif',
             context.textAlign = 'center' }
 
-            context.fillText('Enter: 音量アップ', x + controlWidth / 2, controlY + controlHeight + 12'; }
+            context.fillText('Enter: 音量アップ', x + controlWidth / 2, controlY + controlHeight + 12'; }'
 }
     
     /**
@@ -821,11 +820,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderAccessibilityProfileControl(context: CanvasRenderingContext2D, _value: any, x: number, y: number, width: number, isSelected: boolean): void { const controlWidth = width - 20,
         const controlHeight = 30,
         const controlY = y - controlHeight / 2,
-        ',
+        ','
         // 背景
         context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa',
         context.fillRect(x, controlY, controlWidth, controlHeight),
-        ',
+        ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
         context.lineWidth = isSelected ? 2 : 1,
@@ -834,12 +833,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // プロファイル情報
         const currentProfile = this.accessibilitySettingsManager ? undefined : undefined,
             this.accessibilitySettingsManager.getCurrentProfile() : null,
-        const profileName = currentProfile ? (currentProfile, as any').name: '標準',
+        const profileName = currentProfile ? (currentProfile, as any').name: '標準','
         // プロファイル名表示,
         context.fillStyle = '#2c3e50',
         context.font = '14px Arial, sans-serif',
         context.textAlign = 'left',
-        context.fillText(`現在: ${profileName)`, x + 10, y + 5'),
+        context.fillText(`現在: ${profileName)`, x + 10, y + 5'),'
         
         // プロファイル切り替えボタン
         const, buttonWidth = 60,
@@ -853,7 +852,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.font = '12px, Arial, sans-serif',
         context.textAlign = 'center',
         context.fillText('変更', buttonX + buttonWidth / 2, buttonY + 16};
-        ';
+        ';'
         // 選択時の操作説明
         if(isSelected} {'
 
@@ -862,7 +861,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
             context.textAlign = 'center'; }
 '
-            context.fillText('Enter: プロファイル選択', x + controlWidth / 2, controlY + controlHeight + 12}';
+            context.fillText('Enter: プロファイル選択', x + controlWidth / 2, controlY + controlHeight + 12}';'
         }
     }
     
@@ -872,11 +871,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderSettingsImportExportControl(context: CanvasRenderingContext2D, _value: any, x: number, y: number, width: number, isSelected: boolean): void { const controlWidth = width - 20,
         const controlHeight = 30,
         const controlY = y - controlHeight / 2,
-        ',
+        ','
         // 背景
         context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa',
         context.fillRect(x, controlY, controlWidth, controlHeight),
-        ',
+        ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
 
@@ -896,23 +895,23 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.fillStyle = '#ffffff',
         context.font = '12px Arial, sans-serif',
         context.textAlign = 'center',
-        context.fillText('保存', exportButtonX + buttonWidth / 2, buttonY + 16',
+        context.fillText('保存', exportButtonX + buttonWidth / 2, buttonY + 16','
         
         // インポートボタン
         const importButtonX = exportButtonX + buttonWidth + spacing,
         context.fillStyle = '#e74c3c',
         context.fillRect(importButtonX, buttonY, buttonWidth, buttonHeight),
         context.fillStyle = '#ffffff',
-        context.fillText('読込', importButtonX + buttonWidth / 2, buttonY + 16',
-        ',
+        context.fillText('読込', importButtonX + buttonWidth / 2, buttonY + 16','
+        ','
         // 選択時の操作説明
-        if(isSelected) {
+        if (isSelected) {
 
             context.fillStyle = '#3498db',
             context.font = '10px Arial, sans-serif',
             context.textAlign = 'center' }
 
-            context.fillText('Enter: インポート/エクスポート選択', x + controlWidth / 2, controlY + controlHeight + 12'; }
+            context.fillText('Enter: インポート/エクスポート選択', x + controlWidth / 2, controlY + controlHeight + 12'; }'
 }
     
     /**
@@ -921,17 +920,17 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderTextInput(context: CanvasRenderingContext2D, value: any, x: number, y: number, width: number, isSelected: boolean) {
         const height = 30,
         const inputY = y - height / 2,
-        ',
+        ','
         // 背景
         context.fillStyle = '#ffffff',
         context.fillRect(x, inputY, width, height),
-        ',
+        ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
 
         context.lineWidth = isSelected ? 2 : 1,
         context.strokeRect(x, inputY, width, height),
-        ',
+        ','
         // テキスト
         context.fillStyle = '#2c3e50',
         context.font = '14px Arial, sans-serif',
@@ -949,9 +948,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         }
         
         context.fillText(truncatedText, x + 10, y + 5);
-        ';
+        ';'
         // 編集中のカーソル
-        if(isSelected && this.isEditingValue) {
+        if (isSelected && this.isEditingValue) {
 
             const textWidth = context.measureText(this.tempValue || '').width,
             context.strokeStyle = '#2c3e50',
@@ -974,7 +973,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const dialogWidth = 400,
         const dialogHeight = 200,
         const dialogX = (width - dialogWidth) / 2,
-        const dialogY = (height - dialogHeight') / 2,
+        const dialogY = (height - dialogHeight') / 2,'
 
         context.fillStyle = '#ffffff',
         context.fillRect(dialogX, dialogY, dialogWidth, dialogHeight),
@@ -983,35 +982,35 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
         context.lineWidth = 1,
         context.strokeRect(dialogX, dialogY, dialogWidth, dialogHeight),
-        ',
+        ','
         // メッセージ
         context.fillStyle = '#2c3e50',
         context.font = '16px Arial, sans-serif',
         context.textAlign = 'center',
 
-        context.fillText()',
+        context.fillText()','
             this.confirmDialogData?.message || '設定を変更しますか？'),
-            dialogX + dialogWidth / 2,',
+            dialogX + dialogWidth / 2,','
             dialogY + 80'',
-        '),
+        '),'
         
         // ボタン
         const buttonWidth = 80,
         const buttonHeight = 35,
         const buttonY = dialogY + dialogHeight - 60,
-        ',
+        ','
         // キャンセルボタン
         context.fillStyle = '#95a5a6',
         context.fillRect(dialogX + 80, buttonY, buttonWidth, buttonHeight),
         context.fillStyle = '#ffffff',
-        context.fillText('キャンセル', dialogX + 80 + buttonWidth / 2, buttonY + 22',
-        ',
+        context.fillText('キャンセル', dialogX + 80 + buttonWidth / 2, buttonY + 22','
+        ','
         // OKボタン
         context.fillStyle = '#3498db',
         context.fillRect(dialogX + dialogWidth - 160, buttonY, buttonWidth, buttonHeight),
         context.fillStyle = '#ffffff' }
 
-        context.fillText('OK', dialogX + dialogWidth - 160 + buttonWidth / 2, buttonY + 22'; }
+        context.fillText('OK', dialogX + dialogWidth - 160 + buttonWidth / 2, buttonY + 22'; }'
     }
     
     /**
@@ -1024,10 +1023,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.font = '12px Arial, sans-serif',
         context.textAlign = 'center',
 
-        context.fillText()',
+        context.fillText()','
             '↑↓: 項目選択  ←→: カテゴリ切り替え  Enter: 設定変更 , Esc: 戻る'),
             width / 2) }
-            helpY'; }
+            helpY'; }'
     }
     
     /**
@@ -1038,7 +1037,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
             this.handleKeyInput(event, as KeyboardEvent);' }'
 
-        } else if(event.type === 'click' || event.type === 'touchstart) { this.handleMouseInput(event) }
+        } else if (event.type === 'click' || event.type === 'touchstart) { this.handleMouseInput(event) }'
     }
     
     /**
@@ -1048,7 +1047,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             this.handleConfirmDialogInput(event),
             return }
         
-        if(this.isEditingValue) {
+        if (this.isEditingValue) {
         
             this.handleEditingInput(event) }
             return; }
@@ -1056,34 +1055,34 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
         switch(event.key) {
 
-            case 'ArrowUp':',
-                this.selectedSettingIndex = Math.max(0, this.selectedSettingIndex - 1),
+            case 'ArrowUp':','
+                this.selectedSettingIndex = Math.max(0; this.selectedSettingIndex - 1),
                 break,
 
-            case 'ArrowDown':',
+            case 'ArrowDown':','
                 const maxIndex = (this.settingItems[this.currentCategory] || []).length - 1,
-                this.selectedSettingIndex = Math.min(maxIndex, this.selectedSettingIndex + 1),
+                this.selectedSettingIndex = Math.min(maxIndex; this.selectedSettingIndex + 1),
                 break,
 
-            case 'ArrowLeft':',
-                this.selectedCategoryIndex = Math.max(0, this.selectedCategoryIndex - 1),
-                this.switchCategory()',
-            case 'ArrowRight':',
-                this.selectedCategoryIndex = Math.min(this.categories.length - 1, this.selectedCategoryIndex + 1),
+            case 'ArrowLeft':','
+                this.selectedCategoryIndex = Math.max(0; this.selectedCategoryIndex - 1),
+                this.switchCategory()','
+            case 'ArrowRight':','
+                this.selectedCategoryIndex = Math.min(this.categories.length - 1; this.selectedCategoryIndex + 1),
                 this.switchCategory('''
-            case 'Enter': ',
+            case 'Enter': ','
                 this.activateCurrentSetting('',
-            case 'Escape':',
+            case 'Escape':','
                 this.goBack('','
-            case 'p':',
+            case 'p':','
             case 'P':')',
                 if(event.ctrlKey && this.currentCategory === 'accessibility' {''
                     this.showAccessibilityProfiles('','
-            case 'e':',
+            case 'e':','
             case 'E':')',
                 if(event.ctrlKey && this.currentCategory === 'accessibility' {''
                     this.exportAccessibilitySettings('','
-            case 'i':',
+            case 'i':','
             case 'I':')',
                 if(event.ctrlKey && this.currentCategory === 'accessibility' { }
                     this.importAccessibilitySettings(); }
@@ -1100,7 +1099,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const y = event.clientY - rect.top,
         
         // カテゴリクリック判定
-        if(x < this.layout.categoryWidth + 10) {
+        if (x < this.layout.categoryWidth + 10) {
             const categoryIndex = Math.floor((y - 80) / 50),
             if (categoryIndex >= 0 && categoryIndex < this.categories.length) {
                 this.selectedCategoryIndex = categoryIndex }
@@ -1112,7 +1111,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             const itemIndex = Math.floor((y - itemStartY) / this.layout.itemHeight),
             const maxIndex = (this.settingItems[this.currentCategory] || []).length - 1,
             
-            if(itemIndex >= 0 && itemIndex <= maxIndex) {
+            if (itemIndex >= 0 && itemIndex <= maxIndex) {
             
                 this.selectedSettingIndex = itemIndex }
                 this.activateCurrentSetting(); }
@@ -1137,20 +1136,20 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         if (!item) return,
 
         const currentValue = this.gameEngine.settingsManager.get(item.key),
-        ',
+        ','
         // アクセシビリティ設定の場合は専用マネージャーを使用
         if(item.key.startsWith('accessibility.) && this.accessibilitySettingsManager' {''
             switch(item.type) {''
-                case 'toggle':',
+                case 'toggle':','
                     this.accessibilitySettingsManager.setSetting(item.key, !currentValue),
                     break,
 
-                case 'select':',
+                case 'select':','
                     const nextSelectValue = this.getNextSelectValue(item, currentValue),
                     this.accessibilitySettingsManager.setSetting(item.key, nextSelectValue),
                     break,
 
-                case 'slider':',
+                case 'slider':','
                     const nextSliderValue = this.getNextSliderValue(item, currentValue),
                     this.accessibilitySettingsManager.setSetting(item.key, nextSliderValue),
                     break,
@@ -1161,7 +1160,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 } else {  // 通常の設定処理
             switch(item.type) {
 
-                case 'toggle':',
+                case 'toggle':','
                     // 特別な処理が必要な設定項目
             }
 
@@ -1174,15 +1173,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                     }
                     break;
 
-                case 'select':';
+                case 'select':';'
                     this.cycleSelectValue(item, currentValue);
                     break;
 
-                case 'slider':';
+                case 'slider':';'
                     this.adjustSliderValue(item, currentValue);
                     break;
 
-                case 'text':';
+                case 'text':';'
                     this.startTextEditing(currentValue);
                     break;
 
@@ -1215,7 +1214,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         let newValue = currentValue + step,
         
         // 最大値を超えた場合は最小値に戻る
-        if(newValue > max) {
+        if (newValue > max) {
     
 }
             newValue = min; }
@@ -1233,8 +1232,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     /**
      * テキスト編集開始
      */''
-    startTextEditing(currentValue: any): void { this.isEditingValue = true,
-        this.tempValue = currentValue || ' }
+    startTextEditing(currentValue: any): void { this.isEditingValue = true;
+        this.tempValue = currentValue || ' }'
     
     /**
      * 編集中の入力処理
@@ -1242,12 +1241,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     handleEditingInput(event: any): void { ''
         switch(event.key) {
 
-            case 'Enter':',
+            case 'Enter':';'
                 this.finishTextEditing('''
-            case 'Escape': ')
-                this.cancelTextEditing()',
+            case 'Escape': ')'
+                this.cancelTextEditing()','
             case 'Backspace':')',
-                this.tempValue = (this.tempValue || ').slice(0, -1),
+                this.tempValue = (this.tempValue || ').slice(0, -1),'
                 break,
                 
             default:,
@@ -1266,7 +1265,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const currentItems = this.settingItems[this.currentCategory] || [],
         const item = currentItems[this.selectedSettingIndex],
 
-        if(item) {
+        if (item) {
             // アクセシビリティ設定の場合は専用マネージャーを使用
             if(item.key.startsWith('accessibility.) && this.accessibilitySettingsManager' { }
                 this.accessibilitySettingsManager.setSetting(item.key, this.tempValue); }
@@ -1291,9 +1290,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     handleConfirmDialogInput(event: any): void { ''
         switch(event.key) {
 
-            case 'Enter':',
+            case 'Enter':','
                 this.confirmDialogData?.onConfirm?.(),
-                this.closeConfirmDialog()',
+                this.closeConfirmDialog()','
             case 'Escape':),
                 this.confirmDialogData?.onCancel?.(),
                 this.closeConfirmDialog() }
@@ -1327,16 +1326,16 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     handleAudioMuteToggle() {
         try {
             if (this.gameEngine.audioManager) {''
-                const newMutedState = this.gameEngine.audioManager.toggleMute()',
-                this.gameEngine.settingsManager.set('audio.muted', newMutedState',
+                const newMutedState = this.gameEngine.audioManager.toggleMute()','
+                this.gameEngine.settingsManager.set('audio.muted', newMutedState','
 
-                ' }
+                ' }'
 
-                console.log(`[SettingsScene] Audio mute toggled: ${newMutedState}`},' }
+                console.log(`[SettingsScene] Audio mute toggled: ${newMutedState}`},' }'
 '
-                this.loggingSystem.info('SettingsScene', `Audio mute toggled: ${newMutedState}`}';} catch (error) {
-            console.error('[SettingsScene] Error toggling audio mute:', error',
-            this.loggingSystem.error('SettingsScene', 'Audio mute toggle error', error' }
+                this.loggingSystem.info('SettingsScene', `Audio mute toggled: ${newMutedState}`}';} catch (error) {'
+            console.error('[SettingsScene] Error toggling audio mute:', error','
+            this.loggingSystem.error('SettingsScene', 'Audio mute toggle error', error' }'
     }
     
     /**
@@ -1345,11 +1344,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     handleCustomComponent(item: any): void { ''
         switch(item.component) {
 
-            case 'VolumeControlComponent':',
+            case 'VolumeControlComponent':','
                 this.handleVolumeControl('''
-            case 'AccessibilityProfileComponent': ',
+            case 'AccessibilityProfileComponent': ','
                 this.handleAccessibilityProfileComponent('','
-            case 'SettingsImportExportComponent':',
+            case 'SettingsImportExportComponent':','
                 this.handleSettingsImportExportComponent() }
 
                 console.warn('[SettingsScene] Unknown custom component:', item.component'; }'
@@ -1367,7 +1366,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             // VolumeControlComponentを使用した音量調整
             // このメソッドは現在選択されているときに音量アップを実行
             if (this.volumeControlComponent) {''
-                this.volumeControlComponent.handleVolumeUp()',
+                this.volumeControlComponent.handleVolumeUp()','
                 console.log('[SettingsScene] Volume, control activated'),'
 
     }
@@ -1375,7 +1374,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 this.loggingSystem.info('SettingsScene', 'Volume control activated'; }
 
             } catch (error) {
-            console.error('[SettingsScene] Error handling volume control:', error',
+            console.error('[SettingsScene] Error handling volume control:', error','
             this.loggingSystem.error('SettingsScene', 'Volume control error', error) }
     }
     
@@ -1384,17 +1383,17 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */
     handleAccessibilityProfileComponent() {
 
-        if(!this.accessibilitySettingsManager) {''
+        if (!this.accessibilitySettingsManager) {''
             console.warn('[SettingsScene] AccessibilitySettingsManager, not available') }
             return; }
         }
-        ';
+        ';'
         try { // プロファイル選択ダイアログを表示
-            this.showAccessibilityProfileDialog()',
-            this.loggingSystem.info('SettingsScene', 'Accessibility profile component activated',' }
+            this.showAccessibilityProfileDialog()','
+            this.loggingSystem.info('SettingsScene', 'Accessibility profile component activated',' }'
 
         } catch (error) {
-            console.error('[SettingsScene] Error handling accessibility profile component:', error',
+            console.error('[SettingsScene] Error handling accessibility profile component:', error','
             this.loggingSystem.error('SettingsScene', 'Accessibility profile component error', error) }
     }
     
@@ -1403,8 +1402,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */
     showAccessibilityProfileDialog() {
         const profiles = this.accessibilitySettingsManager.getAvailableProfiles(),
-        const currentProfile = this.accessibilitySettingsManager.getCurrentProfile()',
-        console.log('[SettingsScene] Available Accessibility Profiles:', profiles',
+        const currentProfile = this.accessibilitySettingsManager.getCurrentProfile()','
+        console.log('[SettingsScene] Available Accessibility Profiles:', profiles','
         console.log('[SettingsScene] Current Profile:', currentProfile),
         
         // 簡易プロファイル選択（実際の実装では専用UIを作成）
@@ -1434,7 +1433,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             this.loggingSystem.info('SettingsScene', 'Settings import/export component activated'; }
 
         } catch (error) {
-            console.error('[SettingsScene] Error handling settings import/export component:', error',
+            console.error('[SettingsScene] Error handling settings import/export component:', error','
             this.loggingSystem.error('SettingsScene', 'Settings import/export component error', error) }
     }
     
@@ -1444,10 +1443,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     showImportExportDialog() {
         // 簡易選択（実際の実装では専用UIを作成）
         // デフォルトでエクスポートを実行
-        this.exportAccessibilitySettings()',
-        console.log('[SettingsScene] Import/Export, dialog activated (Export, executed')') }
+        this.exportAccessibilitySettings()','
+        console.log('[SettingsScene] Import/Export, dialog activated (Export, executed')') }'
 
-        this.loggingSystem.info('SettingsScene', 'Import/Export dialog activated); }
+        this.loggingSystem.info('SettingsScene', 'Import/Export dialog activated); }'
     }
     
     /**
@@ -1459,7 +1458,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             this.cancelTextEditing(); }
         } else if (this.showingConfirmDialog) { this.closeConfirmDialog() } else {  // NavigationContextManagerを使用して適切な戻り先を決定
             try {'
-                if(!this.gameEngine.sceneManager) {', ' }
+                if (!this.gameEngine.sceneManager) {', ' }
 
                     console.error('SceneManager, not available'); }''
                     return; }
@@ -1467,27 +1466,27 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 
                 // NavigationContextManagerから戻り先を取得
                 const returnScene = this.navigationContext.getReturnDestination();
-                this.navigationContext.popContext()';
+                this.navigationContext.popContext()';'
                 const targetScene = returnScene || 'menu'; // フォールバックとして'menu'を使用)
                 const success = this.gameEngine.sceneManager.switchScene(targetScene);
                 
-                if(!success) {
-                ',
+                if (!success) {
+                ','
 
                     console.error(`Failed, to navigate, to ${targetScene) from, settings screen`),'
 
                     // フォールバック: menuシーンに戻る試行
                     if (targetScene !== 'menu'} {''
-                        const, fallbackSuccess = this.gameEngine.sceneManager.switchScene('menu}
+                        const, fallbackSuccess = this.gameEngine.sceneManager.switchScene('menu}'
 )
-                        if(!fallbackSuccess) { }'
+                        if (!fallbackSuccess) { }'
 
-                            console.error('Failed, to navigate, to fallback, menu scene'}';
+                            console.error('Failed, to navigate, to fallback, menu scene'}';'
                         }
 }
 
-                this.loggingSystem.info('SettingsScene', `Navigated back to: ${targetScene}, success: ${success}`}';} catch (error) {
-                console.error('Error navigating back from settings screen:', error',
+                this.loggingSystem.info('SettingsScene', `Navigated back to: ${targetScene}, success: ${success}`}';} catch (error) {'
+                console.error('Error navigating back from settings screen:', error','
                 this.loggingSystem.error('SettingsScene', 'Navigation error', error) }
 }
     
@@ -1497,16 +1496,16 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     showAccessibilityProfiles() {
         if (!this.accessibilitySettingsManager) return,
 
-        const profiles = this.accessibilitySettingsManager.getAvailableProfiles()',
-        console.log('[SettingsScene] Available Accessibility Profiles:', profiles',
+        const profiles = this.accessibilitySettingsManager.getAvailableProfiles()','
+        console.log('[SettingsScene] Available Accessibility Profiles:', profiles','
         
         // 簡易的なプロファイル表示（実際の実装では専用UIを作成）
-        this.showingProfileDialog = true,
+        this.showingProfileDialog = true;
         this.profileDialogData = {
             profiles }
             selectedIndex: 0 
     };
-        this.loggingSystem.info('SettingsScene', 'Accessibility profiles dialog opened);
+        this.loggingSystem.info('SettingsScene', 'Accessibility profiles dialog opened);'
     }
     
     /**
@@ -1515,15 +1514,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     exportAccessibilitySettings() {
 
         if(!this.accessibilitySettingsManager) return,
-        ',
+        ','
 
         try {'
-            this.accessibilitySettingsManager.exportSettings('json', true' }
+            this.accessibilitySettingsManager.exportSettings('json', true' }'
 
             this.loggingSystem.info('SettingsScene', 'Accessibility settings export initiated'; }
 
         } catch (error) {
-            console.error('[SettingsScene] Export failed:', error',
+            console.error('[SettingsScene] Export failed:', error','
             this.loggingSystem.error('SettingsScene', 'Export failed', error) }
     }
     
@@ -1547,7 +1546,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 if (file) {
                     try {
                         await this.accessibilitySettingsManager.importSettings(file),
-                        ',
+                        ','
 
                         // 設定項目リストを更新
     }
@@ -1557,7 +1556,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                         this.loggingSystem.info('SettingsScene', 'Accessibility settings imported successfully'; }
 
                     } catch (error) { : undefined''
-                        console.error('[SettingsScene] Import failed:', error',
+                        console.error('[SettingsScene] Import failed:', error','
                         this.loggingSystem.error('SettingsScene', 'Import failed', error) }
                 }
                 
@@ -1569,7 +1568,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             input.click();
 
         } catch (error) {
-            console.error('[SettingsScene] Import setup failed:', error',
+            console.error('[SettingsScene] Import setup failed:', error','
             this.loggingSystem.error('SettingsScene', 'Import setup failed', error) }
     }
     
@@ -1578,7 +1577,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */
     getAccessibilityIntegrationStatus() {', ' }
 
-        if(!this.accessibilitySettingsManager) { }'
+        if (!this.accessibilitySettingsManager) { }'
 
             return { integrated: false, reason: 'AccessibilitySettingsManager not initialized'
             }
@@ -1607,12 +1606,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             if (this.volumeControlComponent) { this.volumeControlComponent.dispose() }
             ;
             // 設定の保存
-            this.saveSettings()';
+            this.saveSettings()';'
             console.log('[SettingsScene] SettingsScene, destroyed');'
-            this.loggingSystem.info('SettingsScene', 'Settings scene destroyed);
+            this.loggingSystem.info('SettingsScene', 'Settings scene destroyed);'
 
         } catch (error) {
-            console.error('Error during SettingsScene destruction:', error',
-            this.loggingSystem.error('SettingsScene', 'Destruction error', error' }
+            console.error('Error during SettingsScene destruction:', error','
+            this.loggingSystem.error('SettingsScene', 'Destruction error', error' }'
 
-    }'}
+    }'}'

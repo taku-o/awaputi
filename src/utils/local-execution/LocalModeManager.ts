@@ -15,50 +15,50 @@ import LocalModeStatusManager from './local-mode/LocalModeStatusManager.js';
 
 // Type definitions
 interface PerformanceConfig { enableLazyInitialization: boolean,
-    enableComponentCaching: boolean,
-    enableBatchProcessing: boolean,
-    enableResourcePreloading: boolean,
-    enableMemoryOptimization: boolean,
-    initializationTimeout: number,
-    componentInitDelay: number,
-    retryAttempts: number,
-    maxConcurrentTasks: number  }
+    enableComponentCaching: boolean;
+    enableBatchProcessing: boolean;
+    enableResourcePreloading: boolean;
+    enableMemoryOptimization: boolean;
+    initializationTimeout: number;
+    componentInitDelay: number;
+    retryAttempts: number;
+    maxConcurrentTasks: number;
 
 interface LocalModeConfig { enableMetaTagOptimization?: boolean,
-    enableFaviconGeneration?: boolean,
-    enableDeveloperGuidance?: boolean,
-    enableErrorHandling?: boolean,
-    enableFallbackResources?: boolean,
-    autoInitialize?: boolean,
-    debugMode?: boolean,
-    enablePerformanceOptimizations?: boolean }
+    enableFaviconGeneration?: boolean;
+    enableDeveloperGuidance?: boolean;
+    enableErrorHandling?: boolean;
+    enableFallbackResources?: boolean;
+    autoInitialize?: boolean;
+    debugMode?: boolean;
+    enablePerformanceOptimizations?: boolean;
 
 interface DefaultConfig { enableMetaTagOptimization: boolean,
-    enableFaviconGeneration: boolean,
-    enableDeveloperGuidance: boolean,
-    enableErrorHandling: boolean,
-    enableFallbackResources: boolean,
-    autoInitialize: boolean,
-    debugMode: boolean,
-    enablePerformanceOptimizations: boolean  }
+    enableFaviconGeneration: boolean;
+    enableDeveloperGuidance: boolean;
+    enableErrorHandling: boolean;
+    enableFallbackResources: boolean;
+    autoInitialize: boolean;
+    debugMode: boolean;
+    enablePerformanceOptimizations: boolean;
 
 interface InitializationMetrics { startTime: number | null,
-    endTime: number | null,
-    componentTimes: Record<string, number>,
-    totalExecutionTime: number,
-    optimizationsApplied: string[]  }
+    endTime: number | null;
+    componentTimes: Record<string, number>;
+    totalExecutionTime: number;
+    optimizationsApplied: string[];
 
 interface ExecutionContext { isLocal: boolean,
-    protocol: string,
-    url: string,
-    domain: string,
-    path: string }
+    protocol: string;
+    url: string;
+    domain: string;
+    path: string;
 
 interface InitializationResult { success: boolean,
-    executionContext?: ExecutionContext,
-    metrics?: InitializationMetrics,
-    reason?: string,
-    error?: Error }
+    executionContext?: ExecutionContext;
+    metrics?: InitializationMetrics;
+    reason?: string;
+    error?: Error;
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
@@ -85,7 +85,7 @@ class LocalModeManager { /**
         enableFallbackResources: true,
         autoInitialize: true,
         debugMode: false,
-    enablePerformanceOptimizations: true  };
+    enablePerformanceOptimizations: true,;
     public config: DefaultConfig,
     public isInitialized: boolean,
     public executionContext: ExecutionContext | null,
@@ -93,7 +93,7 @@ class LocalModeManager { /**
     
     // パフォーマンス最適化用のプライベートストレージ
     private _componentCache: Map<string, any>;
-    private _initializationMetrics: InitializationMetrics;
+    private _initializationMetrics: InitializationMetrics,
     private, _resourcePreloadPromises: Map<string, Promise<any>>;
 
     /**
@@ -102,20 +102,20 @@ class LocalModeManager { /**
      */
     constructor(config: LocalModeConfig = { ) {
         this.config = { ...LocalModeManager.DEFAULT_CONFIG, ...config,
-        this.isInitialized = false,
-        this.executionContext = null,
-        this.initializationPromise = null,
+        this.isInitialized = false;
+        this.executionContext = null;
+        this.initializationPromise = null;
         
         // パフォーマンス最適化用のプライベートストレージ
-        this._componentCache = new Map(),
+        this._componentCache = new Map();
         this._initializationMetrics = { startTime: null,
-            endTime: null }
+            endTime: null,
             componentTimes: {}
             totalExecutionTime: 0,
-    optimizationsApplied: [];
+    optimizationsApplied: [],
         };
-        this._resourcePreloadPromises = new Map()';
-        this.log('LocalModeManager, instance created);
+        this._resourcePreloadPromises = new Map()';'
+        this.log('LocalModeManager, instance created);'
     }
 
     /**
@@ -142,13 +142,13 @@ class LocalModeManager { /**
                     this.config),
                     this.log.bind(this),
 
-            if(result.success) {
-                this.isInitialized = true,
+            if (result.success) {
+                this.isInitialized = true;
                 this.executionContext = result.executionContext || null }
 
                 this._initializationMetrics = result.metrics || this._initializationMetrics;' }'
 
-                this.log(`LocalModeManager, initialized successfully (${this.config.enablePerformanceOptimizations ? 'optimized' : 'legacy} mode}`});
+                this.log(`LocalModeManager, initialized successfully (${this.config.enablePerformanceOptimizations ? 'optimized' : 'legacy} mode}`});'
                 return true;
             } else {  }
                 this.log(`LocalModeManager, initialization failed: ${result.reason || result.error?.message}`});
@@ -219,11 +219,11 @@ class LocalModeManager { /**
      * @param message - ログメッセージ
      * @param level - ログレベル'
      */''
-    log(message: string, level: LogLevel = 'info): void { if (this.config.debugMode) {
+    log(message: string, level: LogLevel = 'info): void { if (this.config.debugMode) {'
             const timestamp = new Date().toISOString() }
 
             const prefix = `[LocalModeManager:${level}] ${timestamp}`;
-            console.log(`${prefix} - ${message}`}';
+            console.log(`${prefix} - ${message}`}';'
         }
 }
 

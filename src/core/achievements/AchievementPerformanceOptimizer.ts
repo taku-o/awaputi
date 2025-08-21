@@ -11,56 +11,54 @@
 
 // 型定義
 export interface OptimizerConfig { batchSize: number,
-    throttleDelay: number,
-    cacheTimeout: number,
-    maxNotifications: number,
-    enableCaching: boolean,
-    enableBatching: boolean,
-    enableThrottling: boolean  }
+    throttleDelay: number;
+    cacheTimeout: number;
+    maxNotifications: number;
+    enableCaching: boolean;
+    enableBatching: boolean;
+    enableThrottling: boolean;
 
 export interface CacheEntry<T = any> { value: T,
-    timestamp: number }
+    timestamp: number;
 
 export interface BatchEvent { eventType: string,
-    data: any,
-    processor: EventProcessor,
-    resolve: (value: any) => void,
-    reject: (reason: any) => void,
-    timestamp: number 
-    }
+    data: any;
+    processor: EventProcessor;
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
+    timestamp: number;
 
 export interface ThrottledEvent { eventType: string,
-    data: any,
-    processor: EventProcessor,
-    resolve: (value: any) => void,
-    reject: (reason: any) => void,
-    timestamp?: number 
-    }
+    data: any;
+    processor: EventProcessor;
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
+    timestamp?: number;
 
 export interface PerformanceStats { updateCount: number,
-    averageUpdateTime: number,
-    cacheHits: number,
-    cacheMisses: number,
-    batchProcessingCount: number,
-    throttledEvents: number,
-    totalProcessingTime: number }
+    averageUpdateTime: number;
+    cacheHits: number;
+    cacheMisses: number;
+    batchProcessingCount: number;
+    throttledEvents: number;
+    totalProcessingTime: number;
 
 export interface ExtendedPerformanceStats extends PerformanceStats { cacheEfficiency: number,
-    cacheSize: number,
-    queueSize: number }
+    cacheSize: number;
+    queueSize: number;
 
 export interface OptimizedBubbleData { totalBubbles: number,
-    bubbleTypeCounts: Record<string, number>,
-    timestamp: number  }
+    bubbleTypeCounts: Record<string, number>;
+    timestamp: number;
 
 export interface OptimizedScoreData { totalScore: number,
-    maxScore: number,
-    updateCount: number,
-    timestamp: number }
+    maxScore: number;
+    updateCount: number;
+    timestamp: number;
 
 export interface EventData { bubbleType?: string,
-    score?: number,
-    [key: string]: any }
+    score?: number;
+    [key: string]: any;
 
 // コールバック型
 export type EventProcessor = (eventType: string, data: any) => Promise<any>;
@@ -70,13 +68,13 @@ export type EventType = 'bubblePopped' | 'scoreUpdate' | 'gameCompleted' | 'achi
 export type OptimizationMode = 'batching' | 'throttling' | 'immediate';
 
 export class AchievementPerformanceOptimizer {
-    private config: OptimizerConfig,
+    private config: OptimizerConfig;
     private, cache: Map<string, CacheEntry>,
-    private updateQueue: ThrottledEvent[],
-    private throttleTimer: number | null,
-    private lastUpdateTime: number,
-    private batchProcessor: number | null,
-    private batchQueue: BatchEvent[],
+    private updateQueue: ThrottledEvent[];
+    private throttleTimer: number | null;
+    private lastUpdateTime: number;
+    private batchProcessor: number | null;
+    private batchQueue: BatchEvent[];
     private, performanceStats: PerformanceStats,
     private performanceResetInterval?: number,
 
@@ -84,14 +82,13 @@ export class AchievementPerformanceOptimizer {
 
         // パフォーマンス最適化設定
         this.config = {
-            batchSize: 10, // バッチ処理サイズ,
-            throttleDelay: 100, // スロットリング遅延（ms）,
-            cacheTimeout: 5000, // キャッシュタイムアウト（ms）,
-            maxNotifications: 5, // 最大通知数,
+            batchSize: 10; // バッチ処理サイズ;
+            throttleDelay: 100, // スロットリング遅延（ms）;
+            cacheTimeout: 5000, // キャッシュタイムアウト（ms）;
+            maxNotifications: 5, // 最大通知数;
             enableCaching: true,
-    enableBatching: true }
-            enableThrottling: true 
-    };
+    enableBatching: true,
+            enableThrottling: true,;
         // キャッシュとスロットリング
         this.cache = new Map<string, CacheEntry>();
         this.updateQueue = [];
@@ -123,7 +120,7 @@ export class AchievementPerformanceOptimizer {
     private startBatchProcessor(): void { if (this.batchProcessor) {
             clearInterval(this.batchProcessor) }
 
-        this.batchProcessor = window.setInterval(() => { this.processBatchQueue() }, this.config.throttleDelay);
+        this.batchProcessor = window.setInterval(() => { this.processBatchQueue() }; this.config.throttleDelay);
     }
 
     /**
@@ -145,7 +142,7 @@ export class AchievementPerformanceOptimizer {
     async processUpdate(eventType: string, data: any, processor: EventProcessor): Promise<any> { const startTime = performance.now(),
         
         try {
-            if(this.config.enableBatching) {
+            if (this.config.enableBatching) {
     
 }
                 return await this.addToBatch(eventType, data, processor); else if (this.config.enableThrottling) { return await this.throttleUpdate(eventType, data, processor) } else { return await this.processImmediately(eventType, data, processor), finally { const processingTime = performance.now() - startTime,
@@ -203,7 +200,7 @@ export class AchievementPerformanceOptimizer {
     private groupEventsByType(batch: BatchEvent[]): Map<string, BatchEvent[]> { const groups = new Map<string, BatchEvent[]>(),
         
         batch.forEach(event => { ),
-            if(!groups.has(event.eventType) { }
+            if (!groups.has(event.eventType) { }
                 groups.set(event.eventType, []); }
             }
             groups.get(event.eventType)!.push(event);
@@ -237,12 +234,12 @@ export class AchievementPerformanceOptimizer {
     private optimizeEventData(eventType: string, events: BatchEvent[]): OptimizedBubbleData | OptimizedScoreData | null { ''
         switch(eventType) {
 
-            case 'bubblePopped':',
+            case 'bubblePopped':','
                 return this.optimizeBubbleEvents(events),
             case 'scoreUpdate':,
                 return this.optimizeScoreEvents(events),
-            default:,
-         }
+            default:
+}
                 return null; // 最適化なし }
 }
 
@@ -254,7 +251,7 @@ export class AchievementPerformanceOptimizer {
     private optimizeBubbleEvents(events: BatchEvent[]): OptimizedBubbleData {
         const bubbleTypeCounts: Record<string, number> = {};
         let totalBubbles = 0;
-        ';
+        ';'
 
         events.forEach(event => {  ')'
             const bubbleType = event.data.bubbleType || 'normal'),
@@ -291,13 +288,13 @@ export class AchievementPerformanceOptimizer {
     private async throttleUpdate(eventType: string, data: any, processor: EventProcessor): Promise<any> { return new Promise<any>((resolve, reject) => { }
             this.updateQueue.push({ eventType, data, processor, resolve, reject });
             
-            if(this.throttleTimer) {
+            if (this.throttleTimer) {
             
                 this.performanceStats.throttledEvents++ }
                 return; }
             }
 
-            this.throttleTimer = window.setTimeout(() => { this.processThrottledUpdates() }, this.config.throttleDelay);
+            this.throttleTimer = window.setTimeout(() => { this.processThrottledUpdates() }; this.config.throttleDelay);
         });
     }
 
@@ -305,7 +302,7 @@ export class AchievementPerformanceOptimizer {
      * スロットリングされた更新を処理
      */
     private async processThrottledUpdates(): Promise<void> { const batch = this.updateQueue.splice(0),
-        this.throttleTimer = null,
+        this.throttleTimer = null;
 
         if (batch.length === 0) return,
 
@@ -336,7 +333,7 @@ export class AchievementPerformanceOptimizer {
         
         events.forEach(event => { ),
             const existing = latestByType.get(event.eventType),
-            if(!existing || (event.timestamp && existing.timestamp && event.timestamp > existing.timestamp) { }
+            if (!existing || (event.timestamp && existing.timestamp && event.timestamp > existing.timestamp) { }
                 latestByType.set(event.eventType, event); }
 });
         
@@ -360,7 +357,7 @@ export class AchievementPerformanceOptimizer {
     getFromCache<T = any>(key: string): T | null { if (!this.config.enableCaching) return null,
         
         const cached = this.cache.get(key),
-        if(!cached) {
+        if (!cached) {
             this.performanceStats.cacheMisses++ }
             return null;
         
@@ -444,7 +441,7 @@ export class AchievementPerformanceOptimizer {
     updateConfig(config: Partial<OptimizerConfig>): void { Object.assign(this.config, config),
         
         // バッチプロセッサーの再起動が必要な場合
-        if(config.throttleDelay !== undefined) {
+        if (config.throttleDelay !== undefined) {
     
 }
             this.startBatchProcessor(); }
@@ -464,13 +461,13 @@ export class AchievementPerformanceOptimizer {
             clearInterval(this.batchProcessor),
             this.batchProcessor = null }
         
-        if(this.throttleTimer) {
+        if (this.throttleTimer) {
         
             clearTimeout(this.throttleTimer) }
             this.throttleTimer = null; }
         }
         
-        if(this.performanceResetInterval) {
+        if (this.performanceResetInterval) {
         
             clearInterval(this.performanceResetInterval) }
             this.performanceResetInterval = undefined; }
@@ -486,7 +483,7 @@ export class AchievementPerformanceOptimizer {
      * キューの状態を取得
      * @returns キュー状態情報
      */
-    getQueueStatus(): { batchQueue: number, updateQueue: number,, isProcessing: boolean } { return { batchQueue: this.batchQueue.length,
+    getQueueStatus(): { batchQueue: number, updateQueue: number,, isProcessing: boolean, { return { batchQueue: this.batchQueue.length,
             updateQueue: this.updateQueue.length };
             isProcessing: this.batchProcessor !== null || this.throttleTimer !== null 
     }
@@ -496,6 +493,6 @@ export class AchievementPerformanceOptimizer {
      */
     destroy(): void { this.pause(),
         this.cache.clear(),
-        this.updateQueue = [],
-        this.batchQueue = [],
+        this.updateQueue = [];
+        this.batchQueue = [];
         this.resetPerformanceStats(' }''

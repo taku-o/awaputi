@@ -3,28 +3,28 @@ import path from 'path';
 import { glob  } from 'glob';
 
 interface Reference { file: string,
-    line: number,
-    context: string,
+    line: number;
+    context: string;
     type: 'import' | 'string'
             }
 
 export interface ReferenceResult { filePath: string,
-    references: Reference[],
-    hasReferences: boolean,
-    importCount: number,
-    stringCount: number }
+    references: Reference[];
+    hasReferences: boolean;
+    importCount: number;
+    stringCount: number;
 
 export class ReferenceChecker {
-    private searchExtensions: string[]',
+    private searchExtensions: string[]';'
 
     constructor('',
-        this.searchExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json', '.md] }
+        this.searchExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json', '.md] }'
 );
     async checkImportReferences(filePath: string, rootPath: string = process.cwd(): Promise<Reference[]> { const fileName = path.basename(filePath),
 
         const fileNameWithoutExt = path.basename(filePath, path.extname(filePath),
         const relativeFromRoot = path.relative(rootPath, filePath),
-        ',
+        ','
 
         const patterns = [' }]'
             `import.*from.*['"\`][^'"\`]*${fileNameWithoutExt}[^'"\`]*['"\`]`,""
@@ -38,20 +38,20 @@ export class ReferenceChecker {
 
     async checkStringReferences(filePath: string, rootPath: string = process.cwd(): Promise<Reference[]> { const fileName = path.basename(filePath),
         const relativeFromRoot = path.relative(rootPath, filePath),
-        ",
+        ","
         const patterns = ["]",
             fileName.replace(/[.*+? ^${)()|[\]\\]/g, '\\$&'),''
-            relativeFromRoot.replace(/[.*+?^${)('}|[\]\\]/g, '\\$&'}
+            relativeFromRoot.replace(/[.*+?^${)('}|[\]\\]/g, '\\$&'}'
         ];
  }
         return await this.searchPatterns(patterns, filePath, rootPath});
     }
 
- : undefined';
+ : undefined';'
     async searchPatterns(patterns: string[], targetFile: string, rootPath: string = process.cwd()): Promise<Reference[]> { ''
         const allFiles = await glob('**/*', {'
-            cwd: rootPath,',
-            ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**', '*.log]),
+            cwd: rootPath,','
+            ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**', '*.log]),'
             absolute: true),
 ,
         const searchableFiles = allFiles.filter(file => { ),
@@ -63,13 +63,13 @@ export class ReferenceChecker {
         for (const file of searchableFiles) {
             try {'
                 const content = await fs.promises.readFile(file, 'utf8'),
-                const lines = content.split('\n),
+                const lines = content.split('\n),'
 
                 for (let, i = 0, i < lines.length, i++) {
                     const line = lines[i],
                     for (const pattern of patterns) {''
-                        const regex = new RegExp(pattern, 'gi),
-                        if(regex.test(line) {
+                        const regex = new RegExp(pattern, 'gi),'
+                        if (regex.test(line) {
                             references.push({),
                                 file: path.relative(rootPath, file),
                                 line: i + 1,
@@ -97,13 +97,13 @@ export class ReferenceChecker {
         
         const allReferences = [...importReferences, ...stringReferences],
         const uniqueReferences = this.removeDuplicateReferences(allReferences),
-',
+','
 
         return { ''
             filePath: path.relative(rootPath, filePath),
             references: uniqueReferences,
             hasReferences: uniqueReferences.length > 0,
-            importCount: uniqueReferences.filter(ref => ref.type === 'import').length,' };
+            importCount: uniqueReferences.filter(ref => ref.type === 'import').length,' };'
 
             stringCount: uniqueReferences.filter(ref => ref.type === 'string'.length }'
         }
@@ -114,6 +114,6 @@ export class ReferenceChecker {
             if (seen.has(key)}) { return false }
             seen.add(key);
 
-            return true;}');
+            return true;}');'
 
-    }'}
+    }'}'

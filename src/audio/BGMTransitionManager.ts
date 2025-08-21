@@ -2,77 +2,76 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // トランジションオプション型定義
 interface TransitionOptions { type?: string,
-    duration?: number,
-    curve?: string,
-    delay?: number,
-    volume?: number,
-    fadeOutDuration?: number,
-    fadeInDuration?: number }
+    duration?: number;
+    curve?: string;
+    delay?: number;
+    volume?: number;
+    fadeOutDuration?: number;
+    fadeInDuration?: number;
 
 // トランジション情報型定義
 interface TransitionInfo { fromTrack: string,
-    toTrack: string,
-    type: string,
-    duration: number,
-    curve: string  }
+    toTrack: string;
+    type: string;
+    duration: number;
+    curve: string;
 
 // キューエントリ型定義
 interface QueueEntry { fromTrack: string,
-    toTrack: string,
-    options: TransitionOptions
-    }
+    toTrack: string;
+    options: TransitionOptions;
 
 // BGMシステム型定義
 interface BGMSystem { isPlaying: boolean,
-    tracks: Map<string, TrackInfo>,
-    playBGM(trackName: string, options?: any): Promise<void>,
-    stopBGM(options?: any): Promise<void>,
-    setVolume(volume: number, fadeTime?: number): void,
+    tracks: Map<string, TrackInfo>;
+    playBGM(trackName: string, options?: any): Promise<void>;
+    stopBGM(options?: any): Promise<void>;
+    setVolume(volume: number, fadeTime?: number): void;
     getCurrentBGMInfo(): BGMInfo | null }
 
 // トラック情報型定義
 interface TrackInfo { metadata: {
         temp,o: number,
-    key: string };
-    style: string;
+    key: string,;
+    style: string,
 }
 
 // BGM情報型定義
 interface BGMInfo { volume: number,
-    isPlaying: boolean  }
+    isPlaying: boolean;
 
 // エラーハンドラー型定義
 interface ErrorHandler { ''
-    handleError(error: Error, type: string, context?: any): void }
+    handleError(error: Error, type: string, context?: any): void;
 
 // 設定型定義
 interface TransitionSettings { defaultFadeInDuration?: number,
-    defaultFadeOutDuration?: number,
-    defaultCrossfadeDuration?: number }
+    defaultFadeOutDuration?: number;
+    defaultCrossfadeDuration?: number;
 
 // トランジション状態型定義
 interface TransitionState { isTransitioning: boolean,
-    currentTransition: TransitionInfo | null,
-    queueLength: number,
+    currentTransition: TransitionInfo | null;
+    queueLength: number;
     settings: {
         defaultFadeInDuratio,n: number,
         defaultFadeOutDuration: number,
-    defaultCrossfadeDuration: number  }
+    defaultCrossfadeDuration: number,
 
 /**
  * BGMトランジション管理クラス - 高度なBGM遷移制御とフェード機能
  */
 export class BGMTransitionManager {
-    private audioContext: AudioContext,
-    private bgmSystem: BGMSystem,
+    private audioContext: AudioContext;
+    private bgmSystem: BGMSystem;
     // トランジション状態
-    private isTransitioning: boolean = false,
-    private currentTransition: TransitionInfo | null = null,
-    private transitionQueue: QueueEntry[] = [],
+    private isTransitioning: boolean = false;
+    private currentTransition: TransitionInfo | null = null;
+    private transitionQueue: QueueEntry[] = [];
     // フェード設定
-    private defaultFadeInDuration: number = 2.0,
-    private defaultFadeOutDuration: number = 2.0,
-    private, defaultCrossfadeDuration: number = 3.0,
+    private defaultFadeInDuration: number = 2.0;
+    private defaultFadeOutDuration: number = 2.0;
+    private, defaultCrossfadeDuration: number = 3.0;
     // トランジションタイプ
     private readonly transitionTypes = {''
         FADE_OUT_IN: 'fade_out_in',
@@ -88,10 +87,10 @@ export class BGMTransitionManager {
         SMOOTH: 'smooth'
             } as const;
     constructor(audioContext: AudioContext, bgmSystem: BGMSystem) {
-        this.audioContext = audioContext,
-        this.bgmSystem = bgmSystem,
+        this.audioContext = audioContext;
+        this.bgmSystem = bgmSystem;
 
-        ' }
+        ' }'
 
     }
 
@@ -106,7 +105,7 @@ export class BGMTransitionManager {
      */
     async transitionTo(fromTrack: string, toTrack: string, options: TransitionOptions = { ): Promise<void> {
         try {
-            if(this.isTransitioning) {
+            if (this.isTransitioning) {
                 // 既に遷移中の場合はキューに追加
             }
                 this.transitionQueue.push({ fromTrack, toTrack, options ) }
@@ -160,14 +159,14 @@ export class BGMTransitionManager {
                 setTimeout(() => { }
                     this.transitionTo(nextTransition.fromTrack, nextTransition.toTrack, nextTransition.options});
                 }, 100); // 短い遅延を入れて処理を安定させる
-            } catch (error) { this.isTransitioning = false,
-            this.currentTransition = null,
+            } catch (error) { this.isTransitioning = false;
+            this.currentTransition = null;
 
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {''
-                operation: 'transitionTo),
+                operation: 'transitionTo),'
                 fromTrack: fromTrack,
     toTrack: toTrack),
-                options: options  });
+                options: options,);
         }
     }
     
@@ -187,7 +186,7 @@ export class BGMTransitionManager {
         
         // 新しいBGMをフェードインで開始
         await this.bgmSystem.playBGM(toTrack, { volume: volume)
-           , fadeInDuration: fadeInDuration }
+           , fadeInDuration: fadeInDuration,
     
     /**
      * クロスフェード遷移
@@ -239,7 +238,7 @@ export class BGMTransitionManager {
         const fromTrackInfo = this.bgmSystem.tracks.get(fromTrack);
         const toTrackInfo = this.bgmSystem.tracks.get(toTrack);
         
-        if(!fromTrackInfo || !toTrackInfo) {
+        if (!fromTrackInfo || !toTrackInfo) {
         
             // 情報が不十分な場合は通常のクロスフェードにフォールバック
         
@@ -253,7 +252,7 @@ export class BGMTransitionManager {
         let adjustedDuration = duration;
         let curve = this.curveTypes.SMOOTH;
         
-        if(harmonyScore > 0.8) {
+        if (harmonyScore > 0.8) {
         
             // 高い調和 - 短いクロスフェード
             adjustedDuration = duration * 0.6 }
@@ -267,7 +266,7 @@ export class BGMTransitionManager {
         // 調整されたクロスフェードを実行
         await this._crossfadeTransition(fromTrack, toTrack, { ...options)
             duration: adjustedDuration),
-            curve: curve  }
+            curve: curve,
     
     /**
      * 音楽的調和度を計算
@@ -317,7 +316,7 @@ export class BGMTransitionManager {
         if(key1 === key2) return 1.0,
         
         // 簡単な調和度計算（完全5度、4度関係を重視）
-        const keyMap: Record<string, number> = {', 'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,
+        const keyMap: Record<string, number> = {', 'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,'
             'F#': 6, 'Db': 1, 'Ab': 8, 'Eb': 3, 'Bb': 10, 'F': 5,
             'Am': 9, 'Em': 4, 'Bm': 11, 'F#m': 6, 'C#m': 1, 'G#m': 8,
             'D#m': 3, 'A#m': 10, 'Fm': 5, 'Cm': 0, 'Gm': 7, 'Dm': 2 };
@@ -384,7 +383,7 @@ export class BGMTransitionManager {
      */
     async fadeOut(duration: number = this.defaultFadeOutDuration, curve: string = this.curveTypes.SMOOTH): Promise<void> { try {
             const currentInfo = this.bgmSystem.getCurrentBGMInfo(),
-            if(!currentInfo || !currentInfo.isPlaying) {
+            if (!currentInfo || !currentInfo.isPlaying) {
     
 }
                 return; }
@@ -450,16 +449,16 @@ export class BGMTransitionManager {
                 trackName: trackName),
                 duration: duration,
     curve: curve),
-                targetVolume: targetVolume  }';
+                targetVolume: targetVolume,';'
         }
     }
     
     /**
      * 即座にトランジションを停止'
      */''
-    stopTransition()';
+    stopTransition()';'
             console.log('All, transitions stopped');
-            ';
+            ';'
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {''
                 operation: 'stopTransition'
@@ -472,7 +471,7 @@ export class BGMTransitionManager {
      * @param settings - 設定
      */
     updateSettings(settings: TransitionSettings): void { try {
-            if(settings.defaultFadeInDuration !== undefined) {
+            if (settings.defaultFadeInDuration !== undefined) {
     
 }
                 this.defaultFadeInDuration = Math.max(0.1, Math.min(10, settings.defaultFadeInDuration); }
@@ -480,20 +479,20 @@ export class BGMTransitionManager {
             
             if (settings.defaultFadeOutDuration !== undefined) { this.defaultFadeOutDuration = Math.max(0.1, Math.min(10, settings.defaultFadeOutDuration) }
             
-            if(settings.defaultCrossfadeDuration !== undefined) {
-            ',
+            if (settings.defaultCrossfadeDuration !== undefined) {
+            ','
 
-                ' }
+                ' }'
 
                 this.defaultCrossfadeDuration = Math.max(0.5, Math.min(20, settings.defaultCrossfadeDuration)); }
             }
 
-            console.log('Transition settings updated', settings';
-            ';
+            console.log('Transition settings updated', settings';'
+            ';'
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {''
                 operation: 'updateSettings'),
-                settings: settings  });
+                settings: settings,);
         }
     }
     
@@ -521,14 +520,14 @@ export class BGMTransitionManager {
      * リソースの解放
      */'
     dispose(): void { try {'
-            this.stopTransition()',
-            console.log('BGMTransitionManager, disposed) }
+            this.stopTransition()','
+            console.log('BGMTransitionManager, disposed) }'
 
         } catch (error) {
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {''
-                operation: 'dispose'),' }
+                operation: 'dispose'),' }'
 
-            }');
+            }');'
         }
 
-    }'}
+    }'}'
