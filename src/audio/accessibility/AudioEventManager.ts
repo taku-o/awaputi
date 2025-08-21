@@ -6,22 +6,22 @@
  */
 
 // Types for audio events
-interface AudioAccessibilityEvent { id: string;
-    type: string;
+interface AudioAccessibilityEvent { id: string,
+    type: string,
     data: Record<string, any>;
-    timestamp: number;
+    timestamp: number,
 
 // Types for event statistics
-interface EventStatistics { totalEvents: number;
+interface EventStatistics { totalEvents: number,
     eventsByType: Record<string, number>;
-    uptime: number;
+    uptime: number,
     firstEventTime: number | null;
     lastEventTime: number | null  }
 
 // Types for component status
-interface ComponentStatus { historySize: number;
-    maxHistorySize: number;
-    uptime: number;
+interface ComponentStatus { historySize: number,
+    maxHistorySize: number,
+    uptime: number,
     eventTypes: string[];
 
 // Main controller interface
@@ -30,8 +30,8 @@ interface MainController { // Add properties as needed }
 export class AudioEventManager {
     private mainController: MainController;
     private eventHistory: AudioAccessibilityEvent[];
-    private maxHistorySize: number;
-    private, initializationTime: number;
+    private maxHistorySize: number,
+    private initializationTime: number,
     constructor(mainController: MainController) {
 
         this.mainController = mainController;

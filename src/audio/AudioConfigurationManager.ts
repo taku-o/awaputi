@@ -156,7 +156,7 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager';
-                operation: 'setupConfigWatchers'
+                operation: 'setupConfigWatchers
             });
         }
     }
@@ -396,7 +396,7 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager';
-                operation: 'toggleMute'
+                operation: 'toggleMute
             });
             return this.currentConfig.volumes.muted;
         }
@@ -493,7 +493,7 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager';
-                operation: 'syncWithConfig'
+                operation: 'syncWithConfig
             });
         }
     }

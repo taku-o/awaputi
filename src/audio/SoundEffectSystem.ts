@@ -15,17 +15,17 @@ import { SoundEffectRenderer } from './effects/SoundEffectRenderer';
  * サウンドカテゴリ設定インターフェース
  */
 interface SoundCategoryConfig {
-    enabled: boolean;
-    volume: number;
+    enabled: boolean,
+    volume: number,
 }
 
 /**
  * 再生オプションインターフェース
  */
 interface PlaybackOptions {
-    volume?: number;
-    pitch?: number;
-    useVariation?: boolean;
+    volume?: number,
+    pitch?: number,
+    useVariation?: boolean,
     [key: string]: any;
 }
 
@@ -56,9 +56,9 @@ interface ErrorHandler {
  */
 interface SystemStatistics {
     categories: { [key: string]: SoundCategoryConfig };
-    bubbleTypes: number;
-    comboLevels: number;
-    achievementRarities: number;
+    bubbleTypes: number,
+    comboLevels: number,
+    achievementRarities: number,
     components: {;
         pool?: any;
         effects?: any;
@@ -128,7 +128,7 @@ export class SoundEffectSystem {
     private readonly achievementRarities: AchievementRarity[];
     
     // 無効化フラグ
-    private disabled: boolean;
+    private disabled: boolean,
 
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
@@ -164,7 +164,7 @@ export class SoundEffectSystem {
             'normal', 'stone', 'iron', 'diamond', 'rainbow';
             'pink', 'clock', 'electric', 'poison', 'spiky';
             'escaping', 'boss', 'golden', 'frozen', 'magnetic';
-            'explosive', 'phantom', 'multiplier'
+            'explosive', 'phantom', 'multiplier
         ];
         
         // コンボレベル定義

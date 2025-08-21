@@ -10,29 +10,29 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Operation counts interface
  */
-export interface OperationCounts { gets: number;
-    sets: number;
-    deletes: number;
-    evictions: number;
-    cleanups: number;
+export interface OperationCounts { gets: number,
+    sets: number,
+    deletes: number,
+    evictions: number,
+    cleanups: number,
 /**
  * Category statistics interface
  */
-export interface CategoryStats { count: number;
-    totalSize: number;
-    hitRate: number;
+export interface CategoryStats { count: number,
+    totalSize: number,
+    hitRate: number,
 /**
  * Time series data point interfaces
  */
-export interface HitRateDataPoint { timestamp: number;
-    hitRate: number;
-    export interface MemoryUsageDataPoint { timestamp: number;
-    usage: number;
-    ratio: number;
-    export interface LoadTimeDataPoint { timestamp: number;
-    avgLoadTime: number;
-    export interface RequestCountDataPoint { timestamp: number;
-    requests: number;
+export interface HitRateDataPoint { timestamp: number,
+    hitRate: number,
+    export interface MemoryUsageDataPoint { timestamp: number,
+    usage: number,
+    ratio: number,
+    export interface LoadTimeDataPoint { timestamp: number,
+    avgLoadTime: number,
+    export interface RequestCountDataPoint { timestamp: number,
+    requests: number,
 /**
  * Time series data interface
  */
@@ -43,10 +43,10 @@ export interface TimeSeriesData { hitRates: HitRateDataPoint[];
 /**
  * Statistics interface
  */
-export interface Statistics { totalRequests: number;
-    hitRatio: number;
-    averageLoadTime: number;
-    memoryEfficiency: number;
+export interface Statistics { totalRequests: number,
+    hitRatio: number,
+    averageLoadTime: number,
+    memoryEfficiency: number,
     operationCounts: OperationCounts;
     timeSeriesData: TimeSeriesData;
     categoryStats: {
@@ -58,31 +58,31 @@ export interface Statistics { totalRequests: number;
 /**
  * Performance snapshot interface
  */
-export interface PerformanceSnapshot { timestamp: number;
+export interface PerformanceSnapshot { timestamp: number,
     audioBuffer: any;
     metadata: any;
     chunk: any;
-    memory: { tota,l?: number;
-        max?: number;
+    memory: { tota,l?: number,
+        max?: number,
         ratio?: number };
-    loader: { averageLoadTime?: number;
-    overall: { totalHits: number;
-        totalMisses: number;
+    loader: { averageLoadTime?: number,
+    overall: { totalHits: number,
+        totalMisses: number,
     };
-        totalEvictions: number;
-        totalMemoryUsage: number;
-    memoryEfficiency: number;
-    memoryEfficiency: number;
+        totalEvictions: number,
+        totalMemoryUsage: number,
+    memoryEfficiency: number,
+    memoryEfficiency: number,
         };
 /**
  * Trend analysis result interface
- */'
+ */
 export interface TrendAnalysis {;
     status: 'success' | 'insufficient_data' | 'error';
     period?: {;
-        start: number;
+        start: number,
     };
-    end: number;
+    end: number,
     trends?: { hitRate: TrendInfo;
         memoryUsage: TrendInfo };
     loadTime: TrendInfo;
@@ -91,24 +91,24 @@ export interface TrendAnalysis {;
 /**
  * Trend info interface
  */
-export interface TrendInfo { start: number;
+export interface TrendInfo { start: number,
 
-    end: number;
-    change: 'improving' | 'stable' | 'degrading'
+    end: number,
+    change: 'improving' | 'stable' | 'degrading
             };
 /**
  * Recommendation interface
- */'
+ */
 export interface Recommendation { type: string,
     priority: 'high' | 'medium' | 'low;
-    message: string;
+    message: string,
 /**
  * Statistics summary interface
  */
-export interface StatisticsSummary { overview: { totalRequest,s: number;
-        hitRatio: number;
-        averageLoadTime: number;
-    memoryEfficiency: number;
+export interface StatisticsSummary { overview: { totalRequest,s: number,
+        hitRatio: number,
+        averageLoadTime: number,
+    memoryEfficiency: number,
     operations: OperationCounts;
     categories: { audioBuffers: CategoryStats;
         metadata: CategoryStats  ;
@@ -116,7 +116,7 @@ export interface StatisticsSummary { overview: { totalRequest,s: number;
     performance: { 
         trends: Partial<TrendAnalysis['trends]>,'  };
         recommendations: Recommendation[];
-    lastUpdated: number;
+    lastUpdated: number,
 }
 /**
  * Main controller interface
@@ -126,7 +126,7 @@ interface MainController { audioBufferCache: { getStats(): any;;
     chunkCache: { getStats(): any;
     memoryManager?: { getCurrentMemoryUsage(): any;
         performanceStats: {
-            cleanupOperations: number;
+            cleanupOperations: number,
     dataLoader?: { getLoaderStats(): any;
 
 export class CacheStatistics {
@@ -139,8 +139,8 @@ export class CacheStatistics {
     // 統計データ
     private statistics: Statistics;
     // パフォーマンス監視
-    private, performanceMonitor: { intervalId: NodeJS.Timeout | null
-        lastAggregation: number;
+    private performanceMonitor: { intervalId: NodeJS.Timeout | null
+        lastAggregation: number,
     };
     snapshots: PerformanceSnapshot[];
     snapshots: PerformanceSnapshot[];
@@ -190,15 +190,15 @@ export class CacheStatistics {
 }
                 clearInterval(this.performanceMonitor.intervalId); }
             this.performanceMonitor.intervalId = setInterval(() => {  this.collectPerformanceSnapshot();
-                this.aggregateStatistics();' }'
+                this.aggregateStatistics(); }
 
-            }, this.statsConfig.aggregationInterval';'
+            }, this.statsConfig.aggregationInterval';
 
             console.log('Cache statistics monitoring started');
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
-                operation: 'startPerformanceMonitoring',')';
-                component: 'CacheStatistics'
+                operation: 'startPerformanceMonitoring',');
+                component: 'CacheStatistics
             }
         }
     /**
@@ -235,8 +235,8 @@ export class CacheStatistics {
             
             // 履歴サイズ制限
             if (this.performanceMonitor.snapshots.length > this.statsConfig.maxHistorySize) { this.performanceMonitor.snapshots.shift() } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
-                operation: 'collectPerformanceSnapshot',')';
-                component: 'CacheStatistics'
+                operation: 'collectPerformanceSnapshot',');
+                component: 'CacheStatistics
             }
         }
     /**
@@ -259,11 +259,11 @@ export class CacheStatistics {
             this.updateCategoryStatistics(latestSnapshot);
             
             this.performanceMonitor.lastAggregation = Date.now();
-            ';'
+            ';
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
-                operation: 'aggregateStatistics',')';
-                component: 'CacheStatistics'
+                operation: 'aggregateStatistics',');
+                component: 'CacheStatistics
             }
         }
     /**
@@ -383,19 +383,19 @@ export class CacheStatistics {
             const recentSnapshots = this.performanceMonitor.snapshots.filter();
                 snapshot => snapshot.timestamp >= cutoffTime);
 
-            if (recentSnapshots.length < 2) { }'
+            if (recentSnapshots.length < 2) { }
 
                 return { status: 'insufficient_data' }
             const first = recentSnapshots[0];
             const last = recentSnapshots[recentSnapshots.length - 1];
-            ';'
+            ';
 
             return { };
 
                 status: 'success';
 }
                 period: { start: first.timestamp, end: last.timestamp  ;
-                trends: { hitRate: {'
+                trends: { hitRate: {
                         start: first.overall.totalHits / (first.overall.totalHits + first.overall.totalMisses;
                         end: last.overall.totalHits / (last.overall.totalHits + last.overall.totalMisses;
                         change: this.calculateTrendDirection('hitRate', recentSnapshots } };
@@ -407,36 +407,36 @@ export class CacheStatistics {
                         change: this.calculateTrendDirection('loadTime', recentSnapshots }
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
-                operation: 'analyzeTrends',')';
-                component: 'CacheStatistics'),' }'
+                operation: 'analyzeTrends',');
+                component: 'CacheStatistics'),' }
 
-            }');'
+            }');
             return { status: 'error' ;
     
     /**
      * トレンド方向を計算
-     * @param metric - メトリクス名'
+     * @param metric - メトリクス名
      * @param snapshots - スナップショット配列
      * @returns トレンド方向 ('improving', 'stable', 'degrading')
-     */'
-    calculateTrendDirection()';'
-        metric: 'hitRate' | 'memoryUsage' | 'loadTime')';'
-    snapshots: PerformanceSnapshot[]';'
+     */
+    calculateTrendDirection()';
+        metric: 'hitRate' | 'memoryUsage' | 'loadTime');
+    snapshots: PerformanceSnapshot[]';
     '): 'improving' | 'stable' | 'degrading' { 
         if (snapshots.length < 3) {', ' }
 
-            return 'stable'
+            return 'stable
             }
         let values: number[] = [];
 
         snapshots.forEach(snapshot => {  );
             switch(metric) {
 
-                case 'hitRate':';'
+                case 'hitRate':';
                     const total = snapshot.overall.totalHits + snapshot.overall.totalMisses;
                     values.push(total > 0 ? snapshot.overall.totalHits / total: 0;
                     break;
-                case 'memoryUsage':';'
+                case 'memoryUsage':';
                     values.push(snapshot.memory.total || 0);
 
                     break;
@@ -495,43 +495,43 @@ export class CacheStatistics {
 
         if (this.statistics.hitRatio < 0.7) {
             recommendations.push({
-                type: 'hit_ratio',';'
-                priority: 'high',' }'
+                type: 'hit_ratio',';
+                priority: 'high',' }
 
                 message: 'Cache hit ratio is low. Consider increasing cache size or reviewing access patterns.');
     }
 
         if (this.statistics.memoryEfficiency < 0.5) {
             recommendations.push({
-                type: 'memory_efficiency',';'
-                priority: 'medium',' }'
+                type: 'memory_efficiency',';
+                priority: 'medium',' }
 
-                message: 'Memory efficiency is low. Consider optimizing cache eviction policies.')'); '
+                message: 'Memory efficiency is low. Consider optimizing cache eviction policies.')'); 
     }
 
         if (trends.trends?.loadTime?.change === 'degrading') {
             recommendations.push({ : undefined
-                type: 'load_time',';'
-                priority: 'high',' }'
+                type: 'load_time',';
+                priority: 'high',' }
 
-                message: 'Load times are increasing. Check for performance bottlenecks.')'); '
+                message: 'Load times are increasing. Check for performance bottlenecks.')'); 
     }
 
         if (trends.trends?.memoryUsage?.change === 'degrading') {
             recommendations.push({ : undefined
-                type: 'memory_usage',';'
-                priority: 'medium',' }'
+                type: 'memory_usage',';
+                priority: 'medium',' }
 
-                message: 'Memory usage is growing. Consider more aggressive cleanup policies.')'); }'
+                message: 'Memory usage is growing. Consider more aggressive cleanup policies.')'); }
         return recommendations;
     }
     
-    /**'
+    /**
      * 統計データをエクスポート
      * @param format - エクスポート形式 ('json', 'csv')
-     * @returns エクスポートデータ'
+     * @returns エクスポートデータ
      */
-    exportStatistics(format: 'json' | 'csv' = 'json): string | null { try {'
+    exportStatistics(format: 'json' | 'csv' = 'json): string | null { try {
             const data = {
                 summary: this.generateSummary();
                 timeSeriesData: this.statistics.timeSeriesData;
@@ -539,7 +539,7 @@ export class CacheStatistics {
 };
             switch(format) {
 
-                case 'json':';'
+                case 'json':';
                     return JSON.stringify(data, null, 2);
 
                 case 'csv':;
@@ -548,19 +548,19 @@ export class CacheStatistics {
 }
                     throw new Error(`Unsupported, export format: ${format}`}
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
-                operation: 'exportStatistics')','
-                format,')';
-                component: 'CacheStatistics'
-            }';'
+                operation: 'exportStatistics')',
+                format,');
+                component: 'CacheStatistics
+            }';
             return null;
     /**
      * データをCSV形式に変換
      * @param data - 統計データ
-     * @returns CSV文字列'
+     * @returns CSV文字列
      */
     convertToCSV(data: any): string { 
         const headers = ['timestamp', 'hitRate', 'memoryUsage', 'loadTime', 'requests'];
-        const rows = [headers.join(')];'
+        const rows = [headers.join(')];
         
         const maxLength = Math.max(
             data.timeSeriesData.hitRates.length);
@@ -570,17 +570,17 @@ export class CacheStatistics {
 
         for(let, i = 0, i < maxLength, i++) {
             const row = [']';
-                data.timeSeriesData.hitRates[i]?.timestamp || ';'
-                data.timeSeriesData.hitRates[i]?.hitRate || ';'
-                data.timeSeriesData.memoryUsage[i]?.usage || ';'
-                data.timeSeriesData.loadTimes[i]?.avgLoadTime || ';'
-                data.timeSeriesData.requestCounts[i]?.requests || '';
+                data.timeSeriesData.hitRates[i]?.timestamp || ';
+                data.timeSeriesData.hitRates[i]?.hitRate || ';
+                data.timeSeriesData.memoryUsage[i]?.usage || ';
+                data.timeSeriesData.loadTimes[i]?.avgLoadTime || ';
+                data.timeSeriesData.requestCounts[i]?.requests || ';
             ] }
 
-            rows.push(row.join(')'; }'
+            rows.push(row.join('); }
         }
 
-        return rows.join('\n);'
+        return rows.join('\n);
     }
     
     /**
@@ -599,12 +599,12 @@ export class CacheStatistics {
  };
             console.log('CacheStatistics, disposed';
 
-        } catch (error') {'
+        } catch (error') {
             getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
-                operation: 'dispose',')';
-                component: 'CacheStatistics'),' }'
+                operation: 'dispose',');
+                component: 'CacheStatistics'),' }
 
-            }');'
+            }');
         }
 
-    }'}'
+    }'}

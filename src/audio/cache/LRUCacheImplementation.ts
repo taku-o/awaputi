@@ -10,39 +10,39 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Cache statistics interface
  */
-export interface CacheStats { hits: number;
-    misses: number;
-    evictions: number;
-    totalAccesses: number;
-    hitRate?: number;
-    currentSize?: number;
-    maxSize?: number;
-    entryCount?: number;
+export interface CacheStats { hits: number,
+    misses: number,
+    evictions: number,
+    totalAccesses: number,
+    hitRate?: number,
+    currentSize?: number,
+    maxSize?: number,
+    entryCount?: number,
     memoryUsageRatio?: number };
 /**
  * Cache entry info for frequency-based removal
  */
-export interface CacheEntryInfo { key: string;
-    hitCount: number;
-    accessTime: number;
-    size: number;
-    score: number;
+export interface CacheEntryInfo { key: string,
+    hitCount: number,
+    accessTime: number,
+    size: number,
+    score: number,
 
 /**
  * Result of cache removal operations
  */
-export interface RemovalResult { removedCount: number;
-    removedSize: number;
+export interface RemovalResult { removedCount: number,
+    removedSize: number,
     removedKeys: string[];
 
 /**
  * LRUキャッシュノード
  */
-class CacheNode<T = any> { key: string;
+class CacheNode<T = any> { key: string,
     value: T;
-    size: number;
-    accessTime: number;
-    hitCount: number;
+    size: number,
+    accessTime: number,
+    hitCount: number,
     prev: CacheNode<T> | null;
     next: CacheNode<T> | null;
     constructor(key: string, value: T, size: number) {
@@ -60,8 +60,8 @@ class CacheNode<T = any> { key: string;
 /**
  * LRUキャッシュ実装
  */
-export class LRUCache<T = any> { private readonly maxSize: number;
-    private currentSize: number;
+export class LRUCache<T = any> { private readonly maxSize: number,
+    private currentSize: number,
     private readonly, cache: Map<string, CacheNode<T>>;
     private readonly head: CacheNode<T>;
     private readonly tail: CacheNode<T>;
@@ -71,9 +71,9 @@ export class LRUCache<T = any> { private readonly maxSize: number;
         // デフォルト50MB
         this.maxSize = maxSize;
         this.currentSize = 0;
-        this.cache = new Map()';'
+        this.cache = new Map()';
         this.head = new CacheNode(, null as any, 0';
-        this.tail = new CacheNode(', null as any, 0),'
+        this.tail = new CacheNode(', null as any, 0),
         this.head.next = this.tail;
         this.tail.prev = this.head;
         
@@ -287,7 +287,7 @@ export class LRUCache<T = any> { private readonly maxSize: number;
 }
                 break; }
             }
-            ';'
+            ';
 
             this.delete(entry.key);
             removedKeys.push(entry.key);
@@ -298,4 +298,4 @@ export class LRUCache<T = any> { private readonly maxSize: number;
         return { removedCount;
             removedSize };
             removedKeys }
-        }'}'
+        }'}

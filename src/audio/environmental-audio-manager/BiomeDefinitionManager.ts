@@ -4,13 +4,13 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
  * Sound layer interface
  */
 export interface SoundLayer {
-    name: string;
-    type: string;
-    volume: number;
-    frequency: number;
+    name: string,
+    type: string,
+    volume: number,
+    frequency: number,
     modulation: {
-        rate: number;
-        depth: number;
+        rate: number,
+        depth: number,
     };
 }
 
@@ -18,9 +18,9 @@ export interface SoundLayer {
  * Additional layer interface for time variations
  */
 export interface AdditionalLayer {
-    name: string;
-    type: string;
-    volume: number;
+    name: string,
+    type: string,
+    volume: number,
     biomes: string[];
 }
 
@@ -28,18 +28,18 @@ export interface AdditionalLayer {
  * Biome characteristics interface
  */
 export interface BiomeCharacteristics {
-    baseFrequency: number;
-    richness: number;
-    dynamics: number;
+    baseFrequency: number,
+    richness: number,
+    dynamics: number,
 }
 
 /**
  * Biome definition interface
  */
 export interface BiomeDefinition {
-    id: string;
-    name: string;
-    description: string;
+    id: string,
+    name: string,
+    description: string,
     layers: SoundLayer[];
     characteristics: BiomeCharacteristics;
 }
@@ -48,29 +48,29 @@ export interface BiomeDefinition {
  * Sound profile interface
  */
 export interface SoundProfile {
-    type: string;
-    volume: number;
-    frequency: number;
-    filterCutoff: number;
-    reverb: number;
+    type: string,
+    volume: number,
+    frequency: number,
+    filterCutoff: number,
+    reverb: number,
 }
 
 /**
  * Biome modifier interface
  */
 export interface BiomeModifier {
-    volumeMultiplier: number;
-    filterMultiplier: number;
+    volumeMultiplier: number,
+    filterMultiplier: number,
 }
 
 /**
  * Weather effect interface
  */
 export interface WeatherEffect {
-    id: string;
-    name: string;
-    description: string;
-    intensity: number;
+    id: string,
+    name: string,
+    description: string,
+    intensity: number,
     soundProfile: SoundProfile;
     biomeModifiers: Record<string, BiomeModifier>;
 }
@@ -79,26 +79,26 @@ export interface WeatherEffect {
  * Time range interface
  */
 export interface TimeRange {
-    start: number; // Hour (0-23)
-    end: number;   // Hour (0-23)
+    start: number, // Hour (0-23)
+    end: number,   // Hour (0-23)
 }
 
 /**
  * Time modifiers interface
  */
 export interface TimeModifiers {
-    volumeMultiplier: number;
-    frequencyShift: number;
-    reverbIncrease: number;
-    filterCutoff: number;
+    volumeMultiplier: number,
+    frequencyShift: number,
+    reverbIncrease: number,
+    filterCutoff: number,
 }
 
 /**
  * Time variation interface
  */
 export interface TimeVariation {
-    id: string;
-    name: string;
+    id: string,
+    name: string,
     timeRange: TimeRange;
     modifiers: TimeModifiers;
     additionalLayers: AdditionalLayer[];
@@ -108,34 +108,34 @@ export interface TimeVariation {
  * Sound characteristics interface
  */
 export interface SoundCharacteristics {
-    frequency: number;
-    amplitude: number;
-    noiseLevel: number;
-    modulation: number;
+    frequency: number,
+    amplitude: number,
+    noiseLevel: number,
+    modulation: number,
 }
 
 /**
  * Available item info interfaces
  */
 export interface AvailableBiome {
-    id: string;
-    name: string;
-    description: string;
-    layerCount: number;
+    id: string,
+    name: string,
+    description: string,
+    layerCount: number,
 }
 
 export interface AvailableWeatherEffect {
-    id: string;
-    name: string;
-    description: string;
-    intensity: number;
+    id: string,
+    name: string,
+    description: string,
+    intensity: number,
 }
 
 export interface AvailableTimeVariation {
-    id: string;
-    name: string;
+    id: string,
+    name: string,
     timeRange: TimeRange;
-    layerCount: number;
+    layerCount: number,
 }
 
 /**
@@ -167,7 +167,7 @@ export class BiomeDefinitionManager {
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 operation: 'initialize';
-                component: 'BiomeDefinitionManager'
+                component: 'BiomeDefinitionManager
             });
         }
     }
@@ -357,7 +357,7 @@ export class BiomeDefinitionManager {
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 operation: '_initializeBiomes';
-                component: 'BiomeDefinitionManager'
+                component: 'BiomeDefinitionManager
             });
         }
     }
@@ -431,7 +431,7 @@ export class BiomeDefinitionManager {
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 operation: '_initializeWeatherEffects';
-                component: 'BiomeDefinitionManager'
+                component: 'BiomeDefinitionManager
             });
         }
     }
@@ -529,7 +529,7 @@ export class BiomeDefinitionManager {
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 operation: '_initializeTimeVariations';
-                component: 'BiomeDefinitionManager'
+                component: 'BiomeDefinitionManager
             });
         }
     }

@@ -11,13 +11,13 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
  */
 export class ProceduralSoundGenerator {
     // プロパティ宣言
-    isInitialized: boolean;
+    isInitialized: boolean,
     audioContext: any;
     soundBuffers: Map<string, any>;
     soundParams: any;
-    isGenerating: boolean;
-    generationProgress: number;
-    lastGenerationTime: number;
+    isGenerating: boolean,
+    generationProgress: number,
+    lastGenerationTime: number,
     constructor() {
 
         // 初期化状態
@@ -76,14 +76,14 @@ export class ProceduralSoundGenerator {
         try { this.isGenerating = true;
             this.generationProgress = 0;
 
-            const soundTypes = Object.keys(this.soundParams'),'
+            const soundTypes = Object.keys(this.soundParams'),
             const totalSounds = soundTypes.length;
-            ','
+            ',
             // 泡ポップ音
             this.soundBuffers.set('pop', this.createPopSound());
             this.soundBuffers.set('pop_combo', this.createPopSound(true);
             this.updateProgress(2, totalSounds);
-            ','
+            ',
             // 特殊効果音
             this.soundBuffers.set('bonus', this.createBonusSound());
             this.soundBuffers.set('heal', this.createHealSound());
@@ -92,14 +92,14 @@ export class ProceduralSoundGenerator {
             this.soundBuffers.set('chain', this.createChainSound());
             this.soundBuffers.set('time_stop', this.createTimeStopSound();
             this.updateProgress(8, totalSounds);
-            ','
+            ',
             // UI音
             this.soundBuffers.set('click', this.createClickSound());
             this.soundBuffers.set('hover', this.createHoverSound());
             this.soundBuffers.set('error', this.createErrorSound());
             this.soundBuffers.set('success', this.createSuccessSound();
             this.updateProgress(12, totalSounds);
-            ','
+            ',
             // ゲーム状態音
             this.soundBuffers.set('game_start', this.createGameStartSound());
             this.soundBuffers.set('game_over', this.createGameOverSound());
@@ -110,11 +110,11 @@ export class ProceduralSoundGenerator {
             this.lastGenerationTime = Date.now();
             console.log(`Generated ${this.soundBuffers.size} procedural, sounds`};
             return true;
-            ';'
+            ';
 
-        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ')'
-                component: 'ProceduralSoundGenerator,')';
-                operation: 'generateAllSounds'
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ')
+                component: 'ProceduralSoundGenerator,');
+                operation: 'generateAllSounds
             };
             this.isGenerating = false;
             return false;
@@ -462,14 +462,14 @@ export class ProceduralSoundGenerator {
      * @param {Object} variation - バリエーション設定
      * @returns {AudioBuffer} バリエーション音響バッファ
      */
-    generateSoundVariation(baseSoundName: string, variation: { pitchShift?: number;
-        volumeScale?: number;
-        timeStretch?: number;
-        noiseLevel?: number;) = { ): AudioBuffer | null {
+    generateSoundVariation(baseSoundName: string, variation: { pitchShift?: number,
+        volumeScale?: number,
+        timeStretch?: number,
+        noiseLevel?: number,) = { ): AudioBuffer | null {
         const baseBuffer = this.soundBuffers.get(baseSoundName);
-        if (!baseBuffer) { }'
+        if (!baseBuffer) { }
 
-            console.warn(`Base, sound '${baseSoundName}' not, found`}';'
+            console.warn(`Base, sound '${baseSoundName}' not, found`}';
             return null;
         } };
 
@@ -477,7 +477,7 @@ export class ProceduralSoundGenerator {
             volumeScale = 1.0;
             timeStretch = 1.0;
             noiseLevel = 0.0 } = variation;
-        ';'
+        ';
         // pitchShiftは将来の実装で使用予定
         console.log('Variation settings:', { pitchShift, volumeScale, timeStretch, noiseLevel );
         // バリエーション音響を生成

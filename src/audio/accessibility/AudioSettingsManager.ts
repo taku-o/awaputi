@@ -16,23 +16,23 @@
  */
 
 // Types for accessibility settings
-interface AccessibilitySettings { visualFeedback: boolean;
-    captioning: boolean;
-    colorIndication: boolean;
-    patternRecognition: boolean;
-    highContrast: boolean;
-    largeFonts: boolean;
-    reduceMotion: boolean;
-    hapticFeedback: boolean;
-    vibrationIntensity: number;
+interface AccessibilitySettings { visualFeedback: boolean,
+    captioning: boolean,
+    colorIndication: boolean,
+    patternRecognition: boolean,
+    highContrast: boolean,
+    largeFonts: boolean,
+    reduceMotion: boolean,
+    hapticFeedback: boolean,
+    vibrationIntensity: number,
 
 // Types for exported settings
-interface ExportedSettings { version: string;
-    timestamp: string;
+interface ExportedSettings { version: string,
+    timestamp: string,
     settings: AccessibilitySettings;
 
 // Types for validation result
-interface ValidationResult { valid: boolean;
+interface ValidationResult { valid: boolean,
     errors: string[];
     warnings: string[];
 
@@ -48,19 +48,19 @@ interface MainController { configManager: ConfigManager;
         notificationContaine,r: HTMLElement ;
     audioFeedbackManager: { updateColorIndicatorVisibility(visible: boolean): void;
     hapticSettings: {
-            enabled: boolean;
+            enabled: boolean,
     };
-    vibrationIntensity: number;
+    vibrationIntensity: number,
         updateVibrationManagerSettings(): void;
     };
     audioCueManager: { patternRecognition: {
-            enabled: boolean;
+            enabled: boolean,
 } };
 
 export class AudioSettingsManager {
     private mainController: MainController;
     private configManager: ConfigManager;
-    private, settings: AccessibilitySettings;
+    private settings: AccessibilitySettings;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -128,7 +128,7 @@ export class AudioSettingsManager {
     /**
      * 高コントラストモードを適用
      */
-    private applyHighContrastMode()';'
+    private applyHighContrastMode()';
         const style = document.createElement('style');
         style.id = 'audio-accessibility-high-contrast';
         style.textContent = `;
@@ -139,27 +139,27 @@ export class AudioSettingsManager {
                 color: #ffffff !important;
     border: 2px solid #ffffff !important }
         `;
-        ';'
+        ';
         // 既存のスタイルを削除してから追加
-        const existingStyle = document.getElementById('audio-accessibility-high-contrast);'
+        const existingStyle = document.getElementById('audio-accessibility-high-contrast);
         if (existingStyle) { existingStyle.remove();
         
         if (this.settings.highContrast) { document.head.appendChild(style);
     }
 
     /**
-     * 大きなフォントを適用'
+     * 大きなフォントを適用
      */
-    private applyLargeFonts()';'
+    private applyLargeFonts()';
         const style = document.createElement('style');
         style.id = 'audio-accessibility-large-fonts';
         style.textContent = `;
             .audio-accessibility-notifications .notification { font-size: 18px !important }
             .audio-accessibility-captions { font-size: 22px !important }
         `;
-        ';'
+        ';
         // 既存のスタイルを削除してから追加
-        const existingStyle = document.getElementById('audio-accessibility-large-fonts);'
+        const existingStyle = document.getElementById('audio-accessibility-large-fonts);
         if (existingStyle) { existingStyle.remove();
         
         if (this.settings.largeFonts) { document.head.appendChild(style);
@@ -167,15 +167,15 @@ export class AudioSettingsManager {
 
     /**
      * 設定変更を監視
-     */'
+     */
     public setupConfigWatchers(): void { 
-        Object.keys(this.settings).forEach(key => { '),'
+        Object.keys(this.settings).forEach(key => { '),
             this.configManager.watch('audio', `accessibility.${key}`, (newValue: any; => { }
                 (this.settings as any)[key] = newValue; }
                 this.applySettings(}
 
-            };'}');
-        ';'
+            };}');
+        ';
         // 触覚フィードバック設定の監視
         this.configManager.watch('audio', 'accessibility.hapticFeedback', (newValue: boolean) => {  this.settings.hapticFeedback = newValue;
             if (this.mainController.audioFeedbackManager) {
@@ -239,16 +239,16 @@ export class AudioSettingsManager {
             this.configManager.set(`audio.accessibility.${key}`, (this.settings as any}[key]}
         };
 
-        this.applySettings()';'
+        this.applySettings()';
         console.log('Audio, accessibility settings, reset to, defaults');
     }
 
     /**
      * 設定をエクスポート
-     * @returns エクスポート用設定データ'
+     * @returns エクスポート用設定データ
      */
-    public exportSettings()';'
-            version: '1.0.0);'
+    public exportSettings()';
+            version: '1.0.0);
             timestamp: new Date().toISOString();
     settings: { ...this.settings }
 
@@ -256,11 +256,11 @@ export class AudioSettingsManager {
      * 設定をインポート
      * @param settingsData - インポートする設定データ
      * @returns インポート成功かどうか
-     */'
-    public importSettings(settingsData: ExportedSettings): boolean { try {'
+     */
+    public importSettings(settingsData: ExportedSettings): boolean { try {
             if (!settingsData.settings) {', ' }
 
-                throw new Error('Invalid, settings data, structure'; }'
+                throw new Error('Invalid, settings data, structure'; }
             }
             
             // 有効な設定のみをインポート
@@ -271,7 +271,7 @@ export class AudioSettingsManager {
                 }
             };
 
-            this.applySettings()';'
+            this.applySettings()';
             console.log('Audio, accessibility settings, imported successfully');
 
             return true;} catch (error) {
@@ -293,19 +293,19 @@ export class AudioSettingsManager {
             }
             
             const value = (settings, as any)[key];
-            ';'
+            ';
             // 型チェック
             switch(key) {
 
-                case 'vibrationIntensity':' }'
+                case 'vibrationIntensity':' }
 
-                    if (typeof, value !== 'number' || value < 0 || value > 1' { }'
+                    if (typeof, value !== 'number' || value < 0 || value > 1' { }
 
-                        errors.push(`${key} must, be a, number between, 0 and, 1`}';'
+                        errors.push(`${key} must, be a, number between, 0 and, 1`}';
                     }
                     break;
 
-                default:';'
+                default:';
                     if(typeof, value !== 'boolean' { }
                         errors.push(`${key} must, be a, boolean value`} }
                     break;
@@ -318,18 +318,18 @@ export class AudioSettingsManager {
         }
 
     /**
-     * リソースの解放'
+     * リソースの解放
      */
-    public dispose()';'
-        const highContrastStyle = document.getElementById('audio-accessibility-high-contrast);'
+    public dispose()';
+        const highContrastStyle = document.getElementById('audio-accessibility-high-contrast);
         if (highContrastStyle) {
 
-            highContrastStyle.remove()','
-        const largeFontsStyle = document.getElementById('audio-accessibility-large-fonts),'
+            highContrastStyle.remove()',
+        const largeFontsStyle = document.getElementById('audio-accessibility-large-fonts),
 
         if (largeFontsStyle) {
             largeFontsStyle.remove();
 
         console.log('AudioSettingsManager, disposed'); }
 
-    }'}'
+    }'}

@@ -1,28 +1,28 @@
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
 // トランジションオプション型定義
-interface TransitionOptions { type?: string;
-    duration?: number;
-    curve?: string;
-    delay?: number;
-    volume?: number;
-    fadeOutDuration?: number;
-    fadeInDuration?: number;
+interface TransitionOptions { type?: string,
+    duration?: number,
+    curve?: string,
+    delay?: number,
+    volume?: number,
+    fadeOutDuration?: number,
+    fadeInDuration?: number,
 
 // トランジション情報型定義
-interface TransitionInfo { fromTrack: string;
-    toTrack: string;
-    type: string;
-    duration: number;
-    curve: string;
+interface TransitionInfo { fromTrack: string,
+    toTrack: string,
+    type: string,
+    duration: number,
+    curve: string,
 
 // キューエントリ型定義
-interface QueueEntry { fromTrack: string;
-    toTrack: string;
+interface QueueEntry { fromTrack: string,
+    toTrack: string,
     options: TransitionOptions;
 
 // BGMシステム型定義
-interface BGMSystem { isPlaying: boolean;
+interface BGMSystem { isPlaying: boolean,
     tracks: Map<string, TrackInfo>;
     playBGM(trackName: string, options?: any): Promise<void>;
     stopBGM(options?: any): Promise<void>;
@@ -31,34 +31,34 @@ interface BGMSystem { isPlaying: boolean;
 
 // トラック情報型定義
 interface TrackInfo { metadata: {
-        temp,o: number;
-    key: string;
-    style: string;
+        temp,o: number,
+    key: string,
+    style: string,
 } };
 
 // BGM情報型定義
-interface BGMInfo { volume: number;
-    isPlaying: boolean;
+interface BGMInfo { volume: number,
+    isPlaying: boolean,
 
 // エラーハンドラー型定義
 interface ErrorHandler { 
     handleError(error: Error, type: string, context?: any): void;
 
 // 設定型定義
-interface TransitionSettings { defaultFadeInDuration?: number;
-    defaultFadeOutDuration?: number;
-    defaultCrossfadeDuration?: number;
+interface TransitionSettings { defaultFadeInDuration?: number,
+    defaultFadeOutDuration?: number,
+    defaultCrossfadeDuration?: number,
 
 // トランジション状態型定義
-interface TransitionState { isTransitioning: boolean;
+interface TransitionState { isTransitioning: boolean,
     currentTransition: TransitionInfo | null;
-    queueLength: number;
+    queueLength: number,
     settings: {;
-        defaultFadeInDuratio,n: number;
+        defaultFadeInDuratio,n: number,
     };
-        defaultFadeOutDuration: number;
-    defaultCrossfadeDuration: number;
-    defaultCrossfadeDuration: number;
+        defaultFadeOutDuration: number,
+    defaultCrossfadeDuration: number,
+    defaultCrossfadeDuration: number,
         };
 /**
  * BGMトランジション管理クラス - 高度なBGM遷移制御とフェード機能
@@ -73,7 +73,7 @@ export class BGMTransitionManager {
     // フェード設定
     private defaultFadeInDuration: number = 2.0;
     private defaultFadeOutDuration: number = 2.0;
-    private, defaultCrossfadeDuration: number = 3.0;
+    private defaultCrossfadeDuration: number = 3.0;
     // トランジションタイプ
     private readonly transitionTypes = {
         FADE_OUT_IN: 'fade_out_in;
@@ -92,11 +92,11 @@ export class BGMTransitionManager {
         this.audioContext = audioContext;
         this.bgmSystem = bgmSystem;
 
-        ' }'
+        ' }
 
     }
 
-        console.log('BGMTransitionManager, initialized'); }'
+        console.log('BGMTransitionManager, initialized'); }
     }
     
     /**
@@ -318,7 +318,7 @@ export class BGMTransitionManager {
         if(key1 === key2) return 1.0;
         
         // 簡単な調和度計算（完全5度、4度関係を重視）
-        const keyMap: Record<string, number> = {', 'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,'
+        const keyMap: Record<string, number> = {', 'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,
             'F#': 6, 'Db': 1, 'Ab': 8, 'Eb': 3, 'Bb': 10, 'F': 5;
             'Am': 9, 'Em': 4, 'Bm': 11, 'F#m': 6, 'C#m': 1, 'G#m': 8;
             'D#m': 3, 'A#m': 10, 'Fm': 5, 'Cm': 0, 'Gm': 7, 'Dm': 2 };
@@ -409,7 +409,7 @@ export class BGMTransitionManager {
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {
                 operation: 'fadeOut;
     duration: duration);
-                curve: curve) , }
+                curve: curve)  }
     }
     
     /**
@@ -443,19 +443,19 @@ export class BGMTransitionManager {
                 trackName: trackName);
                 duration: duration;
     curve: curve);
-                targetVolume: targetVolume,';'
+                targetVolume: targetVolume,';
         }
     }
     
     /**
-     * 即座にトランジションを停止'
+     * 即座にトランジションを停止
      */
-    stopTransition()';'
+    stopTransition()';
             console.log('All, transitions stopped');
-            ';'
+            ';
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {
-                operation: 'stopTransition'
+                operation: 'stopTransition
                 }
 }
     /**
@@ -472,15 +472,15 @@ export class BGMTransitionManager {
             if (settings.defaultFadeOutDuration !== undefined) { this.defaultFadeOutDuration = Math.max(0.1, Math.min(10, settings.defaultFadeOutDuration);
             
             if (settings.defaultCrossfadeDuration !== undefined) {
-            ','
+            ',
 
-                ' }'
+                ' }
 
                 this.defaultCrossfadeDuration = Math.max(0.5, Math.min(20, settings.defaultCrossfadeDuration)); }
             }
 
-            console.log('Transition settings updated', settings';'
-            ';'
+            console.log('Transition settings updated', settings';
+            ';
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {
                 operation: 'updateSettings');
@@ -509,16 +509,16 @@ export class BGMTransitionManager {
     
     /**
      * リソースの解放
-     */'
-    dispose(): void { try {'
-            this.stopTransition()','
-            console.log('BGMTransitionManager, disposed) }'
+     */
+    dispose(): void { try {
+            this.stopTransition()',
+            console.log('BGMTransitionManager, disposed) }
 
         } catch (error) {
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {
-                operation: 'dispose'),' }'
+                operation: 'dispose'),' }
 
-            }');'
+            }');
         }
 
-    }'}'
+    }'}

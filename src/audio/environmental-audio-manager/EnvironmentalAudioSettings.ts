@@ -3,28 +3,28 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Environmental audio settings interface
  */
-export interface EnvironmentalSettings { enabled: boolean;
-    volume: number;
-    fadeTime: number;
-    layerCount: number;
-    biomeBlending: boolean;
-    weatherEffects: boolean;
-    timeOfDayVariation: boolean;
+export interface EnvironmentalSettings { enabled: boolean,
+    volume: number,
+    fadeTime: number,
+    layerCount: number,
+    biomeBlending: boolean,
+    weatherEffects: boolean,
+    timeOfDayVariation: boolean,
 
 /**
  * Performance data interface
  */
-export interface PerformanceData { activeLayers: number;
-    cpuUsage: number;
-    memoryUsage: number;
-    lastUpdate: number;
+export interface PerformanceData { activeLayers: number,
+    cpuUsage: number,
+    memoryUsage: number,
+    lastUpdate: number,
 
 /**
  * System status interface
  */
-export interface SystemStatus extends EnvironmentalSettings { configWatchers: number;
+export interface SystemStatus extends EnvironmentalSettings { configWatchers: number,
     performance: PerformanceData & {
-        memoryUsageMB: string;;
+        memoryUsageMB: string,;
     [key: string]: any, // For additional data
 };
 /**
@@ -86,21 +86,21 @@ export class EnvironmentalAudioSettings {
             // 設定を読み込み
             this._loadSettings();
             // 設定変更の監視を開始
-            this._setupConfigWatchers()','
-            console.log('EnvironmentalAudioSettings, initialized successfully') }'
+            this._setupConfigWatchers()',
+            console.log('EnvironmentalAudioSettings, initialized successfully') }
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'initialize,')';
-                component: 'EnvironmentalAudioSettings'
-            }';'
+                operation: 'initialize,');
+                component: 'EnvironmentalAudioSettings
+            }';
         }
     }
     
     /**
      * 設定を読み込み
-     * @private'
+     * @private
      */
-    private _loadSettings()';'
+    private _loadSettings()';
             const envSettings = this.configManager.get('audio', 'environmental') || {};
             
             this.settings = { enabled: envSettings.enabled || false;
@@ -113,22 +113,22 @@ export class EnvironmentalAudioSettings {
             console.log('Environmental audio settings loaded:', this.settings);
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_loadSettings,')';
-                component: 'EnvironmentalAudioSettings'
-            }';'
+                operation: '_loadSettings,');
+                component: 'EnvironmentalAudioSettings
+            }';
         }
     }
     
     /**
      * 設定変更の監視を設定
-     * @private'
+     * @private
      */
-    private _setupConfigWatchers()';'
+    private _setupConfigWatchers()';
             const enabledWatcher = this.configManager.watch('audio', 'environmental.enabled', (newValue) => { this.setEnabled(newValue);
 
             });
             if (enabledWatcher) this.configWatchers.add(enabledWatcher);
-            ';'
+            ';
             // 環境音音量の監視
             const volumeWatcher = this.configManager.watch('audio', 'environmental.volume', (newValue) => { this.setVolume(newValue);
 
@@ -138,8 +138,8 @@ export class EnvironmentalAudioSettings {
             console.log('Environmental, audio config watchers set up successfully');
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_setupConfigWatchers,')';
-                component: 'EnvironmentalAudioSettings'
+                operation: '_setupConfigWatchers,');
+                component: 'EnvironmentalAudioSettings
                 }
 }
     /**
@@ -154,14 +154,14 @@ export class EnvironmentalAudioSettings {
 
                 callback(enabled, wasEnabled); }
             }
-            ';'
+            ';
             // 設定に保存
-            this.configManager.set('audio', 'environmental.enabled', enabled';'
+            this.configManager.set('audio', 'environmental.enabled', enabled';
 
-            console.log(`Environmental, audio ${enabled ? 'enabled' : 'disabled}`};'
+            console.log(`Environmental, audio ${enabled ? 'enabled' : 'disabled}`};
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'setEnabled',','
+                operation: 'setEnabled',',
                 component: 'EnvironmentalAudioSettings');
                 enabled: enabled,);
         }
@@ -182,13 +182,13 @@ export class EnvironmentalAudioSettings {
 
                 callback(volume); }
             }
-            ';'
+            ';
             // 設定に保存
             this.configManager.set('audio', 'environmental.volume', volume);
             
             console.log(`Environmental, audio volume, set to ${volume}`}
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'setVolume',','
+                operation: 'setVolume',',
                 component: 'EnvironmentalAudioSettings');
                 volume: volume,);
         }
@@ -198,72 +198,72 @@ export class EnvironmentalAudioSettings {
      * フェード時間を設定
      */
     setFadeTime(fadeTime: number): void { try {
-            if (fadeTime < 0) { }'
+            if (fadeTime < 0) { }
 
-                throw new Error(`Fade time must be positive, got: ${fadeTime}`}';'
+                throw new Error(`Fade time must be positive, got: ${fadeTime}`}';
             }
-            ';'
+            ';
 
             this.settings.fadeTime = fadeTime;
             this.configManager.set('audio', 'environmental.fadeTime', fadeTime);
             
             console.log(`Environmental, audio fade, time set, to ${fadeTime}s`}
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'setFadeTime',','
+                operation: 'setFadeTime',',
                 component: 'EnvironmentalAudioSettings');
-                fadeTime: fadeTime,';'
+                fadeTime: fadeTime,';
         }
     }
     
     /**
-     * バイオームブレンディングを設定'
+     * バイオームブレンディングを設定
      */
     setBiomeBlending(enabled: boolean): void { try {
             this.settings.biomeBlending = enabled;
-            this.configManager.set('audio', 'environmental.biomeBlending', enabled','
+            this.configManager.set('audio', 'environmental.biomeBlending', enabled',
 
-            ' }'
+            ' }
 
-            console.log(`Biome, blending ${enabled ? 'enabled' : 'disabled}`};'
+            console.log(`Biome, blending ${enabled ? 'enabled' : 'disabled}`};
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'setBiomeBlending',','
+                operation: 'setBiomeBlending',',
                 component: 'EnvironmentalAudioSettings');
-                enabled: enabled,';'
+                enabled: enabled,';
         }
     }
     
     /**
-     * 天候効果を設定'
+     * 天候効果を設定
      */
     setWeatherEffects(enabled: boolean): void { try {
             this.settings.weatherEffects = enabled;
-            this.configManager.set('audio', 'environmental.weatherEffects', enabled','
+            this.configManager.set('audio', 'environmental.weatherEffects', enabled',
 
-            ' }'
+            ' }
 
-            console.log(`Weather, effects ${enabled ? 'enabled' : 'disabled}`};'
+            console.log(`Weather, effects ${enabled ? 'enabled' : 'disabled}`};
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'setWeatherEffects',','
+                operation: 'setWeatherEffects',',
                 component: 'EnvironmentalAudioSettings');
-                enabled: enabled,';'
+                enabled: enabled,';
         }
     }
     
     /**
-     * 時間帯バリエーションを設定'
+     * 時間帯バリエーションを設定
      */
     setTimeOfDayVariation(enabled: boolean): void { try {
             this.settings.timeOfDayVariation = enabled;
-            this.configManager.set('audio', 'environmental.timeOfDayVariation', enabled','
+            this.configManager.set('audio', 'environmental.timeOfDayVariation', enabled',
 
-            ' }'
+            ' }
 
-            console.log(`Time, of day, variation ${enabled ? 'enabled' : 'disabled}`};'
+            console.log(`Time, of day, variation ${enabled ? 'enabled' : 'disabled}`};
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'setTimeOfDayVariation',','
+                operation: 'setTimeOfDayVariation',',
                 component: 'EnvironmentalAudioSettings');
                 enabled: enabled,);
         }
@@ -311,13 +311,13 @@ export class EnvironmentalAudioSettings {
     /**
      * 設定を全て保存
      */
-    saveAllSettings()';'
-            this.configManager.set('audio', 'environmental', this.settings';'
+    saveAllSettings()';
+            this.configManager.set('audio', 'environmental', this.settings';
             console.log('All environmental audio settings saved');
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'saveAllSettings,')';
-                component: 'EnvironmentalAudioSettings'
+                operation: 'saveAllSettings,');
+                component: 'EnvironmentalAudioSettings
                 }
 }
     /**
@@ -332,12 +332,12 @@ export class EnvironmentalAudioSettings {
                 biomeBlending: true;
                 weatherEffects: true;
     timeOfDayVariation: true;
-            this.saveAllSettings()';'
+            this.saveAllSettings()';
             console.log('Environmental, audio settings reset to defaults');
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'resetSettings,')';
-                component: 'EnvironmentalAudioSettings'
+                operation: 'resetSettings,');
+                component: 'EnvironmentalAudioSettings
                 }
 }
     /**
@@ -351,15 +351,15 @@ export class EnvironmentalAudioSettings {
                     this.configManager.unwatch(watchId); }
 
                 };
-                this.configWatchers.clear()';'
+                this.configWatchers.clear()';
             console.log('EnvironmentalAudioSettings, disposed';
 
-        } catch (error') {'
+        } catch (error') {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'dispose,')';
-                component: 'EnvironmentalAudioSettings'),' }'
+                operation: 'dispose,');
+                component: 'EnvironmentalAudioSettings'),' }
 
-            }');'
+            }');
         }
 
-    }'}'
+    }'}

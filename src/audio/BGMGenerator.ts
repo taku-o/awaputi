@@ -26,27 +26,27 @@ interface RhythmPatterns {
 
 // トラック設定型定義
 interface TrackConfig {
-    style?: string;
-    duration?: number;
-    tempo?: number;
-    key?: string;
-    timeSignature?: string;
+    style?: string,
+    duration?: number,
+    tempo?: number,
+    key?: string,
+    timeSignature?: string,
 }
 
 // メロディ音符型定義
 interface MelodyNote {
-    frequency: number;
-    scaleIndex: number;
-    duration: number;
-    velocity: number;
+    frequency: number,
+    scaleIndex: number,
+    duration: number,
+    velocity: number,
 }
 
 // ハーモニー音符型定義
 interface HarmonyNote {
-    frequency: number;
-    scaleIndex: number;
-    duration: number;
-    velocity: number;
+    frequency: number,
+    scaleIndex: number,
+    duration: number,
+    velocity: number,
 }
 
 // メロディデータ型定義
@@ -56,12 +56,12 @@ type HarmonyData = (HarmonyNote | null)[];
 
 // ローマ数字マッピング型定義
 interface RomanToNumberMap {
-    [key: string]: number;
+    [key: string]: number,
 }
 
 // ノートマッピング型定義
 interface NoteMap {
-    [key: string]: number;
+    [key: string]: number,
 }
 // 音楽スタイル型定義
 type MusicStyle = 'ambient' | 'energetic' | 'exciting' | 'dramatic';
@@ -74,7 +74,7 @@ export class BGMGenerator {
     private scales: Scales;
     private chordProgressions: ChordProgressions;
     private rhythmPatterns: RhythmPatterns;
-    private baseFrequency: number;
+    private baseFrequency: number,
 
     constructor(audioContext: AudioContext) {
         this.audioContext = audioContext;
@@ -119,7 +119,7 @@ export class BGMGenerator {
                 duration = 30;
                 tempo = 120;
                 key = 'C';
-                timeSignature = '4/4'
+                timeSignature = '4/4
             } = trackConfig;
             
             console.log(`Generating ${style} track: ${duration}s, ${tempo}BPM, key=${key}`);
@@ -412,7 +412,7 @@ export class BGMGenerator {
         };
 
         // マイナーキーの処理（'Am' -> 'A'）
-        const baseNote = note.replace('m', '');
+        const baseNote = note.replace('m', ');
         const semitones = noteMap[baseNote];
         
         if (semitones === undefined) {

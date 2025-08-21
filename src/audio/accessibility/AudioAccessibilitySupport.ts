@@ -27,9 +27,9 @@ type NotificationType = 'info' | 'warning' | 'error' | 'success';
  * 通知オプションインターフェース
  */
 interface NotificationOptions {
-    duration?: number;
-    position?: string;
-    priority?: number;
+    duration?: number,
+    position?: string,
+    priority?: number,
     style?: any;
 }
 
@@ -37,8 +37,8 @@ interface NotificationOptions {
  * キャプションオプションインターフェース
  */
 interface CaptionOptions {
-    duration?: number;
-    position?: string;
+    duration?: number,
+    position?: string,
     style?: any;
 }
 
@@ -46,27 +46,27 @@ interface CaptionOptions {
  * 音響キューオプションインターフェース
  */
 interface AudioCueOptions {
-    volume?: number;
-    delay?: number;
-    priority?: number;
+    volume?: number,
+    delay?: number,
+    priority?: number,
 }
 
 /**
  * アナウンスオプションインターフェース
  */
 interface AnnounceOptions {
-    priority?: number;
-    interrupt?: boolean;
-    language?: string;
+    priority?: number,
+    interrupt?: boolean,
+    language?: string,
 }
 
 /**
  * 色彩インジケーターオプションインターフェース
  */
 interface ColorIndicatorOptions {
-    color?: string;
-    intensity?: number;
-    duration?: number;
+    color?: string,
+    intensity?: number,
+    duration?: number,
 }
 
 /**
@@ -85,9 +85,9 @@ interface ComponentStatus {
  * システム状態インターフェース
  */
 interface SystemStatus {
-    initialized: boolean;
+    initialized: boolean,
     components: ComponentStatus;
-    eventHistorySize: number;
+    eventHistorySize: number,
     capabilities: any;
     settings: any;
 }
@@ -96,10 +96,10 @@ interface SystemStatus {
  * デバイス機能インターフェース
  */
 interface DeviceCapabilities {
-    vibration: boolean;
-    screenReader: boolean;
-    reduceMotion: boolean;
-    prefersContrast: boolean;
+    vibration: boolean,
+    screenReader: boolean,
+    reduceMotion: boolean,
+    prefersContrast: boolean,
     [key: string]: any;
 }
 
@@ -107,8 +107,8 @@ interface DeviceCapabilities {
  * 統計情報インターフェース
  */
 interface Statistics {
-    componentsActive: number;
-    settingsConfigured: number;
+    componentsActive: number,
+    settingsConfigured: number,
     [key: string]: any;
 }
 
@@ -131,7 +131,7 @@ interface ConfigurationManager {
  * LocalizationManager インターフェース（型定義用）
  */
 interface LocalizationManager {
-    get(key: string): string;
+    get(key: string): string,
 }
 
 /**
@@ -152,10 +152,10 @@ interface VibrationManager {
  * 設定変更イベントインターフェース
  */
 interface SettingsChangeEvent {
-    key?: string;
+    key?: string,
     value?: any;
     oldValue?: any;
-    type?: string;
+    type?: string,
 }
 
 /**
@@ -212,7 +212,7 @@ export class ComponentAudioAccessibilitySupport {
         } catch (error) {
             this.errorHandler.handleError(error, {
                 context: 'AudioAccessibilitySupport.initialize';
-                severity: 'high'
+                severity: 'high
             });
             return false;
         }
@@ -234,22 +234,22 @@ export class ComponentAudioAccessibilitySupport {
      * 視覚的通知の表示（FeedbackManagerに委譲）
      * @param message - 通知メッセージ
      * @param type - 通知タイプ
-     * @param options - 表示オプション'
+     * @param options - 表示オプション
      */
     showVisualNotification(message: string, type: NotificationType = 'info', options: NotificationOptions = { ': void {
         this.feedbackManager.showVisualNotification(message, type, options);
-        ','
+        ',
         // イベント履歴に記録
-        this.eventManager.recordEvent('visual_notification', { message, type, options ' }'
+        this.eventManager.recordEvent('visual_notification', { message, type, options ' }
 
     /**
      * 字幕の表示（FeedbackManagerに委譲）
      * @param text - 字幕テキスト
      * @param options - 表示オプション
-     */'
+     */
     showCaption(text: string, options: CaptionOptions = { ): void {
         this.feedbackManager.showCaption(text, options);
-        this.eventManager.recordEvent('caption', { text, options ' }'
+        this.eventManager.recordEvent('caption', { text, options ' }
 
     /**
      * 音声説明の追加（DescriptionManagerに委譲）
@@ -257,34 +257,34 @@ export class ComponentAudioAccessibilitySupport {
      * @param type - 説明タイプ
      * @param params - パラメータ
      * @param priority - 優先度
-     */'
+     */
     addAudioDescription(category: string, type: string, params: any = { ), priority: number = 3): void {
         this.descriptionManager.addDescription(category, type, params, priority);
-        this.eventManager.recordEvent('audio_description', { category, type, params, priority ' }'
+        this.eventManager.recordEvent('audio_description', { category, type, params, priority ' }
 
     /**
      * 音響イベントの処理（CueManagerに委譲）
      * @param eventType - イベントタイプ
      * @param eventData - イベントデータ
      * @param audioData - 音響データ
-     */'
+     */
     processAudioEvent(eventType: string, eventData: any = {}, audioData: any = { ): void {
         this.cueManager.processAudioEvent(eventType, eventData, audioData);
-        this.eventManager.recordEvent('audio_event', { eventType, eventData, audioData ' }'
+        this.eventManager.recordEvent('audio_event', { eventType, eventData, audioData ' }
 
     /**
      * 色彩インジケーターの更新（FeedbackManagerに委譲）
      * @param level - 音量レベル
      * @param options - 表示オプション
-     */'
+     */
     updateColorIndicator(level: string, options: ColorIndicatorOptions = { ): void {
         this.feedbackManager.updateColorIndicator(level, options);
-        this.eventManager.recordEvent('color_indicator', { level, options ' }'
+        this.eventManager.recordEvent('color_indicator', { level, options ' }
 
     /**
      * 触覚フィードバックのトリガー（FeedbackManagerに委譲）
      * @param type - フィードバックタイプ
-     */'
+     */
     triggerHapticFeedback(type: string): void { 
         this.feedbackManager.triggerVibration(type);
         this.eventManager.recordEvent('haptic_feedback', { type );
@@ -352,22 +352,22 @@ export class ComponentAudioAccessibilitySupport {
      */
     enableAudioDescriptions(enabled: boolean = true): void { 
         this.descriptionManager.setEnabled(enabled);
-        this.eventManager.recordEvent('audio_descriptions_enabled', { enabled ' }'
+        this.eventManager.recordEvent('audio_descriptions_enabled', { enabled ' }
 
     /**
      * 音響キューの再生
      * @param cueType - キューの種類
      * @param options - 再生オプション
-     */'
+     */
     playAudioCue(cueType: string, options: AudioCueOptions = { ): void {
         this.cueManager.playCue(cueType, options);
-        this.eventManager.recordEvent('audio_cue_played', { cueType, options ' }'
+        this.eventManager.recordEvent('audio_cue_played', { cueType, options ' }
 
     /**
      * テキストのアナウンス（スクリーンリーダー向け）
      * @param text - アナウンスするテキスト
      * @param options - アナウンスオプション
-     */'
+     */
     announceText(text: string, options: AnnounceOptions = { ): void {
         this.descriptionManager.announce(text, options);
         this.eventManager.recordEvent('text_announced', { text, options );
@@ -449,15 +449,15 @@ export class ComponentAudioAccessibilitySupport {
         if (this.eventManager) { this.eventManager.destroy();
         
         if (this.legacyAdapter) {
-        ','
+        ',
 
             this.legacyAdapter.destroy();
 
-        console.log('AudioAccessibilitySupport, destroyed'); }'
+        console.log('AudioAccessibilitySupport, destroyed'); }
     }
 
     /**
      * 再初期化
-     */'
+     */
     async reinitialize(): Promise<void> { this.destroy();
         await this.initialize(' }';

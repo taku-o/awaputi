@@ -10,10 +10,10 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager';
 /**
  * エンベロープ設定インターフェース
  */
-interface EnvelopeConfig { attack: number;
-    decay: number;
-    sustain: number;
-    release: number;
+interface EnvelopeConfig { attack: number,
+    decay: number,
+    sustain: number,
+    release: number,
 
 /**
  * ハーモニクス設定インターフェース
@@ -24,29 +24,29 @@ interface HarmonicsConfig { harmonics?: number[];
  * モジュレーション設定インターフェース
  */
 interface ModulationConfig { modulation?: {
-        rat,e: number;
-    depth: number;
+        rat,e: number,
+    depth: number,
 
 /**
  * フィルタースイープ設定インターフェース
  */
 interface FilterSweepConfig { filterSweep?: {
-        start: number;
-    end: number;
+        start: number,
+    end: number,
 
 /**
  * ピッチスライド設定インターフェース
  */
 interface PitchSlideConfig { pitchSlide?: {
-        start: number;
-    end: number;
+        start: number,
+    end: number,
 
 /**
  * サウンド設定ベースインターフェース
  */
-interface BaseSoundConfig { baseFreq: number;
+interface BaseSoundConfig { baseFreq: number,
 
-    duration: number;
+    duration: number,
     waveType: OscillatorType | 'noise;
     envelope: EnvelopeConfig;
 
@@ -63,58 +63,58 @@ interface UISoundConfig extends BaseSoundConfig { chord?: number[];
 /**
  * コンボサウンド設定インターフェース
  */
-interface ComboSoundConfig { baseFreq: number;
-    duration: number;
+interface ComboSoundConfig { baseFreq: number,
+    duration: number,
     harmonics: number[];
 
 /**
  * 実績サウンド設定インターフェース
  */
-interface AchievementSoundConfig { baseFreq: number;
-    duration: number;
+interface AchievementSoundConfig { baseFreq: number,
+    duration: number,
     waveType: OscillatorType | 'noise;
     melody: number[];
 
 /**
  * サウンド生成設定インターフェース
  */
-interface GenerationConfig { sampleRate: number;
-    defaultDuration: number;
-    fadeTime: number;
-    maxFrequency: number;
-    minFrequency: number;
+interface GenerationConfig { sampleRate: number,
+    defaultDuration: number,
+    fadeTime: number,
+    maxFrequency: number,
+    minFrequency: number,
 
 /**
- * 泡タイプ'
+ * 泡タイプ
  */
 type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'electric' | 'golden' | 'frozen' | 'boss' | 'escaping';
 
 /**
- * UIサウンドタイプ'
+ * UIサウンドタイプ
  */
 type UISoundType = 'click' | 'hover' | 'success' | 'error';
 
 /**
- * 実績レアリティ'
+ * 実績レアリティ
  */
 type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
 
 /**
  * バリエーションオプションインターフェース
  */
-interface VariationOptions { pitchShift: number;
-    timeStretch: number;
-    volumeVariation: number;
+interface VariationOptions { pitchShift: number,
+    timeStretch: number,
+    volumeVariation: number,
 
 /**
  * レンダリング統計インターフェース
  */
-interface RenderingStatistics { supportedBubbleTypes: number;
-    supportedUITypes: number;
-    supportedComboLevels: number;
-    supportedAchievementRarities: number;
-    sampleRate: number;
-    defaultDuration: number;
+interface RenderingStatistics { supportedBubbleTypes: number,
+    supportedUITypes: number,
+    supportedComboLevels: number,
+    supportedAchievementRarities: number,
+    sampleRate: number,
+    defaultDuration: number,
 
 /**
  * ConfigurationManager インターフェース（型定義用）
@@ -132,7 +132,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     // サウンド生成設定
     private generationConfig: GenerationConfig;
     // 泡タイプ別サウンド設定
-    private, bubbleSoundConfigs: Record<BubbleType, BubbleSoundConfig>;
+    private bubbleSoundConfigs: Record<BubbleType, BubbleSoundConfig>;
     
     // UIサウンド設定
     private uiSoundConfigs: Record<UISoundType, UISoundConfig>;
@@ -146,7 +146,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
 
         this.audioContext = audioContext;
     this.configManager = getConfigurationManager();
-    this.errorHandler = getErrorHandler('}'
+    this.errorHandler = getErrorHandler('}
 
                 waveType: 'sine';
             }
@@ -271,7 +271,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             const config = this.bubbleSoundConfigs[bubbleType];
             if (!config) {', ' }
 
-                console.warn(`[SoundEffectRenderer] Unknown bubble type: ${bubbleType}`},' }'
+                console.warn(`[SoundEffectRenderer] Unknown bubble type: ${bubbleType}`},' }
 
                 return this.generateBubbleSound('normal', variation}
             }
@@ -329,7 +329,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             return buffer;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateBubbleSound),'
+            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateBubbleSound),
             return this.generateFallbackSound(0.3);
     /**
      * UIサウンドを生成
@@ -369,7 +369,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             return buffer;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateUISound),'
+            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateUISound),
             return this.generateFallbackSound(0.1);
     /**
      * コンボサウンドを生成
@@ -389,7 +389,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
                 config.harmonics.forEach((harmonic, index) => { 
                     const harmonicFreq = config.baseFreq * harmonic }
 
-                    const harmonicAmp = 1 / (index + 1'); }'
+                    const harmonicAmp = 1 / (index + 1'); }
 
                     sample += this.generateWaveform('sine', harmonicFreq, time) * harmonicAmp; }
                 };
@@ -401,7 +401,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             return buffer;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateComboSound),'
+            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateComboSound),
             return this.generateFallbackSound(0.3);
     /**
      * 実績サウンドを生成
@@ -434,21 +434,21 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             this.errorHandler.handleError(error, 'SoundEffectRenderer.generateAchievementSound;
             return this.generateFallbackSound(0.8);
     /**
-     * 波形を生成'
+     * 波形を生成
      */
     private generateWaveform(waveType: OscillatorType | 'noise', frequency: number, time: number): number { const omega = 2 * Math.PI * frequency * time;
 
         switch(waveType) {
 
-            case 'sine':','
+            case 'sine':',
                 return Math.sin(omega);
-            case 'square':','
+            case 'square':',
                 return Math.sin(omega) > 0 ? 1 : -1;
 
-            case 'sawtooth':','
-                return 2 * (omega / (2 * Math.PI) - Math.floor(omega / (2 * Math.PI) + 0.5)'),'
+            case 'sawtooth':',
+                return 2 * (omega / (2 * Math.PI) - Math.floor(omega / (2 * Math.PI) + 0.5)'),
 
-            case 'triangle':','
+            case 'triangle':',
                 const t = omega / (2 * Math.PI) - Math.floor(omega / (2 * Math.PI));
                 return t < 0.5 ? 4 * t - 1 : 3 - 4 * t;
 
@@ -532,10 +532,10 @@ interface ErrorHandler { handleError(error: any, context: string): void;
         }
                     volumeVariation: 0.8 + Math.random() * 0.4 // 80-120%の音量変化 
     };
-                ';'
+                ';
 
-                variations.push(variation);'} catch (error) {'
-                this.errorHandler.handleError(error, 'SoundEffectRenderer.generateVariations' }'
+                variations.push(variation);} catch (error) {
+                this.errorHandler.handleError(error, 'SoundEffectRenderer.generateVariations' }
         }
         
         return variations;
@@ -599,4 +599,4 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             supportedAchievementRarities: Object.keys(this.achievementSoundConfigs).length;
     sampleRate: this.generationConfig.sampleRate ;
             defaultDuration: this.generationConfig.defaultDuration 
-    }'}'
+    }'}

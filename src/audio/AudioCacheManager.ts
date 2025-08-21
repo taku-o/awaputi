@@ -25,7 +25,7 @@
  * 
  * // Cache audio buffer
  * await cacheManager.cacheAudio('bgm_001', audioBuffer);
- * '
+ * 
  * // Retrieve cached audio
  * const cachedAudio = await cacheManager.getAudio('bgm_001');
  * 
@@ -68,33 +68,33 @@ interface ConfigurationManager {
 
 // キャッシュ設定型定義
 interface CacheSettings {
-    maxMemorySize: number;
-    maxEntries: number;
-    cleanupInterval: number;
-    maxAge: number;
-    memoryPressureThreshold: number;
+    maxMemorySize: number,
+    maxEntries: number,
+    cleanupInterval: number,
+    maxAge: number,
+    memoryPressureThreshold: number,
     lazyLoading: {;
-        enabled: boolean;
-        chunkSize: number;
-        preloadRadius: number;
+        enabled: boolean,
+        chunkSize: number,
+        preloadRadius: number,
     };
     autoOptimization: {;
-        enabled: boolean;
-        compressionThreshold: number;
-        qualityAdjustment: boolean;
+        enabled: boolean,
+        compressionThreshold: number,
+        qualityAdjustment: boolean,
     };
 }
 // キャッシュエントリー型定義
 interface CacheEntry {
     buffer: AudioBuffer;
     metadata: {;
-        size: number;
-        sampleRate: number;
-        numberOfChannels: number;
-        length: number;
-        duration: number;
-        cached: number;
-        optimized?: boolean;
+        size: number,
+        sampleRate: number,
+        numberOfChannels: number,
+        length: number,
+        duration: number,
+        cached: number,
+        optimized?: boolean,
         [key: string]: any;
     };
 }
@@ -111,16 +111,16 @@ interface CacheStats {
 }
 // ステータス型定義
 interface AudioCacheManagerStatus {
-    initialized: boolean;
+    initialized: boolean,
     components: {;
-        memoryManager: string;
-        dataLoader: string;
-        statistics: string;
+        memoryManager: string,
+        dataLoader: string,
+        statistics: string,
     };
     cacheInstances: {;
-        audioBuffer: string;
-        metadata: string;
-        chunk: string;
+        audioBuffer: string,
+        metadata: string,
+        chunk: string,
     };
     settings: CacheSettings;
 }
@@ -197,7 +197,7 @@ export class AudioCacheManager {
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
                 operation: 'initialize';
-                component: 'AudioCacheManager'
+                component: 'AudioCacheManager
             });
         }
     }
@@ -351,12 +351,12 @@ export class AudioCacheManager {
             components: {
                 memoryManager: this.memoryManager ? 'active' : 'inactive';
                 dataLoader: this.dataLoader ? 'active' : 'inactive';
-                statistics: this.statistics ? 'active' : 'inactive'
+                statistics: this.statistics ? 'active' : 'inactive
             };
             cacheInstances: {
                 audioBuffer: this.audioBufferCache ? 'active' : 'inactive';
                 metadata: this.metadataCache ? 'active' : 'inactive';
-                chunk: this.chunkCache ? 'active' : 'inactive'
+                chunk: this.chunkCache ? 'active' : 'inactive
             };
             settings: { ...this.cacheSettings }
         };
@@ -424,7 +424,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: '_loadCacheSettings'
+                operation: '_loadCacheSettings
             });
         }
     }
@@ -489,7 +489,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: 'dispose'
+                operation: 'dispose
             });
         }
     }

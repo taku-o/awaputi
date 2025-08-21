@@ -15,52 +15,52 @@
  */
 
 // Types for audio cue management
-interface AudioEvent { timestamp: number;
-    type: string;
+interface AudioEvent { timestamp: number,
+    type: string,
     data: any;
-    interface AudioEventData { type: string;
+    interface AudioEventData { type: string,
     [key: string]: any;
-    interface BubblePopEvent { bubbleType: string;
-    comboLevel: number;
-    position: { x: number, y: number;
-    position: { x: number, y: number;
+    interface BubblePopEvent { bubbleType: string,
+    comboLevel: number,
+    position: { x: number, y: number,
+    position: { x: number, y: number,
          };
-interface ComboEvent { comboLevel: number;
-    comboCount: number;
-    comboCount: number;
+interface ComboEvent { comboLevel: number,
+    comboCount: number,
+    comboCount: number,
         };
-interface AchievementEvent { achievementName: string;
-    rarity: string;
-    rarity: string;
+interface AchievementEvent { achievementName: string,
+    rarity: string,
+    rarity: string,
         };
 interface GameStateEvent { state: 'gameStart' | 'gameOver' | 'levelUp' | 'warning' | 'bonusStart';
-    details?: string;
-    interface AudioPattern { name: string;
-    description: string;
+    details?: string,
+    interface AudioPattern { name: string,
+    description: string,
     pattern: string[];
-    timeWindow: number;
-    notification: string;
-    notification: string;
+    timeWindow: number,
+    notification: string,
+    notification: string,
         };
-interface PatternRecognition { enabled: boolean;
+interface PatternRecognition { enabled: boolean,
     patterns: Map<string, AudioPattern>;
     currentPattern: AudioEvent[] | null;
     patternTimeout: number | null  }
 
-interface AudioStatistics { totalEvents: number;
+interface AudioStatistics { totalEvents: number,
     eventTypes: Record<string, number>;
     recentActivity: AudioEvent[];
-    interface AudioVisualizationStats { averageLevel?: number;
-    peakLevel?: number;
-    frequency?: number;
+    interface AudioVisualizationStats { averageLevel?: number,
+    peakLevel?: number,
+    frequency?: number,
     interface MainController { audioManager: any;
     errorHandler: any;
     audioFeedbackManager: any;
     audioDescriptionManager: any;
     settings: {
-        visualFeedbac,k?: boolean;
-    colorIndication?: boolean;
-    hapticFeedback?: boolean;
+        visualFeedbac,k?: boolean,
+    colorIndication?: boolean,
+    hapticFeedback?: boolean,
     captioning?: boolean }
 
 export class AudioCueManager {
@@ -68,9 +68,9 @@ export class AudioCueManager {
     private audioManager: any;
     private errorHandler: any;
     private eventHistory: AudioEvent[];
-    private maxHistorySize: number;
+    private maxHistorySize: number,
     private patternRecognition: PatternRecognition;
-    private, audioEventListeners: Map<string, Array<(event: any) => void>>;
+    private audioEventListeners: Map<string, Array<(event: any) => void>>;
 
     constructor(mainController: MainController) {
 
@@ -106,17 +106,17 @@ export class AudioCueManager {
 
         this.addAudioEventListener('bubblePop', (event) => {  }
 
-            this.handleBubblePopEvent(event, as BubblePopEvent);' }'
+            this.handleBubblePopEvent(event, as BubblePopEvent); }
 
-        }');'
+        }');
 
-        this.addAudioEventListener('comboAchieved', (event) => { this.handleComboEvent(event, as ComboEvent),' }'
+        this.addAudioEventListener('comboAchieved', (event) => { this.handleComboEvent(event, as ComboEvent),' }
 
-        }');'
+        }');
 
-        this.addAudioEventListener('achievementUnlocked', (event) => { this.handleAchievementEvent(event, as AchievementEvent),' }'
+        this.addAudioEventListener('achievementUnlocked', (event) => { this.handleAchievementEvent(event, as AchievementEvent),' }
 
-        }');'
+        }');
 
         this.addAudioEventListener('gameStateChange', (event) => { this.handleGameStateEvent(event, as GameStateEvent);
     }
@@ -143,7 +143,7 @@ export class AudioCueManager {
                 if (this.mainController.settings.hapticFeedback) {
             }
 
-                    this.mainController.audioFeedbackManager.triggerAudioLevelVibration(stats.averageLevel || 0, 'background'; }'
+                    this.mainController.audioFeedbackManager.triggerAudioLevelVibration(stats.averageLevel || 0, 'background'; }
 }
             
             setTimeout(monitorLoop, updateInterval);
@@ -174,10 +174,10 @@ export class AudioCueManager {
         if (listeners) {
             listeners.forEach(callback => { );
                 try {);
-                    callback(eventData);' }'
+                    callback(eventData); }
 
                 } catch (error) { this.errorHandler.handleError(error, 'ACCESSIBILITY_ERROR', {
-                        component: 'AudioCueManager',','
+                        component: 'AudioCueManager',',
                         operation: 'triggerAudioEvent');
                         eventType: eventType,);
                     }
@@ -194,12 +194,12 @@ export class AudioCueManager {
         const { bubbleType, comboLevel, position } = event;
         
         // 視覚的通知
-        this.mainController.audioDescriptionManager.showVisualNotification({ ')'
-            type: 'bubblePop,')';
+        this.mainController.audioDescriptionManager.showVisualNotification({ ')
+            type: 'bubblePop,');
             title: '泡破壊;
-            message: `${bubbleType'
+            message: `${bubbleType
             }泡を破壊`,
-            icon: '🫧'
+            icon: '🫧
             }
             color: this.mainController.audioDescriptionManager.getBubbleColor(bubbleType;
             position: position ;
@@ -214,19 +214,19 @@ export class AudioCueManager {
         // 触覚フィードバック
         if (this.mainController.settings.hapticFeedback && this.mainController.audioFeedbackManager.vibrationManager) {', ' }
 
-            this.mainController.audioFeedbackManager.triggerHapticFeedback('bubblePop', event'; }'
+            this.mainController.audioFeedbackManager.triggerHapticFeedback('bubblePop', event'; }
 }
 
     /**
      * コンボイベントを処理
-     * @param event - イベントデータ'
+     * @param event - イベントデータ
      */
     private handleComboEvent(event: ComboEvent): void {
         const { comboLevel, comboCount } = event;
         
         // 視覚的通知
         this.mainController.audioDescriptionManager.showVisualNotification({ 
-            type: 'combo'
+            type: 'combo
             };
             title: `${comboLevel}連鎖`
             message: `${comboCount}コンボ達成！`,
@@ -243,20 +243,20 @@ export class AudioCueManager {
         // 触覚フィードバック
         if (this.mainController.settings.hapticFeedback && this.mainController.audioFeedbackManager.vibrationManager) {', ' }
 
-            this.mainController.audioFeedbackManager.triggerHapticFeedback('comboAchieved', event'; }'
+            this.mainController.audioFeedbackManager.triggerHapticFeedback('comboAchieved', event'; }
 }
 
     /**
      * 実績イベントを処理
-     * @param event - イベントデータ'
+     * @param event - イベントデータ
      */
     private handleAchievementEvent(event: AchievementEvent): void {
         const { achievementName, rarity } = event;
         
         // 視覚的通知
         this.mainController.audioDescriptionManager.showVisualNotification({ 
-            type: 'achievement',','
-            title: '実績解除')','
+            type: 'achievement',',
+            title: '実績解除')',
     message: achievementName,');
             icon: '🏆');
             color: this.mainController.audioDescriptionManager.getRarityColor(rarity;
@@ -271,30 +271,30 @@ export class AudioCueManager {
         // 触覚フィードバック
         if (this.mainController.settings.hapticFeedback && this.mainController.audioFeedbackManager.vibrationManager) {', ' }
 
-            this.mainController.audioFeedbackManager.triggerHapticFeedback('achievementUnlocked', event'; }'
+            this.mainController.audioFeedbackManager.triggerHapticFeedback('achievementUnlocked', event'; }
 }
 
     /**
      * ゲーム状態イベントを処理
-     * @param event - イベントデータ'
+     * @param event - イベントデータ
      */
     private handleGameStateEvent(event: GameStateEvent): void {
         const { state, details } = event;
-        ';'
+        ';
 
-        const stateMessages: Record<string, { title: string, icon: string, color: string,> = { }'
+        const stateMessages: Record<string, { title: string, icon: string, color: string,> = { }
 
-            gameStart: { title: 'ゲーム開始', icon: '🎮', color: '#00ff00'
+            gameStart: { title: 'ゲーム開始', icon: '🎮', color: '#00ff00
             ,
-            gameOver: { title: 'ゲームオーバー', icon: '💀', color: '#ff0000'
+            gameOver: { title: 'ゲームオーバー', icon: '💀', color: '#ff0000
             ,
-            levelUp: { title: 'レベルアップ', icon: '⭐', color: '#ffff00'
+            levelUp: { title: 'レベルアップ', icon: '⭐', color: '#ffff00
             ,
-            warning: { title: '警告', icon: '⚠️', color: '#ff8000'
+            warning: { title: '警告', icon: '⚠️', color: '#ff8000
             ,
-            bonusStart: { title: 'ボーナス開始', icon: '🌟', color: '#ff00ff'
+            bonusStart: { title: 'ボーナス開始', icon: '🌟', color: '#ff00ff
              ;
-        ';'
+        ';
 
         const stateInfo = stateMessages[state];
         if (stateInfo) {
@@ -302,19 +302,19 @@ export class AudioCueManager {
             this.mainController.audioDescriptionManager.showVisualNotification({
                 type: 'gameState;
                 title: stateInfo.title;
-                message: details || '),'
+                message: details || '),
                 icon: stateInfo.icon;
     color: stateInfo.color);
-                duration: 3000','
-            ','
+                duration: 3000',
+            ',
 
             // 字幕
          }
 
-            if (this.mainController.settings.captioning) { }'
+            if (this.mainController.settings.captioning) { }
 
                 this.mainController.audioDescriptionManager.showCaption(`${stateInfo.title}${details ? ': ' + details: '}`}' }
-            ';'
+            ';
             // 触覚フィードバック
             if (this.mainController.settings.hapticFeedback && this.mainController.audioFeedbackManager.vibrationManager) {', ' }
 
@@ -341,27 +341,27 @@ export class AudioCueManager {
      * 音響パターンを初期化
      * @private
      */
-    private initializePatterns('
+    private initializePatterns(
         this.patternRecognition.patterns.set('rapidPops', { 
             name: '連続泡破壊;
-            description: '短時間で多くの泡を破壊',','
+            description: '短時間で多くの泡を破壊',',
             pattern: ['bubblePop, 'bubblePop', 'bubblePop]';
             timeWindow: 1000, // 1秒以内');
-            notification: '連続破壊中！')','
+            notification: '連続破壊中！')',
 
         this.patternRecognition.patterns.set('comboChain', {
             name: 'コンボ連鎖;
-            description: '連続してコンボを達成',','
+            description: '連続してコンボを達成',',
             pattern: ['comboAchieved, 'comboAchieved]';
             timeWindow: 2000, // 2秒以内');
-            notification: 'コンボ連鎖発生！')','
+            notification: 'コンボ連鎖発生！')',
 
         this.patternRecognition.patterns.set('achievementBurst', {
             name: '実績連続解除;
-            description: '短時間で複数の実績を解除',','
+            description: '短時間で複数の実績を解除',',
             pattern: ['achievementUnlocked, 'achievementUnlocked]';
             timeWindow: 5000, // 5秒以内');
-            notification: '実績ラッシュ！'
+            notification: '実績ラッシュ！
             }
 
     /**
@@ -439,11 +439,11 @@ export class AudioCueManager {
 
         this.patternRecognition.patternTimeout = window.setTimeout(() => { // パターン認識通知
             this.mainController.audioDescriptionManager.showVisualNotification({
-                type: 'pattern',','
-                title: 'パターン認識')','
+                type: 'pattern',',
+                title: 'パターン認識')',
     message: pattern.notification;
                 icon: '🎯;
-                color: '#ff00ff'
+                color: '#ff00ff
             }
                 duration: 4000); 
     };

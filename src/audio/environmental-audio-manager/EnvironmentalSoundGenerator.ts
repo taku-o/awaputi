@@ -3,10 +3,10 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Sound characteristics interface (from, BiomeDefinitionManager)
  */
-export interface SoundCharacteristics { frequency: number;
-    amplitude: number;
-    noiseLevel: number;
-    modulation: number;
+export interface SoundCharacteristics { frequency: number,
+    amplitude: number,
+    noiseLevel: number,
+    modulation: number,
 
 /**
  * EnvironmentalSoundGenerator - 環境音生成システム
@@ -73,8 +73,8 @@ export class EnvironmentalSoundGenerator {
             
             console.log(`Generated ${this.environmentBuffers.size} basic, environmental sounds`}
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'generateBasicEnvironmentalSounds,')';
-                component: 'EnvironmentalSoundGenerator'
+                operation: 'generateBasicEnvironmentalSounds,');
+                component: 'EnvironmentalSoundGenerator
                 }
 }
     /**
@@ -91,22 +91,22 @@ export class EnvironmentalSoundGenerator {
             let buffer: AudioBuffer | null = null;
             switch(soundType) {
 
-                case 'wind':','
-                case 'mountain_wind':','
-                case 'sea_wind':','
-                case 'cave_wind':','
-                    buffer = this._generateWindSound('
-                case 'waves': ','
+                case 'wind':',
+                case 'mountain_wind':',
+                case 'sea_wind':',
+                case 'cave_wind':',
+                    buffer = this._generateWindSound(
+                case 'waves': ',
                     buffer = this._generateWaveSound(';
-                case 'rain':','
-                case 'thunderstorm':','
+                case 'rain':',
+                case 'thunderstorm':',
                     buffer = this._generateRainSound(';
-                case 'leaves':','
-                case 'forest':','
+                case 'leaves':',
+                case 'forest':',
                     buffer = this._generateForestSound(';
-                case 'machinery':','
-                case 'traffic':','
-                    buffer = this._generateMachinerySound()','
+                case 'machinery':',
+                case 'traffic':',
+                    buffer = this._generateMachinerySound()',
                 case 'cave_resonance':);
                     buffer = this._generateCaveResonanceSound();
                     break;
@@ -120,7 +120,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'getOrGenerateSound',','
+                operation: 'getOrGenerateSound',',
                 component: 'EnvironmentalSoundGenerator');
                 soundType: soundType,);
             return null;
@@ -158,7 +158,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_generateWindSound'
+                operation: '_generateWindSound
             };
             return null;
     
@@ -195,7 +195,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_generateWaveSound'
+                operation: '_generateWaveSound
             };
             return null;
     
@@ -230,7 +230,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_generateRainSound'
+                operation: '_generateRainSound
             };
             return null;
     
@@ -265,7 +265,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_generateForestSound'
+                operation: '_generateForestSound
             };
             return null;
     
@@ -304,7 +304,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_generateMachinerySound'
+                operation: '_generateMachinerySound
             };
             return null;
     
@@ -343,7 +343,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_generateCaveResonanceSound'
+                operation: '_generateCaveResonanceSound
             };
             return null;
     
@@ -404,6 +404,6 @@ export class EnvironmentalSoundGenerator {
     clearBuffers(): void { this.environmentBuffers.clear();
     
     /**
-     * 生成済み音響の数を取得'
+     * 生成済み音響の数を取得
      */
     getBufferCount();

@@ -12,32 +12,32 @@ type VibrationPattern = number | number[];
 type AudioLevel = 'low' | 'medium' | 'high' | 'critical';
 
 // Types for device capabilities
-interface DeviceCapabilities { vibrationSupported: boolean;
-    speechSynthesisSupported: boolean;
-    visualFeedbackSupported: boolean;
-    highContrastSupported: boolean;
-    reducedMotionSupported: boolean;
+interface DeviceCapabilities { vibrationSupported: boolean,
+    speechSynthesisSupported: boolean,
+    visualFeedbackSupported: boolean,
+    highContrastSupported: boolean,
+    reducedMotionSupported: boolean,
 
 // Types for legacy vibration manager
 interface LegacyVibrationManager { vibrate: (pattern: VibrationPattern) => void;
-    isSupported: () => boolean }'
+    isSupported: () => boolean }
 }
 
 // Types for audio cue
-interface AudioCue { pattern: string;
+interface AudioCue { pattern: string,
     vibrationPattern: VibrationPattern;
 
 // Types for accessibility settings
-interface AccessibilitySettings { visualFeedback: boolean;
-    captioning: boolean;
-    colorIndication: boolean;
-    hapticFeedback: boolean;
-    descriptionEnabled: boolean;
+interface AccessibilitySettings { visualFeedback: boolean,
+    captioning: boolean,
+    colorIndication: boolean,
+    hapticFeedback: boolean,
+    descriptionEnabled: boolean,
 
 // Types for settings change event
 interface SettingsChangeEvent { 
     type: 'single' | 'batch';
-    key?: string;
+    key?: string,
     value?: any;
     settings?: Record<string, any> }
 
@@ -51,7 +51,7 @@ interface MainController { feedbackManager: { applyTactileFeedback(cue: AudioCue
 
 export class AudioLegacyAdapter {
     private mainController: MainController;
-    private, vibrationManager: LegacyVibrationManager | null;
+    private vibrationManager: LegacyVibrationManager | null;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -63,7 +63,7 @@ export class AudioLegacyAdapter {
      * VibrationManagerの互換性設定
      */
     private initializeVibrationManager(): void { this.vibrationManager = {
-            vibrate: (pattern: VibrationPattern'): void => { }'
+            vibrate: (pattern: VibrationPattern'): void => { }
 
                 const cue: AudioCue = { pattern: 'custom', vibrationPattern: pattern;
                 this.mainController.feedbackManager.applyTactileFeedback(cue);
@@ -89,14 +89,14 @@ export class AudioLegacyAdapter {
 
     /**
      * パターン認識の有効化（レガシー互換性）
-     * @param enabled - 有効化フラグ'
+     * @param enabled - 有効化フラグ
      */
     public enablePatternRecognition(enabled: boolean): void { 
-        this.mainController.updateSetting('patternRecognition', enabled' }'
+        this.mainController.updateSetting('patternRecognition', enabled' }
 
     /**
      * アクセシビリティ機能の一括有効化
-     * @param enabled - 有効化フラグ'
+     * @param enabled - 有効化フラグ
      */
     public async enableAccessibilityFeatures(enabled: boolean): Promise<void> { const settings: AccessibilitySettings = {
             visualFeedback: enabled;
@@ -111,7 +111,7 @@ export class AudioLegacyAdapter {
      * 強度からレベルへのマッピング
      * @param intensity - 強度 (0-1)
      * @returns レベル
-     */'
+     */
     private mapIntensityToLevel(intensity: number): AudioLevel { 
         if(intensity >= 0.9) return 'critical;
         if(intensity >= 0.7) return 'high;
@@ -120,29 +120,29 @@ export class AudioLegacyAdapter {
 
     /**
      * デバイス機能の取得
-     * @returns デバイス機能情報'
+     * @returns デバイス機能情報
      */
-    public getCapabilities('
+    public getCapabilities(
             vibrationSupported: 'vibrate' in navigator;
             speechSynthesisSupported: 'speechSynthesis' in window;
-            visualFeedbackSupported: typeof document !== 'undefined',';'
+            visualFeedbackSupported: typeof document !== 'undefined',';
             highContrastSupported: window.matchMedia && window.matchMedia('(prefers-contrast: high)').matches;
-            reducedMotionSupported: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)).matches,'
+            reducedMotionSupported: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)).matches,
         } }
 
     /**
      * 設定変更の処理
-     * @param event - 設定変更イベント'
+     * @param event - 設定変更イベント
      */
     public handleSettingsChange(event: SettingsChangeEvent): void { 
-        this.mainController.eventManager.recordEvent('settings_change', event','
-        ','
+        this.mainController.eventManager.recordEvent('settings_change', event',
+        ',
         // 必要に応じて追加の処理
         if (event.type === 'single' && event.key === 'vibrationIntensity') {
             // 振動強度変更時の即座テスト
         }
 
-            this.mainController.triggerHapticFeedback('notification'; }'
+            this.mainController.triggerHapticFeedback('notification'; }
 }
 
     /**
@@ -159,6 +159,6 @@ export class AudioLegacyAdapter {
             capabilities: this.getCapabilities() } };
 
     /**
-     * クリーンアップ'
+     * クリーンアップ
      */
     public destroy();

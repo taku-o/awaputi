@@ -47,38 +47,38 @@ interface AudioManager {
 
 // パフォーマンスメトリクス型定義
 interface PerformanceMetrics {
-    cpuUsage: number;
-    averageLatency: number;
+    cpuUsage: number,
+    averageLatency: number,
 }
 
 // エラー統計型定義
 interface ErrorStats {
-    totalErrors: number;
+    totalErrors: number,
     errorsByType: Map<string, number>;
     errorsBySource: Map<string, number>;
-    recoveryAttempts: number;
-    successfulRecoveries: number;
-    fallbacksTriggered: number;
-    sessionStart: number;
+    recoveryAttempts: number,
+    successfulRecoveries: number,
+    fallbacksTriggered: number,
+    sessionStart: number,
 }
 
 // エラータイプ定義
 interface ErrorTypes {
-    WEB_AUDIO_INIT: string;
-    WEB_AUDIO_CONTEXT: string;
-    AUDIO_DECODE: string;
-    AUDIO_LOAD: string;
-    AUDIO_PLAY: string;
-    AUDIO_STOP: string;
-    BGM_GENERATION: string;
-    AUDIO_EFFECT: string;
-    VIBRATION: string;
-    ACCESSIBILITY: string;
-    MEMORY: string;
-    PERFORMANCE: string;
-    NETWORK: string;
-    PERMISSION: string;
-    BROWSER_COMPAT: string;
+    WEB_AUDIO_INIT: string,
+    WEB_AUDIO_CONTEXT: string,
+    AUDIO_DECODE: string,
+    AUDIO_LOAD: string,
+    AUDIO_PLAY: string,
+    AUDIO_STOP: string,
+    BGM_GENERATION: string,
+    AUDIO_EFFECT: string,
+    VIBRATION: string,
+    ACCESSIBILITY: string,
+    MEMORY: string,
+    PERFORMANCE: string,
+    NETWORK: string,
+    PERMISSION: string,
+    BROWSER_COMPAT: string,
 }
 
 // 回復戦略型定義
@@ -86,60 +86,60 @@ type RecoveryStrategy = (error: Error, context: any) => Promise<boolean>;
 
 // フォールバックオプション型定義
 interface FallbackOptions {
-    useHTMLAudio: boolean;
-    useSilentMode: boolean;
-    useMinimalFeatures: boolean;
-    disableEffects: boolean;
-    reducedQuality: boolean;
-    noVibration: boolean;
+    useHTMLAudio: boolean,
+    useSilentMode: boolean,
+    useMinimalFeatures: boolean,
+    disableEffects: boolean,
+    reducedQuality: boolean,
+    noVibration: boolean,
 }
 
 // エラー閾値型定義
 interface ErrorThresholds {
-    maxErrorsPerMinute: number;
-    maxConsecutiveErrors: number;
-    maxRecoveryAttempts: number;
-    performanceDegradationThreshold: number;
+    maxErrorsPerMinute: number,
+    maxConsecutiveErrors: number,
+    maxRecoveryAttempts: number,
+    performanceDegradationThreshold: number,
 }
 
 // エラー状態型定義
 interface ErrorState {
-    consecutiveErrors: number;
-    lastErrorTime: number;
-    recoveryInProgress: boolean;
-    fallbackMode: boolean;
-    criticalErrorsDetected: boolean;
+    consecutiveErrors: number,
+    lastErrorTime: number,
+    recoveryInProgress: boolean,
+    fallbackMode: boolean,
+    criticalErrorsDetected: boolean,
 }
 
 // ユーザー通知設定型定義
 interface UserNotificationSettings {
-    showErrorMessages: boolean;
-    showRecoveryMessages: boolean;
-    showFallbackMessages: boolean;
-    notificationDuration: number;
+    showErrorMessages: boolean,
+    showRecoveryMessages: boolean,
+    showFallbackMessages: boolean,
+    notificationDuration: number,
 }
 
 // メモリ使用量型定義
 interface MemoryUsage {
-    used: number;
-    total: number;
-    limit: number;
+    used: number,
+    total: number,
+    limit: number,
 }
 
 // エラーレポート型定義
 interface ErrorReport {
-    timestamp: string;
-    sessionDuration: number;
+    timestamp: string,
+    sessionDuration: number,
     statistics: ErrorStats & {;
-        errorRate: number;
-        recoveryRate: number;
+        errorRate: number,
+        recoveryRate: number,
     };
     currentState: ErrorState & {;
         fallbackOptions: FallbackOptions;
     };
     systemInfo: {;
-        userAgent: string;
-        webAudioSupported: boolean;
+        userAgent: string,
+        webAudioSupported: boolean,
     };
     memoryInfo: MemoryUsage | null;
     recommendations: string[];
@@ -147,13 +147,13 @@ interface ErrorReport {
 
 // エラーデータ型定義
 interface ErrorData {
-    timestamp: string;
-    type: string;
-    severity: string;
-    message: string;
-    stack?: string;
+    timestamp: string,
+    type: string,
+    severity: string,
+    message: string,
+    stack?: string,
     context: any;
-    userAgent: string;
+    userAgent: string,
     audioContextState?: AudioContextState;
     memoryUsage: MemoryUsage | null;
 }
@@ -226,7 +226,7 @@ export class AudioErrorHandler {
             PERFORMANCE: 'performance_error';
             NETWORK: 'network_error';
             PERMISSION: 'permission_error';
-            BROWSER_COMPAT: 'browser_compatibility_error'
+            BROWSER_COMPAT: 'browser_compatibility_error
         };
 
         // 回復戦略の定義
@@ -953,11 +953,11 @@ export class AudioErrorHandler {
 
         const audioKeywords = [
             'audio', 'sound', 'web audio', 'audiocontext', 'audiobuffer';
-            'vibration', 'bgm', 'sfx', 'microphone', 'speaker'
+            'vibration', 'bgm', 'sfx', 'microphone', 'speaker
         ];
 
-        const errorMessage = error.message?.toLowerCase() || '';
-        const errorStack = error.stack?.toLowerCase() || '';
+        const errorMessage = error.message?.toLowerCase() || ';
+        const errorStack = error.stack?.toLowerCase() || ';
         
         return audioKeywords.some(keyword =>
             errorMessage.includes(keyword) || errorStack.includes(keyword)
@@ -968,7 +968,7 @@ export class AudioErrorHandler {
      * エラータイプを判定
      */
     determineErrorType(error: Error): string {
-        const message = error.message?.toLowerCase() || '';
+        const message = error.message?.toLowerCase() || ';
 
         if (message.includes('audiocontext')) {
             return this.errorTypes.WEB_AUDIO_CONTEXT;
@@ -996,7 +996,7 @@ export class AudioErrorHandler {
      * エラーの発生源を判定
      */
     determineErrorSource(error: Error): string {
-        const stack = error.stack || '';
+        const stack = error.stack || ';
 
         if (stack.includes('AudioManager')) return 'AudioManager';
         if (stack.includes('BGM')) return 'BGMSystem';
